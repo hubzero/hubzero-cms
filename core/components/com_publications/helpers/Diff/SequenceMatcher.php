@@ -43,27 +43,27 @@
 class Diff_SequenceMatcher
 {
 	/**
-	 * @var string|array Either a string or an array containing a callback function to determine if a line is "junk" or not.
+	 * @var  string|array  Either a string or an array containing a callback function to determine if a line is "junk" or not.
 	 */
 	private $junkCallback = null;
 
 	/**
-	 * @var array The first sequence to compare against.
+	 * @var  array  The first sequence to compare against.
 	 */
 	private $a = null;
 
 	/**
-	 * @var array The second sequence.
+	 * @var  array  The second sequence.
 	 */
 	private $b = null;
 
 	/**
-	 * @var array Array of characters that are considered junk from the second sequence. Characters are the array key.
+	 * @var  array  Array of characters that are considered junk from the second sequence. Characters are the array key.
 	 */
 	private $junkDict = array();
 
 	/**
-	 * @var array Array of indices that do not contain junk elements.
+	 * @var  array  Array of indices that do not contain junk elements.
 	 */
 	private $b2j = array();
 
@@ -84,10 +84,11 @@ class Diff_SequenceMatcher
 	 * sequence matcher and it will perform a basic cleanup & calculate junk
 	 * elements.
 	 *
-	 * @param string|array $a A string or array containing the lines to compare against.
-	 * @param string|array $b A string or array containing the lines to compare.
-	 * @param string|array $junkCallback Either an array or string that references a callback function (if there is one) to determine 'junk' characters.
-	 * @param array $options
+	 * @param   string|array  $a             A string or array containing the lines to compare against.
+	 * @param   string|array  $b             A string or array containing the lines to compare.
+	 * @param   string|array  $junkCallback  Either an array or string that references a callback function (if there is one) to determine 'junk' characters.
+	 * @param   array         $options
+	 * @return  void
 	 */
 	public function __construct($a, $b, $junkCallback=null, $options)
 	{
@@ -101,7 +102,8 @@ class Diff_SequenceMatcher
 	/**
 	 * Set new options
 	 *
-	 * @param array $options
+	 * @param   array  $options
+	 * @return  void
 	 */
 	public function setOptions($options)
 	{
@@ -111,8 +113,9 @@ class Diff_SequenceMatcher
 	/**
 	 * Set the first and second sequences to use with the sequence matcher.
 	 *
-	 * @param string|array $a A string or array containing the lines to compare against.
-	 * @param string|array $b A string or array containing the lines to compare.
+	 * @param   string|array  $a  A string or array containing the lines to compare against.
+	 * @param   string|array  $b  A string or array containing the lines to compare.
+	 * @return  void
 	 */
 	public function setSequences($a, $b)
 	{
@@ -124,7 +127,8 @@ class Diff_SequenceMatcher
 	 * Set the first sequence ($a) and reset any internal caches to indicate that
 	 * when calling the calculation methods, we need to recalculate them.
 	 *
-	 * @param string|array $a The sequence to set as the first sequence.
+	 * @param   string|array  $a  The sequence to set as the first sequence.
+	 * @return  void
 	 */
 	public function setSeq1($a)
 	{
@@ -146,7 +150,8 @@ class Diff_SequenceMatcher
 	 * Set the second sequence ($b) and reset any internal caches to indicate that
 	 * when calling the calculation methods, we need to recalculate them.
 	 *
-	 * @param string|array $b The sequence to set as the second sequence.
+	 * @param   string|array  $b  The sequence to set as the second sequence.
+	 * @return  void
 	 */
 	public function setSeq2($b)
 	{
@@ -169,6 +174,8 @@ class Diff_SequenceMatcher
 	/**
 	 * Generate the internal arrays containing the list of junk and non-junk
 	 * characters for the second ($b) sequence.
+	 *
+	 * @return  void
 	 */
 	private function chainB()
 	{
@@ -231,8 +238,9 @@ class Diff_SequenceMatcher
 	/**
 	 * Checks if a particular character is in the junk dictionary
 	 * for the list of junk characters.
-	 * @param $b
-	 * @return boolean True if the character is considered junk. False if not.
+	 *
+	 * @param   $b
+	 * @return  boolean  True if the character is considered junk. False if not.
 	 */
 	private function isBJunk($b)
 	{
@@ -257,11 +265,11 @@ class Diff_SequenceMatcher
 	 * that the junk element appears in the block. Extend it as far as possible
 	 * by matching only junk elements in both $a and $b.
 	 *
-	 * @param int $alo The lower constraint for the first sequence.
-	 * @param int $ahi The upper constraint for the first sequence.
-	 * @param int $blo The lower constraint for the second sequence.
-	 * @param int $bhi The upper constraint for the second sequence.
-	 * @return array Array containing the longest match that includes the starting position in $a, start in $b and the length/size.
+	 * @param   int    $alo  The lower constraint for the first sequence.
+	 * @param   int    $ahi  The upper constraint for the first sequence.
+	 * @param   int    $blo  The lower constraint for the second sequence.
+	 * @param   int    $bhi  The upper constraint for the second sequence.
+	 * @return  array  Array containing the longest match that includes the starting position in $a, start in $b and the length/size.
 	 */
 	public function findLongestMatch($alo, $ahi, $blo, $bhi)
 	{
@@ -292,7 +300,8 @@ class Diff_SequenceMatcher
 
 				$k = $this->arrayGetDefault($j2Len, $j -1, 0) + 1;
 				$newJ2Len[$j] = $k;
-				if($k > $bestSize) {
+				if ($k > $bestSize)
+				{
 					$bestI = $i - $k + 1;
 					$bestJ = $j - $k + 1;
 					$bestSize = $k;
@@ -302,32 +311,28 @@ class Diff_SequenceMatcher
 			$j2Len = $newJ2Len;
 		}
 
-		while ($bestI > $alo && $bestJ > $blo && !$this->isBJunk($b[$bestJ - 1]) &&
-			!$this->linesAreDifferent($bestI - 1, $bestJ - 1))
+		while ($bestI > $alo && $bestJ > $blo && !$this->isBJunk($b[$bestJ - 1]) && !$this->linesAreDifferent($bestI - 1, $bestJ - 1))
 		{
-				--$bestI;
-				--$bestJ;
-				++$bestSize;
+			--$bestI;
+			--$bestJ;
+			++$bestSize;
 		}
 
-		while ($bestI + $bestSize < $ahi && ($bestJ + $bestSize) < $bhi &&
-			!$this->isBJunk($b[$bestJ + $bestSize]) && !$this->linesAreDifferent($bestI + $bestSize, $bestJ + $bestSize))
+		while ($bestI + $bestSize < $ahi && ($bestJ + $bestSize) < $bhi && !$this->isBJunk($b[$bestJ + $bestSize]) && !$this->linesAreDifferent($bestI + $bestSize, $bestJ + $bestSize))
 		{
-				++$bestSize;
+			++$bestSize;
 		}
 
-		while ($bestI > $alo && $bestJ > $blo && $this->isBJunk($b[$bestJ - 1]) &&
-			!$this->linesAreDifferent($bestI - 1, $bestJ - 1))
+		while ($bestI > $alo && $bestJ > $blo && $this->isBJunk($b[$bestJ - 1]) && !$this->linesAreDifferent($bestI - 1, $bestJ - 1))
 		{
-				--$bestI;
-				--$bestJ;
-				++$bestSize;
+			--$bestI;
+			--$bestJ;
+			++$bestSize;
 		}
 
-		while ($bestI + $bestSize < $ahi && $bestJ + $bestSize < $bhi &&
-			$this->isBJunk($b[$bestJ + $bestSize]) && !$this->linesAreDifferent($bestI + $bestSize, $bestJ + $bestSize))
+		while ($bestI + $bestSize < $ahi && $bestJ + $bestSize < $bhi && $this->isBJunk($b[$bestJ + $bestSize]) && !$this->linesAreDifferent($bestI + $bestSize, $bestJ + $bestSize))
 		{
-					++$bestSize;
+			++$bestSize;
 		}
 
 		return array(
@@ -340,9 +345,9 @@ class Diff_SequenceMatcher
 	/**
 	 * Check if the two lines at the given indexes are different or not.
 	 *
-	 * @param int $aIndex Line number to check against in a.
-	 * @param int $bIndex Line number to check against in b.
-	 * @return boolean True if the lines are different and false if not.
+	 * @param   int      $aIndex  Line number to check against in a.
+	 * @param   int      $bIndex  Line number to check against in b.
+	 * @return  boolean  True if the lines are different and false if not.
 	 */
 	public function linesAreDifferent($aIndex, $bIndex)
 	{
@@ -378,7 +383,7 @@ class Diff_SequenceMatcher
 	 * constraint of the block in $b and finally the number of lines that the
 	 * block continues for.
 	 *
-	 * @return array Nested array of the matching blocks, as described by the function.
+	 * @return  array  Nested array of the matching blocks, as described by the function.
 	 */
 	public function getMatchingBlocks()
 	{
@@ -499,7 +504,7 @@ class Diff_SequenceMatcher
 	 *           $i1 in $a.
 	 * equal  -  The two strings with the specified ranges are equal.
 	 *
-	 * @return array Array of the opcodes describing the differences between the strings.
+	 * @return  array  Array of the opcodes describing the differences between the strings.
 	 */
 	public function getOpCodes()
 	{
@@ -569,8 +574,8 @@ class Diff_SequenceMatcher
 	 * content of the different files but can still provide context as to where the
 	 * changes are.
 	 *
-	 * @param int $context The number of lines of context to provide around the groups.
-	 * @return array Nested array of all of the grouped opcodes.
+	 * @param   int    $context  The number of lines of context to provide around the groups.
+	 * @return  array  Nested array of all of the grouped opcodes.
 	 */
 	public function getGroupedOpcodes($context=3)
 	{
@@ -661,7 +666,7 @@ class Diff_SequenceMatcher
 	 * The ratio is calculated as (2 * number of matches) / total number of
 	 * elements in both sequences.
 	 *
-	 * @return float The calculated ratio.
+	 * @return  float  The calculated ratio.
 	 */
 	public function Ratio()
 	{
@@ -672,9 +677,9 @@ class Diff_SequenceMatcher
 	/**
 	 * Helper function to calculate the number of matches for Ratio().
 	 *
-	 * @param int $sum The running total for the number of matches.
-	 * @param array $triple Array containing the matching block triple to add to the running total.
-	 * @return int The new running total for the number of matches.
+	 * @param   int    $sum     The running total for the number of matches.
+	 * @param   array  $triple  Array containing the matching block triple to add to the running total.
+	 * @return  int    The new running total for the number of matches.
 	 */
 	private function ratioReduce($sum, $triple)
 	{
@@ -685,7 +690,7 @@ class Diff_SequenceMatcher
 	 * Quickly return an upper bound ratio for the similarity of the strings.
 	 * This is quicker to compute than Ratio().
 	 *
-	 * @return float The calculated ratio.
+	 * @return  float  The calculated ratio.
 	 */
 	private function quickRatio()
 	{
@@ -728,7 +733,7 @@ class Diff_SequenceMatcher
 	 * Return an upper bound ratio really quickly for the similarity of the strings.
 	 * This is quicker to compute than Ratio() and quickRatio().
 	 *
-	 * @return float The calculated ratio.
+	 * @return  float  The calculated ratio.
 	 */
 	private function realquickRatio()
 	{
@@ -742,9 +747,9 @@ class Diff_SequenceMatcher
 	 * Helper function for calculating the ratio to measure similarity for the strings.
 	 * The ratio is defined as being 2 * (number of matches / total length)
 	 *
-	 * @param int $matches The number of matches in the two strings.
-	 * @param int $length The length of the two strings.
-	 * @return float The calculated ratio.
+	 * @param   int    $matches  The number of matches in the two strings.
+	 * @param   int    $length   The length of the two strings.
+	 * @return  float  The calculated ratio.
 	 */
 	private function calculateRatio($matches, $length=0)
 	{
@@ -763,10 +768,10 @@ class Diff_SequenceMatcher
 	 * in an array of it exists, or if it doesn't then return a default value.
 	 * Essentially cleaner than doing a series of if(isset()) {} else {} calls.
 	 *
-	 * @param array $array The array to search.
-	 * @param string $key The key to check that exists.
-	 * @param mixed $default The value to return as the default value if the key doesn't exist.
-	 * @return mixed The value from the array if the key exists or otherwise the default.
+	 * @param   array   $array    The array to search.
+	 * @param   string  $key      The key to check that exists.
+	 * @param   mixed   $default  The value to return as the default value if the key doesn't exist.
+	 * @return  mixed   The value from the array if the key exists or otherwise the default.
 	 */
 	private function arrayGetDefault($array, $key, $default)
 	{
@@ -783,9 +788,9 @@ class Diff_SequenceMatcher
 	/**
 	 * Sort an array by the nested arrays it contains. Helper function for getMatchingBlocks
 	 *
-	 * @param array $a First array to compare.
-	 * @param array $b Second array to compare.
-	 * @return int -1, 0 or 1, as expected by the usort function.
+	 * @param   array  $a  First array to compare.
+	 * @param   array  $b  Second array to compare.
+	 * @return  int    -1, 0 or 1, as expected by the usort function.
 	 */
 	private function tupleSort($a, $b)
 	{
