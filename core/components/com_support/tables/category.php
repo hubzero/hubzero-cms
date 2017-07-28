@@ -188,4 +188,3 @@ class Category extends \JTable
 		}
 	}
 }
-

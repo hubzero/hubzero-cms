@@ -134,4 +134,3 @@ class Resolution extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

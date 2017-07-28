@@ -117,4 +117,3 @@ class Aro extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-
