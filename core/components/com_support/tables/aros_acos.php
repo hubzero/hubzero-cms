@@ -161,4 +161,3 @@ class AroAco extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-
