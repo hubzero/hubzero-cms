@@ -121,4 +121,3 @@ class Section extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-
