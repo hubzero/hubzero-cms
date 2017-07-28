@@ -1349,47 +1349,47 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// send a copy to event admin
 		if ($eventsEvent->email != '')
 		{
+			//build message to send to event admin
+			$email = new \Hubzero\Plugin\View(
+				array(
+					'folder'  => 'groups',
+					'element' => 'calendar',
+					'name'    => 'calendar',
+					'layout'  => 'register_email_admin'
+				)
+			);
+			$email->option     = $this->option;
+			$email->group      = $this->group;
+			$email->params     = $params;
+			$email->event      = $eventsEvent;
+			$email->sitename   = Config::get('sitename');
+			$email->register   = $register;
+			$email->race       = $race;
+			$email->dietary    = $dietary;
+			$email->disability = $disability;
+			$email->arrival    = $arrival;
+			$email->departure  = $departure;
+			$email->dinner     = $dinner;
+			$message           = str_replace("\n", "\r\n", $email->loadTemplate());
+
+			//declare subject
+			$subject = Lang::txt("[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
+
+			//make from array
+			$from = array(
+				'email' => 'group-event-registration@' . $_SERVER['HTTP_HOST'],
+				'name'  => $register['first_name'] . ' ' . $register['last_name']
+			);
+
+			// email from person
+			if ($params->get('show_email', 1) == 1)
+			{
+				$from['email'] = $register['email'];
+			}
+
+			//send email
 			$emailArray = explode(',', $eventsEvent->email);
 			foreach($emailArray as $emailSingle) {
-				//build message to send to event admin
-				$email = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'groups',
-						'element' => 'calendar',
-						'name'    => 'calendar',
-						'layout'  => 'register_email_admin'
-					)
-				);
-				$email->option     = $this->option;
-				$email->group      = $this->group;
-				$email->params     = $params;
-				$email->event      = $eventsEvent;
-				$email->sitename   = Config::get('sitename');
-				$email->register   = $register;
-				$email->race       = $race;
-				$email->dietary    = $dietary;
-				$email->disability = $disability;
-				$email->arrival    = $arrival;
-				$email->departure  = $departure;
-				$email->dinner     = $dinner;
-				$message           = str_replace("\n", "\r\n", $email->loadTemplate());
-
-				//declare subject
-				$subject = Lang::txt("[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
-
-				//make from array
-				$from = array(
-					'email' => 'group-event-registration@' . $_SERVER['HTTP_HOST'],
-					'name'  => $register['first_name'] . ' ' . $register['last_name']
-				);
-
-				// email from person
-				if ($params->get('show_email', 1) == 1)
-				{
-					$from['email'] = $register['email'];
-				}
-
-				//send email
 				$this->_sendEmail($emailSingle, $from, $subject, $message);
 			}
 		}
