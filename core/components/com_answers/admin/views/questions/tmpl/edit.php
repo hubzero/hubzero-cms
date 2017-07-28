@@ -114,7 +114,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_ANSWERS_FIELD_ID'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('id'); ?>
+							<?php echo $this->row->get('id', ''); ?>
 							<input type="hidden" name="question[id]" value="<?php echo $this->row->get('id'); ?>" />
 						</td>
 					</tr>

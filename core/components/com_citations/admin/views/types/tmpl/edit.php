@@ -139,7 +139,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><?php echo Lang::txt('ID'); ?>:</th>
 						<td>
-							<?php echo ($id); ?>
+							<?php echo ($id ? $id : ''); ?>
 							<input type="hidden" name="type[id]" value="<?php echo $id; ?>" />
 						</td>
 					</tr>
