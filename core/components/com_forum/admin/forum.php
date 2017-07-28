@@ -36,11 +36,8 @@ if (!\User::authorise('core.manage', 'com_forum'))
 	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
-require_once(__DIR__ . DS . 'models' . DS . 'adminsection.php');
-require_once(__DIR__ . DS . 'models' . DS . 'admincategory.php');
-require_once(__DIR__ . DS . 'models' . DS . 'adminthread.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 
 $controllerName = \Request::getCmd('controller', 'sections');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

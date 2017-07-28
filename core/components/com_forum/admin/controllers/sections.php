@@ -34,7 +34,6 @@ namespace Components\Forum\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
-use Components\Forum\Admin\Models\AdminSection;
 use Request;
 use Notify;
 use Route;
@@ -205,8 +204,7 @@ class Sections extends AdminController
 			'asset_id' => $row->get('asset_id')
 		));
 
-		$m = new AdminSection();
-		$form = $m->getForm();
+		$form = $row->getForm();
 
 		// Output the HTML
 		$this->view
@@ -242,14 +240,17 @@ class Sections extends AdminController
 		$section = Section::oneOrNew($fields['id'])->set($fields);
 
 		// Bind the rules.
-		$data = Request::getVar('jform', array(), 'post');
+		$data = Request::getVar('data', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
-			$model = new AdminSection();
-			$form      = $model->getForm($data, false);
-			$validData = $model->validate($form, $data);
+			$form = $section->getForm($data);
+			$data = $form->filter($data);
+			if (!$form->validate($data))
+			{
+				Notify::error($form->getError());
+			}
 
-			$section->assetRules = new \Hubzero\Access\Rules($validData['rules']);
+			$section->assetRules = new \Hubzero\Access\Rules($data['rules']);
 		}
 
 		if (!$section->save())

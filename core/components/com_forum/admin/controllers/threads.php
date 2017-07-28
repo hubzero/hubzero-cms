@@ -38,7 +38,6 @@ use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 use Components\Forum\Models\Tags;
-use Components\Forum\Admin\Models\AdminThread;
 use Filesystem;
 use Exception;
 use Request;
@@ -470,8 +469,8 @@ class Threads extends AdminController
 			'id'       => $post->get('id'),
 			'asset_id' => $post->get('asset_id')
 		));
-		$m = new AdminThread();
-		$form = $m->getForm();
+
+		$form = $post->getForm();
 
 		// Get tags on this article
 		$this->view
@@ -534,11 +533,14 @@ class Threads extends AdminController
 		$data = Request::getVar('jform', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
-			$model = new AdminThread();
-			$form      = $model->getForm($data, false);
-			$validData = $model->validate($form, $data);
+			$form = $post->getForm($data);
+			$data = $form->filter($data);
+			if (!$form->validate($data))
+			{
+				Notify::error($form->getError());
+			}
 
-			$post->assetRules = $validData['rules'];
+			$category->assetRules = new \Hubzero\Access\Rules($data['rules']);
 		}
 
 		// Store new content
