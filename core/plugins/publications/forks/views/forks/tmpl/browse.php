@@ -120,10 +120,9 @@ $this->css();
 							<?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FORKED_BY', $name); ?>
 						</div>
 					</div>
-					<?php /* Not yet implemented
-					if ($isPublished) { ?>
-						<a class="btn" href="<?php echo Route::url('index.php?option=com_publications&task=diff&left=' . $this->publication->version->get('id') . '&right=' . $publication->version->get('id')); ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_DIFF'); ?></a>
-					<?php }*/ ?>
+					<?php if ($isPublished) { ?>
+						<a class="btn" href="<?php echo Route::url('index.php?option=com_publications&task=compare&left=' . $this->publication->version->get('id') . '&right=' . $publication->version->get('id')); ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_DIFF'); ?></a>
+					<?php } ?>
 				</div>
 			<?php } ?>
 		<?php } else { ?>

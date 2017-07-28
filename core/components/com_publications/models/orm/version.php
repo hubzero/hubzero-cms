@@ -287,6 +287,40 @@ class Version extends Relational
 	}
 
 	/**
+	 * Check if the publication is published
+	 *
+	 * @return  bool
+	 */
+	public function isPublished()
+	{
+		if ($this->isNew())
+		{
+			return false;
+		}
+
+		if ($this->get('state') != self::STATE_PUBLISHED)
+		{
+			return false;
+		}
+
+		if ($this->get('published_up')
+		 && $this->get('published_up') != '0000-00-00 00:00:00'
+		 && $this->get('published_up') > Date::toSql())
+		{
+			return false;
+		}
+
+		if ($this->get('published_down')
+		 && $this->get('published_down') != '0000-00-00 00:00:00'
+		 && $this->get('published_down') < Date::toSql())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Is this main version
 	 *
 	 * @return  boolean
