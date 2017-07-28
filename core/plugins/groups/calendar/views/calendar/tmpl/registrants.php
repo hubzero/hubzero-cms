@@ -110,7 +110,7 @@ $month = date("m", strtotime($this->event->publish_up));
 					<td><?php echo $registrant->last_name . ', ' . $registrant->first_name; ?></td>
 					<td><?php echo $registrant->email; ?></td>
 					<td><?php echo Date::of($registrant->registered)->toLocal('l, F d, Y @ g:i a'); ?></td>
-					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=unregister&email=' . $this->user->email  . '&event_id=' . $this->event->id); ?>"`>Unregister</a></td>
+					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=unregister&email=' . $this->user->email  . '&event_id=' . $this->event->id . '&' . Session::getFormToken() . '=1');  ?>"`>Unregister</a></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php else : ?>
@@ -119,7 +119,4 @@ $month = date("m", strtotime($this->event->publish_up));
 			</tr>
 		<?php endif; ?>
 	</tbody>
-	<form>
-		<?php echo Html::input('token'); ?>
-	</form>
 </table>

@@ -1583,7 +1583,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 * $return  void
 	 */
 	private function unregister() {
-		Request::checkToken();
+		Request::checkToken('get');
 
 		$db = App::get('db');
 		$event_id = Request::getVar('event_id', array(), 'get');
@@ -1687,7 +1687,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function saveCalendar()
 	{
-		//Request::checkToken();
+		Request::checkToken();
 
 		//get request vars
 		$calendarInput = Request::getVar('calendar', array());
