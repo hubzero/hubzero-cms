@@ -1942,6 +1942,162 @@ class Publications extends SiteController
 	}
 
 	/**
+	 * Show differences between two publications
+	 *
+	 * @return  void
+	 */
+	public function compareTask()
+	{
+		$lft = Request::getInt('left', 0);
+		$rgt = Request::getInt('right', 0);
+
+		// Make sure we have values for both sides
+		if (!$lft || !$rgt)
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_ERROR_MISSING_VERSION'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		// Can't compare against itself
+		if ($lft == $rgt)
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_ERROR_SAME_VERSIONS'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		// Get our model and load publication data
+		include_once dirname(dirname(__DIR__)) . '/models/orm/publication.php';
+
+		// Load the lft version and make sure the user has access
+		$lversion = Models\Orm\Version::oneOrFail($lft);
+		$lpublica = $lversion->publication;
+
+		if (!$lversion->get('id') || $lversion->isDeleted()
+		 || !$lpublica->get('id'))
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		/*if (!$lpublica->access('view'))
+		{
+			return $this->_blockAccess();
+		}*/
+
+		// Load the rgt version and make sure the user has access
+		$rversion = Models\Orm\Version::oneOrFail($rgt);
+
+		if (!$rversion->get('id') || $rversion->isDeleted())
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		$rpublica = new Models\Publication(null, 'default', $rversion->get('id'));
+
+		if (!$rpublica->access('view'))
+		{
+			return $this->_blockAccess();
+		}
+
+		$rpublica->setCuration();
+		$customFields = json_decode($rpublica->_curationModel->getMetaSchema(), true);
+
+		// Diff the two versions
+		require_once dirname(dirname(__DIR__)) . '/helpers/Diff.php';
+		require_once dirname(dirname(__DIR__)) . '/helpers/Diff/Renderer/Html/SideBySide.php';
+
+		$diffs = array();
+
+		$l = explode("\n", $lversion->get('title'));
+		$r = explode("\n", $rversion->get('title'));
+
+		$diff = new \Diff($l, $r);
+		$diffs['title'] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+
+		$l = array();
+		foreach ($lversion->authors as $author)
+		{
+			$l[] = $author->get('name') . ' (' . $author->get('organization') . ')';
+		}
+		$r = array();
+		foreach ($rversion->authors as $author)
+		{
+			$r[] = $author->get('name') . ' (' . $author->get('organization') . ')';
+		}
+
+		$diff = new \Diff($l, $r);
+		$diffs['authors'] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+
+		$l = explode("\n", $lversion->get('description'));
+		$r = explode("\n", $rversion->get('description'));
+
+		$diff = new \Diff($l, $r);
+		$diffs['description'] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+
+		$diffs['metadata'] = array();
+
+		$lmetadata = $lversion->metadata;
+		$rmetadata = $rversion->metadata;
+		foreach ($lmetadata as $key => $l)
+		{
+			$r = (isset($rmetadata[$key]) ? $rmetadata[$key] : '');
+			$l = explode("\n", $l);
+			$r = explode("\n", $r);
+
+			$diff = new \Diff($l, $r);
+			$diffs['metadata'][$key] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+		}
+
+		foreach ($rmetadata as $key => $r)
+		{
+			if (isset($diffs['metadata'][$key]))
+			{
+				continue;
+			}
+			$l = (isset($lmetadata[$key]) ? $lmetadata[$key] : '');
+			$l = explode("\n", $l);
+			$r = explode("\n", $r);
+
+			$diff = new \Diff($l, $r);
+			$diffs['metadata'][$key] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+		}
+
+		// Set the pathway
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+		Pathway::append(
+			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+			'index.php?option=' . $this->_option . '&task=' . $this->_task . '&lft=' . $lft . '&rgt=' . $rgt
+		);
+
+		// Display the view
+		$this->view
+			->set('lft', $lversion)
+			->set('rgt', $rversion)
+			->set('diffs', $diffs)
+			->set('customFields', $customFields)
+			->display();
+	}
+
+	/**
 	 * Block access to restricted publications
 	 *
 	 * @param   object  $publication
