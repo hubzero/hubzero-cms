@@ -328,7 +328,8 @@ function popratings()
 						<tr>
 							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
 							<td>
-								<?php echo $this->model->get('version_label') . ' (' . $status . ')'; ?>
+								<input type="text" name="version_label" id="field-version_label" maxlength="250" size="10" value="<?php echo $this->escape($this->model->get('version_label')); ?>" />
+								<?php echo ' (' . $status . ')'; ?>
 							</td>
 						</tr>
 						<tr>

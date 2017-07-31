@@ -278,13 +278,12 @@ class Items extends AdminController
 
 		// Output the HTML
 		$this->view->display();
-
 	}
 
 	/**
 	 * Save content item details
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savecontentTask()
 	{
@@ -292,8 +291,8 @@ class Items extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$el 	 = Request::getInt('el', 0);
-		$id 	 = Request::getInt('id', 0);
+		$el      = Request::getInt('el', 0);
+		$id      = Request::getInt('id', 0);
 		$version = Request::getVar('version', '');
 		$params  = Request::getVar('params', array(), 'request', 'array');
 		$attachments = Request::getVar('attachments', array(), 'request', 'array');
@@ -461,7 +460,7 @@ class Items extends AdminController
 	/**
 	 * Save author order
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveauthororderTask()
 	{
@@ -771,6 +770,10 @@ class Items extends AdminController
 		$this->model->version->license_text = trim(Request::getVar('license_text', '', 'post'));
 		$this->model->version->license_type = Request::getInt('license_type', 0, 'post');
 		$this->model->version->access       = Request::getInt('access', 0, 'post');
+		if ($version_label = Request::getVar('version_label', null, 'post'))
+		{
+			$this->model->version->version_label = $version_label;
+		}
 
 		// Get DOI service
 		$doiService = new Models\Doi($this->model);
@@ -1109,9 +1112,9 @@ class Items extends AdminController
 	 * Sends a message to authors (or creator) of a publication
 	 *
 	 * @param   string  $subject
-	 * @param   string  $subject
+	 * @param   string  $message
 	 * @param   array   $authors
-	 * @param   string  $subject
+	 * @param   string  $action
 	 * @return  void
 	 */
 	private function _emailContributors($subject = '', $message = '', $authors = array(), $action = 'publish')
