@@ -58,6 +58,8 @@ class Types extends AdminController
 	{
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
 
 		parent::execute();
 	}
@@ -300,6 +302,13 @@ class Types extends AdminController
 
 		foreach ($ids as $id)
 		{
+			// Uuuuugggghhhhhhhh
+			if ($id == 7)
+			{
+				Notify::warning(Lang::txt('Core resource (ID #%s) type cannot be removed', $id));
+				continue;
+			}
+
 			// Check if the type is being used
 			$rt = Type::oneOrFail($id);
 
@@ -329,6 +338,71 @@ class Types extends AdminController
 		}
 
 		// Redirect
+		$this->cancelTask();
+	}
+
+	/**
+	 * Sets the state of one or more entries
+	 *
+	 * @return  void
+	 */
+	public function stateTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$state = $this->getTask() == 'publish' ? Type::STATE_PUBLISHED : Type::STATE_UNPUBLISHED;
+
+		// Incoming
+		$ids = Request::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Check for a resource
+		if (count($ids) < 1)
+		{
+			Notify::warning(Lang::txt('COM_RESOURCES_SELECT_ENTRY_TO', $this->_task));
+			return $this->cancelTask();
+		}
+
+		// Loop through all the IDs
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			// Load the article
+			$row = Type::oneOrNew(intval($id));
+			$row->set('state', $state);
+
+			// Store new content
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			switch ($this->getTask())
+			{
+				case 'publish':
+					$message = Lang::txt('COM_RESOURCES_ITEMS_PUBLISHED', $success);
+				break;
+				case 'unpublish':
+					$message = Lang::txt('COM_RESOURCES_ITEMS_UNPUBLISHED', $success);
+				break;
+			}
+
+			Notify::success($message);
+		}
+
+		// Set the redirect
 		$this->cancelTask();
 	}
 

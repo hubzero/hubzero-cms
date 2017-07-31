@@ -95,6 +95,10 @@ $this->css('introduction.css', 'system')
 
 				foreach ($this->categories as $category)
 				{
+					if (!$category->state)
+					{
+						continue;
+					}
 					if ($category->id == 7 && !Component::isEnabled('com_tools', true))
 					{
 						continue;
