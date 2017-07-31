@@ -1589,15 +1589,24 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event_id = Request::getVar('event_id', array(), 'get');
 		$email = Request::getVar('email', array(), 'get');
 
-		$sql = "DELETE FROM `#__events_respondents` WHERE event_id='$event_id' AND email='$email'";
-		$db->setQuery($sql);
-		$db->query();
+		if($this->user->authorise('manager') || $this->user->email == $email) {
+			$sql = "DELETE FROM `#__events_respondents` WHERE event_id='$event_id' AND email='$email'";
+			$db->setQuery($sql);
+			$db->query();
+			App::redirect(
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&calendar_id=' . $event_id . '&active=calendar&action=details'),
+				Lang::txt('Unregistered from event'),
+				'passed'
+			);
+		}
+		else {
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&calendar_id=' . $event_id . '&active=calendar&action=details'),
-			Lang::txt('Unregistered from event'),
-			'passed'
-		);
+			App::redirect(
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&calendar_id=' . $event_id . '&active=calendar&action=details'),
+				Lang::txt('Incorrect email while being unregistered'),
+				'warning'
+			);
+		}
 	}
 
 	/**
