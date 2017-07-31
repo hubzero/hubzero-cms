@@ -20,8 +20,10 @@ foreach ($fieldSets as $name => $fieldSet) :
 		<ul class="adminformlist">
 			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 				<li>
-					<?php echo $field->label; ?>
-					<?php echo $field->input; ?>
+					<div class="input-wrap">
+						<?php echo $field->label; ?>
+						<?php echo $field->input; ?>
+					</div>
 				</li>
 			<?php endforeach; ?>
 		</ul>
