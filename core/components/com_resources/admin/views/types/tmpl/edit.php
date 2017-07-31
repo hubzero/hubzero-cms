@@ -103,6 +103,13 @@ function submitbutton(pressbutton)
 					</div>
 				<?php } ?>
 				<div class="input-wrap">
+					<label for="field-state"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATE'); ?>:</label><br />
+					<select name="type[state]" id="field-state">
+						<option value="0"<?php if ($this->row->state == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php if ($this->row->state == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					</select>
+				</div>
+				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_RESOURCES_FIELD_DESCIPTION'); ?>:</label><br />
 					<?php echo $this->editor('type[description]', stripslashes($this->row->description), 45, 10, 'field-description', array('class' => 'minimal')); ?>
 				</div>
