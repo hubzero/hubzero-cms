@@ -20,24 +20,32 @@ foreach ($fieldSets as $name => $fieldSet) :
 		<ul class="adminformlist">
 			<?php if ($name == 'jmetadata') : // Include the real fields in this panel. ?>
 				<li>
-					<?php echo $this->form->getLabel('metadesc'); ?>
-					<?php echo $this->form->getInput('metadesc'); ?>
+					<div class="input-wrap">
+						<?php echo $this->form->getLabel('metadesc'); ?>
+						<?php echo $this->form->getInput('metadesc'); ?>
+					</div>
 				</li>
 
 				<li>
-					<?php echo $this->form->getLabel('metakey'); ?>
-					<?php echo $this->form->getInput('metakey'); ?>
+					<div class="input-wrap">
+						<?php echo $this->form->getLabel('metakey'); ?>
+						<?php echo $this->form->getInput('metakey'); ?>
+					</div>
 				</li>
 
 				<li>
-					<?php echo $this->form->getLabel('xreference'); ?>
-					<?php echo $this->form->getInput('xreference'); ?>
+					<div class="input-wrap">
+						<?php echo $this->form->getLabel('xreference'); ?>
+						<?php echo $this->form->getInput('xreference'); ?>
+					</div>
 				</li>
 			<?php endif; ?>
 			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 				<li>
-					<?php echo $field->label; ?>
-					<?php echo $field->input; ?>
+					<div class="input-wrap">
+						<?php echo $field->label; ?>
+						<?php echo $field->input; ?>
+					</div>
 				</li>
 			<?php endforeach; ?>
 		</ul>
