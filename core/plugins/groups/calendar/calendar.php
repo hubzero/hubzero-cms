@@ -784,7 +784,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//make sure registration email is valid
-		if($registration && isset($event['email']) && $event['email'] != '') {
+		if ($registration && isset($event['email']) && $event['email'] != '') {
 			$emailArray = explode(',', $event['email']);
 			if (!filter_var_array($emailArray, FILTER_VALIDATE_EMAIL))
 			{
@@ -1389,7 +1389,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 			//send email
 			$emailArray = explode(',', $eventsEvent->email);
-			foreach($emailArray as $emailSingle) {
+			foreach ($emailArray as $emailSingle) {
 				$this->_sendEmail($emailSingle, $from, $subject, $message);
 			}
 		}
@@ -1582,14 +1582,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 *
 	 * $return  void
 	 */
-	private function unregister() {
+	private function unregister() 
+	{
 		Request::checkToken('get');
 
 		$db = App::get('db');
 		$event_id = Request::getVar('event_id', array(), 'get');
 		$email = Request::getVar('email', array(), 'get');
 
-		if($this->user->authorise('manager') || $this->user->email == $email) {
+		if ($this->user->authorise('manager') || $this->user->email == $email) {
 			$sql = "DELETE FROM `#__events_respondents` WHERE event_id='$event_id' AND email='$email'";
 			$db->setQuery($sql);
 			$db->query();
