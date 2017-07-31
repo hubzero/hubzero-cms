@@ -48,8 +48,13 @@ class plgContentGeshi extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
+		if ($context != 'com_content.article')
+		{
+			return true;
+		}
+
 		// Simple performance check to determine whether bot should process further.
-		if (Hubzero\Utility\String::contains($row->text, 'pre>') === false)
+		if (Hubzero\Utility\String::contains($article->text, 'pre>') === false)
 		{
 			return true;
 		}
