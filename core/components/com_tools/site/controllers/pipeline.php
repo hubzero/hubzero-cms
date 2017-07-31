@@ -2246,7 +2246,7 @@ class Pipeline extends SiteController
 		$group = \Hubzero\User\Group::getInstance($this->config->get('group_prefix', 'app-') . $tool['toolname']);
 		if ($group)
 		{
-			$row->set('group', $group->get('gidNumber'));
+			$row->set('group_id', $group->get('gidNumber'));
 		}
 		$row->set('email', User::get('email'));
 		$row->set('name', User::get('name'));
