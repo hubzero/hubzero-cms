@@ -2243,7 +2243,11 @@ class Pipeline extends SiteController
 		$row->set('type', 3);
 
 		// Attach tool group to a ticket for access
-		$row->set('group', $this->config->get('group_prefix', 'app-') . $tool['toolname']);
+		$group = \Hubzero\User\Group::getInstance($this->config->get('group_prefix', 'app-') . $tool['toolname']);
+		if ($group)
+		{
+			$row->set('group', $group->get('gidNumber'));
+		}
 		$row->set('email', User::get('email'));
 		$row->set('name', User::get('name'));
 
