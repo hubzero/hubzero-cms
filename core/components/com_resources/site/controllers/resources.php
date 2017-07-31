@@ -2158,7 +2158,21 @@ class Resources extends SiteController
 		{
 			$user = User::getInstance();
 		}
-		if ($resource->access == 1 && $user->isGuest())
+
+		// Get parent Access level and use it if it is more restrictive
+		if ($resource->standalone != 1)
+		{
+			$helper = new Helper($resource->id, $this->database);
+			$helper->getParents();
+			$parents = $helper->parents;
+			if (count($parents) == 1)
+			{
+				$parent = new Resource($this->database);
+				$parent->load($parents[0]->id);
+			}
+		}
+		$accessLevel = (isset($parent) && ($parent->access > $resource->access)) ? $parent->access : $resource->access;
+		if ($accessLevel == 1 && $user->isGuest())
 		{
 			//App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
@@ -2170,9 +2184,8 @@ class Resources extends SiteController
 		}
 
 		// Check if the resource is "private" and the user is allowed to view it
-		if ($resource->access == 4  // private
-		 || ($resource->access == 3 && $resource->path))  // protected -- We need to allow images in the sbtract to come through
-		// || !$resource->standalone) // child, no direct access
+		if ($accessLevel == 4  // private
+		 || ($accessLevel == 3 && $resource->path))  // protected -- We need to allow images in the sbtract to come through
 		{
 			if ($user->isGuest())
 			{
@@ -2762,6 +2775,7 @@ class Resources extends SiteController
 				}
 			}
 		}
+
 		if (!$resource->standalone)
 		{
 			if (!isset($p) && isset($parents) && count($parents) == 1)
