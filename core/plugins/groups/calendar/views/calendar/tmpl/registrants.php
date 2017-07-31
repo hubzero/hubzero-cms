@@ -110,8 +110,8 @@ $month = date("m", strtotime($this->event->publish_up));
 					<td><?php echo $registrant->last_name . ', ' . $registrant->first_name; ?></td>
 					<td><?php echo $registrant->email; ?></td>
 					<td><?php echo Date::of($registrant->registered)->toLocal('l, F d, Y @ g:i a'); ?></td>
-					<?php if($registrant->email == $this->user->email) { ?>
-					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=unregister&email=' . $this->user->email  . '&event_id=' . $this->event->id . '&' . Session::getFormToken() . '=1');  ?>"`>Unregister</a></td>
+					<?php if($registrant->email == $this->user->email || $this->authorized == 'manager') { ?>
+					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=unregister&email=' . $registrant->email  . '&event_id=' . $this->event->id . '&' . Session::getFormToken() . '=1');  ?>"`>Unregister</a></td>
 					<?php } else { ?>
 					<td></td>
 					<?php } ?>
