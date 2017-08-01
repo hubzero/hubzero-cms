@@ -88,14 +88,70 @@ class Todo extends Relational
 	);
 
 	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'content'
+	);
+
+	/**
 	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
+		'created_by',
+		'priority'
 	);
+
+	/**
+	 * Generates automatic content field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticContent($data)
+	{
+		if (!isset($data['content']))
+		{
+			$data['content'] = '';
+		}
+		$data['content'] = rtrim($data['content']);
+		$data['content'] = \Hubzero\Utility\Sanitize::stripAll($data['content']);
+
+		if (strlen($data['content']) > 255)
+		{
+			$data['details'] = $data['content'];
+		}
+		$data['content'] = \Hubzero\Utility\String::truncate($data['content'], 255);
+
+		return $data['content'];
+	}
+
+	/**
+	 * Generates automatic priority field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPriority($data)
+	{
+		if (!isset($data['priority']))
+		{
+			$last = self::all()
+				->select('priority')
+				->whereEquals('projectid', (isset($data['projectid']) ? $data['projectid'] : 0))
+				->order('priority', 'desc')
+				->row();
+
+			$data['priority'] = $last->priority + 1;
+		}
+
+		return $data['priority'];
+	}
 
 	/**
 	 * Get parent project
