@@ -366,7 +366,7 @@
 		background-color: #FFFFFF;
 		border: none;
 		background-position: 0 50%;
-		text-align: left !important;
+		text-align: center !important;
 		padding-left: 20px !important;
 	}
 /* Resume Stats */
@@ -718,7 +718,9 @@
 	#jobinfo .spacer {
 		padding: 0.3em;
 	}
-
+	#hubForm input {
+		margin-top: 0;
+	}
 /* Form */
 	.joblist {
 		margin: 0;
