@@ -411,7 +411,7 @@ class File extends Base
 				$html .= ' <span class="edititem">';
 				$html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id=' . $pub->get('id') . '&el=' . $elementId . '&v=' . $pub->get('version_number') . '">';
 				$html .= Lang::txt('COM_PUBLICATIONS_EDIT');
-				$hmtl .= '</a>';
+				$html .= '</a>';
 				$html .= '</span>';
 			}
 			$html .= '</span>';
