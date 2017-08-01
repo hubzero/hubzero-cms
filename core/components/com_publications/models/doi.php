@@ -282,7 +282,7 @@ class Doi extends Object
 		$nameParts = explode(' ', $name);
 		$name  = end($nameParts);
 		$name .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
-		$this->set($type , htmlspecialchars($name));
+		$this->set($type, htmlspecialchars($name));
 
 		if (!empty($orcid))
 		{
