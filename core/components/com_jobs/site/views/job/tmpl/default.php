@@ -51,7 +51,6 @@ defined('_HZEXEC_') or die();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?>
-		<?php if ($owner) { echo '<a class="edit button" href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '">' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</a>'; } ?>
 	</h2>
 
 	<div id="content-header-extra">
@@ -108,6 +107,7 @@ defined('_HZEXEC_') or die();
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="' . $job->companyWebsite . '">' . $job->companyName . '</a>' : $job->companyName;
 		$html .= ', ' . $job->companyLocation;
 		$html .= $job->companyLocationCountry ? ', ' . strtoupper($job->companyLocationCountry) : '';
+		if ($owner) { $html .= '<a class="edit button" href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</a>'; }
 		$html .= '</h3>' . "\n";
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '<div class="apply"><p>'."\n";
