@@ -1161,6 +1161,15 @@ class Jobs extends SiteController
 	}
 
 	/**
+	 * Wrapper to edit an application
+	 *
+	 * @return     void
+	 */
+	public function editappTask() {
+		$this->applyTask();
+	}
+
+	/**
 	 * Save job application
 	 *
 	 * @return     void
