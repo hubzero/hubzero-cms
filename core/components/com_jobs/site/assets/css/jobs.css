@@ -230,25 +230,6 @@
 		text-align: center;
 		margin-top: 2em;
 	}
-	.confirmPublish span a {
-		padding: 0.2em 1em 0.2em 1em;
-		background: #d4efd2;
-		border: 1px solid #7aa777;
-		color: #2d6d28;
-	}
-	.confirmPublish span.alertnative,
-	span.alertnative {
-		margin: 0 1.5em;
-		font-style: italic;
-		color: #666;
-	}
-	.confirmPublish span.makechanges a {
-		padding: 0.2em 1em 0.2em 1em;
-		margin: 0;
-		background: #f3f3f3;
-		border: 1px solid #ccc;
-		color: #333;
-	}
 	.manageroptions {
 		float: right;
 		font-size: 85%;
