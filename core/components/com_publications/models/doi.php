@@ -236,7 +236,8 @@ class Doi extends Object
 
 		// Map license
 		$license = $pub->license();
-		$this->set('license', htmlspecialchars($license->title));
+		$licenseTitle = is_object($license) ? $license->title : null;
+		$this->set('license', htmlspecialchars($licenseTitle));
 
 		// Map related identifier
 		$lastPub = $pub->lastPublicRelease();
@@ -281,7 +282,7 @@ class Doi extends Object
 		$nameParts = explode(' ', $name);
 		$name  = end($nameParts);
 		$name .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
-		$this->set($type , htmlspecialchars($name));
+		$this->set($type, htmlspecialchars($name));
 
 		if (!empty($orcid))
 		{
