@@ -401,19 +401,19 @@
 	}
 
 /* Search */
-	#searchform {
+	.searchform {
 		float: right;
 		margin: 0;
 		padding: 0;
 	}
-	#searchform legend {
+	.searchform legend {
 		display: none;
 	}
-	#searchform fieldset {
+	.searchform fieldset {
 		border: none;
 		padding: 0;
 	}
-	#searchform input {
+	.searchform input {
 		display: block;
 		border: none;
 		float: left;
@@ -424,7 +424,7 @@
 		     -o-border-radius: 0px;
 		        border-radius: 0px;
 	}
-	#submitquery {
+	.searchform input.searchsubmit {
 		margin: 0;
 		padding: 1.4em 1em 1.4em 1em;
 		background: #333 url("../images/layout/search.png") center center no-repeat;
@@ -447,20 +447,20 @@
 	}
 	/* [!] Target Firefox */
 	@-moz-document url-prefix() {
-		#submitquery {
+		.searchform input.searchsubmit {
 			padding: 1.3em 1em 1.3em 1em;
 		}
 	}
-	html.opera #submitquery {
+	html.opera .searchform input.searchsubmit {
 		padding: 1.2em 1em 1.2em 1em;
 	}
-	#submitquery:hover {
+	.searchform input.searchsubmit:hover {
 		background-color: #000;
 	}
-	#searchword-label {
+	.searchform .searchword-label {
 		display: none;
 	}
-	#searchword {
+	.searchform input.searchword {
 		margin: 0;
 		background-color: #333;
 		background-color: rgba(0, 0, 0, 0.15);
@@ -470,10 +470,10 @@
 		color: #abadad;
 		padding: 1.3em 1em 1.3em 1em;
 	}
-	html.opera #searchword {
+	html.opera .searchform input.searchword {
 		padding: 1.2em 1em 1.2em 1em;
 	}
-	#searchword:focus {
+	.searchform input.searchword:focus {
 		color: #e1e1e1;
 	}
 

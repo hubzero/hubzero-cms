@@ -34,16 +34,16 @@
 // no direct access
 defined('_HZEXEC_') or die;
 ?>
-<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" id="searchform" <?php if ($moduleclass_sfx) { echo ' class="' . $moduleclass_sfx . '"'; } ?>>
+<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" id="searchform<?php echo (self::$instances > 1 ? $this->module->id : ''); ?>" class="<?php echo $moduleclass_sfx; ?>searchform">
 	<fieldset>
 		<legend><?php echo $text; ?></legend>
 
 		<?php
-			$output  = '<label for="searchword" id="searchword-label">' . $label . '</label>';
-			$output .= '<input type="text" name="terms" id="searchword" size="' . $width . '" placeholder="' . $text . '" />';
+			$output  = '<label for="searchword" class="' . $moduleclass_sfx . 'searchword-label" id="searchword-label' . (self::$instances > 1 ? $this->module->id : '') . '">' . $label . '</label>';
+			$output .= '<input type="text" name="terms" class="' . $moduleclass_sfx . 'searchword" id="searchword' . (self::$instances > 1 ? $this->module->id : '') . '" size="' . $width . '" placeholder="' . $text . '" />';
 
 			if ($button):
-				$button = '<input type="submit" id="submitquery" value="' . $button_text . '" />';
+				$button = '<input type="submit" class="' . $moduleclass_sfx . 'searchsubmit" id="submitquery' . (self::$instances > 1 ? $this->module->id : '') . '" value="' . $button_text . '" />';
 			endif;
 
 			switch ($button_pos):
