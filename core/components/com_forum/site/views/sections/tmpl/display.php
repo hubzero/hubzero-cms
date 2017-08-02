@@ -187,19 +187,19 @@ $this->css()
 		</div><!-- /.subject -->
 		<aside class="aside">
 			<div class="container">
-				<h3><?php echo Lang::txt('COM_FORUM_STATS'); ?></h3>
 				<table>
+					<caption><?php echo Lang::txt('COM_FORUM_STATS'); ?></caption>
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_FORUM_CATEGORIES'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_FORUM_CATEGORIES'); ?></th>
 							<td><span class="item-count"><?php echo $this->forum->count('categories', $this->filters); ?></span></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_FORUM_DISCUSSIONS'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_FORUM_DISCUSSIONS'); ?></th>
 							<td><span class="item-count"><?php echo $this->forum->count('threads', $this->filters); ?></span></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_FORUM_POSTS'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_FORUM_POSTS'); ?></th>
 							<td><span class="item-count"><?php echo $this->forum->count('posts', $this->filters); ?></span></td>
 						</tr>
 					</tbody>
