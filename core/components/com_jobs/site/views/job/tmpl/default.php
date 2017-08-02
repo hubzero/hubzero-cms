@@ -102,10 +102,10 @@ defined('_HZEXEC_') or die();
 		}
 
 		$html = '';
-		if (!$job->applied && !$job->withdrawn) { 
+		if (!$job->applied && !$job->withdrawn && $job->status == 1) { 
 			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_APPLY_NOW') . '</button></a></span>'; 
 		}
-		if ($job->withdrawn) {
+		if ($job->withdrawn && $job->status == 1) {
 			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_ACTION_REAPPLY') . '</button></a><span>' . "\n";
 		}
 		$html .= '<div id="jobinfo">'."\n";
