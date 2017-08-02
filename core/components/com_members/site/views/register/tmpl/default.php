@@ -226,7 +226,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 				<?php if ($this->registrationPassword != Field::STATE_HIDDEN) { ?>
 						<div class="grid">
 							<div class="col span<?php echo $this->registrationConfirmPassword != Field::STATE_HIDDEN ? '6' : '12'; ?>">
-								<label<?php echo !empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
+								<label for="password"<?php echo !empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
 												? ' class="fieldWithErrors"'
 												: ''; ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_PASSWORD'); ?> <?php if ($this->registrationPassword == Field::STATE_REQUIRED) { echo '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'; } ?>
@@ -238,7 +238,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							</div>
 							<?php if ($this->registrationConfirmPassword != Field::STATE_HIDDEN) { ?>
 								<div class="col span6 omega">
-									<label<?php echo !empty($this->xregistration->_invalid['confirmPassword']) ? ' class="fieldWithErrors"' : ''; ?>>
+									<label for="password2"<?php echo !empty($this->xregistration->_invalid['confirmPassword']) ? ' class="fieldWithErrors"' : ''; ?>>
 										<?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD'); ?> <?php if ($this->registrationConfirmPassword == Field::STATE_REQUIRED) { echo '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>'; } ?>
 										<input name="password2" id="password2" type="password" value="<?php echo $this->escape($this->registration['confirmPassword']); ?>" autocomplete="off" />
 										<?php echo !empty($this->xregistration->_invalid['confirmPassword']) ? '<span class="error">' . $this->xregistration->_invalid['confirmPassword'] . '</span>' : ''; ?>
@@ -569,7 +569,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 
 				<label for="sendEmail"<?php echo $fieldclass; ?>>
 					<?php echo Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES'); ?> <?php echo ($this->registrationOptIn == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
-					<select name="sendEmail">
+					<select name="sendEmail" id="sendEmail">
 						<?php foreach ($options as $key => $value) { ?>
 							<option <?php echo ($key == $this->registration['sendEmail']) ? 'selected="selected"' : ''; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
 						<?php } ?>
