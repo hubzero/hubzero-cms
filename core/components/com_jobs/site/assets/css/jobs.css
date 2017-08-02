@@ -152,6 +152,12 @@
 		-o-border-radius: 6px;
 		border-radius: 6px;
 	}
+	.apply button {
+		margin-bottom: 1em;
+		font-size: 1.2em;
+		padding-left: 2em;
+		padding-right: 2em;
+	}
 	#jobinfo div.apply .applybtn:hover {
 		background-color: #666;
 		border-bottom: 2px solid #000;

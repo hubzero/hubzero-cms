@@ -102,6 +102,12 @@ defined('_HZEXEC_') or die();
 		}
 
 		$html = '';
+		if (!$job->applied && !$job->withdrawn) { 
+			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_APPLY_NOW') . '</button></a></span>'; 
+		}
+		if ($job->withdrawn) {
+			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_ACTION_REAPPLY') . '</button></a><span>' . "\n";
+		}
 		$html .= '<div id="jobinfo">'."\n";
 		$html .= '<h3><span>' . Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code . '</span>' . $job->title . ' - ';
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="' . $job->companyWebsite . '">' . $job->companyName . '</a>' : $job->companyName;
@@ -117,24 +123,6 @@ defined('_HZEXEC_') or die();
 		}
 		else if ($job->withdrawn) {
 			$html .= '<span class="withdrawn">' . Lang::txt('COM_JOBS_JOB_WITHDREW_ON') . ' '.Date::of($job->withdrawn)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<span>' . "\n";
-			$html .= '<span><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '">' . Lang::txt('COM_JOBS_ACTION_REAPPLY') . '</a><span>' . "\n";
-		}
-		else {
-			if ($job->applyExternalUrl) {
-
-				if (strpos($job->applyExternalUrl, "http://") !== false || strpos($job->applyExternalUrl, "https://") !== false)
-				{
-					$url = $job->applyExternalUrl;
-				}
-				else {
-					$url = "http://" . $job->applyExternalUrl;
-				}
-				$html .= '<a class="extlink" href="' . $url . '" rel="external">' . Lang::txt('COM_JOBS_ACTION_APPLY_EXTERNALLY') . '</a>' . "\n";
-				$html .= $job->applyInternal ? '<span class="or">' . strtolower(Lang::txt('COM_JOBS_OR')) . '</span>' . "\n" : '' . "\n";
-			}
-			if ($job->applyInternal) {
-				$html .= '<span class="applybtn"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '">' . Lang::txt('COM_JOBS_ACTION_APPLY_THROUGH_HUB') . ' ' . Config::get('sitename') . '</a></span>'."\n";
-			}
 		}
 		$html .= '</p>';
 		$html .= ($job->applied) ? \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=job&code=' . $job->code), Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code), $action = "withdrawapp") . "\n" : '';
