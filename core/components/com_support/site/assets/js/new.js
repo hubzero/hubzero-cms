@@ -39,14 +39,14 @@ jQuery(document).ready(function(jq){
 			},
 			onComplete: function(id, file, response) {
 				running--;
-
 				// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
-				response.html = response.html.replace(/&gt;/g, '>');
-				response.html = response.html.replace(/&lt;/g, '<');
-				$('#ajax-uploader-list').append(response.html);
-
+				if (response.success){
+					response.html = response.html.replace(/&gt;/g, '>');
+					response.html = response.html.replace(/&lt;/g, '<');
+					$('#ajax-uploader-list').append(response.html);
+				}
 				if (running == 0) {
-					$('ul.qq-upload-list').empty();
+					$('ul.qq-upload-list').find('.qq-upload-success').remove();
 				}
 			}
 		});
