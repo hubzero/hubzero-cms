@@ -231,8 +231,10 @@ class Doi extends Object
 		// Map resource type
 		$category = $pub->category();
 		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';
+		$categoryName = explode('/', $category->name);
+		$categoryName = array_pop($categoryName);
 		$this->set('resourceType', $dcType);
-		$this->set('resourceTypeTitle', htmlspecialchars($category->name));
+		$this->set('resourceTypeTitle', htmlspecialchars($categoryName));
 
 		// Map license
 		$license = $pub->license();
