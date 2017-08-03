@@ -262,7 +262,7 @@ function submitbutton(pressbutton)
 						<?php echo $row->published('date'); ?>
 					</time>
 				</td>
-				<td class="priority-4">
+				<td class="priority-2">
 					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=setcomments&state=' . $state . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
