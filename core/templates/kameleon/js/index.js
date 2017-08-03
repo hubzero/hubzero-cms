@@ -9,7 +9,7 @@ Joomla.submitbutton = function(pressbutton)
 Joomla.submitform = function(pressbutton)
 {
 	return submitform(pressbutton);
-}
+};
 
 /*
 USAGE:
@@ -51,7 +51,7 @@ on the page, such as TopRight (the default) or TopLeft, perhaps even in a
 smaller area with "overflow: scroll" enabled?
 */
 
-;(function($) {
+(function($) {
 	$.growl = function(title,message,image,priority) { notify(title,message,image,priority); }
 	$.growl.version = "1.0.2";
 
@@ -79,7 +79,9 @@ smaller area with "overflow: scroll" enabled?
 	function notify(title,message,image,priority) {
 		var instance = create();
 		var html = jQuery.growl.settings.noticeTemplate;
-		if (typeof(html) == 'object') html = $(html).html();
+		if (typeof(html) == 'object') {
+			html = $(html).html();
+		}
 		html = r(html, /%message%/, (message?message:''));
 		html = r(html, /%title%/, (title?title:''));
 		html = r(html, /%image%/, (image?image:jQuery.growl.settings.defaultImage));
