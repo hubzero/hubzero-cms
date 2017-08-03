@@ -142,6 +142,8 @@ smaller area with "overflow: scroll" enabled?
 })(jQuery);
 
 jQuery(document).ready(function($){
+	$('html').removeClass('nojs');
+
 	var menu = $('#toolbar-box'),
 		top = menu.offset().top - parseFloat(menu.css('margin-top').replace(/auto/, 0));
 
@@ -179,9 +181,6 @@ jQuery(document).ready(function($){
 	$('.main-navigation li.node>a').on('click', function(e){
 		$(this).parent().toggleClass('active');
 	});
-
-	// Apply Uniform to make buttons, selects, etc. look consistent
-	$('select, input[type=file]').not('.noUniform').uniform();
 
 	/* // Display the hints and required badge when field is focused
 	if ($('#item-form').length) {
