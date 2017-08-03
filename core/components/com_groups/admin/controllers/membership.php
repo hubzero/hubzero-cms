@@ -475,20 +475,7 @@ class Membership extends AdminController
 		$managers = $this->group->get('managers');
 
 		// Get a count of the number of managers
-		$nummanagers = count($managers);
-
-		// Only admins can demote the last manager
-		if ($nummanagers <= 1)
-		{
-			$this->setError(Lang::txt('COM_GROUPS_LAST_MANAGER'));
-			if ($this->getError())
-			{
-				echo $this->getError();
-			}
-			return;
-		}
-
-		$users = array();
+		$numManagers = count($managers);
 
 		// Incoming array of users to demote
 		$mbrs = Request::getVar('id', array());
@@ -510,19 +497,23 @@ class Membership extends AdminController
 			}
 		}
 
-		// Make sure there's always at least one manager left
-		if (count($users) >= count($managers))
+		// Remove users from managers list
+		$this->group->remove('managers', $users);
+
+		// Make sure there's at least one manager left
+		if (!(count($this->group->get('managers')) >= 1))
 		{
 			$this->setError(Lang::txt('COM_GROUPS_LAST_MANAGER'));
 			if ($this->getError())
 			{
-				echo $this->getError();
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+					$this->getError(),
+					'warning'
+				);
 			}
 			return;
 		}
-
-		// Remove users from managers list
-		$this->group->remove('managers', $users);
 
 		// Save changes
 		$this->group->update();
