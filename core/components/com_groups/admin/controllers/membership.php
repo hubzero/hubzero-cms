@@ -605,10 +605,20 @@ class Membership extends AdminController
 		// Remove users from managers list
 		$this->group->remove('managers', $users_man);
 
+		if (!(count($this->group->get('managers')) >= 1))
+		{
+			$this->setError(Lang::txt('COM_GROUPS_LAST_MANAGER'));
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
+				$this->getError(),
+				'warning'
+			);
+		}
+
 		// Save changes
 		$this->group->update();
 
-		// log
+		// Log
 		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_deleted',
