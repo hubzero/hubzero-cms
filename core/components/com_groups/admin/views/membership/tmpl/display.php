@@ -66,8 +66,8 @@ switch ($this->filters['status'])
 	default:
 		if ($canDo->get('core.edit'))
 		{
-			Toolbar::custom('promote', 'promote', 'COM_GROUPS_MEMBER_PROMOTE', 'COM_GROUPS_MEMBER_PROMOTE', false, false);
-			Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE','COM_GROUPS_MEMBER_DEMOTE', false, false);
+			Toolbar::custom('promote', 'promote', 'COM_GROUPS_MEMBER_PROMOTE', 'COM_GROUPS_MEMBER_PROMOTE', 400, 400);
+			Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE','COM_GROUPS_MEMBER_DEMOTE', 400, 400);
 		}
 		if ($canDo->get('core.delete'))
 		{
