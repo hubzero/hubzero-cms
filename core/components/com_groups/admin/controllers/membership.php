@@ -474,9 +474,6 @@ class Membership extends AdminController
 		// Get all managers of this group
 		$managers = $this->group->get('managers');
 
-		// Get a count of the number of managers
-		$numManagers = count($managers);
-
 		// Incoming array of users to demote
 		$mbrs = Request::getVar('id', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
@@ -512,13 +509,12 @@ class Membership extends AdminController
 					'warning'
 				);
 			}
-			return;
 		}
 
 		// Save changes
 		$this->group->update();
 
-		// log
+		// Log
 		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_demoted',
