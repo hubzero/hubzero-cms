@@ -1549,7 +1549,7 @@ class Items extends AdminController
 		$pub->setCuration();
 
 		// Produce archival package
-		if (!$pub->_curationModel->package())
+		if (!$pub->_curationModel->package(true))
 		{
 			// Checkin the resource
 			$pub->publication->checkin();
