@@ -142,6 +142,7 @@ class File extends Base
 		$bundleName           = $versionParams->get('element' . $elementId . 'bundlename', $configs->title);
 		$configs->bundleTitle = $bundleName ? $bundleName : $configs->title;
 		$configs->bundleName  = $bundleName ? $bundleName . '.zip' : 'bundle.zip';
+		$configs->bundleOverwrite = $versionParams->get('bundleOverwrite', false);
 
 		// Allow rename?
 		$configs->allowRename = false;
@@ -193,7 +194,7 @@ class File extends Base
 		// Add inside bundles
 		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
-			$filePath = $this->bundle($attachments, $configs, true);
+			$filePath = $this->bundle($attachments, $configs, $configs->bundleOverwrite);
 			$bPath    = $configs->pubBase . DS . 'bundles';
 			if (is_file($filePath))
 			{

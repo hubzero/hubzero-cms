@@ -2062,7 +2062,7 @@ class Curation extends Object
 	 *
 	 * @return  boolean
 	 */
-	public function package()
+	public function package($bundleOverwrite = false)
 	{
 		if (empty($this->_pub))
 		{
@@ -2080,6 +2080,9 @@ class Curation extends Object
 		{
 			return false;
 		}
+
+		// Set overwrite flag in case when are generating a new bundle
+		$this->_pub->params->set('bundleOverwrite', $bundleOverwrite);
 
 		if (!is_dir($this->_pub->path('base', true)))
 		{

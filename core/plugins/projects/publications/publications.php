@@ -2411,7 +2411,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Produce archival package
 		if ($pub->version->get('state') == 1 || $pub->version->get('state') == 5)
 		{
-			$pub->_curationModel->package();
+			$pub->_curationModel->package(true);
 		}
 
 		// Pass error or success message
