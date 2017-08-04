@@ -138,6 +138,7 @@ function submitbutton(pressbutton)
 					$plugins = $database->loadObjectList();
 
 					$found = array();
+					$lang = Lang::getRoot();
 					foreach ($plugins as $plugin)
 					{
 						if (in_array('plg_' . $plugin->element, $found))
@@ -147,8 +148,9 @@ function submitbutton(pressbutton)
 						$found[] = 'plg_' . $plugin->element;
 						if (strstr($plugin->name, '_'))
 						{
-							$lang = Lang::getRoot();
-							$lang->load($plugin->name);
+							$lang->load($plugin->name . '.sys') ||
+							$lang->load($plugin->name . '.sys', PATH_APP . '/plugins/' . $plugin->folder . '/' . $plugin->element) ||
+							$lang->load($plugin->name . '.sys', PATH_CORE . '/plugins/' . $plugin->folder . '/' . $plugin->element);
 						}
 						?>
 						<tr>
