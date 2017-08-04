@@ -94,7 +94,7 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 			$checkasset = "";
 			if ($this->item->get('type') == 'folder')
 			{
-				$checkasset = ' dir';
+				$checkasset = ' dirr';
 			}
 			else
 			{
