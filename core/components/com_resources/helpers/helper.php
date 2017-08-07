@@ -47,21 +47,21 @@ class Helper extends Object
 	/**
 	 * Resource ID
 	 *
-	 * @var mixed
+	 * @var  integer
 	 */
 	private $_id = 0;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_db = null;
 
 	/**
 	 * Container for properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_data = array();
 
@@ -86,9 +86,9 @@ class Helper extends Object
 	/**
 	 * Set a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @param   mixed   $value     Value to set property to
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -98,8 +98,8 @@ class Helper extends Object
 	/**
 	 * Get a property
 	 *
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
+	 * @param   string  $property  Name of property to retrieve
+	 * @return  mixed
 	 */
 	public function __get($property)
 	{
@@ -107,13 +107,15 @@ class Helper extends Object
 		{
 			return $this->_data[$property];
 		}
+
+		return null;
 	}
 
 	/**
 	 * Get a list of contributors without linking names
 	 *
-	 * @param      boolean $incSubmitter Include submitters?
-	 * @return     void
+	 * @param   boolean  $incSubmitter  Include submitters?
+	 * @return  void
 	 */
 	public function getUnlinkedContributors($incSubmitter=false)
 	{
@@ -160,27 +162,31 @@ class Helper extends Object
 	/**
 	 * Get a list of authors for a tool
 	 *
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      string $revision Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $toolname  Tool alias
+	 * @param   string  $revision  Tool revision
+	 * @return  void
 	 */
 	public function getToolAuthors($toolname, $revision)
 	{
 		if (false) // @FIXME  quick hack to deal with influx of data in #__tool_groups
 		{
-		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname,  n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, null as role"
-			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n "
-			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='" . $toolname . "'"
-			 . "\n AND t.revision='" . $revision . "'"
-			 . "\n ORDER BY t.ordering";
+			$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname,  n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, null as role
+					FROM `#__tool_authors` AS t, `#__xprofiles` AS n
+					WHERE n.uidNumber=t.uid
+					AND t.toolname=" . $this->_db->quote($toolname) . "
+					AND t.revision=" . $this->_db->quote($revision) . "
+					ORDER BY t.ordering";
 		}
 		else
 		{
-		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, null as role"
-			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n, #__tool_version AS v "
-			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='" . $toolname . "' AND v.id=t.version_id and v.state<>3"
-			 . "\n AND t.revision='" . $revision . "'"
-			 . "\n ORDER BY t.ordering";
+			$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, null as role
+					FROM `#__tool_authors` AS t, `#__xprofiles` AS n, `#__tool_version` AS v
+					WHERE n.uidNumber=t.uid
+					AND t.toolname=" . $this->_db->quote($toolname) . "
+					AND v.id=t.version_id
+					AND v.state<>3
+					AND t.revision=" . $this->_db->quote($revision) . "
+					ORDER BY t.ordering";
 		}
 		$this->_db->setQuery($sql);
 		$cons = $this->_db->loadObjectList();
@@ -206,7 +212,7 @@ class Helper extends Object
 	/**
 	 * Get contributors
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getCons()
 	{
@@ -226,9 +232,9 @@ class Helper extends Object
 	/**
 	 * Get a list of contributors
 	 *
-	 * @param      boolean $showorgs Show organizations?
-	 * @param      integer $newstyle Use new style formatting?
-	 * @return     void
+	 * @param   boolean  $showorgs  Show organizations?
+	 * @param   integer  $newstyle  Use new style formatting?
+	 * @return  void
 	 */
 	public function getContributors($showorgs=false, $newstyle=0)
 	{
@@ -363,10 +369,10 @@ class Helper extends Object
 	/**
 	 * Get a list of submitters
 	 *
-	 * @param      boolean $showorgs Show organizations?
-	 * @param      integer $newstyle Use new style formatting?
-	 * @param      integer $badges
-	 * @return     void
+	 * @param   boolean  $showorgs  Show organizations?
+	 * @param   integer  $newstyle  Use new style formatting?
+	 * @param   integer  $badges
+	 * @return  void
 	 */
 	public function getSubmitters($showorgs=false, $newstyle=0, $badges=0)
 	{
@@ -507,7 +513,7 @@ class Helper extends Object
 	/**
 	 * Get the IDs of all the contributors of a resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getContributorIDs()
 	{
@@ -519,12 +525,12 @@ class Helper extends Object
 		}
 		else
 		{
-			$sql = "SELECT n.uidNumber AS id"
-				 . "\n FROM #__xprofiles AS n"
-				 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
-				 . "\n WHERE a.subtable = 'resources'"
-				 . "\n AND a.subid=" . $this->_id
-				 . "\n ORDER BY ordering, surname, givenName, middleName";
+			$sql = "SELECT n.uidNumber AS id
+				FROM `#__xprofiles` AS n
+				INNER JOIN `#__author_assoc` AS a ON n.uidNumber=a.authorid
+				WHERE a.subtable = 'resources'
+				AND a.subid=" . $this->_db->quote($this->_id) . "
+				ORDER BY ordering, surname, givenName, middleName";
 
 			$this->_db->setQuery($sql);
 			$contributors = $this->_db->loadObjectList();
@@ -543,7 +549,7 @@ class Helper extends Object
 	/**
 	 * Get citations on a resource
 	 *
-	 * @return     boolean False if errors
+	 * @return  boolean  False if errors
 	 */
 	public function getCitations()
 	{
@@ -560,12 +566,14 @@ class Helper extends Object
 		$cc = new \Components\Citations\Tables\Citation($this->_db);
 
 		$this->citations = $cc->getCitations('resource', $this->_id);
+
+		return true;
 	}
 
 	/**
 	 * Get a count of citations on a resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getCitationsCount()
 	{
@@ -581,7 +589,7 @@ class Helper extends Object
 	/**
 	 * Get the last citation's date
 	 *
-	 * @return     boolean False if errors
+	 * @return  boolean  False if errors
 	 */
 	public function getLastCitationDate()
 	{
@@ -598,6 +606,8 @@ class Helper extends Object
 		$cc = new \Components\Citations\Tables\Citation($this->_db);
 
 		$this->lastCitationDate = $cc->getLastCitationDate('resource', $this->_id);
+
+		return true;
 	}
 
 	/**
@@ -638,9 +648,9 @@ class Helper extends Object
 	/**
 	 * Get a comma-separated list of tags for a resource
 	 *
-	 * @param      integer $tagger_id Tagger ID
-	 * @param      integer $strength  Tag strength
-	 * @return     boolean False if errors, string on success
+	 * @param   integer  $tagger_id  Tagger ID
+	 * @param   integer  $strength   Tag strength
+	 * @return  boolean  False if errors, string on success
 	 */
 	public function getTagsForEditing($tagger_id=0, $strength=0)
 	{
@@ -668,8 +678,8 @@ class Helper extends Object
 	/**
 	 * Get a tag cloud for this resource
 	 *
-	 * @param      integer $admin Include admin tags?
-	 * @return     boolean False if errors, string on success
+	 * @param   integer  $admin  Include admin tags?
+	 * @return  boolean  False if errors, string on success
 	 */
 	public function getTagCloud($admin=0)
 	{
@@ -688,11 +698,11 @@ class Helper extends Object
 	/**
 	 * Get the children of a resource
 	 *
-	 * @param      integer $id                Optional resource ID (uses internal ID if none passeD)
-	 * @param      integer $limit             Number of results to return
-	 * @param      string  $standalone        Include standalone children?
-	 * @param      integer $excludeFirstChild Exclude first child from results?
-	 * @return     array
+	 * @param   integer  $id                 Optional resource ID (uses internal ID if none passeD)
+	 * @param   integer  $limit              Number of results to return
+	 * @param   string   $standalone         Include standalone children?
+	 * @param   integer  $excludeFirstChild  Exclude first child from results?
+	 * @return  array
 	 */
 	public function getChildren($id=0, $limit=0, $standalone='all', $excludeFirstChild = 0)
 	{
@@ -742,8 +752,8 @@ class Helper extends Object
 	/**
 	 * Get a count of standalone children
 	 *
-	 * @param      array $filters Optional filters to apply
-	 * @return     integer
+	 * @param   array    $filters  Optional filters to apply
+	 * @return  integer
 	 */
 	public function getStandaloneCount($filters)
 	{
@@ -759,8 +769,8 @@ class Helper extends Object
 	/**
 	 * Get all standalone children
 	 *
-	 * @param      array $filters Optional filters to apply
-	 * @return     array
+	 * @param   array  $filters  Optional filters to apply
+	 * @return  array
 	 */
 	public function getStandaloneChildren($filters)
 	{
@@ -810,7 +820,7 @@ class Helper extends Object
 	/**
 	 * Get the first child resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getFirstChild()
 	{
@@ -827,7 +837,7 @@ class Helper extends Object
 	/**
 	 * Get all parents of a resource
 	 *
-	 * @return     boolean False if errors, true on success
+	 * @return  boolean  False if errors, true on success
 	 */
 	public function getParents()
 	{
@@ -839,9 +849,9 @@ class Helper extends Object
 		$sql = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.footertext, r.type, r.logical_type AS logicaltype,
 				r.created, r.published, r.publish_up, r.path, r.standalone, r.hits, r.rating, r.times_rated, r.params, r.ranking,
 				t.type AS logicaltitle, rt.type AS typetitle
-				FROM #__resource_types AS rt, #__resources AS r
-				JOIN #__resource_assoc AS a ON r.id=a.parent_id
-				LEFT JOIN #__resource_types AS t ON r.logical_type=t.id
+				FROM `#__resource_types` AS rt, `#__resources` AS r
+				JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
+				LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
 				WHERE r.published=1 AND a.child_id=" . $this->_id . " AND r.type=rt.id AND r.type!=8
 				ORDER BY a.ordering, a.grouping";
 		$this->_db->setQuery($sql);
@@ -855,7 +865,7 @@ class Helper extends Object
 	/**
 	 * Get the reviews for a resource
 	 *
-	 * @return     boolean False if errors, true on success
+	 * @return  boolean  False if errors, true on success
 	 */
 	public function getReviews()
 	{
