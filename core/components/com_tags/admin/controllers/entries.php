@@ -139,7 +139,7 @@ class Entries extends AdminController
 		$model
 			->select('DISTINCT ' . $t . '.*');
 
-		$model->pagination = \Hubzero\Database\Pagination::init($model->getModelName(), $total, 'start', 'limit');
+		$model->pagination = \Hubzero\Database\Pagination::init($model->getModelName(), $total, 'limitstart', 'limit');
 		$model->start($model->pagination->start);
 		$model->limit($model->pagination->limit);
 
