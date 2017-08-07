@@ -126,7 +126,7 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 			</div>
 			<p class="submit">
 				<input class="btn btn-success" type="submit" name="submit" value="<?php echo $this->task=='editapp' ? Lang::txt('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : Lang::txt('COM_JOBS_ACTION_APPLY_THIS_JOB'); ?>" />
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&id=' . $job->code); ?>"><button type="button" class="btn">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&id=' . $job->code); ?>"><button type="button" class="btn btn-secondary">
 							<?php echo Lang::txt('COM_JOBS_CANCEL'); ?>
 					</button></a>
 			</p>
