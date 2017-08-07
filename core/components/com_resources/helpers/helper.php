@@ -33,6 +33,7 @@
 namespace Components\Resources\Helpers;
 
 use Hubzero\Base\Object;
+use Route;
 use User;
 use Lang;
 
@@ -55,7 +56,7 @@ class Helper extends Object
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Container for properties
@@ -68,7 +69,7 @@ class Helper extends Object
 	 * Constructor
 	 *
 	 * @param   integer  $id   Resource ID
-	 * @param   object   &$db  JDatabase
+	 * @param   object   &$db  Database
 	 * @return  void
 	 */
 	public function __construct($id, &$db)
@@ -135,7 +136,7 @@ class Helper extends Object
 				if ($contributor->lastname || $contributor->firstname)
 				{
 					$name = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL)
+					if ($contributor->middlename != null)
 					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
@@ -167,7 +168,7 @@ class Helper extends Object
 	{
 		if (false) // @FIXME  quick hack to deal with influx of data in #__tool_groups
 		{
-		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname,  n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
+		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname,  n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, null as role"
 			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n "
 			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='" . $toolname . "'"
 			 . "\n AND t.revision='" . $revision . "'"
@@ -175,7 +176,7 @@ class Helper extends Object
 		}
 		else
 		{
-		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
+		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, null as role"
 			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n, #__tool_version AS v "
 			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='" . $toolname . "' AND v.id=t.version_id and v.state<>3"
 			 . "\n AND t.revision='" . $revision . "'"
@@ -263,7 +264,7 @@ class Helper extends Object
 				else if ($contributor->lastname || $contributor->firstname)
 				{
 					$name = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL)
+					if ($contributor->middlename != null)
 					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
@@ -400,7 +401,7 @@ class Helper extends Object
 				else if ($contributor->lastname || $contributor->firstname)
 				{
 					$name = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL)
+					if ($contributor->middlename != null)
 					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
@@ -708,10 +709,16 @@ class Helper extends Object
 			 . "\n WHERE r.published=1 AND a.parent_id=" . $id . " AND r.type=rt.id";
 		switch ($standalone)
 		{
-			case 'no': $sql .= " AND r.standalone=0"; break;
-			case 'yes': $sql .= " AND r.standalone=1"; break;
+			case 'no':
+				$sql .= " AND r.standalone=0";
+				break;
+			case 'yes':
+				$sql .= " AND r.standalone=1";
+				break;
 			case 'all':
-			default: $sql .= ""; break;
+			default:
+				$sql .= "";
+				break;
 		}
 		$sql .= "\n ORDER BY a.ordering, a.grouping";
 		if ($limit != 0 or $excludeFirstChild)
@@ -723,7 +730,7 @@ class Helper extends Object
 
 		if ($limit != 0)
 		{
-			return (isset($children[0])) ? $children[0] : NULL;
+			return (isset($children[0])) ? $children[0] : null;
 		}
 		else
 		{
@@ -771,12 +778,24 @@ class Helper extends Object
 		$sql .= " ORDER BY ";
 		switch ($filters['sortby'])
 		{
-			case 'ordering': $sql .= "a.ordering, a.grouping";            break;
-			case 'date':     $sql .= "r.publish_up DESC";                 break;
-			case 'title':    $sql .= "r.title ASC, r.publish_up";         break;
-			case 'rating':   $sql .= "r.rating DESC, r.times_rated DESC"; break;
-			case 'ranking':  $sql .= "r.ranking DESC"; break;
-			case 'author':   $sql .= "author"; break;
+			case 'ordering':
+				$sql .= "a.ordering, a.grouping";
+				break;
+			case 'date':
+				$sql .= "r.publish_up DESC";
+				break;
+			case 'title':
+				$sql .= "r.title ASC, r.publish_up";
+				break;
+			case 'rating':
+				$sql .= "r.rating DESC, r.times_rated DESC";
+				break;
+			case 'ranking':
+				$sql .= "r.ranking DESC";
+				break;
+			case 'author':
+				$sql .= "author";
+				break;
 		}
 		if (isset($filters['limit']) && $filters['limit'] != '' && $filters['limit'] != 0)
 		{
