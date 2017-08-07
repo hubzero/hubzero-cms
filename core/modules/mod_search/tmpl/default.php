@@ -39,7 +39,7 @@ defined('_HZEXEC_') or die;
 		<legend><?php echo $text; ?></legend>
 
 		<?php
-			$output  = '<label for="searchword" class="' . $moduleclass_sfx . 'searchword-label" id="searchword-label' . (self::$instances > 1 ? $this->module->id : '') . '">' . $label . '</label>';
+			$output  = '<label for="searchword' . (self::$instances > 1 ? $this->module->id : '') . '" class="' . $moduleclass_sfx . 'searchword-label" id="searchword-label' . (self::$instances > 1 ? $this->module->id : '') . '">' . $label . '</label>';
 			$output .= '<input type="text" name="terms" class="' . $moduleclass_sfx . 'searchword" id="searchword' . (self::$instances > 1 ? $this->module->id : '') . '" size="' . $width . '" placeholder="' . $text . '" />';
 
 			if ($button):
