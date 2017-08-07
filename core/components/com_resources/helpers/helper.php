@@ -210,10 +210,10 @@ class Helper extends Object
 	public function getCons()
 	{
 		$sql = "SELECT a.authorid, a.name, a.name AS xname, a.organization AS org, a.role, n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS xorg
-				FROM #__author_assoc AS a
-				LEFT JOIN #__xprofiles AS n ON n.uidNumber=a.authorid
+				FROM `#__author_assoc` AS a
+				LEFT JOIN `#__xprofiles` AS n ON n.uidNumber=a.authorid
 				WHERE a.subtable='resources'
-				AND a.subid=" . $this->_id . "
+				AND a.subid=" . $this->_db->quote($this->_id) . "
 				ORDER BY ordering, surname, givenName, middleName";
 
 		$this->_db->setQuery($sql);

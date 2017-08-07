@@ -2445,6 +2445,11 @@ class Resources extends SiteController
 		$row = new Resource($this->database);
 		$row->load($id);
 
+		if (!$row->id)
+		{
+			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+		}
+
 		$thedate = ($row->publish_up != '0000-00-00 00:00:00')
 				 ? $row->publish_up
 				 : $row->created;
