@@ -37,10 +37,16 @@ Pathway::append(
 	$this->page->link()
 );
 
-$rows = \Components\Wiki\Models\Version::all()
-	->whereEquals('length', 0)
-	->whereEquals('scope', $this->page->get('scope'))
-	->whereEquals('scope_id', $this->page->get('scope_id'))
+$query = Components\Wiki\Models\Version::all();
+
+$v = $query->getTableName();
+$p = Components\Wiki\Models\Page::blank()->getTableName();
+
+$rows = $query
+	->join($p, $p . '.id', $v . '.page_id', 'inner')
+	->whereEquals($v . '.length', 0)
+	->whereEquals($p . '.scope', $this->page->get('scope'))
+	->whereEquals($p . '.scope_id', $this->page->get('scope_id'))
 	->rows();
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link()); ?>">
