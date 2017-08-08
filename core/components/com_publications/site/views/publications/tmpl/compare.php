@@ -117,13 +117,13 @@ $this->css('compare.css');
 							}
 						}
 					}
-					echo $v;
+					echo ($v ? $v : '<p class="diff-unchanged">' . Lang::txt('COM_PUBLICATIONS_NO_CHANGES') . '</p>');
 				}
 			}
 			else
 			{
 				echo '<h3 class="diff-area" id="diffed-' . $key . '"><span>' . Lang::txt('COM_PUBLICATIONS_' . strtoupper($key)) . '</span></h3>';
-				echo $result;
+				echo ($result ? $result : '<p class="diff-unchanged">' . Lang::txt('COM_PUBLICATIONS_NO_CHANGES') . '</p>');
 			}
 		}
 
