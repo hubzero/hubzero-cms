@@ -134,6 +134,7 @@ $this->css()
 							<input type="hidden" name="comment[parent]" value="<?php echo $comment->get('parent'); ?>" />
 							<input type="hidden" name="comment[created_by]" value="<?php echo $comment->get('created_by'); ?>" />
 							<input type="hidden" name="comment[state]" value="<?php echo $comment->get('state', 1); ?>" />
+							<input type="hidden" name="comment[access]" value="1" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="action" value="commentsave" />
 
