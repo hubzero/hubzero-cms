@@ -41,7 +41,7 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 
 ?>
 <div id="plg-header">
-<h3 class="databases c-header"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> &raquo; <span class="indlist"><?php echo  isset($this->db_id) ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE') : Lang::txt('PLG_PROJECTS_DATA_START'); ?></span></h3>
+<h3 class="databases c-header"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> &raquo; <span class="indlist"><?php echo isset($this->db_id) ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE') : Lang::txt('PLG_PROJECTS_DATA_START'); ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php
