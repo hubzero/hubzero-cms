@@ -2135,6 +2135,17 @@ class Resources extends SiteController
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
+		// Check if direct access is restricted. If so, look for a token
+		$activeParams = new \Hubzero\Config\Registry($resource->params);
+		$type = new Type($this->database);
+		$type->load($resource->type);
+		$typeParams = new \Hubzero\Config\Registry($type->params);
+		$restrictDirectDownload = $activeParams->get('restrict_direct_access') ? $activeParams->get('restrict_direct_access') : $typeParams->get('restrict_direct_access');
+		if ($restrictDirectDownload == 2)
+		{
+			Request::checkToken('get');
+		}
+
 		// Check if the resource is for logged-in users only and the user is logged-in
 		if (($token = Request::getVar('token', '', 'get')))
 		{
