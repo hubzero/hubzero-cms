@@ -101,6 +101,19 @@ function submitbutton(pressbutton)
 							<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
 						</select>
 					</div>
+					<div class="input-wrap">
+						<label for="param-restrict_direct_access"><?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT'); ?>:</label><br />
+						<select name="params[restrict_direct_access]" id="param-link_action">
+							<option value="0"<?php if (!$params->get('restrict_direct_access')) { echo ' selected="selected"'; } ?>>
+								<?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT'); ?></option>
+							<option value="1"<?php if ($params->get('restrict_direct_access') == 1) { echo ' selected="selected"'; } ?>>
+								<?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_NO'); ?>
+							</option>
+							<option value="2"<?php if ($params->get('restrict_direct_access') == 2) { echo ' selected="selected"'; } ?>>
+								<?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_YES'); ?>
+							</option>
+						</select>
+					</div>
 				<?php } ?>
 				<div class="input-wrap">
 					<label for="field-state"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATE'); ?>:</label><br />
