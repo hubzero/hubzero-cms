@@ -140,7 +140,7 @@ class Nogit extends Models\Adapter
 			}
 			// Load basic file metadata
 			$file = new Models\File($item, $this->_path);
-			if ($file->get('name') == '.git')
+			if ($this->_shouldSkipFile($file))
 			{
 				continue;
 			}
@@ -178,6 +178,14 @@ class Nogit extends Models\Adapter
 		// Apply start and limit, get complete metadata and return
 		return $this->_list($items, $params);
 
+	}
+
+	protected function _shouldSkipFile($file)
+	{
+		$fileName = $file->get('name');
+		$filesToSkip = array('.git', '.gitignore');
+
+		return in_array($fileName, $filesToSkip);
 	}
 
 	/**
