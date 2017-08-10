@@ -106,11 +106,12 @@ class Nogit extends Models\Adapter
 		$files         = isset($params['files']) && is_array($params['files']) ? $params['files'] : [];
 		$dirsOnly      = isset($params['dirsOnly']) ? $params['dirsOnly'] : false;
 		$showAll       = isset($params['showAll']) ? $params['showAll'] : false;
+		$recursive     = isset($params['recursive']) ? $params['recursive'] : false;
 
 		if (!$dirsOnly)
 		{
 			// Get a list of files from the git repository
-			$files = empty($files) ? $this->_nogit->getFiles($dirPath, false) : $files;
+			$files = empty($files) ? $this->_nogit->getFiles($dirPath, $recursive) : $files;
 
 		}
 		else

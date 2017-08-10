@@ -199,7 +199,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 * @param   string  $areas   Plugins to return data
 	 * @return  array   Return array of html
 	 */
-	public function onProject($model, $action = 'view', $areas = null)
+	public function onProject($model, $action = 'view', $areas = null, $params = array())
 	{
 		$arr = array(
 			'html'     => '',
@@ -232,6 +232,20 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Load component configs
 		$this->_config = $model->config();
 		$this->gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
+
+		$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar('repo', 'local');
+		$this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
+
+		$this->_database   = \App::get('db');
+		$this->_uid        = User::get('id');
+		$this->subdir      = trim(urldecode(Request::getVar('subdir', '')), DS);
+
+		if (!$this->repo->exists())
+		{
+			// Default to local repo (will redirect to add repo page in the future)
+			$this->repo = new \Components\Projects\Models\Repo($this->model, 'local');
+		}
+		$this->_path = $this->repo->get('path');
 
 		// Incoming
 		$raw_op = Request::getInt('raw_op', 0);
@@ -287,8 +301,6 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			//Document::addScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
-			//Document::addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
 			Document::addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/smoothness/jquery-ui.css');
 
 			Document::addScript('/core/plugins/projects/databases/res/main.js');
@@ -488,12 +500,6 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Get database list
 		$list  = $objPD->getList($this->model->get('id'));
 
-		if (is_dir($path))
-		{
-			chdir($path);
-			exec($this->gitpath . ' ls-files --exclude-standard |grep ".csv"', $files);
-		}
-
 		$list_u = array();
 		foreach ($list as $l)
 		{
@@ -508,19 +514,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$file = $l['source_file'];
 			}
 
-			exec($this->gitpath . ' log --pretty=format:%f"|#|"%H"|#|"%cr%n -- "' . $file . '"|head -1', $info);
-
-			if (isset($info[0]))
-			{
-				$info = explode('|#|', $info[0]);
-				$l['source_revision_curr'] = $info[1];
-				$l['source_revision_date'] = $info[2];
-			}
-			else
-			{
-				$l['source_revision_curr'] = '';
-				$l['source_revision_date'] = '';
-			}
+			$l['source_revision_curr'] = '';
+			$l['source_revision_date'] = '';
 
 			$l['source_available'] = file_exists($path . DS . $file) ? true : false;
 
@@ -561,6 +556,19 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
 		}
+		// Set params
+		$params = array(
+			'subdir'               => $this->subdir,
+			'filter'               => 'csv',
+			'sortby'               => Request::getVar('sortby', 'name'),
+			'sortdir'              => Request::getVar('sortdir', 'ASC'),
+			'showFullMetadata'     => true,
+			'showUntracked'        => true,
+			'showAll'              => true,
+			'getPubConnections'    => false,
+			'versionTracking'      => $this->model->params->get('versionTracking', '1'),
+			'recursive'            => true,
+		);
 
 		// Incoming
 		$db_id = Request::getInt('db_id', false);
@@ -573,9 +581,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (file_exists($path) && is_dir($path))
 		{
-			chdir($path);
-			exec($this->gitpath . ' ls-files --exclude-standard |grep ".csv"', $list);
-			sort($list);
+			$list = $this->repo->filelist($params);
 		}
 		else
 		{
@@ -591,22 +597,11 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$files = array();
 		foreach ($list as $l)
 		{
-			$info = array();
-			chdir($path);
-
-			exec($this->gitpath . ' log --date=local --pretty=format:%f"|#|"%H"|#|"%ad%n "' . $l . '"|head -1', $info);
-			$info = explode('|#|', $info[0]);
-
-			$file = pathinfo($l);
-
-			if (!in_array($l, $used_files))
-			{
-				$files[$file['dirname']][] = array(
-					'name' => $file['basename'],
-					'hash' => $info[1],
-					'date' => $info[2]
-				);
-			}
+			$files[$l->get('dirname', '/')][] = array(
+				'name' => $l->get('name'),
+				'hash' => $l->get('date')->toUnix(),
+				'date' => $l->get('date')
+			);
 		}
 
 		// Output HTML
@@ -634,8 +629,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		if ($objPD->loadRecord($db_id))
 		{
 			$view->db_id = $db_id;
-			$view->dir   = trim($objPD->source_dir, '/');
-			$view->file  = trim($objPD->source_file, '/');
+			$view->dir   = $objPD->source_dir;
+			$view->file  = $objPD->source_file;
 			$view->title = $objPD->title;
 			$view->desc  = $objPD->description;
 		}
@@ -944,8 +939,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$title = Request::getVar('title', '');
 		$desc  = Request::getVar('desc', '');
 		$db_id = Request::getVar('db_id', '');
-		$d     = Request::getVar('dd', false);
-		$d     = json_decode($d, true);
+		$hash  = Request::getVar('hash', \Hubzero\Utility\Date::of()->toUnix());
+		$dd    = Request::getVar('dd', false);
+		$d     = json_decode($dd, true);
 
 		$db    = $this->get_ds_db($this->model->get('id'));
 		$table = array();
@@ -985,10 +981,6 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (file_exists($path . DS . $file) && ($handle = fopen($path . DS . $file, "r")) !== false)
 		{
-			// Get commit hash
-			chdir($path);
-			exec($this->gitpath . ' log --pretty=format:%H ' . escapeshellarg($file) . '|head -1', $hash);
-			$hash = $hash[0];
 
 			// Check if expert mode CSV
 			$expert_mode = false;
@@ -1235,10 +1227,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				. ' -m "' . $commit_message . '"'
 				. ' --author="' . $author . '" 2>&1');
 
-			// Update source_revision with the current commit hash
-			chdir($path);
-			exec($this->gitpath . ' log --pretty=format:%H ' . escapeshellarg($file) . '|head -1', $hash);
-			$hash = isset($hash[0]) ? $hash[0] : 0;
+			$hash = \Hubzero\Utility\Date::of()->toUnix(); // Use the current time as a hash
 			$objPD->source_revision = $hash;
 			$objPD->store();
 

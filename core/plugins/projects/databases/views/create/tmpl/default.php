@@ -57,7 +57,7 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 				$dir = '';
 			}
 			?>
-				<optgroup label="/<?php echo $dir?>">
+				<optgroup label="<?php echo $dir?>">
 			<?php foreach ($files as $file): ?>
 				<option data-dir="<?php echo $dir?>" data-hash="<?php echo $file['hash']?>" data-date="<?php echo $file['date']?>" value="<?php echo $file['name']?>" class="preview"><?php echo $file['name']?></option>
 			<?php endforeach; ?>
