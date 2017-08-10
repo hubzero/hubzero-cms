@@ -415,7 +415,7 @@ class Resource extends SiteController
 	 */
 	public function updatePage($rid, $status=array(), $published=0, $newtool=0)
 	{
-		if ($rid === NULL)
+		if ($rid === null)
 		{
 			return false;
 		}
