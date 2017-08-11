@@ -871,7 +871,7 @@ class Html
 						}
 						else
 						{
-							$url = Route::url('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
+							$url = Route::url('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path) . '&' . Session::getFormToken() . '=1');
 						}
 					}
 				break;

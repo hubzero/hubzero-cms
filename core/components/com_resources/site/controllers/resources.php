@@ -2141,7 +2141,14 @@ class Resources extends SiteController
 		$type->load($resource->type);
 		$typeParams = new \Hubzero\Config\Registry($type->params);
 		$restrictDirectDownload = $activeParams->get('restrict_direct_access') ? $activeParams->get('restrict_direct_access') : $typeParams->get('restrict_direct_access');
-		if ($restrictDirectDownload == 2)
+
+
+		// Check to see if the Google doc viewer is being used and skip checking for the token if that is the case.
+		$referer = Request::server('HTTP_REFERER');
+		$referer = !empty($referer) ? parse_url($referer) : null;
+		$refererHost = !empty($referer['host']) ? strtolower($referer['host']) : null;
+
+		if ($restrictDirectDownload == 2 && $refererHost != 'docs.google.com')
 		{
 			Request::checkToken('get');
 		}
