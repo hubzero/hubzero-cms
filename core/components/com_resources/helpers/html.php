@@ -144,20 +144,41 @@ class Html
 	{
 		switch ($rating)
 		{
-			case 0.5: $class = ' half';      break;
-			case 1:   $class = ' one';       break;
-			case 1.5: $class = ' onehalf';   break;
-			case 2:   $class = ' two';       break;
-			case 2.5: $class = ' twohalf';   break;
-			case 3:   $class = ' three';     break;
-			case 3.5: $class = ' threehalf'; break;
-			case 4:   $class = ' four';      break;
-			case 4.5: $class = ' fourhalf';  break;
-			case 5:   $class = ' five';      break;
+			case 0.5:
+				$class = ' half';
+				break;
+			case 1:
+				$class = ' one';
+				break;
+			case 1.5:
+				$class = ' onehalf';
+				break;
+			case 2:
+				$class = ' two';
+				break;
+			case 2.5:
+				$class = ' twohalf';
+				break;
+			case 3:
+				$class = ' three';
+				break;
+			case 3.5:
+				$class = ' threehalf';
+				break;
+			case 4:
+				$class = ' four';
+				break;
+			case 4.5:
+				$class = ' fourhalf';
+				break;
+			case 5:
+				$class = ' five';
+				break;
 			case 0:
-			default:  $class = ' none';      break;
+			default:
+				$class = ' none';
+				break;
 		}
-
 		return '<p class="avgrating'.$class.'"><span>Rating: '.$rating.' out of 5 stars</span></p>';
 	}
 
@@ -170,7 +191,7 @@ class Html
 	 */
 	public static function selectAccess($as, $value, $name = 'access')
 	{
-		$as = explode(',',$as);
+		$as = explode(',', $as);
 		$html  = '<select name="' . $name . '" id="field-' . str_replace(array('[',']'), '', $name) . '">' . "\n";
 		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
@@ -692,7 +713,7 @@ class Html
 				if ($author_array[$i]->surname || $author_array[$i]->givenName)
 				{
 					$name = stripslashes($author_array[$i]->givenName) . ' ';
-					if ($author_array[$i]->middleName != NULL)
+					if ($author_array[$i]->middleName != null)
 					{
 						$name .= stripslashes($author_array[$i]->middleName) . ' ';
 					}
@@ -780,18 +801,40 @@ class Html
 	{
 		switch ($rating)
 		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
+			case 0.5:
+				$class = ' half-stars';
+				break;
+			case 1:
+				$class = ' one-stars';
+				break;
+			case 1.5:
+				$class = ' onehalf-stars';
+				break;
+			case 2:
+				$class = ' two-stars';
+				break;
+			case 2.5:
+				$class = ' twohalf-stars';
+				break;
+			case 3:
+				$class = ' three-stars';
+				break;
+			case 3.5:
+				$class = ' threehalf-stars';
+				break;
+			case 4:
+				$class = ' four-stars';
+				break;
+			case 4.5:
+				$class = ' fourhalf-stars';
+				break;
+			case 5:
+				$class = ' five-stars';
+				break;
 			case 0:
-			default:  $class = ' no-stars';      break;
+			default:
+				$class = ' no-stars';
+				break;
 		}
 		return $class;
 	}
@@ -923,7 +966,7 @@ class Html
 				$tables = $database->getTableList();
 				$table = $database->getPrefix() . 'tool_version';
 
-				if (in_array($table,$tables))
+				if (in_array($table, $tables))
 				{
 					if (isset($resource->revision) && $resource->toolpublished)
 					{
