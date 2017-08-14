@@ -83,7 +83,7 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 						break;
 
 						case 'created':
-							echo 'A new wish has been submitted by ' . $this->escape(stripslashes($this->wish->proposer()->get('name')));
+							echo 'A new wish has been submitted.'; //' by ' . $this->escape(stripslashes($this->wish->proposer()->get('name')));
 						break;
 
 						case 'moved':
