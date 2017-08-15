@@ -56,7 +56,7 @@ class Repo extends Object
 	private $_tbl = null;
 
 	/**
-	 * \JDatabase
+	 * Database
 	 *
 	 * @var  object
 	 */
@@ -78,8 +78,8 @@ class Repo extends Object
 
 	/**
 	 * Constructor
-	 * @param    object   $project Project model
-	 *
+	 * @param   object  $project  Project model
+	 * @param   string  $name
 	 * @return  void
 	 */
 	public function __construct($project = null, $name = 'local')
@@ -174,18 +174,23 @@ class Repo extends Object
 	{
 		if (!$this->_adapter)
 		{
-			// Use regex to avoid what might be a caching thing with JTables
-			$matches = array();
-			preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
-			// Assume if versionTracking param was not set that it was tracked via git previously
-			// Otherwise honor the variable
-			if (!isset($matches[1]) || $matches[1] == 1)
+			$engine = 'nogit';
+
+			if (is_object($this->get('project')))
 			{
-				$engine = 'git';
-			}
-			else
-			{
-				$engine = 'nogit';
+				// Use regex to avoid what might be a caching thing with JTables
+				$matches = array();
+				preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
+				// Assume if versionTracking param was not set that it was tracked via git previously
+				// Otherwise honor the variable
+				if (!isset($matches[1]) || $matches[1] == 1)
+				{
+					$engine = 'git';
+				}
+				else
+				{
+					$engine = 'nogit';
+				}
 			}
 
 			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($engine);
