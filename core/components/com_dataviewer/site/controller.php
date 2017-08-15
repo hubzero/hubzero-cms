@@ -41,6 +41,21 @@ function controller()
 	}
 }
 
+
+function task_gallery($db_id)
+{
+	$hash = Request::getVar('hash');
+	$view = 'gallery';
+	$file = (JPATH_COMPONENT . DS . "view" . DS . "$view.php");
+	
+	if (file_exists($file)) 
+	{
+		require_once($file);
+		view($hash);
+	}
+}
+
+
 function task_file($db_id)
 {
 	$view = 'file';

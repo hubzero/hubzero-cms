@@ -25,8 +25,7 @@ function view($hash)
 	}
 
 	$http_path = $_SESSION['dv']['gallery']['list'][$hash];
-	$real_path = explode('/site/', $http_path);
-	$real_path = '/site/' . $real_path[1];
+	$real_path = $http_path;
 
 	$imagetypes = array('png', 'gif', 'jpg', 'jprg');
 	$image_list = array();
@@ -66,10 +65,10 @@ function view($hash)
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Dataview: Image gallery</title>
-		<link rel="stylesheet" href="<?php echo $html_path?>/ui/themes/smoothness/jquery-ui.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $html_path?>/jquery-ui/smoothness/jquery-ui.css" type="text/css" />
 		<link rel="stylesheet" href="<?php echo $html_path?>/dv_gallery.css" type="text/css" />
-		<script type="text/javascript" src="<?php echo $html_path?>/jquery.min.js"></script>
-		<script type="text/javascript" src="<?php echo $html_path?>/ui/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="<?php echo $html_path?>/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo $html_path?>/jquery-ui/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="<?php echo $html_path?>/dv_gallery.js"></script>
 		<style type="text/css">
 			.dv_gallery_toolbar { font: 62.5% "Trebuchet MS", sans-serif;}
@@ -110,6 +109,5 @@ function view($hash)
 	</body>
 </html>
 <?php
-	exit(0);
 }
 ?>
