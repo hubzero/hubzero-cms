@@ -357,7 +357,7 @@ function filter($res, $dd)
 
 						$path = $rec[$dd['cols'][$key]['gallery']];
 						$hash = get_dl_hash($path, 'gallery');
-						$gal_url = "/" . $com_name . '/gallery/' . $hash;
+						$gal_url = "/" . $com_name . '/gallery/' . $db_id . '/?hash=' . $hash;
 						$val = '<a target="_blank" class="dv_gallery_link" href="' . $gal_url . '"><img class="dv_image lazy-load dv_img_preview" src="' . $html_path . '/1x1.png" data-original="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
 					} else {
 						$val = '<a target="_blank" href="' . $original_img . '"><img class="dv_image lazy-load dv_img_preview" src="' . $html_path . '/1x1.png" data-original="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
