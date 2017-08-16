@@ -233,4 +233,12 @@ class License extends Relational
 
 		return true;
 	}
+	
+	public static function getLicenses(){
+		$query = new \Hubzero\Database\Query;
+		$licenses = $query->select('name')
+				  ->from('#__resource_licenses')
+				  ->fetch();
+		return self::all()->rows();
+	}
 }
