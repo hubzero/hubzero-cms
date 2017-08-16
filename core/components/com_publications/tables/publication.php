@@ -127,6 +127,7 @@ class Publication extends \JTable
 		$dev 			= isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
 		$projects 		= isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
 		$mine 			= isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
+		$featured		= isset($filters['featured']) && $filters['featured'] ? 1 : 0;
 		$sortby  		= isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
 		$query  = "FROM ";
@@ -146,6 +147,11 @@ class Publication extends \JTable
 
 		$query .= "LEFT JOIN #__publication_categories AS t ON t.id=C.category ";
 		$query .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id ";
+
+		if ($featured)
+		{
+			$query .=" AND C.featured = 1";
+		}
 
 		if ($dev)
 		{
