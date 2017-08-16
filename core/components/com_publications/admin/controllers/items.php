@@ -710,6 +710,7 @@ class Items extends AdminController
 		$published_up   = trim(Request::getVar('published_up', '', 'post'));
 		$published_down = trim(Request::getVar('published_down', '', 'post'));
 		$state          = Request::getInt('state', 0);
+		$featured       = Request::getInt('featured', 0);
 		$metadata       = '';
 		$activity       = '';
 
@@ -718,6 +719,7 @@ class Items extends AdminController
 		$this->model->publication->category = trim(Request::getInt('category', 0, 'post'));
 		$this->model->publication->access   = Request::getInt('access', 0, 'post');
 		$this->model->publication->group_owner = $group_owner;
+		$this->model->publication->featured = $featured;
 		/*if (!$project->get('owned_by_group'))
 		{
 			$this->model->publication->group_owner = $group_owner;

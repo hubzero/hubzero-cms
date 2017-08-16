@@ -362,6 +362,13 @@ function popratings()
 					</select>
 				</div>
 				<div class="input-wrap">
+					<label for="field-featured"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED'); ?>:</label><br />
+					<select name="featured" id="field-featured">
+						<option value="0"<?php echo ($this->model->get('featured') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_NO'); ?></option>
+						<option value="1"<?php echo ($this->model->get('featured') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_YES'); ?></option>
+					</select>
+				</div>
+				<div class="input-wrap">
 					<label for="access"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
 					<?php
 					// Draw access select list
