@@ -117,10 +117,10 @@ class Jobsv1_0 extends ApiController
 	}
 
 	/**
-	 * Display a list of jobs
+	 * Display a job
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /jobs/job
+	 * @apiUri    /jobs/{jobcode}
 	 * @apiParameter {
 	 * 		"name":          "jobcode",
 	 * 		"description":   "The job code associated with the opening",
