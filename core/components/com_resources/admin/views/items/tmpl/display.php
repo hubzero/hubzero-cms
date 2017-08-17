@@ -109,9 +109,9 @@ function submitbutton(pressbutton)
 				<?php echo \Components\Resources\Helpers\Html::selectType($this->types, 'type', $this->filters['type'], Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'), '', ' onchange="this.form.submit();"', ''); ?>
 				<label for="license"><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE')?></label>
 				<select name="license" id="filter-license" onchange="this.form.submit();">
-					 <option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
+					 <option value="all"<?php echo ($this->filters['license'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
 					<?php foreach($this->licenses as $license){ ?>
-					<option value="<?php echo $license->name; ?>"><?php echo $license->name; ?></option>
+					<option value="<?php echo $license->name; ?>"<?php echo ($this->filters['license'] == $license->name) ? ' selected="selected"' : ''; ?>><?php echo $license->name; ?></option>
 					<?php } ?>
 				</select>
 			</div>

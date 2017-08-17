@@ -126,7 +126,7 @@ class Items extends AdminController
 				''
 			),
 			'license' => Request::getState(
-				$this->_option . '.resource.license',
+				$this->_option . '.resources.license',
 				'license',	
 				''
 			)
@@ -143,14 +143,17 @@ class Items extends AdminController
 		// Get <select> of types
 		$rt = new Type($this->database);
 		$this->view->types = $rt->getMajorTypes();
+
+		// Get <select> of licenses
 		$licenseModel = new License($this->database);
 		$this->view->licenses = $licenseModel->getLicenses();
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
 		}
-
+		
 		// Output the HTML
 		$this->view->display();
 	}
