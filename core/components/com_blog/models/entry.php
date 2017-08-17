@@ -177,7 +177,7 @@ class Entry extends Relational
 	}
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic publish_up field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -200,7 +200,7 @@ class Entry extends Relational
 	}
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic publish_down field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
