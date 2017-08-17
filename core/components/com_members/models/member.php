@@ -33,6 +33,7 @@ namespace Components\Members\Models;
 
 use Hubzero\User\User;
 use Hubzero\Config\Registry;
+use Event;
 
 require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
@@ -300,6 +301,16 @@ class Member extends User
 		$profile = (array)$profile;
 		$access  = (array)$access;
 
+		// Fire the onUserBeforeSaveProfile event
+		$user = $this->toArray();
+		$result = Event::trigger('user.onUserBeforeSaveProfile', array($user, $profile, $access));
+
+		if (in_array(false, $result, true))
+		{
+			// Plugin will have to raise its own error or throw an exception.
+			return false;
+		}
+
 		$keep = array();
 
 		foreach ($this->profiles as $field)
@@ -468,6 +479,9 @@ class Member extends User
 
 			$i++;
 		}
+
+		// Fire the onUserAfterSaveProfile event
+		Event::trigger('user.onUserAfterSaveProfile', array($user, $profile, $access));
 
 		return true;
 	}
