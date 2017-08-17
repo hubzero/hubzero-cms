@@ -200,6 +200,16 @@ class Comment extends Relational
 	}
 
 	/**
+	 * Defines a belongs to one relationship between comment and entry
+	 *
+	 * @return  object
+	 */
+	public function entry()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\Entry', 'entry_id');
+	}
+
+	/**
 	 * Was the entry reported?
 	 *
 	 * @return  boolean  True if reported, False if not

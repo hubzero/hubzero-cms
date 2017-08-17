@@ -146,4 +146,79 @@ class EntryTest extends Database
 			$this->assertEquals($entry->get('scope_id'), $item['scope_id']);
 		}
 	}
+
+	/**
+	 * Test that aliases are built correctly
+	 *
+	 * @covers  Components\Blog\Models\Entry::automaticAlias
+	 * @return  void
+	 */
+	public function testAutomaticAlias()
+	{
+		$entry = Entry::blank();
+
+		$title = 'Sed posuere consectetur est at lobortis!';
+		$alias = 'sed-posuere-consectetur-est-at-lobortis';
+
+		$data = array('title' => $title);
+		$data['alias'] = $entry->automaticAlias($data);
+
+		$this->assertEquals($alias, $data['alias']);
+
+		$title = 'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Curabitur blandit tempus porttitor.';
+		//$alias = 'aenean-eu-leo-quam-pellentesque-ornare-sem-lacinia-quam-venenatis-vestibulum-vestibulum-id-ligula-porta';
+
+		$data = array('title' => $title);
+		$data['alias'] = $entry->automaticAlias($data);
+
+		$this->assertTrue((strlen($data['alias']) <= 100), 'Alias should not be longer than 100 characters');
+		$this->assertFalse(strstr($data['alias'], '.'), 'Alias should not contain any punctuation other than dashes.');
+		$this->assertFalse((substr($data['alias'], 0, 1) === 'A'), 'Alias should be all lowercase.');
+
+		$data = array('alias' => $title);
+		$data['alias'] = $entry->automaticAlias($data);
+
+		$this->assertTrue((strlen($data['alias']) <= 100), 'Alias should not be longer than 100 characters');
+		$this->assertFalse(strstr($data['alias'], '.'), 'Alias should not contain any punctuation other than dashes.');
+		$this->assertFalse((substr($data['alias'], 0, 1) === 'A'), 'Alias should be all lowercase.');
+	}
+
+	/**
+	 * Test publish_up timestamp is set correctly
+	 *
+	 * @covers  Components\Blog\Models\Entry::automaticPublishUp
+	 * @return  void
+	 */
+	public function testAutomaticPublishUp()
+	{
+		// Test that publish_up is set to 'now' if using a non-existing record
+		$entry = Entry::blank();
+
+		$dt = new \Hubzero\Utility\Date('now');
+		$now = $dt->toSql();
+
+		$data = array('id' => 0);
+		$data['publish_up'] = $entry->automaticPublishUp($data);
+
+		$this->assertNotEquals('0000-00-00 00:00:00', $data['publish_up']);
+		$this->assertTrue($data['publish_up'] >= $now);
+
+		// Test that publish_up is set to created date if using an existing record
+		$entry = Entry::one(1);
+
+		$data = array('id' => $entry->get('id'));
+		$data['publish_up'] = $entry->automaticPublishUp($data);
+
+		$this->assertEquals($entry->get('created'), $data['publish_up']);
+
+		// Test that given set values are left untouched
+		$data = array(
+			'id' => $entry->get('id'),
+			'publish_up' => '2017-03-13 15:11:00'
+		);
+
+		$result = $entry->automaticPublishUp($data);
+
+		$this->assertEquals($data['publish_up'], $result);
+	}
 }

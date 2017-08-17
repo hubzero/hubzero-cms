@@ -114,4 +114,40 @@ class CommentTest extends Database
 		$this->assertInstanceOf('\Components\Blog\Models\Comment', $parent, 'Parent is not an instance of \Components\Blog\Models\Comment');
 		$this->assertEquals(1, $parent->id, 'Comment should have returned a parent with ID of 1');
 	}
+
+	/**
+	 * Tests that flagged records are correctly identified as such
+	 *
+	 * @covers  Components\Blog\Models\Comment::isReported
+	 * @return  void
+	 **/
+	public function testIsReported()
+	{
+		$comment = Comment::one(1);
+
+		$this->assertNotEquals(Comment::STATE_FLAGGED, $comment->get('state'), 'Comment->state should not have returned a value of ' . Comment::STATE_FLAGGED);
+		$this->assertFalse($comment->isReported(), 'Comment->isReported() should have returned a value of false');
+
+		$comment = Comment::one(3);
+
+		$this->assertEquals(Comment::STATE_FLAGGED, $comment->get('state'), 'Comment->state should have returned a value of ' . Comment::STATE_FLAGGED);
+		$this->assertTrue($comment->isReported(), 'Comment->isReported() should have returned a value of true');
+	}
+
+	/**
+	 * Tests that modified records are correctly identified as such
+	 *
+	 * @covers  Components\Blog\Models\Comment::wasModified
+	 * @return  void
+	 **/
+	public function testWasModified()
+	{
+		$comment = Comment::one(1);
+
+		$this->assertFalse($comment->wasModified(), 'Comment->wasModified() should have returned a value of false');
+
+		$comment = Comment::one(2);
+
+		$this->assertTrue($comment->wasModified(), 'Comment->wasModified() should have returned a value of true');
+	}
 }
