@@ -75,7 +75,6 @@ $tokens = $this->application->accessTokens()
 							<dl class="meta">
 								<dd><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_ACCESS_TOKEN_CREATED', $token->created('m/d/Y @ g:ia')); ?></dd>
 								<dd><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_ACCESS_TOKEN_EXPIRES', $token->expires('m/d/Y @ g:ia')); ?></dd>
-								<dd><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_ACCESS_TOKEN', $token->get('access_token')); ?></dd>
 							</dl>
 						</li>
 					<?php endforeach; ?>
