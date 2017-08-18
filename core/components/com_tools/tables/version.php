@@ -98,9 +98,9 @@ class Version extends \JTable
 	 * @param      string $tool Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function loadFromInstance($tool=NULL)
+	public function loadFromInstance($tool=null)
 	{
-		if ($tool === NULL)
+		if ($tool === null)
 		{
 			return false;
 		}
@@ -129,7 +129,7 @@ class Version extends \JTable
 	 */
 	public function getAll($includedev = 1)
 	{
-		$sql = "SELECT * FROM #__tool_version";
+		$sql = "SELECT * FROM `#__tool_version`";
 		if (!$includedev)
 		{
 			$sql.= " WHERE state!='3'";
@@ -150,7 +150,7 @@ class Version extends \JTable
 	public function getVersions($alias)
 	{
 		// will load versions excluding dev
-		if ($alias === NULL)
+		if ($alias === null)
 		{
 			$alias = $this->toolname;
 		}
@@ -179,9 +179,9 @@ class Version extends \JTable
 	 * @param      string $version Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getVersionIdFromResource($rid=NULL, $version ='dev')
+	public function getVersionIdFromResource($rid=null, $version ='dev')
 	{
-		if ($rid=== NULL)
+		if ($rid=== null)
 		{
 			return false;
 		}
@@ -214,7 +214,7 @@ class Version extends \JTable
 	 */
 	public function loadFromName($alias)
 	{
-		if ($alias === NULL)
+		if ($alias === null)
 		{
 			return false;
 		}
@@ -242,9 +242,9 @@ class Version extends \JTable
 	 * @param      string $version Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function load_version($toolid=NULL, $version='dev')
+	public function load_version($toolid=null, $version='dev')
 	{
-		if ($toolid === NULL)
+		if ($toolid === null)
 		{
 			return false;
 		}
@@ -276,7 +276,7 @@ class Version extends \JTable
 	 * @param      mixed $vid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function setUnpublishDate($toolid=NULL, $toolname='', $vid=0)
+	public function setUnpublishDate($toolid=null, $toolname='', $vid=0)
 	{
 		if (!$toolid)
 		{
@@ -315,7 +315,7 @@ class Version extends \JTable
 	 * @param      mixed $vid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function unpublish($toolid=NULL, $vid=0)
+	public function unpublish($toolid=null, $vid=0)
 	{
 		if (!$toolid)
 		{
@@ -353,7 +353,7 @@ class Version extends \JTable
 	 * @param      integer $create_new Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function save($toolid=NULL, $version='dev', $create_new = 0)
+	public function save($toolid=null, $version='dev', $create_new = 0)
 	{
 		if (!$this->toolid)
 		{
@@ -610,7 +610,7 @@ class Version extends \JTable
 		// Get some needed libraries
 		//include_once(PATH_CORE.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php');
 		$resource->tarname = $resource->alias.'-r'.$resource->revision.'.tar.gz';
-		$tarball_path = $config->get('sourcecodePath','site/protected/source');
+		$tarball_path = $config->get('sourcecodePath', 'site/protected/source');
 		if ($tarball_path[0] != DS)
 		{
 			$tarball_path = rtrim(PATH_APP . DS . $tarball_path, DS);
