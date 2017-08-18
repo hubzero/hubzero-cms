@@ -70,7 +70,7 @@ $this->css()
 	?>
 
 	<section class="section filters">
-		<field class="input-group">
+		<fieldset class="input-group">
 			<span class="input-cell">
 				<label for="filter-search">
 					<span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
