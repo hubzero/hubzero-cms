@@ -506,7 +506,8 @@ class Version extends \JTable
 			$query.= "WHERE v.toolname=" . $this->_db->quote($toolname) . " ";
 			if ($version=='current')
 			{
-				$query .= "AND v.state=1 ORDER BY v.revision DESC LIMIT 1 ";
+				// Adding state=0 to account for retired tools
+				$query .= "AND v.state IN (1, 0) ORDER BY v.state DESC, v.revision DESC LIMIT 1 ";
 			}
 			else if ($version=='dev')
 			{
