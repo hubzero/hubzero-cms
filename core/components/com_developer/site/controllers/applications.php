@@ -479,7 +479,7 @@ class Applications extends SiteController
 			Lang::txt('COM_DEVELOPER_API_APPLICATION_CLIENT_SECRET_RESET'),
 			'passed'
 		);
-	}	
+	}
 
 	/**
 	 * Revoke application token
