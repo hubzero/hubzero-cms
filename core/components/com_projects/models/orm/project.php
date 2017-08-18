@@ -32,6 +32,7 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Event;
 use User;
 
 include_once __DIR__ . '/owner.php';
@@ -319,6 +320,12 @@ class Project extends Relational
 	 */
 	public function destroy()
 	{
+		$data = $this->toArray();
+
+		// Trigger before delete event
+		Event::trigger('projects.onProjectBeforeDelete', array($data));
+
+		// Remove associated data
 		foreach ($this->connections as $connection)
 		{
 			if (!$connection->destroy())
@@ -346,6 +353,15 @@ class Project extends Relational
 			}
 		}
 
-		return parent::destroy();
+		// Attempt to delete the record
+		$result = parent::destroy();
+
+		if ($result)
+		{
+			// Trigger after delete event
+			Event::trigger('projects.onProjectAfterDelete', array($data));
+		}
+
+		return $result;
 	}
 }

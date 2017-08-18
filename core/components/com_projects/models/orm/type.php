@@ -69,4 +69,26 @@ class Type extends Relational
 	protected $rules = array(
 		'type' => 'notempty'
 	);
+
+	/**
+	 * Registry
+	 *
+	 * @var  object
+	 */
+	protected $paramsRegistry = null;
+
+	/**
+	 * Transform params
+	 *
+	 * @return  string
+	 */
+	public function transformParams()
+	{
+		if (!is_object($this->paramsRegistry))
+		{
+			$this->paramsRegistry = new Registry($this->get('params'));
+		}
+
+		return $this->paramsRegistry;
+	}
 }
