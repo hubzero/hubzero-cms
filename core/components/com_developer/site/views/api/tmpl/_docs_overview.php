@@ -110,9 +110,8 @@ defined('_HZEXEC_') or die();
 
 <div class="doc-section" id="overview-ratelimiting">
 	<h3>Rate Limiting</h3>
-	<p>You can make up to 60 requests per minute, with a hard limit of 10,000 per day. For requests using OAuth, the rate limit is for each application and user combination. For unauthenticated requests, the rate limit is for the requesting IP address.
-
-	</p>You can check the returned HTTP headers of any API request to see your current per minute rate limit status:</p>
+	<p>You can make up to 60 requests per minute, with a hard limit of 10,000 per day. For requests using OAuth, the rate limit is for each application and user combination. For unauthenticated requests, the rate limit is for the requesting IP address.</p>
+	<p>You can check the returned HTTP headers of any API request to see your current per minute rate limit status:</p>
 	<pre><code class="http">GET /groups/12345</code></pre>
 	<br />
 	<pre><code class="http">HTTP/1.1 200 OK
