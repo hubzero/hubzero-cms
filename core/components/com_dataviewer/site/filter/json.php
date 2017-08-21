@@ -504,7 +504,7 @@ function filter($res, $dd)
 					$append_to_url = isset($fv['append_to_url'])? $fv['append_to_url']: '';
 					$fv_data = array_key_exists($fv['data'], $rec)? $rec[$fv['data']]: $fv['data'];
 
-					$url = '/' . $com_name . '/' . $fv['task'] . '/' . $fv['db'] . '/' . $fv_data . '/' . $filter . $append_to_url . '#dv_top';
+					$url = '/' . $com_name . '/' . $fv['task'] . '/' . $fv['db'] . '/' . $fv_data . '/' . $filter . $append_to_url;
 					if ($fv_data != null) {
 						$val = '<a class="filtered_view" href="' . $url . '" title="Pre-filtered view">' . $val . '</a>';
 					}
@@ -524,7 +524,7 @@ function filter($res, $dd)
 					$append_to_url = isset($dd['cols'][$key]['custom_field_link']['append_to_url'])? $dd['cols'][$key]['custom_field_link']['append_to_url']: '';
 
 					$check = '<input type="checkbox" class="dv-custom-field-link" data-url-append=' . $append_to_url . ' data-col-id="dv-' . str_replace('.', '_', $key) . '" value="' . $v . '" style="float: right;" />';
-					$val = $check. '<a class="dv-custom-field-link" title="View filtered spreadsheet" target="_blank" href="/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $dv . '/?custom_field=' . $field . '|' . $v . $append_to_url . '#dv_top">' . $ll . '</a>';
+					$val = $check. '<a class="dv-custom-field-link" title="View filtered spreadsheet" target="_blank" href="/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $dv . '/?custom_field=' . $field . '|' . $v . $append_to_url . '">' . $ll . '</a>';
 				}
 
 				if (isset($dd['cols'][$key]['launch_view']) && !$null_val) {
@@ -536,7 +536,7 @@ function filter($res, $dd)
 					$filter = '?filter=' . implode('||', $filter);
 					$append_to_url = isset($fv['append_to_url'])? $fv['append_to_url']: '';
 
-					$val = '<a class="filtered_view" title="View filtered spreadsheet" target="_blank" href="/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $fv['data'] . '/' . $fv['view'] . '/' . $filter . $append_to_url . '#dv_top">' . $val . '</a>';
+					$val = '<a class="filtered_view" title="View filtered spreadsheet" target="_blank" href="/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $fv['data'] . '/' . $fv['view'] . '/' . $filter . $append_to_url . '">' . $val . '</a>';
 				}
 
 				if (isset($dd['cols'][$key]['abbr'])) {
