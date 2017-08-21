@@ -30,10 +30,11 @@
 		padding: 0 30px;
 		border: 8px solid #000;
 		text-align: left;
-		color: #aaa;
+		color: #ccc;
 		background: #151515;
 	}
 	#help-container h1 {
+		color: #fff;
 		display: none;
 	}
 	#help-container a {
