@@ -142,15 +142,15 @@ $html .= "\t\t\t".'<th scope="col" class="numerical-data"><sup><a href="#fn-1">1
 $html .= "\t\t\t".'<th scope="col" class="numerical-data">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
+$html .= "\t".'<tbody>'."\n";
+$html .= implode('',$rows);
+$html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
 $html .= "\t\t\t".'<th class="numerical-data" colspan="3">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t\t".'<td class="numerical-data highlight">'.$tot.'</td>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</tfoot>'."\n";
-$html .= "\t".'<tbody>'."\n";
-$html .= implode('',$rows);
-$html .= "\t".'</tbody>'."\n";
 $html .= '</table>'."\n";
 
 $typestats = $this->typestats;
@@ -234,6 +234,9 @@ $html .= "\t\t\t".'<th scope="col" class="textual-data">'.Lang::txt('COM_CITATIO
 $html .= "\t\t\t".'<th scope="col" class="numerical-data">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
+$html .= "\t".'<tbody>'."\n";
+$html .= implode('',$rows);
+$html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
 $html .= "\t\t\t".'<th class="text-data">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
@@ -241,12 +244,9 @@ $html .= "\t\t\t".'<td class="textual-data">100%</td>'."\n";
 $html .= "\t\t\t".'<td class="numerical-data">'.$sumval.'</td>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</tfoot>'."\n";
-$html .= "\t".'<tbody>'."\n";
-$html .= implode('',$rows);
-$html .= "\t".'</tbody>'."\n";
 $html .= '</table>'."\n";
 $html .= '<div class="footnotes"><hr />
-	<ol><li><a name="fn-1"></a>'.Lang::txt('COM_CITATIONS_METRICS_FOOTNOTE').'</li></ol>
+	<ol><li id="fn-1">'.Lang::txt('COM_CITATIONS_METRICS_FOOTNOTE').'</li></ol>
 	</div>'."\n";
 
 echo $html;

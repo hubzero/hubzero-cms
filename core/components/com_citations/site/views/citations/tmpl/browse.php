@@ -147,7 +147,7 @@ if ($label == 'none') {
 										<input type="checkbox" class="checkall-download" />
 									</th>
 								<?php endif; ?>
-								<th colspan="3"><?php echo Lang::txt('COM_CITATIONS'); ?></th>
+								<th colspan="2"><?php echo Lang::txt('COM_CITATIONS'); ?></th>
 							</tr>
 							<?php if ($this->isAdmin) : ?>
 								<tr class="hidden"></tr>
@@ -315,7 +315,7 @@ if ($label == 'none') {
 			<?php endif; ?>
 
 			<fieldset>
-				<label>
+				<label for="type">
 					<?php echo Lang::txt('COM_CITATIONS_TYPE'); ?>
 					<select name="type" id="type">
 						<option value=""><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></option>
@@ -325,47 +325,55 @@ if ($label == 'none') {
 						<?php endforeach; ?>
 					</select>
 				</label>
-				<label>
+				<label for="actags">
 					<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
 					<?php
 						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
 						if (count($tf) > 0) : ?>
 							<?php echo $tf[0]; ?>
 						<?php else: ?>
-							<input type="text" name="tag" value="<?php echo $this->filters['tag']; ?>" />
+							<input type="text" name="tag" id="actags" value="<?php echo $this->filters['tag']; ?>" />
 						<?php endif; ?>
 				</label>
-				<label>
+				<label for="author">
 					<?php echo Lang::txt('COM_CITATIONS_AUTHORED_BY'); ?>
-					<input type="text" name="author" value="<?php echo $this->filters['author']; ?>" />
+					<input type="text" name="author" id="author" value="<?php echo $this->filters['author']; ?>" />
 				</label>
-				<label>
+				<label for="publishedin">
 					<?php echo Lang::txt('COM_CITATIONS_PUBLISHED_IN'); ?>
-					<input type="text" name="publishedin" value="<?php echo $this->filters['publishedin']; ?>" />
+					<input type="text" name="publishedin" id="publishedin" value="<?php echo $this->filters['publishedin']; ?>" />
 				</label>
-				<label for="year_start">
-					<?php echo Lang::txt('COM_CITATIONS_YEAR'); ?><br />
-					<input type="text" name="year_start" class="half" value="<?php echo $this->filters['year_start']; ?>" />
-					to
-					<input type="text" name="year_end" class="half" value="<?php echo $this->filters['year_end']; ?>" />
-				</label>
+				<div class="grid">
+					<div class="col span6">
+						<label for="year_start">
+							<?php echo Lang::txt('COM_CITATIONS_YEAR'); ?> (from)
+							<input type="text" name="year_start" id="year_start" value="<?php echo $this->filters['year_start']; ?>" />
+						</label>
+					</div>
+					<div class="col span6 omega">
+						<label for="year_end">
+							<?php echo Lang::txt('COM_CITATIONS_YEAR'); ?> (to)
+							<input type="text" name="year_end" id="year_end" value="<?php echo $this->filters['year_end']; ?>" />
+						</label>
+					</div>
+				</div>
 				<?php if ($this->isAdmin) { ?>
 					<fieldset>
-						<label>
+						<label for="startuploaddate">
 							<?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN'); ?>
-							<input type="text" name="startuploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
+							<input type="text" name="startuploaddate" id="startuploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
 							<div class="hint"><?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 						</label>
-						<label>
+						<label for="enduploaddate">
 							<?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
-							<input type="text" name="enduploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
+							<input type="text" name="enduploaddate" id="enduploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
 							<div class="hint"><?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 						</label>
 					</fieldset>
 				<?php } ?>
-				<label>
+				<label for="sort">
 					<?php echo Lang::txt('COM_CITATIONS_SORT_BY'); ?>
-					<select name="sort" id="sort" class="">
+					<select name="sort" id="sort">
 						<?php foreach ($this->sorts as $k => $v) : ?>
 							<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
 							if (($this->isAdmin !== true) && ($v == "Date uploaded"))
@@ -382,54 +390,54 @@ if ($label == 'none') {
 				</label>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE'); ?></legend>
-					<label>
-						<input class="option" type="checkbox" name="reftype[research]" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> />
+					<label for="reftype_research">
+						<input class="option" type="checkbox" name="reftype[research]" id="reftype_research" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_RESEARCH'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="reftype[education]" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> />
+					<label for="reftype_education">
+						<input class="option" type="checkbox" name="reftype[education]" id="reftype_education" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_EDUCATION'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="reftype[eduresearch]" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> />
+					<label for="reftype_eduresearch">
+						<input class="option" type="checkbox" name="reftype[eduresearch]" id="reftype_eduresearch" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> />
+					<label for="reftype_cyberinfrastructure">
+						<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" id="reftype_cyberinfrastructure" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
 					</label>
 				</fieldset>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY'); ?></legend>
-					<label>
-						<input class="option" type="checkbox" name="geo[us]" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> />
+					<label for="geo_us">
+						<input class="option" type="checkbox" name="geo[us]" id="geo_us" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_US'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="geo[na]" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> />
+					<label for="geo_na">
+						<input class="option" type="checkbox" name="geo[na]" id="geo_na" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_NORTH_AMERICA'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="geo[eu]" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> />
+					<label for="geo_eu">
+						<input class="option" type="checkbox" name="geo[eu]" id="geo_eu" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_EUROPE'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="geo[as]" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> />
+					<label for="geo_as">
+						<input class="option" type="checkbox" name="geo[as]" id="geo_as" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_ASIA'); ?>
 					</label>
 				</fieldset>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION'); ?></legend>
-					<label>
-						<input class="option" type="checkbox" name="aff[university]" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> />
+					<label for="aff_university">
+						<input class="option" type="checkbox" name="aff[university]" id="aff_university" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_UNIVERSITY'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="aff[industry]" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> />
+					<label for="aff_industry">
+						<input class="option" type="checkbox" name="aff[industry]" id="aff_industry" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_INDUSTRY'); ?>
 					</label>
-					<label>
-						<input class="option" type="checkbox" name="aff[government]" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> />
+					<label for="aff_government">
+						<input class="option" type="checkbox" name="aff[government]" id="aff_government" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_GOVERNMENT'); ?>
 					</label>
 				</fieldset>
