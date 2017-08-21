@@ -92,7 +92,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 				<div id="splash">
 					<div class="inner-wrap">
 
-						<header id="masthead" role="banner">
+						<header id="masthead">
 							<jdoc:include type="modules" name="notices" />
 
 							<h1>
@@ -166,9 +166,9 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 						<div class="inner">
 							<div class="wrap">
-							<?php if ($this->getBuffer('message')) : ?>
-								<jdoc:include type="message" />
-							<?php endif; ?>
+								<?php if ($this->getBuffer('message')) : ?>
+									<jdoc:include type="message" />
+								<?php endif; ?>
 								<jdoc:include type="modules" name="welcome" />
 							</div>
 						</div><!-- / .inner -->
