@@ -404,7 +404,7 @@ $pid = Request::getInt('publication', 0);
 							<tr>
 								<th><?php echo Lang::txt('COM_CITATIONS_TYPE'); ?></th>
 								<th><?php echo Lang::txt('COM_CITATIONS_ID'); ?></th>
-								<!--<th><?php //echo Lang::txt('TABLE'); ?></th>-->
+								<th><?php echo Lang::txt('COM_CITATIONS_CONTEXT'); ?></th>
 							</tr>
 						</thead>
 						<tfoot>
@@ -425,11 +425,11 @@ $pid = Request::getInt('publication', 0);
 									if ($r == 0 || !isset($this->assocs[$i]))
 									{
 										$this->assocs[$i] = new stdClass;
-										$this->assocs[$i]->id   = NULL;
-										$this->assocs[$i]->cid  = NULL;
-										$this->assocs[$i]->oid  = NULL;
-										$this->assocs[$i]->type = NULL;
-										$this->assocs[$i]->tbl  = NULL;
+										$this->assocs[$i]->id   = null;
+										$this->assocs[$i]->cid  = $this->row->id;
+										$this->assocs[$i]->oid  = null;
+										$this->assocs[$i]->type = null;
+										$this->assocs[$i]->tbl  = null;
 									}
 
 									echo "\t\t\t".'  <tr>'."\n";
@@ -444,9 +444,20 @@ $pid = Request::getInt('publication', 0);
 									echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
 									echo '>'.Lang::txt('COM_CITATIONS_PUBLICATION').'</option>'."\n";
 									echo '</select></td>'."\n";
-									echo "\t\t\t".'<td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" />'."\n";
+									echo "\t\t\t".'<td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->escape($this->assocs[$i]->oid).'" />'."\n";
 									echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
 									echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
+									echo "\t\t\t".'<td><select name="assocs['.$i.'][type]">'."\n";
+									echo ' <option value=""';
+									echo ($this->assocs[$i]->type == '') ? ' selected="selected"': '';
+									echo '>'.Lang::txt('COM_CITATIONS_SELECT').'</option>'."\n";
+									echo ' <option value="references"';
+									echo ($this->assocs[$i]->type == 'references') ? ' selected="selected"': '';
+									echo '>'.Lang::txt('COM_CITATIONS_CONTEXT_REFERENCES').'</option>'."\n";
+									echo ' <option value="referencedby"';
+									echo ($this->assocs[$i]->type == 'referencedby') ? ' selected="selected"': '';
+									echo '>'.Lang::txt('COM_CITATIONS_CONTEXT_REFERENCEDBY').'</option>'."\n";
+									echo '</select></td>'."\n";
 									echo "\t\t\t".'</tr>'."\n";
 								}
 						?>

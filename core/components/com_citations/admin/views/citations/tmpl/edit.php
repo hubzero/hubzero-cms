@@ -337,12 +337,12 @@ function citeaddRow(id) {
 						<tr>
 							<th><?php echo Lang::txt('TYPE'); ?></th>
 							<th><?php echo Lang::txt('ID'); ?></th>
-							<!--<th><?php //echo Lang::txt('TABLE'); ?></th>-->
+							<th><?php echo Lang::txt('COM_CITATIONS_CONTEXT'); ?></th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
-							<td colspan="2"><a href="#" onclick="citeaddRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
+							<td colspan="3"><a href="#" onclick="citeaddRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
 						</tr>
 					</tfoot>
 					<tbody>
@@ -378,6 +378,13 @@ function citeaddRow(id) {
 									<input type="text" name="assocs[<?php echo $i; ?>][oid]" value="<?php echo $this->escape($assocs[$i]->oid); ?>" size="5" />
 									<input type="hidden" name="assocs[<?php echo $i; ?>][id]" value="<?php echo $this->escape($assocs[$i]->id); ?>" />
 									<input type="hidden" name="assocs[<?php echo $i; ?>][cid]" value="<?php echo $this->escape($assocs[$i]->cid); ?>" />
+								</td>
+								<td>
+									<select name="assocs[<?php echo $i; ?>][type]" class="noUniform">
+										<option value=""<?php echo ($assocs[$i]->type == '') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('SELECT'); ?></option>
+										<option value="references"<?php echo ($assocs[$i]->type == 'references') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCES'); ?></option>
+										<option value="referencedby"<?php echo ($assocs[$i]->type == 'referencedby') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCEDBY'); ?></option>
+									</select>
 								</td>
 							</tr>
 							<?php
