@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for adding offering_id to notes
+ * Migration script for adding 'featured' column to publications table
  **/
 class Migration20170815000001ComPublications extends Base
 {
