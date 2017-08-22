@@ -500,6 +500,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$update = true;
 			}
 
+			if ($xprofile->get('emailConfirmed') != $user['activation'])
+			{
+				$xprofile->set('emailConfirmed', $user['activation']);
+				$update = true;
+			}
+
 			if ($xprofile->get('gid') == '')
 			{
 				$xprofile->set('gid', $params->get('gid', 'users'));
