@@ -35,8 +35,16 @@ require_once Component::path('com_tools') . '/models/orm/handler.php';
 
 use \Components\Tools\Models\Orm\Handler;
 
-$handlerBase = DS . trim($this->fileparams->get('handler_base_path', 'srv/projects'), DS) . DS;
-
+$handlerBase = DS . trim($this->fileparams->get('handler_base_path', 'srv/projects/{project}/files/{file}'), DS);
+if (!strstr($handlerBase, '{'))
+{
+	$handlerBase .= '/{project}/files/{file}';
+}
+$handlerBase = str_replace(
+	array('{project}', '{file}'),
+	array($this->model->get('alias'), $this->item->get('name')),
+	$handlerBase
+);
 
 $me = ($this->item->get('email') == User::get('email')
 	|| $this->item->get('author') == User::get('name'))  ? 1 : 0;
@@ -114,8 +122,8 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 	<td class="middle_valign nobsp is-relative">
 		<?php echo $this->item->drawIcon($ext); ?>
 		<?php if ($this->item->get('type') == 'file') { ?>
-			<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase . $this->model->get('alias') . '/' . $this->item->get('name'))) ? ' hasMultiple' : ''; ?>">
-				<a href="<?php echo $link; ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
+			<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase)) ? ' hasMultiple' : ''; ?>">
+				<a href="<?php echo $link; ?>" class="preview file:<?php echo urlencode($name); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
 					<?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
 				</a>
 				<?php if ($handlers && count($handlers) > 0) : ?>
@@ -127,7 +135,7 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 				<?php endif; ?>
 			</div>
 		<?php } else { ?>
-			<a href="<?php echo Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
+			<a href="<?php echo Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))); ?>" class="dir:<?php echo urlencode($name); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $name; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?></a>
 		<?php } ?>
 	</td>
 	<td class="shrinked middle_valign"></td>
