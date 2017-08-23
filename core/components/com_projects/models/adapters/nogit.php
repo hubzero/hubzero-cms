@@ -308,7 +308,7 @@ class Nogit extends Models\Adapter
 			return false;
 		}
 
-		$this->_nogit->call("mv " . $fromFile->get('localPath') . " " . $toFile->get('localPath'));
+		$this->_nogit->call("mv " . escapeshellarg($fromFile->get('localPath')) . " " . escapeshellarg($toFile->get('localPath')));
 
 		return true;
 	}
@@ -386,7 +386,7 @@ class Nogit extends Models\Adapter
 		}
 
 		// Delete from Git
-		$this->_nogit->call("rm " . $file->get('localPath'));
+		$this->_nogit->call("rm " . escapeshellarg($file->get('localPath')));
 
 		return true;
 	}
