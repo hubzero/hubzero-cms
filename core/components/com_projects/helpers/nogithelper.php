@@ -185,7 +185,7 @@ class Nogit extends Object
 		}
 		else
 		{
-			$out = $this->call("ls -A1 ./" . escapeshellarg($subdir));
+			$out = $this->call("ls -A1 " . escapeshellarg("./" . $subdir));
 		}
 
 		return (empty($out)) ? array() : $out;
