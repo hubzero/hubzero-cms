@@ -80,32 +80,35 @@ $this->css('orcid.css');
 
 $srv = $this->config->get('orcid_service', 'members');
 $tkn = $this->config->get('orcid_' . $srv . '_token');
+$clientID = $this->config->get('orcid_' . $srv . '_client_id', '');
+$redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
+
 ?>
 <section class="main section">
 	<form name="orcid-search-form">
 		<?php if ($srv != 'public' && !$tkn) { ?>
-			<p class="warning"><?php echo Lang::txt('This service is currently unavailable and/or not configured correctly. Please contact <a href="%s">support</a> for further assistance.', Route::url('index.php?option=com_support')); ?></p>
+			<p class="warning"><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_UNAVAILABLE', Route::url('index.php?option=com_support')); ?></p>
 		<?php } else { ?>
-			<h3><?php echo Lang::txt('Associate your <b>ORCID</b> (Open Researcher and Contributor ID)'); ?></h3>
+			<h3><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_ASSOCIATE_ORCID'); ?></h3>
 			<fieldset>
-				<legend><?php echo Lang::txt('Profile Info'); ?></legend>
+				<legend><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_PROFILE_INFO'); ?></legend>
 
 				<div class="grid nobreak">
 					<div class="col span4">
 						<label for="first-name">
-							<?php echo Lang::txt('First name:'); ?>
+							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIRST_NAME'); ?>
 							<input type="text" id="first-name" name="first-name" value="<?php echo $this->escape($fname); ?>" />
 						</label>
 					</div>
 					<div class="col span4">
 						<label for="last-name">
-							<?php echo Lang::txt('Last name:'); ?>
+							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_LAST_NAME'); ?>
 							<input type="text" id="last-name" name="last-name" value="<?php echo $this->escape($lname); ?>" />
 						</label>
 					</div>
 					<div class="col span4 omega">
 						<label for="email">
-							<?php echo Lang::txt('Email:'); ?>
+							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_EMAIL'); ?>
 							<input type="text" id="email" name="email" value="<?php echo $this->escape($email); ?>" />
 						</label>
 					</div>
@@ -115,15 +118,15 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 			</fieldset>
 
 			<div class="orcid-section orcid-search">
-				<h4><?php echo Lang::txt('Search for an existing ORCID'); ?></h4>
+				<h4><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_SEARCH_FOR_EXISTING'); ?></h4>
 				<div class="grid nobreak">
 					<div class="col span8">
-						<p><?php echo Lang::txt('If you have created an ORCID, fill in the fields above and search for your ID from the list.'); ?></p>
-						<p><?php echo Lang::txt('Note that most ORCID records have the email address marked as private and private information will not be returned in the search results.'); ?></p>
+						<p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_FILL_AND_SEARCH'); ?></p>
+						<p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_NOTE_ABOUT_PRIVATE_ORCID'); ?></p>
 					</div>
 					<div class="col span4 omega">
 						<p>
-							<a id="get-orcid-results" class="btn" href="javascript:;"><?php echo Lang::txt('Search ORCID'); ?></a>
+							<a id="get-orcid-results" class="btn" onclick="<?php echo 'HUB.Orcid.fetchOrcidRecords(\'' . $this->escape($fname) . '\', \'' . $this->escape($lname) . '\', \'' . $this->escape($email) . '\');'; ?>"><?php echo Lang::txt('Search ORCID'); ?></a>
 						</p>
 					</div>
 				</div>
@@ -140,13 +143,16 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 
 			<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
 				<div class="orcid-section orcid-create">
-					<h4><?php echo Lang::txt('Create a new ORCID'); ?></h4>
+					<h4><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_ORCID'); ?></h4>
 					<div class="grid nobreak">
 						<div class="col span8">
-							<p><?php echo Lang::txt('If you can\'t find your ID or would like to create one, click the "Create new ORCID" button.'); ?></p>
+							<p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CLICK_CREATE_BUTTON'); ?></p>
 						</div>
 						<div class="col span4 omega">
-							<p><a id="create-orcid" class="btn" href="https://orcid.org/register" target="_blank"><?php echo Lang::txt('Create new ORCID'); ?></a></p>
+							<p><a id="create-orcid" class="btn" href="https://<?php if ($this->config->get('orcid_service', 'members') == 'sandbox') { echo 'sandbox.'; }?>orcid.org/oauth/authorize?client_id=<?php echo $clientID ?>
+							<?php echo htmlspecialchars('&'); ?>response_type=code<?php echo htmlspecialchars('&'); ?>scope=/authenticate<?php echo htmlspecialchars('&'); ?>redirect_uri=<?php echo urlencode($redirectURI) ?><?php echo htmlspecialchars('&'); ?>family_names=<?php echo $this->escape($lname);?>
+							<?php echo htmlspecialchars('&'); ?>given_names=<?php echo $this->escape($fname);?><?php echo htmlspecialchars('&'); ?>email=<?php echo $this->escape($email);?> " target="_blank">
+							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT'); ?></a></p>
 						</div>
 					</div>
 				</div>
