@@ -148,7 +148,8 @@ class Orcid extends SiteController
 			$root = '';
 		}
 		
-        $name = array();		
+		$name = array();
+		
 		if (!empty($root))
 		{			
 			foreach ($root->children() as $child)
@@ -185,12 +186,10 @@ class Orcid extends SiteController
 						if (($profile->getName() == 'path'))
 						{
 							$fields[$profile->getName()] = $profile->__toString();
-							
-							// Get the user's name which is associated with the ORCID id 
 							$names = $this->_getUserName($profile->__toString(), $this->_accessToken);
 							$fields = array_merge($fields, $names);
 						}
-						else if ( $profile->getName() == 'uri')
+						else if ($profile->getName() == 'uri')
 						{
 							$fields[$profile->getName()] = $profile->__toString();
 						}
@@ -236,10 +235,10 @@ class Orcid extends SiteController
 		
 		// Search by first name, last name, email address
 		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/search/?q=';
-		$tkn = $this->_accessToken;		
-
+		$tkn = $this->_accessToken;
+		
 		$bits = array();
-
+		
 		if ($fname)
 		{
 			$bits[] = 'given-names:' . $fname;
@@ -254,7 +253,7 @@ class Orcid extends SiteController
 		{
 			$bits[] = 'email:' . $email;
 		}
-
+		
 		$url .= implode('+AND+', $bits);
 		
 		$header = array('Accept: application/vnd.orcid+xml');
@@ -269,15 +268,12 @@ class Orcid extends SiteController
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
-
+		
 		$curlData = curl_exec($initedCurl);
-		
 		$xmlStr = htmlentities($curlData);
-		
 		$xmlStr = preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
-		
 		$xmlStr = html_entity_decode($xmlStr);
-
+		
 		if (!curl_errno($initedCurl))
 		{
 			$info = curl_getinfo($initedCurl);
@@ -286,9 +282,9 @@ class Orcid extends SiteController
 		{
 			echo 'Curl error: ' . curl_error($initedCurl);
 		}
-
+		
 		curl_close($initedCurl);
-
+		
 		try
 		{
 			$root = simplexml_load_string($xmlStr);
@@ -377,7 +373,6 @@ class Orcid extends SiteController
 	 */
 	public function fetchTask($is_return = false)
 	{
-		
 		$first_name  = Request::getVar('fname', '');
 		$last_name   = Request::getVar('lname', '');
 		$email       = Request::getVar('email', '');
@@ -389,7 +384,7 @@ class Orcid extends SiteController
 		{
 			$callbackPrefix = 'HUB.Register.';
 		}
-
+		
 		// Separated into three requests for better results
 		$filled = 0;
 		$fnames = array();
