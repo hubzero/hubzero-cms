@@ -150,7 +150,7 @@ class Relationships extends AdminController
 				$follow[$idx + 1] = $row['id'];
 			}
 
-			foreach ($follow as $idx=>$tag_id)
+			foreach ($follow as $idx => $tag_id)
 			{
 				$this->database->setQuery(
 					'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM `#__tags_object` to1
@@ -574,7 +574,7 @@ class Relationships extends AdminController
 		}
 
 		$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag_str));
-		$this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
+		$this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (' . $this->database->quote($norm_tag) . ', ' . $this->database->quote($tag_str) . ')');
 		$this->database->execute();
 		$id = $this->database->insertid();
 
@@ -591,4 +591,3 @@ class Relationships extends AdminController
 		);
 	}
 }
-
