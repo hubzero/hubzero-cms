@@ -103,11 +103,6 @@ if ($canDo->get('core.admin'))
 		\Route::url('index.php?option=com_members&controller=imports'),
 		($controllerName == 'imports' || $controllerName == 'importhooks')
 	);
-	\Submenu::addEntry(
-		\Lang::txt('COM_MEMBERS_MENU_EXPORT'),
-		\Route::url('index.php?option=com_members&controller=exports'),
-		($controllerName == 'exports')
-	);
 }
 \Submenu::addEntry(
 	\Lang::txt('COM_MEMBERS_MENU_PLUGINS'),
