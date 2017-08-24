@@ -472,10 +472,13 @@ class Relationships extends AdminController
 				WHERE id = ' . $id
 			);
 			$this->database->execute();
-			foreach ($_POST['types-'.$id] as $type_id)
+			if (isset($_POST['types-'.$id]))
 			{
-				$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
-				$this->database->execute();
+				foreach ($_POST['types-'.$id] as $type_id)
+				{
+					$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+					$this->database->execute();
+				}
 			}
 		}
 
@@ -494,10 +497,13 @@ class Relationships extends AdminController
 			);
 			$this->database->execute();
 			$id = $this->database->insertid();
-			foreach ($_POST['types-new-' . $idx] as $type_id)
+			if (isset($_POST['types-new-' . $idx]))
 			{
-				$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
-				$this->database->execute();
+				foreach ($_POST['types-new-' . $idx] as $type_id)
+				{
+					$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+					$this->database->execute();
+				}
 			}
 		}
 
