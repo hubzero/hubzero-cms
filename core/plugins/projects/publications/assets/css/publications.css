@@ -311,10 +311,7 @@
 		border: none;
 	}
 	ul#status-bar li a {
-		width: 8px;
-		height: 10px;
 		font-size: 10px;
-		font-family: 'Fontcons';
 		color: #c4d2d6;
 		margin-right: 0.2em;
 		content: "\2714";
@@ -326,24 +323,19 @@
 	ul#status-bar li a.c_failed:before {
 		content: "\2716";
 		color: #a16f64;
-		font-size: 8px;
 	}
 	ul#status-bar li a.c_incomplete:before {
 		content: "\26A0";
 		color: red;
-		font-size: 12px;
 	}
 	ul#status-bar li a.c_passed {
 		color: #64a16e;
 	}
 	ul#status-bar.moving li.active:after,
 	ul#status-bar li a:before {
-		width: 8px;
-		height: 10px;
-		font-size: 10px;
 		font-family: 'Fontcons';
 		color: #c4d2d6;
-		margin-right: 0.2em;
+		margin-right: 0.5em;
 	}
 	ul#status-bar.moving li.active:after {
 		content: "\25B6";
