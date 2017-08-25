@@ -346,12 +346,14 @@ class Profiles extends SiteController
 			$filters['sort'] = 'name';
 		}
 
+		$filters['sqlsort'] = $filters['sort'];
+
 		$sortFound = false;
 		if ($filters['sort'] == 'name')
 		{
 			$sortFound = true;
+			$filters['sqlsort'] = 'surname';
 		}
-		$filters['sqlsort'] = $filters['sort'];
 
 		// Process incoming filters
 		foreach ($q as $key => $val)
