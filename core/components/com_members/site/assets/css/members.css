@@ -569,14 +569,21 @@
 		clear: left;
 	}
 	.result-img {
-		width: 80px;
-		height: 80px;
-		margin: 0 auto 1em auto;
+		display: block;
 		overflow: hidden;
+		border: none;
+		position: relative;
+		background: #f1f1f1;
+		text-align: center;
+		width: 50px;
+		height: 50px;
+		margin: 1.5em auto 0 auto;
 		-webkit-border-radius: 50%;
 		-moz-border-radius: 50%;
 		border-radius: 50%;
-		border: 2px solid rgba(0, 0, 0, 0.1);
+	}
+	.result-img:hover {
+		border: none;
 	}
 	.result-img img {
 		width: 100%;
@@ -584,6 +591,8 @@
 	}
 	.result-details {
 		opacity: 0.7;
+		display: block;
+		font-size: 85%;
 	}
 	.result-snippet {
 		margin: 0 0 auto 0;
@@ -591,51 +600,47 @@
 	.result-url a {
 		display: block;
 	}
+	.result-options {
+		background-color: rgba(0, 0, 0, 0.02);
+		padding: 1em;
+		color: #aaa;
+		text-align: center;
+		font-size: 85%;
+	}
 
 	/* Tiles */
+	.tiled {
+		display: flex;
+		flex-wrap: wrap;
+	}
 	.tiled .result {
-		width: 48.35%;
-		margin-right: 3.225806451612903%;
-		float: left;
+		display: flex;
+		width: 100%;
+	}
+	.tiled .result-body {
 		border: 1px solid rgba(0, 0, 0, 0.1);
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		padding: 1.5em;
 		margin-bottom: 2em;
-		background: #fcfcfc;
-		position: relative;
+		background: #fff;
 		-webkit-transition: all .1s ease-out;
 		-moz-transition: all .1s ease-out;
 		-o-transition: all .1s ease-out;
 		transition: all .1s ease-out;
 		text-align: center;
-	}
-	.tiled .result-body {
-		overflow: hidden;
 		position: relative;
-		height: 17em;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
 	}
-	.tiled .result:first-child {
-		border: 1px solid rgba(0, 0, 0, 0.1);
-	}
-	.tiled .result:nth-child(even) {
-		margin-right: 0;
-	}
-	.tiled .result:hover {
-		background: #fff;
+	.tiled .result-body:hover {
 		border: 1px solid rgba(0, 0, 0, 0.3);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 	}
-	.tiled .result-title a {
-		font-size: 1.2em;
+	.tiled .result-title {
+		padding: 1.5em;
+		flex: 1 0 auto;
 	}
 	.tiled .result-snippet {
-		display: block;
-		padding: 1em 0 0 0;
-		margin: 0;
-		height: 1px;
-		overflow: hidden;
+		display: none;
 	}
 	.tiled .result-snippet:before {
 		content: "";
@@ -643,13 +648,7 @@
 		display: table;
 		line-height: 0;
 	}
-	.tiled .result-extras {
-		margin: 1em 0 0 0;
-	}
 
-	.results .message-member a {
-		display: block;
-	}
 	.results .you {
 		display: block;
 		background-color: #5FBB4D;
@@ -657,6 +656,13 @@
 		padding: .7em .91em;
 		text-align: center;
 		line-height: 1;
+		font-size: 0.9em;
+		position: absolute;
+		top: 1em;
+		left: 1em;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
 	}
 
 /* Members Edit CSS */
@@ -760,9 +766,18 @@
 		border-radius: 0.25em;
 	}
 	.com_members #applied-filters .filters-list li a.filters-x {
-		padding-right: 0.5em;
+		margin-left: 0.5em;
 		color: #aaa;
 		border-bottom: none;
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+		line-height: 1;
+	}
+	.com_members #applied-filters .filters-list li a.filters-x:before {
+
 	}
 	.com_members #applied-filters .filters-list li a.filters-x:hover {
 		border-bottom: none;
@@ -823,12 +838,11 @@
 	}
 
 	.tiled .result {
-		width: 31%;
-	}
-	.tiled .result:nth-child(even) {
+		float: left;
+		width: 48.25%;
 		margin-right: 3.225806451612903%;
 	}
-	.tiled .result:nth-child(3n) {
+	.tiled .result:nth-child(even) {
 		margin-right: 0;
 	}
 }
@@ -844,38 +858,26 @@
 		margin-left: 0.8em;
 	}
 
-	.tiled .result {
-		width: 48.35%;
-		text-align: left;
-	}
-	.tiled .result-body {
-		height: 8em;
-	}
-	.tiled .result:nth-child(3n) {
-		margin-right: 3.225806451612903%;
-	}
-	.tiled .result:nth-child(even) {
-		margin-right: 0;
-	}
-	.tiled .result-title {
-		margin-top: 0;
-	}
-	.result-img {
-		float: left;
-		margin-right: 1em;
-		width: 60px;
-		height: 60px;
-	}
-}
-@media (min-width: 70em) {
+	.tiled .result:nth-child(even),
 	.tiled .result {
 		width: 31%;
 		margin-right: 3.225806451612903%;
 	}
-	.tiled .result:nth-child(even) {
+	.tiled .result:nth-child(3n) {
+		margin-right: 0;
+	}
+}
+@media (min-width: 70em) {
+
+}
+@media (min-width: 80em) {
+	.tiled .result:nth-child(even),
+	.tiled .result:nth-child(3n),
+	.tiled .result {
+		width: 22.5%;
 		margin-right: 3.225806451612903%;
 	}
-	.tiled .result:nth-child(3n) {
+	.tiled .result:nth-child(4n) {
 		margin-right: 0;
 	}
 }

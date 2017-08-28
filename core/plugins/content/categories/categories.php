@@ -132,7 +132,7 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
 			->select('COUNT(id)')
 			->from($table)
 			->whereEquals('catid', $catid);
-		$db->setQuery($query);
+		$db->setQuery($query->toString());
 		$count = $db->loadResult();
 
 		// Check for DB error.

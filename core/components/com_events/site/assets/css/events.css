@@ -177,13 +177,13 @@
 		padding: 0;
 		width: 150px;
 		color: #777;
-		font-size: 11px;
+		font-size: 0.85em;
 		text-align: right;
 	}
 	.com_events ul.events dl.event-details dt {
 		font-weight: bold;
 		color: #777;
-		font-size: 12px;
+		font-size: 1em;
 		padding: 0;
 		margin: 1.1em 0 0 0;
 	}
@@ -200,7 +200,7 @@
 	}
 	.com_events ul.events .title {
 		color: #777;
-		font-size: 12px;
+		font-size: 1em;
 		font-weight: bold;
 	}
 /* Search results */

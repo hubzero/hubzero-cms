@@ -346,6 +346,7 @@ class Resource extends Relational
 	/**
 	 * Build and return the url
 	 *
+	 * @param   string  $as
 	 * @return  string
 	 */
 	public function tags($as = 'list')

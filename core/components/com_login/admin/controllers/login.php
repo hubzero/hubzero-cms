@@ -34,9 +34,9 @@ namespace Components\Login\Admin\Controllers;
 
 use Components\Login\Models\Login as Model;
 use Hubzero\Component\AdminController;
-use Exception;
 use Hubzero\Notification\Handler;
 use Hubzero\Notification\Storage\Cookie;
+use Exception;
 use Request;
 use Plugin;
 use Notify;
@@ -71,7 +71,10 @@ class Login extends AdminController
 			{
 				$myplugin = new $className($this, (array)$plugin);
 
-				if ($plugin->name != $authenticator) continue;
+				if ($plugin->name != $authenticator)
+				{
+					continue;
+				}
 
 				if (method_exists($className, 'display'))
 				{
@@ -89,10 +92,10 @@ class Login extends AdminController
 		// otherwise an error will occur.
 		Request::setVar('view', 'login');
 		Request::setVar('tmpl', 'login');
-		//Request::setVar('layout', 'default');
 
 		// See if we have any messages available by cookie
 		$handler = new Handler(new Cookie(1));
+
 		if ($handler->any())
 		{
 			foreach ($handler->messages() as $message)
@@ -130,7 +133,10 @@ class Login extends AdminController
 			{
 				$className = 'plg' . $plugin->type . $plugin->name;
 
-				if ($plugin->name != $authenticator) continue;
+				if ($plugin->name != $authenticator)
+				{
+					continue;
+				}
 
 				if (class_exists($className))
 				{
@@ -189,19 +195,21 @@ class Login extends AdminController
 	/**
 	 * Multifactor authentication page
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function factorsTask()
 	{
-		$this->view->factors = Event::trigger('authfactors.onRenderChallenge');
+		$factors = Event::trigger('authfactors.onRenderChallenge');
 
-		$this->view->display();
+		$this->view
+			->set('factors', $factors)
+			->display();
 	}
 
 	/**
 	 * User consent form
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function consentTask()
 	{
@@ -211,11 +219,12 @@ class Login extends AdminController
 	/**
 	 * Grant user consent
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function grantConsentTask()
 	{
 		Session::set('user_consent', true);
+
 		App::redirect(base64_decode(Request::getVar('return')));
 	}
 
@@ -245,6 +254,11 @@ class Login extends AdminController
 		$this->displayTask();
 	}
 
+	/**
+	 * Unused method.
+	 *
+	 * @return  void
+	 */
 	public function attach()
 	{
 	}

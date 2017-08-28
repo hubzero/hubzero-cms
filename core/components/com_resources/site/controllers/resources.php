@@ -52,6 +52,7 @@ use Request;
 use Route;
 use Event;
 use Lang;
+use User;
 use App;
 
 /**
@@ -462,8 +463,8 @@ class Resources extends SiteController
 				// Incoming
 				$bits['type'] = Request::getInt('type', 7);
 				$bits['id']   = Request::getInt('id', 0);
-				$bits['tg']   = Request::getVar('input', '');
-				$bits['tg2']  = Request::getVar('input2', '');
+				$bits['tg']   = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input', '')));
+				$bits['tg2']  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input2', '')));
 
 				$rt = new Tags($bits['id']);
 
@@ -473,12 +474,12 @@ class Resources extends SiteController
 
 			case 2:
 				// Incoming
-				$bits['type'] = Request::getInt('type', 7);
-				$bits['id'] = Request::getInt('id', 0);
-				$bits['tag'] = Request::getVar('input', '');
-				$bits['tag2'] = Request::getVar('input2', '');
-				$bits['sortby'] = Request::getVar('sortby', 'title');
-				$bits['filter']  = Request::getVar('filter', array('level0','level1','level2','level3','level4'));
+				$bits['type']    = Request::getInt('type', 7);
+				$bits['id']      = Request::getInt('id', 0);
+				$bits['tag']     = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input', '')));
+				$bits['tag2']    = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input2', '')));
+				$bits['sortby']  = Request::getWord('sortby', 'title');
+				$bits['filter']  = Request::getVar('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
 				$bits['ranking'] = $this->config->get('show_ranking');
 
 				if ($bits['tag'] == $bits['tag2'])
@@ -563,7 +564,8 @@ class Resources extends SiteController
 				// Get the first child
 				if ($firstChild || $model->isTool())
 				{
-					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, '');
+					$xact = 'data-pop-out="true"';
+					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, $xact);
 				}
 
 				// Get the sections
@@ -884,7 +886,7 @@ class Resources extends SiteController
 			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			App::redirect(Route::url($redirect, false), '','',false);
+			App::redirect(Route::url($redirect, false), '', '', false);
 		}
 
 		//do we have javascript?
@@ -1040,7 +1042,7 @@ class Resources extends SiteController
 			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			App::redirect(Route::url($redirect, false), '','',false);
+			App::redirect(Route::url($redirect, false), '', '', false);
 		}
 
 		// Instantiate a new view
@@ -1407,7 +1409,7 @@ class Resources extends SiteController
 		// Display different main text if "playing" a resource
 		if ($this->_task == 'play')
 		{
-			$activechild = NULL;
+			$activechild = null;
 			if (is_object($this->activechild))
 			{
 				$activechild = $this->activechild;
@@ -1791,21 +1793,21 @@ class Resources extends SiteController
 					foreach ($all_logical_types as $logical_type)
 					{
 						//if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
-						// && strcasecmp($matches[ 1 ][ 0 ], $as_mnemonic) == 0)
+						// && strcasecmp($matches[1][0], $as_mnemonic) == 0)
 						if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
-						 && substr(strtolower($matches[ 1 ][ 0 ]), -strlen($as_mnemonic)) == $as_mnemonic)
+						 && substr(strtolower($matches[1][0]), -strlen($as_mnemonic)) == $as_mnemonic)
 						{
-							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
+							$relevant_logical_types_by_id[$logical_type->id] = $logical_type;
 							break;
 						}
 						elseif ($as_mnemonic == 'slides' && $logical_type->type == 'Presentation Slides')
 						{
-							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
+							$relevant_logical_types_by_id[$logical_type->id] = $logical_type;
 							break;
 						}
 						elseif ($as_mnemonic == 'notes' && $logical_type->type == 'Lecture Notes')
 						{
-							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
+							$relevant_logical_types_by_id[$logical_type->id] = $logical_type;
 							break;
 						}
 					}
@@ -1820,7 +1822,7 @@ class Resources extends SiteController
 					$grandchildren = $rhelper->children;
 					foreach ($grandchildren as $grandchild)
 					{
-						if (isset($relevant_logical_types_by_id[ (int)$grandchild->logicaltype ]))
+						if (isset($relevant_logical_types_by_id[(int)$grandchild->logicaltype]))
 						{
 							if (stripslashes($grandchild->introtext) != '')
 							{
@@ -1909,32 +1911,78 @@ class Resources extends SiteController
 							$enclosure->url = $podcast;
 							switch (Html::getFileExtension($podcast))
 							{
-								case 'm4v': $enclosure->type = 'video/x-m4v'; break;
-								case 'mp4': $enclosure->type = 'video/mp4'; break;
-								case 'wmv': $enclosure->type = 'video/wmv'; break;
-								case 'mov': $enclosure->type = 'video/quicktime'; break;
-								case 'qt': $enclosure->type = 'video/quicktime'; break;
-								case 'mpg': $enclosure->type = 'video/mpeg'; break;
-								case 'mpeg': $enclosure->type = 'video/mpeg'; break;
-								case 'mpe': $enclosure->type = 'video/mpeg'; break;
-								case 'mp2': $enclosure->type = 'video/mpeg'; break;
-								case 'mpv2': $enclosure->type = 'video/mpeg'; break;
-
-								case 'mp3': $enclosure->type = 'audio/mpeg'; break;
-								case 'm4a': $enclosure->type = 'audio/x-m4a'; break;
-								case 'aiff': $enclosure->type = 'audio/x-aiff'; break;
-								case 'aif': $enclosure->type = 'audio/x-aiff'; break;
-								case 'wav': $enclosure->type = 'audio/x-wav'; break;
-								case 'ra': $enclosure->type = 'audio/x-pn-realaudio'; break;
-								case 'ram': $enclosure->type = 'audio/x-pn-realaudio'; break;
-
-								case 'ppt': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
-								case 'pps': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
-								case 'pdf': $enclosure->type = 'application/pdf'; break;
-								case 'doc': $enclosure->type = 'application/msword'; break;
-								case 'txt': $enclosure->type = 'text/plain'; break;
-								case 'html': $enclosure->type = 'text/html'; break;
-								case 'htm': $enclosure->type = 'text/html'; break;
+								case 'm4v':
+									$enclosure->type = 'video/x-m4v';
+									break;
+								case 'mp4':
+									$enclosure->type = 'video/mp4';
+									break;
+								case 'wmv':
+									$enclosure->type = 'video/wmv';
+									break;
+								case 'mov':
+									$enclosure->type = 'video/quicktime';
+									break;
+								case 'qt':
+									$enclosure->type = 'video/quicktime';
+									break;
+								case 'mpg':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpeg':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpe':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mp2':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mpv2':
+									$enclosure->type = 'video/mpeg';
+									break;
+								case 'mp3':
+									$enclosure->type = 'audio/mpeg';
+									break;
+								case 'm4a':
+									$enclosure->type = 'audio/x-m4a';
+									break;
+								case 'aiff':
+									$enclosure->type = 'audio/x-aiff';
+									break;
+								case 'aif':
+									$enclosure->type = 'audio/x-aiff';
+									break;
+								case 'wav':
+									$enclosure->type = 'audio/x-wav';
+									break;
+								case 'ra':
+									$enclosure->type = 'audio/x-pn-realaudio';
+									break;
+								case 'ram':
+									$enclosure->type = 'audio/x-pn-realaudio';
+									break;
+								case 'ppt':
+									$enclosure->type = 'application/vnd.ms-powerpoint';
+									break;
+								case 'pps':
+									$enclosure->type = 'application/vnd.ms-powerpoint';
+									break;
+								case 'pdf':
+									$enclosure->type = 'application/pdf';
+									break;
+								case 'doc':
+									$enclosure->type = 'application/msword';
+									break;
+								case 'txt':
+									$enclosure->type = 'text/plain';
+									break;
+								case 'html':
+									$enclosure->type = 'text/html';
+									break;
+								case 'htm':
+									$enclosure->type = 'text/html';
+									break;
 							}
 							$enclosure->length = $fs;
 
@@ -2058,8 +2106,8 @@ class Resources extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$id    = Request::getInt('id',0);
-		$alias = Request::getVar('alias','');
+		$id    = Request::getInt('id', 0);
+		$alias = Request::getVar('alias', '');
 		$d     = Request::getVar('d', 'inline');
 
 		//make sure we have a proper disposition
@@ -2087,6 +2135,17 @@ class Resources extends SiteController
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
+		// Check if direct access is restricted. If so, look for a token
+		$activeParams = new \Hubzero\Config\Registry($resource->params);
+		$type = new Type($this->database);
+		$type->load($resource->type);
+		$typeParams = new \Hubzero\Config\Registry($type->params);
+		$restrictDirectDownload = $activeParams->get('restrict_direct_access') ? $activeParams->get('restrict_direct_access') : $typeParams->get('restrict_direct_access');
+		if ($restrictDirectDownload == 2)
+		{
+			Request::checkToken('get');
+		}
+
 		// Check if the resource is for logged-in users only and the user is logged-in
 		if (($token = Request::getVar('token', '', 'get')))
 		{
@@ -2110,7 +2169,21 @@ class Resources extends SiteController
 		{
 			$user = User::getInstance();
 		}
-		if ($resource->access == 1 && $user->isGuest())
+
+		// Get parent Access level and use it if it is more restrictive
+		if ($resource->standalone != 1)
+		{
+			$helper = new Helper($resource->id, $this->database);
+			$helper->getParents();
+			$parents = $helper->parents;
+			if (count($parents) == 1)
+			{
+				$parent = new Resource($this->database);
+				$parent->load($parents[0]->id);
+			}
+		}
+		$accessLevel = (isset($parent) && ($parent->access > $resource->access)) ? $parent->access : $resource->access;
+		if ($accessLevel == 1 && $user->isGuest())
 		{
 			//App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
@@ -2122,9 +2195,8 @@ class Resources extends SiteController
 		}
 
 		// Check if the resource is "private" and the user is allowed to view it
-		if ($resource->access == 4  // private
-		 || ($resource->access == 3 && $resource->path))  // protected -- We need to allow images in the sbtract to come through
-		// || !$resource->standalone) // child, no direct access
+		if ($accessLevel == 4  // private
+		 || ($accessLevel == 3 && $resource->path))  // protected -- We need to allow images in the sbtract to come through
 		{
 			if ($user->isGuest())
 			{
@@ -2384,6 +2456,11 @@ class Resources extends SiteController
 		$row = new Resource($this->database);
 		$row->load($id);
 
+		if (!$row->id)
+		{
+			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+		}
+
 		$thedate = ($row->publish_up != '0000-00-00 00:00:00')
 				 ? $row->publish_up
 				 : $row->created;
@@ -2474,7 +2551,7 @@ class Resources extends SiteController
 				for ($i=0, $n=count($auths); $i < $n; $i++)
 				{
 					$author = trim($auths[$i]);
-					$author = preg_replace('/\{\{(.+)\}\}/i','',$author);
+					$author = preg_replace('/\{\{(.+)\}\}/i', '', $author);
 					if (strstr($author, ','))
 					{
 						$author_arr = explode(',', $author);
@@ -2485,8 +2562,8 @@ class Resources extends SiteController
 					}
 					else
 					{
-						$author_arr = explode(' ',$author);
-						$author_arr = array_map('trim',$author_arr);
+						$author_arr = explode(' ', $author);
+						$author_arr = array_map('trim', $author_arr);
 
 						$last = array_pop($author_arr);
 						$addarray['author'][$i]['first'] = (count($author_arr) > 0) ? implode(' ', $author_arr) : '';
@@ -2535,7 +2612,10 @@ class Resources extends SiteController
 					: $HTTP_USER_AGENT;
 
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+			continue;
+		}
 
 		$fsize = filesize($p . $f);
 		$mod_date = date('r', filemtime($p.$f));
@@ -2711,6 +2791,7 @@ class Resources extends SiteController
 				}
 			}
 		}
+
 		if (!$resource->standalone)
 		{
 			if (!isset($p) && isset($parents) && count($parents) == 1)

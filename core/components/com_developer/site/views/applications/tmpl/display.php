@@ -87,7 +87,7 @@ $this->css('applications')
 				<?php if ($this->tokens->count() > 0) : ?>
 					<?php foreach ($this->tokens as $token) : ?>
 						<li>
-							<?php $application = $token->application(); ?>
+							<?php $application = $token->application; ?>
 							<h4>
 								<?php echo $this->escape($application->get('name')) ?>
 							</h4>

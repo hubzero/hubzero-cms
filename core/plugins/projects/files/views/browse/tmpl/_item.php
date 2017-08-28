@@ -31,6 +31,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+require_once Component::path('com_tools') . '/models/orm/handler.php';
+
+use \Components\Tools\Models\Orm\Handler;
+
+$handlerBase = DS . trim($this->fileparams->get('handler_base_path', 'srv/projects/{project}/files/{file}'), DS);
+if (!strstr($handlerBase, '{'))
+{
+	$handlerBase .= '/{project}/files/{file}';
+}
+$handlerBase = str_replace(
+	array('{project}', '{file}'),
+	array($this->model->get('alias'), $this->item->get('name')),
+	$handlerBase
+);
+
 $me = ($this->item->get('email') == User::get('email')
 	|| $this->item->get('author') == User::get('name'))  ? 1 : 0;
 $when = $this->item->get('date') ? \Components\Projects\Helpers\Html::formatTime($this->item->get('date')) : 'N/A';
@@ -78,40 +93,70 @@ if ($this->item->get('remote'))
 $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 ?>
 <tr class="mini faded mline">
-	<?php if ($this->model->access('content')) { ?>
+	<?php 
+	if ($this->model->access('content'))
+	{
+	?>
 	<td>
-		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; if ($this->item->get('untracked')) { echo ' untracked'; } if ($this->item->get('converted')) { echo ' remote service-google'; } ?>" />
+		<?php 
+			$checkasset = "";
+			if ($this->item->get('type') == 'folder')
+			{
+				$checkasset = ' dirr';
+			}
+			else
+			{
+				if ($this->item->get('untracked'))
+				{
+					$checkasset .= ' untracked';
+				}
+				if ($this->item->get('converted'))
+				{
+					$checkasset .= ' remote service-google';
+				}
+			}
+		?>
+		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $checkasset ?>" />
 	</td>
 	<?php } ?>
-	<td class="top_valign nobsp">
+	<td class="middle_valign nobsp is-relative">
 		<?php echo $this->item->drawIcon($ext); ?>
 		<?php if ($this->item->get('type') == 'file') { ?>
-			<a href="<?php echo urlencode($link); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
-				<?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
-			</a>
+			<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase)) ? ' hasMultiple' : ''; ?>">
+				<a href="<?php echo $link; ?>" class="preview file:<?php echo urlencode($name); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
+					<?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
+				</a>
+				<?php if ($handlers && count($handlers) > 0) : ?>
+					<?php foreach ($handlers as $handler) : ?>
+					<a href="<?php echo Route::url($handler['url']); ?>">
+						<?php echo $handler['prompt']; ?>
+					</a>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</div>
 		<?php } else { ?>
-			<a href="<?php echo Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
+			<a href="<?php echo Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))); ?>" class="dir:<?php echo urlencode($name); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $name; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?></a>
 		<?php } ?>
 	</td>
-	<td class="shrinked"></td>
-	<td class="shrinked"><?php echo $this->item->getSize(true); ?></td>
-	<td class="shrinked">
-	<?php if (!$this->item->get('untracked') && $this->item->get('type') == 'file') { ?>
-		<a href="<?php echo Route::url($this->model->link('files') . '&action=history' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+	<td class="shrinked middle_valign"></td>
+	<td class="shrinked middle_valign"><?php echo $this->item->getSize(true); ?></td>
+	<td class="shrinked middle_valign">
+	<?php if (!$this->item->get('untracked')) { ?>
+		<?php if ($this->item->get('type') == 'file' && $this->params['versionTracking'] == '1') { ?>
+			<a href="<?php echo Route::url($this->model->link('files') . '&action=history' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+		<?php } else { ?>
+			<?php echo $when; ?>
+		<?php } ?>
 	<?php } elseif ($this->item->get('untracked')) { echo Lang::txt('PLG_PROJECTS_FILES_UNTRACKED'); } ?>
 	</td>
-	<td class="shrinked"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $this->item->get('author'); ?></td>
-	<td class="shrinked nojs">
+	<td class="shrinked middle_valign"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $this->item->get('author'); ?></td>
+	<td class="shrinked middle_valign nojs">
 		<?php if ($this->model->access('content')) { ?>
-		<a href="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirPath
-	. '&asset=' . urlencode($this->item->get('name'))); ?>"
-	 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
-		<a href="<?php echo Route::url($this->model->link('files') . '&action=move' . $subdirPath
-	. '&asset=' . urlencode($this->item->get('name'))); ?>"
-	 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a>
-	<?php } ?>
+			<a href="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
+			<a href="<?php echo Route::url($this->model->link('files') . '&action=move' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a>
+		<?php } ?>
 	</td>
 	<?php if ($this->publishing) { ?>
-	<td class="shrinked"></td>
+		<td class="shrinked"></td>
 	<?php } ?>
 </tr>

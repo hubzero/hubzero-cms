@@ -282,8 +282,10 @@ class Feedback extends SiteController
 		}
 
 		// Code cleaner for xhtml transitional compliance
-		$row->set('quote', Sanitize::stripAll($row->get('quote')));
-		$row->set('quote', str_replace('<br>', '<br />', $row->get('quote')));
+		$row->set('quote', Sanitize::stripScripts($row->get('quote')));
+		$row->set('quote', Sanitize::stripImages($row->get('quote')));
+		$row->set('quote', Sanitize::stripTags($row->get('quote')));
+		$row->set('quote', str_replace("\n", '<br />', $row->get('quote')));
 		$row->set('date', Date::toSql());
 
 		// Store new content
@@ -464,7 +466,7 @@ class Feedback extends SiteController
 			fclose($input);
 
 			// Move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);

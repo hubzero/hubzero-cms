@@ -37,13 +37,10 @@ $this->css();
 $canDo = \Components\Publications\Helpers\Permissions::getActions('category');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': ' . $text, 'category');
 if ($canDo->get('core.edit'))
 {
-	if ($this->row->id)
-	{
-		Toolbar::apply();
-	}
+	Toolbar::apply();
 	Toolbar::save();
 }
 Toolbar::cancel();
@@ -54,7 +51,7 @@ $dcTypes = array(
 	'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text'
 );
 
-$params = new \Hubzero\Config\Registry($this->row->params);
+$params = $this->row->params;
 
 Html::behavior('framework', true);
 
@@ -210,6 +207,7 @@ function submitbutton(pressbutton)
 			</fieldset>
 		</div>
 	</div>
+
 	<?php if (!$this->config->get('curation', 0)) { ?>
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_CUSTOM_FIELDS'); ?></span></legend>
@@ -217,9 +215,7 @@ function submitbutton(pressbutton)
 			<table class="admintable" id="fields">
 				<thead>
 					<tr>
-	<?php //if ($this->row->id) { ?>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_REORDER'); ?></th>
-	<?php //} ?>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_FIELD'); ?></th>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_TYPE'); ?></th>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_REQUIRED'); ?></th>
@@ -237,7 +233,7 @@ function submitbutton(pressbutton)
 				</tfoot>
 				<tbody id="field-items">
 				<?php
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+				include_once Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
 				$elements = new \Components\Publications\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();
 
@@ -311,9 +307,6 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 
-			<!-- <script type="text/javascript" src="/core/assets/js/jquery.js"></script>
-			<script type="text/javascript" src="/core/assets/js/jquery.noconflict.js"></script>
-			<script type="text/javascript" src="/core/assets/js/jquery.ui.js"></script>  -->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;
@@ -483,6 +476,6 @@ function submitbutton(pressbutton)
 				});
 			</script>
 		</fieldset>
-		<?php } ?>
+	<?php } ?>
 	<?php echo Html::input('token'); ?>
 </form>

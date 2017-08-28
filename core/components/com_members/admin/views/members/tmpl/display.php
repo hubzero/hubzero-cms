@@ -38,10 +38,14 @@ Toolbar::title(Lang::txt('COM_MEMBERS'));
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option);
-	Toolbar::spacer();
-
-	//Toolbar::custom('profile', 'buildprofile', '', 'COM_MEMBERS_PROFILE', false);
 	Toolbar::getRoot()->appendButton('Link', 'buildprofile', 'COM_MEMBERS_PROFILE', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile'));
+	Toolbar::spacer();
+	$export = 'index.php?option=' . $this->option . '&controller=exports&task=run';
+	foreach ($this->filters as $key => $value)
+	{
+		$export .= '&' . $key . '=' . $value;
+	}
+	Toolbar::getRoot()->appendButton('Link', 'download', 'COM_MEMBERS_MENU_EXPORT', Route::url($export));
 	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))

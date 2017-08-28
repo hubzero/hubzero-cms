@@ -258,7 +258,9 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 	/**
 	 * Handles the actual sending of emails
 	 *
-	 * @return bool
+	 * @param  boolean  $skusInfo     [description]
+	 * @param  boolean  $productsInfo [description]
+	 * @return boolean
 	 **/
 	private function sendNotifications($skusInfo, $productsInfo)
 	{
@@ -310,6 +312,12 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 
+	/**
+	* Summary
+	*
+	* @param  array  $notificationsIndex
+	* @param  [type] $scope
+	*/
 	private function recordNotifications($notificationsIndex, $scope)
 	{
 		//print_r($notificationsIndex); die;

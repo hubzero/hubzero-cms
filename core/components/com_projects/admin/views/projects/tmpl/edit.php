@@ -288,7 +288,10 @@ function submitbutton(pressbutton)
 					</div>
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_APPROVAL_CODE'); ?>:</label>
-						<?php $approval = $this->escape(html_entity_decode($this->params->get( 'grant_approval'))); echo $approval ? $approval : Lang::txt('COM_PROJECTS_NA'); ?>
+						<?php 
+						$approval = $this->escape(html_entity_decode($this->params->get( 'grant_approval')));
+						echo $approval ? $approval : Lang::txt('COM_PROJECTS_NA');
+						?>
 					</div>
 				<?php } ?>
 			</fieldset>
@@ -296,6 +299,11 @@ function submitbutton(pressbutton)
 			<?php if (!$this->model->inSetup()) { ?>
 				<fieldset class="adminform">
 					<legend><?php echo Lang::txt('COM_PROJECTS_FILES'); ?></legend>
+
+					<div class="input-wrap">
+						<input name="params[versionTracking]" type="hidden" value="0" />
+						<input name="params[versionTracking]" type="checkbox" value="1" <?php echo ($this->params->get('versionTracking', '1') == '1') ? 'checked="checked"' : '';?> class="option" ><label><?php echo Lang::txt('Version Tracking'); ?> </label></input>
+					</div>
 
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('Files Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES').')'; ?></label>

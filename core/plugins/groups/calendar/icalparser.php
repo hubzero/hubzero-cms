@@ -131,7 +131,8 @@ class IcalParser
 	/**
 	 * New instance of ical parser
 	 * 
-	 * @param [type] $file [description]
+	 * @param  object  $file      [description]
+	 * @param  [type]  $callback  [description]
 	 */
 	public function __construct($file, $callback = null)
 	{

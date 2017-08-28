@@ -1556,7 +1556,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 *  Append breadcrumbs
 	 *
-	 * @return   void
+	 * @param   string  $title
+	 * @param   string  $url
+	 * @param   string  $version
+	 * @return  void
 	 */
 	protected function _appendBreadcrumbs($title, $url, $version = 'default')
 	{
@@ -1679,7 +1682,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				$admingroup = $this->model->config()->get('admingroup', '');
 				$group = \Hubzero\User\Group::getInstance($admingroup);
-				$row->group = $group ? $group->get('cn') : '';
+				$row->group_id = $group ? $group->get('gidNumber') : '';
 
 				if (!$row->store())
 				{
@@ -2269,7 +2272,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * On after change status
 	 *
-	 * @return     string
+	 * @param   object   $pub
+	 * @param   integer  $originalStatus
+	 * @return  string
 	 */
 	public function onAfterChangeState($pub, $originalStatus = 3)
 	{
@@ -2430,6 +2435,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Parse embargo date
 	 *
+	 * @param   string  $pubdate
 	 * @return  string
 	 */
 	private function _parseDate($pubdate)
@@ -2907,7 +2913,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Serve publication-related file (via public link)
 	 *
-	 * @param   int   $projectid
+	 * @param   string   $type
+	 * @param   integer  $projectid
+	 * @param   string   $query
 	 * @return  void
 	 */
 	public function serve($type = '', $projectid = 0, $query = '')

@@ -167,10 +167,10 @@ class Pages extends SiteController
 		// Does a page exist for the given pagename?
 		if ($this->page->isNew() || $this->page->isDeleted())
 		{
-			if (!$this->page->access('create'))
+			/*if (!$this->page->access('create'))
 			{
 				App::abort(404, Lang::txt('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST'));
-			}
+			}*/
 
 			$this->view
 				->set('page', $this->page)
@@ -485,6 +485,7 @@ class Pages extends SiteController
 		$revision = $this->page->version;
 		$revision->set('version', $revision->get('version') + 1);
 		$revision->set(Request::getVar('revision', array(), 'post', 'none', 2));
+		$revision->set('created', Date::toSql());
 		$revision->set('id', 0);
 
 		// Incoming page
@@ -499,8 +500,18 @@ class Pages extends SiteController
 		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'post')));
 
 		// Get parameters
+		$p = Request::getVar('params', array(), 'post');
+
 		$params = new \Hubzero\Config\Registry($this->page->get('params', ''));
-		$params->merge(Request::getVar('params', array(), 'post'));
+		$params->merge($p);
+
+		foreach (array('hide_authors', 'allow_changes', 'allow_comments') as $key)
+		{
+			if (!isset($p[$key]) || !$p[$key])
+			{
+				$params->set($key, 0);
+			}
+		}
 
 		$this->page->set('params', $params->toString());
 
@@ -544,6 +555,16 @@ class Pages extends SiteController
 		if ($revision->get('pagetext') == '')
 		{
 			$this->setError(Lang::txt('COM_WIKI_ERROR_MISSING_PAGETEXT'));
+			return $this->editTask($revision);
+		}
+
+		// Trigger before save event
+		$isNew  = $this->page->isNew();
+		$result = Event::trigger('wiki.onWikiBeforeSave', array(&$this->page, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			$this->setError($this->page->getError());
 			return $this->editTask($revision);
 		}
 
@@ -643,6 +664,9 @@ class Pages extends SiteController
 
 		// Process tags
 		$this->page->tag(Request::getVar('tags', ''));
+
+		// Trigger after save event
+		Event::trigger('wiki.onWikiAfterSave', array(&$this->page, $isNew));
 
 		// Log activity
 		$recipients = array(
@@ -1066,7 +1090,7 @@ class Pages extends SiteController
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 		// set auto page breaks
-		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
 		// set image scale factor
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -1078,7 +1102,7 @@ class Pages extends SiteController
 		$pdf->setCreator = \Config::get('sitename');
 
 		$pdf->setDocModificationTimeStamp($this->page->modified());
-		$pdf->setHeaderData(NULL, 0, strtoupper($this->page->title), NULL, array(84, 94, 124), array(146, 152, 169));
+		$pdf->setHeaderData(null, 0, strtoupper($this->page->title), null, array(84, 94, 124), array(146, 152, 169));
 		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
 
 		$pdf->AddPage();

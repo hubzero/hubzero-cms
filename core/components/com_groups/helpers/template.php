@@ -37,18 +37,34 @@ use App;
 
 class Template extends Document
 {
+	/**
+	 * Error bag
+	 *
+	 * @var  mixed
+	 */
 	public $error = null;
 
 	/**
 	 * Array of group include tags allowed
 	 * (all tags)
+	 *
+	 * @var  array
 	 */
-	public $allowed_tags = array('module', 'modules', 'toolbar', 'menu', 'content', 'googleanalytics', 'stylesheet', 'script');
+	public $allowed_tags = array(
+		'module',
+		'modules',
+		'toolbar',
+		'menu',
+		'content',
+		'googleanalytics',
+		'stylesheet',
+		'script'
+	);
 
 	/**
 	 * Override parse template to get document content
 	 *
-	 * @return    void
+	 * @return  object  $this
 	 */
 	public function parse()
 	{
@@ -73,7 +89,8 @@ class Template extends Document
 	/**
 	 * Return Content
 	 *
-	 * @return string
+	 * @param   boolean  $echo  Echo document or return?
+	 * @return  mixed    String or echos results
 	 */
 	public function output($echo = false)
 	{
@@ -83,13 +100,14 @@ class Template extends Document
 		$this->set('document', ob_get_clean());
 
 		// run output declared in parent
-		parent::output($echo);
+		return parent::output($echo);
 	}
 
 	/**
 	 * Fetches Template File
 	 *
-	 * @return    void
+	 * @param   string  $base
+	 * @return  object  $this
 	 */
 	private function _fetch($base)
 	{
@@ -149,9 +167,11 @@ class Template extends Document
 
 
 	/**
-	 * Does the group have a specified template
+	 * Does the group have a specified template?
 	 *
-	 * @return    void
+	 * @param   object   $group
+	 * @param   string   $template
+	 * @return  boolean
 	 */
 	public static function hasTemplate($group, $template)
 	{
@@ -173,7 +193,8 @@ class Template extends Document
 	/**
 	 * Load Template File
 	 *
-	 * @return    void
+	 * @param   string  $template
+	 * @return  string
 	 */
 	private function _load($template)
 	{

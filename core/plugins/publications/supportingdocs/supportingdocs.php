@@ -74,6 +74,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 	 * @param   string   $rtrn         Data to be returned
 	 * @param   string   $version      Version name
 	 * @param   boolean  $extended     Whether or not to show panel
+	 * @param   boolean  $authorized   Whether or not authorized
 	 * @return  array
 	 */
 	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true, $authorized = true)

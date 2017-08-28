@@ -90,7 +90,7 @@ class Preference extends Relational
 	/**
 	 * Generates automatic modified field value
 	 *
-	 * @param   array   $data  the data being saved
+	 * @param   array   $data  The data being saved
 	 * @return  string
 	 */
 	public function automaticModified($data)
@@ -101,9 +101,7 @@ class Preference extends Relational
 	/**
 	 * Retrieves one row loaded by an alias field
 	 *
-	 * @param   string   $alias     The alias to load by
-	 * @param   string   $scope     Scope
-	 * @param   integer  $scope_id  Scope ID
+	 * @param   string  $user_id  The alias to load by
 	 * @return  mixed
 	 */
 	public static function oneByUser($user_id)

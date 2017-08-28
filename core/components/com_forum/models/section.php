@@ -32,6 +32,7 @@
 namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Form\Form;
 use Lang;
 use Date;
 
@@ -109,7 +110,7 @@ class Section extends Relational
 	protected $adapter = null;
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic alias field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -129,7 +130,7 @@ class Section extends Relational
 	 */
 	public function automaticScope($data)
 	{
-		if (!isset($data['scope']))
+		if (!isset($data['scope']) || !$data['scope'])
 		{
 			$data['scope'] = 'site';
 		}
@@ -160,7 +161,7 @@ class Section extends Relational
 	}
 
 	/**
-	 * Defines a belongs to one relationship between article and user
+	 * Defines a belongs to one relationship between section and user
 	 *
 	 * @return  object
 	 */
@@ -258,7 +259,7 @@ class Section extends Relational
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->adapter = new $cls($this->get('scope_id'));
@@ -404,5 +405,34 @@ class Section extends Relational
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get a form
+	 *
+	 * @param   array   $data
+	 * @return  object
+	 */
+	public function getForm($data = array())
+	{
+		$name = strtolower($this->getModelName());
+		$file = __DIR__ . '/forms/' . $name . '.xml';
+		$file = \Filesystem::cleanPath($file);
+
+		$form = new Form('com_forum.' . $name, array('control' => 'data'));
+
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		if (!$data || empty($data))
+		{
+			$data = $this->toArray();
+		}
+
+		$form->bind($data);
+
+		return $form;
 	}
 }

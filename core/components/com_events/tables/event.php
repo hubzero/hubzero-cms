@@ -78,6 +78,8 @@ class Event extends \JTable
 	 * Set an event to published
 	 *
 	 * @param      integer $oid Event ID
+	 * @param      integer $state
+	 * @param      integer $state
 	 * @return     void
 	 */
 	public function publish($oid = null, $state = 1, $userId = 0)

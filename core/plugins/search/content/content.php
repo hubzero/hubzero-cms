@@ -141,6 +141,7 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 				// Build the path
 				$sql1 = "SELECT path FROM #__categories WHERE id={$row->catid};";
 				$path = $db->setQuery($sql1)->query()->loadResult();
+
 				if ($path != 'uncategorised')
 				{
 					$path = '/' . $path . '/' . $row->alias;

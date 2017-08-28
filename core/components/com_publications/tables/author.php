@@ -76,7 +76,7 @@ class Author extends \JTable
 	 * @param      integer $vid Pub version ID
 	 * @return     mixed False if error, Object on success
 	 */
-	public function loadAssociation( $uid = NULL, $vid = NULL )
+	public function loadAssociation( $uid = null, $vid = null )
 	{
 		if (!$uid)
 		{
@@ -117,7 +117,7 @@ class Author extends \JTable
 	 * @param      integer $vid 		Pub version ID
 	 * @return     mixed False if error, Object on success
 	 */
-	public function loadAssociationByOwner( $owner_id = NULL, $vid = NULL )
+	public function loadAssociationByOwner( $owner_id = null, $vid = null )
 	{
 		if (!$owner_id)
 		{
@@ -160,7 +160,7 @@ class Author extends \JTable
 	 * @param      boolean $return_uid_array 	Return array
 	 * @return     mixed, Object or array
 	 */
-	public function getAuthors( $vid = NULL, $get_uids = 0, $active = 1,
+	public function getAuthors( $vid = null, $get_uids = 0, $active = 1,
 		$return_uid_array = false, $incSubmitter = false
 	)
 	{
@@ -234,7 +234,7 @@ class Author extends \JTable
 	 * @param      integer $by					Publication creator
 	 * @return     mixed False if error, Object on success
 	 */
-	public function getSubmitter ( $vid = NULL, $by = 0 )
+	public function getSubmitter ( $vid = null, $by = 0 )
 	{
 		if (!$vid)
 		{
@@ -275,7 +275,7 @@ class Author extends \JTable
 	 * @param      integer $by					Publication creator
 	 * @return     mixed False if error, Object on success
 	 */
-	public function saveSubmitter ( $vid = NULL, $by = 0, $projectid = 0 )
+	public function saveSubmitter ( $vid = null, $by = 0, $projectid = 0 )
 	{
 		if (!$vid)
 		{
@@ -324,8 +324,8 @@ class Author extends \JTable
 		$this->status			= 1;
 		$this->name				= $author->name ? $author->name : $author->p_name;
 		$this->organization		= $author->organization ? $author->organization : $author->p_organization;
-		$this->firstName		= $author->firstName ? $author->firstName : NULL;
-		$this->lastName			= $author->lastName ? $author->lastName : NULL;
+		$this->firstName		= $author->firstName ? $author->firstName : null;
+		$this->lastName			= $author->lastName ? $author->lastName : null;
 		$this->credit			= 'Submitter';
 		$this->store();
 	}
@@ -338,7 +338,7 @@ class Author extends \JTable
 	 * @param      integer $active 				Get only active records
 	 * @return     mixed False if error, Object on success
 	 */
-	public function getAuthorByUid ( $vid = NULL, $uid = 0, $active = 0 )
+	public function getAuthorByUid ( $vid = null, $uid = 0, $active = 0 )
 	{
 		if (!$vid)
 		{
@@ -380,7 +380,7 @@ class Author extends \JTable
 	 * @param      integer $owner_id			Owner ID
 	 * @return     mixed False if error, Object on success
 	 */
-	public function getAuthorByOwnerId ( $vid = NULL, $owner_id = 0 )
+	public function getAuthorByOwnerId ( $vid = null, $owner_id = 0 )
 	{
 		if (!$vid)
 		{
@@ -422,7 +422,7 @@ class Author extends \JTable
 	 * @param      integer $vid    Pub version ID
 	 * @return     boolean
 	 */
-	public function deleteAssociations( $vid = NULL )
+	public function deleteAssociations( $vid = null )
 	{
 		if (!$vid)
 		{
@@ -447,7 +447,7 @@ class Author extends \JTable
 	 * @param      integer $delete 				Permanent delete?
 	 * @return     boolean
 	 */
-	public function deleteAssociation( $uid = NULL, $vid = NULL, $delete = 0 )
+	public function deleteAssociation( $uid = null, $vid = null, $delete = 0 )
 	{
 		if (!$uid)
 		{
@@ -493,7 +493,7 @@ class Author extends \JTable
 	 * @param      integer $delete 				Permanent delete?
 	 * @return     boolean
 	 */
-	public function deleteAssociationByOwner( $owner_id = NULL, $vid = NULL, $delete = 0 )
+	public function deleteAssociationByOwner( $owner_id = null, $vid = null, $delete = 0 )
 	{
 		if (!$owner_id)
 		{
@@ -580,6 +580,7 @@ class Author extends \JTable
 					modified_by=" . $this->_db->quote($this->modified_by) . ",
 					role=" . $this->_db->quote($this->role) . ",
 					name=" . $this->_db->quote($this->name) . ",
+					status=" . $this->_db->quote($this->status) . ",
 					organization=" . $this->_db->quote($this->organization) . "
 					WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id)
 					. " AND project_owner_id=" . $this->_db->quote($this->project_owner_id)
@@ -624,7 +625,7 @@ class Author extends \JTable
 	 * @param      integer $vid 	Pub version ID
 	 * @return     integer or NULL
 	 */
-	public function getCount( $vid = NULL )
+	public function getCount( $vid = null )
 	{
 		if (!$vid)
 		{
@@ -644,7 +645,7 @@ class Author extends \JTable
 	 * @param      integer $vid 	Pub version ID
 	 * @return     integer or NULL
 	 */
-	public function getLastOrder( $vid = NULL )
+	public function getLastOrder( $vid = null )
 	{
 		if (!$vid)
 		{

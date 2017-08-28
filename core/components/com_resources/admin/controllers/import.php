@@ -39,7 +39,7 @@ use Hubzero\User\Group;
 use Filesystem;
 use Session;
 use Request;
-use Route;
+use Notify;
 use Lang;
 use User;
 use Date;
@@ -91,6 +91,12 @@ class Import extends AdminController
 	 */
 	public function editTask()
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		// get request vars
@@ -142,6 +148,12 @@ class Import extends AdminController
 		// check token
 		Session::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$import = Request::getVar('import', array());
 		$hooks  = Request::getVar('hooks', array());
@@ -149,51 +161,51 @@ class Import extends AdminController
 		$file   = Request::getVar('file', array(), 'FILES');
 
 		// create import model object
-		$this->import = new Models\Import();
+		$import = new Models\Import();
 
 		// set our hooks
-		$this->import->set('hooks', json_encode($hooks));
+		$import->set('hooks', json_encode($hooks));
 
 		// load current params
-		$iparams = new \Hubzero\Config\Registry($this->import->get('params'));
+		$iparams = new \Hubzero\Config\Registry($import->get('params'));
 
 		// bind incoming params
 		$iparams->parse($params);
 
 		// set params on import object
-		$this->import->set('params', $iparams->toString());
+		$import->set('params', $iparams->toString());
 
 		// bind input to model
-		if (!$this->import->bind($import))
+		if (!$import->bind($import))
 		{
-			$this->setError($this->import->getError());
+			Notify::error($import->getError());
 			return $this->editTask();
 		}
 
 		// is this a new import
 		$isNew = false;
-		if (!$this->import->get('id'))
+		if (!$import->get('id'))
 		{
 			$isNew = true;
 
 			// set the created by/at
-			$this->import->set('created_by', User::get('id'));
-			$this->import->set('created_at', Date::toSql());
+			$import->set('created_by', User::get('id'));
+			$import->set('created_at', Date::toSql());
 		}
 
 		// do we have a data file
-		if ($this->import->get('file'))
+		if ($import->get('file'))
 		{
 			// get record count
 			$importImporter = new Importer();
-			$count = $importImporter->count($this->import);
-			$this->import->set('count', $count);
+			$count = $importImporter->count($import);
+			$import->set('count', $count);
 		}
 
 		// attempt to save
-		if (!$this->import->store(true))
+		if (!$import->store(true))
 		{
-			$this->setError($this->import->getError());
+			Notify::error($import->getError());
 			return $this->editTask();
 		}
 
@@ -201,7 +213,7 @@ class Import extends AdminController
 		if ($isNew)
 		{
 			// create folder for files
-			$this->_createImportFilespace($this->import);
+			$this->_createImportFilespace($import);
 		}
 
 		// if we have a file
@@ -211,42 +223,40 @@ class Import extends AdminController
 
 			if (!in_array($ext, array('csv', 'xml')))
 			{
-				$this->setError(Lang::txt('COM_RESOURCES_IMPORT_UNSUPPORTED_FILE_TYPE'));
+				Notify::error(Lang::txt('COM_RESOURCES_IMPORT_UNSUPPORTED_FILE_TYPE'));
 				return $this->editTask();
 			}
 
-			if (!is_dir($this->import->fileSpacePath()))
+			if (!is_dir($import->fileSpacePath()))
 			{
-				Filesystem::makeDirectory($this->import->fileSpacePath());
+				Filesystem::makeDirectory($import->fileSpacePath());
 			}
 
-			move_uploaded_file($file['tmp_name'], $this->import->fileSpacePath() . DS . $file['name']);
+			move_uploaded_file($file['tmp_name'], $import->fileSpacePath() . DS . $file['name']);
 
-			$this->import->set('file', $file['name']);
+			$import->set('file', $file['name']);
 		}
 
 		// do we have a data file
-		if ($this->import->get('file'))
+		if ($import->get('file'))
 		{
 			// get record count
 			$importImporter = new Importer();
-			$count = $importImporter->count($this->import);
-			$this->import->set('count', $count);
+			$count = $importImporter->count($import);
+			$import->set('count', $count);
 		}
 
 		// save again with import count
-		if (!$this->import->store(true))
+		if (!$import->store(true))
 		{
-			$this->setError($this->import->getError());
+			Notify::error($import->getError());
 			return $this->editTask();
 		}
 
-		//inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			Lang::txt('COM_RESOURCES_IMPORT_CREATED'),
-			'passed'
-		);
+		// Inform user & redirect
+		Notify::success(Lang::txt('COM_RESOURCES_IMPORT_CREATED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -259,10 +269,16 @@ class Import extends AdminController
 		// check token
 		Session::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$ids = Request::getVar('id', array());
 
 		// loop through all ids posted
+		$success = 0;
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
@@ -274,21 +290,20 @@ class Import extends AdminController
 			// attempt to delete import
 			if (!$resourceImport->delete())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-					$resourceImport->getError(),
-					'error'
-				);
-				return;
+				Notify::error($resourceImport->getError());
+				continue;
 			}
+
+			$success++;
 		}
 
 		// inform user & redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			Lang::txt('COM_RESOURCES_IMPORT_REMOVED'),
-			'passed'
-		);
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_RESOURCES_IMPORT_REMOVED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -328,7 +343,7 @@ class Import extends AdminController
 	/**
 	 * Actually Run Import
 	 * 
-	 * @return  string  JSON encoded records that just got inserted or would be
+	 * @return  void  echos JSON encoded records that just got inserted or would be
 	 */
 	public function doRunTask()
 	{
@@ -385,7 +400,7 @@ class Import extends AdminController
 	/**
 	 * Get progress of import task
 	 * 
-	 * @return  string  JSON encoded total and position
+	 * @return  void  echos JSON encoded total and position
 	 */
 	public function progressTask()
 	{
@@ -412,9 +427,9 @@ class Import extends AdminController
 	/**
 	 * Return Hook for Post Parsing or Post Convert
 	 *
-	 * @param   string   $type    Hook we want
-	 * @param   object   $import  Resource Import Model
-	 * @return  Closure
+	 * @param   string  $type    Hook we want
+	 * @param   object  $import  Resource Import Model
+	 * @return  array
 	 */
 	private function _hooks($type, $import)
 	{

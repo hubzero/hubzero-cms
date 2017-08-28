@@ -19,15 +19,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Publication Submit Layout">
+	<layout title="Publication Submission">
 		<message>
-			<![CDATA[STANDARD PUBLICATION SUBMIT LAYOUT DESC]]>
+			<![CDATA[Publication Submission]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Publication Submit Layout</name>
-		<description>STANDARD PUBLICATION SUBMIT LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

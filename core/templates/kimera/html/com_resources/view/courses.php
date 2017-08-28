@@ -42,12 +42,24 @@ if ($mode != 'preview')
 {
 	switch ($this->model->resource->published)
 	{
-		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 1:
+			$txt .= '';
+			break; // published
+		case 2:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> ';
+			break;  // external draft
+		case 3:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';
+			break;  // pending
+		case 4:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';
+			break;  // deleted
+		case 5:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> ';
+			break;  // internal draft
+		case 0;
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';
+			break;  // unpublished
 	}
 }
 ?>
@@ -128,7 +140,7 @@ if ($mode != 'preview')
 
 						echo $html;
 
-						$live_site = rtrim(Request::base(),'/');
+						$live_site = rtrim(Request::base(), '/');
 						?>
 						<p>
 							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
@@ -303,7 +315,7 @@ if ($mode != 'preview')
 										case "pdf":
 										default:
 											if ($grandchild->logicaltype == 14) {
-												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').'</a>'."\n";
+												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . Filesystem::extension($grandchild->path) . ')</a>'."\n";
 											} elseif ($grandchild->logicaltype == 51) {
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 											} else {
@@ -345,11 +357,13 @@ if ($mode != 'preview')
 								$html .= "\t\t\t".'<td colspan="5"> </td>'."\n";
 							}
 							$html .= "\t\t".'</tr>'."\n";
-							if ($child->standalone == 1) {
-								if ($child->type != 31 && $child->introtext) {
+							if ($child->standalone == 1)
+							{
+								if ($child->type != 31 && $child->introtext)
+								{
 									$html .= "\t\t".'<tr class="'.$o.'">'."\n";
 									$html .= "\t\t\t".'<td colspan="6">';
-									$html .= \Hubzero\Utility\String::truncate(stripslashes($child->introtext),200) . '<br /><br />';
+									$html .= \Hubzero\Utility\String::truncate(stripslashes($child->introtext), 200) . '<br /><br />';
 									$html .= "\t\t\t".'</td>'."\n";
 									$html .= "\t\t".'</tr>'."\n";
 								}
@@ -363,5 +377,4 @@ if ($mode != 'preview')
 			<?php
 		}
 	}
-	?>
-<?php } ?>
+}

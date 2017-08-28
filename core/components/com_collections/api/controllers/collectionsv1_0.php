@@ -141,24 +141,17 @@ class Collectionsv1_0 extends ApiController
 	 * @apiMethod POST
 	 * @apiUri    /collections
 	 * @apiParameter {
-	 * 		"name":        "id",
-	 * 		"description": "Entry identifier",
-	 * 		"type":        "integer",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
 	 * 		"name":        "object_type",
 	 * 		"description": "Object type (group, member, etc.)",
 	 * 		"type":        "string",
-	 * 		"required":    false,
+	 * 		"required":    true,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "object_id",
 	 * 		"description": "Object ID",
 	 * 		"type":        "integer",
-	 * 		"required":    false,
+	 * 		"required":    true,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
@@ -236,7 +229,7 @@ class Collectionsv1_0 extends ApiController
 			'title'          => Request::getVar('title', null, 'post', 'none', 2),
 			'alias'          => Request::getVar('alias', 0, 'post'),
 			'description'    => Request::getVar('description', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
+			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', 0, 'post'),
 			'state'          => Request::getInt('state', 0, 'post'),
 			'access'         => Request::getInt('access', 0, 'post'),
@@ -256,7 +249,9 @@ class Collectionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		$this->send($row);
+		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+
+		$this->send($row->toObject());
 	}
 
 	/**
@@ -309,14 +304,14 @@ class Collectionsv1_0 extends ApiController
 	 * 		"name":        "object_type",
 	 * 		"description": "Object type (group, member, etc.)",
 	 * 		"type":        "string",
-	 * 		"required":    false,
+	 * 		"required":    true,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "object_id",
 	 * 		"description": "Object ID",
 	 * 		"type":        "integer",
-	 * 		"required":    false,
+	 * 		"required":    true,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
@@ -389,18 +384,18 @@ class Collectionsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'id'             => Request::getInt('id', 0, 'post'),
-			'object_type'    => Request::getVar('object_type', '', 'post'),
-			'object_id'      => Request::getInt('object_id', 0, 'post'),
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'post'),
-			'description'    => Request::getVar('description', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
-			'created_by'     => Request::getInt('created_by', 0, 'post'),
-			'state'          => Request::getInt('state', 0, 'post'),
-			'access'         => Request::getInt('access', 0, 'post'),
-			'layout'         => Request::getVar('layout', 'grid', 'post'),
-			'sort'           => Request::getVar('sort', 'created', 'post')
+			'id'             => Request::getInt('id', 0, 'put'),
+			'object_type'    => Request::getVar('object_type', '', 'put'),
+			'object_id'      => Request::getInt('object_id', 0, 'put'),
+			'title'          => Request::getVar('title', null, 'put', 'none', 2),
+			'alias'          => Request::getVar('alias', 0, 'put'),
+			'description'    => Request::getVar('description', null, 'put', 'none', 2),
+			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'put'),
+			'created_by'     => Request::getInt('created_by', 0, 'put'),
+			'state'          => Request::getInt('state', 0, 'put'),
+			'access'         => Request::getInt('access', 0, 'put'),
+			'layout'         => Request::getVar('layout', 'grid', 'put'),
+			'sort'           => Request::getVar('sort', 'created', 'put')
 		);
 
 		$row = new Collection($fields['id']);
@@ -420,7 +415,9 @@ class Collectionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		$this->send($row);
+		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+
+		$this->send($row->toObject());
 	}
 
 	/**

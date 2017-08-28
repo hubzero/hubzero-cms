@@ -73,33 +73,33 @@ class Events extends GroupMacro
 	 */
 	public function render()
 	{
-		// check if we can render
+		// Check if we can render
 		if (!parent::canRender())
 		{
 			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
-		// get args
+		// Get args
 		$args = $this->getArgs();
 
-		//array of filters
+		// Array of filters
 		$filters = array(
 			'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3
 		);
 
-		//get group events
+		// Get group events
 		$events =  $this->getGroupEvents($this->group, $filters);
 
-		//create the html container
+		// Create the html container
 		$html  = '<div class="upcoming_events">';
 
-		//render the events
+		// Render the events
 		$html .= $this->renderEvents($this->group, $events);
 
-		//close the container
+		// Close the container
 		$html .= '</div>';
 
-		//return rendered events
+		// Return rendered events
 		return $html;
 	}
 
@@ -112,26 +112,26 @@ class Events extends GroupMacro
 	 */
 	private function getGroupEvents($group, $filters = array())
 	{
-		//instantiate database
+		// Instantiate database
 		$database = \App::get('db');
 
-		//build query
+		// Build query
 		$sql = "SELECT * FROM #__events
 				WHERE publish_up >= UTC_TIMESTAMP()
 				AND scope=" . $database->quote('group') . "
 				AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
 				AND state=1";
 
-		//add ordering
+		// Add ordering
 		$sql .= " ORDER BY publish_up ASC";
 
-		//do we have a limit set
+		// Do we have a limit set
 		if (isset($filters['limit']))
 		{
 			$sql .= " LIMIT " . $filters['limit'];
 		}
 
-		//return result
+		// Return result
 		$database->setQuery($sql);
 		return $database->loadObjectList();
 	}
@@ -139,8 +139,9 @@ class Events extends GroupMacro
 	/**
 	 * Render the events
 	 *
-	 * @param      array     Array of group events
-	 * @return     string
+	 * @param  array  $group   Array of groups
+	 * @param  array  $events  Array of group events
+	 * @return string
 	 */
 	private function renderEvents($group, $events)
 	{
@@ -149,10 +150,10 @@ class Events extends GroupMacro
 		{
 			foreach ($events as $event)
 			{
-				//build link
+				// Build link
 				$link = \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
 
-				//build date
+				// Build date
 				$date = '';
 				$publishUp   = $event->publish_up;
 				$publishDown = $event->publish_down;
@@ -172,14 +173,14 @@ class Events extends GroupMacro
 					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
 				}
 
-				//shorten content
+				// Shorten content
 				$details = nl2br($event->content);
 				if (strlen($details) > 150)
 				{
 					$details = \Hubzero\Utility\String::truncate($details, 150, array('html' => true));
 				}
 
-				//create list
+				// Create list
 				$content .= '<div class="event">';
 				$content .= '<strong><a class=" title" href="' . $link . '">' . stripslashes($event->title) . '</a></strong>';
 				$content .= '<br /><span class="date">' . $date . '</span>';
@@ -195,4 +196,3 @@ class Events extends GroupMacro
 		return $content;
 	}
 }
-

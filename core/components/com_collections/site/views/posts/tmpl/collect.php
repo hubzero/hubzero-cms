@@ -125,6 +125,6 @@ if ($this->collection_id)
 	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
-		<input type="submit" value="<?php echo Lang::txt(strtoupper($this->option) . '_POST'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt(strtoupper($this->option) . '_SAVE'); ?>" />
 	</p>
 </form>

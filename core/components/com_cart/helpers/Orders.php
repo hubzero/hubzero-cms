@@ -77,6 +77,19 @@ class CartOrders
 			$filters['sort'] = 'pName';
 		}
 
+		if (isset($filters['report-from']) && strtotime($filters['report-from']))
+		{
+			$showFrom = date("Y-m-d", strtotime($filters['report-from']));
+			$sql .= " AND t.`tLastUpdated` >= '{$showFrom}'";
+		}
+		if (isset($filters['report-to']) && strtotime($filters['report-to']))
+		{
+			// Add one day to include all the records of the end day
+			$showTo = strtotime($filters['report-to'] . ' +1 day');
+			$showTo = date("Y-m-d 00:00:00", $showTo);
+			$sql .= " AND t.`tLastUpdated` <= '{$showTo}'";
+		}
+
 		$sql .= " ORDER BY " . $filters['sort'];
 
 		$sql .= ' ' . $filters['sort_Dir'];
@@ -92,6 +105,7 @@ class CartOrders
 		}
 
 		$db->setQuery($sql);
+		//echo $db->toString(); die;
 		$db->execute();
 		if ($rtrn == 'count')
 		{

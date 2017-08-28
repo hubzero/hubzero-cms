@@ -328,7 +328,8 @@ function popratings()
 						<tr>
 							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
 							<td>
-								<?php echo $this->model->get('version_label') . ' (' . $status . ')'; ?>
+								<input type="text" name="version_label" id="field-version_label" maxlength="250" size="10" value="<?php echo $this->escape($this->model->get('version_label')); ?>" />
+								<?php echo ' (' . $status . ')'; ?>
 							</td>
 						</tr>
 						<tr>
@@ -358,6 +359,13 @@ function popratings()
 						<option value="1"<?php echo ($this->model->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
 						<option value="0"<?php echo ($this->model->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
 						<option value="2"<?php echo ($this->model->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
+					</select>
+				</div>
+				<div class="input-wrap">
+					<label for="field-featured"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED'); ?>:</label><br />
+					<select name="featured" id="field-featured">
+						<option value="0"<?php echo ($this->model->get('featured') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_NO'); ?></option>
+						<option value="1"<?php echo ($this->model->get('featured') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_YES'); ?></option>
 					</select>
 				</div>
 				<div class="input-wrap">

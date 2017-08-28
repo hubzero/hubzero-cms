@@ -19,15 +19,9 @@
 -->
 
 <metadata>
-	<layout title="Standard About Publications Layout">
+	<layout title="About Publication">
 		<message>
-			<![CDATA[STANDARD ABOUT PUBLICATIONS LAYOUT DESC]]>
+			<![CDATA[About Publication]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard About Publications Layout</name>
-		<description>STANDARD ABOUT PUBLICATIONS LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

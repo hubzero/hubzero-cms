@@ -109,7 +109,7 @@ class Project extends \JTable
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
-			$query .=  " JOIN #__users as x ON x.id=p.owned_by_user ";
+			$query .=  ($admin ? ' LEFT' : '') . " JOIN #__users as x ON x.id=p.owned_by_user ";
 			$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 		}
 
@@ -326,6 +326,10 @@ class Project extends \JTable
 					$sort .= 'p.created ' . $sortdir . ' ';
 					break;
 
+				case 'grant_status':
+					$sort .= 'grant_status ' . $sortdir . ' ';
+					break;
+
 				case 'type':
 					$sort .= 'p.type ' . $sortdir . ' ';
 					break;
@@ -393,6 +397,7 @@ class Project extends \JTable
 		$updates  = isset($filters['updates']) && $filters['updates'] == 1 ? 1: 0;
 		$getowner = isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
 		$activity = isset($filters['activity']) && $filters['activity'] == 1 ? 1: 0;
+		$grantStatus = isset($filters['sortby']) && $filters['sortby'] == 'grant_status' ? true: false;
 
 		$query  = "SELECT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 
@@ -414,6 +419,11 @@ class Project extends \JTable
 		{
 			$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa
 						WHERE pa.projectid=p.id AND pa.state != 2) as activity ";
+		}
+
+		if ($grantStatus)
+		{
+			$query .= ", SUBSTR(SUBSTRING_INDEX(p.params, 'grant_status=', -1), 1, 1) as grant_status ";
 		}
 		$query .= $this->buildQuery($filters, $admin, $uid, $showall, $setup_complete);
 
@@ -510,11 +520,11 @@ class Project extends \JTable
 			$query .= " AND p.owned_by_group != '$groupid' ";
 		}
 
-		$query .= $uid
+		/*$query .= $uid
 				? " AND (p.state = 1 OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
 					AND ((p.state = 1 AND p.setup_stage = " . $setup_complete . ")
 					OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . ")))) "
-				: " AND p.state = 1 ";
+				: " AND p.state = 1 ";*/
 
 		// Sorting
 		if (!isset($filters['count']) or $filters['count'] == 0)
@@ -620,16 +630,20 @@ class Project extends \JTable
 			$query .= " AND p.provisioned=0";*/
 			$query  = "SELECT DISTINCT p.id
 					FROM `#__project_owners` AS po
-					INNER JOIN $this->_tbl AS p ON p.id=po.projectid
-					WHERE p.provisioned=0
+					INNER JOIN $this->_tbl AS p ON p.id=po.projectid ";
+			if ($uid)
+			{
+				$query .= " LEFT JOIN `#__project_owners` AS o ON p.id=o.projectid ";
+			}
+			$query .= "WHERE p.provisioned=0
 					AND po.status=1
 					AND po.groupid=" . $this->_db->quote($groupid);
 			if ($uid)
 			{
-				$query .= " AND po.userid=" . $this->_db->quote($uid);
+				$query .= " AND o.userid=" . $this->_db->quote($uid);
 			}
 			$query .= $active == 1
-					? " AND p.state != 2 "
+					? " AND p.state NOT IN (2, 3) "
 					: " AND p.state = 2 ";
 
 			$this->_db->setQuery($query);

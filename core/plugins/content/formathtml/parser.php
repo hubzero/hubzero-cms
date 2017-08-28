@@ -317,7 +317,7 @@ class Parser
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
 	 *
-	 * @param   string   $val  Content to store
+	 * @param   array    $matches
 	 * @return  integer  Unique ID
 	 */
 	private function _dataPush($matches)
@@ -341,7 +341,7 @@ class Parser
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
 	 *
-	 * @param   string   $val  Content to store
+	 * @param   string   $matches  Content to store
 	 * @return  integer  Unique ID
 	 */
 	private function _dataPull($matches)
@@ -438,15 +438,15 @@ class Parser
 	{
 		if (isset($matches[1]) && $matches[1] != '')
 		{
-			// split macro by . (dot) char
+			// Split macro by . (dot) char
 			$macroPieces = explode('.', strtolower($matches[1]));
 
-			// build namespaced macro name
+			// Build namespaced macro name
 			$macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
 
 			if (!isset(self::$macros[$matches[1]]))
 			{
-				// build macro path
+				// Build macro path
 				$file = DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
 
 				$found = false;

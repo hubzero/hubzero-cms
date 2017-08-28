@@ -135,7 +135,6 @@ class Sync extends \Hubzero\Base\Object
 
 		// Get service API - always project owner!
 		$this->_connect->getAPI($service, $projectOwner);
-		error_log("connected");
 
 		// Collectors
 		$locals        = array();

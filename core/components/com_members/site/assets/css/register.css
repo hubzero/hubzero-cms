@@ -16,21 +16,20 @@
 /* Password rules styles */
 	#hubForm ul#passrules {
 		list-style: none;
-		margin: 0 2em;
+		margin: 0;
 	}
 	#hubForm ul#passrules li {
-		margin: 5px 0;
-		padding: 2px 2px 2px 20px;
+		margin: 0.4em 0;
+		padding: 0.2em 0.2em 0.2em 2em;
 		position: relative;
 	}
 	#hubForm ul#passrules li:before {
-		left: 4px;
-		top: 7px;
+		left: 0.4em;
+		top: 0.4em;
 	}
 	#hubForm ul#passrules li.empty:before {
 		position: absolute;
-		left: 0;
-		top: 0;
+		top: 0.2em;
 		content: "\2192";
 	}
 	#hubForm ul#passrules li.error {
@@ -64,10 +63,10 @@
 	}
 
 /* Username checker */
-	#hubForm .group p.hint.ok {
+	#hubForm p.hint.ok {
 		color: #090;
 	}
-	#hubForm .group p.hint.notok {
+	#hubForm p.hint.notok {
 		color: #900;
 	}
 

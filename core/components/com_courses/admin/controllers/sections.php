@@ -496,9 +496,14 @@ class Sections extends AdminController
 					{
 						$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE'));
 					}
+					// Added to allow users to overwrite their own image. 
+					// Since it accepts multipe image types, this ensures all pre-existing images are removed
+					//   so the one they are uploading is displayed.
+					array_map('unlink', glob($uploadDirectory . 'badge.*'));
 
 					// Get the final file path
 					$target_path = $uploadDirectory . 'badge.' . $ext;
+
 
 					if (!$move = move_uploaded_file($badge_image['tmp_name'], $target_path))
 					{
@@ -519,7 +524,7 @@ class Sections extends AdminController
 			{
 				$badgeObj->set('criteria_text_new', $badge['criteria']);
 				$badgeObj->store();
-				$badgeObj->set('criteria_text_new', NULL);
+				$badgeObj->set('criteria_text_new', null);
 			}
 
 			// If we don't already have a provider badge id set, then we're processing our initial badge creation
@@ -534,7 +539,7 @@ class Sections extends AdminController
 					$credentials = new stdClass();
 					$credentials->consumer_key    = $cconfig->get($badgeObj->get('provider_name').'_consumer_key', 0);
 					$credentials->consumer_secret = $cconfig->get($badgeObj->get('provider_name').'_consumer_secret', 0);
-					$credentials->issuerId        = $cconfig->get($badgeObj->get('provider_name').'_issuer_id');;
+					$credentials->issuerId        = $cconfig->get($badgeObj->get('provider_name').'_issuer_id');
 					$badgesProvider->setCredentials($credentials);
 
 					$offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));

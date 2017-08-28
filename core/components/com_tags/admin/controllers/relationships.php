@@ -150,7 +150,7 @@ class Relationships extends AdminController
 				$follow[$idx + 1] = $row['id'];
 			}
 
-			foreach ($follow as $idx=>$tag_id)
+			foreach ($follow as $idx => $tag_id)
 			{
 				$this->database->setQuery(
 					'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM `#__tags_object` to1
@@ -472,10 +472,13 @@ class Relationships extends AdminController
 				WHERE id = ' . $id
 			);
 			$this->database->execute();
-			foreach ($_POST['types-'.$id] as $type_id)
+			if (isset($_POST['types-'.$id]))
 			{
-				$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
-				$this->database->execute();
+				foreach ($_POST['types-'.$id] as $type_id)
+				{
+					$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+					$this->database->execute();
+				}
 			}
 		}
 
@@ -494,10 +497,13 @@ class Relationships extends AdminController
 			);
 			$this->database->execute();
 			$id = $this->database->insertid();
-			foreach ($_POST['types-new-' . $idx] as $type_id)
+			if (isset($_POST['types-new-' . $idx]))
 			{
-				$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
-				$this->database->execute();
+				foreach ($_POST['types-new-' . $idx] as $type_id)
+				{
+					$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+					$this->database->execute();
+				}
 			}
 		}
 
@@ -568,7 +574,7 @@ class Relationships extends AdminController
 		}
 
 		$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag_str));
-		$this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
+		$this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (' . $this->database->quote($norm_tag) . ', ' . $this->database->quote($tag_str) . ')');
 		$this->database->execute();
 		$id = $this->database->insertid();
 
@@ -585,4 +591,3 @@ class Relationships extends AdminController
 		);
 	}
 }
-

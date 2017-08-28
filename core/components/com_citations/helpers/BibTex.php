@@ -179,6 +179,7 @@ class Structures_BibTex
 	 * Constructor
 	 *
 	 * @access public
+	 * @param  array  $options
 	 * @return void
 	 */
 	function Structures_BibTex($options = array())
@@ -197,7 +198,7 @@ class Structures_BibTex
 			'wordWrapWidth'     => false,
 			'wordWrapBreak'     => "\n",
 			'wordWrapCut'       => 0,
-			'removeCurlyBraces' => false,
+			'removeCurlyBraces' => true,
 			'extractAuthors'    => true,
 		);
 		foreach ($options as $option => $value) {
@@ -280,9 +281,9 @@ class Structures_BibTex
 	/**
 	 * Adds to the content string
 	 *
-	 * @access public
-	 * @param  string $filename Name of the file
-	 * @return mixed  true on success PEAR_Error on failure
+	 * @access  public
+	 * @param   string  $bibstring Name of the file
+	 * @return  mixed   True on success PEAR_Error on failure
 	 */
 	function addContent($bibstring)
 	{
@@ -376,7 +377,7 @@ class Structures_BibTex
 						$notuniques[] = $cites[$i];
 					}
 				}
-				$this->_generateWarning('WARNING_MULTIPLE_ENTRIES', implode(',',$notuniques));
+				$this->_generateWarning('WARNING_MULTIPLE_ENTRIES', implode(',', $notuniques));
 			}
 		}
 		if ($valid) {
@@ -428,7 +429,7 @@ class Structures_BibTex
 			}
 		} else {
 			//Parsing all fields
-			while (strrpos($entry,'=') !== false) {
+			while (strrpos($entry, '=') !== false) {
 				$position = strrpos($entry, '=');
 				//Checking that the equal sign is not quoted or is not inside a equation (For example in an abstract)
 				$proceed  = true;
@@ -440,7 +441,7 @@ class Structures_BibTex
 				}
 				while (!$proceed) {
 					$substring = substr($entry, 0, $position);
-					$position  = strrpos($substring,'=');
+					$position  = strrpos($substring, '=');
 					$proceed   = true;
 					if (substr($entry, $position-1, 1) == '\\') {
 						$proceed = false;
@@ -585,7 +586,7 @@ class Structures_BibTex
 		$opening = array_keys($this->_delimiters);
 		$closing = array_values($this->_delimiters);
 		//Getting the value (at is only allowd in values)
-		if (strrpos($entry,'=') !== false) {
+		if (strrpos($entry, '=') !== false) {
 			$position = strrpos($entry, '=');
 			$proceed  = true;
 			if (substr($entry, $position-1, 1) == '\\') {
@@ -593,7 +594,7 @@ class Structures_BibTex
 			}
 			while (!$proceed) {
 				$substring = substr($entry, 0, $position);
-				$position  = strrpos($substring,'=');
+				$position  = strrpos($substring, '=');
 				$proceed   = true;
 				if (substr($entry, $position-1, 1) == '\\') {
 					$proceed = false;
@@ -667,7 +668,7 @@ class Structures_BibTex
 	 */
 	function _wordwrap($entry)
 	{
-		if ( (''!=$entry) && (is_string($entry)) ) {
+		if (('' != $entry) && (is_string($entry))) {
 			$entry = wordwrap($entry, $this->_options['wordWrapWidth'], $this->_options['wordWrapBreak'], $this->_options['wordWrapCut']);
 		}
 		return $entry;
@@ -839,7 +840,7 @@ class Structures_BibTex
 				if (($ord>=65) && ($ord<=90) && (0==$openbrace)) { //The first character is uppercase
 					$ret   = 1;
 					$found = true;
-				} elseif ( ($ord>=97) && ($ord<=122) && (0==$openbrace) ) { //The first character is lowercase
+				} elseif (($ord>=97) && ($ord<=122) && (0==$openbrace)) { //The first character is lowercase
 					$ret   = 0;
 					$found = true;
 				} else { //Not yet found
@@ -904,8 +905,8 @@ class Structures_BibTex
 	{
 		//First we save the delimiters
 		$beginningdels = array_keys($this->_delimiters);
-		$firstchar     = substr($entry, 0, 1);
-		$lastchar      = substr($entry, -1, 1);
+		$firstchar     = substr($value, 0, 1);
+		$lastchar      = substr($value, -1, 1);
 		$begin         = '';
 		$end           = '';
 		while (in_array($firstchar, $beginningdels)) { //The first character is an opening delimiter
@@ -920,7 +921,7 @@ class Structures_BibTex
 			$lastchar  = substr($value, -1, 1);
 		}
 		//Now we get rid of the curly braces
-		$pattern     = '/([^\\\\])\{(.*?[^\\\\])\}/';
+		$pattern     = '/([^\\\\]|^)?\{(.*?[^\\\\])\}/';
 		$replacement = '$1$2';
 		$value       = preg_replace($pattern, $replacement, $value);
 		//Reattach delimiters
@@ -962,8 +963,14 @@ class Structures_BibTex
 	 */
 	function hasWarning()
 	{
-		if (sizeof($this->warnings)>0) return true;
-		else return false;
+		if (sizeof($this->warnings) > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -1031,11 +1038,11 @@ class Structures_BibTex
 			//Intro
 			$bibtex .= '@'.strtolower($entry['type']).' { '.$entry['cite'].",\n";
 			//Other fields except author
-			foreach ($entry as $key=>$val) {
+			foreach ($entry as $key => $val) {
 				if ($this->_options['wordWrapWidth']>0) {
 					$val = $this->_wordWrap($val);
 				}
-				if (!in_array($key, array('cite','type','author'))) {
+				if (!in_array($key, array('cite', 'type', 'author'))) {
 					$bibtex .= "\t".$key.' = {'.$val."},\n";
 				}
 			}
@@ -1144,7 +1151,7 @@ class Structures_BibTex
 				$line .= "\n\\par\n";
 				$ret  .= $line;
 			} else {
-				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry,1));
+				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry, 1));
 			}
 		}
 		$ret .= '}';
@@ -1228,7 +1235,7 @@ class Structures_BibTex
 				}
 				$ret  .= $line;
 			} else {
-				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry,1));
+				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry, 1));
 			}
 		}
 		$ret  .= "</table>";

@@ -163,7 +163,7 @@ class Page extends Relational
 	 * Get the namespace, if one exists
 	 * Namespaces are determined by a colon (e.g., Special:Cite)
 	 *
-	 * @param   string   $pagename  Name to get namespace from
+	 * @param   string  $pagename  Name to get namespace from
 	 * @return  string
 	 */
 	public function getNamespace($pagename=null)
@@ -202,7 +202,7 @@ class Page extends Relational
 	/**
 	 * Generates automatic pagename field value
 	 *
-	 * @param   array  $data  The data being saved
+	 * @param   array   $data  The data being saved
 	 * @return  string
 	 */
 	public function automaticPagename($data)
@@ -217,7 +217,7 @@ class Page extends Relational
 	/**
 	 * Generates automatic namespace field value
 	 *
-	 * @param   array  $data  The data being saved
+	 * @param   array   $data  The data being saved
 	 * @return  string
 	 */
 	public function automaticNamespace($data)
@@ -401,8 +401,7 @@ class Page extends Relational
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Load a record by path and optional scope/scope_id
 	 *
 	 * @param   string   $path
 	 * @param   string   $scope
@@ -434,8 +433,7 @@ class Page extends Relational
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Load a record by title and optional scope/scope_id
 	 *
 	 * @param   string   $title
 	 * @param   string   $scope

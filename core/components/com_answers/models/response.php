@@ -165,6 +165,16 @@ class Response extends Relational
 	}
 
 	/**
+	 * Defines a belongs to one relationship between question and response
+	 *
+	 * @return  object
+	 */
+	public function question()
+	{
+		return $this->belongsToOne('Question', 'question_id');
+	}
+
+	/**
 	 * Check if a user has voted for this entry
 	 *
 	 * @param   integer  $user_id  Optinal user ID to set as voter
@@ -342,7 +352,7 @@ class Response extends Relational
 	 */
 	public function accept()
 	{
-		$question = $this->question();
+		$question = $this->question;
 
 		if (!$question->get('id'))
 		{
@@ -363,7 +373,7 @@ class Response extends Relational
 		}
 
 		// Un-mark any previous chosen responses
-		foreach ($question->responses() as $response)
+		foreach ($question->responses as $response)
 		{
 			$response->set('state', 0);
 			$response->save();

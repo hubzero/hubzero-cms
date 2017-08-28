@@ -194,6 +194,16 @@ class Orders extends AdminController
 				'limitstart',
 				0,
 				'int'
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 
@@ -346,6 +356,16 @@ class Orders extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 
@@ -358,7 +378,6 @@ class Orders extends AdminController
 			$order->itemInfo = $orderItems[$order->sId];
 		}
 		$rowsRaw = $orders;
-		$date = date('d-m-Y');
 
 		$rows = array();
 
@@ -368,8 +387,12 @@ class Orders extends AdminController
 			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber);
 		}
 
+		$dateFrom = date('dMY', strtotime($filters['report-from']));
+		$dateTo = date('dMY', strtotime($filters['report-to']));
+		$date = date('d-m-Y');
+
 		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=cart-items-ordered" . $date . ".csv");
+		header("Content-Disposition: attachment; filename=cart-items-ordered-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
 		// Disable caching
 		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 		header("Pragma: no-cache"); // HTTP 1.0

@@ -32,6 +32,7 @@
 namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Form\Form;
 use Lang;
 use Date;
 use User;
@@ -156,7 +157,7 @@ class Category extends Relational
 	 */
 	public function automaticScope($data)
 	{
-		if (!isset($data['scope']))
+		if (!isset($data['scope']) || !$data['scope'])
 		{
 			$data['scope'] = 'site';
 		}
@@ -430,7 +431,7 @@ class Category extends Relational
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->adapter = new $cls($this->get('scope_id'));
@@ -461,5 +462,34 @@ class Category extends Relational
 		return $last->order('created', 'desc')
 			->limit(1)
 			->row();
+	}
+
+	/**
+	 * Get a form
+	 *
+	 * @param   array   $data
+	 * @return  object
+	 */
+	public function getForm($data = array())
+	{
+		$name = strtolower($this->getModelName());
+		$file = __DIR__ . '/forms/' . $name . '.xml';
+		$file = \Filesystem::cleanPath($file);
+
+		$form = new Form('com_forum.' . $name, array('control' => 'data'));
+
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		if (!$data || empty($data))
+		{
+			$data = $this->toArray();
+		}
+
+		$form->bind($data);
+
+		return $form;
 	}
 }

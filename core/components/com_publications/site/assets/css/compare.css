@@ -1,0 +1,131 @@
+/**
+ * @package     hubzero-cms
+ * @file        core/components/com_publications/site/assets/css/compare.css
+ * @copyright   Copyright 2005-2017 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.diff-info {
+	text-align: center;
+	position: relative;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-color: rgba(0, 0, 0, 0.1);
+}
+.diff-info:after {
+	content: "\f074";
+	font-family: "Fontcons";
+	position: absolute;
+	left: 50%;
+	top: 1em;
+	font-size: 2em;
+	color: #999;
+	color: rgba(0, 0, 0, 0.2);
+	margin-left: -0.5em;
+}
+.diff-type {
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 0.3em 0.4em;
+	margin: 0 1em 0.2em 0;
+	background: #bbb;
+	color: #fff;
+	border-radius: 0.25em;
+	line-height: 1;
+}
+.diff-meta {
+	display: block;
+	color: #aaa;
+}
+.diff-area {
+	text-align: center;
+	line-height: 1;
+	font-size: 1em;
+	margin: 2em 0 1em 0;
+}
+.diff-area span {
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 0.3em 0.4em;
+	background: #5da6fb;
+	color: #fff;
+	border-radius: 0.25em;
+}
+.diff-id {
+	font-size: 1.3em;
+}
+.diff-side {
+	margin: 1em;
+}
+
+/* Difference table */
+.differences {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+}
+.differences thead {
+	display: none;
+}
+.differences thead th {
+	text-align: left;
+	border-bottom: 1px solid #fff;
+	background: #ccc;
+	color: #666;
+}
+.differences tbody th {
+	text-align: right;
+	background: #eee;
+	width: 4em;
+	border-right: 1px solid #fff;
+	vertical-align: top;
+}
+.differences td {
+}
+.differences ins,
+.differences del {
+	text-decoration: none;
+}
+
+/* Side by side */
+.differences-sidebyside tbody th {
+	width: 5%;
+}
+.differences-sidebyside tbody td {
+	width: 45%;
+}
+.differences-sidebyside .change-replace .left,
+.differences-sidebyside .change-delete .left {
+	background: #fdd;
+}
+.differences-sidebyside .change-replace .right,
+.differences-sidebyside .change-insert .right {
+	background: #dfd;
+}
+.differences-sidebyside .change-replace ins {
+	background: #9e9;
+}
+.differences-sidebyside .change-replace del {
+	background: #e99;
+}
+
+.differences .skipped {
+	background: #f7f7f7;
+}
+
+/* Inline */
+.differences-inline .change-replace .left,
+.differences-inline .change-delete .left {
+	background: #fdd;
+}
+.differences-inline .change-replace .right,
+.differences-inline .change-insert .right {
+	background: #dfd;
+}
+.differences-inline .change-replace ins {
+	background: #9e9;
+}
+.differences-inline .change-replace del {
+	background: #e99;
+}

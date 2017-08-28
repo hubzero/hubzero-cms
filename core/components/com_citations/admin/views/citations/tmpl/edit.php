@@ -311,7 +311,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="citation-formatted"><?php echo Lang::txt('MANUAL_FORMAT_CITATION'); ?>:</label>
-					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->formatted), 50, 10, 'formatted'); ?>
+					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted')), 50, 10, 'formatted'); ?>
 				</div>
 			</fieldset>
 		</div>
@@ -324,12 +324,12 @@ function submitbutton(pressbutton)
 						<tr>
 							<th><?php echo Lang::txt('TYPE'); ?></th>
 							<th><?php echo Lang::txt('ID'); ?></th>
-							<!--<th><?php //echo Lang::txt('TABLE'); ?></th>-->
+							<th><?php echo Lang::txt('COM_CITATIONS_CONTEXT'); ?></th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
-							<td colspan="2"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
+							<td colspan="3"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
 						</tr>
 					</tfoot>
 					<tbody>
@@ -343,37 +343,38 @@ function submitbutton(pressbutton)
 						}
 						for ($i=0; $i < $n; $i++)
 						{
-							if ($r == 0 || !isset($assocs[$i])) {
+							if ($r == 0 || !isset($assocs[$i]))
+							{
 								$assocs[$i] = new stdClass;
-								$assocs[$i]->id = NULL;
-								$assocs[$i]->cid = NULL;
-								$assocs[$i]->oid = NULL;
-								$assocs[$i]->type = NULL;
-								$assocs[$i]->tbl = NULL;
+								$assocs[$i]->id   = null;
+								$assocs[$i]->cid  = null;
+								$assocs[$i]->oid  = null;
+								$assocs[$i]->type = null;
+								$assocs[$i]->tbl  = null;
 							}
-							echo '  <tr>'."\n";
-							//echo '   <td><input type="text" name="assocs['.$i.'][type]" value="'.$assocs[$i]->type.'" size="5" /></td>'."\n";
-							echo '   <td><select name="assocs['.$i.'][tbl]">'."\n";
-							echo ' <option value=""';
-							echo ($assocs[$i]->tbl == '') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('SELECT').'</option>'."\n";
-							//echo ' <option value="content"';
-							//echo ($assocs[$i]->tbl == 'content') ? ' selected="selected"': '';
-							//echo '>'.Lang::txt('CONTENT').'</option>'."\n";
-							echo ' <option value="resource"';
-							echo ($assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('RESOURCE').'</option>'."\n";
-							echo ' <option value="publication"';
-							echo ($assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('Publication').'</option>'."\n";
-							//echo ' <option value="topic"';
-							//echo ($assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
-							//echo '>'.Lang::txt('TOPIC').'</option>'."\n";
-							echo '</select></td>'."\n";
-							echo '   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$assocs[$i]->oid.'" size="5" />'."\n";
-							echo '<input type="hidden" name="assocs['.$i.'][id]" value="'.$assocs[$i]->id.'" />'."\n";
-							echo '<input type="hidden" name="assocs['.$i.'][cid]" value="'.$assocs[$i]->cid.'" /></td>'."\n";
-							echo '  </tr>'."\n";
+							?>
+							<tr>
+								<td>
+									<select name="assocs[<?php echo $i; ?>][tbl]" class="noUniform">
+										<option value=""<?php echo ($assocs[$i]->tbl == '') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('SELECT'); ?></option>
+										<option value="resource"<?php echo ($assocs[$i]->tbl == 'resource') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('RESOURCE'); ?></option>
+										<option value="publication"<?php echo ($assocs[$i]->tbl == 'publication') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('Publication'); ?></option>
+									</select>
+								</td>
+								<td>
+									<input type="text" name="assocs[<?php echo $i; ?>][oid]" value="<?php echo $this->escape($assocs[$i]->oid); ?>" size="5" />
+									<input type="hidden" name="assocs[<?php echo $i; ?>][id]" value="<?php echo $this->escape($assocs[$i]->id); ?>" />
+									<input type="hidden" name="assocs[<?php echo $i; ?>][cid]" value="<?php echo $this->escape($assocs[$i]->cid); ?>" />
+								</td>
+								<td>
+									<select name="assocs[<?php echo $i; ?>][type]" class="noUniform">
+										<option value=""<?php echo ($assocs[$i]->type == '') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('SELECT'); ?></option>
+										<option value="references"<?php echo ($assocs[$i]->type == 'references') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCES'); ?></option>
+										<option value="referencedby"<?php echo ($assocs[$i]->type == 'referencedby') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCEDBY'); ?></option>
+									</select>
+								</td>
+							</tr>
+							<?php
 						}
 						?>
 					</tbody>
@@ -414,10 +415,10 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_CITATIONS_FIELD_SPONSORS_HINT'); ?>">
 					<label for="field-sponsors"><?php echo Lang::txt('COM_CITATIONS_FIELD_SPONSORS'); ?></label>
-					<select name="sponsors[]" id="field-sponsors" multiple="multiple">
-						<!--<option value="sponsors">- Select Citation Sponsor &mdash;</option>-->
+					<select name="sponsors[]" id="field-sponsors" class="noUniform" multiple="multiple">
+						<option value="">- Select Citation Sponsor -</option>
 						<?php foreach ($this->sponsors as $s) : ?>
-							<?php $sel = (in_array($s['id'], $this->row_sponsors)) ? 'selected="selected"': ''; ?>
+							<?php $sel = (in_array($s->get('id'), $this->row_sponsors)) ? 'selected="selected"': ''; ?>
 							<option <?php echo $sel; ?> value="<?php echo $s['id']; ?>"><?php echo $this->escape(stripslashes($s['sponsor'])); ?></option>
 						<?php endforeach; ?>
 					</select>
@@ -430,7 +431,7 @@ function submitbutton(pressbutton)
 							$t = array();
 							foreach ($this->tags as $tag)
 							{
-								$t[] = stripslashes($tag['raw_tag']);
+								$t[] = stripslashes($tag);
 							}
 						?>
 						<label for="field-tags"><?php echo Lang::txt('COM_CITATIONS_FIELD_TAGS'); ?></label>
@@ -444,7 +445,7 @@ function submitbutton(pressbutton)
 							$b = array();
 							foreach ($this->badges as $badge)
 							{
-								$b[] = stripslashes($badge['raw_tag']);
+								$b[] = stripslashes($badge);
 							}
 						?>
 						<label for="field-badges"><?php echo Lang::txt('COM_CITATIONS_FIELD_BADGES'); ?></label>

@@ -187,38 +187,6 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
-
-			if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php'))
-			{
-				require_once PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php';
-
-				$hgConf = \Components\Search\Models\Hubgraph\Configuration::instance();
-
-				if ($hgConf->isOptionEnabled('com_groups'))
-				{
-					$view =$this->view('default', 'results');
-					// Pass the view some info
-					$view->option = $option;
-					$view->group  = $group;
-
-					Lang::load('com_search', PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site');
-
-					ob_start();
-					$_GET['group'] = $group->gidNumber;
-					Request::setVar('group', $group->gidNumber);
-					define('HG_INLINE', 1);
-					require PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'site' . DS . 'controllers' . DS . 'hubgraph.php';
-					$controller = new \Components\Search\Site\Controllers\Hubgraph();
-					$controller->execute();
-					$controller->redirect();
-
-					$view->hubgraphResponse = ob_get_clean();
-
-					return array(
-						'html' => $view->loadTemplate('hubgraph')
-					);
-				}
-			}
 		}
 
 		$database = App::get('db');
@@ -288,7 +256,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($rareas as $c=>$t)
+		foreach ($rareas as $c => $t)
 		{
 			$cats[$i]['category'] = $c;
 
@@ -301,7 +269,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$cats[$i]['_sub']  = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st)
+				foreach ($t as $s => $st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z]))
@@ -483,7 +451,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	 * @param      string $gid Group alias
 	 * @return     array
 	 */
-	private function getResourceIDs($gid=NULL)
+	private function getResourceIDs($gid=null)
 	{
 		if (!$gid)
 		{
@@ -543,7 +511,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	 * Retrieve records for items associated with this group
 	 *
 	 * @param      object  $group      Group that owns the records
-	 * @param      unknown $authorized Authorization level
+	 * @param      [type]  $authorized Authorization level
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
 	 * @param      string  $sort       The field to sort records by
@@ -677,7 +645,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			// Get a count
 			$counts = array();
 			$ares = $this->getResourcesAreas();
-			foreach ($ares as $area=>$val)
+			foreach ($ares as $area => $val)
 			{
 				if (is_array($val))
 				{
@@ -715,4 +683,3 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-

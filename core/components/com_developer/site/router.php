@@ -131,6 +131,7 @@ class Router extends Base
 								case 'edit':
 								case 'revoke':
 								case 'revokeall':
+								case 'createPersonalAccess':
 								case 'removemember':
 									$vars['task'] = $segments[3];
 								break;

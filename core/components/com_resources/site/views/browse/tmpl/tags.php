@@ -80,7 +80,12 @@ $this->css()
 			<label for="browse-type">
 				<span><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?>:</span>
 				<select name="type" id="browse-type">
-				<?php foreach ($this->types as $type) { ?>
+				<?php foreach ($this->types as $type) {
+					if (!$type->state)
+					{
+						continue;
+					}
+					?>
 					<option value="<?php echo $this->escape($type->alias); ?>"<?php if ($type->id == $this->filters['type']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
 				<?php } ?>
 				</select>

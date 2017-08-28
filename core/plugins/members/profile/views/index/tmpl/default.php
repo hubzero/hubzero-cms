@@ -130,6 +130,12 @@ foreach ($profiles as $profile)
 	}
 }
 
+/**
+* Renders if argument is json?
+*
+* @param  string  $v
+* @return string
+*/
 function renderIfJson($v)
 {
 	if (strstr($v, '{'))
@@ -606,6 +612,11 @@ $legacy = array(
 						// IF the type is a URL, link it
 						if ($field->get('type') == 'url')
 						{
+							$parsed = parse_url($value);
+							if (empty($parsed['scheme']))
+							{
+								$value = 'http://' . ltrim($value, '/');
+							}
 							$value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
 						}
 					}

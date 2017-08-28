@@ -238,7 +238,7 @@ if ($this->wishlist->get('id'))
 								}
 								?>
 								<tr class="<?php echo $state; ?>">
-									<th class="priority-5 <?php echo $status; ?>">
+									<th scope="row" class="priority-5 <?php echo $status; ?>">
 										<span class="entry-status"><?php echo $status; ?></span>
 									</th>
 									<td>

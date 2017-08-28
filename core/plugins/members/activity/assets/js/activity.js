@@ -50,6 +50,10 @@ jQuery(document).ready(function(jq){
 		);
 	}
 
+	$('.filters select').on('change', function (e){
+		$(this).closest('form').submit();
+	});
+
 	container
 		// Bookmark button
 		.on('click', '.icon-starred', function (e){

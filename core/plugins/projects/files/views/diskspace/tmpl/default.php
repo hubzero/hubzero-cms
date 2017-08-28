@@ -49,11 +49,18 @@ if ($this->total > 0 && $inuse < 1)
 }
 $working = ($usageGit || $this->by == 'admin') ? $this->totalspace - $this->dirsize : $this->totalspace;
 
-$actual  = $working > 0 ? round((($working * 100 )/ $this->quota), 1) : NULL;
+$actual  = $working > 0 ? round((($working * 100 )/ $this->quota), 1) : null;
 $actual  = $actual > 100 ? 100 : $actual;
-
-$versions = $this->dirsize - $working;
-$versions = ($versions > $minGitSize && ($usageGit || $this->by == 'admin')) ? \Hubzero\Utility\Number::formatBytes($versions) : 0;
+if ($this->versionTracking == '0')
+{
+	$versions = 0;
+	$working = $this->dirsize;
+}
+else
+{
+	$versions = $this->dirsize - $working;
+	$versions = ($versions > $minGitSize && ($usageGit || $this->by == 'admin')) ? \Hubzero\Utility\Number::formatBytes($versions) : 0;
+}
 
 $inuse = ($inuse > 100) ? '> 100' : $inuse;
 
@@ -79,9 +86,9 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 <?php } ?>
 	<div id="disk-usage" <?php if ($warning) { echo 'class="quota-warning"'; } ?>>
 		<div class="disk-usage-wrapper">
-			<h3><?php echo ($this->by != 'admin') ? Lang::txt('PLG_PROJECTS_FILES_QUOTA').': '.$quota : Lang::txt('PLG_PROJECTS_FILES_DISK_USAGE') ; ?></h3>
+			<h3><?php echo ($this->by != 'admin') ? Lang::txt('PLG_PROJECTS_FILES_QUOTA').': '.$quota : Lang::txt('PLG_PROJECTS_FILES_DISK_USAGE'); ?></h3>
 			<?php if ($this->by != 'admin') { ?>
-				<span id="indicator-value"><span><?php echo $inuse . '% '.Lang::txt('PLG_PROJECTS_FILES_USED') . ' (' . $used . ' ' . Lang::txt('COM_PROJECTS_OUT_OF').' ' . $quota . ')'; ?></span> <?php if ($warning) { ?><span class="approaching-quota"> - <?php echo ($inuse == '> 100') ? Lang::txt('PLG_PROJECTS_FILES_OVER_QUOTA')  : Lang::txt('PLG_PROJECTS_FILES_APPROACHING_QUOTA') ; ?></span><?php } ?></span>
+				<span id="indicator-value"><span><?php echo $inuse . '% '.Lang::txt('PLG_PROJECTS_FILES_USED') . ' (' . $used . ' ' . Lang::txt('COM_PROJECTS_OUT_OF').' ' . $quota . ')'; ?></span> <?php if ($warning) { ?><span class="approaching-quota"> - <?php echo ($inuse == '> 100') ? Lang::txt('PLG_PROJECTS_FILES_OVER_QUOTA')  : Lang::txt('PLG_PROJECTS_FILES_APPROACHING_QUOTA'); ?></span><?php } ?></span>
 			<?php } ?>
 			<?php if ($this->by != 'admin') { ?>
 			<div id="indicator-wrapper">
@@ -92,8 +99,9 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 			<div id="usage-labels">
 					<span class="l-actual">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_FILES') . ' ('.\Hubzero\Utility\Number::formatBytes($working) . ')'; ?>
 					<?php if ($versions > 0) { ?>
-					<span class="l-regular">&nbsp;</span><?php echo $this->by == 'admin' ? Lang::txt('Versions') : Lang::txt('Version History*') ; echo ' (' . $versions . ')'; ?>
-					<?php } ?>
+					<span class="l-regular">&nbsp;</span><?php echo $this->by == 'admin' ? Lang::txt('Versions') : Lang::txt('Version History*');
+						echo ' (' . $versions . ')';
+					} ?>
 					<span class="l-unused">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_UNUSED_SPACE').' ('.$unused.')'; ?>
 			</div>
 			<?php } else { ?>
@@ -130,4 +138,4 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
 		<p class="disk-manage-option"><a class="btn manage disk-usage-optimize" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=advoptimize'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_OPTIMIZE_ADV'); ?></a><span class="diskmanage-about"><?php echo Lang::txt('PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE_ADV'); ?></span></p>
 	</div>
-	<?php } ?>
+<?php }

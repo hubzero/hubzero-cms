@@ -167,7 +167,7 @@ if ($this->comment->get('resource_id'))
 
 			<p class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
-			<?php if (User::get('id') == $this->comment->get('created_by') || User::authorise('core.admin')) { ?>
+			<?php if (User::get('id') == $this->comment->get('created_by') || User::authorise('core.manage', 'com_resources')) { ?>
 					<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_DELETE'); ?><!--
 					--></a>

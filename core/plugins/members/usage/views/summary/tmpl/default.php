@@ -195,15 +195,15 @@ $this->css('usage', 'com_usage');
 
 				$cites = plgMembersUsage::get_citationcount($row->id, 0);
 
-				$total['usercount12'] += (int)$usercount12;
-				$total['usercount14'] += (int)$usercount14;
-				$total['citations'] += (int)$cites;
+				$total['usercount12'] += (int)str_replace(',', '', $usercount12);
+				$total['usercount14'] += (int)str_replace(',', '', $usercount14);
+				$total['citations']   += (int)$cites;
 				?>
 				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 					<td><?php echo ($count + 1); ?></td>
 					<td class="textual-data"><a href="<?php echo Route::url('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a> <span class="small"><?php echo $row->type; ?></span></td>
 					<td><?php echo $usercount12; ?></td>
-					<td><?php echo $usercount14 ?></td>
+					<td><?php echo $usercount14; ?></td>
 					<td><?php echo $cites ?></td>
 					<td><?php echo $row->publish_up; ?></td>
 				</tr>
@@ -217,9 +217,9 @@ $this->css('usage', 'com_usage');
 				<tr class="summary">
 					<td></td>
 					<td><?php echo Lang::txt('TOTAL'); ?></td>
-					<td><?php echo $total['usercount12']; //number_format($this->andmore_total_12); ?></td>
-					<td><?php echo $total['usercount14']; //number_format($this->andmore_total_14); ?></td>
-					<td><?php echo $total['citations']; ?></td>
+					<td><?php echo number_format($total['usercount12']); //number_format($this->andmore_total_12); ?></td>
+					<td><?php echo number_format($total['usercount14']); //number_format($this->andmore_total_14); ?></td>
+					<td><?php echo number_format($total['citations']); ?></td>
 					<td></td>
 				</tr>
 				<?php

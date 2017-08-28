@@ -35,7 +35,6 @@ use Hubzero\Component\AdminController;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
-use Components\Forum\Admin\Models\AdminCategory;
 use Request;
 use Notify;
 use Route;
@@ -239,8 +238,8 @@ class Categories extends AdminController
 		{
 			$category->set('created_by', User::get('id'));
 			$category->set('section_id', $section->get('id'));
-			$category->set('scope', $section->get('scope'));
-			$category->set('scope_id', $section->get('scope_id'));
+			$category->set('scope', $section->get('scope', 'site'));
+			$category->set('scope_id', $section->get('scope_id', 0));
 		}
 
 		$data = Section::all()
@@ -268,14 +267,13 @@ class Categories extends AdminController
 			'id'       => $category->get('id'),
 			'asset_id' => $category->get('asset_id')
 		));
-		$m = new AdminCategory();
 
 		// Output the HTML
 		$this->view
 			->set('row', $category)
 			->set('section', $section)
 			->set('sections', $sections)
-			->set('form', $m->getForm())
+			->set('form', $category->getForm())
 			->setLayout('edit')
 			->display();
 	}
@@ -309,20 +307,28 @@ class Categories extends AdminController
 		$data = Request::getVar('jform', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
-			$model = new AdminCategory();
-			$form      = $model->getForm($data, false);
-			$validData = $model->validate($form, $data);
+			$form = $category->getForm($data);
+			$data = $form->filter($data);
+			if (!$form->validate($data))
+			{
+				Notify::error($form->getError());
+			}
 
-			$category->assetRules = new \Hubzero\Access\Rules($validData['rules']);
+			$category->assetRules = new \Hubzero\Access\Rules($data['rules']);
 		}
 
-		if (!$category->get('scope'))
+		// Make sure the chosen section is valid
+		$section = Section::oneOrFail($category->get('section_id'));
+
+		if (!$section->get('id'))
 		{
-			$section = Section::oneOrFail($fields['section_id']);
-
-			$category->set('scope', $section->get('scope'));
-			$category->set('scope_id', $section->get('scope_id'));
+			Notify::error(Lang::txt('COM_FORUM_FIELD_INVALID_SECTION'));
+			return $this->editTask($category);
 		}
+
+		// Ensure the category has the same scope as its parent section
+		$category->set('scope', $section->get('scope'));
+		$category->set('scope_id', $section->get('scope_id'));
 
 		// Store new content
 		if (!$category->save())

@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 /**
- * System plugin to force .rss URLs to raw document mode
+ * System plugin to force .rss and .atom URLs to raw document mode
  */
 class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 {
@@ -45,7 +45,12 @@ class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterInitialise()
 	{
-		$uri = $_SERVER['REQUEST_URI'];
+		if (!App::isSite())
+		{
+			return;
+		}
+
+		$uri = Request::getVar('REQUEST_URI', null, 'server');
 		$bits = explode('?', $uri);
 		$bit = $bits[0];
 
@@ -60,11 +65,8 @@ class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 
 		if ($b == 'rss' || $b == 'atom')
 		{
-			$_GET['no_html'] = 1;
-			$_GET['format']  = 'raw';
-			$_REQUEST['no_html'] = 1;
-			$_REQUEST['format']  = 'raw';
+			Request::setVar('no_html', 1);
+			Request::setVar('format', 'raw');
 		}
 	}
 }
-

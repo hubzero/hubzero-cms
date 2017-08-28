@@ -32,12 +32,12 @@
 
 namespace Components\Citations\Admin\Controllers;
 
-use Components\Citations\Tables\Citation;
-use Components\Citations\Tables\Association;
-use Components\Citations\Tables\Type;
-use Components\Citations\Tables\Sponsor;
-use Components\Citations\Tables\Author;
-use Components\Citations\Tables\Tags;
+require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+
+use Components\Citations\Models\Citation;
+use Components\Citations\Models\Association;
+use Components\Citations\Models\Type;
+use Components\Citations\Models\Sponsor;
 use Components\Citations\Helpers\Format;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
@@ -86,21 +86,17 @@ class Citations extends AdminController
 				''
 			)),
 			'published' => array(0, 1),
-			'scope' => Request::getVar('scope','all')
+			'scope' => Request::getVar('scope', 'all')
 		);
 
-		$obj = new Citation($this->database);
 
 		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters);
+		$this->view->total = Citation::getFilteredRecords($this->view->filters)->count();
 
 		// Get records
-		$this->view->rows = $obj->getRecords($this->view->filters);
+		$this->view->rows = Citation::getFilteredRecords($this->view->filters)->paginated('limitstart');
 
-		//get the dynamic citation types
-		$ct = new Type($this->database);
-		$this->view->types = $ct->getType();
-
+		$this->_displayMessages();
 		// Output the HTML
 		$this->view->display();
 	}
@@ -126,41 +122,40 @@ class Citations extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		//get request vars - expecting an array id[]=4232
-		$id = Request::getVar('id', array());
-		if (is_array($id))
+		$id = Request::getInt('id', 0);
+		if (!isset($this->row) || !($this->row instanceof Citation))
 		{
-			$id = (!empty($id)) ? $id[0] : 0;
+			$this->row = Citation::oneOrNew($id);
 		}
-
 		//get all citations sponsors
-		$cs = new Sponsor($this->database);
-		$this->view->sponsors = $cs->getSponsor();
+		$this->view->sponsors = Sponsor::all();
 
 		//get all citation types
-		$ct = new Type($this->database);
-		$this->view->types = $ct->getType();
+		$this->view->types = Type::all();
 
 		//empty citation object
-		$this->view->row = new Citation($this->database);
+		$this->view->row = $this->row;
 
 		//if we have an id load that citation data
-		if (isset($id) && $id != '' && $id != 0)
+		if (!$this->view->row->isNew())
 		{
-			// Load the citation object
-			$this->view->row->load( $id );
 
-			// Get the associations
-			$assoc = new Association($this->database);
-			$this->view->assocs = $assoc->getRecords(array('cid' => $id));
+			$assocArray = array();
+			foreach ($this->view->row->associations as $assoc)
+			{
+				$assocArray[] = $assoc;
+			}
+
+			$this->view->assocs = $assocArray;
 
 			//get sponsors for citation
-			$this->view->row_sponsors = $cs->getCitationSponsor($this->view->row->id);
+			$this->view->row_sponsors = $this->view->row->sponsors->fieldsByKey('id');
 
 			//get the citations tags
-			$this->view->tags = Format::citationTags($this->view->row, \App::get('db'), false);
+			$this->view->tags = Format::citationTags($this->view->row, false);
 
 			//get the badges
-			$this->view->badges = Format::citationBadges($this->view->row, \App::get('db'), false);
+			$this->view->badges = Format::citationBadges($this->view->row, false);
 
 			//parse citation params
 			$this->view->params = new Registry($this->view->row->params);
@@ -168,7 +163,7 @@ class Citations extends AdminController
 		else
 		{
 			//set the creator
-			$this->view->row->uid = User::get('id');
+			$this->view->row->set('uid', User::get('id'));
 
 			// It's new - no associations to get
 			$this->view->assocs = array();
@@ -183,42 +178,16 @@ class Citations extends AdminController
 			//empty params object
 			$this->view->params = new Registry('');
 		}
-
-		//are we padding back the citation data
-		if (isset($this->row))
-		{
-			$this->view->row = $this->row;
-		}
-
-		//are we passing back the tags from edit
-		if ($this->tags != '')
-		{
-			$this->tags = explode(',', $this->tags);
-			foreach ($this->tags as $tag)
-			{
-				$this->view->tags[]['raw_tag'] = $tag;
-			}
-		}
-
-		//are we passing back the tags from edit
-		if ($this->badges != '')
-		{
-			$this->badges = explode(',', $this->badges);
-			foreach ($this->badges as $badge)
-			{
-				$this->view->badges[]['raw_tag'] = $badge;
-			}
-		}
-
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			Notify::error($this->getError(), 'com.citations');
 		}
 
 		//set vars for view
 		$this->view->config = $this->config;
 
+		$this->_displayMessages();
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -233,29 +202,23 @@ class Citations extends AdminController
 	public function publishTask()
 	{
 		//get request vars - expecting an array id[]=4232
-		$id = Request::getVar('id', array());
-		if (is_array($id))
-		{
-			$id = (!empty($id)) ? $id[0] : 0;
-		}
+		$id = Request::getInt('id', 0);
 
-		//empty citation object
-		$row = new Citation($this->database);
-		$row->load($id);
+		$row = Citation::oneOrFail($id);
 
 		// mark published and save
-		$row->published = 1;
-		if (!$row->save($row))
+		$row->set('published', 1);
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError(), 'com.citations');
 			$this->displayTask();
 			return;
 		}
 
+		Notify::success(Lang::txt('CITATION_PUBLISHED'), 'com.citations');
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_PUBLISHED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -266,104 +229,75 @@ class Citations extends AdminController
 	 */
 	public function unpublishTask()
 	{
-		//get request vars - expecting an array id[]=4232
-		$id = Request::getVar('id', array());
-		if (is_array($id))
-		{
-			$id = (!empty($id)) ? $id[0] : 0;
-		}
+		$id = Request::getInt('id', 0);
 
-		//empty citation object
-		$row = new Citation($this->database);
-		$row->load($id);
+		$row = Citation::oneOrFail($id);
 
 		// mark unpublished and save
-		$row->published = 0;
-		if (!$row->save($row))
+		$row->set('published', 0);
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError(), 'com.citations');
 			$this->displayTask();
 			return;
 		}
-
+		Notify::success(Lang::txt('CITATION_UNPUBLISHED'), 'com.citations');
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_UNPUBLISHED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
-		/*
-		* Toggle affliliation 
-		*
-		* @return void
-		*/
-		public function affiliateTask()
+	/*
+	* Toggle affliliation 
+	*
+	* @return void
+	*/
+	public function affiliateTask()
+	{
+		$id = Request::getInt('id', 0);
+		$row = Citation::oneOrFail($id);
+		$affiliatedId = ($row->affiliated == 1) ? 0 : 1;
+		$row->set('affiliated', $affiliatedId);
+
+		if (!$row->save())
 		{
-				// get the id of the citation
-				$id = Request::getInt('id', '');
-				$row = new Citation($this->database);
-				$row->load($id);
-
-				// toggle the affiliation
-				if ($row->affiliated == 1)
-				{
-						$row->affiliated = 0;
-				}
-				elseif ($row->affiliated == 0)
-				{
-						$row->affiliated = 1;
-				}
-
-				if (!$row->save($row))
-				{
-						$this->setError($row->getError());
-						$this->displayTask();
-						return;
-				}
-
-				// Redirect
-				App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('CITATION_AFFILIATED')
-				);
+				Notify::error($row->getError(), 'com.citations');
+				$this->displayTask();
+				return;
 		}
+		Notify::success(Lang::txt('CITATION_AFFILIATED'), 'com.citations');
+		// Redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
+	}
 
-		/*
-		* Toggle fundedby 
-		*
-		* @return void
-		*/
-		public function fundTask()
+	/*
+	* Toggle fundedby 
+	*
+	* @return void
+	*/
+	public function fundTask()
+	{
+		$id = Request::getInt('id', 0);
+		$row = Citation::oneOrFail($id);
+		$fundedbyId = ($row->fundedby == 1) ? 0 : 1;
+		$row->set('fundedby', $fundedbyId);
+
+		if (!$row->save())
 		{
-				// get the id of the citation
-				$id = Request::getInt('id', '');
-				$row = new Citation($this->database);
-				$row->load($id);
-
-				// toggle the affiliation
-				if ($row->fundedby == 1)
-				{
-						$row->fundedby = 0;
-				}
-				elseif ($row->fundedby == 0)
-				{
-						$row->fundedby = 1;
-				}
-
-				if (!$row->save($row))
-				{
-						$this->setError($row->getError());
-						$this->displayTask();
-						return;
-				}
-
-				// Redirect
-				App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('CITATION_FUNDED')
-				);
+				Notify::error($row->getError(), 'com.citations');
+				$this->displayTask();
+				return;
 		}
+		Notify::success(Lang::txt('CITATION_FUNDED'), 'com.citations');
+
+		// Redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
+	}
 
 	/**
 	 * Display stats for citations
@@ -372,9 +306,8 @@ class Citations extends AdminController
 	 */
 	public function statsTask()
 	{
-		// Load the object
-		$row = new Citation($this->database);
-		$this->view->stats = $row->getStats();
+		$filters = array('scope' => 'all', 'published' => array(0,1));
+		$this->view->stats = Citation::getYearlyStats($filters);
 
 		// Output the HTML
 		$this->view->display();
@@ -395,119 +328,75 @@ class Citations extends AdminController
 		$rollover = Request::getInt("rollover", 0);
 		$this->tags	 = Request::getVar('tags', '');
 		$this->badges	= Request::getVar('badges', '');
-		$this->sponsors = Request::getVar('sponsors', array(), 'post');
+		$this->sponsors = array_filter(Request::getVar('sponsors', array(), 'post'));
+		$citationId = !empty($citation['id']) ? $citation['id'] : null;
+		unset($citation['id']);
 
 		// toggle the affiliation
-		if (!isset($citation['affiliated']) || $citation['affiliated'] == NULL)
+		if (!isset($citation['affiliated']) || $citation['affiliated'] == null)
 		{
 				$citation['affiliated'] = 0;
 		}
 
 		// toggle fundeby
-		if (!isset($citation['fundedby']) || $citation['fundedby'] == NULL)
+		if (!isset($citation['fundedby']) || $citation['fundedby'] == null)
 		{
 				$citation['fundedby'] = 0;
 		}
-
 		// Bind incoming data to object
-		$row = new Citation($this->database);
-		if (!$row->bind($citation))
-		{
-			$this->row = $row;
-			$this->setError( $row->getError() );
-			$this->editTask();
-			return;
-		}
+		$row = Citation::oneOrNew($citationId);
+		$row->set($citation);
 
 		//set params
 		$cparams = new Registry($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
 		$cparams->set('rollover', $rollover);
-		$row->params = $cparams->toString();
+		$row->set('params', $cparams->toString());
 
-		// New entry so set the created date
-		if (!$row->id)
-		{
-			$row->created = \Date::toSql();
-		}
-
-		// Check content for missing required data
-		if (!$row->check())
-		{
-			$this->row = $row;
-			$this->setError($row->getError());
-			$this->editTask();
-			return;
-		}
-
-		// Store new content
-		if (!$row->store())
-		{
-			$this->row = $row;
-			$this->setError($row->getError());
-			$this->editTask();
-			return;
-		}
 
 		// Incoming associations
-		$arr = Request::getVar('assocs', array(), 'post');
-		$ignored = array();
-		foreach ($arr as $a)
+		$assocParams = Request::getVar('assocs', array(), 'post');
+		$associations = array();
+		foreach ($assocParams as $assoc)
 		{
-			$a = array_map('trim',$a);
-
-			// Initiate extended database class
-			$assoc = new Association($this->database);
-
-			//check to see if we should delete
-			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
+			$assoc = array_map('trim', $assoc);
+			$assocId = !empty($assoc['id']) ? $assoc['id'] : null;
+			unset($assoc['id']);
+			$newAssociation = Association::oneOrNew($assocId)->set($assoc);
+			if (!$newAssociation->isNew() && (empty($assoc['tbl']) || empty($assoc['oid'])))
 			{
-				// Delete the row
-				if (!$assoc->delete($a['id']))
-				{
-					throw new Exception($assoc->getError(), 500);
-				}
+				$newAssociation->destroy();
 			}
-			else if ($a['tbl'] != '' || $a['oid'] != '')
+			else
 			{
-				$a['cid'] = $row->id;
-
-				// bind the data
-				if (!$assoc->bind($a))
+				if (!empty($assoc['tbl']) && !empty($assoc['oid']))
 				{
-					throw new Exception($assoc->getError(), 500);
-				}
-
-				// Check content
-				if (!$assoc->check())
-				{
-					throw new Exception($assoc->getError(), 500);
-				}
-
-				// Store new content
-				if (!$assoc->store())
-				{
-					throw new Exception($assoc->getError(), 500);
+					$associations[] = $newAssociation;
 				}
 			}
 		}
 
-		//save sponsors on citation
-		if ($this->sponsors)
+		$row->attach('associations', $associations);
+
+		// Store new content
+		if (!$row->saveAndPropagate())
 		{
-			$cs = new Sponsor($this->database);
-			$cs->addSponsors($row->id, $this->sponsors);
+			$this->row = $row;
+			Notify::error($row->getError(), 'com.citations');
+			$this->editTask();
+			return;
 		}
+		$row->sponsors()->sync($this->sponsors);
 
 		//add tags & badges
-		$ct = new Tags($row->id);
-		$ct->setTags($this->tags, User::get('id'), 0, 1, '');
-		$ct->setTags($this->badges, User::get('id'), 0, 1, 'badge');
+		$row->updateTags($this->tags);
+		$row->updateTags($this->badges, 'badge');
+
+		Notify::success(Lang::txt('CITATION_SAVED', $row->id), 'com.citations');
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -524,12 +413,12 @@ class Citations extends AdminController
 		{
 			if (array_key_exists($ignore, $b))
 			{
-				$b[$ignore] = NULL;
+				$b[$ignore] = null;
 			}
 		}
-		if (array_key_exists('id',$b))
+		if (array_key_exists('id', $b))
 		{
-			$b['id'] = NULL;
+			$b['id'] = null;
 		}
 		$values = array_values($b);
 		$e = true;
@@ -557,49 +446,44 @@ class Citations extends AdminController
 			$ids = array($ids);
 		}
 
-		// Make sure we have IDs to work with
-		if (count($ids) > 0)
+        if (count($ids) > 0)
 		{
 			// Loop through the IDs and delete the citation
-			$citation = new Citation($this->database);
-			$assoc	= new Association($this->database);
-			$author   = new Author($this->database);
-			foreach ($ids as $id)
+			$citations = Citation::whereIn('id', $ids)->rows();
+			$citationsRemoved = array();
+			foreach ($citations as $citation)
 			{
-				// Fetch and delete all the associations to this citation
-				$assocs = $assoc->getRecords(array('cid' => $id));
-				foreach ($assocs as $a)
+				$citationId = $citation->get('id');
+				if (!$citation->destroy())
 				{
-					$assoc->delete($a->id);
+					foreach ($citation->getErrors() as $error)
+					{
+						Notify::error($citation->getError(), 'com.citations');
+					}
+					App::redirect(Route::url('index.php?option=com_citations&task=browse'));
 				}
-
-				// Fetch and delete all the authors to this citation
-				$authors = $author->getRecords(array('cid' => $id));
-				foreach ($authors as $a)
+				else
 				{
-					$author->delete($a->id);
+					Notify::success(Lang::txt('CITATION_REMOVED', $citationId), 'com.citations');
 				}
-
-				// Delete the citation
-				$citation->delete($id);
-
-				//citation tags
-				$ct = new Tags($id);
-				$ct->removeAll();
 			}
-
-			$message = Lang::txt('CITATION_REMOVED');
 		}
 		else
 		{
-			$message = Lang::txt('NO_SELECTION');
+			Notify::error($Lang::txt('NO_SELECTION'), 'com_citations');
 		}
-
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true),
-			$message
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true)
 		);
+	}
+
+	private function _displayMessages($domain = 'com.citations')
+	{
+		foreach (Notify::messages($domain) as $message)
+		{
+			Notify::message($message['message'], $message['type']);
+		}
 	}
 
 	/**

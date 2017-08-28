@@ -35,6 +35,8 @@ use Components\Developer\Models\Application\Member;
 use Components\Developer\Models\Application;
 use Components\Developer\Models\Accesstoken;
 use Hubzero\Component\SiteController;
+use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
+use OAuth2;
 use Request;
 use Route;
 use Lang;
@@ -562,6 +564,71 @@ class Applications extends SiteController
 		App::redirect(
 			Route::url('index.php?option=com_developer&controller=applications&id=' . $id . '&active=tokens'),
 			Lang::txt('COM_DEVELOPER_API_APPLICATION_AUTHORIZED_REVOKED'),
+			'passed'
+		);
+	}
+	/*
+	 * Revoke all tokens for an application
+	 * 
+	 * @return  void
+	 */
+	public function createPersonalAccessTask()
+	{
+		// CSRF check
+		Request::checkToken('get');
+
+		// Must be logged in
+		if (User::isGuest())
+		{
+			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id . '&active=tokens', false, true);
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+			);
+			return;
+		}
+
+		// Get the application 
+		$id = Request::getInt('id', 0);
+		$application = Application::oneOrFail($id);
+
+		// Set up the authorization code request and response
+		$request = OAuth2\Request::createFromGlobals();
+		$response = new OAuth2\Response();
+		$request->query['client_id'] = $application->get('client_id');
+		$request->query['response_type'] = 'code';
+		$request->query['redirect_uri'] = $application->get('redirect_uri');
+		$request->query['state'] = uniqid();
+
+		// Config OAuth to give a token 100 years in the future (for now)
+		$server = new \Hubzero\Oauth\Server(new MysqlStorage, array('access_lifetime'=>3153600000));
+
+		// Validate and handle the authorization request
+		if (!$server->validateAuthorizeRequest($request, $response))
+		{
+			throw new Exception($response->getParameter('error_description'), 400);
+		}
+		$server->handleAuthorizeRequest($request, $response, true, User::get('id'));
+
+		// Parse the response to get authorization code
+		$code_url = new \Hubzero\Utility\Uri($response->getHttpHeaders()['Location']);
+
+		// Set up a new request and response for the access token
+		$request = OAuth2\Request::createFromGlobals();
+		$response = new OAuth2\Response();
+		$request->query = array();
+		$request->server['REQUEST_METHOD'] = 'POST';
+		$request->request['client_id'] = $application->get('client_id');
+		$request->request['redirect_uri'] = $application->get('redirect_uri');
+		$request->request['code'] = $code_url->getVar('code');
+		$request->request['grant_type'] = 'authorization_code';
+
+		// Ask OAuth for an access token to be added to the application
+		$response = $server->handleTokenRequest($request);
+
+		// Redirect back to the main listing with a success message
+		App::redirect(
+			Route::url('index.php?option=com_developer&controller=applications&id=' . $id . '&active=tokens'),
+			Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_PERSONAL_ACCESS_TOKEN_SUCCESS', $response->getParameter('access_token')),
 			'passed'
 		);
 	}

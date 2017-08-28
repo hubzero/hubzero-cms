@@ -36,6 +36,8 @@ use Components\Members\Models\Member;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Helpers\Permissions;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
 use Event;
 use User;
 use Date;
@@ -133,7 +135,6 @@ class Exports extends AdminController
 			}
 
 			$keys[$attrib->get('name')] = $attrib->get('name');
-			//array_push($keys, $attrib->get('name'));
 		}
 
 		$results = Event::trigger('members.onExportMemberKeys', array($keys));
@@ -153,13 +154,148 @@ class Exports extends AdminController
 		// Get request vars
 		$delimiter = Request::getVar('delimiter', ',');
 
-		//$csv = array();
 		$path = Config::get('tmp_path') . DS . 'members.csv';
 		$file = fopen($path, 'w');
 		fputcsv($file, $keys);
 
+		// Get filters
+		$filters = array(
+			'search'       => urldecode(Request::getVar('search', '')),
+			'sort'         => Request::getWord('filter_order', 'registerDate'),
+			'sort_Dir'     => Request::getWord('filter_order_Dir', 'DESC'),
+			'registerDate' => Request::getVar('registerDate', ''),
+			'activation'   => Request::getInt('activation', 0),
+			'state'        => Request::getVar('state', '*'),
+			'access'       => Request::getInt('access', 0),
+			'approved'     => Request::getVar('approved', '*'),
+			'group_id'     => Request::getInt('group_id', 0),
+			'range'        => Request::getVar('range', '')
+		);
+
+		$a = $members->getTableName();
+		$b = '#__user_usergroup_map';
+
+		$members
+			->select($a . '.*')
+			->including(['accessgroups', function ($accessgroup){
+				$accessgroup
+					->select('*');
+			}])
+			->including(['notes', function ($note){
+				$note
+					->select('id')
+					->select('user_id');
+			}]);
+
+		if ($filters['group_id'])
+		{
+			$members
+				->join($b, $b . '.user_id', $a . '.id', 'left')
+				->whereEquals($b . '.group_id', (int)$filters['group_id']);
+		}
+
+		if ($filters['search'])
+		{
+			if (is_numeric($filters['search']))
+			{
+				$members->whereEquals($a . '.id', (int)$filters['search']);
+			}
+			else
+			{
+				$members->whereLike($a . '.name', strtolower((string)$filters['search']), 1)
+					->orWhereLike($a . '.username', strtolower((string)$filters['search']), 1)
+					->orWhereLike($a . '.email', strtolower((string)$filters['search']), 1)
+					->resetDepth();
+			}
+		}
+
+		if ($filters['registerDate'])
+		{
+			$members->where($a . '.registerDate', '>=', $filters['registerDate']);
+		}
+
+		if ($filters['access'] > 0)
+		{
+			$members->whereEquals($a . '.access', (int)$filters['access']);
+		}
+
+		if (is_numeric($filters['state']))
+		{
+			$members->whereEquals($a . '.block', (int)$filters['state']);
+		}
+
+		if (is_numeric($filters['approved']))
+		{
+			$members->whereEquals($a . '.approved', (int)$filters['approved']);
+		}
+
+		if ($filters['activation'] < 0)
+		{
+			$members->where($a . '.activation', '<', 0);
+		}
+		if ($filters['activation'] > 0)
+		{
+			$members->where($a . '.activation', '>', 0);
+		}
+
+		// Apply the range filter.
+		if ($filters['range'])
+		{
+			// Get UTC for now.
+			$dNow = Date::of('now');
+			$dStart = clone $dNow;
+
+			switch ($filters['range'])
+			{
+				case 'past_week':
+					$dStart->modify('-7 day');
+					break;
+
+				case 'past_1month':
+					$dStart->modify('-1 month');
+					break;
+
+				case 'past_3month':
+					$dStart->modify('-3 month');
+					break;
+
+				case 'past_6month':
+					$dStart->modify('-6 month');
+					break;
+
+				case 'post_year':
+				case 'past_year':
+					$dStart->modify('-1 year');
+					break;
+
+				case 'today':
+					// Ranges that need to align with local 'days' need special treatment.
+					$offset = Config::get('offset');
+
+					// Reset the start time to be the beginning of today, local time.
+					$dStart = Date::of('now', $offset);
+					$dStart->setTime(0, 0, 0);
+
+					// Now change the timezone back to UTC.
+					$tz = new \DateTimeZone('GMT');
+					$dStart->setTimezone($tz);
+					break;
+			}
+
+			if ($filters['range'] == 'post_year')
+			{
+				$members->where($a . '.registerDate', '<', $dStart->format('Y-m-d H:i:s'));
+			}
+			else
+			{
+				$members->where($a . '.registerDate', '>=', $dStart->format('Y-m-d H:i:s'));
+				$members->where($a . '.registerDate', '<=', $dNow->format('Y-m-d H:i:s'));
+			}
+		}
+
+		// Get records
 		$rows = $members
-			->ordered()
+			->order($a . '.' . $filters['sort'], $filters['sort_Dir'])
 			->rows();
 
 		// Convert to array and bind to object below
@@ -246,32 +382,21 @@ class Exports extends AdminController
 
 			unset($member);
 
-			//array_push($csv, $tmp);
-
 			fputcsv($file, $tmp);
 		}
 
 		fclose($file);
 
-		// output csv directly as a download
-		@ob_end_clean();
+		$server = new \Hubzero\Content\Server();
+		$server->filename($path);
+		$server->disposition('attachment');
+		$server->acceptranges(false); // @TODO fix byte range support
 
-		header("Pragma: public");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Expires: 0");
-
-		header("Content-Transfer-Encoding: binary");
-		header('Content-type: text/comma-separated-values');
-		header('Content-disposition: attachment; filename="members.csv"');
-
-		readfile($path);
-
-		/*$out = fopen('php://output', 'w');
-		fputcsv($out, $keys);
-		foreach ($csv as $row)
+		if (!$server->serve())
 		{
-			fputcsv($out, $row, $delimiter);
-		}*/
+			// Should only get here on error
+			App::abort(500, Lang::txt('Error serving file.'));
+		}
 
 		exit;
 	}

@@ -67,7 +67,7 @@ if (isset($this->messages))
 		<section class="main section"> <!-- .main .section -->
 			<div class="subject">
 				<div class="container data-entry"> <!-- citation search box -->
-					<!-- @TODO replace with hubgraph -->
+					<!-- @TODO replace with global search -->
 					<input class="entry-search-submit" type="submit" value="Search" /> <!-- search button -->
 					<fieldset class="entry-search"> <!-- text box container -->
 						<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
@@ -159,18 +159,13 @@ if (isset($this->messages))
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
 											<div class="citation-notes">
 												<?php
-													$cs = new \Components\Citations\Tables\Sponsor($this->database);
-													$sponsors = $cs->getCitationSponsor($cite->id);
+													$sponsors = $cite->sponsors;
 													$final = "";
 													if ($sponsors)
 													{
 														foreach ($sponsors as $s)
 														{
-															$sp = $cs->getSponsor($s);
-															if ($sp)
-															{
-																$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
-															}
+															$final .= '<a rel="external" href="'.$s->get('link').'">'.$s->get('sponsor').'</a>, ';
 														}
 													}
 												?>

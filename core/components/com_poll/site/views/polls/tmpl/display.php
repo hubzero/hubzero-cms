@@ -105,7 +105,7 @@ $this->css();
 				<div class="meta">
 					<div class="grid">
 						<div class="col span6">
-							<span class="opt icon-votes"><?php echo Lang::txt('COM_POLL_VOTES', $poll->get('votes', 0)); ?></span>
+							<span class="opt icon-votes"><?php echo Lang::txt('COM_POLL_VOTES', $poll->dates()->total()); ?></span>
 						</div>
 						<div class="col span6 omega">
 							<span class="status <?php echo $poll->get('open') ? Lang::txt('open') : Lang::txt('closed'); ?>"><?php echo $poll->get('open') ? Lang::txt('open') : Lang::txt('closed'); ?></span>

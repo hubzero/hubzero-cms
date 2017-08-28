@@ -581,7 +581,7 @@ class GeSHi
 	var $_rx_key = 0;
 
 	/**
-	 * some "callback parameters" for handle_multiline_regexps
+	 * Some "callback parameters" for handle_multiline_regexps
 	 *
 	 * @since 1.0.8
 	 * @access private

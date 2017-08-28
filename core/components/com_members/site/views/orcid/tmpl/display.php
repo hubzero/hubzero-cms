@@ -126,7 +126,7 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
 					</div>
 					<div class="col span4 omega">
 						<p>
-							<a id="get-orcid-results" class="btn" href="javascript:;"><?php echo Lang::txt('Search ORCID'); ?></a>
+							<a id="get-orcid-results" class="btn" onclick="<?php echo 'HUB.Orcid.fetchOrcidRecords(\'' . $this->escape($fname) . '\', \'' . $this->escape($lname) . '\', \'' . $this->escape($email) . '\');'; ?>"><?php echo Lang::txt('Search ORCID'); ?></a>
 						</p>
 					</div>
 				</div>

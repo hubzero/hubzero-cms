@@ -865,7 +865,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Parse input
 	 *
-	 * @return     string
+	 * @param   string   $url
+	 * @param   boolean  $citation
+	 * @param   boolean  $incPreview
+	 * @param   string   $format
+	 * @return  string
 	 */
 	public function parseUrl($url = '', $citation = true, $incPreview = true, $format = 'apa')
 	{
@@ -1079,6 +1083,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get DOI Metadata
 	 *
+	 * @param   string   $doi
+	 * @param   boolean  $citation
+	 * @param   string   &$url
+	 * @param   boolean  $rawData
+	 * @param   string   $format
 	 * @return  string
 	 */
 	public function getDoiMetadata($doi, $citation = false, &$url, $rawData = false, $format = 'apa')
@@ -1165,7 +1174,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Parse DOI metadata
 	 *
-	 * @return     string
+	 * @param   array  $data
+	 * @param   array  $metadata
+	 * @return  string
 	 */
 	public function parseDoiData($data, $metadata)
 	{

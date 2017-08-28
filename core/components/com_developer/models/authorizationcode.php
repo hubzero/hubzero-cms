@@ -93,7 +93,7 @@ class Authorizationcode extends Relational
 	{
 		$this->addRule('redirect_uri', function($data)
 		{
-			if (!isset($data['redirect_uri']) || $data['redirect_uri'])
+			if (!isset($data['redirect_uri']) || !$data['redirect_uri'])
 			{
 				return Lang::txt('COM_DEVELOPER_API_APPLICATION_MISSING_REDIRECT_URI');
 			}

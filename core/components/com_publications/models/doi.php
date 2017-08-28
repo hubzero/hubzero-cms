@@ -31,9 +31,12 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Object;
+use Config;
+use Request;
+use Lang;
 use stdClass;
 
-include_once(__DIR__ . DS . 'publication.php');
+include_once __DIR__ . DS . 'publication.php';
 
 /**
  * Publication doi model class
@@ -42,29 +45,32 @@ class Doi extends Object
 {
 	/**
 	 * DOI Configs
+	 *
+	 * @var  object
 	 */
-	var $_configs = NULL;
+	public $_configs = null;
 
 	/**
 	 * Container for properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_data = array();
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @param   object  $pub
+	 * @return  void
 	 */
-	public function __construct( $pub = NULL )
+	public function __construct($pub = null)
 	{
 		$this->_db = \App::get('db');
 
@@ -72,29 +78,28 @@ class Doi extends Object
 		$this->configs();
 
 		// Map to DOI fields
-		$this->mapPublication( $pub );
+		$this->mapPublication($pub);
 	}
 
 	/**
 	 * Set DOI service configs
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return  object
 	 */
 	public function configs()
 	{
 		if (empty($this->_configs))
 		{
-			$params   = Component::params( 'com_publications' );
+			$params = Component::params('com_publications');
 
-			$configs            = new stdClass;
+			$configs = new stdClass;
 			$configs->shoulder  = $params->get('doi_shoulder');
 			$configs->service   = trim($params->get('doi_service'), DS);
 			$configs->prefix    = $params->get('doi_prefix');
 			$configs->userpw    = $params->get('doi_userpw');
 			$configs->publisher = $params->get('doi_publisher', Config::get('sitename'));
 			$configs->livesite  = trim(Request::root(), DS);
-			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
+			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd'), DS);
 
 			$this->_configs = $configs;
 		}
@@ -105,8 +110,8 @@ class Doi extends Object
 	/**
 	 * Check if a property is set
 	 *
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
+	 * @param   string   $property  Name of property to set
+	 * @return  boolean  True if set
 	 */
 	public function __isset($property)
 	{
@@ -116,9 +121,9 @@ class Doi extends Object
 	/**
 	 * Set a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @param   mixed   $value     Value to set property to
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -128,8 +133,8 @@ class Doi extends Object
 	/**
 	 * Get a property
 	 *
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
+	 * @param   string  $property  Name of property to retrieve
+	 * @return  mixed
 	 */
 	public function __get($property)
 	{
@@ -142,7 +147,7 @@ class Doi extends Object
 	/**
 	 * Check if the service is on
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function on()
 	{
@@ -161,9 +166,10 @@ class Doi extends Object
 	/**
 	 * Build service call path
 	 *
-	 * @return   string
+	 * @param   string  $doi
+	 * @return  string
 	 */
-	public function getServicePath( $doi = NULL )
+	public function getServicePath($doi = null)
 	{
 		if (!$this->on())
 		{
@@ -186,11 +192,10 @@ class Doi extends Object
 	/**
 	 * Map publication object to DOI fields
 	 *
-	 * Instance of Components\Publications\Models\Publication
-	 *
+	 * @param   object  $pub  Instance of Components\Publications\Models\Publication
 	 * @return  void
 	 */
-	public function mapPublication($pub = NULL)
+	public function mapPublication($pub = null)
 	{
 		if (empty($pub) || !$pub instanceof Publication)
 		{
@@ -208,10 +213,10 @@ class Doi extends Object
 		// Set dates
 		$pubYear = $pub->version->published_up
 				&& $pub->version->published_up != $this->_db->getNullDate()
-				? date( 'Y', strtotime($pub->version->published_up)) : date( 'Y' );
+				? date('Y', strtotime($pub->version->published_up)) : date('Y');
 		$pubDate = $pub->version->published_up
 			&& $pub->version->published_up != $this->_db->getNullDate()
-				? date( 'Y-m-d', strtotime($pub->version->published_up)) : date( 'Y-m-d' );
+				? date('Y-m-d', strtotime($pub->version->published_up)) : date('Y-m-d');
 		$this->set('pubYear', $pubYear);
 		$this->set('datePublished', $pubDate);
 
@@ -226,12 +231,15 @@ class Doi extends Object
 		// Map resource type
 		$category = $pub->category();
 		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';
+		$categoryName = explode('/', $category->name);
+		$categoryName = array_pop($categoryName);
 		$this->set('resourceType', $dcType);
-		$this->set('resourceTypeTitle', htmlspecialchars($category->name));
+		$this->set('resourceTypeTitle', htmlspecialchars($categoryName));
 
 		// Map license
 		$license = $pub->license();
-		$this->set('license', htmlspecialchars($license->title));
+		$licenseTitle = is_object($license) ? $license->title : null;
+		$this->set('license', htmlspecialchars($licenseTitle));
 
 		// Map related identifier
 		$lastPub = $pub->lastPublicRelease();
@@ -244,13 +252,12 @@ class Doi extends Object
 	/**
 	 * Map user
 	 *
-	 * User ID
-	 * Publication authors list
-	 * Mapping field
-	 *
+	 * @param   integer  $uid      User ID
+	 * @param   array    $authors  Publication authors list
+	 * @param   string   $type     Mapping field
 	 * @return  void
 	 */
-	public function mapUser( $uid = NULL, $authors = array(), $type = 'creator')
+	public function mapUser($uid = null, $authors = array(), $type = 'creator')
 	{
 		if (!empty($authors) && count($authors) > 0)
 		{
@@ -274,10 +281,10 @@ class Doi extends Object
 		}
 
 		// Format name
-		$nameParts            = explode(" ", $name);
+		$nameParts = explode(' ', $name);
 		$name  = end($nameParts);
 		$name .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
-		$this->set($type , htmlspecialchars($name));
+		$this->set($type, htmlspecialchars($name));
 
 		if (!empty($orcid))
 		{
@@ -293,7 +300,7 @@ class Doi extends Object
 	public function setDefaults()
 	{
 		$this->set('language', 'en');
-		$this->set('pubYear', date( 'Y' ));
+		$this->set('pubYear', date('Y'));
 		$this->set('publisher', htmlspecialchars($this->_configs->publisher));
 		$this->set('resourceType', 'Dataset');
 		$this->set('resourceTypeTitle', 'Dataset');
@@ -324,7 +331,7 @@ class Doi extends Object
 	/**
 	 * Check if required fields are set
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function checkRequired()
 	{
@@ -379,10 +386,9 @@ class Doi extends Object
 	/**
 	 * Run cURL
 	 *
-	 * @param	   string	$url
-	 * @param	   array	$postvals
-	 *
-	 * @return	   response string
+	 * @param   string   $url
+	 * @param   array    $postvals
+	 * @return  boolean
 	 */
 	public function runCurl($url, $postvals = null)
 	{
@@ -484,7 +490,7 @@ class Doi extends Object
 	 * @param   string   $status  DOI status [public, reserved]
 	 * @return  boolean
 	 */
-	public function update($doi = NULL, $sendXml = false, $status = 'public')
+	public function update($doi = null, $sendXml = false, $status = 'public')
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)
@@ -545,9 +551,10 @@ class Doi extends Object
 	/**
 	 * Delete a DOI
 	 *
-	 * @return boolean
+	 * @param   string   $doi
+	 * @return  boolean
 	 */
-	public function delete($doi = NULL)
+	public function delete($doi = null)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)
@@ -570,9 +577,10 @@ class Doi extends Object
 	/**
 	 * Build XML
 	 *
-	 * @return     xml output
+	 * @param   string  $doi
+	 * @return  mixed   xml output
 	 */
-	public function buildXml( $doi = NULL)
+	public function buildXml($doi = null)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)

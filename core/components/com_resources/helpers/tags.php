@@ -454,9 +454,7 @@ class Tags extends Cloud
 	/**
 	 * Get a tag cloud for an object
 	 *
-	 * @param   integer  $showsizes  Show tag size based on use?
-	 * @param   integer  $admin      Show admin tags?
-	 * @param   integer  $objectid   Object ID
+	 * @param   integer  $limit
 	 * @return  string
 	 */
 	public function getTopTagString($limit)
@@ -526,8 +524,8 @@ class Tags extends Cloud
 	 * Build a tag cloud
 	 *
 	 * @param   array    $tags       List of tags
-	 * @param   string   $sort       How to sort tags?
 	 * @param   integer  $showsizes  Show tag size based on use?
+	 * @param   string   $tagstring
 	 * @return  string   HTML
 	 */
 	public function buildTopCloud($tags, $sort='alpha', $showsizes=0, $tagstring='')

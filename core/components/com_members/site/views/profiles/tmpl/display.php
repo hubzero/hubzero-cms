@@ -93,9 +93,7 @@ $this->css('introduction.css', 'system')
 						<fieldset>
 							<p>
 								<label for="gsearch"><?php echo Lang::txt('COM_MEMBERS_FIND_MEMBERS_SEARCH_LABEL'); ?></label>
-								<input type="hidden" name="q[0][field]" value="name" />
-								<input type="hidden" name="q[0][operator]" value="like" />
-								<input type="text" name="q[0][value]" id="gsearch" value="" />
+								<input type="text" name="search" id="gsearch" value="" />
 								<input type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 							</p>
 							<p>

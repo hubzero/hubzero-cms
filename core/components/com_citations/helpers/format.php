@@ -188,7 +188,7 @@ class Format
 	 * @param   boolean  $coins_only     Only output COINs?
 	 * @return  string   Formatted citation
 	 */
-	public function formatCitation($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
+	public function formatCitation($citation, $highlight = null, $include_coins = true, $config, $coins_only = false)
 	{
 		//get hub specific details
 		$hub_name = \Config::get('sitename');
@@ -756,40 +756,47 @@ class Format
 	/**
 	 * Output a tagcloud of badges associated with a citation
 	 *
-	 * @param   object  $citation  Citation
-	 * @param   object  $database  JDatabase
-	 * @return  string  HTML
+	 * @param   object   $citation  Citation
+	 * @param   object   $database  JDatabase
+	 * @param   boolean  $includeHtml
+	 * @return  string   HTML
 	 */
-	public static function citationBadges($citation, $database, $includeHtml = true)
+	public static function citationBadges(&$cite, $includeHtml = true)
 	{
 		$html = '';
+		$cite->separateTagsAndBadges();
 		$badges = array();
+		$badges = $cite->get('badges');
 
-		$sql = "SELECT DISTINCT t.*
-				FROM `#__tags_object` to1
-				INNER JOIN `#__tags` t ON t.id = to1.tagid
-				WHERE to1.tbl='citations'
-				AND to1.objectid={$citation->id}
-				AND to1.label='badge'";
-		$database->setQuery($sql);
-		$badges = $database->loadAssocList();
-
-		if ($badges)
+		if (count($badges) > 0)
 		{
 			if ($includeHtml)
 			{
 				$html = '<ul class="tags badges">';
 				foreach ($badges as $badge)
 				{
-					$html .= '<li><a href="#">' . stripslashes($badge['raw_tag']) . '</a></li>';
+					$html .= '<li><a href="#">' . stripslashes($badge->raw_tag) . '</a></li>';
 				}
 				$html .= "</ul>";
 				return $html;
 			}
 			else
 			{
-				return $badges;
+				$rawTags = array();
+				foreach ($badges as $badge)
+				{
+					if (empty($badge->get('raw_tag')))
+					{
+						continue;
+					}
+					$rawTags[] = $badge->get('raw_tag');
+				}
+				return $rawTags;
 			}
+		}
+		else
+		{
+			$badges = array();
 		}
 
 		return ($includeHtml) ? '' : $badges;
@@ -802,35 +809,26 @@ class Format
 	 * @param   object  $database  JDatabase
 	 * @return  string  HTML
 	 */
-	public static function citationTags($citation, $database, $includeHtml = true)
+	public static function citationTags(&$cite, $includeHtml = true)
 	{
+		$cite->separateTagsAndBadges();
+		$tags = $cite->get('filteredTags');
 		$html = '';
-		$tags = array();
-
-		$sql = "SELECT DISTINCT t.*
-				FROM `#__tags_object` to1
-				INNER JOIN `#__tags` t ON t.id = to1.tagid
-				WHERE to1.tbl='citations'
-				AND to1.objectid={$citation->id}
-				AND (to1.label='' OR to1.label IS NULL)";
-		$database->setQuery($sql);
-		$tags = $database->loadAssocList();
-
-		if ($tags)
+		$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
+		if (count($tags) > 0)
 		{
 			if ($includeHtml)
 			{
-				$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
 
 				$html  = '<ul class="tags">';
 				foreach ($tags as $tag)
 				{
-					$cls = ($tag['admin']) ? 'admin' : '';
+					$cls = ($tag->admin) ? 'admin' : '';
 
 					//display tag if not admin tag or if admin tag and user is adminstrator
-					if (!$tag['admin'] || ($tag['admin'] && $isAdmin))
+					if (!$tag->admin || ($tag->admin && $isAdmin))
 					{
-						$html .= '<li class="' . $cls . '"><a class="tag' . ($tag['admin'] ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+						$html .= '<li class="' . $cls . '"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
 					}
 				}
 				$html .= '</ul>';
@@ -838,8 +836,21 @@ class Format
 			}
 			else
 			{
-				return $tags;
+				$rawTags = array();
+				foreach ($tags as $tag)
+				{
+					if (empty($tag->get('raw_tag')) || ($tag->admin && !$isAdmin))
+					{
+						continue;
+					}
+					$rawTags[] = $tag->get('raw_tag');
+				}
+				return $rawTags;
 			}
+		}
+		else
+		{
+			$tags = array();
 		}
 
 		return ($includeHtml) ? '' : $tags;
@@ -923,7 +934,7 @@ class Format
 			$a = array();
 			foreach ($auths as $auth)
 			{
-				preg_match('/{{(.*?)}}/s',$auth, $matches);
+				preg_match('/{{(.*?)}}/s', $auth, $matches);
 				if (isset($matches[0]) && $matches[0]!='')
 				{
 					$matches[0] = preg_replace('/{{(.*?)}}/s', '\\1', $matches[0]);
@@ -999,9 +1010,14 @@ class Format
 		{
 			switch ($row->type)
 			{
-				case 'phdthesis': $html .= ' (' . \Lang::txt('PhD Thesis') . ')'; break;
-				case 'mastersthesis': $html .= ' (' . \Lang::txt('Masters Thesis') . ')'; break;
-				default: break;
+				case 'phdthesis': 
+					$html .= ' (' . \Lang::txt('PhD Thesis') . ')';
+					break;
+				case 'mastersthesis':
+					$html .= ' (' . \Lang::txt('Masters Thesis') . ')';
+					break;
+				default: 
+					break;
 			}
 		}
 		if (self::keyExistsOrIsNotEmpty('edition', $row))

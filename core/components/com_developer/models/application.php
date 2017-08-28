@@ -476,6 +476,10 @@ class Application extends Relational
 				$link .= '&task=revokeall&id=' . $this->get('id') . '&' . Session::getFormToken() . '=1';
 			break;
 
+			case 'createpat':
+				$link .= '&task=createPersonalAccess&id=' . $this->get('id') . '&' . Session::getFormToken() . '=1';
+			break;
+
 			case 'stats':
 				$link .= '&task=stats&id=' . $this->get('id');
 			break;

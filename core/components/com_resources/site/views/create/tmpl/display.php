@@ -183,6 +183,10 @@ if ($categories) {
 
 		foreach ($categories as $category)
 		{
+			if (!$category->get('state'))
+			{
+				continue;
+			}
 			if ($category->get('contributable') != 1)
 			{
 				continue;

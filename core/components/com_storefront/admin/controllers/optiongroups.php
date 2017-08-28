@@ -234,6 +234,7 @@ class Optiongroups extends AdminController
 			);
 			return;
 		}
+		Notify::success(Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED'));
 
 		$this->editTask($optionGroup);
 	}
@@ -449,4 +450,3 @@ class Optiongroups extends AdminController
 		);
 	}
 }
-

@@ -35,7 +35,7 @@ namespace Components\Citations\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Citations\Helpers;
 use Components\Citations\Tables;
-use Components\Citations\Models\Format as	CitationFormat;
+use Components\Citations\Models\Format as CitationFormat;
 use Request;
 use Route;
 use Lang;
@@ -61,7 +61,7 @@ class Format extends AdminController
 			->row();
 
 		// see if the component config has a value.
-		if ($this->config->get('default_citation_format') != NULL)
+		if ($this->config->get('default_citation_format') != null)
 		{
 			$currentFormat = CitationFormat::all()
 			->where('style', 'LIKE', strtolower($this->config->get('default_citation_format')))

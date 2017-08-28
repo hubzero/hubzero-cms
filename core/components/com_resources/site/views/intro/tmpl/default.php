@@ -115,6 +115,11 @@ if ($this->categories) {
 
 			foreach ($this->categories as $category)
 			{
+				if (!$category->state)
+				{
+					continue;
+				}
+
 				if ($category->id == 7 && !Component::isEnabled('com_tools', true))
 				{
 					continue;
@@ -123,10 +128,16 @@ if ($this->categories) {
 				$i++;
 				switch ($i)
 				{
-					case 3: $clm = 'omega'; break;
-					case 2: $clm = ''; break;
+					case 3:
+						$clm = 'omega';
+						break;
+					case 2:
+						$clm = '';
+						break;
 					case 1:
-					default: $clm = ''; break;
+					default:
+						$clm = '';
+						break;
 				}
 
 				if (substr($category->alias, -3) == 'ies')

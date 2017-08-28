@@ -153,6 +153,10 @@ $this->css()
 									<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ALL_TYPES'); ?></option>
 									<?php foreach ($this->types as $item) { ?>
 										<?php
+										if (!$item->state)
+										{
+											continue;
+										}
 										if ($item->id == 7 && !Component::isEnabled('com_tools', true))
 										{
 											continue;

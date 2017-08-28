@@ -257,8 +257,8 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 					{
 						if ($this->profile->get('email'))
 						{
-							$confirmed  = Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION');
-							$confirmed .= '[code: ' . -$this->profile->get('activation') . '] <label for="activation"><input type="checkbox" name="activation" id="activation" value="1" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+							$confirmed  = '<span class="unconfirmed">' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION') . '<br />[code: ' . -$this->profile->get('activation') . ']</span>';
+							$confirmed .= '<label for="activation"><input type="checkbox" name="activation" id="activation" value="1" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
 						}
 						else
 						{

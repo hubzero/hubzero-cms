@@ -107,7 +107,7 @@ if ($this->announcement->priority == 1)
 			<tr>
 				<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
 					<strong><?php echo $group->get('description'); ?></strong>,
-					<a href="<?php echo $groupLink . '/announcements'; ?>"><?php echo $groupLink . '/announcements'; ?></a>
+					<a href="<?php echo $groupLink; ?>"><?php echo $groupLink; ?></a>
 				</th>
 			</tr>
 		</thead>
@@ -119,6 +119,9 @@ if ($this->announcement->priority == 1)
 							<tr>
 								<td style="text-align: left; padding: 20px;" align="left">
 									<?php echo $this->announcement->get('content'); ?>
+								</td>
+								<td style="text-align: left; padding: 20px;" align="left">
+									<a href="<?php echo $groupLink . '/announcements'; ?>"><?php echo $groupLink . '/announcements'; ?></a>
 								</td>
 							</tr>
 						</tbody>

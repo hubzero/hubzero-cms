@@ -78,6 +78,34 @@
 		border-bottom: 1px solid rgba(255,0,0,0.3);
 	}
 
+	.group-type {
+		display: inline-block;
+		line-height: 1;
+		margin: 0;
+		padding: 0.4em 0.5em 0.5em 0.5em;
+		overflow: hidden;
+		vertical-align: bottom;
+		white-space: nowrap;
+		background-color: #eee;
+		-webkit-border-radius: 0.25em;
+		-moze-border-radius: 0.25em;
+		border-radius: 0.25em;
+		color: #eee;
+		color: rgba(0, 0, 0, 0.4);
+	}
+	.group-type.system {
+		background-color: #f9e4e4;
+		color: #dd5555;
+	}
+	.group-type.project {
+		background-color: #fff0db;
+		color: #ffa44c;
+	}
+	.group-type.super {
+		background-color: #e7f2ff;
+		color: #5da6fb;
+	}
+
 /* Needs attention */
 	.attention-view,
 	.attention-actions {

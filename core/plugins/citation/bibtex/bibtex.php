@@ -32,6 +32,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+use Components\Citations\Models\Citation;
 
 /**
  * Citations plugin class for bibtex
@@ -58,40 +59,42 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 	/**
 	 * Import data from a file
 	 *
-	 * @param   array  $file
+	 * @param   array    $file
+	 * @param   string   $scope
+	 * @param   integer  $scope_id
 	 * @return  array
 	 */
-	public function onImport($file, $scope = NULL, $scope_id = NULL)
+	public function onImport($file, $scope = null, $scope_id = null)
 	{
-		//file type
+		// File type
 		$active = 'bib';
 
-		//get the file extension
+		// Get the file extension
 		$extension = $file->getClientOriginalExtension();
 
-		//make sure we have a .bib file
+		// Make sure we have a .bib file
 		if ($active != $extension)
 		{
 			return;
 		}
 
-		//include bibtex file
+		// Include bibtex file
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
 
-		//create bibtex object
+		// Create bibtex object
 		$bibtex = new Structures_BibTex();
 
-		//feed bibtex lib the file
+		// Feed bibtex lib the file
 		$bibtex->loadFile($file->getPathname());
 
-		//parse file
+		// Parse file
 		$bibtex->parse();
 
-		//get parsed citations
+		// Get parsed citations
 		$citations = $bibtex->data;
 
-		//fix authors
-		for ($i=0;$i<count($citations); $i++)
+		// Fix authors
+		for ($i=0; $i<count($citations); $i++)
 		{
 			$authors = array();
 			$auths   = isset($citations[$i]['author']) ? $citations[$i]['author'] : '';
@@ -109,13 +112,13 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 				 }
 			 }
 			 $citations[$i]['author'] = implode('; ', $authors);
-			} //end if 
+			} // End if 
 		 }
 
-		//array to hold final citataions
+		// Array to hold final citataions
 		$final = array();
 
-		//check for duplicates
+		// Check for duplicates
 		for ($i = 0; $i < count($citations); $i++)
 		{
 			$duplicate = $this->checkDuplicateCitation($citations[$i], $scope, $scope_id);
@@ -139,45 +142,50 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 	 * Check if a citation is a duplicate
 	 *
 	 * @param   array    $citation
-	 * @param		integer	 $scope_id
-	 * @param		string	 $scope
-	 *
+	 * @param   string   $scope
+	 * @param   integer  $scope_id
 	 * @return  integer
 	 */
-	protected function checkDuplicateCitation($citation, $scope = NULL, $scope_id = NULL)
+	protected function checkDuplicateCitation($citation, $scope = null, $scope_id = null)
 	{
-		//vars
+		// Vars
 		$title = '';
 		$doi   = '';
 		$isbn  = '';
 		$match = 0;
 
-		//default percentage to match title
+		// Default percentage to match title
 		$default_title_match = 90;
 
-		//get the % amount that titles should be alike to be considered a duplicate
+		// Get the % amount that titles should be alike to be considered a duplicate
 		$title_match = $this->params->get('title_match_percent', $default_title_match);
 
-		//force title match percent to be integer and remove any unnecessary % signs
+		// Force title match percent to be integer and remove any unnecessary % signs
 		$title_match = (int) str_replace('%', '', $title_match);
 
-		//make sure 0 is not the %
+		// Make sure 0 is not the %
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
 
-		//database object
-		$db = \App::get('db');
+		$existingCitations = Citation::all();
+		if (!empty($scope))
+		{
+			$existingCitations->whereEquals('scope', $scope);
+		}
+		if (!empty($scope_id))
+		{
+			$existingCitations->whereEquals('scope_id', $scope_id);
+		}
 
-		//query
-		$sql = "SELECT id, title, doi, isbn, scope, scope_id FROM `#__citations`";
+		$matchingKeys = array('isbn', 'title', 'doi');
+		$searchParams = array_intersect_key($citation, array_flip($matchingKeys));
+		$searchParams = array_filter($searchParams);
+		if (!empty($searchParams))
+		{
+			$existingCitations->filterBySearch($searchParams);
+		}
 
-		//set the query
-		$db->setQuery($sql);
-
-		//get the result
-		$result = $db->loadObjectList();
-
-		//loop through all current citations
-		foreach ($result as $r)
+		// Loop through all current citations
+		foreach ($existingCitations->rows() as $r)
 		{
 			$id    = $r->id;
 			$title = $r->title;
@@ -188,21 +196,21 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 
 			if (!isset($scope))
 			{
-				//direct matches on doi
+				// Direct matches on doi
 				if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '')
 				{
 					$match = $id;
 					break;
 				}
 
-				//direct matches on isbn
+				// Direct matches on isbn
 				if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '')
 				{
 					$match = $id;
 					break;
 				}
 
-				//match titles based on percect param
+				// Match titles based on percect param
 				similar_text($title, $citation['title'], $similar);
 				if ($similar >= $title_match)
 				{
@@ -212,24 +220,24 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 			}
 			elseif (isset($scope) && isset($scope_id))
 			{
-				//matching within a scope domain
+				// Matching within a scope domain
 				if ($cScope == $scope && $cScope_id == $scope_id)
 				{
-						//direct matches on doi
+						// Direct matches on doi
 						if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '')
 					 {
 						 $match = $id;
 						 break;
 					 }
 
-					 //direct matches on isbn
+					 // Direct matches on isbn
 					 if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '')
 					 {
 						 $match = $id;
 						 break;
 					 }
 
-					 //match titles based on percect param
+					 // Match titles based on percect param
 					 similar_text($title, $citation['title'], $similar);
 					 if ($similar >= $title_match)
 					 {
@@ -238,7 +246,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 					 }
 				}
 			}
-		} //end foreach result as r
+		} // End foreach result as r
 
 		return $match;
 	}

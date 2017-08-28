@@ -73,21 +73,21 @@ class Resources extends GroupMacro
 	 */
 	public function render()
 	{
-		// check if we can render
+		// Check if we can render
 		if (!parent::canRender())
 		{
 			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
-		// get args
+		// Get args
 		$args = $this->getArgs();
 
-		// get details
+		// Get details
 		$type  = $this->_getType($args, 'all');
 		$limit = $this->_getLimit($args, 5);
 		$class = $this->_getClass($args);
 
-		//get resources
+		// Get resources
 		$groupResources = $this->_getResources($type, $limit);
 
 		$html = '<div class="resources ' . $class . '">';
@@ -116,7 +116,7 @@ class Resources extends GroupMacro
 	 */
 	private function _getResources($type = 'all', $limit = 5)
 	{
-		// database object
+		// Database object
 		$database = \App::get('db');
 
 		// Instantiate some needed objects
@@ -149,7 +149,7 @@ class Resources extends GroupMacro
 			$cats[$normalized]['id'] = $categories[$i]->id;
 		}
 
-		// do we have a type?
+		// Do we have a type?
 		if (in_array($type, array_keys($cats)))
 		{
 			$filters['type'] = $cats[$type]['id'];
@@ -165,7 +165,8 @@ class Resources extends GroupMacro
 	/**
 	 * Get item limit
 	 *
-	 * @param  array  $args  Macro Arguments
+	 * @param  array    $args     Macro Arguments
+	 * @param  integer  $default  Default return value
 	 * @return mixed
 	 */
 	private function _getLimit( &$args, $default = 5 )

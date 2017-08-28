@@ -40,11 +40,12 @@ Toolbar::title(Lang::txt('Projects'), 'user.png');
 if ($this->config->get('custom_profile') == 'custom')
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
+	Toolbar::spacer();
 }
-
+Toolbar::archiveList();
+Toolbar::editList();
 Toolbar::spacer();
 Toolbar::preferences('com_projects', '550');
-Toolbar::editList();
 
 
 Html::behavior('tooltip');
@@ -152,6 +153,7 @@ function submitbutton(pressbutton)
 						$row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
 					}
 					$owner = ($row->owned_by_group) ? $row->groupname . '<br /><span class="block prominent">' . $row->groupcn . '</span>' : $row->authorname;
+					$owner = $owner ? $owner : '<span class="unknown" style="color: #bbb;">' . Lang::txt('(unknown)') . '</span>';
 					$ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 
 					// Determine status

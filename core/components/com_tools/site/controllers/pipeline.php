@@ -1032,7 +1032,7 @@ class Pipeline extends SiteController
 			$txt = new \Hubzero\Config\Registry('');
 		}
 
-		if ($this->config->get('github') && isset($tool['github']))
+		if ($this->config->get('github', 1) && isset($tool['github']))
 		{
 			$txt->set('github', $tool['github']);
 		}
@@ -2243,7 +2243,11 @@ class Pipeline extends SiteController
 		$row->set('type', 3);
 
 		// Attach tool group to a ticket for access
-		$row->set('group', $this->config->get('group_prefix', 'app-') . $tool['toolname']);
+		$group = \Hubzero\User\Group::getInstance($this->config->get('group_prefix', 'app-') . $tool['toolname']);
+		if ($group)
+		{
+			$row->set('group_id', $group->get('gidNumber'));
+		}
 		$row->set('email', User::get('email'));
 		$row->set('name', User::get('name'));
 

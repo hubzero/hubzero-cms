@@ -35,7 +35,6 @@ namespace Components\Publications\Models\Orm;
 use Hubzero\Database\Relational;
 
 require_once __DIR__ . DS . 'version.php';
-require_once __DIR__ . DS . 'author.php';
 require_once __DIR__ . DS . 'rating.php';
 require_once __DIR__ . DS . 'type.php';
 require_once __DIR__ . DS . 'category.php';
@@ -65,13 +64,20 @@ class Publication extends Relational
 	);
 
 	/**
+	 * Component configuration
+	 *
+	 * @var  object
+	 */
+	protected $config = null;
+
+	/**
 	 * Establish relationship to type
 	 *
 	 * @return  object
 	 */
 	public function type()
 	{
-		return $this->oneToOne('Type', 'id', 'master_type');
+		return $this->oneToOne(__NAMESPACE__ . '\\Type', 'id', 'master_type');
 	}
 
 	/**
@@ -81,7 +87,7 @@ class Publication extends Relational
 	 */
 	public function category()
 	{
-		return $this->oneToOne('Category', 'id', 'category');
+		return $this->oneToOne(__NAMESPACE__ . '\\Category', 'id', 'category');
 	}
 
 	/**
@@ -91,7 +97,7 @@ class Publication extends Relational
 	 */
 	public function versions()
 	{
-		return $this->oneToMany('Version', 'publication_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Version', 'publication_id');
 	}
 
 	/**
@@ -101,7 +107,47 @@ class Publication extends Relational
 	 */
 	public function ratings()
 	{
-		return $this->oneToMany('Rating', 'publication_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Rating', 'publication_id');
+	}
+
+	/**
+	 * Get the creator of this entry
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
+
+	/**
+	 * Establish relationship to group
+	 *
+	 * @return  object
+	 */
+	public function group()
+	{
+		return $this->belongsToOne('Hubzero\\User\\Group', 'gidNumber', 'group_owner');
+	}
+
+	/**
+	 * Establish relationship to project
+	 *
+	 * @return  object
+	 */
+	public function project()
+	{
+		return $this->belongsToOne('Components\Projects\Models\Orm\Project', 'project_id');
+	}
+
+	/**
+	 * Get the ancestor this was forked from
+	 *
+	 * @return  object
+	 */
+	public function ancestor()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Publication', 'forked_from');
 	}
 
 	/**
@@ -133,5 +179,26 @@ class Publication extends Relational
 
 		// Attempt to delete the record
 		return parent::destroy();
+	}
+
+	/**
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
+	 *
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default
+	 * @return  mixed
+	 */
+	public function config($key=null, $default=null)
+	{
+		if (!isset($this->config))
+		{
+			$this->config = \Component::params('com_publications');
+		}
+		if ($key)
+		{
+			return $this->config->get($key, $default);
+		}
+		return $this->config;
 	}
 }

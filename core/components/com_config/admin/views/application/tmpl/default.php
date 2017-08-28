@@ -102,6 +102,11 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 				</div>
 			</div>
 		</div>
+		<div id="page-api" class="tab">
+			<div class="noshow">
+				<?php echo $this->loadTemplate('api'); ?>
+			</div>
+		</div>
 		<div id="page-permissions" class="tab">
 			<div class="noshow">
 				<?php echo $this->loadTemplate('permissions'); ?>

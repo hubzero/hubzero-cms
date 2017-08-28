@@ -40,7 +40,7 @@ use Request;
 use Event;
 use Lang;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'plugin.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'plugin.php';
 
 /**
  * API controller class for resources

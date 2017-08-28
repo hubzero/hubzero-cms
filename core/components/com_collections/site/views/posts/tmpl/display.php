@@ -161,7 +161,15 @@ if (!$no_html) {
 					foreach ($item->comments() as $comment)
 					{
 						$cuser = Components\Members\Models\Member::oneOrNew($comment->created_by);
-						$cname = $this->escape(stripslashes($cuser->get('name')));
+						$cname = Lang::txt('COM_COLLECTIONS_ANONYMOUS');
+						if (!$comment->anonymous)
+						{
+							$cname = $this->escape(stripslashes($cuser->get('name')));
+							if (in_array($cuser->get('access'), User::getAuthorisedViewLevels()))
+							{
+								$cname = '<a href="' . Route::url($cuser->link()) . '">' . $cname . '</a>';
+							}
+						}
 					?>
 						<li class="comment" id="c<?php echo $comment->id; ?>">
 							<p class="comment-member-photo">
@@ -170,13 +178,7 @@ if (!$no_html) {
 							<div class="comment-content">
 								<p class="comment-title">
 									<strong>
-										<?php if (in_array($cuser->get('access'), User::getAuthorisedViewLevels())) { ?>
-											<a href="<?php echo Route::url($cuser->link()); ?>">
-												<?php echo $cname; ?>
-											</a>
-										<?php } else { ?>
-											<?php echo $cname; ?>
-										<?php } ?>
+										<?php echo $cname; ?>
 									</strong>
 									<a class="permalink" href="#c">
 										<span class="entry-date">

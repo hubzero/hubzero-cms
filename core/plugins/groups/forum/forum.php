@@ -577,6 +577,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$this->setError($this->forum->getError());
 			}
 			$sections = $this->forum->sections($filters)
+				->purgeCache() // Previous query cached 'no results'
 				->ordered()
 				->rows();
 		}

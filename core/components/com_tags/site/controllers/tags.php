@@ -37,16 +37,17 @@ use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
-use Exception;
 use Document;
 use Request;
 use Pathway;
 use Config;
+use Notify;
 use Event;
 use Cache;
 use Route;
 use Lang;
 use User;
+use App;
 
 /**
  * Controller class for tags
@@ -117,7 +118,7 @@ class Tags extends SiteController
 				);
 			}
 
-			throw new Exception(Lang::txt('COM_TAGS_NO_TAG'), 404);
+			App::abort(404, Lang::txt('COM_TAGS_NO_TAG'));
 		}
 
 		if ($tagstring)
@@ -169,7 +170,7 @@ class Tags extends SiteController
 		// Ensure we loaded the tag's info from the database
 		if (empty($tags))
 		{
-			throw new Exception(Lang::txt('COM_TAGS_TAG_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_TAGS_TAG_NOT_FOUND'));
 		}
 
 		// Incoming paging vars
@@ -180,7 +181,7 @@ class Tags extends SiteController
 		);
 		if (!in_array($this->view->filters['sort'], array('date', 'title')))
 		{
-			throw new Exception(Lang::txt('Invalid sort value of "%s".', $this->view->filters), 404);
+			App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->filters));
 		}
 
 		// Get the active category
@@ -237,10 +238,16 @@ class Tags extends SiteController
 				$query .= ") ORDER BY ";
 				switch ($this->view->filters['sort'])
 				{
-					case 'title': $query .= 'title ASC, publish_up';  break;
-					case 'id':    $query .= "id DESC";                break;
+					case 'title':
+						$query .= 'title ASC, publish_up';
+						break;
+					case 'id':
+						$query .= "id DESC";
+						break;
 					case 'date':
-					default:      $query .= 'publish_up DESC, title'; break;
+					default:
+						$query .= 'publish_up DESC, title';
+						break;
 				}
 				if ($this->view->filters['limit'] != 'all'
 				 && $this->view->filters['limit'] > 0)
@@ -384,7 +391,7 @@ class Tags extends SiteController
 		// Ensure we were passed a tag
 		if (!$tagstring)
 		{
-			throw new Exception(Lang::txt('COM_TAGS_NO_TAG'), 404);
+			App::abort(404, Lang::txt('COM_TAGS_NO_TAG'));
 		}
 
 		// Break the string into individual tags
@@ -468,10 +475,16 @@ class Tags extends SiteController
 				$query .= ") ORDER BY ";
 				switch ($sort)
 				{
-					case 'title': $query .= 'title ASC, publish_up';  break;
-					case 'id':    $query .= "id DESC";                break;
+					case 'title':
+						$query .= 'title ASC, publish_up';
+						break;
+					case 'id':
+						$query .= "id DESC";
+						break;
 					case 'date':
-					default:      $query .= 'publish_up DESC, title'; break;
+					default:
+						$query .= 'publish_up DESC, title';
+						break;
 				}
 				if ($limit != 'all'
 				 && $limit > 0)
@@ -548,7 +561,7 @@ class Tags extends SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+			include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 
 			foreach ($rows as $row)
 			{
@@ -557,7 +570,7 @@ class Tags extends SiteController
 				$title = html_entity_decode($title);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(String::truncate(strip_tags(stripslashes($row->ftext)),300));
+				$description = html_entity_decode(String::truncate(strip_tags(stripslashes($row->ftext)), 300));
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
@@ -684,19 +697,19 @@ class Tags extends SiteController
 	 * @param   object  $tag
 	 * @return  void
 	 */
-	public function editTask($tag=NULL)
+	public function editTask($tag=null)
 	{
 		// Check that the user is authorized
 		if (!$this->config->get('access-edit-tag'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Load a tag object if one doesn't already exist
 		if (!is_object($tag))
 		{
 			// Incoming
-			$tag = Tag::oneOrNew(intval(Request::getInt('id', 0, 'request')));
+			$tag = Tag::oneOrNew(Request::getInt('id', 0));
 		}
 
 		$filters = array(
@@ -747,9 +760,10 @@ class Tags extends SiteController
 		// Check that the user is authorized
 		if (!$this->config->get('access-edit-tag'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
+		// Incoming
 		$tag = Request::getVar('fields', array(), 'post');
 
 		$subs = '';
@@ -762,25 +776,38 @@ class Tags extends SiteController
 		// Bind incoming data
 		$row = Tag::oneOrFail(intval($tag['id']))->set($tag);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('tags.onTagBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
 		if (!$row->saveSubstitutions($subs))
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
+		// Trigger after save event
+		Event::trigger('tags.onTagAfterSave', array(&$row, $isNew));
+
+		// Redirect to main listing
 		$limit  = Request::getInt('limit', 0);
 		$start  = Request::getInt('limitstart', 0);
 		$sortby = Request::getInt('sortby', '');
 		$search = urldecode(Request::getString('search', ''));
 
-		// Redirect to main listing
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=browse&search=' . urlencode($search) . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start)
 		);
@@ -796,7 +823,7 @@ class Tags extends SiteController
 		// Check that the user is authorized
 		if (!$this->config->get('access-delete-tag'))
 		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		// Incoming
@@ -809,17 +836,14 @@ class Tags extends SiteController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=browse')
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		foreach ($ids as $id)
 		{
 			$id = intval($id);
 
-			// Remove references to the tag
+			// Trigger before delete event
 			Event::trigger('tags.onTagDelete', array($id));
 
 			// Remove the tag
@@ -857,9 +881,7 @@ class Tags extends SiteController
 			return true;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=browse', false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -963,4 +985,3 @@ class Tags extends SiteController
 		}
 	}
 }
-

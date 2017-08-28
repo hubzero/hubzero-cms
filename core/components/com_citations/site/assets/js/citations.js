@@ -36,6 +36,7 @@ if (!jq) {
 	var jq = $;
 }
 
+
 HUB.Citations = {
 	jQuery: jq,
 
@@ -58,6 +59,8 @@ HUB.Citations = {
 		// single citation
 		HUB.Citations.singleCitation();
 		//HUB.Citations.singleCitationTabs();
+
+		HUB.Citations.authorAutocomplete();
 
 		// Checks the boxes of the already selected citations when the page is done loading
 		var checkList = $("input[name=idlist]").val();
@@ -174,6 +177,64 @@ HUB.Citations = {
 	},
 
 	//-----
+	authorAutocomplete: function()
+	{
+		var $ = this.jQuery;
+		String.prototype.nohtml = function () {
+			if (this.indexOf('?') == -1) {
+				return this + '?no_html=1';
+			} else {
+				return this + '&no_html=1';
+			}
+		};
+		var _DEBUG = 0;
+		manager = $('.author-manager');
+		if (manager.length) {
+			manager
+				.find('button')
+				.on('click', function (e){
+					e.preventDefault();
+
+					if (_DEBUG) {
+						window.console && console.log('Calling: ' + manager.attr('data-add') + '&author=' + $('#field-author').val());
+					}
+
+					$.get(manager.attr('data-add').nohtml() + '&author=' + $('#field-author').val(), {}, function(data) {
+						manager
+							.find('.author-list')
+							.html(data);
+
+						manager.find('li>span').click();
+					});
+				});
+
+			$('.author-list')
+				.on('click', 'a.delete', function (e){
+					e.preventDefault();
+
+					$.get($(this).attr('href').nohtml(), {}, function(data) {});
+
+					$(this).parent().parent().remove();
+				});
+
+			$('.author-list').sortable({
+				handle: '.author-handle',
+				update: function (e, ui) {
+					var col = $(this).sortable("serialize");
+
+					if (_DEBUG) {
+						window.console && console.log('Calling: ' + manager.attr('data-update').nohtml() + '&' + col);
+					}
+
+					$.get(manager.attr('data-update').nohtml() + '&' + col, function(response) {
+						if (_DEBUG) {
+							window.console && console.log(response);
+						}
+					});
+				}
+			});
+		}
+	},
 
 	download: function()
 	{

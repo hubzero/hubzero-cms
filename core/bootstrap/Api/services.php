@@ -50,7 +50,7 @@ return array(
 	'Bootstrap\Api\Providers\MenuServiceProvider',
 	'Hubzero\Api\Response\UriBase',
 	'Hubzero\Api\RateLimit\RateLimitService',
-	//'Hubzero\Api\Response\JsonpCallable',
+	'Hubzero\Api\Response\JsonpCallable',
 	//'Hubzero\Api\Response\DateFormatter',
 	//'Hubzero\Api\Response\ObjectExpander',
 );

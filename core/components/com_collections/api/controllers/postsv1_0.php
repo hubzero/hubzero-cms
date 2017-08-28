@@ -277,7 +277,7 @@ class Postsv1_0 extends ApiController
 			'title'          => Request::getVar('title', null, 'post', 'none', 2),
 			'description'    => Request::getVar('description', null, 'post', 'none', 2),
 			'url'            => Request::getVar('url', null, 'post'),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
+			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', 0, 'post'),
 			'state'          => Request::getInt('state', 1, 'post'),
 			'access'         => Request::getInt('access', 0, 'post'),
@@ -313,7 +313,54 @@ class Postsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		$this->send($row);
+		// Output the newly created post
+		$href = 'index.php?option=com_collections&controller=media&post=';
+		$base = rtrim(Request::base(), '/');
+		$base = str_replace('/api', '', $base) . '/';
+
+		$item = $post->item();
+
+		$collection = new Collection($post->get('collection_id'));
+
+		$post->set('object_type', $collection->get('object_type'));
+		$post->set('object_id', $collection->get('object_id'));
+
+		$obj = new stdClass;
+		$obj->id        = $post->get('id');
+		$obj->collection_id = $post->get('collection_id');
+		$obj->item_id   = $post->get('item_id');
+		$obj->original  = $post->get('original');
+		$obj->ordering  = $post->get('ordering');
+		$obj->title     = $post->get('title', $item->get('title'));
+		$obj->type      = $item->get('type');
+		$obj->created   = $post->get('created');
+		$obj->created_by = new stdClass;
+		$obj->created_by->id   = $post->get('created_by');
+		$obj->created_by->name = $post->creator()->get('name');
+		$obj->url       = $base . ltrim(Route::url($post->link()), '/');
+
+		$obj->tags      = $item->tags('string');
+		$obj->comments  = $item->get('comments', 0);
+		$obj->likes     = $item->get('positive', 0);
+		$obj->reposts   = $item->get('reposts', 0);
+		$obj->assets    = array();
+
+		$assets = $item->assets();
+
+		if ($assets->total() > 0)
+		{
+			foreach ($assets as $asset)
+			{
+				$a = new stdClass;
+				$a->title       = ltrim($asset->get('filename'), '/');
+				$a->description = $asset->get('description');
+				$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $post->get('id') . '&task=download&file=' . $a->title), '/'));
+
+				$obj->assets[] = $a;
+			}
+		}
+
+		$this->send($obj);
 	}
 
 	/**
@@ -479,17 +526,17 @@ class Postsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'id'             => Request::getInt('id', 0, 'post'),
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'description'    => Request::getVar('description', null, 'post', 'none', 2),
-			'url'            => Request::getVar('url', null, 'post'),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
-			'created_by'     => Request::getInt('created_by', 0, 'post'),
-			'state'          => Request::getInt('state', 1, 'post'),
-			'access'         => Request::getInt('access', 0, 'post'),
-			'type'           => Request::getVar('type', 'file', 'post'),
-			'object_id'      => Request::getInt('object_id', 0, 'post'),
-			'collection_id'  => Request::getInt('collection_id', 0, 'post')
+			'id'             => Request::getInt('id', 0, 'put'),
+			'title'          => Request::getVar('title', null, 'put', 'none', 2),
+			'description'    => Request::getVar('description', null, 'put', 'none', 2),
+			'url'            => Request::getVar('url', null, 'put'),
+			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'put'),
+			'created_by'     => Request::getInt('created_by', 0, 'put'),
+			'state'          => Request::getInt('state', 1, 'put'),
+			'access'         => Request::getInt('access', 0, 'put'),
+			'type'           => Request::getVar('type', 'file', 'put'),
+			'object_id'      => Request::getInt('object_id', 0, 'put'),
+			'collection_id'  => Request::getInt('collection_id', 0, 'put')
 		);
 
 		$row = new Post($fields['id']);
@@ -509,7 +556,54 @@ class Postsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		$this->send($row);
+		// Output the newly created post
+		$href = 'index.php?option=com_collections&controller=media&post=';
+		$base = rtrim(Request::base(), '/');
+		$base = str_replace('/api', '', $base) . '/';
+
+		$item = $row->item();
+
+		$collection = new Collection($row->get('collection_id'));
+
+		$row->set('object_type', $collection->get('object_type'));
+		$row->set('object_id', $collection->get('object_id'));
+
+		$obj = new stdClass;
+		$obj->id        = $row->get('id');
+		$obj->collection_id = $row->get('collection_id');
+		$obj->item_id   = $row->get('item_id');
+		$obj->original  = $row->get('original');
+		$obj->ordering  = $row->get('ordering');
+		$obj->title     = $row->get('title', $item->get('title'));
+		$obj->type      = $item->get('type');
+		$obj->created   = $row->get('created');
+		$obj->created_by = new stdClass;
+		$obj->created_by->id   = $row->get('created_by');
+		$obj->created_by->name = $row->creator()->get('name');
+		$obj->url       = $base . ltrim(Route::url($row->link()), '/');
+
+		$obj->tags      = $item->tags('string');
+		$obj->comments  = $item->get('comments', 0);
+		$obj->likes     = $item->get('positive', 0);
+		$obj->reposts   = $item->get('reposts', 0);
+		$obj->assets    = array();
+
+		$assets = $item->assets();
+
+		if ($assets->total() > 0)
+		{
+			foreach ($assets as $asset)
+			{
+				$a = new stdClass;
+				$a->title       = ltrim($asset->get('filename'), '/');
+				$a->description = $asset->get('description');
+				$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $row->get('id') . '&task=download&file=' . $a->title), '/'));
+
+				$obj->assets[] = $a;
+			}
+		}
+
+		$this->send($obj);
 	}
 
 	/**

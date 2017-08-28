@@ -148,11 +148,11 @@ $first = $this->archive->entries(array(
 						<?php echo $this->row->visibility('text'); ?>
 					</dd>
 					<dd class="entry-options">
-						<a class="edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('COM_BLOG_EDIT'); ?>">
-							<span><?php echo Lang::txt('COM_BLOG_EDIT'); ?></span>
+						<a class="edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+							<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 						</a>
-						<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
-							<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
+						<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 						</a>
 					</dd>
 				<?php } ?>
@@ -404,7 +404,7 @@ $first = $this->archive->entries(array(
 						</label>
 
 						<p class="submit">
-							<input type="submit" name="submit" value="<?php echo Lang::txt('COM_BLOG_SUBMIT'); ?>" />
+							<input type="submit" name="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 						</p>
 					<?php } ?>
 

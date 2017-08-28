@@ -35,3 +35,14 @@
 		color: red;
 		border-color: red;
 	}
+
+	.unconfirmed {
+		display: block;
+		text-align: center;
+		background-color: #f9e4e4;
+		color: #dd5555;
+		padding: 0.5em;
+		font-weight: bold;
+		border-radius: 0.25em;
+		margin: 0 0 0.5em 0;
+	}

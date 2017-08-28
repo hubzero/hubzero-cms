@@ -20,8 +20,8 @@ Html::addIncludePath(PATH_CORE . '/components/com_content/admin/helpers/html');
 Html::behavior('tooltip');
 
 $function  = Request::getCmd('function', 'jSelectArticle');
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn  = $this->escape($this->state->get('list.direction'));
+$listOrder = $this->escape($this->filters['sort']);
+$listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('Select Article'); ?></h2>
 <form action="<?php echo Route::url('index.php?option=com_content&view=articles&layout=modal&tmpl=component&function='.$function.'&'.Session::getFormToken().'=1');?>" method="post" name="adminForm" id="adminForm">
@@ -29,7 +29,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" size="30" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
 
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -37,22 +37,22 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			<div class="col span7">
 				<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']);?>
 				</select>
 
 				<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-					<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+					<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true);?>
 				</select>
 
 				<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-					<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->state->get('filter.category_id'));?>
+					<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']);?>
 				</select>
 
 				<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-					<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+					<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']);?>
 				</select>
 			</div>
 		</div>
@@ -114,10 +114,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						</a>
 					</td>
 					<td class="center">
-						<?php echo $this->escape($item->access_level); ?>
+						<?php echo $this->escape($item->accessLevel->title); ?>
 					</td>
 					<td class="center">
-						<?php echo $this->escape($item->category_title); ?>
+						<?php echo $this->escape($item->category->title); ?>
 					</td>
 					<td class="center">
 						<?php if ($item->language=='*'):?>

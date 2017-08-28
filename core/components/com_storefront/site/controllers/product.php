@@ -151,16 +151,17 @@ class Product extends \Hubzero\Component\SiteController
 		}
 
 		// Get option groups with options and SKUs
-		$data = $this->warehouse->getProductOptions($pId);
+		$productOptions = $this->warehouse->getProductOptions($pId);
 
-		//print_r($data); die;
-
-		if ($data)
+		$data = false;
+		if ($productOptions->status == 'ok')
 		{
-			//App::abort(404 , Lang::txt('COM_STOREFRONT_PRODUCT_ERROR'));
+			$data = $productOptions->options;
 			$this->view->options = $data->options;
 		}
-		//print_r($data); die;
+		else {
+			$this->view->statusMessage = $productOptions->msg;
+		}
 
 		// Find a price range for the product
 		$priceRange = array('high' => 0, 'low' => false);
@@ -421,4 +422,3 @@ class Product extends \Hubzero\Component\SiteController
 		}
 	}
 }
-

@@ -327,5 +327,46 @@ class Asset extends Base
 		}
 		return $this->_tbl->reorder("item_id=" . $this->_db->quote(intval($item_id)));
 	}
-}
 
+	/**
+	 * Move to a new location
+	 *
+	 * @param   integer  $item_id  Item ID
+	 * @return  boolean  True on success, false if errors
+	 */
+	public function move($item_id)
+	{
+		$curr = $this->filespace() . DS . $this->get('item_id') . DS;
+		$dest = $this->filespace() . DS . $item_id . DS;
+
+		$file = $this->get('filename');
+		$ext  = Filesystem::extension($file);
+
+		$files = array();
+		$files['original'] = $file;
+		$files['thumb']    = Filesystem::name($file) . '_t.' . $ext;
+		$files['medium']   = Filesystem::name($file) . '_m.' . $ext;
+
+		foreach ($files as $file)
+		{
+			if (!Filesystem::exists($curr . $file))
+			{
+				continue;
+			}
+
+			if (!Filesystem::move($curr . $file, $dest . $file))
+			{
+				return false;
+			}
+		}
+
+		$this->set('item_id', $item_id);
+
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		return true;
+	}
+}
