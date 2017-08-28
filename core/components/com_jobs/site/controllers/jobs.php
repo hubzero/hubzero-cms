@@ -1165,7 +1165,7 @@ class Jobs extends SiteController
 	 *
 	 * @return     void
 	 */
-	public function editappTask() 
+	public function editappTask()
 	{
 		$this->applyTask();
 	}
