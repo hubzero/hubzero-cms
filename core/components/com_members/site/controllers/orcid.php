@@ -34,6 +34,7 @@ namespace Components\Members\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Members\Models\Member;
+use Components\Members\Models\Profile;
 use Exception;
 use Request;
 use Lang;
@@ -48,6 +49,20 @@ class Orcid extends SiteController
 	 * user's name
 	 *
 	 * @var string
+	 */
+	protected $_userName;
+
+	/**
+	 * user's ORCID ID
+	 *
+	 * @var string
+	 */
+	protected $_userOrcidID;
+
+	/**
+	 * OAuth AccessTokens
+	 *
+	 * @var  array
 	 */
 	protected $_accessToken;
 	
@@ -626,5 +641,104 @@ class Orcid extends SiteController
 		curl_close($initedCurl);
 
 		print_r($curl_response);
+	}
+	/*
+	 * Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.
+	 * When deny button is hit, ORCID posts error code back but we do nothing here.
+	 *
+	 * @param   null
+	 * @return  void
+	 */
+	public function excAuth()
+	{
+		// Get client ID and client secret
+		$srv = $this->config->get('orcid_service', 'members');
+		$clientID = $this->config->get('orcid_' . $srv . '_client_id');
+		$clientSecret = $this->config->get('orcid_' . $srv . '_token');
+		$oauthToken = $this->_oauthToken[$srv];
+		
+		if (Request::getVar('code'))
+		{
+			//Build request parameter string
+			$params = "client_id=" . $clientID . "&client_secret=" . $clientSecret. "&grant_type=authorization_code&code=" . Request::getVar('code', '');
+			//Initialize cURL session
+			$ch = curl_init();
+			//Set cURL options
+			curl_setopt($ch, CURLOPT_URL, $oauthToken);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			//Execute cURL command
+			$result = curl_exec($ch);
+			//Transform cURL response from json string to php array
+			if ($result)
+			{
+				$response = json_decode($result, true);
+				$this->_userName = $response['name'];
+				$this->_userOrcidID = $response['orcid'];
+			}
+			//Close cURL session
+			curl_close($ch);
+		}
+		else if (Request::getVar('error') && Request::getVar('error_description'))
+		{
+			//If user clicks on the deny button, it does nothing.
+		}
+		else
+		{
+			echo "Unexpected response from ORCID";
+		}
+	}
+	/*
+	 * Update or save orcid to #_user_profiles
+	 *
+	 * @param   string   $name, $orcid
+	 * @return  void
+	 */
+	public static function saveORCIDToProfile($userID, $orcid)
+	{
+		$row = Profile::oneByKeyAndUser('orcid', $userID);
+		
+		// If the record exists, you are just overwriting the existing data.
+		// If the record doesn't exist, your are setting for a new entry.
+		$row->set('user_id', $userID);
+		$row->set('access', $row->get('access', 1));
+		$row->set('profile_key', 'orcid');
+		$row->set('profile_value', $orcid);
+		if (!$row->save())
+		{
+			\Notify::error($row->getError());
+		}
+	}
+	
+	/**
+	 * Show the landing page about user and ORCID ID
+	 *
+	 * @return  void
+	 */
+	public function redirectTask()
+	{
+		$this->excAuth();
+		// It means when ORCID posts authorization code back
+		if (Request::getVar('code'))
+		{
+			/*
+			* Check if there is such user's id in database. If there is, then save the orcid in #__user_profiles. 
+			* Otherwise save the orcid in session for later use.
+			*/
+			$user_id = User::get('id');
+			if ($user_id != 0)
+			{
+				self::saveORCIDToProfile($user_id, $this->_userOrcidID);
+			}
+			else
+			{
+				Session::set('orcid', $this->_userOrcidID);
+			}
+		}
+		$view = new \Hubzero\Component\View(array('name' => 'orcid', 'layout' => 'redirect'));
+		$view->set('userName', $this->_userName)->set('userORCID', $this->_userOrcidID);
+		$view->display();
 	}
 }
