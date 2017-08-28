@@ -44,7 +44,7 @@ function filter($res, $dd)
 
 	foreach ($header as $key => $val) {
 		if (count($data)>0) {
-			$field_type = mysqli_fetch_field($data)->type;
+			$field_type = mysqli_fetch_field_direct($data, $offset)->type;
 		} else {
 			$field_type = 'string';
 		}
