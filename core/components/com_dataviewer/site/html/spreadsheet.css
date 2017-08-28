@@ -278,6 +278,11 @@ table#dv-spreadsheet-tbl {
 	max-width: none !important;
 }
 
+td>p[style*='width: '] {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
 /* Floating dataview controls */
 div#dv-spreadsheet-tbl_filter, div#dv-spreadsheet-tbl_info, #dv-spreadsheet-tbl_wrapper .dataTables_paginate {
