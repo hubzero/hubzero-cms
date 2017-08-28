@@ -843,6 +843,10 @@ class Resource extends \JTable
 		{
 			$sql .= " AND r.type=" . $this->_db->quote($filters['type']);
 		}
+		if (isset($filters['license']) && $filters['license'] != 'all')
+		{
+			$sql .= " AND r.params LIKE " . $this->_db->quote('%' . $filters['license'] . '%');
+		}
 		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
@@ -862,7 +866,7 @@ class Resource extends \JTable
 		{
 			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
-
+		
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}

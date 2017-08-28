@@ -34,6 +34,7 @@ namespace Components\Resources\Admin\Controllers;
 
 use Components\Resources\Tables\Resource;
 use Components\Resources\Tables\Type;
+use Components\Resources\Tables\License;
 use Components\Resources\Tables\Review;
 use Components\Resources\Tables\Assoc;
 use Components\Resources\Tables\Contributor;
@@ -123,6 +124,11 @@ class Items extends AdminController
 				$this->_option . '.resources.type',
 				'type',
 				''
+			),
+			'license' => Request::getState(
+				$this->_option . '.resources.license',
+				'license',	
+				''
 			)
 		);
 
@@ -138,12 +144,16 @@ class Items extends AdminController
 		$rt = new Type($this->database);
 		$this->view->types = $rt->getMajorTypes();
 
+		// Get <select> of licenses
+		$licenseModel = new License($this->database);
+		$this->view->licenses = $licenseModel->getLicenses();
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
 		}
-
+		
 		// Output the HTML
 		$this->view->display();
 	}
