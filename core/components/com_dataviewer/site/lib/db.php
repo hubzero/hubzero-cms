@@ -24,7 +24,7 @@ function get_db($db = false)
 		$db['password'] = $db['pass'];
 	}
 
-	$link = mysqli_connect($db['host'] , $db['user'], $db['password']);
+	$link = mysqli_connect($db['host'], $db['user'], $db['password']);
 
 	if (!mysqli_select_db($link, $db['database'])) {
 		print("DB error" . mysqli_errno($link) . ": " . mysqli_error($link));
@@ -92,7 +92,7 @@ function query_gen(&$dd)
 	} elseif (isset($dd['col_info']) && $dd['col_info'] == 'override') {
 
 		$tables = array();
-		foreach ($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id => $prop) {
 			$table = explode('.', $id);
 			$table = $table[0];
 
@@ -115,7 +115,7 @@ function query_gen(&$dd)
 			}
 		}
 
-		foreach ($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id => $prop) {
 			if (isset($col_info[$id])) {
 				if (isset($col_info[$id]['label'])) {
 					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br /><br/><br><hr /><hr/><hr>'));
@@ -133,7 +133,7 @@ function query_gen(&$dd)
 	} elseif (isset($dd['col_info']) && $dd['col_info'] == 'soft_override') {
 
 		$tables = array();
-		foreach ($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id => $prop) {
 			$table = explode('.', $id);
 			$table = $table[0];
 
@@ -155,7 +155,7 @@ function query_gen(&$dd)
 			}
 		}
 
-		foreach ($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id => $prop) {
 			if (isset($col_info[$id])) {
 				if (isset($col_info[$id]['label']) && !isset($dd['cols'][$id]['label'])) {
 					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br /><br/><br><hr /><hr/><hr>'));
@@ -176,7 +176,7 @@ function query_gen(&$dd)
 	$cols_vis = array();
 	$cols_sql = array();
 
-	foreach ($dd['cols'] as $id=>$conf) {
+	foreach ($dd['cols'] as $id => $conf) {
 
 		if (isset($conf['field_type']) && $conf['field_type'] === 'point') {
 			$conf['raw'] = "CONCAT(X($id), ',', Y($id))";
@@ -229,7 +229,7 @@ function query_gen(&$dd)
 		foreach ($dd['join'] as $j) {
 			$type = isset($j['type'])? $j['type']: 'LEFT JOIN';
 			$con = array();
-			foreach ($j['fields'] as $f1=>$f2) {
+			foreach ($j['fields'] as $f1 => $f2) {
 				if ($f1 == 'raw') {
 					$con[] = $f2;
 				} else {
@@ -394,7 +394,7 @@ function query_gen(&$dd)
 
 	if (count($having_filter) > 0) {
 		$having_filter_arr = array();
-		foreach ($having_filter as $key=>$val) {
+		foreach ($having_filter as $key => $val) {
 			$val['val'] = strtolower($val['val']);
 			if ($val['fieldtype'] == 'number' || $val['fieldtype'] == 'datetime') {
 				if (strstr($val['val'], 'to')) {
@@ -539,9 +539,9 @@ function query_gen(&$dd)
 			if (isset($w['raw'])) {
 				$where[] = $w['raw'];
 			} elseif ($cols[$w['field']]['raw']) {
-				$where[] = $cols[$w['field']]['expr'] . " IN ('" . str_replace(',' ,"','", $w['value']) . "')";
+				$where[] = $cols[$w['field']]['expr'] . " IN ('" . str_replace(',', "','", $w['value']) . "')";
 			} else {
-				$where[] = $w['field'] . " IN ('" . str_replace(',' ,"','", $w['value']) . "')";
+				$where[] = $w['field'] . " IN ('" . str_replace(',', "','", $w['value']) . "')";
 			}
 		}
 		$where_str .= implode(' AND ', $where);
@@ -602,8 +602,9 @@ function query_gen(&$dd)
 	$sorting = Request::getVar('iSortCol_0', false);
 	if ($sorting !== false && count($cols_vis) > 0) {
 		$sort_col_count = Request::getInt('iSortingCols', 0);
-		for ($i = 0 ; $i < $sort_col_count; $i++) {
-			$idx = Request::getInt('iSortCol_' . $i, NULL);
+		for ($i = 0; $i < $sort_col_count; $i++)
+		{
+			$idx = Request::getInt('iSortCol_' . $i, null);
 			$sortable = Request::getString('bSortable_' . $idx, 'false');
 			if ($sortable === 'true') {
 				$col_id = $cols_vis[$idx];
@@ -665,7 +666,7 @@ function query_gen_total($dd)
 		foreach ($dd['join'] as $j) {
 			$type = isset($j['type'])? $j['type']: 'LEFT JOIN';
 			$con = array();
-			foreach ($j['fields'] as $f1=>$f2) {
+			foreach ($j['fields'] as $f1 => $f2) {
 				if ($f1 == 'raw') {
 					$con[] = $f2;
 				} else {
@@ -723,4 +724,3 @@ function query_gen_total($dd)
 
 	return $sql;
 }
-?>

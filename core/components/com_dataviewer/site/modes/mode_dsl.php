@@ -152,7 +152,9 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	$total = isset($total['total']) ? $total['total'] : 0;
 	$dd['total_records'] = $total;
 
-	$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+	$vis_col_count = count(array_filter($dd['cols'], function ($col) {
+		return !isset($col['hide']);
+	}));
 
 	if ($cell_count_threshold < ($total * $vis_col_count))
 	{
@@ -209,7 +211,7 @@ function _dd_post($dd)
 		}
 
 		// Hiding
-		foreach ($order_cols as $id=>$prop)
+		foreach ($order_cols as $id => $prop)
 		{
 			if (!in_array($id, $custom_view))
 			{
