@@ -788,7 +788,11 @@ class Register extends SiteController
 
 					// Save profile data
 					$member = Member::oneOrNew($user->get('id'));
-
+					$orcidID = Session::get('orcid');
+					if ($orcidID != null)
+					{
+						$profile['orcid'] = $orcidID;
+					}
 					if (!$member->saveProfile($profile, $access))
 					{
 						\Notify::error($member->getError());
