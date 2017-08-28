@@ -281,7 +281,7 @@ class Jobs extends SiteController
 		}
 
 		// Output HTML
-		echo isset($html) ? $html : NULL;
+		echo isset($html) ? $html : null;
 	}
 
 	/**
@@ -299,7 +299,7 @@ class Jobs extends SiteController
 
 		// Go back to the page
 		App::redirect(
-			Request::getVar('HTTP_REFERER', NULL, 'server')  // What page they came from
+			Request::getVar('HTTP_REFERER', null, 'server')  // What page they came from
 		);
 	}
 
@@ -348,7 +348,7 @@ class Jobs extends SiteController
 		}
 
 		// Get filters
-		$filters = $this->_getFilters($this->_admin, 0 , 1 , 1);
+		$filters = $this->_getFilters($this->_admin, 0, 1, 1);
 		$filters['active'] = 1; // only show jobs that have open/unexpired search close date
 
 		// Get data
@@ -506,7 +506,7 @@ class Jobs extends SiteController
 			{
 				//do we have a pending subscription?
 				$subscription = new Subscription($this->database);
-				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status=array(0)))
+				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status = array(0)))
 				{
 					App::redirect(
 						Route::url('index.php?option=com_jobs&task=dashboard'),
@@ -584,7 +584,7 @@ class Jobs extends SiteController
 
 		// do we have an active subscription already?
 		$subscription = new Subscription($this->database);
-		if (!$subscription->loadSubscription ($employer->subscriptionid, '', '', $status=array(0, 1)))
+		if (!$subscription->loadSubscription ($employer->subscriptionid, '', '', $status = array(0, 1)))
 		{
 			$subscription = new Subscription($this->database);
 			$subscription->uid = $uid;
@@ -1137,7 +1137,7 @@ class Jobs extends SiteController
 
 		$js = new JobSeeker($this->database);
 		$seeker = $js->getSeeker(User::get('id'), User::get('id'));
-		$seeker = count($seeker) > 0 ? $seeker[0] : NULL;
+		$seeker = count($seeker) > 0 ? $seeker[0] : null;
 
 		// Output HTML
 		$view = new View(array('name' => 'apply'));
@@ -1158,6 +1158,16 @@ class Jobs extends SiteController
 		}
 
 		$view->display();
+	}
+
+	/**
+	 * Wrapper to edit an application
+	 *
+	 * @return     void
+	 */
+	public function editappTask() 
+	{
+		$this->applyTask();
 	}
 
 	/**
@@ -1353,7 +1363,7 @@ class Jobs extends SiteController
 			foreach ($job->applications as $ap)
 			{
 				$seeker = $js->getSeeker($ap->uid, $job->employerid);
-				$ap->seeker = (!$seeker or count($seeker)==0) ? NULL : $seeker[0];
+				$ap->seeker = (!$seeker or count($seeker)==0) ? null : $seeker[0];
 
 				if ($ap->status == 2)
 				{
@@ -1482,7 +1492,7 @@ class Jobs extends SiteController
 			}
 		}
 
-		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : NULL;
+		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : null;
 
 		// Save new information
 		if (!$min)
@@ -1610,7 +1620,7 @@ class Jobs extends SiteController
 			{
 				//do we have a pending subscription?
 				$subscription = new Subscription($this->database);
-				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status=array(0)))
+				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status = array(0)))
 				{
 					App::redirect(
 						Route::url('index.php?option=com_jobs&task=dashboard'),
@@ -1948,17 +1958,17 @@ class Jobs extends SiteController
 			$filters['sortby']   = $this->getVar('sortby') && $checkstored
 								 ? $this->getVar('sortby', 'title') : trim(Request::getVar('sortby', 'title'));
 			$filters['category'] = $this->getVar('category') && $checkstored
-								 ? $this->getVar('category') : Request::getInt('category',  'all');
+								 ? $this->getVar('category') : Request::getInt('category', 'all');
 		}
 		else
 		{
 			$filters['sortby']   = $this->getVar('sortby') && $checkstored
 								 ? $this->getVar('sortby') : trim(Request::getVar('sortby', 'lastupdate'));
 			$filters['category'] = $this->getVar('category') && $checkstored
-								 ? $this->getVar('category') : Request::getInt('category',  0);
+								 ? $this->getVar('category') : Request::getInt('category', 0);
 		}
 
-		$filters['type']     = $this->getVar('type') && $checkstored ? $this->getVar('type') : Request::getInt('type',  0);
+		$filters['type']     = $this->getVar('type') && $checkstored ? $this->getVar('type') : Request::getInt('type', 0);
 		$filters['search']   = $this->getVar('search') && $checkstored ? $this->getVar('search') : trim(Request::getVar('q', ''));
 		$filters['filterby'] = trim(Request::getVar('filterby', 'all'));
 		$filters['sortdir']  = Request::getVar('sortdir', 'ASC');
@@ -2075,7 +2085,7 @@ class Jobs extends SiteController
 			$i = 0;
 
 			$zip = new ZipArchive;
-			if ($zip->open(PATH_APP . $base_path . DS . $zipname, ZipArchive::OVERWRITE) === TRUE)
+			if ($zip->open(PATH_APP . $base_path . DS . $zipname, ZipArchive::OVERWRITE) === true)
 			{
 				foreach ($files as $avalue => $alabel)
 				{
@@ -2239,4 +2249,3 @@ class Jobs extends SiteController
 		$service->maxads = intval(str_replace(' ', '', $service->maxads));
 	}
 }
-

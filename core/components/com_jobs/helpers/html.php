@@ -66,26 +66,26 @@ class Html
 	{
 		$html  = '<div class="confirmwrap">' . "\n";
 		$html .= "\t" . '<div class="confirmscreen">' . "\n";
-		$html .= "\t" . '<p class="warning">' . Lang::txt('CONFIRM_ARE_YOU_SURE') . ' ';
+		$html .= "\t" . '<p class="warning">' . Lang::txt('COM_JOBS_CONFIRM_ARE_YOU_SURE') .  ' ';
 		if ($action == 'cancelsubscription')
 		{
-			$html .= strtolower(Lang::txt('SUBSCRIPTION_CANCEL_THIS'));
+			$html .= strtolower(Lang::txt('COM_JOBSSUBSCRIPTION_CANCEL_THIS'));
 		}
 		else if ($action == 'withdrawapp')
 		{
-			$html .=  Lang::txt('APPLICATION_WITHDRAW');
+			$html .=  Lang::txt('COM_JOBS_APPLICATION_WITHDRAW');
 		}
 		else
 		{
-			$html .= Lang::txt('ACTION_PERFORM_THIS');
+			$html .= Lang::txt('COM_JOBS_ACTION_PERFORM_THIS');
 		}
 		$yes  = strtoupper(Lang::txt('YES'));
-		$yes .= $action == 'cancelsubscription' ? ', ' . Lang::txt('ACTION_CANCEL_IT') : '';
-		$yes .= $action == 'withdrawapp'        ? ', ' . Lang::txt('ACTION_WITHDRAW')  : '';
+		$yes .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_CANCEL_IT') : '';
+		$yes .= $action == 'withdrawapp'        ? ', ' . Lang::txt('COM_JOBS_ACTION_WITHDRAW')  : '';
 
 		$no  = strtoupper(Lang::txt('NO'));
-		$no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('ACTION_DO_NOT_CANCEL')   : '';
-		$no .= $action == 'withdrawapp'        ? ', ' . Lang::txt('ACTION_DO_NOT_WITHDRAW') : '';
+		$no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_CANCEL')   : '';
+		$no .= $action == 'withdrawapp'        ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_WITHDRAW') : '';
 
 		$html .= '?</p>' . "\n";
 		$html .= "\t" . '<p><span class="yes"><a href="' . $actionurl . '">' . $yes . '</a></span> <span class="no"><a href="' . $returnurl . '">' . $no . '</a></span></p>';

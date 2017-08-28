@@ -62,8 +62,7 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 </header><!-- / #content-header -->
 
 <?php if (!$seeker) { ?>
-	<p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_TO_APPLY') . ' '. Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_APPLY_NEED_RESUME') ?></p>
-	<p>
+	<p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_TO_APPLY') . ' '. Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_APPLY_NEED_RESUME') ?>
 		<?php echo '<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume') . '" class="add">' . Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE') . '</a>'; ?>
 	</p>
 <?php } else { ?>
@@ -86,7 +85,7 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 			</h3>
 		</div>
 
-		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . "&task=saveapp"); ?>">
 			<fieldset>
 				<input type="hidden"  name="task" value="saveapp" />
 				<input type="hidden" id="code" name="code" value="<?php echo $job->code; ?>" />
@@ -126,12 +125,10 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 				?>
 			</div>
 			<p class="submit">
-				<input type="submit" name="submit" value="<?php echo $this->task=='editapp' ? Lang::txt('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : Lang::txt('COM_JOBS_ACTION_APPLY_THIS_JOB'); ?>" />
-				<span class="cancelaction">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&id=' . $job->code); ?>">
-						<?php echo Lang::txt('COM_JOBS_CANCEL'); ?>
-					</a>
-				</span>
+				<input class="btn btn-success" type="submit" name="submit" value="<?php echo $this->task=='editapp' ? Lang::txt('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : Lang::txt('COM_JOBS_ACTION_APPLY_THIS_JOB'); ?>" />
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&id=' . $job->code); ?>"><button type="button" class="btn btn-secondary">
+							<?php echo Lang::txt('COM_JOBS_CANCEL'); ?>
+					</button></a>
 			</p>
 		</form>
 	</section>
