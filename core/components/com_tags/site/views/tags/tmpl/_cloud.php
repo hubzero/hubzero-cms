@@ -77,7 +77,7 @@ defined('_HZEXEC_') or die();
 
 		if ($this->config->get('show_sizes', 0) == 2)
 		{
-			$tll[$tag->get('tag')] = '<li' . $class . '><a href="javascript:void(0);" onclick="addtag(\'' . $this->escape($tag->get('tag')) . '\');">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->objects()->total() . '</span></a></li>';
+			$tll[$tag->get('tag')] = '<li' . $class . '><a href="javascript:void(0);" onclick="addtag(\'' . $this->escape($tag->get('tag')) . '\');">' . $this->escape(ucfirst(strtolower(stripslashes($tag->get('raw_tag'))))) . ' <span>' . $tag->objects()->total() . '</span></a></li>';
 		}
 		else
 		{
@@ -88,7 +88,7 @@ defined('_HZEXEC_') or die();
 
 				$tll[$tag->get('tag')] .= '<span style="font-size: ' . round($size, 1) . 'em;">';
 			}
-			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
+			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(ucfirst(strtolower(stripslashes($tag->get('raw_tag')))));
 			if ($this->config->get('show_tag_count', 0))
 			{
 				$tll[$tag->get('tag')] .= ' <span>' . $tag->get('count') . '</span>';
