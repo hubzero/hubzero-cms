@@ -203,6 +203,8 @@ jQuery(document).ready(function($){
 			}
 
 			window.open(trigger.attr('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w);
+
+			trigger.blur();
 		}
 
 		if (trigger.attr('rel') 
