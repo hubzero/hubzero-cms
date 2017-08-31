@@ -141,7 +141,7 @@ class Nogit extends Models\Adapter
 			}
 			// Load basic file metadata
 			$file = new Models\File($item, $this->_path);
-			if ($this->_shouldSkipFile($file))
+			if ($file->get('name') == '.git')
 			{
 				continue;
 			}
@@ -179,14 +179,6 @@ class Nogit extends Models\Adapter
 		// Apply start and limit, get complete metadata and return
 		return $this->_list($items, $params);
 
-	}
-
-	protected function _shouldSkipFile($file)
-	{
-		$fileName = $file->get('name');
-		$filesToSkip = array('.git', '.gitignore');
-
-		return in_array($fileName, $filesToSkip);
 	}
 
 	/**
@@ -316,7 +308,7 @@ class Nogit extends Models\Adapter
 			return false;
 		}
 
-		$this->_nogit->call("mv " . escapeshellarg($fromFile->get('localPath')) . " " . escapeshellarg($toFile->get('localPath')));
+		$this->_nogit->call("mv " . $fromFile->get('localPath') . " " . $toFile->get('localPath'));
 
 		return true;
 	}
@@ -394,7 +386,13 @@ class Nogit extends Models\Adapter
 		}
 
 		// Delete from Git
-		$this->_nogit->call("rm " . escapeshellarg($file->get('localPath')));
+		$localPath = $file->get('localPath');
+		// If the filename is not quoted, quote it to avoid issues
+		if (!strpos(basename($localPath), '"'))
+		{
+			$localPath = dirname($localPath) . DS . '"' . basename($localPath) . '"';
+		}
+		$this->_nogit->call("rm " . $localPath);
 
 		return true;
 	}
