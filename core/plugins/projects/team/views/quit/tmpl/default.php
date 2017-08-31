@@ -54,7 +54,11 @@ if ($this->group)
 			<?php echo Html::input('token'); ?>
 			<?php if ($this->model->access('owner')) { ?>
 				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_OWNER'); ?> <a href="<?php echo Route::url($this->model->link('edit') . '&section=team'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM'); ?></a>.</p>
-			<?php } elseif ($this->onlymanager) { ?>
+			<?php }
+			elseif ($this->model->access('componentmanager')) { ?>
+				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_COMPONENTMANAGER'); ?></p>
+			<?php }
+			elseif ($this->onlymanager) { ?>
 					<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER'); ?> <a href="<?php echo Route::url($this->model->link('edit') . '&section=team'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM'); ?></a>.</p>
 			<?php } elseif ($inGroup) { ?>
 				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('gidNumber')); ?>"><?php echo $group->get('description'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>
