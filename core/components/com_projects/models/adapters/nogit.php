@@ -308,7 +308,7 @@ class Nogit extends Models\Adapter
 			return false;
 		}
 
-		$this->_nogit->call("mv " . escapeshellarg($fromFile->get('localPath')) . " " . escapeshellarg($toFile->get('localPath')));
+		$this->_nogit->call("mv " . $fromFile->get('localPath') . " " . $toFile->get('localPath'));
 
 		return true;
 	}
@@ -386,7 +386,13 @@ class Nogit extends Models\Adapter
 		}
 
 		// Delete from Git
-		$this->_nogit->call("rm " . escapeshellarg($file->get('localPath')));
+		$localPath = $file->get('localPath');
+		// If the filename is not quoted, quote it to avoid issues
+		if (!strpos(basename($localPath), '"'))
+		{
+			$localPath = dirname($localPath) . DS . '"' . basename($localPath) . '"';
+		}
+		$this->_nogit->call("rm " . $localPath);
 
 		return true;
 	}
