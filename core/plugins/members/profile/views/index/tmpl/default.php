@@ -660,6 +660,17 @@ $legacy = array(
 							{
 								$formfield->setValue($value);
 
+								if ($this->profile->get('access') > 2)
+								{
+									$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+									$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
+									$access .= '<input type="hidden" name="access[' . $field->get('name') . ']" value="' . $profile->get('access', $field->get('access')) . '" />';
+								}
+								else
+								{
+									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select');
+								}
+
 								$this->view('default', 'edit')
 									->set('registration_field', $field->get('name'))
 									->set('profile_field', $field->get('name'))
@@ -668,7 +679,7 @@ $legacy = array(
 									->set('profile', $this->profile)
 									->set('isUser', $isUser)
 									->set('inputs', $formfield->label . $formfield->input)
-									->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select'))
+									->set('access', $access)
 									->display();
 							}
 						}
