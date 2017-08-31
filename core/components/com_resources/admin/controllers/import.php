@@ -155,13 +155,21 @@ class Import extends AdminController
 		}
 
 		// get request vars
-		$import = Request::getVar('import', array());
+		$importVars = Request::getVar('import', array());
 		$hooks  = Request::getVar('hooks', array());
 		$params = Request::getVar('params', array());
 		$file   = Request::getVar('file', array(), 'FILES');
 
 		// create import model object
 		$import = new Models\Import();
+		$import->set('name', $importVars['name']);
+		$import->set('notes', $importVars['notes']);
+		if (isset($importVars['id']) && $importVars['id'])
+		{
+			$import->set('id', $importVars['id']);
+		}
+
+		//print_r(Request::getVar('import', array())); die;
 
 		// set our hooks
 		$import->set('hooks', json_encode($hooks));
