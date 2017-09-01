@@ -169,8 +169,6 @@ class Import extends AdminController
 			$import->set('id', $importVars['id']);
 		}
 
-		//print_r(Request::getVar('import', array())); die;
-
 		// set our hooks
 		$import->set('hooks', json_encode($hooks));
 
@@ -184,7 +182,7 @@ class Import extends AdminController
 		$import->set('params', $iparams->toString());
 
 		// bind input to model
-		if (!$import->bind($import))
+		if (!$import->bind($importVars))
 		{
 			Notify::error($import->getError());
 			return $this->editTask();
