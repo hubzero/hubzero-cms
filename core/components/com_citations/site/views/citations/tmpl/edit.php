@@ -44,21 +44,6 @@ $fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
 $fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and Badges" : $fieldset_label;
 
 
-$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
-					array(
-						array('tags', 'tags', 'actags', '', 
-							implode(",", $this->tags)
-						)	
-					)
-				);
-
-$badges_list = Event::trigger('hubzero.onGetMultiEntry', 
-					array(
-						array('tags', 'badges', 'actags1', '', 
-							implode(",", $this->badges)
-						)
-					)
-				);
 
 
 //get the referrer
@@ -184,26 +169,7 @@ $pid = Request::getInt('publication', 0);
 					</div>
 
 					<div class="field-wrap author-list">
-						<?php if (count($this->row->relatedAuthors) > 0) { ?>
-							<?php foreach ($this->row->relatedAuthors()->order('ordering', 'ASC') as $i => $author) { ?>
-								<p class="citation-author" id="author_<?php echo $author->id; ?>">
-									<span class="author-handle">
-									</span>
-									<span class="author-name">
-										<?php echo $author->author; ?>
-									</span>
-									<span class="author-description">
-										<input type="hidden" name="author[<?php echo $i; ?>][id]" value="<?php echo $author->id; ?>" />
-										<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" data-id="<?php echo $author->id; ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $author->id . '&' . $this->token . '=1'); ?>">
-											<?php echo Lang::txt('JDELETE'); ?>
-										</a>
-									</span>
-								</p>
-							<?php } ?>
-						<?php } else { ?>
-							<p class="author-instructions"><?php //echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT'); ?></p>
-						<?php } ?>
-					</div>
+						<?php echo $this->setName('authors')->setLayout('display')->loadTemplate('authors'); ?>
 					</fieldset>
 
 			<label for="authoraddress">
@@ -399,6 +365,14 @@ $pid = Request::getInt('publication', 0);
 					<label>
 						<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
 						<?php
+							$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
+												array(
+													array('tags', 'tags', 'actags', '', 
+														implode(",", $this->tags)
+													)	
+												)
+											);
+
 							if (count($tags_list) > 0) {
 								echo $tags_list[0];
 							} else {
@@ -413,6 +387,13 @@ $pid = Request::getInt('publication', 0);
 					<label class="badges">
 						<?php echo Lang::txt('COM_CITATIONS_BADGES'); ?>:
 						<?php
+							$badges_list = Event::trigger('hubzero.onGetMultiEntry', 
+												array(
+													array('tags', 'badges', 'actags1', '', 
+														implode(",", $this->badges)
+													)
+												)
+											);
 							if (count($badges_list) > 0) {
 								echo $badges_list[0];
 							} else {

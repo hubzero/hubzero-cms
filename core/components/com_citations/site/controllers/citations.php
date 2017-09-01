@@ -124,10 +124,6 @@ class Citations extends SiteController
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
 		$this->view->isAdmin  = false;
-		if (User::authorise('core.manage', $this->_option))
-		{
-			$this->view->isAdmin = true;
-		}
 
 		$earliest_year = Citation::all()->where('year', '!=', '')->where('year', 'IS NOT', null)->where('year', '!=', 0)->order('year', 'asc')->limit(1)->row()->year;
 		$earliest_year = !empty($earliest_year) ? $earliest_year : 1970;
@@ -154,6 +150,12 @@ class Citations extends SiteController
 			'enduploaddate'   => Request::getVar('enduploaddate', '0000-00-00'),
 			'scope'			  => 'hub'
 		);
+
+		if (User::authorise('core.manage', $this->_option))
+		{
+			$this->view->isAdmin = true;
+			$this->view->filters['published'] = array(0, 1);
+		}
 
 		$this->view->filter = array(
 			'all'    => Lang::txt('COM_CITATIONS_ALL'),

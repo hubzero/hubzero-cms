@@ -131,11 +131,11 @@ class Authors extends SiteController
 				'cid'          => $this->citation->id,
 				'author'       => $user->get('name'),
 				'uidNumber'    => $user->get('id', 0),
-				'organization' => $user->get('organization'),
-				'givenName'    => $user->get('givenName'),
-				'middleName'   => $user->get('middleName'),
+				'organization' => $user->get('organization', ''),
+				'givenName'    => $user->get('givenName', ''),
+				'middleName'   => $user->get('middleName', ''),
 				'surname'      => $user->get('surname'),
-				'email'        => $user->get('email')
+				'email'        => $user->get('email', '')
 			);
 			$author = Author::blank()->set($authorValues);
 
@@ -230,9 +230,10 @@ class Authors extends SiteController
 
 		// Output the HTML
 		$this->view
-			->set('citation', $this->citation)
-			->setLayout('display')
-			->display();
+			->set('row', $this->citation)
+			->setLayout('display');
+		echo $this->view->loadTemplate('authors');
+		exit();
 	}
 
 }

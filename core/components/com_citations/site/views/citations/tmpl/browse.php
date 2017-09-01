@@ -273,6 +273,7 @@ if ($label == 'none') {
 							case 'reftype':
 							case 'aff':
 							case 'geo':
+							case 'published':
 								foreach ($value as $k => $v)
 								{
 									$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
