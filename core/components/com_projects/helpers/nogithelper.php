@@ -181,7 +181,7 @@ class Nogit extends Object
 		// Get list of all files
 		if ($showAll)
 		{
-			$out = $this->call("find -not -path -'.'" . escapeshellarg($subdir));
+			$out = $this->call("find -printf '%P\n' -not -path -'.'" . escapeshellarg($subdir));
 		}
 		else
 		{
@@ -203,7 +203,7 @@ class Nogit extends Object
 		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
 
 		// Get list of the directories
-		$out = $this->call("find -type d -not -path -'.'");
+		$out = $this->call("find -type d -not -path -'.' -printf '%P\n'");
 		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
 	}
 
