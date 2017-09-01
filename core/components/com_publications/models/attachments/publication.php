@@ -308,7 +308,7 @@ class Publication extends Base
 
 		if (!$path)
 		{
-			$this->setError(Lang::txt('Oups! Something went wrong. Cannot redirect to content.'));
+			$this->setError(Lang::txt('Oops! Something went wrong. Cannot redirect to content.'));
 			return false;
 		}
 

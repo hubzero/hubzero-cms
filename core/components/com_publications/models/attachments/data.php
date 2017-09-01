@@ -252,7 +252,7 @@ class Data extends Base
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->_parent->setError( Lang::txt('Oups! Cannot attach selected database: database not found') );
+				$this->_parent->setError( Lang::txt('Oops! Cannot attach selected database: database not found') );
 				return false;
 			}
 
@@ -324,7 +324,7 @@ class Data extends Base
 
 		if (!$path)
 		{
-			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 
@@ -440,7 +440,7 @@ class Data extends Base
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->setError( Lang::txt('Oups! Cannot attach selected database: database not found') );
+				$this->setError( Lang::txt('Oops! Cannot attach selected database: database not found') );
 				return false;
 			}
 			$objPA->publication_id 			= $pub->id;
