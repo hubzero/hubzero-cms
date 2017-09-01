@@ -949,36 +949,45 @@ class Data extends Base
 					Filesystem::makeDirectory(dirname($configs->dataPath . DS . $file), 0755, true, true);
 				}
 
+				// Copy the file from the project to the publication	
 				if (Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $file))
 				{
-					// Generate thumbnail
-					$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
-					Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
+					// Don't bother turning anything but an image into a thumbnail
+					if (stripos(Filesystem::mimetype($file), 'image') !== false)
+					{
+						// Generate thumbnail
+						$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
+						Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
 
-					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $thumb);
-					if (count($hi->getErrors()) == 0)
-					{
-						$hi->resize(180, false, false, false);
-						$hi->save($configs->dataPath . DS . $thumb);
-					}
-					else
-					{
-						return false;
-					}
+						$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $thumb);
+						if (count($hi->getErrors()) == 0)
+						{
+							$hi->resize(180, false, false, false);
+							$hi->save($configs->dataPath . DS . $thumb);
+						}
+						else
+						{
+							// clean up our mess and carry on
+							Filesystem::delete($configs->dataPath . DS . $thumb);
+							continue;
+						}
 
-					// Generate medium image
-					$med = \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
-					Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
+						// Generate medium image
+						$med = \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
+						Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
 
-					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $med);
-					if (count($hi->getErrors()) == 0)
-					{
-						$hi->resize(800, false, false, false);
-						$hi->save($configs->dataPath . DS . $med);
-					}
-					else
-					{
-						return false;
+						$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $med);
+						if (count($hi->getErrors()) == 0)
+						{
+							$hi->resize(800, false, false, false);
+							$hi->save($configs->dataPath . DS . $med);
+						}
+						else
+						{
+							// clean up our mess and carry on
+							Filesystem::delete($configs->dataPath . DS . $med);
+							continue;
+						}
 					}
 				}
 			}
