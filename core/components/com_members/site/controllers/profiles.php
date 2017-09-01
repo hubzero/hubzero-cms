@@ -512,12 +512,12 @@ class Profiles extends SiteController
 							foreach ($searches as $z => $searching)
 							{
 								$entries->joinRaw(
-									$b . ' AS s' . $z,
-									's' . $z . '.user_id=' . $a . '.id AND s' . $z . '.profile_key=' . $db->quote($searching),
+									$b . ' AS s' . ($v . '_' . $z),
+									's' . ($v . '_' . $z) . '.user_id=' . $a . '.id AND s' . ($v . '_' . $z) . '.profile_key=' . $db->quote($searching),
 									'left'
 								);
 
-								$entries->orWhere('s' . $z . '.profile_value', ' ' . $q['o'] . ' ', strtolower((string)$term), 1);
+								$entries->orWhere('s' . ($v . '_' . $z) . '.profile_value', ' ' . $q['o'] . ' ', strtolower((string)$term), 1);
 							}
 						}
 						$entries->resetDepth();
