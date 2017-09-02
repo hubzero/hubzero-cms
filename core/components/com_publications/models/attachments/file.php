@@ -193,7 +193,7 @@ class File extends Base
 		// Add inside bundles
 		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
-			$filePath = $this->bundle($attachments, $configs, false);
+			$filePath = $this->bundle($attachments, $configs, true);
 			$bPath    = $configs->pubBase . DS . 'bundles';
 			if (is_file($filePath))
 			{
