@@ -44,6 +44,7 @@ use Request;
 use Plugin;
 use Notify;
 use Route;
+use Event;
 use Lang;
 use User;
 use App;
@@ -1522,6 +1523,7 @@ class Publications extends SiteController
 
 		// We're going to need the original ID later
 		$pub_id = $version->get('publication_id');
+		$vnum   = $version->get('version_number');
 
 		// Copy the publication's database entry
 		$publication = $version->publication;
@@ -1623,6 +1625,7 @@ class Publications extends SiteController
 		{
 			$owners[$owner->userid] = $owner->id;
 		}
+		/* Actually, don't copy authors...
 		foreach ($authors as $author)
 		{
 			$owner_id = $author->get('project_owner_id');
@@ -1658,6 +1661,27 @@ class Publications extends SiteController
 			{
 				App::abort(500, $author->getError());
 			}
+		}
+		*/
+
+		// Add the user as the author of the publication
+		$author = Models\Orm\Author::blank();
+		$author->set('user_id', User::get('id'));
+		$author->set('name', User::get('name'));
+		$author->set('firstName', User::get('givenName'));
+		$author->set('lastName', User::get('surname'));
+		$author->set('organization', User::get('organization'));
+		$author->set('status', 1);
+		$author->set('publication_version_id', $version->get('id'));
+		$author->set('project_owner_id', $owners[$author->get('user_id')]);
+		$author->set('created', Date::of('now')->toSql());
+		$author->set('created_by', User::get('id'));
+		$author->set('modified', '0000-00-00 00:00:00');
+		$author->set('modified_by', 0);
+
+		if (!$author->save())
+		{
+			App::abort(500, $author->getError());
 		}
 
 		// Copy attachments
@@ -1782,7 +1806,7 @@ class Publications extends SiteController
 						// Let's try an alternate file name
 						if (!file_exists($from . $file2))
 						{
-							Notify::error('File does not exist: ' . $from . $filenames['main']);
+							Notify::error('File does not exist: ' . $from . $file2);
 							continue;
 						}
 						// Found it
@@ -1925,6 +1949,32 @@ class Publications extends SiteController
 			}
 		}
 
+		// Log activity
+		$recipients = array(
+			['publication', $pub_id],
+			['user', User::get('id')]
+		);
+		foreach ($authors as $author)
+		{
+			$recipients[] = ['user', $author->get('user_id')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'forked',
+				'scope'       => 'publication',
+				'scope_id'    => $pub_id,
+				'description' => Lang::txt('COM_PUBLICATIONS_ACTIVITY_ENTRY_FORKED', '<a href="' . Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum) . '">' . $version->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $version->get('title'),
+					'url'   => Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum),
+					'version_id' => $vid
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Notify of success
 		Notify::success(Lang::txt('COM_PUBLICATIONS_PUBLICATION_FORKED'));
 
 		// Redirect to the project
@@ -1987,11 +2037,6 @@ class Publications extends SiteController
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
-
-		/*if (!$lpublica->access('view'))
-		{
-			return $this->_blockAccess();
-		}*/
 
 		// Load the rgt version and make sure the user has access
 		$rversion = Models\Orm\Version::oneOrFail($rgt);
