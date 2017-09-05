@@ -15,7 +15,7 @@ class Migration20170512150115ComTime extends Base
 	 **/
 	public function up()
 	{
-		$this->deleteComponentEntry('admin');
+		$this->deleteComponentEntry('time');
 
 		$this->deletePluginEntry('support', 'time');
 
