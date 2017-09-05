@@ -103,12 +103,13 @@ class Migration20120101000003Core extends Base
 			$this->db->query();
 		}
 
+		/* Removing this as xgroups_modules is a needed table. Perhaps it was repurposed at some point?
 		if ($this->db->tableExists('#__xgroups_modules'))
 		{
 			$query = "DROP TABLE `#__xgroups_modules`";
 			$this->db->setQuery($query);
 			$this->db->query();
-		}
+		}*/
 
 		if ($this->db->tableExists('#__xforum'))
 		{
