@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to fix index naming conventions in middleware tables
  **/
-class Migration2016090610030000ComTools extends Base
+class Migration20160906100300ComTools extends Base
 {
 	public function up()
 	{

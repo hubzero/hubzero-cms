@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for removing duplicate plugin entries while retaining proper parameters
  **/
-class Migration201508281131531Core extends Base
+class Migration20150828113153Core extends Base
 {
 	/**
 	 * Up

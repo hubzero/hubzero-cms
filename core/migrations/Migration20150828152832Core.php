@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for removing embedded default passwords and excess escaping
  **/
-class Migration201508281528321Core extends Base
+class Migration20150828152832Core extends Base
 {
 	/**
 	 * Up
@@ -17,7 +17,7 @@ class Migration201508281528321Core extends Base
 	{
 		if ($this->db->tableExists('#__extensions'))
 		{
-
+			$query = array();
 			$query[] = 'UPDATE `#__extensions` SET manifest_cache = REPLACE(manifest_cache, "2013 Open Source Matters", "2014 Open Source Matters") WHERE extension_id < 10000;';
 			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "_HUB0_nW_", "") WHERE type="component" AND element="com_system";';
 			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "hubzero_network", "") WHERE type="component" AND element="com_system";';

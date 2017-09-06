@@ -6,9 +6,9 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to change database engine for a few core tables that could have been missed
+ * Migration script to change database engine for cart_meta table
  **/
-class Migration2016090710490000Core extends Base
+class Migration20160907104300ComCart extends Base
 {	
 	private function changeEngine($table,$engine)
 	{
@@ -22,12 +22,11 @@ class Migration2016090710490000Core extends Base
 
 	public function up()
 	{
-		$this->changeEngine('#__viewlevels','MyISAM');
-		$this->changeEngine('#__languages','MyISAM');
-		$this->changeEngine('#__associations','MyISAM');
+		$this->changeEngine('#__cart_meta', 'MyISAM');
 	}
 
 	public function down()
 	{
+		$this->changeEngine('#__cart_meta', 'Innodb');
 	}
 }

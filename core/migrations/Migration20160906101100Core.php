@@ -8,9 +8,9 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to fix index naming conventions in CNS tables
  **/
-class Migration2016090610110000Core extends Base
+class Migration20160906101100Core extends Base
 {
-	private function addIndex($table,$key,$fields)
+	private function addIndex($table, $key, $fields)
 	{
 		if (!$this->db->tableExists($table))
 		{
@@ -39,7 +39,7 @@ class Migration2016090610110000Core extends Base
 			$indexfields = "`" . $fields . "`";
 		}
 
-		$indexfields = trim($indexfields,",");
+		$indexfields = trim($indexfields, ",");
 
 		if (!$this->db->tableHasKey($table, $key))
 		{
@@ -49,7 +49,7 @@ class Migration2016090610110000Core extends Base
 		}
 	}
 
-	private function addPrimaryIndex($table,$fields)
+	private function addPrimaryIndex($table, $fields)
 	{
 		if (!$this->db->tableExists($table))
 		{
@@ -78,7 +78,7 @@ class Migration2016090610110000Core extends Base
 			$indexfields = "`" . $fields . "`";
 		}
 
-		$indexfields = trim($indexfields,",");
+		$indexfields = trim($indexfields, ",");
 
 		if (!$this->db->tableHasKey($table, 'PRIMARY'))
 		{
@@ -88,7 +88,7 @@ class Migration2016090610110000Core extends Base
 		}
 	}
 
-	private function addFulltextIndex($table,$key,$fields)
+	private function addFulltextIndex($table, $key, $fields)
 	{
 		if (!$this->db->tableExists($table))
 		{
@@ -117,7 +117,7 @@ class Migration2016090610110000Core extends Base
 			$indexfields = "`" . $fields . "`";
 		}
 
-		$indexfields = trim($indexfields,",");
+		$indexfields = trim($indexfields, ",");
 
 		if (!$this->db->tableHasKey($table, $key))
 		{
@@ -127,7 +127,7 @@ class Migration2016090610110000Core extends Base
 		}
 	}
 
-	private function addUniqueIndex($table,$key,$fields,$using='')
+	private function addUniqueIndex($table, $key, $fields, $using='')
 	{
 		if (is_array($fields))
 		{
@@ -151,7 +151,7 @@ class Migration2016090610110000Core extends Base
 			$indexfields = "`" . $fields . "`";
 		}
 
-		$indexfields = trim($indexfields,",");
+		$indexfields = trim($indexfields, ",");
 
 		if ($this->db->tableExists($table) && !$this->db->tableHasKey($table, $key))
 		{
@@ -165,9 +165,9 @@ class Migration2016090610110000Core extends Base
 		}
 	}
 
-	private function dropIndex($table,$key)
+	private function dropIndex($table, $key)
 	{
-		if ($this->db->tableExists($table) && $this->db->tableHasKey($table,$key))
+		if ($this->db->tableExists($table) && $this->db->tableHasKey($table, $key))
 		{
 			$query = "DROP INDEX `" . $key . "` ON `" . $table . "`;";
 			$this->db->setQuery($query);
