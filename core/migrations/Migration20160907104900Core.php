@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160907104900Core extends Base
 {	
-	private function changeEngine($table,$engine)
+	private function changeEngine($table, $engine)
 	{
 		if ($this->db->tableExists($table) && strtolower($this->db->getEngine($table)) != $engine)
 		{
