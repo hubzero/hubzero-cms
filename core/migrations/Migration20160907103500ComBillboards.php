@@ -9,7 +9,7 @@ defined('_HZEXEC_') or die();
  * Migration script to fix character encoding on field (from past schema upgrade)
  **/
 class Migration20160907103500ComBillboards extends Base
-{	
+{
 	public function up()
 	{
 		if ($this->db->tableHasField('#__billboards_collections', 'name'))

@@ -9,7 +9,7 @@ defined('_HZEXEC_') or die();
  * Migration script to drop misnamed field that can get left behind during upgrades
  **/
 class Migration20160907102400ComCourses extends Base
-{	
+{
 	public function up()
 	{
 		if ($this->db->tableHasField('#__courses_form_respondents', 'attempts'))
