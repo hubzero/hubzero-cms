@@ -190,7 +190,7 @@ endforeach;
 		</div>
 	<?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
 		<p class="create">
-			<a href="<?php echo Request::base(true); ?>/register" class="register">
+			<a href="<?php echo Request::base(true); ?>/register<?php echo ($this->return ? '?return=' . $this->return : ''); ?>" class="register">
 				<?php echo Lang::txt('COM_USERS_LOGIN_CREATE_ACCOUNT'); ?>
 			</a>
 		</p>
