@@ -420,6 +420,17 @@ $legacy = array(
 							<br class="clear" />
 							<input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
 							<?php
+								if ($this->profile->get('access') > 2)
+								{
+									$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+									$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
+									$access .= '<input type="hidden" name="access[email]" value="' . $this->params->get('access_email') . '" />';
+								}
+								else
+								{
+									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>';
+								}
+
 								$this->view('default', 'edit')
 								     ->set('registration_field', 'email')
 								     ->set('profile_field', 'email')
@@ -430,7 +441,7 @@ $legacy = array(
 								     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
 													. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
 													. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
-								     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>')
+								     ->set('access', $access)
 								     ->display();
 							?>
 						<?php endif; ?>
@@ -777,6 +788,17 @@ $legacy = array(
 							$optin_html .= '</select>';
 							$optin_html .= '</label>';
 
+							if ($this->profile->get('access') > 2)
+							{
+								$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+								$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
+								$access .= '<input type="hidden" name="sendEmail" value="' . $this->params->get('access_optin') . '" />';
+							}
+							else
+							{
+								$access = '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label></div>';
+							}
+
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'sendEmail')
 							     ->set('profile_field', 'sendEmail')
@@ -785,7 +807,7 @@ $legacy = array(
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', $optin_html)
-							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label></div>')
+							     ->set('access', $access)
 							     ->display();
 						?>
 					<?php endif; ?>
