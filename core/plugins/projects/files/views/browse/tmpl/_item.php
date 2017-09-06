@@ -149,7 +149,9 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 		<?php } ?>
 	<?php } elseif ($this->item->get('untracked')) { echo Lang::txt('PLG_PROJECTS_FILES_UNTRACKED'); } ?>
 	</td>
+	<?php if (!empty($this->item->get('author'))) { ?>
 	<td class="shrinked middle_valign"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $this->item->get('author'); ?></td>
+	<?php } ?>
 	<td class="shrinked middle_valign nojs">
 		<?php if ($this->model->access('content')) { ?>
 			<a href="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>

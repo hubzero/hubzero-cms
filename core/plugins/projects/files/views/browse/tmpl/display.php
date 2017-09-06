@@ -158,7 +158,9 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 				<th <?php if ($this->params['sortby'] == 'modified') { echo 'class="activesort"'; } ?>>
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=modified&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?></a>
 				</th>
+				<?php if ($this->repo->getAdapterName() == 'git'){ ?>
 				<th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
+				<?php }; ?>
 				<th class="centeralign nojs"></th>
 				<?php if ($this->publishing) { ?>
 				<th><?php echo Lang::txt('PLG_PROJECTS_FILES_PUBLISHED'); ?></th>
