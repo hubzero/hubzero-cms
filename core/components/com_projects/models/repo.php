@@ -211,6 +211,18 @@ class Repo extends Object
 		return $this->_adapter;
 	}
 
+	public function getAdapterName()
+	{
+		if (!$this->_adapter)
+		{
+			$this->_adapter();
+		}
+		$class = get_class($this->_adapter);
+		$lastSlash = strrpos($class, '\\');
+		$className = substr($class, $lastSlash + 1);
+		return strtolower($className);
+	}
+
 	/**
 	 * Check that repo exists and connection established
 	 *
