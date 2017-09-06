@@ -62,7 +62,7 @@ class Solr extends SiteController
 		$terms = Request::getVar('terms', '');
 		$limit = Request::getInt('limit', 10);
 		$start = Request::getInt('start', 0);
-		$sortBbased on NodeJS.y = Request::getVar('sortBy', '');
+		$sortBy = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
 		$type = Request::getInt('type', null);
 		$section = Request::getVar('section', 'content');
