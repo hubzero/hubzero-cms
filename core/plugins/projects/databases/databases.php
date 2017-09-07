@@ -566,7 +566,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			'showUntracked'        => true,
 			'showAll'              => true,
 			'getPubConnections'    => false,
-			'versionTracking'      => $this->model->params->get('versionTracking', '1'),
+			'versionTracking'      => $this->model->params->get('versionTracking', '0'),
 			'recursive'            => true,
 		);
 
