@@ -105,6 +105,8 @@ defined('_HZEXEC_') or die();
 		if (!$job->applied && !$job->withdrawn && $job->status == 1) { 
 			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_APPLY_NOW') . '</button></a></span>'; 
 		}
+		if($owner && $job->status == 1) { $html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '"><button class="btn btn">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</button></a></span>'; 
+		}
 		if ($job->withdrawn && $job->status == 1) {
 			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_ACTION_REAPPLY') . '</button></a><span>' . "\n";
 		}
@@ -113,7 +115,7 @@ defined('_HZEXEC_') or die();
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="' . $job->companyWebsite . '">' . $job->companyName . '</a>' : $job->companyName;
 		$html .= ', ' . $job->companyLocation;
 		$html .= $job->companyLocationCountry ? ', ' . strtoupper($job->companyLocationCountry) : '';
-		if ($owner && $job->status == 1) { $html .= '<a class="edit button" href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</a>'; }
+		//if ($owner && $job->status == 1) { $html .= '<a class="edit button" href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</a>'; }
 		$html .= '</h3>' . "\n";
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '<div class="apply"><p>'."\n";
