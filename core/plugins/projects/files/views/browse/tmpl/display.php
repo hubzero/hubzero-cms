@@ -45,17 +45,18 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, R
 $min = $this->model->access('content') ? 1 : 0;
 
 // Remote connections
-$connected = $this->oparams->get('google_token') ? true : false;
-$sharing   = isset($this->sharing) && $this->sharing ? true : false;
-$sync      = isset($this->sync) ? $this->sync : 0;
+$versionTracking = 0;
+$connected = false;
+$sharing = false;
+$sync = false;
 
-$versionTracking = 1;
-if (isset($this->params['versionTracking']) && $this->params['versionTracking'] == '0')
+//Only show these features if version tracking was specified in the project
+if (isset($this->params['versionTracking']) && $this->params['versionTracking'] == '1')
 {
-	$versionTracking = 0;
-	$connected = false;
-	$sharing = false;
-	$sync = false;
+	$versionTracking = 1;
+	$connected = $this->oparams->get('google_token') ? true : false;
+	$sharing   = isset($this->sharing) && $this->sharing ? true : false;
+	$sync      = isset($this->sync) ? $this->sync : 0;
 }
 ?>
 

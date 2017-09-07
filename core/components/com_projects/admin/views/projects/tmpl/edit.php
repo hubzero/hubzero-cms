@@ -302,7 +302,7 @@ function submitbutton(pressbutton)
 
 					<div class="input-wrap">
 						<input name="params[versionTracking]" type="hidden" value="0" />
-						<input name="params[versionTracking]" type="checkbox" value="1" <?php echo ($this->params->get('versionTracking', '1') == '1') ? 'checked="checked"' : '';?> class="option" ><label><?php echo Lang::txt('Version Tracking'); ?> </label></input>
+						<input name="params[versionTracking]" type="checkbox" value="1" <?php echo ($this->params->get('versionTracking', '0') == '1') ? 'checked="checked"' : '';?> class="option" ><label><?php echo Lang::txt('Version Tracking'); ?> </label></input>
 					</div>
 
 					<div class="input-wrap">
