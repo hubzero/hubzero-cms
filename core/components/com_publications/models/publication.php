@@ -1919,6 +1919,65 @@ class Publication extends Object
 	}
 
 	/**
+	 * Check if this entry has an image
+	 *
+	 * @param   string  $type	The type of image
+	 * @return  boolean
+	 */
+	public function hasImage($type = 'thumb')
+	{
+		$pid = $this->get('id');
+		$vid = $this->get('version_id');
+		$config = Component::params('com_publications');
+		// Build publication path
+		$path = Helpers\Html::buildPubPath($pid, $vid, $config->get('webpath'));
+
+		if ($type == 'thumb')
+		{
+			$source = PATH_APP . DS . $path . DS . 'thumb.gif';
+
+			// Check for default image
+			if (!is_file($source))
+			{
+				$source = false;
+			}
+		}
+		else
+		{
+			// Get master image
+			$source = PATH_APP . DS . $path . DS . 'master.png';
+
+			// Default image
+			if (!is_file($source))
+			{
+				// Grab first bigger image in gallery
+				if (is_dir(PATH_APP . DS . $path . DS . 'gallery'))
+				{
+					$file_list = scandir(PATH_APP . DS . $path . DS . 'gallery');
+					foreach ($file_list as $file)
+					{
+						if ($file != '.' && $file != '..' && exif_imagetype(PATH_APP . DS . $path . DS . 'gallery' . DS . $file))
+						{
+							list($width, $height, $type, $attr) = getimagesize(PATH_APP . DS . $path . DS . 'gallery' . DS . $file);
+							if ($width > 200)
+							{
+								$source = PATH_APP . DS . $path . DS . 'gallery' . DS . $file;
+								break;
+							}
+						}
+					}
+				}
+				if (!is_file($source))
+				{
+					$source = false;
+				}
+			}
+		}
+
+		return $source;
+	}
+
+	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *

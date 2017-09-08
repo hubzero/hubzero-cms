@@ -67,9 +67,15 @@ if ($this->line->doi)
 	$info[] = 'doi:' . $this->line->doi;
 }
 
+$moreClasses = '';
+if (!$this->line->hasImage())
+{
+	$moreClasses = ' generic';
+}
+
 ?>
 <li class="<?php echo implode(' ', $cls); ?>">
-	<div class="pub-thumb"><img width="40" height="40" src="<?php echo Route::url($this->line->link('thumb')); ?>" alt="" /></div>
+	<div class="pub-thumb<?php echo $moreClasses; ?>"><img src="<?php echo Route::url($this->line->link('thumb')); ?>" alt="" /></div>
 	<div class="pub-details">
 		<p class="title"><a href="<?php echo Route::url($this->line->link()); ?>"><?php echo $this->escape($this->line->title); ?></a></p>
 
