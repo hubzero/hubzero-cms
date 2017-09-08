@@ -105,10 +105,14 @@ defined('_HZEXEC_') or die();
 		if (!$job->applied && !$job->withdrawn && $job->status == 1) { 
 			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_APPLY_NOW') . '</button></a></span>'; 
 		}
-		if($owner && $job->status == 1) { $html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '"><button class="btn btn">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</button></a></span>'; 
-		}
 		if ($job->withdrawn && $job->status == 1) {
 			$html .= '<span class="apply"><a href="' . Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_ACTION_REAPPLY') . '</button></a><span>' . "\n";
+		}
+		if($job->applied) {
+			$html .= '<span class="applied"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') . '</button></a>  <a href="' . Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code) . '" id="showconfirm"><button class="btn btn-danger">' . Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') . '</button></a></span>' . "\n";
+		}
+		if($owner && $job->status == 1) { 
+			$html .= '<span class="edit"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '"><button class="btn btn">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</button></a></span>'; 
 		}
 		$html .= '<div id="jobinfo">'."\n";
 		$html .= '<h3><span>' . Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code . '</span>' . $job->title . ' - ';
@@ -121,7 +125,6 @@ defined('_HZEXEC_') or die();
 		$html .= '<div class="apply"><p>'."\n";
 		if ($job->applied) {
 			$html .= '<span class="alreadyapplied">' . Lang::txt('COM_JOBS_JOB_APPLIED_ON') . ' '.Date::of($job->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<span>' . "\n";
-			$html .= '<span><a href="' . Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) . '">' . Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') . '</a> | <a href="' . Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code) . '" id="showconfirm">' . Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') . '</a><span>' . "\n";
 		}
 		else if ($job->withdrawn) {
 			$html .= '<span class="withdrawn">' . Lang::txt('COM_JOBS_JOB_WITHDREW_ON') . ' '.Date::of($job->withdrawn)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<span>' . "\n";
