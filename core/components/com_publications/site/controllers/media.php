@@ -70,7 +70,7 @@ class Media extends SiteController
 		// Incoming
 		$pid    = Request::getInt('id', 0);
 		$vid    = Request::getInt( 'v', 0 );
-		$source = NULL;
+		$source = null;
 
 		// Need pub and version ID
 		if (!$pid || $pid == 0 || !$vid)
