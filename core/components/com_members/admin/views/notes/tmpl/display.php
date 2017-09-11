@@ -75,17 +75,6 @@ if ($canDo->get('core.admin'))
 }
 Toolbar::help('notes');
 ?>
-<nav role="navigation" class="sub sub-navigation">
-	<ul>
-		<li>
-			<a<?php if ($this->controller == 'notes') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes'); ?>"><?php echo Lang::txt('COM_MEMBERS_SUBMENU_NOTES'); ?></a>
-		</li>
-		<li>
-			<a href="<?php echo Route::url('index.php?option=com_categories&extension=com_users'); ?>"><?php echo Lang::txt('COM_MEMBERS_SUBMENU_NOTE_CATEGORIES'); ?></a>
-		</li>
-	</ul>
-</nav>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
@@ -99,7 +88,7 @@ Toolbar::help('notes');
 			<div class="col span6">
 				<select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-					<?php echo Html::select('options', Html::category('options', 'com_users.notes'), 'value', 'text', $this->filters['category_id']); ?>
+					<?php echo Html::select('options', Html::category('options', 'com_members'), 'value', 'text', $this->filters['category_id']); ?>
 				</select>
 
 				<select name="filter_published" class="inputbox" onchange="this.form.submit()">
