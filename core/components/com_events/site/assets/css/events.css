@@ -24,6 +24,9 @@
 		-o-box-shadow: none;
 		box-shadow: none;
 	}
+	#event-categories label {
+		display: none;
+	}
 	#event-categories,
 	.calendarwrap {
 		background-color: #F6F6F6;
