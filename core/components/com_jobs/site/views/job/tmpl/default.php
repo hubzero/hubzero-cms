@@ -112,14 +112,13 @@ defined('_HZEXEC_') or die();
 			$html .= '<span class="applied"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') . '</button></a>  <a href="' . Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code) . '" id="showconfirm"><button class="btn btn-danger">' . Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') . '</button></a></span>' . "\n";
 		}
 		if($owner && $job->status == 1) { 
-			$html .= '<span class="edit"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '"><button class="btn btn">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</button></a></span>'; 
+			$html .= '<span class="edit"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'"><button class="btn btn">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</button></a></span>'; 
 		}
 		$html .= '<div id="jobinfo">'."\n";
 		$html .= '<h3><span>' . Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code . '</span>' . $job->title . ' - ';
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="' . $job->companyWebsite . '">' . $job->companyName . '</a>' : $job->companyName;
 		$html .= ', ' . $job->companyLocation;
 		$html .= $job->companyLocationCountry ? ', ' . strtoupper($job->companyLocationCountry) : '';
-		//if ($owner && $job->status == 1) { $html .= '<a class="edit button" href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) .'" title="'. Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '">' . ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') . '</a>'; }
 		$html .= '</h3>' . "\n";
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '<div class="apply"><p>'."\n";
@@ -159,7 +158,7 @@ defined('_HZEXEC_') or die();
 			switch ($job->status)
 			{
 				case 1:
-					$html .= '<p class="manageroptions"><span><a href="' . Route::url('index.php?option=' . $this->option . '&task=unpublish&code=' . $job->code) . '"><button class="btn">' . Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') . '</button></a> ' . Lang::txt('COM_JOBS_NOTICE_ACCESS_PRESERVED') . '</span> </p>';
+					$html .= '<p class="manageroptions"><span><a href="' . Route::url('index.php?option=' . $this->option . '&task=unpublish&code=' . $job->code) . '" title="' . Lang::txt('COM_JOBS_NOTICE_ACCESS_PRESERVED') . '"><button class="btn">' . Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') . '</button></a></span></p>';
 				break;
 				case 4:
 					$html .= '<p class="confirmPublish"><span class="makechanges"><a href="' . Route::url('index.php?option=' . $this->option . '&task=confirmjob&code=' . $job->code) . '"><button class="btn btn-success">' . Lang::txt('COM_JOBS_ACTION_PUBLISH_AD') . '</button></a></span> <span class="makechanges"><a href="' . Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) . '"><button class="btn">' . Lang::txt('COM_JOBS_ACTION_MAKE_CHANGES') . '</button></a></span> <span class="makechanges"><a href="' . Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) . '"><button class="btn">' . Lang::txt('COM_JOBS_ACTION_REMOVE_AD') . '</button></a></span></p>';
