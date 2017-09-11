@@ -37,8 +37,8 @@ if (!\User::authorise('core.manage', 'com_members'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'member.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'admin.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'member.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'admin.php';
 
 $controllerName = \Request::getCmd('controller', 'members');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -47,72 +47,13 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 }
 
 // Build sub-menu
-$canDo = \Components\Members\Helpers\Admin::getActions();
+require_once __DIR__ . DS . 'helpers' . DS . 'members.php';
 
-\Submenu::addEntry(
-	\Lang::txt('COM_MEMBERS'),
-	\Route::url('index.php?option=com_members'),
-	$controllerName == 'members'
-);
-\Submenu::addEntry(
-	\Lang::txt('COM_MEMBERS_MENU_NOTES'),
-	\Route::url('index.php?option=com_members&controller=notes'),
-	$controllerName == 'notes'
-);
-\Submenu::addEntry(
-	\Lang::txt('COM_MEMBERS_MENU_ACCESS'),
-	\Route::url('index.php?option=com_members&controller=accessgroups'),
-	($controllerName == 'accessgroups' || $controllerName == 'accesslevels')
-);
-/*\Submenu::addEntry(
-	\Lang::txt('COM_MEMBERS_MENU_MESSAGING'),
-	\Route::url('index.php?option=com_members&controller=messages'),
-	$controllerName == 'messages'
-);*/
-if (\Component::params('com_members')->get('bankAccounts'))
-{
-	\Submenu::addEntry(
-		\Lang::txt('COM_MEMBERS_MENU_POINTS'),
-		\Route::url('index.php?option=com_members&controller=points'),
-		$controllerName == 'points'
-	);
-}
-if ($canDo->get('core.admin'))
-{
-	\Submenu::addEntry(
-		\Lang::txt('COM_MEMBERS_MENU_PASSWORDS'),
-		\Route::url('index.php?option=com_members&controller=passwordrules'),
-		($controllerName == 'passwordrules' || $controllerName == 'passwordblacklist')
-	);
-}
-\Submenu::addEntry(
-	\Lang::txt('COM_MEMBERS_MENU_QUOTAS'),
-	\Route::url('index.php?option=com_members&controller=quotas'),
-	$controllerName == 'quotas'
-);
-\Submenu::addEntry(
-	\Lang::txt('COM_MEMBERS_MENU_REGISTRATION'),
-	\Route::url('index.php?option=com_members&controller=registration'),
-	(in_array($controllerName, array('registration', 'organizations', 'employers', 'incremental', 'premis')))
-);
-
-if ($canDo->get('core.admin'))
-{
-	\Submenu::addEntry(
-		\Lang::txt('COM_MEMBERS_MENU_IMPORT'),
-		\Route::url('index.php?option=com_members&controller=imports'),
-		($controllerName == 'imports' || $controllerName == 'importhooks')
-	);
-}
-\Submenu::addEntry(
-	\Lang::txt('COM_MEMBERS_MENU_PLUGINS'),
-	\Route::url('index.php?option=com_members&controller=plugins'),
-	$controllerName == 'plugins'
-);
-
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+\MembersHelper::addSubmenu($controllerName);
 
 // Instantiate controller
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
 $controller = new $controllerName();
 $controller->execute();

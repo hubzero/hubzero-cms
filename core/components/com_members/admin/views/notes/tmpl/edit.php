@@ -98,7 +98,7 @@ function submitbutton(pressbutton)
 					<label for="field-category_id"><?php echo Lang::txt('COM_MEMBERS_FIELD_CATEGORY'); ?>:</label>
 					<select name="fields[catid]" id="field-category_id">
 						<option value="0"><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-						<?php echo Html::select('options', Html::category('options', 'com_users.notes'), 'value', 'text', $this->row->get('category_id')); ?>
+						<?php echo Html::select('options', Html::category('options', 'com_members'), 'value', 'text', $this->row->get('category_id')); ?>
 					</select>
 				</div>
 
