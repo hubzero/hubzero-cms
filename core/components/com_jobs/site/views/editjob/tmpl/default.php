@@ -191,6 +191,7 @@ defined('_HZEXEC_') or die();
 						<?php else: ?>
 						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
 						<?php endif; ?>
+						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_MAX_DATE'); ?></span>
 					</label>
 				</div> <!-- /.col .span6 -->
 				<div class="col span6 omega">	

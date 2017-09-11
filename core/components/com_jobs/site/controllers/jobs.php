@@ -1549,6 +1549,17 @@ class Jobs extends SiteController
 			$job->status = 2;
 		}
 
+		// if job doesn't already has an expiration date
+		if (!$job->expiredate)
+		{
+			$job->expiredate = date('Y-m-d 00:00:00', strtotime($job->edited . ' + 1 years'));
+		}
+		// expiration date is more than a year away
+		elseif ($job->expiredate > date('Y-m-d 00:00:00', strtotime($job->edited . '+ 1 years')))
+		{
+			$job->expiredate = date('Y-m-d 00:00:00', strtotime($job->edited . ' + 1 years'));
+		}
+
 		// get unique number code for this new job posting
 		if (!$code)
 		{
@@ -1565,7 +1576,6 @@ class Jobs extends SiteController
 		{
 			$job->checkin();
 		}
-
 		if ($this->_task == 'remove')
 		{
 			App::redirect(
