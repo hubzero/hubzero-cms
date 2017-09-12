@@ -1563,7 +1563,11 @@ class Repo extends Object
 			}
 			else
 			{
-				$engine = $this->get('project')->params->get('engine');
+				$engine = 'nogit';
+				if ($this->get('project'))
+				{
+					$engine = $this->get('project')->params->get('engine');
+				}
 				if ($engine == 'git')
 				{
 					$git = new Helpers\Git($path);
