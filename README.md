@@ -15,16 +15,20 @@ Preconfigured virtual machine images that contain the full version of the HUBzer
 
 ### Packages
 
-Instructions for installing the HUBzero platform from packages can be found at http://hubzero.org/documentation/current/installation.
+Instructions for installing the HUBzero platform from packages can be found at http://help.hubzero.org/documentation/current/installation.
 
 ## Documentation
 
-Both user and developer documentation for the CMS can be found at https://hubzero.org/documentation/current.
+Both user and developer documentation for the CMS can be found at https://help.hubzero.org/documentation/current.
 
 ## Contributing
 
-HUBzero is an open source project, with code contributions from nuermous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://hubzero.org/about/contributions.
+HUBzero is an open source project, with code contributions from nuermous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://help.hubzero.org/documentation/current/webdevs/index/contributions.
 
 ## Issues
 
-Please report any bugs or issues at https://hubzero.org/support.
+Please report any bugs or issues at https://help.hubzero.org/support.
+
+## Roadmap
+
+Checkout what is on our development roadmap at https://hubzero.org/roadmap.
