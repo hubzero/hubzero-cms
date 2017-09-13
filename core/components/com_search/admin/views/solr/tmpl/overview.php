@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('Search: Overview'));
+Toolbar::title(Lang::txt('Solr Search: Overview'));
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
