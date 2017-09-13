@@ -190,6 +190,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 						 ->set('model', $this->model)
 						 ->set('subdir', $this->subdir)
 						 ->set('items', $this->items)
+						 ->set('repo', $this->repo)
 					     ->set('params', $this->params)
 					     ->set('publishing', $this->publishing)
 					     ->set('fileparams', $this->fileparams)

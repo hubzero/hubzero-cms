@@ -149,8 +149,8 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 		<?php } ?>
 	<?php } elseif ($this->item->get('untracked')) { echo Lang::txt('PLG_PROJECTS_FILES_UNTRACKED'); } ?>
 	</td>
-	<?php if (!empty($this->item->get('author'))) { ?>
-	<td class="shrinked middle_valign"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $this->item->get('author'); ?></td>
+	<?php if ($this->repo->getAdapterName() == 'git'){ ?>
+		<td class="shrinked middle_valign"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $this->item->get('author'); ?></td>
 	<?php } ?>
 	<td class="shrinked middle_valign nojs">
 		<?php if ($this->model->access('content')) { ?>
