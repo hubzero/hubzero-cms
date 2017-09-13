@@ -37,28 +37,25 @@ Toolbar::back();
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Overview'),
 	'index.php?option='.$this->option.'&task=configure'
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Search Index'),
-	'index.php?option='.$this->option.'&task=searchindex'
+	'index.php?option='.$this->option.'&task=searchindex',
+	true
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
 	'index.php?option='.$this->option.'&task=manageBlacklist'
 );
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="grid">
-			<div class="col span6 rtl">
-				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="filter" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_FILTER_SEARCH_PLACEHOLDER'); ?>" />
-				<input type="submit" value="<?php echo Lang::txt('COM_SEARCH_GO'); ?>" />
-			</div>
-		</div>
+		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="filter" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('COM_SEARCH_GO'); ?>" />
 	</fieldset>
 
 	<?php 
@@ -69,8 +66,6 @@ $this->css('solr');
 		->set('facet', $this->facet)
 		->display();
 	?>
-
-
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
