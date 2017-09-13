@@ -36,7 +36,7 @@ Toolbar::title(Lang::txt('Solr Search: Edit Facet'));
 Toolbar::spacer();
 
 Toolbar::custom('savefacet', 'save', 'savefacet', 'COM_SEARCH_SAVE_FACET', false);
-Toolbar::custom('managefacets', 'cancel', 'cancel', 'COM_SEARCH_CANCEL', false);
+Toolbar::custom('searchindex', 'cancel', 'cancel', 'COM_SEARCH_CANCEL', false);
 //Toolbar::cancel();
 Toolbar::spacer();
 

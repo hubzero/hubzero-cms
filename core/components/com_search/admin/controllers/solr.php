@@ -272,7 +272,6 @@ class Solr extends AdminController
 
 		// Display the view
 		$this->view->display();
-
 	}
 
 	/**
@@ -309,13 +308,15 @@ class Solr extends AdminController
 		$entry->save();
 
 		$helper = new SolrHelper;
+
 		// Remove from index
 		if ($helper->removeDocument($id, 'delete'))
 		{
 			// Redirect back to the search page.
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentlisting&facet='.$facet.'&limitstart='.$limitstart.'&limit='.$limit.'&filter='.$filter, false),
-					'Submitted ' . $id . ' for removal.', 'success'
+				'Submitted ' . $id . ' for removal.',
+				'success'
 			);
 		}
 		else
@@ -323,7 +324,8 @@ class Solr extends AdminController
 			// Redirect back to the search page.
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false),
-					'Failed to remove '. $id, 'error'
+				'Failed to remove '. $id,
+				'error'
 			);
 		}
 	}
@@ -337,20 +339,21 @@ class Solr extends AdminController
 	public function removeBlacklistEntryTask()
 	{
 		$entryID = Request::getInt('entryID', 0);
+
 		$entry = Blacklist::one($entryID);
 		$entry->destroy();
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false),
-				'Successfully removed entry #' . $entryID, 'success'
+			'Successfully removed entry #' . $entryID,
+			'success'
 		);
 	}
 
 	/**
-	 * manageFacetsTask 
+	 * Manage facets
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function searchIndexTask()
 	{
@@ -361,39 +364,38 @@ class Solr extends AdminController
 
 		// Check if we are adding a parent
 		$parentID = Request::getInt('parent_id', 0);
-		if ($parentID != 0)
-		{
-			$parentFacet = Facet::one($parentID)->row();
-			$this->view->parent = $parentFacet;
-		}
+
+		$parent = Facet::oneOrNew($parentID);
 
 		// Load the subfacets, if applicable
-		$this->view->facets = Facet::all()
+		$facets = Facet::all()
 			->whereEquals('parent_id', $parentID)
 			->rows();
 
-		foreach ($this->view->facets as $facet)
+		foreach ($facets as $facet)
 		{
+			$facet->set('count', -1);
+
 			// Instantitate and get all results for a particular document type
 			try
 			{
-				$config = Component::params('com_search');
-				$query = new \Hubzero\Search\Query($config);
+				$query = new \Hubzero\Search\Query($this->config);
 				$results = $query->query($facet->facet)->run()->getResults();
 
 				// Get the total number of records
 				$total = $query->getNumFound();
-				$facet->count = $total;
+				$facet->set('count', $total);
 			}
 			catch (\Solarium\Exception\HttpException $e)
 			{
-				App::redirect(
-					Route::url('index.php?option=com_search&task=searchIndex', false),
-					Lang::txt($e->getMessage()), 'error'
-				);
+				Notify::error(Lang::txt($e->getMessage()));
 			}
 		}
-		$this->view->display();
+
+		$this->view
+			->set('parent', $parent)
+			->set('facets', $facets)
+			->display();
 	}
 
 	/**
@@ -405,9 +407,10 @@ class Solr extends AdminController
 	public function saveFacetTask()
 	{
 		Request::checkToken(["post", "get"]);
+
 		$fields = Request::getVar('fields', array());
 		$action = Request::getCmd('action', '');
-		$id 		= Request::getInt('id', 0);
+		$id     = Request::getInt('id', 0);
 
 		$facet = Facet::oneOrNew($id);
 
@@ -420,7 +423,9 @@ class Solr extends AdminController
 					Notify::error(Lang::txt('COM_SEARCH_FAILURE_TO_SAVE'));
 				}
 			break;
+
 			case 'editfacet':
+			default:
 				$new = $facet->isNew();
 				$facet->set($fields);
 
@@ -439,44 +444,57 @@ class Solr extends AdminController
 						Notify::success(Lang::txt('COM_SEARCH_FACET_UPDATED', $facet->name));
 					}
 				}
+			break;
 		}
 
 		//@FIXME: Redirect back to the child if selected
 		$return = Route::url('index.php?option=com_search&task=searchIndex', false);
 
 		App::redirect(
-				Route::url($return, false)
-				//Lang::txt($message['text']), $message['status']
+			Route::url($return, false)
 		);
 	}
 
 	/**
-	 * addFacetTask 
+	 * Add a facet
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function addFacetTask()
 	{
 		$parentID = Request::getInt('parent_id', 0);
-		$this->view->setLayout('editfacet');
-		$this->view->facet = new Facet;
-		$this->view->display();
+
+		return $this->editFacetTask($parentID);
 	}
 
 	/**
-	 * editFacetTask 
+	 * Edit a facet
 	 * 
-	 * @access public
-	 * @return void
+	 * @param   integer  $parentID
+	 * @return  void
 	 */
 	public function editFacetTask($parentID = 0)
 	{
 		$id = Request::getInt('id', 0);
-		$this->view->facet = Facet::oneOrNew($id);
-		$this->view->display();
+
+		$facet = Facet::oneOrNew($id);
+
+		if ($facet->isNew())
+		{
+			$facet->set('parent_id', $parentID);
+		}
+
+		$this->view
+			->set('facet', $facet)
+			->setLayout('editfacet')
+			->display();
 	}
 
+	/**
+	 * Delete a facet
+	 * 
+	 * @return  void
+	 */
 	public function deleteFacetTask()
 	{
 		$ids = Request::getArray('id', 0);
@@ -517,10 +535,11 @@ class Solr extends AdminController
 		}
 
 		$return = Route::url('index.php?option=com_search&task=searchIndex', false);
+
 		App::redirect(
-				Route::url($return, false),
-				$message, $success
+			Route::url($return, false),
+			$message,
+			$success
 		);
 	}
-
 }
