@@ -203,7 +203,7 @@ class Nogit extends Object
 		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
 
 		// Get list of the directories
-		$out = $this->call("find -type d -not -path -'.' -printf '%P\n'");
+		$out = $this->call("find -name '.git*' -prune -o -type d -not -path -'.' -printf '%P\n'");
 		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
 	}
 
