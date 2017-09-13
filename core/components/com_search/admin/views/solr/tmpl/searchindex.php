@@ -50,30 +50,31 @@ Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
 
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Overview'),
 	'index.php?option='.$option.'&task=configure'
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Search Index'),
-	'index.php?option='.$option.'&task=searchindex'
+	'index.php?option='.$option.'&task=searchindex',
+	true
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
 	'index.php?option='.$option.'&task=manageBlacklist'
 );
 ?>
 
 <?php if (isset($this->processing)) { ?>
-<div class="info">
-	<span><?php echo Lang::txt('COM_SEARCH_BUILDING_INDEX'); ?></span>
-</div>
+	<div class="info">
+		<span><?php echo Lang::txt('COM_SEARCH_BUILDING_INDEX'); ?></span>
+	</div>
 <?php } ?>
 
 <?php if (isset($this->stalled)) { ?>
-<div class="warning">
-	<span><?php echo Lang::txt('COM_SEARCH_INDEX_STALLED'); ?></span>
-</div>
+	<div class="warning">
+		<span><?php echo Lang::txt('COM_SEARCH_INDEX_STALLED'); ?></span>
+	</div>
 <?php } ?>
 
 <section id="main" class="com_search">
@@ -92,7 +93,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="/administrator/index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -101,11 +102,9 @@ function submitbutton(pressbutton)
 				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('title','asc','');return false;" title="Click to sort by this column" class="sort">Title</a></th>
 				<th scope="col" class="priority-2"><a href="#" onclick="Joomla.tableOrdering('state','asc','');return false;" title="Click to sort by this column" class="sort">State</a></th>
 				<th scope="col" class="priority-4"><a href="#" onclick="Joomla.tableOrdering('access','asc','');return false;" title="Click to sort by this column" class="sort"><?php echo Lang::txt('COM_SEARCH_COUNT'); ?></a></th>
-
 				<?php if (!isset($this->parent)): ?>
-				<th scope="col"><?php echo Lang::txt('COM_SEARCH_FACETS'); ?></th>
+					<th scope="col"><?php echo Lang::txt('COM_SEARCH_FACETS'); ?></th>
 				<?php endif; ?>
-
 			</tr>
 		</thead>
 		<tbody>
@@ -176,4 +175,3 @@ function submitbutton(pressbutton)
 	<?php //echo Html::input('token'); ?>
 </form>
 </section><!-- / #main -->
-</section><!-- / #component-content -->
