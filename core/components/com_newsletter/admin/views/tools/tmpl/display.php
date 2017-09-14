@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 //set title
-Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_TITLE') . ': ' . Lang::txt('COM_NEWSLETTER_TOOLS'), 'tools.png');
 
 // add jquery
 Html::behavior('framework');

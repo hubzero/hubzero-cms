@@ -219,11 +219,11 @@ if (!$no_html)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?></th>
+					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?>:</th>
 					<td><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity'))); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_OWNER'); ?></th>
+					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_OWNER'); ?>:</th>
 					<td><?php
 					if ($this->row->isOwned())
 					{
@@ -243,7 +243,7 @@ if (!$no_html)
 					?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_LAST_ACTIVITY'); ?></th>
+					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_LAST_ACTIVITY'); ?>:</th>
 					<td><?php echo $lastactivity; ?></td>
 				</tr>
 			</tbody>

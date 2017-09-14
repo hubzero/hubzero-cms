@@ -108,7 +108,7 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_STATUS'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_STATUS'); ?>:</th>
 						<td><?php echo $this->escape($this->row->status); ?></td>
 					</tr>
 				</tbody>

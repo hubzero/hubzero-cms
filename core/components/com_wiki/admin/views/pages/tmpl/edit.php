@@ -139,23 +139,23 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_ID'); ?></th>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?></th>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
 						<td><?php echo $this->escape($this->row->created('time') . ' ' . $this->row->created('date')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?></th>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')))); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_HITS'); ?></th>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_HITS'); ?>:</th>
 						<td><?php echo $this->escape($this->row->get('hits')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_REVISIONS'); ?></th>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_REVISIONS'); ?>:</th>
 						<td><?php echo $this->row->versions()->total(); ?></td>
 					</tr>
 				</tbody>

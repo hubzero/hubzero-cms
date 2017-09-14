@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
-Toolbar::title(Lang::txt('COM_BLOG_TITLE'), 'blog');
+Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_MENU_ENTRIES'), 'blog');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');

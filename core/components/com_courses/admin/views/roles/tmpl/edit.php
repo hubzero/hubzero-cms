@@ -103,13 +103,13 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING'); ?></th>
+						<th class="key"><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING'); ?>:</th>
 						<td>
 							<?php echo $this->row->offering_id; ?>
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<th class="key"><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->id; ?>
 						</td>
