@@ -84,7 +84,11 @@ if (file_exists(PATH_CORE . DS . $this->group->getBasePath() . DS . 'pages' . DS
 			<?php endif ;?>
 		</ul>
 
-		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm" class="full">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=pages'); ?>" method="post" id="hubForm" class="full">
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="task" value="pages" />
+
 			<fieldset data-tab-content="pages">
 				<?php
 					$this->view('display')
@@ -92,6 +96,7 @@ if (file_exists(PATH_CORE . DS . $this->group->getBasePath() . DS . 'pages' . DS
 					     ->set('categories', $this->categories)
 					     ->set('pages', $this->pages)
 					     ->set('config', $this->config)
+					     ->set('search', isset($this->search) ? $this->search : '')
 					     ->display();
 				?>
 			</fieldset>

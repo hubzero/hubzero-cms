@@ -145,8 +145,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$this->model = new Components\Projects\Models\Project();
 
 		$this->_projects = $this->model->table()->getGroupProjectIds(
-			$group->get('gidNumber'),
-			User::get('id')
+			$group->get('gidNumber')//,
+			//User::get('id')
 		);
 
 		// If we want to return content
@@ -276,7 +276,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 * On after group saved
 	 *
 	 * @param   object  $before  Group before changes
-	 * @param   object  $group   Group after changes
+	 * @param   object  $after   Group after changes
 	 * @return  void
 	 */
 	public function onGroupAfterSave($before, $after)

@@ -40,6 +40,7 @@ use Exception;
 use stdClass;
 use Request;
 use Route;
+use Event;
 use User;
 use Lang;
 
@@ -204,7 +205,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "crated_by",
+	 * 		"name":        "created_by",
 	 * 		"description": "User ID of entry creator",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
@@ -271,7 +272,6 @@ class Entriesv1_0 extends ApiController
 			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
 			'publish_up'     => Request::getVar('publish_up', with(new Date('now'))->toSql(), 'post'),
 			'publish_down'   => Request::getVar('publish_down', null, 'post'),
-			'hits'           => Request::getInt('hits', 0, 'post')
 		);
 
 		$row = new Entry();
@@ -279,6 +279,15 @@ class Entriesv1_0 extends ApiController
 		if (!$row->set($fields))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 500);
+		}
+
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			throw new Exception($row->getError(), 500);
 		}
 
 		if (!$row->save())
@@ -296,6 +305,10 @@ class Entriesv1_0 extends ApiController
 			}
 		}
 
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+
+		$row->set('tags', $tags);
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
 		if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
@@ -507,6 +520,15 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
 		}
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			throw new Exception($row->getError(), 500);
+		}
+
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
@@ -521,6 +543,9 @@ class Entriesv1_0 extends ApiController
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
 		}
+
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
 
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
@@ -591,6 +616,9 @@ class Entriesv1_0 extends ApiController
 			{
 				throw new Exception($row->getError(), 500);
 			}
+
+			// Trigger before delete event
+			Event::trigger('onBlogAfterDelete', array($id));
 
 			// Log activity
 			$base = rtrim(Request::base(), '/');

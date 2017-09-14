@@ -194,6 +194,10 @@ function submitbutton(pressbutton)
 			}
 
 			$status = $row->role;
+			if (in_array($row->uidNumber, $this->group->get('managers')))
+			{
+				$status = 'manager';
+			}
 
 			$roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
 			?>

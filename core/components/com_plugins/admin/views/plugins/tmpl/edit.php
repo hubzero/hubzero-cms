@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 Request::setVar('hidemainmenu', true);
 
-$canDo = \Components\Plugins\Admin\Helpers\Plugins::getActions();
+$canDo = \Components\Plugins\Helpers\Plugins::getActions();
 
 Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGIN', Lang::txt($this->item->name)), 'plugin');
 // If not checked out, can save the item.
@@ -49,7 +49,7 @@ Toolbar::divider();
 Toolbar::help('plugin');
 
 
-Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 ?>
@@ -95,7 +95,7 @@ Html::behavior('formvalidation');
 					<?php echo $this->form->getLabel('ordering'); ?><br />
 					<?php echo $this->form->getInput('ordering'); ?>
 				</div>
-				<!--
+				<?php /*
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('folder'); ?><br />
 					<?php echo $this->form->getInput('folder'); ?>
@@ -112,7 +112,7 @@ Html::behavior('formvalidation');
 						<?php echo $this->form->getInput('extension_id'); ?>
 					</div>
 				<?php endif; ?>
-				-->
+				*/ ?>
 			</fieldset>
 
 			<table class="meta">
@@ -133,7 +133,7 @@ Html::behavior('formvalidation');
 							</th>
 							<td>
 								<?php echo $this->escape($this->item->extension_id); ?>
-								<input type="hidden" name="jform[extension_id]" id="jform_extension_id" value="<?php echo $this->item->extension_id; ?>" />
+								<input type="hidden" name="fields[extension_id]" id="field_extension_id" value="<?php echo $this->item->extension_id; ?>" />
 							</td>
 						</tr>
 					<?php endif; ?>
@@ -143,7 +143,7 @@ Html::behavior('formvalidation');
 						</th>
 						<td>
 							<?php echo $this->escape($this->item->folder); ?>
-							<input type="hidden" name="jform[folder]" id="jform_folder" value="<?php echo $this->escape($this->item->folder); ?>" />
+							<input type="hidden" name="fields[folder]" id="field_folder" value="<?php echo $this->escape($this->item->folder); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -152,7 +152,7 @@ Html::behavior('formvalidation');
 						</th>
 						<td>
 							<?php echo $this->escape($this->item->element); ?>
-							<input type="hidden" name="jform[element]" id="jform_element" value="<?php echo $this->escape($this->item->element); ?>" />
+							<input type="hidden" name="fields[element]" id="field_element" value="<?php echo $this->escape($this->item->element); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -173,7 +173,7 @@ Html::behavior('formvalidation');
 			</table>
 		</div>
 		<div class="col span5">
-			<?php echo Html::sliders('start', 'plugin-sliders-'.$this->item->extension_id); ?>
+			<?php echo Html::sliders('start', 'plugin-sliders-' . $this->item->extension_id); ?>
 
 				<?php echo $this->loadTemplate('options'); ?>
 
@@ -185,7 +185,7 @@ Html::behavior('formvalidation');
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="extension_id" value="<?php echo (int) $this->item->extension_id; ?>" />
+	<input type="hidden" name="id" value="<?php echo (int) $this->item->extension_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<?php echo Html::input('token'); ?>
 	<input type="hidden" name="component" value="<?php echo Request::getCmd('component', ''); ?>" />

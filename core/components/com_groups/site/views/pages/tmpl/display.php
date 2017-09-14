@@ -40,7 +40,7 @@ defined('_HZEXEC_') or die();
 		</a>
 	</li>
 	<li class="filter">
-		<select>
+		<select name="filer">
 			<option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_FILTER'); ?></option>
 			<?php foreach ($this->categories as $category) : ?>
 				<option data-color="#<?php echo $category->get('color'); ?>" value="<?php echo $category->get('id'); ?>"><?php echo $category->get('title'); ?></option>
@@ -49,7 +49,7 @@ defined('_HZEXEC_') or die();
 	</li>
 	<li class="filter-search-divider"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_OR'); ?></li>
 	<li class="search">
-		<input type="text" placeholder="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_SEARCH'); ?>" />
+		<input type="text" name="search" placeholder="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_SEARCH'); ?>" value="<?php echo $this->escape(isset($this->search) ? $this->search : ''); ?>" />
 	</li>
 </ul>
 

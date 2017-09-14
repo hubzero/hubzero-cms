@@ -161,7 +161,7 @@ class Media extends Base
 			}
 
 			//move from temp location to target location which is user folder
-			$target = fopen($path . DS . $file , "w");
+			$target = fopen($path . DS . $file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -183,24 +183,38 @@ class Media extends Base
 			$hi = new \Hubzero\Image\Processor($path . DS . $file);
 			if (count($hi->getErrors()) == 0)
 			{
+				// PHP versions < 7 has issues with reading EXIF data
+				// So, we want to try and catch those specific errors
+				// and ignore them.
 				try
 				{
 					$hi->autoRotate();
+				}
+				catch (\Exception $e)
+				{
+					if (strpos($e->getMessage(), 'Illegal IFD size') !== false
+					 || strpos($e->getMessage(), 'Illegal IFD offset') !== false)
+					{
+						// PURR #1186, QUBES #618
+						// Ignore. Let's just move on.
+					}
+					else
+					{
+						echo json_encode(array('error' => $e->getMessage()));
+						return;
+					}
+				}
+
+				try
+				{
 					$hi->resize(200);
 					$hi->setImageType(IMAGETYPE_PNG);
 					$hi->save($path . DS . $file);
 				}
 				catch (\Exception $e)
 				{
-					if (strpos($e->getMessage(), 'Illegal IFD size') !== false)
-					{
-						// PURR #1186, QUBES #618
-						continue;
-					}
-					else
-					{
-						App::abort('500', $e);
-					}
+					echo json_encode(array('error' => $e->getMessage()));
+					return;
 				}
 			}
 			else
@@ -226,7 +240,8 @@ class Media extends Base
 				}
 				catch (\Exception $e)
 				{
-					error_log($e->getMessage());
+					echo json_encode(array('error' => $e->getMessage()));
+					return;
 				}
 			}
 			else
@@ -403,7 +418,7 @@ class Media extends Base
 	{
 		// Incoming
 		$media    = trim(Request::getVar('media', 'thumb'));
-		$source   = NULL;
+		$source   = null;
 		$redirect = false;
 		$dir      = 'preview';
 
@@ -457,7 +472,7 @@ class Media extends Base
 				}
 
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media;
+				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . urldecode($media);
 				$redirect = true;
 			}
 		}
@@ -484,20 +499,32 @@ class Media extends Base
 	 */
 	public function getProjectImageSrc()
 	{
+
 		if (!$this->model->exists())
 		{
 			return false;
 		}
 
 		$path      = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
-		$masterpic = trim($this->config->get('masterpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
-		if ($masterpic == 'components/com_projects/assets/img/projects-large.gif')
+		$masterpic = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
+
+		if (!$masterpic
+		 || $masterpic == 'components/com_projects/site/assets/img/project.png'
+		 || $masterpic == 'components/com_projects/assets/img/project.png'
+		 || $masterpic == 'components/com_projects/site/assets/img/projects-large.gif'
+		 || $masterpic == 'components/com_projects/assets/img/projects-large.gif')
 		{
 			$masterpic = 'components/com_projects/site/assets/img/projects-large.gif';
+			$defaultPath = PATH_CORE;
 		}
-		$default = PATH_CORE . DS . $masterpic;
+		else
+		{
+			$defaultPath = PATH_APP;
+		}
 
-		$default = is_file($default) ? $default : NULL;
+		$default = $defaultPath . DS . $masterpic;
+
+		$default = is_file($default) ? $default : null;
 
 		$src  = $this->model->get('picture')
 				&& is_file(PATH_APP . DS . $path . DS . $this->model->get('picture'))
@@ -529,17 +556,25 @@ class Media extends Base
 		if ($this->model->get('picture'))
 		{
 			$thumb = Helpers\Html::createThumbName($this->model->get('picture'));
-			$src = $thumb && file_exists($path . DS . $thumb) ? $path . DS . $thumb : NULL;
+			$src = $thumb && file_exists($path . DS . $thumb) ? $path . DS . $thumb : null;
 		}
 
 		if (!$src)
 		{
 			$path = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
-			if ($path == 'components/com_projects/assets/img/project.png')
+			if ($path == 'components/com_projects/assets/img/project.png'
+			 || $path == 'components/com_projects/site/assets/img/project.png'
+			 || $path == 'components/com_projects/site/assets/img/projects-large.gif'
+			 || $path == 'components/com_projects/assets/img/projects-large.gif')
 			{
 				$path = 'components/com_projects/site/assets/img/project.png';
+				$rootPath = PATH_CORE;
 			}
-			$src = PATH_CORE . DS . $path;
+			else
+			{
+				$rootPath = PATH_APP;
+			}
+			$src = $rootPath . DS . $path;
 		}
 
 		return $src;

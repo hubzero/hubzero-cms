@@ -38,10 +38,10 @@ class plgResourcesOpengraph extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param   object  $resource  Current resource
-	 * @param   string  $option    Name of the component
-	 * @param   array   $areas     Active area(s)
-	 * @param   string  $rtrn      Data to be returned
+	 * @param   object  $model   Current model
+	 * @param   string  $option  Name of the component
+	 * @param   array   $areas   Active area(s)
+	 * @param   string  $rtrn    Data to be returned
 	 * @return  void
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')

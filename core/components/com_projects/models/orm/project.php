@@ -32,12 +32,14 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Event;
 use User;
 
 include_once __DIR__ . '/owner.php';
 include_once __DIR__ . '/description.php';
 include_once __DIR__ . '/connection.php';
 include_once __DIR__ . '/activity.php';
+include_once __DIR__ . '/type.php';
 
 /**
  * Projects database model
@@ -57,7 +59,7 @@ class Project extends Relational
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'title';
 
@@ -200,6 +202,16 @@ class Project extends Relational
 	}
 
 	/**
+	 * Defines a one to one relationship between project and type
+	 *
+	 * @return  \Hubzero\Database\Relationship\OneToOne
+	 **/
+	public function type()
+	{
+		return $this->oneToOne(__NAMESPACE__ . '\\Type', 'id', 'type');
+	}
+
+	/**
 	 * Check if the project is public
 	 *
 	 * @return  boolean
@@ -308,6 +320,12 @@ class Project extends Relational
 	 */
 	public function destroy()
 	{
+		$data = $this->toArray();
+
+		// Trigger before delete event
+		Event::trigger('projects.onProjectBeforeDelete', array($data));
+
+		// Remove associated data
 		foreach ($this->connections as $connection)
 		{
 			if (!$connection->destroy())
@@ -335,6 +353,15 @@ class Project extends Relational
 			}
 		}
 
-		return parent::destroy();
+		// Attempt to delete the record
+		$result = parent::destroy();
+
+		if ($result)
+		{
+			// Trigger after delete event
+			Event::trigger('projects.onProjectAfterDelete', array($data));
+		}
+
+		return $result;
 	}
 }

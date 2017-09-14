@@ -60,6 +60,13 @@ class MollomException extends Exception
 
 	/**
 	 * Overrides Exception::__construct().
+	 *
+	 * @param   string   $message
+	 * @param   integer  $code
+	 * @param   unknown  $previous
+	 * @param   object   $mollum
+	 * @param   array    $request_info
+	 * @return  void
 	 */
 	public function __construct($message = '', $code = 0, Exception $previous = NULL, Mollom $mollom, array $request_info = array())
 	{

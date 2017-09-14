@@ -45,12 +45,10 @@ $citation = $this->citation;
 $profile = User::getInstance($citation->uid);
 
 //get citation type
-$ct = new \Components\Citations\Tables\Type($database);
-$type = $ct->getType( $citation->type );
+$type = $this->type;
 
 //get citation sponsors
-$cs = new \Components\Citations\Tables\Sponsor($database);
-$sponsors = $cs->getSponsorsForCitationWithId($citation->id);
+$sponsors = $this->sponsors;
 
 //determine the separator
 $urlSeparator = PHP_EOL;
@@ -131,17 +129,7 @@ $showBadges = $config->get('citation_show_badges', 'yes');
 $associationLinks = array();
 foreach ($this->associations as $a)
 {
-	if ($a->tbl == 'resource')
-	{
-		$sql = "SELECT * FROM `#__resources` WHERE id=" . $a->oid;
-		$database->setQuery($sql);
-		$resource = $database->loadObject();
-
-		if (is_object($resource))
-		{
-			$associationLinks[] = '<a href="'.Route::url('index.php?option=com_resources&id='.$a->oid).'">'.$resource->title.'</a>';
-		}
-	}
+	$associationLinks[] = '<a href="' . $a->link() . '">' . $a->title . '</a>';
 }
 
 //get the sub area we are trying to load
@@ -213,12 +201,7 @@ $area = Request::getVar('area', 'about');
 
 		<div class="citation-citation">
 			<?php
-				$citationsFormat = new \Components\Citations\Tables\Format($this->database);
-				$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
-
-				$cf = new \Components\Citations\Helpers\Format();
-				$cf->setTemplate($template);
-				echo strip_tags($cf->formatCitation($citation, null, false, $config));
+				echo $citation->formatted();
 			?>
 			<div class="download">
 				<a class="" href="<?php echo Route::url('index.php?option=com_citations&task=download&citationFormat=bibtex&id=' . $citation->id . '&no_html=1'); ?>" title="Download in BibTex Format"><?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX'); ?></a> |
@@ -299,7 +282,7 @@ $area = Request::getVar('area', 'about');
 				<tr>
 					<th><?php echo Lang::txt('COM_CITATIONS_TYPE'); ?></th>
 					<td>
-						<a href="<?php echo Route::url('index.php?option=com_citations&task=browse&type='.$type[0]['id']); ?>"><?php echo $type[0]['type_title']; ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_citations&task=browse&type='.$type->id); ?>"><?php echo $type->type_title; ?></a>
 					</td>
 				</tr>
 

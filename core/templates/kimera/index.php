@@ -92,7 +92,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 				<div id="splash">
 					<div class="inner-wrap">
 
-						<header id="masthead" role="banner">
+						<header id="masthead">
 							<jdoc:include type="modules" name="notices" />
 
 							<h1>
@@ -104,7 +104,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 							<nav id="account" class="account-navigation">
 								<ul>
 									<li>
-										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('Search'); ?></a>
+										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?></a>
 										<jdoc:include type="modules" name="search" />
 									</li>
 								<?php if (!User::isGuest()) { ?>
@@ -132,7 +132,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 									<li>
 										<a class="icon-login" href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></a>
 									</li>
-									<?php if ($this->params->get('registerLink') && Component::params('com_users')->get('allowUserRegistration')) : ?>
+									<?php if ($this->params->get('registerLink') && Component::params('com_members')->get('allowUserRegistration')) : ?>
 										<li>
 											<a class="icon-register" href="<?php echo Route::url('index.php?option=com_register'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SIGN_UP'); ?>"><?php echo Lang::txt('TPL_KIMERA_REGISTER'); ?></a>
 										</li>
@@ -166,9 +166,9 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 						<div class="inner">
 							<div class="wrap">
-							<?php if ($this->getBuffer('message')) : ?>
-								<jdoc:include type="message" />
-							<?php endif; ?>
+								<?php if ($this->getBuffer('message')) : ?>
+									<jdoc:include type="message" />
+								<?php endif; ?>
 								<jdoc:include type="modules" name="welcome" />
 							</div>
 						</div><!-- / .inner -->

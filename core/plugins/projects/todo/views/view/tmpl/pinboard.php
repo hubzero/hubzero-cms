@@ -110,7 +110,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 					$order++;
 				}
 				?>
-			<?php } elseif (!$this->filters['state']) {	 ?>
+			<?php } elseif (!$this->filters['state'] && $this->model->access('content')) { ?>
 				<li class="todo-add">
 					<span>
 						<a class="item-add showinbox" href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">

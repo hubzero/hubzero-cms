@@ -301,13 +301,13 @@ if ($mode != 'preview')
 										case "pdf":
 										default:
 											if ($grandchild->logicaltype == 14) {
-												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').'</a>'."\n";
+												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . Filesystem::extension($grandchild->path) . ')</a>'."\n";
 											} elseif ($grandchild->logicaltype == 51) {
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 											} else {
 												$grandchildParams  = new \Hubzero\Config\Registry($grandchild->params);
 												$grandchildAttribs = new \Hubzero\Config\Registry($grandchild->attribs);
-												$linkAction = $grandchildParams->get( 'link_action', 0 );
+												$linkAction = $grandchildParams->get('link_action', 0);
 												$width      = $grandchildAttribs->get('width', 640) + 20;
 												$height     = $grandchildAttribs->get('height', 360) + 60;
 

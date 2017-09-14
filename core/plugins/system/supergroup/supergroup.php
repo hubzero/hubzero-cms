@@ -137,10 +137,15 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterInitialise()
 	{
+		if (!App::isSite())
+		{
+			return;
+		}
+
 		App::get('router')->rules('build')->append('supergroup', function ($uri)
 		{
 			// get the current segments
-			$currentSegments = explode('/', trim(\App::get('request')->path(), '/'));
+			$currentSegments = explode('/', trim(App::get('request')->path(), '/'));
 
 			// make sure were building within groups
 			if (!isset($currentSegments[0]) || !isset($currentSegments[1]) || $currentSegments[0] != 'groups')
@@ -160,16 +165,16 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 			}
 
 			// get request options
-			$cn     = \App::get('request')->getVar('cn', '');
-			$active = \App::get('request')->getVar('active', '');
+			$cn     = App::get('request')->getVar('cn', '');
+			$active = App::get('request')->getVar('active', '');
 
 			// load group object
-			$group  = \Hubzero\User\Group::getInstance($cn);
+			$group  = Hubzero\User\Group::getInstance($cn);
 
 			// make sure we have all the needed stuff
 			if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
 			{
-				$params = \App::get('component')->params('com_groups');
+				$params = App::get('component')->params('com_groups');
 
 				// get com_groups params to get upload path
 				$uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber'); //$this->filespace($group);

@@ -39,39 +39,37 @@ HUBzero is a registered trademark of Purdue University.
 	<description>Manage A Blog</description>
 	<files folder="site">
 		<filename>router.php</filename>
-		<filename>controller.php</filename>
+		<filename>controllers/entries.php</filename>
+		<filename>controllers/media.php</filename>
 		<filename>blog.xml</filename>
 		<filename>blog.php</filename>
-		<filename>tables/blog.entry.php</filename>
-		<filename>tables/blog.comment.php</filename>
-		<filename>views/entries/tmpl/default.php</filename>
-		<filename>views/entry/tmpl/default.php</filename>
+		<filename>views/entries/tmpl/display.php</filename>
+		<filename>views/entries/tmpl/delete.php</filename>
+		<filename>views/entries/tmpl/edit.php</filename>
+		<filename>views/entries/tmpl/entry.php</filename>
+		<filename>views/entries/tmpl/_comment.php</filename>
+		<filename>views/entries/tmpl/_list.php</filename>
+		<filename>views/media/tmpl/display.php</filename>
+		<filename>views/media/tmpl/list.php</filename>
 		<filename>index.html</filename>
 	</files>
 	<languages folder="site">
 		<language tag="en-GB">en-GB.com_blog.ini</language>
 	</languages>
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">install.sql</file>
-		</sql>
-	</install>
-	<uninstall>
-		<sql>
-			<file charset="utf8" driver="mysql">uninstall.sql</file>
-		</sql>
-	</uninstall>
 	<administration>
 		<menu>Blog</menu>
 		<files folder="admin">
-			<filename>controller.php</filename>
+			<filename>controllers/entries.php</filename>
+			<filename>controllers/comments.php</filename>
 			<filename>blog.php</filename>
-			<filename>views/entries/tmpl/default.php</filename>
-			<filename>views/edit/tmpl/default.php</filename>
+			<filename>views/entries/tmpl/display.php</filename>
+			<filename>views/entries/tmpl/edit.php</filename>
+			<filename>views/comments/tmpl/display.php</filename>
+			<filename>views/comments/tmpl/edit.php</filename>
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_blog.ini</language>
-			<language tag="en-GB">en-GB.com_blog.menu.ini</language>
+			<language tag="en-GB">en-GB.com_blog.sys.ini</language>
 		</languages>
 	</administration>
 </extension>

@@ -45,11 +45,7 @@ Document::setTitle(Lang::txt('COM_ANSWERS'));
 $this->css()
      ->js();
 
-if (!$this->filters['filterby'])
-{
-	$this->filters['filterby'] = 'all';
-}
-if ($this->filters['filterby'] == 'none')
+if (!$this->filters['filterby'] || $this->filters['filterby'] == 'none')
 {
 	$this->filters['filterby'] = 'all';
 }

@@ -32,9 +32,8 @@
 
 namespace Components\Login\Admin;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'login.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'login.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'login.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'login.php';
 
 $controller = new Controllers\Login();
 $controller->execute();
-$controller->redirect();

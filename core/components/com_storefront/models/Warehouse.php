@@ -56,7 +56,7 @@ class Warehouse extends \Hubzero\Base\Object
 	/**
 	 * array Product categories to look at (to define scope)
 	 */
-	var $lookupCollections = NULL;
+	var $lookupCollections = null;
 
 	// Access levels scope (what is allowed to display)
 	var $accessLevelsScope = false;
@@ -68,7 +68,7 @@ class Warehouse extends \Hubzero\Base\Object
 	var $userScope = false;
 
 	// Database instance
-	var $db = NULL;
+	var $db = null;
 
 	/**
 	 * Constructor method
@@ -106,7 +106,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	public function resetLookupCollections()
 	{
-		$this->lookupCollections[] = NULL;
+		$this->lookupCollections[] = null;
 	}
 
 	/**
@@ -680,8 +680,20 @@ class Warehouse extends \Hubzero\Base\Object
 	{
 		// Get all SKUs' options and option groups
 		$sql  = "	SELECT
-					s.`sId` AS skuId, so.`oId` AS skusOptionId, s.`sPrice`, s.`sAllowMultiple`, s.`sInventory`,
-					s.`sTrackInventory`, og.`ogId`, `oName`, `ogName`";
+					s.`sId` AS skuId,
+					so.`oId` AS skusOptionId,
+					s.`sPrice`,
+					s.`sAllowMultiple`,
+					s.`sInventory`,
+					s.`sTrackInventory`,
+					s.`sRestricted`,
+					og.`ogId`,
+					`oName`,
+					`ogName`";
+		if ($this->userScope)
+		{
+			$sql .= " 	, pr.`uId`";
+		}
 		$sql .= "	FROM `#__storefront_skus` s
 					LEFT JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
 					LEFT JOIN `#__storefront_options` o ON so.`oId` = o.`oId`
@@ -690,32 +702,66 @@ class Warehouse extends \Hubzero\Base\Object
 		// check user scope if needed
 		if ($this->userScope)
 		{
-			$sql .= " LEFT JOIN #__storefront_permissions pr ON pr.`scope_id` = s.sId";
+			$sql .= " LEFT JOIN #__storefront_permissions pr ON (pr.`scope_id` = s.sId AND pr.scope = 'sku' AND pr.uId = '{$this->userScope}')";
 		}
 
 		$sql .= "	WHERE s.`pId` = {$pId} AND s.`sActive` = 1";
 		$sql .= " 	AND (s.`publish_up` IS NULL OR s.`publish_up` <= NOW())";
 		$sql .= " 	AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
-		$sql .= "   AND (s.`sInventory` > 0 OR s.`sTrackInventory` = 0)";
-		if ($this->userScope)
-		{
-			$sql .= " AND (s.`sRestricted` = 0 OR (pr.scope = 'sku' AND pr.uId = '{$this->userScope}'))";
-		}
-		else
-		{
-			$sql .= " AND s.`sRestricted` = 0";
-		}
 		$sql .= "	ORDER BY og.`ogId`, o.`oId`";
 
 		$this->_db->setQuery($sql);
 		//print_r($this->_db->toString()); die;
 		$this->_db->query();
+
+		// check some values to figure out what to return
+		$returnObject = new \stdClass();
+		$returnObject->status = 'ok';
+
 		if (!$this->_db->getNumRows())
 		{
-			return false;
+			$returnObject->status = 'error';
+			$returnObject->msg = 'not found';
+			return $returnObject;
 		}
+		else
+		{
+			$results = $this->_db->loadObjectList();
+			$res = $results;
 
-		$res = $this->_db->loadObjectList();
+			// Go through each SKU and do the checks to determine what needs to be returned
+			// default value
+			$permissionsRestricted = false;
+
+			foreach ($res as $k => $line)
+			{
+				if ($line->sRestricted && (!$this->userScope || $line->uId != $this->userScope))
+				{
+					// Sku is restricted and not available
+					$permissionsRestricted = true;
+					// remove it
+					unset($res[$k]);
+
+				}
+				elseif ($line->sTrackInventory && $line->sInventory < 1)
+				{
+					// remove it
+					unset($res[$k]);
+				}
+			}
+
+			if (sizeof($res) < 1)
+			{
+				$returnObject->status = 'error';
+				$returnObject->msg = 'out of stock';
+				// If at least one SKU is restricted, we cannot return 'out of stock'
+				if ($permissionsRestricted)
+				{
+					$returnObject->msg = 'restricted';
+				}
+				return $returnObject;
+			}
+		}
 
 		// Initialize array for option groups
 		$options = array();
@@ -724,7 +770,8 @@ class Warehouse extends \Hubzero\Base\Object
 
 		// Parse result and populate $options with option groups and corresponding options
 		$currentOgId = false;
-		foreach ($res as $line) {
+		foreach ($res as $line)
+		{
 			// Populate options
 			if ($line->ogId) {
 				// Keep track of option groups and do not do anything if no options
@@ -765,7 +812,8 @@ class Warehouse extends \Hubzero\Base\Object
 		$ret->skus = $skus;
 		//print_r($ret); die;
 
-		return $ret;
+		$returnObject->options = $ret;
+		return $returnObject;
 	}
 
 	// Get all option groups (for admin)

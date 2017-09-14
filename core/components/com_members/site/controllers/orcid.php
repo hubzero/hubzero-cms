@@ -263,12 +263,12 @@ class Orcid extends SiteController
 	{
 		$srv = $this->config->get('orcid_service', 'members');
 		
-		// Search by first name, last name, insitution name
+		// Search by first name, last name, institution name
 		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/search/?q=';
 		$tkn = $this->_accessToken;
 		
 		$bits = array();
-
+		
 		if ($fname)
 		{
 			$bits[] = 'given-names:' . $fname;
@@ -287,20 +287,21 @@ class Orcid extends SiteController
 		$url .= implode('+AND+', $bits);
 		$url .= htmlspecialchars('&') . 'start=0' . htmlspecialchars('&') . 'rows=5';
 		
-		$header = array('Accept: application/vnd.orcid+xml');		
+		$header = array('Accept: application/vnd.orcid+xml');
 		if ($srv != 'public')
 		{
 			$header[] = 'Authorization: Bearer ' . $tkn;
 		}
-
+		
 		$initedCurl = curl_init();
 		curl_setopt($initedCurl, CURLOPT_URL, $url);
 		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
+		
 		$curlData = curl_exec($initedCurl);
-
+    
 		$xmlStr = htmlentities($curlData);
 		$xmlStr = preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
 		$xmlStr = html_entity_decode($xmlStr);
@@ -313,9 +314,9 @@ class Orcid extends SiteController
 		{
 			echo 'Curl error: ' . curl_error($initedCurl);
 		}
-
+		
 		curl_close($initedCurl);
-
+		
 		try
 		{
 			$root = simplexml_load_string($xmlStr);

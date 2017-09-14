@@ -10,7 +10,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$published = $this->state->get('filter.published');
+$published = $this->filters['published'];
 ?>
 <fieldset class="batch">
 	<legend><?php echo Lang::txt('COM_CONTENT_BATCH_OPTIONS');?></legend>

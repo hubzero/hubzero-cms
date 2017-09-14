@@ -43,32 +43,32 @@ class Publication extends \JTable
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publications', 'id', $db );
+		parent::__construct('#__publications', 'id', $db);
 	}
 
 	/**
 	 * Load by alias
 	 *
 	 * @param      string 	$oid
-	 * @return     object or FALSE
+	 * @return     object or false
 	 */
-	public function loadPublication( $oid=NULL )
+	public function loadPublication($oid=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}
 		$where = is_numeric($oid) ? 'id=' . $this->_db->quote($oid) : 'alias=' . $this->_db->quote($oid);
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE " . $where );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE " . $where);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -77,22 +77,22 @@ class Publication extends \JTable
 	 * Load by alias
 	 *
 	 * @param      string 	$oid
-	 * @return     object or FALSE
+	 * @return     object or false
 	 */
-	public function loadAlias( $oid=NULL )
+	public function loadAlias($oid=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($oid) );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($oid));
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -104,7 +104,7 @@ class Publication extends \JTable
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '')
+		if (trim($this->title) == '')
 		{
 			$this->setError(Lang::txt('Your Publication must contain a title.'));
 			return false;
@@ -118,7 +118,7 @@ class Publication extends \JTable
 	 * @param      array 		$filters
 	 * @return     query string
 	 */
-	public function buildQuery( $filters = array(), $admin = false )
+	public function buildQuery($filters = array(), $admin = false)
 	{
 		$now 		= Date::toSql();
 		$groupby 	= ' GROUP BY C.id ';
@@ -127,6 +127,7 @@ class Publication extends \JTable
 		$dev 			= isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
 		$projects 		= isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
 		$mine 			= isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
+		$featured		= isset($filters['featured']) && $filters['featured'] ? 1 : 0;
 		$sortby  		= isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
 		$query  = "FROM ";
@@ -147,9 +148,17 @@ class Publication extends \JTable
 		$query .= "LEFT JOIN #__publication_categories AS t ON t.id=C.category ";
 		$query .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id ";
 
+		if ($featured)
+		{
+			$query .=" AND C.featured = 1";
+		}
+
 		if ($dev)
 		{
-			$query .= " AND V.main=1 ";
+			// $query .= " AND V.main=1 ";
+			// Not sure why this was included?.
+			// It prevents publications with a draft from being listed to owners inside a project.
+
 			if (isset($filters['status']) && $filters['status'] != 'all')
 			{
 				if (is_array($filters['status']))
@@ -159,7 +168,7 @@ class Publication extends \JTable
 					{
 						$squery .= "'" . $s . "',";
 					}
-					$squery = substr($squery,0,strlen($squery) - 1);
+					$squery = substr($squery, 0, strlen($squery) - 1);
 					$query .= " AND (V.state IN (" . $squery . ")) ";
 				}
 				else
@@ -169,14 +178,14 @@ class Publication extends \JTable
 			}
 			if ($mine)
 			{
-				if (count($projects) > 0 )
+				if (count($projects) > 0)
 				{
 					$p_query = '';
 					foreach ($projects as $p)
 					{
 						$p_query .= "'" . $p . "',";
 					}
-					$p_query = substr($p_query,0,strlen($p_query) - 1);
+					$p_query = substr($p_query, 0, strlen($p_query) - 1);
 					$query .= " AND (C.project_id IN (" . $p_query . ")) ";
 				}
 				else
@@ -203,14 +212,14 @@ class Publication extends \JTable
 		{
 			$query .= " AND V.version_number = (SELECT MAX(version_number) FROM #__publication_versions
 						WHERE publication_id=C.id AND state=1 ) AND (V.state=1";
-			if (count($projects) > 0 )
+			if (count($projects) > 0)
 			{
 				$p_query = '';
 				foreach ($projects as $p)
 				{
 					$p_query .= "'" . $p . "',";
 				}
-				$p_query = substr($p_query,0,strlen($p_query) - 1);
+				$p_query = substr($p_query, 0, strlen($p_query) - 1);
 				$query .= " OR (C.project_id IN (" . $p_query . ") AND V.state != 3 AND V.state != 2) ";
 			}
 			$query .= ") ";
@@ -246,8 +255,8 @@ class Publication extends \JTable
 				{
 					$tquery .= "'" . $type . "',";
 				}
-				$tquery = substr($tquery,0,strlen($tquery) - 1);
-				$query .= " AND ((C.master_type IN (" . $tquery . ") ) ";
+				$tquery = substr($tquery, 0, strlen($tquery) - 1);
+				$query .= " AND ((C.master_type IN (" . $tquery . ")) ";
 			}
 			elseif (is_numeric($filters['master_type']))
 			{
@@ -313,8 +322,8 @@ class Publication extends \JTable
 		}
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
-			include_once( PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
-			$tagging = new \Components\Publications\Helpers\Tags( $this->_db );
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
+			$tagging = new \Components\Publications\Helpers\Tags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
 			$query .= "AND RTA.objectid=C.id AND TA.tag IN ('" . implode("','", $tags) . "')";
@@ -421,15 +430,15 @@ class Publication extends \JTable
 	 * @param      boolean		$admin
 	 * @return     object
 	 */
-	public function getCount( $filters = array(), $admin = false )
+	public function getCount($filters = array(), $admin = false)
 	{
 		$filters['count'] = 1;
-		$query = $this->buildQuery( $filters, $admin );
+		$query = $this->buildQuery($filters, $admin);
 
 		$sql  = "SELECT C.id ";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query : $query;
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return count($this->_db->loadObjectList());
 	}
 
@@ -440,7 +449,7 @@ class Publication extends \JTable
 	 * @param      boolean		$admin
 	 * @return     object
 	 */
-	public function getRecords( $filters = array(), $admin = false )
+	public function getRecords($filters = array(), $admin = false)
 	{
 		$sql  = "SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access,
 				C.checked_out, C.checked_out_time, C.rating as master_rating,
@@ -461,11 +470,11 @@ class Publication extends \JTable
 		}
 
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
-		$sql .= $this->buildQuery( $filters, $admin );
+		$sql .= $this->buildQuery($filters, $admin);
 		$start = isset($filters['start']) ? $filters['start'] : 0;
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $start . ", " . $filters['limit'] : "";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
@@ -489,7 +498,7 @@ class Publication extends \JTable
 		$query .= " JOIN #__projects AS p ON pub.project_id=p.id ";
 		$query .= " WHERE V.publication_id=pub.id AND V.main=1 AND p.id=" . $this->_db->quote($pid) . " LIMIT 1 ";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($getid)
 		{
 			return $this->_db->loadResult();
@@ -510,19 +519,19 @@ class Publication extends \JTable
 	 * @param      string		$alias
 	 * @return     object
 	 */
-	public function getPublication ( $pid = NULL, $version = 'default', $project_id = NULL, $alias = NULL )
+	public function getPublication($pid = null, $version = 'default', $project_id = null, $alias = null)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			$pid = $this->id;
 		}
-		if (($pid === NULL or $pid == 0) && $alias === NULL )
+		if (($pid === null or $pid == 0) && $alias === null)
 		{
 			return false;
 		}
 
 		$now = Date::toSql();
-		$alias = str_replace( ':', '-', $alias );
+		$alias = str_replace(':', '-', $alias);
 
 		$sql  = "SELECT V.*, C.id as id, C.category, C.master_type,
 				C.project_id, C.access as master_access, C.master_doi,
@@ -537,8 +546,8 @@ class Publication extends \JTable
 				PP.owned_by_group as project_group ";
 
 		$sql .= ",(SELECT vv.version_label FROM #__publication_versions as vv
-				WHERE vv.publication_id=C.id AND (vv.state = 3 OR vv.state = 5)) AS dev_version_label ";
-		$sql .= ",(SELECT vv.state FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.main=1)
+				WHERE vv.publication_id=C.id AND (vv.state = 3 OR vv.state = 5) LIMIT 1) AS dev_version_label ";
+		$sql .= ",(SELECT vv.state FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.main=1 ORDER BY vv.created DESC LIMIT 1)
 				AS default_version_status ";
 		$sql .= ",(SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
 		$sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS MT, $this->_tbl AS C ";
@@ -565,7 +574,7 @@ class Publication extends \JTable
 		$sql .= $pid ? " AND C.id=" . $this->_db->quote($pid) : " AND C.alias=" . $this->_db->quote($alias);
 		$sql .= " LIMIT 1";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -577,7 +586,7 @@ class Publication extends \JTable
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery( "SELECT rating FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($this->id) );
+		$this->_db->setQuery("SELECT rating FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($this->id));
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -607,7 +616,7 @@ class Publication extends \JTable
 	 */
 	public function updateRating()
 	{
-		$this->_db->setQuery( "UPDATE $this->_tbl SET rating=" . $this->_db->quote($this->rating) . ", times_rated=" . $this->_db->quote($this->times_rated) . " WHERE id=" . $this->_db->quote($this->id) );
+		$this->_db->setQuery("UPDATE $this->_tbl SET rating=" . $this->_db->quote($this->rating) . ", times_rated=" . $this->_db->quote($this->times_rated) . " WHERE id=" . $this->_db->quote($this->id));
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();
@@ -621,7 +630,7 @@ class Publication extends \JTable
 	 * @param      integer 		$id
 	 * @return     void
 	 */
-	public function deleteExistence( $id = NULL )
+	public function deleteExistence($id = null)
 	{
 		if (!$id)
 		{
@@ -629,14 +638,14 @@ class Publication extends \JTable
 		}
 
 		// Delete tag associations
-		$this->_db->setQuery( "DELETE FROM #__tags_object WHERE tbl='publications' AND objectid=". $this->_db->quote($id) );
+		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='publications' AND objectid=". $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();
 			exit;
 		}
 		// Delete ratings
-		$this->_db->setQuery( "DELETE FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($id) );
+		$this->_db->setQuery("DELETE FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();
@@ -651,11 +660,11 @@ class Publication extends \JTable
 	 * @param      string 	$get
 	 * @return     mixed
 	 */
-	public function getPubStats ( $validProjects = array(), $get = 'total', $when = NULL)
+	public function getPubStats($validProjects = array(), $get = 'total', $when = null)
 	{
 		if (empty($validProjects))
 		{
-			return NULL;
+			return null;
 		}
 
 		if ($get == 'usage')
@@ -673,11 +682,11 @@ class Publication extends \JTable
 				{
 					$tquery .= "'".$v."',";
 				}
-				$tquery = substr($tquery,0,strlen($tquery) - 1);
+				$tquery = substr($tquery, 0, strlen($tquery) - 1);
 				$query .= $tquery.") ";
 			}
 			$query .= " GROUP BY p.id ";
-			$this->_db->setQuery( $query );
+			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
 			return count($result);
 		}
@@ -701,7 +710,7 @@ class Publication extends \JTable
 			{
 				$tquery .= "'" . $v . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery.") ";
 		}
 
@@ -720,7 +729,7 @@ class Publication extends \JTable
 			$query .= " GROUP BY P.project_id ";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 
 		if ($get == 'total' || $get == 'released' || $get == 'draft')
 		{
@@ -744,7 +753,7 @@ class Publication extends \JTable
 				$d++;
 			}
 
-			return $d ? number_format($c/$d,0) : 0;
+			return $d ? number_format($c/$d, 0) : 0;
 		}
 	}
 }

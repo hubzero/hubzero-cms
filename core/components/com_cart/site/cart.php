@@ -42,7 +42,7 @@ require_once(__DIR__ . DS . 'controllers' . DS . 'component.php');
 $controllerName = \Request::getCmd('controller', '');
 if (empty($controllerName))
 {
-	$controllerName = 'cart';
+	App::redirect(Request::base() . 'cart/cart');
 }
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
@@ -55,4 +55,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

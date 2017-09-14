@@ -312,6 +312,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$view->groupusers = array_values(array_filter($view->groupusers));
 				}
 
+				if (!$view->groupusers)
+				{
+					$view->groupusers = array();
+				}
+
 				// sort users before display
 				$view->groupusers = $this->sortAlphabetically($view->groupusers);
 

@@ -41,6 +41,13 @@ $this->js();
 $templates = $this->book->templates()
 	->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
 	->rows();
+
+$url = Route::url($this->page->link('new'));
+if (User::isGuest())
+{
+	$return = base64_encode(Route::url($this->page->link('new'), false, true));
+	$url = Route::url('index.php?option=com_users&view=login&return=' . $return, false);
+}
 ?>
 
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
@@ -60,7 +67,7 @@ $templates = $this->book->templates()
 
 <section class="main section">
 	<p class="warning">
-		<?php echo Lang::txt('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST_CREATE_IT', Route::url($this->page->link('new'))); ?>
+		<?php echo Lang::txt('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST_CREATE_IT', $url); ?>
 	</p>
 	<?php if ($templates->count()) { ?>
 		<p>
@@ -69,7 +76,14 @@ $templates = $this->book->templates()
 		<ul>
 			<?php foreach ($templates as $template) { ?>
 				<li>
-					<a href="<?php echo Route::url($this->page->link('new') . '&tplate=' . stripslashes($template->get('pagename'))); ?>">
+					<a href="<?php
+						$url = Route::url($this->page->link('new') . '&tplate=' . stripslashes($template->get('pagename')));
+						if (User::isGuest())
+						{
+							$return = base64_encode(Route::url($this->page->link('new') . '&tplate=' . stripslashes($template->get('pagename')), false, true));
+							$url = Route::url('index.php?option=com_users&view=login&return=' . $return, false);
+						}
+						echo $url; ?>">
 						<?php echo $this->escape(stripslashes($template->title)); ?>
 					</a>
 				</li>

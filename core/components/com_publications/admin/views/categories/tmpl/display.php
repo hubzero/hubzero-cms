@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('category');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_CATEGORIES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_CATEGORIES'), 'category');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -44,38 +44,38 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::editList();
 	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
 }
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	Toolbar::deleteList();
+}
 
 $this->css();
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cotnroller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php
-				$pageNav = $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				echo $pageNav->render();
-				?></td>
+				<td colspan="5">
+					<?php echo $this->rows->pagination; ?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$row = &$this->rows[$i];
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -85,7 +85,7 @@ $this->css();
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
 					<span class="block">
@@ -107,6 +107,7 @@ $this->css();
 			</tr>
 			<?php
 			$k = 1 - $k;
+			$i++;
 		}
 		?>
 		</tbody>

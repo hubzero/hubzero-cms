@@ -134,22 +134,14 @@ function submitbutton(pressbutton)
 		<?php
 		$k = 0;
 
-		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		foreach ($this->rows as $row)
 		{
-			$row =& $this->rows[$i];
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
+				<td><input type="checkbox" name="id[]" id="cb<?php echo $row->id; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
 				<td class="priority-2">
 					<?php
-						$type = "";
-						foreach ($this->types as $t)
-						{
-							if ($row->type == $t['id'])
-							{
-								$type = $t['type_title'];
-							}
-						}
+						$type = $row->relatedType->get('type_title');
 						echo ($type) ? $type : Lang::txt('GENERIC');
 					?>
 				</td>

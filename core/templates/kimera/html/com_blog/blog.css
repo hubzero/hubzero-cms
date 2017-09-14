@@ -113,8 +113,8 @@
 		margin-top: 0;
 	}
 
-	.subject .edit,
-	.subject .delete {
+	.entry-options .edit,
+	.entry-options .delete {
 		display: block;
 		width: 1em;
 		height: 1em;
@@ -126,31 +126,36 @@
 		right: 0;
 		position: absolute;
 		color: #bbb;
+		font-style: normal;
 	}
-	.subject dl .edit,
-	.subject dl .delete {
+	.entry-options .edit:hover,
+	.entry-options .delete:hover {
+		border: none;
+	}
+	.entry-options .edit,
+	.entry-options .delete {
 		font-size: 1.8em;
 		top: 0.4em;
 	}
-	.subject .edit:before,
-	.subject .delete:before{
+	.entry-options .edit:before,
+	.entry-options .delete:before{
 		margin-right: 1em;
 		font-family: "Fontcons";
 		font-weight: normal;
 	}
-	.subject .edit:before {
+	.entry-options .edit:before {
 		content: "\270E";
 	}
-	.subject .delete:before {
+	.entry-options .delete:before {
 		content: "\f014";
 	}
-	.subject .edit:hover {
+	.entry-options .edit:hover {
 		color: #222;
 	}
-	.subject .delete:hover {
+	.entry-options .delete:hover {
 		color: red;
 	}
-	.subject .delete {
+	.entry-options .delete {
 		right: 1.5em;
 	}
 	.no-comments {
@@ -268,7 +273,7 @@
 		border: 2px solid #ccc;
 		width: auto;
 	}
-	.entry-content table td, 
+	.entry-content table td,
 	.entry-content table th {
 		border: 1px solid #ccc;
 		margin: 0;
@@ -400,14 +405,14 @@
 		padding: 0 1em;
 	}
 
-	ol.comments .comment-options a {
+	/*ol.comments .comment-options a {
 		visibility: hidden;
 	}
 	ol.comments .comment-options,
 	ol.comments .comment-options:hover a,
 	ol.comments .comment-options a.reply {
 		visibility: visible;
-	}
+	}*/
 	ol.comments .comment-options a {
 		color: #ccc;
 		border: none;

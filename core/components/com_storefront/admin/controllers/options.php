@@ -236,6 +236,7 @@ class Options extends AdminController
 			);
 			return;
 		}
+		Notify::success(Lang::txt('COM_STOREFRONT_OPTION_SAVED'));
 
 		$this->editTask($option);
 	}
@@ -457,4 +458,3 @@ class Options extends AdminController
 		);
 	}
 }
-

@@ -46,12 +46,21 @@ use Lang;
 class Helper extends Module
 {
 	/**
+	 * Number of instances of the module
+	 *
+	 * @var  integer
+	 */
+	public static $instances = 0;
+
+	/**
 	 * Display the search form
 	 *
 	 * @return  void
 	 */
 	public function display()
 	{
+		self::$instances++;
+
 		if ($this->params->get('opensearch', 0))
 		{
 			$ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . Config::get('sitename'));

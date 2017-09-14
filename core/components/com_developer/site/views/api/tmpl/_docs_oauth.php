@@ -104,9 +104,9 @@ defined('_HZEXEC_') or die();
 				<td><span class="required">Required.</span> The client ID you received from your application when you registered your application.</td>
 			</tr>
 			<tr>
-				<td>client_secret</td>
+				<td>redirect_uri</td>
 				<td>string</td>
-				<td><span class="required">Required.</span> The client Secret you received from your application when you registered your application.</td>
+				<td><span class="required">Required.</span> Must be the URL you gave in Step 1.</td>
 			</tr>
 			<tr>
 				<td>grant_type</td>

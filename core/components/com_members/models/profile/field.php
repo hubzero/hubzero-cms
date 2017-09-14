@@ -381,6 +381,7 @@ class Field extends Relational
 		{
 			$f  = '<field type="' . $field->get('type') . '" name="' . htmlspecialchars($field->get('name'), ENT_COMPAT) . '" label="' . htmlspecialchars($field->get('label'), ENT_COMPAT) . '"';
 			$f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
+			$f .= ($field->get('placeholder')  ? ' placeholder="' . htmlspecialchars($field->get('placeholder'), ENT_COMPAT) . '"' : '');
 			$f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
 			$f .= ($field->get('option_other') ? ' option_other="1"' : '');
 			$f .= (!is_null($field->get('min')) ? ' min="' . (int) $field->get('min') . '"' : '');

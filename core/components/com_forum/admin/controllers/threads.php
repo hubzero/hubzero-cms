@@ -38,7 +38,6 @@ use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 use Components\Forum\Models\Tags;
-use Components\Forum\Admin\Models\AdminThread;
 use Filesystem;
 use Exception;
 use Request;
@@ -416,6 +415,8 @@ class Threads extends AdminController
 
 		if ($post->isNew())
 		{
+			$post->set('scope', 'site');
+			$post->set('scope_id', 0);
 			$post->set('parent', $parent);
 			$post->set('created_by', User::get('id'));
 		}
@@ -468,8 +469,8 @@ class Threads extends AdminController
 			'id'       => $post->get('id'),
 			'asset_id' => $post->get('asset_id')
 		));
-		$m = new AdminThread();
-		$form = $m->getForm();
+
+		$form = $post->getForm();
 
 		// Get tags on this article
 		$this->view
@@ -516,15 +517,30 @@ class Threads extends AdminController
 		// Initiate extended database class
 		$post = Post::oneOrNew(intval($fields['id']))->set($fields);
 
+		// Make sure a valid category was selected
+		$category = Category::oneOrNew($post->get('category_id'));
+		if (!$category->get('id'))
+		{
+			Notify::error(Lang::txt('COM_FORUM_FIELD_INVALID_CATEGORY'));
+			return $this->editTask($post);
+		}
+
+		// Ensure the post's scope is the same as its parent category
+		$post->set('scope', $category->get('scope'));
+		$post->set('scope_id', $category->get('scope_id'));
+
 		// Bind the rules.
 		$data = Request::getVar('jform', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
-			$model = new AdminThread();
-			$form      = $model->getForm($data, false);
-			$validData = $model->validate($form, $data);
+			$form = $post->getForm($data);
+			$data = $form->filter($data);
+			if (!$form->validate($data))
+			{
+				Notify::error($form->getError());
+			}
 
-			$post->assetRules = $validData['rules'];
+			$category->assetRules = new \Hubzero\Access\Rules($data['rules']);
 		}
 
 		// Store new content

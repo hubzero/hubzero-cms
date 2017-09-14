@@ -247,7 +247,7 @@ class Projects extends Base
 		$this->view->filters['reviewer'] = $reviewer;
 		$this->view->filters['filterby'] = Request::getWord('filterby', 'all');
 
-		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status')))
+		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status')))
 		{
 			$this->view->filters['sortby'] = 'title';
 		}
@@ -263,10 +263,10 @@ class Projects extends Base
 		}
 		// We're filtering by a specific state
 		// Do NOT include all projects the user may have access to as some of them may not be of this state
-		if (in_array($this->view->filters['filterby'], array('open', 'public')))
-		{
-			$this->view->filters['uid'] = 0;
-		}
+		//if (in_array($this->view->filters['filterby'], array('open', 'public')))
+		//{
+		//	$this->view->filters['uid'] = 0;
+		//}
 
 		/*if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
 		{
@@ -316,6 +316,7 @@ class Projects extends Base
 		$sync         = false;
 
 		// Stop ajax action if user got logged out
+		/* [!] I don't think this is needed anymore. Leaving for awhile incase need to re-introduce.
 		if ($ajax && User::isGuest())
 		{
 			// Project on hold
@@ -324,7 +325,7 @@ class Projects extends Base
 			$this->view->title  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
 			$this->view->display();
 			return;
-		}
+		}*/
 
 		// Check that project exists
 		if (!$this->model->exists())
@@ -403,12 +404,6 @@ class Projects extends Base
 			// Reload member
 			$this->model->member(true);
 		}
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Set the page title
-		$this->_buildTitle();
 
 		// Do we need to login?
 		if (User::isGuest() && $action == 'login')
@@ -640,6 +635,12 @@ class Projects extends Base
 			$this->model->set('counts', Helpers\Html::getCountArray($counts));
 		}
 
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Set the page title
+		$this->_buildTitle();
+
 		// Output HTML
 		$this->view->params   = $this->model->params;
 		$this->view->model    = $this->model;
@@ -668,7 +669,8 @@ class Projects extends Base
 		}
 
 		// Check session if this is a newly submitted entry. Trigger a proper event if so.
-		if (Session::get('newsubmission.project')) {
+		if (Session::get('newsubmission.project'))
+		{
 			// Unset the new submission session flag
 			Session::set('newsubmission.project');
 			Event::trigger('content.onAfterContentSubmission', array('Project'));

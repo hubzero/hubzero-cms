@@ -395,7 +395,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// get the preferred labeling scheme
-		$view->label = "both";
+		$view->label = $this->params->get('labeling_scheme', "both");
 
 		if ($view->label == "none")
 		{
@@ -690,6 +690,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'scope' => self::PLUGIN_SCOPE,
 				'scope_id' => $scope_id,
 			));
+		if ($isNew)
+		{
+			$citation->tempId = $cid;
+		}
 
 		$customID = Request::getVar('custom4', '');
 		if ($customID != '')
@@ -1309,6 +1313,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			Notify::error(Lang::txt('Unable to write temporary file.'));
 		}
+		if (!empty($citations[0]['attention']))
+		{
+			$citationRequiredIds = array_map(function($value){
+				return isset($value['duplicate']) ? $value['duplicate'] : false;
+			}, (array) $citations[0]['attention']);
+			$citeCollection = Citation::all()->including('relatedType')->whereIn('id', $citationRequiredIds)->rows();
+			foreach ($citations[0]['attention'] as &$citation)
+			{
+				$citation['duplicate'] = $citeCollection->seek($citation['duplicate']);
+			}
+		}
 
 		$view->citations_require_attention = $citations[0]['attention'];
 		$view->citations_require_no_attention = $citations[0]['no_attention'];
@@ -1527,8 +1542,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Applies filters to Citations model and returns applied filters
 	 *
-	 * @param   array  $filters  array of POST values
-	 * @return  array  sanitized and validated filter values
+	 * @param   array    $filters   Array of POST values
+	 * @param   integer  $scope_id  Value of scope id
+	 * @return  array    Sanitized and validated filter values
 	 */
 	private function _filterHandler($filters = array(),  $scope_id = 0)
 	{

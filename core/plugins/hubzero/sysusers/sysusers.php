@@ -41,6 +41,7 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return information about this hub
 	 *
+	 * @param   string  $values
 	 * @return  array
 	 */
 	public function onSystemOverview($values = 'all')
@@ -57,7 +58,7 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
 			$database->setQuery("SELECT COUNT(*) FROM `#__users`");
 			$response->data['total'] = $this->_obj('Total', $database->loadResult());
 
-			$database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE `emailConfirmed` < 1");
+			$database->setQuery("SELECT COUNT(*) FROM `#__users` WHERE `activation` < 1");
 			$response->data['unconfirmed'] = $this->_obj('Unconfirmed', $database->loadResult());
 
 			$response->data['confirmed'] = $this->_obj('Confirmed', ($response->data['total']->value - $response->data['unconfirmed']->value));
@@ -81,8 +82,8 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Assign label and data to an object
 	 *
-	 * @param   string $label
-	 * @param   mixed  $value
+	 * @param   string  $label
+	 * @param   mixed   $value
 	 * @return  object
 	 */
 	private function _obj($label, $value)

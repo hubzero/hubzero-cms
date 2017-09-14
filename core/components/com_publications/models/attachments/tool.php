@@ -80,7 +80,7 @@ class Tool extends Base
 		$configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
 
 		// Get default title
-		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
 		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Fancy launcher?
@@ -139,7 +139,7 @@ class Tool extends Base
 
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId])
-					 ? $attachments['elements'][$elementId] : NULL;
+					 ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments(
@@ -149,7 +149,7 @@ class Tool extends Base
 		);
 
 		$disabled = 0;
-		$pop 	  = NULL;
+		$pop 	  = null;
 
 		$mconfig = Component::params('com_tools');
 
@@ -202,7 +202,7 @@ class Tool extends Base
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : Lang::txt('COM_PUBLICATIONS_LAUNCH_TOOL');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null,
 					$title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
@@ -249,13 +249,13 @@ class Tool extends Base
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
 
 		// Default to first attachment
-		$record = count($attachments) > 0 ? $attachments[0] : NULL;
+		$record = count($attachments) > 0 ? $attachments[0] : null;
 
 		// Specific attachment requested?
 		if ($itemId)
@@ -271,7 +271,7 @@ class Tool extends Base
 		// Attachment missing
 		if (!$record)
 		{
-			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 
@@ -295,7 +295,7 @@ class Tool extends Base
 
 		if (!$path)
 		{
-			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 

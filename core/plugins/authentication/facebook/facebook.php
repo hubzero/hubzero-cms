@@ -44,6 +44,32 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * Stores the initialized Facebook object.
+	 *
+	 * @var  object  Facebook
+	 */
+	private $facebook = null;
+
+	/**
+	 * Get the Facebook object, instantiating it if need be
+	 *
+	 * @return  object
+	 */
+	protected function facebook()
+	{
+		if (is_null($this->facebook))
+		{
+			$this->facebook = new \Facebook\Facebook([
+				'app_id' => $this->params->get('app_id'),
+				'app_secret' => $this->params->get('app_secret'),
+				'default_graph_version' => $this->params->get('graph_version')
+			]);
+		}
+
+		return $this->facebook;
+	}
+
+	/**
 	 * Perform logout (not currently used)
 	 *
 	 * @return  void
@@ -155,15 +181,11 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 		// Set up params for the login call
 		$params = array(
-			'scope'        => 'public_profile,email',
 			'display'      => 'page',
 			'redirect_uri' => self::getReturnUrl($view->return)
 		);
 
-		\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
-
-		$helper = new \Facebook\FacebookRedirectLoginHelper($params['redirect_uri']);
-		$loginUrl = $helper->getLoginUrl(explode(',', $params['scope']));
+		$loginUrl = $this->facebook()->getRedirectLoginHelper()->getLoginUrl($params['redirect_uri'], array('email'));
 
 		// Redirect to the login URL
 		App::redirect($loginUrl);
@@ -179,22 +201,11 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		// Set up the config for the sdk instance
-		$config = array(
-			'appId'  => $this->params->get('app_id'),
-			'secret' => $this->params->get('app_secret')
-		);
-
-		// Set defaults
-		\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
-
-		$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return'], true));
-
 		try
 		{
-			$session = $helper->getSessionFromRedirect();
+			$session = $this->facebook()->getRedirectLoginHelper()->getAccessToken();
 		}
-		catch (\Facebook\FacebookRequestException $ex)
+		catch (\Facebook\Exceptions\FacebookSDKException $ex)
 		{
 			// When Facebook returns an error
 		}
@@ -208,15 +219,19 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		{
 			try
 			{
-				$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
-				$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
+				$this->facebook()->setDefaultAccessToken($session);
+				$facebookResponse = $this->facebook()->get('/me?fields=email,name');
+				$user_profile = $facebookResponse->getGraphUser();
 
 				$id       = $user_profile->getId();
 				$fullname = $user_profile->getName();
-				$email    = $user_profile->getProperty('email');
-				$username = $user_profile->getProperty('username');
+				$email    = $user_profile->getEmail();
+				
+				// Version 5 of the Facebook SDK no longer allows retrival of username
+				// $username = $user_profile->getField('username');
+
 			}
-			catch (\Facebook\FacebookRequestException $e)
+			catch (\Facebook\Exceptions\FacebookResponseException $e)
 			{
 				// Error message?
 				$response->status = \Hubzero\Auth\Status::FAILURE;
@@ -258,19 +273,21 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $email, 2);
-				$tmp_username = (!empty($username)) ? $username : $sub_email[0];
+				$tmp_username = $sub_email[0];
 				App::get('session')->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
 
+
 			// If we have a real user, drop the authenticator cookie
 			if (isset($user) && is_object($user))
 			{
+				$apiVersion = $this->facebook()->getDefaultGraphVersion();
 				// Set cookie with login preference info
 				$prefs = array(
 					'user_id'       => $user->get('id'),
-					'user_img'      => 'https://graph.facebook.com/v2.0/' . $id . '/picture?type=normal',
+					'user_img'      => 'https://graph.facebook.com/' . $apiVersion . '/' . $id . '/picture?type=normal',
 					'authenticator' => 'facebook'
 				);
 
@@ -295,22 +312,11 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-		// Set up the config for the sdk instance
-		$config = array(
-			'appId'  => $this->params->get('app_id'),
-			'secret' => $this->params->get('app_secret')
-		);
-
-		// Set defaults
-		\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
-
-		$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return']));
-
 		try
 		{
-			$session = $helper->getSessionFromRedirect();
+			$session = $this->facebook()->getRedirectLoginHelper()->getAccessToken();
 		}
-		catch (\Facebook\FacebookRequestException $ex)
+		catch (\Facebook\Exceptions\FacebookSDKException $ex)
 		{
 			// When Facebook returns an error
 		}
@@ -324,13 +330,16 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		{
 			try
 			{
-				$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
-				$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
+				$this->facebook()->setDefaultAccessToken($session);
+				$facebookResponse = $this->facebook()->get('/me');
+				$user_profile = $facebookResponse->getGraphUser();
+				$graph_node = $facebookResponse->getGraphNode();
 
-				$id    = $user_profile->getId();
-				$email = $user_profile->getProperty('email');
+				$id       = $user_profile->getId();
+				$email    = $graph_node->getField('email');
+
 			}
-			catch (\Facebook\FacebookRequestException $e)
+			catch (\Facebook\Exceptions\FacebookRequestException $e)
 			{
 				// Error message?
 				$response->status = \Hubzero\Auth\Status::FAILURE;

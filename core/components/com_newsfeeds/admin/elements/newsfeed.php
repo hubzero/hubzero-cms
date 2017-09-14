@@ -26,6 +26,15 @@ class JElementNewsfeed extends JElement
 	 */
 	protected	$_name = 'Newsfeed';
 
+	/**
+	 * Fetch elements
+	 *
+	 * @param  string   $name
+	 * @param  unknown  $value
+	 * @param  object   &$node
+	 * @param  string   $control_name
+	 * @param  object
+	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
 		$db = App::get('db');

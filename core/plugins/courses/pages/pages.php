@@ -584,6 +584,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build and return the file path
 	 *
+	 * @param   boolean  $page
 	 * @return  string
 	 */
 	private function _path($page=null)

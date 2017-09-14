@@ -36,6 +36,7 @@ use Components\Answers\Models\Question;
 use Request;
 use Notify;
 use Route;
+use Event;
 use Lang;
 use User;
 use App;
@@ -207,6 +208,16 @@ class Questions extends AdminController
 		$row->set('email', (isset($fields['email']) ? 1 : 0));
 		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onQuestionBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store content
 		if (!$row->save())
 		{
@@ -217,6 +228,10 @@ class Questions extends AdminController
 		// Add the tag(s)
 		$row->tag($tags, User::get('id'));
 
+		// Trigger after save event
+		Event::trigger('onQuestionAfterSave', array(&$row, $isNew));
+
+		// Display success message
 		Notify::success(Lang::txt('COM_ANSWERS_QUESTION_SAVED'));
 
 		if ($this->getTask() == 'apply')
@@ -252,7 +267,7 @@ class Questions extends AdminController
 			return $this->cancelTask();
 		}
 
-		$i = 0;
+		$success = 0;
 		foreach ($ids as $id)
 		{
 			// Load the record
@@ -265,12 +280,15 @@ class Questions extends AdminController
 				continue;
 			}
 
-			$i++;
+			// Trigger after delete event
+			Event::trigger('onQuestionAfterDelete', array($id));
+
+			$success++;
 		}
 
-		if ($i)
+		if ($success)
 		{
-			Notify::success(Lang::txt('COM_ANSWERS_QUESTION_DELETED'));
+			Notify::success(Lang::txt('COM_ANSWERS_ITEMS_REMOVED', $success));
 		}
 
 		$this->cancelTask();

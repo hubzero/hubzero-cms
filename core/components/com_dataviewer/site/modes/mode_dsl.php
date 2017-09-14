@@ -146,13 +146,15 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	/* Dynamically set processing mode */
 	$link = get_db($dv_conf['db']);
 	$cell_count_threshold = (isset($dv_conf['proc_switch_threshold']) && $dv_conf['proc_switch_threshold']) != 0 ? $dv_conf['proc_switch_threshold'] : 20000;
-	mysql_query(query_gen_total($dd), $link);
-	$total = mysql_query('SELECT FOUND_ROWS() AS total', $link);
-	$total = mysql_fetch_assoc($total);
+	mysqli_query($link, query_gen_total($dd));
+	$total = mysqli_query($link, 'SELECT FOUND_ROWS() AS total');
+	$total = mysqli_fetch_assoc($total);
 	$total = isset($total['total']) ? $total['total'] : 0;
 	$dd['total_records'] = $total;
 
-	$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+	$vis_col_count = count(array_filter($dd['cols'], function ($col) {
+		return !isset($col['hide']);
+	}));
 
 	if ($cell_count_threshold < ($total * $vis_col_count))
 	{
@@ -209,7 +211,7 @@ function _dd_post($dd)
 		}
 
 		// Hiding
-		foreach ($order_cols as $id=>$prop)
+		foreach ($order_cols as $id => $prop)
 		{
 			if (!in_array($id, $custom_view))
 			{

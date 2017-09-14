@@ -142,9 +142,12 @@ class Shop extends SiteController
 	{
 		switch ($num)
 		{
-			case '1': $out = Lang::txt('COM_STORE_MERCHANDISE'); break;
-			case '2': $out = Lang::txt('COM_STORE_SERVICE');     break;
-			default:  $out = Lang::txt('COM_STORE_MERCHANDISE'); break;
+			case '1':
+				$out = Lang::txt('COM_STORE_MERCHANDISE'); break;
+			case '2':
+				$out = Lang::txt('COM_STORE_SERVICE');     break;
+			default:
+				$out = Lang::txt('COM_STORE_MERCHANDISE'); break;
 		}
 		return $out;
 	}
@@ -434,7 +437,7 @@ class Shop extends SiteController
 		$item = new Cart($this->database);
 
 		// Calculate total
-		$cost = $item->getCartItems(User::get('id'),'cost');
+		$cost = $item->getCartItems(User::get('id'), 'cost');
 
 		// Check available user funds
 		$BTL = new Teller(User::get('id'));
@@ -597,10 +600,12 @@ class Shop extends SiteController
 		// Get cart object
 		$item = new Cart($this->database);
 
+		$items = $item->getCartItems(User::get('id'));
+
 		// Calculate total
 		$cost = $item->getCartItems(User::get('id'), 'cost');
 
-		if (!$cost)
+		if (empty($items))
 		{
 			$this->setError(Lang::txt('COM_STORE_ERR_EMPTY_ORDER'));
 		}
@@ -662,4 +667,3 @@ class Shop extends SiteController
 		$this->view->display();
 	}
 }
-

@@ -34,6 +34,8 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 
+require_once __DIR__ . DS . 'block.php';
+
 /**
  * Model class for publication type
  */

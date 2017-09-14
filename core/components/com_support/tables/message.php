@@ -129,4 +129,3 @@ class Message extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

@@ -41,6 +41,7 @@ class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return information about this hub
 	 *
+	 * @param   string  $values
 	 * @return  array
 	 */
 	public function onSystemOverview($values = 'all')

@@ -62,7 +62,6 @@ $this->view('_submenu')
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-
 	<fieldset id="filter-bar">
 		<div class="grid">
 			<div class="col span12 align-right">

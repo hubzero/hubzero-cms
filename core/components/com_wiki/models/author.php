@@ -90,7 +90,7 @@ class Author extends Relational
 		return $this->belongsToOne('Page', 'page_id');
 	}
 
-		/**
+	/**
 	 * Saves a string of comma-separated usernames or IDs to authors table
 	 *
 	 * @param   mixed    $authors  String or array of authors
@@ -169,7 +169,7 @@ class Author extends Relational
 		// Remove any entries not found in the new list
 		foreach ($existing as $ex)
 		{
-			if (!in_array($ex->get('id'), $auths))
+			if (!in_array($ex->get('user_id'), $auths))
 			{
 				if (!$ex->destroy())
 				{

@@ -113,16 +113,15 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		$this->database = App::get('db');
 
-		// Instantiate citations object and get count
-		$obj = new \Components\Citations\Tables\Citation($this->database);
-		$this->grand_total = $obj->getCount(array(
-			'scope'    => 'member',
+		$filters = array(
+			'scope' => 'member',
 			'scope_id' => $member->get('id')
-		), true);
+		);
+		$this->grand_total = Citation::getFilteredRecords($filters)->count();
 
 		$arr['metadata']['count'] = $this->grand_total;
 
-		//if we want to return content
+		// If we want to return content
 		if ($returnhtml)
 		{
 			$this->member   = $member;
@@ -159,21 +158,43 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			// Run task based on action
 			switch ($this->action)
 			{
-				case 'save':     $arr['html'] .= $this->saveAction();     break;
+				case 'save':
+					$arr['html'] .= $this->saveAction();
+					break;
 				case 'add':
-				case 'edit':     $arr['html'] .= $this->editAction();     break;
-				case 'delete':   $arr['html'] .= $this->deleteAction();   break;
-				case 'publish':  $arr['html'] .= $this->publishAction();  break;
-				case 'browse':   $arr['html'] .= $this->browseAction();   break;
-				case 'settings': $arr['html'] .= $this->settingsAction(); break;
-
-				case 'import':   $arr['html'] .= $this->importAction();   break;
-				case 'upload':   $arr['html'] .= $this->uploadAction();   break;
-				case 'review':   $arr['html'] .= $this->reviewAction();   break;
-				case 'process':  $arr['html'] .= $this->processAction();  break;
-				case 'saved':    $arr['html'] .= $this->savedAction();    break;
-
-				default:         $arr['html'] .= $this->browseAction();   break;
+				case 'edit':
+					$arr['html'] .= $this->editAction();
+					break;
+				case 'delete':
+					$arr['html'] .= $this->deleteAction();
+					break;
+				case 'publish':
+					$arr['html'] .= $this->publishAction();
+					break;
+				case 'browse':
+					$arr['html'] .= $this->browseAction();
+					break;
+				case 'settings':
+					$arr['html'] .= $this->settingsAction();
+					break;
+				case 'import':
+					$arr['html'] .= $this->importAction();
+					break;
+				case 'upload':
+					$arr['html'] .= $this->uploadAction();
+					break;
+				case 'review':
+					$arr['html'] .= $this->reviewAction();
+					break;
+				case 'process':
+					$arr['html'] .= $this->processAction();
+					break;
+				case 'saved':
+					$arr['html'] .= $this->savedAction();
+					break;
+				default:
+					$arr['html'] .= $this->browseAction();
+					break;
 			}
 		}
 
@@ -216,7 +237,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			// initialize the view
+			// Initialize the view
 			$view = $this->view('browse');
 
 			// push objects to the view
@@ -231,24 +252,29 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		}
 
-		// get applied filters
+		// Get applied filters
 		$view->filters = $obj['filters'];
 
-		// only display published citations to non-managers.
+		// Only display published citations to non-managers.
 		if ($view->isAdmin)
 		{
 			// get filtered citations
-			$view->citations = $obj['citations']->paginated()->rows();
+			$view->citations = $obj['citations']->paginated()->including(['relatedAuthors', function($author){
+				$author->order('ordering', 'asc');
+			}])->rows();
 		}
 		else
 		{
 			$view->citations = $obj['citations']
 				->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+				->including(['relatedAuthors', function($author){
+					$author->order('ordering', 'asc');
+				}])
 				->paginated()
 				->rows();
 		}
 
-		// get the earliest year we have citations for
+		// Get the earliest year we have citations for
 		$view->earliest_year = 2001;
 
 		// Affiliation filter
@@ -259,7 +285,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			'member' => Lang::txt('PLG_MEMBERS_CITATIONS_MEMBERCONTRIB')
 		);
 
-		// set default values for required filters for this view.
+		// Set default values for required filters for this view.
 		$view->filters['search'] = isset($view->filters['search']) ? $view->filters['search'] : "";
 		$view->filters['type'] = isset($view->filters['type']) ? $view->filters['type'] : "";
 		$view->filters['tag'] = isset($view->filters['tag']) ? $view->filters['tag'] : "";
@@ -305,7 +331,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$session->set('idlist', $view->filters['idlist']);
 		}
 
-		// get the preferred labeling scheme
+		// Get the preferred labeling scheme
 		$view->label = "both";
 
 		if ($view->label == "none")
@@ -329,10 +355,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view->citations_label_class = "both-label";
 		}
 
-		// enable coins support
+		// Enable coins support
 		$view->coins = 1;
 
-		// types
+		// Types
 		$ct = \Components\Citations\Models\Type::all();
 		$view->types = $ct;
 
@@ -354,7 +380,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display the form allowing to edit a citation
 	 *
-	 * @return  string  HTML
+	 * @param  object  $row
+	 * @return string  HTML
 	 */
 	private function editAction($row=null)
 	{
@@ -405,109 +432,106 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// Load the object
 		if (is_object($row))
-		{
-			$view->row = $row;
-		}
-		else
-		{
-			$view->row = \Components\Citations\Models\Citation::oneOrNew($id);
+	{
+		$view->row = $row;
+	}
+	else
+	{
+		$view->row = \Components\Citations\Models\Citation::oneOrNew($id);
 
-			// check to see if this member created this citation
-			if (!$view->row->isNew() && ($view->row->uid != User::get('id') || $view->row->scope != 'member'))
+		// Check to see if this member created this citation
+		if (!$view->row->isNew() && ($view->row->uid != User::get('id') || $view->row->scope != 'member'))
+		{
+			// redirect
+			App::redirect(
+				Route::url($this->member->link() . '&active=' . $this->_name),
+				Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
+				'warning'
+			);
+		}
+	}
+
+	// Make sure title isnt too long
+	$maxTitleLength = 30;
+	$shortenedTitle = (strlen($view->row->title) > $maxTitleLength)
+		? substr($view->row->title, 0, $maxTitleLength) . '&hellip;'
+		: $view->row->title;
+
+	// Set the pathway
+	if ($id && $id != 0)
+	{
+		Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
+		Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
+	}
+	else
+	{
+		Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
+	}
+
+	// Set the page title
+	Document::setTitle( Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle );
+
+	// Push jquery to doc
+	Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
+
+	// Instantiate a new view
+	$view->title  = Lang::txt('PLG_MEMBERS_CITATIONS') . ': ' . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
+
+	// No ID, so we're creating a new entry
+	// Set the ID of the creator
+	if (!$id)
+	{
+		$view->row->uid = User::get('id');
+
+		// Tags & badges
+		$view->tags   = array();
+		$view->badges = array();
+
+		$view->row->id = -time();
+	}
+	else
+	{
+		if ((!$view->authors = $view->row->relatedAuthors()->order('ordering', 'asc')) && ($view->row->relatedAuthors->count() == 0 && $view->row->author != ''))
+		{
+			// Formats the author for the multi-author plugin
+			$authors = explode(';', $view->row->author);
+
+			$authorString = '';
+			$totalAuths = count($authors);
+			$x = 0;
+
+
+			foreach ($authors as &$author)
 			{
-				// redirect
-				App::redirect(
-					Route::url($this->member->link() . '&active=' . $this->_name),
-					Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
-					'warning'
-				);
-			}
-		}
-
-		//make sure title isnt too long
-		$maxTitleLength = 30;
-		$shortenedTitle = (strlen($view->row->title) > $maxTitleLength)
-			? substr($view->row->title, 0, $maxTitleLength) . '&hellip;'
-			: $view->row->title;
-
-		// Set the pathway
-		if ($id && $id != 0)
-		{
-			Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
-			Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
-		}
-		else
-		{
-			Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
-		}
-
-		// Set the page title
-		Document::setTitle( Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle );
-
-		//push jquery to doc
-		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
-
-		// Instantiate a new view
-		$view->title  = Lang::txt('PLG_MEMBERS_CITATIONS') . ': ' . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
-
-		// No ID, so we're creating a new entry
-		// Set the ID of the creator
-		if (!$id)
-		{
-			$view->row->uid = User::get('id');
-
-			//tags & badges
-			$view->tags   = array();
-			$view->badges = array();
-
-			$view->row->id = -time();
-		}
-		else
-		{
-			if ($view->row->relatedAuthors->count())
-			{
-				$view->authors = $view->row->relatedAuthors;
-			}
-			elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
-			{
-				// formats the author for the multi-author plugin
-				$authors = explode(';',$view->row->author);
-
-				$authorString = '';
-				$totalAuths = count($authors);
-				$x = 0;
-
-
-				foreach ($authors as &$author)
+				/***
+				* Because the multi-select keys off of a comma,
+				* imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
+				* Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
+				* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
+				***/
+				$authorEntry = explode(',', $author);
+				if (count($authorEntry == 2))
 				{
-					/***
-					* Because the multi-select keys off of a comma,
-					* imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
-					* Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
-					* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
-					***/
-					$authorEntry = explode(',', $author);
-					if (count($authorEntry == 2))
-					{
-						$author = $authorEntry[1] . ' ' . $authorEntry[0];
-					}
-
-					$authorString .= $author;
-
-					if ($totalAuths > 1 && $x < $totalAuths - 1 )
-					{
-						$authorString .= ',';
-					}
-
-					$x = $x + 1;
+					$author = $authorEntry[1] . ' ' . $authorEntry[0];
 				}
 
-				$view->authorString = $authorString;
+				$authorString .= $author;
+
+				if ($totalAuths > 1 && $x < $totalAuths - 1)
+				{
+					$authorString .= ',';
+				}
+
+				$x = $x + 1;
 			}
 
+			$view->authorString = $authorString;
+		}
+
 			// tags & badges
-			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
-			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
+
+			$view->tags = \Components\Citations\Helpers\Format::citationTags($view->row, false);
+			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, false);
 		}
 
 		// Output HTML
@@ -537,21 +561,21 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
 		}
 
-		// set scope & scope id in save so no one can mess with hidden form inputs
+		// Set scope & scope id in save so no one can access hidden form inputs
 		$scope    = 'member';
 		$scopeID = $this->member->get('id');
 
-		// get tags
+		// Get tags
 		$tags = trim(Request::getVar('tags', ''));
 
-		// get badges
+		// Get badges
 		$badges = trim(Request::getVar('badges', ''));
 
-		// check to see if new
+		// Check to see if new
 		$cid = Request::getInt('cid');
 		$isNew = ($cid < 0 ? true : false);
 
-		// get the citation (single) or create a new one
+		// Get the citation (single) or create a new one
 		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
 			->set(array(
 				'type' => Request::getInt('type'),
@@ -598,6 +622,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'scope_id' => $scopeID
 			));
 
+		if ($isNew)
+		{
+			$citation->tempId = $cid;
+		}
+
 		// Store new content
 		if (!$citation->save() && !$citation->validate())
 		{
@@ -608,7 +637,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		$authorCount = $citation->relatedAuthors()->count();
 
-		// update authors entries for new citations
+		// Update authors entries for new citations
 		if ($isNew)
 		{
 			$authors = \Components\Citations\Models\Author::all()
@@ -622,17 +651,17 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		elseif (!$isNew && ($authorCount == 0))
 		{
-			$authorField = explode(',',Request::getVar('author'));
+			$authorField = explode(',', Request::getVar('author'));
 			$totalAuths = count($authorField);
 
 			if ($totalAuths == 0)
 			{
-				// redirect
+				// Redirect
 			}
 
 			foreach ($authorField as $key => $a)
 			{
-				// create a new row
+				// Create a new row
 				$authorObj = \Components\Citations\Models\Author::blank()->set(array(
 					'cid' => $citation->id,
 					'ordering' => $key,
@@ -641,18 +670,18 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 				$authorObj->save();
 			}
-			// turn the author string into author entries
+			// Turn the author string into author entries
 		}
 
-		// check if we are allowing tags
+		// Check if we are allowing tags
 		$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
 		$ct1->setTags($tags, User::get('id'), 0, 1, '');
 
-		// check if we are allowing badges
+		// Check if we are allowing badges
 		$ct2 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
 		$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 
-		// resdirect after save
+		// Resdirect after save
 		App::redirect(
 			Route::url($this->member->link() . '&active=' . $this->_name),
 			($this->getError() ? $this->getError() : Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_SAVED')),
@@ -730,7 +759,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			$deleted  = array();
 
-			$citationIDs = explode(',',$citationIDs);
+			$citationIDs = explode(',', $citationIDs);
 
 			foreach ($citationIDs as $id)
 			{
@@ -809,13 +838,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			// set member citation parameters
 			$this->member->setParam('citationFormat', $citationFormatID);
-			$this->member->setParam('include_coins' , $include_coins);
-			$this->member->setParam('coins_only' , $coins_only);
-			$this->member->setParam('citations_show_tags' , $citation_show_tags);
-			$this->member->setParam('citations_show_badges' , $citation_show_badges);
+			$this->member->setParam('include_coins', $include_coins);
+			$this->member->setParam('coins_only', $coins_only);
+			$this->member->setParam('citations_show_tags', $citation_show_tags);
+			$this->member->setParam('citations_show_badges', $citation_show_badges);
 
 			// save profile settings
-			if (!$this->member->update())
+			if (!$this->member->save())
 			{
 				// failed
 				App::redirect(
@@ -925,7 +954,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			// toggle the state
 			if ($citation->published != $citation::STATE_PUBLISHED)
 			{
-				$citation->set('published',  $citation::STATE_PUBLISHED);
+				$citation->set('published', $citation::STATE_PUBLISHED);
 				$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
 			}
 			else
@@ -973,7 +1002,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			}
 
 			$published = array();
-			$citationIDs = explode(',',$citationIDs);
+			$citationIDs = explode(',', $citationIDs);
 			$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
 
 			// error, no such citation
@@ -984,7 +1013,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				// toggle the state
 				if ($citation->published != $citation::STATE_PUBLISHED)
 				{
-					$citation->set('published',  $citation::STATE_PUBLISHED);
+					$citation->set('published', $citation::STATE_PUBLISHED);
 				}
 				else
 				{
@@ -1062,7 +1091,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// citation temp file cleanup
 		$this->importer->cleanup();
 
-		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
 
 		$view->messages = Notify::messages('plg_members_citations');
 
@@ -1122,7 +1151,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file, 'member', User::get('id')));
+		$citations = Event::trigger('citation.onImport', array($file, 'member', User::get('id')));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
@@ -1191,6 +1220,19 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			);
 			return;
 		}
+
+		if (!empty($citations_require_attention))
+		{
+			$citationRequiredIds = array_map(function($value){
+				return isset($value['duplicate']) ? $value['duplicate'] : false;
+			}, (array) $citations_require_attention);
+			$citeCollection = Citation::all()->including('relatedType')->whereIn('id', $citationRequiredIds)->rows();
+			foreach ($citations_require_attention as &$citation)
+			{
+				$citation['duplicate'] = $citeCollection->seek($citation['duplicate']);
+			}
+		}
+
 
 		$view = $this->view('review', 'import');
 		$view->citations_require_attention    = $citations_require_attention;
@@ -1350,12 +1392,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			'search' => ''
 		);
 		$view->citations = array();
-
-		foreach ($citations_saved as $cs)
+		$citations = Citation::all()->whereIn('id', $citations_saved);
+		foreach ($citations as $citation)
 		{
-			$cc = new \Components\Citations\Tables\Citation($this->database);
-			$cc->load($cs);
-			$view->citations[] = $cc;
+			$view->citations[] = $citation;
 		}
 
 		$view->openurl['link'] = '';
@@ -1372,10 +1412,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Applies filters to Citations model and returns applied filters
-	* @param array  $filters array of POST values
-	* @return	array sanitized and validated filter values
-	*/
+	 * Applies filters to Citations model and returns applied filters
+	 * @param array  $filters array of POST values
+	 * @return	array sanitized and validated filter values
+	 */
 	private function _filterHandler($filters = array(),  $scope_id = 0)
 	{
 		$citations = \Components\Citations\Models\Citation::all();
@@ -1505,10 +1545,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Uses URL to determine OpenURL server
-	*
-	* @return  mixed
-	*/
+	 * Uses URL to determine OpenURL server
+	 *
+	 * @return  mixed
+	 */
 	private function _handleOpenURL()
 	{
 		// get the users id to make lookup

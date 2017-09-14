@@ -50,7 +50,7 @@ class Data extends Base
 	*
 	* @var
 	*/
-	protected	$_imgHelper = NULL;
+	protected	$_imgHelper = null;
 
 	/**
 	 * Unique attachment properties
@@ -87,7 +87,7 @@ class Data extends Base
 		//$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $pub->version_id . '&amp;task=serve';
 
 		// Get default title
-		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
 		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Fancy launcher?
@@ -146,7 +146,7 @@ class Data extends Base
 
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId])
-					 ? $attachments['elements'][$elementId] : NULL;
+					 ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments(
@@ -156,7 +156,7 @@ class Data extends Base
 		);
 
 		$disabled = 0;
-		$pop 	  = NULL;
+		$pop 	  = null;
 
 		if ($pub->isUnpublished() || $pub->isDown())
 		{
@@ -201,7 +201,7 @@ class Data extends Base
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : Lang::txt('Go to data');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null,
 					$title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
@@ -247,12 +247,12 @@ class Data extends Base
 			// Get database object and load record
 			$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 			$objData->loadRecord($att->object_name);
-			$dbVersion = NULL;
+			$dbVersion = null;
 
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->_parent->setError( Lang::txt('Oups! Cannot attach selected database: database not found') );
+				$this->_parent->setError( Lang::txt('Oops! Cannot attach selected database: database not found') );
 				return false;
 			}
 
@@ -265,7 +265,7 @@ class Data extends Base
 
 			// New database instance - need to clone again and get a new version number
 			$result 			= Event::trigger( 'projects.clone_database', array( $pAttach->object_name, $pub->_project, $newConfigs->servePath) );
-			$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
+			$dbVersion 			= $result && isset($result[0]) ? $result[0] : null;
 
 			// Failed to clone
 			if (!$dbVersion)
@@ -275,8 +275,8 @@ class Data extends Base
 				return false;
 			}
 
-			$pAttach->modified_by = NULL;
-			$pAttach->modified 	= NULL;
+			$pAttach->modified_by = null;
+			$pAttach->modified 	= null;
 			$pAttach->object_revision = $dbVersion;
 			$pAttach->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
 										. DS . $pAttach->object_name . DS . '?v=' . $dbVersion;
@@ -300,12 +300,12 @@ class Data extends Base
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
 
-		$path = NULL;
+		$path = null;
 		if ($itemId)
 		{
 			foreach ($attachments as $attach)
@@ -324,7 +324,7 @@ class Data extends Base
 
 		if (!$path)
 		{
-			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 
@@ -420,7 +420,7 @@ class Data extends Base
 		// Get database object and load record
 		$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 		$objData->loadRecord($database_name);
-		$dbVersion = NULL;
+		$dbVersion = null;
 
 		$objPA = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 		if ($objPA->loadElementAttachment($pub->version_id, array( 'object_name' => $database_name),
@@ -440,7 +440,7 @@ class Data extends Base
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->setError( Lang::txt('Oups! Cannot attach selected database: database not found') );
+				$this->setError( Lang::txt('Oops! Cannot attach selected database: database not found') );
 				return false;
 			}
 			$objPA->publication_id 			= $pub->id;
@@ -458,16 +458,16 @@ class Data extends Base
 		if ($new)
 		{
 			$result = Event::trigger( 'projects.clone_database', array( $database_name, $pub->_project, $configs->servePath) );
-			$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
+			$dbVersion = $result && isset($result[0]) ? $result[0] : null;
 		}
 		else
 		{
-			$rtime = $objPA->modified ? strtotime($objPA->modified) : NULL;
-			if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime )
+			$rtime = $objPA->modified ? strtotime($objPA->modified) : null;
+			if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime)
 			{
 				// New database instance - need to clone again and get a new version number
 				$result 			= Event::trigger( 'projects.clone_database', array( $database_name, $pub->_project, $configs->servePath) );
-				$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
+				$dbVersion 			= $result && isset($result[0]) ? $result[0] : null;
 				$objPA->modified_by = $uid;
 				$objPA->modified 	= Date::toSql();
 			}
@@ -782,8 +782,8 @@ class Data extends Base
 		require_once($dv_com_path . DS . 'modes' . DS . 'mode_dsl.php');
 		require_once($dv_com_path . DS . 'filter' . DS . 'csv.php');
 
-		$dv_conf = get_conf(NULL);
-		$dd = get_dd(NULL, $db_name, $version);
+		$dv_conf = get_conf(null);
+		$dd = get_dd(null, $db_name, $version);
 		$dd['serverside'] = false;
 
 		$sql = query_gen($dd);
@@ -817,7 +817,7 @@ class Data extends Base
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
-		$list = NULL;
+		$list = null;
 
 		if (!$attachments)
 		{
@@ -901,7 +901,7 @@ class Data extends Base
 		$repoPath = $objPD->source_dir ? $configs->path . DS . $objPD->source_dir : $configs->path;
 		$csv = $repoPath . DS . $objPD->source_file;
 
-		if (file_exists($csv) && ($handle = fopen($csv, "r")) !== FALSE)
+		if (file_exists($csv) && ($handle = fopen($csv, "r")) !== false)
 		{
 			// Check if expert mode CSV
 			$expert_mode = false;
@@ -949,36 +949,45 @@ class Data extends Base
 					Filesystem::makeDirectory(dirname($configs->dataPath . DS . $file), 0755, true, true);
 				}
 
+				// Copy the file from the project to the publication	
 				if (Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $file))
 				{
-					// Generate thumbnail
-					$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
-					Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
+					// Don't bother turning anything but an image into a thumbnail
+					if (stripos(Filesystem::mimetype($file), 'image') !== false)
+					{
+						// Generate thumbnail
+						$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
+						Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
 
-					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $thumb);
-					if (count($hi->getErrors()) == 0)
-					{
-						$hi->resize(180, false, false, false);
-						$hi->save($configs->dataPath . DS . $thumb);
-					}
-					else
-					{
-						return false;
-					}
+						$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $thumb);
+						if (count($hi->getErrors()) == 0)
+						{
+							$hi->resize(180, false, false, false);
+							$hi->save($configs->dataPath . DS . $thumb);
+						}
+						else
+						{
+							// clean up our mess and carry on
+							Filesystem::delete($configs->dataPath . DS . $thumb);
+							continue;
+						}
 
-					// Generate medium image
-					$med = \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
-					Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
+						// Generate medium image
+						$med = \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
+						Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
 
-					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $med);
-					if (count($hi->getErrors()) == 0)
-					{
-						$hi->resize(800, false, false, false);
-						$hi->save($configs->dataPath . DS . $med);
-					}
-					else
-					{
-						return false;
+						$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $med);
+						if (count($hi->getErrors()) == 0)
+						{
+							$hi->resize(800, false, false, false);
+							$hi->save($configs->dataPath . DS . $med);
+						}
+						else
+						{
+							// clean up our mess and carry on
+							Filesystem::delete($configs->dataPath . DS . $med);
+							continue;
+						}
 					}
 				}
 			}

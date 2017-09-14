@@ -33,8 +33,9 @@ namespace Plugins\Oaipmh\Resources\Data;
 
 use Hubzero\Base\Object;
 use Components\Oaipmh\Models\Provider;
+use Component;
 
-require_once(PATH_CORE . '/components/com_oaipmh/models/provider.php');
+require_once Component::path('com_oaipmh') . '/models/provider.php';
 
 /**
  * Data miner for resources to be used by OAI-PMH
@@ -88,7 +89,7 @@ class Miner extends Object implements Provider
 
 		if (!($db instanceof \Hubzero\Database\Driver) && !($db instanceof \JDatabase))
 		{
-			throw new \Exception(\Lang::txt('Database must be of type JDatabase'), 500);
+			throw new \Exception(\Lang::txt('Database must be of type Hubzero\\Database\\Driver'), 500);
 		}
 
 		$this->database = $db;
@@ -250,7 +251,7 @@ class Miner extends Object implements Provider
 		}
 		else
 		{
-			if ($shoulder = \Component::params('com_tools')->get('doi_shoulder'))
+			if ($shoulder = Component::params('com_tools')->get('doi_shoulder'))
 			{
 				if (substr($identifier, 0, strlen($shoulder)) == $shoulder)
 				{
@@ -399,8 +400,8 @@ class Miner extends Object implements Provider
 		);
 		if ($children = $this->database->loadObjectList())
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+			require_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
+			require_once Component::path('com_resources') . DS . 'tables' . DS . 'type.php';
 
 			foreach ($children as $child)
 			{
@@ -499,25 +500,54 @@ class Miner extends Object implements Provider
 
 		if ($this->get('citations', 1))
 		{
+			$formatterPath = Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+
 			$this->database->setQuery(
 				"SELECT *
 				FROM `#__citations` AS a
 				INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
-				WHERE n.`tbl`='resource' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
+				WHERE n.`tbl`='resource' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`!='references' AND a.`published`=1
 				ORDER BY `year` DESC"
 			);
 			$references = $this->database->loadObjectList();
-			if (count($references) && file_exists(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+			if (count($references) && file_exists($formatterPath))
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+				include_once $formatterPath;
 
 				$formatter = new \Components\Citations\Helpers\Format;
 				$formatter->setTemplate('apa');
 
 				foreach ($references as $reference)
 				{
-					//<dcterms:isReferencedBy>uytruytry</dcterms:isReferencedBy>
-					//<dcterms:isVersionOf>jgkhfjf</dcterms:isVersionOf>
+					// <dcterms:isReferencedBy>uytruytry</dcterms:isReferencedBy>
+					$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
+					$cite = str_replace('&quot;', '"', $cite);
+
+					$record->relation[] = array(
+						'type'  => 'isReferencedBy',
+						'value' => trim($cite)
+					);
+				}
+			}
+
+			$this->database->setQuery(
+				"SELECT *
+				FROM `#__citations` AS a
+				INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+				WHERE n.`tbl`='resource' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`='references' AND a.`published`=1
+				ORDER BY `year` DESC"
+			);
+			$references = $this->database->loadObjectList();
+			if (count($references) && file_exists($formatterPath))
+			{
+				include_once $formatterPath;
+
+				$formatter = new \Components\Citations\Helpers\Format;
+				$formatter->setTemplate('apa');
+
+				foreach ($references as $reference)
+				{
+					// <dcterms:references>uytruytry</dcterms:references>
 					$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
 					$cite = str_replace('&quot;', '"', $cite);
 
@@ -565,9 +595,9 @@ class Miner extends Object implements Provider
 
 		if (!$resolver)
 		{
-			$resolver = \Component::params('com_tools')->get('doi_resolve', 'http://dx.doi.org/');
+			$resolver = Component::params('com_tools')->get('doi_resolve', 'http://dx.doi.org/');
 			$resolver = rtrim($resolver, '/') . '/';
-			if ($shoulder = \Component::params('com_tools')->get('doi_shoulder'))
+			if ($shoulder = Component::params('com_tools')->get('doi_shoulder'))
 			{
 				$resolver .= $shoulder . '/';
 			}

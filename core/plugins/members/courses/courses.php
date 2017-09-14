@@ -406,7 +406,6 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   object   $member      Current member
 	 * @param   string   $option      Component name
-	 * @param   string   $authorized  Authorization level
 	 * @param   integer  $limit       Number of record to return
 	 * @param   integer  $limitstart  Record return start
 	 * @param   string   $sort        Field to sort records on

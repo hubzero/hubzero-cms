@@ -64,7 +64,7 @@ class Comments extends AdminController
 	}
 
 	/**
-	 * Display a list of blog entries
+	 * Display a list of blog comments
 	 *
 	 * @return  void
 	 */
@@ -164,7 +164,7 @@ class Comments extends AdminController
 	 * @param   integer  $maxlevel  Maximum levels to descend
 	 * @param   integer  $level     Indention level
 	 * @param   integer  $type      Indention type
-	 * @return  void
+	 * @return  array
 	 */
 	public function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
 	{
@@ -270,6 +270,16 @@ class Comments extends AdminController
 		// Initiate extended database class
 		$row = Comment::oneOrNew($fields['id'])->set($fields);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogCommentBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->save())
 		{
@@ -277,14 +287,18 @@ class Comments extends AdminController
 			return $this->editTask($row);
 		}
 
+		// Trigger after save event
+		Event::trigger('onBlogCommentAfterSave', array(&$row, $isNew));
+
+		// Notify of success
 		Notify::success(Lang::txt('COM_BLOG_COMMENT_SAVED'));
 
+		// Redirect to main listing or go back to edit form
 		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
-		// Set the redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false)
 		);
@@ -307,25 +321,25 @@ class Comments extends AdminController
 
 		// Incoming
 		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		if (count($ids) > 0)
+		$removed = 0;
+
+		foreach ($ids as $id)
 		{
-			$removed = 0;
+			// Delete the entry
+			$entry = Comment::oneOrFail(intval($id));
 
-			// Loop through all the IDs
-			foreach ($ids as $id)
+			if (!$entry->destroy())
 			{
-				// Delete the entry
-				$entry = Comment::oneOrFail(intval($id));
-
-				if (!$entry->destroy())
-				{
-					Notify::error($entry->getError());
-					continue;
-				}
-
-				$removed++;
+				Notify::error($entry->getError());
+				continue;
 			}
+
+			// Trigger before delete event
+			Event::trigger('onBlogCommentAfterDelete', array($id));
+
+			$removed++;
 		}
 
 		if ($removed)

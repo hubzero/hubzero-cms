@@ -65,11 +65,12 @@ if ($canDo->get('core.delete'))
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TITLE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_CATEGORY', 'category', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-1"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->rows->pagination; ?></td>
+				<td colspan="6"><?php echo $this->rows->pagination; ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -78,10 +79,28 @@ if ($canDo->get('core.delete'))
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
+			if ($row->get('state') == 0)
+			{
+				$alt  = Lang::txt('JUNPUBLISHED');
+				$task = 'publish';
+				$cls  = 'unpublish';
+			}
+			else if ($row->get('state') == 1)
+			{
+				$alt  = Lang::txt('JPUBLISHED');
+				$cls  = 'publish';
+				$task = 'unpublish';
+			}
+			else if ($row->get('state') == 2)
+			{
+				$alt  = Lang::txt('JTRASHED');
+				$task = 'publish';
+				$cls  = 'trash';
+			}
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php if ($canDo->get('core.edit')) { ?>
+					<?php if ($canDo->get('core.edit') && $row->id != 7) { ?>
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 					<?php } ?>
 				</td>
@@ -114,6 +133,11 @@ if ($canDo->get('core.delete'))
 					}
 					echo $this->escape(stripslashes($cat_title));
 					?>
+				</td>
+				<td class="priority-1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+						<span><?php echo $alt; ?></span>
+					</a>
 				</td>
 			</tr>
 			<?php

@@ -1,28 +1,51 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Categories\Admin\Helpers;
+
+use Hubzero\Base\Object;
+use Filesystem;
+use Component;
+use User;
 
 /**
- * Categories helper.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_categories
- * @since		1.6
+ * Categories helper
  */
 class CategoriesHelper
 {
 	/**
 	 * Configure the Submenu links.
 	 *
-	 * @param	string	The extension being used for the categories.
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   string  $extension  The extension being used for the categories
+	 * @return  void
 	 */
 	public static function addSubmenu($extension)
 	{
@@ -42,23 +65,21 @@ class CategoriesHelper
 
 		// Try to find the component helper.
 		$eName = str_replace('com_', '', $component);
-		$file  = Filesystem::cleanPath(PATH_CORE.'/components/'.$component.'/admin/helpers/'.$eName.'.php');
+		$file  = Filesystem::cleanPath(Component::path($component) . '/admin/helpers/' . $eName . '.php');
 
-		if (file_exists($file)) {
+		if (file_exists($file))
+		{
 			require_once $file;
 
 			$prefix = ucfirst(str_replace('com_', '', $component));
-			$cName  = $prefix.'Helper';
+			$cName  = $prefix . 'Helper';
 
 			if (class_exists($cName))
 			{
 				if (is_callable(array($cName, 'addSubmenu')))
 				{
-					$lang = Lang::getRoot();
-					// loading language file from the administrator/language directory then
-					// loading language file from the administrator/components/*extension*/language directory
-					$lang->load($component, JPATH_BASE, null, false, true)
-					|| $lang->load($component, Filesystem::cleanPath(PATH_CORE . '/components/' . $component . '/admin'), null, false, true);
+					// loading language file from the components/*extension*/admin/language directory
+					Lang::load($component, Filesystem::cleanPath(Component::path($component) . '/admin'), null, false, true);
 
 					call_user_func(array($cName, 'addSubmenu'), 'categories'.(isset($section)?'.'.$section:''));
 				}
@@ -69,33 +90,33 @@ class CategoriesHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	string	$extension	The extension.
-	 * @param	int		$categoryId	The category ID.
-	 * @return	Object
-	 * @since	1.6
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The category ID.
+	 * @return  object
 	 */
-	public static function getActions($extension, $categoryId = 0)
+	public static function getActions($extension='com_categories', $assetType='component', $assetId = 0)
 	{
-		$result    = new \Hubzero\Base\Object;
-		$parts     = explode('.', $extension);
-		$component = $parts[0];
-
-		if (empty($categoryId))
+		$assetName  = $extension;
+		$assetName .= '.' . $assetType;
+		if ($assetId)
 		{
-			$assetName = $component;
-			$level = 'component';
-		}
-		else
-		{
-			$assetName = $component.'.category.'.(int) $categoryId;
-			$level = 'category';
+			$assetName .= '.' . (int) $assetId;
 		}
 
-		$actions = JAccess::getActions($component, $level);
+		$result = new Object;
+
+		$actions = array(
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
+		);
 
 		foreach ($actions as $action)
 		{
-			$result->set($action->name, User::authorise($action->name, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

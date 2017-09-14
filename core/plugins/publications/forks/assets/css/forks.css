@@ -1,0 +1,156 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/publications/forks/assets/css/forks.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+	.icon-fork:before {
+		content: "\f16b";
+	}
+	.fork-source {
+		margin: 0;
+		padding: 1em;
+		border-radius: 0.25em;
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+/* Modal */
+	.fancybox-inner .fork-options h3 {
+		background: #333;
+		color: #fff;
+		line-height: 1;
+		margin: 0;
+		padding: 0.7em 1em;
+	}
+	.fork-options .fork-new {
+		text-align: center;
+		padding-top: 4em;
+		padding-left: 3%;
+	}
+	.fork-options,
+	.fork-options .grid,
+	.fork-options .col {
+		height: 100%;
+	}
+	.fork-options h4 {
+		font-weight: bold;
+	}
+	.fork-options .fork-to-project {
+		border-left: 1px solid #ddd;
+	}
+	.fork-options .fork-to-project h4 {
+		line-height: 1;
+		margin: 0;
+		padding: 1em;
+		border-bottom: 1px solid #ddd;
+	}
+	.fork-options ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		overflow: scroll;
+		max-height: 80%;
+	}
+	.fork-options li {
+		margin: 0;
+		padding: 1em 1em;
+		position: relative;
+	}
+	.fork-options li .btn {
+		display: none;
+		position: absolute;
+		right: 1em;
+		top: 0.75em;
+	}
+	.fork-options li:hover {
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+	.fork-options li:hover .btn {
+		display: inline-block;
+	}
+
+	.project-title {
+		margin-left: 0.5em;
+	}
+
+/* Listing */
+	.publication-fork {
+		padding: 1em 0;
+		position: relative;
+	}
+	.publication-fork:before {
+		position: absolute;
+		top: 1em;
+		left: 0;
+		background: rgba(0, 0, 0, 0.2);
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		color: #fff;
+	}
+	.publication-fork {
+		padding-left: 2em;
+	}
+	.publication-fork.published:before {
+		background-color: #62c462;
+	}
+	.publication-time,
+	.publication-meta {
+		color: #999;
+	}
+	/*.publication-title,
+	.publication-date {
+		font-size: 1.2em;
+	}*/
+
+/* No results */
+	.publication-forks .results-none {
+		max-width: 30em;
+		margin: 90px auto;
+		padding: 5em 0 0 0;
+		text-align: center;
+		position: relative;
+	}
+	.publication-forks .results-none p:first-child {
+		font-size: 1.5em;
+		line-height: 1.8em;
+		font-weight: 300;
+		margin: 0 0 2em 0;
+	}
+	.publication-forks .results-none:before {
+		position: absolute;
+		top: 0px;
+		left: 50%;
+		font-size: 5em;
+		margin-left: -0.5em;
+		content: "\2298";
+		font-family: "Fontcons";
+		color: rgba(0, 0, 0, 0.2);
+	}
+
+@media (min-width: 40em) {
+	.publication-fork .btn {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	.publication-fork {
+		padding-left: 0;
+	}
+	.publication-fork:before {
+		top: 1.5em;
+		left: 9em;
+	}
+	.publication-fork .publication-datetime {
+		width: 7.5em;
+		float: left;
+		text-align: right;
+	}
+	.publication-fork .publication-details {
+		margin-left: 12em;
+	}
+}

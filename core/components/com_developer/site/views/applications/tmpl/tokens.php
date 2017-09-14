@@ -43,7 +43,8 @@ $tokens = $this->application->accessTokens()
 	->limit($filters['limit'], $filters['start'])
 	->ordered()
 	->paginated()
-	->rows();
+	->rows()
+	->sort('expires', false);
 ?>
 
 <div class="subject full">
@@ -52,6 +53,9 @@ $tokens = $this->application->accessTokens()
 			<h3>
 				<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_ACCESS_TOKENS'); ?> <span><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_AUTHORIZED_TO'); ?>:</span>
 
+				<a class="btn btn-secondary add-permanent confirm btn-success" data-txt-confirm="<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_ADD_PERSONAL_ACCESS_TOKEN_CONFIRM'); ?>" href="<?php echo Route::url($this->application->link('createpat')); ?>">
+					<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_ADD_PERSONAL_ACCESS_TOKEN'); ?>
+				</a>
 				<a class="btn btn-secondary revoke-all confirm btn-danger" data-txt-confirm="<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_REVOKE_ALL_TOKEN_CONFIRM'); ?>" href="<?php echo Route::url($this->application->link('revokeall')); ?>">
 					<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_REVOKE_ALL_TOKEN'); ?>
 				</a>

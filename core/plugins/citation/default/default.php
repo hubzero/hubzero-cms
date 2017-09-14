@@ -52,35 +52,37 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 	 */
 	public function onImportAcceptedFiles()
 	{
-		//return '.txt <small>(' . Lang::txt('PLG_CITATION_DEFAULT_FILE') . ')</small>';
+		// Return '.txt <small>(' . Lang::txt('PLG_CITATION_DEFAULT_FILE') . ')</small>';
 	}
 
 	/**
 	 * Import data from a file
 	 *
-	 * @param   array  $file
+	 * @param   array    $file
+	 * @param   string   $scope
+	 * @param   integer  $scope_id
 	 * @return  array
 	 */
 	public function onImport($file, $scope = NULL, $scope_id = NULL)
 	{
-		//array of acceptable file types
+		// Array of acceptable file types
 		$acceptable = array('txt');
-		//get the file extension
+		// Get the file extension
 		$extension = $file->getClientOriginalExtension();
 
-		//only process acceptable files
+		// Only process acceptable files
 		if (!in_array($extension, $acceptable))
 		{
 			return;
 		}
 
-		//get the file contents, uses temporary file
+		// Get the file contents, uses temporary file
 		$raw_contents = file_get_contents($file->getFilename());
 
-		//check to see if this is endnote content
+		// Check to see if this is endnote content
 		if (preg_match('/%A|%0|%T/', $raw_contents))
 		{
-			//make new file to pass to dispatcher
+			// Make new file to pass to dispatcher
 			$new_file = array(
 				'name'     => $file->getClientOriginalName() . '.enw',
 				'type'     => $file->getType(),

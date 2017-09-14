@@ -67,7 +67,8 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send notification
 	 *
-	 * @param   array  $data
+	 * @param   string  $channel
+	 * @param   array   $data
 	 * @return  bool
 	 */
 	protected function send($channel, $data)

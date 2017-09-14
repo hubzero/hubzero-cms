@@ -126,7 +126,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	 * Display the editor area.
 	 *
 	 * @param   string   $name     The control name.
-	 * @param   string   $html     The contents of the text area.
+	 * @param   string   $content  The contents of the text area.
 	 * @param   string   $width    The width of the text area (px or %).
 	 * @param   string   $height   The height of the text area (px or %).
 	 * @param   int      $col      The number of columns for the textarea.
@@ -239,8 +239,10 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	/**
 	 * Displays the editor buttons.
 	 *
-	 * @param string $name
-	 * @param mixed $buttons [array with button objects | boolean true to display buttons]
+	 * @param  string  $name
+	 * @param  mixed   $buttons [array with button objects | boolean true to display buttons]
+	 * @param  string  $asset
+	 * @param  object  $author
 	 *
 	 * @return string HTML
 	 */

@@ -40,8 +40,6 @@ $this->css('import.css')
 $label    = $this->config->get('citation_label', 'number');
 $rollover = $this->config->get('citation_rollover', 'no');
 
-$citationsFormat = new \Components\Citations\Helpers\Format($this->database);
-$template = $citationsFormat->getDefaultFormat();
 
 //batch downloads
 $batch_download = $this->config->get("citation_batch_download", 1);
@@ -105,8 +103,6 @@ $base = $this->member->link() . '&active=citations';
 
 		<?php if (count($this->citations) > 0) : ?>
 			<?php
-				$formatter = new \Components\Citations\Helpers\Format();
-				$formatter->setTemplate($template);
 
 				$counter = 1;
 			?>
@@ -120,15 +116,7 @@ $base = $this->member->link() . '&active=citations';
 							<?php if ($label != "none") : ?>
 								<td class="citation-label <?php echo $this->escape($citations_label_class); ?>">
 									<?php
-										$type = '';
-										foreach ($this->types as $t)
-										{
-											if ($t['id'] == $cite->type)
-											{
-												$type = $t['type_title'];
-											}
-										}
-										$type = ($type != '') ? $type : 'Generic';
+										$type = $cite->relatedType->get('type_title', 'Generic');
 
 										switch ($label)
 										{
@@ -147,7 +135,7 @@ $base = $this->member->link() . '&active=citations';
 								</td>
 							<?php endif; ?>
 							<td class="citation-container">
-								<?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
+								<?php echo $cite->formatted(array(), $this->filters['search']); ?>
 
 								<?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
 									<div class="citation-notes">
@@ -156,14 +144,14 @@ $base = $this->member->link() . '&active=citations';
 								<?php endif; ?>
 
 								<div class="citation-details">
-									<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
+									<?php echo $cite->citationDetails($this->openurl); ?>
 
 									<?php if ($this->config->get('citation_show_badges', 'no') == 'yes') : ?>
-										<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+										<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>
 									<?php endif; ?>
 
 									<?php if ($this->config->get('citation_show_tags', 'no') == 'yes') : ?>
-										<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+										<?php echo \Components\Citations\Helpers\Format::citationTags($cite); ?>
 									<?php endif; ?>
 								</div>
 							</td>

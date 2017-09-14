@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/resources/abouttool/abouttool.css
+ * @file        plugins/publications/groups/assets/css/groups.css
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
@@ -12,14 +12,6 @@
 	-- -- -- -- -- -- --
 
 */
-
-	/*#group-owner .group-img {
-		float: left;
-		padding: 0 1em 0 0;
-	}
-	#group-owner .group-img img {
-		border: 1px solid #ccc;
-	}*/
 	#group-owner .group-img {
 		padding: 0;
 		margin: 0;

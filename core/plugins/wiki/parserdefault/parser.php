@@ -422,7 +422,7 @@ class WikiParser
 			'autourl'    => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
 				//"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
 				//"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\'\<]*[A-Za-z0-9\\/?=&~_])",  // link
-				"(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))",
+				"(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?Â«Â»Â“Â”Â‘Â’]))",
 
 			// Email pattern
 			'autoemail'    => "([\s]*)" .  // whitespace
@@ -1026,7 +1026,7 @@ class WikiParser
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
 	 *
-	 * @param      string $val Content to store
+	 * @param      array   $matches Content to store
 	 * @return     integer Unique ID
 	 */
 	private function _dataPush($matches)
@@ -1043,7 +1043,7 @@ class WikiParser
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
 	 *
-	 * @param      string $val Content to store
+	 * @param      string  $matches Content to store
 	 * @return     integer Unique ID
 	 */
 	private function _dataPull($matches)
@@ -1085,7 +1085,7 @@ class WikiParser
 	/**
 	 * Restores <pre></pre> blocks to their actual content
 	 *
-	 * @param      array $matches Parameter description (if any) ...
+	 * @param      string   $txt Parameter description (if any) ...
 	 * @return     string
 	 */
 	private function _restorePre($txt)
@@ -1210,8 +1210,8 @@ class WikiParser
 	/**
 	 * `{{{...}}}`
 	 *
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      unknown  $m Parameter description (if any) ...
+	 * @return     string   Return description (if any) ...
 	 */
 	private function _getCode($m)
 	{
@@ -1372,7 +1372,7 @@ class WikiParser
 	 * Render a math forumla
 	 * Output depends on complexity of formula. HTML is tried first with image used for complex formulas
 	 *
-	 * @param   array  $mtch_arr  Wiki markup matching a <math>formula</math>
+	 * @param   array  $matches  Wiki markup matching a <math>formula</math>
 	 * @return  string
 	 */
 	private function _getMath($matches)
@@ -2713,7 +2713,7 @@ class WikiParser
 				if ($openmatch or $closematch)
 				{
 					$paragraphStack = false;
-					// TODO bug 5718: paragraph closed
+					//Â TODO bug 5718: paragraph closed
 					$output .= $this->_closeParagraph();
 					if ($preOpenMatch and !$preCloseMatch) {
 						$this->mInPre = true;

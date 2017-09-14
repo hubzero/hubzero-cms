@@ -53,9 +53,9 @@ class UsersModelUsers extends JModelList
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
-	 *
+	 * @param   unknown  $ordering
+	 * @param   unknown  $direction
 	 * @return  void
-	 *
 	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
@@ -419,7 +419,12 @@ class UsersModelUsers extends JModelList
 		return $query;
 	}
 
-	//sqlsrv change
+	/**
+	 * Sqlsrv change
+	 *
+	 * @param   $user_id
+	 * @return  string
+	 */
 	function _getUserDisplayedGroups($user_id)
 	{
 		$db = App::get('db');

@@ -484,7 +484,7 @@ class Google extends Object
 	public static function deleteAllParents($apiService, $id = 0)
 	{
 		// Check for what we need
-		if (!$apiService || !$id)
+		if (!$apiService || !isset($apiService->parents) || !$id)
 		{
 			return false;
 		}

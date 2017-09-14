@@ -171,7 +171,18 @@
 	display: none;
 }
 
-.revoke-all {
+.revoke-all,
+.add-permanent {
 	font-size: 11px;
 	float: right;
+}
+
+.add-permanent:before {
+	font-family: "Fontcons";
+	content: "\2295";
+}
+
+.revoke-all:before {
+	font-family: "Fontcons";
+	content: "\f057"
 }

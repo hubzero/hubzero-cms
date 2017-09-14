@@ -170,7 +170,7 @@ else
 								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description'))); ?>" />
 							</label>
 						</div>
-						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($attachment->get('id'))); ?>" />
+						<input type="hidden" name="attachment" value="<?php echo $this->escape($attachment->get('id')); ?>" />
 					</div>
 					<?php if ($attachment->get('id')) { ?>
 						<p class="warning">
@@ -185,7 +185,7 @@ else
 				</label>
 
 				<p class="submit">
-					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_FORUM_SUBMIT'); ?>" />
+					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 				</p>
 
 				<div class="sidenote">

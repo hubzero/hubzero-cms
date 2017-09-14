@@ -51,6 +51,7 @@ class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 	/**
 	 * readmore button
 	 *
+	 * @param  string  $name  Value of name
 	 * @return  array  A two element array of (imageName, textToInsert)
 	 */
 	public function onDisplay($name)

@@ -82,6 +82,7 @@ class Elements
 	 * Constructor
 	 *
 	 * @param   mixed  $data  The data to bind to the new object.
+	 * @param   mixed  $setup
 	 * @return  void
 	 */
 	public function __construct($data = null, $setup = null)
@@ -314,7 +315,8 @@ class Elements
 	/**
 	 * Loads an XML setup file and parses it.
 	 *
-	 * @param   string  A path to the XML setup file.
+	 * @param   string  $setup  A path to the XML setup file.
+	 * @param   string  $group
 	 * @return  object
 	 */
 	public function loadSetup($setup, $group = '_default')
@@ -757,10 +759,11 @@ class Elements
 	/**
 	 * Render a parameter type.
 	 *
+	 * @param   string  $name
 	 * @param   object  $node          A parameter XML element.
 	 * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-	 * @return  array   Any array of the label, the form element and the tooltip.
+	 * @return  array                  Any array of the label, the form element and the tooltip.
 	 */
 	public function getElementOptions($name, &$node, $control_name = 'nbtag', $group = '_default')
 	{

@@ -172,8 +172,8 @@ class Media extends Base
 	/**
 	 * Create group folder id doesnt exist
 	 *
-	 * @param  [type] $path [description]
-	 * @return [type]       [description]
+	 * @param   string  $path
+	 * @return  void
 	 */
 	private function _createGroupFolder($path)
 	{
@@ -193,9 +193,9 @@ class Media extends Base
 	/**
 	 * Build Folder tree based on path
 	 *
-	 * @param  [type]  $folders   [description]
-	 * @param  integer $parent_id [description]
-	 * @return [type]             [description]
+	 * @param   array    $folders
+	 * @param   integer  $parent_id
+	 * @return  array
 	 */
 	private function _buildFolderTree($folders, $parent_id = 0)
 	{
@@ -216,10 +216,10 @@ class Media extends Base
 	}
 
 	/**
-	 * Build Folder tree in html ul list form
+	 * Build Folder tree in html <ul> list form
 	 *
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
+	 * @param   array  $tree
+	 * @return  string
 	 */
 	private function _buildFolderTreeHtml($tree)
 	{
@@ -253,8 +253,8 @@ class Media extends Base
 	/**
 	 * Build Folder tree in select list form
 	 *
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
+	 * @param   array  $tree
+	 * @return  string
 	 */
 	private function _buildFolderTreeSelect($tree)
 	{
@@ -277,8 +277,8 @@ class Media extends Base
 	/**
 	 * Recursive function to create options for select list
 	 *
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
+	 * @param   array  $tree
+	 * @return  string
 	 */
 	private function _buildFolderTreeSelectOptionList($tree)
 	{
@@ -307,7 +307,7 @@ class Media extends Base
 	/**
 	 * List all group files
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function listfilesTask()
 	{
@@ -387,7 +387,7 @@ class Media extends Base
 	/**
 	 * File upload - older browser support
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -431,7 +431,7 @@ class Media extends Base
 	/**
 	 * File upload - for CKeditor
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function ckeditorUploadTask()
 	{
@@ -477,7 +477,7 @@ class Media extends Base
 	/**
 	 * Do basic file upload  (ajax upload in another function)
 	 *
-	 * @return  array
+	 * @return  object
 	 */
 	public function doUpload()
 	{
@@ -735,7 +735,7 @@ class Media extends Base
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -772,7 +772,7 @@ class Media extends Base
 	/**
 	 * Display Move group file Form
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function moveFileTask()
 	{
@@ -784,13 +784,21 @@ class Media extends Base
 
 		// default folder to have open
 		$this->view->activeFolder = '/uploads';
-		if ($this->group->get('type') == 3)
-		{
-			$this->view->activeFolder = '/';
-		}
+		//if ($this->group->get('type') == 3)
+		//{
+		//	$this->view->activeFolder = '/';
+		//}
 
 		// get list of folders
 		$folders    = Filesystem::directoryTree($this->path, '.', 10);
+		foreach ($folders as $i => $folder)
+		{
+			if ($folder['parent'] || (!$folder['parent'] && $folder['name'] == 'uploads'))
+			{
+				continue;
+			}
+			unset($folders[$i]);
+		}
 		$folderTree = $this->_buildFolderTree($folders);
 		$folderList = $this->_buildFolderTreeSelect($folderTree);
 
@@ -806,7 +814,7 @@ class Media extends Base
 	/**
 	 * Move group file
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function doMoveFileTask()
 	{
@@ -869,7 +877,7 @@ class Media extends Base
 	/**
 	 * Rename group file
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function doRenameFileTask()
 	{
@@ -915,7 +923,7 @@ class Media extends Base
 	/**
 	 * Extract group Archive
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function extractFileTask()
 	{
@@ -946,7 +954,7 @@ class Media extends Base
 	/**
 	 * Delete group file
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function deletefileTask()
 	{
@@ -989,7 +997,7 @@ class Media extends Base
 	/**
 	 * Add group folder
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function addFolderTask()
 	{
@@ -1032,7 +1040,7 @@ class Media extends Base
 	/**
 	 * Save group folder
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function saveFolderTask()
 	{
@@ -1078,7 +1086,7 @@ class Media extends Base
 	/**
 	 * Display group folder rename form
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function renameFolderTask()
 	{
@@ -1098,7 +1106,7 @@ class Media extends Base
 	/**
 	 * Rename Group Folder
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function doRenameFolderTask()
 	{
@@ -1155,7 +1163,7 @@ class Media extends Base
 	/**
 	 * Display Move group folder form
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function moveFolderTask()
 	{
@@ -1163,7 +1171,7 @@ class Media extends Base
 		$folder = Request::getVar('folder', '');
 
 		// default folder to have open
-		//$this->view->activeFolder = '/uploads';
+		$this->view->activeFolder = '/uploads';
 		//if ($this->group->get('type') == 3)
 		//{
 		//	$this->view->activeFolder = '/';
@@ -1171,6 +1179,15 @@ class Media extends Base
 
 		// get list of folders
 		$folders    = Filesystem::directoryTree($this->path, '.', 10);
+		foreach ($folders as $i => $folder)
+		{
+			if ($folder['parent'] || (!$folder['parent'] && $folder['name'] == 'uploads'))
+			{
+				continue;
+			}
+			unset($folders[$i]);
+		}
+
 		$folderTree = $this->_buildFolderTree($folders);
 		$folderList = $this->_buildFolderTreeSelect($folderTree);
 
@@ -1188,7 +1205,7 @@ class Media extends Base
 	/**
 	 * Move group folder
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function doMoveFolderTask()
 	{
@@ -1234,7 +1251,7 @@ class Media extends Base
 	/**
 	 * Delete group folder
 	 *
-	 * @return  array
+	 * @return  void
 	 */
 	public function deleteFolderTask()
 	{

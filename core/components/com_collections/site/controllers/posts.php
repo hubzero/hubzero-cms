@@ -605,7 +605,7 @@ class Posts extends SiteController
 			],
 			'recipients' => array(
 				['collection', $post->collection_id],
-				['user', $collection->created_by],
+				['user', $collection->get('created_by')],
 				['user', $post->created_by]
 			)
 		]);

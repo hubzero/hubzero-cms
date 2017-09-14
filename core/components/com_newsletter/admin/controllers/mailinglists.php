@@ -133,7 +133,7 @@ class Mailinglists extends AdminController
 		}
 
 		// Incoming data
-		$fields = Request::getVar('newsletter', array(), 'post', 'array', 2);
+		$fields = Request::getVar('field', array(), 'post', 'array', 2);
 
 		// Initiate model
 		$row = Mailinglist::oneOrNew($fields['id'])->set($fields);

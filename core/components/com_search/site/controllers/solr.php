@@ -51,6 +51,7 @@ class Solr extends SiteController
 	/**
 	 * Display search form and results (if any)
 	 *
+	 * @param   unknown  $response
 	 * @return  void
 	 */
 	public function displayTask($response = null)
@@ -140,6 +141,7 @@ class Solr extends SiteController
 
 		$this->view->pagination = new \Hubzero\Pagination\Paginator($numFound, $start, $limit);
 		$this->view->pagination->setAdditionalUrlParam('terms', $terms);
+		$this->view->pagination->setAdditionalUrlParam('type', $type);
 
 		if (isset($results) && count($results) > 0)
 		{
@@ -160,7 +162,6 @@ class Solr extends SiteController
 		}
 
 		$this->view->terms = $terms;
-		$this->view->total = $numFound;
 		$this->view->type = $type;
 		$this->view->section = $section;
 		$this->view->setLayout('display');
@@ -168,6 +169,14 @@ class Solr extends SiteController
 		$this->view->display();
 	}
 
+	/**
+	 * Gets categories
+	 *
+	 * @param  $type
+	 * @param  $tersm
+	 * @param  $limit
+	 * @param  $start
+	 */
 	private function getCategories($type, $terms, $limit, $start)
 	{
 		$config = Component::params('com_search');
@@ -202,12 +211,18 @@ class Solr extends SiteController
 		return $facets;
 	}
 
+	/**
+	 * Format the results
+	 *
+	 * @param  $results
+	 * @param  $terms
+	 */
 	private function formatResults($results, $terms)
 	{
 		$highlightOptions = array('format' =>'<strong>\1</strong>',
-															'html' => false,
-															'regex'  => "|%s|iu"
-														);
+					  'html' => false,
+					  'regex'  => "|%s|iu"
+					  );
 
 		$snippetFields = array('description', 'fulltext', 'abstract');
 
@@ -227,17 +242,6 @@ class Solr extends SiteController
 			{
 				//@FIXME: SOLR-specific
 				$result['title'] = $result['title'][0];
-
-				// Appends http(s)://
-				if (isset($result['url']))
-				{
-					$result['url']  = rtrim(Request::base(), "/") . $result['url'];
-				}
-				else
-				{
-					$result['url'] = '';
-				}
-
 				$snippet = '';
 				foreach ($result as $field => &$r)
 				{

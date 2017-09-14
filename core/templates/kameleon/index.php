@@ -60,17 +60,12 @@ $htheme = $this->params->get('header', 'light');
 $browser = new \Hubzero\Browser\Detector();
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="nojs <?php echo $htheme . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>">
 	<head>
 		<meta name="viewport" content="width=device-width" />
 
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/assets/js/jquery.uniform.min.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js"></script>
 

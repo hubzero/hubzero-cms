@@ -42,21 +42,21 @@ class File extends Macro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Container for element attributes
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $attr = array();
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function description()
 	{
@@ -94,20 +94,20 @@ class File extends Macro
 	/**
 	 * Generate macro output based on passed arguments
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
 		$content = strip_tags($this->args);
 
-		// args will be null if the macro is called without parenthesis.
+		// Args will be null if the macro is called without parenthesis.
 		if (!$content)
 		{
 			return '';
 		}
 
 		// Parse arguments
-		// We expect the 1st argument to be a filename
+		// We expect the first argument to be a filename
 		$args   = explode(',', $content);
 		$file   = array_shift($args);
 
@@ -183,7 +183,7 @@ class File extends Macro
 		// Does the file exist?
 		if ($ret)
 		{
-			//$attr['desc'] = htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8');
+			// $attr['desc'] = htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8');
 
 			// Return HTML
 			return $this->_embed($file, $attr);
@@ -199,8 +199,8 @@ class File extends Macro
 	 * Parse attribute=value pairs
 	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
 	 *
-	 * @param      array $matches Values matching attr=val pairs
-	 * @return     void
+	 * @param   array $matches Values matching attr=val pairs
+	 * @return  void
 	 */
 	public function parseAttributeValuePair($matches)
 	{
@@ -212,7 +212,7 @@ class File extends Macro
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
 		// Set width if just a pixel size is given
-		// e.g., [[File(myfile.jpg, width=120px)]]
+		// EX: [[File(myfile.jpg, width=120px)]]
 		if (preg_match($size, $val, $matches) && $key != 'border')
 		{
 			if ($matches[0] && in_array($key, array('width', 'height')))
@@ -274,7 +274,7 @@ class File extends Macro
 			return;
 		}
 		// Check for alignment, no key given
-		// e.g., [[File(myfile.jpg, left)]]
+		// EX: [[File(myfile.jpg, left)]]
 		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
 		{
 			if ($key == 'center')
@@ -335,8 +335,8 @@ class File extends Macro
 	 * Handle single attribute values
 	 * EX: [[Image(myimage.png, nolink, right)]]
 	 *
-	 * @param      array $matches Values matching the single attribute pattern
-	 * @return     void
+	 * @param   array $matches Values matching the single attribute pattern
+	 * @return  void
 	 */
 	public function parseSingleAttribute($matches)
 	{
@@ -349,7 +349,7 @@ class File extends Macro
 		}
 
 		// Set width if just a pixel size is given
-		// e.g., [[File(myfile.jpg, 120px)]]
+		// EX: [[File(myfile.jpg, 120px)]]
 		$size   = '/[0-9+](%|px|em)+$/';
 		if (preg_match($size, $key, $matches))
 		{
@@ -383,7 +383,7 @@ class File extends Macro
 		}
 
 		// Check for alignment, no key given
-		// e.g., [[File(myfile.jpg, left)]]
+		// EX: [[File(myfile.jpg, left)]]
 		if (in_array($key, array('left', 'right', 'top', 'bottom')))
 		{
 			if ($key == 'center')
@@ -415,8 +415,9 @@ class File extends Macro
 	 * Generate an absolute path to a file stored on the system
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
 	 *
-	 * @param      $file  Filename
-	 * @return     string
+	 * @param   $file    Filename
+	 * @param   boolean  $alt
+	 * @return  string
 	 */
 	private function _path($file, $alt=false)
 	{
@@ -455,10 +456,10 @@ class File extends Macro
 
 	/**
 	 * Generate a link to a file
-	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
 	 *
-	 * @param      $file  Filename
-	 * @return     string
+	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
+	 * @param   $file  Filename
+	 * @return  string
 	 */
 	private function _link($file)
 	{
@@ -494,9 +495,9 @@ class File extends Macro
 	/**
 	 * Generates HTML to either embed a file or link to file for download
 	 *
-	 * @param      string $file File to embed
-	 * @param      array  $attr Attributes to apply to the HTML
-	 * @return     string
+	 * @param   string $file File to embed
+	 * @param   array  $attr Attributes to apply to the HTML
+	 * @return  string
 	 */
 	private function _embed($file, $attr=array())
 	{

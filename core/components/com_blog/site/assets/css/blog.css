@@ -142,37 +142,50 @@
 		margin-top: 0;
 	}
 
-	.entry-title .edit,
-	.entry-title .delete {
+	.entry-options .edit,
+	.entry-options .delete {
 		display: block;
-		width: 16px;
-		height: 16px;
-		font-size: 16px;
+		width: 1em;
+		height: 1em;
+		font-size: 1.2em;
 		line-height: 1;
 		overflow: hidden;
 		border: none;
-		top: 0.5em;
-		right: 0.5em;
+		top: 0;
+		right: 0;
 		position: absolute;
+		color: #bbb;
+		font-style: normal;
 	}
-	dd.entry-options .edit:before,
-	dd.entry-options .delete:before,
-	.entry-title .edit:before,
-	.entry-title .delete:before {
+	.entry-options .edit:hover,
+	.entry-options .delete:hover {
+		border: none;
+	}
+	.entry-options .edit,
+	.entry-options .delete {
+		font-size: 1.8em;
+		top: 0.4em;
+	}
+	.entry-options .edit:before,
+	.entry-options .delete:before{
 		margin-right: 1em;
 		font-family: "Fontcons";
 		font-weight: normal;
 	}
-	dd.entry-options .edit:before,
-	.entry-title .edit:before {
+	.entry-options .edit:before {
 		content: "\270E";
 	}
-	dd.entry-options .delete:before,
-	.entry-title .delete:before {
+	.entry-options .delete:before {
 		content: "\f014";
 	}
-	.entry-title .delete {
-		right: 2em;
+	.entry-options .edit:hover {
+		color: #222;
+	}
+	.entry-options .delete:hover {
+		color: red;
+	}
+	.entry-options .delete {
+		right: 1.5em;
 	}
 	.no-comments {
 		font-style: italic;

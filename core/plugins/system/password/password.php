@@ -63,8 +63,8 @@ class plgSystemPassword extends \Hubzero\Plugin\Plugin
 			$current .= ($task       = Request::getWord('task', false)) ? '.' . $task : '';
 			$current .= ($view       = Request::getWord('view', false)) ? '.' . $view : '';
 
-			$badpassword     = Session::get('badpassword',false);
-			$expiredpassword = Session::get('expiredpassword',false);
+			$badpassword     = Session::get('badpassword', false);
+			$expiredpassword = Session::get('expiredpassword', false);
 
 			// If guest, proceed as normal and they'll land on the login page
 			if (!in_array($current, $exceptions) && ($badpassword || $expiredpassword))
@@ -73,14 +73,16 @@ class plgSystemPassword extends \Hubzero\Plugin\Plugin
 				Request::setVar('task', 'changepassword');
 				Request::setVar('id', 0);
 
+				$this->loadLanguage();
+
 				if ($badpassword)
 				{
-					Request::setVar('Your password does not meet current site requirements. Please change your password now.');
+					Notify::warning(Lang::txt('PLG_SYSTEM_PASSWORD_REQUIREMENTS_NOT_MET'));
 				}
 
 				if ($expiredpassword)
 				{
-					Request::setVar('Your password has expired. Please change your password now.');
+					Notify::warning(Lang::txt('PLG_SYSTEM_PASSWORD_EXPIRED'));
 				}
 
 				$this->event->stop();

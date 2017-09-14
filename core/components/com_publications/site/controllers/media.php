@@ -33,6 +33,7 @@
 namespace Components\Publications\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Publications\Helpers;
+use Components\Publications\Models;
 
 /**
  * Publications controller class for media
@@ -69,7 +70,7 @@ class Media extends SiteController
 		// Incoming
 		$pid    = Request::getInt('id', 0);
 		$vid    = Request::getInt( 'v', 0 );
-		$source = NULL;
+		$source = null;
 
 		// Need pub and version ID
 		if (!$pid || $pid == 0 || !$vid)
@@ -103,30 +104,14 @@ class Media extends SiteController
 
 			if (strtolower($file) == 'master')
 			{
-				// Get master image
-				$source = $path . DS . 'master.png';
+				$publication = new Models\Publication($pid, null, $vid);
+				// Get the image if exists
+				$source = $publication->hasImage('master');
 
 				// Default image
-				if (!is_file(PATH_APP . DS . $source))
+				if (!$source)
 				{
-					// Grab first bigger image in gallery
-					if (is_dir(PATH_APP . DS . $path . DS . 'gallery'))
-					{
-						$file_list = scandir(PATH_APP . DS . $path . DS . 'gallery');
-						foreach ($file_list as $file)
-						{
-							list($width, $height, $type, $attr) = getimagesize(PATH_APP . DS . $path . DS . 'gallery' . DS . $file);
-							if ($width > 200)
-							{
-								$source = $path . DS . 'gallery' . DS . $file;
-								break;
-							}
-						}
-					}
-					if (!is_file(PATH_APP . DS . $source))
-					{
-						$source = PATH_CORE . DS . trim($this->config->get('masterimage', 'components/com_publications/site/assets/img/master.png'), DS);
-					}
+					$source = PATH_CORE . DS . trim($this->config->get('masterimage', 'components/com_publications/site/assets/img/master.png'), DS);
 				}
 			}
 			else

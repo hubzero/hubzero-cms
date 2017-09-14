@@ -412,11 +412,12 @@ class Newsletters extends AdminController
 
 		// Get the request vars
 		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have ids
 		$success = 0;
 
-		if (isset($ids) && count($ids) > 0)
+		if (count($ids) > 0)
 		{
 			foreach ($ids as $id)
 			{

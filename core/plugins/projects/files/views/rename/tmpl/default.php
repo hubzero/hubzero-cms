@@ -36,13 +36,12 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 
 $bcEnd = $this->type == 'folder' ? '<span class="folder">' . $this->item . '</span>' : '<span class="file">' . $this->item . '</span>';
 ?>
-
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME') . ' ' . $this->type . ' ' . $bc . ' ' . $bcEnd; ?></h3>
 <?php
 // Display error
 if ($this->getError()) {
-	echo ('<p class="witherror">' . $this->getError() . '</p>');
+	echo '<p class="witherror">' . $this->getError() . '</p>';
 }
 else {
 ?>

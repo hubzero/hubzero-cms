@@ -64,7 +64,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return  array  Plugin name and title
+	 * @param   unknown  $alias
+	 * @return  array    Plugin name and title
 	 */
 	public function &onProjectAreas($alias = null)
 	{

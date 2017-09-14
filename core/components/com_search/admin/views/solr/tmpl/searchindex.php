@@ -32,46 +32,49 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if (isset($this->parent))
+if ($this->parent->get('id'))
 {
-	Toolbar::title(Lang::txt('Solr Search Facets : ') . $this->parent->name);
+	Toolbar::title(Lang::txt('Solr Search: Facets: ') . $this->parent->get('name'));
 	Toolbar::back();
 }
 else
 {
-	Toolbar::title(Lang::txt('Solr Search Facets'));
+	Toolbar::title(Lang::txt('Solr Search: Facets'));
 }
 Toolbar::custom('addfacet', 'new', 'add', 'COM_SEARCH_ADD_FACET', false);
 Toolbar::custom('deletefacet', 'delete', 'delete', 'COM_SEARCH_DELETE_FACET', true);
+Toolbar::spacer();
+Toolbar::custom('fullindex', 'refresh', 'refresh', 'COM_SEARCH_SOLR_FULLINDEX', false);
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
 
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Overview'),
 	'index.php?option='.$option.'&task=configure'
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Search Index'),
-	'index.php?option='.$option.'&task=searchindex'
+	'index.php?option='.$option.'&task=searchindex',
+	true
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
 	'index.php?option='.$option.'&task=manageBlacklist'
 );
 ?>
 
 <?php if (isset($this->processing)) { ?>
-<div class="info">
-	<span><?php echo Lang::txt('COM_SEARCH_BUILDING_INDEX'); ?></span>
-</div>
+	<div class="info">
+		<span><?php echo Lang::txt('COM_SEARCH_BUILDING_INDEX'); ?></span>
+	</div>
 <?php } ?>
 
 <?php if (isset($this->stalled)) { ?>
-<div class="warning">
-	<span><?php echo Lang::txt('COM_SEARCH_INDEX_STALLED'); ?></span>
-</div>
+	<div class="warning">
+		<span><?php echo Lang::txt('COM_SEARCH_INDEX_STALLED'); ?></span>
+	</div>
 <?php } ?>
 
 <section id="main" class="com_search">
@@ -90,7 +93,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="/administrator/index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -99,11 +102,9 @@ function submitbutton(pressbutton)
 				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('title','asc','');return false;" title="Click to sort by this column" class="sort">Title</a></th>
 				<th scope="col" class="priority-2"><a href="#" onclick="Joomla.tableOrdering('state','asc','');return false;" title="Click to sort by this column" class="sort">State</a></th>
 				<th scope="col" class="priority-4"><a href="#" onclick="Joomla.tableOrdering('access','asc','');return false;" title="Click to sort by this column" class="sort"><?php echo Lang::txt('COM_SEARCH_COUNT'); ?></a></th>
-
-				<?php if (!isset($this->parent)): ?>
-				<th scope="col"><?php echo Lang::txt('COM_SEARCH_FACETS'); ?></th>
+				<?php if (!$this->parent->get('id')): ?>
+					<th scope="col"><?php echo Lang::txt('COM_SEARCH_FACETS'); ?></th>
 				<?php endif; ?>
-
 			</tr>
 		</thead>
 		<tbody>
@@ -121,7 +122,6 @@ function submitbutton(pressbutton)
 						<?php $protected = $facet->get('protected'); ?>
 						<?php if ($protected == 1)
 						{
-							dlog($facet);
 							echo '(' . Lang::txt('COM_SEARCH_PROTECTED') . ')';
 						}
 						?>
@@ -148,12 +148,16 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-4">
 					<span>
-					<a href="<?php echo Route::url('index.php?option=com_search&task=documentListing&facet=' . $facet->facet); ?>">
-						<?php echo $facet->count; ?>
-					</a>
+						<?php if ($facet->count < 0): ?>
+							<?php echo Lang::txt('(error)'); ?>
+						<?php else: ?>
+						<a href="<?php echo Route::url('index.php?option=com_search&task=documentListing&facet=' . $facet->facet); ?>">
+							<?php echo $facet->count; ?>
+						</a>
+						<?php endif; ?>
 					</span>
 				</td>
-				<?php if (!isset($this->parent)): ?>
+				<?php if (!$this->parent->get('id')): ?>
 				<td>
 					<a class="glyph category" href="<?php echo Route::url('index.php?option=com_search&task=searchIndex&parent_id=' . $facet->id .  '&' . Session::getFormToken() . '=1');?>">
 						<?php echo $facet->children()->count(); ?></span>
@@ -171,7 +175,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="id" />
 	<input type="hidden" name="filter_order_Dir" value="DESC" />
-	<?php //echo Html::input('token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>
 </section><!-- / #main -->
-</section><!-- / #component-content -->

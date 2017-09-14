@@ -67,8 +67,8 @@ class Users extends \JTable
 	 * Get top users for a resource
 	 *
 	 * @param   integer  $resid   Resource ID
-	 * @param   integer  $period  Time period
 	 * @param   string   $dthis   YYYY-MM
+	 * @param   integer  $period  Time period
 	 * @param   integer  $top     Top value
 	 * @return  array
 	 */

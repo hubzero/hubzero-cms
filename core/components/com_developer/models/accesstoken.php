@@ -171,14 +171,14 @@ class Accesstoken extends Relational
 	 */
 	public function created($as='')
 	{
-		$as = strtolower($as);
+		$check = strtolower($as);
 
-		if ($as == 'date')
+		if ($check == 'date')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if ($check == 'time')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
@@ -199,14 +199,14 @@ class Accesstoken extends Relational
 	 */
 	public function expires($as='')
 	{
-		$as = strtolower($as);
+		$check = strtolower($as);
 
-		if ($as == 'date')
+		if ($check == 'date')
 		{
 			return Date::of($this->get('expires'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if ($check == 'time')
 		{
 			return Date::of($this->get('expires'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}

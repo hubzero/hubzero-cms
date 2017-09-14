@@ -73,30 +73,30 @@ class Members extends GroupMacro
 	 */
 	public function render()
 	{
-		// check if we can render
+		// Check if we can render
 		if (!parent::canRender())
 		{
 			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
-		// get args
+		// Get args
 		$args = $this->getArgs();
 
-		//array of filters
+		// Array of filters
 		$filters = array(
 			'limit' => (count($args) == 1 && is_numeric($args[0])) ? $args[0] : 12
 		);
 
-		// get members
+		// Get members
 		$members = $this->getGroupMembers($this->group, $filters);
 
-		//are we a group member
+		// Are we a group member
 		$isMember = (in_array(\User::get('id'), $this->group->get('members'))) ? true : false;
 
-		//get the members plugin access for this group
+		// Get the members plugin access for this group
 		$memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'members');
 
-		// make sure we can actually display for the current user
+		// Make sure we can actually display for the current user
 		if ($memberAccess == 'anyone'
 			|| ($memberAccess == 'registered' && !User::isGuest())
 			|| ($memberAccess == 'members' && $isMember))
@@ -108,7 +108,7 @@ class Members extends GroupMacro
 			$html = '';
 		}
 
-		//return rendered events
+		// Return rendered events
 		return $html;
 	}
 
@@ -121,18 +121,18 @@ class Members extends GroupMacro
 	 */
 	private function getGroupMembers($group, $filters = array())
 	{
-		// get members from group
+		// Get members from group
 		$members = $group->get('members');
 
-		// get group params
+		// Get group params
 		$params = \Component::params("com_groups");
 		$displaySystemUsers = $params->get('display_system_users', 'no');
 
-		//get this groups params
+		// Get this groups params
 		$gparams = new \Hubzero\Config\Registry($group->get('params'));
 		$displaySystemUsers = $gparams->get('display_system_users', $displaySystemUsers);
 
-		// filter is system users
+		// Filter is system users
 		if ($displaySystemUsers == 'no')
 		{
 			$members = array_map(function($userid) {
@@ -141,21 +141,22 @@ class Members extends GroupMacro
 			$members = array_values(array_filter($members));
 		}
 
-		// shuffle order
+		// Shuffle order
 		shuffle($members);
 
-		// limit members based on the filter
+		// Limit members based on the filter
 		$members = array_slice($members, 0, $filters['limit']);
 
-		//return members
+		// Return members
 		return $members;
 	}
 
 	/**
 	 * Render the events
 	 *
-	 * @param      array     Array of group events
-	 * @return     string
+	 * @param   array  Array of group events
+	 * @param   array  $members  Array of members
+	 * @return  string
 	 */
 	private function renderMembers($group, $members)
 	{

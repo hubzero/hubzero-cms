@@ -42,6 +42,13 @@ class Gitlab
 	private $url;
 
 	/**
+	 * Default Guzzle options/ headers
+	 *
+	 * @var array
+	 */
+	private $options;
+
+	/**
 	 * GitLab Auth Token
 	 * 
 	 * @var  string
@@ -64,9 +71,14 @@ class Gitlab
 	{
 		$this->url    = rtrim($url, DS);
 		$this->token  = $token;
+		$this->options = array(
+			'verify' => false,
+			'headers' => array('PRIVATE-TOKEN' => $token)
+		);
 		$this->client = new \GuzzleHttp\Client;
 
-		$this->client->setDefaultOption('verify', false);
+		// Method removed in Guzzle 6.0
+		//$this->client->setDefaultOption('verify', false);
 	}
 
 	/**
@@ -167,15 +179,16 @@ class Gitlab
 	 */
 	private function _getRequest($resource)
 	{
-		// init get request
-		$request = $this->client->createRequest('GET', $this->url . DS . $resource);
-
 		// add our auth header
-		$request->addHeader('PRIVATE-TOKEN', $this->token);
+		$headers = array('PRIVATE-TOKEN' => $this->token);
 
-		// send and return response
-		$response = $this->client->send($request);
-		return $response->json();
+		// init get request
+		$response = $this->client->request('GET', $this->url . DS . $resource, $this->options);
+
+		// json() method removed in Guzzle 6.0
+		// return $respone->json();
+
+		return json_decode($response->getBody(), true);
 	}
 
 	/**
@@ -188,20 +201,14 @@ class Gitlab
 	private function _postRequest($resource, $params = array())
 	{
 		// init post request
-		$request = $this->client->createRequest('POST', $this->url . DS . $resource);
 
-		// set post fields
-		foreach ($params as $key => $value)
-		{
-			$request->getQuery()->set($key, $value);
-		}
+		$requestOptions = array_merge(array('query' => $params), $this->options);
+		$response = $this->client->request('POST', $this->url . DS . $resource, $requestOptions);
 
-		// add our auth header
-		$request->addHeader('PRIVATE-TOKEN', $this->token);
+		// json() method removed in Guzzle 6.0
+		// return $response->json();
 
-		// send and return response
-		$response = $this->client->send($request);
-		return $response->json();
+		return json_decode($response->getBody(), true);
 	}
 
 	/**
@@ -213,20 +220,14 @@ class Gitlab
 	 */
 	public function _putRequest($resource, $params = array())
 	{
+		$requestOptions = array_merge(array('form_params' => $params), $this->options);
+
 		// init post request
-		$request = $this->client->createRequest('POST', $this->url . DS . $resource);
+		$response = $this->client->request('PUT', $this->url . DS . $resource, $requestOptions);
 
-		// set post fields
-		foreach ($params as $key => $value)
-		{
-			$request->setPostField($key, $value);
-		}
+		// json() method removed in Guzzle 6.0
+		// return $response->json();
 
-		// add our auth header
-		$request->addHeader('PRIVATE-TOKEN', $this->token);
-
-		// send and return response
-		$response = $this->client->send($request);
-		return $response->json();
+		return json_decode($response->getBody(), true);
 	}
 }

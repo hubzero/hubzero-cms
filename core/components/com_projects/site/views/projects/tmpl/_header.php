@@ -47,8 +47,16 @@ else
 $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
 ?>
 <div id="content-header" <?php if (!$this->showPic) { echo 'class="nopic"'; } ?>>
-	<?php if ($this->showPic) { ?>
-		<div class="pthumb"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" /></a></div>
+	<?php if ($this->showPic)
+	{
+		// Check if there is a picture
+		$thumbClass = '';
+		if (!$this->model->get('picture'))
+		{
+			$thumbClass = ' no-picture';
+		}
+	?>
+		<div class="pthumb<?php echo $thumbClass; ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" /></a></div>
 	<?php } ?>
 	<div class="ptitle">
 	<h2>

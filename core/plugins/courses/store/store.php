@@ -92,11 +92,10 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object   $course    Current resource
+	 * @param   object   $offering 
+	 * @param   unknown  $section
+	 * @return  array
 	 */
 	public function onCourseEnrollLink($course, $offering, $section)
 	{
@@ -135,7 +134,6 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	 * Actions to perform after saving a course
 	 *
 	 * @param      object  $model \Components\Courses\Models\Course
-	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
 	public function onOfferingSave($model)
@@ -248,7 +246,6 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	 * Actions to perform after saving an offering
 	 *
 	 * @param      object  $model \Components\Courses\Models\Offering
-	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
 	public function onCourseSave($model)
@@ -359,7 +356,6 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	 * Actions to perform after deleting an offering
 	 *
 	 * @param      object  $model \Components\Courses\Models\Section
-	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
 	public function onAfterDeleteCoupon($model)

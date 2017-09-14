@@ -5,73 +5,52 @@
 */
 	#recommendations {
 		margin-bottom: 2em;
-		}
+	}
 	#recommendations ul {
 		margin: 0;
 		padding: 0.5em 0.5em 0.5em 0.5em;
 		border-left: 1px solid #9da6b7;
 		border-right: 1px solid #9da6b7;
 		border-bottom: 1px solid #9da6b7;
-		}
-	#recommendations p,
-	#whatsrelated ul, 
-	#whatsrelated p {
+	}
+	#recommendations p {
 		margin: 0;
 		padding: 0.5em 0.5em 0.5em 2em ;
 		border-left: 1px solid #9da6b7;
 		border-right: 1px solid #9da6b7;
 		border-bottom: 1px solid #9da6b7;
 		list-style: none;
-		}
+	}
 	#recommendations p#credits {
 		border: none;
 		padding: 0.2em 0;
 		margin: 0;
 		font-size: 85%;
-		}
-	#recommendations ul,
-	#whatsrelated ul {
+	}
+	#recommendations ul {
 		padding-left: 0.5em;
-		}
+	}
 	#recommendations li {
 		margin: 0 0 0 2em;
 		padding: 0.5em;
 		font-size: 90%;
-		}
-	#whatsrelated li {
-		margin: 0;
-		padding: 0.5em;
-		padding-left: 2.5em;
-		font-size: 90%;
-		list-style: none;
-		}
-	#recommendations li.nodata,
-	#whatsrelated li.nodata {
+	}
+	#recommendations li.nodata {
 		border: none;
 		list-style: none;
 		padding-bottom: 1em;
-		}
-	#recommendations li span,
-	#whatsrelated li span {
+	}
+	#recommendations li span {
 		display: inline;
 		color: #999;
 		font-size: 90%;
-		}
-	#recommendations h3,
-	#whatsrelated h3, 
-	#whatspop h3 {
-		margin: 0 !important;
-		padding: 0 !important;
+	}
+	#recommendations h3 {
+		margin: 0;
+		padding: 0;
 		color: #747b88;
 		text-transform: uppercase;
-		font-size: 85%;	
-		display: block !important;
+		font-size: 85%;
+		display: block;
 		border-bottom: 4px solid #9da6b7;
-		}
-	#whatsrelated {
-		padding: 0;
-		margin-bottom: 2em;
-		}
-	#whatspop {
-		margin-bottom: 2em;
-		}
+	}

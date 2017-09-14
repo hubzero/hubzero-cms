@@ -35,6 +35,7 @@ namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
+use Hubzero\Geocode\Geocode;
 use Hubzero\Base\Object;
 
 /**
@@ -89,5 +90,74 @@ class Author extends Relational
 	public function citation()
 	{
 		return $this->belongsToOne('Citation', 'cid', 'id');
+	}
+
+	public function filterByAuthor($authorString)
+	{
+		if (!empty($authorString))
+		{
+			$this->orWhereLike('author', $authorString, 1)
+				   ->orWhereLike('givenName', $authorString, 1)
+				   ->orWhereLike('surname', $authorString, 1);
+		}
+		return $this;
+	}
+
+	public function filterByGeo($geoCodes, $totalOptions = 4)
+	{
+		$geoFields = array_filter($geoCodes, function($geo){
+			if ($geo == 1)
+			{
+				return $geo;
+			}
+		});
+
+		if (count($geoFields) < $totalOptions)
+		{
+			$geoKeys = array_keys($geoFields);
+			$countryCodes = array();
+			foreach ($geoKeys as $continent)
+			{
+				if ($continent == 'us')
+				{
+					$countryCodes[] = 'us';
+				}
+				else
+				{
+					$countries = array();
+					$countries = Geocode::getCountriesByContinent($continent);
+					$countryCodes = array_merge($countryCodes, $countries);
+				}
+			}
+			$this->whereIn('countryresident', $countryCodes);
+		}
+		return $this;
+	}
+
+	public function filterByAff($types, $totalOptions = 3)
+	{
+		$types = array_filter($types, function($org){
+			if ($org == 1)
+			{
+				return $org;
+			}
+		});
+
+		if (count($types) < $totalOptions)
+		{
+			$firstQuery = true;
+			$orgtypes = array_keys($types);
+			foreach ($orgtypes as $type)
+			{
+				$whereFunc = $firstQuery ? 'whereLike' : 'orWhereLike';
+				$this->$whereFunc('orgtype', $type, 1);
+				if ($type == 'university')
+				{
+					$this->orWhereLike('orgtype', 'education', 1);
+				}
+				$firstQuery = false;
+			}
+		}
+		return $this;
 	}
 }

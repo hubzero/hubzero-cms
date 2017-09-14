@@ -639,6 +639,9 @@ class Members extends AdminController
 		// Drop through to edit form?
 		if ($this->getTask() == 'apply')
 		{
+			// Force reload te record as it's possible other pieces
+			// of code made changes (i.e., password change)
+			$user = Member::oneOrNew($user->get('id'));
 			return $this->editTask($user);
 		}
 
@@ -1330,7 +1333,8 @@ class Members extends AdminController
 				'action_browse' => (isset($element->browse) ? (int) $element->browse : 0),
 				'min'           => (isset($element->field_options->min) ? (int) $element->field_options->min : 0),
 				'max'           => (isset($element->field_options->max) ? (int) $element->field_options->max : 0),
-				'default_value' => (isset($element->field_options->value) ? (string) $element->field_options->value : '')
+				'default_value' => (isset($element->field_options->value) ? (string) $element->field_options->value : ''),
+				'placeholder'   => (isset($element->field_options->placeholder) ? (string) $element->field_options->placeholder : '')
 			));
 
 			if ($field->get('type') == 'dropdown')

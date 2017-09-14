@@ -32,8 +32,10 @@
 
 namespace Components\Citations\Admin\Controllers;
 
+require_once Component::path('com_citations') . DS . 'models' . DS . 'sponsor.php';
+
 use Hubzero\Component\AdminController;
-use Components\Citations\Tables\Sponsor;
+use Components\Citations\Models\Sponsor;
 use Request;
 use Route;
 use Lang;
@@ -51,8 +53,9 @@ class Sponsors extends AdminController
 	 */
 	public function displayTask()
 	{
-		$cs = new Sponsor($this->database);
-		$this->view->sponsors = $cs->getSponsor();
+		$this->view->sponsors = Sponsor::all();
+
+		$this->_displayMessages();
 
 		// Output the HTML
 		$this->view->display();
@@ -71,6 +74,7 @@ class Sponsors extends AdminController
 	/**
 	 * Edit a type
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -79,17 +83,12 @@ class Sponsors extends AdminController
 
 		$this->view->config = $this->config;
 
-		if (!is_object($row))
+		if (!($row instanceof Sponsor))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
-			if (is_array($id))
-			{
-				$id = (!empty($id) ? $id[0] : 0);
-			}
+			$id = Request::getInt('id', 0);
 
-			$sponsor = new Sponsor($this->database);
-			$row = $sponsor->getSponsor($id);
+			$row = Sponsor::oneOrNew($id);
 		}
 
 		$this->view->sponsor = $row;
@@ -97,8 +96,10 @@ class Sponsors extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			\Notify::error($error);
+			\Notify::error($error, 'com.citations');
 		}
+
+		$this->_displayMessages();
 
 		// Output the HTML
 		$this->view
@@ -117,33 +118,24 @@ class Sponsors extends AdminController
 		Request::checkToken();
 
 		$s = Request::getVar('sponsor', array(), 'post');
+		$sponsorId = !empty($s['id']) ? $s['id'] : null;
+		unset($s['id']);
 
-		$row = new Sponsor($this->database);
-		if (!$row->bind($s))
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		$row = Sponsor::oneOrNew($sponsorId);
+		$row->set($s);
 
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError(), 'com.citations');
 			$this->editTask($row);
 			return;
 		}
 
+		Notify::success(Lang::txt('CITATION_SPONSOR_SAVED'), 'com.citations');
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_SPONSOR_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -161,26 +153,40 @@ class Sponsors extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
+			Notify::error(Lang::txt('CITATION_NO_SPONSOR'), 'com.citations');
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('CITATION_NO_SPONSOR'),
-				'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
 
-		$cs = new Sponsor($this->database);
-		foreach ($ids as $id)
+		$cs = Sponsor::all()->whereIn('id', $ids)->rows();
+		foreach ($cs as $sponsor)
 		{
-			// Delete the type
-			$cs->delete($id);
+			$sponsorId = $sponsor->get('id');
+			if (!$sponsor->destroy())
+			{
+				Notify::error(Lang::txt('CITATION_SPONSOR_NOT_REMOVED', $sponsorId), 'com.citations');
+			}
+			else
+			{
+				$sponsor->citations()->sync(array());
+			}
 		}
+
+		Notify::success(Lang::txt('CITATION_SPONSOR_REMOVED'), 'com.citations');
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_SPONSOR_REMOVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
-}
 
+	private function _displayMessages($domain = 'com.citations')
+	{
+		foreach (Notify::messages($domain) as $message)
+		{
+			Notify::message($message['message'], $message['type']);
+		}
+	}
+}

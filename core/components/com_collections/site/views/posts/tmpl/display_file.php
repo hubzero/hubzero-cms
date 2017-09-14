@@ -139,7 +139,17 @@ if ($assets->total() > 0)
 				<span class="file-meta">
 					<span class="file-size">
 						<?php if ($asset->get('type') != 'link') { ?>
-							<?php echo \Hubzero\Utility\Number::formatBytes(filesize($path . DS . ltrim($asset->get('filename'), DS))); ?>
+							<?php
+							$fpath = $path . DS . ltrim($asset->get('filename'), DS);
+							if (file_exists($fpath))
+							{
+								echo \Hubzero\Utility\Number::formatBytes(filesize($fpath));
+							}
+							else
+							{
+								echo '--';
+							}
+							?>
 						<?php } else { ?>
 							<?php echo Lang::txt('COM_COLLECTIONS_ASSET_TYPE_LINK'); ?>
 						<?php } ?>

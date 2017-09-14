@@ -50,10 +50,8 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param   object  $resource  Current resource
-	 * @param   string  $option    Name of the component
-	 * @param   array   $areas     Active area(s)
-	 * @param   string  $rtrn      Data to be returned
+	 * @param   object  $course
+	 * @param   string  $active
 	 * @return  array
 	 */
 	public function onCourseView($course, $active=null)
@@ -220,7 +218,9 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method to add a message to the component message que
 	 *
-	 * @param   string  $message  The message to add
+	 * @param   string  $url      URL
+	 * @param   string  $msg      The message to add
+	 * @param   string  $msgType  Type of message
 	 * @return  void
 	 */
 	public function redirect($url, $msg='', $msgType='')

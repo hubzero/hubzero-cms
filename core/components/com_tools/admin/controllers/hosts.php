@@ -187,7 +187,7 @@ class Hosts extends AdminController
 		foreach ($output as $line)
 		{
 			// If it's a new session, catch the session number...
-			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/",$line,$sess))
+			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/", $line, $sess))
 			{
 				$retval = $sess[1];
 			}
@@ -298,7 +298,7 @@ class Hosts extends AdminController
 
 		if (!$row->hostname)
 		{
-			Notify::error(Lang::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'));
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_INVALID_HOSTNAME'));
 			return $this->editTask($row);
 		}
 
@@ -345,7 +345,7 @@ class Hosts extends AdminController
 			return $this->editTask($row);
 		}
 
-		Notify::success(Lang::_('COM_TOOLS_ITEM_SAVED'));
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
