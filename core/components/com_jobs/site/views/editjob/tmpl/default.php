@@ -187,9 +187,9 @@ defined('_HZEXEC_') or die();
 						<?php echo Lang::txt('COM_JOBS_EDITJOB_EXPIRE_DATE'); ?>:
 						<input  type="text" name="expiredate" id="expiredate" size="10" maxlength="10" value="<?php echo $expiredate; ?>" />
 						<?php if ($this->config->get('expiry', 0)): ?>
-						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT_EXPIRY'); ?></span>
+							<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT_EXPIRY'); ?></span>
 						<?php else: ?>
-						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
 						<?php endif; ?>
 						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_MAX_DATE'); ?></span>
 					</label>
