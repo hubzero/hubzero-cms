@@ -42,7 +42,7 @@ if (!strstr($handlerBase, '{'))
 }
 $handlerBase = str_replace(
 	array('{project}', '{file}'),
-	array($this->model->get('alias'), $this->item->get('name')),
+	array($this->model->get('alias'), $this->item->get('localPath')),
 	$handlerBase
 );
 
