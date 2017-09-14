@@ -35,6 +35,7 @@ use Hubzero\Base\Object;
 use Exception;
 use User;
 use Html;
+use Lang;
 
 /**
  * Redirect component helper.
@@ -98,5 +99,32 @@ class Redirect
 	public static function isEnabled()
 	{
 		return \Plugin::isEnabled('system', 'redirect');
+	}
+
+	/**
+	 * Render a published/unpublished toggle
+	 *
+	 * @param   integer  $value      The state value.
+	 * @param   integer  $i
+	 * @param   boolean  $canChange  An optional setting for access control on the action.
+	 * @return  string
+	 */
+	public static function published($value = 0, $i, $canChange = true)
+	{
+		// Array of image, task, title, action
+		$states	= array(
+			1  => array('on', 'unpublish', 'JENABLED', 'COM_REDIRECT_DISABLE_LINK'),
+			0  => array('off', 'publish', 'JDISABLED', 'COM_REDIRECT_ENABLE_LINK'),
+			2  => array('archived', 'unpublish', 'JARCHIVED', 'JUNARCHIVE'),
+			-2 => array('trash', 'publish', 'JTRASHED', 'COM_REDIRECT_ENABLE_LINK'),
+		);
+		$state = \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[0]);
+		$html  = '<span>' . Lang::txt($state[3]) . '</span>';
+		if ($canChange)
+		{
+			$html = '<a class="state ' . $state[0] . '" href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'. $html.'</a>';
+		}
+
+		return $html;
 	}
 }
