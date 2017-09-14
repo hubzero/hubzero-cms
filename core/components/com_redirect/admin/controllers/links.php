@@ -123,8 +123,9 @@ class Links extends AdminController
 
 		// Get records
 		$rows = $entries
-			->ordered('filter_order', 'filter_order_Dir')
-			->paginated();
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		$this->view
 			->set('rows', $rows)
@@ -205,7 +206,7 @@ class Links extends AdminController
 		$fields = Request::getVar('fields', array(), 'post', 'array');
 
 		// The save2copy task needs to be handled slightly differently.
-		if ($this->_task == 'save2copy')
+		if ($this->getTask() == 'save2copy')
 		{
 			// Reset the ID and then treat the request as for Apply.
 			$fields['id'] = 0;
@@ -223,7 +224,7 @@ class Links extends AdminController
 
 		Notify::success(Lang::txt('COM_REDIRECT_SAVE_SUCCESS'));
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
@@ -240,7 +241,7 @@ class Links extends AdminController
 	public function activateTask()
 	{
 		// Check for request forgeries.
-		Request::checkToken();
+		Request::checkToken(['get', 'post']);
 
 		// Access check.
 		if (!User::authorise('core.edit', $this->_option))
@@ -295,7 +296,7 @@ class Links extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		Request::checkToken();
+		Request::checkToken(['get', 'post']);
 
 		// Access check.
 		if (!User::authorise('core.edit', $this->_option))
@@ -384,7 +385,7 @@ class Links extends AdminController
 			Notify::error(Lang::txt('COM_REDIRECT_NO_ITEM_SELECTED'));
 		}
 
-		$i = 0;
+		$deleted = 0;
 		foreach ($ids as $id)
 		{
 			$entry = Link::oneOrFail(intval($id));
@@ -395,12 +396,12 @@ class Links extends AdminController
 				continue;
 			}
 
-			$i++;
+			$deleted++;
 		}
 
-		if ($i)
+		if ($deleted)
 		{
-			Notify::success(Lang::txts('COM_REDIRECT_N_ITEMS_DELETED', $i));
+			Notify::success(Lang::txts('COM_REDIRECT_N_ITEMS_DELETED', $deleted));
 		}
 
 		$this->cancelTask();
