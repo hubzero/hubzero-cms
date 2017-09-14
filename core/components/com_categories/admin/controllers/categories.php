@@ -47,8 +47,16 @@ use Lang;
 use Date;
 use App;
 
+/**
+ * Categories controller
+ */
 class Categories extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
 	public function execute()
 	{
 		$this->registerTask('add', 'edit');
@@ -61,23 +69,28 @@ class Categories extends AdminController
 		$this->registerTask('trash', 'state');
 		$this->registerTask('orderup', 'reorder');
 		$this->registerTask('orderdown', 'reorder');
+
 		parent::execute();
 	}
 
+	/**
+	 * Batch process entries
+	 *
+	 * @return  void
+	 */
 	public function batchTask()
 	{
 		$ids = Request::getArray('cid', array());
 		if (empty($ids))
 		{
 			Notify::warning(Lang::txt('COM_CATEGORIES_NO_ITEM_SELECTED'));
-			$this->cancelTask();
+			return $this->cancelTask();
 		}
 		$batchOptions = Request::getArray('batch', array());
 		if (empty($batchOptions['category_id']))
 		{
 			Notify::warning(Lang::txt('COM_CATEGORIES_BATCH_NO_CATEGORY_SELECTED'));
-			$this->cancelTask();
-			return;
+			return $this->cancelTask();
 		}
 		$action = $batchOptions['move_copy'] == 'm' ? 'moved' : 'copied';
 
@@ -92,9 +105,15 @@ class Categories extends AdminController
 			$category->moveOrCopyWithChildren($batchOptions['category_id'], $batchOptions['move_copy'], $params);
 		}
 		Notify::success(Lang::txt('COM_CATEGORIES_BATCH_SUCCESS', $action));
+
 		$this->cancelTask();
 	}
 
+	/**
+	 * Display a list of entries
+	 *
+	 * @return  void
+	 */
 	public function displayTask()
 	{
 		$filters = array(
@@ -138,8 +157,8 @@ class Categories extends AdminController
 		);
 		$filterableFields = array(
 			'category_id' => 'catid',
-			'access' => 'access',
-			'extension' => 'extension'
+			'access'      => 'access',
+			'extension'   => 'extension'
 		);
 		$categories = Category::all()
 			->select('`#__categories`.*')
@@ -151,7 +170,7 @@ class Categories extends AdminController
 			if (isset($filters[$index]) && $filters[$index] != '')
 			{
 				$categories->whereEquals($column, $filters[$index]);
-			}	
+			}
 		}
 
 		$searchableFields = array('title', 'description');
@@ -205,23 +224,35 @@ class Categories extends AdminController
 			$ordering[$parentId][] = $item->get('id');
 		}
 		$extension = $filters['extension'];
-		
+
+		$canDo = CategoriesHelper::getActions($extension, 'category', 0);
+		CategoriesHelper::addSubmenu($extension);
+
 		$this->view->set('pagination', $items->pagination);
 		$this->view->set('f_levels', $fLevels);
 		$this->view->set('filters', $filters);
 		$this->view->set('ordering', $ordering);
 		$this->view->set('items', $itemsArray);
+		$this->view->set('canDo', $canDo);
 		$this->view->setLayout('default')->display();
 	}
 
+	/**
+	 * Show a form for editing an entry
+	 *
+	 * @param   object  $category
+	 * @return  void
+	 */
 	public function editTask($category = null)
 	{
 		$id = Request::getInt('id', 0);
 		$extension = Request::getCmd('extension');
+
 		if (!($category instanceof Category))
-		{	
+		{
 			$category = Category::oneOrNew($id);
 		}
+
 		if (!$category->isNew())
 		{
 			$assetId = $category->get('asset_id');
@@ -257,9 +288,12 @@ class Categories extends AdminController
 			$category->set('extension', $extension);
 			$lang = 'COM_CATEGORIES_CATEGORY_ADD_TITLE';
 		}
+
 		$extensionLang = Lang::txt(strtoupper($extension));
 		$title = Lang::txt($lang, $extensionLang);
 		$canDo = CategoriesHelper::getActions($extension, 'category', $category->get('id', 0));
+		CategoriesHelper::addSubmenu($extension);
+
 		$this->view->set('title', $title);
 		$this->view->set('item', $category);
 		$this->view->set('form', $category->getForm());
@@ -268,34 +302,49 @@ class Categories extends AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * Save an entry
+	 *
+	 * @return  void
+	 */
 	public function saveTask()
 	{
 		Request::checkToken();
-		$items = Request::getVar('fields', array());
-		$extension = Request::getCmd('extension');
+
+		$items      = Request::getVar('fields', array());
+		$extension  = Request::getCmd('extension');
 		$categoryId = Request::getInt('id');
+
 		$category = Category::oneOrNew($categoryId);
-		$checkedOut = $category->get('checked_out');
-		if ($checkedOut)
+
+		if ($category->get('checked_out'))
 		{
-			$category->set('checked_out', null);
+			$category->set('checked_out', 0);
 			$category->set('checked_out_time', null);
 			$category->save();
 		}
+
 		if (!empty($items['rules']))
 		{
-			$rules = array_map(function($item){
-				return array_filter($item, 'strlen');
-			}, $items['rules']);
+			$rules = array_map(
+				function($item)
+				{
+					return array_filter($item, 'strlen');
+				},
+				$items['rules']
+			);
 			$category->assetRules = new Rules($rules);
 			$category->setNameSpace($extension);
 		}
 		unset($items['rules']);
+
 		$category->set($items);
+
 		if ($this->_task == 'save2copy')
 		{
 			$category->set('id', 0);
 		}
+
 		if (!$category->saveAsChildOf($items['parent_id']))
 		{
 			Notify::error($category->getError());
@@ -303,6 +352,7 @@ class Categories extends AdminController
 		}
 
 		Notify::success(Lang::txt('COM_CATEGORY_SAVED'));
+
 		if ($this->_task == 'apply' || $this->_task == 'save2copy')
 		{
 			return $this->editTask($category);
@@ -310,14 +360,21 @@ class Categories extends AdminController
 		elseif ($this->_task == 'save2new')
 		{
 			Request::setVar('id', 0);
-			$this->editTask();
+			return $this->editTask();
 		}
+
 		$this->cancelTask();
 	}
 
+	/**
+	 * Set the state for one or more entries
+	 *
+	 * @return  void
+	 */
 	public function stateTask()
 	{
 		Request::checkToken();
+
 		$states = array(
 			'publish' => array(
 				'value' => '1',
@@ -339,9 +396,13 @@ class Categories extends AdminController
 		$state = $states[$this->_task];
 
 		$ids = Request::getArray('cid');
+
 		if (!empty($ids))
 		{
-			$categories = Category::all()->whereIn('id', $ids)->rows();
+			$categories = Category::all()
+				->whereIn('id', $ids)
+				->rows();
+
 			$permissionErrors = 0;
 			foreach ($categories as $index => $category)
 			{
@@ -351,10 +412,13 @@ class Categories extends AdminController
 					$permissionErrors++;
 					continue;
 				}
+
 				$category->set('published', $state['value']);
 			}
 		}
+
 		$count = count($categories);
+
 		if ($count != $permissionErrors)
 		{
 			if ($categories->save())
@@ -363,29 +427,47 @@ class Categories extends AdminController
 				Notify::success(Lang::txt($state['lang'], $count, $title));
 			}
 		}
+
 		$this->cancelTask();
 	}
 
+	/**
+	 * Check-in one or more entries
+	 *
+	 * @return  void
+	 */
 	public function checkinTask()
 	{
 		Request::checkToken();
+
 		$ids = Request::getArray('cid');
-		$categories = Category::all()->whereIn('id', $ids)->rows();
+
+		$categories = Category::all()
+			->whereIn('id', $ids)
+			->rows();
+
+		$success = 0;
 		foreach ($categories as $category)
 		{
-			$category->set('checked_out', null);
+			$category->set('checked_out', 0);
 			$category->set('checked_out_time', null);
+
+			if (!$category->save())
+			{
+				Notify::error($category->getError());
+				continue;
+			}
+
+			$success++;
 		}
-		if (!$categories->save())
+
+		if ($success)
 		{
-			Notify::error($categories->getError());	
+			$title = Inflector::pluralize(Lang::txt('COM_CATEGORY'), $success);
+
+			Notify::success(Lang::txt('COM_CATEGORIES_N_ITEMS_CHECKED_IN_MORE', $success, $title));
 		}
-		else
-		{
-			$count = (int) count($categories);
-			$title = Inflector::pluralize(Lang::txt('COM_CATEGORY'), $count);
-			Notify::success(Lang::txt('COM_CATEGORIES_N_ITEMS_CHECKED_IN_MORE', $count, $title));
-		}
+
 		$this->cancelTask();
 	}
 
@@ -448,26 +530,34 @@ class Categories extends AdminController
 			$id = Request::getInt('id', 0);
 			$category = Category::one($id);
 			$categoryCheckedOut = $category instanceof Category ? $category->get('checked_out') : 0;
-			if ($category && User::getInstance()->get('id') == $categoryCheckedOut)
+
+			if ($category && User::get('id') == $categoryCheckedOut)
 			{
-				$category->set('checked_out', null);
+				$category->set('checked_out', 0);
 				$category->set('checked_out_time', null);
 				$category->save();
 			}
 		}
 		$extension = Request::getCmd('extension');
+
 		// Set the redirect
-		\App::redirect(
-			\Route::url('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : 
-				'') . '&extension=' . $extension, false)
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : '') . '&extension=' . $extension, false)
 		);
 	}
 
+	/**
+	 * Save the order for categories
+	 *
+	 * @return  void
+	 */
 	public function saveorderTask()
 	{
 		Request::checkToken();
-		$ordering = Request::getVar('order', array());
+
+		$ordering  = Request::getVar('order', array());
 		$extension = Request::getState($this->_option . '.' . $this->_controller . '.extension', 'extension');
+
 		if (!Category::saveorder($ordering, $extension))
 		{
 			Notify::error(Lang::txt('COM_CONTENT_ORDERING_ERROR'));
@@ -476,6 +566,7 @@ class Categories extends AdminController
 		{
 			Notify::success(Lang::txt('COM_CONTENT_ORDERING_SUCCESS'));
 		}
+
 		$this->cancelTask();
 	}
 }

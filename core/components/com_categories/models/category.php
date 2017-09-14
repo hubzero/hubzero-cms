@@ -42,15 +42,14 @@ use User;
 use Date;
 
 /**
- * Model class for a blog entry
+ * Model class for a category
  */
 class Category extends Nested
 {
-
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $orderBy = 'published_up';
 
@@ -95,17 +94,24 @@ class Category extends Nested
 		'created_user_id'
 	);
 
+	/**
+	 * Asset rules
+	 *
+	 * @var  object
+	 */
 	public $assetRules;
 
-	protected $namespace = 'category';
-
-	protected $table = '#__categories';
-
+	/**
+	 * Set the namespace
+	 *
+	 * @param   string  $name
+	 * @return  void
+	 */
 	public function setNameSpace($name)
 	{
 		if (!empty($name))
 		{
-			$underscorePos = strpos($name, "_");
+			$underscorePos = strpos($name, '_');
 			if ($underscorePos !== false)
 			{
 				$name = substr($name, $underscorePos + 1);
@@ -115,6 +121,11 @@ class Category extends Nested
 		}
 	}
 
+	/**
+	 * Generate asset ID
+	 *
+	 * @return  integer
+	 */
 	public function automaticAssetId()
 	{
 		if (!empty($this->assetRules))
@@ -125,88 +136,122 @@ class Category extends Nested
 	}
 
 	/**
-     * Generates automatic created time field value
-     *
-     * @param   array   $data  the data being saved
-     * @return  string
-     */
-    public function automaticCreatedTime($data)
-    {
-        if (!isset($data['created_time']))
-        {
-            $data['created_time'] = Date::toSql();
-        }
+	 * Generates automatic created time field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticCreatedTime($data)
+	{
+		if (!isset($data['created_time']))
+		{
+			$data['created_time'] = Date::toSql();
+		}
 
-        $created_time = $data['created_time'];
-        return $created_time;
-    }
+		return $data['created_time'];
+	}
 
 	/**
 	 * Generates userId of person logged in if no user ID provided upon creation.
 	 *
-	 * @param array $data	the data being saved
-	 * @return string
+	 * @param   array   $data  the data being saved
+	 * @return  integer
 	 */
 	public function automaticCreatedUserId($data)
 	{
 		if (empty($data['created_user_id']))
 		{
-			return User::getInstance()->get('id');
+			$data['created_user_id'] = User::get('id');
 		}
+
+		return $data['created_user_id'];
 	}
 
+	/**
+	 * Generates userId of person logged in if no user ID provided upon creation.
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  integer
+	 */
 	public function automaticModifiedUserId($data)
 	{
 		if (empty($data['modified_user_id']))
 		{
-			return User::getInstance()->get('id');
+			return User::get('id');
 		}
+
+		return $data['modified_user_id'];
 	}
 
+	/**
+	 * Generates userId of person logged in if no user ID provided upon creation.
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
 	public function automaticModifiedTime()
 	{
-		return Date::of()->toSql();
+		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : '0000-00-00 00:00:00');
 	}
 
+	/**
+	 * Get title
+	 *
+	 * @return  string
+	 */
 	public function transformName()
 	{
 		return $this->get('title');
 	}
+
 	/**
 	 * Get params as Registry object
 	 *
-	 * @return object
+	 * @return  object
 	 */
 	public function transformParams()
 	{
-		if(!($this->paramsRegistry instanceof Registry))
+		if (!($this->paramsRegistry instanceof Registry))
 		{
-			$itemRegistry = new Registry($this->get('params'));
-			$this->paramsRegistry = $itemRegistry;
+			$this->paramsRegistry = new Registry($this->get('params'));
 		}
 		return $this->paramsRegistry;
 	}
 
+	/**
+	 * Make sure params are a string
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
 	public function automaticParams($data)
 	{
-        if (!empty($data['params']))
-        {
-            $params = json_encode($data['params']);
-			return $params;
-        }
-		return false;
+		if (!empty($data['params']) && ($data['params'] instanceof Registry))
+		{
+			$data['params'] = $data['params']->toString();
+		}
+		return $data['params'];
 	}
 
+	/**
+	 * Get metadata as Registry object
+	 *
+	 * @return  object
+	 */
 	public function transformMetadata()
 	{
-		if(!($this->metadataRegistry instanceof Registry))
+		if (!($this->metadataRegistry instanceof Registry))
 		{
-			$itemRegistry = new Registry($this->get('metadata'));
-			$this->metadataRegistry = $itemRegistry;
+			$this->metadataRegistry = new Registry($this->get('metadata'));
 		}
 		return $this->metadataRegistry;
 	}
 
+	/**
+	 * Get the published state as a text string
+	 *
+	 * @return  object
+	 */
 	public function transformPublished()
 	{
 		$states = array(
@@ -219,61 +264,94 @@ class Category extends Nested
 		return $states[$stateNum];
 	}
 
+	/**
+	 * Ensure metadata is a string
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
 	public function automaticMetadata($data)
 	{
-        if (!empty($data['metadata']))
-        {
-            $metadata = json_encode($data['metadata']);
-			return $metadata;
-        }
-		return false;
+		if (!empty($data['metadata']) && ($data['metadata'] instanceof Registry))
+		{
+			$data['metadata'] = $data['metadata']->toString();
+		}
+		return $data['metadata'];
 	}
 
+	/**
+	 * Generate a Form object and bind data to it
+	 *
+	 * @return  object
+	 */
 	public function getForm()
-    {
-        $file = __DIR__ . '/forms/category.xml';
-        $file = Filesystem::cleanPath($file);
-        $form = new Form('categories', array('control' => 'fields'));
-        if (!$form->loadFile($file, false, '//form'))
-        {
-            $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
-        }
-		$data = $this->getAttributes();
-        $data['params'] = $this->params->toArray();
-        $data['metadata'] = $this->metadata->toArray();
-        $form->bind($data);
-        return $form;
-    }
+	{
+		$file = __DIR__ . '/forms/category.xml';
+		$file = Filesystem::cleanPath($file);
 
+		$form = new Form('categories', array('control' => 'fields'));
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		$data = $this->getAttributes();
+		$data['params'] = $this->params->toArray();
+		$data['metadata'] = $this->metadata->toArray();
+
+		$form->bind($data);
+
+		return $form;
+	}
+
+	/**
+	 * Establish relationship of user to checked_out
+	 *
+	 * @return  object
+	 */
 	public function editor()
 	{
 		return $this->belongsToOne('\Hubzero\User\User', 'checked_out');
 	}
 
+	/**
+	 * Save the ordering for multiple entries
+	 *
+	 * @param   array    $ordering
+	 * @param   string   $extension
+	 * @return  boolean
+	 */
 	public static function saveorder($ordering, $extension)
 	{
 		if (empty($ordering) || !is_array($ordering))
 		{
 			return false;
 		}
+
 		$storage = null;
+
 		foreach ($ordering as $parentid => $order)
 		{
-			$existingOrderedRows = self::all()->whereEquals('parent_id', $parentid)
-											  ->whereEquals('extension', $extension)
-											  ->order('lft', 'asc')
-											  ->rows();
+			$existingOrderedRows = self::all()
+				->whereEquals('parent_id', $parentid)
+				->whereEquals('extension', $extension)
+				->order('lft', 'asc')
+				->rows();
+
 			if (count($existingOrderedRows) <= 1)
 			{
 				continue;
 			}
+
 			$existingLftIds = array();
 			foreach ($existingOrderedRows as $row)
 			{
 				$pkValue = $row->get('id');
 				$existingLftIds[$pkValue] = $row->lft;
 			}
+
 			asort($order);
+
 			if (array_keys($order) !== array_keys($existingLftIds))
 			{
 				$startLft = array_shift($existingLftIds);
@@ -293,6 +371,14 @@ class Category extends Nested
 		return true;
 	}
 
+	/**
+	 * Move an entry up or down in th ordering
+	 *
+	 * @param   itneger  $delta
+	 * @param   string   $extension
+	 * @param   string   $where
+	 * @return  boolean
+	 */
 	public function move($delta, $extension, $where = '')
 	{
 		// If the change is none, do nothing.
@@ -353,9 +439,18 @@ class Category extends Nested
 		return true;
 	}
 
+	/**
+	 * More or copy an entry with children
+	 *
+	 * @param   integer  $parentId
+	 * @param   string   $method
+	 * @param   array    $params
+	 * @return  boolean
+	 */
 	public function moveOrCopyWithChildren($parentId, $method = 'c', $params = array())
 	{
 		$children = $this->getChildren();
+
 		if ($method == 'c')
 		{
 			$this->removeAttribute('id');
@@ -367,7 +462,7 @@ class Category extends Nested
 			{
 				$this->set($index, $value);
 			}
-		}	
+		}
 
 		if ($this->saveAsChildOf($parentId))
 		{
@@ -380,9 +475,17 @@ class Category extends Nested
 		{
 			return false;
 		}
+
 		return true;
 	}
 
+	/**
+	 * Update postion of an entry
+	 *
+	 * @param   integer  $iterator
+	 * @param   object   $storage
+	 * @return  object
+	 */
 	public function updatePositionWithChildren($iterator, $storage = null)
 	{
 		if (!($storage instanceof Rows))
@@ -390,39 +493,55 @@ class Category extends Nested
 			$storage = new Rows();
 		}
 		$children = $this->getChildren();
+
 		$this->set('lft', $iterator);
+
 		if ($children->count() < 1)
 		{
 			$iterator++;
+
 			$this->set('rgt', $iterator);
+
 			$storage->push($this);
 		}
 		else
 		{
-			foreach($children as $child)
+			foreach ($children as $child)
 			{
 				$iterator++;
-				$storage = $child->updatePositionWithChildren($iterator, $storage);
+				$storage  = $child->updatePositionWithChildren($iterator, $storage);
 				$iterator = $storage->last()->get('rgt');
 			}
 			$iterator++;
+
 			$this->set('rgt', $iterator);
+
 			$storage->push($this);
 		}
+
 		return $storage;
 	}
 
+	/**
+	 * Retrieve parents
+	 *
+	 * @return  object
+	 */
 	public function parents()
 	{
-		$id = $this->get('id');
-		$extension = $this->get('extension');
 		$parents = self::all()
-			->whereEquals('extension', $extension)
-			->where('parent_id', '!=', $id)
+			->whereEquals('extension', $this->get('extension'))
+			->where('parent_id', '!=', $this->get('id'))
 			->order('lft', 'asc');
+
 		return $parents;
 	}
 
+	/**
+	 * Get the title prefixed based on the level of nesting
+	 *
+	 * @return  string
+	 */
 	public function nestedTitle()
 	{
 		$nestedPad = str_repeat('- ', $this->get('level', 1));

@@ -1,53 +1,42 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_categories
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
+// No direct access
 defined('_HZEXEC_') or die();
-$canAdmin = User::authorise('core.admin', 'com_categories');
-$canCreate = User::authorise('core.create', 'com_categories');
-$canEdit = User::authorise('core.edit', 'com_categories');
-$canChangeState = User::authorise('core.edit.state', 'com_categories');
-$canDelete = User::authorise('core.delete', 'com_categories');
-Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-Html::behavior('multiselect');
 
-if ($canCreate)
-{
-    Toolbar::addNew();
-}
-if ($canEdit)
-{
-    Toolbar::editList();
-}
-Toolbar::spacer();
-if ($canChangeState)
-{
-    Toolbar::publishList();
-    Toolbar::unpublishList();
-    Toolbar::spacer();
-	Toolbar::archiveList();
-	Toolbar::checkin();
-}
-
-if ($canDelete)
-{
-    Toolbar::deleteList('', 'trash');
-}
-
-if ($canAdmin)
-{
-    Toolbar::spacer();
-    Toolbar::preferences($this->filters['extension'], '550');
-}
-
-Toolbar::spacer();
-Toolbar::help('categories');
-Html::behavior('tooltip');
+//$canAdmin = User::authorise('core.admin', 'com_categories');
+//$canCreate = User::authorise('core.create', 'com_categories');
+//$canEdit = User::authorise('core.edit', 'com_categories');
+//$canChangeState = User::authorise('core.edit.state', 'com_categories');
+//$canDelete = User::authorise('core.delete', 'com_categories');
 
 $userId    = User::get('id');
 $extension = $this->filters['extension'];
@@ -55,38 +44,73 @@ $listOrder = $this->filters['sort'];
 $listDirn  = $this->filters['sort_Dir'];
 $ordering  = ($listOrder == 'lft');
 $saveOrder = $listOrder == 'lft';
+
 Toolbar::title(Lang::txt('COM_CATEGORIES_CATEGORIES_TITLE', Lang::txt($extension)), 'categories');
+if ($this->canDo->get('core.create'))
+{
+	Toolbar::addNew();
+}
+if ($this->canDo->get('core.edit'))
+{
+	Toolbar::editList();
+}
+Toolbar::spacer();
+if ($this->canDo->get('core.edit.state'))
+{
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
+	Toolbar::archiveList();
+	Toolbar::checkin();
+}
+if ($this->canDo->get('core.delete'))
+{
+	Toolbar::deleteList('', 'trash');
+}
+if ($this->canDo->get('core.admin'))
+{
+	Toolbar::spacer();
+	Toolbar::preferences($this->filters['extension'], '550');
+}
+Toolbar::spacer();
+Toolbar::help('categories');
+
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::behavior('multiselect');
+Html::behavior('tooltip');
 ?>
 <form action="<?php echo Route::url('index.php?option=com_categories&view=categories');?>" method="post" name="adminForm" id="adminForm">
 
 	<fieldset id="filter-bar">
-		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CATEGORIES_ITEMS_SEARCH_FILTER'); ?>" />
-			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
+		<div class="grid">
+			<div class="filter-search span4">
+				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CATEGORIES_ITEMS_SEARCH_FILTER'); ?>" />
+				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
 
-		<div class="filter-select fltrt">
-			<select name="filter_level" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
-				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']);?>
-			</select>
+			<div class="filter-select span8 align-right">
+				<select name="filter_level" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
+					<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']);?>
+				</select>
 
-			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true);?>
-			</select>
+				<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+					<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true);?>
+				</select>
 
-			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']);?>
-			</select>
+				<select name="filter_access" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']);?>
+				</select>
 
-			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']);?>
-			</select>
+				<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
+					<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']);?>
+				</select>
+			</div>
 		</div>
 	</fieldset>
 
@@ -131,9 +155,9 @@ Toolbar::title(Lang::txt('COM_CATEGORIES_CATEGORIES_TITLE', Lang::txt($extension
 			$originalOrders = array();
 			foreach ($this->items as $i => $item) :
 				$orderkey   = array_search($item->id, $this->ordering[$item->parent_id]);
-				$canEdit    = User::authorise('core.edit',       $extension.'.category.'.$item->id);
-				$canCheckin = User::authorise('core.admin',      'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-				$canEditOwn = User::authorise('core.edit.own',   $extension.'.category.'.$item->id) && $item->created_user_id == $userId;
+				$canEdit    = User::authorise('core.edit', $extension.'.category.'.$item->id);
+				$canCheckin = User::authorise('core.admin', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+				$canEditOwn = User::authorise('core.edit.own', $extension.'.category.'.$item->id) && $item->created_user_id == $userId;
 				$canChange  = User::authorise('core.edit.state', $extension.'.category.'.$item->id) && $canCheckin;
 			?>
 				<tr class="row<?php echo $i % 2; ?>">
@@ -152,7 +176,8 @@ Toolbar::title(Lang::txt('COM_CATEGORIES_CATEGORIES_TITLE', Lang::txt($extension
 						<?php endif; ?>
 						<?php if ($canEdit || $canEditOwn) : ?>
 							<a href="<?php echo Route::url('index.php?option=com_categories&task=category.edit&id='.$item->id.'&extension='.$extension);?>">
-								<?php echo $this->escape($item->title); ?></a>
+								<?php echo $this->escape($item->title); ?>
+							</a>
 						<?php else : ?>
 							<?php echo $this->escape($item->title); ?>
 						<?php endif; ?>
@@ -167,7 +192,8 @@ Toolbar::title(Lang::txt('COM_CATEGORIES_CATEGORIES_TITLE', Lang::txt($extension
 								<?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
 							<?php else : ?>
 								<?php echo Lang::txt('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note));?>
-							<?php endif; ?></p>
+							<?php endif; ?>
+						</p>
 					</td>
 					<td class="priority-2 center">
 						<?php echo Html::grid('published', $item->get('published'), $i, 'categories.', $canChange);?>
@@ -189,15 +215,16 @@ Toolbar::title(Lang::txt('COM_CATEGORIES_CATEGORIES_TITLE', Lang::txt($extension
 						<?php echo $this->escape($item->level); ?>
 					</td>
 					<td class="priority-4 center nowrap">
-					<?php if ($item->language=='*'):?>
-						<?php echo Lang::txt('JALL', 'language'); ?>
-					<?php else:?>
-						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
-					<?php endif;?>
+						<?php if ($item->language=='*'):?>
+							<?php echo Lang::txt('JALL', 'language'); ?>
+						<?php else:?>
+							<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
+						<?php endif;?>
 					</td>
 					<td class="priority-4 center">
 						<span title="<?php echo sprintf('%d-%d', $item->lft, $item->rgt);?>">
-							<?php echo (int) $item->id; ?></span>
+							<?php echo (int) $item->id; ?>
+						</span>
 					</td>
 				</tr>
 			<?php endforeach; ?>
