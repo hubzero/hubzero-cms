@@ -421,14 +421,14 @@ class Category extends Nested
 			{
 				$thisStart = $row->get('lft');
 				$storage = $this->updatePositionWithChildren($thisStart);
-				$rowStart = $storage->last()->get('rgt') + 1;	
+				$rowStart = $storage->last()->get('rgt') + 1;
 				$row->updatePositionWithChildren($rowStart, $storage);
 			}
 			else if ($delta > 0)
 			{
 				$rowStart = $this->get('lft');
 				$storage = $row->updatePositionWithChildren($rowStart);
-				$thisStart = $storage->last()->get('rgt') + 1;	
+				$thisStart = $storage->last()->get('rgt') + 1;
 				$this->updatePositionWithChildren($thisStart, $storage);
 			}
 			if (!$storage->save())
