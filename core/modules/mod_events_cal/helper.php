@@ -228,7 +228,7 @@ class Helper extends Module
 		// Days name rows
 		for ($i=0;$i<7;$i++)
 		{
-			$content.='   <th>'.$day_name[($i+$startday)%7].'</th>'."\n";
+			$content.='   <th scope="col">'.$day_name[($i+$startday)%7].'</th>'."\n";
 		}
 		$content .= '  </tr>'."\n";
 		$content .= ' </thead>'."\n";
