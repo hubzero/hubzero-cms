@@ -71,14 +71,14 @@ class CategoryEdit extends Select
 		{
 			$oldCat = Request::getInt('id', 0);
 			$oldParent = $this->form->getValue($name, 0);
-			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) Request::getCmd('extension','com_content');
+			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) Request::getCmd('extension', 'com_content');
 		}
 		else
 		// For items the old category is the category they are in when opened or 0 if new.
 		{
 			$thisItem = Request::getInt('id', 0);
 			$oldCat = $this->form->getValue($name, 0);
-			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) Request::getCmd('option','com_content');
+			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) Request::getCmd('option', 'com_content');
 		}
 
 		$db = App::get('db');
@@ -183,7 +183,7 @@ class CategoryEdit extends Select
 				// To take save or create in a category you need to have create rights for that category
 				// unless the item is already in that category.
 				// Unset the option if the user isn't authorised for it. In this field assets are always categories.
-				if (\User::authorise('core.create', $extension . '.category.' . $option->value) != true )
+				if (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 				{
 					unset($options[$i]);
 				}

@@ -140,7 +140,7 @@ class CategoryParent extends Select
 				$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
 			}
 
-			$options[$i]->text = str_repeat('- ', $options[$i]->level).$options[$i]->text;
+			$options[$i]->text = str_repeat('- ', $options[$i]->level) . $options[$i]->text;
 		}
 
 		// Initialise variables.
@@ -153,7 +153,7 @@ class CategoryParent extends Select
 				// To take save or create in a category you need to have create rights for that category
 				// unless the item is already in that category.
 				// Unset the option if the user isn't authorised for it. In this field assets are always categories.
-				if (\User::authorise('core.create', $extension . '.category.' . $option->value) != true )
+				if (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 				{
 					unset($options[$i]);
 				}
