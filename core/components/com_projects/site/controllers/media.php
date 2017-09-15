@@ -441,18 +441,13 @@ class Media extends Base
 		}
 
 		// Show project thumbnail
-		if ($media == 'thumb')
+		if ($media == 'thumb' || $media == 'master')
 		{
-			$source = $this->getThumbSrc();
+			$source = $this->model->picture($media, true);
 		}
 		elseif ($media)
 		{
-			if ($media == 'master')
-			{
-				// Public picture
-				$source = $this->getProjectImageSrc();
-			}
-			elseif ($dir == 'tools')
+			if ($dir == 'tools')
 			{
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
 				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media . '.png';
@@ -490,93 +485,5 @@ class Media extends Base
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
-	}
-
-	/**
-	 * Get project image source
-	 *
-	 * @return  string
-	 */
-	public function getProjectImageSrc()
-	{
-
-		if (!$this->model->exists())
-		{
-			return false;
-		}
-
-		$path      = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
-		$masterpic = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
-
-		if (!$masterpic
-		 || $masterpic == 'components/com_projects/site/assets/img/project.png'
-		 || $masterpic == 'components/com_projects/assets/img/project.png'
-		 || $masterpic == 'components/com_projects/site/assets/img/projects-large.gif'
-		 || $masterpic == 'components/com_projects/assets/img/projects-large.gif')
-		{
-			$masterpic = 'components/com_projects/site/assets/img/projects-large.gif';
-			$defaultPath = PATH_CORE;
-		}
-		else
-		{
-			$defaultPath = PATH_APP;
-		}
-
-		$default = $defaultPath . DS . $masterpic;
-
-		$default = is_file($default) ? $default : null;
-
-		$src  = $this->model->get('picture')
-				&& is_file(PATH_APP . DS . $path . DS . $this->model->get('picture'))
-				? PATH_APP . DS . $path . DS . $this->model->get('picture')
-				: $default;
-		return $src;
-	}
-
-	/**
-	 * Get project thumbnail source
-	 *
-	 * @return  string
-	 */
-	public function getThumbSrc()
-	{
-		if (!$this->model->exists())
-		{
-			return false;
-		}
-
-		$src  = '';
-		$path = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
-
-		if (file_exists($path . DS . 'thumb.png'))
-		{
-			return $path . DS . 'thumb.png';
-		}
-
-		if ($this->model->get('picture'))
-		{
-			$thumb = Helpers\Html::createThumbName($this->model->get('picture'));
-			$src = $thumb && file_exists($path . DS . $thumb) ? $path . DS . $thumb : null;
-		}
-
-		if (!$src)
-		{
-			$path = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
-			if ($path == 'components/com_projects/assets/img/project.png'
-			 || $path == 'components/com_projects/site/assets/img/project.png'
-			 || $path == 'components/com_projects/site/assets/img/projects-large.gif'
-			 || $path == 'components/com_projects/assets/img/projects-large.gif')
-			{
-				$path = 'components/com_projects/site/assets/img/project.png';
-				$rootPath = PATH_CORE;
-			}
-			else
-			{
-				$rootPath = PATH_APP;
-			}
-			$src = $rootPath . DS . $path;
-		}
-
-		return $src;
 	}
 }

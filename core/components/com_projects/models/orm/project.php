@@ -297,10 +297,11 @@ class Project extends Relational
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
 	 *
-	 * @param   string  $key  Config property to retrieve
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default  Default value if property is not found
 	 * @return  mixed
 	 */
-	public function config($key=null)
+	public function config($key=null, $default=null)
 	{
 		if (!isset($this->config))
 		{
@@ -308,7 +309,7 @@ class Project extends Relational
 		}
 		if ($key)
 		{
-			return $this->config->get($key);
+			return $this->config->get($key, $default);
 		}
 		return $this->config;
 	}
@@ -363,5 +364,79 @@ class Project extends Relational
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Generate and return path to a picture for the project
+	 *
+	 * @param   string   $size      Thumbnail (thumb) or full size (master)?
+	 * @param   boolean  $realpath  Return the actual file path? When FALSE, it returns a link to /files/{hash}
+	 * @return  string
+	 */
+	public function picture($size = 'thumb', $realpath = false)
+	{
+		$src  = '';
+		$path = PATH_APP . DS . trim($this->config()->get('imagepath', '/site/projects'), DS) . DS . $this->get('alias') . DS . 'images';
+
+		if ($size == 'thumb')
+		{
+			// Does a thumb exist?
+			if (file_exists($path . DS . 'thumb.png'))
+			{
+				$src = $path . DS . 'thumb.png';
+			}
+
+			// No thumb. Try to create it...
+			if (!$src && $this->get('picture'))
+			{
+				$thumb = \Components\Projects\Helpers\Html::createThumbName($this->get('picture'));
+
+				if ($thumb && file_exists($path . DS . $thumb))
+				{
+					$src = $path . DS . $thumb;
+				}
+			}
+		}
+		else
+		{
+			// Get the picture if set
+			if ($this->get('picture') && is_file($path . DS . $this->get('picture')))
+			{
+				$src = $path . DS . $this->get('picture');
+			}
+		}
+
+		// Still no file? Let's use the default
+		if (!$src)
+		{
+			$deprecated = array(
+				'components/com_projects/site/assets/img/project.png',
+				'components/com_projects/assets/img/project.png',
+				'components/com_projects/site/assets/img/projects-large.gif',
+				'components/com_projects/assets/img/projects-large.gif'
+			);
+
+			$path = trim($this->config()->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
+
+			if (in_array($path, $deprecated))
+			{
+				$path = 'components/com_projects/site/assets/img/project.png';
+				$rootPath = PATH_CORE;
+			}
+			else
+			{
+				$rootPath = PATH_APP;
+			}
+
+			$src = $rootPath . DS . $path;
+		}
+
+		// Gnerate a file link
+		if (!$realpath)
+		{
+			$src = with(new \Hubzero\Content\Moderator($src, 'public'))->getUrl();
+		}
+
+		return $src;
 	}
 }
