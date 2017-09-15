@@ -392,14 +392,7 @@ class Nogit extends Models\Adapter
 			return false;
 		}
 
-		// Delete from Git
-		$localPath = $file->get('localPath');
-		// If the filename is not quoted, quote it to avoid issues
-		if (!strpos(basename($localPath), '"'))
-		{
-			$localPath = dirname($localPath) . DS . '"' . basename($localPath) . '"';
-		}
-		$this->_nogit->call("rm " . $localPath);
+		$this->_nogit->call("rm " . escapeshellarg($file->get('localPath')));
 
 		return true;
 	}
