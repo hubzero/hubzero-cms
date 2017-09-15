@@ -39,7 +39,7 @@ defined('_HZEXEC_') or die();
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 // Menu items
-Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . $text, 'billboards');
 Toolbar::save();
 Toolbar::cancel();
 Toolbar::spacer();

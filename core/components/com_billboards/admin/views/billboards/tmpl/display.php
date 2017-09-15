@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 
 // Menu
-Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS'), 'billboards');
 Toolbar::preferences($this->option, '200', '500');
 Toolbar::spacer();
 Toolbar::publishList();

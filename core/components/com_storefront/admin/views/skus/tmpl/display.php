@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKUs', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKUs', 'storefront');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -55,8 +55,6 @@ if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();
 }
-//Toolbar::spacer();
-//Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('categories');
 ?>
@@ -73,7 +71,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -83,8 +81,8 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_STOREFRONT_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">Restrictions</th>
 			</tr>
 		</thead>
@@ -103,13 +101,10 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
 $i = 0;
 
 foreach ($this->rows as $row)
 {
-	//print_r($row); die;
-	//$row =& $this->rows[$i];
 	switch ($row->sActive)
 	{
 		case 1:

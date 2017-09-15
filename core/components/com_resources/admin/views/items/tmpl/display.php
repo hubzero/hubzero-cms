@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-Toolbar::title(Lang::txt('COM_RESOURCES'), 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES'), 'resources');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::custom('check', 'scan', '', 'COM_RESOURCES_AUDIT', false);

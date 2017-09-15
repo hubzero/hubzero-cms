@@ -38,7 +38,7 @@ $text = 'Upload a CSV file';
 
 if ($tmpl != 'component')
 {
-	Toolbar::title(Lang::txt('COM_STOREFRONT').': ' . $text, 'addedit.png');
+	Toolbar::title(Lang::txt('COM_STOREFRONT').': ' . $text, 'storefront');
 }
 
 Html::behavior('framework');
@@ -47,7 +47,7 @@ Html::behavior('framework');
 <script type="text/javascript">
 	function closeAndRefresh(pressbutton)
 	{
-		window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&id=<?php echo $this->sId; ?>';
+		window.parent.location='<?php echo Route::url("index.php?option=" . $this->option . "&controller=" . $this->controller . "&id=" . $this->sId); ?>';
 	}
 
 	jQuery(document).ready(function($){

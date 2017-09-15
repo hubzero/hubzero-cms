@@ -40,14 +40,14 @@ $tmpl = Request::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . $pageTitle . ' ' . Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')', 'groups.png');
+	Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . $pageTitle . ' ' . Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')', 'publications');
 	Toolbar::save('saveauthor');
 	Toolbar::cancel();
 }
 
-$name      = $this->author->name ? $this->author->name : NULL;
-$firstname = NULL;
-$lastname  = NULL;
+$name      = $this->author->name ? $this->author->name : null;
+$firstname = null;
+$lastname  = null;
 
 if (trim($name))
 {
@@ -139,13 +139,13 @@ function submitbutton(pressbutton)
 				<tr>
 					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:</label></td>
 					<td>
-						<input type="text" name="organization" value="<?php echo $this->author->organization; ?>" size="25" />
+						<input type="text" name="organization" value="<?php echo $this->escape($this->author->organization); ?>" size="25" />
 					</td>
 				</tr>
 				<tr>
 					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_CREDIT'); ?>:</label></td>
 					<td>
-						<input type="text" name="credit" value="<?php echo $this->author->credit; ?>" size="25" />
+						<input type="text" name="credit" value="<?php echo $this->escape($this->author->credit); ?>" size="25" />
 					</td>
 				</tr>
 			</tbody>

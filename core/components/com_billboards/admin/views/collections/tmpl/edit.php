@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'billboards');
 Toolbar::save();
 Toolbar::cancel();
 Toolbar::spacer();

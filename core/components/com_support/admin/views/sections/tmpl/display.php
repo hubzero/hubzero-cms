@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title( Lang::txt('Ticket Sections'), 'addedit.png');
+Toolbar::title( Lang::txt('Ticket Sections'), 'support');
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::deleteList();

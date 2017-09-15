@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_TAGS') . ' #' . $this->row->id, 'addedit.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_TAGS') . ' #' . $this->row->id, 'resources');
 Toolbar::save();
 Toolbar::cancel();
 

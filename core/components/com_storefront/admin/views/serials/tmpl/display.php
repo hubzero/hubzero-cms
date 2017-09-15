@@ -28,11 +28,10 @@
  */
 
 defined('_HZEXEC_') or die();
-//print_r($this->sku->getId()); die;
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s serial numbers', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s serial numbers', 'storefront');
 
 Toolbar::appendButton('Popup', 'new', 'New', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&sId=' . $this->sku->getId(), 570, 170);
 if ($canDo->get('core.delete'))
@@ -60,53 +59,46 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan=5">
+				<th colspan="5">
 					Serial numbers for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=edit&id=' . $this->sku->getId()); ?>" title="<?php echo Lang::txt('Edit SKU'); ?>"><?php echo $this->sku->getName(); ?></a>
 				</th>
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'ID', 'srId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'Serial Number', 'srNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'Status', 'srStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'ID', 'srId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Serial Number', 'srNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Status', 'srStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
-		<tr>
-			<td colspan="5"><?php
-				// Initiate paging
-				echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-				);
-				?></td>
-		</tr>
+			<tr>
+				<td colspan="5"><?php
+					// Initiate paging
+					echo $this->pagination(
+							$this->total,
+							$this->filters['start'],
+							$this->filters['limit']
+					);
+					?></td>
+			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
-$i = 0;
+		<?php
+		$k = 0;
+		$i = 0;
 
-foreach ($this->rows as $row)
-{
-?>
+		foreach ($this->rows as $row)
+		{
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php
-					if ($row->srStatus == 'available')
-					{
-					?>
-						<input type="checkbox" name="srId[]" id="cb<?php echo $i; ?>" value="<?php echo $row->srId; ?>"
-							   onclick="isChecked(this.checked, this);"/>
-					<?php
-					}
-					?>
+					<?php if ($row->srStatus == 'available') { ?>
+						<input type="checkbox" name="srId[]" id="cb<?php echo $i; ?>" value="<?php echo $row->srId; ?>" onclick="isChecked(this.checked, this);" />
+					<?php } ?>
 				</td>
 				<td>
 					<span>
@@ -124,11 +116,11 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

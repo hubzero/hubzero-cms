@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('category');
 
-Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_CATEGORIES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_CATEGORIES'), 'category');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();

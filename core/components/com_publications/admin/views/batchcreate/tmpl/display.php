@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'), 'publications');
 
 $this->css('batchcreate');
 $this->js('batchcreate');

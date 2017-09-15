@@ -37,7 +37,7 @@ $this->js();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('item');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'publications');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');

@@ -33,7 +33,7 @@
 defined('_HZEXEC_') or die();
 
 $text = ( $this->task == 'edit' ? Lang::txt('Edit') : Lang::txt('New'));
-Toolbar::title(Lang::txt('Ticket Section') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('Ticket Section') . ': ' . $text, 'support');
 Toolbar::save();
 Toolbar::cancel();
 ?>
