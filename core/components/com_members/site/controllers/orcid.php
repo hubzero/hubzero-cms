@@ -166,7 +166,7 @@ class Orcid extends SiteController
 		$name = array();
 		
 		if (!empty($root))
-		{			
+		{
 			foreach ($root->children() as $child)
 			{
 				if ($child->getName() == 'name')
@@ -247,7 +247,7 @@ class Orcid extends SiteController
 		}
 		else
 		{
-			return FALSE;			
+			return false;
 		}
 	}
 
@@ -285,23 +285,21 @@ class Orcid extends SiteController
 		}
 		
 		$url .= implode('+AND+', $bits);
-		$url .= htmlspecialchars('&') . 'start=0' . htmlspecialchars('&') . 'rows=5';
 		
-		$header = array('Accept: application/vnd.orcid+xml');
+		$header = array('Accept: application/vnd.orcid+xml');		
 		if ($srv != 'public')
 		{
 			$header[] = 'Authorization: Bearer ' . $tkn;
 		}
-		
+
 		$initedCurl = curl_init();
 		curl_setopt($initedCurl, CURLOPT_URL, $url);
 		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
-		
 		$curlData = curl_exec($initedCurl);
-    
+		
 		$xmlStr = htmlentities($curlData);
 		$xmlStr = preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
 		$xmlStr = html_entity_decode($xmlStr);
@@ -314,7 +312,7 @@ class Orcid extends SiteController
 		{
 			echo 'Curl error: ' . curl_error($initedCurl);
 		}
-		
+
 		curl_close($initedCurl);
 		
 		try
@@ -414,7 +412,7 @@ class Orcid extends SiteController
 		$ins_option = $this->config->get('orcid_institution_field_option');
 		
 		$ins_name = $this->config->get('orcid_user_institution_name', 'Purdue University');
-
+		
 		$callbackPrefix = 'HUB.Members.Profile.';
 		if ($isRegister)
 		{
@@ -536,7 +534,7 @@ class Orcid extends SiteController
 				$records = array_merge($records, $lastNameSearch);
 			}	
 		}
-
+		
 		ob_end_clean();
 		ob_start();
 
