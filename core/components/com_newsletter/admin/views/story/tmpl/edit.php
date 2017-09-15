@@ -37,7 +37,7 @@ Request::setVar('hidemainmenu', 1);
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
 
-Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)) . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)) . ': ' . $text, 'newsletter');
 Toolbar::save();
 Toolbar::cancel();
 ?>
