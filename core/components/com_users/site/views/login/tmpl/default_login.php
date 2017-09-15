@@ -73,7 +73,7 @@ foreach ($this->authenticators as $a)
 	$refl[$a['name']] = new \ReflectionClass("plgAuthentication{$a['name']}");
 	if ($refl[$a['name']]->hasMethod('onRenderOption'))
 	{
-		$html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(NULL, $this->returnQueryString);
+		$html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $this->returnQueryString);
 		$login_provider_html .= is_array($html) ? implode("\n", $html) : $html;
 	}
 	else
@@ -107,7 +107,7 @@ foreach ($this->authenticators as $a)
 					<?php endif; ?>
 				</div>
 				<div class="lower">
-					<div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(NULL, $this->returnQueryString) : Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $this->authenticators[$primary]['display']); ?></div>
+					<div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(null, $this->returnQueryString) : Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $this->authenticators[$primary]['display']); ?></div>
 				</div>
 			</div>
 		</a>
@@ -193,7 +193,7 @@ foreach ($this->authenticators as $a)
 		</div>
 	<?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
 		<p class="create">
-			<a href="<?php echo Request::base(true); ?>/register<?php echo ($this->return ? '?return=' . $this->return : ''); ?>" class="register">
+			<a href="<?php echo Request::base(true); ?>/register<?php echo $this->return ? '?return=' . $this->return : ''; ?>" class="register">
 				<?php echo Lang::txt('COM_USERS_LOGIN_CREATE_ACCOUNT'); ?>
 			</a>
 		</p>
