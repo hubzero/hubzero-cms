@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_ADD_CHILD'), 'addedit.png' );
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_ADD_CHILD'), 'resources');
 Toolbar::cancel();
 
 Request::setVar('hidemainmenu', 1);

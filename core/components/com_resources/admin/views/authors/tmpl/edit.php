@@ -37,7 +37,7 @@ $canDo = \Components\Resources\Helpers\Permissions::getActions('contributor');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS') . ': ' . $text, 'forum.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS') . ': ' . $text, 'resources');
 Toolbar::spacer();
 if ($canDo->get('core.edit'))
 {

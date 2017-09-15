@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Store\Helpers\Permissions::getActions('component');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
-Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();

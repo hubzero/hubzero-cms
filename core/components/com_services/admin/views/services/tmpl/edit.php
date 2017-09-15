@@ -36,7 +36,7 @@ $canDo = \Components\Services\Helpers\Permissions::getActions('service');
 
 $text = ($this->row->id ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES') . ': ' . $text, 'services');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();

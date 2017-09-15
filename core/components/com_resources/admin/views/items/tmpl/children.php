@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_CHILDREN'), 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_CHILDREN'), 'resources');
 if ($this->filters['parent_id'] > 0)
 {
 	if ($canDo->get('core.create'))

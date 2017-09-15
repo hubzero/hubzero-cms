@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('contributor');
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS'), 'resources');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');

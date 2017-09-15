@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Services\Helpers\Permissions::getActions('service');
 
-Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS'), 'services');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_services', '550');

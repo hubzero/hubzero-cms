@@ -29,7 +29,7 @@
 
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete SKU', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete SKU', 'storefront');
 Toolbar::cancel();
 
 ?>
@@ -54,8 +54,7 @@ function submitbutton(pressbutton)
 		<tbody>
 			<tr>
 				<td>
-					<input type="checkbox" name="delete" value="delete"
-						   id="field-delete">
+					<input type="checkbox" name="delete" value="delete" id="field-delete">
 					<label for="field-delete">I'm positive. Go ahead and do the delete.</label>
 				</td>
 			</tr>

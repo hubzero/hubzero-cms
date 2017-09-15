@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('curation.js');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED'), 'publications');
 Toolbar::save('saveadvanced');
 Toolbar::cancel();
 

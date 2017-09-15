@@ -38,7 +38,7 @@ $text = 'Add serial number';
 
 if ($tmpl != 'component')
 {
-	Toolbar::title(Lang::txt('COM_STOREFRONT').': ' . $text, 'storefront.png');
+	Toolbar::title(Lang::txt('COM_STOREFRONT').': ' . $text, 'storefront');
 	if ($canDo->get('core.edit'))
 	{
 		Toolbar::save();
