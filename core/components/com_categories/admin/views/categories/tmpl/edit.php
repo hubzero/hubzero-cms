@@ -80,40 +80,16 @@ Toolbar::help('category');
 					<?php echo $this->form->getInput('alias'); ?>
 				</div>
 
-				<?php echo $this->form->getInput('extension'); ?>
-				<?php
-				/*<div class="input-wrap">
-					<?php echo $this->form->getLabel('extension'); ?>
-					<?php echo $this->form->getInput('extension'); ?>
-				</div>*/
-				?>
-
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('parent_id'); ?>
-					<select name="fields[parent_id]" class="inputbox">
-						<option value="1"> - No parent -</option>
-						<?php foreach ($this->item->parents() as $parent): ?>
-							<?php $selected = $this->item->get('parent_id') == $parent->get('id') ? 'selected="selected"' : ''; ?>
-							<option value="<?php echo $parent->get('id'); ?>" <?php echo $selected; ?>>
-								<?php echo $parent->nestedTitle(); ?>
-							</option>
-						<?php endforeach; ?>`
-					</select>
+					<?php echo $this->form->getInput('parent_id'); ?>
 				</div>
 
 				<div class="grid">
 					<div class="col span6">
 						<div class="input-wrap">
 							<?php echo $this->form->getLabel('published'); ?>
-							<?php if ($this->canDo->get('core.edit.state')): ?>
-								<?php echo $this->form->getInput('published'); ?>
-							<?php else: ?>
-							<select name="fields[published]" disabled="disabled">
-								<option value="<?php echo $this->item->get('published');?>">
-									<?php echo $this->item->published; ?>
-								</option>
-							</select>
-							<?php endif; ?>
+							<?php echo $this->form->getInput('published'); ?>
 						</div>
 					</div>
 					<div class="col span6">
@@ -124,18 +100,18 @@ Toolbar::help('category');
 					</div>
 				</div>
 
-					<?php /*if ($this->canDo->get('core.admin')): ?>
-						<div class="input-wrap">
-							<span class="faux-label"><?php echo Lang::txt('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
-							<div class="button2-left">
-								<div class="blank">
-									<button type="button" onclick="document.location.href='#access-rules';">
-										<?php echo Lang::txt('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
-									</button>
-								</div>
+				<?php /*if ($this->canDo->get('core.admin')): ?>
+					<div class="input-wrap">
+						<span class="faux-label"><?php echo Lang::txt('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
+						<div class="button2-left">
+							<div class="blank">
+								<button type="button" onclick="document.location.href='#access-rules';">
+									<?php echo Lang::txt('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
+								</button>
 							</div>
 						</div>
-					<?php endif;*/ ?>
+					</div>
+				<?php endif;*/ ?>
 
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('language'); ?>
@@ -153,43 +129,50 @@ Toolbar::help('category');
 			<table class="meta">
 				<tbody>
 					<tr>
-						<td><?php echo Lang::txt('COM_CATEGORY_FIELD_ID'); ?></td>
+						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_EXTENSION'); ?></th>
+						<td>
+							<?php echo $this->item->get('extension'); ?>
+							<?php echo $this->form->getInput('extension'); ?>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_ID'); ?></th>
 						<td>
 							<?php echo $this->item->get('id', 0); ?>
 							<input type="hidden" name="fields[id]" value="<?php echo $this->item->get('id', 0); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo Lang::txt('COM_CATEGORY_FIELD_CREATOR'); ?></td>
+						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATOR'); ?></th>
 						<td>
 							<?php echo User::getInstance($this->item->get('created_user_id'))->get('name'); ?>
 							<input type="hidden" name="fields[created_user_id]" value="<?php echo $this->item->createdUserId; ?>" />
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo Lang::txt('COM_CATEGORY_FIELD_CREATED'); ?></td>
+						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATED'); ?></th>
 						<td>
 							<?php echo $this->item->get('created_time'); ?>
 						</td>
 					</tr>
 					<?php if ($this->item->get('modified_time', false)): ?>
 						<tr>
-							<td><?php echo Lang::txt('COM_CATEGORY_FIELD_MODIFIER'); ?></td>
+							<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIER'); ?></th>
 							<td>
 								<?php echo User::getInstance($this->item->get('modified_user_id'))->get('name'); ?>
-								<input type="hidden" name="fields[modified_user_id]" value="<?php echo $this->item->modifiedUserId;?>" />
+								<input type="hidden" name="fields[modified_user_id]" value="<?php echo $this->item->modifiedUserId; ?>" />
 							</td>
 						</tr>
 						<tr>
-							<td><?php echo Lang::txt('COM_CATEGORY_FIELD_MODIFIED');?></td>
+							<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIED');?></th>
 							<td>
 								<?php echo $this->item->get('modified_time'); ?>
 							</td>
 						</tr>
-                    <?php endif; ?>
+					<?php endif; ?>
 				</tbody>
 			</table>
-			<?php echo Html::sliders('start', 'categories-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+			<?php echo Html::sliders('start', 'categories-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 				<?php echo $this->loadTemplate('options'); ?>
 				<div class="clr"></div>
 
@@ -200,11 +183,11 @@ Toolbar::help('category');
 
 				<?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
 				<?php foreach ($fieldSets as $name => $fieldSet) : ?>
-					<?php $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_CATEGORIES_'.$name.'_FIELDSET_LABEL'; ?>
+					<?php $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_CATEGORIES_' . $name . '_FIELDSET_LABEL'; ?>
 					<?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
-						<?php echo Html::sliders('panel', Lang::txt($label), $name.'-options'); ?>
+						<?php echo Html::sliders('panel', Lang::txt($label), $name . '-options'); ?>
 						<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
-							<p class="tip"><?php echo $this->escape(Lang::txt($fieldSet->description));?></p>
+							<p class="tip"><?php echo $this->escape(Lang::txt($fieldSet->description)); ?></p>
 						<?php endif; ?>
 						<fieldset class="panelform">
 							<?php foreach ($this->form->getFieldset($name) as $field) : ?>
@@ -222,16 +205,9 @@ Toolbar::help('category');
 
 	<?php if ($this->canDo->get('core.admin')): ?>
 		<div class="width-100">
-
-			<?php //echo Html::sliders('start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-
-			<?php //echo Html::sliders('panel', Lang::txt('COM_CATEGORIES_FIELDSET_RULES'), 'access-rules'); ?>
 			<fieldset class="panelform">
-
 				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>
-
-			<?php //echo Html::sliders('end'); ?>
 		</div>
 	<?php endif; ?>
 

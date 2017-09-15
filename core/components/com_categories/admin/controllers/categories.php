@@ -262,8 +262,8 @@ class Categories extends AdminController
 			{
 				if ($checkedOut != User::getInstance()->get('id'))
 				{
-				Notify::error(Lang::txt('COM_CATEGORY_CHECKED_IN_ERROR', $category->id));
-				$this->cancelTask();
+					Notify::error(Lang::txt('COM_CATEGORY_CHECKED_IN_ERROR', $category->id));
+					$this->cancelTask();
 				}
 			}
 			if (!User::authorise('core.edit', $assetId))
