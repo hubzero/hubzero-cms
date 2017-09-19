@@ -127,7 +127,8 @@ class Media extends SiteController
 
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
-		if (!$file['name'])
+
+		if (!$file['name'] || $file['size'] == 0)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));
 			return $this->displayTask();
@@ -157,6 +158,31 @@ class Media extends SiteController
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
 
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+
+			return $this->displayTask();
+		}
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize');
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+
+			return $this->displayTask();
+		}
+
+		// Make sure the file name is unique
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -170,6 +196,7 @@ class Media extends SiteController
 			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING'));
 		}
 
+		// Virus scan
 		if (!Filesystem::isSafe($path . DS . $file['name']))
 		{
 			Filesystem::delete($path . DS . $file['name']);
