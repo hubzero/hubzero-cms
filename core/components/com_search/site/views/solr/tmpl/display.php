@@ -128,10 +128,12 @@ $noResult = count($this->results) > 0 ? false : true;
 											<?php endif; ?>
 										</div>
 
-										<!-- Snippet : mandatory -->
-										<div class="result-snippet">
-											<?php echo $result['snippet']; ?>
-										</div><!-- end result snippet -->
+										<?php if (isset($result['snippet']) && $result['snippet'] != '…'): ?>
+											<!-- Snippet : mandatory -->
+											<div class="result-snippet">
+												<?php echo $result['snippet']; ?>
+											</div><!-- end result snippet -->
+										<?php endif; ?>
 
 										<?php if (isset($result['tags'])): ?>
 											<!-- Tags -->
