@@ -100,16 +100,29 @@ class Solr extends SiteController
 			// Add a type
 			$urlQuery .= '&type='.$type;
 		}
-
-		// Administrators can see all records
-		$isAdmin = User::authorise('core.admin', 'com_users');
-		if ($isAdmin)
-		{
-			$query = $query->query($terms)->limit($limit)->start($start);
-		}
 		else
 		{
-			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
+			$facets = Facet::all()->whereEquals('state', 1)->rows()->toObject();
+
+			$allfacets = array();
+			foreach ($facets as $facet)
+			{
+				//echo 'Type: ' . $facet->facet . '<br />';
+				//$query->addFilter('Type', $facet->facet);
+				$allfacets[] = $facet->facet;
+			}
+			if (!empty($allfacets))
+			{
+				$query->addFilter('Type', '(' . implode(' OR ', $allfacets) . ')');
+			}
+		}
+
+		$query = $query->query($terms)->limit($limit)->start($start);
+
+		// Administrators can see all records
+		if (!User::authorise('core.admin'))
+		{
+			$query->restrictAccess();
 		}
 
 		if (isset($locationFilter))
@@ -191,12 +204,16 @@ class Solr extends SiteController
 			{
 				$config = Component::params('com_search');
 				$query = new \Hubzero\Search\Query($config);
-				$results = $query
-					->query($facet->facet . ' AND ' . $terms)
+				$query->query($facet->facet . ' AND ' . $terms)
 					->limit($limit)
-					->start($start)
-					->restrictAccess()
-					->run()->getResults();
+					->start($start);
+				if (!User::authorise('core.admin'))
+				{
+					$query->restrictAccess();
+				}
+				$results = $query
+					->run()
+					->getResults();
 
 				// Get the total number of records
 				$total = $query->getNumFound();
@@ -214,15 +231,17 @@ class Solr extends SiteController
 	/**
 	 * Format the results
 	 *
-	 * @param  $results
-	 * @param  $terms
+	 * @param   array  $results
+	 * @param   array  $terms
+	 * @return  array
 	 */
 	private function formatResults($results, $terms)
 	{
-		$highlightOptions = array('format' =>'<strong>\1</strong>',
-					  'html' => false,
-					  'regex'  => "|%s|iu"
-					  );
+		$highlightOptions = array(
+			'format' =>'<strong>\1</strong>',
+			'html'   => false,
+			'regex'  => "|%s|iu"
+		);
 
 		$snippetFields = array('description', 'fulltext', 'abstract');
 
@@ -251,10 +270,8 @@ class Solr extends SiteController
 						$r = strip_tags($r);
 					}
 
-					/** 
-					 * Generate the snippet
-					 * A snippet is the search result text which is displayed
-					 **/
+					// Generate the snippet
+					// A snippet is the search result text which is displayed
 					if (in_array($field, $snippetFields))
 					{
 						$snippet .= $r . " ";
@@ -266,7 +283,7 @@ class Solr extends SiteController
 				$snippet = str_replace("\r", '', $snippet);
 				$snippet = str_replace("<br/>", '', $snippet);
 				$snippet = str_replace("<br>", '', $snippet);
-				$snippet  = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+				$snippet = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
 				$snippet = \Hubzero\Utility\String::highlight($snippet, $terms, $highlightOptions);
 				$result['snippet'] = $snippet;
 
@@ -287,13 +304,15 @@ class Solr extends SiteController
 						}
 						$authorCnt++;
 					}
-					$result['authorString'] = $authorString; }
+					$result['authorString'] = $authorString;
+				}
 			}
 			else
 			{
 				$result = $override;
 			}
 		} // End foreach results
-			return $results;
+
+		return $results;
 	}
 }
