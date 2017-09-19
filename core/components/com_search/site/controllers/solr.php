@@ -94,7 +94,10 @@ class Solr extends SiteController
 
 		if ($type != null)
 		{
-			$facet = Facet::all()->whereEquals('id', $type)->limit(1)->row();
+			$facet = Facet::all()
+				->whereEquals('id', $type)
+				->limit(1)
+				->row();
 			$query->addFilter('Type', $facet->facet);
 
 			// Add a type
@@ -102,15 +105,18 @@ class Solr extends SiteController
 		}
 		else
 		{
-			$facets = Facet::all()->whereEquals('state', 1)->rows()->toObject();
+			$facets = Facet::all()
+				->whereEquals('state', 1)
+				->whereEquals('parent_id', 0)
+				->rows()
+				->toObject();
 
 			$allfacets = array();
 			foreach ($facets as $facet)
 			{
-				//echo 'Type: ' . $facet->facet . '<br />';
-				//$query->addFilter('Type', $facet->facet);
 				$allfacets[] = $facet->facet;
 			}
+
 			if (!empty($allfacets))
 			{
 				$query->addFilter('Type', '(' . implode(' OR ', $allfacets) . ')');
@@ -294,7 +300,7 @@ class Solr extends SiteController
 				$snippet = str_replace("<br>", '', $snippet);
 				$snippet = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
 				$snippet = \Hubzero\Utility\String::highlight($snippet, $terms, $highlightOptions);
-				$result['snippet'] = $snippet;
+				$result['snippet'] = trim($snippet);
 
 				if (isset($result['author']))
 				{
