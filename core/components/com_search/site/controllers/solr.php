@@ -41,7 +41,7 @@ use Config;
 use Lang;
 use stdClass;
 
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS .'facet.php';
+require_once \Component::path('com_search') . DS . 'models' . DS . 'solr' . DS .'facet.php';
 
 /**
  * Search controller class
@@ -84,7 +84,7 @@ class Solr extends SiteController
 		$filters = Request::getVar('filters', array());
 
 		// To pass to the view
-		$urlQuery = '?terms='.$terms;
+		$urlQuery = '?terms=' . $terms;
 
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
@@ -98,7 +98,7 @@ class Solr extends SiteController
 			$query->addFilter('Type', $facet->facet);
 
 			// Add a type
-			$urlQuery .= '&type='.$type;
+			$urlQuery .= '&type=' . $type;
 		}
 		else
 		{
@@ -131,8 +131,8 @@ class Solr extends SiteController
 		}
 
 		// Build the reset of the query string
-		$urlQuery .= '&limit='.$limit;
-		$urlQuery .= '&start='.$start;
+		$urlQuery .= '&limit=' . $limit;
+		$urlQuery .= '&start=' . $start;
 
 		// Perform the query
 		try
@@ -146,7 +146,7 @@ class Solr extends SiteController
 			\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
 		}
 
-		$results = $query->getResults();
+		$results  = $query->getResults();
 		$numFound = $query->getNumFound();
 
 		// Format the results (highlighting, snippet, etc)
@@ -173,6 +173,15 @@ class Solr extends SiteController
 			$this->view->queryString = '';
 			$this->view->results = null;
 		}
+
+		// Set breadcrumbs
+		\Pathway::append(
+			Lang::txt('COM_SEARCH'),
+			'index.php?option=' . $this->_option
+		);
+
+		// Set the document title
+		\Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
 
 		$this->view->terms = $terms;
 		$this->view->type = $type;
