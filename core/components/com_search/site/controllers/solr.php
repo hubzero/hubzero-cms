@@ -60,7 +60,7 @@ class Solr extends SiteController
 		$query = new \Hubzero\Search\Query($config);
 
 		$terms = Request::getVar('terms', '');
-		$limit = Request::getInt('limit', 10);
+		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('start', 0);
 		$sortBy = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
