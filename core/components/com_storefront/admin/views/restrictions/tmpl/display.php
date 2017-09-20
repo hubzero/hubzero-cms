@@ -31,10 +31,6 @@ use Hubzero\Html\Builder\Behavior;
 
 defined('_HZEXEC_') or die();
 
-function fetchButton($type = 'Popup', $name = '', $text = '', $url = '', $width = 640, $height = 480, $top = 0, $left = 0, $onClose = '')
-{
-	echo '5555'; die;
-}
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
@@ -98,9 +94,9 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 			<td colspan="5"><?php
 				// Initiate paging
 				echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
 				);
 				?></td>
 		</tr>
@@ -112,6 +108,13 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 
 		foreach ($this->rows as $row)
 		{
+			if (!$row->uId)
+			{
+				$row->uId   = '--';
+				$row->name  = '[UNREGISTERED]';
+				$row->email = '--';
+				$row->username = $row->uName;
+			}
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

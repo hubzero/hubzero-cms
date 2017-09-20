@@ -82,5 +82,12 @@ if ($loginRequired && $controllerRequested != 'overview')
 	}
 }
 
+if (!\User::isGuest())
+{
+	require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
+
+	\Components\Storefront\Admin\Helpers\RestrictionsHelper::updateUser(\User::get('id'), \User::get('username'));
+}
+
 $controller->execute();
 $controller->redirect();

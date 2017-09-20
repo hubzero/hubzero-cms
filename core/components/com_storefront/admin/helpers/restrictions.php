@@ -29,23 +29,23 @@
 namespace Components\Storefront\Admin\Helpers;
 
 use Hubzero\Base\Object;
-
+use App;
 
 class RestrictionsHelper
 {
 	/**
 	 * Name of the component
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public static $extension = 'com_storefront';
 
 	/**
 	 * Get a list or count of the users for the SKU.
 	 *
-	 * @param   array   Filters
-	 * @param   int  SKU id
-	 * @return  object
+	 * @param   array  $filters  Filters
+	 * @param   int    $sId      SKU id
+	 * @return  mixed
 	 */
 	public static function getSkuUsers($filters = array(), $sId)
 	{
@@ -62,11 +62,11 @@ class RestrictionsHelper
 			$filters['return'] = 'list';
 		}
 
-		$db = \App::get('db');
-		$sql = "SELECT p.id, p.uId, u.name, u.username, u.email ";
-		$sql .= "FROM #__storefront_permissions p
-				LEFT JOIN `#__users` u ON (u.id = p.uId)";
-		$sql .= " WHERE p.scope='sku' AND p.scope_id = " . $db->quote($sId);
+		$db = App::get('db');
+		$sql = "SELECT p.id, p.uId, p.username AS uName, u.name, u.username, u.email
+				FROM `#__storefront_permissions` p
+				LEFT JOIN `#__users` u ON (u.id = p.uId)
+				WHERE p.scope='sku' AND p.scope_id = " . $db->quote($sId);
 
 		if (isset($filters['sort']))
 		{
@@ -89,62 +89,106 @@ class RestrictionsHelper
 		}
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
+
 		if ($filters['return'] == 'count')
 		{
-			return($db->getNumRows());
+			return $db->getNumRows();
 		}
-		$users = $db->loadObjectList();
 
-		return $users;
+		return $db->loadObjectList();
 	}
 
 	/**
 	 * Delete users
 	 *
-	 * @param   array	permissions IDs
+	 * @param   array  permissions IDs
 	 * @return  void
 	 */
 	public static function removeUsers($ids)
 	{
-		$db = \App::get('db');
-		$sql = "DELETE FROM #__storefront_permissions";
-		$sql .= " WHERE id IN (0";
-		foreach ($ids as $id)
-		{
-			$sql .= ',' . $id;
-		}
-		$sql .= ")";
+		$ids = array_map('intval', $ids);
+
+		$db = App::get('db');
+		$sql = "DELETE FROM `#__storefront_permissions`
+				WHERE id IN (" . implode(',', $ids) . ")";
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 	}
 
 	/**
-	 * Delete users
+	 * Add user/sku
 	 *
-	 * @param   int	user ID
-	 * @param   int	SKU ID
-	 * @return  void
+	 * @param   int  $uId  user ID
+	 * @param   int  $sId  SKU ID
+	 * @return  int
 	 */
-	public static function addSkuUser($uId, $sId)
+	public static function addSkuUser($uId, $sId, $username = null)
 	{
-		return RestrictionsHelper::addUser('sku', $uId, $sId);
+		return self::addUser('sku', $uId, $sId, $username);
 	}
 
-	private static function addUser($scope, $uId, $scopeId)
+	/**
+	 * Add user
+	 *
+	 * @param   string  $scope
+	 * @param   int     $uId      user ID
+	 * @param   int     $scopeId
+	 * @return  int
+	 */
+	private static function addUser($scope, $uId, $scopeId, $username = null)
 	{
-		$db = \App::get('db');
-		$sql = "INSERT IGNORE INTO #__storefront_permissions";
-		$sql .= " SET `scope` = '{$scope}', `uId` = {$uId}, `scope_id` = {$scopeId}";
+		$db = App::get('db');
+
+		$sql = "SELECT COUNT(p.id)
+				FROM `#__storefront_permissions` p
+				WHERE p.scope=" . $db->quote($scope) . " AND p.scope_id = " . $db->quote($scopeId);
+
+		if ($uId)
+		{
+			$sql .= " AND p.uId = " . $db->quote($uId);
+		}
+		else if ($username)
+		{
+			$sql .= " AND p.username = " . $db->quote($username);
+		}
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
+		if ($db->loadResult())
+		{
+			return 1;
+		}
+
+		$sql  = "INSERT IGNORE INTO `#__storefront_permissions`
+				SET `scope` = " . $db->quote($scope) . ", `uId` = " . $db->quote((int)$uId) . ", `scope_id` = " . $db->quote((int)$scopeId);
+
+		if (!$uId && $username)
+		{
+			$sql .= ", `username` = " . $db->quote($username);
+		}
+
+		$db->setQuery($sql);
 		$db->execute();
 
 		return $db->getAffectedRows();
 	}
-}
 
+	/**
+	 * Update entry
+	 *
+	 * @param   int  $uId  user ID
+	 * @param   int  $sId  SKU ID
+	 * @return  int
+	 */
+	public static function updateUser($uId, $username)
+	{
+		$db = App::get('db');
+
+		$sql  = "UPDATE `#__storefront_permissions`
+				SET `uId` = " . $db->quote((int)$uId) . ", `username` = NULL WHERE `username` = " . $db->quote($username);
+
+		$db->setQuery($sql);
+		$db->execute();
+	}
+}
