@@ -31,7 +31,6 @@
 namespace Components\Cart\Site\Controllers;
 
 use Exception;
-use Request;
 
 /**
  * Cart AJAX requests
@@ -52,8 +51,8 @@ class Request extends ComponentController
 		$cart = new CurrentCart();
 
 		// update cart
-		$updateCartRequest = Request::getVar('updateCart', false, 'post');
-		$pIds = Request::getVar('pId', false, 'post');
+		$updateCartRequest = \Request::getVar('updateCart', false, 'post');
+		$pIds = \Request::getVar('pId', false, 'post');
 
 		// If pIds are posted, convert them to SKUs
 		if (!empty($pIds))
@@ -78,7 +77,7 @@ class Request extends ComponentController
 		}
 		else
 		{
-			$skus = Request::getVar('skus', false, 'post');
+			$skus = \Request::getVar('skus', false, 'post');
 		}
 
 		// Initialize errors array
@@ -102,8 +101,8 @@ class Request extends ComponentController
 		}
 
 		// add coupon if needed
-		$addCouponRequest = Request::getVar('addCouponCode', false, 'post');
-		$couponCode = Request::getVar('couponCode', false, 'post');
+		$addCouponRequest = \Request::getVar('addCouponCode', false, 'post');
+		$couponCode = \Request::getVar('couponCode', false, 'post');
 
 		if ($addCouponRequest && $couponCode)
 		{
