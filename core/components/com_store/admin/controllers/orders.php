@@ -197,9 +197,6 @@ class Orders extends AdminController
 			return;
 		}
 
-		// Include needed libraries
-		// require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
-
 		// Build the link displayed
 		$sef = Route::url('index.php?option=' . $this->_option);
 		if (substr($sef, 0, 1) == '/')
