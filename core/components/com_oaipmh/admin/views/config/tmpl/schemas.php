@@ -33,7 +33,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Oaipmh\Helpers\Permissions::getActions('component');
 
-Toolbar::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'generic.png');
+Toolbar::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'oaipmh');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_oaipmh', 500);
@@ -60,7 +60,7 @@ $this->css();
 				$this->service->setSchema($name);
 				$schema = $this->service->getSchema();
 				?>
-				<th><?php echo $schema->name(); ?></th>
+				<th scope="row"><?php echo $schema->name(); ?></th>
 				<td><?php echo $schema->prefix(); ?></td>
 				<td><code>&amp;metadataPrefix=<?php echo $schema->prefix(); ?></code></td>
 			</tr>
