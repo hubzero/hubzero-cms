@@ -197,8 +197,9 @@ function submitbutton(pressbutton)
 					</span>
 				</td>
 				<td class="priority-3">
+					<?php //echo ($admin ? $this->rows[0]->addedBy . "<br>" : "") ?>
 					<span <?php echo $adminclass; ?>>
-						<span><?php echo ($admin ? Lang::txt('COM_JOBS_ADMIN') : ''); ?></span>
+						<span><?php echo ($admin ? Lang::txt('COM_JOBS_ADMIN') : $this->rows[0]->addedBy); ?></span>
 					</span>
 				</td>
 				<td class="priority-4">
@@ -206,7 +207,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-4">
 					<?php if ($row->expiredate != "0000-00-00 00:00:00"): ?>
-					<time datetime="<?php echo $row->expiredate; ?>"><?php echo Date::of($row->expiredate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+						<time datetime="<?php echo $row->expiredate; ?>"><?php echo Date::of($row->expiredate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					<?php else: ?>
 						<span><?php echo Lang::txt('COM_JOBS_NEVER_EXPIRES'); ?></span> 
 					<?php endif; ?>
