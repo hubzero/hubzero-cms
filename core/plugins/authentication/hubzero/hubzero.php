@@ -69,9 +69,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		jimport('joomla.user.helper');
-
-		// For JLog
+		// For Log
 		$response->type = 'hubzero';
 
 		// HUBzero does not like blank passwords
@@ -122,6 +120,15 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
 			return false;
+		}
+
+		// Remove old records
+		if ($duration = Component::params('com_members')->get('login_log_timeframe'))
+		{
+			$authlog = Hubzero\User\Log\Auth::blank();
+			$authlog->delete($authlog->getTableName())
+				->where('logged', '<', Date::of('now')->modify('-' . $duration)->toSql())
+				->execute();
 		}
 
 		// Check to see if there are many blocked accounts
@@ -243,10 +250,10 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		$params    = \Component::params('com_members');
 		$limit     = (int)$params->get('blocked_accounts_limit', 10);
 		$timeframe = (int)$params->get('blocked_accounts_timeframe', 1);
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip        = $_SERVER['REMOTE_ADDR'];
 		$fail2ban  = $params->get('fail2ban', 0);
 		$jailname  = $params->get('fail2ban-jail', 'hub-login');
-		$username = $response->username;
+		$username  = $response->username;
 		$result    = true;
 
 		// Fail2ban Enabled?
@@ -260,7 +267,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			$auths = $auths->whereEquals('status', 'blocked')
 						->select('username')
 						->whereEquals('ip', $ip)
-			      ->where('logged', '>=', $threshold)
+						->where('logged', '>=', $threshold)
 						->rows()
 						->fieldsByKey('username');
 
