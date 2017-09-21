@@ -166,6 +166,13 @@
 		padding-right: 2em;
 		//float: right;
 	}
+	.unpublish button {
+		margin-bottom: 1em;
+		font-size: 1.2em;
+		padding-left: 2em;
+		padding-right: 2em;
+		float: right;
+	}
 	.applied button {
 		margin-bottom: 1em;
 		font-size: 1.2em;
@@ -329,6 +336,13 @@
 		white-space: nowrap;
 		margin: 0;
 	}
+	.review_applicants {
+		font-size: 1.2em;
+		padding-top: .5em;
+		padding-left: 2em;
+		padding-right: 2em;
+		float: right;
+	}
 /* Confirm screen */
 	div.confirmwrap {
 		position: relative;
@@ -428,11 +442,13 @@
 	#candidates li.applic {
 		margin-top: 1em;
 		color: #000;
+		background: transparent;
 	}
 	#candidates li.applicbot {
 		border-bottom: 2px solid #f0decb;
 		margin-bottom: 1em;
 		padding-bottom: 1em;
+		background: transparent;
 	}
 	h4 {
 		margin-bottom: 0.5em;
