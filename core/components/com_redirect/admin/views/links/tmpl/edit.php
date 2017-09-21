@@ -95,6 +95,15 @@ Html::behavior('keepalive');
 					<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?></span>
 				</div>
 
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('JFIELD_PUBLISHED_DESC'); ?>">
+					<label for="fields-status_code"><?php echo Lang::txt('COM_REDIRECT_STATUS'); ?></label>
+					<select name="fields[status_code]" id="fields-status_code">
+						<option value="404"<?php if ((!$this->row->new_url && !$this->row->status_code) || $this->row->status_code == 404) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_REDIRECT_STATUS_NOTFOUND'); ?></option>
+						<option value="301"<?php if ($this->row->status_code == 301) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_REDIRECT_STATUS_PERMANENT'); ?></option>
+						<option value="302"<?php if (($this->row->new_url && !$this->row->status_code) || $this->row->status_code == 302) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_REDIRECT_STATUS_FOUND'); ?></option>
+					</select>
+				</div>
+
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_DESC'); ?>">
 					<label id="fields-comment-lbl" for="fields-comment"><?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_LABEL'); ?></label>
 					<input type="text" name="fields[comment]" id="fields-comment" value="<?php echo $this->escape($this->row->comment); ?>" class="inputbox required" />
