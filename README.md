@@ -23,7 +23,7 @@ Both user and developer documentation for the CMS can be found at https://help.h
 
 ## Contributing
 
-HUBzero is an open source project, with code contributions from nuermous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://help.hubzero.org/documentation/current/webdevs/index/contributions.
+HUBzero is an open source project, with code contributions from numerous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://help.hubzero.org/documentation/current/webdevs/index/contributions.
 
 ## Issues
 
