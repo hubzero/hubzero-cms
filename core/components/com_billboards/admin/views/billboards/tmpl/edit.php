@@ -104,7 +104,7 @@ jQuery(document).ready(function($){
 					<label for="ordering"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_ORDERING'); ?>:</label><br />
 					<?php if ($this->row->id) : ?>
 						<?php $query = Billboard::select('ordering', 'value')->select('name', 'text')->whereEquals('collection_id', $this->row->collection_id)->toString(); ?>
-						<?php echo JHTML::_('list.ordering', 'billboard[ordering]', $query, null, $this->row->id); ?>
+						<?php echo Html::select('ordering', 'billboard[ordering]', $query, null, $this->row->id); ?>
 					<?php else : ?>
 						<input type="hidden" name="billboard[ordering]" id="ordering" value="" />
 						<span class="readonly"><?php echo Lang::txt('COM_BILLBOARDS_ASC'); ?></span>

@@ -30,13 +30,10 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Utility class working with phpsetting
  */
-abstract class JHtmlPhpSetting
+class ComponentsSystemHelpersHtmlPhpsetting
 {
 	/**
 	 * Method to generate a boolean message for a value
