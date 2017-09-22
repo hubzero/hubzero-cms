@@ -30,20 +30,16 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Utility class working with directory
  */
-abstract class JHtmlDirectory
+class ComponentsSystemHelpersHtmlDirectory
 {
 	/**
 	 * Method to generate a (un)writable message for directory
 	 *
-	 * @param	boolean	$writable is the directory writable?
-	 *
-	 * @return	string	html code
+	 * @param   boolean  $writable  is the directory writable?
+	 * @return  string   html code
 	 */
 	public static function writable($writable)
 	{
@@ -60,11 +56,10 @@ abstract class JHtmlDirectory
 	/**
 	 * Method to generate a message for a directory
 	 *
-	 * @param	string	$dir the directory
-	 * @param	boolean	$message the message
-	 * @param	boolean	$visible is the $dir visible?
-	 *
-	 * @return	string	html code
+	 * @param   string   $dir      the directory
+	 * @param   boolean  $message  the message
+	 * @param   boolean  $visible  is the $dir visible?
+	 * @return  string   html code
 	 */
 	public static function message($dir, $message, $visible=true)
 	{

@@ -45,7 +45,7 @@ class JFormFieldResourcetype extends JFormFieldList
 	{
 		$db = \App::get('db');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'type.php';
 		$model = new \Components\Resources\Tables\Type($db);
 
 		$types = $model->getMajorTypes();
@@ -54,7 +54,7 @@ class JFormFieldResourcetype extends JFormFieldList
 
 		foreach ($types as $type)
 		{
-			$options[] = JHtml::_('select.option', $type->id, stripslashes($type->type), 'value', 'text');
+			$options[] = Html::select('option', $type->id, stripslashes($type->type), 'value', 'text');
 		}
 
 		$options = array_merge(parent::getOptions(), $options);
