@@ -147,7 +147,6 @@ class Solr extends SiteController
 		}
 		catch (\Solarium\Exception\HttpException $e)
 		{
-			//@TODO: 'Did you mean' functionality.
 			$query->query('')->limit($limit)->start($start)->run();
 			\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
 		}
@@ -157,6 +156,14 @@ class Solr extends SiteController
 
 		// Format the results (highlighting, snippet, etc)
 		$results = $this->formatResults($results, $terms);
+
+		// 'Did you mean' functionality.
+		if ($terms != '' && $numFound == 0)
+		{
+			// Get MoreLikeThis results
+			$spellSuggestions = $query->spellCheck($terms);
+			$this->view->spellSuggestions = $spellSuggestions;
+		}
 
 		$this->view->pagination = new \Hubzero\Pagination\Paginator($numFound, $start, $limit);
 		$this->view->pagination->setAdditionalUrlParam('terms', $terms);

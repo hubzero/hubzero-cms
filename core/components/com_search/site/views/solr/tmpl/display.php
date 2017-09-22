@@ -73,7 +73,16 @@ $noResult = count($this->results) > 0 ? false : true;
 <section class="main section">
 	<?php if ($noResult) { ?>
 		<div class="info">
-			<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
+			<?php if (isset($this->spellSuggestions)) { ?>
+				<h3><?php echo Lang::txt('COM_SEARCH_DIDYOUMEAN'); ?></h3>
+				<?php foreach ($this->spellSuggestions as $suggestion) { ?>
+					<?php foreach($suggestion->getWords() as $word) { ?>
+						<a href="<?php echo Route::url('search?terms=' . $word['word'] . '&section=content'); ?>"><?php echo $word['word']; ?></a>
+					<?php } ?>
+				<?php } ?>
+			<?php } else { ?>
+					<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
+			<?php } ?>
 		</div>
 	<?php } else { ?>
 		<div class="section-inner">
