@@ -178,6 +178,7 @@
 		font-size: 1.2em;
 		padding-left: 2em;
 		padding-right: 2em;
+		margin-right: .5em;
 	}
 	#jobinfo div.apply .applybtn:hover {
 		background-color: #666;
