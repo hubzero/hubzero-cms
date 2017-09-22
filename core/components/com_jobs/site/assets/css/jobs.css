@@ -339,8 +339,6 @@
 	.review_applicants {
 		font-size: 1.2em;
 		padding-top: .5em;
-		padding-left: 2em;
-		padding-right: 2em;
 		float: right;
 	}
 /* Confirm screen */
@@ -350,7 +348,7 @@
 	}
 	div.confirmscreen {
 		position: absolute;
-		border: 5px solid #e3aeae;
+		border: 5px solid #ee5f5b;
 		background-color: #FFFFFF;
 		left: 0;
 		width: 350px;
