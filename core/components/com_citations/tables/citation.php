@@ -598,11 +598,11 @@ class Citation extends \JTable
 			$stats[$i] = array();
 
 			// Not supported in PLG_GROUPS_CITATIONS or PLG_MEMBERS_CITATIONS
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope='' OR scope IS NULL OR `scope='hub')");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope='' OR scope IS NULL OR `scope`='hub')");
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 
 			// Not supported in PLG_GROUPS_CITATIONS or PLG_MEMBERS_CITATIONS
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope='' OR scope IS NULL OR `scope='hub')");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope='' OR scope IS NULL OR `scope`='hub')");
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
 
