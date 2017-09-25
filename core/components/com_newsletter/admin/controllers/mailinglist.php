@@ -210,7 +210,7 @@ class Mailinglist extends AdminController
 	{
 		//get request vars
 		$ids = Request::getVar('id', array());
-		$id = (isset($ids[0])) ? $ids[0] : null;
+		$id = (is_array($ids) && isset($ids[0])) ? $ids[0] : $ids;
 
 		//get request vars
 		$this->view->id = $id;
