@@ -108,7 +108,7 @@ $noResult = count($this->results) > 0 ? false : true;
 					<div class="results list"><!-- add "tiled" to class for tiled view -->
 						<?php foreach ($this->results as $result): ?>
 							<?php if (is_array($result)): ?>
-								<div class="result <?php echo (isset($result['access_level']) ? $result['access_level'] : 'public'); ?>">
+								<div class="result <?php echo (isset($result['access_level']) ? $result['access_level'] : 'public'); ?>" id="<?php echo $result['id']; ?>">
 									<div class="result-body">
 										<!-- Title : mandatory -->
 										<h3 class="result-title"><a href="<?php echo $result['url']; ?>"><b><!-- highlight portion --></b><?php echo $result['title']; ?></a></h3>
