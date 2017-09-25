@@ -259,6 +259,7 @@ class Events extends AdminController
 		else
 		{
 			$this->view->row->state = 0;
+			$this->view->row->time_zone = -5;
 			$start_publish = Date::format('Y-m-d');
 			$stop_publish = Date::format('Y-m-d');
 			$start_time = "08:00";
