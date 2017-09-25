@@ -138,7 +138,7 @@ defined('_HZEXEC_') or die();
 					$iniprice = $thissub ? 0 : $this->services[$i]->unitprice;
 					?>
 					<div class="bindtogether product">
-					<input class="option service" type="radio" name="serviceid" id="service_<?php echo $this->services[$i]->id . ?>" value="<?php echo $this->services[$i]->id ?>"
+					<input class="option service" type="radio" name="serviceid" id="service_<?php echo $this->services[$i]->id; ?>" value="<?php echo $this->services[$i]->id ?>"
 					<?php if ($thissub or ($this->subscription->serviceid==0 && $i==0)) {
 						echo 'checked="checked"';
 					}
@@ -149,7 +149,7 @@ defined('_HZEXEC_') or die();
 
 					<div class="subdetails" id="plan_<?php $this->services[$i]->id ?>">
 					<?php if ($thissub) {
-						echo  $expires
+						echo  $expires;
 					} else {
 						echo '';
 					}
@@ -167,7 +167,7 @@ defined('_HZEXEC_') or die();
 					echo $unitsChoice;
 					echo $this->services[$i]->unitmeasure ?>
 					(s) </label>
-					<span class="totalprice"><?php echo Lang::txt( 'COM_JOBS_SUBSCRIBE_YOUR_TOTAL' ) . ' '
+					<span class="totalprice"><?php echo Lang::txt( 'COM_JOBS_SUBSCRIBE_YOUR_TOTAL' ) . ' ';
 					if ($thissub) {
 						echo strtolower(Lang::txt( 'COM_JOBS_NEW' )) . ' ';
 					} else {
@@ -185,7 +185,7 @@ defined('_HZEXEC_') or die();
 					</div>
 					</div>
 					<input type="hidden" name="price_<?php echo $this->services[$i]->id ?>" id="price_<?php echo $this->services[$i]->id ?>" value="<?php echo $this->escape($this->services[$i]->unitprice) ?>" />
-				<?php }				}
+				<?php }	
 				$btn = $this->subscription->id ? Lang::txt( 'COM_JOBS_SUBSCRIPTION_SAVE' ) : Lang::txt( 'COM_JOBS_SUBSCRIPTION_PROCESS_ORDER' );
 			?>
 			<label for="contact">

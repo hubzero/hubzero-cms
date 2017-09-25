@@ -86,6 +86,9 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 		</div>
 
 		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . "&task=saveapp"); ?>">
+			<div class="explaination">
+				<p><?php echo Lang::txt('COM_JOBS_APPLY_HINT_COVER_LETTER'); ?></p>
+			</div>
 			<fieldset>
 				<input type="hidden"  name="task" value="saveapp" />
 				<input type="hidden" id="code" name="code" value="<?php echo $job->code; ?>" />
@@ -97,9 +100,6 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 					<textarea name="cover" id="cover" rows="10" cols="15"><?php echo $application->cover; ?></textarea>
 				</label>
 			</fieldset>
-			<div class="explaination">
-				<p><?php echo Lang::txt('COM_JOBS_APPLY_HINT_COVER_LETTER'); ?></p>
-			</div>
 			<div class="clear"></div>
 
 			<div class="subject custom">
