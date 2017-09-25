@@ -87,7 +87,7 @@ class JobCategory extends \JTable
 	 * @param      string  $default Default value if no record found
 	 * @return     mixed False if errors, String upon success
 	 */
-	public function getCat($id = NULL, $default = 'unspecified')
+	public function getCat($id = NULL, $default = 'Unspecified')
 	{
 		if ($id === NULL)
 		{
