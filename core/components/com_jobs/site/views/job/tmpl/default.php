@@ -91,6 +91,10 @@ defined('_HZEXEC_') or die();
                         if ($job->status == 1 && $owner) { ?>
                                 <span class="unpublish"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=unpublish&code=' . $job->code) ?>" title="<?php echo Lang::txt('COM_JOBS_NOTICE_ACCESS_PRESERVED') ?>"><button class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') ?></button></a></span>
                         <?php }
+                        if ($job->status == 3) { ?>
+                                <span class="manageroptions"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=reopen&code=' . $job->code) ?>" title="<?php echo Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING') ?>"><button class="btn btn"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button></a><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>" title="<?php echo Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS') ?>"><button class="btn btn"><?php echo Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB') ?></button></a></span>
+                                </p>
+                        <?php }
                         if ($job->applied) {
                                  \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=job&code=' . $job->code), Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code), $action = "withdrawapp");
                         } else {
@@ -162,12 +166,6 @@ defined('_HZEXEC_') or die();
 					<span class="makechanges"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>"><button class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_REMOVE_AD') ?></button></a></span>
 				</p>
 			<?php } 
-			if ($job->status == 3) { ?>
-				<p class="manageroptions">
-					<span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=reopen&code=' . $job->code) ?>" title="<?php echo Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING') ?>"><button class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button></a></span>
-					<span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>" title="<?php echo Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS') ?>"><button class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB') ?></button></a></span>
-				</p>';
-			<?php }
 		} ?>
 	</div>
 	<?php if ($owner) { ?>

@@ -197,9 +197,8 @@ function submitbutton(pressbutton)
 					</span>
 				</td>
 				<td class="priority-3">
-					<?php //echo ($admin ? $this->rows[0]->addedBy . "<br>" : "") ?>
 					<span <?php echo $adminclass; ?>>
-						<span><?php echo ($admin ? Lang::txt('COM_JOBS_ADMIN') : $this->rows[0]->addedBy); ?></span>
+						<span><?php echo ($admin ? Lang::txt('COM_JOBS_ADMIN') : ''); ?></span>
 					</span>
 				</td>
 				<td class="priority-4">

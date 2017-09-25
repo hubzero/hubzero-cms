@@ -159,18 +159,16 @@
 		padding-left: 2em;
 		padding-right: 2em;
 	}
+	.apply p {
+		position: absolute;
+	}
 	.edit button {
 		margin-bottom: 1em;
 		font-size: 1.2em;
-		padding-left: 2em;
-		padding-right: 2em;
-		//float: right;
 	}
 	.unpublish button {
 		margin-bottom: 1em;
 		font-size: 1.2em;
-		padding-left: 2em;
-		padding-right: 2em;
 		float: right;
 	}
 	.applied button {
@@ -180,6 +178,13 @@
 		padding-right: 2em;
 		margin-right: .5em;
 	}
+	.manageroptions button {
+		margin-bottom: 1em;
+		margin-right: .5em;
+		font-size: 1.2em;
+		float: right;
+	}	
+
 	#jobinfo div.apply .applybtn:hover {
 		background-color: #666;
 		border-bottom: 2px solid #000;
@@ -257,10 +262,6 @@
 	.confirmPublish {
 		text-align: center;
 		margin-top: 2em;
-	}
-	.manageroptions {
-		float: right;
-		font-size: 85%;
 	}
 /* Job Posting  List */
 	ul.postings {
