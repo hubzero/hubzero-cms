@@ -34,11 +34,11 @@ defined('_HZEXEC_') or die();
 
 	/* Job Posting */
 	$job        = $this->job;
-	$job->cat   = $job->cat ? $job->cat : 'unspecified';
-	$job->type  = $job->type ? $job->type : 'unspecified';
+	$job->cat   = $job->cat ? $job->cat : 'Unspecified';
+	$job->type  = $job->type ? $job->type : 'Unspecified';
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'Unspecified';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'Unspecified';
 
 	$model = new \Components\Jobs\Models\Job($job);
 
