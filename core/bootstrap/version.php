@@ -3,7 +3,7 @@
  * HUBzero CMS
  *
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2016 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2017 HUBzero Foundation, LLC.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -18,4 +18,4 @@
 |
 */
 
-define('HVERSION', '2.1.10');
+define('HVERSION', '2.1.11');
