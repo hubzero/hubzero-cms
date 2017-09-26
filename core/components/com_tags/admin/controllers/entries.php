@@ -583,4 +583,55 @@ class Entries extends AdminController
 			break;
 		}
 	}
+
+	/**
+	 * Re-calculate associated content for one or more tags
+	 *
+	 * @return  void
+	 */
+	public function calculateTask()
+	{
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Make sure we have an ID
+		if (empty($ids))
+		{
+			Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
+
+			return $this->cancelTask();
+		}
+
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			$id = intval($id);
+
+			// Recalculate associated content
+			$tag = Tag::oneOrFail($id);
+			if ($tag->hasAttribute('objects'))
+			{
+				$tag->set('objects', $tag->objects()->total());
+			}
+			if ($tag->hasAttribute('substitutes'))
+			{
+				$tag->set('substitutes', $tag->substitutes()->total());
+			}
+
+			if (!$tag->save())
+			{
+				Notify::error($tag->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_TAGS_TAGS_UPDATED', $success));
+		}
+
+		$this->cancelTask();
+	}
 }
