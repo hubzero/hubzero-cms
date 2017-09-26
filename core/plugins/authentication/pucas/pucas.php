@@ -64,7 +64,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 
 		$this->initialize();
 
-		$service = rtrim(Request::base(),'/');
+		$service = rtrim(Request::base(), '/');
 
 		if (empty($service))
 		{
