@@ -232,11 +232,10 @@ class Stats extends \JTable
 		$objAA = new Activity($this->_db);
 		$recentlyActive = $tbl->getCount(array('exclude' => $exclude, 'timed' => $pastMonth, 'active' => 1), true);
 
-		$perc = round(($recentlyActive * 100)/$active) . '%';
 		$stats['activity'] = array(
 			'total'   => $objAA->getActivityStats($include, 'total'),
 			'average' => $objAA->getActivityStats($include, 'average'),
-			'usage'   => $perc
+			'usage'   => $recentlyActive
 		);
 
 		$stats['topActiveProjects'] = $objAA->getTopActiveProjects($exclude, 5, $publicOnly);
