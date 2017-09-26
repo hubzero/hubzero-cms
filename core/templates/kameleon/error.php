@@ -45,19 +45,19 @@ $browser = new \Hubzero\Browser\Detector();
 	<head>
 		<meta name="viewport" content="width=device-width" />
 
-		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . DS . 'css' . DS . 'error.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . '/css/error.css'); ?>" />
 
 		<title><?php echo Lang::txt('TPL_KAMELEON_ERROR_OCCURRED') . ' - ' . $code; ?></title>
 
 		<!--[if lt IE 9]>
-			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js?v=<?php echo filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
 		<![endif]-->
 
 		<!--[if IE 9]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie8.css'); ?>" />
 		<![endif]-->
 	</head>
 	<body id="error-body">
@@ -95,7 +95,7 @@ $browser = new \Hubzero\Browser\Detector();
 					<?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), date("Y")); ?>
 				</p>
 				<p class="promotion">
-					<?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', App::version()); ?>
+					<?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', HVERSION); ?>
 				</p>
 			</section>
 		</footer><!-- / #footer -->

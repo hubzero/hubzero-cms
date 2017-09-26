@@ -34,27 +34,27 @@
 defined('_HZEXEC_') or die();
 
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css?v=' . filemtime(__DIR__ . DS . 'css' . DS . 'component.css'));
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css?v=' . filemtime(__DIR__ . '/css/component.css'));
 // Load theme
 if ($theme = $this->params->get('theme'))
 {
 	if ($theme == 'custom')
 	{
 		$color = $this->params->get('color');
-		$this->addStyleDeclaration(include_once(__DIR__ . DS . 'css' . DS . 'themes' . DS . 'custom.php'));
+		$this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
 	}
 	else if ($theme != 'gray')
 	{
-		$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $theme . '.css');
+		$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $theme . '.css?v=' . filemtime(__DIR__ . '/css/themes/' . $theme . '.css'));
 	}
 }
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css?v=' . filemtime(__DIR__ . '/css/common/rtl.css'));
 }
 
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js');
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js?v=' . filemtime(__DIR__ . '/js/component.js'));
 
 $browser = new \Hubzero\Browser\Detector();
 ?>
