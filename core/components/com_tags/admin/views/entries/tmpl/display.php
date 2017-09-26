@@ -40,6 +40,7 @@ if ($canDo->get('core.admin'))
 	Toolbar::preferences($this->option, '550');
 	Toolbar::spacer();
 }
+Toolbar::custom('calculate', 'refresh', '', 'COM_TAGS_RECALCULATE', false);
 if ($canDo->get('core.edit'))
 {
 	Toolbar::custom('pierce', 'copy', '', 'COM_TAGS_PIERCE', false);
