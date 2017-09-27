@@ -461,8 +461,6 @@ tooltip: true,
 							<?php } ?>
 					<td class="stats-more">
 						<ul>
-							<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['commits']; ?></span>
-							<?php echo Lang::txt('total Git commits'); ?></li>
 							<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['diskspace']; ?></span>
 							<?php echo Lang::txt('total used disk space'); ?></li>
 						</ul>

@@ -283,7 +283,6 @@ class Stats extends \JTable
 			$fAverage = number_format($fTotal/$validCount, 0);
 			$fUsage   = $repo->getStats($validProjects, 'usage');
 			$fDSpace  = $repo->getStats($validProjects, 'diskspace');
-			$fCommits = $repo->getStats($validProjects, 'commitCount');
 			$pDSpace  = $repo->getStats($validProjects, 'pubspace');
 
 			$perc = round(($fUsage * 100)/$active) . '%';
@@ -293,7 +292,6 @@ class Stats extends \JTable
 				'average'   => $fAverage,
 				'usage'     => $perc,
 				'diskspace' => \Hubzero\Utility\Number::formatBytes($fDSpace),
-				'commits'   => $fCommits,
 				'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace)
 			);
 		}
