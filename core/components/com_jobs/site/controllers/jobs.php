@@ -1549,15 +1549,25 @@ class Jobs extends SiteController
 			$job->status = 2;
 		}
 
-		// if job doesn't already has an expiration date
-		if (!$job->expiredate)
+		// checks if expiration date is set
+		if ($job->expiredate == "") 
 		{
-			$job->expiredate = date('Y-m-d 00:00:00', strtotime($job->edited . ' + 1 years'));
+			$job->bind($_POST);
+			$this->_job = $job;
+			$this->_jobCode = $code;
+			$this->setError(Lang::txt('COM_JOBS_ERROR_MISSING_EXPIRATION_DATE'));
+			$this->editjobTask();
+			return;
 		}
+
 		// expiration date is more than a year away
-		elseif ($job->expiredate > date('Y-m-d 00:00:00', strtotime($job->edited . '+ 1 years')))
+		if ($job->expiredate > date('Y-m-d 00:00:00', strtotime($job->edited . '+ 1 years')))
 		{
-			$job->expiredate = date('Y-m-d 00:00:00', strtotime($job->edited . ' + 1 years'));
+			$this->_job     = $job;
+			$this->_jobCode = $code;
+			$this->setError(Lang::txt('COM_JOBS_ERROR_WRONG_EXPIRATION_DATE'));
+			$this->editjobTask();
+			return;
 		}
 
 		// get unique number code for this new job posting
