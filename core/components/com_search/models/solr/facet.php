@@ -51,11 +51,7 @@ class Facet extends Relational
 	 */
 	public function children()
 	{
-		$children = $this->all()
-			->whereEquals('parent_id', $this->id)
-			->rows();
-
-		return $children;
+		return $this->oneToMany('Facet', 'parent_id');
 	}
 
 	/**
@@ -81,5 +77,62 @@ class Facet extends Relational
 		}
 
 		return $tops;
+	}
+
+	public function getQueryName()
+	{
+		$name = str_replace(' ', '_', $this->name);
+		return $name;
+	}
+
+	public function parentFacet()
+	{
+		return $this->oneToOne('Facet', 'id', 'parent_id');
+	}
+
+	public function hasParent()
+	{
+		if ($this->parentFacet->get('id') > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public function transformFacet()
+	{
+		if ($this->hasParent())
+		{
+			$facet = $this->parentFacet->facet . ' AND ' . $this->get('facet');
+		}
+		else
+		{
+			$facet = $this->get('facet');
+		}
+		return $facet;
+	}
+
+	public function formatWithCounts($counts, $activeType = null, $terms = null)
+	{
+		$countIndex = $this->getQueryName();
+		$count = isset($counts[$countIndex]) ? $counts[$countIndex] : 0;
+		if ($count > 0)
+		{
+			$class = ($activeType == $this->id) ? 'class="active"' : '';
+			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . $this->id);
+			$html = '<li><a ' . $class . ' href="' . $link . '">';
+			$html .= $this->name . '<span class="item-count">' . $count . '</span></a>';
+			if ($this->children->count() > 0)
+			{
+				$html .= '<ul>';
+				foreach ($this->children as $child)
+				{
+					$html .= $child->formatWithCounts($counts, $activeType, $terms);
+				}
+				$html .= '</ul>';
+			}
+			$html .= '</li>';
+			return $html;
+		}
 	}
 }
