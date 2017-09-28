@@ -81,10 +81,22 @@ class Solr extends SiteController
 			}
 		}
 
+		// Add categories for Facet functions (mainly counting the different categories)
+		$multifacet = $query->adapter->getFacetQuery('hubtypes');
+		$allFacets = Facet::all()->whereEquals('state', 1)->rows();
+		foreach ($allFacets as $facet)
+		{
+			$multifacet->createQuery($facet->getQueryName(), $facet->facet, array('root_type'));
+		} 
+
 		$filters = Request::getVar('filters', array());
 
 		// To pass to the view
 		$urlQuery = '?terms=' . $terms;
+		$rootFacets = Facet::all()
+			->whereEquals('state', 1)
+			->whereEquals('parent_id', 0)
+			->rows();
 
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
@@ -94,32 +106,23 @@ class Solr extends SiteController
 
 		if ($type != null)
 		{
-			$facet = Facet::all()
-				->whereEquals('id', $type)
-				->limit(1)
-				->row();
-			$query->addFilter('Type', $facet->facet);
+			$facet = Facet::one($type);
+			$query->addFilter('Type', $facet->facet, 'root_type');
 
 			// Add a type
 			$urlQuery .= '&type=' . $type;
 		}
 		else
 		{
-			$facets = Facet::all()
-				->whereEquals('state', 1)
-				->whereEquals('parent_id', 0)
-				->rows()
-				->toObject();
-
 			$allfacets = array();
-			foreach ($facets as $facet)
+			foreach ($rootFacets as $facet)
 			{
 				$allfacets[] = $facet->facet;
 			}
 
 			if (!empty($allfacets))
 			{
-				$query->addFilter('Type', '(' . implode(' OR ', $allfacets) . ')');
+				$query->addFilter('Type', '(' . implode(' OR ', $allfacets) . ')', 'root_type');
 			}
 		}
 
@@ -133,7 +136,7 @@ class Solr extends SiteController
 
 		if (isset($locationFilter))
 		{
-			$query->addFilter('BoundingBox', $locationFilter);
+			$query->addFilter('BoundingBox', $locationFilter, 'root_type');
 		}
 
 		// Build the reset of the query string
@@ -153,6 +156,12 @@ class Solr extends SiteController
 
 		$results  = $query->getResults();
 		$numFound = $query->getNumFound();
+		$facetResult = $query->resultsFacetSet->getFacet('hubtypes');
+		$facetCounts = array();
+		foreach ($facetResult as $facet => $count)
+		{
+			$facetCounts[$facet] = $count;
+		}
 
 		// Format the results (highlighting, snippet, etc)
 		$results = $this->formatResults($results, $terms);
@@ -173,12 +182,13 @@ class Solr extends SiteController
 		{
 			$this->view->query = $terms;
 			$this->view->results = $results;
-			$this->view->facets = $this->getCategories($type, $terms, $limit, $start);
-
+			$this->view->facets = $rootFacets;
+			$this->view->facetCounts = $facetCounts;
 			$this->view->total = 0;
 			foreach ($this->view->facets as $facet)
 			{
-				$this->view->total = $this->view->total + $facet->count;
+				$facetIndex = $facet->getQueryName();
+				$this->view->total = $this->view->total + $facetCounts[$facetIndex];
 			}
 		}
 		else

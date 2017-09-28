@@ -95,11 +95,7 @@ $noResult = count($this->results) > 0 ? false : true;
 							<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>">All Categories <span class="item-count"><?php echo $this->total; ?></span></a>
 						</li>
 						<?php foreach ($this->facets as $facet): ?>
-							<?php if ($facet->count > 0): ?>
-								<li>
-									<a <?php echo ($this->type == $facet->id) ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms . '&type=' . $facet->id); ?>"><?php echo $facet->name; ?> <span class="item-count"><?php echo $facet->count; ?></span></a>
-								</li>
-							<?php endif; ?>
+							<?php echo $facet->formatWithCounts($this->facetCounts, $this->type, $this->terms); ?>
 						<?php endforeach; ?>
 					</ul>
 				</div><!-- / .container -->
