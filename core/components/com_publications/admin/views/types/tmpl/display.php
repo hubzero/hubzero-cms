@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('type');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'));
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'), 'publications');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();

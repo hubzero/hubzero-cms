@@ -460,9 +460,7 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<div class="width-100">
-		<p class="notice"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
-	</div>
+	<p class="notice"><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a> <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
 
 	<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

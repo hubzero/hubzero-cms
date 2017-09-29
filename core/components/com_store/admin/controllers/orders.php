@@ -197,9 +197,6 @@ class Orders extends AdminController
 			return;
 		}
 
-		// Include needed libraries
-		// require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
-
 		// Build the link displayed
 		$sef = Route::url('index.php?option=' . $this->_option);
 		if (substr($sef, 0, 1) == '/')
@@ -220,20 +217,20 @@ class Orders extends AdminController
 		//require_once(PATH_CORE . DS . 'libraries/tcpdf/tcpdf.php');
 		$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-		$receipt_title  = $this->config->get('receipt_title')  ? $this->config->get('receipt_title')  : 'Your Order' ;
+		$receipt_title  = $this->config->get('receipt_title') ? $this->config->get('receipt_title') : 'Your Order';
 		$hubaddress = array();
-		$hubaddress[] = $this->config->get('hubaddress_ln1') ? $this->config->get('hubaddress_ln1') : '' ;
-		$hubaddress[] = $this->config->get('hubaddress_ln2') ? $this->config->get('hubaddress_ln2') : '' ;
-		$hubaddress[] = $this->config->get('hubaddress_ln3') ? $this->config->get('hubaddress_ln3') : '' ;
-		$hubaddress[] = $this->config->get('hubaddress_ln4') ? $this->config->get('hubaddress_ln4') : '' ;
-		$hubaddress[] = $this->config->get('hubaddress_ln5') ? $this->config->get('hubaddress_ln5') : '' ;
-		$hubaddress[] = $this->config->get('hubemail') ? $this->config->get('hubemail') : '' ;
-		$hubaddress[] = $this->config->get('hubphone') ? $this->config->get('hubphone') : '' ;
+		$hubaddress[] = $this->config->get('hubaddress_ln1') ? $this->config->get('hubaddress_ln1') : '';
+		$hubaddress[] = $this->config->get('hubaddress_ln2') ? $this->config->get('hubaddress_ln2') : '';
+		$hubaddress[] = $this->config->get('hubaddress_ln3') ? $this->config->get('hubaddress_ln3') : '';
+		$hubaddress[] = $this->config->get('hubaddress_ln4') ? $this->config->get('hubaddress_ln4') : '';
+		$hubaddress[] = $this->config->get('hubaddress_ln5') ? $this->config->get('hubaddress_ln5') : '';
+		$hubaddress[] = $this->config->get('hubemail') ? $this->config->get('hubemail') : '';
+		$hubaddress[] = $this->config->get('hubphone') ? $this->config->get('hubphone') : '';
 
-		$headertext_ln1 = $this->config->get('headertext_ln1') ? $this->config->get('headertext_ln1') : '' ;
-		$headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : Config::get('sitename') ;
-		$footertext     = $this->config->get('footertext')     ? $this->config->get('footertext')     : 'Thank you for contributions to our HUB!' ;
-		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;
+		$headertext_ln1 = $this->config->get('headertext_ln1') ? $this->config->get('headertext_ln1') : '';
+		$headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : Config::get('sitename');
+		$footertext     = $this->config->get('footertext')     ? $this->config->get('footertext')     : 'Thank you for contributions to our HUB!';
+		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '';
 
 		// Get front-end template name
 		$sql = "SELECT template FROM `#__template_styles` WHERE `client_id`=0 AND `home`=1";
@@ -241,12 +238,12 @@ class Orders extends AdminController
 		$tmpl = $this->database->loadResult();
 
 		// set default header data
-		$pdf->SetHeaderData(NULL, 0, strtoupper($receipt_title). ' - #' . $id, NULL, array(84, 94, 124), array(146, 152, 169));
+		$pdf->SetHeaderData(null, 0, strtoupper($receipt_title). ' - #' . $id, null, array(84, 94, 124), array(146, 152, 169));
 		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
 
 		// set header and footer fonts
-		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+		$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 		// set margins
 		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
@@ -387,7 +384,7 @@ class Orders extends AdminController
 	/**
 	 * Saves changes to an order
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -398,7 +395,7 @@ class Orders extends AdminController
 
 		$data   = array_map('trim', $_POST);
 		$action = (isset($data['action'])) ? $data['action'] : '';
-		$id     = ($data['id']) ? $data['id'] : 0 ;
+		$id     = ($data['id']) ? $data['id'] : 0;
 		$cost   = intval($data['total']);
 
 		if ($id)
@@ -474,7 +471,6 @@ class Orders extends AdminController
 			if (!$row->check())
 			{
 				throw new Exception($row->getError(), 500);
-				return;
 			}
 
 			// store new content
@@ -489,8 +485,7 @@ class Orders extends AdminController
 				if (\Hubzero\Utility\Validate::email($row->email))
 				{
 					$message = new \Hubzero\Mail\Message();
-					$message->setSubject(Config::get('sitename') . ' '
-						. Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT', $id));
+					$message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT', $id));
 					$message->addFrom(
 						Config::get('mailfrom'),
 						Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE')

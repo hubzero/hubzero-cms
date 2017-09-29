@@ -43,7 +43,7 @@ $text = ($this->task == 'edit'
 	? Lang::txt('JACTION_EDIT') . ' #' . $this->model->get('id') . ' (v.' . $this->model->get('version_label') . ')'
 	: Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': ' . $text, 'publications');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -72,7 +72,7 @@ $customFields = $rt->customFields && $rt->customFields != '{"fields":[]}' ? $rt-
 
 $customFields = $this->model->_curationModel->getMetaSchema();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+include_once Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
 
 $elements = new \Components\Publications\Models\Elements($data, $customFields);
 $fields   = $elements->render();

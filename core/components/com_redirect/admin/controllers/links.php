@@ -90,6 +90,11 @@ class Links extends AdminController
 				'state',
 				'*'
 			),
+			'type' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.type',
+				'type',
+				'redirect'
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -110,6 +115,15 @@ class Links extends AdminController
 			$entries->whereEquals('published', (int)$filters['state']);
 		}
 
+		if ($filters['type'] != '404')
+		{
+			$entries->where('new_url', '!=', '');
+		}
+		else
+		{
+			$entries->whereEquals('new_url', '');
+		}
+
 		if ($filters['search'])
 		{
 			$filters['search'] = strtolower((string)$filters['search']);
@@ -126,6 +140,17 @@ class Links extends AdminController
 			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
+
+		\Submenu::addEntry(
+			Lang::txt('COM_REDIRECT_REDIRECTS'),
+			Route::url('index.php?option=' . $this->_option . '&type=redirect'),
+			($filters['type'] != '404')
+		);
+		\Submenu::addEntry(
+			Lang::txt('COM_REDIRECT_NOTFOUND'),
+			Route::url('index.php?option=' . $this->_option . '&type=404'),
+			($filters['type'] == '404')
+		);
 
 		$this->view
 			->set('rows', $rows)

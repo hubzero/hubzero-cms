@@ -42,7 +42,7 @@ class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
 	 *
 	 * This is where we setup the click-through content highlighting for.
 	 * The highlighting is done with JavaScript so we just
-	 * need to check a few parameters and the JHtml behavior will do the rest.
+	 * need to check a few parameters and the Html behavior will do the rest.
 	 *
 	 * @return  boolean  True on success
 	 */

@@ -38,6 +38,7 @@ use Components\Projects\Models;
 use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description\Option;
 use Components\Projects\Helpers;
+use Component;
 use Request;
 use Notify;
 use Plugin;
@@ -84,7 +85,7 @@ class Projects extends AdminController
 		// Enable publication management
 		if ($this->_publishing)
 		{
-			require_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+			require_once Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 		}
 	}
 
@@ -181,7 +182,7 @@ class Projects extends AdminController
 				$params = new \Hubzero\Config\Registry($rows[$i]->params);
 				$quota = $params->get('quota', 0);
 				if (($this->view->filters['quota'] == 'premium' && $quota < $this->view->premiumQuota)
-					|| ($this->view->filters['quota'] == 'regular' && $quota > $this->view->defaultQuota))
+				 || ($this->view->filters['quota'] == 'regular' && $quota > $this->view->defaultQuota))
 				{
 					$counter--;
 					unset($rows[$i]);
@@ -259,13 +260,13 @@ class Projects extends AdminController
 				return $this->cancelTask();
 			}
 		}
+
 		if (!$id)
 		{
 			Notify::error(Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'));
 			return $this->cancelTask();
 		}
 
-		$this->view = $this->view;
 		$this->view->config = $this->config;
 
 		// Get project types
@@ -307,7 +308,7 @@ class Projects extends AdminController
 		$this->view->params = $model->params;
 
 		$content = Event::trigger('projects.diskspace', array($model, 'local', 'admin'));
-		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
+		$this->view->diskusage = isset($content[0])  ? $content[0] : '';
 
 		// Set any errors
 		if ($this->getError())
@@ -321,7 +322,7 @@ class Projects extends AdminController
 
 		// Output the HTML
 		$this->view->model = $model;
-		$this->view->publishing	= $this->_publishing;
+		$this->view->publishing = $this->_publishing;
 		$this->view->display();
 	}
 
@@ -347,24 +348,28 @@ class Projects extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Config
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 		// Incoming
 		$formdata = $_POST;
-		$id       = Request::getVar('id', 0);
+		$id       = Request::getInt('id', 0);
 		$action   = Request::getVar('admin_action', '');
 		$message  = rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar('message', '')));
 
 		// Load model
 		$model = new Models\Project($id);
+
 		if (!$model->exists())
 		{
-			App::redirect(
-				'index.php?option=' . $this->_option,
-				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error'
-			);
+			Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		$title = $formdata['title'] ? rtrim($formdata['title']) : $model->get('title');
@@ -444,8 +449,8 @@ class Projects extends AdminController
 		// Save changes
 		if (!$model->store())
 		{
-			$this->setError($model->getError());
-			return false;
+			Notify::error($model->getError());
+			return $this->cancelTask();
 		}
 
 		// Incoming tags
@@ -806,12 +811,8 @@ class Projects extends AdminController
 		$obj = new Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		// Get project group
@@ -854,9 +855,9 @@ class Projects extends AdminController
 		$objB->deletePosts($id, $permanent);
 
 		// Erase all notes
-		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php'))
+		if (file_exists(Component::path('com_wiki') . DS . 'models' . DS . 'page.php'))
 		{
-			include_once PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php';
+			include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
 			// Get all notes
 			$this->database->setQuery(
@@ -924,12 +925,8 @@ class Projects extends AdminController
 		$obj = new Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		$url = Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false);
@@ -951,16 +948,12 @@ class Projects extends AdminController
 
 		if (!is_file($path . DS . $file))
 		{
-			App::redirect(
-				$url,
-				Lang::txt('Error: File not found in the project, cannot add and commit'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('Error: File not found in the project, cannot add and commit'));
+			return $this->cancelTask();
 		}
 
 		// Git helper
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'githelper.php';
 		$gitHelper = new Helpers\Git($path);
 
 		$commitMsg = '';
@@ -969,10 +962,11 @@ class Projects extends AdminController
 		$gitHelper->gitAdd($file, $commitMsg);
 		$gitHelper->gitCommit($commitMsg);
 
+		Notify::success(Lang::txt('File checked into project Git repo'));
+
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
-			Lang::txt('File checked into project Git repo')
+			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false)
 		);
 	}
 
@@ -986,29 +980,27 @@ class Projects extends AdminController
 		$id = Request::getVar('id', 0);
 
 		// Get repo model
-		require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'repo.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'repo.php';
 
 		$project = new Models\Project($id);
 		if (!$project->exists())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+			return $this->cancelTask();
 		}
-		$repo = new \Components\Projects\Models\Repo ($project, 'local');
+
+		$repo = new \Components\Projects\Models\Repo($project, 'local');
 		$params = array(
 			'path' => $repo->get('path'),
 			'adv'  => true
 		);
 		$repo->call('optimize', $params);
 
+		Notify::success(Lang::txt('Git repo optimized'));
+
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
-			Lang::txt('Git repo optimized')
+			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false)
 		);
 	}
 
@@ -1026,12 +1018,8 @@ class Projects extends AdminController
 		$obj = new Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		// Unlock sync
@@ -1039,7 +1027,7 @@ class Projects extends AdminController
 
 		// Get log file
 		$repodir = Helpers\Html::getProjectRepoPath($obj->alias, 'logs');
-		$sfile 	 = $repodir . DS . 'sync.' . Date::format('Y-m') . '.log';
+		$sfile   = $repodir . DS . 'sync.' . Date::format('Y-m') . '.log';
 
 		if (file_exists($sfile))
 		{

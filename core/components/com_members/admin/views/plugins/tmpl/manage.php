@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('Members') . ': ' . Lang::txt('Plugins'), 'addedit.png');
+Toolbar::title(Lang::txt('Members') . ': ' . Lang::txt('Plugins'), 'members');
 
 if ($this->html)
 {

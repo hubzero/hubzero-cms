@@ -59,6 +59,12 @@ class Event extends \JTable
 		{
 			$this->setError(Lang::txt('EVENTS_MUST_HAVE_TITLE'));
 		}
+
+		if (!$this->scope_id && !$this->scope)
+		{
+			$this->scope = 'event';
+		}
+
 		if (trim($this->catid) == '' || trim($this->catid) == 0)
 		{
 			if ($this->scope == 'event')

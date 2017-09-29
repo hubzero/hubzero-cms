@@ -585,7 +585,7 @@ class Entry extends Relational
 				'domain'   => ''
 			);
 
-			$this->$property = Html::content('prepare', $this->get($field, ''), $params);
+			$this->$property = \Html::content('prepare', $this->get($field, ''), $params);
 		}
 
 		return $this->$property;

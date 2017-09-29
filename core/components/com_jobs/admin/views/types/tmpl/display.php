@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('type');
 
-Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES'), 'job');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -57,7 +57,7 @@ Toolbar::help('types');
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>

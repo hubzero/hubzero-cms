@@ -73,7 +73,16 @@ $noResult = count($this->results) > 0 ? false : true;
 <section class="main section">
 	<?php if ($noResult) { ?>
 		<div class="info">
-			<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
+			<?php if (isset($this->spellSuggestions)) { ?>
+				<h3><?php echo Lang::txt('COM_SEARCH_DIDYOUMEAN'); ?></h3>
+				<?php foreach ($this->spellSuggestions as $suggestion) { ?>
+					<?php foreach($suggestion->getWords() as $word) { ?>
+						<a href="<?php echo Route::url('search?terms=' . $word['word'] . '&section=content'); ?>"><?php echo $word['word']; ?></a>
+					<?php } ?>
+				<?php } ?>
+			<?php } else { ?>
+					<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
+			<?php } ?>
 		</div>
 	<?php } else { ?>
 		<div class="section-inner">
@@ -99,7 +108,7 @@ $noResult = count($this->results) > 0 ? false : true;
 					<div class="results list"><!-- add "tiled" to class for tiled view -->
 						<?php foreach ($this->results as $result): ?>
 							<?php if (is_array($result)): ?>
-								<div class="result">
+								<div class="result <?php echo (isset($result['access_level']) ? $result['access_level'] : 'public'); ?>" id="<?php echo $result['id']; ?>">
 									<div class="result-body">
 										<!-- Title : mandatory -->
 										<h3 class="result-title"><a href="<?php echo $result['url']; ?>"><b><!-- highlight portion --></b><?php echo $result['title']; ?></a></h3>
@@ -119,19 +128,28 @@ $noResult = count($this->results) > 0 ? false : true;
 													<span class="result-author"><?php echo $result['authorString']; ?></span>
 												</span>
 											<?php endif; ?>
+
+											<?php if (User::authorise('core.admin') && isset($result['access_level'])): ?>
+												<!-- Access -->
+												<span class="result-access">
+													Access: <?php echo $result['access_level']; ?>
+												</span>
+											<?php endif; ?>
 										</div>
 
-										<!-- Snippet : mandatory -->
-										<div class="result-snippet">
-											<?php echo $result['snippet']; ?>
-										</div><!-- end result snippet -->
+										<?php if (isset($result['snippet']) && $result['snippet'] != '…'): ?>
+											<!-- Snippet : mandatory -->
+											<div class="result-snippet">
+												<?php echo $result['snippet']; ?>
+											</div><!-- end result snippet -->
+										<?php endif; ?>
 
 										<?php if (isset($result['tags'])): ?>
 											<!-- Tags -->
 											<div class="result-tags">
 												<ul class="tags">
 													<?php foreach ($result['tags'] as $tag): ?>
-													<li><a class="tag" href="/search?terms=<?php echo $tag; ?>"><?php echo $tag; ?></a></li>
+													<li><a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>"><?php echo $tag; ?></a></li>
 													<?php endforeach; ?>
 												</ul>
 											</div>

@@ -67,9 +67,22 @@ $primary     = Request::getWord('primary', false);
 
 // use some reflections to inspect plugins for special behavior (added for shibboleth)
 $refl = array();
-foreach ($this->authenticators as $a):
+$login_provider_html = "";
+foreach ($this->authenticators as $a)
+{
 	$refl[$a['name']] = new \ReflectionClass("plgAuthentication{$a['name']}");
-endforeach;
+	if ($refl[$a['name']]->hasMethod('onRenderOption'))
+	{
+		$html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $this->returnQueryString);
+		$login_provider_html .= is_array($html) ? implode("\n", $html) : $html;
+	}
+	else
+	{
+		$login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString) . '">';
+		$login_provider_html .= '<div class="signin">' . Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+		$login_provider_html .= '</a>';
+	}
+}
 ?>
 <?php if ($this->params->get('show_page_title', 1)) : ?>
 	<header id="content-header">
@@ -94,7 +107,7 @@ endforeach;
 					<?php endif; ?>
 				</div>
 				<div class="lower">
-					<div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(NULL, $this->returnQueryString) : Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $this->authenticators[$primary]['display']); ?></div>
+					<div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(null, $this->returnQueryString) : Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $this->authenticators[$primary]['display']); ?></div>
 				</div>
 			</div>
 		</a>
@@ -108,20 +121,10 @@ endforeach;
 					<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
 				<?php endif; ?>
 			</div>
-			<div class="default" style="display:<?php echo ($primary || count($this->authenticators) == 0) ? 'none' : 'block'; ?>;">
+			<div class="default" style="display:<?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>;">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_CHOOSE_METHOD'); ?></div>
 				<div class="options">
-					<?php foreach ($this->authenticators as $a) : ?>
-							<?php
-								if ($refl[$a['name']]->hasMethod('onRenderOption') && ($html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(NULL, $this->returnQueryString))):
-									echo is_array($html) ? implode("\n", $html) : $html;
-								else:
-							?>
-								<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
-									<div class="signin"><?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']); ?></div>
-								</a>
-							<?php endif; ?>
-					<?php endforeach; ?>
+					<?php echo $login_provider_html; ?>
 				</div>
 				<?php if (isset($this->local) && $this->local) : ?>
 					<div class="or"></div>
@@ -132,7 +135,7 @@ endforeach;
 					</div>
 				<?php endif; ?>
 			</div>
-			<div class="hz" style="display:<?php echo ($primary == 'hubzero' || count($this->authenticators) == 0) ? 'block' : 'none'; ?>;">
+			<div class="hz" style="display:<?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>;">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
@@ -190,7 +193,7 @@ endforeach;
 		</div>
 	<?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
 		<p class="create">
-			<a href="<?php echo Request::base(true); ?>/register<?php echo ($this->return ? '?return=' . $this->return : ''); ?>" class="register">
+			<a href="<?php echo Request::base(true); ?>/register<?php echo $this->return ? '?return=' . $this->return : ''; ?>" class="register">
 				<?php echo Lang::txt('COM_USERS_LOGIN_CREATE_ACCOUNT'); ?>
 			</a>
 		</p>

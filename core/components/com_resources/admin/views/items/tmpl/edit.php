@@ -36,7 +36,7 @@ $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . $text, 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . $text, 'resources');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::spacer();

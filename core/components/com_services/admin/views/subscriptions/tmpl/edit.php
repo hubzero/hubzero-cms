@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUCSCRIPTIONS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUCSCRIPTIONS'), 'services');
 Toolbar::save();
 Toolbar::cancel();
 

@@ -232,11 +232,10 @@ class Stats extends \JTable
 		$objAA = new Activity($this->_db);
 		$recentlyActive = $tbl->getCount(array('exclude' => $exclude, 'timed' => $pastMonth, 'active' => 1), true);
 
-		$perc = round(($recentlyActive * 100)/$active) . '%';
 		$stats['activity'] = array(
 			'total'   => $objAA->getActivityStats($include, 'total'),
 			'average' => $objAA->getActivityStats($include, 'average'),
-			'usage'   => $perc
+			'usage'   => $recentlyActive
 		);
 
 		$stats['topActiveProjects'] = $objAA->getTopActiveProjects($exclude, 5, $publicOnly);
@@ -284,7 +283,6 @@ class Stats extends \JTable
 			$fAverage = number_format($fTotal/$validCount, 0);
 			$fUsage   = $repo->getStats($validProjects, 'usage');
 			$fDSpace  = $repo->getStats($validProjects, 'diskspace');
-			$fCommits = $repo->getStats($validProjects, 'commitCount');
 			$pDSpace  = $repo->getStats($validProjects, 'pubspace');
 
 			$perc = round(($fUsage * 100)/$active) . '%';
@@ -294,7 +292,6 @@ class Stats extends \JTable
 				'average'   => $fAverage,
 				'usage'     => $perc,
 				'diskspace' => \Hubzero\Utility\Number::formatBytes($fDSpace),
-				'commits'   => $fCommits,
 				'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace)
 			);
 		}

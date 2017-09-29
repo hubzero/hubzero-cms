@@ -41,7 +41,7 @@ use Config;
 use Lang;
 use stdClass;
 
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS .'facet.php';
+require_once \Component::path('com_search') . DS . 'models' . DS . 'solr' . DS .'facet.php';
 
 /**
  * Search controller class
@@ -60,7 +60,7 @@ class Solr extends SiteController
 		$query = new \Hubzero\Search\Query($config);
 
 		$terms = Request::getVar('terms', '');
-		$limit = Request::getInt('limit', 10);
+		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('start', 0);
 		$sortBy = Request::getVar('sortBy', '');
 		$sortDir = Request::getVar('sortDir', '');
@@ -84,7 +84,7 @@ class Solr extends SiteController
 		$filters = Request::getVar('filters', array());
 
 		// To pass to the view
-		$urlQuery = '?terms='.$terms;
+		$urlQuery = '?terms=' . $terms;
 
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
@@ -94,22 +94,41 @@ class Solr extends SiteController
 
 		if ($type != null)
 		{
-			$facet = Facet::all()->whereEquals('id', $type)->limit(1)->row();
+			$facet = Facet::all()
+				->whereEquals('id', $type)
+				->limit(1)
+				->row();
 			$query->addFilter('Type', $facet->facet);
 
 			// Add a type
-			$urlQuery .= '&type='.$type;
-		}
-
-		// Administrators can see all records
-		$isAdmin = User::authorise('core.admin', 'com_users');
-		if ($isAdmin)
-		{
-			$query = $query->query($terms)->limit($limit)->start($start);
+			$urlQuery .= '&type=' . $type;
 		}
 		else
 		{
-			$query = $query->query($terms)->limit($limit)->start($start)->restrictAccess();
+			$facets = Facet::all()
+				->whereEquals('state', 1)
+				->whereEquals('parent_id', 0)
+				->rows()
+				->toObject();
+
+			$allfacets = array();
+			foreach ($facets as $facet)
+			{
+				$allfacets[] = $facet->facet;
+			}
+
+			if (!empty($allfacets))
+			{
+				$query->addFilter('Type', '(' . implode(' OR ', $allfacets) . ')');
+			}
+		}
+
+		$query = $query->query($terms)->limit($limit)->start($start);
+
+		// Administrators can see all records
+		if (!User::authorise('core.admin'))
+		{
+			$query->restrictAccess();
 		}
 
 		if (isset($locationFilter))
@@ -118,8 +137,8 @@ class Solr extends SiteController
 		}
 
 		// Build the reset of the query string
-		$urlQuery .= '&limit='.$limit;
-		$urlQuery .= '&start='.$start;
+		$urlQuery .= '&limit=' . $limit;
+		$urlQuery .= '&start=' . $start;
 
 		// Perform the query
 		try
@@ -128,16 +147,23 @@ class Solr extends SiteController
 		}
 		catch (\Solarium\Exception\HttpException $e)
 		{
-			//@TODO: 'Did you mean' functionality.
 			$query->query('')->limit($limit)->start($start)->run();
 			\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
 		}
 
-		$results = $query->getResults();
+		$results  = $query->getResults();
 		$numFound = $query->getNumFound();
 
 		// Format the results (highlighting, snippet, etc)
 		$results = $this->formatResults($results, $terms);
+
+		// 'Did you mean' functionality.
+		if ($terms != '' && $numFound == 0)
+		{
+			// Get MoreLikeThis results
+			$spellSuggestions = $query->spellCheck($terms);
+			$this->view->spellSuggestions = $spellSuggestions;
+		}
 
 		$this->view->pagination = new \Hubzero\Pagination\Paginator($numFound, $start, $limit);
 		$this->view->pagination->setAdditionalUrlParam('terms', $terms);
@@ -160,6 +186,15 @@ class Solr extends SiteController
 			$this->view->queryString = '';
 			$this->view->results = null;
 		}
+
+		// Set breadcrumbs
+		\Pathway::append(
+			Lang::txt('COM_SEARCH'),
+			'index.php?option=' . $this->_option
+		);
+
+		// Set the document title
+		\Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
 
 		$this->view->terms = $terms;
 		$this->view->type = $type;
@@ -191,12 +226,16 @@ class Solr extends SiteController
 			{
 				$config = Component::params('com_search');
 				$query = new \Hubzero\Search\Query($config);
-				$results = $query
-					->query($facet->facet . ' AND ' . $terms)
+				$query->query($facet->facet . ' AND ' . $terms)
 					->limit($limit)
-					->start($start)
-					->restrictAccess()
-					->run()->getResults();
+					->start($start);
+				if (!User::authorise('core.admin'))
+				{
+					$query->restrictAccess();
+				}
+				$results = $query
+					->run()
+					->getResults();
 
 				// Get the total number of records
 				$total = $query->getNumFound();
@@ -214,15 +253,17 @@ class Solr extends SiteController
 	/**
 	 * Format the results
 	 *
-	 * @param  $results
-	 * @param  $terms
+	 * @param   array  $results
+	 * @param   array  $terms
+	 * @return  array
 	 */
 	private function formatResults($results, $terms)
 	{
-		$highlightOptions = array('format' =>'<strong>\1</strong>',
-					  'html' => false,
-					  'regex'  => "|%s|iu"
-					  );
+		$highlightOptions = array(
+			'format' =>'<strong>\1</strong>',
+			'html'   => false,
+			'regex'  => "|%s|iu"
+		);
 
 		$snippetFields = array('description', 'fulltext', 'abstract');
 
@@ -251,10 +292,8 @@ class Solr extends SiteController
 						$r = strip_tags($r);
 					}
 
-					/** 
-					 * Generate the snippet
-					 * A snippet is the search result text which is displayed
-					 **/
+					// Generate the snippet
+					// A snippet is the search result text which is displayed
 					if (in_array($field, $snippetFields))
 					{
 						$snippet .= $r . " ";
@@ -266,9 +305,9 @@ class Solr extends SiteController
 				$snippet = str_replace("\r", '', $snippet);
 				$snippet = str_replace("<br/>", '', $snippet);
 				$snippet = str_replace("<br>", '', $snippet);
-				$snippet  = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+				$snippet = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
 				$snippet = \Hubzero\Utility\String::highlight($snippet, $terms, $highlightOptions);
-				$result['snippet'] = $snippet;
+				$result['snippet'] = trim($snippet);
 
 				if (isset($result['author']))
 				{
@@ -287,13 +326,15 @@ class Solr extends SiteController
 						}
 						$authorCnt++;
 					}
-					$result['authorString'] = $authorString; }
+					$result['authorString'] = $authorString;
+				}
 			}
 			else
 			{
 				$result = $override;
 			}
 		} // End foreach results
-			return $results;
+
+		return $results;
 	}
 }

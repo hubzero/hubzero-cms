@@ -56,9 +56,9 @@ defined('_HZEXEC_') or die();
 						password.on('keyup', function(){
 							// Create an ajax call to check the potential password
 							$.ajax({
-								url: "/api/members/checkpass",
+								url: "<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=checkpass&no_html=1', false); ?>", //"/api/members/checkpass",
 								type: "POST",
-								data: "password1="+password.val(),
+								data: "password1="+password.val()+"&user_id=<?php echo $this->profile->get('id', 0); ?>&option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&task=checkpass&no_html=1",
 								dataType: "json",
 								cache: false,
 								success: function(json) {

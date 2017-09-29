@@ -98,8 +98,8 @@ $rows = $this->model->entries('list', $this->filters);
 							<?php if (!$setup && !$row->isPublic()) { ?>
 								<span class="s-private">&nbsp;</span>
 							<?php } ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $row->get('alias')); ?>">
-								<img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $row->get('alias') . '&task=media'); ?>" alt="" />
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<img src="<?php echo $row->picture(); ?>" alt="" />
 								<span class="block"><?php echo Hubzero\Utility\String::truncate($this->escape($row->get('title')), 30); ?></span>
 							</a>
 							<?php if ($setup) { ?>

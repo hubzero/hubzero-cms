@@ -82,5 +82,14 @@ if ($loginRequired && $controllerRequested != 'overview')
 	}
 }
 
+// Update any restrictions that were entered before the account existed
+// @TODO: Move to a plugin that responds after login?
+if (!\User::isGuest())
+{
+	require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
+
+	\Components\Storefront\Admin\Helpers\RestrictionsHelper::updateUser(\User::get('id'), \User::get('username'));
+}
+
 $controller->execute();
 $controller->redirect();

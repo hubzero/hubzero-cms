@@ -30,13 +30,10 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Utility class working with system
  */
-abstract class JHtmlSystem
+class ComponentsSystemHelpersHtmlSystem
 {
 	/**
 	 * Method to generate a string message for a value

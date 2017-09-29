@@ -301,7 +301,9 @@ if ($mode != 'preview')
 										case "pdf":
 										default:
 											if ($grandchild->logicaltype == 14) {
-												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . Filesystem::extension($grandchild->path) . ')</a>'."\n";
+												$ext = Filesystem::extension($grandchild->path);
+												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
+												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a>'."\n";
 											} elseif ($grandchild->logicaltype == 51) {
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 											} else {

@@ -80,3 +80,14 @@
 	.state.synced:hover:before {
 		color: #333;
 	}
+
+	.notice {
+		background-color: #fff0db;
+		color: #ffa44c;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		padding: 1em;
+	}

@@ -34,19 +34,27 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title(Lang::txt('Projects'), 'user.png');
+Toolbar::title(Lang::txt('Projects'), 'projects');
 
 // Only display if enabled
-if ($this->config->get('custom_profile') == 'custom')
+if (User::authorise('core.manage', $this->option . '.component') && $this->config->get('custom_profile') == 'custom')
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
 	Toolbar::spacer();
 }
-Toolbar::archiveList();
-Toolbar::editList();
-Toolbar::spacer();
-Toolbar::preferences('com_projects', '550');
-
+if (User::authorise('core.edit.state', $this->option . '.component'))
+{
+	Toolbar::archiveList();
+}
+if (User::authorise('core.edit', $this->option . '.component'))
+{
+	Toolbar::editList();
+}
+if (User::authorise('core.admin', $this->option . '.component'))
+{
+	Toolbar::spacer();
+	Toolbar::preferences('com_projects', '550');
+}
 
 Html::behavior('tooltip');
 
@@ -75,10 +83,6 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<?php if ($this->getError()) { ?>
-			<p class="error"><?php echo $this->getError(); ?></p>
-		<?php } ?>
-
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>:</label>
@@ -140,11 +144,11 @@ function submitbutton(pressbutton)
 		<tbody>
 			<?php
 			$k = 0;
-			$filterstring  = ($this->filters['sortby']) ? '&amp;sort=' . $this->filters['sortby'] : '';
+			$filterstring = ($this->filters['sortby']) ? '&amp;sort=' . $this->filters['sortby'] : '';
 
 			if ($this->rows)
 			{
-				for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+				for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				{
 					$row = $this->rows[$i];
 
@@ -186,7 +190,7 @@ function submitbutton(pressbutton)
 					$cloud = new \Components\Projects\Models\Tags($row->id);
 					$tags  = $cloud->render('cloud');
 
-					$params = new \Hubzero\Config\Registry( $row->params );
+					$params = new \Hubzero\Config\Registry($row->params);
 					$quota  = $params->get('quota', $this->defaultQuota);
 					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 
@@ -200,7 +204,7 @@ function submitbutton(pressbutton)
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td>
-							<?php echo Html::grid('id', $i, $row->id, false, 'id' ); ?>
+							<?php echo Html::grid('id', $i, $row->id, false, 'id'); ?>
 						</td>
 						<td class="priority-5">
 							<?php echo $row->id; ?>
@@ -209,8 +213,8 @@ function submitbutton(pressbutton)
 							<img src="<?php echo rtrim($base, '/') . '/projects/' . $row->alias . '/media'; ?>" width="30" height="30" alt="<?php echo $this->escape($row->alias); ?>" />
 						</td>
 						<td>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
-							<strong><?php echo stripslashes($row->alias); ?></strong>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo $this->escape($row->title); ?></a><br />
+							<strong><?php echo $this->escape($row->alias); ?></strong>
 							<?php if ($tags) { ?>
 								<span class="project-tags block">
 									<?php echo $tags; ?>

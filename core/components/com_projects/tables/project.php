@@ -288,10 +288,6 @@ class Project extends \JTable
 		{
 			$query .= " AND p.setup_stage >= $setup_complete ";
 		}
-		if (isset($filters['timed']) && isset($filters['active']))
-		{
-			$query .= " GROUP BY p.id ";
-		}
 
 		if (!$filters['count'])
 		{

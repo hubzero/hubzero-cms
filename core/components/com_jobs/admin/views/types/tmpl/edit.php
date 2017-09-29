@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('type');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES') . ': ' . $text, 'job');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();

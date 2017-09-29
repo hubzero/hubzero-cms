@@ -589,7 +589,7 @@ class Citation extends \JTable
 	{
 		$stats = array();
 
-		$this->_db->setQuery("SELECT `year` FROM $this->_tbl WHERE `published`=1 AND `year` > 0 AND (`scope`='' OR `scope` IS NULL) ORDER BY `year` ASC LIMIT 1");
+		$this->_db->setQuery("SELECT `year` FROM $this->_tbl WHERE `published`=1 AND `year` > 0 AND (`scope`='' OR `scope` IS NULL OR `scope`='hub') ORDER BY `year` ASC LIMIT 1");
 		$year = intval($this->_db->loadResult());
 		$year = $year ? $year : gmdate("Y");
 
@@ -598,11 +598,11 @@ class Citation extends \JTable
 			$stats[$i] = array();
 
 			// Not supported in PLG_GROUPS_CITATIONS or PLG_MEMBERS_CITATIONS
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope='' OR scope IS NULL)");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope='' OR scope IS NULL OR `scope`='hub')");
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 
 			// Not supported in PLG_GROUPS_CITATIONS or PLG_MEMBERS_CITATIONS
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope='' OR scope IS NULL)");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope='' OR scope IS NULL OR `scope`='hub')");
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
 

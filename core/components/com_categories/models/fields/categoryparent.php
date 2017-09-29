@@ -1,35 +1,58 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('JPATH_BASE') or die;
+namespace Hubzero\Form\Fields;
 
-JFormHelper::loadFieldClass('list');
+use stdClass;
+use Request;
+use Html;
+use Lang;
+use App;
 
 /**
- * Form Field class for the Joomla Framework.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_categories
- * @since		1.6
+ * CategoryParent form field
  */
-class JFormFieldCategoryParent extends JFormFieldList
+class CategoryParent extends Select
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var  string
 	 */
 	protected $type = 'CategoryParent';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return  array  The field option objects.
 	 */
 	protected function getOptions()
 	{
@@ -38,61 +61,74 @@ class JFormFieldCategoryParent extends JFormFieldList
 		$name = (string) $this->element['name'];
 
 		// Let's get the id for the current item, either category or content item.
-		$jinput = JFactory::getApplication()->input;
 		// For categories the old category is the category id 0 for new category.
 		if ($this->element['parent'])
 		{
-			$oldCat = $jinput->get('id',0);
+			$oldCat = Request::getInt('id', 0);
 			$oldParent = $this->form->getValue($name);
 		}
 		else
 		// For items the old category is the category they are in when opened or 0 if new.
 		{
-			$thisItem = $jinput->get('id',0);
+			$thisItem = Request::getInt('id', 0);
 			$oldCat = $this->form->getValue($name);
 		}
 
 		$db    = App::get('db');
-		$query = $db->getQuery(true);
+		$query = $db->getQuery();
 
-		$query->select('a.id AS value, a.title AS text, a.level');
-		$query->from('#__categories AS a');
-		$query->join('LEFT', $db->quoteName('#__categories').' AS b ON a.lft > b.lft AND a.rgt < b.rgt');
+		$query->select('a.id', 'value')
+			->select('a.title', 'text')
+			->select('a.level')
+			->from('#__categories', 'a')
+			->joinRaw('#__categories AS b', 'a.lft > b.lft AND a.rgt < b.rgt', 'left');
 
 		// Filter by the type
 		if ($extension = $this->form->getValue('extension'))
 		{
-			$query->where('(a.extension = '.$db->quote($extension).' OR a.parent_id = 0)');
+			$query->whereEquals('a.extension', $extension, 1)
+				->orWhereEquals('a.parent_id', '0', 1)
+				->resetDepth();
 		}
+
 		if ($this->element['parent'])
 		{
 		// Prevent parenting to children of this item.
 			if ($id = $this->form->getValue('id'))
 			{
-				$query->join('LEFT', $db->quoteName('#__categories').' AS p ON p.id = '.(int) $id);
-				$query->where('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
+				$query->joinRaw('#__categories AS p', 'p.id = '.(int) $id, 'left');
+				$query->whereRaw('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 
-				$rowQuery = $db->getQuery(true);
-				$rowQuery->select('a.id AS value, a.title AS text, a.level, a.parent_id');
-				$rowQuery->from('#__categories AS a');
-				$rowQuery->where('a.id = ' . (int) $id);
-				$db->setQuery($rowQuery);
+				$rowQuery = $db->getQuery();
+				$rowQuery->select('a.id', 'value')
+					->select('a.title', 'text')
+					->select('a.level')
+					->select('a.parent_id')
+					->from('#__categories', 'a')
+					->whereEquals('a.id', (int) $id);
+				$db->setQuery($rowQuery->toString());
 				$row = $db->loadObject();
 			}
 		}
-		$query->where('a.published IN (0,1)');
-		$query->group('a.id, a.title, a.level, a.lft, a.rgt, a.extension, a.parent_id');
-		$query->order('a.lft ASC');
+		$query->whereIn('a.published', array(0, 1))
+			->group('a.id')
+			->group('a.title')
+			->group('a.level')
+			->group('a.lft')
+			->group('a.rgt')
+			->group('a.extension')
+			->group('a.parent_id')
+			->order('a.lft', 'ASC');
 
 		// Get the options.
-		$db->setQuery($query);
+		$db->setQuery($query->toString());
 
 		$options = $db->loadObjectList();
 
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			throw new Exception($db->getErrorMsg(), 500);
+			throw new \Exception($db->getErrorMsg(), 500);
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
@@ -104,7 +140,7 @@ class JFormFieldCategoryParent extends JFormFieldList
 				$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
 			}
 
-			$options[$i]->text = str_repeat('- ', $options[$i]->level).$options[$i]->text;
+			$options[$i]->text = str_repeat('- ', $options[$i]->level) . $options[$i]->text;
 		}
 
 		// Initialise variables.
@@ -117,7 +153,7 @@ class JFormFieldCategoryParent extends JFormFieldList
 				// To take save or create in a category you need to have create rights for that category
 				// unless the item is already in that category.
 				// Unset the option if the user isn't authorised for it. In this field assets are always categories.
-				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true )
+				if (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 				{
 					unset($options[$i]);
 				}
@@ -126,13 +162,12 @@ class JFormFieldCategoryParent extends JFormFieldList
 		// If you have an existing category id things are more complex.
 		else
 		{
-			//$categoryOld = $this->form->getValue($name);
 			foreach ($options as $i => $option)
 			{
 				// If you are only allowed to edit in this category but not edit.state, you should not get any
 				// option to change the category parent for a category or the category for a content item,
 				// but you should be able to save in that category.
-				if (User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true)
+				if (\User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true)
 				{
 					if ($option->value != $oldCat)
 					{
@@ -142,7 +177,7 @@ class JFormFieldCategoryParent extends JFormFieldList
 				}
 				// However, if you can edit.state you can also move this to another category for which you have
 				// create permission and you should also still be able to save in the current category.
-				else if ((User::authorise('core.create', $extension . '.category.' . $option->value) != true) && $option->value != $oldCat)
+				else if ((\User::authorise('core.create', $extension . '.category.' . $option->value) != true) && $option->value != $oldCat)
 				{
 					echo 'x';
 					unset($options[$i]);

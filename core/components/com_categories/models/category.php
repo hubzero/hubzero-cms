@@ -289,7 +289,10 @@ class Category extends Nested
 		$file = __DIR__ . '/forms/category.xml';
 		$file = Filesystem::cleanPath($file);
 
+		Form::addFieldPath(__DIR__ . '/fields');
+
 		$form = new Form('categories', array('control' => 'fields'));
+
 		if (!$form->loadFile($file, false, '//form'))
 		{
 			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

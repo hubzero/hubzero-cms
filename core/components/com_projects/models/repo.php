@@ -1566,7 +1566,7 @@ class Repo extends Object
 				$engine = 'nogit';
 				if ($this->get('project'))
 				{
-					$engine = $this->get('project')->params->get('engine');
+					$engine = $this->get('project')->params->get('engine', 'nogit');
 				}
 				if ($engine == 'git')
 				{
@@ -1596,11 +1596,15 @@ class Repo extends Object
 				}
 				else
 				{
+					$commits = 0; // There are no commits in nogit, stub for reports
 					$helper = new Helpers\Nogit($path);
-					$count = count($helper->getFiles());
+					$recursive = true;
+					$subdir = '';
+					$count = count($helper->getFiles($subdir, $recursive));
+					$files = $files + $count; // Count the files in a project and add to total for a report
 					if ($count > 1)
 					{
-						$usage++;
+						$usage++; // A project is using files, increment for reports
 					}
 				}
 			}

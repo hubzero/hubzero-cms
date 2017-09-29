@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUDIT'));
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUDIT'), 'resources');
 
 $this->css('audit.css');
 

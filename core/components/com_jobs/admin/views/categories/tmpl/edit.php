@@ -37,7 +37,7 @@ $canDo = \Components\Jobs\Helpers\Permissions::getActions('category');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_CATEGORIES') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_CATEGORIES') . ': ' . $text, 'category');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();

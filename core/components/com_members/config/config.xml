@@ -225,10 +225,26 @@ HUBzero is a registered trademark of Purdue University.
 			step="1"
 			default="1">
 		</field>
+		<field
+			name="login_log_timeframe"
+			type="list"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_LOG_TIMEFRAME_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_LOG_TIMEFRAME_DESC"
+			default="">
+			<option value="">Never</option>
+			<option value="1 week">1 week</option>
+			<option value="2 weeks">2 weeks</option>
+			<option value="3 weeks">3 weeks</option>
+			<option value="1 month">1 Month</option>
+			<option value="2 months">2 Months</option>
+			<option value="3 months">3 Months</option>
+			<option value="6 months">6 Months</option>
+			<option value="1 year">1 Year</option>
+		</field>
 		<field type="spacer" hr="false" />
 		<field name="fail2ban" type="list" default="0" label="Fail2Ban" description="Trigger Fail2Ban when the threshold of blocked accounts per IP address is met.">
-			<option value="1">On</option>
-			<option value="0">Off</option>
+			<option value="1">JOn</option>
+			<option value="0">JOff</option>
 		</field>
 		<field
 			name="blocked_accounts_limit"

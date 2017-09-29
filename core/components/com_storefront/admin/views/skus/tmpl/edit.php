@@ -42,7 +42,7 @@ if (isset($skuMeta['inventoryNotificationThreshold']) && !empty($skuMeta['invent
 	$inventoryNotificationThreshold = $skuMeta['inventoryNotificationThreshold'];
 }
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_SKU') . ': ' . $text, 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_SKU') . ': ' . $text, 'storefront');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>

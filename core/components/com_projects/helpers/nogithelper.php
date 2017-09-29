@@ -174,18 +174,18 @@ class Nogit extends Object
 	 * @param   string  $subdir  Local directory path
 	 * @return  array
 	 */
-	public function getFiles($subdir = '', $showAll = false, $recursive = false)
+	public function getFiles($subdir = '', $recursive = false)
 	{
 		// Make sure subdir has a trailing slash
 		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
 		// Get list of all files
-		if ($showAll)
+		if ($recursive)
 		{
-			$out = $this->call("find -printf '%P\n' -not -path -'.'" . escapeshellarg($subdir));
+			$out = $this->call("find ./" . escapeshellarg($subdir) . " -mindepth 1 -name '.git*' -prune -o -printf '%P\n' -not -path -'.'");
 		}
 		else
 		{
-			$out = $this->call("ls -A1 " . escapeshellarg("./" . $subdir));
+			$out = $this->call("find ./" . escapeshellarg($subdir) . " -mindepth 1 -maxdepth 1 -name '.git*' -prune -o -printf '%P\n' -not -path -'.'");
 		}
 
 		return (empty($out)) ? array() : $out;

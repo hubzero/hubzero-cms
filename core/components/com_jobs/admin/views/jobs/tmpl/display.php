@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('job');
 
-Toolbar::title(Lang::txt('COM_JOBS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS'), 'job');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_jobs', '550');
@@ -86,11 +86,11 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_JOBS_COL_CODE'); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_JOBS_COL_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_JOBS_COL_COMPANY', 'location', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_JOBS_COL_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_JOBS_COL_OWNER', 'adminposting', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_JOBS_COL_ADDED', 'added', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_JOBS_COL_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_JOBS_COL_COMPANY', 'location', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_JOBS_COL_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_JOBS_COL_OWNER', 'adminposting', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_JOBS_COL_ADDED', 'added', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_JOBS_EXPIRATION'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_JOBS_COL_APPLICATIONS'); ?></th>
 			</tr>

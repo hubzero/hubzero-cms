@@ -37,6 +37,11 @@ $canDo = Components\Kb\Admin\Helpers\Permissions::getActions('article');
 $ttle = Lang::txt('COM_KB_ARTICLES');
 
 Toolbar::title(Lang::txt('COM_KB') . ': ' . $ttle, 'kb');
+if ($canDo->get('core.admin'))
+{
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
+}
 if ($canDo->get('core.edit.state'))
 {
 	Toolbar::publishList();

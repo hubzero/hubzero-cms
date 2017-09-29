@@ -30,13 +30,10 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Utility class working with phpsetting
  */
-abstract class JHtmlPhpSetting
+class ComponentsSystemHelpersHtmlPhpsetting
 {
 	/**
 	 * Method to generate a boolean message for a value
@@ -46,7 +43,7 @@ abstract class JHtmlPhpSetting
 	 */
 	public static function boolean($val)
 	{
-		return ($val ? '<span class="state on"><span>' . Lang::txt('JON') : '<span class="state off"><span>' . Lang::txt('JOFF')) . '</span></span>' ;
+		return ($val ? '<span class="state on"><span>' . Lang::txt('JON') : '<span class="state off"><span>' . Lang::txt('JOFF')) . '</span></span>';
 	}
 
 	/**
@@ -57,7 +54,7 @@ abstract class JHtmlPhpSetting
 	 */
 	public static function set($val)
 	{
-		return ($val ? '<span class="state yes"><span>' . Lang::txt('JYES') : '<span class="state no"><span>' . Lang::txt('JNO')) . '</span></span>' ;
+		return ($val ? '<span class="state yes"><span>' . Lang::txt('JYES') : '<span class="state no"><span>' . Lang::txt('JNO')) . '</span></span>';
 	}
 
 	/**
