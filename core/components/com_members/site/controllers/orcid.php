@@ -215,7 +215,7 @@ class Orcid extends SiteController
 		}
 		return $records;
 	}
-
+	
 	/**
 	 * Get ORCID record searching access token
 	 *
@@ -262,7 +262,6 @@ class Orcid extends SiteController
 	private function _fetchXml($fname, $lname, $iname)
 	{
 		$srv = $this->config->get('orcid_service', 'members');
-
 		// Search by first name, last name, institution name
 		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/search/?q=';
 		$tkn = $this->_accessToken;
@@ -285,8 +284,9 @@ class Orcid extends SiteController
 		}
 
 		$url .= implode('+AND+', $bits);
-
-		$header = array('Accept: application/vnd.orcid+xml');
+    
+		$header = array('Accept: application/vnd.orcid+xml');	
+    
 		if ($srv != 'public')
 		{
 			$header[] = 'Authorization: Bearer ' . $tkn;
@@ -299,7 +299,7 @@ class Orcid extends SiteController
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
 		$curlData = curl_exec($initedCurl);
-
+    
 		$xmlStr = htmlentities($curlData);
 		$xmlStr = preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
 		$xmlStr = html_entity_decode($xmlStr);
@@ -408,11 +408,11 @@ class Orcid extends SiteController
 		$returnOrcid = Request::getInt('return', 0);
 		$isRegister  = $returnOrcid == 1;
 		$records = array();
-
+    
 		$ins_option = $this->config->get('orcid_institution_field_option');
-
-		$ins_name = $this->config->get('orcid_user_institution_name', 'Purdue University');
-
+		
+		$ins_name = $this->config->get('orcid_user_institution_name');
+		
 		$callbackPrefix = 'HUB.Members.Profile.';
 		if ($isRegister)
 		{
@@ -421,15 +421,15 @@ class Orcid extends SiteController
 
 		// The default option is searching by first name and last name. 
 		$defSearch = array();
-
+		
 		// The configurable option is searching by first name, last name, and instituation name
 		$optSearch = array();
-
+		
 		$firstNameSearch = $lastNameSearch = $firstNameOptSearch = $lastNameOptSearch = array();
-
+		
 		// Get ORCID record public access token
 		$token = $this->_getAccessToken();
-
+		
 		if (false == $token)
 		{
 			return;
@@ -444,7 +444,7 @@ class Orcid extends SiteController
 				{
 					$defSearch = $this->_parseTree($root);
 				}
-
+        
 				// Searching by first name, last name, and institution name when the institution option is enabled.
 				if ($ins_option)
 				{
@@ -465,7 +465,7 @@ class Orcid extends SiteController
 						$firstNameSearch = $this->_parseTree($root);
 					}
 				}
-
+				
 				if (empty($first_name) && !empty($last_name))
 				{
 					$root = $this->_fetchXml(null, $last_name, null);
@@ -474,7 +474,7 @@ class Orcid extends SiteController
 						$lastNameSearch = $this->_parseTree($root);
 					}
 				}
-
+        
 				if ($ins_option)
 				{
 					if (!empty($first_name) && empty($last_name))
@@ -485,7 +485,7 @@ class Orcid extends SiteController
 							$firstNameOptSearch = $this->_parseTree($root);
 						}
 					}
-
+          
 					if (empty($first_name) && !empty($last_name))
 					{
 						$root = $this->_fetchXml(null, $last_name, $ins_name);
@@ -510,7 +510,7 @@ class Orcid extends SiteController
 				{
 					$records = array_merge($records, $firstNameSearch, $firstNameOptSearch);
 				}
-
+				
 				if (empty($first_name) && !empty($last_name))
 				{
 					$records = array_merge($records, $lastNameSearch, $lastNameOptSearch);
@@ -523,18 +523,18 @@ class Orcid extends SiteController
 			{
 				$records = array_merge($records, $defSearch);
 			}
-
+			
 			if (!empty($first_name) && empty($last_name))
 			{
 				$records = array_merge($records, $firstNameSearch);
 			}
-
+			
 			if (empty($first_name) && !empty($last_name))
 			{
 				$records = array_merge($records, $lastNameSearch);
-			}
+			}	
 		}
-
+		
 		ob_end_clean();
 		ob_start();
 
