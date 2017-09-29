@@ -106,12 +106,6 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
 							<input type="text" id="last-name" name="last-name" value="<?php echo $this->escape($lname); ?>" />
 						</label>
 					</div>
-					<div class="col span4 omega">
-						<label for="email">
-							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_EMAIL'); ?>
-							<input type="text" id="email" name="email" value="<?php echo $this->escape($email); ?>" />
-						</label>
-					</div>
 				</div>
 
 				<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(Request::base(true), '/'); ?>" />
@@ -126,7 +120,7 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
 					</div>
 					<div class="col span4 omega">
 						<p>
-							<a id="get-orcid-results" class="btn" onclick="<?php echo 'HUB.Orcid.fetchOrcidRecords(\'' . $this->escape($fname) . '\', \'' . $this->escape($lname) . '\', \'' . $this->escape($email) . '\');'; ?>"><?php echo Lang::txt('Search ORCID'); ?></a>
+							<a id="get-orcid-results" class="btn" onclick="<?php echo 'HUB.Orcid.fetchOrcidRecords(\'' . $this->escape($fname) . '\', \'' . $this->escape($lname) . '\');'; ?>"><?php echo Lang::txt('Search ORCID'); ?></a>
 						</p>
 					</div>
 				</div>
