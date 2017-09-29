@@ -82,8 +82,11 @@ class Solr extends SiteController
 		}
 
 		// Add categories for Facet functions (mainly counting the different categories)
-		$multifacet = $query->adapter->getFacetQuery('hubtypes');
-		$allFacets = Facet::all()->whereEquals('state', 1)->rows();
+		$multifacet = $query->adapter->getFacetMultiQuery('hubtypes');
+		$allFacets = Facet::all()
+			->whereEquals('state', 1)
+			->including('parentFacet')
+			->rows();
 		foreach ($allFacets as $facet)
 		{
 			$multifacet->createQuery($facet->getQueryName(), $facet->facet, array('root_type'));
@@ -94,6 +97,8 @@ class Solr extends SiteController
 		// To pass to the view
 		$urlQuery = '?terms=' . $terms;
 		$rootFacets = Facet::all()
+			->including('children')
+			->including('parentFacet')
 			->whereEquals('state', 1)
 			->whereEquals('parent_id', 0)
 			->rows();
@@ -214,51 +219,6 @@ class Solr extends SiteController
 		$this->view->display();
 	}
 
-	/**
-	 * Gets categories
-	 *
-	 * @param  $type
-	 * @param  $tersm
-	 * @param  $limit
-	 * @param  $start
-	 */
-	private function getCategories($type, $terms, $limit, $start)
-	{
-		$config = Component::params('com_search');
-		$query = new \Hubzero\Search\Query($config);
-
-		$facets = Facet::all()->whereEquals('state', 1)->rows()->toObject();
-
-		foreach ($facets as &$facet)
-		{
-			// Instantitate and get all results for a particular document type
-			try
-			{
-				$config = Component::params('com_search');
-				$query = new \Hubzero\Search\Query($config);
-				$query->query($facet->facet . ' AND ' . $terms)
-					->limit($limit)
-					->start($start);
-				if (!User::authorise('core.admin'))
-				{
-					$query->restrictAccess();
-				}
-				$results = $query
-					->run()
-					->getResults();
-
-				// Get the total number of records
-				$total = $query->getNumFound();
-				$facet->count = $total;
-			}
-			catch (\Solarium\Exception\HttpException $e)
-			{
-				$query->query('')->limit($limit)->start($start)->run();
-				\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
-			}
-		}
-		return $facets;
-	}
 
 	/**
 	 * Format the results
