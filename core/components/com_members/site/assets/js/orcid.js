@@ -19,9 +19,8 @@ HUB.Orcid = {
 
 		var firstName = $('#first-name').val();
 		var lastName = $('#last-name').val();
-		var email = $('#email').val();
 
-		if (!firstName && !lastName && !email) {
+		if (!firstName && !lastName) {
 			alert('Please fill at least one of the fields.');
 			return;
 		}
@@ -29,7 +28,7 @@ HUB.Orcid = {
 		// return param: 1 means return ORCID to use to finish registration, assumes registration page
 		// return param: 0 means do not return ORCID, assumes profile page
 		$.ajax({
-			url: $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=fetch&no_html=1&fname=' + firstName + '&lname=' + lastName + '&email=' + email + '&return=1',
+			url: $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=fetch&no_html=1&fname=' + firstName + '&lname=' + lastName + '&return=1',
 			type: 'GET',
 			success: function(data, status, jqXHR) {
 				$('#section-orcid-results').html(jQuery.parseJSON(data));
@@ -52,9 +51,9 @@ HUB.Orcid = {
 		window.parent.jQuery.fancybox.close();
 	},
 
-	createOrcid: function(fname, lname, email) {
+	createOrcid: function(fname, lname) {
 		var $ = jq,
-			uri = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email;
+			uri = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname;
 
 		$.ajax({
 			url: uri,
