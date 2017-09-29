@@ -1251,8 +1251,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($filename == '')
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=import'),
-				Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE'),
+				Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+				Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_MISSING_FILE'),
 				'error'
 			);
 			return;
@@ -1262,8 +1262,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($file->getSize() > 4000000)
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=import'),
-				Lang::txt('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
+				Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+				Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_FILE_TOO_BIG'),
 				'error'
 			);
 			return;
@@ -1272,7 +1272,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// make sure we dont have any file errors
 		if ($file->getError() > 0)
 		{
-			throw new Exception(Lang::txt('COM_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+				Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
+				'error'
+			);
+			return;
 		}
 
 		// call the plugins
@@ -1283,8 +1288,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!$citations)
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=import'),
-				Lang::txt('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
+				Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+				Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
 				'error'
 			);
 			return;
