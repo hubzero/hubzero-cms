@@ -411,7 +411,7 @@ class Orcid extends SiteController
 		
 		$ins_option = $this->config->get('orcid_institution_field_option');
 		
-		$ins_name = $this->config->get('orcid_user_institution_name', 'Purdue University');
+		$ins_name = $this->config->get('orcid_user_institution_name');
 		
 		$callbackPrefix = 'HUB.Members.Profile.';
 		if ($isRegister)
