@@ -65,7 +65,7 @@ class Orcid extends SiteController
 	 * @var  array
 	 */
 	protected $_accessToken;
-	
+
 	/**
 	 * A list of ORCID services that can be used
 	 *
@@ -77,7 +77,7 @@ class Orcid extends SiteController
 		'members' => 'api.orcid.org',
 		'sandbox' => 'api.sandbox.orcid.org'
 	);
-	
+
 	/**
 	 * OAuth tokens
 	 *
@@ -113,7 +113,7 @@ class Orcid extends SiteController
 			}
 		}
 	}
-	
+
 	/**
 	 * Query the ORCID user's name
 	 *
@@ -136,11 +136,11 @@ class Orcid extends SiteController
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
 
 		$curlData = curl_exec($initedCurl);
-		
+
 		$xmlStr = htmlentities($curlData);
-		
+
 		$xmlStr = preg_replace('/[a-zA-Z-]+[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
-		
+
 		$xmlStr = html_entity_decode($xmlStr);
 
 		if (!curl_errno($initedCurl))
@@ -153,7 +153,7 @@ class Orcid extends SiteController
 		}
 
 		curl_close($initedCurl);
-		
+
 		try
 		{
 			$root = simplexml_load_string($xmlStr);
@@ -162,9 +162,9 @@ class Orcid extends SiteController
 		{
 			$root = '';
 		}
-		
+
 		$name = array();
-		
+
 		if (!empty($root))
 		{
 			foreach ($root->children() as $child)
@@ -215,7 +215,7 @@ class Orcid extends SiteController
 		}
 		return $records;
 	}
-	
+
 	/**
 	 * Get ORCID record searching access token
 	 *
@@ -230,7 +230,7 @@ class Orcid extends SiteController
 		$clientSecret = $this->config->get('orcid_' . $srv . '_token');
 		$oauthToken = $this->_oauthToken[$srv];
 		$params = "client_id=" . $clientID . "&client_secret=" . $clientSecret. "&grant_type=client_credentials&scope=/read-public";
-		
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $oauthToken);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
@@ -238,7 +238,7 @@ class Orcid extends SiteController
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$result = curl_exec($ch);
-		
+
 		if ($result)
 		{
 			$response = json_decode($result, true);
@@ -262,13 +262,13 @@ class Orcid extends SiteController
 	private function _fetchXml($fname, $lname, $iname)
 	{
 		$srv = $this->config->get('orcid_service', 'members');
-		
+
 		// Search by first name, last name, institution name
 		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/search/?q=';
 		$tkn = $this->_accessToken;
-		
+
 		$bits = array();
-		
+
 		if ($fname)
 		{
 			$bits[] = 'given-names:' . $fname;
@@ -283,10 +283,10 @@ class Orcid extends SiteController
 		{
 			$bits[] = 'affiliation-org-name:' . $iname;
 		}
-		
+
 		$url .= implode('+AND+', $bits);
-		
-		$header = array('Accept: application/vnd.orcid+xml');		
+
+		$header = array('Accept: application/vnd.orcid+xml');
 		if ($srv != 'public')
 		{
 			$header[] = 'Authorization: Bearer ' . $tkn;
@@ -299,11 +299,11 @@ class Orcid extends SiteController
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
 		$curlData = curl_exec($initedCurl);
-		
+
 		$xmlStr = htmlentities($curlData);
 		$xmlStr = preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
 		$xmlStr = html_entity_decode($xmlStr);
-		
+
 		if (!curl_errno($initedCurl))
 		{
 			$info = curl_getinfo($initedCurl);
@@ -314,7 +314,7 @@ class Orcid extends SiteController
 		}
 
 		curl_close($initedCurl);
-		
+
 		try
 		{
 			$root = simplexml_load_string($xmlStr);
@@ -408,11 +408,11 @@ class Orcid extends SiteController
 		$returnOrcid = Request::getInt('return', 0);
 		$isRegister  = $returnOrcid == 1;
 		$records = array();
-		
+
 		$ins_option = $this->config->get('orcid_institution_field_option');
-		
+
 		$ins_name = $this->config->get('orcid_user_institution_name', 'Purdue University');
-		
+
 		$callbackPrefix = 'HUB.Members.Profile.';
 		if ($isRegister)
 		{
@@ -421,15 +421,15 @@ class Orcid extends SiteController
 
 		// The default option is searching by first name and last name. 
 		$defSearch = array();
-		
+
 		// The configurable option is searching by first name, last name, and instituation name
 		$optSearch = array();
-		
+
 		$firstNameSearch = $lastNameSearch = $firstNameOptSearch = $lastNameOptSearch = array();
-		
+
 		// Get ORCID record public access token
 		$token = $this->_getAccessToken();
-		
+
 		if (false == $token)
 		{
 			return;
@@ -444,7 +444,7 @@ class Orcid extends SiteController
 				{
 					$defSearch = $this->_parseTree($root);
 				}
-				
+
 				// Searching by first name, last name, and institution name when the institution option is enabled.
 				if ($ins_option)
 				{
@@ -458,14 +458,14 @@ class Orcid extends SiteController
 			else
 			{
 				if (!empty($first_name) && empty($last_name))
-				{		
+				{
 					$root = $this->_fetchXml($first_name, null, null);
 					if (!empty($root))
 					{
 						$firstNameSearch = $this->_parseTree($root);
 					}
 				}
-				
+
 				if (empty($first_name) && !empty($last_name))
 				{
 					$root = $this->_fetchXml(null, $last_name, null);
@@ -474,7 +474,7 @@ class Orcid extends SiteController
 						$lastNameSearch = $this->_parseTree($root);
 					}
 				}
-				
+
 				if ($ins_option)
 				{
 					if (!empty($first_name) && empty($last_name))
@@ -485,7 +485,7 @@ class Orcid extends SiteController
 							$firstNameOptSearch = $this->_parseTree($root);
 						}
 					}
-					
+
 					if (empty($first_name) && !empty($last_name))
 					{
 						$root = $this->_fetchXml(null, $last_name, $ins_name);
@@ -510,7 +510,7 @@ class Orcid extends SiteController
 				{
 					$records = array_merge($records, $firstNameSearch, $firstNameOptSearch);
 				}
-				
+
 				if (empty($first_name) && !empty($last_name))
 				{
 					$records = array_merge($records, $lastNameSearch, $lastNameOptSearch);
@@ -523,18 +523,18 @@ class Orcid extends SiteController
 			{
 				$records = array_merge($records, $defSearch);
 			}
-			
+
 			if (!empty($first_name) && empty($last_name))
 			{
 				$records = array_merge($records, $firstNameSearch);
 			}
-			
+
 			if (empty($first_name) && !empty($last_name))
 			{
 				$records = array_merge($records, $lastNameSearch);
-			}	
+			}
 		}
-		
+
 		ob_end_clean();
 		ob_start();
 
@@ -730,7 +730,7 @@ class Orcid extends SiteController
 		$clientID = $this->config->get('orcid_' . $srv . '_client_id');
 		$clientSecret = $this->config->get('orcid_' . $srv . '_token');
 		$oauthToken = $this->_oauthToken[$srv];
-		
+
 		if (Request::getVar('code'))
 		{
 			//Build request parameter string
@@ -773,7 +773,7 @@ class Orcid extends SiteController
 	public static function saveORCIDToProfile($userID, $orcid)
 	{
 		$row = Profile::oneByKeyAndUser('orcid', $userID);
-		
+
 		// If the record exists, you are just overwriting the existing data.
 		// If the record doesn't exist, your are setting for a new entry.
 		$row->set('user_id', $userID);
@@ -785,7 +785,7 @@ class Orcid extends SiteController
 			\Notify::error($row->getError());
 		}
 	}
-	
+
 	/**
 	 * Show the landing page about user and ORCID ID
 	 *
