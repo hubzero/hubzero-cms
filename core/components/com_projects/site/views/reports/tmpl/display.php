@@ -423,7 +423,7 @@ tooltip: true,
 
 								foreach ($this->monthly as $month => $data)
 								{
-									$xdata  .= '[' . $y . ', ' . $data['files']['total'] . ']';
+									$xdata  .= '[' . $y . ', ' . (isset($data['files']) ? $data['files']['total'] : 0) . ']';
 									$xdata  .= (($y + 1) == count($this->monthly)) ? '' : ',';
 									$xticks .= "[" . $y . ", '" . $month . "']";
 									$xticks .= (($y + 1) == count($this->monthly)) ? '' : ',';
