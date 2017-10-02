@@ -1357,11 +1357,7 @@ class Project extends Model
 
 			if (in_array($path, $deprecated))
 			{
-				$path = 'components/com_projects/site/assets/img/projects-large.gif';
-				if ($size == 'thumb')
-				{
-					$path = 'components/com_projects/site/assets/img/project.png';
-				}
+				$path = 'components/com_projects/site/assets/img/project.svg';
 				$rootPath = PATH_CORE;
 			}
 			else
