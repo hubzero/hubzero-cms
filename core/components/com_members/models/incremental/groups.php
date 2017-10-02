@@ -172,7 +172,7 @@ class Groups
 		foreach ($cols as $col)
 		{
 			// Was the field found in the results?
-			// If so, then the user filess it out
+			// If so, then the user filled it out
 			if (array_key_exists($col['field'], $profile))
 			{
 				continue;
@@ -197,6 +197,6 @@ class Groups
 			}
 		}
 
-		return $neededCols;
+		return array_slice($neededCols, 0, 4);
 	}
 }

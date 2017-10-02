@@ -108,7 +108,7 @@ class Helper extends Module
 		}
 
 		// looks like an error page, don't show
-		if (\JDocument::getInstance('error')->getTitle())
+		if (Document::getType() === 'error')
 		{
 			return;
 		}
@@ -330,7 +330,7 @@ class Helper extends Module
 							$BTL->deposit($award, Lang::txt('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'), 'registration', 0);
 						}
 
-						$aw_update = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1, ';
+						$aw_update = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1, last_bothered = CURRENT_TIMESTAMP, bothered_times = bothered_times + 1,  ';
 						$first = true;
 						foreach (array_keys($row) as $k)
 						{
