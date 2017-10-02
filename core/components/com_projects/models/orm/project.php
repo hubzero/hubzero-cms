@@ -106,6 +106,13 @@ class Project extends Relational
 	public $config = null;
 
 	/**
+	 * Get the URI
+	 *
+	 * @var  string
+	 */
+	protected $url = null;
+
+	/**
 	 * Sets up additional custom rules
 	 *
 	 * @return  void
@@ -364,6 +371,55 @@ class Project extends Relational
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param   string   $type  The type of link to return
+	 * @return  boolean
+	 */
+	public function link($type = '')
+	{
+		if (!isset($this->url))
+		{
+			$this->url = 'index.php?option=com_projects&alias=' . $this->get('alias');
+		}
+
+		$type = strtolower($type);
+
+		// If it doesn't exist or isn't published
+		switch ($type)
+		{
+			case 'setup':
+			case 'edit':
+				$link = $this->url . '&task=' . $type;
+			break;
+
+			case 'thumb':
+				$link = $this->picture();
+			break;
+
+			case 'stamp':
+				$link = 'index.php?option=com_projects&task=get';
+			break;
+
+			case 'permalink':
+			default:
+				$link = $this->url;
+
+				if ($type)
+				{
+					if (\Plugin::isEnabled('projects', $type))
+					{
+						$link .= '&active=' . $type;
+					}
+				}
+			break;
+		}
+
+		return $link;
 	}
 
 	/**
