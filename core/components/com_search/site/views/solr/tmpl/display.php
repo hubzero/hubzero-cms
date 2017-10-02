@@ -33,6 +33,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css('search-enhanced');
+$this->js('suggest');
 
 $terms = isset($this->terms) ? $this->terms : '';
 $noResult = count($this->results) > 0 ? false : true;
@@ -81,7 +82,7 @@ $noResult = count($this->results) > 0 ? false : true;
 					<?php } ?>
 				<?php } ?>
 			<?php } else { ?>
-					<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
+				<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
 			<?php } ?>
 		</div>
 	<?php } else { ?>

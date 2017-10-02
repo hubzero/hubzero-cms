@@ -221,17 +221,42 @@ class Searchv1_0 extends ApiController
 		$this->send($response);
 	}
 
+	public function typeSuggestionsTask()
+	{
+		
+		$terms = Request::getVar('terms', '');
+		$suggestedWords = array();
+
+		if ($terms != '')
+		{
+			$config = Component::params('com_search');
+			$query = new Query($config);
+			$typeSuggestions = $query->spellCheck($terms);
+
+			if (!empty($typeSuggestions))
+			{
+				foreach ($typeSuggestions as $suggestion)
+				{
+					foreach ($suggestion->getWords() as $word)
+					{
+						array_push($suggestedWords, $word['word']);
+					}
+				}
+			}
+		}
+
+		$response = new stdClass;
+		$response->results = json_encode($suggestedWords);
+		$response->success = true;
+
+		$this->send($response);
+	}
+
 	/**
 	 * Display a list of hub types for a term
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /search/getHubTypes
-	 * 		"name":          "type",
-	 * 		"description":   "Content type (groups, members, etc.)",
-	 * 		"type":          "string",
-	 * 		"required":      false,
-	 * 		"default":       ""
-	 * }
 	 * @apiParameter {
 	 * 		"name":          "terms",
 	 * 		"description":   "Terms to search for.",
