@@ -66,7 +66,7 @@ class Html
 	{ ?>
 		<div class="confirmwrap">
 			<div class="confirmscreen">
-			<p class="warning"><?php echo Lang::txt('COM_JOBS_CONFIRM_ARE_YOU_SURE');
+			<p class="warning"><?php echo Lang::txt('COM_JOBS_CONFIRM_ARE_YOU_SURE') . " ";
 		if ($action == 'cancelsubscription')
 		{
 			echo strtolower(Lang::txt('COM_JOBSSUBSCRIPTION_CANCEL_THIS'));
