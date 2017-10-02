@@ -159,12 +159,12 @@
 		padding-left: 2em;
 		padding-right: 2em;
 	}
-	.apply p {
-		position: absolute;
-	}
 	.edit button {
 		margin-bottom: 1em;
+		margin-right: .5em;
 		font-size: 1.2em;
+		padding-left: 2em;
+		padding-right: 2em;
 	}
 	.unpublish button {
 		margin-bottom: 1em;
@@ -183,8 +183,21 @@
 		margin-right: .5em;
 		font-size: 1.2em;
 		float: right;
-	}	
-
+	}
+        .review_applicants {
+                padding-top: .5em;
+                float: right;
+        }
+        .review_applicants button {
+                margin-bottom: 1em;
+                font-size: 1.2em;
+                padding-left: 2em;
+                padding-right: 2em;
+        }
+        .review_applicants a button {
+                padding-left: 2em; 
+                padding-right: 2em; 
+        }    
 	#jobinfo div.apply .applybtn:hover {
 		background-color: #666;
 		border-bottom: 2px solid #000;
@@ -337,11 +350,6 @@
 		padding-right: 0;
 		white-space: nowrap;
 		margin: 0;
-	}
-	.review_applicants {
-		font-size: 1.2em;
-		padding-top: .5em;
-		float: right;
 	}
 /* Confirm screen */
 	div.confirmwrap {
