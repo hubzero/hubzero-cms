@@ -42,21 +42,21 @@ Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_NOTES') 
 // If not checked out, can save the item.
 if (!$checkedOut && ($canDo->get('core.edit') || (count(User::getAuthorisedCategories('com_users', 'core.create')))))
 {
-	Toolbar::apply('note.apply');
-	Toolbar::save('note.save');
+	Toolbar::apply();
+	Toolbar::save();
 }
 
 if (!$checkedOut && (count(User::getAuthorisedCategories('com_users', 'core.create'))))
 {
-	Toolbar::save2new('note.save2new');
+	Toolbar::save2new();
 }
 
 // If an existing item, can save to a copy.
 if (!$this->row->isNew() && (count(User::getAuthorisedCategories('com_users', 'core.create')) > 0))
 {
-	Toolbar::save2copy('note.save2copy');
+	Toolbar::save2copy();
 }
-Toolbar::cancel('note.cancel');
+Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('note');
 
