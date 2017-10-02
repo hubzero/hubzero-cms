@@ -45,7 +45,7 @@ class JFormFieldResourcetype extends JFormFieldList
 	{
 		$db = \App::get('db');
 
-		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'type.php';
+		include_once \Component::path('com_resources') . DS . 'tables' . DS . 'type.php';
 		$model = new \Components\Resources\Tables\Type($db);
 
 		$types = $model->getMajorTypes();
