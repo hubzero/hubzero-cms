@@ -258,15 +258,15 @@ function submitbutton(pressbutton)
 				<td>
 					<div class="fltrt">
 						<?php if ($count = $row->notes->count()) : ?>
-							<a class="state filter" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&filter_search=uid:' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_USERS_FILTER_NOTES'); ?>">
-								<span><?php echo Lang::txt('COM_USERS_NOTES'); ?></span>
+							<a class="state filter" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&filter_search=uid:' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_FILTER_NOTES'); ?>">
+								<span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
 							</a>
 							<a class="modal state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&tmpl=component&task=modal&id=' . (int) $row->get('id')); ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}" title="<?php echo Lang::txts('COM_MEMBERS_N_USER_NOTES', $count); ?>">
-								<span><?php echo Lang::txt('COM_USERS_NOTES'); ?></span>
+								<span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
 							</a>
 						<?php endif; ?>
-						<a class="state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&task=add&user_id=' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_USERS_ADD_NOTE'); ?>">
-							<span><?php echo Lang::txt('COM_USERS_NOTES'); ?></span>
+						<a class="state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&task=add&user_id=' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_ADD_NOTE'); ?>">
+							<span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
 						</a>
 					</div>
 					<?php if ($canEdit) : ?>
