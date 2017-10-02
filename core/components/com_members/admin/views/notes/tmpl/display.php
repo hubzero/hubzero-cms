@@ -38,33 +38,33 @@ $canDo = Components\Members\Helpers\Admin::getActions('component');
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_NOTES'), 'user');
 if ($canDo->get('core.create'))
 {
-	Toolbar::addNew('note.add');
+	Toolbar::addNew();
 }
 
 if ($canDo->get('core.edit'))
 {
-	Toolbar::editList('note.edit');
+	Toolbar::editList();
 }
 
 if ($canDo->get('core.edit.state'))
 {
 	Toolbar::divider();
-	Toolbar::publish('notes.publish', 'JTOOLBAR_PUBLISH', true);
-	Toolbar::unpublish('notes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+	Toolbar::publish();
+	Toolbar::unpublish();
 
 	Toolbar::divider();
-	Toolbar::archiveList('notes.archive');
-	Toolbar::checkin('notes.checkin');
+	Toolbar::archiveList();
+	Toolbar::checkin();
 }
 
 if ($this->filters['state'] == -2 && $canDo->get('core.delete'))
 {
-	Toolbar::deleteList('', 'notes.delete', 'JTOOLBAR_EMPTY_TRASH');
+	Toolbar::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');
 	Toolbar::divider();
 }
 elseif ($canDo->get('core.edit.state'))
 {
-	Toolbar::trash('notes.trash');
+	Toolbar::trash();
 	Toolbar::divider();
 }
 
