@@ -483,11 +483,15 @@ class Register extends SiteController
 				$suser->set('name', $xprofile->get('name'));
 				Session::set('user', $suser);
 
-				// Get the session object
-				$table = \JTable::getInstance('session');
-				$table->load(Session::getId());
-				$table->username = $xprofile->get('username');
-				$table->update();
+				// Update the session entry
+				// @TODO: Use a model rather than direct query
+				$database = App::get('db');
+				$database->setQuery(
+					"UPDATE `#__session`
+					SET `username`=" . $database->quote($xprofile->get('username')) . "
+					WHERE `session_id`=" . $database->quote(Session::getId())
+				);
+				$database->query();
 			}
 
 			Session::set('registration.incomplete', false);

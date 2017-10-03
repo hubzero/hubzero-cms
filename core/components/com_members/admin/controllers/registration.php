@@ -34,12 +34,9 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Request;
-use Config;
-use Route;
+use Notify;
 use Lang;
 use App;
-
-include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'extension.php');
 
 /**
  * Controller class for registration configuration
@@ -53,22 +50,17 @@ class Registration extends AdminController
 	 */
 	public function displayTask()
 	{
-		$config = new \JForm('com_members.registration');
+		$config = new \Hubzero\Form\Form('com_members.registration');
 		$config->loadFile(dirname(dirname(__DIR__)) . DS . 'config' . DS . 'config.xml', true, '/config');
 		$config->bind($this->config->toArray());
 
-		$this->config = $config;
-
-		$this->view->params = $config->getFieldset('registration');
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
+		$params = $config->getFieldset('registration');
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('params', $params)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -85,18 +77,22 @@ class Registration extends AdminController
 
 		if (!is_array($settings) || empty($settings))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_REGISTRATION_ERROR_MISSING_DATA'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_MEMBERS_REGISTRATION_ERROR_MISSING_DATA'));
+
+			return $this->cancelTask();
 		}
 
 		$arr = array();
 
-		$component = new \JTableExtension($this->database);
-		$component->load($component->find(array('element' => $this->_option, 'type' => 'component')));
+		$database = App::get('db');
+		$database->setQuery(
+			"SELECT *
+			FROM `#__extensions`
+			WHERE `type`='component'
+			AND `element`=" . $database->quote($this->_option) . "
+			LIMIT 1"
+		);
+		$component = $database->loadObject();
 
 		$params = new \Hubzero\Config\Registry($component->params);
 
@@ -108,7 +104,13 @@ class Registration extends AdminController
 		}
 
 		$component->params = $params->toString();
-		$component->store();
+
+		$database->setQuery(
+			"UPDATE `#__extensions`
+			SET `params`=" . $database->quote($component->params) . "
+			WHERE `extension_id`=" . $database->quote($component->extension_id)
+		);
+		$database->query();
 
 		if (App::get('config')->get('caching'))
 		{
@@ -123,9 +125,8 @@ class Registration extends AdminController
 			$cache->clean('_system');
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_REGISTRATION_SAVED')
-		);
+		Notify::success(Lang::txt('COM_MEMBERS_REGISTRATION_SAVED'));
+
+		$this->cancelTask();
 	}
 }
