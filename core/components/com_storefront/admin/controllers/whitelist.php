@@ -42,7 +42,7 @@ use User;
 /**
  * Controller class
  */
-class Restrictions extends AdminController
+class Whitelist extends AdminController
 {
 	/**
 	 * Display a list of all users
@@ -93,11 +93,11 @@ class Restrictions extends AdminController
 
 		// Get record count
 		$this->view->filters['return'] = 'count';
-		$this->view->total = RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId);
+		$this->view->total = RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId);
 
 		// Get records
 		$this->view->filters['return'] = 'list';
-		$this->view->rows = RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId);
+		$this->view->rows = RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId);
 
 		// Output the HTML
 		$this->view->display();
@@ -183,7 +183,7 @@ class Restrictions extends AdminController
 			$uId = $usr->get('id', 0);
 			if ($uId)
 			{
-				RestrictionsHelper::addPermittedSkuUser($uId, $sId);
+				RestrictionsHelper::addWhitelistedSkuUser($uId, $sId);
 				$matched++;
 			}
 			else
@@ -191,7 +191,7 @@ class Restrictions extends AdminController
 				// Are we adding by username?
 				if ($user && is_string($user))
 				{
-					RestrictionsHelper::addPermittedSkuUser($uId, $sId, $user);
+					RestrictionsHelper::addWhitelistedSkuUser($uId, $sId, $user);
 				}
 				else
 				{
@@ -202,94 +202,6 @@ class Restrictions extends AdminController
 
 		$this->view->matched = $matched;
 		$this->view->noUserMatch = $noHubUserMatch;
-		$this->view->display();
-	}
-
-	/**
-	 * Display a form for uploading
-	 *
-	 * @return  void
-	 */
-	public function uploadTask()
-	{
-		$sId = Request::getInt('id', '');
-
-		$this->view->sId = $sId;
-
-		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Handle upload of a CSV
-	 *
-	 * @return  void
-	 */
-	public function uploadcsvTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
-
-		// See if we have a file
-		$csvFile = Request::getVar('csvFile', false, 'files', 'array');
-
-		$sId = Request::getVar('sId', '');
-		$inserted = 0;
-		$skipped = array();
-		$ignored = array();
-
-		if (isset($csvFile['name']) && $csvFile['name'])
-		{
-			if (($handle = fopen($csvFile['tmp_name'], "r")) !== false)
-			{
-				while (($line = fgetcsv($handle, 1000, ',')) !== false)
-				{
-					if (!empty($line[0]))
-					{
-						$key = trim($line[0]);
-
-						if (!$key)
-						{
-							$ignored[] = $line[0];
-							continue;
-						}
-
-						$usr = User::getInstance($key);
-						$uId = $usr->get('id', 0);
-
-						if ($uId)
-						{
-							$key = null;
-						}
-
-						$res = RestrictionsHelper::addSkuUser($uId, $sId, $key);
-						if ($res)
-						{
-							$inserted++;
-						}
-						else
-						{
-							$skipped[] = $usr;
-						}
-					}
-				}
-				fclose($handle);
-			}
-			else
-			{
-				$this->view->setError('Could not read the file.');
-			}
-		}
-		else
-		{
-			$this->view->setError('No file or bad file was uploaded. Please make sure you upload the CSV formated file.');
-		}
-
-		// Output the HTML
-		$this->view->sId = $sId;
-		$this->view->inserted = $inserted;
-		$this->view->skipped = $skipped;
-		$this->view->ignored = $ignored;
 		$this->view->display();
 	}
 }

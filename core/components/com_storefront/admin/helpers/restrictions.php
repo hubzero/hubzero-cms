@@ -41,13 +41,81 @@ class RestrictionsHelper
 	public static $extension = 'com_storefront';
 
 	/**
-	 * Get a list or count of the users for the SKU.
+	 * Get a list or count of the permitted users for the SKU.
 	 *
 	 * @param   array  $filters  Filters
 	 * @param   int    $sId      SKU id
 	 * @return  mixed
 	 */
-	public static function getSkuUsers($filters = array(), $sId)
+	public static function getPermittedSkuUsers($filters = array(), $sId)
+	{
+		return self::getSkuUsers($filters = array(), $sId);
+	}
+
+	/**
+	 * Get a list or count of the whitelisted users for the SKU.
+	 *
+	 * @param   array  $filters  Filters
+	 * @param   int    $sId      SKU id
+	 * @return  mixed
+	 */
+	public static function getWhitelistedSkuUsers($filters = array(), $sId)
+	{
+		return self::getSkuUsers($filters = array(), $sId, array('usersType' => 'skuWhitelist'));
+	}
+
+	/**
+	 * Check if the user is whitelisted for the SKU.
+	 *
+	 * @param   int    $uId      User ID
+	 * @param   int    $sId      SKU ID
+	 * @return  mixed
+	 */
+	public static function checkWhitelistedSkuUser($uId, $sId)
+	{
+		$db = App::get('db');
+		$sql = "SELECT id
+				FROM `#__storefront_permissions` p
+				WHERE p.scope='skuWhitelist' AND uId = '{$uId}' AND p.scope_id = " . $db->quote($sId);
+		$db->setQuery($sql);
+		$db->execute();
+		return $db->getNumRows();
+	}
+
+	/**
+	 * Check if the user is whitelisted for the SKUs provided.
+	 *
+	 * @param   int    $uId      User ID
+	 * @param   int    $sIds     SKUs IDs
+	 * @return  mixed
+	 */
+	public static function checkWhitelistedSkusUser($uId, $sIds)
+	{
+		$db = App::get('db');
+
+		$skus = '0';
+		foreach ($sIds as $sId)
+		{
+			$skus .= ", {$sId}";
+		}
+
+		$sql = "SELECT scope_id AS sId
+				FROM `#__storefront_permissions` p
+				WHERE p.scope='skuWhitelist' AND uId = '{$uId}' AND p.scope_id IN (" . $skus . ')';
+		$db->setQuery($sql);
+		$db->execute();
+		return($db->loadColumn());
+	}
+
+	/**
+	 * Get a list or count of the permitted or whitelisted users for the SKU.
+	 *
+	 * @param   array  $filters  Filters
+	 * @param   int    $sId      SKU id
+	 * @param   array  $options  Options
+	 * @return  mixed
+	 */
+	private static function getSkuUsers($filters = array(), $sId, $options = array())
 	{
 		if (!isset($filters['sort']))
 		{
@@ -61,12 +129,16 @@ class RestrictionsHelper
 		{
 			$filters['return'] = 'list';
 		}
+		if (!isset($options['usersType']))
+		{
+			$options['usersType'] = 'sku';
+		}
 
 		$db = App::get('db');
 		$sql = "SELECT p.id, p.uId, p.username AS uName, u.name, u.username, u.email
 				FROM `#__storefront_permissions` p
 				LEFT JOIN `#__users` u ON (u.id = p.uId)
-				WHERE p.scope='sku' AND p.scope_id = " . $db->quote($sId);
+				WHERE p.scope='" . $options['usersType'] . "' AND p.scope_id = " . $db->quote($sId);
 
 		if (isset($filters['sort']))
 		{
@@ -118,15 +190,27 @@ class RestrictionsHelper
 	}
 
 	/**
-	 * Add user/sku
+	 * Add permitted user to a SKU
 	 *
 	 * @param   int  $uId  user ID
 	 * @param   int  $sId  SKU ID
 	 * @return  int
 	 */
-	public static function addSkuUser($uId, $sId, $username = null)
+	public static function addPermittedSkuUser($uId, $sId, $username = null)
 	{
 		return self::addUser('sku', $uId, $sId, $username);
+	}
+
+	/**
+	 * Add whitelisted user to a SKU
+	 *
+	 * @param   int  $uId  user ID
+	 * @param   int  $sId  SKU ID
+	 * @return  int
+	 */
+	public static function addWhitelistedSkuUser($uId, $sId, $username = null)
+	{
+		return self::addUser('skuWhitelist', $uId, $sId, $username);
 	}
 
 	/**

@@ -86,7 +86,8 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
@@ -209,7 +210,7 @@ function submitbutton(pressbutton)
 		?>
 
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 				<tr>
@@ -241,7 +242,7 @@ function submitbutton(pressbutton)
 						}
 						else
 						{
-							echo 'time';
+							echo ' time';
 						}
 						?>
 					</td>
@@ -364,8 +365,21 @@ function submitbutton(pressbutton)
 			?>
 		</fieldset>
 
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('Whitelist'); ?></span></legend>
+
+			<div class="input-wrap">
+				Whitelisting grants users access to the SKU despite any other existing access controls or restrictions
+			</div>
+
+			<p>
+				<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=whitelist&id=' . $this->row->getId(); ?>">Manage whitelist</a>
+			</p>
+
+		</fieldset>
+
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
