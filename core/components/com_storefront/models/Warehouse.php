@@ -53,9 +53,7 @@ require_once(__DIR__ . DS . 'Collection.php');
  */
 class Warehouse extends \Hubzero\Base\Object
 {
-	/**
-	 * array Product categories to look at (to define scope)
-	 */
+	// Product categories to look at (to define scope)
 	var $lookupCollections = null;
 
 	// Access levels scope (what is allowed to display)
@@ -66,6 +64,12 @@ class Warehouse extends \Hubzero\Base\Object
 
 	// User scope (what user is trying to get the info)
 	var $userScope = false;
+
+	// User whitelisted SKUS for a product
+	var $userWhitelistedSkus = false;
+
+	// Flag if the current product is not permitted to access by the uses by default
+	var $userCannotAccessProduct = false;
 
 	// Database instance
 	var $db = null;
@@ -419,6 +423,14 @@ class Warehouse extends \Hubzero\Base\Object
 			return $response;
 		}
 
+		// Get the SKUs whitelist for a user
+		if ($this->userScope)
+		{
+			$allProductSkus = $this->getProductSkus($pInfo->pId);
+			require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
+			$this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
+		}
+
 		// Check if the product can be viewed (if access level scope is set)
 		if (\Component::params('com_storefront')->get('productAccess'))
 		{
@@ -435,10 +447,14 @@ class Warehouse extends \Hubzero\Base\Object
 				// No common groups
 				if (empty($groups))
 				{
-					$response->status = 0;
-					$response->errorCode = 403;
-					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
-					return $response;
+					$this->userCannotAccessProduct = true;
+					if (!$this->userWhitelistedSkus)
+					{
+						$response->status = 0;
+						$response->errorCode = 403;
+						$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+						return $response;
+					}
 				}
 
 				$accessgroups = $product->getAccessGroups('exclude');
@@ -449,10 +465,14 @@ class Warehouse extends \Hubzero\Base\Object
 				// User in disallowed groups
 				if (!empty($groups))
 				{
-					$response->status = 0;
-					$response->errorCode = 403;
-					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
-					return $response;
+					$this->userCannotAccessProduct = true;
+					if (!$this->userWhitelistedSkus)
+					{
+						$response->status = 0;
+						$response->errorCode = 403;
+						$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+						return $response;
+					}
 				}
 			}
 		}
@@ -462,10 +482,14 @@ class Warehouse extends \Hubzero\Base\Object
 			{
 				if (!in_array($pInfo->access, $this->accessLevelsScope))
 				{
-					$response->status = 0;
-					$response->errorCode = 403;
-					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
-					return $response;
+					$this->userCannotAccessProduct = true;
+					if (!$this->userWhitelistedSkus)
+					{
+						$response->status = 0;
+						$response->errorCode = 403;
+						$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+						return $response;
+					}
 				}
 			}
 		}
@@ -733,9 +757,18 @@ class Warehouse extends \Hubzero\Base\Object
 			// default value
 			$permissionsRestricted = false;
 
+			require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
+
 			foreach ($res as $k => $line)
 			{
-				if ($line->sRestricted && (!$this->userScope || $line->uId != $this->userScope))
+				// see if the user is whitelisted for this SKU
+				$skuWhitelisted = false;
+				if ($this->userWhitelistedSkus && in_array($line->skuId, $this->userWhitelistedSkus))
+				{
+					$skuWhitelisted = true;
+				}
+
+				if (!$skuWhitelisted && $line->sRestricted && (!$this->userScope || $line->uId != $this->userScope))
 				{
 					// Sku is restricted and not available
 					$permissionsRestricted = true;
@@ -743,7 +776,15 @@ class Warehouse extends \Hubzero\Base\Object
 					unset($res[$k]);
 
 				}
-				elseif ($line->sTrackInventory && $line->sInventory < 1)
+				elseif ($this->userCannotAccessProduct && !$skuWhitelisted)
+				{
+					// Sku is restricted and not available
+					$permissionsRestricted = true;
+					// remove it
+					unset($res[$k]);
+				}
+
+				if ($line->sTrackInventory && $line->sInventory < 1)
 				{
 					// remove it
 					unset($res[$k]);

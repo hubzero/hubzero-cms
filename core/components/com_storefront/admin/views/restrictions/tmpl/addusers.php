@@ -53,7 +53,10 @@ Html::behavior('framework');
 			<?php
 
 			echo '<p><strong>' . $this->matched . '</strong> user(s) added.</p>';
-			echo '<p><strong>' . sizeof($this->noUserMatch) . '</strong> user(s) could not be added (no matching users):<br>';
+			if (sizeof($this->noUserMatch))
+			{
+				echo '<p><strong>' . sizeof($this->noUserMatch) . '</strong> user(s) could not be added (no matching users):<br>';
+			}
 
 			$i = 0;
 			foreach ($this->noUserMatch as $usr)

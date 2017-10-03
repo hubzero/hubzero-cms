@@ -56,162 +56,163 @@ $this->css();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert("<?php echo 'Title cannot be empty' ?>");
-	}
-	<?php
-	if (0 && $this->pInfo->ptModel == 'software')
+	function submitbutton(pressbutton)
 	{
-	?>
-	else if (document.getElementById('field-download-file').value == ''){
-		alert("<?php echo 'Download file cannot be empty' ?>");
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
+
+		<?php echo $this->editor()->save('text'); ?>
+
+		// do field validation
+		if (document.getElementById('field-title').value == ''){
+			alert("<?php echo 'Title cannot be empty' ?>");
+		}
+		<?php
+			if (0 && $this->pInfo->ptModel == 'software')
+			{
+			?>
+		else if (document.getElementById('field-download-file').value == ''){
+			alert("<?php echo 'Download file cannot be empty' ?>");
+		}
+		<?php
+			}
+			?>
+		else {
+			submitform(pressbutton);
+		}
 	}
-	<?php
-	}
-	?>
-	else {
-		submitform(pressbutton);
-	}
-}
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[sSku]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_PRICE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[sPrice]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getPrice())); ?>" />
-			</div>
-
-			<?php
-			if ($this->pInfo->ptId == 1) {
-			?>
 				<div class="input-wrap">
-					<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_WEIGHT'); ?>:</label><br/>
-					<input type="text" name="fields[pWeight]" id="field-title" size="30" maxlength="100"
-						   value="<?php echo $this->escape(stripslashes($this->row->getWeight())); ?>"/>
+					<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[sSku]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
 				</div>
+
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_PRICE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[sPrice]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getPrice())); ?>" />
+				</div>
+
+				<?php
+				if ($this->pInfo->ptId == 1) {
+					?>
+					<div class="input-wrap">
+						<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_WEIGHT'); ?>:</label><br/>
+						<input type="text" name="fields[pWeight]" id="field-title" size="30" maxlength="100"
+							   value="<?php echo $this->escape(stripslashes($this->row->getWeight())); ?>"/>
+					</div>
+					<?php
+				}
+				?>
+			</fieldset>
+
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('Checkout options'); ?></span></legend>
+
+				<div class="input-wrap">
+					<label for="field-checkoutNotes"><?php echo Lang::txt('Checkout notes/comments message'); ?>:</label><br />
+					<input type="text" name="fields[checkoutNotes]" id="field-checkoutNotes" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getCheckoutNotes())); ?>" />
+				</div>
+
+				<div class="input-wrap">
+					<label for="field-checkoutNotesRequired"><?php echo Lang::txt('Checkout notes/comments required'); ?>:</label>
+					<select name="fields[checkoutNotesRequired]" id="field-checkoutNotesRequired">
+						<option value="0"<?php if ($this->row->getCheckoutNotesRequired() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
+						<option value="1"<?php if ($this->row->getCheckoutNotesRequired() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+					</select>
+				</div>
+
+			</fieldset>
+
 			<?php
-			}
-			?>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('Checkout options'); ?></span></legend>
-
-			<div class="input-wrap">
-				<label for="field-checkoutNotes"><?php echo Lang::txt('Checkout notes/comments message'); ?>:</label><br />
-				<input type="text" name="fields[checkoutNotes]" id="field-checkoutNotes" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getCheckoutNotes())); ?>" />
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-checkoutNotesRequired"><?php echo Lang::txt('Checkout notes/comments required'); ?>:</label>
-				<select name="fields[checkoutNotesRequired]" id="field-checkoutNotesRequired">
-					<option value="0"<?php if ($this->row->getCheckoutNotesRequired() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
-					<option value="1"<?php if ($this->row->getCheckoutNotesRequired() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
-				</select>
-			</div>
-
-		</fieldset>
-
-		<?php
-		if (!empty($this->allOptions))
-		{
-		?>
-		<fieldset class="adminform">
-			<legend><span><?php echo 'Product options'; ?></span></legend>
-
-			<?php
-			foreach ($this->allOptions as $optionGroup)
+			if (!empty($this->allOptions))
 			{
-			?>
-				<div class="input-wrap">
-					<label for="field-options-<?php echo $optionGroup->ogId; ?>"><?php echo $optionGroup->ogName; ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+				?>
+				<fieldset class="adminform">
+					<legend><span><?php echo 'Product options'; ?></span></legend>
 
 					<?php
-					// First check if there are any options to display
-					$optionsToDisplay = false;
-					foreach ($optionGroup->options as $option)
+					foreach ($this->allOptions as $optionGroup)
 					{
-						if ($option->oActive || in_array($option->oId, $this->options))
-						{
-							$optionsToDisplay = true;
-						}
-					}
-					?>
-
-					<?php
-					if ($optionsToDisplay)
-					{
-					?>
-						<select name="fields[options][]" id="field-options-<?php echo $optionGroup->ogId; ?>">
-							<option value="">-- please select an option --</option>
-						<?php
-						foreach ($optionGroup->options as $option)
-						{
-							if ($option->oActive || in_array($option->oId, $this->options))
-							{
-							?>
-							<option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) {
-								echo ' selected="selected"';
-							} ?>><?php echo $option->oName ?></option>
-							<?php
-							}
-						}
 						?>
-						</select>
-					<?php
+						<div class="input-wrap">
+							<label for="field-options-<?php echo $optionGroup->ogId; ?>"><?php echo $optionGroup->ogName; ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+
+							<?php
+							// First check if there are any options to display
+							$optionsToDisplay = false;
+							foreach ($optionGroup->options as $option)
+							{
+								if ($option->oActive || in_array($option->oId, $this->options))
+								{
+									$optionsToDisplay = true;
+								}
+							}
+							?>
+
+							<?php
+							if ($optionsToDisplay)
+							{
+								?>
+								<select name="fields[options][]" id="field-options-<?php echo $optionGroup->ogId; ?>">
+									<option value="">-- please select an option --</option>
+									<?php
+									foreach ($optionGroup->options as $option)
+									{
+										if ($option->oActive || in_array($option->oId, $this->options))
+										{
+											?>
+											<option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) {
+												echo ' selected="selected"';
+											} ?>><?php echo $option->oName ?></option>
+											<?php
+										}
+									}
+									?>
+								</select>
+								<?php
+							}
+							else
+							{
+								?>
+								<p class="warning">There are currently no available options for this option group. Please go to the <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=options&task=display&id=' . $optionGroup->ogId); ?>" title="<?php echo Lang::txt('Edit option group'); ?>"><?php echo $optionGroup->ogName; ?> options administration</a> and make sure to create new or enable existing options.</p>
+								<?php
+							}
+							?>
+						</div>
+						<?php
 					}
-					else
-					{
 					?>
-						<p class="warning">There are currently no available options for this option group. Please go to the <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=options&task=display&id=' . $optionGroup->ogId); ?>" title="<?php echo Lang::txt('Edit option group'); ?>"><?php echo $optionGroup->ogName; ?> options administration</a> and make sure to create new or enable existing options.</p>
-					<?php
-					}
-					?>
-				</div>
-			<?php
+				</fieldset>
+				<?php
 			}
 			?>
-		</fieldset>
-		<?php
-		}
-		?>
 
-		<?php
-		// Product type specific meta options
+			<?php
+			// Product type specific meta options
 
-		if ($this->pInfo->ptModel == 'software')
-		{
-			$view = new \Hubzero\Component\View(array('name'=>'meta', 'layout' => 'sku-software'));
-			$view->parent = $this;
-			$view->skuMeta = $skuMeta;
-			$view->display();
-		}
+			if ($this->pInfo->ptModel == 'software')
+			{
+				$view = new \Hubzero\Component\View(array('name'=>'meta', 'layout' => 'sku-software'));
+				$view->parent = $this;
+				$view->skuMeta = $skuMeta;
+				$view->display();
+			}
 
-		?>
+			?>
 
-	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
 					<td>
@@ -229,24 +230,24 @@ function submitbutton(pressbutton)
 				<?php
 				if ($this->pInfo->ptModel == 'software')
 				{
-				?>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
-					<td>
-						<?php
-						echo $this->downloaded;
-						if ($this->downloaded == 0 || $this->downloaded > 1)
-						{
-							echo(' times');
-						}
-						else
-						{
-							echo 'time';
-						}
-						?>
-					</td>
-				</tr>
-				<?php
+					?>
+					<tr>
+						<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
+						<td>
+							<?php
+							echo $this->downloaded;
+							if ($this->downloaded == 0 || $this->downloaded > 1)
+							{
+								echo(' times');
+							}
+							else
+							{
+								echo ' time';
+							}
+							?>
+						</td>
+					</tr>
+					<?php
 				}
 				?>
 				<tr>
@@ -274,98 +275,111 @@ function submitbutton(pressbutton)
 						?>
 					</td>
 				</tr>
-			</tbody>
-		</table>
+				</tbody>
+			</table>
 
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_OPTIONS'); ?></span></legend>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_STOREFRONT_OPTIONS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-sAllowMultiple"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
-				<select name="fields[sAllowMultiple]" id="field-pAllowMultiple">
-					<option value="0"<?php if ($this->row->getAllowMultiple() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
-					<option value="1"<?php if ($this->row->getAllowMultiple() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
-				</select>
-			</div>
+				<div class="input-wrap">
+					<label for="field-sAllowMultiple"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
+					<select name="fields[sAllowMultiple]" id="field-pAllowMultiple">
+						<option value="0"<?php if ($this->row->getAllowMultiple() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
+						<option value="1"<?php if ($this->row->getAllowMultiple() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+					</select>
+				</div>
 
-			<?php
-			$showInventoryOptions = true;
-			if ($this->pInfo->ptModel == 'software' && isset($skuMeta['serialManagement']) && $skuMeta['serialManagement'] == 'multiple')
-			{
-				$showInventoryOptions = false;
-			}
-			if ($showInventoryOptions)
-			{
-			?>
+				<?php
+				$showInventoryOptions = true;
+				if ($this->pInfo->ptModel == 'software' && isset($skuMeta['serialManagement']) && $skuMeta['serialManagement'] == 'multiple')
+				{
+					$showInventoryOptions = false;
+				}
+				if ($showInventoryOptions)
+				{
+					?>
 
-			<div class="input-wrap" data-hint="<?php echo 'Should the inventory level be kept tracked? If yes set the inventory.'; ?>">
-				<label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
-				<select name="fields[sTrackInventory]" id="field-sTrackInventory">
-					<option value="0"<?php if ($this->row->getTrackInventory() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
-					<option value="1"<?php if ($this->row->getTrackInventory() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
-				</select>
-			</div>
+					<div class="input-wrap" data-hint="<?php echo 'Should the inventory level be kept tracked? If yes set the inventory.'; ?>">
+						<label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
+						<select name="fields[sTrackInventory]" id="field-sTrackInventory">
+							<option value="0"<?php if ($this->row->getTrackInventory() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
+							<option value="1"<?php if ($this->row->getTrackInventory() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+						</select>
+					</div>
 
-			<div class="input-wrap" data-hint="<?php echo 'Number of items available for sale in the inventory. Non-negative integer.'; ?>">
-				<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
-				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="10" value="<?php echo $this->row->getInventoryLevel(); ?>" />
-			</div>
+					<div class="input-wrap" data-hint="<?php echo 'Number of items available for sale in the inventory. Non-negative integer.'; ?>">
+						<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
+						<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="10" value="<?php echo $this->row->getInventoryLevel(); ?>" />
+					</div>
 
-			<?php
-			}
-			?>
+					<?php
+				}
+				?>
 
-			<div class="input-wrap" data-hint="<?php echo 'Inventory threshold: when reached or below an email notification is sent to the admin on each inventory change'; ?>">
-				<label for="field-inventory-notification-threshold"><?php echo 'Inventory notification threshold'; ?>:</label>
-				<input type="text" name="fields[meta][inventoryNotificationThreshold]" id="field-inventory-notification-threshold" size="30" maxlength="10" value="<?php echo $inventoryNotificationThreshold; ?>" />
-			</div>
-		</fieldset>
+				<div class="input-wrap" data-hint="<?php echo 'Inventory threshold: when reached or below an email notification is sent to the admin on each inventory change'; ?>">
+					<label for="field-inventory-notification-threshold"><?php echo 'Inventory notification threshold'; ?>:</label>
+					<input type="text" name="fields[meta][inventoryNotificationThreshold]" id="field-inventory-notification-threshold" size="30" maxlength="10" value="<?php echo $inventoryNotificationThreshold; ?>" />
+				</div>
+			</fieldset>
 
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_PUBLISH_OPTIONS'); ?></span></legend>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_STOREFRONT_PUBLISH_OPTIONS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_STATE'); ?>:</label>
-				<select name="fields[state]" id="field-state">
-					<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-					<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-				</select>
-			</div>
+				<div class="input-wrap">
+					<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_STATE'); ?>:</label>
+					<select name="fields[state]" id="field-state">
+						<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					</select>
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-publish_up"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
-			</div>
+				<div class="input-wrap">
+					<label for="field-publish_up"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>:</label><br />
+					<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
+					<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
+				</div>
+			</fieldset>
 
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('Restrictions'); ?></span></legend>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('Restrictions'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-restricted"><?php echo Lang::txt('Restrict by users'); ?>:</label>
-				<select name="fields[restricted]" id="field-restricted">
-					<option value="0"<?php if ($this->row->getRestricted() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
-					<option value="1"<?php if ($this->row->getRestricted() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
-				</select>
-			</div>
+				<div class="input-wrap">
+					<label for="field-restricted"><?php echo Lang::txt('Restrict by users'); ?>:</label>
+					<select name="fields[restricted]" id="field-restricted">
+						<option value="0"<?php if ($this->row->getRestricted() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
+						<option value="1"<?php if ($this->row->getRestricted() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+					</select>
+				</div>
 
-			<?php
-			if ($this->row->getRestricted()) {
-			?>
+				<?php
+				if ($this->row->getRestricted()) {
+					?>
+					<p>
+						<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=restrictions&id=' . $this->row->getId(); ?>">Manage restrictions</a></p>
+					<?php
+				}
+				?>
+			</fieldset>
+
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('Whitelist'); ?></span></legend>
+
+				<div class="input-wrap">
+					Whitelisting grants users access to the SKU despite any other existing access controls or restrictions
+				</div>
+
 				<p>
-					<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=restrictions&id=' . $this->row->getId(); ?>">Manage restrictions</a></p>
-			<?php
-			}
-			?>
-		</fieldset>
+					<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=whitelist&id=' . $this->row->getId(); ?>">Manage whitelist</a>
+				</p>
 
+			</fieldset>
+
+		</div>
 	</div>
-	<div class="clr"></div>
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
