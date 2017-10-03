@@ -25,71 +25,69 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\System\Tables;
+namespace Components\System\Models;
+
+use Hubzero\Database\Relational;
 
 /**
- * Table class for resource detailed media tracking
+ * media tracking detailed model
+ *
+ * @uses \Hubzero\Database\Relational
  */
-class MediaTrackingDetailed extends \JTable
+class Mediatrackingdetailed extends Relational
 {
 	/**
-	 * Constructor
+	 * The table to which the class pertains
 	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__media_tracking_detailed', 'id', $db);
-	}
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__media_tracking_detailed';
 
 	/**
-	 * Check method used to verify data on save
-	 * 
-	 * @return  bool  Validation check result
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
 	 */
-	public function check()
-	{
-		// session id check
-		if (trim($this->session_id) == '')
-		{
-			$this->setError(\Lang::txt('Missing required session identifier.'));
-		}
-
-		// IP check
-		if (trim($this->ip_address) == '')
-		{
-			$this->setError(\Lang::txt('Missing required session identifier.'));
-		}
-
-		// object id/type check
-		if (trim($this->object_id) == '' || trim($this->object_type) == '')
-		{
-			$this->setError(\Lang::txt('Missing required object id or object type.'));
-		}
-
-		if ($this->getError())
-		{
-			return false;
-		}
-
-		return true;
-	}
+	protected $rules = array(
+		'session_id'  => 'notempty',
+		'ip_address'  => 'notempty',
+		'object_id'   => 'positive|nonzero',
+		'object_type' => 'notempty'
+	);
 
 	/**
-	 * Load a record by ID
+	 * Get tracking info for a specific user/object combination
 	 *
-	 * @param   integer  $id  Record ID
+	 * @param   string  $object_id    Object ID
+	 * @param   string  $object_type  Object type
+	 * @param   string  $user_id      User ID
 	 * @return  object
 	 */
-	public function loadByDetailId($id)
+	public static function oneByUserAndObject($object_id, $object_type, $user_id = 0)
 	{
-		$this->_db->setQuery("SELECT m.* FROM $this->_tbl AS m WHERE id=" . $this->_db->quote($id));
-		return $this->_db->loadObject();
+		$query = self::all()
+			->whereEquals('object_id', $object_id)
+			->whereEquals('object_type', $object_type);
+
+		if (!$user_id)
+		{
+			$session_id = \App::get('session')->getId();
+
+			$query->whereEquals('session_id', $session_id);
+		}
+		else
+		{
+			$query->whereEquals('user_id', $user_id);
+		}
+
+		return $quer->limit(1)->row();
 	}
 }

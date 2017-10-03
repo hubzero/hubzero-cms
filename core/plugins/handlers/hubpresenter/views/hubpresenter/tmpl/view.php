@@ -96,12 +96,10 @@ $this->css('jquery.colpick.css', 'system');
 // Include media tracking
 if (isset($this->entityId) && isset($this->entityType))
 {
-	require_once PATH_CORE . DS . 'components' . DS . 'com_system' . DS . 'tables' . DS . 'mediatracking.php';
-	$dbo           = \App::get('db');
-	$mediaTracking = new \Components\System\Tables\MediaTracking($dbo);
+	require_once Component::path('com_system') . DS . 'models' . DS . 'mediatracking.php';
 
 	// Get tracking for this user for this resource
-	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $this->entityId, $this->entityType);
+	$tracking = Components\System\Models\Mediatracking::oneByUserAndObject($this->entityId, $this->entityType, User::get('id'));
 
 	// Check to see if we already have a time query param
 	$hasTime = (Request::getVar('time', '') != '') ? true : false;

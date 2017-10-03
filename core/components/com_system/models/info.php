@@ -32,13 +32,14 @@
 
 namespace Components\System\Models;
 
+use Hubzero\Base\Object;
 use Filesystem;
 use Config;
 
 /**
  * Model class for getting system information
  */
-class Info extends \JModelLegacy
+class Info extends Object
 {
 	/**
 	 * @var  array  some php settings
@@ -151,9 +152,7 @@ class Info extends \JModelLegacy
 	{
 		if (is_null($this->info))
 		{
-			$version  = new \JVersion();
-			$platform = new \JPlatform();
-			$db       = \App::get('db');
+			$db = \App::get('db');
 
 			if (isset($_SERVER['SERVER_SOFTWARE']))
 			{
@@ -171,8 +170,8 @@ class Info extends \JModelLegacy
 			$this->info['phpversion']  = phpversion();
 			$this->info['server']      = $sf;
 			$this->info['sapi_name']   = php_sapi_name();
-			$this->info['version']     = $version->getLongVersion();
-			$this->info['platform']    = $platform->getLongVersion();
+			$this->info['version']     = HVERSION;
+			$this->info['platform']    = 'HUBzero CMS';
 			$this->info['useragent']   = $_SERVER['HTTP_USER_AGENT'];
 		}
 		return $this->info;
