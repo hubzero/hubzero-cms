@@ -221,9 +221,22 @@ class Searchv1_0 extends ApiController
 		$this->send($response);
 	}
 
+	/**
+	 * Get suggestions for submitted terms
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /search/typeSuggestions
+	 * @apiParameter {
+	 * 		"name":          "terms",
+	 * 		"description":   "Terms to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @return  void
+	 */
 	public function typeSuggestionsTask()
 	{
-		
 		$terms = Request::getVar('terms', '');
 		$suggestedWords = array();
 
