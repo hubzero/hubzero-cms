@@ -35,17 +35,14 @@ namespace Components\Store\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Content\Server;
 use Hubzero\Bank\Teller;
-use Hubzero\Config\Registry;
-use Components\Store\Tables\Order;
-use Components\Store\Tables\OrderItem;
-use Exception;
+use Components\Store\Models\Order;
 use Component;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
 use User;
-use Date;
+use App;
 
 /**
  * Controller class for store orders
@@ -59,8 +56,7 @@ class Orders extends AdminController
 	 */
 	public function execute()
 	{
-		$upconfig = Component::params('com_members');
-		$this->banking = $upconfig->get('bankAccounts');
+		$this->banking = Component::params('com_members')->get('bankAccounts');
 
 		parent::execute();
 	}
@@ -68,75 +64,60 @@ class Orders extends AdminController
 	/**
 	 * Display all orders
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// Instantiate a new view
-		$this->view->store_enabled = $this->config->get('store_enabled');
-
 		// Get paging variables
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.items.limit',
-				'limit',
-				Config::get('list_limit'),
+		$filters = array(
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'status' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.status',
+				'status',
+				-1,
 				'int'
 			),
-			'start' => Request::getState(
-				$this->_option . '.items.limitstart',
-				'limitstart',
-				0,
-				'int'
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'ordered'
 			),
-			'filterby' => Request::getState(
-				$this->_option . '.orders.filterby',
-				'filterby',
-				'all'
-			),
-			'sortby' => Request::getState(
-				$this->_option . '.orders.sortby',
-				'sortby',
-				'm.id DESC'
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
 			)
 		);
 
-		// Get cart object
-		$objOrder = new Order($this->database);
+		$query = Order::all();
 
-		// Get record count
-		$this->view->total = $objOrder->getOrders('count', $this->view->filters);
-		$this->view->rows  = $objOrder->getOrders('', $this->view->filters);
-
-		if ($this->view->rows)
+		if ($filters['status'] >= 0)
 		{
-			$oi = new OrderItem($this->database);
-			foreach ($this->view->rows as $o)
-			{
-				$items = '';
-
-				$results = $oi->getOrderItems($o->id);
-
-				foreach ($results as $r)
-				{
-					$items .= $r->title;
-					$items .= ($r != end($results)) ? '; ' : '';
-				}
-				$o->itemtitles = $items;
-
-				$targetuser = User::getInstance($o->uid);
-				$o->author = $targetuser->get('username');
-			}
+			$query->whereEquals('status', (int)$filters['status']);
 		}
 
+		// Get records
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Generate a receipt
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function receiptTask()
 	{
@@ -144,58 +125,18 @@ class Orders extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// Load the order
-		$row = new Order($this->database);
-		$row->load($id);
+		$row = Order::oneOrFail($id);
 
-		// Instantiate an OrderItem object
-		$oi = new OrderItem($this->database);
+		// Get order items
+		$orderitems = $row->items;
 
-		if ($id)
+		if ($orderitems->count() <= 0)
 		{
-			// Get order items
-			$orderitems = $oi->getOrderItems($id);
-			if ($orderitems)
-			{
-				foreach ($orderitems as $r)
-				{
-					$params = new Registry($r->params);
-					$selections = new Registry($r->selections);
-
-					// Get size selection
-					$r->sizes        = $params->get('size', '');
-					$r->sizes        = str_replace(' ', '', $r->sizes);
-					$r->selectedsize = trim($selections->get('size', ''));
-					$r->sizes        = preg_split('/,/', $r->sizes);
-					$r->sizeavail    = in_array($r->selectedsize, $r->sizes) ? 1 : 0;
-
-					// Get color selection
-					$r->colors        = $params->get('color', '');
-					$r->colors        = str_replace(' ', '', $r->colors);
-					$r->selectedcolor = trim($selections->get('color', ''));
-					$r->colors        = preg_split('/,/', $r->colors);
-				}
-			}
-			else
-			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('Order empty, cannot generate receipt'),
-					'error'
-				);
-				return;
-			}
-
-			$customer = User::getInstance($row->uid);
+			Notify::warning(Lang::txt('Order empty, cannot generate receipt'));
+			return $this->cancelTask();
 		}
-		else
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('Need order ID to issue a receipt'),
-				'error'
-			);
-			return;
-		}
+
+		$customer = User::getInstance($row->uid);
 
 		// Build the link displayed
 		$sef = Route::url('index.php?option=' . $this->_option);
@@ -214,7 +155,6 @@ class Orders extends AdminController
 			$webpath = str_replace(':/', '://', $webpath);
 		}
 
-		//require_once(PATH_CORE . DS . 'libraries/tcpdf/tcpdf.php');
 		$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		$receipt_title  = $this->config->get('receipt_title') ? $this->config->get('receipt_title') : 'Your Order';
@@ -288,7 +228,7 @@ class Orders extends AdminController
 		{
 			if (!\Filesystem::makeDirectory($dir))
 			{
-				throw new Exception(Lang::txt('Failed to create folder to store receipts'), 500);
+				App::abort(500, Lang::txt('Failed to create folder to store receipts'));
 			}
 		}
 
@@ -302,83 +242,44 @@ class Orders extends AdminController
 			$xserver->serve_inline($tempFile);
 			exit;
 		}
-		else
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('There was an error creating a receipt'),
-				'error'
-			);
-			return;
-		}
 
-		return;
+		Notify::error(Lang::txt('There was an error creating a receipt'));
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Display an order
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function orderTask()
 	{
-		$this->view->store_enabled = $this->config->get('store_enabled');
-
 		// Incoming
 		$id = Request::getInt('id', 0);
 
 		// Load data
-		$this->view->row = new Order($this->database);
-		$this->view->row->load($id);
+		$row = Order::oneOrFail($id);
 
-		$oi = new OrderItem($this->database);
+		// Get order items
+		$orderitems = $row->items;
 
-		$this->view->orderitems = array();
-		$this->view->customer = null;
-		$this->view->funds = 0;
-		if ($id)
-		{
-			// Get order items
-			$this->view->orderitems = $oi->getOrderItems($id);
-			if (count($this->view->orderitems) > 0)
-			{
-				foreach ($this->view->orderitems as $r)
-				{
-					$params = new Registry($r->params);
-					$selections = new Registry($r->selections);
+		// Get customer
+		$customer = User::getInstance($row->get('uid'));
 
-					// Get size selection
-					$r->sizes = $params->get('size', '');
-					$r->sizes = str_replace(' ', '', $r->sizes);
-					$r->sizes = preg_split('#,#', $r->sizes);
-					$r->selectedsize = trim($selections->get('size', ''));
-					$r->sizeavail = in_array($r->selectedsize, $r->sizes) ? 1 : 0;
-
-					// Get color selection
-					$r->colors = $params->get('color', '');
-					$r->colors = str_replace(' ', '', $r->colors);
-					$r->colors = preg_split('#,#', $r->colors);
-					$r->selectedcolor = trim($selections->get('color', ''));
-				}
-			}
-
-			$this->view->customer = User::getInstance($this->view->row->uid);
-
-			// Check available user funds
-			$BTL = new Teller($this->view->row->uid);
-			$balance = $BTL->summary();
-			$credit  = $BTL->credit_summary();
-			$this->view->funds = $balance;
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		// Check available user funds
+		$BTL = new Teller($row->get('uid'));
+		$balance = $BTL->summary();
+		$credit  = $BTL->credit_summary();
+		$funds   = $balance;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->set('orderitems', $orderitems)
+			->set('funds', $funds)
+			->set('customer', $customer)
+			->display();
 	}
 
 	/**
@@ -393,140 +294,132 @@ class Orders extends AdminController
 
 		$statusmsg = '';
 
-		$data   = array_map('trim', $_POST);
-		$action = (isset($data['action'])) ? $data['action'] : '';
-		$id     = ($data['id']) ? $data['id'] : 0;
-		$cost   = intval($data['total']);
+		$data   = array(
+			'action' => Request::getCmd('action'),
+			'notes'  => Request::getVar('notes'),
+			'total'  => Request::getInt('total', 0)
+		);
+		$id   = Request::getInt('id', 0);
+		$cost = intval($data['total']);
 
-		if ($id)
+		// initiate extended database class
+		$row = Order::oneOrFail($id);
+		$row->set('notes', \Hubzero\Utility\Sanitize::clean($data['notes']));
+		$hold = $row->total;
+		$row->set('total', $cost);
+
+		// get user bank account
+		$xprofile = User::getInstance($row->uid);
+		$BTL_Q = new Teller($xprofile->get('id'));
+
+		switch ($action)
 		{
-			// initiate extended database class
-			$row = new Order($this->database);
-			$row->load($id);
-			$row->notes = \Hubzero\Utility\Sanitize::clean($data['notes']);
-			$hold       = $row->total;
-			$row->total = $cost;
+			case 'complete_order':
+				// adjust credit
+				$credit = $BTL_Q->credit_summary();
+				$adjusted = $credit - $hold;
+				$BTL_Q->credit_adjustment($adjusted);
 
-			// get user bank account
-			$xprofile = User::getInstance($row->uid);
-			$BTL_Q = new Teller($xprofile->get('id'));
+				// remove hold
+				$database = App::get('db');
+				$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='" . $id . "' AND uid=" . intval($row->uid);
+				$database->setQuery($sql);
+				$database->query();
 
-			switch ($action)
-			{
-				case 'complete_order':
-					// adjust credit
-					$credit = $BTL_Q->credit_summary();
-					$adjusted = $credit - $hold;
-					$BTL_Q->credit_adjustment($adjusted);
-
-					// remove hold
-					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='" . $id . "' AND uid=" . intval($row->uid);
-					$this->database->setQuery($sql);
-					if (!$this->database->query())
-					{
-						throw new Exception($this->database->getErrorMsg(), 500);
-					}
-					// debit account
-					if ($cost > 0)
-					{
-						$BTL_Q->withdraw($cost, Lang::txt('COM_STORE_BANKING_PURCHASE').' #' . $id, 'store', $id);
-					}
-
-					// update order information
-					$row->status_changed = Date::toSql();
-					$row->status = 1;
-					$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_COMPLETED')) . '.';
-				break;
-
-				case 'cancel_order':
-					// adjust credit
-					$credit = $BTL_Q->credit_summary();
-					$adjusted = $credit - $hold;
-					$BTL_Q->credit_adjustment($adjusted);
-
-					// remove hold
-					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='" . $id . "' AND uid=" . intval($row->uid);
-					$this->database->setQuery($sql);
-					if (!$this->database->query())
-					{
-						throw new Exception($this->database->getErrorMsg(), 500);
-					}
-					// update order information
-					$row->status_changed = Date::toSql();
-					$row->status = 2;
-
-					$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_CANCELLED')) . '.';
-				break;
-
-				case 'message':
-					$statusmsg = Lang::txt('COM_STORE_MSG_SENT') . '.';
-				break;
-
-				default:
-					$statusmsg = Lang::txt('COM_STORE_ORDER_DETAILS_UPDATED') . '.';
-				break;
-			}
-
-			// check content
-			if (!$row->check())
-			{
-				throw new Exception($row->getError(), 500);
-			}
-
-			// store new content
-			if (!$row->store())
-			{
-				throw new Exception($row->getError(), 500);
-			}
-
-			// send email
-			if ($action || $data['message'])
-			{
-				if (\Hubzero\Utility\Validate::email($row->email))
+				// debit account
+				if ($cost > 0)
 				{
-					$message = new \Hubzero\Mail\Message();
-					$message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT', $id));
-					$message->addFrom(
-						Config::get('mailfrom'),
-						Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE')
-					);
-
-					// Plain text email
-					$eview = new \Hubzero\Mail\View(array(
-						'name'   => 'emails',
-						'layout' => '_plain'
-					));
-					$eview->option     = $this->_option;
-					$eview->controller = $this->_controller;
-					$eview->orderid    = $id;
-					$eview->cost       = $cost;
-					$eview->row        = $row;
-					$eview->action     = $action;
-					$eview->message    = \Hubzero\Utility\Sanitize::stripAll($data['message']);
-
-					$plain = $eview->loadTemplate(false);
-					$plain = str_replace("\n", "\r\n", $plain);
-
-					$message->addPart($plain, 'text/plain');
-
-					// HTML email
-					$eview->setLayout('_html');
-
-					$html = $eview->loadTemplate();
-					$html = str_replace("\n", "\r\n", $html);
-
-					$message->addPart($html, 'text/html');
-
-					// Send e-mail
-					$message->setTo(array($row->email));
-					$message->send();
+					$BTL_Q->withdraw($cost, Lang::txt('COM_STORE_BANKING_PURCHASE').' #' . $id, 'store', $id);
 				}
+
+				// update order information
+				$row->set('status_changed', Date::toSql());
+				$row->set('status', 1);
+
+				$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_COMPLETED')) . '.';
+			break;
+
+			case 'cancel_order':
+				// adjust credit
+				$credit = $BTL_Q->credit_summary();
+				$adjusted = $credit - $hold;
+				$BTL_Q->credit_adjustment($adjusted);
+
+				// remove hold
+				$database = App::get('db');
+				$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='" . $id . "' AND uid=" . intval($row->uid);
+				$database->setQuery($sql);
+				$database->query();
+
+				// update order information
+				$row->set('status_changed', Date::toSql());
+				$row->set('status', 2);
+
+				$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_CANCELLED')) . '.';
+			break;
+
+			case 'message':
+				$statusmsg = Lang::txt('COM_STORE_MSG_SENT') . '.';
+			break;
+
+			default:
+				$statusmsg = Lang::txt('COM_STORE_ORDER_DETAILS_UPDATED') . '.';
+			break;
+		}
+
+		// store new content
+		if (!$row->save())
+		{
+			Notify::error($row->getError());
+			return $this->cancelTask();
+		}
+
+		// send email
+		if ($action || $data['message'])
+		{
+			if (\Hubzero\Utility\Validate::email($row->email))
+			{
+				$message = new \Hubzero\Mail\Message();
+				$message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT', $id));
+				$message->addFrom(
+					Config::get('mailfrom'),
+					Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE')
+				);
+
+				// Plain text email
+				$eview = new \Hubzero\Mail\View(array(
+					'name'   => 'emails',
+					'layout' => '_plain'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->orderid    = $id;
+				$eview->cost       = $cost;
+				$eview->row        = $row;
+				$eview->action     = $action;
+				$eview->message    = \Hubzero\Utility\Sanitize::stripAll($data['message']);
+
+				$plain = $eview->loadTemplate(false);
+				$plain = str_replace("\n", "\r\n", $plain);
+
+				$message->addPart($plain, 'text/plain');
+
+				// HTML email
+				$eview->setLayout('_html');
+
+				$html = $eview->loadTemplate();
+				$html = str_replace("\n", "\r\n", $html);
+
+				$message->addPart($html, 'text/html');
+
+				// Send e-mail
+				$message->setTo(array($row->email));
+				$message->send();
 			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			$statusmsg
-		);
+		Notify::success($statusmsg);
+
+		$this->cancelTask();
 	}
 }

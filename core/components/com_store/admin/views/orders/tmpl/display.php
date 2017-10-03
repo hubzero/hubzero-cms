@@ -34,9 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Store\Helpers\Permissions::getActions('component');
 
-$text = (!$this->store_enabled) ? ' (store is disabled)' : '';
-
-Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER'), 'store');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_store', '550');
@@ -59,27 +57,20 @@ function submitbutton(pressbutton)
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter-filterby"><?php echo Lang::txt('COM_STORE_FILTERBY'); ?>:</label>
-		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
-			<option value="new"<?php if ($this->filters['filterby'] == 'new') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_NEW'); ?> <?php echo ucfirst(Lang::txt('COM_STORE_ORDERS')); ?></option>
-			<option value="processed"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_COMPLETED'); ?> <?php echo ucfirst(Lang::txt('COM_STORE_ORDERS')); ?></option>
-			<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_CANCELLED'); ?> <?php echo ucfirst(Lang::txt('COM_STORE_ORDERS')); ?></option>
-			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_ALL'); ?> <?php echo ucfirst(Lang::txt('COM_STORE_ORDERS')); ?></option>
-		</select>
-
-		<label for="filter-sortby"><?php echo Lang::txt('COM_STORE_SORTBY'); ?>:</label>
-		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit();">
-			<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_ORDER_DATE'); ?></option>
-			<option value="m.status_changed"<?php if ($this->filters['sortby'] == 'm.status_changed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_LAST_STATUS_CHANGE'); ?></option>
-			<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(Lang::txt('COM_STORE_ORDER')).' '.strtoupper(Lang::txt('COM_STORE_ID')); ?></option>
+		<label for="filter-status"><?php echo Lang::txt('COM_STORE_FILTERBY'); ?>:</label>
+		<select name="status" id="filter-status" onchange="document.adminForm.submit();">
+			<option value="-1"<?php if ($this->filters['status'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_ORDERS_ALL'); ?></option>
+			<option value="0"<?php if ($this->filters['status'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_NEW'); ?></option>
+			<option value="1"<?php if ($this->filters['status'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_COMPLETED'); ?></option>
+			<option value="2"<?php if ($this->filters['status'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STORE_CANCELLED'); ?></option>
 		</select>
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col" class="priority-5"><?php echo strtoupper(Lang::txt('COM_STORE_ID')); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_STORE_STATUS'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_STORE_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_STORE_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_STORE_ORDERED_ITEMS'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_STORE_TOTAL'); ?> (<?php echo Lang::txt('COM_STORE_POINTS'); ?>)</th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_STORE_BY'); ?></th>
@@ -92,11 +83,7 @@ function submitbutton(pressbutton)
 				<td colspan="7">
 					<?php
 					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					echo $this->rows->pagination;
 					?>
 				</td>
 			</tr>
@@ -104,10 +91,9 @@ function submitbutton(pressbutton)
 		<tbody>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$row = &$this->rows[$i];
-
 			$status = '';
 			$class  = 'completed-item';
 			switch ($row->status)
@@ -142,7 +128,7 @@ function submitbutton(pressbutton)
 					<?php echo $this->escape($row->total); ?>
 				</td>
 				<td class="priority-2">
-					<?php echo $this->escape(stripslashes($row->author)); ?>
+					<?php echo $this->escape(stripslashes($row->user->get('name'))); ?>
 				</td>
 				<td class="priority-3">
 					<time datetime="<?php echo $row->ordered; ?>"><?php echo Date::of($row->ordered)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
@@ -155,16 +141,19 @@ function submitbutton(pressbutton)
 				</td>
 			</tr>
 			<?php
+			$i++;
 			$k = 1 - $k;
 		}
 		?>
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

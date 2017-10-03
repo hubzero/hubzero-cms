@@ -34,15 +34,14 @@ namespace Components\Store\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Sanitize;
-use Components\Store\Tables\Store;
-use Components\Store\Tables\OrderItem;
-use Exception;
+use Components\Store\Models\Store;
 use Component;
 use Request;
+use Notify;
 use Route;
-use Config;
+use Event;
 use Lang;
-use Date;
+use App;
 
 /**
  * Controller class for store items
@@ -60,116 +59,120 @@ class Items extends AdminController
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+		$this->registerTask('available', 'availability');
+		$this->registerTask('unavailable', 'availability');
 
 		parent::execute();
 	}
 
 	/**
-	 * Displays a list of groups
+	 * Displays a list of entries
 	 *
 	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// Instantiate a new view
-		$this->view->store_enabled = $this->config->get('store_enabled');
-
 		// Get paging variables
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.items.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.items.limitstart',
+		$filters = array(
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'available' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.available',
 				'limitstart',
-				0,
+				-1,
 				'int'
 			),
-			'filterby' => Request::getState(
-				$this->_option . '.items.filterby',
-				'filterby',
-				'all'
+			'published' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.published',
+				'limitstart',
+				-1,
+				'int'
 			),
-			'sortby' => Request::getState(
-				$this->_option . '.items.sortby',
-				'sortby',
-				'date'
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
 			)
 		);
 
-		$obj = new Store($this->database);
+		$query = Store::all();
 
-		$this->view->total = $obj->getItems('count', $this->view->filters, $this->config);
-
-		$this->view->rows = $obj->getItems('retrieve', $this->view->filters, $this->config);
-
-		// how many times ordered?
-		if ($this->view->rows)
+		if ($filters['search'])
 		{
-			$oi = new OrderItem($this->database);
-			foreach ($this->view->rows as $o)
-			{
-				// Active orders
-				$o->activeorders = $oi->countActiveItemOrders($o->id);
-
-				// All orders
-				$o->allorders = $oi->countAllItemOrders($o->id);
-			}
+			$query->whereLike('title', strtolower((string)$filters['search']));
 		}
 
+		if ($filters['available'] >= 0)
+		{
+			$query->whereEquals('available', (int)$filters['available']);
+		}
+
+		if ($filters['published'] >= 0)
+		{
+			$query->whereEquals('published', (int)$filters['published']);
+		}
+
+		// Get records
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Edit a store item
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($row = null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
-		// Instantiate a new view
-		$this->view->store_enabled = $this->config->get('store_enabled');
-
-		// Incoming
-		$id = Request::getInt('id', 0);
-
-		// Load info from database
-		$this->view->row = new Store($this->database);
-		$this->view->row->load($id);
-
-		if ($id)
+		if (!is_object($row))
 		{
-			// Get parameters
-			$params = new \Hubzero\Config\Registry($this->view->row->params);
-			$this->view->row->size  = $params->get('size', '');
-			$this->view->row->color = $params->get('color', '');
-		}
-		else
-		{
-			// New item
-			$this->view->row->available = 0;
-			$this->view->row->created   = Date::toSql();
-			$this->view->row->published = 0;
-			$this->view->row->featured  = 0;
-			$this->view->row->special   = 0;
-			$this->view->row->type      = 1;
-			$this->view->row->category  = 'wear';
+			// Incoming
+			$id = Request::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
+			// Load the article
+			$row = Store::oneOrNew($id);
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		if ($row->isNew())
 		{
-			$this->view->setError($error);
+			$row->set('category', 'wear');
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -184,27 +187,24 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming
-		$id = Request::getInt('id', 0);
-
-		$_POST = array_map('trim', $_POST);
-
-		// initiate extended database class
-		$row = new Store($this->database);
-		if (!$row->bind($_POST))
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			throw new Exception($row->getError(), 500);
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
+
+		// Incoming
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+
+		// Initiate extended database class
+		$row = Store::oneOrNew($fields['id'])->set($fields);
 
 		// code cleaner
-		$row->description = Sanitize::clean($row->description);
-		if (!$id)
-		{
-			$row->created = $row->created ? $row->created : Date::toSql();
-		}
-		$sizes = ($_POST['sizes']) ? $_POST['sizes'] : '';
+		$row->set('description', Sanitize::clean($row->get('description')));
+
+		$sizes = Request::getVar('sizes', '', 'post', 'none', 2);
 		$sizes = str_replace(' ', '', $sizes);
-		$sizes = preg_split('#,#', $sizes);
+		$sizes = explode(',', $sizes);
 		$sizes_cl = '';
 		foreach ($sizes as $s)
 		{
@@ -214,69 +214,32 @@ class Items extends AdminController
 				$sizes_cl .= ($s == end($sizes)) ? '' : ', ';
 			}
 		}
-		$row->title     = htmlspecialchars(stripslashes($row->title));
-		$row->params    = $sizes_cl ? 'size=' . $sizes_cl : '';
-		$row->published	= isset($_POST['published']) ? 1 : 0;
-		$row->available	= isset($_POST['available']) ? 1 : 0;
-		$row->featured  = isset($_POST['featured'])  ? 1 : 0;
-		$row->type      = ($_POST['category'] == 'service') ? 2 : 1;
 
-		// check content
-		if (!$row->check())
+		$row->params->set('size', $sizes_cl);
+
+		$row->set('params', $row->params->toString());
+		$row->set('published', isset($fields['published']) ? 1 : 0);
+		$row->set('available', isset($fields['available']) ? 1 : 0);
+		$row->set('featured', isset($fields['featured'])  ? 1 : 0);
+		$row->set('type', ($fields['category'] == 'service' ? 2 : 1));
+
+		// Store content
+		if (!$row->save())
 		{
-			throw new Exception($row->getError(), 500);
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		// store new content
-		if (!$row->store())
+		// Notify of success
+		Notify::success(Lang::txt('COM_STORE_MSG_SAVED'));
+
+		// Redirect to main listing or go back to edit form
+		if ($this->getTask() == 'apply')
 		{
-			throw new Exception($row->getError(), 500);
+			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_STORE_MSG_SAVED')
-		);
-	}
-
-	/**
-	 * Calls stateTask to set entry to available
-	 *
-	 * @return  void
-	 */
-	public function availableTask()
-	{
-		$this->stateTask();
-	}
-
-	/**
-	 * Calls stateTask to set entry to unavailable
-	 *
-	 * @return  void
-	 */
-	public function unavailableTask()
-	{
-		$this->stateTask();
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return  void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask();
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return  void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask();
+		$this->cancelTask();
 	}
 
 	/**
@@ -287,88 +250,172 @@ class Items extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get');
+		Request::checkToken(['get', 'post']);
 
-		$id = Request::getInt('id', 0, 'get');
-
-		switch ($this->_task)
+		if (!User::authorise('core.edit.state', $this->_option))
 		{
-			case 'publish':
-			case 'unpublish':
-				$publish = ($this->_task == 'publish') ? 1 : 0;
-
-				// Check for an ID
-				if (!$id)
-				{
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						Lang::txt('COM_STORE_ALERT_SELECT_ITEM') . ' ' . ($publish == 1 ? 'published' : 'unpublished'),
-						'error'
-					);
-					return;
-				}
-
-				// Update record(s)
-				$obj = new Store($this->database);
-				$obj->load($id);
-				$obj->published = $publish;
-
-				if (!$obj->store())
-				{
-					throw new Exception($obj->getError(), 500);
-				}
-
-				// Set message
-				if ($publish == '1')
-				{
-					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_ADDED'));
-				}
-				else if ($publish == '0')
-				{
-					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_DELETED'));
-				}
-			break;
-
-			case 'available':
-			case 'unavailable':
-				$avail = ($this->_task == 'available') ? 1 : 0;
-
-				// Check for an ID
-				if (!$id)
-				{
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						Lang::txt('COM_STORE_ALERT_SELECT_ITEM') . ' ' . ($avail == 1 ? 'available' : 'unavailable'),
-						'error'
-					);
-					return;
-				}
-
-				// Update record(s)
-				$obj = new Store($this->database);
-				$obj->load($id);
-				$obj->available = $avail;
-
-				if (!$obj->store())
-				{
-					throw new Exception($obj->getError(), 500);
-				}
-
-				// Set message
-				if ($avail == '1')
-				{
-					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_AVAIL'));
-				}
-				else if ($avail == '0')
-				{
-					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_UNAVAIL'));
-				}
-			break;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$state = $this->getTask() == 'publish' ? 1 : 0;
+
+		// Incoming
+		$ids = Request::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Check for a resource
+		if (count($ids) < 1)
+		{
+			Notify::warning(Lang::txt('COM_STORE_ALERT_SELECT_ITEM', $this->getTask()));
+			return $this->cancelTask();
+		}
+
+		// Loop through all the IDs
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			// Load the article
+			$row = Store::oneOrNew(intval($id));
+			$row->set('published', $state);
+
+			// Store new content
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			switch ($this->getTask())
+			{
+				case 'publish':
+					$message = Lang::txt('COM_STORE_MSG_ITEM_PUBLISHED', $success);
+				break;
+				case 'unpublish':
+					$message = Lang::txt('COM_STORE_MSG_ITEM_UNPUBLISHED', $success);
+				break;
+			}
+
+			Notify::success($message);
+		}
+
+		// Set the redirect
+		$this->cancelTask();
+	}
+
+	/**
+	 * Change availability of item(s)
+	 *
+	 * @return  void
+	 */
+	public function availabilityTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$state = $this->getTask() == 'available' ? 1 : 0;
+
+		// Incoming
+		$ids = Request::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Check for a resource
+		if (count($ids) < 1)
+		{
+			Notify::warning(Lang::txt('COM_STORE_ALERT_SELECT_ITEM', $this->getTask()));
+			return $this->cancelTask();
+		}
+
+		// Loop through all the IDs
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			// Load the article
+			$row = Store::oneOrNew(intval($id));
+			$row->set('available', $state);
+
+			// Store new content
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			switch ($this->getTask())
+			{
+				case 'available':
+					$message = Lang::txt('COM_STORE_MSG_ITEM_AVAIL', $success);
+				break;
+				case 'unavailable':
+					$message = Lang::txt('COM_STORE_MSG_ITEM_UNAVAIL', $success);
+				break;
+			}
+
+			Notify::success($message);
+		}
+
+		// Set the redirect
+		$this->cancelTask();
+	}
+
+	/**
+	 * Delete one or more entries
+	 *
+	 * @return  void
+	 */
+	public function deleteTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$removed = 0;
+
+		foreach ($ids as $id)
+		{
+			$row = Store::oneOrFail(intval($id));
+
+			// Delete the entry
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			// Trigger before delete event
+			Event::trigger('onStoreAfterDelete', array($id));
+
+			$removed++;
+		}
+
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_STORE_ITEMSS_DELETED'));
+		}
+
+		// Set the redirect
+		$this->cancelTask();
 	}
 }
-

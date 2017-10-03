@@ -34,8 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Store\Helpers\Permissions::getActions('component');
 
-$text = (!$this->store_enabled) ? ' (store is disabled)' : '';
-Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER'), 'store');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -80,7 +79,7 @@ function submitbutton(pressbutton)
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
-<?php if (isset($this->row->id)) { ?>
+<?php if ($this->row->id) { ?>
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -92,12 +91,13 @@ function submitbutton(pressbutton)
 						$k=1;
 						foreach ($this->orderitems as $o)
 						{
-							$avail = ($o->available) ?  'available' : 'unavailable';
+							$avail = ($o->item->available) ?  'available' : 'unavailable';
 							$html  = $k . ') ';
-							$html .= $o->title . ' (x' . $o->quantity . ')';
-							$html .= ($o->selectedsize) ? '- size ' . $o->selectedsize : '';
+							$html .= $o->item->title . ' (x' . $o->quantity . ')';
+							$html .= ($o->selections->get('size') ? '- size ' . $o->selections->get('size') : '');
 							$html .= '<br /><span style="color:#999;">' . Lang::txt('COM_STORE_ITEM') . ' ' . Lang::txt('COM_STORE_STORE') . ' ' . Lang::txt('COM_STORE_ID') . ' #' . $o->itemid . '. ' . Lang::txt('COM_STORE_STATUS') . ': ' . $avail;
-							if (!$o->sizeavail) {
+							if (!in_array($o->selections->get('size'), $o->item->sizes))
+							{
 								$html .= Lang::txt('COM_STORE_WARNING_NOT_IN_STOCK');
 							}
 							$html .= '. ' . Lang::txt('COM_STORE_CURRENT_PRICE') . ': ' . $o->price . '</span><br />';
