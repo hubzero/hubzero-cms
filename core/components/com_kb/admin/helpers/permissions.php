@@ -36,7 +36,7 @@ use Hubzero\Base\Object;
 use User;
 
 /**
- * Table class for knowledge base permissions
+ * Knowledge Base permissions helper
  */
 class Permissions
 {
@@ -82,4 +82,3 @@ class Permissions
 		return $result;
 	}
 }
-
