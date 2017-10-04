@@ -38,9 +38,8 @@ if (!\User::authorise('core.manage', 'com_services'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'service.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'subscription.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'subscription.php';
 
 $controllerName = \Request::getCmd('controller', 'services');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -59,11 +58,9 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'subscriptions'
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Initiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

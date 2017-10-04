@@ -32,10 +32,10 @@
 
 namespace Components\Services\Admin\Controllers;
 
-use Components\Services\Tables\Service;
+use Components\Services\Models\Service;
 use Hubzero\Component\AdminController;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
 use Date;
@@ -67,19 +67,6 @@ class Services extends AdminController
 	public function displayTask()
 	{
 		$filters = array(
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
 			// Get sorting variables
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -94,15 +81,17 @@ class Services extends AdminController
 		);
 
 		// get all available services
-		$objS = new Service($this->database);
-		$rows = $objS->getServices('', 1, '', $filters['sort'], $filters['sort_Dir'], '', 1);
+		$query = Service::all();
 
-		$total = ($rows) ? count($rows) : 0;
+		// Get records
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
-			->set('total', $total)
 			->set('rows', $rows)
 			->display();
 	}
@@ -114,66 +103,55 @@ class Services extends AdminController
 	 */
 	protected function setupServices()
 	{
-		$database = \App::get('db');
-
-		$objS = new Service($database);
 		$now = Date::toSql();
 
-		$default1 = array(
-			'id' => 0,
-			'title' => Lang::txt('COM_SERVICES_BASIC_SERVICE_TITLE'),
-			'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
-			'alias' => 'employer_basic',
-			'status' => 1,
-			'description' => Lang::txt('COM_SERVICES_BASIC_SERVICE_DESC'),
-			'unitprice' => '0.00',
-			'pointprice' => 0,
-			'currency' => '$',
-			'maxunits' => 6,
-			'minunits' => 1,
-			'unitsize' => 1,
-			'unitmeasure' => strtolower(Lang::txt('month')),
-			'changed' => $now,
-			'params' => "promo=" . Lang::txt('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1"
-		);
-		$default2 = array(
-			'id' => 0,
-			'title' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_TITLE'),
-			'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
-			'alias' => 'employer_premium',
-			'status' => 0,
-			'description' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_DESC'),
-			'unitprice' => '500.00',
-			'pointprice' => 0,
-			'currency' => '$',
-			'maxunits' => 6,
-			'minunits' => 1,
-			'unitsize' => 1,
-			'unitmeasure' => strtolower(Lang::txt('month')),
-			'changed' => $now,
-			'params' => "promo=\npromomaxunits=\nmaxads=3"
+		$defaults = array(
+			array(
+				'title' => Lang::txt('COM_SERVICES_BASIC_SERVICE_TITLE'),
+				'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
+				'alias' => 'employer_basic',
+				'status' => 1,
+				'description' => Lang::txt('COM_SERVICES_BASIC_SERVICE_DESC'),
+				'unitprice' => '0.00',
+				'pointprice' => 0,
+				'currency' => '$',
+				'maxunits' => 6,
+				'minunits' => 1,
+				'unitsize' => 1,
+				'unitmeasure' => strtolower(Lang::txt('month')),
+				'changed' => $now,
+				'params' => "promo=" . Lang::txt('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1"
+			),
+			array(
+				'title' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_TITLE'),
+				'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
+				'alias' => 'employer_premium',
+				'status' => 0,
+				'description' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_DESC'),
+				'unitprice' => '500.00',
+				'pointprice' => 0,
+				'currency' => '$',
+				'maxunits' => 6,
+				'minunits' => 1,
+				'unitsize' => 1,
+				'unitmeasure' => strtolower(Lang::txt('month')),
+				'changed' => $now,
+				'params' => "promo=\npromomaxunits=\nmaxads=3"
+			)
 		);
 
-		if (!$objS->bind($default1))
+		foreach ($defaults as $data)
 		{
-			$this->setError($objS->getError());
-			return false;
+			$row = Service::blank()->set($data);
+
+			if (!$row->save())
+			{
+				$this->setError($row->getError());
+				return false;
+			}
 		}
-		if (!$objS->store())
-		{
-			$this->setError($objS->getError());
-			return false;
-		}
-		if (!$objS->bind($default2))
-		{
-			$this->setError($objS->getError());
-			return false;
-		}
-		if (!$objS->store())
-		{
-			$this->setError($objS->getError());
-			return false;
-		}
+
+		return true;
 	}
 
 	/**
@@ -184,6 +162,12 @@ class Services extends AdminController
 	 */
 	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -195,8 +179,7 @@ class Services extends AdminController
 			}
 
 			// load infor from database
-			$row = new Service($this->database);
-			$row->load($id);
+			$row = Service::oneOrNew($id);
 		}
 
 		// Output the HTML
@@ -216,32 +199,27 @@ class Services extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Service($this->database);
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Service::oneOrNew($fields['id'])->set($fields);
 
 		// Store content
-		if (!$row->check())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
-		// Store content
-		if (!$row->store())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
-
+		// Notify of success
 		Notify::success(Lang::txt('COM_SERVICES_SAVED'));
 
 		if ($this->getTask() == 'apply')
@@ -260,27 +238,34 @@ class Services extends AdminController
 	 */
 	public function removeTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get the request vars
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$success = 0;
+		$removed = 0;
 
 		foreach ($ids as $id)
 		{
-			$row = new Service($this->database);
-			$row->load(intval($id));
+			$row = Service::oneOrFail(intval($id));
 
-			if (!$row->delete())
+			if (!$row->destroy())
 			{
 				Notify::error(Lang::txt('COM_SERVICES_DELETE_FAILED', $id));
 				continue;
 			}
 
-			$success++;
+			$removed++;
 		}
 
-		if ($success)
+		if ($removed)
 		{
 			Notify::success(Lang::txt('COM_SERVICES_DELETE_SUCCESS'));
 		}

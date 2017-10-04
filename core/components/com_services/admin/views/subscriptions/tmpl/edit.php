@@ -81,7 +81,6 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
-<?php if (isset($this->subscription->id)) { ?>
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -209,8 +208,6 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 	<input type="hidden" name="usepoints" value="<?php echo $this->subscription->usepoints; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->subscription->id; ?>" />
 	<input type="hidden" name="task" value="save" />
-<?php  } // end if id exists ?>
-
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 

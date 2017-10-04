@@ -32,10 +32,10 @@
 
 namespace Components\Services\Admin\Controllers;
 
-use Components\Services\Tables\Subscription;
+use Components\Services\Models\Subscription;
 use Hubzero\Component\AdminController;
 use Request;
-use Config;
+use Notify;
 use Event;
 use Route;
 use Lang;
@@ -48,7 +48,7 @@ use App;
  */
 class Subscriptions extends AdminController
 {
-		/**
+	/**
 	 * Execute a task
 	 *
 	 * @return  void
@@ -68,96 +68,104 @@ class Subscriptions extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
+		$filters = array(
+			'status' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.status',
+				'filter_status',
+				'all'
 			),
 			// Get sorting variables
-			'sortby' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortby',
-				'sortby',
-				'pending'
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
 			),
-			'filterby' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.filterby',
-				'filterby',
-				'all'
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
 			)
 		);
 
-		$obj = new Subscription($this->database);
+		// get all available subscriptions
+		$query = Subscription::all();
 
-		// Record count
-		$this->view->total = $obj->getSubscriptionsCount($this->view->filters, true);
-
-		// Fetch results
-		$this->view->rows = $obj->getSubscriptions($this->view->filters, true);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		switch ($filters['status'])
 		{
-			$this->view->setError($error);
+			case 'pending':
+				$query->whereEquals('status', 0)
+					->orWhere('pendingpayment', '>', 0)
+					->orWhere('pendingunits', '>', 0);
+			break;
+
+			case 'cancelled':
+				$query->whereEquals('status', 2);
+			break;
+
+			default:
+			break;
 		}
 
+		// Get records
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
 	 * Edit Subscription
 	 *
+	 * @param   object  $subscription
 	 * @return  void
 	 */
-	public function editTask($row=null)
+	public function editTask($subscription=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($row))
+		if (!is_object($subscription))
 		{
-			$id = Request::getInt('id', 0);
+			$id = Request::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? intval($id[0]) : 0);
+			}
 
-			$row = new Subscription($this->database);
-			$this->view->subscription = $row->getSubscription($id);
+			$subscription = Subscription::oneOrNew($id);
 		}
 
-		$this->view->subscription = $row;
-
-		if (!$this->view->subscription)
+		if (!$subscription->get('id'))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SERVICES_SUBSCRIPTION_NOT_FOUND')
-			);
-			return;
+			Notify::warning(Lang::txt('COM_SERVICES_SUBSCRIPTION_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
-		$this->view->customer = User::getInstance($this->view->subscription->uid);
+		$customer = $subscription->user;
 
 		// check available user funds
-		$BTL = new \Hubzero\Bank\Teller($this->view->subscription->uid);
+		$BTL = new \Hubzero\Bank\Teller($subscription->get('uid'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance;
-		$this->view->funds = ($funds > 0) ? $funds : '0';
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$funds   = ($funds > 0) ? $funds : 0;
 
 		// Output the HTML
 		$this->view
+			->set('subscription', $subscription)
+			->set('funds', $funds)
+			->set('customer', $customer)
 			->setLayout('edit')
 			->display();
 	}
@@ -174,27 +182,16 @@ class Subscriptions extends AdminController
 
 		$id = Request::getInt('id', 0);
 
-		$subscription = new Subscription($this->database);
-		if (!$subscription->load($id))
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SERVICES_SUBSCRIPTION_NOT_FOUND'),
-				'error'
-			);
-			return;
-		}
+		$subscription = Subscription::oneOrFail($id);
 
 		// get service
-		$service = new Service($this->database);
-		if (!$service->loadService('', $subscription->serviceid))
+		$service = $subscription->service;
+
+		if (!$service->get('id'))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' .  $subscription->serviceid,
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' .  $subscription->get('serviceid'));
+
+			return $this->cancelTask();
 		}
 
 		$author    = User::getInstance($subscription->uid);
@@ -208,30 +205,38 @@ class Subscriptions extends AdminController
 		{
 			case 'refund':
 				$received_refund = Request::getInt('received_refund', 0);
-				$newunits = Request::getInt('newunits', 0);
-				$pending = $subscription->pendingpayment - $received_refund;
-				$pendingunits = $subscription->pendingunits - $newunits;
-				$subscription->pendingpayment = $pending <= 0 ? 0 : $pending;
-				$subscription->pendingunits = $pendingunits <= 0 ? 0 : $pendingunits;
+				$newunits        = Request::getInt('newunits', 0);
+
+				$pending      = $subscription->get('pendingpayment') - $received_refund;
+				$pendingunits = $subscription->get('pendingunits') - $newunits;
+
+				$subscription->set('pendingpayment', ($pending <= 0 ? 0 : $pending));
+				$subscription->set('pendingunits', ($pendingunits <= 0 ? 0 : $pendingunits));
+
 				$email = 0;
 				$statusmsg .= Lang::txt('Refund has been processed.');
 			break;
 
 			case 'activate':
 				$received_payment = Request::getInt('received_payment', 0);
-				$newunits = Request::getInt('newunits', 0);
-				$pending = $subscription->pendingpayment - $received_payment;
-				$pendingunits = $subscription->pendingunits - $newunits;
-				$subscription->pendingpayment = $pending <= 0 ? 0 : $pending;
-				$subscription->pendingunits = $pendingunits <= 0 ? 0 : $pendingunits;
-				$subscription->totalpaid = $subscription->totalpaid + $received_payment;
-				$oldunits = $subscription->units;
+				$newunits         = Request::getInt('newunits', 0);
 
-				$months = $newunits * $service->unitsize;
-				$newexpire = ($oldunits > 0  && intval($subscription->expires) <> 0) ? Date::of(strtotime($subscription->expires . "+" . $months . "months"))->format("Y-m-d") : Date::of(strtotime("+" . $months . "months"))->format("Y-m-d");
-				$subscription->expires = $newunits ? $newexpire : $subscription->expires;
-				$subscription->status =  1;
-				$subscription->units = $subscription->units + $newunits;
+				$pending      = $subscription->get('pendingpayment') - $received_payment;
+				$pendingunits = $subscription->get('pendingunits') - $newunits;
+
+				$subscription->set('pendingpayment', ($pending <= 0 ? 0 : $pending));
+				$subscription->set('pendingunits', ($pendingunits <= 0 ? 0 : $pendingunits));
+				$subscription->set('totalpaid', ($subscription->get('totalpaid') + $received_payment));
+
+				$oldunits  = $subscription->get('units');
+				$months    = $newunits * $service->get('unitsize');
+				$newexpire = ($oldunits > 0  && intval($subscription->get('expires')) <> 0)
+					? Date::of(strtotime($subscription->get('expires') . "+" . $months . "months"))->format("Y-m-d")
+					: Date::of(strtotime("+" . $months . "months"))->format("Y-m-d");
+
+				$subscription->set('expires', ($newunits ? $newexpire : $subscription->get('expires')));
+				$subscription->set('status', 1);
+				$subscription->set('units', ($subscription->get('units') + $newunits));
 
 				$email = ($received_payment > 0 or $newunits > 0)  ? 1 : 0;
 				$statusmsg .= Lang::txt('COM_SERVICES_SUBSCRIPTION_ACTIVATED');
@@ -249,13 +254,15 @@ class Subscriptions extends AdminController
 
 			case 'cancelsub':
 				$refund    = 0;
-				$unitsleft = $subscription->getRemaining('unit', $subscription, $service->maxunits, $service->unitsize);
+				$unitsleft = $subscription->getRemaining('unit', $service->get('maxunits'), $service->get('unitsize'));
 
 				// get cost per unit (to compute required refund)
-				$refund = ($subscription->totalpaid > 0 && $unitsleft > 0 && ($subscription->totalpaid - $unitsleft * $unitcost) > 0) ? $unitsleft * $prevunitcost : 0;
-				$subscription->status = 2;
-				$subscription->pendingpayment = $refund;
-				$subscription->pendingunits = $refund > 0  ? $unitsleft : 0;
+				$refund = ($subscription->get('totalpaid') > 0 && $unitsleft > 0 && ($subscription->get('totalpaid') - $unitsleft * $unitcost) > 0) ? $unitsleft * $prevunitcost : 0;
+
+				$subscription->set('status', 2);
+				$subscription->set('pendingpayment', $refund);
+				$subscription->set('pendingunits', ($refund > 0 ? $unitsleft : 0));
+
 				$email = 1;
 				$statusmsg .= Lang::txt('COM_SERVICES_SUBSCRIPTION_CANCELLED');
 			break;
@@ -263,24 +270,19 @@ class Subscriptions extends AdminController
 
 		if (($action && $action != 'message') || $message)
 		{
-			$subscription->notes .= '------------------------------' . "\r\n";
-			$subscription->notes .= Lang::txt('COM_SERVICES_SUBSCRIPTION_STATUS_UPDATED') . ', '. Date::toSql() . "\r\n";
-			$subscription->notes .= $statusmsg ? $statusmsg . "\r\n" : '';
-			$subscription->notes .= $message   ? $message . "\r\n"   : '';
-			$subscription->notes .= '------------------------------' . "\r\n";
+			$notes  = '------------------------------' . "\r\n";
+			$notes .= Lang::txt('COM_SERVICES_SUBSCRIPTION_STATUS_UPDATED') . ', '. Date::toSql() . "\r\n";
+			$notes .= $statusmsg ? $statusmsg . "\r\n" : '';
+			$notes .= $message   ? $message . "\r\n"   : '';
+			$notes .= '------------------------------' . "\r\n";
+
+			$subscription->set('notes', $subscription->get('notes') . $notes);
 		}
 
-		if (!$subscription->check())
+		if (!$subscription->save())
 		{
-			$this->setError($subscription->getError());
-			$this->editTask($subscription);
-			return;
-		}
-		if (!$subscription->store())
-		{
-			$this->setError($subscription->getError());
-			$this->editTask($subscription);
-			return;
+			Notify::error($subscription->getError());
+			return $this->editTask($subscription);
 		}
 
 		if ($email || $message)
@@ -306,13 +308,12 @@ class Subscriptions extends AdminController
 
 			if (!Event::trigger('xmessage.onSendMessage', array('subscriptions_message', $subject, $emailbody, $from, array($subscription->uid), $this->_option)))
 			{
-				\Notify::error(Lang::txt('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'));
+				Notify::error(Lang::txt('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'));
 			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SERVICES_SUBSCRIPTION_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
-		);
+		Notify::success(Lang::txt('COM_SERVICES_SUBSCRIPTION_SAVED') . ($statusmsg ? ' ' . $statusmsg : ''));
+
+		$this->cancelTask();
 	}
 }
