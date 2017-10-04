@@ -131,6 +131,9 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 			<label for="prj-db-col-width"><?php echo Lang::txt('Width'); ?>:</label><br />
 			<input id="prj-db-col-width" class="col-prop" type="text" value="" /><br /><br />
 
+			<label for="prj-db-col-forcetruncate"><?php echo Lang::txt('Truncate text at width: '); ?>: </label>
+			<input id="prj-db-col-forcetruncate" class="col-prop" type="checkbox" value="forcetruncate" /><br /><br />
+
 			<label for="prj-db-col-units"><?php echo Lang::txt('Units'); ?>:</label><br />
 			<input id="prj-db-col-units" class="col-prop" type="text" value="" />
 		</div>

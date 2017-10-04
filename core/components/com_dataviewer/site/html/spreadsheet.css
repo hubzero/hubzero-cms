@@ -148,7 +148,6 @@ ul.ui-autocomplete li a {
 	border-bottom: none;
 }
 
-
 .truncate {
 	float: left;
 	margin-right: 0px;
@@ -278,10 +277,12 @@ table#dv-spreadsheet-tbl {
 	max-width: none !important;
 }
 
-td>p[style*='width: '] {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+.forcetruncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow:ellipsis;
+	-ms-text-overflow:ellipsis;
+	white-space: nowrap;
 }
 
 /* Floating dataview controls */

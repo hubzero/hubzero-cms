@@ -585,6 +585,10 @@ function filter($res, $dd)
 
 						$val = '<div ' . $title . $class . ' style="' . $nowrap . $opmod_style . ' width: ' . $dd['cols'][$key]['width'] . 'px; max-height: ' . $dd['cols'][$key]['height'] . 'px; overflow: clip;">' . $val . '</div>';
 					} else {
+						if (isset($dd['cols'][$key]['forcetruncate']))
+						{
+							$class = 'class="forcetruncate"';
+						}
 						$val = '<p ' . $title . ' ' . $class . ' style="' . $nowrap . $opmod_style . ' width: ' . $dd['cols'][$key]['width'] . 'px;">' . $val . '</p>';
 					}
 				} elseif ($opmod_style != '') {
