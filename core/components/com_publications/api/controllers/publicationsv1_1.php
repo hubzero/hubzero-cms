@@ -163,7 +163,12 @@ class Publicationsv1_1 extends ApiController
 				$obj->id            = 'publication-' . $entry->get('id');
 				$obj->hubtype       = 'publication';
 				$obj->title         = $entry->get('title');
-				$obj->description   = $entry->get('abstract');
+
+				$description = $entry->get('abstract') . ' ' . $entry->get('description');
+				$description = html_entity_decode($description);
+				$description = \Hubzero\Utility\Sanitize::stripAll($description);
+
+				$obj->description   = $description;
 				$obj->url           = Route::url($entry->link('version'));
 				$obj->doi           = $entry->get('doi');
 				$statusName         = $entry->getStatusName();
@@ -178,6 +183,17 @@ class Publicationsv1_1 extends ApiController
 
 				$obj->owner_type = 'user';
 				$obj->owner = $entry->creator('id');
+
+				$tags = $entry->getTags();
+
+				if (count($tags) > 0)
+				{
+					$obj->tags = array();
+					foreach ($tags as $tag)
+					{
+						$obj->tags[] = $tag->raw_tag;
+					}
+				}
 
 				if ($statusName != 'published')
 				{
