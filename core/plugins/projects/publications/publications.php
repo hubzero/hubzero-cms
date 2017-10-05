@@ -2619,8 +2619,29 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$pub->publication->deleteExistence($pid);
 
 						// Delete related publishing activity from feed
-						$objAA = $this->model->table('Activity');
-						$objAA->deleteActivityByReference($this->model->get('id'), $pid, 'publication');
+						$activities = Hubzero\Activity\Log::all()
+							->whereEquals('scope', 'publication')
+							->whereEquals('scope_id', $pid)
+							->whereEquals('state', 1)
+							->rows()
+							->toArray();
+
+						$logs = array();
+						foreach ($activities as $activity)
+						{
+							$logs[] = $activity['id'];
+						}
+
+						$past = Hubzero\Activity\Recipient::all()
+							->whereIn('log_id', $logs)
+							->whereEquals('state', 1)
+							->rows();
+
+						foreach ($past as $p)
+						{
+							$p->set('state', 0);
+							$p->save();
+						}
 					}
 
 					// Add activity

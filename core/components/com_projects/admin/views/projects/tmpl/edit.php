@@ -379,10 +379,10 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_PROJECTS_LAST_ACTIVITY'); ?>:</th>
 						<td><?php if ($this->last_activity) {
-							$activity = preg_replace('/said/', "posted an update", $this->last_activity->activity);
+							$activity = preg_replace('/said/', "posted an update", $this->last_activity->description);
 							$activity = preg_replace('/&#58;/', "", $activity);
 							?>
-							<?php echo $this->last_activity->recorded; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->recorded) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->name; ?></span> <?php echo $activity; ?>
+							<?php echo $this->last_activity->created; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->creator->name; ?></span> <?php echo $activity; ?>
 							<?php } else { echo Lang::txt('COM_PROJECTS_NA'); }?>
 						</td>
 					</tr>

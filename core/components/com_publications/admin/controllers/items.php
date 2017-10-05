@@ -1355,8 +1355,29 @@ class Items extends AdminController
 					$objP->deleteExistence($id);
 
 					// Delete related publishing activity from feed
-					$objAA = new \Components\Projects\Tables\Activity($this->database);
-					$objAA->deleteActivityByReference($projectId, $id, 'publication');
+					$activities = Hubzero\Activity\Log::all()
+						->whereEquals('scope', 'publication')
+						->whereEquals('scope_id', $id)
+						->whereEquals('state', 1)
+						->rows()
+						->toArray();
+
+					$logs = array();
+					foreach ($activities as $activity)
+					{
+						$logs[] = $activity['id'];
+					}
+
+					$past = Hubzero\Activity\Recipient::all()
+						->whereIn('log_id', $logs)
+						->whereEquals('state', 1)
+						->rows();
+
+					foreach ($past as $p)
+					{
+						$p->set('state', 0);
+						$p->save();
+					}
 
 					// Build publication path
 					$path =  PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\String::pad($id);

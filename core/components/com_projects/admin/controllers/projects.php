@@ -250,7 +250,6 @@ class Projects extends AdminController
 		}
 
 		$model = new Models\Project($id);
-		$objAC = $model->table('Activity');
 
 		if ($id)
 		{
@@ -276,7 +275,10 @@ class Projects extends AdminController
 		// Get activity counts
 		$counts = Event::trigger('projects.onProjectCount', array($model, 1));
 		$counts = Helpers\Html::getCountArray($counts);
-		$counts['activity'] = $objAC->getActivityCount($model->get('id'), User::get('id'));
+		$counts['activity'] = \Hubzero\Activity\Recipient::all()
+			->whereEquals('scope', 'project')
+			->whereEquals('scope_id', $model->get('id'))
+			->total();
 		$this->view->counts = $counts;
 
 		// Get team
@@ -292,16 +294,41 @@ class Projects extends AdminController
 		$this->view->reviewers = $objO->getOwnerNames($id, 0, '5', 1);
 
 		// Get last activity
-		$afilters = array('limit' => 1);
-		$last_activity = $objAC->getActivities ($id, $afilters);
-		$this->view->last_activity = count($last_activity) > 0 ? $last_activity[0] : '';
+		$log = \Hubzero\Activity\Log::all();
+
+		$l = $log->getTableName();
+		$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+		$this->view->last_activity = $log
+			->join($r, $r . '.log_id', $l . '.id', 'inner')
+			->whereEquals($r . '.scope', 'project')
+			->whereEquals($r . '.scope_id', $id)
+			->order($l . '.created', 'desc')
+			->row();
 
 		// Was project suspended?
 		$this->view->suspended = false;
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if ($model->isInactive())
 		{
-			$this->view->suspended = $objAC->checkActivity($id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$log = \Hubzero\Activity\Log::all();
+
+			$l = $log->getTableName();
+			$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+			$result = $log
+				->join($r, $r . '.log_id', $l . '.id', 'inner')
+				->whereEquals($r . '.scope', 'project')
+				->whereEquals($r . '.scope_id', $id)
+				->whereEquals($l . '.description', Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'))
+				->order($l . '.created', 'desc')
+				->row();
+
+			$this->view->suspended = null;
+			if ($result)
+			{
+				$this->view->suspended = $result->details->get('admin');
+			}
 		}
 
 		// Get project params
@@ -387,7 +414,24 @@ class Projects extends AdminController
 		$suspended = false;
 		if ($model->isInactive())
 		{
-			$suspended = $model->table('Activity')->checkActivity($id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$log = \Hubzero\Activity\Log::all();
+
+			$l = $log->getTableName();
+			$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+			$result = $log
+				->join($r, $r . '.log_id', $l . '.id', 'inner')
+				->whereEquals($r . '.scope', 'project')
+				->whereEquals($r . '.scope_id', $this->model->get('id'))
+				->whereEquals($l . '.description', Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'))
+				->order($l . '.created', 'desc')
+				->row();
+
+			$suspended = null;
+			if ($result)
+			{
+				$suspended = $result->details->get('admin');
+			}
 		}
 
 		$subject  = Lang::txt('COM_PROJECTS_PROJECT') . ' "' . $model->get('alias') . '" ';

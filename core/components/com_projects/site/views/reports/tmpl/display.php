@@ -295,10 +295,11 @@ tooltip: true,
 						<?php if (!empty($this->stats['topActiveProjects'])) { ?>
 						<ul>
 							<?php foreach ($this->stats['topActiveProjects'] as $topProject) {
+								$project = new Components\Projects\Models\Project($topProject->scope_id);
 								?>
-							<li><span class="stats-ima-small"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media'); ?>" alt="" /></span>
-								<?php if (!$topProject->private) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias); ?>"> <?php } ?>
-								<?php echo $topProject->title; ?><?php if (!$topProject->private) { ?></a> <?php } ?>
+							<li><span class="stats-ima-small"><img src="<?php echo $project->picture('thumb'); ?>" alt="" /></span>
+								<?php if (!$project->get('private')) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $project->get('alias')); ?>"> <?php } ?>
+								<?php echo $project->get('title'); ?><?php if (!$project->get('private')) { ?></a> <?php } ?>
 							</li>
 							<?php } ?>
 						</ul>

@@ -229,16 +229,60 @@ class Stats extends \JTable
 		$total  = $stats['general']['total'] ? $stats['general']['total'] : 1;
 
 		// Activity stats
-		$objAA = new Activity($this->_db);
 		$recentlyActive = $tbl->getCount(array('exclude' => $exclude, 'timed' => $pastMonth, 'active' => 1), true);
 
+		$l = \Hubzero\Activity\Log::blank()->getTableName();
+		$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+		// Get total
+		$total = \Hubzero\Activity\Log::all()
+			->join($r, $r . '.log_id', $l . '.id', 'inner')
+			->whereEquals($r . '.scope', 'project')
+			->whereIn($r . '.scope_id', $include)
+			->total();
+
+		// Get average
+		$result = \Hubzero\Activity\Log::all()
+			->select($r . '.scope_id')
+			->select('COUNT('. $r . '.id)', 'activity')
+			->join($r, $r . '.log_id', $l . '.id', 'inner')
+			->whereEquals($r . '.scope', 'project')
+			->whereIn($r . '.scope_id', $include)
+			->group($r . '.scope_id')
+			->rows();
+
+		$c = 0;
+		$d = 0;
+
+		foreach ($result as $res)
+		{
+			$c = $c + $res->activity;
+			$d++;
+		}
+
+		$average = number_format($c/$d, 0);
+
 		$stats['activity'] = array(
-			'total'   => $objAA->getActivityStats($include, 'total'),
-			'average' => $objAA->getActivityStats($include, 'average'),
+			'total'   => $total,
+			'average' => $average,
 			'usage'   => $recentlyActive
 		);
 
-		$stats['topActiveProjects'] = $objAA->getTopActiveProjects($exclude, 5, $publicOnly);
+		// Get top projects
+		$log = \Hubzero\Activity\Log::all()
+			->select($r . '.scope_id')
+			->select('COUNT('. $r . '.id)', 'activity')
+			->join($r, $r . '.log_id', $l . '.id', 'inner')
+			->whereEquals($r . '.scope', 'project');
+		if (!empty($exclude))
+		{
+			$log->whereRaw($r . '.scope_id NOT IN (' . implode($exclude) . ')');
+		}
+		$stats['topActiveProjects'] = $log
+			->group($r . '.scope_id')
+			->order('activity', 'desc')
+			->limit(5)
+			->rows();
 
 		// Collect team stats
 		$objO = new Owner($this->_db);

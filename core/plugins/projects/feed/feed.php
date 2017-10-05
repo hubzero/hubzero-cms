@@ -171,10 +171,9 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			}
 
 			// Set vars
-			$this->_config   = $model->config();
-			$this->_task     = Request::getVar('action', '');
-			$this->_database = App::get('db');
-			$this->_uid      = User::get('id');
+			$this->_config = $model->config();
+			$this->_task   = Request::getVar('action', '');
+			$this->_uid    = User::get('id');
 
 			switch ($this->_task)
 			{
@@ -301,43 +300,56 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$limit = intval($this->params->get('limit', 25));
 
 		$filters = array(
-			'role'    => ($this->model->member() ? $this->model->member()->role : 0),
-			'limit'   => Request::getVar('limit', $limit, 'request')
+			'role'  => ($this->model->member() ? $this->model->member()->role : 0),
+			'limit' => Request::getInt('limit', $limit),
+			'start' => Request::getInt('start', 0),
+			'search' => Request::getVar('search', '')
 		);
 
-		$objAC = $this->model->table('Activity');
+		$recipient = Hubzero\Activity\Recipient::all();
 
-		// Get count
-		$total = $objAC->getActivities(
-			$this->model->get('id'),
-			$filters,
-			1,
-			$this->_uid
-		);
+		$r = $recipient->getTableName();
+		$l = Hubzero\Activity\Log::blank()->getTableName();
 
-		// Get activities
-		$activities = $objAC->getActivities(
-			$this->model->get('id'),
-			$filters,
-			0,
-			$this->_uid
-		);
-		$activities = $this->_prepActivities(
-			$activities,
-			$filters,
-			$limit
-		);
+		$scopes = array('project');
+		$managers = $this->model->table('Owner')->getIds($this->model->get('id')); //team(array('role' => 1));
+		if (in_array(User::get('id'), $managers))
+		{
+			$scopes[] = 'project_managers';
+		}
+
+		$recipient
+			->select($r . '.*')
+			->including('log')
+			->join($l, $l . '.id', $r . '.log_id')
+			->whereIn($r . '.scope', $scopes)
+			->whereEquals($r . '.scope_id', $this->model->get('id'))
+			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+
+		if ($filters['search'])
+		{
+			$recipient->whereLike($l . '.description', $filters['search']);
+		}
+
+		$recipient->whereEquals($l . '.parent', 0);
+
+		$total = $recipient->copy()->total();
+
+		$activities = $recipient
+			->ordered()
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->rows();
 
 		// Output html
 		$view = $this->view('default', 'view')
 			->set('params', $this->model->params)
 			->set('option', $this->_option)
-			->set('database', $this->_database)
 			->set('model', $this->model)
 			->set('uid', $this->_uid)
 			->set('filters', $filters)
 			->set('limit', $limit)
-			->set('total', $activities)
+			->set('total', $total)
 			->set('activities', $activities)
 			->set('title', $this->_area['title']);
 
@@ -362,68 +374,112 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$managers  = Request::getInt('managers_only', 0);
-		$entry     = trim(Request::getVar('blogentry', ''));
-		$eid       = Request::getInt('eid', 0);
-		$posted    = Date::toSql();
-		$posted_by = $this->_uid;
-		$isNew     = true;
+		$comment = array(
+			'id'          => Request::getInt('activity', 0),
+			'description' => trim(Request::getVar('comment', '')),
+			'scope'       => 'project.comment',
+			'scope_id'    => $this->model->get('id'),
+			'parent'      => Request::getInt('parent_activity', 0),
+		);
+		$isNew = true;
 
 		// Text clean-up
-		$entry = \Hubzero\Utility\Sanitize::stripScripts($entry);
-		$entry = \Hubzero\Utility\Sanitize::stripImages($entry);
+		$comment['description'] = \Hubzero\Utility\Sanitize::stripScripts($comment['description']);
+		$comment['description'] = \Hubzero\Utility\Sanitize::stripImages($comment['description']);
 
-		// Instantiate project microblog entry
-		$objM = new \Components\Projects\Tables\Blog($this->_database);
+		$row = Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
 
-		if ($eid)
+		if ($row->get('id'))
 		{
-			$objM->load($eid);
-
-			$managers  = $objM->managers_only;
-			$posted    = $objM->posted;
-			$posted_by = $objM->posted_by;
-			$isNew     = false;
+			$isNew = false;
 		}
 
-		if ($entry)
+		if ($comment['description'])
 		{
-			$objM->projectid     = $this->model->get('id');
-			$objM->blogentry     = $entry;
-			$objM->managers_only = $managers;
-			$objM->posted        = $posted;
-			$objM->posted_by     = $posted_by;
-
 			// Save new blog entry
-			if (!$objM->store())
+			if (!$row->save())
 			{
-				$this->setError($objM->getError());
+				$this->setError($row->getError());
 			}
 			else
 			{
 				$this->_msg = ($isNew ? Lang::txt('PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED') : Lang::txt('PLG_PROJECTS_BLOG_BLOG_ENTRY_SAVED'));
 			}
 
-			// Get new entry ID
-			if (!$objM->id)
-			{
-				$objM->checkin();
-			}
-
 			// Record activity
-			if ($objM->id && $isNew)
+			if ($row->get('id') && $isNew)
 			{
-				$aid = $this->model->recordActivity(
-					Lang::txt('COM_PROJECTS_SAID'),
-					$objM->id,
-					'', '', 'blog', 1
-				);
+				// Record the activity
+				$recipients = array();
+				// Log to the project
+				$recipients[] = ['project', $this->model->get('id')];
+				// Log the activity to the creator
+				$recipients[] = ['user', $row->get('created_by')];
 
-				// Store activity ID
-				if ($aid)
+				// Notify the creator of the parent comment
+				if ($row->get('parent'))
 				{
-					$objM->activityid = $aid;
-					$objM->store();
+					$recipients[] = ['user', $row->parent()->get('created_by')];
+
+					// We have a child comment
+					// So, we want to force the parent to show up more recent in the list
+					// to reflect the new comment.
+
+					// Unset the parent's recipient record(s)
+					$past = Hubzero\Activity\Recipient::all()
+						->whereEquals('scope', 'project')
+						->whereEquals('scope_id', $this->model->get('id'))
+						->whereEquals('log_id', $row->get('parent'))
+						->whereEquals('state', 1)
+						->rows();
+
+					foreach ($past as $p)
+					{
+						$p->set('state', 0);
+						$p->save();
+					}
+
+					// And add a new recipient record with an updated timestamp
+					$updated = Hubzero\Activity\Recipient::blank()
+						->set(array(
+							'scope'    => 'project',
+							'scope_id' => $this->model->get('id'),
+							'log_id'   => $row->get('parent'),
+							'state'    => 1,
+							'created'  => Date::toSql(),
+							'viewed'   => Date::toSql()
+						));
+					$updated->save();
 				}
+
+				// Notify the parent group
+				if ($gid = $this->model->get('owned_by_group'))
+				{
+					$recipients[] = ['group', $gid];
+				}
+
+				Event::trigger('system.logActivity', [
+					'activity' => [
+						'id'          => $row->get('id'),
+						'action'      => ($comment['id'] ? 'updated' : 'created'),
+						'scope'       => $row->get('scope'),
+						'scope_id'    => $row->get('scope_id'),
+						'anonymous'   => $row->get('anonymous', 0),
+						'description' => $row->get('description'),
+						'details'     => array(
+							'url'   => Route::url($this->model->link() . '&active=' . $this->_name . '#activity' . $row->get('id')),
+							'class' => ($row->get('parent') ? 'quote' : 'blog')
+						)
+					],
+					'recipients' => $recipients
+				]);
+
+				Event::trigger('projects.onWatch', array(
+					$this->model,
+					($row->get('parent') ? 'quote' : 'blog'),
+					array($row->get('id')),
+					User::get('id')
+				));
 			}
 		}
 
@@ -442,7 +498,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Delete blog entry
+	 * Delete entry
 	 *
 	 * @return  void  redirect
 	 */
@@ -454,74 +510,40 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 		}
 
-		// Incoming
-		$tbl = trim(Request::getVar('tbl', 'activity'));
-		$eid = Request::getInt('eid', 0);
+		$id = Request::getInt('activity', 0);
 
-		// Are we deleting a blog entry?
-		if ($tbl == 'blog')
+		$entry = Hubzero\Activity\Log::oneOrFail($id);
+
+		if ($this->model->access('content') || $entry->get('created_by') == User::get('id'))
 		{
-			$objM = new \Components\Projects\Tables\Blog($this->_database);
-
-			if ($eid && $objM->load($eid))
+			foreach ($entry->recipients as $recipient)
 			{
-				// Get associated commenting activities
-				$objC = new \Components\Projects\Tables\Comment($this->_database);
-				$activities = $objC->collectActivities($eid, $tbl);
-				$activities[] = $objM->activityid;
-
-				// Delete blog entry
-				if ($objM->deletePost())
+				// Note: We're just unpublishing the recipient entry rather
+				// that removing the activity entry itself.
+				if (!$recipient->markAsUnpublished())
 				{
-					$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_ENTRY_DELETED');
+					$this->setError($recipient->getError());
+				}
+			}
 
-					// Delete all associated comments
-					$comments = $objC->deleteComments($eid, $tbl);
-
-					// Delete all associated activities
-					foreach ($activities as $a)
+			// Unpublish comments on this entry too
+			foreach ($entry->children as $child)
+			{
+				foreach ($child->recipients as $recipient)
+				{
+					// Note: We're just unpublishing the recipient entry rather
+					// that removing the activity entry itself.
+					if (!$recipient->markAsUnpublished())
 					{
-						$objAA = $this->model->table('Activity');
-						$objAA->loadActivity($a, $this->model->get('id'));
-						$objAA->deleteActivity();
+						$this->setError($recipient->getError());
 					}
 				}
 			}
 		}
-
-		// Are we deleting activity?
-		if ($tbl == 'activity')
+		else
 		{
-			$objAA = $this->model->table('Activity');
-			$objAA->loadActivity($eid, $this->model->get('id'));
-
-			if ($this->model->access('content') || $objAA->userid == $this->_uid)
-			{
-				// Get associated commenting activities
-				$objC = new \Components\Projects\Tables\Comment($this->_database);
-				$activities = $objC->collectActivities($eid, $tbl);
-
-				if ($objAA->deleteActivity())
-				{
-					$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_ENTRY_DELETED');
-
-					// Delete all associated comments
-					$comments = $objC->deleteComments($eid, $tbl);
-
-					// Delete all associated activities
-					foreach ($activities as $a)
-					{
-						$objAA = $this->model->table('Activity');
-						$objAA->loadActivity($a, $this->model->get('id'));
-						$objAA->deleteActivity();
-					}
-				}
-			}
-			else
-			{
-				// Unauthorized
-				$this->setError(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'));
-			}
+			// Unauthorized
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'));
 		}
 
 		// Pass error or success message
@@ -545,174 +567,95 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	 */
 	public function updateFeed()
 	{
-		$objAC = $this->model->table('Activity');
-
-		$filters = array();
-
-		$total = $objAC->getActivities(
-			$this->model->get('id'),
-			$filters,
-			1,
-			$this->_uid
-		);
 		$limit = intval($this->params->get('limit', 25));
-		$filters['limit'] = Request::getVar('limit', $limit);
+
+		$filters = array(
+			'limit' => Request::getInt('limit', $limit),
+			'start' => Request::getInt('start', 0),
+			'created' => ''
+		);
 
 		if ($start = Request::getVar('recorded'))
 		{
-			$filters['recorded'] = $start;
-			$filters['sortby']   = 'recorded';
-			$filters['sortdir']  = 'ASC';
+			$filters['created'] = $start;
+			$filters['sortby']  = 'created';
+			$filters['sortdir'] = 'ASC';
 		}
 
-		$activities = $objAC->getActivities(
-			$this->model->get('id'),
-			$filters,
-			0,
-			$this->_uid
-		);
+		$recipient = Hubzero\Activity\Recipient::all();
+
+		$r = $recipient->getTableName();
+		$l = Hubzero\Activity\Log::blank()->getTableName();
+
+		$scopes = array('project');
+		$managers = $this->model->table('Owner')->getIds($this->model->get('id')); //team(array('role' => 1));
+		if (in_array(User::get('id'), $managers))
+		{
+			$scopes[] = 'project_managers';
+		}
+
+		$recipient
+			->select($r . '.*')
+			->including('log')
+			->join($l, $l . '.id', $r . '.log_id')
+			->whereIn($r . '.scope', $scopes)
+			->whereEquals($r . '.scope_id', $this->model->get('id'))
+			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
+			->whereEquals($l . '.parent', 0);
+
+		if ($filters['created'])
+		{
+			$recipient->where($r . '.created', '>', $filters['created']);
+		}
+
+		$total = $recipient->copy()->total();
+
+		$activities = $recipient
+			->ordered()
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->rows();
 
 		// In this case, we're expecting JSON output
 		// @TODO: Move to API
-		if (isset($filters['recorded']))
+		if (isset($filters['created']))
 		{
 			$data = new stdClass();
 			$data->activities = array();
 
 			if (count($activities))
 			{
-				$objM  = new \Components\Projects\Tables\Blog($this->_database);
-				$objC  = new \Components\Projects\Tables\Comment($this->_database);
-				$objTD = new \Components\Projects\Tables\Todo($this->_database);
-
 				$shown = array();
 
 				// Loop through activities
 				foreach ($activities as $a)
 				{
-					if (in_array($a->id, $shown))
+					if (in_array($a->get('id'), $shown))
 					{
 						continue;
 					}
 
-					$shown[] = $a->id;
-
-					// Is this a comment?
-					$class = $a->class ? $a->class : 'activity';
-
-					// Display hyperlink
-					if ($a->highlighted && $a->url)
-					{
-						$a->activity = str_replace($a->highlighted, '<a href="' . $a->url . '">' . $a->highlighted . '</a>', $a->activity);
-					}
-
-					// Set vars
-					$ebody     = '';
-					$eid       = $a->id;
-					$etbl      = 'activity';
-					$deletable = 0;
-					$parent    = 0;
-					$comments  = null;
-					$content   = '';
-
-					// Get blog entry
-					if ($class == 'blog')
-					{
-						$blog = $objM->getEntries(
-							$a->projectid,
-							$bfilters = array('activityid' => $a->id),
-							$a->referenceid
-						);
-						if (!$blog)
-						{
-							continue;
-						}
-
-						$content   = $blog[0]->blogentry;
-						$ebody     = $this->drawBodyText($blog[0]->blogentry);
-						$eid       = $a->referenceid;
-						$etbl      = 'blog';
-						$deletable = 1;
-					}
-					elseif ($class == 'todo')
-					{
-						$todo = $objTD->getTodos(
-							$a->projectid,
-							$tfilters = array('activityid' => $a->id),
-							$a->referenceid
-						);
-						if (!$todo)
-						{
-							continue;
-						}
-
-						$content = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
-						$ebody   = $this->drawBodyText($content);
-						$eid     = $a->referenceid;
-						$etbl    = 'todo';
-					}
-					else if ($a->class == 'quote')
-					{
-						$comment = $objC->getComments(null, 'blog', $a->id);
-						if (!$comment)
-						{
-							continue;
-						}
-
-						$objM->load($comment->itemid);
-
-						$content = $comment->comment;
-						$ebody   = $this->drawBodyText($content);
-						$eid     = $a->referenceid;
-						$etbl    = 'quote';
-						$parent  = $objM->activityid;
-					}
-
-					// Get/parse & save item preview if available
-					$preview = empty($this->miniView) ? $this->getItemPreview($class, $a) : '';
-
-					// Is user allowed to delete item?
-					$deletable = empty($this->miniView)
-						&& $deletable
-						&& $this->model->access('content')
-						&& ($a->userid == $this->_uid or $this->model->access('manager'))
-						? 1 : 0;
-
-					$deletable = $this->model->access('manager') ? 1 :$deletable;
+					$shown[] = $a->get('id');
 
 					$prep = array(
-						'activity'   => $a,
-						'eid'        => $eid,
-						'etbl'       => $etbl,
-						'body'       => $ebody,
-						'raw'        => $content,
-						'deletable'  => $deletable,
-						'comments'   => $comments,
-						'class'      => $class,
-						'preview'    => $preview,
-						'parent'     => $parent
+						'activity'   => $a->log->toObject(),
+						'eid'        => $a->log->get('id'),
+						//'etbl'       => $etbl,
+						'body'       => $a->log->get('description'),
+						//'raw'        => $content,
+						//'deletable'  => $deletable,
+						//'comments'   => $comments,
+						'class'      => $a->log->details->get('class', ($a->log->get('parent') ? 'quote' : '')),
+						//'preview'    => $preview,
+						'parent'     => $a->log->get('parent')
 					);
 
-					if ($a->class == 'quote')
-					{
-						$prep['body'] = $this->view('_comment', 'activity')
-							->set('option', $this->_option)
-							->set('model', $this->model)
-							->set('activity', $prep)
-							->set('uid', $this->_uid)
-							->set('comment', $comment)
-							->set('edit', true)
-							->loadTemplate();
-					}
-					else
-					{
-						$prep['body'] = $this->view('_activity', 'activity')
-							->set('option', $this->_option)
-							->set('model', $this->model)
-							->set('activity', $prep)
-							->set('uid', $this->_uid)
-							->loadTemplate();
-					}
+					$prep['body'] = $this->view('_activity', 'activity')
+						->set('option', $this->_option)
+						->set('model', $this->model)
+						->set('activity', $a)
+						->set('online', array())
+						->loadTemplate();
 
 					$data->activities[] = $prep;
 				}
@@ -724,21 +667,14 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
-		$activities = $this->_prepActivities(
-			$activities,
-			$filters,
-			$limit
-		);
-
 		$view = $this->view('default', 'activity')
 			->set('option', $this->_option)
 			->set('model', $this->model)
 			->set('filters', $filters)
 			->set('limit', $limit)
-			->set('total', $activities)
+			->set('total', $total)
 			->set('activities', $activities)
 			->set('uid', $this->_uid)
-			->set('database', $this->_database)
 			->set('title', $this->_area['title']);
 
 		return $view->loadTemplate();
@@ -762,25 +698,41 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		$this->model     = $model;
-		$this->_database = App::get('db');
-		$this->_uid      = $uid;
-		$this->miniView  = true;
-
 		$limit = (isset($filters['limit']) ? $filters['limit'] : 0);
+		if (!isset($filters['start']))
+		{
+			$filters['start'] = Request::getInt('start', 0);
+		}
 
 		// Get and sort activities
-		$objAC = $this->model->table('Activity');
+		$recipient = Hubzero\Activity\Recipient::all();
 
-		$activities = $objAC->getActivities(0, $filters, 0, $uid, $projects);
-		$activities = $this->_prepActivities(
-			$activities,
-			$filters,
-			$limit
-		);
+		$r = $recipient->getTableName();
+		$l = Hubzero\Activity\Log::blank()->getTableName();
 
-		// Get total
-		$total = $objAC->getActivities(0, array(), 1, $uid, $projects);
+		$scopes = array('project');
+		$managers = $model->table('Owner')->getIds($model->get('id')); //team(array('role' => 1));
+		if (in_array(User::get('id'), $managers))
+		{
+			$scopes[] = 'project_managers';
+		}
+
+		$recipient
+			->select($r . '.*')
+			->including('log')
+			->join($l, $l . '.id', $r . '.log_id')
+			->whereIn($r . '.scope', $scopes)
+			->whereIn($r . '.scope_id', $projects)
+			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
+			->whereEquals($l . '.parent', 0);
+
+		$total = $recipient->copy()->total();
+
+		$activities = $recipient
+			->ordered()
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->rows();
 
 		// Output HTML
 		$view = $this->view('shared', 'activity')
@@ -788,7 +740,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			->set('filters', $filters)
 			->set('activities', $activities)
 			->set('total', $total)
-			->set('uid', $this->_uid)
+			->set('uid', $uid)
 			->set('model', $model);
 
 		return $view->loadTemplate();
@@ -819,589 +771,32 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$entry = Hubzero\Utility\Sanitize::stripScripts((string) $entry);
 		$entry = Hubzero\Utility\Sanitize::stripImages($entry);
 
-		$posted    = $posted ?: Date::toSql();
-		$posted_by = $posted_by ?: User::get('id');
+		// Record the activity
+		$recipients = array();
+		// Log to the project
+		$recipients[] = ['project', $model->get('id')];
+		// Log the activity to the creator
+		$recipients[] = ['user', $posted_by];
 
-		$database = App::get('db');
-
-		// Instantiate project microblog entry
-		$objM = new Components\Projects\Tables\Blog($database);
-		$objM->projectid     = (int) $model->get('id');
-		$objM->blogentry     = $entry;
-		$objM->managers_only = (int) $managers;
-		$objM->posted        = (string) $posted;
-		$objM->posted_by     = (int) $posted_by;
-
-		// Save new blog entry
-		if (!$objM->store())
+		// Notify the parent group
+		if ($gid = $model->get('owned_by_group'))
 		{
-			Notify::error($objM->getError());
-			return;
+			$recipients[] = ['group', $gid];
 		}
 
-		// Get new entry ID
-		if (!$objM->id)
-		{
-			$objM->checkin();
-		}
-
-		// Record activity
-		if ($objM->id)
-		{
-			$aid = $model->recordActivity(
-				Lang::txt('COM_PROJECTS_SAID'),
-				$objM->id,
-				'',
-				'',
-				'blog',
-				1
-			);
-
-			// Store activity ID
-			if ($aid)
-			{
-				$objM->activityid = $aid;
-				$objM->store();
-			}
-		}
-	}
-
-	/**
-	 * Collect activity data
-	 *
-	 * @param   array    $activities
-	 * @param   array    $filters     Query filters
-	 * @param   integer  $limit       Number of entries
-	 * @return  array
-	 */
-	protected function _prepActivities($activities, $filters, $limit)
-	{
-		$objAC = $this->model->table('Activity');
-
-		// Instantiate some classes
-		$objM  = new \Components\Projects\Tables\Blog($this->_database);
-		$objC  = new \Components\Projects\Tables\Comment($this->_database);
-		$objTD = new \Components\Projects\Tables\Todo($this->_database);
-
-		// Collectors
-		$shown   = array();
-		$newc    = array();
-		$skipped = array();
-		$prep    = array();
-
-		// Loop through activities
-		if (is_array($activities) && count($activities) > 0)
-		{
-			foreach ($activities as $a)
-			{
-				// Is this a comment?
-				if ($a->class == 'quote')
-				{
-					// Get comment
-					$c = $objC->getComments(null, null, $a->id);
-					if (!$c)
-					{
-						continue;
-					}
-
-					// Bring up commented item
-					$needle = array('id' => $c->parent_activity);
-					$key = \Components\Projects\Helpers\Html::myArraySearch($needle, $activities);
-					$shown[] = $a->id;
-					if (!$key)
-					{
-						// get and add parent activity
-						$filters['id'] = $c->parent_activity;
-						$pa = $objAC->getActivities($a->projectid, $filters, 0, $this->_uid);
-						if ($pa && count($pa) > 0)
-						{
-							$a = $pa[0];
-						}
-					}
-					else
-					{
-						$a = $activities[$key];
-					}
-					$a->new = isset($c->newcount) ? $c->newcount : 0;
-				}
-
-				if (!in_array($a->id, $shown))
-				{
-					$shown[] = $a->id;
-					$class = $a->class ? $a->class : 'activity';
-
-					// Display hyperlink
-					if ($a->highlighted && $a->url)
-					{
-						$a->activity = str_replace($a->highlighted, '<a href="' . $a->url . '">' . $a->highlighted . '</a>', $a->activity);
-					}
-
-					// Set vars
-					$ebody     = '';
-					$eid       = $a->id;
-					$etbl      = 'activity';
-					$deletable = 0;
-					$content   = '';
-
-					// Get blog entry
-					if ($class == 'blog')
-					{
-						$blog = $objM->getEntries(
-							$a->projectid,
-							$bfilters = array('activityid' => $a->id),
-							$a->referenceid
-						);
-						if (!$blog)
-						{
-							continue;
-						}
-
-						$content   = $blog[0]->blogentry;
-						$ebody     = $this->drawBodyText($blog[0]->blogentry);
-						$eid       = $a->referenceid;
-						$etbl      = 'blog';
-						$deletable = 1;
-					}
-					elseif ($class == 'todo')
-					{
-						$todo = $objTD->getTodos(
-							$a->projectid,
-							$tfilters = array('activityid' => $a->id),
-							$a->referenceid
-						);
-						if (!$todo)
-						{
-							continue;
-						}
-
-						$content = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
-						$ebody   = $this->drawBodyText($content);
-						$eid     = $a->referenceid;
-						$etbl    = 'todo';
-					}
-
-					// Get/parse & save item preview if available
-					$preview = empty($this->miniView) ? $this->getItemPreview($class, $a) : '';
-
-					// Get comments
-					if ($a->commentable)
-					{
-						$comments = $objC->getComments($eid, $etbl);
-					}
-					else
-					{
-						$comments = null;
-					}
-
-					// Is user allowed to delete item?
-					$deletable = empty($this->miniView)
-						&& $deletable
-						&& $this->model->access('content')
-						&& ($a->userid == $this->_uid or $this->model->access('manager'))
-						? 1 : 0;
-
-					$deletable = $this->model->access('manager') ? 1 :$deletable;
-
-					$prep[] = array(
-						'activity'  => $a,
-						'eid'       => $eid,
-						'etbl'      => $etbl,
-						'body'      => $ebody,
-						'raw'       => $content,
-						'deletable' => $deletable,
-						'comments'  => $comments,
-						'class'     => $class,
-						'preview'   => $preview
-					);
-				}
-			}
-		}
-
-		return $prep;
-	}
-
-	/**
-	 * Display 'more' link if text is too long
-	 *
-	 * @param   string  $body  Text body to shorten
-	 * @return  mixed
-	 */
-	public function drawBodyText($body = null)
-	{
-		if (!$body)
-		{
-			return false;
-		}
-
-		$isHtml = false;
-		if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
-		{
-			$isHtml = true;
-		}
-
-		$shorten = ($body && strlen(strip_tags($body)) > 250) ? 1 : 0;
-		$shortBody = $shorten ? \Hubzero\Utility\String::truncate($body, 250, array('html' => true)) : $body;
-
-		// Embed links
-		$body      = \Components\Projects\Helpers\Html::replaceUrls($body, 'external');
-		$shortBody = \Components\Projects\Helpers\Html::replaceUrls($shortBody, 'external');
-
-		// Emotions (new)
-		$body      = \Components\Projects\Helpers\Html::replaceEmoIcons($body);
-		$shortBody = \Components\Projects\Helpers\Html::replaceEmoIcons($shortBody);
-
-		// Style body text
-		if (!$isHtml)
-		{
-			$shortBody = preg_replace("/\n/", '<br />', trim($shortBody));
-		}
-		$ebody  = '<div class="body';
-		$ebody .= strlen($shortBody) > 50 || $isHtml ? ' newline' : ' sameline';
-		$ebody .= '">' . $shortBody;
-		if ($shorten)
-		{
-			$ebody .= ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
-		}
-		$ebody .= '</div>';
-
-		if ($shorten)
-		{
-			if (!$isHtml)
-			{
-				$body = preg_replace("/\n/", '<br />', trim($body));
-			}
-			$ebody .= '<div class="fullbody hidden">' . $body . '</div>';
-		}
-
-		return $ebody;
-	}
-
-	/**
-	 * Get preview
-	 *
-	 * @param   string  $type      Item type (files, notes etc.)
-	 * @param   object  $activity  Individual activity
-	 * @param   string  $body
-	 * @param   bool    $reload
-	 * @return  string
-	 */
-	public function getItemPreview($type = null, $activity = null, $body = null, $reload = false)
-	{
-		$ref = $activity->referenceid;
-
-		// Do we have a saved preview?
-		if ($activity->preview && !$reload)
-		{
-			return $activity->preview;
-		}
-
-		if ($body)
-		{
-			return $this->drawBodyText($body);
-		}
-
-		if (!$ref || !$type)
-		{
-			return false;
-		}
-
-		$previewBody = null;
-
-		switch ($type)
-		{
-			case 'files':
-				$previewBody = $this->_getFilesPreview($ref);
-				break;
-
-			case 'notes':
-				$previewBody = $this->_getNotesPreview($ref);
-				break;
-		}
-
-		// Save preview
-		if ($previewBody)
-		{
-			$objA = $this->model->table('Activity');
-			$objA->saveActivityPreview($activity->id, $previewBody);
-		}
-
-		return $previewBody;
-	}
-
-	/**
-	 * Get Note Previews
-	 *
-	 * @param   string  $ref  Reference to note
-	 * @return  bool
-	 */
-	protected function _getNotesPreview($ref = '')
-	{
-		// TBD
-		return false;
-	}
-
-	/**
-	 * Get File Previews
-	 *
-	 * @param   string  $ref  Reference to files
-	 * @return  mixed
-	 */
-	protected function _getFilesPreview($ref = '')
-	{
-		if (!$ref)
-		{
-			return false;
-		}
-
-		if (!$this->_path)
-		{
-			// Get project file path
-			$this->_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
-		}
-
-		// We do need project file path
-		if (!$this->_path || !is_dir($this->_path))
-		{
-			return false;
-		}
-
-		$files     = explode(',', $ref);
-		$selected  = array();
-		$maxHeight = 0;
-		$minHeight = 0;
-		$minWidth  = 0;
-		$maxWidth  = 0;
-
-		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
-		$to_path = DS . $imagepath . DS . strtolower($this->model->get('alias')) . DS . 'preview';
-
-		foreach ($files as $item)
-		{
-			$parts = explode(':', $item);
-			$file  = count($parts) > 1 ? $parts[1] : $parts[0];
-			$hash  = count($parts) > 1 ? $parts[0] : null;
-
-			if ($hash)
-			{
-				// Only preview mid-size images from now on
-				$hashed = md5(basename($file) . '-' . $hash) . '.png';
-
-				if (is_file(PATH_APP. $to_path . DS . $hashed))
-				{
-					$preview['image'] = $hashed;
-					$preview['url']   = null;
-					$preview['title'] = basename($file);
-
-					// Get image properties
-					list($width, $height, $type, $attr) = getimagesize(PATH_APP. $to_path . DS . $hashed);
-
-					$preview['width'] = $width;
-					$preview['height'] = $height;
-					$preview['orientation'] = $width > $height ? 'horizontal' : 'vertical';
-
-					// Record min and max width and height to build image grid
-					if ($height >= $maxHeight)
-					{
-						$maxHeight = $height;
-					}
-					if ($height && $height <= $minHeight)
-					{
-						$minHeight = $height;
-					}
-					else
-					{
-						$minHeight = $height;
-					}
-					if ($width > $maxWidth)
-					{
-						$maxWidth = $width;
-					}
-
-					$selected[] = $preview;
-				}
-			}
-		}
-
-		// No files for preview
-		if (empty($selected))
-		{
-			return false;
-		}
-
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'projects',
-				'element' => $this->_name,
-				'name'    => 'preview',
-				'layout'  => 'files'
-			)
-		);
-		$view->maxHeight = $maxHeight;
-		$view->maxWidth  = $maxWidth;
-		$view->minHeight = ($minHeight > 400) ? 400 : $minHeight;
-		$view->selected  = $selected;
-		$view->option    = $this->_option;
-		$view->model     = $this->model;
-		return $view->loadTemplate();
-	}
-
-	/**
-	 * Save comment
-	 *
-	 * @return  void
-	 */
-	protected function _saveComment()
-	{
-		// Check permission
-		if (!$this->model->access('content'))
-		{
-			App::abort(403, Lang::txt('ALERTNOTAUTH'));
-		}
-
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
-
-		// Incoming
-		$itemid          = Request::getInt('itemid', 0, 'post');
-		$tbl             = trim(Request::getVar('tbl', 'activity', 'post'));
-		$comment         = trim(Request::getVar('comment', '', 'post'));
-		$parent_activity = Request::getInt('parent_activity', 0, 'post');
-		$cid             = Request::getInt('cid', 0, 'post');
-		$created         = Date::toSql();
-		$created_by      = $this->_uid;
-		$isNew           = true;
-
-		// Clean-up
-		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
-		$comment = \Hubzero\Utility\Sanitize::stripImages($comment);
-
-		// Instantiate comment
-		$objC = new \Components\Projects\Tables\Comment($this->_database);
-
-		if ($cid)
-		{
-			$objC->load($cid);
-
-			$itemid     = $objC->itemid;
-			$tbl        = $objC->tbl;
-			$created    = $objC->created;
-			$created_by = $objC->created_by;
-			$parent_activity = $objC->parent_activity;
-			$isNew      = false;
-		}
-
-		if ($comment)
-		{
-			$objC->itemid          = $itemid;
-			$objC->tbl             = $tbl;
-			$objC->parent_activity = $parent_activity;
-			$objC->comment         = $comment;
-			$objC->created         = $created;
-			$objC->created_by      = $created_by;
-
-			if (!$objC->store())
-			{
-				$this->setError($objC->getError());
-			}
-			else
-			{
-				$this->_msg = ($isNew ? Lang::txt('PLG_PROJECTS_BLOG_COMMENT_POSTED') : Lang::txt('PLG_PROJECTS_BLOG_COMMENT_UPDATED'));
-			}
-
-			// Get new entry ID
-			if (!$objC->id)
-			{
-				$objC->checkin();
-			}
-
-			// Record activity
-			if ($isNew)
-			{
-				$what = $tbl == 'blog' ? Lang::txt('COM_PROJECTS_BLOG_POST') : Lang::txt('COM_PROJECTS_AN_ACTIVITY');
-				$what = $tbl == 'todo' ? Lang::txt('COM_PROJECTS_TODO_ITEM') : $what;
-				$url  = $tbl == 'todo' ? Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid) : Route::url($this->model->link('feed')) . '#tr_' . $parent_activity; // same-page link
-
-				$aid  = $this->model->recordActivity(
-					Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON') . ' ' . $what,
-					$objC->id,
-					$what,
-					$url,
-					'quote',
-					0
-				);
-
-				// Store activity ID
-				if ($aid)
-				{
-					$objC->activityid = $aid;
-					$objC->store();
-				}
-			}
-		}
-
-		// Pass error or success message
-		if ($this->getError())
-		{
-			Notify::message($this->getError(), 'error', 'projects');
-		}
-		elseif (!empty($this->_msg))
-		{
-			Notify::message($this->_msg, 'success', 'projects');
-		}
-
-		// Redirect
-		App::redirect(Route::url($this->model->link()));
-	}
-
-	/**
-	 * Delete comment
-	 *
-	 * @return  void
-	 */
-	protected function _deleteComment()
-	{
-		// Check permission
-		if (!$this->model->access('content'))
-		{
-			App::abort(403, Lang::txt('ALERTNOTAUTH'));
-		}
-
-		// Incoming
-		$cid = Request::getInt('cid', 0);
-
-		// Instantiate comment
-		$objC = new \Components\Projects\Tables\Comment($this->_database);
-
-		if ($objC->load($cid))
-		{
-			$activityid = $objC->activityid;
-
-			// delete comment
-			if ($objC->deleteComment())
-			{
-				$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_COMMENT_DELETED');
-			}
-
-			// delete associated activity
-			$objAA = $this->model->table('Activity');
-			if ($activityid && $objAA->load($activityid))
-			{
-				$objAA->deleteActivity();
-			}
-		}
-
-		// Pass error or success message
-		if ($this->getError())
-		{
-			Notify::message($this->getError(), 'error', 'projects');
-		}
-		elseif (!empty($this->_msg))
-		{
-			Notify::message($this->_msg, 'success', 'projects');
-		}
-
-		// Redirect
-		App::redirect(Route::url($this->model->link()));
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'created',
+				'scope'       => 'project.comment',
+				'scope_id'    => $model->get('id'),
+				'anonymous'   => 0,
+				'description' => $entry,
+				'details'     => array(
+					'url'   => Route::url($model->link() . '&active=feed'),
+					'class' => 'blog'
+				)
+			],
+			'recipients' => $recipients
+		]);
 	}
 }

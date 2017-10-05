@@ -225,14 +225,27 @@ if ($revertAllowed && $this->pub->accepted())
 										. ' ' . strtolower(Lang::txt('publication'))
 										. ' "' . $pubtitle . '"';
 
-							$admin = $this->project->table('Activity')->checkActivity( $this->project->get('id'), $activity);
-							 if ($admin != 1) { ?>
-							<li><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH'); ?></p>
-								<?php echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">'
-							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ; ?></li>
+							$log = \Hubzero\Activity\Log::all();
+
+							$l = $log->getTableName();
+							$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+							$past = $log
+								->join($r, $r . '.log_id', $l . '.id', 'inner')
+								->whereEquals($r . '.scope', 'project')
+								->whereEquals($r . '.scope_id', $this->project->get('id'))
+								->whereEquals($l . '.description', $check)
+								->order($l . '.created', 'desc')
+								->row();
+
+							if ($past->details->get('admin') != 1) { ?>
+								<li>
+									<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH'); ?></p>
+									<?php echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ; ?>
+								</li>
 							<?php } ?>
-							<?php if ($admin == 1) { ?>
-							<li id="next-question"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_BY_ADMIN');  ?></p></li>
+							<?php if ($past->details->get('admin') == 1) { ?>
+								<li id="next-question"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_BY_ADMIN'); ?></p></li>
 							<?php }
 						break;
 

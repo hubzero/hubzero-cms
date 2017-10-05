@@ -34,7 +34,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Manage project micro blog entries</description>
+	<description>Display activity for a project</description>
 	<files>
 		<filename plugin="feed">feed.php</filename>
 	</files>

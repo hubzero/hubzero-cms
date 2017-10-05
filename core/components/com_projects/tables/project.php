@@ -100,9 +100,9 @@ class Project extends \JTable
 
 		if (isset($filters['timed']) && isset($filters['active']))
 		{
-			$query .= " JOIN #__project_activity AS pa
-						ON pa.projectid=p.id AND pa.state != 2 ";
-			$query .= "AND pa.recorded >= " . $this->_db->quote($filters['timed']);
+			$query .= " INNER JOIN #__activity_recipients AS pa
+						ON pa.scope='project' AND pa.scope_id=p.id AND pa.state != 2
+						AND pa.created >= " . $this->_db->quote($filters['timed']);
 		}
 
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid);
@@ -401,20 +401,24 @@ class Project extends \JTable
 		{
 			$query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
 		}
-		$query .= " ,(SELECT t.type FROM #__project_types as t WHERE t.id=p.type) as projecttype ";
+		$query .= ", (SELECT t.type FROM `#__project_types` as t WHERE t.id=p.type) as projecttype ";
 
 		if ($updates)
 		{
-			$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa
-						WHERE pa.projectid=p.id AND pa.recorded >= o.lastvisit
-						AND o.lastvisit IS NOT NULL AND o.id IS NOT NULL
-						AND pa.state != 2 AND (pa.managers_only = 0
-						OR (pa.managers_only=1 AND o.role=1))) as newactivity ";
+			$query .= ", (
+						SELECT COUNT(*) FROM `#__activity_recipients` AS pa
+						WHERE pa.scope='project'
+						AND pa.scope_id=p.id
+						AND pa.created >= o.lastvisit
+						AND o.lastvisit IS NOT NULL
+						AND o.id IS NOT NULL
+						AND pa.state != 2
+					) as newactivity ";
 		}
 		if ($activity)
 		{
-			$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa
-						WHERE pa.projectid=p.id AND pa.state != 2) as activity ";
+			$query .= ", (SELECT COUNT(*) FROM `#__activity_recipients` AS pa
+						WHERE pa.scope='project' AND pa.scope_id=p.id AND pa.state != 2) as activity ";
 		}
 
 		if ($grantStatus)
@@ -482,8 +486,8 @@ class Project extends \JTable
 	{
 		$query  = "SELECT DISTINCT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 		$query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
-		$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa WHERE pa.projectid=p.id
-					AND pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
+		$query .= ", (SELECT COUNT(*) FROM `#__activity_recipients` AS pa WHERE pa.scope='project' AND pa.scope_id=p.id
+					AND pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND o.id IS NOT NULL AND pa.state != 2) as newactivity ";
 		$query .= " FROM #__project_owners as po, $this->_tbl AS p";
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
@@ -667,19 +671,20 @@ class Project extends \JTable
 	{
 		if (!empty($projects) && $uid != 0)
 		{
-			$query  = "SELECT COUNT(*) FROM `#__project_activity` AS pa ";
-			$query .= " JOIN `#__project_owners` as o ON o.projectid=pa.projectid AND o.userid=" . $this->_db->quote($uid);
-			$query .= " WHERE pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
-						AND pa.state !=2 AND pa.recorded >= o.added";
-			$query .= " AND pa.projectid IN (";
-
 			$tquery = array();
 			foreach ($projects as $project)
 			{
 				$tquery[] = $this->_db->quote($project);
 			}
 
-			$query .= implode(',', $tquery) . ") ";
+			$query = "SELECT COUNT(*)
+					FROM `#__activity_recipients` AS pa
+					INNER JOIN `#__project_owners` as o ON o.projectid=pa.scope_id AND o.userid=" . $this->_db->quote($uid) . "
+					WHERE pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
+					AND pa.state !=2 AND pa.created >= o.added
+					AND pa.scope='project'
+					AND pa.scope_id IN (" . implode(',', $tquery) . ")";
+
 			$this->_db->setQuery($query);
 
 			return $this->_db->loadResult();

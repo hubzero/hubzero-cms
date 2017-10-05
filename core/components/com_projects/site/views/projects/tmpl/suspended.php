@@ -35,8 +35,24 @@ $this->css()
      ->js();
 
 // Check who suspended project
-$suspended = $this->model->table('Activity')->checkActivity( $this->model->get('id'), Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+$log = \Hubzero\Activity\Log::all();
 
+$l = $log->getTableName();
+$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+$result = $log
+	->join($r, $r . '.log_id', $l . '.id', 'inner')
+	->whereEquals($r . '.scope', 'project')
+	->whereEquals($r . '.scope_id', $this->model->get('id'))
+	->whereEquals($l . '.description', Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'))
+	->order($l . '.created', 'desc')
+	->row();
+
+$suspended = null;
+if ($result)
+{
+	$suspended = $result->details->get('admin');
+}
 ?>
 <div id="project-wrap">
 	<section class="main section">

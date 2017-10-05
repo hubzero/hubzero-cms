@@ -289,13 +289,28 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		// Get full activity info from IDs
 		if ($activities)
 		{
-			$activities = $project->table('Activity')->getActivities(
-				$project->get('id'),
-				$filters = array('id' => $activities)
-			);
+			$recipient = Hubzero\Activity\Recipient::all();
+
+			$r = $recipient->getTableName();
+			$l = Hubzero\Activity\Log::blank()->getTableName();
+
+			$recipient
+				->select($r . '.*')
+				->including('log')
+				->join($l, $l . '.id', $r . '.log_id')
+				->whereIn($r . '.scope', array('project'))
+				->whereEquals($r . '.scope_id', $project->get('id'))
+				->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
+				->whereEquals($l . '.parent', 0);
+
+			if ($activities)
+			{
+				$recipient->whereIn($l . '.id', $activities);
+			}
+			$activities = $recipient->rows();
 		}
 
-		if (empty($activities))
+		if (count($activities) <= 0)
 		{
 			// Nothing to report
 			return false;

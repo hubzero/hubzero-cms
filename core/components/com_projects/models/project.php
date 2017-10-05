@@ -977,13 +977,14 @@ class Project extends Model
 	 */
 	public function newCount($refresh = false)
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
 		if (!isset($this->_newCount) || $refresh == true)
 		{
-			$this->_newCount = $this->_tblActivity->getNewActivityCount($this->get('id'), User::get('id'));
+			$this->_newCount = \Hubzero\Activity\Recipient::all()
+				->whereEquals('scope', 'project')
+				->whereEquals('scope_id', $this->get('id'))
+				->whereEquals('viewed', '0000-00-00 00:00:00')
+				->whereEquals('state', 1)
+				->total();
 		}
 
 		return $this->_newCount;
@@ -1100,7 +1101,7 @@ class Project extends Model
 			break;
 
 			default:
-			$results = $this->_tbl->getRecords($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
+				$results = $this->_tbl->getRecords($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
 			break;
 		}
 
@@ -1118,30 +1119,241 @@ class Project extends Model
 	/**
 	 * Record activity
 	 *
-	 * @return  integer
+	 * @param   string   $activity
+	 * @param   integer  $refid
+	 * @param   string   $underline
+	 * @param   string   $url
+	 * @param   string   $class
+	 * @param   integer  $commentable
+	 * @param   integer  $admin
+	 * @param   integer  $managers_only
+	 * @return  mixed
 	 */
 	public function recordActivity($activity = '', $refid = '', $underline = '', $url = '', $class = 'project', $commentable = 0, $admin = 0, $managers_only = 0)
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
 		if ($activity)
 		{
 			$refid = $refid ? $refid : $this->get('id');
 
-			$aid = $this->_tblActivity->recordActivity(
-				$this->get('id'),
-				User::get('id'),
-				$activity,
-				$refid,
-				$underline,
-				$url,
-				$class,
-				$commentable,
-				$admin,
-				$managers_only
+			$recipients = array(
+				['user', User::get('id')]
 			);
+
+			if ($managers_only)
+			{
+				$recipients[] = ['project_managers', $this->get('id')];
+			}
+			else
+			{
+				$recipients[] = ['project', $this->get('id')];
+
+				if ($gid = $this->get('owned_by_group'))
+				{
+					$recipients[] = ['group', $gid];
+				}
+			}
+
+			// Legacy support
+			// Translate project activity to the global activity schema
+			$action   = 'created';
+			$scope    = 'project';
+			$scope_id = $refid;
+			switch ($activity)
+			{
+				case 'started the project':
+					break;
+
+				case 'deleted project':
+					$action = 'deleted';
+					break;
+
+				case 'joined the project':
+					$action = 'joined';
+					break;
+
+				case 'left the project':
+					$action = 'cancelled';
+					break;
+
+				case 'posted a to-do item':
+					$scope = 'project.todo';
+					break;
+
+				case 'said':
+					$scope = 'project.comment';
+					break;
+
+				case 'commented on a to-do item':
+					$scope = 'project.todo.comment';
+					break;
+
+				case 'commented on a blog post':
+				case 'commented on an activity':
+					$scope = 'project.comment';
+					break;
+
+				case 'added a new page in project notes':
+					$scope = 'project.note';
+					break;
+
+				case 'changed the project settings':
+				case 'edited project information':
+				case 'replaced project picture':
+					$action = 'updated';
+					break;
+
+				default:
+					if (substr($activity, 0, strlen('uploaded')) == 'uploaded')
+					{
+						$action = 'uploaded';
+						$scope = 'project.file';
+					}
+					if (substr($activity, 0, strlen('updated file')) == 'updated file')
+					{
+						$action = 'updated';
+						$scope = 'project.file';
+					}
+					if (substr($activity, 0, strlen('restored deleted file')) == 'restored deleted file')
+					{
+						$action = 'updated';
+						$scope = 'project.file';
+					}
+					if (substr($activity, 0, strlen('created database')) == 'created database')
+					{
+						$action = 'created';
+						$scope = 'project.database';
+					}
+					if (substr($activity, 0, strlen('removed database')) == 'removed database')
+					{
+						$action = 'deleted';
+						$scope = 'project.database';
+						$scope_id = $refid;
+					}
+					if (substr($activity, 0, strlen('updated database')) == 'updated database')
+					{
+						$action = 'updated';
+						$scope = 'project.database';
+						$scope_id = $refid;
+					}
+					// Publications
+					if (substr($activity, 0, strlen('started a new publication')) == 'started a new publication'
+					 || substr($activity, 0, strlen('started draft')) == 'started draft')
+					{
+						$action = 'created';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('started new version')) == 'started new version')
+					{
+						$action = 'created';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('published version')) == 'published version'
+					 || substr($activity, 0, strlen('re-published version')) == 're-published version')
+					{
+						$action = 'published';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('submitted draft')) == 'submitted draft'
+					 || substr($activity, 0, strlen('re-submitted draft')) == 're-submitted draft')
+					{
+						$action = 'submitted';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('deleted draft')) == 'deleted draft')
+					{
+						$action = 'deleted';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('reviewed')) == 'reviewed')
+					{
+						$action = 'reviewed';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('approved')) == 'approved')
+					{
+						$action = 'approved';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('reverted to draft')) == 'reverted to draft')
+					{
+						$action = 'reverted';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('unpublished')) == 'unpublished')
+					{
+						$action = 'unpublished';
+						$scope = 'publication';
+					}
+					// Notes
+					if (substr($activity, 0, strlen('edited page')) == 'edited page')
+					{
+						$action = 'updated';
+						$scope = 'project.note';
+					}
+					break;
+			}
+
+			/*Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => $action,
+					'scope'       => $scope,
+					'scope_id'    => $scope_id,
+					'description' => $activity,
+					'details'     => array(
+						'title' => $this->get('title'),
+						'url'   => ($url ? $url : Route::url($this->link())),
+						'class' => $class,
+						'underline' => $underline
+					)
+				],
+				'recipients' => $recipients
+			]);*/
+			$act = \Hubzero\Activity\Log::blank()->set([
+				'action'      => $action,
+				'scope'       => $scope,
+				'scope_id'    => $scope_id,
+				'description' => $activity,
+				'details'     => array(
+					'title'       => $this->get('title'),
+					'url'         => ($url ? $url : Route::url($this->link())),
+					'class'       => $class,
+					'underline'   => $underline,
+					'commentable' => $commentable,
+					'admin'       => $admin
+				)
+			]);
+
+			if (!$act->save())
+			{
+				return false;
+			}
+
+			$aid  = $act->get('id');
+			$sent = array();
+
+			// Do we have any recipients?
+			foreach ($recipients as $receiver)
+			{
+				$key = implode('.', $receiver);
+
+				// No duplicate sendings
+				if (in_array($key, $sent))
+				{
+					continue;
+				}
+
+				// Create a recipient object that ties a user to an activity
+				$recipient = \Hubzero\Activity\Recipient::blank()->set([
+					'scope'    => $receiver[0],
+					'scope_id' => $receiver[1],
+					'log_id'   => $aid,
+					'state'    => 1
+				]);
+
+				$recipient->save();
+
+				$sent[] = $key;
+			}
 
 			// Notify subscribers
 			if ($aid && !User::isGuest() && !$this->isProvisioned())
@@ -1177,21 +1389,26 @@ class Project extends Model
 	}
 
 	/**
-	 * Record first join activity
+	 * Checks if an activity has been recorded
 	 *
-	 * @return  void
+	 * @param   string  $activity
+	 * @return  integer
 	 */
 	public function checkActivity($activity = null)
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
-		if ($activity)
-		{
-			return $this->_tblActivity->checkActivity($this->get('id'), $activity);
-		}
-		return false;
+		$log = \Hubzero\Activity\Log::all();
+
+		$l = $log->getTableName();
+		$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+		return $log
+			->join($r, $r . '.log_id', $l . '.id', 'inner')
+			->whereEquals($r . '.scope', 'project')
+			->whereEquals($r . '.scope_id', $this->get('id'))
+			->whereEquals($l . '.description', $activity)
+			->order($l . '.created', 'desc')
+			->row()
+			->get('id');
 	}
 
 	/**
@@ -1201,11 +1418,6 @@ class Project extends Model
 	 */
 	public function recordFirstJoinActivity()
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
-
 		if ($this->isMemberConfirmed() && !$this->isProvisioned() && $this->isActive())
 		{
 			if (!$this->member()->lastvisit)
@@ -1223,9 +1435,11 @@ class Project extends Model
 
 				// If newly created - remove join activity of project creator
 				$timecheck = Date::of(time() - (10 * 60)); // last second
+
 				if ($this->access('owner') && $timecheck <= $this->get('created'))
 				{
-					$this->_tblActivity->deleteActivity($aid);
+					$activity = \Hubzero\Activity\Log::oneOrFail($aid);
+					$activity->destroy();
 				}
 			}
 		}
@@ -1234,7 +1448,7 @@ class Project extends Model
 	/**
 	 * Get the project type
 	 *
-	 * @return     mixed
+	 * @return  object
 	 */
 	public function type()
 	{
@@ -1252,8 +1466,8 @@ class Project extends Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type = '')
 	{
@@ -1286,7 +1500,6 @@ class Project extends Model
 			break;
 
 			case 'thumb':
-				//$link = $this->_base . '&controller=media&media=thumb';
 				$link = $this->picture();
 			break;
 
