@@ -520,4 +520,3 @@ class Manager extends Object
 		return $this->config;
 	}
 }
-
