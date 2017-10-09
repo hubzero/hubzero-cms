@@ -59,6 +59,7 @@ class Solr extends SiteController
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
 
+		$childTerms = Request::getArray('childTerms', array());
 		$terms = Request::getVar('terms', '');
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('start', 0);
@@ -89,13 +90,28 @@ class Solr extends SiteController
 			->rows();
 		foreach ($allFacets as $facet)
 		{
-			$multifacet->createQuery($facet->getQueryName(), $facet->facet, array('root_type'));
+			$facetString = !User::authorise('core.admin') ? $facet->facet . ' AND (' . $query->adapter->getAccessString() . ')' : $facet->facet;
+			$multifacet->createQuery($facet->getQueryName(), $facetString, array('exclude' => 'root_type', 'include' => 'child_type'));
 		} 
 
 		$filters = Request::getVar('filters', array());
-
+		$queryTerms = $terms;
+		if (!empty($childTerms))
+		{
+			foreach ($childTerms as $child)
+			{
+				// This string tells Solr to filter the parents out based on childTerm
+				$queryTerms .= ' +{!parent which=hubtype:*}' . $child['id'];
+			}
+		}
 		// To pass to the view
-		$urlQuery = '?terms=' . $terms;
+		$childTermsString = '';
+		foreach ($childTerms as $index => $child)
+		{
+			$childTermsString .= '&childTerms[' . $index . ']' . '[id]=' . $child['id']; 
+			$childTermsString .= '&childTerms[' . $index . ']' . '[title]=' . $child['title'];
+		}
+		$urlQuery = '?terms=' . $terms . $childTermsString;
 		$rootFacets = Facet::all()
 			->including('children')
 			->including('parentFacet')
@@ -131,18 +147,21 @@ class Solr extends SiteController
 			}
 		}
 
-		$query = $query->query($terms)->limit($limit)->start($start);
-
+		$query->query($queryTerms)->limit($limit)->start($start);
+		$childFilter = '[child parentFilter=hubtype:*';
 		// Administrators can see all records
 		if (!User::authorise('core.admin'))
 		{
+			$childFilter .= ' childFilter=access_level:public';
 			$query->restrictAccess();
 		}
+		$childFilter .= ']';
 
 		if (isset($locationFilter))
 		{
 			$query->addFilter('BoundingBox', $locationFilter, 'root_type');
 		}
+		$query->fields(array('*', $childFilter));
 
 		// Build the reset of the query string
 		$urlQuery .= '&limit=' . $limit;
@@ -167,7 +186,6 @@ class Solr extends SiteController
 		{
 			$facetCounts[$facet] = $count;
 		}
-
 		// Format the results (highlighting, snippet, etc)
 		$results = $this->formatResults($results, $terms);
 
@@ -175,13 +193,16 @@ class Solr extends SiteController
 		if ($terms != '' && $numFound == 0)
 		{
 			// Get MoreLikeThis results
-			$spellSuggestions = $query->spellCheck($terms);
-			$this->view->spellSuggestions = $spellSuggestions;
 		}
 
 		$this->view->pagination = new \Hubzero\Pagination\Paginator($numFound, $start, $limit);
 		$this->view->pagination->setAdditionalUrlParam('terms', $terms);
 		$this->view->pagination->setAdditionalUrlParam('type', $type);
+		foreach ($childTerms as $index => $child)
+		{
+			$this->view->pagination->setAdditionalUrlParam('childTerms[' . $index . '][id]', $child['id']);
+			$this->view->pagination->setAdditionalUrlParam('childTerms[' . $index . '][title]', $child['title']);
+		}
 
 		if (isset($results) && count($results) > 0)
 		{
@@ -212,6 +233,8 @@ class Solr extends SiteController
 		\Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
 
 		$this->view->terms = $terms;
+		$this->view->childTerms = $childTerms;
+		$this->view->childTermsString = $childTermsString;
 		$this->view->type = $type;
 		$this->view->section = $section;
 		$this->view->setLayout('display');

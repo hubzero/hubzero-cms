@@ -45,6 +45,7 @@ Toolbar::custom('addfacet', 'new', 'add', 'COM_SEARCH_ADD_FACET', false);
 Toolbar::custom('deletefacet', 'delete', 'delete', 'COM_SEARCH_DELETE_FACET', true);
 Toolbar::spacer();
 Toolbar::custom('fullindex', 'refresh', 'refresh', 'COM_SEARCH_SOLR_FULLINDEX', false);
+Toolbar::custom('optimize', 'save', 'optimize', 'COM_SEARCH_SOLR_OPTIMIZE', false);
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
@@ -58,6 +59,10 @@ Submenu::addEntry(
 	Lang::txt('Search Index'),
 	'index.php?option='.$option.'&task=searchindex',
 	true
+);
+Submenu::addEntry(
+	Lang::txt('Searchable Components'),
+	'index.php?option='.$option.'&task=display&controller=searchable'
 );
 Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
