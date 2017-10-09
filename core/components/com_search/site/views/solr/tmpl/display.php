@@ -95,7 +95,7 @@ $noResult = count($this->results) > 0 ? false : true;
 							<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>">All Categories <span class="item-count"><?php echo $this->total; ?></span></a>
 						</li>
 						<?php foreach ($this->facets as $facet): ?>
-							<?php echo $facet->formatWithCounts($this->facetCounts, $this->type, $this->terms); ?>
+							<?php echo $facet->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString); ?>
 						<?php endforeach; ?>
 					</ul>
 				</div><!-- / .container -->
@@ -103,6 +103,12 @@ $noResult = count($this->results) > 0 ? false : true;
 			<div class="subject">
 				<div class="container">
 					<div class="results list"><!-- add "tiled" to class for tiled view -->
+						<?php if (!empty($this->childTerms)): ?>
+							<?php $baseUrl = Route::url('index.php?option=com_search&terms=' . $this->terms . '&type=' . $this->type); ?>
+							<?php foreach ($this->childTerms as $filterType => $values): ?>
+								<a class="tag closable" href="<?php echo \Components\Search\Helpers\UrlQueryHelper::buildQueryString($baseUrl, $this->childTerms, $filterType);?>"><?php echo $filterType . ': ' . $values['title']; ?></a>
+							<?php endforeach; ?>
+						<?php endif; ?>
 						<?php foreach ($this->results as $result): ?>
 							<?php if (is_array($result)): ?>
 								<div class="result <?php echo (isset($result['access_level']) ? $result['access_level'] : 'public'); ?>" id="<?php echo $result['id']; ?>">
@@ -141,12 +147,19 @@ $noResult = count($this->results) > 0 ? false : true;
 											</div><!-- end result snippet -->
 										<?php endif; ?>
 
-										<?php if (isset($result['tags'])): ?>
+										<?php if (isset($result['_childDocuments_'])): ?>
 											<!-- Tags -->
 											<div class="result-tags">
 												<ul class="tags">
-													<?php foreach ($result['tags'] as $tag): ?>
-													<li><a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>"><?php echo $tag; ?></a></li>
+													<?php 
+														$baseTagUrl = Route::url('index.php?option=com_search&terms=' . $this->terms); 
+													?>
+													<?php foreach ($result['_childDocuments_'] as $tag): ?>
+														<li>
+															<a class="tag" href="<?php echo $baseTagUrl . '&childTerms[tag][id]=id:' . $tag['id'] .
+																'&childTerms[tag][title]=' . $tag['title'][0]; ?>"><?php echo $tag['title'][0]; ?>
+															</a>
+														</li>
 													<?php endforeach; ?>
 												</ul>
 											</div>
@@ -170,6 +183,10 @@ $noResult = count($this->results) > 0 ? false : true;
 						</nav>
 						<div class="clearfix"></div>
 						<input type="hidden" name="terms" value="<?php echo $terms; ?>" />
+						<?php foreach ($this->childTerms as $index => $child): ?>
+							<input type="hidden" name="<?php echo 'childTerms[' . $index . '][id]';?>" value="<?php echo $child['id']; ?>" />
+							<input type="hidden" name="<?php echo 'childTerms[' . $index . '][title]';?>" value="<?php echo $child['title']; ?>" />
+						<?php endforeach; ?>
 						<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 					</form>
 				</div><!-- / .container -->

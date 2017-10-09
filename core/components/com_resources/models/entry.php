@@ -42,7 +42,7 @@ use Date;
 use Lang;
 use User;
 use App;
-
+use stdClass;
 require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'type.php';
 require_once __DIR__ . DS . 'author.php';
@@ -55,7 +55,7 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
  *
  * @uses \Hubzero\Database\Relational
  */
-class Entry extends Relational
+class Entry extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * State constants
@@ -1533,5 +1533,134 @@ class Entry extends Relational
 		$query->group($r . '.id');
 
 		return $query;
+	}
+	public function searchableDescription()
+	{
+		$description = $this->fulltxt . ' ' . $this->introtext;
+		$description = html_entity_decode($description);
+		$description = \Hubzero\Utility\Sanitize::stripAll($description);
+		return $description;
+	}
+
+	public function transformAccessLevel()
+	{
+		$accessLevel = 'private';
+		if ($this->standalone == 1 && $this->published == 1)
+		{
+			switch ($this->access)
+			{
+				case 0:
+					$accessLevel = 'public';
+				break;
+				case 1:
+					$accessLevel = 'registered';
+				break;
+				case 4:
+				default:
+					$accessLevel = 'private';
+			}
+		}
+		return $accessLevel;
+	}
+
+	/**
+	 * Get the groups allowed to access a resource
+	 *
+	 * @return  array
+	 */
+	public function getGroups()
+	{
+		if ($this->group_access != '')
+		{
+			$this->group_access = trim($this->group_access);
+			$this->group_access = substr($this->group_access, 1, (strlen($this->group_access)-2));
+			$allowedgroups = explode(';', $this->group_access);
+		}
+		else
+		{
+			$allowedgroups = array();
+		}
+		$groupOwner = $this->get('group_owner', '');
+		if (!empty($groupOwner))
+		{
+			$allowedgroups[] = $groupOwner;
+		}
+
+		return $allowedgroups;
+	}
+
+	public function searchResult()
+	{
+		$obj = new stdClass;
+
+		$obj->url = Request::root() . $this->link();
+		$obj->title = $this->title;
+		$id = $this->id;
+		$obj->id = 'resource-' . $id;
+		$obj->hubtype = 'resource';
+
+		$obj->type = $this->type()->type;
+
+		$obj->description = $this->searchableDescription();
+		$obj->author = $this
+			->authors()
+			->select('name')
+			->rows()
+			->fieldsbyKey('name');
+
+		$obj->access_level = $this->access_level;
+		$groups = $this->getGroups();
+		$tags = $this->tags(false);
+
+		if (!empty($tags))
+		{
+			foreach ($tags as $tag)
+			{
+				$title = $tag->get('raw_tag', '');
+				$obj->tags[] = array(
+					'id' => 'tag-' . $tag->id,
+					'title' => $title,
+					'access_level' => $tag->admin == 0 ? 'public' : 'private',
+					'type' => 'tag'
+				);
+			}
+		}
+
+		if (!empty($groups))
+		{
+			foreach ($groups as $g => $group)
+			{
+				$grp = \Hubzero\User\Group::getInstance($group);
+				if ($grp)
+				{
+					$groups[$g] = $grp->get('gidNumber');
+				}
+				// Group not found
+				else
+				{
+					unset($groups[$g]);
+				}
+			}
+			$groups = array_unique($groups);
+			$obj->owner_type = 'group';
+			$obj->owner = $groups;
+		}
+		else
+		{
+			$obj->owner_type = 'user';
+			$obj->owner = $this->created_by;
+		}
+		return (array) $obj;
+	}
+
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
 	}
 }

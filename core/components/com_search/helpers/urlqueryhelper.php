@@ -27,40 +27,36 @@
  * @package   hubzero-cms
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
+ * @since     2.1.1
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Search\Helpers;
+use ReflectionClass;
+use Hubzero\Search\Searchable;
 
 /**
- * System plugin for content events
+ * Solr helper class
  */
-class plgSystemContent extends \Hubzero\Plugin\Plugin
+class UrlQueryHelper
 {
-	/**
-	 * Hook for after parsing route
-	 *
-	 * @param   object  $table
-	 * @param   object  $model
-	 * @return  void
-	 */
-	public function onContentSave($table, $model)
+	public static function buildQueryString($url, $values, $excludes = array())
 	{
-		//@TODO: Add check for isIndexable
-		Event::trigger('search.onAddIndex', array($table, $model));
-	}
-
-	/**
-	 * Hook for after parsing route
-	 *
-	 * @param   object  $table
-	 * @param   object  $model
-	 * @return  void
-	 */
-	public function onContentDestroy($table, $model)
-	{
-		//@TODO: Add check for isIndexable
-		Event::trigger('search.onRemoveIndex', array($table, $model));
+		$queryString = '';
+		if (is_string($excludes))
+		{
+			$excludes = array($excludes);
+		}
+		foreach ($values as $type => $fields)
+		{
+			if (in_array($type, $excludes))
+			{
+				continue;
+			}
+			foreach ($fields as $field => $value)
+			{
+				$queryString .= '&childTerms[' . $type . '][' . $field . ']=' . $value;
+			}
+		}
+		return $url . $queryString;
 	}
 }
-

@@ -77,17 +77,32 @@ class Facet extends Relational
 		return $tops;
 	}
 
+	/**
+	 * Convert facet name to solr query safe name
+	 *
+	 * @return string name of query
+	 */
 	public function getQueryName()
 	{
 		$name = str_replace(' ', '_', $this->name);
 		return $name;
 	}
 
+	/**
+	 * Get parent facet
+	 *
+	 * @return Components\Search\Models\Solr\Facet 
+	 */
 	public function parentFacet()
 	{
 		return $this->oneToOne('Facet', 'id', 'parent_id');
 	}
 
+	/**
+	 * Checks if current Facet has a parent
+	 *
+	 * @return boolean
+	 */
 	public function hasParent()
 	{
 		if ($this->parentFacet->get('id') > 0)
@@ -97,6 +112,11 @@ class Facet extends Relational
 		return false;
 	}
 
+	/**
+	 * Automatically merge current facet string with parent
+	 *
+	 * @return string
+	 */
 	public function transformFacet()
 	{
 		if ($this->hasParent())
@@ -110,14 +130,24 @@ class Facet extends Relational
 		return $facet;
 	}
 
-	public function formatWithCounts($counts, $activeType = null, $terms = null)
+	/**
+	 * Build HTML list of current item and its nested children
+	 * @param array $counts prefetched solr array of counts of all facets
+	 * @param int $activeType id of currently selected facet
+	 * @param string $terms search terms currently applied ot the search
+	 * @param string $childTerms any currently applied filters
+	 * 
+	 * @return string HTML list with links to apply a facet with currently selected searchTerms
+	 */
+	public function formatWithCounts($counts, $activeType = null, $terms = null, $childTerms = null)
 	{
 		$countIndex = $this->getQueryName();
 		$count = isset($counts[$countIndex]) ? $counts[$countIndex] : 0;
 		if ($count > 0)
 		{
 			$class = ($activeType == $this->id) ? 'class="active"' : '';
-			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . $this->id);
+			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . 
+				$this->id . $childTerms);
 			$html = '<li><a ' . $class . ' href="' . $link . '">';
 			$html .= $this->name . '<span class="item-count">' . $count . '</span></a>';
 			if ($this->children->count() > 0)
@@ -125,7 +155,7 @@ class Facet extends Relational
 				$html .= '<ul>';
 				foreach ($this->children as $child)
 				{
-					$html .= $child->formatWithCounts($counts, $activeType, $terms);
+					$html .= $child->formatWithCounts($counts, $activeType, $terms, $childTerms);
 				}
 				$html .= '</ul>';
 			}
