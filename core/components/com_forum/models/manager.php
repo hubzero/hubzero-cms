@@ -314,6 +314,12 @@ class Manager extends Object
 
 			$model->whereIn('access', $filters['access']);
 		}
+		if (isset($filters['orderBy']))
+		{
+			$orderBy = $filters['orderBy'];
+			$orderDir = isset($filters['orderDir']) ? $filters['orderDir'] : 'ASC';
+			$model->order($orderBy, $orderDir);
+		}
 
 		return $model;
 	}
