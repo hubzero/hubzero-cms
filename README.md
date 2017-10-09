@@ -13,8 +13,8 @@ This is because the API controller is not necessary to the component, and was ju
 Installation
 ============
 
-When downloaded as a ZIP file from http://hubzero.org/documentation/2.0.0/webdevs/components
-unzip and place the resulting directory into /app/components
+When downloaded as a ZIP file, 
+unzip and place the resulting directory into public/app/components
 
 The final result should look like:
 
