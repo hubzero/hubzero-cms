@@ -892,6 +892,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'search'     => Request::getVar('q', ''),
+			'orderBy'    => Request::getVar('orderBy', 'created'),
+			'orderDir'   => Request::getVar('orderDir', 'DESC'),
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => 1,
