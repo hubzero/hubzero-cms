@@ -58,13 +58,13 @@ if (!strstr($handlerBase, '{'))
 			<?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
 			<?php if ($item->isFile()) : ?>
 				<div class="file-action-dropdown<?php
-					$handlerBase = str_replace(
+					$handlerPath = str_replace(
 						array('{project}', '{file}'),
 						array($this->model->get('alias'), $item->getPath()),
 						$handlerBase
 					);
 
-					echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase)) ? ' hasMultiple' : ''; ?>">
+					echo ($handlers = Handler::getLaunchUrlsForFile($handlerPath)) ? ' hasMultiple' : ''; ?>">
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
 						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getFileName(), 60); ?>
 					</a>
