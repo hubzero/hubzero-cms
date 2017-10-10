@@ -293,7 +293,7 @@ class Threads extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.thread.sort',
 				'filter_order',
-				'c.id'
+				'id'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.thread.sortdir',
