@@ -211,7 +211,7 @@ class Cloud extends \Hubzero\Base\Object
 
 		$tbl = Object::blank()->getTableName();
 
-		$results = Tag::all();
+		$results = Tag::all()->purgeCache();
 
 		if (isset($filters['sort']) && $filters['sort'] == 'taggedon')
 		{
