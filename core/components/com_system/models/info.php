@@ -171,8 +171,8 @@ class Info extends \JModelLegacy
 			$this->info['phpversion']  = phpversion();
 			$this->info['server']      = $sf;
 			$this->info['sapi_name']   = php_sapi_name();
-			$this->info['version']     = $version->getLongVersion();
-			$this->info['platform']    = $platform->getLongVersion();
+			$this->info['version']     = HVERSION;
+			$this->info['platform']    = 'HUBzero CMS';
 			$this->info['useragent']   = $_SERVER['HTTP_USER_AGENT'];
 		}
 		return $this->info;
