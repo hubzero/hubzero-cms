@@ -51,10 +51,9 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 		$status = ($status == '-1' ? 0 : $status);
 		if ($status)
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
+			include_once Component::path('com_support') . DS . 'models' . DS . 'status.php';
 
-			$st = new \Components\Support\Tables\Status($database);
-			$st->load($status);
+			$st = \Components\Support\Models\Status::oneOrFail($status);
 
 			$open = $st->open;
 		}
@@ -264,13 +263,12 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 		if ($message_id && !empty($tickets))
 		{
 			Lang::load('com_support') ||
-			Lang::load('com_support', PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site');
+			Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+			include_once Component::path('com_support') . DS . 'models' . DS . 'message.php';
+			include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
-			$message = new \Components\Support\Tables\Message($database);
-			$message->load($message_id);
+			$message = \Components\Support\Models\Message::oneOrNew($message_id);
 
 			// Make sure we have a message to send
 			if ($message->message)
@@ -291,10 +289,7 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 
 				$mailed = array();
 
-				$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
-				$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
-
-				$comment = new \Components\Support\Models\Comment();
+				$comment = \Components\Support\Models\Comment::blank();
 				$comment->set('created', Date::toSql());
 				$comment->set('created_by', 0);
 				$comment->set('access', 0);
@@ -331,7 +326,7 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 						continue;
 					}
 
-					$old = new \Components\Support\Models\Ticket($submitter->id);
+					$old = \Components\Support\Models\Ticket::oneOrNew($submitter->id);
 					$old->set('open', 1);
 
 					$row = clone $old;
@@ -345,7 +340,7 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 					$comment->set('ticket', $row->get('id'));
 
 					$eview = new \Hubzero\Mail\View(array(
-						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
+						'base_path' => Component::path('com_support') . DS . 'site',
 						'name'      => 'emails',
 						'layout'    => 'comment_plain'
 					));

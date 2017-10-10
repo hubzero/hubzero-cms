@@ -1859,14 +1859,14 @@ class Pipeline extends SiteController
 		$summary = '';
 
 		// Make sure ticket is tied to the tool group
-		$row = new \Components\Support\Models\Ticket($ticketid);
-		if ($row->exists() && isset($newstuff['toolname']))
+		$row = \Components\Support\Models\Ticket::oneOrNew($ticketid);
+		if ($row->get('id') && isset($newstuff['toolname']))
 		{
 			$row->set('group', $this->config->get('group_prefix', 'app-') . $newstuff['toolname']);
-			$row->store();
+			$row->save();
 		}
 
-		$rowc = new \Components\Support\Models\Comment();
+		$rowc = \Components\Support\Models\Comment::blank();
 		$rowc->set('ticket', $ticketid);
 
 		// see what changed
@@ -2021,7 +2021,7 @@ class Pipeline extends SiteController
 			$rowc->set('access', $access);
 
 			Log::debug(__FUNCTION__ . '() storing ticket');
-			if (!$rowc->store())
+			if (!$rowc->save())
 			{
 				$this->_error = $rowc->getError();
 				return false;
@@ -2056,7 +2056,7 @@ class Pipeline extends SiteController
 
 		$summary = '';
 
-		$rowc = new \Components\Support\Models\Comment();
+		$rowc = \Components\Support\Models\Comment::blank();
 		$rowc->set('ticket', $obj->getTicketId($toolid));
 
 		// see what changed
@@ -2206,7 +2206,7 @@ class Pipeline extends SiteController
 		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);
 
-		if (!$rowc->store())
+		if (!$rowc->save())
 		{
 			$this->setError($rowc->getError());
 			return false;
@@ -2231,7 +2231,7 @@ class Pipeline extends SiteController
 	 */
 	private function _createTicket($toolid, $tool)
 	{
-		$row = new \Components\Support\Models\Ticket();
+		$row = \Components\Support\Models\Ticket::blank();
 		$row->set('open', 1);
 		$row->set('status', 0);
 		$row->set('created', Date::toSql());
@@ -2251,7 +2251,7 @@ class Pipeline extends SiteController
 		$row->set('email', User::get('email'));
 		$row->set('name', User::get('name'));
 
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return false;

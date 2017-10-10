@@ -33,12 +33,11 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Tables;
 use Request;
-use Config;
+use Date;
 use Lang;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'status.php');
+include_once dirname(dirname(__DIR__)) . '/models/status.php';
 
 /**
  * Support controller class for ticket stats
@@ -53,31 +52,24 @@ class Stats extends AdminController
 	public function displayTask()
 	{
 		// Instantiate a new view
-		$this->view->title = Lang::txt(strtoupper($this->_name));
+		$filters = array(
+			'type'  => Request::getVar('type', 'submitted'),
+			'group' => Request::getVar('group', ''),
+			'sort'  => Request::getVar('sort', 'name'),
+			'year'  => Request::getInt('year', Date::of('now')->format('Y')),
+			'month' => Date::of('now')->format('m')
+		);
 
-		$type = Request::getVar('type', 'submitted');
-		$this->view->type = ($type == 'automatic') ? 1 : 0;
+		$filters['type'] = ($filters['type'] == 'automatic') ? 1 : 0;
 
-		$this->view->group = Request::getVar('group', '');
-
-		$this->view->sort = Request::getVar('sort', 'name');
-
-		$this->offset = Config::get('offset');
-
-		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
-		$month = strftime("%m", time()+($this->offset*60*60));
-
-		$this->view->year = $year;
 		$this->view->opened = array();
 		$this->view->closed = array();
 
-		$st = new Tables\Ticket($this->database);
-
 		$sql = "SELECT DISTINCT(g.`cn`), g.description
-				FROM #__support_tickets AS s
-				LEFT JOIN #__xgroups AS g ON g.gidNumber=s.`group_id`
+				FROM `#__support_tickets` AS s
+				LEFT JOIN `#__xgroups` AS g ON g.gidNumber=s.`group_id`
 				WHERE s.`group_id` > 0
-				AND s.type=" . $this->database->quote($this->view->type) . "
+				AND s.type=" . $this->database->quote($filters['type']) . "
 				ORDER BY g.description ASC";
 		$this->database->setQuery($sql);
 		$this->view->groups = $this->database->loadObjectList();
@@ -85,20 +77,20 @@ class Stats extends AdminController
 		// Users
 		$this->view->users = null;
 
-		if ($this->view->group)
+		if ($filters['group'] || $filters['group'] == '_none_')
 		{
-			$query = "SELECT a.username, a.name, a.id"
-				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
-				. "\n WHERE g.cn=" . $this->database->quote($this->view->group) . " AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
-				. "\n ORDER BY a.name";
+			$query = "SELECT a.username, a.name, a.id
+				FROM `#__users` AS a, `#__xgroups` AS g, `#__xgroups_members` AS gm
+				WHERE g.cn=" . $this->database->quote($filters['group']) . " AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id
+				ORDER BY a.name";
 		}
 		else
 		{
-			$query = "SELECT DISTINCT a.username, a.name, a.id"
-				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.id"	// map user to aro
-				. "\n WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type)
-				. "\n ORDER BY a.name";
+			$query = "SELECT DISTINCT a.username, a.name, a.id
+				FROM `#__users` AS a
+				INNER JOIN `#__support_tickets` AS s ON s.owner = a.id
+				WHERE a.block = '0' AND s.type=" . $this->database->quote($filters['type']) . "
+				ORDER BY a.name";
 		}
 
 		$this->database->setQuery($query);
@@ -106,9 +98,9 @@ class Stats extends AdminController
 
 		// First ticket
 		$sql = "SELECT YEAR(created)
-				FROM #__support_tickets
+				FROM `#__support_tickets`
 				WHERE report!=''
-				AND type=" . $this->database->quote($this->view->type) . " ORDER BY created ASC LIMIT 1";
+				AND type=" . $this->database->quote($filters['type']) . " ORDER BY created ASC LIMIT 1";
 		$this->database->setQuery($sql);
 		$first = intval($this->database->loadResult());
 
@@ -116,15 +108,15 @@ class Stats extends AdminController
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM `#__support_tickets`
 				WHERE report!=''
-				AND type=" . $this->database->quote($this->view->type);
-		if (!$this->view->group)
+				AND type=" . $this->database->quote($filters['type']);
+		if (!$filters['group'] || $filters['group'] == '_none_')
 		{
 			$sql .= " AND `group_id`=0";
 		}
 		else
 		{
 			$gidNumber = 0;
-			if ($group = \Hubzero\User\Group::getInstance($this->view->group))
+			if ($group = \Hubzero\User\Group::getInstance($filters['group']))
 			{
 				$gidNumber = $group->get('gidNumber');
 			}
@@ -176,15 +168,15 @@ class Stats extends AdminController
 		$sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
-				AND t.type=" . $this->database->Quote($this->view->type) . " AND t.open=0";
-		if (!$this->view->group || $this->view->group == '_none_')
+				AND t.type=" . $this->database->quote($filters['type']) . " AND t.open=0";
+		if (!$filters['group'] || $filters['group'] == '_none_')
 		{
 			$sql .= " AND t.`group_id`=0";
 		}
-		else if ($this->view->group)
+		else if ($filters['group'])
 		{
 			$gidNumber = 0;
-			if ($group = \Hubzero\User\Group::getInstance($this->view->group))
+			if ($group = \Hubzero\User\Group::getInstance($filters['group']))
 			{
 				$gidNumber = $group->get('gidNumber');
 			}
@@ -239,7 +231,7 @@ class Stats extends AdminController
 
 			for ($i = 1; $i <= 12; $i++)
 			{
-				if ($k == $year && $i > $month)
+				if ($k == $filters['year'] && $i > $filters['month'])
 				{
 					break;
 					//$this->view->closedmonths[$k][$i] = 'null';
@@ -247,8 +239,8 @@ class Stats extends AdminController
 				}
 				else
 				{
-					$this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0; //$st->getCountOfTicketsClosedInMonth($this->view->type, $k, sprintf("%02d",$i), $this->view->group);
-					$this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i]))     ? $open[$k][$i]   : 0; //$st->getCountOfTicketsOpenedInMonth($this->view->type, $k, sprintf("%02d",$i), $this->view->group);
+					$this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
+					$this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i]))     ? $open[$k][$i]   : 0;
 				}
 
 				foreach ($users as $j => $user)
@@ -272,9 +264,9 @@ class Stats extends AdminController
 
 					if ($i <= "9"&preg_match("#(^[1-9]{1})#", $i))
 					{
-						$month = "0$i";
+						$filters['month'] = "0$i";
 					}
-					if ($k == $year && $i > $month)
+					if ($k == $filters['year'] && $i > $filters['month'])
 					{
 						$user->closed[$k][$i] = 'null';
 					}
@@ -318,19 +310,14 @@ class Stats extends AdminController
 			$u[$key] = $user;
 		}
 		krsort($u);
-		$this->view->users  = $u;//$users;
 
-		// Set the config
-		$this->view->config = $this->config;
-		$this->view->first  = $first;
-		$this->view->month  = $month;
-
-		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		// Output view
+		$this->view
+			->set('filters', $filters)
+			->set('title', Lang::txt(strtoupper($this->_option)))
+			->set('config', $this->config)
+			->set('users', $u)
+			->set('first', $first)
+			->display();
 	}
 }

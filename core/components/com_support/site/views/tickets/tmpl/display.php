@@ -103,12 +103,11 @@ $this->css()
 										</a>
 									</span>
 								<?php } ?>
-								<?php if (isset($folder->queries)) : ?>
 								<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
 									<?php foreach ($folder->queries as $query) { ?>
 										<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
 											<a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
-												<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
+												<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->get('count'); ?></span>
 											</a>
 											<?php if ($this->acl->check('read', 'tickets')) { ?>
 												<span class="query-options">
@@ -123,7 +122,6 @@ $this->css()
 										</li>
 									<?php } ?>
 								</ul>
-							<?php endif; ?>
 							</li>
 						<?php } ?>
 					<?php } ?>
@@ -218,43 +216,18 @@ $this->css()
 						<tbody>
 					<?php
 					$k = 0;
-					$sc = new \Components\Support\Tables\Comment($this->database);
-					$st = new \Components\Support\Models\Tags();
-
-					// Collect all the IDs
-					$ids = array();
-					if ($this->rows)
+					if (count($this->rows) > 0)
 					{
-						foreach ($this->rows as $row)
-						{
-							$ids[] = $row->id;
-						}
-
-						// Pull out the last activity date for all the IDs
-						$lastactivities = array();
-						if (count($ids))
-						{
-							$lastactivities = $sc->newestCommentsForTickets(true, $ids);
-							$alltags = $st->checkTags($ids);
-						}
-
 						$cls = 'even';
 
-						for ($i=0, $n=count($this->rows); $i < $n; $i++)
+						$i = 0;
+						foreach ($this->rows as $row)
 						{
-							$row = &$this->rows[$i];
-
-							if (!($row instanceof \Components\Support\Models\Ticket))
-							{
-								$row = new \Components\Support\Models\Ticket($row);
-							}
-
 							// Was there any activity on this item?
-							$lastcomment = '0000-00-00 00:00:00';
-							if (isset($lastactivities[$row->get('id')]))
-							{
-								$lastcomment = $lastactivities[$row->get('id')]['lastactivity'];
-							}
+							$lastcomment = $row->comments()
+								->order('created', 'desc')
+								->row()
+								->get('created', '0000-00-00 00:00:00');
 
 							$tags = '';
 							if (isset($alltags[$row->get('id')]))
@@ -263,13 +236,13 @@ $this->css()
 							}
 							?>
 							<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
-								<td<?php if ($row->get('status')) { echo ($row->status('color') ? ' style="border-left-color: #' . $row->status('color') . ';"' : ''); } ?>>
-									<span class="hasTip" title="<?php echo Lang::txt('COM_SUPPORT_DETAILS'); ?> :: <?php echo Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $row->status('text'); ?>">
+								<td<?php if ($row->get('status')) { echo ($row->status->get('color') ? ' style="border-left-color: #' . $row->status->get('color') . ';"' : ''); } ?>>
+									<span class="hasTip" title="<?php echo Lang::txt('COM_SUPPORT_DETAILS'); ?> :: <?php echo Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $row->status->get('text'); ?>">
 										<span class="ticket-id">
 											<?php echo $row->get('id'); ?>
 										</span>
-										<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status('class'); ?> status">
-											<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+										<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status->get('class'); ?> status">
+											<?php echo $row->status->get('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 										</span>
 										<?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
 											<span class="ticket-target_date tooltips" title="<?php echo Lang::txt('Target date: %s', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
@@ -281,7 +254,7 @@ $this->css()
 								<td colspan="6">
 									<p>
 										<span class="ticket-author">
-											<?php echo $this->escape($row->get('name')); echo ($row->submitter()->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter()->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
+											<?php echo $this->escape($row->get('name')); echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
 										</span>
 										<span class="ticket-datetime">
 											@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('local'); ?></time>
@@ -293,8 +266,8 @@ $this->css()
 										<?php } ?>
 									</p>
 									<p>
-										<a class="ticket-content" title="<?php echo $this->escape($row->content('parsed')); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-											<?php echo ($row->content('clean') ? $row->content('clean', 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
+										<a class="ticket-content" title="<?php echo $this->escape($row->content); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+											<?php echo ($row->content ? \Hubzero\Utility\String::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
 										</a>
 									</p>
 									<?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>
@@ -317,8 +290,8 @@ $this->css()
 											</span>
 										<?php } ?>
 										<?php if ($row->isOwned()) { ?>
-											<span class="ticket-owner hasTip" title="<?php echo Lang::txt('COM_SUPPORT_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->owner()->picture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->owner()->get('username'))); ?><br /><?php echo $this->escape(stripslashes($row->owner()->get('organization', Lang::txt('COM_SUPPORT_UNKNOWN')))); ?>">
-												<?php echo $this->escape(stripslashes($row->owner()->get('name'))); ?>
+											<span class="ticket-owner hasTip" title="<?php echo Lang::txt('COM_SUPPORT_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->assignee->picture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->assignee->get('username'))); ?><br /><?php echo $this->escape(stripslashes($row->assignee->get('organization', Lang::txt('COM_SUPPORT_UNKNOWN')))); ?>">
+												<?php echo $this->escape(stripslashes($row->assignee->get('name'))); ?>
 											</span>
 										<?php } ?>
 										</p>
@@ -376,7 +349,7 @@ var _DEBUG = 0;
 jQuery(document).ready(function($){
 	var panes = $('#panes');
 
-	_DEBUG = $('#system-debug').length;
+	_DEBUG = 1; //$('#system-debug').length;
 
 	$('#queries')
 		.on('click', 'span.folder', function(e) {
@@ -531,7 +504,14 @@ jQuery(document).ready(function($){
 					query = Conditions.getCondition('.query > fieldset');
 					$('#field-conditions').val(JSON.stringify(query));
 
+					if (_DEBUG) {
+						window.console && console.log($(this).attr('action'));
+					}
+
 					$.post($(this).attr('action'), $(this).serialize(), function(data) {
+						if (_DEBUG) {
+							window.console && console.log(data);
+						}
 						$('#query-list').html(data);
 						$.fancybox.close();
 					});

@@ -42,8 +42,8 @@ use Config;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php';
 
 /**
  * API controller class for support tickets
@@ -119,7 +119,7 @@ class Commentsv1_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$obj = new \Components\Support\Tables\Ticket($this->database);
+		$obj = \Components\Support\Models\Comment::all();
 
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
@@ -139,67 +139,19 @@ class Commentsv1_0 extends ApiController
 		$filters['closed'] = $this->_toTimestamp(Request::getVar('closed', ''));
 
 		$response = new stdClass;
-		$response->success = true;
-		$response->total   = 0;
-		$response->tickets = array();
+		$response->success  = true;
+		$response->total    = 0;
+		$response->comments = array();
 
 		// Get a list of all statuses
-		$sobj = new \Components\Support\Tables\Status($this->database);
-
-		$statuses = array();
-		if ($data = $sobj->find('all'))
-		{
-			foreach ($data as $status)
-			{
-				$statuses[$status->id] = $status;
-			}
-		}
+		$statuses = \Components\Support\Models\Status::all()->rows();
 
 		// Get a count of tickets
-		$response->total = $obj->getTicketsCount($filters);
+		$response->total = $obj->rows()->count();
 
 		if ($response->total)
 		{
-			$response->tickets = $obj->getTickets($filters);
-
-			foreach ($response->tickets as $i => $ticket)
-			{
-				$owner = $ticket->owner;
-
-				$response->tickets[$i]->owner = new stdClass;
-				$response->tickets[$i]->owner->username = $owner;
-				$response->tickets[$i]->owner->name     = $ticket->owner_name;
-				$response->tickets[$i]->owner->id       = $ticket->owner_id;
-
-				unset($response->tickets[$i]->owner_name);
-				unset($response->tickets[$i]->owner_id);
-
-				$response->tickets[$i]->reporter = new stdClass;
-				$response->tickets[$i]->reporter->name     = $ticket->name;
-				$response->tickets[$i]->reporter->username = $ticket->login;
-				$response->tickets[$i]->reporter->email    = $ticket->email;
-
-				unset($response->tickets[$i]->name);
-				unset($response->tickets[$i]->login);
-				unset($response->tickets[$i]->email);
-
-				$status = $response->tickets[$i]->status;
-
-				$response->tickets[$i]->status = new stdClass;
-				if (!$status)
-				{
-					$response->tickets[$i]->status->alias = 'new';
-					$response->tickets[$i]->status->title = 'New';
-				}
-				else
-				{
-					$response->tickets[$i]->status->alias = (isset($statuses[$status]) ? $statuses[$status]->alias : 'unknown');
-					$response->tickets[$i]->status->title = (isset($statuses[$status]) ? $statuses[$status]->title : 'unknown');
-				}
-				$response->tickets[$i]->status->id    = $status;
-
-				$response->tickets[$i]->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->tickets[$i]->id), '/'));
-			}
+			$response->comments = $obj->rows();
 		}
 
 		$this->send($response);
@@ -252,17 +204,16 @@ class Commentsv1_0 extends ApiController
 		$ticket_id = Request::getInt('ticket', 0, 'post');
 
 		// Load the old ticket so we can compare for the changelog
-		$old = new \Components\Support\Models\Ticket($ticket_id);
+		$old = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
 		$old->set('tags', $old->tags('string'));
 
-		if (!$old->exists())
+		if (!$old->get('id'))
 		{
-			$this->errorMessage(500, Lang::txt('Ticket "%s" does not exist.', $ticket_id));
-			return;
+			throw new Exception(500, Lang::txt('Ticket "%s" does not exist.', $ticket_id));
 		}
 
 		// Initiate class and bind posted items to database fields
-		$ticket = new \Components\Support\Models\Ticket($ticket_id);
+		$ticket = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
 		$ticket->set('status',   Request::getInt('status', $ticket->get('status'), 'post'));
 		$ticket->set('open',     Request::getInt('open', $ticket->get('open'), 'post'));
 		$ticket->set('category', Request::getInt('category', $ticket->get('category'), 'post'));
@@ -338,8 +289,6 @@ class Commentsv1_0 extends ApiController
 		// Check if the notify list has eny entries
 		if (count($comment->to()))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-
 			$allowEmailResponses = $ticket->config('email_processing');
 			if ($allowEmailResponses)
 			{
@@ -488,7 +437,7 @@ class Commentsv1_0 extends ApiController
 		$id = Request::getInt('comment', 0);
 
 		// Initiate class and bind data to database fields
-		$ticket = new \Components\Support\Models\Comment($id);
+		$ticket = \Components\Support\Models\Comment::oneOrFail($id);
 
 		$response = new stdClass;
 		$response->id = $comment->get('id');
@@ -541,19 +490,9 @@ class Commentsv1_0 extends ApiController
 		$ticket_id  = Request::getInt('ticket', 0);
 		$comment_id = Request::getInt('comment', 0);
 
-		$ticket = new \Components\Support\Models\Ticket($ticket_id);
+		$ticket = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
 
-		if (!$ticket->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
-
-		$comment = new \Components\Support\Models\Comment($comment_id);
-
-		if (!$comment->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
+		$comment = \Components\Support\Models\Comment::oneOrFail($comment_id);
 
 		$this->send(null, 204);
 	}
@@ -591,26 +530,21 @@ class Commentsv1_0 extends ApiController
 		$ticket_id  = Request::getInt('ticket', 0);
 		$comment_id = Request::getInt('comment', 0);
 
-		$ticket = new \Components\Support\Models\Ticket($ticket_id);
+		$ticket = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
 
-		if (!$ticket->exists())
+		if (!$ticket->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
 		}
 
-		$comment = new \Components\Support\Models\Comment($comment_id);
-
-		if (!$comment->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
+		$comment = \Components\Support\Models\Comment::oneOrFail($comment_id);
 
 		if ($comment->isPrivate() && !$this->acl->check('delete', 'private_comments'))
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_UNAUTHORIZED'), 403);
 		}
 
-		if (!$comment->delete())
+		if (!$comment->destroy())
 		{
 			throw new Exception($comment->getError(), 500);
 		}

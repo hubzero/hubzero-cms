@@ -39,7 +39,7 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 
 if (!$no_html && !$tmpl)
 {
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_QUERY_FOLDER') . ': ' . $text, 'support.png');
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_QUERY_FOLDER') . ': ' . $text, 'support');
 Toolbar::apply();
 Toolbar::save();
 Toolbar::spacer();
@@ -132,7 +132,7 @@ function submitbutton(pressbutton)
 							?>
 						</td>
 					</tr>
-					<?php if ($this->row->modified_by) { ?>
+					<?php if ($this->row->modified_by && $this->row->modified_by != '0000-00-00 00:00:00') { ?>
 						<tr>
 							<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
 							<td>

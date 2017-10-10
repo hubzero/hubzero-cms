@@ -44,7 +44,7 @@ $tmpl = Request::getVar('tmpl', '');
 if (!$tmpl)
 {
 	$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-	Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES') . ': ' . $text, 'support.png');
+	Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES') . ': ' . $text, 'support');
 	Toolbar::save();
 	Toolbar::cancel();
 }
@@ -209,15 +209,10 @@ if (!$tmpl)
 					<label for="field-sort"><?php echo Lang::txt('In folder'); ?></label>
 					<select name="fields[folder_id]" id="field-folder_id">
 						<?php
-						$database = App::get('db');
-						include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
-
-						$sr = new \Components\Support\Tables\QueryFolder($database);
-						$folders = $sr->find('list', array(
-							'user_id'  => User::get('id'),
-							'sort'     => 'ordering',
-							'sort_Dir' => 'ASC'
-						));
+						$folders = Components\Support\Models\QueryFolder::all()
+							->whereEquals('user_id', User::get('id'))
+							->order('ordering', 'ASC')
+							->rows();
 						if ($folders)
 						{
 							foreach ($folders as $folder)

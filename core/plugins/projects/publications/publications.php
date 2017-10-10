@@ -1659,32 +1659,31 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Include support scripts
-				include_once PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php';
-				include_once PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php';
+				include_once PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php';
 
 				// Load the support config
 				$sparams = Component::params('com_support');
 
-				$row = new \Components\Support\Tables\Ticket($this->_database);
-				$row->created = Date::toSql();
-				$row->login   = User::get('username');
-				$row->email   = User::get('email');
-				$row->name    = User::get('name');
-				$row->summary = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW');
+				$row = \Components\Support\Models\Ticket::blank();
+				$row->set('created', Date::toSql());
+				$row->set('login', User::get('username'));
+				$row->set('email', User::get('email'));
+				$row->set('name', User::get('name'));
+				$row->set('summary', Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW'));
 
 				$report  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE') . ': ' . $l_title ."\r\n";
 				$report .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL') . ': ' . $l_url . "\r\n";
 				$report .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_COMMENTS') . ': ' . $l_text ."\r\n";
-				$row->report   = $report;
-				$row->referrer = Request::getVar('HTTP_REFERER', null, 'server');
-				$row->type     = 0;
-				$row->severity = 'normal';
+				$row->set('report', $report);
+				$row->set('referrer', Request::getVar('HTTP_REFERER', null, 'server'));
+				$row->set('type', 0);
+				$row->set('severity', 'normal');
 
 				$admingroup = $this->model->config()->get('admingroup', '');
 				$group = \Hubzero\User\Group::getInstance($admingroup);
-				$row->group_id = $group ? $group->get('gidNumber') : '';
+				$row->set('group_id', $group ? $group->get('gidNumber') : '');
 
-				if (!$row->store())
+				if (!$row->save())
 				{
 					$this->setError($row->getError());
 				}

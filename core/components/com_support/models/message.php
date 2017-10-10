@@ -30,14 +30,15 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Support\Models\Orm;
+namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
+use Config;
 
 /**
- * Support ticket status model
+ * Support ticket message model
  */
-class Status extends Relational
+class Message extends Relational
 {
 	/**
 	 * The table namespace
@@ -66,36 +67,27 @@ class Status extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'title' => 'notempty'
+		'title'   => 'notempty',
+		'message' => 'notempty'
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Get message
 	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'alias'
-	);
-
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
+	 * @param   integer  $ticket_id
 	 * @return  string
 	 */
-	public function automaticAlias($data)
+	public function transformMessage($ticket_id = 0)
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 250)
-		{
-			$alias = substr($alias . ' ', 0, 250);
-			$alias = substr($alias, 0, strrpos($alias,' '));
-		}
-		$alias = str_replace(' ', '-', $alias);
+		$content = $this->get('message');
 
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+		$content = str_replace('"','&quot;', stripslashes($content));
+		$content = str_replace('&quote;', '&quot;', $content);
+		$content = str_replace('#XXX', '#' . $ticket_id, $content);
+		$content = str_replace('{ticket#}', $ticket_id, $content);
+		$content = str_replace('{sitename}', Config::get('sitename'), $content);
+		$content = str_replace('{siteemail}', Config::get('mailfrom'), $content);
+
+		return $content;
 	}
 }

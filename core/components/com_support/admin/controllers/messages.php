@@ -33,7 +33,7 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Models\Orm\Message;
+use Components\Support\Models\Message;
 use Request;
 use Config;
 use Notify;
@@ -41,8 +41,7 @@ use Route;
 use Lang;
 use App;
 
-require_once dirname(dirname(__DIR__)) . '/models/orm/message.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
+require_once dirname(dirname(__DIR__)) . '/models/message.php';
 
 /**
  * Support controller class for message templates

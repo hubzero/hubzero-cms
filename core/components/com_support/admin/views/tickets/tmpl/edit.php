@@ -43,10 +43,14 @@ if ($this->row->get('login'))
 {
 	if ($this->row->get('name'))
 	{
-		jimport('joomla.user.helper');
-		$usertype = implode(', ', JUserHelper::getUserGroups($this->row->submitter()->get('id')));
+		$gids = array();
+		foreach (User::getInstance($this->row->submitter->get('id'))->accessgroups() as $g)
+		{
+			$gids[] = $g->group_id;
+		}
+		$usertype = implode(', ', $gids);
 
-		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->submitter()->get('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
+		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->submitter->get('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
 		$unknown = false;
 
 		$notify[] = $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')';
@@ -68,18 +72,18 @@ if (!$name)
 
 if ($this->row->isOwned())
 {
-	if ($this->row->owner()->get('name'))
+	if ($this->row->assignee->get('name'))
 	{
-		$notify[] = $this->escape(stripslashes($this->row->owner()->get('name'))) . ' (' . $this->escape(stripslashes($this->row->owner()->get('username'))) . ')';
+		$notify[] = $this->escape(stripslashes($this->row->assignee->get('name'))) . ' (' . $this->escape(stripslashes($this->row->assignee->get('username'))) . ')';
 	}
 }
 
 $lastactivity = Lang::txt('COM_SUPPORT_NOT_APPLICAPABLE');
-if ($this->row->comments()->total() > 0)
+if ($this->row->comments->count() > 0)
 {
-	$last = $this->row->comments()->last();
-	$lastactivity = '<time datetime="' . $last->created() . '">' . Date::of($last->created())->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . '</time>';
-	$this->row->comments()->rewind();
+	$last = $this->row->comments->last();
+	$lastactivity = '<time datetime="' . $last->get('created') . '">' . Date::of($last->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . '</time>';
+	$this->row->comments->rewind();
 }
 
 $cc = array();
@@ -132,18 +136,18 @@ if (!$no_html)
 					</strong>
 					<a class="permalink" href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=edit&id=' . $this->row->get('id')); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
 						<span class="time-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-						<span class="time"><time datetime="<?php echo $this->row->created(); ?>"><?php echo $this->row->created('time'); ?></time></span>
+						<span class="time"><time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-						<span class="date"><time datetime="<?php echo $this->row->created(); ?>"><?php echo $this->row->created('date'); ?></time></span>
+						<span class="date"><time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</a>
 				</div>
 				<blockquote class="ticket-content" cite="<?php echo $this->escape($this->row->get('login', $this->row->get('name'))); ?>">
-					<p><?php echo $this->row->content('parsed'); ?></p>
+					<p><?php echo $this->row->content; ?></p>
 
-					<?php if ($this->row->attachments()->total()) { ?>
+					<?php if ($this->row->attachments->count()) { ?>
 						<div class="comment-attachments">
 							<?php
-							foreach ($this->row->attachments() as $attachment)
+							foreach ($this->row->attachments as $attachment)
 							{
 								if (!trim($attachment->get('description')))
 								{
@@ -227,9 +231,9 @@ if (!$no_html)
 					<td><?php
 					if ($this->row->isOwned())
 					{
-						if ($this->row->owner('id'))
+						if ($this->row->assignee->get('id'))
 						{
-							echo '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->owner('id')) . '">' . $this->escape(stripslashes($this->row->owner('name'))) . '</a>';
+							echo '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->assignee->get('id')) . '">' . $this->escape(stripslashes($this->row->assignee->get('name'))) . '</a>';
 						}
 						else
 						{
@@ -268,7 +272,7 @@ if (!$no_html)
 	<div class="ticket-comments">
 	<?php } ?>
 
-	<?php if ($this->row->comments()->total() > 0) { ?>
+	<?php if ($this->row->comments->count() > 0) { ?>
 		<?php if (!$no_html) { ?>
 		<div class="grid">
 		<div class="col span8">
@@ -278,7 +282,7 @@ if (!$no_html)
 
 				<ol class="comments">
 				<?php
-				foreach ($this->row->comments() as $comment)
+				foreach ($this->row->comments as $comment)
 				{
 					$access = 'public';
 					if ($comment->isPrivate())
@@ -294,10 +298,10 @@ if (!$no_html)
 					$name = Lang::txt('COM_SUPPORT_UNKNOWN');
 					$cite = $name;
 
-					if ($comment->creator()->get('id'))
+					if ($comment->creator->get('id'))
 					{
-						$cite = $this->escape(stripslashes($comment->creator()->get('name')));
-						$name = '<a href="' . Route::url('index.php?option=com_members&task=edit&id[]=' . $comment->creator()->get('id')) . '">' . $cite . ' (' . $this->escape($comment->creator()->get('username')) . ')</a>';
+						$cite = $this->escape(stripslashes($comment->creator->get('name')));
+						$name = '<a href="' . Route::url('index.php?option=com_members&task=edit&id[]=' . $comment->creator->get('id')) . '">' . $cite . ' (' . $this->escape($comment->creator->get('username')) . ')</a>';
 					}
 
 					if ($comment->changelog()->format() != 'html')
@@ -308,7 +312,7 @@ if (!$no_html)
 					<li class="<?php echo $access .' comment'; ?>" id="c<?php echo $comment->get('id'); ?>">
 						<p class="comment-member-photo">
 							<span class="comment-anchor"></span>
-							<img src="<?php echo $comment->creator()->picture(); ?>" alt="<?php echo Lang::txt('COM_SUPPORT_PROFILE_IMAGE'); ?>" />
+							<img src="<?php echo $comment->creator->picture(); ?>" alt="<?php echo Lang::txt('COM_SUPPORT_PROFILE_IMAGE'); ?>" />
 						</p>
 						<p class="comment-head">
 							<strong>
@@ -316,21 +320,21 @@ if (!$no_html)
 							</strong>
 							<a class="permalink" href="<?php echo 'index.php?option=com_support&amp;controller=tickets&amp;task=edit&amp;id=' . $this->row->get('id') . '#c' . $comment->get('id'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
 								<span class="time-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-								<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span>
+								<span class="time"><time datetime="<?php echo $this->escape($comment->get('created')); ?>"><?php echo Date::of($comment->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 								<span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-								<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
+								<span class="date"><time datetime="<?php echo $this->escape($comment->get('created')); ?>"><?php echo Date::of($comment->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 							</a>
 						</p>
 						<blockquote class="comment-content" cite="<?php echo $cite; ?>">
-						<?php if ($content = $comment->content('parsed')) { ?>
+						<?php if ($content = $comment->comment) { ?>
 							<p><?php echo $content; ?></p>
 						<?php } else { ?>
 							<p class="comment-none"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_NO_CONTENT'); ?></p>
 						<?php } ?>
-						<?php if ($comment->attachments()->total()) { ?>
+						<?php if ($comment->attachments->count()) { ?>
 							<div class="comment-attachments">
 								<?php
-								foreach ($comment->attachments() as $attachment)
+								foreach ($comment->attachments as $attachment)
 								{
 									if (!trim($attachment->get('description')))
 									{
@@ -412,8 +416,8 @@ if (!$no_html)
 
 				<div class="ticket-content">
 					<?php
-						$results = Event::trigger('support.onTicketComment', array($this->row));
-						echo implode("\n", $results);
+					$results = Event::trigger('support.onTicketComment', array($this->row));
+					echo implode("\n", $results);
 					?>
 					<fieldset>
 						<div class="input-wrap">
@@ -424,16 +428,10 @@ if (!$no_html)
 									$hi = array();
 									foreach ($this->lists['messages'] as $message)
 									{
-										$message->message = str_replace('"','&quot;', stripslashes($message->message));
-										$message->message = str_replace('&quote;', '&quot;', $message->message);
-										$message->message = str_replace('#XXX', '#' . $this->row->get('id'), $message->message);
-										$message->message = str_replace('{ticket#}', $this->row->get('id'), $message->message);
-										$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
-										$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
 										?>
-											<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
+										<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
 										<?php
-										$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape(stripslashes($message->message)) . '" />';
+										$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape($message->transformMessage($this->row->get('id'))) . '" />';
 									}
 									?>
 								</select>
@@ -583,18 +581,18 @@ if (!$no_html)
 										}
 									}
 
-									$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group_id', 'acgroup','', $group,'','owner')));
+									$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group_id]', 'acgroup','', $group,'','owner')));
 									if (count($gc) > 0) {
 										echo $gc[0];
 									} else { ?>
-									<input type="text" name="group_id" value="<?php echo $this->escape($this->row->get('group_id')); ?>" id="acgroup" value="" size="30" autocomplete="off" />
+									<input type="text" name="ticket[group_id]" value="<?php echo $this->escape($this->row->get('group_id')); ?>" id="acgroup" value="" size="30" autocomplete="off" />
 									<?php } ?>
 								</label>
 							</div>
 						</div>
 						<div class="col span6">
 							<div class="input-wrap">
-								<label for="owner">
+								<label for="ticketowner">
 									<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OWNER'); ?>
 									<?php echo $this->lists['owner']; ?>
 								</label>
@@ -606,7 +604,7 @@ if (!$no_html)
 					<div class="input-wrap">
 						<label for="ticket-field-category">
 							<?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_CATEGORY'); ?>
-							<select name="category" id="ticket-field-category">
+							<select name="ticket[category]" id="ticket-field-category">
 								<option value=""><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
 								<?php
 								foreach ($this->lists['categories'] as $category)
@@ -623,7 +621,7 @@ if (!$no_html)
 
 					<div class="input-wrap">
 						<label for="target_date"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TARGET_DATE'); ?></label>
-						<?php echo Html::input('calendar', 'target_date', ($this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-target_date')); ?>
+						<?php echo Html::input('calendar', 'ticket[target_date]', ($this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-target_date')); ?>
 					</div>
 
 					<div class="grid">
@@ -631,7 +629,7 @@ if (!$no_html)
 							<div class="input-wrap">
 								<label for="ticket-field-severity">
 									<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?>
-									<select name="severity" id="ticket-field-severity">
+									<select name="ticket[severity]" id="ticket-field-severity">
 										<?php foreach (\Components\Support\Helpers\Utilities::getSeverities() as $severity) { ?>
 											<option value="<?php echo $severity; ?>"<?php if ($severity == $this->row->get('severity')) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
 										<?php } ?>
@@ -643,15 +641,15 @@ if (!$no_html)
 							<div class="input-wrap">
 								<label for="ticket-field-status">
 									<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?>:
-									<select name="status" id="ticket-field-status">
+									<select name="ticket[status]" id="ticket-field-status">
 										<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
-											<?php foreach ($this->row->statuses('open') as $status) { ?>
+											<?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
 												<option value="<?php echo $status->get('id'); ?>"<?php if ($this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
 											<?php } ?>
 										</optgroup>
 										<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
 											<option value="0"<?php if (!$this->row->isOpen() && $this->row->get('status') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
-											<?php foreach ($this->row->statuses('closed') as $status) { ?>
+											<?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
 												<option value="<?php echo $status->get('id'); ?>"<?php if (!$this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
 											<?php } ?>
 										</optgroup>

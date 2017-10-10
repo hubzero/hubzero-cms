@@ -32,6 +32,8 @@
 
 namespace Components\Support\Api\Controllers;
 
+use Components\Support\Models\Ticket;
+use Components\Support\Models\Status;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Component;
@@ -43,12 +45,9 @@ use Route;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . '/models/ticket.php');
-require_once(dirname(dirname(__DIR__)) . '/models/orm/ticket.php');
-require_once(dirname(dirname(__DIR__)) . '/models/orm/status.php');
-require_once(dirname(dirname(__DIR__)) . '/models/orm/attachment.php');
-require_once(dirname(dirname(__DIR__)) . '/helpers/acl.php');
-require_once(dirname(dirname(__DIR__)) . '/helpers/utilities.php');
+require_once dirname(dirname(__DIR__)) . '/models/ticket.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/acl.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/utilities.php';
 require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'group.php';
 
 /**
@@ -116,44 +115,51 @@ class Ticketsv2_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$tickets = \Components\Support\Models\Orm\Ticket::all();
+		$tickets = Ticket::all();
 
 		if (Request::getInt('owner', null))
 		{
-			$tickets = $tickets->whereEquals('owner', Request::get('owner'));
+			$tickets->whereEquals('owner', Request::get('owner'));
 		}
 
 		if (Request::getInt('status', null))
 		{
-			$tickets = $tickets->whereEquals('status', Request::get('status'));
+			$tickets->whereEquals('status', Request::get('status'));
 		}
 
 		if (Request::getString('severity', null))
 		{
-			$tickets = $tickets->whereEquals('severity', Request::get('severity'));
+			$tickets->whereEquals('severity', Request::get('severity'));
 		}
 
 		if (Request::getString('group', null))
 		{
-			$tickets = $tickets->whereEquals('group', Request::getString('group'));
+			$tickets->whereEquals('group', Request::getString('group'));
 		}
 
+		$total = clone $tickets;
+
+		$rows = $tickets->order('created', 'desc')
+			->limit(Request::getInt('limit', 25))
+			->start(Request::getInt('start', 0))
+			->rows();
+
 		$response = new StdClass;
-		$response->total = $tickets->count();
+		$response->total = $total->total();
 		$response->tickets = array();
-		foreach ($tickets->rows() as $row)
+		foreach ($rows as $row)
 		{
 			$temp = array();
-			$temp['id'] = $row->id;
-			$temp['name'] = $row->name;
-			$temp['login'] = $row->login;
-			$temp['email'] = $row->email;
-			$temp['status'] = $row->status;
-			$temp['severity'] = $row->severity;
-			$temp['owner'] = $row->owner;
-			$temp['summary'] = $row->summary;
-			$temp['group'] = $row->group;
-			$temp['target_date'] = $row->target_date;
+			$temp['id'] = $row->get('id');
+			$temp['name'] = $row->get('name');
+			$temp['login'] = $row->get('login');
+			$temp['email'] = $row->get('email');
+			$temp['status'] = $row->get('status');
+			$temp['severity'] = $row->get('severity');
+			$temp['owner'] = $row->get('owner');
+			$temp['summary'] = $row->get('summary');
+			$temp['group'] = $row->get('group');
+			$temp['target_date'] = $row->get('target_date');
 
 			$response->tickets[] = $temp;
 		}
@@ -275,7 +281,7 @@ class Ticketsv2_0 extends ApiController
 		}
 
 		// Initiate class and bind data to database fields
-		$ticket = new \Components\Support\Models\Orm\Ticket;
+		$ticket = Ticket::blank();
 
 		// Set the column values for our new row
 		$ticket->set('status', Request::getInt('status', 0));
@@ -327,7 +333,7 @@ class Ticketsv2_0 extends ApiController
 			$group_model = \Components\Groups\Models\Orm\Group::oneByCn(Request::get('group'));
 			if ($group_model->get('gidNumber', null))
 			{
-				$model->set('group_id', $group_model->get('gidNumber'));
+				$ticket->set('group_id', $group_model->get('gidNumber'));
 			}
 			else
 			{
@@ -378,17 +384,16 @@ class Ticketsv2_0 extends ApiController
 		$ticket_id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
-		$ticket = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
+		$ticket = Ticket::oneOrFail($ticket_id);
 
-		$owner = $ticket->get_owner;
+		$owner     = $ticket->assignee;
 		$submitter = $ticket->submitter;
 
 		$response = new stdClass;
 		$response->id = $ticket->get('id');
 		$response->owner_id = $owner->get('id');
 		$response->submitter_id = $submitter->get('id');
-
-		$response->group_id = $ticket->group_id;
+		$response->group_id = $ticket->get('group_id');
 
 		foreach (array('status', 'created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop)
 		{
@@ -396,7 +401,7 @@ class Ticketsv2_0 extends ApiController
 		}
 
 		$response->summary = $ticket->get('summary');
-		$response->report = $ticket->get('report');
+		$response->report  = $ticket->get('report');
 
 		$response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id), '/'));
 
@@ -457,22 +462,24 @@ class Ticketsv2_0 extends ApiController
 
 		// Initiate class and bind data to database fields
 		$ticket_id = Request::getInt('id', 0);
-		$status = Request::getInt('status', null);
-		$owner = Request::getInt('owner', null);
-		$severity = Request::getString('severity', null);
-		$group = Request::getString('group', null);
+		$status    = Request::getInt('status', null);
+		$owner     = Request::getInt('owner', null);
+		$severity  = Request::getString('severity', null);
+		$group     = Request::getString('group', null);
 
 		// Initiate class and bind data to database fields
-		$model = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
+		$model = Ticket::oneOrFail($ticket_id);
 
 		if ($status)
 		{
 			//cheap check to see if we got a valid status
-			$status_model = \Components\Support\Models\Orm\Status::oneOrFail($status);
+			$status_model = Status::oneOrFail($status);
+
 			if (!$status_model->get('id'))
 			{
 				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_STATUS"), 404);
 			}
+
 			$model->set('status', $status);
 			$model->set('open', $status_model->get('open'));
 		}
@@ -480,11 +487,13 @@ class Ticketsv2_0 extends ApiController
 		if ($owner)
 		{
 			//cheap check to see if we got a valid user
-			$owner_model = \Hubzero\User\User::one($owner);
+			$owner_model = \Hubzero\User\User::oneOrNew($owner);
+
 			if (!$owner_model->get('id'))
 			{
 				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_OWNER"), 404);
 			}
+
 			$model->set('owner', $owner);
 		}
 
@@ -503,6 +512,7 @@ class Ticketsv2_0 extends ApiController
 		if ($group)
 		{
 			$group_model = \Components\Groups\Models\Orm\Group::oneByCn($group);
+
 			if ($group_model->get('gidNumber', null))
 			{
 				$model->set('group_id', $group_model->get('gidNumber'));
@@ -550,7 +560,7 @@ class Ticketsv2_0 extends ApiController
 		$ticket_id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
-		$model = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
+		$model = Ticket::oneOrFail($ticket_id);
 
 		if (!$model->destroy())
 		{

@@ -440,7 +440,7 @@ class Changelog extends Object
 	 */
 	public function diff($before, $after)
 	{
-		if ($after->get('group_id') != $before->get('group_id'))
+		if (intval($after->get('group_id')) != intval($before->get('group_id')))
 		{
 			$bg = \Hubzero\User\Group::getInstance($before->get('group_id'));
 			$ag = \Hubzero\User\Group::getInstance($after->get('group_id'));
@@ -463,8 +463,8 @@ class Changelog extends Object
 		{
 			$this->changed(
 				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_OWNER'),
-				$before->owner('username', Lang::txt('COM_SUPPORT_NONE')),
-				$after->owner('username', Lang::txt('COM_SUPPORT_NONE'))
+				$before->assignee->get('username', Lang::txt('COM_SUPPORT_NONE')),
+				$after->assignee->get('username', Lang::txt('COM_SUPPORT_NONE'))
 			);
 		}
 		/*if ($after->get('resolved') != $before->get('resolved'))
@@ -479,8 +479,8 @@ class Changelog extends Object
 		{
 			$this->changed(
 				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
-				$before->status('text'),
-				$after->status('text')
+				$before->status->get('title'),
+				$after->status->get('title')
 			);
 		}
 		if ($after->get('category') != $before->get('category'))
@@ -515,7 +515,7 @@ class Changelog extends Object
 			$this->changed(
 				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_TAGS'),
 				($before->get('tags') ? $before->get('tags') : Lang::txt('COM_SUPPORT_BLANK')),
-				($after->get('tags')  ? $after->get('tags')  : Lang::txt('COM_SUPPORT_BLANK'))
+				($after->get('tags') ? $after->get('tags') : Lang::txt('COM_SUPPORT_BLANK'))
 			);
 		}
 
@@ -527,8 +527,18 @@ class Changelog extends Object
 	 *
 	 * @return  string
 	 */
-	public function __toString()
+	public function toString()
 	{
 		return json_encode($this->_log);
+	}
+
+	/**
+	 * Output log as a string
+	 *
+	 * @return  string
+	 */
+	public function __toString()
+	{
+		return $this->toString();
 	}
 }

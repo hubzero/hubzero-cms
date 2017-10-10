@@ -42,12 +42,9 @@ use Config;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . '/models/orm/comment.php');
-require_once(dirname(dirname(__DIR__)) . '/models/orm/ticket.php');
-require_once(dirname(dirname(__DIR__)) . '/models/orm/status.php');
-require_once(dirname(dirname(__DIR__)) . '/models/orm/attachment.php');
-require_once(dirname(dirname(__DIR__)) . '/helpers/acl.php');
-require_once(dirname(dirname(__DIR__)) . '/helpers/utilities.php');
+require_once dirname(dirname(__DIR__)) . '/models/ticket.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/acl.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/utilities.php';
 
 /**
  * API controller class for support tickets
@@ -100,7 +97,7 @@ class Commentsv2_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$comments = \Components\Support\Models\Orm\Comment::all();
+		$comments = \Components\Support\Models\Comment::all();
 
 		if (Request::getInt('ticket', null))
 		{
@@ -236,8 +233,8 @@ class Commentsv2_0 extends ApiController
 			throw new Exception(Lang::txt('Bad request - comment required'), 400);
 		}
 
-		$ticket = \Components\Support\Models\Orm\Ticket::oneOrFail($ticket_id);
-		$comment = new \Components\Support\Models\Orm\Comment();
+		$ticket = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
+		$comment = \Components\Support\Models\Comment::blank();
 		$changelog = new stdClass;
 
 		$comment->set('ticket', Request::get('ticket', ''));
@@ -260,17 +257,17 @@ class Commentsv2_0 extends ApiController
 					{
 						if ($ticket->get('status') == 0)
 						{
-							$status_model = new \Components\Support\Models\Orm\Status();
+							$status_model = \Components\Support\Models\Status::blank();
 							$status_model->set('title', 'Closed');
 							$status_model->set('open', 0);
 						}
 						else
 						{
-							$status_model = \Components\Support\Models\Orm\Status::oneOrFail(Request::get('status'));
+							$status_model = \Components\Support\Models\Status::oneOrFail(Request::get('status'));
 						}
 						if ($ticket->get('status') == 0)
 						{
-							$old_status = new \Components\Support\Models\Orm\Status();
+							$old_status = \Components\Support\Models\Status::blank();
 							$old_status->set('title', 'Closed');
 							$old_status->set('open', 0);
 						}
@@ -333,7 +330,7 @@ class Commentsv2_0 extends ApiController
 		$msg->notified = $comment->get('changelog');
 
 		$this->send($msg, 200, 'OK');
-/*
+		/*
 		$changlog->notifications = array();
 		if (Request::get('email_owner'))
 		{
@@ -463,7 +460,7 @@ class Commentsv2_0 extends ApiController
 		$msg->notified = $comment->get('changelog');
 
 		$this->send($msg, 200, 'OK');
-*/
+		*/
 	}
 
 	/**
@@ -493,7 +490,7 @@ class Commentsv2_0 extends ApiController
 		$id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
-		$comment = \Components\Support\Models\Orm\Comment::oneOrFail($id);
+		$comment = \Components\Support\Models\Comment::oneOrFail($id);
 
 		$response = new stdClass;
 		$response->id = $comment->get('id');

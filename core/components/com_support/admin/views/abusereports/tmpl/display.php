@@ -59,12 +59,6 @@ function submitbutton(pressbutton)
 			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_RELEASED'); ?></option>
 			<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_DELETED'); ?></option>
 		</select>
-
-		<label for="filter-sortby"><?php echo Lang::txt('COM_SUPPORT_SORT_BY'); ?>:</label>
-		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit( );">
-			<option value="a.category"<?php if ($this->filters['sortby'] == 'a.category') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_SORT_CATEGORY'); ?></option>
-			<option value="a.created DESC"<?php if ($this->filters['sortby'] == 'a.created DESC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_SORT_MOST_RECENT'); ?></option>
-		</select>
 	</fieldset>
 
 	<table class="adminlist">
@@ -82,34 +76,29 @@ function submitbutton(pressbutton)
 			<tr>
 				<td colspan="6"><?php
 				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
+		<?php
+		$i = 0;
+		$k = 0;
+		foreach ($this->rows as $row)
+		{
+			$status = '';
+			switch ($row->state)
+			{
+				case '1':
+					$status = Lang::txt('COM_SUPPORT_REPORT_RELEASED');
+					break;
+				case '0':
+					$status = Lang::txt('COM_SUPPORT_REPORT_NEW');
+					break;
+			}
 
-	$status = '';
-	switch ($row->state)
-	{
-		case '1':
-			$status = Lang::txt('COM_SUPPORT_REPORT_RELEASED');
-			break;
-		case '0':
-			$status = Lang::txt('COM_SUPPORT_REPORT_NEW');
-			break;
-	}
-
-	$user = User::getInstance($row->created_by);
-?>
+			$user = User::getInstance($row->created_by);
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $row->id;  ?></td>
 				<td><?php echo $status;  ?></td>
@@ -118,10 +107,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><?php echo $this->escape($user->get('username')); ?></td>
 				<td><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

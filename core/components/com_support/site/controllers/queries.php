@@ -34,10 +34,8 @@ namespace Components\Support\Site\Controllers;
 
 use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Conditions;
-use Components\Support\Tables\Query;
-use Components\Support\Tables\QueryFolder;
-use Components\Support\Tables\Ticket;
-use Components\Support\Tables\Resolution;
+use Components\Support\Models\Query;
+use Components\Support\Models\QueryFolder;
 use Hubzero\Component\SiteController;
 use stdClass;
 use Request;
@@ -45,8 +43,7 @@ use Route;
 use Lang;
 use User;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 
 /**
  * Support controller class for ticket queries
@@ -56,7 +53,7 @@ class Queries extends SiteController
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -68,7 +65,7 @@ class Queries extends SiteController
 	/**
 	 * Create a new record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -78,47 +75,42 @@ class Queries extends SiteController
 	/**
 	 * Display a form for adding/editing a record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function editTask()
 	{
-		$this->view->setLayout('edit');
-
-		$this->view->lists = array();
-
-		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
+		$lists = array();
+		$lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
 		$id = Request::getInt('id', 0);
 
-		$this->view->row = new Query($this->database);
-		$this->view->row->load($id);
-		if (!$this->view->row->sort)
+		$row = Query::oneOrNew($id);
+		if (!$row->get('sort'))
 		{
-			$this->view->row->sort = 'created';
+			$row->set('sort', 'created');
 		}
-		if (!$this->view->row->sort_dir)
+		if (!$row->get('sort_dir'))
 		{
-			$this->view->row->sort_dir = 'desc';
+			$row->set('sort_dir', 'desc');
 		}
 
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'conditions.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'conditions.php';
 		$con = new Conditions();
-		$this->view->conditions = $con->getConditions();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$conditions = $con->getConditions();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('lists', $lists)
+			->set('row', $row)
+			->set('conditions', $conditions)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Create a new record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -130,38 +122,10 @@ class Queries extends SiteController
 		$no_html = Request::getInt('no_html', 0);
 		$tmpl    = Request::getVar('component', '');
 
-		$row = new Query($this->database);
-		if (!$row->bind($fields))
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editTask($row);
-			}
-			else
-			{
-				echo $row->getError();
-			}
-			return;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editTask($row);
-			}
-			else
-			{
-				echo $row->getError();
-			}
-			return;
-		}
+		$row = Query::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
@@ -179,7 +143,7 @@ class Queries extends SiteController
 		{
 			// Output messsage and redirect
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display&show=' . $row->id, false)
+				Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display&show=' . $row->get('id'), false)
 			);
 		}
 		else
@@ -214,9 +178,8 @@ class Queries extends SiteController
 			return;
 		}
 
-		$row = new Query($this->database);
-		// Delete message
-		$row->delete(intval($id));
+		$row = Query::oneOrFail(intval($id));
+		$row->destroy();
 
 		if (!$no_html && $tmpl != 'component')
 		{
@@ -238,51 +201,16 @@ class Queries extends SiteController
 	 */
 	public function listTask()
 	{
-		$obj = new Ticket($this->database);
-
 		// Get query list
-		$sf = new QueryFolder($this->database);
-		$this->view->folders = $sf->find('list', array(
-			'user_id'  => User::get('id'),
-			'sort'     => 'ordering',
-			'sort_Dir' => 'asc'
-		));
-
-		$sq = new Query($this->database);
-		$queries = $sq->find('list', array(
-			'user_id'  => User::get('id'),
-			'sort'     => 'ordering',
-			'sort_Dir' => 'asc'
-		));
-
-		foreach ($queries as $query)
-		{
-			$query->query = $sq->getQuery($query->conditions);
-			$query->count = $obj->getCount($query->query);
-
-			foreach ($this->view->folders as $k => $v)
-			{
-				if (!isset($this->view->folders[$k]->queries))
-				{
-					$this->view->folders[$k]->queries = array();
-				}
-				if ($query->folder_id == $v->id)
-				{
-					$this->view->folders[$k]->queries[] = $query;
-				}
-			}
-		}
-
-		$this->view->show = 0;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$folders = QueryFolder::all()
+			->whereEquals('user_id', User::get('id'))
+			->order('ordering', 'asc')
+			->rows();
 
 		// Output the HTML
 		$this->view
+			->set('folders', $folders)
+			->set('show', 0)
 			->setLayout('list')
 			->display();
 	}
@@ -290,7 +218,7 @@ class Queries extends SiteController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -327,20 +255,14 @@ class Queries extends SiteController
 				$id = (!empty($id) ? intval($id[0]) : 0);
 			}
 
-			$row = new QueryFolder($this->database);
-			$row->load($id);
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row = QueryFolder::oneOrNew($id);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('editfolder')->display();
+		$this->view
+			->set('row', $row)
+			->setLayout('editfolder')
+			->display();
 	}
 
 	/**
@@ -373,42 +295,10 @@ class Queries extends SiteController
 		$response->success = 1;
 		$response->message = '';
 
-		$row = new QueryFolder($this->database);
-		if (!$row->bind($fields))
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editfolderTask($row);
-			}
-			else
-			{
-				$response->success = 0;
-				$response->message = $row->getError();
-				echo json_encode($response);
-			}
-			return;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editfolderTask($row);
-			}
-			else
-			{
-				$response->success = 0;
-				$response->message = $row->getError();
-				echo json_encode($response);
-			}
-			return;
-		}
+		$row = QueryFolder::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
@@ -461,11 +351,8 @@ class Queries extends SiteController
 
 		foreach ($ids as $id)
 		{
-			$row = new Query($this->database);
-			$row->deleteByFolder(intval($id));
-
-			$row = new QueryFolder($this->database);
-			$row->delete(intval($id));
+			$row = QueryFolder::oneOrFail(intval($id));
+			$row->destroy();
 		}
 
 		if (!$no_html)
@@ -499,10 +386,9 @@ class Queries extends SiteController
 		{
 			foreach ($folders as $key => $folder)
 			{
-				$row = new QueryFolder($this->database);
-				$row->load(intval($folder));
-				$row->ordering = $key + 1;
-				$row->store();
+				$row = QueryFolder::oneOrFail(intval($folder));
+				$row->set('ordering', $key + 1);
+				$row->save();
 			}
 		}
 
@@ -524,17 +410,16 @@ class Queries extends SiteController
 					$i = 0;
 				}
 
-				$row = new Query($this->database);
-				$row->load($id);
-				$row->folder_id = $fd;
-				$row->ordering  = $i + 1;
-				$row->store();
+				$row = Query::oneOrFail($id);
+				$row->set('folder_id', $fd);
+				$row->set('ordering', $i + 1);
+				$row->save();
 
 				$i++;
 			}
 		}
 
-		if (!$no_html)
+		if (!Request::getInt('no_html'))
 		{
 			// Output messsage and redirect
 			App::redirect(

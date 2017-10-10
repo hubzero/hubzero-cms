@@ -25,28 +25,26 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Support\Models\Orm;
+namespace Components\Support\Models\Acl;
 
 use Hubzero\Database\Relational;
 
-require_once __DIR__ . DS . 'attachment.php';
-
 /**
- * Support ticket comment model
+ * Support ticket ARO model
  */
-class Comment extends Relational
+class Aro extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	public $namespace = 'support';
+	public $namespace = 'support_acl';
 
 	/**
 	 * Default order by for model
@@ -68,48 +66,18 @@ class Comment extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'comment' => 'notempty',
-		'ticket'  => 'positive|nonzero'
+		'model'       => 'notempty',
+		'foreign_key' => 'positive|nonzero'
 	);
 
 	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by'
-	);
-
-	/**
-	 * Get parent ticket
+	 * Get maps
 	 *
 	 * @return  object
 	 */
-	public function ticket()
+	public function maps()
 	{
-		return $this->belongsToOne('Ticket', 'ticket');
-	}
-
-	/**
-	 * Defines a belongs to one relationship between comment and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
-	}
-
-	/**
-	 * Get a list of attachments
-	 *
-	 * @return  object
-	 */
-	public function attachments()
-	{
-		return $this->oneToMany('Attachment', 'comment_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Map', 'aro_id');
 	}
 
 	/**
@@ -120,11 +88,11 @@ class Comment extends Relational
 	public function destroy()
 	{
 		// Remove data
-		foreach ($this->attachments()->rows() as $attachment)
+		foreach ($this->maps()->rows() as $map)
 		{
-			if (!$attachment->destroy())
+			if (!$map->destroy())
 			{
-				$this->addError($attachment->getError());
+				$this->addError($map->getError());
 				return false;
 			}
 		}

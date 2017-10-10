@@ -47,7 +47,6 @@ class JFormFieldTicketstate extends JFormField
 	 */
 	protected function getInput()
 	{
-		$db = \App::get('db');
 		$value = $this->value;
 		$name  = $this->name;
 		$id    = $this->id;
@@ -56,10 +55,11 @@ class JFormFieldTicketstate extends JFormField
 
 		$html[] = '<select name="' . $name . '" id="' . $id . '">';
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
-		$sr = new \Components\Support\Tables\Status($db);
+		include_once \Component::path('com_support') . DS . 'models' . DS . 'status.php';
 
-		$status = $sr->find('list', array('sort' => 'open', 'sort_Dir' => 'DESC'));
+		$status = \Components\Support\Models\Status::all()
+			->order('open', 'desc')
+			->rows();
 
 		$html[] = '<option value=""' . ($value === '' || $value === null ? ' selected="selected"' : '') . '>--</option>';
 		$html[] = '<option value="0"' . ($value === 0 || $value === '0' ? ' selected="selected"' : '') . '>open: New</option>';

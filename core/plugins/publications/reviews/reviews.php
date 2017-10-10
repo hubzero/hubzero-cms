@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(PATH_CORE . DS . 'components'.DS .'com_publications' . DS . 'tables' . DS . 'review.php');
+require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
 
 /**
  * Publications Plugin class for reviews
@@ -50,9 +50,9 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param   object   $model  Current publication
-	 * @param   string   $version      Version name
-	 * @param   boolean  $extended     Whether or not to show panel
+	 * @param   object   $model     Current publication
+	 * @param   string   $version   Version name
+	 * @param   boolean  $extended  Whether or not to show panel
 	 * @return  array
 	 */
 	public function &onPublicationAreas($model, $version = 'default', $extended = true)
@@ -91,12 +91,12 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param   object   $model        Current publication
-	 * @param   string   $option       Name of the component
-	 * @param   array    $areas        Active area(s)
-	 * @param   string   $rtrn         Data to be returned
-	 * @param   string   $version      Version name
-	 * @param   boolean  $extended     Whether or not to show panel
+	 * @param   object   $model     Current publication
+	 * @param   string   $option    Name of the component
+	 * @param   array    $areas     Active area(s)
+	 * @param   string   $rtrn      Data to be returned
+	 * @param   string   $version   Version name
+	 * @param   boolean  $extended  Whether or not to show panel
 	 * @return  array
 	 */
 	public function onPublication($model, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
@@ -227,7 +227,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 				if ($abuse)
 				{
-					$comment->abuse_reports = self::getAbuseReports($comment->id, 'pubreview');
+					$comment->set('reports', self::getAbuseReports($comment->get('id'), 'pubreview'));
 				}
 			}
 		}
@@ -243,9 +243,11 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function getAbuseReports($item, $category)
 	{
-		$database = App::get('db');
+		include_once Component::path('com_support') . DS . 'models' . DS . 'report.php';
 
-		$ra = new \Components\Support\Tables\ReportAbuse($database);
-		return $ra->getCount(array('id' => $item, 'category' => $category));
+		return \Components\Support\Models\Report::all()
+			->whereEquals('referenceid', $item)
+			->whereEquals('category', $category)
+			->total();
 	}
 }

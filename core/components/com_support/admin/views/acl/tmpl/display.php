@@ -156,43 +156,42 @@ function checkAllOptions()
 <?php
 $db = App::get('db');
 $k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
+$i = 0;
+foreach ($this->rows as $row)
 {
-	$row = &$this->rows[$i];
-
 	$sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
-	FROM `#__support_acl_aros_acos` AS m
-	LEFT JOIN `#__support_acl_aros` AS r ON m.aro_id=r.id
-	LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id
-	WHERE r.foreign_key=" . $db->quote($row->foreign_key) . " AND r.model=" . $db->quote($row->model) . "
-	ORDER BY aro_foreign_key, aro_model";
+		FROM `#__support_acl_aros_acos` AS m
+		LEFT JOIN `#__support_acl_aros` AS r ON m.aro_id=r.id
+		LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id
+		WHERE r.foreign_key=" . $db->quote($row->foreign_key) . " AND r.model=" . $db->quote($row->model) . "
+		ORDER BY aro_foreign_key, aro_model";
 	$db->setQuery($sql);
 	$lines = $db->loadObjectList();
 
 	$data = array();
-	$data['tickets']['id'] = 0;
+	$data['tickets']['id']     = 0;
 	$data['tickets']['create'] = 0;
-	$data['tickets']['read'] = 0;
+	$data['tickets']['read']   = 0;
 	$data['tickets']['update'] = 0;
 	$data['tickets']['delete'] = 0;
 
-	$data['comments']['id'] = 0;
+	$data['comments']['id']     = 0;
 	$data['comments']['create'] = 0;
-	$data['comments']['read'] = 0;
+	$data['comments']['read']   = 0;
 	$data['comments']['update'] = 0;
 	$data['comments']['delete'] = 0;
 
-	$data['private_comments']['id'] = 0;
+	$data['private_comments']['id']     = 0;
 	$data['private_comments']['create'] = 0;
-	$data['private_comments']['read'] = 0;
+	$data['private_comments']['read']   = 0;
 	$data['private_comments']['update'] = 0;
 	$data['private_comments']['delete'] = 0;
 
 	foreach ($lines as $line)
 	{
-		$data[$line->aco_model]['id'] = $line->id;
+		$data[$line->aco_model]['id']     = $line->id;
 		$data[$line->aco_model]['create'] = $line->action_create;
-		$data[$line->aco_model]['read'] = $line->action_read;
+		$data[$line->aco_model]['read']   = $line->action_read;
 		$data[$line->aco_model]['update'] = $line->action_update;
 		$data[$line->aco_model]['delete'] = $line->action_delete;
 	}
@@ -305,6 +304,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td> </td>
 			</tr>
 <?php
+	$i++;
 	$k = 1 - $k;
 }
 ?>

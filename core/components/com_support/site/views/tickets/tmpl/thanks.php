@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 <?php if ($this->no_html) { ?>
 	<div id="report-response">
 		<div>
-			<p><?php echo Lang::txt('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id='.$this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
+			<p><?php echo Lang::txt('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
 			<p><button onclick="javascript:HUB.ReportProblem.resetForm();" title="<?php echo Lang::txt('COM_FEEDBACK_NEW_REPORT'); ?>"><?php echo Lang::txt('COM_FEEDBACK_NEW_REPORT'); ?></button></p>
 		</div>
 		<p>
@@ -57,7 +57,7 @@ defined('_HZEXEC_') or die();
 		<p><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_THANKS'); ?></p>
 		<p class="information"><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_TICKET_TIMES'); ?></p>
 		<?php if ($this->ticket) { ?>
-			<p><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_TICKET_REFERENCE',$this->ticket); ?></p>
+			<p><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_TICKET_REFERENCE', $this->ticket); ?></p>
 		<?php } ?>
 	</section><!-- / .main section -->
 <?php } ?>

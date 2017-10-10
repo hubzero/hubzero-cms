@@ -38,7 +38,7 @@ $this->css()
      ->js('jquery.timepicker.js', 'system')
      ->js();
 
-$status = $this->row->status('text');
+$status = $this->row->status->get('title');
 
 $unknown  = 1;
 //$name     = Lang::txt('COM_SUPPORT_UNKNOWN');
@@ -46,10 +46,15 @@ $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
 
 if ($this->row->get('login'))
 {
-	$submitter = $this->row->submitter();
+	$submitter = $this->row->submitter;
 	if ($submitter->get('id'))
 	{
-		$usertype = implode(', ', \JUserHelper::getUserGroups($submitter->get('id')));
+		$gids = array();
+		foreach (User::getInstance($this->row->submitter->get('id'))->accessgroups() as $g)
+		{
+			$gids[] = $g->group_id;
+		}
+		$usertype = implode(', ', $gids);
 
 		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&id=' . $submitter->get('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
 		$unknown = 0;
@@ -68,18 +73,13 @@ else
 
 $prev = null;
 $next = null;
-
-$sq = new \Components\Support\Tables\Query($this->database);
-$sq->load($this->filters['show']);
+/*
+$sq = \Components\Support\Models\Query::oneOrNew($this->filters['show']);
 if ($sq->conditions)
 {
-	$tbl = new \Components\Support\Tables\Ticket($this->database);
-
-	$sq->query = $sq->getQuery($sq->conditions);
-
 	$this->filters['sort']    = $sq->sort;
 	$this->filters['sortdir'] = $sq->sort_dir;
-	if ($rows = $tbl->getRecords($sq->query, $this->filters))
+	if ($rows = \Components\Support\Models\Ticket::allWithQuery($sq, $this->filters))
 	{
 		foreach ($rows as $key => $row)
 		{
@@ -99,7 +99,7 @@ if ($sq->conditions)
 		unset($rows);
 	}
 }
-
+*/
 $cc = array();
 ?>
 <header id="content-header">
@@ -140,7 +140,7 @@ $cc = array();
 		<div class="ticket entry" id="t<?php echo $this->row->get('id'); ?>">
 			<p class="entry-member-photo">
 				<span class="entry-anchor"></span>
-				<img src="<?php echo $this->row->submitter()->picture($unknown); ?>" alt="" />
+				<img src="<?php echo $this->row->submitter->picture($unknown); ?>" alt="" />
 			</p><!-- / .entry-member-photo -->
 			<div class="entry-content">
 				<p class="entry-title">
@@ -153,11 +153,11 @@ $cc = array();
 					</a>
 				</p><!-- / .entry-title -->
 				<div class="entry-body">
-					<p><?php echo $this->row->content('parsed'); ?></p>
-					<?php if ($this->row->attachments()->total()) { ?>
+					<p><?php echo $this->row->content; ?></p>
+					<?php if ($this->row->attachments->count()) { ?>
 						<div class="comment-attachments">
 							<?php
-							foreach ($this->row->attachments() as $attachment)
+							foreach ($this->row->attachments as $attachment)
 							{
 								if (!trim($attachment->get('description')))
 								{
@@ -262,12 +262,12 @@ $cc = array();
 	<div class="subject">
 		<h3><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENTS'); ?></h3>
 
-	<?php if ($this->row->comments()->total() > 0) { ?>
+	<?php if ($this->row->comments->count() > 0) { ?>
 		<ol class="comments">
 		<?php
 		$o = 'even';
 		$i = 0;
-		foreach ($this->row->comments() as $comment)
+		foreach ($this->row->comments as $comment)
 		{
 			if ($comment->changelog()->format() != 'html')
 			{
@@ -291,7 +291,7 @@ $cc = array();
 			{
 				$access = 'public';
 			}
-			if ($comment->get('created_by') == $this->row->submitter()->get('username') && !$comment->isPrivate())
+			if ($comment->get('created_by') == $this->row->submitter->get('username') && !$comment->isPrivate())
 			{
 				$access = 'submitter';
 			}
@@ -299,17 +299,17 @@ $cc = array();
 			$name = Lang::txt('COM_SUPPORT_UNKNOWN');
 			$cite = $name;
 
-			if ($comment->creator()->get('id'))
+			if ($comment->creator->get('id'))
 			{
-				$cite = $this->escape(stripslashes($comment->creator()->get('name')));
-				$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $comment->creator()->get('id')) . '">' . $cite . ' (' . $this->escape(stripslashes($comment->creator()->get('username'))) . ')</a>';
+				$cite = $this->escape(stripslashes($comment->creator->get('name')));
+				$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $comment->creator->get('id')) . '">' . $cite . ' (' . $this->escape(stripslashes($comment->creator->get('username'))) . ')</a>';
 			}
 
 			$o = ($o == 'odd') ? 'even' : 'odd';
 			?>
 			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->get('id'); ?>">
 				<p class="comment-member-photo">
-					<img src="<?php echo $comment->creator()->picture(); ?>" alt="" />
+					<img src="<?php echo $comment->creator->picture(); ?>" alt="" />
 				</p>
 				<div class="comment-content">
 					<p class="comment-head">
@@ -323,15 +323,15 @@ $cc = array();
 							<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
 						</a>
 					</p><!-- / .comment-head -->
-				<?php if ($content = $comment->content('parsed')) { ?>
+				<?php if ($content = $comment->comment) { ?>
 					<div class="comment-body">
 						<p><?php echo $content; ?></p>
 					</div><!-- / .comment-body -->
 				<?php } ?>
-				<?php if ($comment->attachments()->total()) { ?>
+				<?php if ($comment->attachments->count()) { ?>
 					<div class="comment-attachments">
 						<?php
-						foreach ($comment->attachments() as $attachment)
+						foreach ($comment->attachments as $attachment)
 						{
 							if (!trim($attachment->get('description')))
 							{
@@ -399,15 +399,13 @@ $cc = array();
 			<p class="comment-member-photo">
 				<span class="comment-anchor"></span>
 				<?php
-					$jxuser = \Components\Members\Models\Member::oneOrNew(User::get('id'));
-
 					$anon = 1;
 					if (!User::isGuest())
 					{
 						$anon = 0;
 					}
 				?>
-				<img src="<?php echo $jxuser->picture($anon); ?>" alt="" />
+				<img src="<?php echo User::picture($anon); ?>" alt="" />
 			</p>
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />
@@ -491,13 +489,13 @@ $cc = array();
 								<?php echo Lang::txt('COM_SUPPORT_COMMENT_STATUS'); ?>:
 								<select name="ticket[status]" id="status">
 									<optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
-										<?php foreach ($this->row->statuses('open') as $status) { ?>
+										<?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
 											<option value="<?php echo $status->get('id'); ?>"<?php if ($this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
 										<?php } ?>
 									</optgroup>
 									<optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
 										<option value="0"<?php if (!$this->row->isOpen() && $this->row->get('status') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
-										<?php foreach ($this->row->statuses('closed') as $status) { ?>
+										<?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
 											<option value="<?php echo $status->get('id'); ?>"<?php if (!$this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
 										<?php } ?>
 									</optgroup>
@@ -565,26 +563,19 @@ $cc = array();
 				<?php } ?>
 					<?php if ($this->row->access('create', 'comments') > 0) { ?>
 						<label for="messages">
-							<?php
-							$hi = array();
-							$o  = '<select name="messages" id="messages">' . "\n";
-							$o .= "\t" . '<option value="mc">' . Lang::txt('COM_SUPPORT_COMMENT_CUSTOM') . '</option>' . "\n";
-							foreach ($this->lists['messages'] as $message)
-							{
-								//$message->message = str_replace('"', '&quot;', $message->message);
-								$message->message = str_replace('&quote;', '&quot;', $message->message);
-								$message->message = str_replace('#XXX', '#' . $this->row->get('id'), $message->message);
-								$message->message = str_replace('{ticket#}', $this->row->get('id'), $message->message);
-								$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
-								$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
-
-								$o .= "\t".'<option value="m' . $message->id . '">' . $this->escape(stripslashes($message->title)) . '</option>' . "\n";
-
-								$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape(stripslashes($message->message)) . '" />' . "\n";
-							}
-							$o .= '</select>' . "\n";
-							echo $o;
-							?>
+							<select name="messages" id="messages">
+								<option value="mc"><?php echo Lang::txt('COM_SUPPORT_COMMENT_CUSTOM'); ?></option>
+								<?php
+								$hi = array();
+								foreach ($this->lists['messages'] as $message)
+								{
+									?>
+									<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
+									<?php
+									$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape($message->transformMessage($this->row->get('id'))) . '" />' . "\n";
+								}
+								?>
+							</select>
 						</label>
 						<?php echo implode("\n", $hi); ?>
 					<?php } // ACL can create comment (admin) ?>

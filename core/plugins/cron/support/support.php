@@ -341,13 +341,12 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		else if ($message_id && !empty($tickets))
 		{
 			Lang::load('com_support') ||
-			Lang::load('com_support', PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site');
+			Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+			include_once Component::path('com_support') . DS . 'models' . DS . 'message.php');
+			include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php');
 
-			$message = new \Components\Support\Tables\Message($database);
-			$message->load($message_id);
+			$message = \Components\Support\Models\Message::oneOrNew($message_id);
 
 			// Make sure we have a message to send
 			if ($message->message)
@@ -368,10 +367,6 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 
 				$mailed = array();
 
-				$message->message = stripslashes($message->message);
-				$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
-				$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
-
 				foreach ($tickets as $submitter)
 				{
 					$name  = null;
@@ -389,8 +384,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 					}
 
 					$email = $email ?: $submitter->email;
-					$name  = $name  ?: $submitter->name;
-					$name  = $name  ?: $email;
+					$name  = $name ?: $submitter->name;
+					$name  = $name ?: $email;
 
 					if (!$email)
 					{
@@ -403,13 +398,13 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 						continue;
 					}*/
 
-					$old = new \Components\Support\Models\Ticket($submitter->id);
+					$old = \Components\Support\Models\Ticket::oneOrNew($submitter->id);
 					$old->set('open', 1);
 
 					$row = clone $old;
 					$row->set('open', 0);
 
-					$comment = new \Components\Support\Models\Comment();
+					$comment = \Components\Support\Models\Comment::blank();
 					$comment->set('created', Date::toSql());
 					$comment->set('created_by', 0);
 					$comment->set('access', 0);
@@ -421,13 +416,13 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 					$comment->changelog()->diff($old, $row);
 					$comment->set('ticket', $row->get('id'));
 
-					if (!$comment->store())
+					if (!$comment->save())
 					{
 						$this->setError($comment->getError());
 					}
 
 					$eview = new \Hubzero\Mail\View(array(
-						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
+						'base_path' => Component::path('com_support') . DS . 'site',
 						'name'      => 'emails',
 						'layout'    => 'comment_plain'
 					));
@@ -490,7 +485,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		$sconfig = Component::params('com_support');
 
 		Lang::load('com_support') ||
-		Lang::load('com_support', PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site');
+		Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
 		$sql = "SELECT * FROM `#__support_tickets` WHERE `open`=1 AND `status`!=2";
 
@@ -517,7 +512,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+		include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
 		if (is_object($params) && $params->get('support_ticketreminder_severity', 'all') != 'all')
 		{
@@ -525,7 +520,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
 			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
@@ -583,7 +578,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 
 			// Plain text
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
+				'base_path' => Component::path('com_support') . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'tickets_plain'
 			));
@@ -641,7 +636,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		$sconfig = Component::params('com_support');
 
 		Lang::load('com_support') ||
-		Lang::load('com_support', PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site');
+		Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
 		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner`";
 
@@ -931,7 +926,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+		include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
 		if ($params->get('support_ticketlist_severity', 'all') != 'all')
 		{
@@ -939,7 +934,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
 			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
@@ -997,7 +992,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			}
 
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
+				'base_path' => Component::path('com_support') . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'ticketlist_plain'
 			));

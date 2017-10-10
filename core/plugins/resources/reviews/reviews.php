@@ -261,9 +261,9 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	/*public static function getAbuseReports($item, $category)
 	{
-		$database = App::get('db');
-
-		$ra = new \Components\Support\Tables\ReportAbuse($database);
-		return $ra->getCount(array('id' => $item, 'category' => $category));
+		return \Components\Support\Models\Report::all()
+			->whereEquals('referenceid', $item)
+			->whereEquals('category', $category)
+			->total();
 	}*/
 }

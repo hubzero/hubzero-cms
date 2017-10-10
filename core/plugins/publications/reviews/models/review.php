@@ -33,8 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'review.php');
-require_once(__DIR__ . '/comment.php');
+require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
+require_once __DIR__ . '/comment.php');
 
 /**
  * Publications review mdoel
@@ -56,31 +56,31 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	protected $_context = 'com_publications.review.comment';
 
 	/**
-	 * USer
+	 * User
 	 *
 	 * @var object
 	 */
-	private $_creator = NULL;
+	private $_creator = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
 	 *
 	 * @var object
 	 */
-	private $_comments = NULL;
+	private $_comments = null;
 
 	/**
 	 * Commen count
 	 *
 	 * @var integer
 	 */
-	private $_comments_count = NULL;
+	private $_comments_count = null;
 
 	/**
 	 * Returns a reference to a blog comment model
 	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object
+	 * @param   mixed   $oid  ID (int) or alias (string)
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -102,7 +102,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	/**
 	 * HAs this comment been reported
 	 *
-	 * @return     boolean True if reported, False if not
+	 * @return  boolean  True if reported, False if not
 	 */
 	public function isReported()
 	{
@@ -113,15 +113,17 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 		// Reports hasn't been set
 		if ($this->get('reports', -1) == -1)
 		{
-			if (is_file(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
+			if (is_file(Component::path('com_support') . DS . 'models' . DS . 'report.php'))
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new \Components\Support\Tables\ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'pubreview'
-				));
+				include_once Component::path('com_support') . DS . 'models' . DS . 'report.php';
+
+				$val = \Components\Support\Models\Report::all()
+					->whereEquals('referenceid', $this->get('id'))
+					->whereEquals('category', 'pubreview')
+					->total();
+
 				$this->set('reports', $val);
+
 				if ($this->get('reports') > 0)
 				{
 					return true;
@@ -134,8 +136,8 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
+	 * @param   string   $as  What format to return
+	 * @return  boolean
 	 */
 	public function created($as='')
 	{
@@ -162,8 +164,8 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @param      boolean  $property  Holds property value
-	 * @return     mixed
+	 * @param   boolean  $property  Holds property value
+	 * @return  mixed
 	 */
 	public function creator($property=null)
 	{
@@ -186,10 +188,10 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -316,8 +318,8 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -355,4 +357,3 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 		return $link;
 	}
 }
-

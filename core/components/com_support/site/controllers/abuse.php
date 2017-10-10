@@ -32,7 +32,7 @@
 
 namespace Components\Support\Site\Controllers;
 
-use Components\Support\Tables\ReportAbuse;
+use Components\Support\Models\Report;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Utility\Validate;
@@ -44,6 +44,9 @@ use Route;
 use Lang;
 use User;
 use Date;
+use App;
+
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'report.php';
 
 /**
  * Report items as abusive
@@ -101,44 +104,45 @@ class Abuse extends SiteController
 		}
 
 		// Incoming
-		$this->view->refid    = Request::getInt('id', 0);
-		$this->view->parentid = Request::getInt('parent', 0);
-		$this->view->cat      = Request::getVar('category', '');
+		$refid    = Request::getInt('id', 0);
+		$parentid = Request::getInt('parent', 0);
+		$cat      = Request::getVar('category', '');
 
 		// Check for a reference ID
-		if (!$this->view->refid)
+		if (!$refid)
 		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_REFERENCE_ID_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_SUPPORT_ERROR_REFERENCE_ID_NOT_FOUND'));
 		}
 
 		// Check for a category
-		if (!$this->view->cat)
+		if (!$cat)
 		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_CATEGORY_NOT_FOUND'), 404);
+			App::abort(404, Lang::txt('COM_SUPPORT_ERROR_CATEGORY_NOT_FOUND'));
 		}
 
 		// Get the search result totals
 		$results = Event::trigger('support.getReportedItem', array(
-			$this->view->refid,
-			$this->view->cat,
-			$this->view->parentid
+			$refid,
+			$cat,
+			$parentid
 		));
 
 		// Check the results returned for a reported item
-		$this->view->report = null;
+		$report = null;
+
 		if ($results)
 		{
 			foreach ($results as $result)
 			{
 				if ($result)
 				{
-					$this->view->report = $result[0];
+					$report = $result[0];
 				}
 			}
 		}
 
 		// Ensure we found a reported item
-		if (!$this->view->report)
+		if (!$report)
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_REPORTED_ITEM_NOT_FOUND'));
 		}
@@ -146,18 +150,17 @@ class Abuse extends SiteController
 		// Set the page title
 		$this->_buildTitle();
 
-		$this->view->title = $this->_title;
-
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		$this->view
+			->set('title', $this->_title)
+			->set('refid', $refid)
+			->set('cat', $cat)
+			->set('parentid', $parentid)
+			->set('report', $report)
+			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
 	}
@@ -173,82 +176,46 @@ class Abuse extends SiteController
 		Request::checkToken();
 
 		// Incoming
-		$this->view->cat = Request::getVar('category', '');
-		$this->view->refid = Request::getInt('referenceid', 0);
-		$this->view->returnlink = Request::getVar('link', '');
+		$cat = Request::getVar('category', '');
+		$refid = Request::getInt('referenceid', 0);
+		$returnlink = Request::getVar('link', '');
 		$no_html = Request::getInt('no_html', 0);
 
 		// Trim and addslashes all posted items
 		$incoming = array_map('trim', $_POST);
 
 		// Initiate class and bind posted items to database fields
-		$row = new ReportAbuse($this->database);
-		if (!$row->bind($incoming))
-		{
-			if ($no_html)
-			{
-				echo json_encode(array(
-					'success'  => false,
-					'message'  => $row->getError(),
-					'id'       => $this->view->refid,
-					'category' => $this->view->cat
-				));
-				return;
-			}
-			Request::setVar('id', $this->view->refid);
-			$this->setError($row->getError());
-			$this->displayTask();
-			return;
-		}
+		$row = Report::blank()->set($incoming);
 
-		$row->report     = Sanitize::clean($row->report);
-		$row->report     = nl2br($row->report);
-		$row->created_by = User::get('id');
-		$row->created    = Date::toSql();
-		$row->state      = 0;
-
-		// Check content
-		if (!$row->check())
-		{
-			if ($no_html)
-			{
-				echo json_encode(array(
-					'success'  => false,
-					'message'  => $row->getError(),
-					'id'       => $this->view->refid,
-					'category' => $this->view->cat
-				));
-				return;
-			}
-			Request::setVar('id', $this->view->refid);
-			$this->setError($row->getError());
-			$this->displayTask();
-			return;
-		}
+		$row->set('report', Sanitize::clean($row->get('report')));
+		$row->set('report', nl2br($row->get('report')));
+		$row->set('created_by', User::get('id'));
+		$row->set('created', Date::toSql());
+		$row->set('state', 0);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			if ($no_html)
 			{
 				echo json_encode(array(
 					'success'  => false,
 					'message'  => $row->getError(),
-					'id'       => $this->view->refid,
-					'category' => $this->view->cat
+					'id'       => $refid,
+					'category' => $cat
 				));
 				return;
 			}
-			Request::setVar('id', $this->view->refid);
+			Request::setVar('id', $refid);
+
 			$this->setError($row->getError());
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Get the search result totals
 		$results = Event::trigger('support.onReportItem', array(
-			$this->view->refid,
-			$this->view->cat
+			$refid,
+			$cat
 		));
 
 		// Send notification email
@@ -259,8 +226,8 @@ class Abuse extends SiteController
 
 			// Get the search result totals
 			$results = Event::trigger('support.getReportedItem', array(
-				$this->view->refid,
-				$this->view->cat,
+				$refid,
+				$cat,
 				0
 			));
 
@@ -343,10 +310,10 @@ class Abuse extends SiteController
 		{
 			echo json_encode(array(
 				'success'   => true,
-				'report_id' => $row->id,
+				'report_id' => $row->get('id'),
 				'message'   => Lang::txt('COM_SUPPORT_REPORT_NUMBER_REFERENCE', $row->id),
-				'id'        => $this->view->refid,
-				'category'  => $this->view->cat
+				'id'        => $refid,
+				'category'  => $cat
 			));
 			return;
 		}
@@ -354,18 +321,16 @@ class Abuse extends SiteController
 		// Set the page title
 		$this->_buildTitle();
 
-		$this->view->title = $this->_title;
-		$this->view->report = $row;
-
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('title', $this->_title)
+			->set('report', $row)
+			->set('refid', $refid)
+			->set('cat', $cat)
+			->set('returnlink', $returnlink)
+			->display();
 	}
 }

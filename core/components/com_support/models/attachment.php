@@ -32,39 +32,67 @@
 
 namespace Components\Support\Models;
 
-use Hubzero\Base\Model;
+use Hubzero\Database\Relational;
+use Filesystem;
 use Component;
 use Request;
 use Route;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-
 /**
- * Support mdoel for a ticket resolution
+ * Support ticket attachment model
  */
-class Attachment extends Model
+class Attachment extends Relational
 {
 	/**
-	 * Table name
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Support\\Tables\\Attachment';
+	public $namespace = 'support';
 
 	/**
-	 * URL for this entry
+	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	private $_base = 'index.php?option=com_support';
+	public $orderBy = 'id';
 
 	/**
-	 * File size
+	 * Default order direction for select queries
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	private $_size = null;
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'filename' => 'notempty',
+		//'ticket'   => 'positive|nonzero'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'filename'
+	);
 
 	/**
 	 * Diemnsions for file (must be an image)
@@ -74,59 +102,46 @@ class Attachment extends Model
 	private $_dimensions = null;
 
 	/**
-	 * Scan text for attachment macros {attachment#}
+	 * Ensure no invalid characters
 	 *
-	 * @param   string $text Text to search
-	 * @return  string HTML
+	 * @param   array  $data
+	 * @return  string
 	 */
-	public function parse($text)
+	public function automaticFilename($data)
 	{
-		return preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'getAttachment'), $text);
+		$data['filename'] = preg_replace("/[^A-Za-z0-9._]/i", '-', $data['filename']);
+
+		return $data['filename'];
 	}
 
 	/**
-	 * Process an attachment macro and output a link to the file
+	 * Get parent ticket
 	 *
-	 * @param   array $matches Macro info
-	 * @return  string HTML
+	 * @return  object
 	 */
-	public function getAttachment($matches)
+	public function ticket()
 	{
-		$match = $matches[0];
-		$tokens = explode('#', $match);
-		$id = intval(end($tokens));
+		return $this->belongsToOne(__NAMESPACE__ . '\\Ticket', 'ticket');
+	}
 
-		$this->_tbl->load($id);
+	/**
+	 * Get parent comment
+	 *
+	 * @return  object
+	 */
+	public function comment()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Comment', 'comment_id');
+	}
 
-		if ($this->output != 'web' && $this->output != 'email')
-		{
-			return $this->link();
-		}
-
-		if (is_file($this->link('filepath')))
-		{
-			$url = $this->link();
-
-			if ($this->output != 'email' && $this->isImage())
-			{
-				$size = getimagesize($this->link('filepath'));
-				if ($size[0] > 400)
-				{
-					$img = '<a href="' . $url . '"><img src="' . $url . '" alt="' . $this->get('description') . '" width="400" /></a>';
-				}
-				else
-				{
-					$img = '<img src="' . $url . '" alt="' . $this->get('description') . '" />';
-				}
-				return $img;
-			}
-			else
-			{
-				return '<a href="' . $url . '" title="' . $this->get('description') . '">' . $this->get('description', $this->get('filename')) . '</a>';
-			}
-		}
-
-		return '[attachment #' . $id . ' not found]';
+	/**
+	 * Defines a belongs to one relationship between comment and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
@@ -146,7 +161,7 @@ class Attachment extends Model
 	 */
 	public function hasFile()
 	{
-		return file_exists($this->link('filepath'));
+		return file_exists($this->path());
 	}
 
 	/**
@@ -156,16 +171,12 @@ class Attachment extends Model
 	 */
 	public function size()
 	{
-		if ($this->_size === null)
+		if ($this->hasFile())
 		{
-			$this->_size = 0;
-			if ($this->hasFile())
-			{
-				$this->_size = filesize($this->link('filepath'));
-			}
+			return filesize($this->path());
 		}
 
-		return $this->_size;
+		return 0;
 	}
 
 	/**
@@ -177,7 +188,7 @@ class Attachment extends Model
 	{
 		if (!$this->_dimensions)
 		{
-			$this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->link('filepath')) : array(0, 0);
+			$this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
 		}
 
 		return $this->_dimensions[0];
@@ -192,10 +203,66 @@ class Attachment extends Model
 	{
 		if (!$this->_dimensions)
 		{
-			$this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->link('filepath')) : array(0, 0);
+			$this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
 		}
 
 		return $this->_dimensions[1];
+	}
+
+	/**
+	 * Root file path
+	 *
+	 * @return  string
+	 */
+	public function rootPath()
+	{
+		return PATH_APP . DS . trim(Component::params('com_support')->get('webpath', '/site/tickets'), DS);
+	}
+
+	/**
+	 * File path
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		//($this->get('comment_id') ? '/' . $this->get('comment_id') : '')
+		return $this->rootPath() . '/' . $this->get('ticket') . '/' . $this->get('filename');
+	}
+
+	/**
+	 * Delete record
+	 *
+	 * @return  boolean  True if successful, False if not
+	 */
+	public function destroy()
+	{
+		if ($this->hasFile())
+		{
+			if (!Filesystem::delete($this->path()))
+			{
+				$this->addError('Unable to delete file.');
+
+				return false;
+			}
+		}
+
+		return parent::destroy();
+	}
+
+	/**
+	 * Load a record by comment ID and filename
+	 *
+	 * @param   integer  $comment_id
+	 * @param   string   $filename
+	 * @return  object
+	 */
+	public static function oneByComment($comment_id, $filename)
+	{
+		return self::all()
+			->whereEquals('comment_id', (int)$comment_id)
+			->whereEquals('filename', (string)$filename)
+			->row();
 	}
 
 	/**
@@ -208,9 +275,7 @@ class Attachment extends Model
 	 */
 	public function link($type='', $absolute=false)
 	{
-		static $path;
-
-		$link = $this->_base;
+		$link = 'index.php?option=com_support';
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
@@ -221,12 +286,7 @@ class Attachment extends Model
 			break;
 
 			case 'filepath':
-				if (!$path)
-				{
-					$config = Component::params('com_support');
-					$path = PATH_APP . DS . trim($config->get('webpath', '/site/tickets'), DS);
-				}
-				return $path . DS . $this->get('ticket') . DS . $this->get('filename');
+				return $this->path();
 			break;
 
 			case 'permalink':
@@ -244,30 +304,78 @@ class Attachment extends Model
 	}
 
 	/**
-	 * Delete record and associated file
+	 * Take a file existing on the local filesystem and place it in a ticket
 	 *
-	 * @return  boolean
+	 * @param   string   $currentfile
+	 * @param   string   $filename
+	 * @param   integer  $ticketid
+	 * @return  string
 	 */
-	public function delete()
+	public function addFile($currentfile, $filename, $ticketid)
 	{
-		if (!parent::delete())
-		{
-			return false;
-		}
+		$config = Component::params('com_support');
 
-		if ($this->hasFile())
-		{
-			$file = $this->get('filename');
-			$path = $this->link('filepath');
+		// Construct our file path for new file
+		$path = $this->rootPath() . DS . $ticketid;
 
-			if (!\Filesystem::delete($path))
+		// Build the path if it doesn't exist
+		if (!is_dir($path))
+		{
+			if (!Filesystem::makeDirectory($path))
 			{
-				$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_DELETE_FILE', $file));
-				return false;
+				$this->addError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return '';
 			}
 		}
 
-		return true;
+		// Make the filename safe
+		$filename = Filesystem::clean($filename);
+		$filename = str_replace(' ', '_', $filename);
+		$ext = strtolower(Filesystem::extension($filename));
+
+		// Make sure that file is acceptable type
+		if (!in_array($ext, explode(',', $config->get('file_ext'))))
+		{
+			$this->addError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+			return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
+		}
+
+		$newname = Filesystem::name($filename);
+		while (file_exists($path . DS . $newname . '.' . $ext))
+		{
+			$newname .= rand(10, 99);
+		}
+		$newname = $newname . '.' . $ext;
+
+		// We should ask the model if the name we generated is OK
+		$data = array();
+		$data['filename'] = $newname;
+		$newname = $this->automaticFilename($data);
+
+		$finalfile = $path . DS . $newname;
+
+		// Perform the upload
+		if (!Filesystem::upload($currentfile, $finalfile))
+		{
+			$this->addError(Lang::txt('COM_SUPPORT_ERROR_UPLOADING'));
+			return '';
+		}
+		else
+		{
+			// Scan for viruses
+			if (!Filesystem::isSafe($finalfile))
+			{
+				if (Filesystem::delete($finalfile))
+				{
+					$this->addError(Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN'));
+					return Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN');
+				}
+			}
+
+		}
+
+		$this->set('filename', $newname);
+
+		return '';
 	}
 }
-

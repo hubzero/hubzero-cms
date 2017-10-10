@@ -94,12 +94,12 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		{
 			// Transfer from a Support Ticket
 			case 'ticket':
-				$row = new \Components\Support\Models\Ticket($from_id);
+				$row = \Components\Support\Models\Ticket::oneOrNew($from_id);
 
-				if ($row->exists())
+				if ($row->get('id'))
 				{
 					$author  = $row->get('login');
-					$subject = $row->content('raw', 200); // max 200 characters
+					$subject = \Hubzero\Utility\String::truncate($row->get('report'), 200); // max 200 characters
 					$body    = $row->get('summary');
 					$owner   = $row->get('group');
 
@@ -121,12 +121,12 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 			// Transfer from a Question
 			case 'question':
-				$row = new \Components\Answers\Models\Question($from_id);
+				$row = \Components\Answers\Models\Question::oneOrNew($from_id);
 
-				if ($row->exists())
+				if ($row->get('id'))
 				{
 					$author     = $row->get('created_by');
-					$subject    = $row->subject('raw', 200); // max 200 characters
+					$subject    = \Hubzero\Utility\String::truncate($row->get('subject'), 200); // max 200 characters
 					$body       = $row->get('question');
 					$anonymous  = $row->get('anonymous');
 
@@ -203,7 +203,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		{
 			// Transfer to a Support Ticket
 			case 'ticket':
-				$newrow = new \Components\Support\Models\Ticket();
+				$newrow = \Components\Support\Models\Ticket::blank();
 				$newrow->set('open', 1);
 				$newrow->set('status', 0);
 				$newrow->set('created', $today);
@@ -222,7 +222,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'question':
-				$newrow = new \Components\Answers\Models\Question();
+				$newrow = \Components\Answers\Models\Question::blank();
 				$newrow->set('subject', $subject);
 				$newrow->set('question', $body);
 				$newrow->set('created', $today);
@@ -257,7 +257,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		}
 
 		// Save new information
-		if (!$newrow->store())
+		if (!$newrow->save())
 		{
 			$this->setError($newrow->getError());
 			return;
@@ -268,7 +268,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			// $newrow->checkin();
 
 			// Extras
-			if ($newrow->exists())
+			if ($newrow->get('id'))
 			{
 				switch ($to_type)
 				{
@@ -295,7 +295,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		if ($deactivate)
 		{
 			// Overwrite old entry
-			if (!$row->store())
+			if (!$row->save())
 			{
 				$this->setError($row->getError());
 				exit();

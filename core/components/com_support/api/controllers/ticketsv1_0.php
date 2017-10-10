@@ -43,8 +43,8 @@ use Route;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php';
 
 /**
  * API controller class for support tickets
@@ -126,8 +126,6 @@ class Ticketsv1_0 extends ApiController
 		$stats->tickets->opened = array();
 		$stats->tickets->closed = array();
 
-		$st = new \Components\Support\Tables\Ticket($this->database);
-
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM `#__support_tickets`
 				WHERE report!=''
@@ -149,7 +147,9 @@ class Ticketsv1_0 extends ApiController
 			$sql .= " AND `group_id`=" . $this->database->quote((int)$group);
 		}
 		$sql .= " ORDER BY created ASC";
+
 		$this->database->setQuery($sql);
+
 		$openTickets = $this->database->loadObjectList();
 		foreach ($openTickets as $o)
 		{
@@ -295,8 +295,6 @@ class Ticketsv1_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$obj = new \Components\Support\Tables\Ticket($this->database);
-
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
@@ -320,36 +318,55 @@ class Ticketsv1_0 extends ApiController
 		$response->tickets = array();
 
 		// Get a list of all statuses
-		$sobj = new \Components\Support\Tables\Status($this->database);
+		$statuses = \Components\Support\Models\Status::all()->rows(;
 
-		$statuses = array();
-		if ($data = $sobj->find('all'))
+		$tickets = Ticket::all();
+
+		if ($filters['owner'])
 		{
-			foreach ($data as $status)
+			$tickets->whereEquals('owner', $filters['owner']);
+		}
+
+		if ($filters['status'])
+		{
+			foreach ($statuses as $status)
 			{
-				$statuses[$status->id] = $status;
+				if ($status->get('alias') == $filters['status'])
+				{
+					$tickets->whereEquals('status', $status->get('id'));
+					break;
+				}
 			}
 		}
 
+		$tickets->whereEquals('severity', $filters['type']);
+
+		if ($filters['group'])
+		{
+			$tickets->whereEquals('group', $filters['group']);
+		}
+
+		$results = $tickets
+			->order($filters['sort'], $filters['sortdir'])
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->rows();
+
 		// Get a count of tickets
-		$response->total = $obj->getTicketsCount($filters);
+		$response->total = $results->count();
 
 		if ($response->total)
 		{
-			$response->tickets = $obj->getTickets($filters);
-
-			foreach ($response->tickets as $i => $ticket)
+			$i = 0;
+			foreach ($results => $ticket)
 			{
-				$owner = $ticket->owner;
+				$owner = $ticket->get('owner');
 
+				$response->tickets[$i] = $ticket->toObject();
 				$response->tickets[$i]->owner = new stdClass;
-				$response->tickets[$i]->owner->username = $ticket->username;
-				$response->tickets[$i]->owner->name     = $ticket->owner_name;
-				$response->tickets[$i]->owner->id       = $ticket->owner_id;
-
-				unset($response->tickets[$i]->owner_name);
-				unset($response->tickets[$i]->owner_id);
-				unset($response->tickets[$i]->username);
+				$response->tickets[$i]->owner->username = $ticket->assignee->get('username');
+				$response->tickets[$i]->owner->name     = $ticket->assignee->get('name');
+				$response->tickets[$i]->owner->id       = $ticket->assignee->get('id');
 
 				$response->tickets[$i]->reporter = new stdClass;
 				$response->tickets[$i]->reporter->name     = $ticket->name;
@@ -370,12 +387,14 @@ class Ticketsv1_0 extends ApiController
 				}
 				else
 				{
-					$response->tickets[$i]->status->alias = (isset($statuses[$status]) ? $statuses[$status]->alias : 'unknown');
-					$response->tickets[$i]->status->title = (isset($statuses[$status]) ? $statuses[$status]->title : 'unknown');
+					$response->tickets[$i]->status->alias = $ticket->status->get('alias');
+					$response->tickets[$i]->status->title = $ticket->status->get('title');
 				}
-				$response->tickets[$i]->status->id    = $status;
+				$response->tickets[$i]->status->id = $status;
 
 				$response->tickets[$i]->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->tickets[$i]->id), '/'));
+
+				$i++;
 			}
 		}
 
@@ -430,7 +449,7 @@ class Ticketsv1_0 extends ApiController
 		}
 
 		// Initiate class and bind data to database fields
-		$ticket = new \Components\Support\Models\Ticket();
+		$ticket = \Components\Support\Models\Ticket::blank();
 
 		// Set the created date
 		$ticket->set('created', Date::toSql());
@@ -468,7 +487,7 @@ class Ticketsv1_0 extends ApiController
 		$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
 
 		// Save the data
-		if (!$ticket->store())
+		if (!$ticket->save())
 		{
 			throw new Exception($ticket->getErrors(), 500);
 		}
@@ -514,24 +533,24 @@ class Ticketsv1_0 extends ApiController
 		$ticket_id = Request::getInt('ticket', 0);
 
 		// Initiate class and bind data to database fields
-		$ticket = new \Components\Support\Models\Ticket($ticket_id);
+		$ticket = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
 
 		$response = new stdClass;
 		$response->id = $ticket->get('id');
 
 		$response->owner = new stdClass;
-		$response->owner->username = $ticket->owner('username');
-		$response->owner->name     = $ticket->owner('name');
-		$response->owner->id       = $ticket->owner('id');
+		$response->owner->username = $ticket->assignee->get('username');
+		$response->owner->name     = $ticket->assignee->get('name');
+		$response->owner->id       = $ticket->assignee->get('id');
 
 		$response->reporter = new stdClass;
-		$response->reporter->name     = $ticket->submitter('name');
-		$response->reporter->username = $ticket->submitter('username');
-		$response->reporter->email    = $ticket->submitter('email');
+		$response->reporter->name     = $ticket->submitter->get('name');
+		$response->reporter->username = $ticket->submitter->get('username');
+		$response->reporter->email    = $ticket->submitter->get('email');
 
 		$response->status = new stdClass;
-		$response->status->alias = $ticket->status('class');
-		$response->status->title = $ticket->status('text');
+		$response->status->alias = $ticket->status->get('class');
+		$response->status->title = $ticket->status->get('text');
 		$response->status->id    = $ticket->get('status');
 
 		foreach (array('created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop)
@@ -539,22 +558,22 @@ class Ticketsv1_0 extends ApiController
 			$response->$prop = $ticket->get($prop);
 		}
 
-		$response->report = $ticket->content('raw');
+		$response->report = $ticket->get('report');
 
 		$response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id), '/'));
 
 		$response->comments = array();
-		foreach ($ticket->comments() as $comment)
+		foreach ($ticket->comments as $comment)
 		{
 			$c = new stdClass;
 			$c->id = $comment->get('id');
 			$c->created = $comment->get('created');
 			$c->creator = new stdClass;
-			$c->creator->username = $comment->creator('username');
-			$c->creator->name     = $comment->creator('name');
-			$c->creator->id       = $comment->creator('id');
+			$c->creator->username = $comment->creator->get('username');
+			$c->creator->name     = $comment->creator->get('name');
+			$c->creator->id       = $comment->creator->get('id');
 			$c->private = ($comment->access ? true : false);
-			$c->content = $comment->content('raw');
+			$c->content = $comment->get('comment');
 
 			$response->comments[] = $c;
 		}
@@ -589,9 +608,9 @@ class Ticketsv1_0 extends ApiController
 		$ticket_id = Request::getInt('ticket', 0);
 
 		// Initiate class and bind data to database fields
-		$row = new \Components\Support\Models\Ticket($ticket_id);
+		$row = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
 
-		if (!$row->exists())
+		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
 		}
@@ -626,14 +645,9 @@ class Ticketsv1_0 extends ApiController
 		$ticket_id = Request::getInt('ticket', 0);
 
 		// Initiate class and bind data to database fields
-		$row = new \Components\Support\Models\Ticket($ticket_id);
+		$row = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
 
-		if (!$row->exists())
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_RECORD'), 404);
-		}
-
-		if (!$row->delete())
+		if (!$row->destroy())
 		{
 			throw new Exception($row->getError(), 500);
 		}

@@ -33,9 +33,9 @@
 namespace Components\Support\Admin\Controllers;
 
 use Components\Support\Helpers\ACL as TheACL;
-use Components\Support\Tables\Aro;
-use Components\Support\Tables\Aco;
-use Components\Support\Tables\AroAco;
+use Components\Support\Models\Acl\Aro;
+use Components\Support\Models\Acl\Aco;
+use Components\Support\Models\Acl\Map;
 use Hubzero\Component\AdminController;
 use Request;
 use Notify;
@@ -59,8 +59,7 @@ class Acl extends AdminController
 		$acl = TheACL::getACL();
 
 		// Fetch results
-		$aro = new Aro($this->database);
-		$rows = $aro->getRecords();
+		$rows = Aro::all()->rows();
 
 		// Output HTML
 		$this->view
@@ -77,37 +76,39 @@ class Acl extends AdminController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken('get');
+		Request::checkToken(['get', 'post']);
 
 		$id     = Request::getInt('id', 0);
 		$action = Request::getVar('action', '');
 		$value  = Request::getInt('value', 0);
 
-		$row = new AroAco($this->database);
-		$row->load($id);
+		$row = Map::oneOrFail($id);
 
 		switch ($action)
 		{
-			case 'create': $row->action_create = $value; break;
-			case 'read':   $row->action_read   = $value; break;
-			case 'update': $row->action_update = $value; break;
-			case 'delete': $row->action_delete = $value; break;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			App::abort(500, $row->getError());
+			case 'create':
+				$row->set('action_create', $value);
+				break;
+			case 'read':
+				$row->set('action_read', $value);
+				break;
+			case 'update':
+				$row->set('action_update',$value);
+				break;
+			case 'delete':
+				$row->set('action_delete', $value);
+				break;
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			App::abort(500, $row->getError());
+			Notify::error($row->getError());
 		}
-
-		// Output messsage and redirect
-		Notify::success(Lang::txt('COM_SUPPORT_ACL_SAVED'));
+		else
+		{
+			Notify::success(Lang::txt('COM_SUPPORT_ACL_SAVED'));
+		}
 
 		$this->cancelTask();
 	}
@@ -124,33 +125,21 @@ class Acl extends AdminController
 
 		$ids = Request::getVar('id', array());
 
-		$i = 0;
+		$removed = 0;
 		foreach ($ids as $id)
 		{
-			$row = new Aro($this->database);
-			$row->load(intval($id));
+			$row = Aro::oneOrFail(intval($id));
 
-			if ($row->id)
-			{
-				$aro_aco = new AroAco($this->database);
-
-				if (!$aro_aco->deleteRecordsByAro($row->id))
-				{
-					Notify::error($aro_aco->getError());
-					continue;
-				}
-			}
-
-			if (!$row->delete())
+			if (!$row->destroy())
 			{
 				Notify::error($row->getError());
 				continue;
 			}
 
-			$i++;
+			$removed++;
 		}
 
-		if ($i)
+		if ($removed)
 		{
 			Notify::success(Lang::txt('COM_SUPPORT_ACL_REMOVED'));
 		}
@@ -174,53 +163,38 @@ class Acl extends AdminController
 		$aro = array_map('trim', $aro);
 
 		// Initiate class and bind posted items to database fields
-		$row = new Aro($this->database);
-		if (!$row->bind($aro))
-		{
-			App::abort(500, $row->getError());
-		}
+		$row = Aro::blank()->set($aro);
 
-		if ($row->foreign_key)
+		if ($fk = $row->get('foreign_key'))
 		{
-			switch ($row->model)
+			switch ($row->get('model'))
 			{
 				case 'user':
-					$user = User::getInstance($row->foreign_key);
+					$user = User::getInstance($fk);
 					if (!is_object($user))
 					{
 						App::abort(500, Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'));
 					}
-					$row->foreign_key = intval($user->get('id'));
-					$row->alias = $user->get('username');
+					$row->set('foreign_key', intval($user->get('id')));
+					$row->set('alias', $user->get('username'));
 				break;
 
 				case 'group':
-					$group = \Hubzero\User\Group::getInstance($row->foreign_key);
+					$group = \Hubzero\User\Group::getInstance($fk);
 					if (!is_object($group))
 					{
-						App::abort(500, Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_GROUP'));
+						App::abort(500, Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_GROUP') . ' ' . $fk);
 					}
-					$row->foreign_key = intval($group->gidNumber);
-					$row->alias = $group->cn;
+					$row->set('foreign_key', intval($group->get('gidNumber')));
+					$row->set('alias', $group->get('cn'));
 				break;
 			}
 		}
 
-		// Check content
-		if (!$row->check())
-		{
-			App::abort(500, $row->getError());
-		}
-
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			App::abort(500, $row->getError());
-		}
-
-		if (!$row->id)
-		{
-			$row->id = $this->database->insertid();
 		}
 
 		// Trim and addslashes all posted items
@@ -229,22 +203,12 @@ class Acl extends AdminController
 		foreach ($map as $k => $v)
 		{
 			// Initiate class and bind posted items to database fields
-			$aroaco = new AroAco($this->database);
-			if (!$aroaco->bind($v))
-			{
-				App::abort(500, $aroaco->getError());
-			}
+			$aroaco = Map::oneOrNew($v['id'])->set($v);
 
-			$aroaco->aro_id = (!$aroaco->aro_id) ? $row->id : $aroaco->aro_id;
-
-			// Check content
-			if (!$aroaco->check())
-			{
-				App::abort(500, $aroaco->getError());
-			}
+			$aroaco->set('aro_id', ($aroaco->get('aro_id') ? $aroaco->get('aro_id') : $row->get('id')));
 
 			// Store new content
-			if (!$aroaco->store())
+			if (!$aroaco->save())
 			{
 				App::abort(500, $aroaco->getError());
 			}

@@ -33,15 +33,6 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if (!($this->ticket instanceof \Components\Support\Models\Ticket))
-{
-	$this->ticket = new \Components\Support\Models\Ticket($this->ticket);
-}
-if (!($this->comment instanceof \Components\Support\Models\Comment))
-{
-	$this->comment = new \Components\Support\Models\Comment($this->comment);
-}
-
 $base = rtrim(Request::base(), '/');
 if (substr($base, -13) == 'administrator')
 {
@@ -70,16 +61,16 @@ if (!$this->config->get('email_terse'))
 	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";
 	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')).': '.$this->ticket->get('summary')."\n";
 	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')).': '.$this->ticket->get('created')."\n";
-	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
-	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS')).': '.$this->ticket->status()."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter->get('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS')).': '.$this->ticket->status->get('title')."\n";
 	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS')).': '.$this->ticket->tags('string')."\n";
 	$message .= '----------------------------'."\n\n";
 	if ($this->comment->isPrivate())
 	{
 		$message .= '!! ' . Lang::txt('COM_SUPPORT_COMMENT_PRIVATE') . " !!\n";
 	}
-	$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator('name') . '(' . $this->comment->creator('username') . ")\n";
-	$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created() . "\n\n";
+	$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator->get('name') . '(' . $this->comment->creator->get('username') . ")\n";
+	$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->get('created') . "\n\n";
 	if ($this->comment->changelog()->lists())
 	{
 		foreach ($this->comment->changelog()->lists() as $type => $log)
@@ -101,11 +92,11 @@ if (!$this->config->get('email_terse'))
 			}
 		}
 	}
-	$message .= $this->comment->content('clean');
-	if ($this->comment->attachments()->total() > 0)
+	$message .= strip_tags($this->comment->comment);
+	if ($this->comment->attachments->count() > 0)
 	{
 		$message .= "\n\n";
-		foreach ($this->comment->attachments() as $attachment)
+		foreach ($this->comment->attachments as $attachment)
 		{
 			$message .= $base . '/' . trim(Route::url($attachment->link()), '/') . "\n";
 		}

@@ -36,9 +36,7 @@ use Hubzero\Base\Object;
 use Hubzero\User\Helper as UserHelper;
 use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'acos.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'aros_acos.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'aros.php');
+require_once dirname(__DIR__) . '/models/acl/map.php';
 
 /**
  * Helper class for support ACL
@@ -307,4 +305,3 @@ class ACL extends Object
 		return false;
 	}
 }
-

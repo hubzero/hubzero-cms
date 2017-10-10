@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Support\Models\Orm;
+namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
 use Date;

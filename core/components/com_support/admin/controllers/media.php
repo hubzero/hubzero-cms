@@ -33,6 +33,8 @@
 namespace Components\Support\Admin\Controllers;
 
 use Components\Support\Models\Attachment;
+use Components\Support\Models\Comment;
+use Components\Support\Models\Ticket;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Number;
 use Hubzero\Component\View;
@@ -41,7 +43,7 @@ use Request;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 
 /**
  * Collections controller class for media
@@ -172,15 +174,15 @@ class Media extends AdminController
 		}
 
 		// Create database entry
-		$asset = new Attachment();
-		$asset->bind(array(
+		$asset = Attachment::blank();
+		$asset->set(array(
 			'id'          => 0,
 			'ticket'      => $ticket,
 			'comment_id'  => $comment,
 			'filename'    => $filename . '.' . $ext,
 			'description' => Request::getVar('description', '')
 		));
-		if (!$asset->store(true))
+		if (!$asset->save())
 		{
 			echo json_encode(array(
 				'success' => false,
@@ -227,8 +229,7 @@ class Media extends AdminController
 		if (!$ticket)
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
@@ -236,8 +237,7 @@ class Media extends AdminController
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Build the upload path if it doesn't exist
@@ -248,8 +248,7 @@ class Media extends AdminController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('Error uploading. Unable to create path.'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 		}
 
@@ -296,8 +295,8 @@ class Media extends AdminController
 			}
 
 			// Create database entry
-			$asset = new Attachment();
-			$asset->bind(array(
+			$asset = Attachment::blank();
+			$asset->set(array(
 				'id'          => 0,
 				'ticket'      => $ticket,
 				'comment_id'  => $comment,
@@ -305,7 +304,7 @@ class Media extends AdminController
 				'description' => Request::getVar('description', '')
 			));
 
-			if (!$asset->store(true))
+			if (!$asset->save())
 			{
 				$this->setError($asset->getError());
 			}
@@ -330,20 +329,17 @@ class Media extends AdminController
 		// Incoming asset
 		$id = Request::getInt('asset', 0, 'get');
 
-		$model = new Attachment($id);
+		$model = Attachment::oneOrFail($id);
 
-		if ($model->exists())
+		// Check if they're logged in when the ticket ID
+		// is > 0. This means it's an attachment on a real
+		// ticket, not a temp.
+		if ($model->get('ticket') > 0 && User::isGuest())
 		{
-			// Check if they're logged in when the ticket ID
-			// is > 0. This means it's an attachment on a real
-			// ticket, not a temp.
-			if ($model->get('ticket') > 0 && User::isGuest())
-			{
-				$this->displayTask();
-				return;
-			}
-			$model->delete();
+			$this->displayTask();
+			return;
 		}
+		$model->destroy();
 
 		// Push through to the media view
 		$this->displayTask();
@@ -361,18 +357,15 @@ class Media extends AdminController
 
 		if ($id)
 		{
-			$model = new Attachment($id);
+			$model = Attachment::oneOrFail($id);
 
-			if ($model->exists())
+			if (!$model->destroy())
 			{
-				if (!$model->delete())
-				{
-					echo json_encode(array(
-						'success' => false,
-						'error'   => $model->getError()
-					));
-					return;
-				}
+				echo json_encode(array(
+					'success' => false,
+					'error'   => $model->getError()
+				));
+				return;
 			}
 		}
 
@@ -400,26 +393,20 @@ class Media extends AdminController
 
 		if ($comment)
 		{
-			$model = new Comment($comment);
+			$model = Comment::oneOrNew($comment);
 		}
 		else
 		{
-			$model = new Ticket($ticket);
-		}
-
-		$this->view->model   = $model;
-		$this->view->config  = $this->config;
-		$this->view->ticket  = $ticket;
-		$this->view->comment = $comment;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$model = Ticket::oneOrNew($ticket);
 		}
 
 		$this->view
+			->set('config', $this->config)
+			->set('ticket', $ticket)
+			->set('comment', $comment)
+			->set('model', $model)
+			->setErrors($this->getErrors())
 			->setLayout('list')
 			->display();
 	}
 }
-

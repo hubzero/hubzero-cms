@@ -25,41 +25,48 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Support\Helpers;
+namespace Components\Support\Models;
+
+use Hubzero\Database\Relational;
 
 /**
- * Support helper class for misc. HTML
+ * Abuse Report model
  */
-class Html
+class Report extends Relational
 {
 	/**
-	 * Generate a select list from a simply array of values
+	 * The table namespace
 	 *
-	 * @param      string $name  Field name
-	 * @param      array  $array Values to populate
-	 * @param      string $value Chosen value
-	 * @param      string $class Field class
-	 * @param      string $js    Extra attributes to add to element
-	 * @return     string HTML <select>
+	 * @var  string
 	 */
-	public static function selectArray($name, $array, $value, $class='', $js='')
-	{
-		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
-		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
-		foreach ($array as $anode)
-		{
-			$selected = ($anode == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$html .= ' <option value="' . $anode . '"' . $selected . '>' . stripslashes($anode) . '</option>' . "\n";
-		}
-		$html .= '</select>' . "\n";
-		return $html;
-	}
-}
+	public $namespace = 'abuse';
 
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+}

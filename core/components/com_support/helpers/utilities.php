@@ -33,6 +33,8 @@
 namespace Components\Support\Helpers;
 
 use Hubzero\Mail\Message;
+use Request;
+use Config;
 
 /**
  * Support Utilities class
@@ -326,24 +328,31 @@ class Utilities
 		return $lifetime;
 	}
 
+	/**
+	 * CAdd attachments
+	 *
+	 * @param   integer  $ticketid
+	 * @param   itneger  $commentid
+	 * @return  void
+	 */
 	public static function addAttachments($ticketid, $commentid=0)
 	{
 		$attachments = Request::getVar('attachments', null, 'files', 'array');
+
 		if (is_array($attachments) && count($attachments) > 0 && is_array($attachments['name']))
 		{
-			for ($i=0; $i < count($attachments['name']); $i++)
+			for ($i = 0; $i < count($attachments['name']); $i++)
 			{
-				$attachment = new \Components\Support\Models\Orm\Attachment();
+				$attachment = \Components\Support\Models\Attachment::blank();
 				$attachment->set('ticket', $ticketid);
 				$attachment->set('comment_id', $commentid);
 				$attachment->addFile($attachments['tmp_name'][$i], $attachments['name'][$i], $ticketid);
+
 				if (!$attachment->save())
 				{
-					throw new Exception(print_r($attachment->getErrors(), 1), 500);
+					throw new \Exception(print_r($attachment->getError(), 1), 500);
 				}
-
 			}
-
 		}
 	}
 }

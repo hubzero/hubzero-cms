@@ -33,15 +33,14 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Models\Orm\Status;
+use Components\Support\Models\Status;
 use Request;
 use Notify;
 use Route;
 use Lang;
 use App;
 
-require_once dirname(dirname(__DIR__)) . '/models/orm/status.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
+require_once dirname(dirname(__DIR__)) . '/models/status.php';
 
 /**
  * Support controller class for managing ticket statuses

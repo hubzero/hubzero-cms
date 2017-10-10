@@ -25,30 +25,26 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Support\Models\Orm;
+namespace Components\Support\Models\Acl;
 
 use Hubzero\Database\Relational;
 
-require_once __DIR__ . DS . 'comment.php';
-require_once __DIR__ . DS . 'status.php';
-require_once __DIR__ . DS . 'category.php';
-
 /**
- * Support ticket model
+ * Support ticket ACO model
  */
-class Ticket extends Relational
+class Aco extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var  string
 	 */
-	public $namespace = 'support';
+	public $namespace = 'support_acl';
 
 	/**
 	 * Default order by for model
@@ -65,72 +61,23 @@ class Ticket extends Relational
 	public $orderDir = 'asc';
 
 	/**
-	 * Automatic fields to populate every time a row is created
+	 * Fields and their validation criteria
 	 *
 	 * @var  array
 	 */
-	public $initiate = array(
-		'created',
+	protected $rules = array(
+		'model'       => 'notempty',
+		'foreign_key' => 'positive|nonzero'
 	);
 
 	/**
-	 * Get the owner object
-	 *
-	 * @return object
-	 */
-	public function get_owner()
-	{
-		return $this->oneToOne('\Hubzero\User\User', 'id', 'owner');
-	}
-
-	/**
-	 * Get a list of comments
+	 * Get maps
 	 *
 	 * @return  object
 	 */
-	public function submitter()
+	public function maps()
 	{
-		return $this->oneToOne('\Hubzero\User\User', 'username', 'login');
-	}
-
-	/**
-	 * Get a list of comments
-	 *
-	 * @return  object
-	 */
-	public function comments()
-	{
-		return $this->oneToMany('Comment', 'ticket');
-	}
-
-	/**
-	 * Get a list of attachments
-	 *
-	 * @return  object
-	 */
-	public function attachments()
-	{
-		return $this->oneToMany('Attachment', 'ticket');
-	}
-
-	/**
-	 * Get status
-	 *
-	 * @return  object
-	 */
-	public function status()
-	{
-		return $this->oneToOne('Status', 'id', 'status');
-	}
-
-	/**
-	 * Get category
-	 *
-	 * @return  object
-	 */
-	public function category()
-	{
-		return $this->oneToOne('Category', 'id', 'category');
+		return $this->oneToMany(__NAMESPACE__ . '\\Map', 'aco_id');
 	}
 
 	/**
@@ -141,20 +88,11 @@ class Ticket extends Relational
 	public function destroy()
 	{
 		// Remove data
-		foreach ($this->comments()->rows() as $comment)
+		foreach ($this->maps()->rows() as $map)
 		{
-			if (!$comment->destroy())
+			if (!$map->destroy())
 			{
-				$this->addError($comment->getError());
-				return false;
-			}
-		}
-
-		foreach ($this->attachments()->rows() as $attachment)
-		{
-			if (!$attachment->destroy())
-			{
-				$this->addError($attachment->getError());
+				$this->addError($map->getError());
 				return false;
 			}
 		}

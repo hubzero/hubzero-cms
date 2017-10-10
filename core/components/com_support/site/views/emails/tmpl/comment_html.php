@@ -33,15 +33,6 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if (!($this->ticket instanceof \Components\Support\Models\Ticket))
-{
-	$this->ticket = new \Components\Support\Models\Ticket($this->ticket);
-}
-if (!($this->comment instanceof \Components\Support\Models\Comment))
-{
-	$this->comment = new \Components\Support\Models\Comment($this->comment);
-}
-
 $base = rtrim(Request::base(), '/');
 if (substr($base, -13) == 'administrator')
 {
@@ -56,16 +47,27 @@ $link = $base . '/' . trim($sef, '/');
 
 switch ($this->ticket->get('severity'))
 {
-	case 'critical': $bgcolor = '#ffd3d4'; $bdcolor = '#e9bcbc'; break;
-	case 'major':    $bgcolor = '#fbf1be'; $bdcolor = '#e9e1bc'; break;
-	case 'minor':    $bgcolor = '#d3e3ff'; $bdcolor = '#bccbe9'; break;
-	case 'trivial':  $bgcolor = '#d3f9ff'; $bdcolor = '#bce1e9'; break;
-
+	case 'critical':
+		$bgcolor = '#ffd3d4';
+		$bdcolor = '#e9bcbc';
+		break;
+	case 'major':
+		$bgcolor = '#fbf1be';
+		$bdcolor = '#e9e1bc';
+		break;
+	case 'minor':
+		$bgcolor = '#d3e3ff';
+		$bdcolor = '#bccbe9';
+		break;
+	case 'trivial':
+		$bgcolor = '#d3f9ff';
+		$bdcolor = '#bce1e9';
+		break;
 	case 'normal':
 	default:
 		$bgcolor = '#f1f1f1';
 		$bdcolor = '#e1e1e1';
-	break;
+		break;
 }
 
 $this->css(
@@ -189,7 +191,7 @@ $this->css(
 								</tr>
 								<tr>
 									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS'); ?>:</th>
-									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->status(); ?></td>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->status->get('title'); ?></td>
 								</tr>
 								<tr>
 									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS'); ?>:</th>
@@ -233,7 +235,7 @@ $this->css(
 		<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 			<tbody>
 				<tr>
-					<th style="text-align: left;" align="left"><?php echo ($this->comment->creator('id') ? $this->comment->creator('name') . ' (' . $this->comment->creator('username') . ')' : Lang::txt('JADMINISTRATOR')); ?></th>
+					<th style="text-align: left;" align="left"><?php echo ($this->comment->creator->get('id') ? $this->comment->creator->get('name') . ' (' . $this->comment->creator->get('username') . ')' : Lang::txt('JADMINISTRATOR')); ?></th>
 					<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
 				</tr>
 				<tr>
@@ -273,11 +275,11 @@ $this->css(
 							<?php
 							}
 						?>
-						<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->comment->content('parsed'); ?></p>
-						<?php if ($this->comment->attachments()->total()) { ?>
+						<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->comment->comment; ?></p>
+						<?php if ($this->comment->attachments->count()) { ?>
 							<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
 								<?php
-								foreach ($this->comment->attachments() as $attachment)
+								foreach ($this->comment->attachments as $attachment)
 								{
 									if (!trim($attachment->get('description')))
 									{

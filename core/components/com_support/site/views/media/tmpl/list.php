@@ -35,11 +35,9 @@ defined('_HZEXEC_') or die();
 
 $no_html = Request::getInt('no_html', 0);
 
-$assets = $this->model->attachments('list', array(
-	'ticket'  => $this->ticket,
-	'comment_id' => $this->comment
-));
-if ($assets->total() > 0)
+$assets = $this->model->attachments;
+
+if ($assets->count() > 0)
 {
 	$i = 0;
 	foreach ($assets as $asset)
