@@ -242,10 +242,7 @@ class Query extends Relational
 		{
 			$condition = json_decode($condition);
 		}
-		if (!is_object($condition))
-		{
-print_R($this); die();
-}
+
 		$db = App::get('db');
 		$user = User::getInstance();
 

@@ -92,7 +92,7 @@ class Status extends Relational
 		if (strlen($alias) > 250)
 		{
 			$alias = substr($alias . ' ', 0, 250);
-			$alias = substr($alias, 0, strrpos($alias,' '));
+			$alias = substr($alias, 0, strrpos($alias, ' '));
 		}
 		$alias = str_replace(' ', '-', $alias);
 

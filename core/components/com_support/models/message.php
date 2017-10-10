@@ -81,7 +81,7 @@ class Message extends Relational
 	{
 		$content = $this->get('message');
 
-		$content = str_replace('"','&quot;', stripslashes($content));
+		$content = str_replace('"', '&quot;', stripslashes($content));
 		$content = str_replace('&quote;', '&quot;', $content);
 		$content = str_replace('#XXX', '#' . $ticket_id, $content);
 		$content = str_replace('{ticket#}', $ticket_id, $content);

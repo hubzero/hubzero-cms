@@ -62,7 +62,7 @@ class Cloud extends \Hubzero\Base\Object
 	 *
 	 * @var object
 	 */
-	protected $_db = NULL;
+	protected $_db = null;
 
 	/**
 	 * Container for properties
@@ -130,7 +130,7 @@ class Cloud extends \Hubzero\Base\Object
 	 * @param   string  $property  The name of the property
 	 * @param   mixed   $default   The default value
 	 * @return  mixed   The value of the property
- 	 */
+	 */
 	public function get($property, $default=null)
 	{
 		if ($property == 'scope')

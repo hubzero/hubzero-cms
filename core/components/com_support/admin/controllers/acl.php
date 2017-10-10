@@ -93,7 +93,7 @@ class Acl extends AdminController
 				$row->set('action_read', $value);
 				break;
 			case 'update':
-				$row->set('action_update',$value);
+				$row->set('action_update', $value);
 				break;
 			case 'delete':
 				$row->set('action_delete', $value);

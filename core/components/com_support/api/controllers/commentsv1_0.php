@@ -214,12 +214,12 @@ class Commentsv1_0 extends ApiController
 
 		// Initiate class and bind posted items to database fields
 		$ticket = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
-		$ticket->set('status',   Request::getInt('status', $ticket->get('status'), 'post'));
-		$ticket->set('open',     Request::getInt('open', $ticket->get('open'), 'post'));
+		$ticket->set('status', Request::getInt('status', $ticket->get('status'), 'post'));
+		$ticket->set('open', Request::getInt('open', $ticket->get('open'), 'post'));
 		$ticket->set('category', Request::getInt('category', $ticket->get('category'), 'post'));
 		$ticket->set('severity', Request::getVar('severity', $ticket->get('severity'), 'post'));
-		$ticket->set('owner',    Request::getVar('owner', $ticket->get('owner'), 'post'));
-		$ticket->set('group',    Request::getVar('group', $ticket->get('group'), 'post'));
+		$ticket->set('owner', Request::getVar('owner', $ticket->get('owner'), 'post'));
+		$ticket->set('group', Request::getVar('group', $ticket->get('group'), 'post'));
 
 		// If an existing ticket AND closed AND previously open
 		if ($ticket_id && !$ticket->get('open') && $ticket->get('open') != $old->get('open'))

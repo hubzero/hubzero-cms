@@ -284,7 +284,7 @@ class Abuse extends SiteController
 			$message->addPart($html, 'text/html');
 
 			// Loop through the addresses
-			foreach ($defs As $def)
+			foreach ($defs as $def)
 			{
 				// Check if the address should come from Joomla config
 				if ($def == '{config.mailfrom}')
