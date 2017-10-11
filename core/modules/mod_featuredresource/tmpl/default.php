@@ -51,7 +51,7 @@ if ($this->getError()) { ?>
 				<?php echo $this->escape(stripslashes($this->row->title)); ?>
 			</a>:
 		<?php if ($this->row->introtext) { ?>
-			<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->introtext)), $this->txt_length); ?>
+			<?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($this->row->introtext)), $this->txt_length); ?>
 		<?php } ?>
 		</p>
 	</div>

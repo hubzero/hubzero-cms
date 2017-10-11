@@ -94,7 +94,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 					$desc = strip_tags($desc);
 					$desc = str_replace("\n", '', $desc);
 					$desc = str_replace("&nbsp;", '', $desc);
-					echo \Hubzero\Utility\String::truncate($desc, $this->params->get('word_count', 200));
+					echo \Hubzero\Utility\Str::truncate($desc, $this->params->get('word_count', 200));
 					?>
 				</span>
 			<?php } ?>

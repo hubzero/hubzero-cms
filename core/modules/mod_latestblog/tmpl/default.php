@@ -104,11 +104,11 @@ $c = 0;
 									<?php 
 									if ($this->pullout && $c == 0)
 									{
-										echo \Hubzero\Utility\String::truncate(strip_tags($post->content), $this->params->get('pulloutlimit', 500));
+										echo \Hubzero\Utility\Str::truncate(strip_tags($post->content), $this->params->get('pulloutlimit', 500));
 									}
 									else
 									{
-										echo \Hubzero\Utility\String::truncate(strip_tags($post->content), $this->params->get('charlimit', 100));
+										echo \Hubzero\Utility\Str::truncate(strip_tags($post->content), $this->params->get('charlimit', 100));
 									}
 									?>
 								</div>

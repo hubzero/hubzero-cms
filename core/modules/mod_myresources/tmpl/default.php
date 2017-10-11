@@ -69,7 +69,7 @@ if (!$this->no_html)
 						?>
 						<li class="<?php echo $class; ?>">
 							<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->contributions[$i]->id); ?>">
-								<?php echo \Hubzero\Utility\String::truncate(stripslashes($this->contributions[$i]->title), 40); ?>
+								<?php echo \Hubzero\Utility\Str::truncate(stripslashes($this->contributions[$i]->title), 40); ?>
 							</a>
 							<span class="under">
 								<?php echo $thedate . ' &nbsp; ' . $this->escape(stripslashes($this->contributions[$i]->typetitle)); ?>

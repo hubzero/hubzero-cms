@@ -58,7 +58,7 @@ defined('_HZEXEC_') or die();
 			?>
 			<li class="wishlist">
 				<a href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $title; ?>">
-					#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
+					#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\Str::truncate(stripslashes($row->subject), 35); ?>
 				</a>
 				<span>
 					<span class="<?php
@@ -94,7 +94,7 @@ defined('_HZEXEC_') or die();
 			foreach ($this->rows2 as $row)
 			{
 				$when = Date::of($row->proposed)->relative();
-				$title = strip_tags($row->about) ? $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->about)), 160) : NULL;
+				$title = strip_tags($row->about) ? $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\Str::truncate($this->escape(strip_tags($row->about)), 160) : NULL;
 			?>
 			<li class="wishlist">
 				<a href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $title; ?>">

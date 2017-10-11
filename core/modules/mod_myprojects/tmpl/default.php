@@ -74,7 +74,7 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 				$owned_by = Lang::txt('MOD_MYPROJECTS_BY') . ' ';
 				if ($row->owned_by_group)
 				{
-					$owned_by .= '<strong>' . \Hubzero\Utility\String::truncate($row->groupname, 20) . '</strong>';
+					$owned_by .= '<strong>' . \Hubzero\Utility\Str::truncate($row->groupname, 20) . '</strong>';
 				}
 				else if ($row->created_by_user == User::get('id'))
 				{
@@ -106,7 +106,7 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 				?>
 					<li <?php echo $class; ?>>
 						<a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo Route::url('index.php?option=com_projects&alias=' . $row->alias . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($row->title); ?>" class="project-image" /></a>
-						<a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($row->title), 30); ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\Str::truncate($this->escape($row->title), 30); ?></a>
 						<span class="sub">
 							<?php echo $owned_by; ?> | <?php echo $role; ?> <?php
 							if ($setup)

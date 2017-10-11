@@ -52,7 +52,7 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
 	<?php }*/ ?>
 	<div class="ptitle">
 	<h2>
-		<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($this->model->get('title')), 50); ?></a>
+		<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50); ?></a>
 	</h2>
 	<?php // Member options
 	if (!empty($this->showOptions))

@@ -76,7 +76,7 @@ $base = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANIT
 							<?php
 							if (!trim($quote->get('short_quote')))
 							{
-								$quote->set('short_quote', \Hubzero\Utility\String::truncate($quote->get('quote'), 250));
+								$quote->set('short_quote', \Hubzero\Utility\Str::truncate($quote->get('quote'), 250));
 							}
 							$quote->set('short_quote', html_entity_decode(stripslashes($quote->get('short_quote'))));
 							$quote->set('short_quote', strip_tags($quote->get('short_quote')));

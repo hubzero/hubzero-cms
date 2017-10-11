@@ -141,7 +141,7 @@ else
 			}
 
 			$html .= "\t" . '<li class="' . $class . '">' . "\n";
-			$html .= "\t\t" . '<a href="' . Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $contributions[$i]->id) . '">' . \Hubzero\Utility\String::truncate(stripslashes($contributions[$i]->title), 40) . '</a>' . "\n";
+			$html .= "\t\t" . '<a href="' . Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $contributions[$i]->id) . '">' . \Hubzero\Utility\Str::truncate(stripslashes($contributions[$i]->title), 40) . '</a>' . "\n";
 			$html .= "\t\t" . '<span class="under">' . Lang::txt('MOD_MYCONTRIBUTIONS_TYPE') . ': ' . $contributions[$i]->typetitle . '<br />' . Lang::txt('MOD_MYCONTRIBUTIONS_SUBMITTED_BY', $author_login) . '</span>' . "\n";
 			$html .= "\t" . '</li>' . "\n";
 		}

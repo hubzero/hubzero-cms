@@ -82,7 +82,7 @@ $c = 0;
 						</span>
 					<?php if ($this->charlimit > 0) : ?>
 						<span class="discussion-comment">
-							<?php echo \Hubzero\Utility\String::truncate(strip_tags($post->get('comment')), $this->charlimit); ?>
+							<?php echo \Hubzero\Utility\Str::truncate(strip_tags($post->get('comment')), $this->charlimit); ?>
 						</span>
 					<?php endif; ?>
 					</li>

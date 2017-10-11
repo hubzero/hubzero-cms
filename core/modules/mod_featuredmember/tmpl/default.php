@@ -55,7 +55,7 @@ if ($this->getError()) { ?>
 					<?php echo $this->escape(stripslashes($this->row->get('name', $this->row->get('givenName') . ' ' . $this->row->get('surname')))); ?>
 				</a>:
 				<?php if ($txt = $this->row->get('bio')) { ?>
-					<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($txt)), $this->txt_length); ?>
+					<?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($txt)), $this->txt_length); ?>
 				<?php } ?>
 			</p>
 		</div>

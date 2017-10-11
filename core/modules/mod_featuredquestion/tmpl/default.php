@@ -39,7 +39,7 @@ if ($this->getError()) { ?>
 		$name = Lang::txt('MOD_FEATUREDQUESTION_ANONYMOUS');
 		if (!$this->row->get('anonymous'))
 		{
-			$name = $row->creator()->get('name');
+			$name = $this->row->creator->get('name');
 		}
 
 		$rcount = $this->row->responses()->where('state', '<', 2)->count();
@@ -59,7 +59,7 @@ if ($this->getError()) { ?>
 				<?php echo $this->escape(strip_tags($this->row->subject)); ?>
 			</a>
 			<?php if ($this->row->get('question')) { ?>
-				: <?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>
+				: <?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>
 			<?php } ?>
 			<br />
 			<span><?php echo Lang::txt('MOD_FEATUREDQUESTION_ASKED_BY', $name); ?></span> -
