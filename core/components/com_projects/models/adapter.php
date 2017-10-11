@@ -42,9 +42,8 @@ class Adapter extends Obj
 	/**
 	 * Exec call
 	 *
-	 * @param      string	$call
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $call
+	 * @return  mixed   to be parsed
 	 */
 	protected function _exec($call = '')
 	{

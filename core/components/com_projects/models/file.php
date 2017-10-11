@@ -44,14 +44,15 @@ class File extends Obj
 	/**
 	 * Container for properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_data = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param	string	$path
+	 * @param   string  $localPath
+	 * @param   string  $repoPath
 	 * @return  void
 	 */
 	public function __construct($localPath = null, $repoPath = null)
@@ -68,8 +69,8 @@ class File extends Obj
 	/**
 	 * Check if a property is set
 	 *
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
+	 * @param   string   $property  Name of property to set
+	 * @return  boolean  True if set
 	 */
 	public function __isset($property)
 	{
@@ -79,9 +80,9 @@ class File extends Obj
 	/**
 	 * Set a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @param   mixed   $value     Value to set property to
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -91,8 +92,8 @@ class File extends Obj
 	/**
 	 * Unset a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @return  void
 	 */
 	public function clear($property)
 	{
@@ -105,8 +106,8 @@ class File extends Obj
 	/**
 	 * Get a property
 	 *
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
+	 * @param   string  $property  Name of property to retrieve
+	 * @return  mixed
 	 */
 	public function __get($property)
 	{
@@ -119,7 +120,7 @@ class File extends Obj
 	/**
 	 * Return all properties
 	 *
-	 * @return     _data
+	 * @return  array
 	 */
 	public function getData()
 	{
@@ -129,7 +130,7 @@ class File extends Obj
 	/**
 	 * Check if file exists
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function exists()
 	{
@@ -139,7 +140,7 @@ class File extends Obj
 	/**
 	 * Build basic metadata object
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function defaults()
 	{
@@ -170,7 +171,7 @@ class File extends Obj
 	/**
 	 * Get file contents
 	 *
-	 * @return     boolean
+	 * @return  mixed
 	 */
 	public function contents()
 	{
@@ -185,6 +186,11 @@ class File extends Obj
 	/**
 	 * Get preview image
 	 *
+	 * @param   object  $model
+	 * @param   string  $hash
+	 * @param   string  $get
+	 * @param   string  $render
+	 * @param   string  $hashed
 	 * @return  mixed
 	 */
 	public function getPreview($model, $hash = '', $get = 'name', $render = '', $hashed = null)
@@ -288,8 +294,7 @@ class File extends Obj
 		}
 		elseif ($get == 'url')
 		{
-			return Route::url('index.php?option=com_projects&alias='
-			. $model->get('alias') . '&controller=media&media=' . urlencode(basename($image)));
+			return Route::url('index.php?option=com_projects&alias=' . $model->get('alias') . '&controller=media&media=' . urlencode(basename($image)));
 		}
 
 		return basename($image);
@@ -298,6 +303,7 @@ class File extends Obj
 	/**
 	 * Get file size
 	 *
+	 * @param   bool   $formatted
 	 * @return  mixed
 	 */
 	public function getSize($formatted = false)
@@ -313,7 +319,8 @@ class File extends Obj
 	/**
 	 * Set file size
 	 *
-	 * @return  mixed
+	 * @param   integer  $size
+	 * @return  integer
 	 */
 	public function setSize($size = null)
 	{
@@ -342,7 +349,7 @@ class File extends Obj
 	/**
 	 * Get mime type
 	 *
-	 * @return  mixed
+	 * @return  string
 	 */
 	public function getMimeType()
 	{
@@ -357,7 +364,7 @@ class File extends Obj
 	/**
 	 * Set mime type
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function setMimeType()
 	{
@@ -370,7 +377,7 @@ class File extends Obj
 	/**
 	 * Set md5Hash
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function setMd5Hash()
 	{
@@ -383,7 +390,7 @@ class File extends Obj
 	/**
 	 * Set md5Hash
 	 *
-	 * @return  mixed
+	 * @return  string
 	 */
 	public function getMd5Hash()
 	{
@@ -407,7 +414,7 @@ class File extends Obj
 	/**
 	 * Is image?
 	 *
-	 * @return  mixed
+	 * @return  bool
 	 */
 	public function isImage()
 	{
@@ -418,7 +425,7 @@ class File extends Obj
 	/**
 	 * Can image thumbnail be generated?
 	 *
-	 * @return  mixed
+	 * @return  bool
 	 */
 	public function isSupportedImage()
 	{
@@ -433,7 +440,7 @@ class File extends Obj
 	/**
 	 * Get item parent directories
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function getParents()
 	{
@@ -450,7 +457,7 @@ class File extends Obj
 	/**
 	 * Set item parents
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function setParents()
 	{
@@ -487,7 +494,7 @@ class File extends Obj
 	/**
 	 * Build file metadata object for a folder
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function setFolder()
 	{
@@ -512,10 +519,10 @@ class File extends Obj
 	/**
 	 * Fix up some mimetypes
 	 *
-	 * @param      string $mimeType
-	 * @return     string
+	 * @param   string  $mimeType
+	 * @return  string
 	 */
-	protected function _fixUpMimeType ($mimeType = null)
+	protected function _fixUpMimeType($mimeType = null)
 	{
 		if ($this->get('ext'))
 		{
@@ -545,10 +552,10 @@ class File extends Obj
 	/**
 	 * Get file icon image
 	 *
-	 * @param      boolean $basename
-	 * @return     string
+	 * @param   boolean  $basename
+	 * @return  string
 	 */
-	public function getIcon ($basename = false)
+	public function getIcon($basename = false)
 	{
 		if (!$this->get('icon'))
 		{
@@ -560,12 +567,12 @@ class File extends Obj
 	/**
 	 * Set file icon image
 	 *
-	 * @param      string  $ext
-	 * @param      boolean $basename
-	 * @param      string  $icon
-	 * @return     string
+	 * @param   string   $ext
+	 * @param   boolean  $basename
+	 * @param   string   $icon
+	 * @return  string
 	 */
-	public function setIcon ($ext = null, $basename = false, $icon = '')
+	public function setIcon($ext = null, $basename = false, $icon = '')
 	{
 		if ($this->get('icon') && $this->get('ext') == $ext)
 		{
@@ -590,8 +597,8 @@ class File extends Obj
 	/**
 	 * Draw icon
 	 *
-	 * @param      string  $ext
-	 * @return     HTML string
+	 * @param   string  $ext
+	 * @return  string  HTML
 	 */
 	public static function drawIcon($ext = '')
 	{
@@ -602,12 +609,12 @@ class File extends Obj
 	/**
 	 * Get file icon image
 	 *
-	 * @param      string  $ext
-	 * @param      boolean $basename
-	 * @param      string  $icon
-	 * @return     string
+	 * @param   string   $ext
+	 * @param   boolean  $basename
+	 * @param   string   $icon
+	 * @return  string
 	 */
-	public static function getIconImage ($ext, $basename = false, $icon = '')
+	public static function getIconImage($ext, $basename = false, $icon = '')
 	{
 		switch (strtolower($ext))
 		{
@@ -743,12 +750,10 @@ class File extends Obj
 	/**
 	 * Get folder structure level
 	 *
-	 * @param      array	$files
-	 * @param      array	$params
-	 *
-	 * @return     integer
+	 * @param   string   $dirPath
+	 * @return  integer
 	 */
-	public function getDirLevel ($dirPath = '')
+	public function getDirLevel($dirPath = '')
 	{
 		if (!trim($dirPath))
 		{

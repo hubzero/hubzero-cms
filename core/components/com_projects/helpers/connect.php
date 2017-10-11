@@ -39,7 +39,7 @@ use Google_Service_Oauth2;
 use Google_Http_Request;
 use Hubzero\Base\Obj;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php';
+require_once __DIR__ . DS . 'remote' . DS . 'google.php';
 
 /**
  * Projects Connect helper class
@@ -51,71 +51,71 @@ class Connect extends Obj
 	 *
 	 * @var object
 	 */
-	public $model		   = null;
+	public $model = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	private $_db			= null;
+	private $_db = null;
 
 	/**
 	 * User ID
 	 *
 	 * @var integer
 	 */
-	private $_uid			= null;
+	private $_uid = null;
 
 	/**
 	 * Connection configuration
 	 *
 	 * @var array
 	 */
-	private $_connect		= array();
+	private $_connect = array();
 
 	/**
 	 * Service configuration
 	 *
 	 * @var array
 	 */
-	private $_service		= array();
+	private $_service = array();
 
 	/**
 	 * Available services
 	 *
 	 * @var array
 	 */
-	private $_services		= array('google', 'dropbox');
+	private $_services = array('google', 'dropbox');
 
 	/**
 	 * Service client
 	 *
 	 * @var array
 	 */
-	public $_client			= array();
+	public $_client = array();
 
 	/**
 	 * Service API
 	 *
 	 * @var array
 	 */
-	public $_api			= array();
+	public $_api = array();
 
 	/**
 	 * URL to revoke Google token
 	 */
-	const GOOGLE_OAUTH2_REVOKE_URI	= 'https://accounts.google.com/o/oauth2/revoke';
+	const GOOGLE_OAUTH2_REVOKE_URI = 'https://accounts.google.com/o/oauth2/revoke';
 
 	/**
 	 * URL to refresh Google token
 	 */
-	const GOOGLE_OAUTH2_TOKEN_URI	= 'https://accounts.google.com/o/oauth2/token';
+	const GOOGLE_OAUTH2_TOKEN_URI = 'https://accounts.google.com/o/oauth2/token';
 
 	/**
 	 * Google auth URL
 	 */
-	const GOOGLE_OAUTH2_AUTH_URL	= 'https://accounts.google.com/o/oauth2/auth';
+	const GOOGLE_OAUTH2_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth';
 
 	/**
 	 * Constructor

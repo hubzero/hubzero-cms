@@ -44,19 +44,20 @@ class Nogit extends Obj
 	 *
 	 * @var integer
 	 */
-	private $_uid 			= null;
+	private $_uid = null;
 
 	/**
 	 * Full path to Git repo
 	 *
 	 * @var string
 	 */
-	private $_path 		    = null;
+	private $_path = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @param   string  $path
+	 * @return  void
 	 */
 	public function __construct($path = null)
 	{
@@ -73,11 +74,10 @@ class Nogit extends Obj
 	/**
 	 * Init Git repository
 	 *
-	 * @param      string	$path	Repo path
-	 *
-	 * @return     string
+	 * @param   string  $path  Repo path
+	 * @return  string
 	 */
-	public function iniGit( $path = null)
+	public function iniGit($path = null)
 	{
 		if (!$path)
 		{
@@ -97,11 +97,10 @@ class Nogit extends Obj
 	/**
 	 * Make a call
 	 *
-	 * @param      string	$call
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $call
+	 * @return  array   to be parsed
 	 */
-	public function call ($call = '')
+	public function call($call = '')
 	{
 		if (!$this->_path || !is_dir($this->_path) || !$call)
 		{
@@ -118,9 +117,8 @@ class Nogit extends Obj
 	/**
 	 * Exec call
 	 *
-	 * @param      string	$call
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $call
+	 * @return  array   to be parsed
 	 */
 	protected function _exec($call = '')
 	{
@@ -139,10 +137,9 @@ class Nogit extends Obj
 	/**
 	 * Get file content
 	 *
-	 * @param      string  	$file		file path
-	 * @param      string  	$target		Output content to path
-	 *
-	 * @return     void
+	 * @param   string  $file    file path
+	 * @param   string  $target  Output content to path
+	 * @return  bool
 	 */
 	public function getContent($file = '', $target = '')
 	{
@@ -158,12 +155,11 @@ class Nogit extends Obj
 	/**
 	 * Parse response
 	 *
-	 * @param      array  	$out		Array of data to parse
-	 * @param      string  	$return
-	 *
-	 * @return     mixed
+	 * @param   array  	$out     Array of data to parse
+	 * @param   string  $return
+	 * @return  mixed
 	 */
-	public function parseLog ($out = array(), $return = 'date')
+	public function parseLog($out = array(), $return = 'date')
 	{
 		return '';
 	}
@@ -210,10 +206,14 @@ class Nogit extends Obj
 	/**
 	 * Get changes for sync
 	 *
-	 * @return     array
+	 * @param   string  $localPath
+	 * @param   string  $synced
+	 * @param   string  $localDir
+	 * @param   array   $localRenames
+	 * @param   array   $connections
+	 * @return  array
 	 */
-	public function getChanges ($localPath = '', $synced = '',
-		$localDir = '', &$localRenames, $connections)
+	public function getChanges($localPath = '', $synced = '', $localDir = '', &$localRenames, $connections)
 	{
 		//Stub for compatibility
 		return array();
@@ -222,12 +222,12 @@ class Nogit extends Obj
 	/**
 	 * Make Git recognize empty folder
 	 *
-	 * @param      string	$path
-	 * @param      string	$dir
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $dir
+	 * @param   bool    $commit
+	 * @param   string  $commitMsg
+	 * @return  bool
 	 */
-	public function makeEmptyFolder ( $dir = '', $commit = true, $commitMsg = '' )
+	public function makeEmptyFolder($dir = '', $commit = true, $commitMsg = '')
 	{
 		// Check for repo
 		if (!$this->_path || !is_dir($this->_path))
@@ -239,7 +239,7 @@ class Nogit extends Obj
 		chdir($this->_path);
 
 		// Git add
-		$this->gitAdd($dir, $commitMsg );
+		$this->gitAdd($dir, $commitMsg);
 
 		if ($commit == false)
 		{
@@ -258,12 +258,11 @@ class Nogit extends Obj
 	/**
 	 * Filter ASCII
 	 *
-	 * @param      array	$out
-	 * @param      boolean	$diff	Format as diff?
-	 * @param      boolean	$color	Color changes?
-	 * @param      int		$max	Max number of lines
-	 *
-	 * @return     string
+	 * @param   array    $out
+	 * @param   boolean  $diff   Format as diff?
+	 * @param   boolean  $color  Color changes?
+	 * @param   int      $max    Max number of lines
+	 * @return  string
 	 */
 	public static function filterASCII($out = array(), $diff = false, $color = false, $max = 200)
 	{
@@ -340,19 +339,18 @@ class Nogit extends Obj
 	/**
 	 * Determine if last change was a rename
 	 *
-	 * @param      string	$file		file path
-	 * @param      string	$hash		Git hash
-	 * @param      string	$since
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $file   file path
+	 * @param   string  $hash   Git hash
+	 * @param   string  $since
+	 * @return  array   to be parsed
 	 */
-	public function getRename ($file = '', $hash = '', $since = '' )
+	public function getRename($file = '', $hash = '', $since = '')
 	{
 		$renames = $this->gitLog($file, '', 'rename');
 		$rename = '';
 
 		$hashes = $this->getLocalFileHistory($file);
-		$new	= $this->getLocalFileHistory($file, '', $since);
+		$new    = $this->getLocalFileHistory($file, '', $since);
 		$fetch  = 1;
 
 		if (count($renames) > 0)
@@ -388,13 +386,12 @@ class Nogit extends Obj
 	/**
 	 * Show commit log detail
 	 *
-	 * @param      string  	$file		file path
-	 * @param      string  	$hash		Git hash
-	 * @param      string  	$return
-	 *
-	 * @return     string
+	 * @param   string  $file    file path
+	 * @param   string  $hash    Git hash
+	 * @param   string  $return
+	 * @return  string
 	 */
-	public function gitLog ($file = '', $hash = '', $return = 'date')
+	public function gitLog($file = '', $hash = '', $return = 'date')
 	{
 		if (!$this->_path || !is_dir($this->_path))
 		{

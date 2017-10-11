@@ -42,18 +42,18 @@ class Compiler extends Obj
 	/**
 	 * Cache dir
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_outputFolder 	= './';
 
 	/**
 	 * Is tex file?
 	 *
-	 * @param      string	$file
-	 *
-	 * @return     array to be parsed
+	 * @param   string   $file
+	 * @param   string   $mimeType
+	 * @return  integer
 	 */
-	public static function isTexFile ($file = '', $mimeType = '')
+	public static function isTexFile($file = '', $mimeType = '')
 	{
 		$tex = 0;
 
@@ -76,28 +76,26 @@ class Compiler extends Obj
 	/**
 	 * Get array of file types
 	 *
-	 * @param      string	$file
-	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public static function getFormatsArray()
 	{
 		$formats = array (
-		    'application' => array (
-		      'application/pdf'
-		    ),
-		    'images'  => array (
-		      'image/jpeg',
-		      'image/jpg',
-		      'image/png',
-		      'image/x-png',
-		      'image/gif'
+			'application' => array (
+				'application/pdf'
 			),
-			'text'  => array (
-		      'text/plain',
-		      'text/css',
-			  'text/x-tex',
-			  'text/html'
+			'images' => array (
+				'image/jpeg',
+				'image/jpg',
+				'image/png',
+				'image/x-png',
+				'image/gif'
+			),
+			'text' => array (
+				'text/plain',
+				'text/css',
+				'text/x-tex',
+				'text/html'
 			)
 		);
 
@@ -107,16 +105,15 @@ class Compiler extends Obj
 	/**
 	* Compile tex
 	*
-	* @access	public
-	* @param	string		fullpath
-	* @param	string		data
-	* @param	string		textpath
-	* @param	string		outputDir
-	* @param	integer		getPath
-	* @param	string		&tempBase
-	* @return	string		compressed data
+	* @param   string   $fullpath
+	* @param   string   $data
+	* @param   string   $textpath
+	* @param   string   $outputDir
+	* @param   integer  $getPath
+	* @param   string   &$tempBase
+	* @return  string   compressed data
 	*/
-	function compileTex( $fullpath = '', $data = '', $texpath = '', $outputDir = '', $getPath = 0, &$tempBase = '' )
+	public function compileTex($fullpath = '', $data = '', $texpath = '', $outputDir = '', $getPath = 0, &$tempBase = '')
 	{
 		if (!$texpath || !$data)
 		{
@@ -128,13 +125,13 @@ class Compiler extends Obj
 
 		if (!$tempBase)
 		{
-			$filename 	 = Html::takeOutExt(basename($fullpath));
-			$texFile	 = $cacheFolder . DS . $filename . '__temp_' . Html::generateCode (6, 6, 0, 1, 1 );
-			$tempBase	 = basename($texFile);
+			$filename = Html::takeOutExt(basename($fullpath));
+			$texFile  = $cacheFolder . DS . $filename . '__temp_' . Html::generateCode(6, 6, 0, 1, 1 );
+			$tempBase = basename($texFile);
 		}
 		else
 		{
-			$texFile	 = $cacheFolder . DS . $tempBase;
+			$texFile = $cacheFolder . DS . $tempBase;
 		}
 
 		$pdf = $tempBase . '.pdf';

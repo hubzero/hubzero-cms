@@ -36,7 +36,7 @@ use Components\Projects\Models;
 use Components\Projects\Helpers;
 
 // Get git helper
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'githelper.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'githelper.php';
 
 /**
  * Projects Git adapter class
