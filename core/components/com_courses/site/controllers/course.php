@@ -35,7 +35,7 @@ namespace Components\Courses\Site\Controllers;
 use Components\Courses\Models;
 use Components\Courses\Tables;
 use Hubzero\Component\SiteController;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Content\Server;
 use Exception;
 use stdClass;
@@ -180,7 +180,7 @@ class Course extends SiteController
 		{
 			foreach ($pages as $page)
 			{
-				$plg = with(new Object)
+				$plg = with(new Obj)
 					->set('name', $page->get('url'))
 					->set('title', $page->get('title'));
 

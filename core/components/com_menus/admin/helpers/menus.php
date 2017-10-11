@@ -50,7 +50,7 @@ class MenusHelper
 	 */
 	public static function getActions($parentId = 0)
 	{
-		$result = new \Hubzero\Base\Object;
+		$result = new \Hubzero\Base\Obj;
 
 		if (empty($parentId)) {
 			$assetName = 'com_menus';

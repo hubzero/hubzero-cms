@@ -33,7 +33,7 @@ namespace Components\Templates\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Filesystem;
 use Lang;
 
@@ -172,7 +172,7 @@ class Template extends Relational
 		{
 			$filePath = Filesystem::cleanPath(($this->get('protected') ? PATH_CORE : PATH_APP) . '/templates/' . $this->get('element') . '/templateDetails.xml');
 
-			$this->xmldata = new Object;
+			$this->xmldata = new Obj;
 
 			// Check of the xml file exists
 			if (is_file($filePath))

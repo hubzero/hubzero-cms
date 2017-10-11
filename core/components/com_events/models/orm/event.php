@@ -34,8 +34,6 @@
 namespace Components\Events\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model
@@ -85,7 +83,7 @@ class Event extends Relational
 	 */
 	public static function getLatest($limit = 10, $dateField = 'created', $sort = 'DESC')
 	{
-		$rows = Event::all()->where('scope', '=', 'event')->where('state', '=', '1')->order($dateField, $sort)->limit($limit);
+		$rows = self::all()->where('scope', '=', 'event')->where('state', '=', '1')->order($dateField, $sort)->limit($limit);
 
 		return $rows;
 	}

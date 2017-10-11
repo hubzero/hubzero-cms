@@ -31,7 +31,7 @@
 
 namespace Plugins\Groups\Activity\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Util;
 use Hubzero\Utility\Number;
 use Filesystem;
@@ -40,7 +40,7 @@ use Lang;
 /**
  * Class for comment files (attachments)
  */
-class Attachment extends Object
+class Attachment extends Obj
 {
 	/**
 	 * File size

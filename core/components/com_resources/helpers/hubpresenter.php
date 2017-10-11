@@ -32,12 +32,12 @@
 
 namespace Components\Resources\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Helper class for HUB Presenter
  */
-class Hubpresenter extends Object
+class Hubpresenter extends Obj
 {
 	/**
 	 * Generates JSON Manifest from XML doc uploaded

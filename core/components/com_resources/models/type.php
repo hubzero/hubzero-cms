@@ -33,8 +33,6 @@ namespace Components\Resources\Models;
 
 use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 include_once __DIR__ . DS . 'author' . DS . 'role.php';
 

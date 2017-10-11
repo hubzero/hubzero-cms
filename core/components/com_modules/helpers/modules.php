@@ -32,7 +32,7 @@
 
 namespace Components\Modules\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
 use Html;
 use Lang;
@@ -58,7 +58,7 @@ abstract class Modules
 	 */
 	public static function getActions()
 	{
-		$result    = new Object;
+		$result    = new Obj;
 		$assetName = self::$extension;
 
 		$actions = Access::getActionsFromFile(\Component::path($assetName) . '/config/access.xml');

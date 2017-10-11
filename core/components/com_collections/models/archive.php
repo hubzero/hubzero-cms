@@ -33,7 +33,7 @@
 namespace Components\Collections\Models;
 
 use Components\Collections\Tables;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Base\ItemList;
 use Hubzero\Plugin\Params;
 use User;
@@ -46,28 +46,28 @@ require_once(__DIR__ . DS . 'collection.php');
 /**
  * Collections archive model
  */
-class Archive extends Object
+class Archive extends Obj
 {
 	/**
 	 * Object type [member, group, etc.]
 	 *
 	 * @var string
 	 */
-	private $_object_type = NULL;
+	private $_object_type = null;
 
 	/**
 	 * Object ID [member ID, group ID, etc.]
 	 *
 	 * @var integer
 	 */
-	private $_object_id = NULL;
+	private $_object_id = null;
 
 	/**
 	 * JDatabase
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * \Hubzero\Base\ItemList

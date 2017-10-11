@@ -32,7 +32,7 @@
 
 namespace Components\Collections\Helpers;
 
-use hubzero\Base\Object;
+use hubzero\Base\Obj;
 use User;
 
 /**
@@ -63,7 +63,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = array(
 			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
@@ -77,4 +77,3 @@ class Permissions
 		return $result;
 	}
 }
-

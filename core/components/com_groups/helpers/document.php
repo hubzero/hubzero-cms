@@ -32,20 +32,61 @@
 
 namespace Components\Groups\Helpers;
 
-use Hubzero\Base\Object;
-use Hubzero\Utility\String;
+use Hubzero\Base\Obj;
+use Hubzero\Utility\Str;
 use App;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'helpers' . DS . 'document' . DS . 'renderer.php';
+require_once __DIR__ . DS . 'document' . DS . 'renderer.php';
 
-class Document extends Object
+class Document extends Obj
 {
+	/**
+	 * Document
+	 *
+	 * @var  object
+	 */
 	public $document     = null;
+
+	/**
+	 * Group
+	 *
+	 * @var  object
+	 */
 	public $group        = null;
+
+	/**
+	 * Content
+	 *
+	 * @var  object
+	 */
 	public $content      = null;
+
+	/**
+	 * Page
+	 *
+	 * @var  object
+	 */
 	public $page         = null;
+
+	/**
+	 * Tab
+	 *
+	 * @var  string
+	 */
 	public $tab          = null;
+
+	/**
+	 * Allowed tags
+	 *
+	 * @var  array
+	 */
 	public $allowed_tags = array('module','modules','stylesheet','script');
+
+	/**
+	 * Tags
+	 *
+	 * @var  array
+	 */
 	private $_tags       = array();
 
 	/**
@@ -71,7 +112,7 @@ class Document extends Object
 			//loop through each match
 			for ($i = 0; $i < $count; $i++)
 			{
-				$attribs = String::parseAttributes($matches[1][$i]);
+				$attribs = Str::parseAttributes($matches[1][$i]);
 
 				$type   = (isset($attribs['type'])) ? strtolower(trim($attribs['type'])) : null;
 				$name   = (isset($attribs['name'])) ? $attribs['name'] : $type;
@@ -101,9 +142,6 @@ class Document extends Object
 		// vars to hold replace values
 		$replace = array();
 		$with    = array();
-
-		// include renderer class
-		require_once __DIR__ . DS . 'document' . DS . 'renderer.php';
 
 		// loop through all includes and render
 		foreach ($this->_tags as $tag => $props)
@@ -140,13 +178,12 @@ class Document extends Object
 		}
 	}
 
-
 	/**
 	 * Get Template Buffer
 	 *
 	 * @return  string
 	 */
-	private function _getBuffer( $tag, $type = null, $name = null, $params = array() )
+	private function _getBuffer($tag, $type = null, $name = null, $params = array())
 	{
 		// make sure we have type
 		// make sure this type is in allowed tags
@@ -174,7 +211,7 @@ class Document extends Object
 		}
 
 		// instantiate renderer and call render
-		$renderer          = new $renderClass();
+		$renderer = new $renderClass();
 		$renderer->group   = $this->get('group');
 		$renderer->page    = $this->get('page');
 		$renderer->content = $this->get('content');

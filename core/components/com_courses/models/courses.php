@@ -33,7 +33,7 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 require_once(__DIR__ . DS . 'course.php');
 require_once(__DIR__ . DS . 'iterator.php');
@@ -42,21 +42,21 @@ require_once(__DIR__ . DS . 'tags.php');
 /**
  * Courses model class for a course
  */
-class Courses extends Object
+class Courses extends Obj
 {
 	/**
 	 * Tables\Course
 	 *
 	 * @var object
 	 */
-	private $_tbl = NULL;
+	private $_tbl = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
@@ -230,4 +230,3 @@ class Courses extends Object
 		return $ct->parseTags($tag, $remove);
 	}
 }
-

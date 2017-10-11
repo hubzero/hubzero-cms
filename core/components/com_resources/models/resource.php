@@ -34,18 +34,18 @@ namespace Components\Resources\Models;
 
 use Components\Resources\Tables;
 use Components\Resources\Helpers;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Component;
 use Request;
 use Event;
 use Lang;
 
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'resource.php');
+include_once dirname(__DIR__) . DS . 'tables' . DS . 'resource.php';
 
 /**
  * Information retrieval for items/info linked to a resource
  */
-class Resource extends Object
+class Resource extends Obj
 {
 	/**
 	 * Resource ID
@@ -864,12 +864,24 @@ class Resource extends Object
 				 . " ORDER BY "; //a.ordering ASC, a.grouping ASC";
 			switch ($order)
 			{
-				case 'ordering': $sql .= "a.ordering ASC, a.grouping ASC";    break;
-				case 'date':     $sql .= "r.publish_up DESC";                 break;
-				case 'title':    $sql .= "r.title ASC, r.publish_up";         break;
-				case 'rating':   $sql .= "r.rating DESC, r.times_rated DESC"; break;
-				case 'ranking':  $sql .= "r.ranking DESC";                    break;
-				case 'author':   $sql .= "author";                            break;
+				case 'ordering':
+					$sql .= "a.ordering ASC, a.grouping ASC";
+					break;
+				case 'date':
+					$sql .= "r.publish_up DESC";
+					break;
+				case 'title':
+					$sql .= "r.title ASC, r.publish_up";
+					break;
+				case 'rating':
+					$sql .= "r.rating DESC, r.times_rated DESC";
+					break;
+				case 'ranking':
+					$sql .= "r.ranking DESC";
+					break;
+				case 'author':
+					$sql .= "author";
+					break;
 			}
 			/*if ($limit != 0)
 			{
@@ -1036,7 +1048,7 @@ class Resource extends Object
 		{
 			$this->tags = array();
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
 
 			$rt = new Helpers\Tags($this->resource->id);
 			if ($results = $rt->tags('list')) // get_tags_on_object
@@ -1109,10 +1121,10 @@ class Resource extends Object
 		{
 			$this->citations = array();
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
+			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
 
 			$cc = new \Components\Citations\Tables\Citation($this->_db);
 
@@ -1297,7 +1309,7 @@ class Resource extends Object
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 
 		return $content;

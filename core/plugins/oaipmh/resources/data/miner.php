@@ -31,7 +31,7 @@
 
 namespace Plugins\Oaipmh\Resources\Data;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Oaipmh\Models\Provider;
 use Component;
 
@@ -40,7 +40,7 @@ require_once Component::path('com_oaipmh') . '/models/provider.php';
 /**
  * Data miner for resources to be used by OAI-PMH
  */
-class Miner extends Object implements Provider
+class Miner extends Obj implements Provider
 {
 	/**
 	 * Base URL

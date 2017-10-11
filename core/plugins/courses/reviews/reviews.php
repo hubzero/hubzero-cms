@@ -57,7 +57,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	public function onCourseView($course, $active=null)
 	{
 		// Prepare the response
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
@@ -98,14 +98,28 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 			switch ($this->task)
 			{
 				// Entries
-				case 'save':     $this->_save();   break;
-				case 'new':      $this->_view();   break;
-				case 'edit':     $this->_view();   break;
-				case 'delete':   $this->_delete(); break;
-				case 'view':     $this->_view();   break;
-				case 'vote':     $this->_vote();   break;
+				case 'save':
+					$this->_save();
+					break;
+				case 'new':
+					$this->_view();
+					break;
+				case 'edit':
+					$this->_view();
+					break;
+				case 'delete':
+					$this->_delete();
+					break;
+				case 'view':
+					$this->_view();
+					break;
+				case 'vote':
+					$this->_vote();
+					break;
 
-				default:         $this->_view();   break;
+				default:
+					$this->_view();
+					break;
 			}
 
 			foreach ($this->getErrors() as $error)

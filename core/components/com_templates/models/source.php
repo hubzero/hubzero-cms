@@ -31,12 +31,12 @@
 
 namespace Components\Templates\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Source model
  */
-class Source extends Object
+class Source extends Obj
 {
 	/**
 	 * Cache for the template information.

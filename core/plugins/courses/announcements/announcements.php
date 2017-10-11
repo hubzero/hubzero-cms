@@ -55,7 +55,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourse($course, $offering, $describe=false)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
@@ -92,17 +92,27 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 				$this->offering->link() . '&active=' . $this->_name
 			);
 
-			require_once(Component::path('com_courses') . DS . 'models' . DS . 'announcement.php');
+			require_once Component::path('com_courses') . DS . 'models' . DS . 'announcement.php';
 
 			$action = Request::getWord('action', '');
 
 			switch (strtolower($action))
 			{
-				case 'save':   $response->set('html', $this->_save());   break;
-				case 'new':    $response->set('html', $this->_edit());   break;
-				case 'edit':   $response->set('html', $this->_edit());   break;
-				case 'delete': $response->set('html', $this->_delete()); break;
-				default:       $response->set('html', $this->_list());   break;
+				case 'save':
+					$response->set('html', $this->_save());
+					break;
+				case 'new':
+					$response->set('html', $this->_edit());
+					break;
+				case 'edit':
+					$response->set('html', $this->_edit());
+					break;
+				case 'delete':
+					$response->set('html', $this->_delete());
+					break;
+				default:
+					$response->set('html', $this->_list());
+					break;
 			}
 		}
 
@@ -328,4 +338,3 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		return $this->_list();
 	}
 }
-

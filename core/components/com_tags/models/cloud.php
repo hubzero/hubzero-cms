@@ -41,7 +41,7 @@ require_once(__DIR__ . DS . 'tag.php');
 /**
  * Cloud model for Tags
  */
-class Cloud extends \Hubzero\Base\Object
+class Cloud extends \Hubzero\Base\Obj
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags

@@ -32,7 +32,7 @@
 namespace Components\Messages\Helpers;
 
 use Hubzero\Access\Access;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Utility\Arr;
 use User;
 use Html;
@@ -72,7 +72,7 @@ class Utilities
 	 */
 	public static function getActions()
 	{
-		$result	= new Object;
+		$result	= new Obj;
 
 		$actions = Access::getActionsFromFile(dirname(__DIR__) . DS . 'config' . DS . 'access.xml');
 

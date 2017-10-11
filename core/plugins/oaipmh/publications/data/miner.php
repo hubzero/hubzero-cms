@@ -32,15 +32,15 @@
 
 namespace Plugins\Oaipmh\Publications\Data;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Oaipmh\Models\Provider;
 
-require_once(PATH_CORE . '/components/com_oaipmh/models/provider.php');
+require_once \Component::path('com_oaipmh') . '/models/provider.php';
 
 /**
  * Data miner for publications to be used by OAI-PMH
  */
-class Miner extends Object implements Provider
+class Miner extends Obj implements Provider
 {
 	/**
 	 * Base URL
@@ -369,9 +369,9 @@ class Miner extends Object implements Provider
 			ORDER BY `year` DESC"
 		);
 		$references = $this->database->loadObjectList();
-		if (count($references) && file_exists(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		if (count($references) && file_exists(\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php'))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+			include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 			$formatter = new \Components\Citations\Helpers\Format;
 			$formatter->setTemplate('apa');
@@ -396,9 +396,9 @@ class Miner extends Object implements Provider
 			ORDER BY `year` DESC"
 		);
 		$references = $this->database->loadObjectList();
-		if (count($references) && file_exists(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		if (count($references) && file_exists(\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php'))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+			include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 			$formatter = new \Components\Citations\Helpers\Format;
 			$formatter->setTemplate('apa');

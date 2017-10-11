@@ -38,7 +38,7 @@ use Components\Forum\Models\Attachment;
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
+require_once \Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 /**
  * Courses Plugin class for forum entries
@@ -107,7 +107,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+		require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
 
 		// Load the parent unit
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
@@ -196,7 +196,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+		require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
 
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 
@@ -299,7 +299,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourse($course, $offering, $describe=false)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))

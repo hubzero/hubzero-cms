@@ -110,7 +110,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$object_file = new \Hubzero\Base\Object($file);
+			$object_file = new \Hubzero\Base\Obj($file);
 			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
 			if (in_array(false, $result, true))
 			{
@@ -232,7 +232,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			$fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
-			$object_file = new \Hubzero\Base\Object(array('filepath' => $fullPath));
+			$object_file = new \Hubzero\Base\Obj(array('filepath' => $fullPath));
 			if (is_file($fullPath))
 			{
 				// Trigger the onContentBeforeDelete event.

@@ -34,7 +34,7 @@ namespace Components\Resources\Models\Import;
 
 use Components\Resources\Tables;
 use Components\Resources\Helpers\Tags;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Exception;
 use stdClass;
 

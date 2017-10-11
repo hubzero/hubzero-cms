@@ -85,7 +85,7 @@ class Installer
 	 */
 	public static function getActions()
 	{
-		$result = new \Hubzero\Base\Object;
+		$result = new \Hubzero\Base\Obj;
 
 		$assetName = 'com_installer';
 

@@ -687,7 +687,7 @@ class MenusModelItem extends JModelAdmin
 
 		// Convert to the Object before adding the params.
 		$properties = $table->getProperties(1);
-		$result = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
+		$result = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Obj');
 
 		// Convert the params field to an array.
 		$registry = new \Hubzero\Config\Registry($table->params);

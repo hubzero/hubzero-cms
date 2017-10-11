@@ -45,7 +45,7 @@ class MediaViewImagesList extends JViewLegacy
 		}
 		else
 		{
-			$this->_tmp_folder = new \Hubzero\Base\Object;
+			$this->_tmp_folder = new \Hubzero\Base\Obj;
 		}
 	}
 
@@ -57,7 +57,7 @@ class MediaViewImagesList extends JViewLegacy
 		}
 		else
 		{
-			$this->_tmp_img = new \Hubzero\Base\Object;
+			$this->_tmp_img = new \Hubzero\Base\Obj;
 		}
 	}
 }

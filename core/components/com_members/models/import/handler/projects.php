@@ -32,7 +32,7 @@
 
 namespace Components\Members\Models\Import\Handler;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Projects\Models\Project;
 use Components\Projects\Tables;
 use Component;
@@ -44,7 +44,7 @@ include_once Component::path('com_projects') . '/models/project.php';
 /**
  * Member Projects import handler
  */
-class Projects extends Object
+class Projects extends Obj
 {
 	/**
 	 * Return a sample for import header and content

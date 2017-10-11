@@ -75,7 +75,7 @@ class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 
 		Document::addScriptDeclaration($js);
 
-		$button = new \Hubzero\Base\Object;
+		$button = new \Hubzero\Base\Obj;
 		$button->set('modal', false);
 		$button->set('onclick', 'insertReadmore(\''.$name.'\');return false;');
 		$button->set('text', Lang::txt('PLG_READMORE_BUTTON_READMORE'));

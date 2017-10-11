@@ -34,7 +34,7 @@ namespace Components\Groups\Models\Page;
 
 use Components\Groups\Models\Page;
 use Components\Groups\Tables;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Base\Model\ItemList;
 
 // include needed models
@@ -65,14 +65,14 @@ class Archive extends Object
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * \Hubzero\User\Group
 	 *
 	 * @var object
 	 */
-	private $_group = NULL;
+	private $_group = null;
 
 	/**
 	 * Constructor

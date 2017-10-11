@@ -31,7 +31,7 @@
 
 namespace Components\Templates\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
 use Request;
 use Submenu;
@@ -72,7 +72,7 @@ class Utilities
 	 */
 	public static function getActions()
 	{
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = Access::getActionsFromFile(\Component::path('com_templates') . '/config/access.xml');
 

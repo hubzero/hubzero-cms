@@ -32,14 +32,14 @@
 
 namespace Components\Resources\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use stdClass;
 use Lang;
 
 /**
  * Resource element base class
  */
-class Element extends Object
+class Element extends Obj
 {
 	/**
 	* Element name

@@ -34,8 +34,6 @@
 namespace Components\Resources\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Resource association model

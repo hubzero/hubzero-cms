@@ -37,7 +37,7 @@ use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Object;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Collections Tagging class
@@ -143,4 +143,3 @@ class Tags extends Cloud
 		return $this;
 	}
 }
-

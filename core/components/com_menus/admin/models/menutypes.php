@@ -131,7 +131,7 @@ class MenusModelMenutypes extends JModelLegacy
 		if (!empty($menu['options']) && $menu['options'] == 'none')
 		{
 			// Create the menu option for the component.
-			$o = new \Hubzero\Base\Object;
+			$o = new \Hubzero\Base\Obj;
 			$o->title		= (string) $menu['name'];
 			$o->description	= (string) $menu['msg'];
 			$o->request		= array('option' => $component);
@@ -164,7 +164,7 @@ class MenusModelMenutypes extends JModelLegacy
 				if ($child->getName() == 'option')
 				{
 					// Create the menu option for the component.
-					$o = new \Hubzero\Base\Object;
+					$o = new \Hubzero\Base\Obj;
 					$o->title		= (string) $child['name'];
 					$o->description	= (string) $child['msg'];
 					$o->request		= array('option' => $component, (string) $optionsNode['var'] => (string) $child['value']);
@@ -174,7 +174,7 @@ class MenusModelMenutypes extends JModelLegacy
 				elseif ($child->getName() == 'default')
 				{
 					// Create the menu option for the component.
-					$o = new \Hubzero\Base\Object;
+					$o = new \Hubzero\Base\Obj;
 					$o->title		= (string) $child['name'];
 					$o->description	= (string) $child['msg'];
 					$o->request		= array('option' => $component);
@@ -245,7 +245,7 @@ class MenusModelMenutypes extends JModelLegacy
 										if ($child->getName() == 'option')
 										{
 											// Create the menu option for the component.
-											$o = new \Hubzero\Base\Object;
+											$o = new \Hubzero\Base\Obj;
 											$o->title		= (string) $child['name'];
 											$o->description	= (string) $child['msg'];
 											$o->request		= array(
@@ -259,7 +259,7 @@ class MenusModelMenutypes extends JModelLegacy
 										elseif ($child->getName() == 'default')
 										{
 											// Create the menu option for the component.
-											$o = new \Hubzero\Base\Object;
+											$o = new \Hubzero\Base\Obj;
 											$o->title		= (string) $child['name'];
 											$o->description	= (string) $child['msg'];
 											$o->request		= array(
@@ -369,7 +369,7 @@ class MenusModelMenutypes extends JModelLegacy
 				$layout = Filesystem::name(basename($layout));
 
 				// Create the menu option for the layout.
-				$o = new \Hubzero\Base\Object;
+				$o = new \Hubzero\Base\Obj;
 				$o->title		= ucfirst($layout);
 				$o->description	= '';
 				$o->request		= array(

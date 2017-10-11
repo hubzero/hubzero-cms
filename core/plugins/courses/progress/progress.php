@@ -58,7 +58,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourse($course, $offering, $describe=false)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
@@ -113,20 +113,48 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		switch (Request::getWord('action'))
 		{
-			case 'assessmentdetails':   $this->assessmentdetails();   break;
-			case 'getprogressrows':     $this->getprogressrows();     break;
-			case 'getprogressdata':     $this->getprogressdata();     break;
-			case 'getgradebookdata':    $this->getgradebookdata();    break;
-			case 'getreportsdata':      $this->getreportsdata();      break;
-			case 'exportcsv':           $this->exportcsv();           break;
-			case 'downloadresponses':   $this->downloadresponses();   break;
-			case 'savegradebookitem':   $this->savegradebookitem();   break;
-			case 'deletegradebookitem': $this->deletegradebookitem(); break;
-			case 'savegradebookentry':  $this->savegradebookentry();  break;
-			case 'resetgradebookentry': $this->resetgradebookentry(); break;
-			case 'policysave':          $this->policysave();          break;
-			case 'restoredefaults':     $this->restoredefaults();     break;
-			default:                    $this->progress();            break;
+			case 'assessmentdetails':
+				$this->assessmentdetails();
+				break;
+			case 'getprogressrows':
+				$this->getprogressrows();
+				break;
+			case 'getprogressdata':
+				$this->getprogressdata();
+				break;
+			case 'getgradebookdata':
+				$this->getgradebookdata();
+				break;
+			case 'getreportsdata':
+				$this->getreportsdata();
+				break;
+			case 'exportcsv':
+				$this->exportcsv();
+				break;
+			case 'downloadresponses':
+				$this->downloadresponses();
+				break;
+			case 'savegradebookitem':
+				$this->savegradebookitem();
+				break;
+			case 'deletegradebookitem':
+				$this->deletegradebookitem();
+				break;
+			case 'savegradebookentry':
+				$this->savegradebookentry();
+				break;
+			case 'resetgradebookentry':
+				$this->resetgradebookentry();
+				break;
+			case 'policysave':
+				$this->policysave();
+				break;
+			case 'restoredefaults':
+				$this->restoredefaults();
+				break;
+			default:
+				$this->progress();
+				break;
 		}
 
 		$response->set('html', $this->view->loadTemplate());

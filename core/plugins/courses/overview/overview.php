@@ -54,7 +54,7 @@ class plgCoursesOverview extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseView($course, $active=null)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
@@ -73,4 +73,3 @@ class plgCoursesOverview extends \Hubzero\Plugin\Plugin
 		return $response;
 	}
 }
-

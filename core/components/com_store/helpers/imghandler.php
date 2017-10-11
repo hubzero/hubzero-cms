@@ -32,82 +32,84 @@
 
 namespace Components\Store\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
+use Filesystem;
+use Lang;
 
 /**
  * Image manipulation class
  */
-class ImgHandler extends Object
+class ImgHandler extends Obj
 {
 	/**
 	 * Description for 'path'
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
-	var $path = NULL;
+	public $path = null;
 
 	/**
 	 * Description for 'image'
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
-	var $image = NULL;
+	public $image = null;
 
 	/**
 	 * Description for 'maxWidth'
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
-	var $maxWidth = 186;
+	public $maxWidth = 186;
 
 	/**
 	 * Description for 'maxHeight'
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
-	var $maxHeight = 186;
+	public $maxHeight = 186;
 
 	/**
 	 * Description for 'cropratio'
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
-	var $cropratio = NULL;
+	public $cropratio = null;
 
 	/**
 	 * Description for 'quality'
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
-	var $quality = 90;
+	public $quality = 90;
 
 	/**
 	 * Description for 'color'
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
-	var $color = false;
+	public $color = false;
 
 	/**
 	 * Description for 'overwrite'
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
-	var $overwrite = true;
+	public $overwrite = true;
 
 	/**
 	 * Description for 'outputName'
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
-	var $outputName = NULL;
+	public $outputName = null;
 
 	/**
 	 * Description for '_MEMORY_TO_ALLOCATE'
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	var $_MEMORY_TO_ALLOCATE = '100M';
+	public $_MEMORY_TO_ALLOCATE = '100M';
 
 	/**
 	 * Process an image
@@ -349,13 +351,13 @@ class ImgHandler extends Object
 			{
 				if (file_exists($docRoot . $image))
 				{
-					if (!\Filesystem::delete($docRoot . $image))
+					if (!Filesystem::delete($docRoot . $image))
 					{
 						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 						return false;
 					}
 				}
-				if (!\Filesystem::move($resized, $docRoot . $image))
+				if (!Filesystem::move($resized, $docRoot . $image))
 				{
 					$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 					return false;
@@ -385,8 +387,8 @@ class ImgHandler extends Object
 			return false;
 		}
 
-		$ext   = \Filesystem::extension($image);
-		$thumb = \Filesystem::name($image) . $tn . '.' . $ext;
+		$ext   = Filesystem::extension($image);
+		$thumb = Filesystem::name($image) . $tn . '.' . $ext;
 
 		return $thumb;
 	}
@@ -413,4 +415,3 @@ class ImgHandler extends Object
 		return max(round($result), 0);
 	}
 }
-

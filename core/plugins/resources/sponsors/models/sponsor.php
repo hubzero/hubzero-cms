@@ -32,8 +32,8 @@
 namespace Plugins\Resources\Sponsors\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
+use Date;
+use User;
 
 /**
  * Resource sponsor model

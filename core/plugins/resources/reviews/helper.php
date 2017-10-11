@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 /**
  * Helper class for reviews
  */
-class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
+class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 {
 	/**
 	 * Execute an action

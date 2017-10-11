@@ -33,7 +33,7 @@
 namespace Components\Resources\Models\Import;
 
 use Hubzero\Base\Model\ItemList;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 // include models
 require_once dirname(__DIR__) . DS . 'import.php';
@@ -42,10 +42,10 @@ require_once __DIR__ . DS . 'run.php';
 /**
  * Import archive model
  */
-class Archive extends Object
+class Archive extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var  object
 	 */

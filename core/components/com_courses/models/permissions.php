@@ -33,7 +33,7 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Component;
 use Request;
 use User;
@@ -45,63 +45,63 @@ require_once(__DIR__ . DS . 'student.php');
 /**
  * Courses model class for course permissions
  */
-class Permissions extends Object
+class Permissions extends Obj
 {
 	/**
 	 * Config
 	 *
 	 * @var object
 	 */
-	private $_config = NULL;
+	private $_config = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_managers = NULL;
+	private $_managers = null;
 
 	/**
 	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
-	private $_manager = NULL;
+	private $_manager = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_students = NULL;
+	private $_students = null;
 
 	/**
 	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
-	private $_student = NULL;
+	private $_student = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_course_id = NULL;
+	private $_course_id = null;
 
 	/**
 	 * \Components\Courses\Models\Section
 	 *
 	 * @var object
 	 */
-	private $_offering_id = NULL;
+	private $_offering_id = null;
 
 	/**
 	 * \Components\Courses\Models\Section
 	 *
 	 * @var object
 	 */
-	private $_section_id = NULL;
+	private $_section_id = null;
 
 	/**
 	 * Constructor
@@ -594,4 +594,3 @@ class Permissions extends Object
 		return $this->config()->get('access-' . strtolower($action) . '-' . $item);
 	}
 }
-

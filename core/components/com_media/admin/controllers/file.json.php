@@ -83,7 +83,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$object_file = new \Hubzero\Base\Object($file);
+			$object_file = new \Hubzero\Base\Obj($file);
 			$object_file->filepath = $filepath;
 			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
 			if (in_array(false, $result, true))

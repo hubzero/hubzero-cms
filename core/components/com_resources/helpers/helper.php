@@ -32,7 +32,7 @@
 
 namespace Components\Resources\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Route;
 use User;
 use Lang;
@@ -42,7 +42,7 @@ include_once(dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
 /**
  * Information retrieval for items/info linked to a resource
  */
-class Helper extends Object
+class Helper extends Obj
 {
 	/**
 	 * Resource ID
@@ -598,10 +598,10 @@ class Helper extends Object
 			return false;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
 
 		$cc = new \Components\Citations\Tables\Citation($this->_db);
 

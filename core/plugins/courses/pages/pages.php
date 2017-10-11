@@ -55,7 +55,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourse($course, $offering, $describe=false)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
@@ -129,16 +129,32 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			switch ($action)
 			{
 				case 'add':
-				case 'edit':     $this->_edit();         break;
-				case 'save':     $this->_save();         break;
-				case 'delete':   $this->_delete();       break;
+				case 'edit':
+					$this->_edit();
+					break;
+				case 'save':
+					$this->_save();
+					break;
+				case 'delete':
+					$this->_delete();
+					break;
 
-				case 'upload':   $this->_fileUpload();   break;
-				case 'download': $this->_fileDownload(); break;
-				case 'list':     $this->_fileList();     break;
-				case 'remove':   $this->_fileDelete();   break;
+				case 'upload':
+					$this->_fileUpload();
+					break;
+				case 'download':
+					$this->_fileDownload();
+					break;
+				case 'list':
+					$this->_fileList();
+					break;
+				case 'remove':
+					$this->_fileDelete();
+					break;
 
-				default: $this->_list(); break;
+				default:
+					$this->_list();
+					break;
 			}
 
 			if (Request::getInt('no_html', 0))

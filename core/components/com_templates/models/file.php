@@ -31,7 +31,7 @@
 
 namespace Components\Templates\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Filesystem;
 use stdClass;
 use Event;
@@ -40,7 +40,7 @@ use Lang;
 /**
  * Source model
  */
-class File extends Object
+class File extends Obj
 {
 	/**
 	 * Cache for the template information.
