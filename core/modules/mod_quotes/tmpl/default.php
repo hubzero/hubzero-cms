@@ -56,7 +56,7 @@ $base = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANIT
 		<?php foreach ($this->quotes as $quote) { ?>
 			<?php
 				$fullQuote = $this->escape((stripslashes($quote->get('quote'))));
-				$fullQuote = preg_replace("/&lt;br ?\/&gt;/", "<br/>", $fullQuote);
+				$fullQuote = preg_replace("/&lt;br ?\/&gt;|\n/", "<br/>", $fullQuote);
 			 ?>
 			<div class="quote">
 				<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
