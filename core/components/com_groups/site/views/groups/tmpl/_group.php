@@ -104,11 +104,11 @@ $published = ($group->get('published')) ? true : false;
 			<span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
 			<?php if ($published) : ?>
 				<a class="group-title" data-id="<?php echo $group->get('gidNumber'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn='. $group->get('cn')); ?>">
-					<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($group->get('description')), 60)); ?>
+					<?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)); ?>
 				</a>
 			<?php else : ?>
 				<span class="group-title">
-					<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($group->get('description')), 60)); ?>
+					<?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)); ?>
 				</span>
 			<?php endif; ?>
 

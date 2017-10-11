@@ -35,7 +35,6 @@ use Components\Feedback\Models\Quote;
 use Components\Members\Models\Member;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Number;
-use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use DirectoryIterator;
 use Filesystem;

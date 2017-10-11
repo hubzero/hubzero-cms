@@ -32,7 +32,7 @@
 namespace Components\Forum\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
@@ -89,21 +89,21 @@ class Threads extends SiteController
 		if (isset($section))
 		{
 			Pathway::append(
-				String::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
+				Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
 			);
 		}
 		if (isset($category))
 		{
 			Pathway::append(
-				String::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
+				Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
 			);
 		}
 		if (isset($thread) && $thread->get('id'))
 		{
 			Pathway::append(
-				'#' . $thread->get('id') . ' - ' . String::truncate(stripslashes($thread->get('title')), 100, array('exact' => true)),
+				'#' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')
 			);
 		}
@@ -122,15 +122,15 @@ class Threads extends SiteController
 		$this->_title = Lang::txt(strtoupper($this->_option));
 		if (isset($section))
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
 		}
 		if (isset($category))
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
 		}
 		if (isset($thread) && $thread->get('id'))
 		{
-			$this->_title .= ': #' . $thread->get('id') . ' - ' . String::truncate(stripslashes($thread->get('title')), 100, array('exact' => true));
+			$this->_title .= ': #' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, array('exact' => true));
 		}
 
 		Document::setTitle($this->_title);

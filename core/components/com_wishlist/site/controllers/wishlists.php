@@ -40,7 +40,7 @@ use Components\Wishlist\Models\Plan;
 use Components\Wishlist\Models\Vote;
 use Components\Wishlist\Helpers\Economy;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Content\Server;
 use Hubzero\Bank\Teller;
 use Filesystem;
@@ -529,7 +529,7 @@ class Wishlists extends SiteController
 
 		// Set the pathway
 		$this->_wishpath  = $wish->link();
-		$this->_wishtitle = String::truncate($wish->get('subject'), 80);
+		$this->_wishtitle = Str::truncate($wish->get('subject'), 80);
 		$this->_buildPathway($wishlist);
 
 			// Go through some access checks

@@ -32,7 +32,6 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Request;
 use Lang;
 use Date;

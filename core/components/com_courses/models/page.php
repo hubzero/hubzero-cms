@@ -32,7 +32,7 @@
 
 namespace Components\Courses\Models;
 
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Components\Courses\Tables;
 use Filesystem;
 use Request;
@@ -131,7 +131,7 @@ class Page extends Base
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$content = Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}

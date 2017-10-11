@@ -374,7 +374,7 @@ $first = $this->archive->entries(array(
 								<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 							</p>
 							<p>
-								<?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?>
+								<?php echo \Hubzero\Utility\Str::truncate(stripslashes($replyto->get('content')), 300); ?>
 							</p>
 						</blockquote>
 						<?php

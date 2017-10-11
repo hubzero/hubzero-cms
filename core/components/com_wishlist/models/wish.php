@@ -33,7 +33,6 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use User;
 use Lang;
 use Date;

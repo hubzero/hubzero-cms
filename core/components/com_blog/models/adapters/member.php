@@ -33,7 +33,7 @@
 namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\User;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Plugin;
 use Date;
 
@@ -70,7 +70,7 @@ class Member extends Base
 
 		$config = Plugin::params('members', 'blog');
 
-		$id = String::pad($this->get('scope_id'));
+		$id = Str::pad($this->get('scope_id'));
 
 		$this->set('path', str_replace('{{uid}}', $id, $config->get('uploadpath', '/site/members/{{uid}}/blog')));
 		$this->set('scope', $this->get('scope_id') . '/blog');

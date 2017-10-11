@@ -105,7 +105,7 @@ $this->css()
 					<h4><span class="coin">&nbsp;</span><?php echo Lang::txt('COM_STORE_ORDER_SUMMARY'); ?></h4>
 					<?php foreach ($this->items as $item) { ?>
 						<p>
-							<?php echo \Hubzero\Utility\String::truncate($item->title, 28); ?>
+							<?php echo \Hubzero\Utility\Str::truncate($item->title, 28); ?>
 						<?php if ($item->selectedsize) { ?>
 							</p>
 							<p>

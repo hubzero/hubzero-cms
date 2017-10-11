@@ -35,7 +35,7 @@ namespace Components\Tags\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Utility\Sanitize;
 use Document;
 use Request;
@@ -570,7 +570,7 @@ class Tags extends SiteController
 				$title = html_entity_decode($title);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(String::truncate(strip_tags(stripslashes($row->ftext)), 300));
+				$description = html_entity_decode(Str::truncate(strip_tags(stripslashes($row->ftext)), 300));
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 

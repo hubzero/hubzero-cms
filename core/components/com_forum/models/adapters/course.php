@@ -32,7 +32,7 @@
 
 namespace Components\Forum\Models\Adapters;
 
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Request;
 
 require_once(__DIR__ . DS . 'base.php');
@@ -61,7 +61,7 @@ class Course extends Base
 	{
 		$this->set('scope_id', $scope_id);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+		include_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 
 		$offering = \Components\Courses\Models\Offering::getInstance($this->get('scope_id'));
 		$course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
@@ -74,7 +74,7 @@ class Course extends Base
 			$this->_segments['active']   = 'outline';
 		}
 
-		$this->_name = String::truncate($course->get('alias'), 50) . ': ' . String::truncate($offering->get('alias'), 50);
+		$this->_name = Str::truncate($course->get('alias'), 50) . ': ' . Str::truncate($offering->get('alias'), 50);
 	}
 
 	/**

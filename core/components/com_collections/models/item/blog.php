@@ -136,7 +136,7 @@ class Blog extends GenericItem
 		     ->set('created', $post->get('created'))
 		     ->set('created_by', $post->get('created_by'))
 		     ->set('title', $post->get('title'))
-		     ->set('description', \Hubzero\Utility\String::truncate(strip_tags($post->content()), 200))
+		     ->set('description', \Hubzero\Utility\Str::truncate(strip_tags($post->content()), 200))
 		     ->set('url', Route::url($post->link()));
 
 		if (!$this->store())

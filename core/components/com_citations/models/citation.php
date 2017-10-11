@@ -440,7 +440,7 @@ class Citation extends Relational
 			$year = $cite->year;
 			$year = !empty($year) && ($year != "0") ? $year : $emptyLabel;
 			$affNum = $cite->affiliated;
-			$affLabel = $affiliationLabels[$affNum];
+			$affLabel = (isset($affiliationLabels[$affNum]) ? $affiliationLabels[$affNum] : '');
 			// Set count for affliation
 			if ($year == $emptyLabel)
 			{

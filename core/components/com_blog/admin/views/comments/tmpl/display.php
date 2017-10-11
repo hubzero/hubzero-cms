@@ -135,11 +135,11 @@ function submitbutton(pressbutton)
 					<?php echo $row->get('treename'); ?>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content)), 90); ?>
+							<?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($row->content)), 90); ?>
 						</a>
 					<?php } else { ?>
 						<span>
-							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content)), 90); ?>
+							<?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($row->content)), 90); ?>
 						</span>
 					<?php } ?>
 				</td>

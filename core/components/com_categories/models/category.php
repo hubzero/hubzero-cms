@@ -33,7 +33,6 @@ namespace Components\Categories\Models;
 
 use Hubzero\Database\Nested;
 use Hubzero\Database\Rows;
-use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Component;

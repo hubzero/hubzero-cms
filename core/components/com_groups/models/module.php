@@ -343,7 +343,7 @@ class Module extends Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}

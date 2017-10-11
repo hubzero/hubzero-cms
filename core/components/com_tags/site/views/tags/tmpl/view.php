@@ -220,7 +220,7 @@ foreach ($cats as $cat)
 									$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . \Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>' . "\n";
 									if ($row->ftext)
 									{
-										$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags($row->ftext), 200) . "</p>\n";
+										$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags($row->ftext), 200) . "</p>\n";
 									}
 									$html .= "\t\t" . '<p class="href">' . $base . $row->href . '</p>' . "\n";
 									$html .= "\t" . '</li>' . "\n";

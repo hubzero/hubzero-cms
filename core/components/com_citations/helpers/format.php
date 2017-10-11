@@ -38,7 +38,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models
 use Components\Citations\Tables\Association;
 use Components\Citations\Tables\Type;
 use Components\Citations\Models\Format as CitationFormat;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 
 /**
  * Citations helper class for formatting results
@@ -488,7 +488,7 @@ class Format
 
 		// highlight citation data
 		// do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
-		$cite = ($highlight) ? String::highlight($cite, $highlight) : $cite;
+		$cite = ($highlight) ? Str::highlight($cite, $highlight) : $cite;
 
 		// if we want coins add them
 		if ($include_coins || $coins_only)
@@ -747,7 +747,7 @@ class Format
 		if ($citation->eprint)
 		{
 			$html .= '<span>|</span>';
-			$html .= '<a href="' . String::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+			$html .= '<a href="' . Str::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
 		}
 
 		return $html;
@@ -988,7 +988,7 @@ class Format
 			}
 			else
 			{
-				$html .= ', "<a href="' . self::cleanUrl($row->url) . '">' . String::highlight(stripslashes($row->title), $highlight) . '</a>';
+				$html .= ', "<a href="' . self::cleanUrl($row->url) . '">' . Str::highlight(stripslashes($row->title), $highlight) . '</a>';
 			}
 		}
 		if (self::keyExistsOrIsNotEmpty('journal', $row)
@@ -1000,7 +1000,7 @@ class Format
 		$html .= '"';
 		if (self::keyExistsOrIsNotEmpty('journal', $row))
 		{
-			$html .= ' <i>' . String::highlight(stripslashes($row->journal), $highlight) . '</i>';
+			$html .= ' <i>' . Str::highlight(stripslashes($row->journal), $highlight) . '</i>';
 		}
 		elseif (self::keyExistsOrIsNotEmpty('booktitle', $row))
 		{

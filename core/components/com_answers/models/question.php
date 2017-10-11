@@ -33,7 +33,6 @@ namespace Components\Answers\Models;
 
 use Components\Answers\Helpers\Economy;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;

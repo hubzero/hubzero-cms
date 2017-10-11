@@ -142,11 +142,11 @@ function submitbutton(pressbutton)
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($row->get('quote')), 100)); ?>
+							<?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags($row->get('quote')), 100)); ?>
 						</a>
 					<?php } else { ?>
 						<span>
-							<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($row->get('quote')), 100)); ?>
+							<?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags($row->get('quote')), 100)); ?>
 						</span>
 					<?php } ?>
 				</td>

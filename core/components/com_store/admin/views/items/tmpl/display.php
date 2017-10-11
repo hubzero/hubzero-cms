@@ -168,7 +168,7 @@ function submitbutton(pressbutton)
 					<?php } ?>
 				</td>
 				<td>
-					<?php echo \Hubzero\Utility\String::truncate(stripslashes($row->description), 300); ?></td>
+					<?php echo \Hubzero\Utility\Str::truncate(stripslashes($row->description), 300); ?></td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->price)); ?>
 				</td>

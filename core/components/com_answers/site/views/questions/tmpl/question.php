@@ -40,7 +40,7 @@ if (Pathway::count() <= 0)
 	);
 }
 Pathway::append(
-	\Hubzero\Utility\String::truncate(strip_tags($this->question->get('subject')), 50),
+	\Hubzero\Utility\Str::truncate(strip_tags($this->question->get('subject')), 50),
 	$this->question->link()
 );
 

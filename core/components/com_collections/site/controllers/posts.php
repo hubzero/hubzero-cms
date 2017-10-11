@@ -320,7 +320,7 @@ class Posts extends SiteController
 
 		$title = $post->item()->get('title');
 		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
-		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
 
@@ -392,7 +392,7 @@ class Posts extends SiteController
 
 		$title = $post->item()->get('title');
 		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
-		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
 		$item = '<a href="' . Route::url($url) . '">' . $title . '</a>';
@@ -448,7 +448,7 @@ class Posts extends SiteController
 		// Log activity
 		$title = $post->item()->get('title');
 		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
-		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . $post->get('id');
 

@@ -35,7 +35,7 @@ use Components\Blog\Models\Archive;
 use Components\Blog\Models\Comment;
 use Components\Blog\Models\Entry;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Utility\Sanitize;
 use Exception;
 use Document;
@@ -529,7 +529,7 @@ class Entries extends SiteController
 				$item->description = html_entity_decode(Sanitize::stripAll($item->description));
 				if ($this->config->get('feed_entries') == 'partial')
 				{
-					$item->description = String::truncate($item->description, 300);
+					$item->description = Str::truncate($item->description, 300);
 				}
 				$item->description = '<![CDATA[' . $item->description . ']]>';
 

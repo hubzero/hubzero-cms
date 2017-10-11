@@ -148,7 +148,7 @@ class Kb extends GenericItem
 		     ->set('created', $article->get('created'))
 		     ->set('created_by', $article->get('created_by'))
 		     ->set('title', $article->get('title'))
-		     ->set('description', \Hubzero\Utility\String::truncate($article->fulltxt(), 200))
+		     ->set('description', \Hubzero\Utility\Str::truncate($article->fulltxt(), 200))
 		     ->set('url', Route::url($article->link()));
 
 		if (!$this->store())

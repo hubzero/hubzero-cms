@@ -35,7 +35,7 @@ namespace Components\Collections\Models;
 use Components\Collections\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\User\Group;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Request;
 use User;
 use Lang;
@@ -677,7 +677,7 @@ class Collection extends Base
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$content = Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}

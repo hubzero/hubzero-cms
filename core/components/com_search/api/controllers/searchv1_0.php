@@ -33,7 +33,7 @@ namespace Components\Search\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Inflector;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Search\Query;
 use Component;
 use stdClass;
@@ -160,7 +160,7 @@ class Searchv1_0 extends ApiController
 
 				if ($field != 'url')
 				{
-					$r = String::highlight($r, $terms, $highlightOptions);
+					$r = Str::highlight($r, $terms, $highlightOptions);
 				}
 
 				if ($field == 'description' || $field == 'fulltext' || $field == 'abstract')
@@ -174,7 +174,7 @@ class Searchv1_0 extends ApiController
 
 			$snippet = str_replace("\n", "", $snippet);
 			$snippet = str_replace("\r", "", $snippet);
-			$snippet  = String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+			$snippet  = Str::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
 
 			$result['snippet'] = $snippet;
 		}

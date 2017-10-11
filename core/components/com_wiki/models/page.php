@@ -32,7 +32,6 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use stdClass;
 use Request;

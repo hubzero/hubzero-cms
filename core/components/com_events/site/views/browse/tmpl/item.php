@@ -56,7 +56,7 @@ if (!isset($this->row->time_zone) || $this->row->time_zone == '')
 elseif (isset($this->row->time_zone))
 {
 	// else use the one provided by the event
-	$timezone = timezone_name_from_abbr('',$this->row->time_zone*3600, NULL);
+	$timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, null);
 }
 
 // If not timezone is found or cannot be acertained from above
@@ -141,7 +141,7 @@ foreach ($this->fields as $field)
 }
 $html .= $info;
 if (!$info) {
-	$html .= "\t\t".'<p class="description">'. \Hubzero\Utility\String::truncate(strip_tags($this->row->content),300) .'</p>'."\n";
+	$html .= "\t\t".'<p class="description">'. \Hubzero\Utility\Str::truncate(strip_tags($this->row->content),300) .'</p>'."\n";
 }
 $html .= "\t".'</div></li>'."\n";
 

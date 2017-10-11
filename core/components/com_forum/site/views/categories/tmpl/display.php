@@ -263,7 +263,7 @@ $this->category->set('section_alias', $this->filters['section']);
 						$last->set('section', $this->filters['section']);
 						?>
 						<a class="entry-comment" href="<?php echo Route::url($last->link()); ?>">
-							<?php echo \Hubzero\Utility\String::truncate(strip_tags($last->get('comment')), 170); ?>
+							<?php echo \Hubzero\Utility\Str::truncate(strip_tags($last->get('comment')), 170); ?>
 						</a>
 						<span class="entry-author">
 							<?php echo $lname; ?>

@@ -66,7 +66,7 @@ switch ($this->count)
 				</h3>
 			<?php if ($this->course->get('blurb')) { ?>
 				<p class="course-description">
-					<?php echo \Hubzero\Utility\String::truncate($this->escape($this->course->get('blurb')), 130); ?>
+					<?php echo \Hubzero\Utility\Str::truncate($this->escape($this->course->get('blurb')), 130); ?>
 				</p>
 			<?php } ?>
 			</div>

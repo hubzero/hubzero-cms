@@ -220,10 +220,10 @@ $rows = $this->archive->entries($this->filters)
 								<div class="entry-content">
 									<?php if ($this->config->get('cleanintro', 1)) { ?>
 										<p>
-											<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
+											<?php echo \Hubzero\Utility\Str::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
 										</p>
 									<?php } else { ?>
-										<?php echo \Hubzero\Utility\String::truncate($row->content, $this->config->get('introlength', 300), array('html' => true)); ?>
+										<?php echo \Hubzero\Utility\Str::truncate($row->content, $this->config->get('introlength', 300), array('html' => true)); ?>
 									<?php } ?>
 								</div>
 							</article>

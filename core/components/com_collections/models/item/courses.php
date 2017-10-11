@@ -33,7 +33,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Request;
 use Route;
 use Lang;
@@ -135,7 +135,7 @@ class Courses extends GenericItem
 		     ->set('created', $course->get('created'))
 		     ->set('created_by', $course->get('created_by'))
 		     ->set('title', $course->get('title'))
-		     ->set('description', String::truncate($course->get('blurb'), 200))
+		     ->set('description', Str::truncate($course->get('blurb'), 200))
 		     ->set('url', Route::url($course->link()));
 
 		if (!$this->store())

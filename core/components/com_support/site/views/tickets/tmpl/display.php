@@ -267,7 +267,7 @@ $this->css()
 									</p>
 									<p>
 										<a class="ticket-content" title="<?php echo $this->escape($row->content); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-											<?php echo ($row->content ? \Hubzero\Utility\String::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
+											<?php echo ($row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
 										</a>
 									</p>
 									<?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>

@@ -32,7 +32,7 @@
 
 namespace Components\Collections\Models;
 
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Request;
 use Lang;
 
@@ -387,7 +387,7 @@ class Post extends Base
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten);
+			$content = Str::truncate($content, $shorten);
 		}
 		return $content;
 	}

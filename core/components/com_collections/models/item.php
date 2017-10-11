@@ -36,7 +36,7 @@ use Components\Members\Models\Member;
 use Components\Collections\Tables;
 use Hubzero\Item\Comment;
 use Hubzero\Base\ItemList;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Filesystem;
 use Request;
 use Date;
@@ -717,7 +717,7 @@ class Item extends Base
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten);
+			$content = Str::truncate($content, $shorten);
 		}
 		return $content;
 	}

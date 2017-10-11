@@ -305,8 +305,8 @@ class Solr extends SiteController
 				$snippet = str_replace("\r", '', $snippet);
 				$snippet = str_replace("<br/>", '', $snippet);
 				$snippet = str_replace("<br>", '', $snippet);
-				$snippet = \Hubzero\Utility\String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
-				$snippet = \Hubzero\Utility\String::highlight($snippet, $terms, $highlightOptions);
+				$snippet = \Hubzero\Utility\Str::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+				$snippet = \Hubzero\Utility\Str::highlight($snippet, $terms, $highlightOptions);
 				$result['snippet'] = trim($snippet);
 
 				if (isset($result['author']))

@@ -213,7 +213,7 @@ class Application extends JModelForm
 		// Escape the offline message if present.
 		if (isset($data['offline']['offline_message']))
 		{
-			$data['offline']['offline_message'] = \Hubzero\Utility\String::ampReplace($data['offline']['offline_message']);
+			$data['offline']['offline_message'] = \Hubzero\Utility\Str::ampReplace($data['offline']['offline_message']);
 		}
 
 		// Purge the database session table if we are changing to the database handler.
