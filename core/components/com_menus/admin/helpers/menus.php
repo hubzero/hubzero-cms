@@ -152,15 +152,21 @@ class MenusHelper
 			}
 		}
 
-		if (!empty($languages)) {
-			if (is_array($languages)) {
+		if (!empty($languages))
+		{
+			if (is_array($languages))
+			{
 				$languages = '(' . implode(',', array_map(array($db, 'quote'), $languages)) . ')';
 			}
 			$query->where('a.language IN ' . $languages);
 		}
 
-		if (!empty($published)) {
-			if (is_array($published)) $published = '(' . implode(',', $published) .')';
+		if (!empty($published))
+		{
+			if (is_array($published))
+			{
+				$published = '(' . implode(',', $published) .')';
+			}
 			$query->where('a.published IN ' . $published);
 		}
 
@@ -181,11 +187,13 @@ class MenusHelper
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
-		foreach ($links as &$link) {
+		foreach ($links as &$link)
+		{
 			$link->text = str_repeat('- ', $link->level).$link->text;
 		}
 
-		if (empty($menuType)) {
+		if (empty($menuType))
+		{
 			// If the menutype is empty, group the items by menutype.
 			$query->clear();
 			$query->select('*');
@@ -205,14 +213,17 @@ class MenusHelper
 
 			// Create a reverse lookup and aggregate the links.
 			$rlu = array();
-			foreach ($menuTypes as &$type) {
+			foreach ($menuTypes as &$type)
+			{
 				$rlu[$type->menutype] = &$type;
 				$type->links = array();
 			}
 
 			// Loop through the list of menu links.
-			foreach ($links as &$link) {
-				if (isset($rlu[$link->menutype])) {
+			foreach ($links as &$link)
+			{
+				if (isset($rlu[$link->menutype]))
+				{
 					$rlu[$link->menutype]->links[] = &$link;
 
 					// Cleanup garbage.
@@ -226,7 +237,7 @@ class MenusHelper
 		}
 	}
 
-	static public function getAssociations($pk)
+	public static function getAssociations($pk)
 	{
 		$associations = array();
 		$db = App::get('db');
@@ -245,7 +256,7 @@ class MenusHelper
 			throw new Exception($error, 500);
 			return false;
 		}
-		foreach ($menuitems as $tag=>$item)
+		foreach ($menuitems as $tag => $item)
 		{
 			$associations[$tag] = $item->id;
 		}

@@ -42,20 +42,20 @@ use Lang;
 class Element extends Obj
 {
 	/**
-	* Element name
-	*
-	* This has to be set in the final
-	* renderer classes.
-	*
-	* @var string
-	*/
+	 * Element name
+	 *
+	 * This has to be set in the final
+	 * renderer classes.
+	 *
+	 * @var string
+	 */
 	protected $_name = null;
 
 	/**
-	* Reference to the object that instantiated the element
-	*
-	* @var object
-	*/
+	 * Reference to the object that instantiated the element
+	 *
+	 * @var object
+	 */
 	protected $_parent = null;
 
 	/**
@@ -70,10 +70,10 @@ class Element extends Obj
 	}
 
 	/**
-	* Get the element name
-	*
-	* @return  string  Type of the parameter
-	*/
+	 * Get the element name
+	 *
+	 * @return  string  Type of the parameter
+	 */
 	public function getName()
 	{
 		return $this->_name;

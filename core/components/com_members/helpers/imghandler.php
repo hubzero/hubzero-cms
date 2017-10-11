@@ -175,7 +175,7 @@ class ImgHandler extends Obj
 		}
 		else
 		{
-			$color = FALSE;
+			$color = false;
 		}
 
 		// Ratio cropping
@@ -253,25 +253,25 @@ class ImgHandler extends Obj
 			case 'image/gif':
 				// We will be converting GIFs to PNGs to avoid transparency issues when resizing GIFs
 				// This is maybe not the ideal solution, but IE6 can suck it
-				$creationFunction	= 'ImageCreateFromGif';
-				$outputFunction		= 'ImagePng';
-				$mime				= 'image/png'; // We need to convert GIFs to PNGs
-				$doSharpen			= FALSE;
-				$quality			= round(10 - ($quality / 10)); // We are converting the GIF to a PNG and PNG needs a compression level of 0 (no compression) through 9
+				$creationFunction = 'ImageCreateFromGif';
+				$outputFunction   = 'ImagePng';
+				$mime             = 'image/png'; // We need to convert GIFs to PNGs
+				$doSharpen        = false;
+				$quality          = round(10 - ($quality / 10)); // We are converting the GIF to a PNG and PNG needs a compression level of 0 (no compression) through 9
 			break;
 
 			case 'image/x-png':
 			case 'image/png':
-				$creationFunction	= 'ImageCreateFromPng';
-				$outputFunction		= 'ImagePng';
-				$doSharpen			= FALSE;
-				$quality			= round(10 - ($quality / 10)); // PNG needs a compression level of 0 (no compression) through 9
+				$creationFunction = 'ImageCreateFromPng';
+				$outputFunction   = 'ImagePng';
+				$doSharpen        = false;
+				$quality          = round(10 - ($quality / 10)); // PNG needs a compression level of 0 (no compression) through 9
 			break;
 
 			default:
-				$creationFunction	= 'ImageCreateFromJpeg';
-				$outputFunction	 	= 'ImageJpeg';
-				$doSharpen			= TRUE;
+				$creationFunction = 'ImageCreateFromJpeg';
+				$outputFunction   = 'ImageJpeg';
+				$doSharpen        = true;
 			break;
 		}
 
@@ -294,7 +294,7 @@ class ImgHandler extends Obj
 					$color = substr($color, 1);
 				}
 
-				$background	= FALSE;
+				$background = false;
 
 				if (strlen($color) == 6)
 				{

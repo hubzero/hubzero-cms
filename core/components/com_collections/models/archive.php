@@ -158,7 +158,7 @@ class Archive extends Obj
 	 * @param   string  $property  The name of the property
 	 * @param   mixed   $default   The default value
 	 * @return  mixed   The value of the property
- 	 */
+	 */
 	public function get($property, $default=null)
 	{
 		$property = '_' . $property;

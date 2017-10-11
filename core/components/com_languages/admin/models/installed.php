@@ -239,7 +239,7 @@ class LanguagesModelInstalled extends JModelList
 
 			// Compute the displayed languages
 			$this->data	= array();
-			for ($i = $start;$i < $end;$i++)
+			for ($i = $start; $i < $end; $i++)
 			{
 				$this->data[] = & $data[$i];
 			}

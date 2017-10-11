@@ -175,7 +175,7 @@ class ImgHandler extends Obj
 		}
 		else
 		{
-			$color = FALSE;
+			$color = false;
 		}
 
 		// Ratio cropping
@@ -256,7 +256,7 @@ class ImgHandler extends Obj
 				$creationFunction = 'ImageCreateFromGif';
 				$outputFunction   = 'ImagePng';
 				$mime             = 'image/png'; // We need to convert GIFs to PNGs
-				$doSharpen        = FALSE;
+				$doSharpen        = false;
 				$quality          = round(10 - ($quality / 10)); // We are converting the GIF to a PNG and PNG needs a compression level of 0 (no compression) through 9
 			break;
 
@@ -264,14 +264,14 @@ class ImgHandler extends Obj
 			case 'image/png':
 				$creationFunction = 'ImageCreateFromPng';
 				$outputFunction   = 'ImagePng';
-				$doSharpen        = FALSE;
+				$doSharpen        = false;
 				$quality          = round(10 - ($quality / 10)); // PNG needs a compression level of 0 (no compression) through 9
 			break;
 
 			default:
 				$creationFunction = 'ImageCreateFromJpeg';
 				$outputFunction   = 'ImageJpeg';
-				$doSharpen        = TRUE;
+				$doSharpen        = true;
 			break;
 		}
 
@@ -294,7 +294,7 @@ class ImgHandler extends Obj
 					$color = substr($color, 1);
 				}
 
-				$background	= FALSE;
+				$background = false;
 
 				if (strlen($color) == 6)
 				{

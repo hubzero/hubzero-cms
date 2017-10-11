@@ -49,14 +49,14 @@ class Archive extends Obj
 	 *
 	 * @var  object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Import list
 	 *
 	 * @var  object
 	 */
-	private $_imports = NULL;
+	private $_imports = null;
 
 	/**
 	 * Constructor

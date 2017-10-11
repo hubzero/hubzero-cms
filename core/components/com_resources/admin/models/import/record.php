@@ -44,9 +44,9 @@ include_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models
 /**
  * Resource Import Record Model
  */
-class Record extends Object
+class Record extends Obj
 {
-	CONST TITLE_MATCH = 10;
+	const TITLE_MATCH = 10;
 
 	public $raw;
 	public $record;

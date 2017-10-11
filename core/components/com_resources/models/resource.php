@@ -59,7 +59,7 @@ class Resource extends Obj
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Container for properties
@@ -743,7 +743,7 @@ class Resource extends Obj
 							if ($contributor->surname || $contributor->givenName)
 							{
 								$name = stripslashes($contributor->givenName) . ' ';
-								if ($contributor->middleName != NULL)
+								if ($contributor->middleName != null)
 								{
 									$name .= stripslashes($contributor->middleName) . ' ';
 								}

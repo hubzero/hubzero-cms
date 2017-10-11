@@ -821,7 +821,7 @@ class Course extends SiteController
 	 * @param      object $course CoursesCourse
 	 * @return     string
 	 */
-	private function courseAvailability($course = NULL)
+	private function courseAvailability($course = null)
 	{
 		//get the course
 		$course = (!is_null($course)) ? $course : Request::getVar('course', '');
@@ -951,4 +951,3 @@ class Course extends SiteController
 		return;
 	}
 }
-

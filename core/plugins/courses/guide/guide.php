@@ -136,9 +136,13 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'mark': $this->_mark(); break;
+				case 'mark':
+					$this->_mark();
+					break;
 
-				default: $this->_default(); break;
+				default:
+					$this->_default();
+					break;
 			}
 
 			if (Request::getInt('no_html', 0))
