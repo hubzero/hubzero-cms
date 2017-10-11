@@ -264,7 +264,7 @@ class Economy extends Obj
 						if (intval($A_owner_share) > 0)
 						{
 							$A_owner_share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answered question #%s that was recently closed', $qid);
-							$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
+							$BTL_A->deposit($A_owner_share, $A_owner_share_msg, $cat, $qid);
 						}
 					}
 					// is best answer eligible for extra points?

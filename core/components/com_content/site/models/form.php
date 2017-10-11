@@ -55,7 +55,7 @@ class ContentModelForm extends ContentModelArticle
 	 *
 	 * @return	mixed	Content item data object on success, false on failure.
 	 */
-	public function &getItem($pk = NULL)
+	public function &getItem($pk = null)
 	{
 		// Initialise variables.
 		$itemId = $pk;
