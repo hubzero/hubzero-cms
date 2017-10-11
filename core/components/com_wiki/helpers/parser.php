@@ -32,7 +32,7 @@
 
 namespace Components\Wiki\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
 use Exception;
 use Plugin;
@@ -41,7 +41,7 @@ use Lang;
 /**
  * Hubzero helper class for retrieving wiki parser
  */
-class Parser extends Object
+class Parser extends Obj
 {
 	/**
 	 * Parser Plugin object

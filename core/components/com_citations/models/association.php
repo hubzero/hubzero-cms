@@ -34,8 +34,6 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model

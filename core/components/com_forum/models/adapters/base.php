@@ -32,12 +32,12 @@
 
 namespace Components\Forum\Models\Adapters;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Abstract adapter class for a forum post link
  */
-abstract class Base extends Object
+abstract class Base extends Obj
 {
 	/**
 	 * Script name

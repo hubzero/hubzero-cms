@@ -32,7 +32,7 @@
 
 namespace Components\Cron\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 
 /**
@@ -43,7 +43,7 @@ class Permissions
 	/**
 	 * Name of the component
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public static $extension = 'com_cron';
 
@@ -63,7 +63,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = array(
 			'core.admin',
@@ -82,4 +82,3 @@ class Permissions
 		return $result;
 	}
 }
-

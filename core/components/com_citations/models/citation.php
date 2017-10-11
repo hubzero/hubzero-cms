@@ -35,19 +35,18 @@ namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
+use Hubzero\Utility\Str;
 use Components\Tags\Models\Tag;
 
-require_once Component::path('com_citations') . DS . 'models' . DS . 'link.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'author.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'sponsor.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'format.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
-require_once Component::path('com_tags') . DS . 'models' . DS . 'tag.php';
-require_once Component::path('com_resources') . DS . 'models' . DS . DS . 'orm' . DS . 'resource.php';
-require_once Component::path('com_publications') . DS . 'models' . DS . DS . 'orm' . DS . 'publication.php';
+require_once __DIR__ . DS . 'link.php';
+require_once __DIR__ . DS . 'author.php';
+require_once __DIR__ . DS . 'sponsor.php';
+require_once __DIR__ . DS . 'type.php';
+require_once __DIR__ . DS . 'format.php';
+require_once __DIR__ . DS . 'association.php';
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'tag.php';
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+require_once \Component::path('com_publications') . DS . 'models' . DS . 'orm' . DS . 'publication.php';
 
 /**
  * Hubs database model
@@ -68,7 +67,6 @@ class Citation extends Relational
 	 *
 	 * @var  string
 	 */
-
 	public $orderBy = 'name';
 
 	/**
@@ -379,6 +377,11 @@ class Citation extends Relational
 		return $this;
 	}
 
+	/**
+	 * Join association data
+	 *
+	 * @return  object
+	 */
 	public function isOwner()
 	{
 		$this->select('id', 'citation_id')->from('#__citations_assoc');
@@ -493,6 +496,12 @@ class Citation extends Relational
 		return $this->manytoMany('\Components\Publications\Models\Orm\Publication', '#__citations_assoc', 'cid', 'oid')->whereEquals('#__citations_assoc.tbl', 'publication');
 	}
 
+	/**
+	 * Check if a user can edit
+	 *
+	 * @param   itneger  $userId
+	 * @return  bool
+	 */
 	public function canEdit($userId = null)
 	{
 		$owners = $this->publications()->select('owners.userid')->join('#__project_owners as owners', '#__publications.project_id', 'owners.projectid');
@@ -546,6 +555,11 @@ class Citation extends Relational
 		return $this->belongsToOne('Type', 'type', 'id');
 	}
 
+	/**
+	 * Get the model name
+	 *
+	 * @return  string
+	 */
 	public function getModelName()
 	{
 		$this->modelName = 'citations';
@@ -562,6 +576,14 @@ class Citation extends Relational
 		return $this->manyShiftsToMany('\Components\Tags\Models\Tag', '#__tags_object', 'objectid', 'tbl', 'tagid');
 	}
 
+	/**
+	 * Update tags
+	 *
+	 * @param   string   $tags
+	 * @param   string   $label
+	 * @param   itneger  $strength
+	 * @return  void
+	 */
 	public function updateTags($tags, $label= '', $strength = 1)
 	{
 		$currentTags = $this->tags()->whereEquals('jos_tags_object.label', $label)->rows();
@@ -595,6 +617,11 @@ class Citation extends Relational
 		}
 	}
 
+	/**
+	 * Separate tags and badges
+	 *
+	 * @return  object
+	 */
 	public function separateTagsAndBadges()
 	{
 		if (!$this->badgesSeparated)
@@ -1036,7 +1063,7 @@ class Citation extends Relational
 
 		// highlight citation data
 		// do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
-		$cite = ($highlight) ? String::highlight($cite, $highlight) : $cite;
+		$cite = ($highlight) ? Str::highlight($cite, $highlight) : $cite;
 
 		// if we want coins add them
 		if ($include_coins == "yes"|| $coins_only == "yes")
@@ -1110,12 +1137,17 @@ class Citation extends Relational
 		if ($this->eprint)
 		{
 			$details .= '<span>|</span>';
-			$details .= '<a href="' . String::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+			$details .= '<a href="' . Str::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
 		}
 
 		return $details;
 	}
 
+	/**
+	 * Format resourc elinks
+	 *
+	 * @return  mixed
+	 */
 	public function formattedResourceLinks()
 	{
 		if (!$this->resources)
@@ -1334,6 +1366,11 @@ class Citation extends Relational
 		return $html;
 	}
 
+	/**
+	 * Save record and propogate data
+	 *
+	 * @return  bool
+	 */
 	public function saveAndPropagate()
 	{
 		if (!$this->save())
@@ -1355,6 +1392,11 @@ class Citation extends Relational
 		return true;
 	}
 
+	/**
+	 * Remove record
+	 *
+	 * @return  bool
+	 */
 	public function destroy()
 	{
 		$relatedAuthors = $this->relatedAuthors;
@@ -1379,6 +1421,11 @@ class Citation extends Relational
 		return true;
 	}
 
+	/**
+	 * Output a list of authors
+	 *
+	 * @return  string
+	 */
 	public function automaticAuthor()
 	{
 		if (!empty($this->tempId))

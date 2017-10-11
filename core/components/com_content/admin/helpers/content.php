@@ -50,13 +50,13 @@ class ContentHelper
 	 * @param	int		The category ID.
 	 * @param	int		The article ID.
 	 *
-	 * @return	Object
+	 * @return	object
 	 * @since	1.6
 	 */
 	public static function getActions($categoryId = 0, $articleId = 0)
 	{
 		// Reverted a change for version 2.5.6
-		$result	= new \Hubzero\Base\Object;
+		$result	= new \Hubzero\Base\Obj;
 
 		if (empty($articleId) && empty($categoryId))
 		{

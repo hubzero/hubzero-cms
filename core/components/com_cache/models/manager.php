@@ -32,14 +32,14 @@
 namespace Components\Cache\Models;
 
 use Hubzero\Base\ClientManager;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Request;
 use App;
 
 /**
  * Cache Model
  */
-class Manager extends Object
+class Manager extends Obj
 {
 	/**
 	 * Database connection
@@ -100,7 +100,7 @@ class Manager extends Object
 		}
 		else
 		{
-			$this->state = new Object;
+			$this->state = new Obj;
 		}
 
 		// Set the model dbo

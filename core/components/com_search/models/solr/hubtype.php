@@ -33,8 +33,7 @@
 namespace Components\Search\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
+use App;
 
 /**
  * Database model for search hub types

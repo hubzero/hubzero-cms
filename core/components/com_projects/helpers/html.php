@@ -33,7 +33,7 @@
 namespace Components\Projects\Helpers;
 
 use Exception;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Entity;
 use Filesystem;
 use StdClass;
@@ -46,7 +46,7 @@ use Date;
 /**
  * Html helper class
  */
-class Html extends Object
+class Html extends Obj
 {
 	/**
 	 * Show time since present moment or an actual date

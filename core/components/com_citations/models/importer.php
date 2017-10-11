@@ -34,7 +34,7 @@ namespace Components\Citations\Models;
 
 use Components\Citations\Tables;
 use Hubzero\Utility\Date;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use App;
 
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'citation.php');
@@ -44,7 +44,7 @@ include_once(dirname(__DIR__) . DS . 'tables' . DS . 'tags.php');
 /**
  * Citation importer
  */
-class Importer extends Object
+class Importer extends Obj
 {
 	/**
 	 * Database connection

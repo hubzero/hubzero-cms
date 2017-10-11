@@ -33,7 +33,7 @@ namespace Components\Answers\Helpers;
 
 use Components\Answers\Models\Question;
 use Components\Answers\Models\Response;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Bank\Config;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
@@ -44,14 +44,14 @@ use User;
  * Answers Economy class:
  * Stores economy funtions for com_answers
  */
-class Economy extends Object
+class Economy extends Obj
 {
 	/**
 	 * Database
 	 *
 	 * @var  object
 	 */
-	protected $_db = NULL;
+	protected $_db = null;
 
 	/**
 	 * Constructor
@@ -90,16 +90,16 @@ class Economy extends Object
 	 */
 	public function calculate_marketvalue($id, $type='regular')
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			$id = $this->qid;
 		}
-		if ($id === NULL)
+		if ($id === null)
 		{
 			return false;
 		}
 
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
+		require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
 
 		// Get point values for actions
 		$BC = Config::values();
@@ -120,7 +120,7 @@ class Economy extends Object
 		if ($type != 'royalty')
 		{
 			$calc += $p_Q;  // ! this is different from version before code migration !
-			$calc += ($results->count())*$p_A;
+			$calc += ($results->count()) * $p_A;
 		}
 
 		// Calculate as if there is at leat one answer
@@ -131,15 +131,15 @@ class Economy extends Object
 
 		foreach ($results as $result)
 		{
-			$calc += ($result->get('helpful'))*$p_R;
-			$calc += ($result->get('nothelpful'))*$p_R;
+			$calc += ($result->get('helpful')) * $p_R;
+			$calc += ($result->get('nothelpful')) * $p_R;
 			if ($result->get('state') == 1 && $type != 'royalty')
 			{
 				$accepted = 1;
 			}
 		}
 
-		if (isset($accepted) or $type == 'maxaward')
+		if (isset($accepted) || $type == 'maxaward')
 		{
 			$calc += $p_A_accepted;
 		}
@@ -167,13 +167,13 @@ class Economy extends Object
 	 */
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
-		if ($qid === NULL)
+		if ($qid === null)
 		{
 			$qid = $this->qid;
 		}
 		$cat = 'answers';
 
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
+		require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
 
 		$points = $this->calculate_marketvalue($qid, $type);
 
@@ -297,4 +297,3 @@ class Economy extends Object
 		}
 	}
 }
-

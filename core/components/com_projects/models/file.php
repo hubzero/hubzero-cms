@@ -32,14 +32,14 @@
 
 namespace Components\Projects\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Projects\Helpers;
 use stdClass;
 
 /**
  * Project File model
  */
-class File extends Object
+class File extends Obj
 {
 	/**
 	 * Container for properties

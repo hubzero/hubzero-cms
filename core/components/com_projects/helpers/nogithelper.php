@@ -32,12 +32,12 @@
 
 namespace Components\Projects\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Projects Git helper class
  */
-class Nogit extends Object
+class Nogit extends Obj
 {
 	/**
 	 * User ID

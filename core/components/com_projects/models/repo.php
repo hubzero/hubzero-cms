@@ -32,7 +32,7 @@
 
 namespace Components\Projects\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
@@ -46,7 +46,7 @@ require_once(__DIR__ . DS . 'adapter.php');
 /**
  * Project Repository model
  */
-class Repo extends Object
+class Repo extends Obj
 {
 	/**
 	 * Tables\Repo

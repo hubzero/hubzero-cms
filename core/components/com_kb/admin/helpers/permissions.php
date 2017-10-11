@@ -32,7 +32,7 @@
 
 namespace Components\Kb\Admin\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 
 /**
@@ -43,7 +43,7 @@ class Permissions
 	/**
 	 * Name of the component
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public static $extension = 'com_kb';
 
@@ -72,7 +72,7 @@ class Permissions
 			'core.delete'
 		);
 
-		$result = new Object;
+		$result = new Obj;
 
 		foreach ($actions as $action)
 		{

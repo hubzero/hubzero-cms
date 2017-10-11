@@ -32,7 +32,6 @@
 
 namespace Components\Projects\Models\Adapters;
 
-use Hubzero\Base\Object;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
 

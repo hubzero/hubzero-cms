@@ -28,7 +28,6 @@
 
 namespace Components\Storefront\Admin\Helpers;
 
-use Hubzero\Base\Object;
 use App;
 
 class RestrictionsHelper

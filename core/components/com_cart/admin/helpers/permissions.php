@@ -28,7 +28,7 @@
 
 namespace Components\Cart\Admin\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 
 class Permissions
@@ -36,7 +36,7 @@ class Permissions
 	/**
 	 * Name of the component
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public static $extension = 'com_cart';
 
@@ -57,7 +57,7 @@ class Permissions
 		}
 
 		$user = \User::getInstance();
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = array(
 			'admin',

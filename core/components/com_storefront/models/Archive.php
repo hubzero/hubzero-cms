@@ -11,7 +11,7 @@ require_once __DIR__ . DS . 'Sku.php';
 /**
  * Archive model. Interface between admin and Warehouse
  */
-class Archive extends \Hubzero\Base\Object
+class Archive extends \Hubzero\Base\Obj
 {
 	/**
 	 * Products

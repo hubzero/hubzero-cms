@@ -32,12 +32,12 @@
 
 namespace Components\Projects\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Projects Git helper class
  */
-class Git extends Object
+class Git extends Obj
 {
 	/**
 	 * Git path

@@ -51,7 +51,7 @@ require_once(__DIR__ . DS . 'Collection.php');
  * Products inventory and structure (only product lookup and inventory management)
  *
  */
-class Warehouse extends \Hubzero\Base\Object
+class Warehouse extends \Hubzero\Base\Obj
 {
 	// Product categories to look at (to define scope)
 	var $lookupCollections = null;

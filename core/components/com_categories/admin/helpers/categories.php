@@ -31,7 +31,7 @@
 
 namespace Components\Categories\Admin\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Filesystem;
 use Component;
 use User;
@@ -103,7 +103,7 @@ class CategoriesHelper
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = array(
 			'core.admin',

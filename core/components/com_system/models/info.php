@@ -32,14 +32,14 @@
 
 namespace Components\System\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Filesystem;
 use Config;
 
 /**
  * Model class for getting system information
  */
-class Info extends Object
+class Info extends Obj
 {
 	/**
 	 * @var  array  some php settings

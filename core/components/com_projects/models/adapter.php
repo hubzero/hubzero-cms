@@ -32,12 +32,12 @@
 
 namespace Components\Projects\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Project File Adapter model
  */
-class Adapter extends Object
+class Adapter extends Obj
 {
 	/**
 	 * Exec call

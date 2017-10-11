@@ -32,18 +32,18 @@
 
 namespace Components\Blog\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Component;
 use Lang;
 use User;
 use Date;
 
-require_once(__DIR__ . DS . 'entry.php');
+require_once __DIR__ . DS . 'entry.php';
 
 /**
  * Blog archive model class
  */
-class Archive extends Object
+class Archive extends Obj
 {
 	/**
 	 * Registry

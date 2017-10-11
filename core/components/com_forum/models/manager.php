@@ -31,18 +31,18 @@
 
 namespace Components\Forum\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
 use Component;
 use Lang;
 use User;
 
-require_once(__DIR__ . DS . 'section.php');
+require_once __DIR__ . DS . 'section.php';
 
 /**
  * Model class for a forum
  */
-class Manager extends Object
+class Manager extends Obj
 {
 	/**
 	 * Cached data

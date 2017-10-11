@@ -33,8 +33,6 @@
 namespace Components\Search\Models\Solr;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Database model for search queue

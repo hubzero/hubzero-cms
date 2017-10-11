@@ -34,8 +34,6 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model
@@ -50,7 +48,6 @@ class Type extends Relational
 	 * @var string
 	 **/
 	protected $namespace = 'citations';
-	// table name jos_citations
 
 	/**
 	 * Default order by for model
@@ -65,7 +62,7 @@ class Type extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'	=> 'notempty',
+		//'name'    => 'notempty',
 		//'liaison' => 'notempty'
 	);
 
@@ -84,13 +81,18 @@ class Type extends Relational
 	 * Defines a one to Many relationship with citation
 	 *
 	 * @return $this
-	 * @since  1.3.2
 	 **/
 	public function citations()
 	{
 		return $this->oneToMany('Citation', 'type');
 	}
 
+	/**
+	 * Defines a one to Many relationship with citation
+	 *
+	 * @param   array  $filters
+	 * @return  array
+	 **/
 	public static function getCitationsCountByType($filters = array())
 	{
 		$types = self::all()

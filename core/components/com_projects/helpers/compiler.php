@@ -32,12 +32,12 @@
 
 namespace Components\Projects\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Projects Git LaTeX and PDF compiler helper class
  */
-class Compiler extends Object
+class Compiler extends Obj
 {
 	/**
 	 * Cache dir

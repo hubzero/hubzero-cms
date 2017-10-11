@@ -32,7 +32,7 @@
 
 namespace Components\System\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 
 /**
@@ -71,7 +71,7 @@ class Permissions
 			'core.delete'
 		);
 
-		$result = new Object;
+		$result = new Obj;
 
 		foreach ($actions as $action)
 		{

@@ -32,7 +32,7 @@
 
 namespace Components\Support\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\User\Helper as UserHelper;
 use User;
 
@@ -41,7 +41,7 @@ require_once dirname(__DIR__) . '/models/acl/map.php';
 /**
  * Helper class for support ACL
  */
-class ACL extends Object
+class ACL extends Obj
 {
 	/**
 	 * Current user

@@ -31,7 +31,7 @@
 
 namespace Components\Redirect\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Exception;
 use User;
 use Html;
@@ -63,7 +63,7 @@ class Redirect
 		$actions = \Hubzero\Access\Access::getActionsFromFile($path);
 		$actions ?: array();
 
-		$result  = new Object;
+		$result  = new Obj;
 
 		foreach ($actions as $action)
 		{

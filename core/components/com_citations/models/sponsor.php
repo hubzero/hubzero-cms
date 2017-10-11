@@ -33,11 +33,9 @@
 
 namespace Components\Citations\Models;
 
-require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+require_once __DIR__ . DS . 'citation.php';
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model
@@ -67,7 +65,7 @@ class Sponsor extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'	=> 'notempty',
+		//'name'    => 'notempty',
 		//'liaison' => 'notempty'
 	);
 

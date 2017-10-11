@@ -34,9 +34,7 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Hubzero\Geocode\Geocode;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model
@@ -51,7 +49,6 @@ class Author extends Relational
 	 * @var string
 	 **/
 	protected $namespace = 'citations';
-	// table name jos_citations
 
 	/**
 	 * Default order by for model
@@ -66,7 +63,7 @@ class Author extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'	=> 'notempty',
+		//'name'    => 'notempty',
 		//'liaison' => 'notempty'
 	);
 
@@ -79,7 +76,6 @@ class Author extends Relational
 		//'name_normalized',
 		//'asset_id'
 	);
-
 
 	/**
 	 * Defines the inverse relationship between a record and a task

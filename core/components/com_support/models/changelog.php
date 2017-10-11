@@ -32,7 +32,7 @@
 
 namespace Components\Support\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Utility\Validate;
 use InvalidArgumentException;
 use stdClass;
@@ -42,7 +42,7 @@ use Lang;
 /**
  * Support mdoel for a ticket changelog
  */
-class Changelog extends Object
+class Changelog extends Obj
 {
 	/**
 	 * ItemList

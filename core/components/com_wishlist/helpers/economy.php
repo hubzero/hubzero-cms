@@ -34,7 +34,7 @@ namespace Components\Wishlist\Helpers;
 
 use Components\Wishlist\Models\Wishlist;
 use Components\Wishlist\Models\Wish;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
 use Component;
@@ -45,7 +45,7 @@ use Lang;
  * Wishlist Economy class:
  * Stores economy funtions for wishlists
  */
-class Economy extends Object
+class Economy extends Obj
 {
 	/**
 	 * Database

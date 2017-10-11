@@ -34,8 +34,7 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
+use Component;
 
 /**
  * Hubs database model
@@ -50,7 +49,6 @@ class Format extends Relational
 	 * @var string
 	 **/
 	protected $namespace = 'citations';
-	// table name jos_citations
 
 	/**
 	 * Default order by for model
@@ -59,7 +57,11 @@ class Format extends Relational
 	 **/
 	public $orderBy = 'name';
 
-
+	/**
+	 * Table name
+	 *
+	 * @var string
+	 **/
 	protected $table = '#__citations_format';
 
 	/**
@@ -68,7 +70,7 @@ class Format extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'	=> 'notempty',
+		//'name'    => 'notempty',
 		//'liaison' => 'notempty'
 	);
 
@@ -82,6 +84,12 @@ class Format extends Relational
 		//'asset_id'
 	);
 
+	/**
+	 * Defines a one to one relationship with citation
+	 *
+	 * @param   string  $fallbackDefault
+	 * @return  object
+	 **/
 	public static function getDefault($fallbackDefault = 'IEEE')
 	{
 		$config = Component::params('com_citations');
@@ -91,22 +99,24 @@ class Format extends Relational
 		return $format->row();
 	}
 
-
 	/**
 	 * Defines a one to one relationship with citation
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  object
 	 **/
 	public function citations()
 	{
 		return $this->belongsToMany('Citation', 'format', 'style');
 	}
 
-
+	/**
+	 * Defines a one to one relationship with citation
+	 *
+	 * @return  array
+	 **/
 	public function getTemplateKeys()
 	{
-	    $template_keys =  array(
+		$template_keys =  array(
 			"type" => "{TYPE}",
 			"cite" => "{CITE KEY}",
 			"ref_type" => "{REF TYPE}",

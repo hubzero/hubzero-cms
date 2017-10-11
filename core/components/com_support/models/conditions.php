@@ -32,11 +32,9 @@
 
 namespace Components\Support\Models;
 
-use Components\Support\Models\Category;
-use Components\Support\Models\Status;
 use Components\Support\Helpers\Utilities;
 use Hubzero\Base\Traits\Escapable;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use InvalidArgumentException;
 use stdClass;
 use Component;
@@ -44,13 +42,13 @@ use User;
 use Lang;
 
 include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-include_once dirname(__DIR__) . DS . 'models' . DS . 'status.php';
-include_once dirname(__DIR__) . DS . 'models' . DS . 'category.php';
+include_once __DIR__ . DS . 'status.php';
+include_once __DIR__ . DS . 'category.php';
 
 /*
  * Support model class for query conditions
  */
-class Conditions extends Object
+class Conditions extends Obj
 {
 	use Escapable;
 

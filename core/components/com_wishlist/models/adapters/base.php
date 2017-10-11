@@ -32,33 +32,33 @@
 
 namespace Components\Wishlist\Models\Adapters;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Pathway;
 use Lang;
 
 /**
  * Abstract adapter class for a wishlist
  */
-abstract class Base extends Object
+abstract class Base extends Obj
 {
 	/**
 	 * The object the referenceid references
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_item = null;
 
 	/**
 	 * Script name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_base = 'index.php';
 
 	/**
 	 * URL segments
 	 *
-	 * @var string
+	 * @var  array
 	 */
 	protected $_segments = array();
 
