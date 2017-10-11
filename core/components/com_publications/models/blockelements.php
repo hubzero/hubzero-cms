@@ -32,7 +32,7 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 include_once(dirname(__FILE__) . DS . 'blockelement.php');
 include_once(dirname(__FILE__) . DS . 'status.php');
@@ -41,35 +41,35 @@ include_once(dirname(__FILE__) . DS . 'status.php');
  * Publications block elements class
  *
  */
-class BlockElements extends Object
+class BlockElements extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	public $_db   		= NULL;
+	public $_db = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
-	protected $_elements 	= array();
+	 * @var    array  Loaded elements
+	 */
+	protected $_elements = array();
 
 	/**
-	* @var    array  Directories, where block elements can be stored
-	*/
-	protected $_path 	= array();
+	 * @var    array  Directories, where block elements can be stored
+	 */
+	protected $_path = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      	 JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
-		$this->_db 		= $db;
-		$this->_path[] 	= dirname(__FILE__) . DS . 'blockelements';
+		$this->_db = $db;
+		$this->_path[] = dirname(__FILE__) . DS . 'blockelements';
 	}
 
 	/**
@@ -77,7 +77,7 @@ class BlockElements extends Object
 	 *
 	 * @return object
 	 */
-	public function getStatus($name, $manifest = NULL, $pub = NULL)
+	public function getStatus($name, $manifest = null, $pub = null)
 	{
 		// Load attachment type
 		$element = $this->loadElement($name);
@@ -100,8 +100,7 @@ class BlockElements extends Object
 	 *
 	 * @return object
 	 */
-	public function drawElement($name, $elementId = 0, $manifest = NULL,
-		$master = NULL, $pub = NULL, $status = NULL, $viewname = 'edit', $order = 0)
+	public function drawElement($name, $elementId = 0, $manifest = null, $master = null, $pub = null, $status = null, $viewname = 'edit', $order = 0)
 	{
 		// Load attachment type
 		$element = $this->loadElement($name);
@@ -124,12 +123,12 @@ class BlockElements extends Object
 	public function getActiveElement($elements, $review)
 	{
 		// What is the last incomplete element?
-		$lastComplete 	= 0;
+		$lastComplete   = 0;
 		$lastIncomplete = 0;
-		$total 			= 0;
-		$showElement 	= 1;
-		$collector		= array();
-		$i				= 1;
+		$total          = 0;
+		$showElement    = 1;
+		$collector      = array();
+		$i              = 1;
 
 		foreach ($elements as $elId => $el)
 		{
@@ -193,7 +192,7 @@ class BlockElements extends Object
 			&& !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))
 			&& $new === false)
 		{
-			return	$this->_elements[$signature];
+			return $this->_elements[$signature];
 		}
 
 		$elementClass = __NAMESPACE__ . '\\BlockElement\\' . ucfirst($name);

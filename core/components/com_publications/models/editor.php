@@ -32,12 +32,12 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Model for a handler editor
  */
-class Editor extends Object
+class Editor extends Obj
 {
 	/**
 	 * Handler object
@@ -94,4 +94,3 @@ class Editor extends Object
 		return $this->handler->drawEditor($this);
 	}
 }
-

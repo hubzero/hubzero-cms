@@ -32,7 +32,7 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 include_once(__DIR__ . DS . 'format.php');
 include_once(__DIR__ . DS . 'block.php');
@@ -43,44 +43,44 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'block.php');
  * Publications blocks class
  *
  */
-class Blocks extends Object
+class Blocks extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	public $_db   			= NULL;
+	public $_db = null;
 
 	/**
 	 * Table class
 	 *
 	 * @var object
 	 */
-	public $_objBlock   	= NULL;
+	public $_objBlock = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
-	protected $_blocks 		= array();
+	 * @var    array  Loaded elements
+	 */
+	protected $_blocks = array();
 
 	/**
-	* @var    array  Directories, where block types can be stored
-	*/
-	protected $_blockPath 	= array();
+	 * @var    array  Directories, where block types can be stored
+	 */
+	protected $_blockPath = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      	 JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
-		$this->_db 		 	= $db;
+		$this->_db = $db;
 		$this->_blockPath[] = dirname(__FILE__) . DS . 'blocks';
 
-		$this->_objBlock 	= new \Components\Publications\Tables\Block($db);
+		$this->_objBlock = new \Components\Publications\Tables\Block($db);
 	}
 
 	/**
@@ -88,7 +88,7 @@ class Blocks extends Object
 	 *
 	 * @return object
 	 */
-	public function getStatus($name, $pub = NULL, $manifest = NULL, $blockId = 0, $elementId = NULL)
+	public function getStatus($name, $pub = null, $manifest = null, $blockId = 0, $elementId = null)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -104,7 +104,6 @@ class Blocks extends Object
 
 		// Return status
 		return $status;
-
 	}
 
 	/**
@@ -112,7 +111,7 @@ class Blocks extends Object
 	 *
 	 * @return  object
 	 */
-	public function loadBlock( $name, $blockId = 0, $new = false )
+	public function loadBlock($name, $blockId = 0, $new = false)
 	{
 		$signature = md5($name);
 
@@ -120,7 +119,7 @@ class Blocks extends Object
 			&& !($this->_blocks[$signature] instanceof __PHP_Incomplete_Class))
 			&& $new === false)
 		{
-			return	$this->_blocks[$signature];
+			return $this->_blocks[$signature];
 		}
 
 		$elementClass = __NAMESPACE__ . '\\Block\\' . ucfirst($name);
@@ -164,7 +163,7 @@ class Blocks extends Object
 	 *
 	 * @return  array  An array of all available blocks
 	 */
-	public function getBlocks( $select = '*', $where = '', $order = '')
+	public function getBlocks($select = '*', $where = '', $order = '')
 	{
 		return $this->_objBlock->getBlocks($select, $where, $order);
 	}
@@ -175,7 +174,7 @@ class Blocks extends Object
 	 * @param   string  $name   	Name of block to render
 	 * @return  object
 	 */
-	public function getManifest( $name, $new = false )
+	public function getManifest($name, $new = false)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -194,10 +193,10 @@ class Blocks extends Object
 	/**
 	 * Get default element manifest for block
 	 *
-	 * @param   string  $name   	Name of block to render
+	 * @param   string  $name  Name of block to render
 	 * @return  object
 	 */
-	public function getElementManifest( $name )
+	public function getElementManifest($name)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -221,12 +220,12 @@ class Blocks extends Object
 	/**
 	 * Get block property
 	 *
-	 * @param   string  $property   	Name of property
+	 * @param   string  $property  Name of property
 	 * @return  object
 	 */
-	public function getBlockProperty( $name = NULL, $property = NULL )
+	public function getBlockProperty($name = null, $property = null)
 	{
-		if ($property === NULL)
+		if ($property === null)
 		{
 			return false;
 		}
@@ -249,7 +248,7 @@ class Blocks extends Object
 	 *
 	 * @return  boolean
 	 */
-	public function transferData( $name, $manifest = NULL, $pub = NULL, $old, $new )
+	public function transferData($name, $manifest = null, $pub = null, $old, $new)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -271,7 +270,7 @@ class Blocks extends Object
 	 * @param   string  $view   Name of rendering view (edit / curation / admin / review)
 	 * @return  string HTML
 	 */
-	public function renderBlock( $name, $viewname = 'edit', $manifest = NULL, $pub = NULL, $blockId = 0 )
+	public function renderBlock($name, $viewname = 'edit', $manifest = null, $pub = null, $blockId = 0)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -306,7 +305,7 @@ class Blocks extends Object
 		// Allow changes in non-draft version?
 		$freeze 	= isset($blockParams->published_editing)
 					 && $blockParams->published_editing == 0
-					 && ($pub->state == 1 || $pub->state == 5 )
+					 && ($pub->state == 1 || $pub->state == 5)
 					? true : false;
 
 		return $freeze;
@@ -318,7 +317,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function saveBlock( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
+	public function saveBlock($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -354,7 +353,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function reorder( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
+	public function reorder($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -390,7 +389,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function saveItem( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
+	public function saveItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -426,7 +425,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function deleteItem( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
+	public function deleteItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -462,7 +461,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function addItem( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
+	public function addItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
 		// Load block
 		$block = $this->loadBlock($name);

@@ -32,7 +32,7 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Publications\Helpers;
 use Components\Publications\Tables;
 use stdClass;
@@ -58,7 +58,7 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
  *
  * Parses curation flow into view block for user, admin and curator
  */
-class Curation extends Object
+class Curation extends Obj
 {
 	/**
 	 * Database

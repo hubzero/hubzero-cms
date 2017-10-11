@@ -34,19 +34,19 @@ namespace Components\Publications\Helpers;
 
 use Components\Tags\Models\Cloud;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Publication Tagging class
  */
-class Tags extends \Hubzero\Base\Object
+class Tags extends \Hubzero\Base\Obj
 {
 	/**
 	 * Database
 	 *
 	 * @var unknown
 	 */
-	public $_db  = NULL;
+	public $_db  = null;
 
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -60,7 +60,7 @@ class Tags extends \Hubzero\Base\Object
 	 *
 	 * @var unknown
 	 */
-	public $_oid = NULL;  //
+	public $_oid = null;
 
 	/**
 	 * The primary tag table
@@ -89,7 +89,7 @@ class Tags extends \Hubzero\Base\Object
 		$this->_tbl = 'publications';
 	}
 
-		/**
+	/**
 	 * Get all the tags on an object
 	 *
 	 * @param      integer $object_id Object ID
@@ -739,7 +739,7 @@ class Tags extends \Hubzero\Base\Object
 		return $this->_db->loadObjectList();
 	}
 
-/**
+	/**
 	 * Get a tag cloud of top publication tags
 	 *
 	 * @param      integer $limit
@@ -918,4 +918,3 @@ class Tags extends \Hubzero\Base\Object
 		return $html;
 	}
 }
-

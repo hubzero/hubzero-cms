@@ -30,12 +30,12 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Publication status model class
  */
-class Status extends Object
+class Status extends Obj
 {
 	/**
 	 * Int(1)
@@ -44,20 +44,20 @@ class Status extends Object
 	 * 2 = requirement partially satisfied (incomplete)
 	 * 3 = not available
 	 */
-	var $status = NULL;
+	public $status = null;
 
 	/**
 	 * Status message
 	 */
-	var $message = NULL;
+	public $message = null;
 
 	/**
 	 * For nested blocks
 	 */
-	var $elements = NULL;
+	public $elements = null;
 
 	/**
 	 * Time of last status update
 	 */
-	var $lastupdate = NULL;
+	public $lastupdate = null;
 }

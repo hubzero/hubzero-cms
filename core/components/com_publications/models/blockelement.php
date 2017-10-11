@@ -30,28 +30,28 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Publication block element class
  */
-class BlockElement extends Object
+class BlockElement extends Obj
 {
 	/**
-	* Element name
-	*
-	* This has to be set in the final
-	* renderer classes.
-	*
-	* @var string
-	*/
+	 * Element name
+	 *
+	 * This has to be set in the final
+	 * renderer classes.
+	 *
+	 * @var string
+	 */
 	protected $_name = null;
 
 	/**
-	* Reference to the object that instantiated the element
-	*
-	* @var object
-	*/
+	 * Reference to the object that instantiated the element
+	 *
+	 * @var object
+	 */
 	protected $_parent = null;
 
 	/**
@@ -65,11 +65,11 @@ class BlockElement extends Object
 	}
 
 	/**
-	* Get the element name
-	*
-	* @access public
-	* @return string type of the parameter
-	*/
+	 * Get the element name
+	 *
+	 * @access public
+	 * @return string type of the parameter
+	 */
 	public function getName()
 	{
 		return $this->_name;

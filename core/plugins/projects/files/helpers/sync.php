@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 /**
  * Sync helper
  */
-class Sync extends \Hubzero\Base\Object
+class Sync extends \Hubzero\Base\Obj
 {
 	/**
 	 * Constructor
@@ -1057,7 +1057,7 @@ class Sync extends \Hubzero\Base\Object
 		$locals = array_merge($localFiles, $localDirectories);
 		$localIds = array();
 		$localIds = array_map(function($file){
-				$path = $file->get('localPath');
+			$path = $file->get('localPath');
 			return $path;
 		}, $localIds);
 

@@ -32,10 +32,11 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Publications\Helpers;
 use Components\Publications\Tables;
 use Hubzero\Base\ItemList;
+use Component;
 
 // Include table classes
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
@@ -52,8 +53,8 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
 
 // Projects
-require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'models' . DS . 'project.php');
-require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'models' . DS . 'repo.php');
+require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+require_once \Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
 
 // Common models
 require_once(__DIR__ . DS . 'curation.php');
@@ -67,7 +68,7 @@ require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
 /**
  * Information retrieval for items/info linked to a publication
  */
-class Publication extends Object
+class Publication extends Obj
 {
 	/**
 	 * Authorized

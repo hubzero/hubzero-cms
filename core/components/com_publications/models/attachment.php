@@ -30,31 +30,30 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'html.php');
+include_once \Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
 /**
  * Publication attachment model class
  */
-class Attachment extends Object
+class Attachment extends Obj
 {
 	/**
-	* Element name
-	*
-	* This has to be set in the final
-	* renderer classes.
-	*
-	* @var string
-	*/
+	 * Element name
+	 *
+	 * This has to be set in the final
+	 * renderer classes.
+	 *
+	 * @var string
+	 */
 	protected $_name = null;
 
 	/**
-	* Reference to the object that instantiated the element
-	*
-	* @var object
-	*/
+	 * Reference to the object that instantiated the element
+	 *
+	 * @var object
+	 */
 	protected $_parent = null;
 
 	/**
@@ -68,22 +67,22 @@ class Attachment extends Object
 	}
 
 	/**
-	* Get the element name
-	*
-	* @access public
-	* @return string type of the parameter
-	*/
+	 * Get the element name
+	 *
+	 * @access public
+	 * @return string type of the parameter
+	 */
 	public function getName()
 	{
 		return $this->_name;
 	}
 
 	/**
-	* Get the element connector property
-	*
-	* @access public
-	* @return string type of the parameter
-	*/
+	 * Get the element connector property
+	 *
+	 * @access public
+	 * @return string type of the parameter
+	 */
 	public function getConnector()
 	{
 		return $this->_connector;

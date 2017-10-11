@@ -32,7 +32,7 @@
 
 namespace Components\Publications\Helpers\Economy;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Config;
 
@@ -40,14 +40,14 @@ use Hubzero\Bank\Config;
  * Reviews Economy class:
  * Stores economy functions for reviews on publications
  */
-class Reviews extends Object
+class Reviews extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var  object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Constructor
@@ -159,4 +159,3 @@ class Reviews extends Object
 		return true;
 	}
 }
-

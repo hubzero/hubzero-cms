@@ -53,13 +53,13 @@ class Elements
 	protected $_schema = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
+	 * @var    array  Loaded elements
+	 */
 	protected $_elements = array();
 
 	/**
-	* @var    array  Directories, where element types can be stored
-	*/
+	 * @var    array  Directories, where element types can be stored
+	 */
 	protected $_elementPath = array();
 
 	/**

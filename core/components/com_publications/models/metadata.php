@@ -30,100 +30,100 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Publication DOI metadata base class
  */
-class Metadata extends Object
+class Metadata extends Obj
 {
 	/**
 	 *  Object title
 	 */
-	var $title						= NULL;
+	public $title = null;
 
 	/**
 	 * Object abstract
 	 */
-	var $abstract					= NULL;
+	public $abstract = null;
 
 	/**
 	 * Object description
 	 */
-	var $description				= NULL;
+	public $description = null;
 
 	/**
 	 * Object dc type
 	 */
-	var $type						= NULL;
+	public $type = null;
 
 	/**
 	 * URL to resource
 	 */
-	var $url						= NULL;
+	public $url = null;
 
 	/**
 	 * URL to resource
 	 */
-	var $doi						= NULL;
+	public $doi = null;
 
 	/**
 	 * Publisher
 	 */
-	var $publisher					= NULL;
+	public $publisher = null;
 
 	/**
 	 * Journal
 	 */
-	var $journal					= NULL;
+	public $journal = null;
 
 	/**
 	 * Subject
 	 */
-	var $subject					= NULL;
+	public $subject = null;
 
 	/**
 	 * Language
 	 */
-	var $language					= NULL;
+	public $language = null;
 
 	/**
 	 * Format
 	 */
-	var $format						= NULL;
+	public $format = null;
 
 	/**
 	 * Date
 	 */
-	var $date						= NULL;
+	public $date = null;
 
 	/**
 	 * Date
 	 */
-	var $issued						= NULL;
+	public $issued = null;
 
 	/**
 	 * Volume
 	 */
-	var $volume						= NULL;
+	public $volume = null;
 
 	/**
 	 * Issue
 	 */
-	var $issue						= NULL;
+	public $issue = null;
 
 	/**
 	 * Page
 	 */
-	var $page						= NULL;
+	public $page = null;
 
 	/**
 	 * ISBN
 	 */
-	var $isbn						= NULL;
+	public $isbn = null;
 
 	/**
 	 * Author
 	 */
-	var $author						= NULL;
+	public $author = null;
 }

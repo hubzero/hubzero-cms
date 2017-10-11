@@ -30,7 +30,7 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Config;
 use Request;
 use Lang;
@@ -41,7 +41,7 @@ include_once __DIR__ . DS . 'publication.php';
 /**
  * Publication doi model class
  */
-class Doi extends Object
+class Doi extends Obj
 {
 	/**
 	 * DOI Configs
@@ -337,12 +337,11 @@ class Doi extends Object
 	{
 		// Check required
 		if ($this->get('pubYear')
-			&& $this->get('publisher')
-			&& $this->get('resourceType')
-			&& $this->get('title')
-			&& $this->get('creator')
-			&& $this->get('url')
-		)
+		 && $this->get('publisher')
+		 && $this->get('resourceType')
+		 && $this->get('title')
+		 && $this->get('creator')
+		 && $this->get('url'))
 		{
 			return true;
 		}
