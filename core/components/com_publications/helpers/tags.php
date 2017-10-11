@@ -100,7 +100,7 @@ class Tags extends \Hubzero\Base\Obj
 	 * @param      integer $admin     Has admin access?
 	 * @return     array
 	 */
-	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0, $label='')
+	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=null, $strength=0, $admin=0, $label='')
 	{
 		$cloud = new Cloud($object_id, $this->_tbl);
 		return $cloud->tags('list', [
@@ -370,7 +370,7 @@ class Tags extends \Hubzero\Base\Obj
 	 * @param      integer $objectid  Object ID
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
+	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=null)
 	{
 		$cloud = new Cloud($objectid, $this->_tbl);
 		return $cloud->render();
@@ -387,7 +387,7 @@ class Tags extends \Hubzero\Base\Obj
 	 * @param      integer $admin     Admin tags?
 	 * @return     string
 	 */
-	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0, $label='')
+	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=null, $strength=0, $admin=0, $label='')
 	{
 		$cloud = new Cloud($oid, $this->_tbl);
 		return $cloud->render('string');
