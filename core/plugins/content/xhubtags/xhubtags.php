@@ -277,7 +277,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 
 		if (empty($component) && empty($module))
 		{
-			return ''; //substr(\Hubzero\Document\Assets::getHubImage($file[2]),1);
+			return ''; //substr(\Hubzero\Document\Assets::getHubImage($file[2]), 1);
 		}
 		else if (!empty($component))
 		{
@@ -285,7 +285,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 		}
 		else if (!empty($module))
 		{
-			return substr(\Hubzero\Document\Assets::getModuleImage($module[2],$file[2]),1);
+			return substr(\Hubzero\Document\Assets::getModuleImage($module[2], $file[2]), 1);
 		}
 
 		return '';
@@ -302,7 +302,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 		$options = trim($options, " \n\t\r}");
 
 		$sitename = Config::get('sitename');
-		$live_site = rtrim(Request::base(),'/');
+		$live_site = rtrim(Request::base(), '/');
 
 		if ($options == 'hubShortName')
 		{
