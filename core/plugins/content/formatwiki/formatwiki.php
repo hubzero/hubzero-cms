@@ -47,7 +47,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentBeforeSave($context, &$article, $isNew)
 	{
-		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
 		{
 			return;
 		}
@@ -84,7 +84,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
 		{
 			return;
 		}

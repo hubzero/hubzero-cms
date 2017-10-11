@@ -49,7 +49,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		if (($article instanceof \Hubzero\Base\Object) || !in_array($context, ['com_content.article', 'text']))
+		if (($article instanceof \Hubzero\Base\Obj) || !in_array($context, ['com_content.article', 'text']))
 		{
 			return;
 		}

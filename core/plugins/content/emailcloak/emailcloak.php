@@ -49,7 +49,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	public function onContentPrepare($context, &$row, &$params, $page = 0)
 	{
 		// Don't run this plugin when the content is being indexed
-		if ($context == 'com_finder.indexer' || $row instanceof \Hubzero\Base\Object)
+		if ($context == 'com_finder.indexer' || $row instanceof \Hubzero\Base\Obj)
 		{
 			return true;
 		}
@@ -69,7 +69,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	 * @param   string  $text  The text enclosed by the link.
 	 * @return  string  A regular expression that matches a link containing the parameters.
 	 */
-	protected function _getPattern ($link, $text)
+	protected function _getPattern($link, $text)
 	{
 		$pattern = '~(?:<a ([^>]*)href\s*=\s*"mailto:' . $link . '"([^>]*))>' . $text . '</a>~i';
 		return $pattern;

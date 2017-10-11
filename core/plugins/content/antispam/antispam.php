@@ -82,7 +82,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if ($article instanceof \Hubzero\Base\Object || $article instanceof \Hubzero\Database\Relational)
+		if ($article instanceof \Hubzero\Base\Obj || $article instanceof \Hubzero\Database\Relational)
 		{
 			$key = $this->_key($context);
 
