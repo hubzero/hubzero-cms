@@ -63,7 +63,7 @@ class Post extends Base
 	 *
 	 * @var object
 	 */
-	private $_adapter = NULL;
+	private $_adapter = null;
 
 	/**
 	 * Post

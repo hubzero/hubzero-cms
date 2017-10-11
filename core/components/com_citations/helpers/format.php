@@ -32,8 +32,8 @@
 
 namespace Components\Citations\Helpers;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'type.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'format.php';
 
 use Components\Citations\Tables\Association;
 use Components\Citations\Tables\Type;
@@ -1010,13 +1010,13 @@ class Format
 		{
 			switch ($row->type)
 			{
-				case 'phdthesis': 
+				case 'phdthesis':
 					$html .= ' (' . \Lang::txt('PhD Thesis') . ')';
 					break;
 				case 'mastersthesis':
 					$html .= ' (' . \Lang::txt('Masters Thesis') . ')';
 					break;
-				default: 
+				default:
 					break;
 			}
 		}

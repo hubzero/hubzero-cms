@@ -2410,7 +2410,7 @@ class Wishlists extends SiteController
 	 * @param   string   $order
 	 * @return  array
 	 */
-	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
 		$database = App::get('db');
 

@@ -413,7 +413,7 @@ class Comment extends Relational
 		return parent::destroy();
 	}
 
-		/**
+	/**
 	 * Validates the set data attributes against the model rules
 	 *
 	 * @return  bool

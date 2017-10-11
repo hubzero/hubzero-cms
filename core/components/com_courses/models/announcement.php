@@ -181,4 +181,3 @@ class Announcement extends Base
 		return $content;
 	}
 }
-
