@@ -248,4 +248,3 @@ class Media extends AdminController
 			->display();
 	}
 }
-

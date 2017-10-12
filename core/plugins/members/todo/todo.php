@@ -142,15 +142,17 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 
 			switch ($this->task)
 			{
-				case 'browse':
-				default: $arr['html'] = $this->_browse(); break;
-
 				case 'new':
 					$arr['html'] = $this->_new();
 					break;
 
 				case 'save':
 					$arr['html'] = $this->_save();
+					break;
+
+				case 'browse':
+				default:
+					$arr['html'] = $this->_browse();
 					break;
 			}
 		}

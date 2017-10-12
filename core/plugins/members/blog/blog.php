@@ -292,7 +292,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('id'),
-			'search'     => Request::getVar('search',''),
+			'search'     => Request::getVar('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -354,7 +354,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('id'),
-			'search'     => Request::getVar('search',''),
+			'search'     => Request::getVar('search', ''),
 			//'created_by' => $this->member->get('id')
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -392,7 +392,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Build some basic RSS document information
 		$doc->title       = Config::get('sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . Lang::txt('Blog');
-		$doc->description = Lang::txt('PLG_MEMBERS_BLOG_RSS_DESCRIPTION', Config::get('sitename'),stripslashes($this->member->get('name')));
+		$doc->description = Lang::txt('PLG_MEMBERS_BLOG_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($this->member->get('name')));
 		$doc->copyright   = Lang::txt('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('PLG_MEMBERS_BLOG_RSS_CATEGORY');
 

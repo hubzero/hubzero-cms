@@ -259,7 +259,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			{
 				if (is_array($val))
 				{
-					foreach ($val as $a=>$t)
+					foreach ($val as $a => $t)
 					{
 						$filters['type'] = $cats[$a]['id'];
 

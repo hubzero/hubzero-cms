@@ -42,12 +42,12 @@ use Date;
 use Hubzero\Form\Form;
 
 require_once Component::path('com_categories') . '/models/category.php';
+
 /**
  * Model class for a blog entry
  */
 class Article extends Relational
 {
-
 	/**
 	 * Default order by for model
 	 *
@@ -104,7 +104,6 @@ class Article extends Relational
 	 *
 	 * @var string
 	 */
-
 	public $assetRules;
 
 	/**
@@ -112,19 +111,28 @@ class Article extends Relational
 	 *
 	 * @var  object
 	 */
-	public $params = NULL;
+	public $params = null;
 
 	/**
-	 *	Registry params object 
+	 * Registry params object 
 	 *
 	 * @var  object
 	 */
 	protected $paramsRegistry = null;
 
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
 	protected $namespace = 'content';
 
+	/**
+	 * The table name
+	 *
+	 * @var  string
+	 */
 	protected $table = '#__content';
-
 
 	/**
 	 * Sets up additional custom rules
@@ -143,6 +151,11 @@ class Article extends Relational
 		});
 	}
 
+	/**
+	 * Generates automatic asset_id field value
+	 *
+	 * @return  integer
+	 */
 	public function automaticAssetId()
 	{
 		if (!empty($this->assetRules))
@@ -152,21 +165,41 @@ class Article extends Relational
 		return $this->get('asset_id');
 	}
 
+	/**
+	 * Establish relationship to category
+	 *
+	 * @return  object
+	 */
 	public function category()
 	{
 		return $this->belongsToOne('Components\Categories\Models\Category', 'catid');
 	}
 
+	/**
+	 * Establish relationship to author
+	 *
+	 * @return  object
+	 */
 	public function author()
 	{
 		return $this->belongsToOne('\Hubzero\User\User', 'created_by');
 	}
 
+	/**
+	 * Establish relationship to editor
+	 *
+	 * @return  object
+	 */
 	public function editor()
 	{
 		return $this->belongsToOne('\Hubzero\User\User', 'checked_out');
 	}
 
+	/**
+	 * Get a list of all categories
+	 *
+	 * @return  object
+	 */
 	public function categories()
 	{
 		$categories = Category::all()
@@ -176,6 +209,11 @@ class Article extends Relational
 		return $categories;
 	}
 
+	/**
+	 * Display state as human readable text
+	 *
+	 * @return  string
+	 */
 	public function transformState()
 	{
 		$states = array(
@@ -188,73 +226,102 @@ class Article extends Relational
 		return $states[$stateNum];
 	}
 
+	/**
+	 * Establish relationship to access level
+	 *
+	 * @return  object
+	 */
 	public function accessLevel()
 	{
 		return $this->belongsToOne('\Hubzero\Access\Viewlevel', 'access');
 	}
 
+	/**
+	 * Establish relationship to asset
+	 *
+	 * @return  object
+	 */
 	public function asset()
 	{
 		return $this->belongsToOne('Hubzero\Access\Asset', 'asset_id');
 	}
 
 	/**
-     * Generates automatic owned by field value
-     *
-     * @param   array   $data  the data being saved
-     * @return  string
-     */
-    public function automaticPublishUp($data)
-    {
-        if (!isset($data['publish_up']))
-        {
-            $data['publish_up'] = null;
-        }
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishUp($data)
+	{
+		if (!isset($data['publish_up']))
+		{
+			$data['publish_up'] = null;
+		}
 
-        $publish_up = $data['publish_up'];
+		$publish_up = $data['publish_up'];
 
-        if (!$publish_up || $publish_up == '0000-00-00 00:00:00')
-        {
-            $publish_up = $this->isNew() ? \Date::toSql() : $this->created;
-        }
+		if (!$publish_up || $publish_up == '0000-00-00 00:00:00')
+		{
+			$publish_up = $this->isNew() ? Date::toSql() : $this->created;
+		}
 
-        return $publish_up;
-    }
-
-    /**
-     * Generates automatic owned by field value
-     *
-     * @param   array   $data  the data being saved
-     * @return  string
-     */
-    public function automaticPublishDown($data)
-    {
-        if (!isset($data['publish_down']) || !$data['publish_down'])
-        {
-            $data['publish_down'] = '0000-00-00 00:00:00';
-        }
-        return $data['publish_down'];
+		return $publish_up;
 	}
-	
+
+	/**
+	 * Generates automatic publish_down field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishDown($data)
+	{
+		if (!isset($data['publish_down']) || !$data['publish_down'])
+		{
+			$data['publish_down'] = '0000-00-00 00:00:00';
+		}
+		return $data['publish_down'];
+	}
+
+	/**
+	 * Generates automatic modified field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
 	public function automaticModified($data)
 	{
 		$data['modified'] = Date::of()->toSql();
 		return $data['modified'];
 	}
 
+	/**
+	 * Generates automatic modified by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
 	public function automaticModifiedBy($data)
 	{
 		$data['modified_by'] = User::getInstance()->get('id');
 		return $data['modified_by'];
 	}
 
+	/**
+	 * Generates automatic ordering field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
 	public function automaticOrdering($data)
 	{
 		if (empty($data['ordering']) && !empty($data['catid']))
 		{
-			$lastOrderedRow = self::all()->whereEquals('catid', $data['catid'])
-										 ->order('ordering', 'desc')
-										 ->row();
+			$lastOrderedRow = self::all()
+				->whereEquals('catid', $data['catid'])
+				->order('ordering', 'desc')
+				->row();
 			$lastOrderNum = $lastOrderedRow->get('ordering', 0);
 			$data['ordering'] = $lastOrderNum + 1;
 		}
@@ -264,11 +331,11 @@ class Article extends Relational
 	/**
 	 * Get params as Registry object
 	 *
-	 * @return object
+	 * @return  object
 	 */
 	public function transformAttribs()
 	{
-		if(!($this->paramsRegistry instanceof Registry))
+		if (!($this->paramsRegistry instanceof Registry))
 		{
 			$itemRegistry = new Registry($this->get('attribs'));
 			$componentRegistry = Component::params('com_content');
@@ -278,60 +345,94 @@ class Article extends Relational
 		return $this->paramsRegistry;
 	}
 
+	/**
+	 * Transform title
+	 *
+	 * @return  string
+	 */
 	public function transformName()
 	{
 		return $this->get('title');
 	}
 
+	/**
+	 * Get metadata as an object
+	 *
+	 * @return  object
+	 */
 	public function transformMetadata()
 	{
 		$metadata = $this->get('metadata');
+
 		if (!empty($metadata) && !is_array($metadata))
 		{
 			return json_decode($metadata);
 		}
+
+		return new \stdclass;
 	}
 
+	/**
+	 * Generates automatic attribs field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
 	public function automaticAttribs($data)
 	{
-        if (!empty($data['attribs']))
-        {
-            $attribs = json_encode($data['attribs']);
-			return $attribs;
-        }
-		return false;
-	}
-	
-	public function automaticMetadata($data)
-	{
-        if (!empty($data['metadata']))
-        {
-            $metadata = json_encode($data['metadata']);
-			return $metadata;
-        }
-		return false;
+		if (!empty($data['attribs']))
+		{
+			return json_encode($data['attribs']);
+		}
+		return '';
 	}
 
+	/**
+	 * Generates automatic metadata field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticMetadata($data)
+	{
+		if (!empty($data['metadata']))
+		{
+			return json_encode($data['metadata']);
+		}
+		return '';
+	}
+
+	/**
+	 * Build a Form object and bind data to it
+	 *
+	 * @return  object
+	 */
 	public function getForm()
-    {
-        $file = __DIR__ . '/forms/article.xml';
-        $file = Filesystem::cleanPath($file);
-        $form = new Form('content', array('control' => 'fields'));
-        if (!$form->loadFile($file, false, '//form'))
-        {
-            $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
-        }
+	{
+		$file = __DIR__ . '/forms/article.xml';
+		$file = Filesystem::cleanPath($file);
+		$form = new Form('content', array('control' => 'fields'));
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
 		$data = $this->getAttributes();
-        $data['attribs'] = $this->attribs->toArray();
+		$data['attribs']  = $this->attribs->toArray();
 		$data['metadata'] = $this->metadata;
 		if ($this->isNew())
 		{
 			unset($data['asset_id']);
 		}
-        $form->bind($data);
-        return $form;
-    }
+		$form->bind($data);
+		return $form;
+	}
 
+	/**
+	 * Save ordering
+	 *
+	 * @param   array  $ordering
+	 * @return  bool
+	 */
 	public static function saveorder($ordering)
 	{
 		if (empty($ordering) || !is_array($ordering))
@@ -340,9 +441,10 @@ class Article extends Relational
 		}
 		foreach ($ordering as $catid => $order)
 		{
-			$existingOrderedRows = self::all()->whereEquals('catid', $catid)
-											  ->order('ordering', 'asc')
-											  ->rows();
+			$existingOrderedRows = self::all()
+				->whereEquals('catid', $catid)
+				->order('ordering', 'asc')
+				->rows();
 			if (count($existingOrderedRows) <= 1)
 			{
 				continue;
@@ -372,7 +474,13 @@ class Article extends Relational
 		return true;
 	}
 
-
+	/**
+	 * Move a single item up or down in ordering
+	 *
+	 * @param   integer  $delta
+	 * @param   string   $where
+	 * @return  bool
+	 */
 	public function move($delta, $where = '')
 	{
 		// If the change is none, do nothing.

@@ -355,7 +355,7 @@ class Attachments extends SiteController
 			fclose($input);
 
 			// Move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -868,16 +868,36 @@ class Attachments extends SiteController
 
 		switch ($ftype)
 		{
-			case 'mov': $type = 15; break;
-			case 'swf': $type = 32; break;
-			case 'ppt': $type = 35; break;
-			case 'asf': $type = 37; break;
-			case 'asx': $type = 37; break;
-			case 'wmv': $type = 37; break;
-			case 'zip': $type = 38; break;
-			case 'tar': $type = 38; break;
-			case 'pdf': $type = 33; break;
-			default:    $type = 13; break;
+			case 'mov':
+				$type = 15;
+				break;
+			case 'swf':
+				$type = 32;
+				break;
+			case 'ppt':
+				$type = 35;
+				break;
+			case 'asf':
+				$type = 37;
+				break;
+			case 'asx':
+				$type = 37;
+				break;
+			case 'wmv':
+				$type = 37;
+				break;
+			case 'zip':
+				$type = 38;
+				break;
+			case 'tar':
+				$type = 38;
+				break;
+			case 'pdf':
+				$type = 33;
+				break;
+			default:
+				$type = 13;
+				break;
 		}
 
 		return $type;

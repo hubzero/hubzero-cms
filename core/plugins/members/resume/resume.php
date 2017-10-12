@@ -223,20 +223,38 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			$database = App::get('db');
 
-			$task = Request::getVar('action','');
+			$task = Request::getVar('action', '');
 
 			switch ($task)
 			{
-				case 'uploadresume': $arr['html'] = $this->_upload($database, $option, $member); break;
-				case 'deleteresume': $arr['html'] = $this->_deleteresume($database, $option, $member, $emp);   break;
-				case 'edittitle':    $arr['html'] = $this->_view($database, $option, $member, $emp, 1);   break;
-				case 'savetitle':    $arr['html'] = $this->_save($database, $option, $member, $task, $emp);   break;
-				case 'saveprefs':    $arr['html'] = $this->_save($database, $option, $member, $task, $emp);   break;
-				case 'editprefs':    $arr['html'] = $this->_view($database, $option, $member, $emp, 0, $editpref = 2); break;
-				case 'activate':     $arr['html'] = $this->_activate($database, $option, $member, $emp); break;
-				case 'download':     $arr['html'] = $this->_download($member); break;
+				case 'uploadresume':
+					$arr['html'] = $this->_upload($database, $option, $member);
+					break;
+				case 'deleteresume':
+					$arr['html'] = $this->_deleteresume($database, $option, $member, $emp);
+					break;
+				case 'edittitle':
+					$arr['html'] = $this->_view($database, $option, $member, $emp, 1);
+					break;
+				case 'savetitle':
+					$arr['html'] = $this->_save($database, $option, $member, $task, $emp);
+					break;
+				case 'saveprefs':
+					$arr['html'] = $this->_save($database, $option, $member, $task, $emp);
+					break;
+				case 'editprefs':
+					$arr['html'] = $this->_view($database, $option, $member, $emp, 0, $editpref = 2);
+					break;
+				case 'activate':
+					$arr['html'] = $this->_activate($database, $option, $member, $emp);
+					break;
+				case 'download':
+					$arr['html'] = $this->_download($member);
+					break;
 				case 'view':
-				default: $arr['html'] = $this->_view($database, $option, $member, $emp, $edittitle = 0); break;
+				default:
+					$arr['html'] = $this->_view($database, $option, $member, $emp, $edittitle = 0);
+					break;
 			}
 		}
 		else if ($emp)
@@ -259,11 +277,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save($database, $option, $member, $task, $emp)
 	{
-		$lookingfor = Request::getVar('lookingfor','');
-		$tagline    = Request::getVar('tagline','');
+		$lookingfor = Request::getVar('lookingfor', '');
+		$tagline    = Request::getVar('tagline', '');
 		$active     = Request::getInt('activeres', 0);
 		$author     = Request::getInt('author', 0);
-		$title      = Request::getVar('title','');
+		$title      = Request::getVar('title', '');
 
 		if ($task == 'saveprefs')
 		{
@@ -637,7 +655,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if ($oid)
 		{
-			$this->shortlist($oid, $ajax=1);
+			$this->shortlist($oid, 1);
 		}
 	}
 
