@@ -39,10 +39,10 @@ defined('_HZEXEC_') or die();
 	$profile = $this->profile;
 	$id = $this->jobid;
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal('Y-m-d') : '';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal('Y-m-d') : '';
-	$defaultExpire = ($this->config->get('expiry', 0) ? Date::of(strtotime('180 days'))->toLocal('Y-m-d') : '');
-	$expiredate = ($job->expiredate && $job->expiredate !='0000-00-00 00:00:00') ? Date::of($job->expiredate)->toLocal('Y-m-d') : $defaultExpire;
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal('Y-m-d 00:00:00') : '';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal('Y-m-d 00:00:00') : '';
+	$defaultExpire = ($this->config->get('expiry', 0) ? Date::of(strtotime('180 days'))->toLocal('Y-m-d 00:00:00') : '');
+	$expiredate = ($job->expiredate && $job->expiredate !='0000-00-00 00:00:00') ? Date::of($job->expiredate)->toLocal('Y-m-d 00:00:00') : $defaultExpire;
 
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode
 
@@ -185,12 +185,14 @@ defined('_HZEXEC_') or die();
 				<div class="col span6">
 					<label for="expiredate">
 						<?php echo Lang::txt('COM_JOBS_EDITJOB_EXPIRE_DATE'); ?>:
+						<span class="required"><?php echo Lang::txt('COM_JOBS_REQUIRED'); ?></span>
 						<input  type="text" name="expiredate" id="expiredate" size="10" maxlength="10" value="<?php echo $expiredate; ?>" />
 						<?php if ($this->config->get('expiry', 0)): ?>
-						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT_EXPIRY'); ?></span>
+							<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT_EXPIRY'); ?></span>
 						<?php else: ?>
-						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
 						<?php endif; ?>
+						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_MAX_DATE'); ?></span>
 					</label>
 				</div> <!-- /.col .span6 -->
 				<div class="col span6 omega">	
@@ -227,7 +229,7 @@ defined('_HZEXEC_') or die();
 		<p class="submit">
 			<input type="submit" class="btn btn-success" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? Lang::txt('COM_JOBS_ACTION_SAVE_PREVIEW') : Lang::txt('COM_JOBS_ACTION_SAVE'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_CANCEL'); ?></a>
+			<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_CANCEL'); ?></a>
 		</p>
 	</form>
 </section>

@@ -80,9 +80,9 @@ class JobType extends \JTable
 	 * @param      string  $default Default value to return
 	 * @return     string
 	 */
-	public function getType($id = NULL, $default = 'unspecified')
+	public function getType($id = null, $default = 'Unspecified')
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			 return false;
 		}
@@ -96,4 +96,3 @@ class JobType extends \JTable
 		return $this->_db->loadResult();
 	}
 }
-

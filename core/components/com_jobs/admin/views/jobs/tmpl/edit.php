@@ -52,10 +52,10 @@ $usonly = $this->config->get('usonly');
 $this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : Lang::txt('COM_JOBS_USA');
 $this->row->code = !$this->isnew ? $this->row->code : Lang::txt('COM_JOBS_ISNEW');
 
-$startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? Date::of($this->row->startdate)->toLocal('Y-M-d') : '';
-$closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? Date::of($this->row->closedate)->toLocal('Y-M-d') : '';
-$opendate  = ($this->row->opendate  && $this->row->opendate  !='0000-00-00 00:00:00') ? Date::of($this->row->opendate)->toLocal('Y-M-d')  : '';
-$expiredate  = ($this->row->expiredate && $this->row->expiredate !='0000-00-00 00:00:00') ? Date::of($this->row->expiredate)->toLocal('Y-M-d')  : '';
+$startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? Date::of($this->row->startdate)->toLocal('Y-m-d 00:00:00') : '';
+$closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? Date::of($this->row->closedate)->toLocal('Y-m-d 00:00:00') : '';
+$opendate  = ($this->row->opendate  && $this->row->opendate  !='0000-00-00 00:00:00') ? Date::of($this->row->opendate)->toLocal('Y-m-d 00:00:00')  : '';
+$expiredate  = ($this->row->expiredate && $this->row->expiredate !='0000-00-00 00:00:00') ? Date::of($this->row->expiredate)->toLocal('Y-m-d 00:00:00')  : '';
 
 $status = (!$this->isnew) ? $this->row->status : 4; // draft mode
 
