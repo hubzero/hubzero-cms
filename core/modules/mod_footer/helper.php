@@ -56,7 +56,7 @@ class Helper extends Module
 		$cur_year   = Date::format('Y');
 		$csite_name = Config::get('sitename');
 
-		if (is_int(\JString::strpos(Lang::txt('MOD_FOOTER_LINE1'), '%date%')))
+		if (is_int(strpos(Lang::txt('MOD_FOOTER_LINE1'), '%date%')))
 		{
 			$line1 = str_replace('%date%', $cur_year, Lang::txt('MOD_FOOTER_LINE1'));
 		}
@@ -65,7 +65,7 @@ class Helper extends Module
 			$line1 = Lang::txt('MOD_FOOTER_LINE1');
 		}
 
-		if (is_int(\JString::strpos($line1, '%sitename%')))
+		if (is_int(strpos($line1, '%sitename%')))
 		{
 			$lineone = str_replace('%sitename%', $csite_name, $line1);
 		}

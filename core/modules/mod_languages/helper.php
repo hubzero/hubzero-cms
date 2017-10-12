@@ -39,10 +39,7 @@ use Route;
 use User;
 use Lang;
 use JLanguageHelper;
-use JLanguage;
-use JFactory;
 use JLoader;
-use JString;
 
 /**
  * Module class for displaying a menu
@@ -60,8 +57,8 @@ class Helper extends Module
 		$params = $this->params;
 		$module = $this->module;
 
-		$headerText	= JString::trim($params->get('header_text'));
-		$footerText	= JString::trim($params->get('footer_text'));
+		$headerText = trim($params->get('header_text'));
+		$footerText = trim($params->get('footer_text'));
 
 		$list = self::getList($params);
 

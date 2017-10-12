@@ -449,7 +449,7 @@ class ContentModelArticles extends JModelList
 
 		if ((is_object($params)) && ($params->get('filter_field') != 'hide') && ($filter = $this->getState('list.filter'))) {
 			// clean filter variable
-			$filter = JString::strtolower($filter);
+			$filter = strtolower($filter);
 			$hitsFilter = intval($filter);
 			$filter = $db->Quote('%'.$db->escape($filter, true).'%', false);
 
