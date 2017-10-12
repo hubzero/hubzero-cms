@@ -48,7 +48,7 @@ if (!$this->ajax)
 	<div class="curation-history">
 		<div class="pubtitle">
 			<p>
-				<?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
+				<?php echo \Hubzero\Utility\Str::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
 			</p>
 		</div>
 		<?php if ($history) { ?>

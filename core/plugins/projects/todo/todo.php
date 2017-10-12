@@ -32,8 +32,7 @@
 defined('_HZEXEC_') or die();
 
 // Include model
-include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'models' . DS . 'todo.php');
+include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
 
 /**
  * Projects todo's
@@ -388,7 +387,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Append breadcrumbs
 		Pathway::append(
-			stripslashes(\Hubzero\Utility\String::truncate($view->row->get('content'), 40)),
+			stripslashes(\Hubzero\Utility\Str::truncate($view->row->get('content'), 40)),
 			Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid)
 		);
 
@@ -479,7 +478,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			{
 				$objTD->details = $objTD->content;
 			}
-			$objTD->content     = \Hubzero\Utility\String::truncate($objTD->content, 255);
+			$objTD->content     = \Hubzero\Utility\Str::truncate($objTD->content, 255);
 
 			$objTD->color       = $listcolor == 'none' ? '' : $listcolor;
 			$objTD->assigned_to = $assigned;
@@ -929,7 +928,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Clean-up
 		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
 		$comment = \Hubzero\Utility\Sanitize::stripImages($comment);
-		$comment = \Hubzero\Utility\String::truncate($comment, 800);
+		$comment = \Hubzero\Utility\Str::truncate($comment, 800);
 
 		// Instantiate comment
 		$objC = new \Components\Projects\Tables\Comment($this->_database);

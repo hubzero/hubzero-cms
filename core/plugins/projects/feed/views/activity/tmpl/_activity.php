@@ -95,7 +95,7 @@ if (!$this->activity->log->get('anonymous'))
 			<div class="activity-details">
 				<?php if ($showProject) { ?>
 					<span class="project-name">
-						<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\String::truncate($this->model->get('title'), 65); ?></a>
+						<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\Str::truncate($this->model->get('title'), 65); ?></a>
 					</span>
 				<?php } ?>
 				<span class="activity-actor"><?php echo $name; ?></span>
@@ -127,7 +127,7 @@ if (!$this->activity->log->get('anonymous'))
 						<?php
 						if (strlen(strip_tags($content)) > 250)
 						{
-							$short = Hubzero\Utility\String::truncate($content, 250, array('html' => true));
+							$short = Hubzero\Utility\Str::truncate($content, 250, array('html' => true));
 							?>
 							<div class="activity-event-preview">
 								<?php echo $short; ?>

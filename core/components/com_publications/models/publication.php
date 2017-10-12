@@ -1457,7 +1457,7 @@ class Publication extends Obj
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -1532,7 +1532,7 @@ class Publication extends Obj
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -1649,7 +1649,7 @@ class Publication extends Obj
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -1894,7 +1894,7 @@ class Publication extends Obj
 	{
 		if (!isset($this->_basePath))
 		{
-			$this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\String::pad($this->get('id')) . DS . \Hubzero\Utility\String::pad($this->get('version_id'));
+			$this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($this->get('id')) . DS . \Hubzero\Utility\Str::pad($this->get('version_id'));
 		}
 		switch (strtolower($type))
 		{

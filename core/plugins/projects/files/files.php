@@ -3094,7 +3094,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$mconfig = Component::params('com_members');
 
 		// Build upload path
-		$dir  = \Hubzero\Utility\String::pad($this->_uid);
+		$dir  = \Hubzero\Utility\Str::pad($this->_uid);
 		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
 		if (!is_dir(PATH_APP . $path))

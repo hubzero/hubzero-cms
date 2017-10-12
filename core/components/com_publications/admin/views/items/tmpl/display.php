@@ -201,7 +201,7 @@ function submitbutton(pressbutton)
 					<span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
 				</td>
 				<td class="priority-2">
-					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->project_title, 50);  ?></a>
 				</td>
 				<td class="priority-4">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id=' . $row->id . $filterstring ); ?>"><?php echo $this->escape($row->versions); ?></a>

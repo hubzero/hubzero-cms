@@ -41,14 +41,14 @@ class Link extends Base
 	/**
 	 * Attachment type name
 	 *
-	 * @var		string
+	 * @var	 string
 	 */
-	protected	$_name = 'link';
+	protected $_name = 'link';
 
 	/**
 	 * Unique attachment properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_connector  = array('path');
 
@@ -57,22 +57,22 @@ class Link extends Base
 	 *
 	 * @return  boolean
 	 */
-	public function getConfigs( $element, $elementId, $pub, $blockParams )
+	public function getConfigs($element, $elementId, $pub, $blockParams)
 	{
-		$configs	= new stdClass;
+		$configs= new stdClass;
 		$typeParams = $element->typeParams;
 
 		// Allow changes in non-draft version?
-		$configs->freeze 	= isset($blockParams->published_editing)
-							&& $blockParams->published_editing == 0
-							&& ($pub->state == 1 || $pub->state == 5)
-							? 1 : 0;
+		$configs->freeze = isset($blockParams->published_editing)
+						&& $blockParams->published_editing == 0
+						&& ($pub->state == 1 || $pub->state == 5)
+						? 1 : 0;
 
 		// Log path
 		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// replace current attachments?
-		$configs->replace  	= Request::getInt( 'replace_current', 0, 'post');
+		$configs->replace  	= Request::getInt('replace_current', 0, 'post');
 
 		// Verify file type against allowed before attaching?
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
@@ -93,16 +93,14 @@ class Link extends Base
 	 *
 	 * @return  string HTML
 	 */
-	public function drawList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$html = '';
 
-		$url =  Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
+		$url =  Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId);
 		$url = preg_replace('/\/administrator/', '', $url);
 
 		if ($attachments)
@@ -110,10 +108,10 @@ class Link extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
-				$itemUrl 	= $url . '&a=' . $attach->id;
-				$title 		= $attach->title ? $attach->title : $configs->title;
-				$title 		= $title ? $title : $attach->path;
-				$pop		= Lang::txt('View link') . ' ' . $title;
+				$itemUrl = $url . '&a=' . $attach->id;
+				$title   = $attach->title ? $attach->title : $configs->title;
+				$title   = $title ? $title : $attach->path;
+				$pop     = Lang::txt('View link') . ' ' . $title;
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
@@ -130,7 +128,7 @@ class Link extends Base
 	 *
 	 * @return  string HTML
 	 */
-	public function drawLauncher( $element, $elementId, $pub, $blockParams, $elements, $authorized )
+	public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -147,18 +145,18 @@ class Link extends Base
 		);
 
 		$disabled = 0;
-		$pop 	  = null;
+		$pop      = null;
 
 		if ($pub->isUnpublished() || $pub->isDown())
 		{
-			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-			$disabled 	= 1;
+			$pop = Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$disabled = 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+				? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+				: Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
@@ -167,16 +165,14 @@ class Link extends Base
 			$pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
-		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
+		$pop = $pop ? '<p class="warning">' . $pop . '</p>' : '';
 
 		$html = '';
 
 		// Which role?
 		$role = $element->params->role;
 
-		$url = Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number )
-				. '?el=' . $elementId;
+		$url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
 
 		// Primary button
 		if ($role == 1)
@@ -189,17 +185,15 @@ class Link extends Base
 
 			// One launcher for all files
 			$label = Lang::txt('View publication');
-			$class = 'btn btn-primary active icon-next';
+			$class  = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : Lang::txt('View publication');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null,
-					$title, 'rel="external"', $disabled, $pop);
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
 		{
 			$html .= '<ul>';
-			$html .= self::drawList( $attachments, $element, $elementId,
-					$pub, $blockParams, $authorized);
+			$html .= self::drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized);
 			$html .= '</ul>';
 		}
 
@@ -211,15 +205,14 @@ class Link extends Base
 	 *
 	 * @return  boolean
 	 */
-	public function transferData( $elementparams, $elementId, $pub, $blockParams,
-			$attachments, $oldVersion, $newVersion)
+	public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
 	{
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
 			// Make new attachment record
-			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id') ))
+			$pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id')))
 			{
 				continue;
 			}
@@ -231,7 +224,7 @@ class Link extends Base
 	 *
 	 * @return  boolean
 	 */
-	public function serve( $element, $elementId, $pub, $blockParams, $itemId = 0)
+	public function serve($element, $elementId, $pub, $blockParams, $itemId = 0)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -261,7 +254,7 @@ class Link extends Base
 
 		if (!$path)
 		{
-			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
+			$this->setError(Lang::txt('Oops! Something went wrong. Cannot redirect to content.'));
 			return false;
 		}
 
@@ -278,11 +271,11 @@ class Link extends Base
 	 *
 	 * @return  boolean
 	 */
-	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
+	public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
 	{
-		$toAttach   = $toAttach ? $toAttach : Request::getVar( 'url', '', 'post', 'array');
-		$titles 	= Request::getVar( 'title', '', 'post', 'array');
-		$desc 		= Request::getVar( 'desc', '', 'post', 'array');
+		$toAttach = $toAttach ? $toAttach : Request::getVar('url', '', 'post', 'array');
+		$titles   = Request::getVar('title', '', 'post', 'array');
+		$desc     = Request::getVar('desc', '', 'post', 'array');
 
 		// Incoming selections
 		if (!is_array($toAttach))
@@ -337,20 +330,20 @@ class Link extends Base
 			{
 				// Do we also set draft title and metadata from the link?
 				if ($i == 0 && $title && $element->role == 1
-					&& stripos($pub->title, $defaultTitle) !== false )
+					&& stripos($pub->title, $defaultTitle) !== false)
 				{
 					// Load publication version
-					$row = new \Components\Publications\Tables\Version( $this->_parent->_db );
+					$row = new \Components\Publications\Tables\Version($this->_parent->_db);
 					if (!$row->load($pub->version_id))
 					{
 						$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
 						return false;
 					}
 
-					$row->title    		= $title;
-					$description	   	= \Hubzero\Utility\Sanitize::clean($desc);
-					$row->description 	= $description;
-					$row->abstract		= \Hubzero\Utility\String::truncate($description, 255);
+					$row->title       = $title;
+					$description      = \Hubzero\Utility\Sanitize::clean($desc);
+					$row->description = $description;
+					$row->abstract    = \Hubzero\Utility\Str::truncate($description, 255);
 					$row->store();
 				}
 
@@ -386,8 +379,8 @@ class Link extends Base
 			}
 		}
 
-		$objPA = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-		if ($objPA->loadElementAttachment($pub->version_id, array( 'path' => $path),
+		$objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+		if ($objPA->loadElementAttachment($pub->version_id, array('path' => $path),
 			$elementId, $this->_name, $element->role))
 		{
 			// Link already attached
@@ -396,21 +389,21 @@ class Link extends Base
 		}
 		else
 		{
-			$objPA->publication_id 			= $pub->id;
-			$objPA->publication_version_id 	= $pub->version_id;
-			$objPA->path 					= $path;
-			$objPA->type 					= $this->_name;
-			$objPA->created_by 				= $uid;
-			$objPA->created 				= Date::toSql();
-			$objPA->role 					= $element->role;
-			$objPA->title 					= $title;
+			$objPA->publication_id         = $pub->id;
+			$objPA->publication_version_id = $pub->version_id;
+			$objPA->path                   = $path;
+			$objPA->type                   = $this->_name;
+			$objPA->created_by             = $uid;
+			$objPA->created                = Date::toSql();
+			$objPA->role                   = $element->role;
+			$objPA->title                  = $title;
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
 		}
 
-		$objPA->element_id 	= $elementId;
-		$objPA->ordering 	= $ordering;
+		$objPA->element_id = $elementId;
+		$objPA->ordering   = $ordering;
 
 		if (!$objPA->store())
 		{
@@ -460,8 +453,8 @@ class Link extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= Request::getVar( 'title', '' );
-		$thumb 	= Request::getInt( 'makedefault', 0 );
+		$title 	= Request::getVar('title', '');
+		$thumb 	= Request::getInt('makedefault', 0);
 
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
@@ -473,9 +466,9 @@ class Link extends Base
 		}
 
 		// Update label
-		$row->title 		= $title;
-		$row->modified_by 	= User::get('id');
-		$row->modified 		= Date::toSql();
+		$row->title       = $title;
+		$row->modified_by = User::get('id');
+		$row->modified    = Date::toSql();
 
 		// Update record
 		if (!$row->store())
@@ -493,18 +486,18 @@ class Link extends Base
 	 *
 	 * @return  object
 	 */
-	public function getStatus( $element, $attachments )
+	public function getStatus($element, $attachments)
 	{
 		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
-		$max 		= $element->max;
-		$min 		= $element->min;
-		$role 		= $element->role;
-		$params		= $element->typeParams;
-		$required	= $element->required;
-		$counter 	= count($attachments);
-		$allowed 	= isset($params->accept) ? $params->accept :  null;
+		$max      = $element->max;
+		$min      = $element->min;
+		$role     = $element->role;
+		$params   = $element->typeParams;
+		$required = $element->required;
+		$counter  = count($attachments);
+		$allowed  = isset($params->accept) ? $params->accept : null;
 
 		if (!$required)
 		{
@@ -517,7 +510,7 @@ class Link extends Base
 		{
 			if ($counter)
 			{
-				$status->setError( Lang::txt('Need at least ' . $min . ' attachment') );
+				$status->setError(Lang::txt('Need at least ' . $min . ' attachment'));
 			}
 			else
 			{
@@ -528,7 +521,7 @@ class Link extends Base
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( Lang::txt('Maximum ' . $max . ' attachment(s) allowed') );
+			$status->setError(Lang::txt('Maximum ' . $max . ' attachment(s) allowed'));
 		}
 		// Check allowed formats
 		elseif (!self::checkAllowed($attachments, $allowed))
@@ -541,7 +534,7 @@ class Link extends Base
 					$error .= ' ' . $ext .',';
 				}
 				$error = substr($error, 0, strlen($error) - 1);
-				$status->setError( $error );
+				$status->setError($error);
 			}
 		}
 
@@ -555,7 +548,7 @@ class Link extends Base
 	 *
 	 * @return  object
 	 */
-	public function checkAllowed( $attachments, $formats = array() )
+	public function checkAllowed($attachments, $formats = array())
 	{
 		if (empty($formats))
 		{
@@ -588,18 +581,18 @@ class Link extends Base
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'attachments',
-				'layout'	=> $this->_name
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'attachments',
+				'layout'  => $this->_name
 			)
 		);
-		$view->data 	= $data;
-		$view->params   = $params;
+		$view->data   = $data;
+		$view->params = $params;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -611,14 +604,14 @@ class Link extends Base
 	 */
 	public function buildDataObject($att, $view, $i = 1)
 	{
-		$data 			= new stdClass;
-		$data->row 		= $att;
+		$data = new stdClass;
+		$data->row      = $att;
 		$data->ordering = $i;
 		$data->editUrl  = $view->pub->link('editversion');
-		$data->id		= $att->id;
-		$data->props	= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
-		$data->viewer	= $view->viewer;
-		$data->version	= $view->pub->version_number;
+		$data->id       = $att->id;
+		$data->props    = $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
+		$data->viewer   = $view->viewer;
+		$data->version  = $view->pub->version_number;
 		return $data;
 	}
 
@@ -627,8 +620,7 @@ class Link extends Base
 	 *
 	 * @return  boolean
 	 */
-	public function addToBundle( $zip, $attachments, $element, $elementId,
-		$pub, $blockParams, &$readme, $bundleDir)
+	public function addToBundle($zip, $attachments, $element, $elementId, $pub, $blockParams, &$readme, $bundleDir)
 	{
 		return false;
 	}
@@ -638,8 +630,7 @@ class Link extends Base
 	 *
 	 * @return  boolean
 	 */
-	public function drawPackageList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		return false;
 	}

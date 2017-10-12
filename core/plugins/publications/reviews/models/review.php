@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
-require_once __DIR__ . '/comment.php');
+require_once __DIR__ . '/comment.php';
 
 /**
  * Publications review mdoel
@@ -309,7 +309,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}

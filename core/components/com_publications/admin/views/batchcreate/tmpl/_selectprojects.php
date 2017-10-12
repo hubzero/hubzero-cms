@@ -37,7 +37,7 @@ $html .= "\t".'<option value="0" selected="selected">' . Lang::txt('COM_PUBLICAT
 foreach ($this->projects as $project)
 {
 	$html .= "\t".'<option value="' . $project->id . '"';
-	$html .= '>' . \Hubzero\Utility\String::truncate($project->title, 60) . ' (' . $project->alias . ')</option>'."\n";
+	$html .= '>' . \Hubzero\Utility\Str::truncate($project->title, 60) . ' (' . $project->alias . ')</option>'."\n";
 }
 $html .= '</select>'."\n";
 echo $html;

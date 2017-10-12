@@ -94,11 +94,11 @@ $pa = new \Components\Publications\Tables\Author($database);
 			$description = '';
 			if ($item->get('abstract'))
 			{
-				$description = \Hubzero\Utility\String::truncate(stripslashes($item->get('abstract')), 300) . "\n";
+				$description = \Hubzero\Utility\Str::truncate(stripslashes($item->get('abstract')), 300) . "\n";
 			}
 			else if ($item->get('description'))
 			{
-				$description = \Hubzero\Utility\String::truncate(stripslashes($item->get('description')), 300) . "\n";
+				$description = \Hubzero\Utility\Str::truncate(stripslashes($item->get('description')), 300) . "\n";
 			}
 
 			$info = array();

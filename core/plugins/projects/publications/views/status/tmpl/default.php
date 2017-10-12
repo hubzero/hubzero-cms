@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 // Build our citation object
 if ($this->pub->version->get('doi'))
 {
-	include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+	include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 	$cite = new stdClass();
 	$cite->title    = $this->pub->get('title');
@@ -86,7 +86,7 @@ if ($revertAllowed && $this->pub->accepted())
 ?>
 
 <form action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post" id="plg-form" enctype="multipart/form-data">
-	<?php echo \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->title); ?>
+	<?php echo \Components\Publications\Helpers\Html::showPubTitle($this->pub, $this->title); ?>
 
 		<fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" id="projectid" />
@@ -217,7 +217,7 @@ if ($revertAllowed && $this->pub->accepted())
 						// Unpublished
 						case 0:
 							// Check who unpublished this
-							$pubtitle = \Hubzero\Utility\String::truncate($this->escape($this->pub->version->get('title')), 100);
+							$pubtitle = \Hubzero\Utility\Str::truncate($this->escape($this->pub->version->get('title')), 100);
 							$activity = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
 							$activity.= ' ' . strtolower(Lang::txt('version'))
 										. ' ' . $this->pub->versionAlias
@@ -280,12 +280,9 @@ if ($revertAllowed && $this->pub->accepted())
 								<span class="revert-options">
 								<?php if ($revertAllowed)
 								{
-									echo ' <a href="' . Route::url($this->pub->link('editversion') . '&action=revert') .'" class="btn icon-revert" id="action-revert">'
-								. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT')
-								. '</a> <span class="block and_or">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR') . '</span>';
+									echo ' <a href="' . Route::url($this->pub->link('editversion') . '&action=revert') .'" class="btn icon-revert" id="action-revert">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT') . '</a> <span class="block and_or">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR') . '</span>';
 								}
-								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">'
-							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ;  ?>
+								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ;  ?>
 								</span>
 								</p></li>
 							<?php } ?>

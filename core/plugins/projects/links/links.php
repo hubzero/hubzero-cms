@@ -286,8 +286,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$new  = $cite['id'] ? false : true;
 
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
 
 		if (!$pid || !$cite['type'] || !$cite['title'])
 		{
@@ -356,9 +356,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function unattachCitation($pid = 0, $cid = 0, $returnStatus = false)
 	{
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 		if (!$cid || !$pid)
 		{
@@ -416,10 +416,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function attachCitation($pid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
 	{
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'type.php';
+		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 		$out = array('error' => null, 'success' => null);
 
@@ -674,8 +674,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Incoming
 			$cid    = Request::getInt('cid', 0);
 
-			include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php';
-			include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
+			include_once \Component::path('com_citations') . DS . 'tables' . DS . 'type.php';
+			include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
 
 			// Load the object
 			$view->row = new \Components\Citations\Tables\Citation($this->_database);
@@ -765,8 +765,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'type.php';
+		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
 
 		// Load the object
 		$view->row = new \Components\Citations\Tables\Citation($this->_database);
@@ -1054,8 +1054,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				}
 
 				$out .= $description
-						? stripslashes('<p>' . \Hubzero\Utility\String::truncate(addslashes($description), 200) . '</p>')
-						: '<p>' . \Hubzero\Utility\String::truncate(addslashes($finalUrl), 200) . '</p>';
+						? stripslashes('<p>' . \Hubzero\Utility\Str::truncate(addslashes($description), 200) . '</p>')
+						: '<p>' . \Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
 
 				if ($images)
 				{

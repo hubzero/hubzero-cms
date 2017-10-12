@@ -59,7 +59,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 	<div class="curation-wrap">
 		<div class="pubtitle">
 			<h3>
-				<span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
+				<span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo \Hubzero\Utility\Str::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
 			</h3>
 		</div>
 		<p class="instruct">

@@ -87,7 +87,7 @@ else
 				<?php } ?>
 
 				<p class="ataglance">
-					<?php echo $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : ''; ?>
+					<?php echo $this->publication->abstract ? \Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250) : ''; ?>
 				</p>
 
 				<?php

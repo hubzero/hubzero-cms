@@ -32,10 +32,10 @@
 defined('_HZEXEC_') or die();
 
 $this->css('jquery.datepicker.css', 'system')
-	 ->css('jquery.timepicker.css', 'system')
-	 ->css()
-	 ->js('jquery.timepicker', 'system')
-     ->js();
+	->css('jquery.timepicker.css', 'system')
+	->css()
+	->js('jquery.timepicker', 'system')
+	->js();
 
 $color = $this->row->get('color');
 $class = $color ? 'pin_' . $color : 'pin_grey';
@@ -57,7 +57,7 @@ $listName = $this->todo->getListName($this->model->get('id'), $color);
 if ($this->row->isComplete())
 {
 	$diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));
-	$diff = \Components\Projects\Helpers\Html::timeDifference ($diff);
+	$diff = \Components\Projects\Helpers\Html::timeDifference($diff);
 }
 $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('PLG_PROJECTS_TODO_NOONE');
 ?>
@@ -65,7 +65,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 	<h3 class="todo"><a href="<?php echo Route::url($url); ?>"><?php echo $this->title; ?></a>
 	<?php if ($listName) { ?> &raquo; <a href="<?php echo Route::url($url) . '/?list=' . $color; ?>"><span class="indlist <?php echo 'pin_' . $color; ?>"><?php echo $listName; ?></span></a> <?php } ?>
 	<?php if ($this->row->isComplete()) { ?> &raquo; <span class="indlist completedtd"><a href="<?php echo Route::url($url) . '/?state=1'; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')); ?></a></span> <?php } ?>
-	&raquo; <span class="itemname"><?php echo \Hubzero\Utility\String::truncate($this->row->get('content'), 60); ?></span>
+	&raquo; <span class="itemname"><?php echo \Hubzero\Utility\Str::truncate($this->row->get('content'), 60); ?></span>
 	</h3>
 </div>
 	<?php if ($this->model->access('content')) { ?>

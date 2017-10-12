@@ -121,7 +121,7 @@ $authorlist = '';
 											</tbody>
 										</table>
 									</div>
-									<?php echo \Hubzero\Utility\String::truncate(stripslashes($line->abstract), 300); ?>
+									<?php echo \Hubzero\Utility\Str::truncate(stripslashes($line->abstract), 300); ?>
 								</div>
 						<?php } ?>
 					</td>

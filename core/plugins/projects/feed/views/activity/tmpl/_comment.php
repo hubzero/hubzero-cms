@@ -50,7 +50,7 @@ $longComment = str_replace('<!-- {FORMAT:HTML} -->', '', $longComment);
 
 $shorten = (strlen($longComment) > 250) ? 1 : 0;
 $shortComment = $shorten
-	? \Hubzero\Utility\String::truncate($longComment, 250, array('html' => true)) : $longComment;
+	? \Hubzero\Utility\Str::truncate($longComment, 250, array('html' => true)) : $longComment;
 
 $longComment  = \Components\Projects\Helpers\Html::replaceUrls($longComment, 'external');
 $shortComment = \Components\Projects\Helpers\Html::replaceUrls($shortComment, 'external');

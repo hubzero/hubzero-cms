@@ -94,7 +94,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 							<?php if ($row->isComplete()) { ?>
 								<span class="complete">&nbsp;</span>
 							<?php } ?>
-							<span class="todo-content" id="td-content-<?php echo $row->get('id'); ?>"><?php echo \Hubzero\Utility\String::truncate($row->get('content'), 150); ?></span>
+							<span class="todo-content" id="td-content-<?php echo $row->get('id'); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 150); ?></span>
 							<span class="todo-options" id="td-options-<?php echo $row->get('id'); ?>">
 							<?php if ($row->isComplete()) { ?>
 								<span class="todo-assigned"> <?php echo $row->closer('name'); ?></span> <?php if ($row->isComplete()) { echo '<span class="todo-due">' . Lang::txt('PLG_PROJECTS_TODO_CHECKED_OFF') . ' ' . $row->closed('date') . '</span>'; } ?>

@@ -765,7 +765,7 @@ class Items extends AdminController
 
 		// Save incoming
 		$this->model->version->title        = $title;
-		$this->model->version->abstract     = \Hubzero\Utility\String::truncate($abstract, 250);
+		$this->model->version->abstract     = \Hubzero\Utility\Str::truncate($abstract, 250);
 		$this->model->version->description  = $description;
 		$this->model->version->metadata     = $metadata;
 		$this->model->version->release_notes= $release_notes;
@@ -836,7 +836,7 @@ class Items extends AdminController
 		$rt->tag_object(User::get('id'), $id, $tags, 1, true);
 
 		// Email config
-		$pubtitle = \Hubzero\Utility\String::truncate($this->model->version->title, 100);
+		$pubtitle = \Hubzero\Utility\Str::truncate($this->model->version->title, 100);
 		$subject  = Lang::txt('Version') . ' ' . $this->model->version->version_label . ' '
 					. Lang::txt('COM_PUBLICATIONS_OF') . ' '
 					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))
@@ -1009,10 +1009,10 @@ class Items extends AdminController
 					// Append comment to activity
 					if ($message && $aid)
 					{
-						require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+						require_once \Component::path('com_projects') . DS . 'tables' . DS . 'comment.php';
 						$objC = new \Components\Projects\Tables\Comment($this->database);
 
-						$comment = \Hubzero\Utility\String::truncate($message, 250);
+						$comment = \Hubzero\Utility\Str::truncate($message, 250);
 						$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 
 						$objC->itemid           = $aid;
@@ -1380,7 +1380,7 @@ class Items extends AdminController
 					}
 
 					// Build publication path
-					$path =  PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\String::pad($id);
+					$path =  PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($id);
 
 					// Delete all files
 					if (is_dir($path))

@@ -47,7 +47,7 @@ if ($this->groups)
 		{
 			$html .= ' selected="selected"';
 		}
-		$html .= '>' . \Hubzero\Utility\String::truncate($group->description, 60) .'</option>'."\n";
+		$html .= '>' . \Hubzero\Utility\Str::truncate($group->description, 60) .'</option>'."\n";
 	}
 }
 $html .= '</select>'."\n";

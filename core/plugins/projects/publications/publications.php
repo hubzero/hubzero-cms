@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php';
+include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 /**
  * Project publications
@@ -1056,7 +1056,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Record activity
 		if ($this->get('_activity'))
 		{
-			$pubTitle = \Hubzero\Utility\String::truncate($pub->title, 100);
+			$pubTitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
 			$aid = $this->model->recordActivity(
 				$this->get('_activity'),
 				$pub->id,
@@ -1881,7 +1881,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->set('_msg', Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED'));
 
 					// Set activity message
-					$pubTitle = \Hubzero\Utility\String::truncate($new->title, 100);
+					$pubTitle = \Hubzero\Utility\Str::truncate($new->title, 100);
 					$action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION') . ' ' . $new->version_label . ' ';
 					$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubTitle . '"';
 					$this->set('_activity', $action);
@@ -2317,7 +2317,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		$this->_msg .= ' <a href="' . Route::url($pub->link('version')) . '">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT') . '</a>';
 
-		$pubtitle = \Hubzero\Utility\String::truncate($pub->version->get('title'), 100);
+		$pubtitle = \Hubzero\Utility\Str::truncate($pub->version->get('title'), 100);
 		$action  .= ' ' . $pub->version->get('version_label') . ' ';
 		$action  .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . html_entity_decode($pubtitle) . '"';
 		$action   = htmlentities($action, ENT_QUOTES, "UTF-8");
@@ -2529,7 +2529,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			if (!$this->getError())
 			{
-				$pubtitle = \Hubzero\Utility\String::truncate($pub->version->get('title'), 100);
+				$pubtitle = \Hubzero\Utility\Str::truncate($pub->version->get('title'), 100);
 
 				if ($pub->version->get('state') == 1)
 				{
@@ -2586,10 +2586,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pScreenshot->deleteScreenshots($vid);
 
 					// Build publication path
-					$path =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS) . DS . \Hubzero\Utility\String::pad($pid);
+					$path =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid);
 
 					// Build version path
-					$vPath = $path . DS . \Hubzero\Utility\String::pad($vid);
+					$vPath = $path . DS . \Hubzero\Utility\Str::pad($vid);
 
 					// Delete all version files
 					if (is_dir($vPath))
@@ -2795,7 +2795,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$mconfig = Component::params('com_members');
 
 		// Build upload path
-		$dir  = \Hubzero\Utility\String::pad($this->_uid);
+		$dir  = \Hubzero\Utility\Str::pad($this->_uid);
 		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
 		if (!is_dir(PATH_APP . $path))

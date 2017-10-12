@@ -33,7 +33,7 @@
 namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Date;
 use User;
 use Lang;
@@ -512,8 +512,8 @@ class Version extends Relational
 	 */
 	public function filespace()
 	{
-		$pid = String::pad($this->get('publication_id'), 5);
-		$vid = String::pad($this->get('id'), 5);
+		$pid = Str::pad($this->get('publication_id'), 5);
+		$vid = Str::pad($this->get('id'), 5);
 		$sec = $this->get('secret');
 
 		return PATH_APP . '/' . trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/') . '/' . $pid . '/' . $vid . '/' . $sec;

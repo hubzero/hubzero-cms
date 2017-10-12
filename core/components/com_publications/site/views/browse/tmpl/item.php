@@ -168,7 +168,7 @@ if (!$this->line->hasImage())
 		{
 			$content = $this->line->get('description');
 		}
-		echo \Hubzero\Utility\String::truncate(stripslashes($content), 300);
+		echo \Hubzero\Utility\Str::truncate(stripslashes($content), 300);
 		?>
 	</div>
 </li>

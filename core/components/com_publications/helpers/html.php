@@ -63,8 +63,8 @@ class Html
 
 		$base = DS . trim($base, DS);
 
-		$pub_dir     =  \Hubzero\Utility\String::pad($pid);
-		$version_dir =  \Hubzero\Utility\String::pad($vid);
+		$pub_dir     =  \Hubzero\Utility\Str::pad($pid);
+		$version_dir =  \Hubzero\Utility\Str::pad($vid);
 		$path        = $base . DS . $pub_dir . DS . $version_dir;
 		$path        = $filedir ? $path . DS . $filedir : $path;
 		$path        = $root ? PATH_APP . $path : $path;
@@ -543,7 +543,7 @@ class Html
 				$project .= $publication->access('owner')
 					? ' <a href="' . Route::url($publication->project()->link()) . '">'
 					: ' <strong>';
-				$project .= \Hubzero\Utility\String::truncate($publication->project()->get('title'), 50);
+				$project .= \Hubzero\Utility\Str::truncate($publication->project()->get('title'), 50);
 				$project .= $publication->access('owner') ? '</a>' : '</strong>';
 				$msg .= ' <span class="fromproject">' . $project . '</span>';
 			}
@@ -838,7 +838,7 @@ class Html
 		?>
 		<div id="plg-header">
 			<h3 class="publications c-header">
-				<a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->get('title'), 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
+				<a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\Str::truncate($pub->get('title'), 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
 				<?php if ($append) { echo $append; } ?>
 			</h3>
 		</div>
@@ -856,7 +856,7 @@ class Html
 	{
 		?>
 		<h3 class="prov-header">
-			<a href="<?php echo Route::url($pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo \Hubzero\Utility\String::truncate($pub->get('title'), 65); ?>"
+			<a href="<?php echo Route::url($pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo \Hubzero\Utility\Str::truncate($pub->get('title'), 65); ?>"
 			<?php if ($append) { echo $append; } ?>
 		</h3>
 		<?php
@@ -1110,7 +1110,7 @@ class Html
 
 			foreach ($rows as $row)
 			{
-				$path = DS . $base . DS . \Hubzero\Utility\String::pad($row->id);
+				$path = DS . $base . DS . \Hubzero\Utility\Str::pad($row->id);
 				$used = $used + self::computeDiskUsage($path, PATH_APP, false);
 			}
 		}

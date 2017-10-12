@@ -36,19 +36,19 @@ $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
 $required = $this->pub->curation('blocks', $this->master->blockId, 'elements', $this->elementId)->params->required;
 
-$elName   		= 'content-element' . $this->elementId;
-$max 	  		= $this->manifest->params->max;
-$multiZip 		= (isset($this->manifest->params->typeParams->multiZip)
-				&& $this->manifest->params->typeParams->multiZip == 0)
-				? false : true;
+$elName   = 'content-element' . $this->elementId;
+$max      = $this->manifest->params->max;
+$multiZip = (isset($this->manifest->params->typeParams->multiZip) && $this->manifest->params->typeParams->multiZip == 0)
+			? false
+			: true;
 
 // Customize title
-$defaultTitle	= $this->manifest->params->title
-				? str_replace('{pubtitle}', $this->pub->title,
-				$this->manifest->params->title) : NULL;
-$defaultTitle	= $this->manifest->params->title
-				? str_replace('{pubversion}', $this->pub->version_label,
-				$defaultTitle) : NULL;
+$defaultTitle = $this->manifest->params->title
+			? str_replace('{pubtitle}', $this->pub->title,
+			$this->manifest->params->title) : null;
+$defaultTitle = $this->manifest->params->title
+			? str_replace('{pubversion}', $this->pub->version_label,
+			$defaultTitle) : null;
 
 $error 			= $this->status->getError();
 
@@ -60,12 +60,11 @@ $shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
 
 if ($shorten)
 {
-	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
-	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-				. Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
-	$about.= ' <div class="hidden">';
-	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
-	$about.= ' </div>';
+	$about  = \Hubzero\Utility\Str::truncate($aboutTxt, 200);
+	$about .= ' <a href="#more-' . $elName . '" class="more-content">' . Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
+	$about .= ' <div class="hidden">';
+	$about .= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
+	$about .= ' </div>';
 }
 else
 {
@@ -73,9 +72,9 @@ else
 }
 
 // Get version params and extract bundle name
-$bundleName		= $this->pub->params->get($elName . 'bundlename', $defaultTitle);
-$bundleName		= $bundleName ? $bundleName : 'bundle';
-$bundleName	   .= '.zip';
+$bundleName  = $this->pub->params->get($elName . 'bundlename', $defaultTitle);
+$bundleName  = $bundleName ? $bundleName : 'bundle';
+$bundleName .= '.zip';
 
 // Get attachment model
 $modelAttach = new \Components\Publications\Models\Attachments($this->database);
@@ -84,11 +83,11 @@ $modelAttach = new \Components\Publications\Models\Attachments($this->database);
 $modelHandler = new \Components\Publications\Models\Handlers($this->database);
 
 // Is there handler choice?
-$handlers 	  = $this->manifest->params->typeParams->handlers;
+$handlers = $this->manifest->params->typeParams->handlers;
 
 // Is there handler assigned?
-$handler 	  = $this->manifest->params->typeParams->handler;
-$useHandles   = ($handlers || $handler ) ? true : false;
+$handler = $this->manifest->params->typeParams->handler;
+$useHandles = ($handlers || $handler ) ? true : false;
 
 if ($handler)
 {

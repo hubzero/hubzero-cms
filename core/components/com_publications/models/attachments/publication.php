@@ -133,11 +133,11 @@ class Publication extends Base
 				$description = '';
 				if ($publication->get('abstract'))
 				{
-					$description = \Hubzero\Utility\String::truncate(stripslashes($publication->get('abstract')), 300) . "\n";
+					$description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('abstract')), 300) . "\n";
 				}
 				else if ($publication->get('description'))
 				{
-					$description = \Hubzero\Utility\String::truncate(stripslashes($publication->get('description')), 300) . "\n";
+					$description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('description')), 300) . "\n";
 				}
 
 				$pop = Lang::txt('View link') . ' ' . $title;
