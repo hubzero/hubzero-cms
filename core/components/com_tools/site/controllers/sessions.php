@@ -346,7 +346,7 @@ class Sessions extends SiteController
 
 		if (!empty($params))
 		{
-			$params_whitelist = explode(',', $this->config->get('params_whitelist',''));
+			$params_whitelist = explode(',', $this->config->get('params_whitelist', ''));
 
 			$separator = "\r\n";
 
@@ -367,7 +367,7 @@ class Sessions extends SiteController
 					if (($type == 'directory' || $type == 'file'))
 					{
 						// Replace ~/ prefix with user's home directory
-						if (strncmp($value,"~/",2) === 0)
+						if (strncmp($value, "~/", 2) === 0)
 						{
 							$homeDirectory = rtrim(User::get('homeDirectory'), '/');
 
@@ -413,9 +413,9 @@ class Sessions extends SiteController
 								continue;
 							}
 
-							$wl = rtrim(trim($wl),'/') . '/';  // make sure we compare against a full path element
+							$wl = rtrim(trim($wl), '/') . '/';  // make sure we compare against a full path element
 
-							if (strncmp($wl,$value,strlen($wl)) === 0)
+							if (strncmp($wl, $value, strlen($wl)) === 0)
 							{
 								$match = $wl;
 								break;
@@ -1215,24 +1215,24 @@ class Sessions extends SiteController
 			return; // Do no more after this.
 		}
 
-		if ($app->params->get('vncEncoding',0))
+		if ($app->params->get('vncEncoding', 0))
 		{
-			$output->encoding = trim($app->params->get('vncEncoding',''),'"');
+			$output->encoding = trim($app->params->get('vncEncoding', ''), '"');
 		}
 
-		if ($app->params->get('vncShowControls',0))
+		if ($app->params->get('vncShowControls', 0))
 		{
-			$output->show_controls = trim($app->params->get('vncShowControls',''),'"');
+			$output->show_controls = trim($app->params->get('vncShowControls', ''), '"');
 		}
 
-		if ($app->params->get('vncShowLocalCursor',0))
+		if ($app->params->get('vncShowLocalCursor', 0))
 		{
-			$output->show_local_cursor = trim($app->params->get('vncShowLocalCursor',''),'"');
+			$output->show_local_cursor = trim($app->params->get('vncShowLocalCursor', ''), '"');
 		}
 
-		if ($app->params->get('vncDebug',0))
+		if ($app->params->get('vncDebug', 0))
 		{
-			$output->debug = trim($app->params->get('vncDebug',''),'"');
+			$output->debug = trim($app->params->get('vncDebug', ''), '"');
 		}
 
 		foreach ($output as $key => $value)
