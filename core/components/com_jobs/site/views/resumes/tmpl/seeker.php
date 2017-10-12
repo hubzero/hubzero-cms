@@ -48,7 +48,7 @@ $title = Lang::txt('COM_JOBS_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' '
 // Get the configured upload path
 $base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);
 
-$path = $base_path . DS . \Hubzero\Utility\String::pad($this->seeker->uid);
+$path = $base_path . DS . \Hubzero\Utility\Str::pad($this->seeker->uid);
 
 if (!is_dir(PATH_APP . $path))
 {

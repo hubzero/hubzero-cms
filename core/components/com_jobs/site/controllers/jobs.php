@@ -2089,7 +2089,7 @@ class Jobs extends SiteController
 				$base_path = DS . trim($base_path, DS);
 			}
 
-			$base_path .= DS . \Hubzero\Utility\String::pad(User::get('id'));
+			$base_path .= DS . \Hubzero\Utility\Str::pad(User::get('id'));
 
 			$i = 0;
 
