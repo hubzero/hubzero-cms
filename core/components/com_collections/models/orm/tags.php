@@ -32,9 +32,7 @@
 
 namespace Components\Collections\Models\Orm;
 
-//use Hubzero\Base\ItemList;
 use Components\Tags\Models\Cloud;
-//use Components\Tags\Models\Tag;
 
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
@@ -49,94 +47,4 @@ class Tags extends Cloud
 	 * @var  string
 	 */
 	protected $_scope = 'bulletinboard';
-
-	/**
-	 * Get tags for a list of IDs
-	 * 
-	 * @param   array    $ids    Bulletin ids
-	 * @param   integer  $admin  Admin flag
-	 * @return  array
-	 */
-	/*public function getTagsForIds($ids=array(), $admin=0)
-	{
-		$tt = new Tables\Tag($this->_db);
-		$tj = new Tables\Object($this->_db);
-
-		if (!is_array($ids) || empty($ids))
-		{
-			return false;
-		}
-
-		$ids = array_map('intval', $ids);
-
-		$sql = "SELECT t.tag, t.raw_tag, t.admin, rt.objectid
-				FROM " . $tt->getTableName() . " AS t 
-				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='" . $this->_scope . "' 
-				WHERE rt.objectid IN (" . implode(',', $ids) . ") ";
-
-		switch ($admin)
-		{
-			case 1:
-				$sql .= "";
-			break;
-			case 0:
-			default:
-				$sql .= "AND t.admin=0 ";
-			break;
-		}
-		$sql .= "ORDER BY raw_tag ASC";
-		$this->_db->setQuery($sql);
-
-		$tags = array();
-		if ($items = $this->_db->loadObjectList())
-		{
-			foreach ($items as $item)
-			{
-				if (!isset($tags[$item->objectid]))
-				{
-					$tags[$item->objectid] = array();
-				}
-				$tags[$item->objectid][] = $item;
-			}
-		}
-		return $tags;
-	}*/
-
-	/**
-	 * Append a tag to the internal cloud
-	 * 
-	 * @param   mixed   $tag
-	 * @return  object
-	 */
-	/*public function append($tag)
-	{
-		if (!($this->_cache['tags.list'] instanceof ItemList))
-		{
-			$this->_cache['tags.list'] = new ItemList(array());
-		}
-
-		if (!$tag)
-		{
-			return $this;
-		}
-
-		if (!($tag instanceof Tag))
-		{
-			if (is_array($tag))
-			{
-				foreach ($tag as $t)
-				{
-					$this->_cache['tags.list']->add(new Tag($t));
-				}
-				return $this;
-			}
-			else
-			{
-				$tag = new Tag($tag);
-			}
-		}
-		$this->_cache['tags.list']->add($tag);
-
-		return $this;
-	}*/
 }
