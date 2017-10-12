@@ -103,16 +103,16 @@ class Compiler extends Obj
 	}
 
 	/**
-	* Compile tex
-	*
-	* @param   string   $fullpath
-	* @param   string   $data
-	* @param   string   $textpath
-	* @param   string   $outputDir
-	* @param   integer  $getPath
-	* @param   string   &$tempBase
-	* @return  string   compressed data
-	*/
+	 * Compile tex
+	 *
+	 * @param   string   $fullpath
+	 * @param   string   $data
+	 * @param   string   $textpath
+	 * @param   string   $outputDir
+	 * @param   integer  $getPath
+	 * @param   string   &$tempBase
+	 * @return  string   compressed data
+	 */
 	public function compileTex($fullpath = '', $data = '', $texpath = '', $outputDir = '', $getPath = 0, &$tempBase = '')
 	{
 		if (!$texpath || !$data)

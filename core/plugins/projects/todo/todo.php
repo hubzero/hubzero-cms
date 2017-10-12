@@ -155,7 +155,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$this->todo = new \Components\Projects\Models\Todo();
 
 			// Set vars
-			$this->_task     = $action ? $action : Request::getVar('action','');
+			$this->_task     = $action ? $action : Request::getVar('action', '');
 			$this->_todoid   = Request::getInt('todoid', 0);
 			$this->_database = App::get('db');
 			$this->_uid      = User::get('id');

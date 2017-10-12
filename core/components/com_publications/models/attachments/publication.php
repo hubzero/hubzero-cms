@@ -44,10 +44,10 @@ use Date;
 class Publication extends Base
 {
 	/**
-	* Attachment type name
-	*
-	* @var  string
-	*/
+	 * Attachment type name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'publication';
 
 	/**
