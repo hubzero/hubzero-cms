@@ -448,7 +448,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$base_path = $this->params->get('webpath', '/site/members');
 		$base_path = DS . trim($base_path, DS);
 
-		$dir = \Hubzero\Utility\String::pad($uid);
+		$dir = \Hubzero\Utility\Str::pad($uid);
 
 		$listdir = $base_path . DS . $dir;
 
@@ -841,4 +841,3 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		exit;
 	}
 }
-

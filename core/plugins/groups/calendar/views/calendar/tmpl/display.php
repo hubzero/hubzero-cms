@@ -104,7 +104,7 @@ defined('_HZEXEC_') or die();
 							<p>
 								<?php
 									$content = strip_tags($event->get('content'));
-									echo ($content) ? Hubzero\Utility\String::truncate($content, 500) : '<em>no content</em>';
+									echo ($content) ? Hubzero\Utility\Str::truncate($content, 500) : '<em>no content</em>';
 								?>
 							</p>
 						</div>
@@ -137,4 +137,3 @@ defined('_HZEXEC_') or die();
 			->set('group', $this->group)
 			->display();
 	}
-

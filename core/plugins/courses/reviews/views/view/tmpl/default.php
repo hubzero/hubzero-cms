@@ -137,7 +137,7 @@ $this->js();
 							<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('date'); ?></time></span>
 						</p>
-						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($reply->get('content')), 300); ?></p>
+						<p><?php echo \Hubzero\Utility\Str::truncate(stripslashes($reply->get('content')), 300); ?></p>
 					</blockquote>
 					<?php
 					}

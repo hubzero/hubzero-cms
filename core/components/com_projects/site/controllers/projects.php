@@ -780,7 +780,7 @@ class Projects extends Base
 		// Save new alias & title
 		if (!$this->getError())
 		{
-			$this->model->set('title', \Hubzero\Utility\String::truncate($title, 250));
+			$this->model->set('title', \Hubzero\Utility\Str::truncate($title, 250));
 			$this->model->set('alias', $name);
 
 			$state = $this->_setupComplete == 3 ? 0 : 1;
@@ -1098,7 +1098,7 @@ class Projects extends Base
 			// Save comment
 			if (trim($comment) != '')
 			{
-				$comment = \Hubzero\Utility\String::truncate($comment, 500);
+				$comment = \Hubzero\Utility\Str::truncate($comment, 500);
 				$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 				if (!$approve)
 				{

@@ -33,7 +33,7 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Image\Processor;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Filesystem;
 use Request;
 use Route;
@@ -62,7 +62,7 @@ class Media extends AdminController
 		$file    = Request::getVar('upload', '', 'files', 'array');
 
 		// Build upload path
-		$dir  = String::pad($id);
+		$dir  = Str::pad($id);
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		//allowed extensions for uplaod
@@ -184,7 +184,7 @@ class Media extends AdminController
 		}
 
 		// Build the file path
-		$dir  = String::pad($id);
+		$dir  = Str::pad($id);
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
 		// if we have file

@@ -325,7 +325,7 @@ class Html
 	 */
 	public static function niceidformat($someid)
 	{
-		return \Hubzero\Utility\String::pad($someid);
+		return \Hubzero\Utility\Str::pad($someid);
 	}
 
 	/**

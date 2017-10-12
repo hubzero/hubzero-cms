@@ -54,7 +54,7 @@ defined('_HZEXEC_') or die();
 			foreach ($this->rows1 as $row)
 			{
 				$when = Date::of($row->proposed)->relative();
-				$title = strip_tags($row->about) ? $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->about)), 160) : NULL;
+				$title = strip_tags($row->about) ? $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\Str::truncate($this->escape(strip_tags($row->about)), 160) : NULL;
 			?>
 			<li class="wishlist">
 				<a href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $title; ?>">

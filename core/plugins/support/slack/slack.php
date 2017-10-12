@@ -136,7 +136,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 			$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
 		}
 		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
-		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
+		$text    = Hubzero\Utility\Str::truncate(Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
 
 		if (Component::params('com_support')->get('email_terse'))
 		{
@@ -206,7 +206,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 		}
 		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename')); //, $comment->creator()->get('name'));
 		$text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
-		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
+		$text    = Hubzero\Utility\Str::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
 
 		$color = 'good';
 		if ($comment->isPrivate())

@@ -54,7 +54,7 @@ class plgContentGeshi extends \Hubzero\Plugin\Plugin
 		}
 
 		// Simple performance check to determine whether bot should process further.
-		if (Hubzero\Utility\String::contains($article->text, 'pre>') === false)
+		if (Hubzero\Utility\Str::contains($article->text, 'pre>') === false)
 		{
 			return true;
 		}

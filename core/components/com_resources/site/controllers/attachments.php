@@ -35,7 +35,7 @@ use Components\Resources\Models\Orm\Resource;
 use Components\Resources\Models\Orm\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Utility\Number;
 use Filesystem;
 use Component;
@@ -907,7 +907,7 @@ class Attachments extends SiteController
 			$dir_year  = Date::of('now')->format('Y');
 			$dir_month = Date::of('now')->format('m');
 		}
-		$dir_id = String::pad($id);
+		$dir_id = Str::pad($id);
 
 		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 

@@ -41,15 +41,15 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Get the group IDs for all the groups of a specific user
 	 *
-	 * @param      integer $uid User ID
-	 * @return     array
+	 * @param   integer  $uid  User ID
+	 * @return  array
 	 */
 	private function _getGroupIds($uid=0)
 	{
@@ -62,13 +62,13 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 *
-	 * @param      array   $tags       Tags to match records against
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * 
+	 * @param   array    $tags        Tags to match records against
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
@@ -130,10 +130,16 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, created';  break;
-			case 'id':    $order_by .= "id DESC";             break;
+			case 'title':
+				$order_by .= 'title ASC, created';
+				break;
+			case 'id':
+				$order_by .= "id DESC";
+				break;
 			case 'date':
-			default:      $order_by .= 'created DESC, title'; break;
+			default:
+				$order_by .= 'created DESC, title';
+				break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -156,8 +162,8 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
@@ -198,4 +204,3 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 }
-

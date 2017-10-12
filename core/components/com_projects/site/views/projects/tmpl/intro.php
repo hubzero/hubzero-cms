@@ -100,7 +100,7 @@ $rows = $this->model->entries('list', $this->filters);
 							<?php } ?>
 							<a href="<?php echo Route::url($row->link()); ?>">
 								<img src="<?php echo $row->picture(); ?>" alt="" />
-								<span class="block"><?php echo Hubzero\Utility\String::truncate($this->escape($row->get('title')), 30); ?></span>
+								<span class="block"><?php echo Hubzero\Utility\Str::truncate($this->escape($row->get('title')), 30); ?></span>
 							</a>
 							<?php if ($setup) { ?>
 								<span class="s-complete"><?php echo Lang::txt('COM_PROJECTS_COMPLETE_SETUP'); ?></span>

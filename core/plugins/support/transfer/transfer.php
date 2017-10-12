@@ -99,7 +99,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				if ($row->get('id'))
 				{
 					$author  = $row->get('login');
-					$subject = \Hubzero\Utility\String::truncate($row->get('report'), 200); // max 200 characters
+					$subject = \Hubzero\Utility\Str::truncate($row->get('report'), 200); // max 200 characters
 					$body    = $row->get('summary');
 					$owner   = $row->get('group');
 
@@ -126,7 +126,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				if ($row->get('id'))
 				{
 					$author     = $row->get('created_by');
-					$subject    = \Hubzero\Utility\String::truncate($row->get('subject'), 200); // max 200 characters
+					$subject    = \Hubzero\Utility\Str::truncate($row->get('subject'), 200); // max 200 characters
 					$body       = $row->get('question');
 					$anonymous  = $row->get('anonymous');
 
@@ -153,7 +153,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				if ($row->get('id'))
 				{
 					$author    = $row->get('proposed_by');
-					$subject   = \Hubzero\Utility\String::truncate($row->get('subject'), 200); // max 200 characters
+					$subject   = \Hubzero\Utility\Str::truncate($row->get('subject'), 200); // max 200 characters
 					$body      = $row->get('about');
 					$anonymous = $row->get('anonymous');
 

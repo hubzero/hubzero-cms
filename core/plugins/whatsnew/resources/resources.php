@@ -77,8 +77,8 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once \Component::path('com_resources') . DS . 'tables' . DS . 'type.php';
+		include_once \Component::path('com_resources') . DS . 'tables' . DS . 'resource.php';
 	}
 
 	/**
@@ -217,7 +217,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			// Did we get any results?
 			if ($rows)
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+				include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
@@ -284,8 +284,8 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
 		\Hubzero\Document\Assets::addComponentScript('com_resources');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
+		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
+		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
 	}
 
 	/**
@@ -422,11 +422,11 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		$html .= '</p>' . "\n";
 		if ($row->itext)
 		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->itext)), 200) . '</p>' . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		}
 		else if ($row->ftext)
 		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";

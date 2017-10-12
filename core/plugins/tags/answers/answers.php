@@ -41,19 +41,19 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Retrieve records for items tagged with specific tags
 	 * 
-	 * @param      array   $tags       Tags to match records against
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * @param   array    $tags        Tags to match records against
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
@@ -82,21 +82,27 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 		// Build the query
 		$f_count = "SELECT COUNT(f.id) FROM (SELECT a.id, COUNT(DISTINCT t.tagid) AS uniques ";
 
-		$f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by, 
-					NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href, 
-					'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params, 
-					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount, 
+		$f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by,
+					NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href,
+					'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params,
+					(SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount,
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 
-		$f_from  = " FROM #__answers_questions AS a, #__tags_object AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids) AND a.state!=2";
+		$f_from  = " FROM `#__answers_questions` AS a, `#__tags_object` AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids) AND a.state!=2";
 		$f_from .= " GROUP BY a.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, created';    break;
-			case 'id':    $order_by .= "id DESC";               break;
+			case 'title':
+				$order_by .= 'title ASC, created';
+				break;
+			case 'id':
+				$order_by .= "id DESC";
+				break;
 			case 'date':
-			default:      $order_by .= 'created DESC, title'; break;
+			default:
+				$order_by .= 'created DESC, title';
+				break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -119,8 +125,8 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 * 
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
@@ -140,7 +146,7 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 		$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
 		if ($row->ftext)
 		{
-			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";

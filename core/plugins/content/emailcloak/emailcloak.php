@@ -113,14 +113,14 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 * Check for presence of {emailcloak=off} which is explicits disables this
 		 * bot for the item.
 		 */
-		if (Hubzero\Utility\String::contains($text, '{emailcloak=off}') !== false)
+		if (Hubzero\Utility\Str::contains($text, '{emailcloak=off}') !== false)
 		{
 			$text = str_ireplace('{emailcloak=off}', '', $text);
 			return true;
 		}
 
 		// Simple performance check to determine whether bot should process further.
-		if (Hubzero\Utility\String::contains($text, '@') === false)
+		if (Hubzero\Utility\Str::contains($text, '@') === false)
 		{
 			return true;
 		}

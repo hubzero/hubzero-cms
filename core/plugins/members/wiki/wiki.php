@@ -125,7 +125,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+		include_once \Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
 		$versions = \Components\Wiki\Models\Version::all()
 			->whereEquals('created_by', $uidNumber)
@@ -167,7 +167,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->link() . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		$html .= "\t\t" . '<p class="details">' . $row->get('scope') . '</p>' . "\n";
-		$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->version->get('pagehtml'))), 300) . "</p>\n";
+		$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->version->get('pagehtml'))), 300) . "</p>\n";
 		$html .= "\t" . '</li>' . "\n";
 		return $html;
 	}

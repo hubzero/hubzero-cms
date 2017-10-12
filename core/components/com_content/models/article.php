@@ -34,7 +34,6 @@ namespace Components\Content\Models;
 use Components\Categories\Models\Category;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Asset;
-use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use Component;
 use Lang;

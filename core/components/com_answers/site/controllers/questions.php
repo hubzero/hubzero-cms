@@ -37,7 +37,6 @@ use Components\Answers\Models\Response;
 use Components\Answers\Models\Comment;
 use Components\Answers\Models\Tags;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;

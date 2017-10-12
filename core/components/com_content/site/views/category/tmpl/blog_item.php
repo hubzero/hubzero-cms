@@ -155,13 +155,13 @@ Html::behavior('framework');
 					elseif ($readmore = $this->item->alternative_readmore) :
 						echo $readmore;
 						if ($params->get('show_readmore_title', 0) != 0) :
-							echo \Hubzero\Utility\String::truncate($this->item->title, $params->get('readmore_limit'));
+							echo \Hubzero\Utility\Str::truncate($this->item->title, $params->get('readmore_limit'));
 						endif;
 					elseif ($params->get('show_readmore_title', 0) == 0) :
 						echo Lang::txt('COM_CONTENT_READ_MORE_TITLE');
 					else :
 						echo Lang::txt('COM_CONTENT_READ_MORE');
-						echo \Hubzero\Utility\String::truncate($this->item->title, $params->get('readmore_limit'));
+						echo \Hubzero\Utility\Str::truncate($this->item->title, $params->get('readmore_limit'));
 					endif; ?></a>
 		</p>
 <?php endif; ?>

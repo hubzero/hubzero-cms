@@ -42,12 +42,24 @@ if ($mode != 'preview')
 {
 	switch ($this->model->resource->published)
 	{
-		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 1:
+			$txt .= '';
+			break; // published
+		case 2:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> ';
+			break;  // external draft
+		case 3:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';
+			break;  // pending
+		case 4:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';
+			break;  // deleted
+		case 5:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> ';
+			break;  // internal draft
+		case 0:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';
+			break;  // unpublished
 	}
 }
 ?>
@@ -263,7 +275,7 @@ if ($mode != 'preview')
 								}
 								$html .= '>'.$child->title.'</a>';
 								if ($child->type != 31) {
-									//$html .= ($child->introtext) ? '<br />'.\Hubzero\Utility\String::truncate(stripslashes($child->introtext),200) : '';
+									//$html .= ($child->introtext) ? '<br />'.\Hubzero\Utility\Str::truncate(stripslashes($child->introtext),200) : '';
 								}
 							}
 							$html .= '</td>'."\n";
@@ -349,7 +361,7 @@ if ($mode != 'preview')
 								if ($child->type != 31 && $child->introtext) {
 									$html .= "\t\t".'<tr class="'.$o.'">'."\n";
 									$html .= "\t\t\t".'<td colspan="6">';
-									$html .= \Hubzero\Utility\String::truncate(stripslashes($child->introtext),200) . '<br /><br />';
+									$html .= \Hubzero\Utility\Str::truncate(stripslashes($child->introtext),200) . '<br /><br />';
 									$html .= "\t\t\t".'</td>'."\n";
 									$html .= "\t\t".'</tr>'."\n";
 								}

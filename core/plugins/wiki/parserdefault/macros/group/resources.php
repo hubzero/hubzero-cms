@@ -44,14 +44,14 @@ class Resources extends GroupMacro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  bool
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -69,7 +69,7 @@ class Resources extends GroupMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -100,7 +100,7 @@ class Resources extends GroupMacro
 
 			$html .= '<a href="' . $resourceLink . '"><strong>' . $resource->title . '</strong></a>';
 			$html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' . $resource->area . '</a></p>';
-			$html .= '<p>' . \Hubzero\Utility\String::truncate($resource->itext) . '</p>';
+			$html .= '<p>' . \Hubzero\Utility\Str::truncate($resource->itext) . '</p>';
 		}
 
 		$html .= '</div>';
@@ -109,10 +109,11 @@ class Resources extends GroupMacro
 	}
 
 	/**
-	 * [_getResources description]
-	 * @param  string  $type  [description]
-	 * @param  integer $limit [description]
-	 * @return [type]         [description]
+	 * Get resources for specified type
+	 *
+	 * @param   string   $type
+	 * @param   integer  $limit
+	 * @return  array
 	 */
 	private function _getResources($type = 'all', $limit = 5)
 	{
@@ -165,9 +166,9 @@ class Resources extends GroupMacro
 	/**
 	 * Get item limit
 	 *
-	 * @param  array   $args    Macro Arguments
-	 * @param  integer $default Default return value
-	 * @return mixed
+	 * @param   array    $args     Macro Arguments
+	 * @param   integer  $default  Default return value
+	 * @return  mixed
 	 */
 	private function _getLimit(&$args, $default = 5)
 	{
@@ -188,8 +189,8 @@ class Resources extends GroupMacro
 	/**
 	 * Get class
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array  $args  Macro Arguments
+	 * @return  mixed
 	 */
 	private function _getClass(&$args)
 	{
@@ -207,8 +208,8 @@ class Resources extends GroupMacro
 	/**
 	 * Get type
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array  $args  Macro Arguments
+	 * @return  mixed
 	 */
 	private function _getType(&$args)
 	{

@@ -94,7 +94,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								Instructors: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span>
 							</span>
 							<span class="entry-content">
-								<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
+								<?php echo \Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200); ?>
 							</span>
 						</td>
 						<td>
@@ -104,19 +104,35 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							<span class="<?php
 							switch ($course->get('state'))
 							{
-								case 3: echo 'draft'; break;
-								case 2: echo 'trashed'; break;
-								case 1: echo 'published'; break;
-								case 0: echo 'unpublished'; break;
+								case 3:
+									echo 'draft';
+									break;
+								case 2:
+									echo 'trashed';
+									break;
+								case 1:
+									echo 'published';
+									break;
+								case 0:
+									echo 'unpublished';
+									break;
 							}
 							?> entry-state">
 							<?php
 							switch ($course->get('state'))
 							{
-								case 3: echo Lang::txt('PLG_GROUPS_COURSES_STATE_DRAFT'); break;
-								case 2: echo Lang::txt('PLG_GROUPS_COURSES_STATE_DELETED'); break;
-								case 1: echo Lang::txt('PLG_GROUPS_COURSES_STATE_PUBLISHED'); break;
-								case 0: echo Lang::txt('PLG_GROUPS_COURSES_STATE_UNPUBLISHED'); break;
+								case 3:
+									echo Lang::txt('PLG_GROUPS_COURSES_STATE_DRAFT');
+									break;
+								case 2:
+									echo Lang::txt('PLG_GROUPS_COURSES_STATE_DELETED');
+									break;
+								case 1:
+									echo Lang::txt('PLG_GROUPS_COURSES_STATE_PUBLISHED');
+									break;
+								case 0:
+									echo Lang::txt('PLG_GROUPS_COURSES_STATE_UNPUBLISHED');
+									break;
 							}
 							?>
 							</span>

@@ -33,8 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
+include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
+include_once Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
 
 $database = App::get('db');
 
@@ -52,10 +52,18 @@ $params->merge($rparams);
 // Set the display date
 switch ($params->get('show_date'))
 {
-	case 0: $thedate = ''; break;
-	case 1: $thedate = Date::of($this->row->created)->toLocal('d M Y');    break;
-	case 2: $thedate = Date::of($this->row->modified)->toLocal('d M Y');   break;
-	case 3: $thedate = Date::of($this->row->publish_up)->toLocal('d M Y'); break;
+	case 0:
+		$thedate = '';
+		break;
+	case 1:
+		$thedate = Date::of($this->row->created)->toLocal('d M Y');
+		break;
+	case 2:
+		$thedate = Date::of($this->row->modified)->toLocal('d M Y');
+		break;
+	case 3:
+		$thedate = Date::of($this->row->publish_up)->toLocal('d M Y');
+		break;
 }
 
 if (strstr($this->row->href, 'index.php'))
@@ -65,12 +73,22 @@ if (strstr($this->row->href, 'index.php'))
 
 switch ($this->row->access)
 {
-	case 1: $cls = 'registered'; break;
-	case 2: $cls = 'special';    break;
-	case 3: $cls = 'protected';  break;
-	case 4: $cls = 'private';    break;
+	case 1:
+		$cls = 'registered';
+		break;
+	case 2:
+		$cls = 'special';
+		break;
+	case 3:
+		$cls = 'protected';
+		break;
+	case 4:
+		$cls = 'private';
+		break;
 	case 0:
-	default: $cls = 'public'; break;
+	default:
+		$cls = 'public';
+		break;
 }
 ?>
 
@@ -115,18 +133,40 @@ switch ($this->row->access)
 		<?php
 		switch ($this->row->rating)
 		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
+			case 0.5:
+				$class = ' half-stars';
+				break;
+			case 1:
+				$class = ' one-stars';
+				break;
+			case 1.5:
+				$class = ' onehalf-stars';
+				break;
+			case 2:
+				$class = ' two-stars';
+				break;
+			case 2.5:
+				$class = ' twohalf-stars';
+				break;
+			case 3:
+				$class = ' three-stars';
+				break;
+			case 3.5:
+				$class = ' threehalf-stars';
+				break;
+			case 4:
+				$class = ' four-stars';
+				break;
+			case 4.5:
+				$class = ' fourhalf-stars';
+				break;
+			case 5:
+				$class = ' five-stars';
+				break;
 			case 0:
-			default:  $class = ' no-stars';      break;
+			default:
+				$class = ' no-stars';
+				break;
 		}
 		?>
 		<div class="metadata">
@@ -148,7 +188,7 @@ switch ($this->row->access)
 		$text = $this->row->itext;
 	}
 	$text = strip_tags($text);
-	echo \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($text)), 200) . "\n";
+	echo \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($text)), 200) . "\n";
 	?>
 
 	<p class="href"><?php echo Request::base() . ltrim($this->row->href, '/'); ?></p>

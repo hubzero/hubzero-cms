@@ -41,16 +41,16 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An optional associative array of configuration settings.
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -62,13 +62,13 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 *
-	 * @param      array   $tags       Tags to match records against
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * 
+	 * @param   array    $tags        Tags to match records against
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
@@ -182,14 +182,14 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build a database query
 	 *
-	 * @param      array $filters Options for building the query
-	 * @return     string SQL
+	 * @param   array   $filters  Options for building the query
+	 * @return  string  SQL
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
 		$database = App::get('db');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once \Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
 		$rt = new \Components\Publications\Tables\Category($database);
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
@@ -254,15 +254,29 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
 				{
-					case 'title':   $query .= 'title ASC, publish_up DESC';    break;
-					case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
-					case 'ranking': $query .= "ranking DESC";                  break;
-					case 'relevance': $query .= "relevance DESC";              break;
+					case 'title':
+						$query .= 'title ASC, publish_up DESC';
+						break;
+					case 'rating':
+						$query .= "rating DESC, times_rated DESC";
+						break;
+					case 'ranking':
+						$query .= "ranking DESC";
+						break;
+					case 'relevance':
+						$query .= "relevance DESC";
+						break;
 					case 'users':
-					case 'usage':   $query .= "users DESC";                    break;
-					case 'jobs':    $query .= "jobs DESC";                     break;
+					case 'usage':
+						$query .= "users DESC";
+						break;
+					case 'jobs':
+						$query .= "jobs DESC";
+						break;
 					case 'date':
-					default: $query .= 'publish_up DESC';               break;
+					default:
+						$query .= 'publish_up DESC';
+						break;
 				}
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all')
@@ -284,8 +298,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
@@ -311,10 +325,18 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		// Set the display date
 		switch ($config->get('show_date'))
 		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 3: $thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 0:
+				$thedate = '';
+				break;
+			case 1:
+				$thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 2:
+				$thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 3:
+				$thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
 		}
 
 		if (strstr($row->href, 'index.php'))
@@ -331,13 +353,12 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
 		if ($authors)
 		{
-			$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS')
-				. ' ' . stripslashes(\Components\Publications\Helpers\Html::showContributors( $authors, true, false ));
+			$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS') . ' ' . stripslashes(\Components\Publications\Helpers\Html::showContributors($authors, true, false));
 		}
 		$html .= '</p>' . "\n";
 		if ($row->itext)
 		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		}
 
 		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href . '/?v=' . $row->alias, '/') . '</p>' . "\n";
@@ -345,6 +366,5 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 
 		// Return output
 		return $html;
-
 	}
 }

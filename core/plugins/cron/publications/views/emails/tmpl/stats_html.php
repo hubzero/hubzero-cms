@@ -62,7 +62,7 @@ $lastMonth = date('M Y', strtotime("-1 month"));
 
 $profileLink = $this->user->link();
 $profileThumb = '';
-$thumbpath = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/members/' . Hubzero\Utility\String::pad($this->user->get('id'), 5) . '/thumb.png';
+$thumbpath = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/members/' . Hubzero\Utility\Str::pad($this->user->get('id'), 5) . '/thumb.png';
 if (file_exists(PATH_ROOT . $thumbpath))
 {
 	// picture() will return a /file/hash URL that is tied to session

@@ -289,7 +289,7 @@ $first = $this->archive->entries(array(
 								<span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
 								<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 							</p>
-							<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?></p>
+							<p><?php echo \Hubzero\Utility\Str::truncate(stripslashes($replyto->get('content')), 300); ?></p>
 						</blockquote>
 						<?php } ?>
 

@@ -40,7 +40,7 @@ defined('_HZEXEC_') or die();
 	<p class="details">
 		<?php echo Date::of($this->course->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
 	</p>
-	<?php if ($content = \Hubzero\Utility\String::truncate(strip_tags($this->course->get('blurb')), 200)) { ?>
+	<?php if ($content = \Hubzero\Utility\Str::truncate(strip_tags($this->course->get('blurb')), 200)) { ?>
 		<p><?php echo $content; ?></p>
 	<?php } ?>
 	<p class="href">

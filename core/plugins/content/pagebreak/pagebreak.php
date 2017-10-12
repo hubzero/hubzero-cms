@@ -84,7 +84,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		}
 
 		// Simple performance check to determine whether bot should process further.
-		if (Hubzero\Utility\String::contains($row->text, 'class="system-pagebreak') === false)
+		if (Hubzero\Utility\Str::contains($row->text, 'class="system-pagebreak') === false)
 		{
 			return true;
 		}

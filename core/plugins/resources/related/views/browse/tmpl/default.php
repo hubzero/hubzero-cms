@@ -139,7 +139,7 @@ $database = App::get('db');
 								</tbody>
 							</table>
 						</div>
-						<?php echo \Hubzero\Utility\String::truncate(stripslashes($line->introtext), 300); ?>
+						<?php echo \Hubzero\Utility\Str::truncate(stripslashes($line->introtext), 300); ?>
 					</div>
 				<?php } else { ?>
 					<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>

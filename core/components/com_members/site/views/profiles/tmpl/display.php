@@ -168,7 +168,7 @@ $this->css('introduction.css', 'system')
 									</div>
 									<p class="course-instructor-bio">
 										<?php if ($bio = $contributor->get('bio')) { ?>
-											<?php echo Hubzero\Utility\String::truncate(strip_tags($bio), 200); ?>
+											<?php echo Hubzero\Utility\Str::truncate(strip_tags($bio), 200); ?>
 										<?php } else { ?>
 											<em><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_NO_BIO'); ?></em>
 										<?php } ?>

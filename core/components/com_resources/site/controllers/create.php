@@ -39,7 +39,7 @@ use Components\Resources\Models\Elements;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Html;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Pathway;
 use Request;
 use Route;
@@ -733,7 +733,7 @@ class Create extends SiteController
 		$row->set('access', (int)$row->get('access', 0));
 
 		$row->set('fulltxt', trim(preg_replace('/\\\/', "%5C", $row->get('fulltxt'))));
-		$row->set('introtext', String::truncate(strip_tags($row->get('fulltxt')), 500));
+		$row->set('introtext', Str::truncate(strip_tags($row->get('fulltxt')), 500));
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
 		$type = Type::oneOrFail($row->get('type'));

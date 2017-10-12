@@ -35,7 +35,7 @@ namespace Components\Resources\Models\Orm;
 
 use Components\Resources\Helpers\Tags;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Component;
 use Date;
 
@@ -301,7 +301,7 @@ class Resource extends Relational
 			$dir_year  = Date::of($date)->format('Y');
 			$dir_month = Date::of($date)->format('m');
 
-			if (!is_dir($this->basepath() . DS . $dir_year . DS . $dir_month . DS . String::pad($this->get('id')))
+			if (!is_dir($this->basepath() . DS . $dir_year . DS . $dir_month . DS . Str::pad($this->get('id')))
 			 && intval($dir_year) <= 2013
 			 && intval($dir_month) <= 11)
 			{
@@ -315,7 +315,7 @@ class Resource extends Relational
 			$dir_month = Date::of('now')->format('m');
 		}
 
-		return $dir_year . DS . $dir_month . DS . String::pad($this->get('id'));
+		return $dir_year . DS . $dir_month . DS . Str::pad($this->get('id'));
 	}
 
 	/**

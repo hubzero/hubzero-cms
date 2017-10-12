@@ -613,22 +613,22 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		<dl class="debug-varlist">
 			<dt class="key">$_GET</dt>
 			<dd class="value">
-				<span id="debug-get-short" class="open" onclick="Debugger.toggleShortFull(\'get\');">' . \Hubzero\Utility\String::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
+				<span id="debug-get-short" class="open" onclick="Debugger.toggleShortFull(\'get\');">' . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
 				<span id="debug-get-full" onclick="Debugger.toggleShortFull(\'get\');">' . nl2br($get) . '</span>
 			</dd>
 			<dt class="key">$_POST</dt>
 			<dd class="value">
-				<span id="debug-post-short" class="open" onclick="Debugger.toggleShortFull(\'post\');">' . \Hubzero\Utility\String::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
+				<span id="debug-post-short" class="open" onclick="Debugger.toggleShortFull(\'post\');">' . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
 				<span id="debug-post-full" onclick="Debugger.toggleShortFull(\'post\');">' . nl2br($post) . '</span>
 			</dd>
 			<dt class="key">$_COOKIE</dt>
 			<dd class="value">
-				<span id="debug-cookies-short" class="open" onclick="Debugger.toggleShortFull(\'cookies\');">' . \Hubzero\Utility\String::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
+				<span id="debug-cookies-short" class="open" onclick="Debugger.toggleShortFull(\'cookies\');">' . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
 				<span id="debug-cookies-full" onclick="Debugger.toggleShortFull(\'cookies\');">' . nl2br($cookies) . '</span>
 			</dd>
 			<dt class="key">$_SERVER</dt>
 			<dd class="value">
-				<span id="debug-server-short" class="open" onclick="Debugger.toggleShortFull(\'server\');">' . \Hubzero\Utility\String::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
+				<span id="debug-server-short" class="open" onclick="Debugger.toggleShortFull(\'server\');">' . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
 				<span id="debug-server-full" onclick="Debugger.toggleShortFull(\'server\');">' . nl2br($server) . '</span>
 			</dd>
 		</dl>';

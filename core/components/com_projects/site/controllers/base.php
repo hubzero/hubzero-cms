@@ -202,7 +202,7 @@ class Base extends SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$active  = isset($this->active) ? $this->active : NULL;
+		$active  = isset($this->active) ? $this->active : null;
 
 		// Set the title
 		$this->title  = $this->_task == 'edit'
@@ -270,8 +270,8 @@ class Base extends SiteController
 	protected function _buildPathway()
 	{
 		$group_tasks = array('start', 'setup', 'view');
-		$group       = isset($this->group) ? $this->group : NULL;
-		$active      = isset($this->active) ? $this->active : NULL;
+		$group       = isset($this->group) ? $this->group : null;
+		$active      = isset($this->active) ? $this->active : null;
 
 		// Point to group if group project
 		if (is_object($group) && in_array($this->_task, $group_tasks))
@@ -282,7 +282,7 @@ class Base extends SiteController
 				Route::url('index.php?option=com_groups')
 			);
 			Pathway::append(
-				\Hubzero\Utility\String::truncate($group->get('description'), 50),
+				\Hubzero\Utility\Str::truncate($group->get('description'), 50),
 				Route::url('index.php?option=com_groups&cn=' . $group->cn)
 			);
 			Pathway::append(

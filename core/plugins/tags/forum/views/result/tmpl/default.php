@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$content = \Hubzero\Utility\String::truncate(strip_tags($this->post->get('comment')), 200);
+$content = \Hubzero\Utility\Str::truncate(strip_tags($this->post->get('comment')), 200);
 ?>
 <li class="forum-entry">
 	<p class="title">

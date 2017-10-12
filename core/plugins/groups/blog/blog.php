@@ -509,7 +509,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				$item->description = Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
 				if ($this->params->get('feed_entries') == 'partial')
 				{
-					$item->description = Hubzero\Utility\String::truncate($item->description, 300);
+					$item->description = Hubzero\Utility\Str::truncate($item->description, 300);
 				}
 				$item->description = '<![CDATA[' . $item->description . ']]>';
 

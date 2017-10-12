@@ -97,8 +97,8 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 		);
 
 		// Include models
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'todo.php');
+		require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+		include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
 
 		// Get our models
 		$this->todo = new \Components\Projects\Models\Todo();
@@ -268,7 +268,7 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 		{
 			$objTD->details = $objTD->content;
 		}
-		$objTD->content = \Hubzero\Utility\String::truncate($objTD->content, 255);
+		$objTD->content = \Hubzero\Utility\Str::truncate($objTD->content, 255);
 
 		if ($due && $due!= 'mm/dd/yyyy')
 		{

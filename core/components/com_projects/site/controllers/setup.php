@@ -690,7 +690,7 @@ class Setup extends Base
 					$this->model->set('private', $this->config->get('privacy', 1));
 				}
 
-				$this->model->set('title', \Hubzero\Utility\String::truncate($title, 250));
+				$this->model->set('title', \Hubzero\Utility\Str::truncate($title, 250));
 				$this->model->set('about', trim(Request::getVar('about', '', 'post', 'none', 2)));
 				$this->model->set('type', Request::getInt('type', 1, 'post'));
 

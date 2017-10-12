@@ -177,7 +177,7 @@ class Events extends GroupMacro
 				$details = nl2br($event->content);
 				if (strlen($details) > 150)
 				{
-					$details = \Hubzero\Utility\String::truncate($details, 150, array('html' => true));
+					$details = \Hubzero\Utility\Str::truncate($details, 150, array('html' => true));
 				}
 
 				// Create list

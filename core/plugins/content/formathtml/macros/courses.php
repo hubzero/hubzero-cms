@@ -34,7 +34,7 @@ namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
+require_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 
 /**
  * Wiki macro class for displaying hello world
@@ -214,7 +214,7 @@ class Courses extends Macro
 				// make sure we dont want to hide the description
 				if (!(bool) $this->_getArg('hidedescription'))
 				{
-					$html .= '<p>' . \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200) . '</p>';
+					$html .= '<p>' . \Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200) . '</p>';
 				}
 			}
 		}

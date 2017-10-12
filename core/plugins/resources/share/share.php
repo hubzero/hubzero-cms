@@ -166,7 +166,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	public function share($with, $url, $resource)
 	{
 		$link = '';
-		$description = \Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 250);
+		$description = \Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 250);
 		$description = urlencode($description);
 		$title = stripslashes($resource->title);
 		$title = urlencode($title);

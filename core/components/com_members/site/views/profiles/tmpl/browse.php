@@ -449,7 +449,7 @@ foreach ($this->fields as $field)
 											if ($val = $row->get($c->get('name'))) { ?>
 												<span class="result-details">
 													<span class="<?php echo $this->escape($c->get('name')); ?>">
-														<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($val), 60)); ?>
+														<?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($val), 60)); ?>
 													</span>
 												</span>
 											<?php } ?>
@@ -467,7 +467,7 @@ foreach ($this->fields as $field)
 												$val = (is_array($val) ? implode(', ', $val) : $val);
 											?>
 												<div class="result-snippet-<?php echo $this->escape($c->get('name')); ?>">
-													<?php echo $this->escape(Hubzero\Utility\String::truncate(strip_tags(stripslashes($val)), 150)); ?>
+													<?php echo $this->escape(Hubzero\Utility\Str::truncate(strip_tags(stripslashes($val)), 150)); ?>
 												</div>
 											<?php } ?>
 										<?php } ?>

@@ -19,16 +19,16 @@ $direction = " ";
 if ($lang->isRTL() && $myrtl == 0) {
 	$direction = " redirect-rtl";
 } elseif ($lang->isRTL() && $myrtl == 1) {
-		$direction = " redirect-ltr";
-	} elseif ($lang->isRTL() && $myrtl == 2) {
-			$direction = " redirect-rtl";
-		} elseif ($myrtl == 0) {
-				$direction = " redirect-ltr";
-			} elseif ($myrtl == 1) {
-					$direction = " redirect-ltr";
-				} elseif ($myrtl == 2) {
-						$direction = " redirect-rtl";
-					}
+	$direction = " redirect-ltr";
+} elseif ($lang->isRTL() && $myrtl == 2) {
+	$direction = " redirect-rtl";
+} elseif ($myrtl == 0) {
+	$direction = " redirect-ltr";
+} elseif ($myrtl == 1) {
+	$direction = " redirect-ltr";
+} elseif ($myrtl == 2) {
+	$direction = " redirect-rtl";
+}
 ?>
 <div class="newsfeed<?php echo $this->pageclass_sfx?><?php echo $direction; ?>">
 <?php if ($this->params->get('show_page_heading')) : ?>
@@ -70,7 +70,7 @@ if ($lang->isRTL() && $myrtl == 0) {
 				{
 					$text = JFilterOutput::stripImages($text);
 				}
-				$text = \Hubzero\Utility\String::truncate($text, $this->params->get('feed_character_count'));
+				$text = \Hubzero\Utility\Str::truncate($text, $this->params->get('feed_character_count'));
 					echo str_replace('&apos;', "'", $text);
 				?>
 

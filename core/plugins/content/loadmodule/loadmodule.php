@@ -185,7 +185,7 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 	 */
 	protected function byName($module, $title, $style = 'none')
 	{
-		$moduleinstance = $module . Hubzero\Utility\String::camel($title);
+		$moduleinstance = $module . Hubzero\Utility\Str::camel($title);
 
 		if (!isset(self::$mods[$moduleinstance]))
 		{

@@ -41,19 +41,19 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 *
-	 * @param      array   $tags       Tags to match records against
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * 
+	 * @param   array    $tags        Tags to match records against
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
@@ -94,10 +94,16 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, publish_up';  break;
-			case 'id':    $order_by .= "id DESC";                break;
+			case 'title':
+				$order_by .= 'title ASC, publish_up';
+				break;
+			case 'id':
+				$order_by .= "id DESC";
+				break;
 			case 'date':
-			default:      $order_by .= 'publish_up DESC, title'; break;
+			default:
+				$order_by .= 'publish_up DESC, title';
+				break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -122,7 +128,7 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 	/**
 	 * Include needed libraries and push scripts and CSS to the document
 	 *
-	 * @return     void
+	 * @return   void
 	 */
 	public static function documents()
 	{
@@ -132,8 +138,8 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
@@ -153,7 +159,7 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 
 			// Remove tags to prevent tables from being displayed within a table.
 			$row->ftext = strip_tags($row->ftext);
-			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
@@ -162,4 +168,3 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 		return $html;
 	}
 }
-

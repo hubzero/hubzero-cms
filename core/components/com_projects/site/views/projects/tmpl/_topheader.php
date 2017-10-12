@@ -45,7 +45,7 @@ defined('_HZEXEC_') or die();
 				?>
 			</div>
 			<div class="ptitle-container">
-				<h2><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($this->model->get('title')), 50); ?> <span>(<?php echo $this->model->get('alias'); ?>)</span></a></h2>
+				<h2><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50); ?> <span>(<?php echo $this->model->get('alias'); ?>)</span></a></h2>
 
 				<?php if ($this->model->groupOwner()) { ?>
 					<p>

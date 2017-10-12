@@ -87,7 +87,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	public function onGroupDelete($group)
 	{
 		// Import needed libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
 		// Get all the IDs for collections
 		$database = App::get('db');
@@ -135,7 +135,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
 		$database = App::get('db');
 		$database->setQuery("SELECT COUNT(*) FROM `#__collections` WHERE `object_type`=" . $database->quote('group') . " AND `object_id`=" . $database->quote($group->get('gidNumber')));
@@ -1666,7 +1666,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$title = $post->item()->get('title');
 		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
-		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 		$url = Route::url('index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment');
 
 		Event::trigger('system.logActivity', [
@@ -1732,7 +1732,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$title = $post->item()->get('title');
 		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
-		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
 		Event::trigger('system.logActivity', [
 			'activity' => [

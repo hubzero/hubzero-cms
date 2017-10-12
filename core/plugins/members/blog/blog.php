@@ -146,31 +146,57 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			switch ($this->task)
 			{
 				// Feeds
-				case 'feed.rss': $this->_feed();   break;
-				case 'feed':     $this->_feed();   break;
-				//case 'comments.rss': $this->_commentsFeed();   break;
-				//case 'comments':     $this->_commentsFeed();   break;
+				case 'feed.rss':
+					$this->_feed();
+					break;
+				case 'feed':
+					$this->_feed();
+					break;
 
 				// Settings
-				case 'savesettings': $arr['html'] = $this->_savesettings(); break;
-				case 'settings':     $arr['html'] = $this->_settings();     break;
+				case 'savesettings':
+					$arr['html'] = $this->_savesettings();
+					break;
+				case 'settings':
+					$arr['html'] = $this->_settings();
+					break;
 
 				// Comments
-				case 'savecomment':   $arr['html'] = $this->_savecomment();   break;
-				case 'newcomment':    $arr['html'] = $this->_newcomment();    break;
-				case 'editcomment':   $arr['html'] = $this->_entry();         break;
-				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
+				case 'savecomment':
+					$arr['html'] = $this->_savecomment();
+					break;
+				case 'newcomment':
+					$arr['html'] = $this->_newcomment();
+					break;
+				case 'editcomment':
+					$arr['html'] = $this->_entry();
+					break;
+				case 'deletecomment':
+					$arr['html'] = $this->_deletecomment();
+					break;
 
 				// Entries
-				case 'save':   $arr['html'] = $this->_save();   break;
-				case 'new':    $arr['html'] = $this->_new();    break;
-				case 'edit':   $arr['html'] = $this->_edit();   break;
-				case 'delete': $arr['html'] = $this->_delete(); break;
-				case 'entry':  $arr['html'] = $this->_entry();  break;
+				case 'save':
+					$arr['html'] = $this->_save();
+					break;
+				case 'new':
+					$arr['html'] = $this->_new();
+					break;
+				case 'edit':
+					$arr['html'] = $this->_edit();
+					break;
+				case 'delete':
+					$arr['html'] = $this->_delete();
+					break;
+				case 'entry':
+					$arr['html'] = $this->_entry();
+					break;
 
 				case 'archive':
 				case 'browse':
-				default: $arr['html'] = $this->_browse(); break;
+				default:
+					$arr['html'] = $this->_browse();
+					break;
 			}
 		}
 
@@ -385,7 +411,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$item->description = \Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
 			if ($this->params->get('feed_entries') == 'partial')
 			{
-				$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
+				$item->description = \Hubzero\Utility\Str::truncate($item->description, 300);
 			}
 			$item->description = '<![CDATA[' . $item->description . ']]>';
 

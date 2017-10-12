@@ -896,7 +896,7 @@ class Html extends Obj
 
 			if ($shorten)
 			{
-				$note   = \Hubzero\Utility\String::truncate($note, $shorten);
+				$note   = \Hubzero\Utility\Str::truncate($note, $shorten);
 			}
 			if ($showmeta)
 			{

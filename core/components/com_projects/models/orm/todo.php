@@ -126,7 +126,7 @@ class Todo extends Relational
 		{
 			$data['details'] = $data['content'];
 		}
-		$data['content'] = \Hubzero\Utility\String::truncate($data['content'], 255);
+		$data['content'] = \Hubzero\Utility\Str::truncate($data['content'], 255);
 
 		return $data['content'];
 	}

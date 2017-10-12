@@ -373,10 +373,10 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							$usersConfig    = Component::params('com_users');
 							$useractivation = $usersConfig->get('useractivation', 1);
 							if ($useractivation != 0) { ?>
-								<p class="warning"><?php echo Lang::txt('COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL', \Hubzero\Utility\String::obfuscate(Config::get('mailfrom'))); ?></p>
+								<p class="warning"><?php echo Lang::txt('COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL', \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom'))); ?></p>
 							<?php } ?>
 						<?php } else { ?>
-							<p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?php echo \Hubzero\Utility\String::obfuscate(Config::get('mailfrom')); ?> in order to re-activate your account.</p>
+							<p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?php echo \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom')); ?> in order to re-activate your account.</p>
 						<?php } ?>
 					<?php } ?>
 				<?php } ?>

@@ -1666,7 +1666,7 @@ class Resources extends SiteController
 		// Build some basic RSS document information
 		$dtitle = \Hubzero\Utility\Sanitize::clean(stripslashes($title));
 
-		$doc->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle), 250));
+		$doc->title = trim(\Hubzero\Utility\Str::truncate(html_entity_decode($dtitle), 250));
 		$doc->description = htmlspecialchars(html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
 		$doc->copyright = \Lang::txt('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category = Lang::txt('COM_RESOURCES_RSS_CATEGORY');
@@ -1700,7 +1700,7 @@ class Resources extends SiteController
 			}
 		}
 		$tags = implode(', ', $tagarray);
-		$tags = trim(\Hubzero\Utility\String::truncate($tags, 250));
+		$tags = trim(\Hubzero\Utility\Str::truncate($tags, 250));
 		$tags = rtrim($tags, ',');
 
 		$helper->getUnlinkedContributors();
@@ -1736,7 +1736,7 @@ class Resources extends SiteController
 		{
 			$dimage = new \Hubzero\Document\Type\Feed\Image();
 			$dimage->url = $dimg;
-			$dimage->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle . ' ' . Lang::txt('COM_RESOURCES_RSS_ARTWORK')), 250));
+			$dimage->title = trim(\Hubzero\Utility\Str::truncate(html_entity_decode($dtitle . ' ' . Lang::txt('COM_RESOURCES_RSS_ARTWORK')), 250));
 			$dimage->link = $base.$doc->link;
 			$doc->itunes_image = $dimage;
 		}
@@ -1846,7 +1846,7 @@ class Resources extends SiteController
 				$rtags = $rtt->render('string');
 				if (trim($rtags))
 				{
-					$rtags = trim(\Hubzero\Utility\String::truncate($rtags, 250));
+					$rtags = trim(\Hubzero\Utility\Str::truncate($rtags, 250));
 					$rtags = rtrim($rtags, ',');
 				}
 
@@ -2472,7 +2472,7 @@ class Resources extends SiteController
 		// Build the download path
 		$path = PATH_APP . $this->config->get('cachepath', '/cache/resources');
 		$date = $row->created;
-		$dir_resid = \Hubzero\Utility\String::pad($row->id);
+		$dir_resid = \Hubzero\Utility\Str::pad($row->id);
 		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);

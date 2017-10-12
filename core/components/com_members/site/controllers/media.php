@@ -140,7 +140,7 @@ class Media extends SiteController
 		}
 
 		//define upload directory and make sure its writable
-		$uploadDirectory = PATH_APP . DS . $this->filespace() . DS . \Hubzero\Utility\String::pad($id) . DS;
+		$uploadDirectory = PATH_APP . DS . $this->filespace() . DS . \Hubzero\Utility\Str::pad($id) . DS;
 
 		if (!is_dir($uploadDirectory))
 		{
@@ -354,7 +354,7 @@ class Media extends SiteController
 		}
 
 		// Build upload path
-		$dir  = \Hubzero\Utility\String::pad($id);
+		$dir  = \Hubzero\Utility\Str::pad($id);
 		$path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
 		if (!is_dir($path))
@@ -478,7 +478,7 @@ class Media extends SiteController
 			'thumb.png'
 		);
 
-		$dir  = \Hubzero\Utility\String::pad($id);
+		$dir  = \Hubzero\Utility\Str::pad($id);
 		$path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
 		foreach ($files as $file)
@@ -522,7 +522,7 @@ class Media extends SiteController
 		}
 
 		// Build the file path
-		$dir  = \Hubzero\Utility\String::pad($id);
+		$dir  = \Hubzero\Utility\Str::pad($id);
 		$path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
 		// Output HTML
@@ -608,7 +608,7 @@ class Media extends SiteController
 		$file = urldecode($file);
 
 		// build base path
-		$base_path = $this->filespace() . DS . \Hubzero\Utility\String::pad($member->get('id'), 5);
+		$base_path = $this->filespace() . DS . \Hubzero\Utility\Str::pad($member->get('id'), 5);
 
 		//if we are on the blog
 		if (Request::getVar('active', 'profile') == 'blog')
@@ -627,7 +627,7 @@ class Media extends SiteController
 			$blog_params = Plugin::params('members', 'blog');
 
 			//build the base path to file based of upload path param
-			$base_path = str_replace('{{uid}}', \Hubzero\Utility\String::pad($member->get('id'), 5), $blog_params->get('uploadpath'));
+			$base_path = str_replace('{{uid}}', \Hubzero\Utility\Str::pad($member->get('id'), 5), $blog_params->get('uploadpath'));
 		}
 
 		//build file path

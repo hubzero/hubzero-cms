@@ -197,7 +197,7 @@ function submitbutton(pressbutton)
 					?>
 				</td>
 				<td>
-					<?php echo $row->groupdesc ? \Hubzero\Utility\String::truncate($row->groupdesc, 30) : ''; ?>
+					<?php echo $row->groupdesc ? \Hubzero\Utility\Str::truncate($row->groupdesc, 30) : ''; ?>
 					<span class="block mini short prominent"><?php echo ($row->groupname ? $row->groupname : Lang::txt('COM_PROJECTS_NONE')); ?></span>
 				</td>
 				<?php /*if (!$groupSynced) { ?>

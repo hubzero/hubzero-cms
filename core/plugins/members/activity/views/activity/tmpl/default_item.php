@@ -205,7 +205,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 
 				if (strlen(strip_tags($content)) > 150)
 				{
-					$short = Hubzero\Utility\String::truncate($content, 150, array('html' => true));
+					$short = Hubzero\Utility\Str::truncate($content, 150, array('html' => true));
 					?>
 					<div class="activity-event-preview">
 						<?php echo $short; ?>
