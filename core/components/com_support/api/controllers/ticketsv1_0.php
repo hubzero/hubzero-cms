@@ -318,7 +318,7 @@ class Ticketsv1_0 extends ApiController
 		$response->tickets = array();
 
 		// Get a list of all statuses
-		$statuses = \Components\Support\Models\Status::all()->rows(;
+		$statuses = \Components\Support\Models\Status::all()->rows();
 
 		$tickets = Ticket::all();
 

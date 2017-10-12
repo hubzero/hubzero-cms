@@ -87,17 +87,17 @@ class Mediav1_0 extends ApiController
 			$trackingInformation = Mediatracking::blank();
 			$trackingInformation->set(array(
 				'user_id'                     => User::get('id'),
-				'session_id'                  = $session->getId(),
-				'ip_address'                  = $ipAddress,
-				'object_id'                   = $entityId,
-				'object_type'                 = $entityType,
-				'object_duration'             = $duration,
-				'current_position'            = $time,
-				'farthest_position'           = $time,
-				'current_position_timestamp'  = Date::toSql(),
-				'farthest_position_timestamp' = Date::toSql(),
-				'completed'                   = 0,
-				'total_views'                 = 1,
+				'session_id'                  => $session->getId(),
+				'ip_address'                  => $ipAddress,
+				'object_id'                   => $entityId,
+				'object_type'                 => $entityType,
+				'object_duration'             => $duration,
+				'current_position'            => $time,
+				'farthest_position'           => $time,
+				'current_position_timestamp'  => Date::toSql(),
+				'farthest_position_timestamp' => Date::toSql(),
+				'completed'                   => 0,
+				'total_views'                 => 1,
 				'total_viewing_time'          => 0
 			));
 		}

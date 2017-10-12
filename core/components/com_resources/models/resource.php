@@ -1048,7 +1048,7 @@ class Resource extends Obj
 		{
 			$this->tags = array();
 
-			include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
+			include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 			$rt = new Helpers\Tags($this->resource->id);
 			if ($results = $rt->tags('list')) // get_tags_on_object
