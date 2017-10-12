@@ -981,12 +981,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "9a6ecc98b76daeaa57ae37126375875af289dbe6"
+                "reference": "bd679e50d20ae7d3bba66dfbb563b8c30fb38dd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/9a6ecc98b76daeaa57ae37126375875af289dbe6",
-                "reference": "9a6ecc98b76daeaa57ae37126375875af289dbe6",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/bd679e50d20ae7d3bba66dfbb563b8c30fb38dd8",
+                "reference": "bd679e50d20ae7d3bba66dfbb563b8c30fb38dd8",
                 "shasum": ""
             },
             "require": {
@@ -1019,7 +1019,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2017-10-11 10:39:06"
+            "time": "2017-10-12 13:20:33"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1648,12 +1648,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jjriv/emogrifier.git",
+                "url": "https://github.com/MyIntervals/emogrifier.git",
                 "reference": "a325863d2a2872f72facbf5513a396966b03a45e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/a325863d2a2872f72facbf5513a396966b03a45e",
+                "url": "https://api.github.com/repos/MyIntervals/emogrifier/zipball/a325863d2a2872f72facbf5513a396966b03a45e",
                 "reference": "a325863d2a2872f72facbf5513a396966b03a45e",
                 "shasum": ""
             },
