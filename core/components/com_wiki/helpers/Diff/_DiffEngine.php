@@ -92,7 +92,8 @@ class _DiffEngine
 			$this->xchanged[$skip] = $this->ychanged[$skip] = false;
 		}
 		// Skip trailing common lines.
-		$xi = $n_from; $yi = $n_to;
+		$xi = $n_from;
+		$yi = $n_to;
 		for ($endskip = 0; --$xi > $skip && --$yi > $skip; $endskip++)
 		{
 			if ($from_lines[$xi] !== $to_lines[$yi])
@@ -417,7 +418,7 @@ class _DiffEngine
 			//$nchunks = sqrt(min($xlim - $xoff, $ylim - $yoff) / 2.5);
 			//$nchunks = max(2,min(8,(int)$nchunks));
 			$nchunks = min(7, $xlim - $xoff, $ylim - $yoff) + 1;
-			list($lcs, $seps) = $this->_diag($xoff,$xlim,$yoff, $ylim,$nchunks);
+			list($lcs, $seps) = $this->_diag($xoff, $xlim, $yoff, $ylim, $nchunks);
 		}
 
 		if ($lcs == 0)
@@ -492,7 +493,8 @@ class _DiffEngine
 			while ($i < $len && ! $changed[$i])
 			{
 				USE_ASSERTS && assert('$j < $other_len && ! $other_changed[$j]');
-				$i++; $j++;
+				$i++;
+				$j++;
 				while ($j < $other_len && $other_changed[$j])
 				{
 					$j++;
@@ -578,7 +580,9 @@ class _DiffEngine
 				$changed[--$i] = 0;
 				USE_ASSERTS && assert('$j > 0');
 				while ($other_changed[--$j])
+				{
 					continue;
+				}
 				USE_ASSERTS && assert('$j >= 0 && !$other_changed[$j]');
 			}
 		}
