@@ -44,7 +44,7 @@ require_once __DIR__ . DS . 'category' . DS . 'archive.php';
 /**
  * Group page archive model class
  */
-class Archive extends Object
+class Archive extends Obj
 {
 	/**
 	 * \Hubzero\Base\Model
