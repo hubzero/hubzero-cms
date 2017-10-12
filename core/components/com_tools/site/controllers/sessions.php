@@ -342,7 +342,7 @@ class Sessions extends SiteController
 			return;
 		}
 
-		$params = Request::getString('params','','default',JREQUEST_ALLOWRAW);
+		$params = Request::getString('params', '', 'default', JREQUEST_ALLOWRAW);
 
 		if (!empty($params))
 		{
@@ -908,7 +908,7 @@ class Sessions extends SiteController
 		if (count($rows) != 1)
 		{
 			App::abort(404, Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
-			break;
+			return;
 		}
 
 		$ids = array();
@@ -2065,4 +2065,3 @@ class Sessions extends SiteController
 		return false;
 	}
 }
-
