@@ -33,6 +33,9 @@
 namespace Components\Publications\Helpers;
 
 use Components\Tags\Models\Cloud;
+use Route;
+use Date;
+use Lang;
 
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
@@ -760,7 +763,7 @@ class Tags extends \Hubzero\Base\Obj
 	 */
 	public function getTopTags($limit)
 	{
-		$tj = \Components\Tags\Models\Object::blank();
+		$tj = \Components\Tags\Models\Objct::blank();
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM #__tags AS t  ";

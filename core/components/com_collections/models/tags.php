@@ -35,7 +35,7 @@ namespace Components\Collections\Models;
 use Hubzero\Base\ItemList;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
-use Components\Tags\Models\Object;
+use Components\Tags\Models\Objct;
 
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
@@ -61,7 +61,7 @@ class Tags extends Cloud
 	public function getTagsForIds($ids=array(), $admin=0)
 	{
 		$tt = Tag::blank();
-		$tj = Object::blank();
+		$tj = Objct::blank();
 
 		if (!is_array($ids) || empty($ids))
 		{

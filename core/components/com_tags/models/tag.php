@@ -36,7 +36,7 @@ use Lang;
 use Date;
 use User;
 
-require_once __DIR__ . DS . 'object.php';
+require_once __DIR__ . DS . 'objct.php';
 require_once __DIR__ . DS . 'substitute.php';
 require_once __DIR__ . DS . 'log.php';
 
@@ -234,20 +234,20 @@ class Tag extends Relational
 	 */
 	private function _datetime($as='', $key='created')
 	{
-		switch (strtolower($as))
+		$as = strtolower($as);
+		$dt = $this->get($key);
+
+		if ($as == 'date')
 		{
-			case 'date':
-				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get($key);
-			break;
+			$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
+
+		if ($as == 'time')
+		{
+			$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
+
+		return $dt;
 	}
 
 	/**
@@ -277,7 +277,7 @@ class Tag extends Relational
 	 */
 	public function substitutes()
 	{
-		return $this->oneToMany('Substitute', 'tag_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Substitute', 'tag_id');
 	}
 
 	/**
@@ -304,7 +304,7 @@ class Tag extends Relational
 	 */
 	public function objects()
 	{
-		return $this->oneToMany('Object', 'tagid');
+		return $this->oneToMany(__NAMESPACE__ . '\\Objct', 'tagid');
 	}
 
 	/**
@@ -314,7 +314,7 @@ class Tag extends Relational
 	 */
 	public function logs()
 	{
-		return $this->oneToMany('\Components\Tags\Models\Log', 'tag_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Log', 'tag_id');
 	}
 
 	/**
@@ -416,7 +416,7 @@ class Tag extends Relational
 	public function removeFrom($scope, $scope_id, $tagger=0)
 	{
 		// Check if the relationship exists
-		$to = Object::oneByScoped($scope, $scope_id, $this->get('id'), $tagger);
+		$to = Objct::oneByScoped($scope, $scope_id, $this->get('id'), $tagger);
 
 		if (!$to->get('id'))
 		{
@@ -459,7 +459,7 @@ class Tag extends Relational
 	public function addTo($scope, $scope_id, $tagger=0, $strength=1, $label='')
 	{
 		// Check if the relationship already exists
-		$to = Object::oneByScoped($scope, $scope_id, $this->get('id'), $tagger);
+		$to = Objct::oneByScoped($scope, $scope_id, $this->get('id'), $tagger);
 
 		if ($to->get('id'))
 		{
@@ -513,7 +513,7 @@ class Tag extends Relational
 
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		if (!Object::moveTo($this->get('id'), $tag_id))
+		if (!Objct::moveTo($this->get('id'), $tag_id))
 		{
 			$this->addError(Lang::txt('Failed to move objects attached to tag.'));
 			return false;
@@ -577,7 +577,7 @@ class Tag extends Relational
 
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		if (!Object::copyTo($this->get('id'), $tag_id))
+		if (!Objct::copyTo($this->get('id'), $tag_id))
 		{
 			$this->addError($to->getError());
 			return false;
@@ -659,7 +659,7 @@ class Tag extends Relational
 			{
 				// Get all the associations to this tag
 				// Loop through the associations and link them to a different tag
-				Object::moveTo($tag->get('id'), $this->get('id'));
+				Objct::moveTo($tag->get('id'), $this->get('id'));
 
 				// Get all the substitutions to this tag
 				// Loop through the records and link them to a different tag

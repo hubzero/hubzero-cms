@@ -33,13 +33,19 @@ namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
 use stdClass;
-use Date;
 use Lang;
+use Date;
+use User;
+
+require_once __DIR__ . DS . 'log.php';
 
 /**
- * Tag substitute
+ * Tag object association
+ *
+ * NOTE: If following naming conventions, this should be "Object"
+ * but that's a reserved word in PHP 7. So, we drop the 'e'.
  */
-class Substitute extends Relational
+class Objct extends Relational
 {
 	/**
 	 * The table namespace
@@ -57,14 +63,14 @@ class Substitute extends Relational
 	 *
 	 * @var  string
 	 */
-	protected $table = '#__tags_substitute';
+	protected $table = '#__tags_object';
 
 	/**
 	 * Default order by for model
 	 *
 	 * @var string
 	 */
-	public $orderBy = 'created';
+	public $orderBy = 'taggedon';
 
 	/**
 	 * Default order direction for select queries
@@ -79,8 +85,9 @@ class Substitute extends Relational
 	 * @var  array
 	 */
 	protected $rules = array(
-		'raw_tag'  => 'notempty',
-		'tag_id'   => 'positive|nonzero'
+		'tbl'      => 'notempty',
+		'tagid'    => 'positive|nonzero',
+		'objectid' => 'positive|nonzero'
 	);
 
 	/**
@@ -89,29 +96,48 @@ class Substitute extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
-		'created',
-		'created_by'
+		'taggedon',
+		'taggerid'
 	);
 
 	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'tag'
-	);
-
-	/**
-	 * Generates automatic tag field
+	 * Generates automatic taggedon field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function automaticTag($data)
+	public function automaticTaggedon($data)
 	{
-		$tag = (isset($data['raw_tag']) && $data['raw_tag'] ? $data['raw_tag'] : $data['tag']);
-		return Tag::blank()->normalize($tag);
+		if (!isset($data['taggedon']) || !$data['taggedon'])
+		{
+			$data['taggedon'] = Date::toSql();
+		}
+		return $data['taggedon'];
+	}
+
+	/**
+	 * Generates automatic taggerid field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  integer
+	 */
+	public function automaticTaggerid($data)
+	{
+		if (!isset($data['taggerid']) || !$data['taggerid'])
+		{
+			$data['taggerid'] = User::get('id');
+		}
+		return $data['taggerid'];
+	}
+
+	/**
+	 * Get parent tag
+	 *
+	 * @return  object
+	 */
+	public function tag()
+	{
+		return $this->belongsToOne('Tag', 'tagid');
 	}
 
 	/**
@@ -121,7 +147,7 @@ class Substitute extends Relational
 	 */
 	public function creator()
 	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+		return $this->belongsToOne('Hubzero\User\User', 'taggerid');
 	}
 
 	/**
@@ -132,54 +158,44 @@ class Substitute extends Relational
 	 */
 	public function created($as='')
 	{
-		$timestamp = $this->get('created');
-
 		$as = strtolower($as);
+		$dt = $this->get('taggedon');
 
 		if ($as == 'date')
 		{
-			$timestamp = Date::of($timestamp)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+			$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
 
 		if ($as == 'time')
 		{
-			$timestamp = Date::of($timestamp)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+			$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		return $timestamp;
+		return $dt;
 	}
 
 	/**
-	 * Save entry
+	 * Retrieves one row loaded by a tag field
 	 *
-	 * @return  object
-	 */
-	public function save()
+	 * @param   string   $scope     Object type (ex: resource, ticket)
+	 * @param   integer  $scope_id  Object ID (e.g., resource ID, ticket ID)
+	 * @param   integer  $tag_id    Tag ID
+	 * @param   integer  $tagger    User ID of person adding tag
+	 * @return  mixed
+	 **/
+	public static function oneByScoped($scope, $scope_id, $tag_id, $tagger=0)
 	{
-		$action = $this->isNew() ? 'substitute_created' : 'substitute_edited';
+		$instance = self::blank()
+			->whereEquals('tbl', $scope)
+			->whereEquals('objectid', $scope_id)
+			->whereEquals('tagid', $tag_id);
 
-		$result = parent::save();
-
-		if ($result)
+		if ($tagger)
 		{
-			$log = Log::blank();
-			$log->set('tag_id', $this->get('id'));
-			$log->set('action', $action);
-			$log->set('comments', $this->toJson());
-			$log->save();
+			$instance->whereEquals('taggerid', $tagger);
 		}
 
-		return $result;
-	}
-
-	/**
-	 * Get parent tag
-	 *
-	 * @return  object
-	 */
-	public function tag()
-	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Tag', 'tag_id');
+		return $instance->row();
 	}
 
 	/**
@@ -197,14 +213,14 @@ class Substitute extends Relational
 		}
 
 		$items = self::all()
-			->whereEquals('tag_id', $oldtagid)
+			->whereEquals('tagid', $oldtagid)
 			->rows();
 
 		$entries = array();
 
 		foreach ($items as $item)
 		{
-			$item->set('tag_id', $newtagid);
+			$item->set('tagid', $newtagid);
 			$item->save();
 
 			$entries[] = $item->toArray();
@@ -218,57 +234,16 @@ class Substitute extends Relational
 		$log = Log::blank();
 		$log->set([
 			'tag_id'   => $newtagid,
-			'action'   => 'substitutes_moved',
+			'action'   => 'objects_moved',
 			'comments' => json_encode($data)
 		]);
 		$log->save();
-
-		return self::cleanUp($newtagid);
-	}
-
-	/**
-	 * Clean up duplicate references
-	 *
-	 * @param   integer  $tag_id  ID of tag to clean up
-	 * @return  boolean  True on success, false if errors
-	 */
-	public static function cleanUp($tag_id)
-	{
-		$subs = self::all()
-			->whereEquals('tag_id', (int)$tag_id)
-			->rows();
-
-		$tags = array();
-
-		foreach ($subs as $sub)
-		{
-			if (!isset($tags[$sub->get('tag')]))
-			{
-				// Item isn't in collection yet, so add it
-				$tags[$sub->get('tag')] = $sub->get('id');
-			}
-			else
-			{
-				// Item tag *is* in collection.
-				if ($tags[$sub->get('tag')] == $sub->get('id'))
-				{
-					// Really this shouldn't happen
-					continue;
-				}
-				else
-				{
-					// Duplcate tag with a different ID!
-					// We don't need duplicates.
-					$sub->destroy();
-				}
-			}
-		}
 
 		return true;
 	}
 
 	/**
-	 * Copy all substitutions for one tag to another
+	 * Copy all tags on an object to another object
 	 *
 	 * @param   integer  $oldtagid  ID of tag to be copied
 	 * @param   integer  $newtagid  ID of tag to copy to
@@ -282,7 +257,7 @@ class Substitute extends Relational
 		}
 
 		$rows = self::all()
-			->whereEquals('tag_id', $oldtagid)
+			->whereEquals('tagid', $oldtagid)
 			->rows();
 
 		if ($rows)
@@ -292,7 +267,7 @@ class Substitute extends Relational
 			foreach ($rows as $row)
 			{
 				$row->set('id', null)
-					->set('tag_id', $newtagid)
+					->set('tagid', $newtagid)
 					->save();
 
 				$entries[] = $row->get('id');
@@ -306,7 +281,7 @@ class Substitute extends Relational
 			$log = Log::blank();
 			$log->set([
 				'tag_id'   => $newtagid,
-				'action'   => 'substitutions_copied',
+				'action'   => 'objects_copied',
 				'comments' => json_encode($data)
 			]);
 			$log->save();

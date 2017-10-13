@@ -32,7 +32,7 @@
 
 namespace Components\Tags\Admin\Controllers;
 
-use Components\Tags\Models\Object;
+use Components\Tags\Models\Objct;
 use Hubzero\Component\AdminController;
 use Request;
 use Notify;
@@ -90,10 +90,10 @@ class Tagged extends AdminController
 			)
 		);
 
-		$modelt = Object::all()
+		$modelt = Objct::all()
 			->select('DISTINCT(tbl)');
 
-		$model = Object::all();
+		$model = Objct::all();
 
 		if ($filters['tagid'])
 		{
@@ -150,7 +150,7 @@ class Tagged extends AdminController
 				$id = $id[0];
 			}
 
-			$row = Object::oneOrNew(intval($id));
+			$row = Objct::oneOrNew(intval($id));
 		}
 
 		// Output the HTML
@@ -178,7 +178,7 @@ class Tagged extends AdminController
 
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = Object::oneOrFail($fields['id'])->set($fields);
+		$row = Objct::oneOrFail($fields['id'])->set($fields);
 
 		// Store content
 		if (!$row->save())
@@ -229,7 +229,7 @@ class Tagged extends AdminController
 		foreach ($ids as $id)
 		{
 			// Remove entry
-			$row = Object::oneOrFail(intval($id));
+			$row = Objct::oneOrFail(intval($id));
 
 			if (!$row->destroy())
 			{

@@ -36,7 +36,7 @@ use Hubzero\Component\View;
 use User;
 use Date;
 
-require_once(__DIR__ . DS . 'tag.php');
+require_once __DIR__ . DS . 'tag.php';
 
 /**
  * Cloud model for Tags
@@ -209,7 +209,7 @@ class Cloud extends \Hubzero\Base\Obj
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
-		$tbl = Object::blank()->getTableName();
+		$tbl = Objct::blank()->getTableName();
 
 		$results = Tag::all()->purgeCache();
 
@@ -432,7 +432,7 @@ class Cloud extends \Hubzero\Base\Obj
 			return false;
 		}
 
-		$to = Object::all()
+		$to = Objct::all()
 			->whereEquals('tbl', $this->_scope)
 			->whereEquals('objectid', $this->_scope_id);
 

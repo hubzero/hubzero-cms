@@ -109,7 +109,7 @@ class Log extends Relational
 	 */
 	public function tag()
 	{
-		return $this->belongsToOne('Tag', 'tag_id');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Tag', 'tag_id');
 	}
 
 	/**
