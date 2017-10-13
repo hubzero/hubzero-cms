@@ -59,7 +59,7 @@ class Resource extends Object
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Container for properties
@@ -743,7 +743,7 @@ class Resource extends Object
 							if ($contributor->surname || $contributor->givenName)
 							{
 								$name = stripslashes($contributor->givenName) . ' ';
-								if ($contributor->middleName != NULL)
+								if ($contributor->middleName != null)
 								{
 									$name .= stripslashes($contributor->middleName) . ' ';
 								}
@@ -861,12 +861,24 @@ class Resource extends Object
 				 . " ORDER BY "; //a.ordering ASC, a.grouping ASC";
 			switch ($order)
 			{
-				case 'ordering': $sql .= "a.ordering ASC, a.grouping ASC";    break;
-				case 'date':     $sql .= "r.publish_up DESC";                 break;
-				case 'title':    $sql .= "r.title ASC, r.publish_up";         break;
-				case 'rating':   $sql .= "r.rating DESC, r.times_rated DESC"; break;
-				case 'ranking':  $sql .= "r.ranking DESC";                    break;
-				case 'author':   $sql .= "author";                            break;
+				case 'ordering':
+					$sql .= "a.ordering ASC, a.grouping ASC";
+					break;
+				case 'date':
+					$sql .= "r.publish_up DESC";
+					break;
+				case 'title':
+					$sql .= "r.title ASC, r.publish_up";
+					break;
+				case 'rating':
+					$sql .= "r.rating DESC, r.times_rated DESC";
+					break;
+				case 'ranking':
+					$sql .= "r.ranking DESC";
+					break;
+				case 'author':
+					$sql .= "author";
+					break;
 			}
 			/*if ($limit != 0)
 			{
@@ -1243,7 +1255,7 @@ class Resource extends Object
 		{
 			$content = stripslashes($this->resource->fulltxt);
 			$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
-			$content = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
+			$content = str_replace(array('="/site/', '="site/'), '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site/', $content);
 
 			$this->set('description', trim($content));
 		}
