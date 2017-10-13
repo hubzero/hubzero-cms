@@ -248,7 +248,6 @@ class Citations extends SiteController
 			}
 		});
 		$citations = Citation::getFilteredRecords($this->view->filters);
-		$this->view->total = $citations->count();
 		$citations = $citations->paginated('limitstart', 'limit')->rows();
 
 		// Get records

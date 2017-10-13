@@ -255,11 +255,7 @@ if ($label == 'none') {
 				<?php endif; ?>
 				<?php
 					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['limitstart'],
-						$this->filters['limit']
-					);
+					$pageNav = $this->citations->pagination;
 					$pageNav->setAdditionalUrlParam('task', 'browse');
 					foreach ($this->filters as $key => $value)
 					{
