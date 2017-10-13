@@ -35,9 +35,11 @@ namespace Components\Courses\Models\Assets;
 use Request;
 
 /**
-* Object Asset handler class
-*/
-class Object extends Content
+ * Object Asset handler class
+ *
+ * Note: Renamed because 'Object' is a reserved word in PHP 7
+ */
+class Objct extends Content
 {
 	/**
 	 * Class info
@@ -88,7 +90,7 @@ class Object extends Content
 		}
 		else
 		{
-			return array('error'=>'Content did not match the pre-defined filter for an object');
+			return array('error' => 'Content did not match the pre-defined filter for an object');
 		}
 
 		$this->asset['type']    = (!empty($this->asset['type'])) ? $this->asset['type'] : 'video';

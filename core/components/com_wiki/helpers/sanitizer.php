@@ -392,7 +392,7 @@ class Sanitizer
 	{
 		global $wgUseTidy;
 
-		public static $htmlpairs, $htmlsingle, $htmlsingleonly, $htmlnest, $tabletags,
+		static $htmlpairs, $htmlsingle, $htmlsingleonly, $htmlnest, $tabletags,
 			$htmllist, $listtags, $htmlsingleallowed, $htmlelements, $staticInitialised;
 
 		if (!$staticInitialised)
@@ -917,7 +917,7 @@ class Sanitizer
 	 */
 	public static function escapeId($id, $flags = self::INITIAL_NONLETTER)
 	{
-		public static $replace = array(
+		static $replace = array(
 			'%3A' => ':',
 			'%' => '.'
 		);
@@ -1324,7 +1324,7 @@ class Sanitizer
 	 */
 	public static function attributeWhitelist($element)
 	{
-		public static $list;
+		static $list;
 
 		if (!isset($list))
 		{

@@ -358,7 +358,7 @@ class Ticketsv1_0 extends ApiController
 		if ($response->total)
 		{
 			$i = 0;
-			foreach ($results => $ticket)
+			foreach ($results as $ticket)
 			{
 				$owner = $ticket->get('owner');
 

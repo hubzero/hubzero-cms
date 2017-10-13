@@ -359,7 +359,14 @@ class Orcid extends SiteController
 		{
 			if (preg_match('/([^:]+): (.+)/m', $field, $match))
 			{
-				$match[1] = preg_replace('/(?<=^|[\x09\x20\x2D])./e', 'strtoupper("\0")', strtolower(trim($match[1])));
+				$match[1] = preg_replace(
+					'/(?<=^|[\x09\x20\x2D])./',
+					function ($m)
+					{
+						return strtoupper($m[0]);
+					},
+					strtolower(trim($match[1]))
+				);
 
 				if (isset($retVal[$match[1]]))
 				{

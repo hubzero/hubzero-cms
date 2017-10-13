@@ -45,7 +45,7 @@ class TableDiffFormatter extends DiffFormatter
 	 *
 	 * @return     void
 	 */
-	public function TableDiffFormatter()
+	public function __construct()
 	{
 		$this->leading_context_lines = 0;
 		$this->trailing_context_lines = 0;

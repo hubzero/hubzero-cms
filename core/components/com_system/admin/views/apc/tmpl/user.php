@@ -247,7 +247,7 @@ $this->css('apc.css');
 				}
 				$field_value = htmlentities(strip_tags($entry[$fieldname], ''), ENT_QUOTES, 'UTF-8');
 				echo
-					'<tr class="tr-'.$i%2.'">'.
+					'<tr class="tr-'.($i%2).'">'.
 					'<td class="td-0"><a href="' . $this->MY_SELF . '&amp;OB=' . $this->MYREQUEST['OB'] . '&amp;SH=' . md5($entry[$fieldkey]) . '">' . $field_value . '</a></td>'.
 					'<td class="td-n center">'.$entry['num_hits'].'</td>'.
 					'<td class="td-n right">'.$entry['mem_size'].'</td>'.

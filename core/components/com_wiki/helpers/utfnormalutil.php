@@ -101,7 +101,7 @@ function hexSequenceToUtf8($sequence)
 function utf8ToHexSequence($str)
 {
 	return rtrim(preg_replace(
-		'/(.)/uSe',
+		'/(.)/uS',
 		function ($m)
 		{
 			return sprintf("%04x ", utf8ToCodepoint($m[1]));

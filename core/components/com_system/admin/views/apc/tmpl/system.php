@@ -262,7 +262,7 @@ $cache     = $this->cache;
 				{
 					$field_value = $this->escape(strip_tags($entry[$fieldname], ''));
 					echo
-						'<tr class="tr-'.$i%2.'">'.
+						'<tr class="tr-'.($i%2).'">'.
 						"<td class=\"td-0\"><a href=\"$MY_SELF&amp;OB=".$this->MYREQUEST['OB']."&amp;SH=".md5($entry[$fieldkey])."\">".$field_value.'</a></td>'.
 						'<td class="td-n center">'.$entry['num_hits'].'</td>'.
 						'<td class="td-n right">'.$entry['mem_size'].'</td>'.

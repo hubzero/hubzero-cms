@@ -54,7 +54,7 @@ class WordLevelDiff extends MappedDiff
 	 * @param      unknown $closing_lines Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function WordLevelDiff ($orig_lines, $closing_lines)
+	public function __construct($orig_lines, $closing_lines)
 	{
 		list($orig_words, $orig_stripped) = $this->_split($orig_lines);
 		list($closing_words, $closing_stripped) = $this->_split($closing_lines);
