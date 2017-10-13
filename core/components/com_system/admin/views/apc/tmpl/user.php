@@ -51,9 +51,9 @@ $this->css('apc.css');
 
 <?php
 
-	$fieldname='info';
-	$fieldheading='User Entry Label';
-	$fieldkey='info';
+	$fieldname = 'info';
+	$fieldheading = 'User Entry Label';
+	$fieldkey = 'info';
 
 	if (!empty($this->MYREQUEST['SH']))
 	{
@@ -65,28 +65,34 @@ $this->css('apc.css');
 		{
 			foreach ($cache[$list] as $i => $entry)
 			{
-				if (md5($entry[$fieldkey])!=$this->MYREQUEST['SH']) continue;
+				if (md5($entry[$fieldkey]) != $this->MYREQUEST['SH'])
+				{
+					continue;
+				}
 				foreach ($entry as $k => $value)
 				{
 					if ($k == "num_hits")
 					{
-						$value = sprintf("%s (%.2f%%)",$value,$value*100/$cache['num_hits']);
+						$value = sprintf("%s (%.2f%%)", $value, $value*100/$cache['num_hits']);
 					}
 					if ($k == 'deletion_time')
 					{
-						if (!$entry['deletion_time']) $value = "None";
+						if (!$entry['deletion_time'])
+						{
+							$value = "None";
+						}
 					}
 					echo
-						'<tr class="tr-' . $m . '">',
-						'<td class="td-0">',ucwords(preg_replace("/_/"," ",$k)),'</td>',
-						'<td class="td-last">',(preg_match("/time/",$k) && $value!='None') ? date(DATE_FORMAT,$value) : $value,'</td>',
+						'<tr class="tr-' . $m . '">'.
+						'<td class="td-0">'.ucwords(preg_replace("/_/", " ", $k)).'</td>'.
+						'<td class="td-last">'.((preg_match("/time/", $k) && $value != 'None') ? date(DATE_FORMAT, $value) : $value).'</td>'.
 						'</tr>';
 					$m=1-$m;
 				}
 				if ($fieldkey == 'info')
 				{
 					echo "<tr class=\"tr-$m\"><td class=\"td-0\">Stored Value</td><td class=\"td-last\"><pre>";
-					$output = var_export(apc_fetch($entry[$fieldkey]),true);
+					$output = var_export(apc_fetch($entry[$fieldkey]), true);
 					echo htmlspecialchars($output);
 					echo "</pre></td></tr>\n";
 				}
@@ -95,7 +101,6 @@ $this->css('apc.css');
 		}
 
 		echo '</tbody></table>';
-		break;
 	}
 
 	$cols = 7;
@@ -161,24 +166,23 @@ $this->css('apc.css');
 		if (preg_match($this->MYREQUEST['SEARCH'], 'test') === false)
 		{
 			echo '<p class="error">Error: enter a valid regular expression as a search query.</p>';
-			break;
 		}
 	}
 ?>
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S', $fieldheading, "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H', 'Hits', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z', 'Size', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A', 'Last accessed', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M', 'Last modified', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C', 'Created at', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			<?php if ($fieldname=='info') { ?>
 				<?php $cols+=1; ?>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T', 'Timeout', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			<?php } ?>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D', 'Deleted at', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -190,14 +194,30 @@ $this->css('apc.css');
 	{
 		switch ($this->MYREQUEST['SORT1'])
 		{
-			case 'A': $k = sprintf('%015d-', $entry['access_time']);   break;
-			case 'H': $k = sprintf('%015d-', $entry['num_hits']);      break;
-			case 'Z': $k = sprintf('%015d-', $entry['mem_size']);      break;
-			case 'M': $k = sprintf('%015d-', $entry['mtime']);         break;
-			case 'C': $k = sprintf('%015d-', $entry['creation_time']); break;
-			case 'T': $k = sprintf('%015d-', $entry['ttl']);           break;
-			case 'D': $k = sprintf('%015d-', $entry['deletion_time']); break;
-			case 'S': $k = '';                                         break;
+			case 'A':
+				$k = sprintf('%015d-', $entry['access_time']);
+				break;
+			case 'H':
+				$k = sprintf('%015d-', $entry['num_hits']);
+				break;
+			case 'Z':
+				$k = sprintf('%015d-', $entry['mem_size']);
+				break;
+			case 'M':
+				$k = sprintf('%015d-', $entry['mtime']);
+				break;
+			case 'C':
+				$k = sprintf('%015d-', $entry['creation_time']);
+				break;
+			case 'T':
+				$k = sprintf('%015d-', $entry['ttl']);
+				break;
+			case 'D':
+				$k = sprintf('%015d-', $entry['deletion_time']);
+				break;
+			case 'S':
+				$k = '';
+				break;
 		}
 		$list[$k . (isset($entry[$fieldname]) ? $entry[$fieldname] : 'huh')] = $entry;
 	}
@@ -207,8 +227,12 @@ $this->css('apc.css');
 		// sort list
 		switch ($this->MYREQUEST['SORT2'])
 		{
-			case "A": krsort($list); break;
-			case "D": ksort($list);  break;
+			case "A":
+				krsort($list);
+				break;
+			case "D":
+				ksort($list);
+				break;
 		}
 
 		// output list
@@ -221,15 +245,15 @@ $this->css('apc.css');
 				{
 					$entry[$fieldname] = '[unknown]';
 				}
-				$field_value = htmlentities(strip_tags($entry[$fieldname],''), ENT_QUOTES, 'UTF-8');
+				$field_value = htmlentities(strip_tags($entry[$fieldname], ''), ENT_QUOTES, 'UTF-8');
 				echo
-					'<tr class="tr-',$i%2,'">',
-					'<td class="td-0"><a href="' . $this->MY_SELF . '&amp;OB=' . $this->MYREQUEST['OB'] . '&amp;SH=' . md5($entry[$fieldkey]) . '">' . $field_value . '</a></td>',
-					'<td class="td-n center">',$entry['num_hits'],'</td>',
-					'<td class="td-n right">',$entry['mem_size'],'</td>',
-					'<td class="td-n center">',date(DATE_FORMAT,$entry['access_time']),'</td>',
-					'<td class="td-n center">',date(DATE_FORMAT,$entry['mtime']),'</td>',
-					'<td class="td-n center">',date(DATE_FORMAT,$entry['creation_time']),'</td>';
+					'<tr class="tr-'.$i%2.'">'.
+					'<td class="td-0"><a href="' . $this->MY_SELF . '&amp;OB=' . $this->MYREQUEST['OB'] . '&amp;SH=' . md5($entry[$fieldkey]) . '">' . $field_value . '</a></td>'.
+					'<td class="td-n center">'.$entry['num_hits'].'</td>'.
+					'<td class="td-n right">'.$entry['mem_size'].'</td>'.
+					'<td class="td-n center">'.date(DATE_FORMAT, $entry['access_time']),'</td>'.
+					'<td class="td-n center">'.date(DATE_FORMAT, $entry['mtime']).'</td>'.
+					'<td class="td-n center">'.date(DATE_FORMAT, $entry['creation_time']).'</td>';
 
 				if ($fieldname=='info')
 				{
@@ -244,12 +268,12 @@ $this->css('apc.css');
 				}
 				if (isset($entry['deletion_time']) && $entry['deletion_time'])
 				{
-					echo '<td class="td-last center">', date(DATE_FORMAT,$entry['deletion_time']), '</td>';
+					echo '<td class="td-last center">'. date(DATE_FORMAT, $entry['deletion_time']). '</td>';
 				}
 				else if ($this->MYREQUEST['OB'] == OB_USER_CACHE)
 				{
 					echo '<td class="td-last center">';
-					echo '[<a href="', $this->MY_SELF, '&OB=', $this->MYREQUEST['OB'], '&DU=', urlencode($entry[$fieldkey]), '">Delete Now</a>]';
+					echo '[<a href="'. $this->MY_SELF. '&OB='. $this->MYREQUEST['OB']. '&DU='. urlencode($entry[$fieldkey]). '">Delete Now</a>]';
 					echo '</td>';
 				}
 				else
@@ -268,13 +292,13 @@ $this->css('apc.css');
 	}
 	else
 	{
-		echo '<tr class="tr-0"><td class="center" colspan="',$cols,'"><i>No data</i></td></tr>';
+		echo '<tr class="tr-0"><td class="center" colspan="'.$cols.'"><i>No data</i></td></tr>';
 	}
 	echo '</tbody></table>';
 
 	if ($list && $i < count($list))
 	{
-		echo "<a href=\"$this->MY_SELF&amp;OB=",$this->MYREQUEST['OB'],"&amp;COUNT=0\"><i>",count($list)-$i,' more available...</i></a>';
+		echo "<a href=\"$this->MY_SELF&amp;OB=".$this->MYREQUEST['OB']."&amp;COUNT=0\"><i>".count($list)-$i.' more available...</i></a>';
 	}
 
 ?>

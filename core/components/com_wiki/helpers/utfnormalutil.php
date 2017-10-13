@@ -100,7 +100,14 @@ function hexSequenceToUtf8($sequence)
  */
 function utf8ToHexSequence($str)
 {
-	return rtrim(preg_replace('/(.)/uSe', 'sprintf("%04x ", utf8ToCodepoint("$1"))', $str));
+	return rtrim(preg_replace(
+		'/(.)/uSe',
+		function ($m)
+		{
+			return sprintf("%04x ", utf8ToCodepoint($m[1]));
+		},
+		$str
+	));
 }
 
 /**
