@@ -252,7 +252,7 @@ if ($this->config->get('access-manage-section')) {
 		</div>
 
 		<?php
-				$this->view('_email_settings')
+				$this->view('_email_settings', '/shared')
 					->set('config', $this->config)
 					->set('base', $base)
 					->set('recvEmailOptionID', $this->recvEmailOptionID)
