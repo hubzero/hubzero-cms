@@ -66,7 +66,7 @@ class Groups extends AdminController
 		$tbl = Request::getVar('tbl', '');
 		if (!$tbl)
 		{
-			$this->setError(Lang::txt('COM_MEMBERS_NO_GROUP_TABLE'));
+			$this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_TABLE'));
 			return $this->displayTask($id);
 		}
 
@@ -74,7 +74,7 @@ class Groups extends AdminController
 		$gid = Request::getInt('gid', 0);
 		if (!$gid)
 		{
-			$this->setError(Lang::txt('COM_MEMBERS_NO_GROUP_ID'));
+			$this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_ID'));
 			return $this->displayTask($id);
 		}
 
@@ -131,7 +131,7 @@ class Groups extends AdminController
 		$gid = Request::getVar('gid', '');
 		if (!$gid)
 		{
-			$this->setError(Lang::txt('COM_MEMBERS_NO_GROUP_ID'));
+			$this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_ID'));
 			return $this->displayTask($id);
 		}
 
@@ -214,4 +214,3 @@ class Groups extends AdminController
 			->display();
 	}
 }
-
