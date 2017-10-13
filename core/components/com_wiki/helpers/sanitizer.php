@@ -397,7 +397,7 @@ class Sanitizer
 
 		if (!$staticInitialised)
 		{
-			$htmlpairs = array_merge($extratags, array(# Tags that must be closed
+			$htmlpairs = array_merge($extratags, array(// Tags that must be closed
 				'b', 'del', 'i', 'ins', 'u', 'font', 'big', 'small', 'sub', 'sup', 'h1',
 				'h2', 'h3', 'h4', 'h5', 'h6', 'cite', 'code', 'em', 's',
 				'strike', 'strong', 'tt', 'var', 'div', 'center',
@@ -407,27 +407,27 @@ class Sanitizer
 			$htmlsingle = array(
 				'br', 'hr', 'li', 'dt', 'dd'
 			);
-			$htmlsingleonly = array(# Elements that cannot have close tags
+			$htmlsingleonly = array(// Elements that cannot have close tags
 				'br', 'hr'
 			);
-			$htmlnest = array(# Tags that can be nested--??
+			$htmlnest = array(// Tags that can be nested--??
 				'table', 'tr', 'td', 'th', 'div', 'blockquote', 'ol', 'ul',
 				'dl', 'font', 'big', 'small', 'sub', 'sup', 'span'
 			);
-			$tabletags = array(# Can only appear inside table, we will close them
+			$tabletags = array(// Can only appear inside table, we will close them
 				'td', 'th', 'tr',
 			);
-			$htmllist = array(# Tags used by list
+			$htmllist = array(// Tags used by list
 				'ul','ol',
 			);
-			$listtags = array(# Tags that can appear in a list
+			$listtags = array(// Tags that can appear in a list
 				'li',
 			);
 
 			$htmlsingleallowed = array_merge($htmlsingle, $tabletags);
 			$htmlelements = array_merge($htmlsingle, $htmlpairs, $htmlnest);
 
-			# Convert them all to hashtables for faster lookup
+			// Convert them all to hashtables for faster lookup
 			$vars = array(
 				'htmlpairs', 'htmlsingle', 'htmlsingleonly', 'htmlnest', 'tabletags',
 				'htmllist', 'listtags', 'htmlsingleallowed', 'htmlelements'
@@ -439,7 +439,7 @@ class Sanitizer
 			$staticInitialised = true;
 		}
 
-		# Remove HTML comments
+		// Remove HTML comments
 		$text = self::removeHTMLcomments($text);
 		$bits = explode('<', $text);
 		$text = str_replace('>', '&gt;', array_shift($bits));
@@ -458,13 +458,13 @@ class Sanitizer
 					$slash = $t = $params = $brace = $rest = null;
 				}
 
-				$badtag = 0 ;
+				$badtag = 0;
 				if (isset($htmlelements[$t = strtolower($t)]))
 				{
-					# Check our stack
+					// Check our stack
 					if ($slash)
 					{
-						# Closing a tag...
+						// Closing a tag...
 						if (isset($htmlsingleonly[$t]))
 						{
 							$badtag = 1;
@@ -473,8 +473,8 @@ class Sanitizer
 						{
 							if (isset($htmlsingleallowed[$ot]))
 							{
-								# Pop all elements with an optional close tag
-								# and see if we find a match below them
+								// Pop all elements with an optional close tag
+								// and see if we find a match below them
 								$optstack = array();
 								array_push ($optstack, $ot);
 								while ((($ot = @array_pop($tagstack)) != $t) && isset($htmlsingleallowed[$ot]))
@@ -483,7 +483,7 @@ class Sanitizer
 								}
 								if ($t != $ot)
 								{
-									# No match. Push the optinal elements back again
+									// No match. Push the optinal elements back again
 									$badtag = 1;
 									while ($ot = @array_pop($optstack))
 									{
@@ -494,7 +494,7 @@ class Sanitizer
 							else
 							{
 								@array_push($tagstack, $ot);
-								# <li> can be nested in <ul> or <ol>, skip those cases:
+								// <li> can be nested in <ul> or <ol>, skip those cases:
 								if (!(isset($htmllist[$ot]) && isset($listtags[$t])))
 								{
 									$badtag = 1;
@@ -512,15 +512,15 @@ class Sanitizer
 					}
 					else
 					{
-						# Keep track for later
+						// Keep track for later
 						if (isset($tabletags[$t]) && !in_array('table', $tagstack))
 						{
 							$badtag = 1;
 						}
-						else if (in_array($t, $tagstack) && !isset($htmlnest [$t ]))
+						else if (in_array($t, $tagstack) && !isset($htmlnest[$t]))
 						{
-							$badtag = 1 ;
-						# Is it a self closed htmlpair ? (bug 5487)
+							$badtag = 1;
+						// Is it a self closed htmlpair ? (bug 5487)
 						}
 						else if ($brace == '/>' && isset($htmlpairs[$t]))
 						{
@@ -528,15 +528,15 @@ class Sanitizer
 						}
 						elseif (isset($htmlsingleonly[$t]))
 						{
-							# Hack to force empty tag for uncloseable elements
+							// Hack to force empty tag for uncloseable elements
 							$brace = '/>';
 						}
 						else if (isset($htmlsingle[$t]))
 						{
-							# Hack to not close $htmlsingle tags
-							$brace = NULL;
+							// Hack to not close $htmlsingle tags
+							$brace = null;
 						}
-						else if (isset($tabletags[$t]) && in_array($t ,$tagstack))
+						else if (isset($tabletags[$t]) && in_array($t, $tagstack))
 						{
 							// New table tag but forgot to close the previous one
 							$text .= "<$t>";
@@ -551,14 +551,14 @@ class Sanitizer
 							array_push($tagstack, $t);
 						}
 
-						# Replace any variables or template parameters with
-						# plaintext results.
+						// Replace any variables or template parameters with
+						// plaintext results.
 						if (is_callable($processCallback))
 						{
 							call_user_func_array($processCallback, array(&$params, $args));
 						}
 
-						# Strip non-approved attributes from the tag
+						// Strip non-approved attributes from the tag
 						$newparams = self::fixTagAttributes($params, $t);
 					}
 
@@ -572,7 +572,7 @@ class Sanitizer
 				}
 				$text .= '&lt;' . str_replace('>', '&gt;', $x);
 			}
-			# Close off any remaining tags
+			// Close off any remaining tags
 			while (is_array($tagstack) && ($t = array_pop($tagstack)))
 			{
 				$text .= "<$t>\n";
@@ -584,7 +584,7 @@ class Sanitizer
 		}
 		else
 		{
-			# this might be possible using tidy itself
+			// this might be possible using tidy itself
 			foreach ($bits as $x)
 			{
 				preg_match('/^(\\/?)(\\w+)([^>]*?)(\\/{0,1}>)([^<]*)$/',
@@ -627,14 +627,14 @@ class Sanitizer
 			$end = strpos($text, '-->', $start + 4);
 			if ($end === false)
 			{
-				# Unterminated comment; bail out
+				// Unterminated comment; bail out
 				break;
 			}
 
 			$end += 3;
 
-			# Trim space and newline if the comment is both
-			# preceded and followed by a newline
+			// Trim space and newline if the comment is both
+			// preceded and followed by a newline
 			$spaceStart = max($start - 1, 0);
 			$spaceLen = $end - $spaceStart;
 			while (substr($text, $spaceStart, 1) === ' ' && $spaceStart > 0)
@@ -648,13 +648,13 @@ class Sanitizer
 			}
 			if (substr($text, $spaceStart, 1) === "\n" and substr($text, $spaceStart + $spaceLen, 1) === "\n")
 			{
-				# Remove the comment, leading and trailing
-				# spaces, and leave only one newline.
+				// Remove the comment, leading and trailing
+				// spaces, and leave only one newline.
 				$text = substr_replace($text, "\n", $spaceStart, $spaceLen + 1);
 			}
 			else
 			{
-				# Remove just the comment.
+				// Remove just the comment.
 				$text = substr_replace($text, '', $start, $end - $start);
 			}
 		}
@@ -796,7 +796,7 @@ class Sanitizer
 
 		if (preg_match('/(?:expression|tps*:\/\/|url\\s*\().*/is', $stripped))
 		{
-			# haxx0r
+			// haxx0r
 			return false;
 		}
 
@@ -1015,28 +1015,28 @@ class Sanitizer
 	{
 		if (isset($set[6]))
 		{
-			# Illegal #XXXXXX color with no quotes.
+			// Illegal #XXXXXX color with no quotes.
 			return $set[6];
 		}
 		elseif (isset($set[5]))
 		{
-			# No quotes.
+			// No quotes.
 			return $set[5];
 		}
 		elseif (isset($set[4]))
 		{
-			# Single-quoted
+			// Single-quoted
 			return $set[4];
 		}
 		elseif (isset($set[3]))
 		{
-			# Double-quoted
+			// Double-quoted
 			return $set[3];
 		}
 		elseif (!isset($set[2]))
 		{
-			# In XHTML, attributes must have a value.
-			# For 'reduced' form, return explicitly the attribute name here.
+			// In XHTML, attributes must have a value.
+			// For 'reduced' form, return explicitly the attribute name here.
 			return $set[1];
 		}
 		else
@@ -1121,7 +1121,7 @@ class Sanitizer
 		{
 			$ret = self::decCharReference($matches[2]);
 		}
-		elseif ($matches[3] != '' )
+		elseif ($matches[3] != '')
 		{
 			$ret = self::hexCharReference($matches[3]);
 		}
@@ -1265,7 +1265,7 @@ class Sanitizer
 		{
 			return self::decodeChar(hexdec($matches[4]));
 		}
-		# Last case should be an ampersand by itself
+		// Last case should be an ampersand by itself
 		return $matches[0];
 	}
 
@@ -1358,15 +1358,15 @@ class Sanitizer
 			'bgcolor' // deprecated
 		);
 
-		# Numbers refer to sections in HTML 4.01 standard describing the element.
-		# See: http://www.w3.org/TR/html4/
+		// Numbers refer to sections in HTML 4.01 standard describing the element.
+		// See: http://www.w3.org/TR/html4/
 		$whitelist = array (
-			# 7.5.4
+			// 7.5.4
 			'div'        => $block,
-			'center'     => $common, # deprecated
-			'span'       => $block, # ??
+			'center'     => $common, // deprecated
+			'span'       => $block, // ??
 
-			# 7.5.5
+			// 7.5.5
 			'h1'         => $block,
 			'h2'         => $block,
 			'h3'         => $block,
@@ -1374,87 +1374,87 @@ class Sanitizer
 			'h5'         => $block,
 			'h6'         => $block,
 
-			# 7.5.6
-			# address
+			// 7.5.6
+			// address
 
-			# 8.2.4
-			# bdo
+			// 8.2.4
+			// bdo
 
-			# 9.2.1
+			// 9.2.1
 			'em'         => $common,
 			'strong'     => $common,
 			'cite'       => $common,
-			# dfn
+			// dfn
 			'code'       => $common,
-			# samp
-			# kbd
+			// samp
+			// kbd
 			'var'        => $common,
-			# abbr
-			# acronym
+			// abbr
+			// acronym
 
-			# 9.2.2
+			// 9.2.2
 			'blockquote' => array_merge($common, array('cite')),
-			# q
+			// q
 
-			# 9.2.3
+			// 9.2.3
 			'sub'        => $common,
 			'sup'        => $common,
 
-			# 9.3.1
+			// 9.3.1
 			'p'          => $block,
 
-			# 9.3.2
+			// 9.3.2
 			'br'         => array('id', 'class', 'title', 'style', 'clear'),
 
-			# 9.3.4
+			// 9.3.4
 			'pre'        => array_merge($common, array('width')),
 
-			# 9.4
+			// 9.4
 			'ins'        => array_merge($common, array('cite', 'datetime')),
 			'del'        => array_merge($common, array('cite', 'datetime')),
 
-			# 10.2
+			// 10.2
 			'ul'         => array_merge($common, array('type')),
 			'ol'         => array_merge($common, array('type', 'start')),
 			'li'         => array_merge($common, array('type', 'value')),
 
-			# 10.3
+			// 10.3
 			'dl'         => $common,
 			'dd'         => $common,
 			'dt'         => $common,
 
-			# 11.2.1
+			// 11.2.1
 			'table'      => array_merge($common,
 								array('summary', 'width', 'border', 'frame',
 										'rules', 'cellspacing', 'cellpadding',
 										'align', 'bgcolor',
 								)),
 
-			# 11.2.2
+			// 11.2.2
 			'caption'    => array_merge($common, array('align')),
 
-			# 11.2.3
+			// 11.2.3
 			'thead'      => array_merge($common, $tablealign),
 			'tfoot'      => array_merge($common, $tablealign),
 			'tbody'      => array_merge($common, $tablealign),
 
-			# 11.2.4
+			// 11.2.4
 			'colgroup'   => array_merge($common, array('span', 'width'), $tablealign),
 			'col'        => array_merge($common, array('span', 'width'), $tablealign),
 
-			# 11.2.5
+			// 11.2.5
 			'tr'         => array_merge($common, array('bgcolor'), $tablealign),
 
-			# 11.2.6
+			// 11.2.6
 			'td'         => array_merge($common, $tablecell, $tablealign),
 			'th'         => array_merge($common, $tablecell, $tablealign),
 
-			# 13.2
-			# Not usually allowed, but may be used for extension-style hooks
-			# such as <math> when it is rasterized
+			// 13.2
+			// Not usually allowed, but may be used for extension-style hooks
+			// such as <math> when it is rasterized
 			'img'        => array_merge($common, array('alt')),
 
-			# 15.2.1
+			// 15.2.1
 			'tt'         => $common,
 			'b'          => $common,
 			'i'          => $common,
@@ -1464,25 +1464,25 @@ class Sanitizer
 			's'          => $common,
 			'u'          => $common,
 
-			# 15.2.2
+			// 15.2.2
 			'font'       => array_merge($common, array('size', 'color', 'face')),
-			# basefont
+			// basefont
 
-			# 15.3
+			// 15.3
 			'hr'         => array_merge($common, array('noshade', 'size', 'width')),
 
-			# XHTML Ruby annotation text module, simple ruby only.
-			# http://www.w3c.org/TR/ruby/
+			// XHTML Ruby annotation text module, simple ruby only.
+			// http://www.w3c.org/TR/ruby/
 			'ruby'       => $common,
-			# rbc
-			# rtc
+			// rbc
+			// rtc
 			'rb'         => $common,
-			'rt'         => $common, #array_merge($common, array('rbspan')),
+			'rt'         => $common, //array_merge($common, array('rbspan')),
 			'rp'         => $common,
 
-			# MathML root element, where used for extensions
-			# 'title' may not be 100% valid here; it's XHTML
-			# http://www.w3.org/TR/REC-MathML/
+			// MathML root element, where used for extensions
+			// 'title' may not be 100% valid here; it's XHTML
+			// http://www.w3.org/TR/REC-MathML/
 			'math'       => array('class', 'style', 'id', 'title'),
 			);
 		return $whitelist;
@@ -1500,10 +1500,10 @@ class Sanitizer
 	 */
 	public static function stripAllTags($text)
 	{
-		# Actual <tags>
+		// Actual <tags>
 		$text = StringUtils::delimiterReplace('<', '>', '', $text);
 
-		# Normalize &entities and whitespace
+		// Normalize &entities and whitespace
 		$text = self::decodeCharReferences($text);
 		$text = self::normalizeWhitespace($text);
 
