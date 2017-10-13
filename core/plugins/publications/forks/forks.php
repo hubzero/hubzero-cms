@@ -189,7 +189,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 			->where('published_up', '<=', Date::toSql(), 1)
 			->orWhere('published_up', '=', '0000-00-00 00:00:00', 1)
 			->resetDepth()
-			->whereRaw('published_up', ' IS NULL', 1)
+			->whereRaw('published_up IS NULL', array(), 1)
 			->orWhere('published_down', '>=', Date::toSql(), 1)
 			->orWhere('published_up', '=', '0000-00-00 00:00:00', 1)
 			->resetDepth()
