@@ -130,7 +130,7 @@ class Tagged extends AdminController
 	 * @param   object  $row
 	 * @return  void
 	 */
-	public function editTask($row=NULL)
+	public function editTask($row=null)
 	{
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
