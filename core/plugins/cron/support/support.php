@@ -343,8 +343,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			Lang::load('com_support') ||
 			Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
-			include_once Component::path('com_support') . DS . 'models' . DS . 'message.php');
-			include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php');
+			include_once Component::path('com_support') . DS . 'models' . DS . 'message.php';
+			include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
 			$message = \Components\Support\Models\Message::oneOrNew($message_id);
 

@@ -57,7 +57,7 @@ class Helper extends Module
 	private function _countdown($year, $month, $day, $hour, $minute)
 	{
 		// Make a unix timestamp for the given date
-		$the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year, -1);
+		$the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year);
 
 		// Get current unix timestamp
 		$now = time() + (Config::get('offset') * 60 * 60);

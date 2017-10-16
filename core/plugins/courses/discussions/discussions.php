@@ -701,7 +701,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'both':
-				default:
 					$filters['start_at'] = Request::getVar('start_at', '');
 
 					$data->thread = $this->_thread($post, $filters);
@@ -1296,7 +1295,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'both':
-				default:
 					$filters['start_at'] = Request::getVar('start_at', '');
 
 					$data->thread = $this->_thread($post, $filters);
