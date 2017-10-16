@@ -179,10 +179,12 @@ else
 					<?php } ?>
 				</fieldset>
 
-				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
-					<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
-				</label>
+				<?php if ($this->config->get('allow_anonymous')) { ?>
+					<label for="field-anonymous" id="comment-anonymous-label">
+						<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
+					</label>
+				<?php } ?>
 
 				<p class="submit">
 					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('JSUBMIT'); ?>" />

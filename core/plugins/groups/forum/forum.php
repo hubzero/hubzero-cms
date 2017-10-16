@@ -180,17 +180,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$this->group_plugin_acl = $group_plugin_acl;
 			$this->authorized = $authorized;
 
-			//group vars
-			//$this->members = $members;
-			//get the plugins params
-			$p = new \Hubzero\Plugin\Params($this->database);
-			$this->params = $p->getParams($this->group->get('gidNumber'), 'groups', $this->_name);
-
+			// Get the plugins params
+			$this->params = \Hubzero\Plugin\Params::getParams($this->group->get('gidNumber'), 'groups', $this->_name);
+			$this->params->def('allow_anonymous', 1);
+			$this->params->def('threading', 'list');
+			$this->params->def('threading_depth', 3);
 			$this->params->set('access-plugin', $group_plugin_acl);
 
 			//option and paging vars
 			$this->option = $option;
-			//$this->name = substr($option, 4, strlen($option));
 			$this->limitstart = $limitstart;
 			$this->limit = $limit;
 			$this->base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;

@@ -60,6 +60,9 @@ class Threads extends SiteController
 	 */
 	public function execute()
 	{
+		// Allow anonymous posts by default
+		$this->config->def('allow_anonymous', 1);
+
 		$this->forum = new Manager('site', 0);
 
 		$this->registerTask('latest', 'feed');
