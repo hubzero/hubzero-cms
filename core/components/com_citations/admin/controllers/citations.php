@@ -54,31 +54,38 @@ use App;
 class Citations extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * List citations
 	 *
 	 * @return	void
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
 			// Get filters
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
-				'sort',
-				'created DESC'
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
 			),
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
@@ -86,110 +93,118 @@ class Citations extends AdminController
 				''
 			)),
 			'published' => array(0, 1),
-			'scope' => Request::getVar('scope', 'all')
+			'scope' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.scope',
+				'scope',
+				'all'
+			))
 		);
 
-
-		// Get a record count
-		$this->view->total = Citation::getFilteredRecords($this->view->filters)->count();
-
 		// Get records
-		$this->view->rows = Citation::getFilteredRecords($this->view->filters)->paginated('limitstart');
+		$rows = Citation::getFilteredRecords($filters)
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
-		$this->_displayMessages();
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Create a new citation
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
 	 * Edit a citation
 	 *
+	 * @param   object
 	 * @return	void
 	 */
-	public function editTask()
+	public function editTask($row = null)
 	{
-		//stop menu from working?
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Stop menu from working?
 		Request::setVar('hidemainmenu', 1);
 
-		//get request vars - expecting an array id[]=4232
-		$id = Request::getInt('id', 0);
-		if (!isset($this->row) || !($this->row instanceof Citation))
+		if (!($row instanceof Citation))
 		{
-			$this->row = Citation::oneOrNew($id);
-		}
-		//get all citations sponsors
-		$this->view->sponsors = Sponsor::all();
-
-		//get all citation types
-		$this->view->types = Type::all();
-
-		//empty citation object
-		$this->view->row = $this->row;
-
-		//if we have an id load that citation data
-		if (!$this->view->row->isNew())
-		{
-
-			$assocArray = array();
-			foreach ($this->view->row->associations as $assoc)
+			// Get request vars - expecting an array id[]=4232
+			$id = Request::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
 			{
-				$assocArray[] = $assoc;
+				$id = $id[0];
 			}
 
-			$this->view->assocs = $assocArray;
+			$row = Citation::oneOrNew($id);
+		}
 
-			//get sponsors for citation
-			$this->view->row_sponsors = $this->view->row->sponsors->fieldsByKey('id');
+		//if we have an id load that citation data
+		if (!$row->isNew())
+		{
+			$assocs = array();
+			foreach ($row->associations as $assoc)
+			{
+				$assocs[] = $assoc;
+			}
 
-			//get the citations tags
-			$this->view->tags = Format::citationTags($this->view->row, false);
+			// Get sponsors for citation
+			$row_sponsors = $row->sponsors->fieldsByKey('id');
 
-			//get the badges
-			$this->view->badges = Format::citationBadges($this->view->row, false);
+			// Get the citations tags
+			$tags = Format::citationTags($row, false);
 
-			//parse citation params
-			$this->view->params = new Registry($this->view->row->params);
+			// Get the badges
+			$badges = Format::citationBadges($row, false);
+
+			// Parse citation params
+			$params = new Registry($row->params);
 		}
 		else
 		{
-			//set the creator
-			$this->view->row->set('uid', User::get('id'));
+			// Set the creator
+			$row->set('uid', User::get('id'));
 
 			// It's new - no associations to get
-			$this->view->assocs = array();
+			$assocs = array();
 
-			//array of sponsors - empty
-			$this->view->row_sponsors = array();
+			// Array of sponsors - empty
+			$row_sponsors = array();
 
-			//empty tags and badges arrays
-			$this->view->tags = array();
-			$this->view->badges = array();
+			// Empty tags and badges arrays
+			$tags = array();
+			$badges = array();
 
-			//empty params object
-			$this->view->params = new Registry('');
+			// Empty params object
+			$params = new Registry('');
 		}
+
+		// Get all citations sponsors
+		$sponsors = Sponsor::all();
+
+		// Get all citation types
+		$types = Type::all();
+
 		// Set any errors
 		if ($this->getError())
 		{
-			Notify::error($this->getError(), 'com.citations');
+			Notify::error($this->getError());
 		}
 
-		//set vars for view
-		$this->view->config = $this->config;
-
-		$this->_displayMessages();
 		// Output the HTML
 		$this->view
+			->set('config', $this->config)
+			->set('row', $row)
+			->set('sponsors', $sponsors)
+			->set('types', $types)
+			->set('tags', $tags)
+			->set('badges', $badges)
+			->set('params', $params)
+			->set('row_sponsors', $row_sponsors)
+			->set('assocs', $assocs)
 			->setLayout('edit')
 			->display();
 	}
@@ -199,118 +214,160 @@ class Citations extends AdminController
 	 *
 	 * @return	void
 	 */
-	public function publishTask()
+	public function stateTask()
 	{
-		//get request vars - expecting an array id[]=4232
-		$id = Request::getInt('id', 0);
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
 
-		$row = Citation::oneOrFail($id);
-
-		// mark published and save
-		$row->set('published', 1);
-		if (!$row->save())
+		if (!User::authorise('core.edit.state', $this->_option))
 		{
-			Notify::error($row->getError(), 'com.citations');
-			$this->displayTask();
-			return;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		Notify::success(Lang::txt('CITATION_PUBLISHED'), 'com.citations');
+		$state = $this->getTask() == 'publish' ? 1 : 0;
+
+		// Incoming
+		$ids = Request::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			$row = Citation::oneOrFail($id);
+
+			// Mark record and save
+			$row->set('published', $state);
+
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			$msg = $this->getTask() == 'publish'
+				? Lang::txt('CITATION_PUBLISHED')
+				: Lang::txt('CITATION_UNPUBLISHED');
+
+			Notify::success($msg);
+		}
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
-	 * Unpublish a citation
+	 * Toggle affliliation 
 	 *
-	 * @return	void
+	 * @return  void
 	 */
-	public function unpublishTask()
-	{
-		$id = Request::getInt('id', 0);
-
-		$row = Citation::oneOrFail($id);
-
-		// mark unpublished and save
-		$row->set('published', 0);
-		if (!$row->save())
-		{
-			Notify::error($row->getError(), 'com.citations');
-			$this->displayTask();
-			return;
-		}
-		Notify::success(Lang::txt('CITATION_UNPUBLISHED'), 'com.citations');
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/*
-	* Toggle affliliation 
-	*
-	* @return void
-	*/
 	public function affiliateTask()
 	{
-		$id = Request::getInt('id', 0);
-		$row = Citation::oneOrFail($id);
-		$affiliatedId = ($row->affiliated == 1) ? 0 : 1;
-		$row->set('affiliated', $affiliatedId);
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
 
-		if (!$row->save())
+		if (!User::authorise('core.edit.state', $this->_option))
 		{
-				Notify::error($row->getError(), 'com.citations');
-				$this->displayTask();
-				return;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
-		Notify::success(Lang::txt('CITATION_AFFILIATED'), 'com.citations');
+
+		$ids = Request::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			$row = Citation::oneOrFail($id);
+
+			$affiliatedId = ($row->get('affiliated') == 1) ? 0 : 1;
+
+			$row->set('affiliated', $affiliatedId);
+
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('CITATION_AFFILIATED'));
+		}
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
-	/*
-	* Toggle fundedby 
-	*
-	* @return void
-	*/
+	/**
+	 * Toggle fundedby 
+	 *
+	 * @return  void
+	 */
 	public function fundTask()
 	{
-		$id = Request::getInt('id', 0);
-		$row = Citation::oneOrFail($id);
-		$fundedbyId = ($row->fundedby == 1) ? 0 : 1;
-		$row->set('fundedby', $fundedbyId);
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
 
-		if (!$row->save())
+		if (!User::authorise('core.edit.state', $this->_option))
 		{
-				Notify::error($row->getError(), 'com.citations');
-				$this->displayTask();
-				return;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
-		Notify::success(Lang::txt('CITATION_FUNDED'), 'com.citations');
+
+		$ids = Request::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			$row = Citation::oneOrFail($id);
+
+			$fundedbyId = ($row->get('fundedby') == 1) ? 0 : 1;
+
+			$row->set('fundedby', $fundedbyId);
+
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('CITATION_FUNDED'));
+		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
 	 * Display stats for citations
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function statsTask()
 	{
-		$filters = array('scope' => 'all', 'published' => array(0,1));
-		$this->view->stats = Citation::getYearlyStats($filters);
+		$filters = array(
+			'scope'     => 'all',
+			'published' => array(0, 1)
+		);
+
+		$stats = Citation::getYearlyStats($filters);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('stats', $stats)
+			->display();
 	}
 
 	/**
@@ -323,11 +380,17 @@ class Citations extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$citation = array_map('trim', Request::getVar('citation', array(), 'post'));
 		$exclude  = Request::getVar('exclude', '', 'post');
 		$rollover = Request::getInt("rollover", 0);
-		$this->tags	 = Request::getVar('tags', '');
-		$this->badges	= Request::getVar('badges', '');
+		$this->tags = Request::getVar('tags', '');
+		$this->badges = Request::getVar('badges', '');
 		$this->sponsors = array_filter(Request::getVar('sponsors', array(), 'post'));
 		$citationId = !empty($citation['id']) ? $citation['id'] : null;
 		unset($citation['id']);
@@ -335,24 +398,23 @@ class Citations extends AdminController
 		// toggle the affiliation
 		if (!isset($citation['affiliated']) || $citation['affiliated'] == null)
 		{
-				$citation['affiliated'] = 0;
+			$citation['affiliated'] = 0;
 		}
 
 		// toggle fundeby
 		if (!isset($citation['fundedby']) || $citation['fundedby'] == null)
 		{
-				$citation['fundedby'] = 0;
+			$citation['fundedby'] = 0;
 		}
 		// Bind incoming data to object
 		$row = Citation::oneOrNew($citationId);
 		$row->set($citation);
 
-		//set params
+		// Set params
 		$cparams = new Registry($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
 		$cparams->set('rollover', $rollover);
 		$row->set('params', $cparams->toString());
-
 
 		// Incoming associations
 		$assocParams = Request::getVar('assocs', array(), 'post');
@@ -381,116 +443,73 @@ class Citations extends AdminController
 		// Store new content
 		if (!$row->saveAndPropagate())
 		{
-			$this->row = $row;
-			Notify::error($row->getError(), 'com.citations');
-			$this->editTask();
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
+
 		$row->sponsors()->sync($this->sponsors);
 
 		//add tags & badges
 		$row->updateTags($this->tags);
 		$row->updateTags($this->badges, 'badge');
 
-		Notify::success(Lang::txt('CITATION_SAVED', $row->id), 'com.citations');
+		Notify::success(Lang::txt('CITATION_SAVED', $row->id));
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
-	 * Check if an array has any values set other than $ignored values
-	 *
-	 * @param	array	$b		Array to check
-	 * @param	array	$ignored  Values to ignore
-	 * @return	boolean  True if empty
-	 */
-	private function _isEmpty($b, $ignored=array())
-	{
-		foreach ($ignored as $ignore)
-		{
-			if (array_key_exists($ignore, $b))
-			{
-				$b[$ignore] = null;
-			}
-		}
-		if (array_key_exists('id', $b))
-		{
-			$b['id'] = null;
-		}
-		$values = array_values($b);
-		$e = true;
-		foreach ($values as $v)
-		{
-			if ($v)
-			{
-				$e = false;
-			}
-		}
-		return $e;
+		$this->cancelTask();
 	}
 
 	/**
 	 * Remove one or more citations
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming (we're expecting an array)
 		$ids = Request::getVar('id', array());
-		if (!is_array($ids))
-		{
-			$ids = array($ids);
-		}
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-        if (count($ids) > 0)
+		$removed = 0;
+
+		// Loop through the IDs and delete the citation
+		foreach ($ids as $id)
 		{
-			// Loop through the IDs and delete the citation
-			$citations = Citation::whereIn('id', $ids)->rows();
-			$citationsRemoved = array();
-			foreach ($citations as $citation)
+			$citation = Citation::oneOrFail($id);
+
+			if (!$citation->destroy())
 			{
-				$citationId = $citation->get('id');
-				if (!$citation->destroy())
-				{
-					foreach ($citation->getErrors() as $error)
-					{
-						Notify::error($citation->getError(), 'com.citations');
-					}
-					App::redirect(Route::url('index.php?option=com_citations&task=browse'));
-				}
-				else
-				{
-					Notify::success(Lang::txt('CITATION_REMOVED', $citationId), 'com.citations');
-				}
+				Notify::error($citation->getError());
+				continue;
 			}
-		}
-		else
-		{
-			Notify::error($Lang::txt('NO_SELECTION'), 'com_citations');
-		}
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true)
-		);
-	}
 
-	private function _displayMessages($domain = 'com.citations')
-	{
-		foreach (Notify::messages($domain) as $message)
-		{
-			Notify::message($message['message'], $message['type']);
+			// Trigger before delete event
+			Event::trigger('onCitationAfterDelete', array($id));
+
+			$removed++;
 		}
+
+		if ($removed)
+		{
+			Notify::error(Lang::txt('NO_SELECTION'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Get the params for a citation
 	 *
-	 * @param	integer  $citation	Citation ID
-	 * @return	integer
+	 * @param   integer  $citation  Citation ID
+	 * @return  string
 	 */
 	private function _getParams($citation = 0)
 	{

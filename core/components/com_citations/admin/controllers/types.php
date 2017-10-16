@@ -32,7 +32,8 @@
 
 namespace Components\Citations\Admin\Controllers;
 
-require_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php';
+
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Type;
 use Request;
@@ -46,58 +47,65 @@ use App;
 class Types extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * List types
 	 *
 	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$ct = new Type($this->database);
-		$this->view->types = Type::all();
-		$this->_displayMessages();
+		$types = Type::all();
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Create a new type
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		$this->view
+			->set('types', $types)
+			->display();
 	}
 
 	/**
 	 * Edit a type
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		Request::setVar('hidemainmenu', 1);
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
-		$this->view->config = $this->config;
+		Request::setVar('hidemainmenu', 1);
 
 		if (!($row instanceof Type))
 		{
 			// Incoming
-			$id = Request::getInt('id', 0);
+			$id = Request::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
 			$row = Type::oneOrNew($id);
 		}
 
-		$this->view->type = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			\Notify::error($error);
-		}
-		$this->_displayMessages();
 		// Output the HTML
 		$this->view
+			->set('config', $this->config)
+			->set('type', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -112,6 +120,12 @@ class Types extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$fields = Request::getVar('type', array(), 'post');
 		$typeId = !empty($fields['id']) ? $fields['id'] : null;
 		unset($fields['id']);
@@ -122,15 +136,13 @@ class Types extends AdminController
 		// Store new content
 		if (!$row->save())
 		{
-			Notify::error($row->getError(), 'com.citations');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		Notify::success(Lang::txt('CITATION_TYPE_SAVED'), 'com.citations');
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		Notify::success(Lang::txt('CITATION_TYPE_SAVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -143,41 +155,33 @@ class Types extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Ensure we have an ID to work with
-		if (empty($ids))
+		$removed = 0;
+
+		foreach ($ids as $id)
 		{
-			Notify::error(Lang::txt('CITATION_NO_TYPE'), 'com.citations');
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			$type = Type::oneOrFail(intval($id));
+
+			if (!$type->destroy())
+			{
+				Notify::error($type->getError());
+				continue;
+			}
+
+			$removed++;
 		}
 
-		$deleteTypes = Type::all()->whereIn('id', $ids)->rows();
-		if (!$deleteTypes->destroyAll())
-		{
-			Notify::error(Lang::txt('CITATION_TYPE_ERROR_REMOVED'), 'com.citations');
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-		}
+		Notify::success(Lang::txt('CITATION_TYPE_REMOVED'));
 
-		Notify::success(Lang::txt('CITATION_TYPE_REMOVED'), 'com.citations');
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	private function _displayMessages($domain = 'com.citations')
-	{
-		foreach (Notify::messages($domain) as $message)
-		{
-			Notify::message($message['message'], $message['type']);
-		}
+		$this->cancelTask();
 	}
 }

@@ -32,12 +32,12 @@
 
 namespace Components\Citations\Admin\Controllers;
 
-require_once Component::path('com_citations') . DS . 'models' . DS . 'sponsor.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'sponsor.php';
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Sponsor;
 use Request;
-use Route;
+use Notify;
 use Lang;
 use App;
 
@@ -47,62 +47,65 @@ use App;
 class Sponsors extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * List types
 	 *
 	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->sponsors = Sponsor::all();
-
-		$this->_displayMessages();
+		$sponsors = Sponsor::all();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('sponsors', $sponsors)
+			->display();
 	}
 
 	/**
-	 * Create a new type
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
-	 * Edit a type
+	 * Edit an entry
 	 *
 	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		Request::setVar('hidemainmenu', 1);
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
-		$this->view->config = $this->config;
+		Request::setVar('hidemainmenu', 1);
 
 		if (!($row instanceof Sponsor))
 		{
 			// Incoming
-			$id = Request::getInt('id', 0);
+			$id = Request::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
 
 			$row = Sponsor::oneOrNew($id);
 		}
 
-		$this->view->sponsor = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			\Notify::error($error, 'com.citations');
-		}
-
-		$this->_displayMessages();
-
 		// Output the HTML
 		$this->view
+			->set('config', $this->config)
+			->set('sponsor', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -117,6 +120,12 @@ class Sponsors extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$s = Request::getVar('sponsor', array(), 'post');
 		$sponsorId = !empty($s['id']) ? $s['id'] : null;
 		unset($s['id']);
@@ -124,19 +133,16 @@ class Sponsors extends AdminController
 		$row = Sponsor::oneOrNew($sponsorId);
 		$row->set($s);
 
-
 		// Store new content
 		if (!$row->save())
 		{
-			Notify::error($row->getError(), 'com.citations');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		Notify::success(Lang::txt('CITATION_SPONSOR_SAVED'), 'com.citations');
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		Notify::success(Lang::txt('CITATION_SPONSOR_SAVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -146,47 +152,40 @@ class Sponsors extends AdminController
 	 */
 	public function removeTask()
 	{
-		// Incoming (expecting an array)
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Ensure we have an ID to work with
-		if (empty($ids))
-		{
-			Notify::error(Lang::txt('CITATION_NO_SPONSOR'), 'com.citations');
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
-		}
+		$removed = 0;
 
-		$cs = Sponsor::all()->whereIn('id', $ids)->rows();
-		foreach ($cs as $sponsor)
+		foreach ($ids as $id)
 		{
-			$sponsorId = $sponsor->get('id');
+			$sponsor = Sponsor::oneOrFail(intval($id));
+
 			if (!$sponsor->destroy())
 			{
-				Notify::error(Lang::txt('CITATION_SPONSOR_NOT_REMOVED', $sponsorId), 'com.citations');
+				Notify::error(Lang::txt('CITATION_SPONSOR_NOT_REMOVED', $id));
+				continue;
 			}
-			else
-			{
-				$sponsor->citations()->sync(array());
-			}
+
+			$sponsor->citations()->sync(array());
+
+			$removed++;
 		}
 
-		Notify::success(Lang::txt('CITATION_SPONSOR_REMOVED'), 'com.citations');
-
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	private function _displayMessages($domain = 'com.citations')
-	{
-		foreach (Notify::messages($domain) as $message)
+		if ($removed)
 		{
-			Notify::message($message['message'], $message['type']);
+			Notify::success(Lang::txt('CITATION_SPONSOR_REMOVED'));
 		}
+
+		$this->cancelTask();
 	}
 }

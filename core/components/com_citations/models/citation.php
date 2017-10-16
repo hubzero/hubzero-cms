@@ -399,32 +399,39 @@ class Citation extends Relational
 		$publishState = empty($filters['published']) ? array(1) : $filters['published'];
 		$publishState = !is_array($publishState) ? array($publishState) : $publishState;
 		$scope = empty($filters['scope']) ? 'hub' : $filters['scope'];
-		$citations = self::all()->select('affiliated')
-								->select('year')
-								->select('id', 'totalcite', true)
-								->whereIn('published', $publishState)
-								->group('year')
-								->group('affiliated')
-								->order('year', 'desc');
+
+		$citations = self::all()
+			->select('affiliated')
+			->select('year')
+			->select('id', 'totalcite', true)
+			->whereIn('published', $publishState)
+			->group('year')
+			->group('affiliated')
+			->order('year', 'desc');
 
 		if ($scope == 'hub')
 		{
-			$citations->whereEquals('scope', '', 1);
-			$citations->orWhere('scope', 'IS', null, 1);
-			$citations->orWhereEquals('scope', $scope, 1);
-			$citations->resetDepth();
+			$citations->whereEquals('scope', '', 1)
+				->orWhere('scope', 'IS', null, 1)
+				->orWhereEquals('scope', $scope, 1)
+				->resetDepth();
 		}
 		elseif ($scope != 'all' && !empty($filters['scope_id']))
 		{
-			$citations->whereEquals('scope', $scope);
-			$citations->whereEquals('scope_id', $filters['scope_id']);
+			$citations->whereEquals('scope', $scope)
+				->whereEquals('scope_id', $filters['scope_id']);
 		}
 
-		$earliestYear = self::blank()->select('year')
-									->where('year', '!=', '')
-									->where('year', 'IS NOT', null)
-									->where('year', '>', 0)
-									->order('year', 'asc')->limit(1)->row()->year;
+		$earliestYear = self::blank()
+			->select('year')
+			->where('year', '!=', '')
+			->where('year', 'IS NOT', null)
+			->where('year', '>', 0)
+			->order('year', 'asc')
+			->limit(1)
+			->row()
+			->get('year');
+
 		$groupCitations = array();
 		$affiliations = array('non-affiliate' => 0, 'affiliate' => 0);
 		$affiliationLabels = array_keys($affiliations);
@@ -435,16 +442,23 @@ class Citation extends Relational
 		}
 		$emptyLabel = 'No Year';
 		$groupCitations[$emptyLabel] = $affiliations;
+
 		foreach ($citations->rows() as $cite)
 		{
 			$year = $cite->year;
 			$year = !empty($year) && ($year != "0") ? $year : $emptyLabel;
-			$affNum = $cite->affiliated;
+			$affNum = (int) $cite->affiliated;
 			$affLabel = (isset($affiliationLabels[$affNum]) ? $affiliationLabels[$affNum] : '');
+
+			if (!isset($groupCitations[$year]))
+			{
+				$groupCitations[$year] = array();
+			}
+
 			// Set count for affliation
 			if ($year == $emptyLabel)
 			{
-				$groupCitations[$year][$affLabel] += $cite->totalcite;
+				$groupCitations[$emptyLabel][$affLabel] += $cite->totalcite;
 			}
 			else
 			{
@@ -458,7 +472,7 @@ class Citation extends Relational
 	/**
 	 * Defines a belongs to one relationship with format
 	 *
-	 * @return $this
+	 * @return  object
 	 */
 	public function assignedFormat()
 	{
@@ -468,7 +482,7 @@ class Citation extends Relational
 	/**
 	 * Defines a many to many relationship with resources
 	 *
-	 * @return $this
+	 * @return  object
 	 */
 	public function resources()
 	{
@@ -478,7 +492,7 @@ class Citation extends Relational
 	/**
 	 * Defines a one to many relationship with associations
 	 *
-	 * @return $this
+	 * @return  object
 	 */
 	public function associations()
 	{
@@ -488,12 +502,12 @@ class Citation extends Relational
 	/**
 	 * Defines a many to many relationship with publications
 	 *
-	 * @return $this
+	 * @return  object
 	 */
 	public function publications()
 	{
-
-		return $this->manytoMany('\Components\Publications\Models\Orm\Publication', '#__citations_assoc', 'cid', 'oid')->whereEquals('#__citations_assoc.tbl', 'publication');
+		return $this->manytoMany('\Components\Publications\Models\Orm\Publication', '#__citations_assoc', 'cid', 'oid')
+			->whereEquals('#__citations_assoc.tbl', 'publication');
 	}
 
 	/**
@@ -504,7 +518,10 @@ class Citation extends Relational
 	 */
 	public function canEdit($userId = null)
 	{
-		$owners = $this->publications()->select('owners.userid')->join('#__project_owners as owners', '#__publications.project_id', 'owners.projectid');
+		$owners = $this->publications()
+			->select('owners.userid')
+			->join('#__project_owners as owners', '#__publications.project_id', 'owners.projectid');
+
 		$ownerIds = array();
 		foreach ($owners->rows() as $owner)
 		{
@@ -526,7 +543,7 @@ class Citation extends Relational
 	/**
 	 * Defines a many to many relationship with sponsors
 	 *
-	 * @return $this
+	 * @return  object
 	 */
 	public function sponsors()
 	{
@@ -536,8 +553,7 @@ class Citation extends Relational
 	/**
 	 * Defines a one to many relationship with authors
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  object
 	 */
 	public function relatedAuthors()
 	{
@@ -547,8 +563,7 @@ class Citation extends Relational
 	/**
 	 * Defines a one to many relationship with authors
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  object
 	 */
 	public function relatedType()
 	{

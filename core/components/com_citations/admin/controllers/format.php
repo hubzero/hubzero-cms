@@ -33,11 +33,9 @@
 namespace Components\Citations\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Citations\Helpers;
-use Components\Citations\Tables;
 use Components\Citations\Models\Format as CitationFormat;
 use Request;
-use Route;
+use Notify;
 use Lang;
 use App;
 
@@ -47,13 +45,12 @@ use App;
 class Format extends AdminController
 {
 	/**
-	 * List types
+	 * List formats
 	 *
 	 * @return  void
 	 */
 	public function displayTask()
 	{
-
 		// get the first item, will use as default if not set.
 		$firstResult = CitationFormat::all()
 			->where('style', 'NOT LIKE', 'custom-group-%')
@@ -64,36 +61,29 @@ class Format extends AdminController
 		if ($this->config->get('default_citation_format') != null)
 		{
 			$currentFormat = CitationFormat::all()
-			->where('style', 'LIKE', strtolower($this->config->get('default_citation_format')))
-			->limit(1)
-			->row();
+				->where('style', 'LIKE', strtolower($this->config->get('default_citation_format')))
+				->limit(1)
+				->row();
 		}
 		else
 		{
 			$currentFormat = $firstResult;
 		}
 
-		// set view variable
-		$this->view->currentFormat = $currentFormat;
-
-		//get formatter object
-		$this->view->formats = CitationFormat::all();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		// Get formatter object
+		$formats = CitationFormat::all();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('currentFormat', $currentFormat)
+			->set('formats', $formats)
+			->display();
 	}
 
-
 	/**
-	 * Save a type
+	 * Save a format
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -109,28 +99,28 @@ class Format extends AdminController
 		if ($model->style == 'Hub Custom' || $model->isNew() === true)
 		{
 			$model->set(array(
-				'style' => 'Hub Custom',
+				'style'  => 'Hub Custom',
 				'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
-				));
+			));
 		}
 		else
 		{
 			$model->set(array(
-				'format' => \Hubzero\Utility\Sanitize::clean($format['format'])));
+				'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
+			));
 		}
 
 		if (!$model->save())
 		{
 			// redirect with error message
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('CITATION_FORMAT_NOT_SAVED'),
-				'error');
+			Notify::error($model->getError());
+		}
+		else
+		{
+			Notify::success(Lang::txt('CITATION_FORMAT_SAVED') . ' ' . $model->style);
 		}
 
 		// successfully set the default value, redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_FORMAT_SAVED') . ' ' . $model->style);
+		$this->cancelTask();
 	}
 }
