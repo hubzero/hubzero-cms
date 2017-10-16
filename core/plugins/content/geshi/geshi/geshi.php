@@ -1494,14 +1494,14 @@ class GeSHi
 	 *       a extension->lang lookup?)
 	 * @todo static?
 	 */
-	public function get_language_name_from_extension( $extension, $lookup = array() )
+	public function get_language_name_from_extension($extension, $lookup = array() )
 	{
-		if ( !is_array($lookup) || empty($lookup)) {
+		if (!is_array($lookup) || empty($lookup)) {
 			$lookup = array(
-				'6502acme' => array( 'a', 's', 'asm', 'inc' ),
-				'6502tasm' => array( 'a', 's', 'asm', 'inc' ),
-				'6502kickass' => array( 'a', 's', 'asm', 'inc' ),
-				'68000devpac' => array( 'a', 's', 'asm', 'inc' ),
+				'6502acme' => array('a', 's', 'asm', 'inc' ),
+				'6502tasm' => array('a', 's', 'asm', 'inc' ),
+				'6502kickass' => array('a', 's', 'asm', 'inc' ),
+				'68000devpac' => array('a', 's', 'asm', 'inc' ),
 				'abap' => array('abap'),
 				'actionscript' => array('as'),
 				'ada' => array('a', 'ada', 'adb', 'ads'),
@@ -1855,7 +1855,7 @@ class GeSHi
 	 */
 	public function enable_important_blocks($flag)
 	{
-		$this->enable_important_blocks = ( $flag ) ? true : false;
+		$this->enable_important_blocks = ($flag ) ? true : false;
 	}
 
 	/**
@@ -2568,11 +2568,9 @@ class GeSHi
 									continue;
 								}
 								$match_i = $comment_regexp_cache_per_key[$comment_key]['pos'];
-							} elseif (
 								//This is to allow use of the offset parameter in preg_match and stay as compatible with older PHP versions as possible
-								(GESHI_PHP_PRE_433 && preg_match($regexp, substr($part, $i), $match, PREG_OFFSET_CAPTURE)) ||
-								(!GESHI_PHP_PRE_433 && preg_match($regexp, $part, $match, PREG_OFFSET_CAPTURE, $i))
-								) {
+							} elseif ((GESHI_PHP_PRE_433 && preg_match($regexp, substr($part, $i), $match, PREG_OFFSET_CAPTURE))
+									|| (!GESHI_PHP_PRE_433 && preg_match($regexp, $part, $match, PREG_OFFSET_CAPTURE, $i))) {
 								$match_i = $match[0][1];
 								if (GESHI_PHP_PRE_433) {
 									$match_i += $i;
@@ -2646,7 +2644,7 @@ class GeSHi
 						}
 
 						// now handle the string
-						$string = "<span$string_attributes>" . GeSHi::hsc($char);
+						$string = "<span$string_attributes>" . self::hsc($char);
 						$start = $i + $char_len;
 						$string_open = true;
 
@@ -2676,11 +2674,9 @@ class GeSHi
 												continue;
 											}
 											$match_i = $escape_regexp_cache_per_key[$escape_key]['pos'];
-										} elseif (
 											//This is to allow use of the offset parameter in preg_match and stay as compatible with older PHP versions as possible
-											(GESHI_PHP_PRE_433 && preg_match($regexp, substr($part, $start), $match, PREG_OFFSET_CAPTURE)) ||
-											(!GESHI_PHP_PRE_433 && preg_match($regexp, $part, $match, PREG_OFFSET_CAPTURE, $start))
-											) {
+										} elseif ((GESHI_PHP_PRE_433 && preg_match($regexp, substr($part, $start), $match, PREG_OFFSET_CAPTURE))
+												|| (!GESHI_PHP_PRE_433 && preg_match($regexp, $part, $match, PREG_OFFSET_CAPTURE, $start))) {
 											$match_i = $match[0][1];
 											if (GESHI_PHP_PRE_433) {
 												$match_i += $start;
@@ -2737,8 +2733,7 @@ class GeSHi
 								}
 
 								//Add the style for the escape char ...
-								$string .= "<span$escape_char_attributes>" .
-									GeSHi::hsc($this->language_data['ESCAPE_CHAR']);
+								$string .= "<span$escape_char_attributes>" . self::hsc($this->language_data['ESCAPE_CHAR']);
 
 								//Get the byte AFTER the ESCAPE_CHAR we just found
 								$es_char = $part[$es_pos + 1];
@@ -3023,7 +3018,7 @@ class GeSHi
 									$test_str = $this->hsc($open);
 								}
 
-								$close_pos = strpos( $part, $close, $i + $open_strlen );
+								$close_pos = strpos($part, $close, $i + $open_strlen );
 
 								if ($close_pos === false) {
 									$close_pos = $length;
@@ -3073,9 +3068,7 @@ class GeSHi
 											continue;
 										}
 										$match_i = $comment_single_cache_per_key[$comment_key];
-									} elseif (
-										// case sensitive comments
-										($this->language_data['CASE_SENSITIVE'][GESHI_COMMENTS] &&
+									} elseif (($this->language_data['CASE_SENSITIVE'][GESHI_COMMENTS] && // case sensitive comments
 										($match_i = stripos($part, $comment_mark, $i)) !== false) ||
 										// non case sensitive
 										(!$this->language_data['CASE_SENSITIVE'][GESHI_COMMENTS] &&
@@ -3336,7 +3329,7 @@ class GeSHi
 				// There is a base group for this keyword
 
 				// Old system: strtolower
-				//$keyword = ( $this->language_data['CASE_SENSITIVE'][$group] ) ? $keyword : strtolower($keyword);
+				//$keyword = ($this->language_data['CASE_SENSITIVE'][$group] ) ? $keyword : strtolower($keyword);
 				// New system: get keyword from language file to get correct case
 				if (!$this->language_data['CASE_SENSITIVE'][$k] &&
 					strpos($this->language_data['URLS'][$k], '{FNAME}') !== false) {
@@ -3383,7 +3376,7 @@ class GeSHi
 	public function handle_regexps_callback($matches)
 	{
 		// before: "' style=\"' . call_user_func(\"$func\", '\\1') . '\"\\1|>'",
-		return  ' style="' . call_user_func($this->language_data['STYLES']['REGEXPS'][$this->_rx_key], $matches[1]) . '"'. $matches[1] . '|>';
+		return ' style="' . call_user_func($this->language_data['STYLES']['REGEXPS'][$this->_rx_key], $matches[1]) . '"'. $matches[1] . '|>';
 	}
 
 	/**
@@ -3418,7 +3411,7 @@ class GeSHi
 					. '<|!REG3XP' . $this->_hmr_key .'!>'
 						. str_replace("\n", "|>\n<|!REG3XP" . $this->_hmr_key . '!>', $replace)
 					. '|>'
-			  . $after;
+			. $after;
 	}
 
 	/**
@@ -3528,11 +3521,11 @@ class GeSHi
 					if ($this->line_numbers != GESHI_NO_LINE_NUMBERS) {
 						// produce valid HTML when we match multiple lines
 						$this->_hmr_key = $key;
-						$stuff_to_parse = preg_replace_callback( "/(" . $regexp . ")/",
+						$stuff_to_parse = preg_replace_callback("/(" . $regexp . ")/",
 											  array($this, 'handle_multiline_regexps'), $stuff_to_parse);
 						$this->_hmr_key = '';
 					} else {
-						$stuff_to_parse = preg_replace( "/(" . $regexp . ")/", "<|!REG3XP$key!>\\1|>", $stuff_to_parse);
+						$stuff_to_parse = preg_replace("/(" . $regexp . ")/", "<|!REG3XP$key!>\\1|>", $stuff_to_parse);
 					}
 				}
 			}
@@ -3622,7 +3615,7 @@ class GeSHi
 		// be highlighting regardless
 		//
 		if ($this->lexic_permissions['BRACKETS']) {
-			$stuff_to_parse = str_replace( $this->language_data['CACHE_BRACKET_MATCH'],
+			$stuff_to_parse = str_replace($this->language_data['CACHE_BRACKET_MATCH'],
 							  $this->language_data['CACHE_BRACKET_REPLACE'], $stuff_to_parse );
 		}
 
@@ -3741,7 +3734,7 @@ class GeSHi
 		//
 
 		$stuff_to_parse = str_replace('<|', '<span', $stuff_to_parse);
-		$stuff_to_parse = str_replace ( '|>', '</span>', $stuff_to_parse );
+		$stuff_to_parse = str_replace ('|>', '</span>', $stuff_to_parse );
 		return substr($stuff_to_parse, 1);
 	}
 
@@ -4657,20 +4650,20 @@ class GeSHi
 	}
 
 	/**
-	* this functions creates an optimized regular expression list
-	* of an array of strings.
-	*
-	* Example:
-	* <code>$list = array('faa', 'foo', 'foobar');
-	*          => string 'f(aa|oo(bar)?)'</code>
-	*
-	* @param $list array of (unquoted) strings
-	* @param $regexp_delimiter your regular expression delimiter, @see preg_quote()
-	* @return string for regular expression
-	* @author Milian Wolff <mail@milianw.de>
-	* @since 1.0.8
-	* @access private
-	*/
+	 * this functions creates an optimized regular expression list
+	 * of an array of strings.
+	 *
+	 * Example:
+	 * <code>$list = array('faa', 'foo', 'foobar');
+	 *          => string 'f(aa|oo(bar)?)'</code>
+	 *
+	 * @param $list array of (unquoted) strings
+	 * @param $regexp_delimiter your regular expression delimiter, @see preg_quote()
+	 * @return string for regular expression
+	 * @author Milian Wolff <mail@milianw.de>
+	 * @since 1.0.8
+	 * @access private
+	 */
 	public function optimize_regexp_list($list, $regexp_delimiter = '/')
 	{
 		$regex_chars = array('.', '\\', '+', '-', '*', '?', '[', '^', ']', '$',
@@ -4772,7 +4765,7 @@ class GeSHi
 		// make sure the last tokens get converted as well
 		$new_entry = $this->_optimize_regexp_list_tokens_to_string($tokens);
 		if (GESHI_MAX_PCRE_SUBPATTERNS && $num_subpatterns + substr_count($new_entry, '(?:') > GESHI_MAX_PCRE_SUBPATTERNS) {
-			if ( !empty($regexp_list[$list_key]) ) {
+			if (!empty($regexp_list[$list_key]) ) {
 			  ++$list_key;
 			}
 			$regexp_list[$list_key] = $new_entry;
@@ -4784,17 +4777,18 @@ class GeSHi
 		}
 		return $regexp_list;
 	}
+
 	/**
-	* this function creates the appropriate regexp string of an token array
-	* you should not call this function directly, @see $this->optimize_regexp_list().
-	*
-	* @param &$tokens array of tokens
-	* @param $recursed bool to know wether we recursed or not
-	* @return string
-	* @author Milian Wolff <mail@milianw.de>
-	* @since 1.0.8
-	* @access private
-	*/
+	 * this function creates the appropriate regexp string of an token array
+	 * you should not call this function directly, @see $this->optimize_regexp_list().
+	 *
+	 * @param &$tokens array of tokens
+	 * @param $recursed bool to know wether we recursed or not
+	 * @return string
+	 * @author Milian Wolff <mail@milianw.de>
+	 * @since 1.0.8
+	 * @access private
+	 */
 	public function _optimize_regexp_list_tokens_to_string(&$tokens, $recursed = false)
 	{
 		$list = '';

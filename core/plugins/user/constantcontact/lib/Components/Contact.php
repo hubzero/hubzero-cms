@@ -236,7 +236,7 @@ class Contact extends CCObject
 		$xml_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns='http://www.w3.org/2005/Atom'></entry>";
 		$xml_object = simplexml_load_string($xml_string);
 		$xml_object->addChild("title");
-		$xml_object->addChild("updated",$update_date);
+		$xml_object->addChild("updated", $update_date);
 		$author_node = $xml_object->addChild("author");
 		$author_node->addChild("name", ("CTCT Samples"));
 		$xml_object->addChild("id", $this->id);
@@ -253,7 +253,7 @@ class Contact extends CCObject
 		$contact_node->addChild("CompanyName", $this->companyName);
 		$contact_node->addChild("JobTitle", $this->jobTitle);
 		$contact_node->addChild("OptInSource", $this->optInSource);
-		$contact_node->addChild("HomePhone",$this->homePhone);
+		$contact_node->addChild("HomePhone", $this->homePhone);
 		$contact_node->addChild("WorkPhone", $this->workPhone);
 		$contact_node->addChild("Addr1", $this->addr1);
 		$contact_node->addChild("Addr2", $this->addr2);

@@ -18,7 +18,7 @@ class Cost
 		$this->total = (isset($params['total'])) ? $params['total'] : '';
 	}
 
-	 /**
+	/**
 	 * Create associative array of object properties
 	 * @static
 	 * @param array $params - Array representing an event Cost

@@ -7,7 +7,7 @@ abstract class CCObject
 	 * @params  array  $params  object property names to reference for validation before HTTP requests
 	 * @return  void
 	 */
-	protected function validate(Array $params)
+	protected function validate(array $params)
 	{
 		try
 		{

@@ -137,7 +137,7 @@ class Campaign extends CCObject
 		$this->greetingString = (isset($params['greetingString'])) ? $params['greetingString'] : '';
 		$this->orgName = (isset($params['orgName'])) ? $params['orgName'] : '$ACCOUNT.ORGANIZATIONNAME';
 		$this->orgAddr1 = (isset($params['orgAddr1'])) ? $params['orgAddr1'] : '$ACCOUNT.ADDRESS_LINE_1';
-		$this->orgAddr2 = (isset($params['orgAddr2'])) ? $params['orgAddr2'] : '$ACCOUNT.ADDRESS_LINE_2';;
+		$this->orgAddr2 = (isset($params['orgAddr2'])) ? $params['orgAddr2'] : '$ACCOUNT.ADDRESS_LINE_2';
 		$this->orgAddr3 = (isset($params['orgAddr3'])) ? $params['orgAddr3'] : '$ACCOUNT.ADDRESS_LINE_3';
 		$this->orgCity = (isset($params['orgCity'])) ? $params['orgCity'] : '';
 		$this->orgState = (isset($params['orgState'])) ? $params['orgState'] : '';
@@ -151,7 +151,7 @@ class Campaign extends CCObject
 		$this->emailContentFormat = (isset($params['emailContentFormat'])) ? $params['emailContentFormat'] : 'HTML';
 		$this->emailContent = (isset($params['emailContent'])) ? $params['emailContent'] : '';
 		$this->textVersionContent = (isset($params['textVersionContent'])) ? $params['textVersionContent'] : '';
-		$this->styleSheet = (isset($params['styleSheet'])) ? $params['styleSheet'] : '';;
+		$this->styleSheet = (isset($params['styleSheet'])) ? $params['styleSheet'] : '';
 		$this->lists = (isset($params['lists'])) ? $params['lists'] : array();
 		$this->archiveStatus = (isset($params['archiveStatus'])) ? $params['archiveStatus'] : '';
 		$this->archiveUrl = (isset($params['archiveUrl'])) ? $params['archiveUrl'] : '';
