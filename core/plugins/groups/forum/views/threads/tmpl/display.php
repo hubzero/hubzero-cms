@@ -274,10 +274,12 @@ $this->css()
 					</div>
 				</fieldset>
 
-				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
-					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
-				</label>
+				<?php if ($this->config->get('allow_anonymous')) { ?>
+					<label for="field-anonymous" id="comment-anonymous-label">
+						<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
+						<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+					</label>
+				<?php } ?>
 
 				<p class="submit">
 					<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
