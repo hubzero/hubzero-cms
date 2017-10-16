@@ -194,7 +194,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	 * @param      array  $config   Optional config values
 	 * @return     void
 	 */
-	public function plgSupportCaptcha(&$subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
