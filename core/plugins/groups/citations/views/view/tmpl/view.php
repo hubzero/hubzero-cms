@@ -202,8 +202,7 @@ $area = Request::getVar('area', 'about');
 
 		<div class="citation-citation">
 			<?php
-				$citationsFormat = new \Components\Citations\Tables\Format( $this->database );
-				$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
+				$template = \Components\Citations\Models\Format::getDefault();
 
 				$cf = new \Components\Citations\Helpers\Format();
 				$cf->setTemplate($template);

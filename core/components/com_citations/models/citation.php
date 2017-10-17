@@ -42,6 +42,7 @@ require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'author.php';
 require_once __DIR__ . DS . 'format.php';
 require_once __DIR__ . DS . 'link.php';
+require_once __DIR__ . DS . 'secondary.php';
 require_once __DIR__ . DS . 'sponsor.php';
 require_once __DIR__ . DS . 'type.php';
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'tag.php';
@@ -568,6 +569,16 @@ class Citation extends Relational
 	public function relatedType()
 	{
 		return $this->belongsToOne('Type', 'type', 'id');
+	}
+
+	/**
+	 * Defines a one to many relationship with secondary citations
+	 *
+	 * @return  object
+	 */
+	public function secondaries()
+	{
+		return $this->oneToMany('Secondary', 'cid');
 	}
 
 	/**
@@ -1415,24 +1426,35 @@ class Citation extends Relational
 	public function destroy()
 	{
 		$relatedAuthors = $this->relatedAuthors;
-		$associations = $this->associations;
 		if (!$relatedAuthors->destroyAll())
 		{
 			$this->setErrors($relatedAuthors->getErrors());
 			return false;
 		}
+
+		$associations = $this->associations;
 		if (!$associations->destroyAll())
 		{
 			$this->setErrors($associations->getErrors());
 			return false;
 		}
+
+		$secondaries = $this->secondaries;
+		if (!$secondaries->destroyAll())
+		{
+			$this->setErrors($secondaries->getErrors());
+			return false;
+		}
+
 		if (!parent::destroy())
 		{
 			return false;
 		}
+
 		$this->sponsors()->sync(array());
 		$this->updateTags(array());
 		$this->updateTags(array(), 'badge');
+
 		return true;
 	}
 

@@ -32,11 +32,12 @@
 
 namespace Components\Citations\Helpers;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'type.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'association.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'type.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'format.php';
 
-use Components\Citations\Tables\Association;
-use Components\Citations\Tables\Type;
+use Components\Citations\Models\Association;
+use Components\Citations\Models\Type;
 use Components\Citations\Models\Format as CitationFormat;
 use Hubzero\Utility\Str;
 
@@ -197,8 +198,8 @@ class Format
 		$c_type = 'journal';
 
 		$db = \App::get('db');
-		$ct = new Type($db);
-		$types = $ct->getType();
+
+		$types = Type::all()->rows();
 
 		$type = '';
 		foreach ($types as $t)
@@ -564,16 +565,13 @@ class Format
 	{
 		$html = "";
 
-		$database = \App::get('db');
-
 		$text  = $openurl['text'];
 		$icon  = $openurl['icon'];
 		$link  = $openurl['link'];
 		$query = array();
 
 		// citation type
-		$citation_type = new Type($database);
-		$citation_type->load($citation->type);
+		$citation_type = Type::oneOrNew($citation->type);
 
 		// do we have a title
 		if (isset($citation->title) && $citation->title != '')
@@ -690,8 +688,7 @@ class Format
 		$database = \App::get('db');
 
 		// Get the associations
-		$assoc = new Association($database);
-		$assocs = $assoc->getRecords(array('cid' => $citation->id));
+		$assocs = Association::all()->whereEquals('cid', $citation->id);
 
 		if (count($assocs) > 0)
 		{
@@ -725,19 +722,19 @@ class Format
 			}
 			else
 			{
-				if ($assocs[0]->tbl == 'resource')
+				if ($assocs->first()->tbl == 'resource')
 				{
-					$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . $assocs[0]->oid);
+					$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . $assocs->first()->oid);
 					$state = $database->loadResult();
 					if ($state == 1)
 					{
 						if ($internally_cited_image)
 						{
-							$html .= ' <span>|</span> <a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '" /></a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid) . '"><img src="' . $internally_cited_image_single . '" alt="' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '" /></a>';
 						}
 						else
 						{
-							$html .= ' <span>|</span> <a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '</a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid) . '">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '</a>';
 						}
 					}
 				}

@@ -48,7 +48,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param   object  $model  Current model
+	 * @param   object  $resource  Current resource
 	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
@@ -67,10 +67,10 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param   object  $model   Current model
-	 * @param   string  $option  Name of the component
-	 * @param   array   $areas   Active area(s)
-	 * @param   string  $rtrn    Data to be returned
+	 * @param   object  $resource  Current resource
+	 * @param   string  $option    Name of the component
+	 * @param   array   $areas     Active area(s)
+	 * @param   string  $rtrn      Data to be returned
 	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
@@ -95,23 +95,22 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
+		// Get a needed library
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-		include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-		include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
-		include_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
-		include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+		$cc = \Components\Citations\Models\Citation::all();
 
-		// Get citations for this resource
-		$c = \Components\Citations\Models\Association::all()
-			->whereEquals('tbl', 'resource')
-			->whereEquals('oid', $model->resource->id)
-			->including('citation')
+		$a = \Components\Citations\Models\Association::blank()->getTableName();
+		$c = $cc->getTableName();
+
+		$citations = $cc
+			->join($a, $a . '.cid', $c . '.id', 'inner')
+			->whereEquals($c . '.published', 1)
+			->whereEquals($a . '.tbl', 'resource')
+			->whereEquals($a . '.oid', $model->resource->id)
+			->order($c . '.affiliated', 'asc')
+			->order($c . '.year', 'desc')
 			->rows();
-		$citations = array();
-		foreach ($c as $assoc)
-		{
-			$citations[] = $assoc->citation;
-		}
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')

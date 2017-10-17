@@ -558,14 +558,21 @@ class Helper extends Obj
 			return false;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-		$cc = new \Components\Citations\Tables\Citation($this->_db);
+		$cc = \Components\Citations\Models\Citation::all();
 
-		$this->citations = $cc->getCitations('resource', $this->_id);
+		$a = \Components\Citations\Models\Association::blank()->getTableName();
+		$c = $cc->getTableName();
+
+		$this->citations = $cc
+			->join($a, $a . '.cid', $c . '.id', 'inner')
+			->whereEquals($c . '.published', 1)
+			->whereEquals($a . '.tbl', 'resource')
+			->whereEquals($a . '.oid', $this->_id)
+			->order($c . '.affiliated', 'asc')
+			->order($c . '.year', 'desc')
+			->rows();
 
 		return true;
 	}
@@ -583,7 +590,7 @@ class Helper extends Obj
 			$citations = $this->getCitations();
 		}
 
-		$this->citationsCount = $citations;
+		$this->citationsCount = $citations->count();
 	}
 
 	/**
@@ -598,14 +605,21 @@ class Helper extends Obj
 			return false;
 		}
 
-		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-		include_once \Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-		$cc = new \Components\Citations\Tables\Citation($this->_db);
+		$cc = \Components\Citations\Models\Citation::all();
 
-		$this->lastCitationDate = $cc->getLastCitationDate('resource', $this->_id);
+		$a = \Components\Citations\Models\Association::blank()->getTableName();
+		$c = $cc->getTableName();
+
+		$this->lastCitationDate = $cc
+			->join($a, $a . '.cid', $c . '.id', 'inner')
+			->whereEquals($c . '.published', 1)
+			->whereEquals($a . '.tbl', 'resource')
+			->whereEquals($a . '.oid', $this->_id)
+			->order($c . '.created', 'desc')
+			->row()
+			->get('created');
 
 		return true;
 	}

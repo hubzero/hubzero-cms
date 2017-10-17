@@ -1119,19 +1119,21 @@ class Resource extends Obj
 
 		if (!isset($this->citations))
 		{
-			$this->citations = array();
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+			$cc = \Components\Citations\Models\Citation::all();
 
-			$cc = new \Components\Citations\Tables\Citation($this->_db);
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
 
-			if ($results = $cc->getCitations('resource', $this->resource->id))
-			{
-				$this->citations = $results;
-			}
+			$this->citations = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'resource')
+				->whereEquals($a . '.oid', $this->resource->id)
+				->order($c . '.affiliated', 'asc')
+				->order($c . '.year', 'desc')
+				->rows();
 		}
 
 		if ($idx !== null && is_numeric($idx))

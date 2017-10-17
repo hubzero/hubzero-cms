@@ -1697,14 +1697,21 @@ class Publication extends Obj
 		}
 		if (!isset($this->_citations))
 		{
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-			$cc = new \Components\Citations\Tables\Citation($this->_db);
+			$cc = \Components\Citations\Models\Citation::all();
 
-			$this->_citations = $cc->getCitations('publication', $this->get('id'));
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
+
+			$this->_citations = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'publication')
+				->whereEquals($a . '.oid', $this->get('id'))
+				->order($c . '.affiliated', 'asc')
+				->order($c . '.year', 'desc')
+				->rows();
 		}
 
 		return $this->_citations;
@@ -1735,14 +1742,21 @@ class Publication extends Obj
 		}
 		if (!isset($this->_lastCitationDate))
 		{
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+			include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-			$cc = new \Components\Citations\Tables\Citation($this->_db);
+			$cc = \Components\Citations\Models\Citation::all();
 
-			$this->_lastCitationDate = $cc->getLastCitationDate('publication', $this->get('id'));
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
+
+			$this->lastCitationDate = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'publication')
+				->whereEquals($a . '.oid', $this->get('id'))
+				->order($c . '.created', 'desc')
+				->row()
+				->get('created');
 		}
 
 		return $this->_lastCitationDate;

@@ -114,20 +114,11 @@ if (count($this->citations) > 0) :
 							<?php if ($citation_rollover && $cite->abstract != "") : ?>
 								<div class="citation-notes">
 									<?php
-										$cs = new \Components\Citations\Tables\Sponsor($this->database);
-										$sponsors = $cs->getCitationSponsor($cite->id);
-										$final = "";
-										if ($sponsors)
-										{
-											foreach ($sponsors as $s)
-											{
-												$sp = $cs->getSponsor($s);
-												if ($sp)
-												{
-													$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
-												}
-											}
-										}
+									$final = "";
+									foreach ($cite->sponsors as $s)
+									{
+										$final .= '<a rel="external" href="'.$sp->get('link').'">'.$sp->get('sponsor').'</a>, ';
+									}
 									?>
 									<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
 										<?php $final = substr($final, 0, -2); ?>

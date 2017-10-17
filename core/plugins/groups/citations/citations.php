@@ -35,12 +35,6 @@ defined('_HZEXEC_') or die();
 // include needed libs
 require_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-require_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'author.php';
-require_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
-require_once Component::path('com_citations') . DS . 'tables' . DS . 'sponsor.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'format.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
 require_once Component::path('com_citations') . DS . 'models' . DS . 'tag.php';
 require_once Component::path('com_citations') . DS . 'models' . DS . 'tagobject.php';
 require_once Component::path('com_citations') . DS . 'models' . DS . 'importer.php';

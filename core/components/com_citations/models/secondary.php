@@ -25,26 +25,60 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Patrick Mulligan <jpmulligan@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
+ * @since     Class available since release 1.3.2
  */
 
-namespace Components\Citations\Tables;
+namespace Components\Citations\Models;
 
-use Components\Tags\Models\Cloud;
-
-require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+use Hubzero\Database\Relational;
 
 /**
- * Citations Tagging Class
+ * Secndary Citation model
+ *
+ * @uses \Hubzero\Database\Relational
  */
-class Tags extends Cloud
+class Secondary extends Relational
 {
 	/**
-	 * Object type, used for linking objects (such as resources) to tags
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
+	 **/
+	protected $namespace = 'citations';
+
+	/**
+	 * The table name, non-standard naming 
+	 *
+	 * @var  string
 	 */
-	protected $_scope = 'citations';
+	protected $table = '#__citations_secondary';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 **/
+	public $orderBy = 'id';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 **/
+	protected $rules = array(
+		'cid' => 'positive|nonzero'
+	);
+
+	/**
+	 * Defines the inverse relationship between a record and a task
+	 *
+	 * @return \Hubzero\Database\Relationship\belongsToOne
+	 **/
+	public function citation()
+	{
+		return $this->belongsToOne('Citation', 'cid', 'id');
+	}
 }

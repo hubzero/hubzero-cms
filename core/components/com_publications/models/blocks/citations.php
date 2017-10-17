@@ -33,9 +33,8 @@ namespace Components\Publications\Models\Block;
 use Components\Publications\Models\Block as Base;
 use stdClass;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 /**
  * Citations block
@@ -45,40 +44,44 @@ class Citations extends Base
 	/**
 	* Block name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'citations';
+	protected $_name = 'citations';
 
 	/**
 	* Parent block name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_parentname 	= NULL;
+	protected $_parentname = null;
 
 	/**
 	* Default manifest
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_manifest 	= NULL;
+	protected $_manifest = null;
 
 	/**
 	* Numeric block ID
 	*
-	* @var		integer
+	* @var  integer
 	*/
-	protected	$_blockId = 0;
+	protected $_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   string   $viewname
+	 * @param   itneger  $blockId
+	 * @return  string   HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
+	public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -91,8 +94,8 @@ class Citations extends Base
 			// Output HTML
 			$view = new \Hubzero\Component\View(
 				array(
-					'name'		=> 'curation',
-					'layout'	=> 'block'
+					'name'   => 'curation',
+					'layout' => 'block'
 				)
 			);
 		}
@@ -103,24 +106,24 @@ class Citations extends Base
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=> 'projects',
-					'element'	=> 'publications',
-					'name'		=> $name,
-					'layout'	=> 'wrapper'
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => $name,
+					'layout'  => 'wrapper'
 				)
 			);
 		}
 
-		$view->manifest 	= $this->_manifest;
-		$view->content 		= self::buildContent( $pub, $viewname );
-		$view->pub			= $pub;
-		$view->active		= $this->_name;
-		$view->step			= $blockId;
-		$view->showControls	= 2;
+		$view->manifest     = $this->_manifest;
+		$view->content      = self::buildContent($pub, $viewname);
+		$view->pub          = $pub;
+		$view->active       = $this->_name;
+		$view->step         = $blockId;
+		$view->showControls = 2;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -128,19 +131,21 @@ class Citations extends Base
 	/**
 	 * Build panel content
 	 *
+	 * @param   object  $pub
+	 * @param   string  $viewname
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent($pub = null, $viewname = 'edit')
 	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=> 'projects',
-				'element'	=> 'publications',
-				'name'		=> $name,
-				'layout'	=> 'citations'
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => $name,
+				'layout'  => 'citations'
 			)
 		);
 
@@ -152,17 +157,28 @@ class Citations extends Base
 		if (!isset($pub->_citations))
 		{
 			// Get citations for this publication
-			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
-			$pub->_citations = $c->getCitations( 'publication', $pub->id );
+			$cc = \Components\Citations\Models\Citation::all();
+
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
+
+			$pub->_citations = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'publication')
+				->whereEquals($a . '.oid', $pub->id)
+				->order($c . '.affiliated', 'asc')
+				->order($c . '.year', 'desc')
+				->rows();
 		}
 
-		$view->pub		= $pub;
+		$view->pub      = $pub;
 		$view->manifest = $this->_manifest;
-		$view->step		= $this->_blockId;
+		$view->step     = $this->_blockId;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -170,12 +186,17 @@ class Citations extends Base
 	/**
 	 * Save block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  string   HTML
 	 */
-	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -187,7 +208,7 @@ class Citations extends Base
 		}
 
 		// Load publication version
-		$objP = new \Components\Publications\Tables\Publication( $this->_parent->_db );
+		$objP = new \Components\Publications\Tables\Publication($this->_parent->_db);
 
 		if (!$objP->load($pub->id))
 		{
@@ -198,8 +219,19 @@ class Citations extends Base
 		if (!isset($pub->_citations))
 		{
 			// Get citations for this publication
-			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
-			$pub->_citations = $c->getCitations( 'publication', $pub->id );
+			$cc = \Components\Citations\Models\Citation::all();
+
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
+
+			$pub->_citations = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'publication')
+				->whereEquals($a . '.oid', $pub->id)
+				->order($c . '.affiliated', 'asc')
+				->order($c . '.year', 'desc')
+				->rows();
 		}
 
 		// Incoming
@@ -224,7 +256,7 @@ class Citations extends Base
 		);
 
 		// Attach citation
-		$output = Event::trigger( 'projects.attachCitation', $plugin_params);
+		$output = Event::trigger('projects.attachCitation', $plugin_params);
 
 		if (isset($output[0]))
 		{
@@ -253,9 +285,15 @@ class Citations extends Base
 	/**
 	 * Add new citation
 	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $cid
 	 * @return  void
 	 */
-	public function addItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	public function addItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
 		$cite = Request::getVar('cite', array(), 'post', 'none', 2);
 
@@ -263,22 +301,16 @@ class Citations extends Base
 
 		if (!$cite['type'] || !$cite['title'])
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
 
-		$citation = new \Components\Citations\Tables\Citation( $this->_parent->_db );
-		if (!$citation->bind($cite))
-		{
-			$this->setError($citation->getError());
-			return false;
-		}
+		$citation = \Components\Citations\Models\Citation::all()->set($cite);
+		$citation->set('created', $new ? Date::toSql() : $citation->get('created'));
+		$citation->set('uid', $new ? $actor : $citation->get('uid'));
+		$citation->set('published', 1);
 
-		$citation->created 		= $new ? Date::toSql() : $citation->created;
-		$citation->uid			= $new ? $actor : $citation->uid;
-		$citation->published	= 1;
-
-		if (!$citation->store(true))
+		if (!$citation->save())
 		{
 			// This really shouldn't happen.
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
@@ -286,32 +318,38 @@ class Citations extends Base
 		}
 
 		// Create association
-		if ($new == true && $citation->id)
+		if ($new == true && $citation->get('id'))
 		{
-			$assoc 		 = new \Components\Citations\Tables\Association( $this->_parent->_db );
-			$assoc->oid  = $pub->id;
-			$assoc->tbl  = 'publication';
-			$assoc->type = 'owner';
-			$assoc->cid  = $citation->id;
+			$assoc = \Components\Citations\Models\Association::blank();
+			$assoc->set('oid', $pub->id);
+			$assoc->set('tbl', 'publication');
+			$assoc->set('type', 'owner');
+			$assoc->set('cid', $citation->get('id'));
 
 			// Store new content
-			if (!$assoc->store())
+			if (!$assoc->save())
 			{
 				$this->setError($assoc->getError());
 				return false;
 			}
 		}
 
-		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE') );
+		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE'));
 		return true;
 	}
 
 	/**
 	 * Update citation record
 	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $cid
 	 * @return  void
 	 */
-	public function saveItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	public function saveItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
 		$this->addItem($manifest, $blockId, $pub, $actor, $elementId, $cid);
 		return;
@@ -320,11 +358,17 @@ class Citations extends Base
 	/**
 	 * Delete citation
 	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $cid
 	 * @return  void
 	 */
-	public function deleteItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	public function deleteItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
-		$cid = $cid ? $cid : Request::getInt( 'cid', 0 );
+		$cid = $cid ? $cid : Request::getInt('cid', 0);
 
 		// Plugin params
 		$plugin_params = array(
@@ -334,7 +378,7 @@ class Citations extends Base
 		);
 
 		// Attach citation
-		$output = Event::trigger( 'projects.unattachCitation', $plugin_params);
+		$output = Event::trigger('projects.unattachCitation', $plugin_params);
 
 		if (isset($output[0]))
 		{
@@ -364,17 +408,31 @@ class Citations extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   integer  $elementId
 	 * @return  object
 	 */
-	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
+	public function getStatus($pub = null, $manifest = null, $elementId = null)
 	{
-		$status 	 = new \Components\Publications\Models\Status();
+		$status = new \Components\Publications\Models\Status();
 
 		if (!isset($pub->_citations))
 		{
 			// Get citations for this publication
-			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
-			$pub->_citations = $c->getCitations( 'publication', $pub->id );
+			$cc = \Components\Citations\Models\Citation::all();
+
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
+
+			$pub->_citations = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'publication')
+				->whereEquals($a . '.oid', $pub->id)
+				->order($c . '.affiliated', 'asc')
+				->order($c . '.year', 'desc')
+				->rows();
 		}
 
 		// Required?
@@ -388,6 +446,7 @@ class Citations extends Base
 	/**
 	 * Get default manifest for the block
 	 *
+	 * @param   bool  $new
 	 * @return  void
 	 */
 	public function getManifest($new = false)
@@ -400,15 +459,15 @@ class Citations extends Base
 		if (!$manifest)
 		{
 			$manifest = array(
-				'name' 			=> 'citations',
-				'label' 		=> 'Citations',
-				'title' 		=> 'Citations to integral or companion resources',
-				'draftHeading' 	=> 'Add citations',
-				'draftTagline'	=> 'Cite integral or companion resources',
-				'about'			=> '',
-				'adminTips'		=> '',
-				'elements' 		=> array(),
-				'params'		=> array( 'required' => 0, 'published_editing' => 1 )
+				'name'         => 'citations',
+				'label'        => 'Citations',
+				'title'        => 'Citations to integral or companion resources',
+				'draftHeading' => 'Add citations',
+				'draftTagline' => 'Cite integral or companion resources',
+				'about'        => '',
+				'adminTips'    => '',
+				'elements'     => array(),
+				'params'       => array('required' => 0, 'published_editing' => 1)
 			);
 
 			return json_decode(json_encode($manifest), FALSE);

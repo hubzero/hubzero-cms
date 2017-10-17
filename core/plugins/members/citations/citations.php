@@ -34,17 +34,12 @@
 defined('_HZEXEC_') or die();
 
 // Include needed libs
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'citation.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'author.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tag.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tagobject.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'importer.php');
+$base = Component::path('com_citations');
+require_once $base . DS . 'helpers' . DS . 'format.php';
+require_once $base . DS . 'models' . DS . 'citation.php';
+require_once $base . DS . 'models' . DS . 'tag.php';
+require_once $base . DS . 'models' . DS . 'tagobject.php';
+require_once $base . DS . 'models' . DS . 'importer.php';
 
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
@@ -141,8 +136,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			if (in_array($this->action, array('import', 'upload', 'review', 'process', 'saved')))
 			{
-				include_once(Component::path('com_citations') . DS . 'models' . DS . 'importer.php');
-
 				$this->importer = new \Components\Citations\Models\Importer(
 					App::get('db'),
 					App::get('filesystem'),
@@ -1403,8 +1396,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->openurl['icon'] = '';
 
 		//take care fo type
-		$ct = new \Components\Citations\Tables\Type($this->database);
-		$view->types = $ct->getType();
+		$view->types = \Components\Citations\Models\Type::all()->rows();
 
 		$view->messages = Notify::messages('plg_members_citations');
 

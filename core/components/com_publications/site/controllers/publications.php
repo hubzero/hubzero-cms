@@ -1594,19 +1594,18 @@ class Publications extends SiteController
 		}
 
 		// Copy citations
-		include_once Component::path('com_citations')  . '/tables/association.php';
+		include_once Component::path('com_citations')  . '/models/association.php';
 
-		$c = new \Components\Citations\Tables\Association($this->database);
-		$citations = $c->getRecords(array(
-			'tbl' => 'publication',
-			'oid' => $pub_id
-		));
+		$citations = new \Components\Citations\Models\Association::all()
+			->whereEquals('tbl', 'publication')
+			->whereEquals('oid', $pub_id)
+			->rows();
 		foreach ($citations as $citation)
 		{
-			$ca = new \Components\Citations\Tables\Association($this->database);
-			$ca->cid = $citation->cid;
-			$ca->tbl = $citation->tbl;
-			$ca->oid = $pub_id;
+			$ca = \Components\Citations\Models\Association::blank();
+			$ca->set('cid', $citation->cid);
+			$ca->set('tbl', $citation->tbl);
+			$ca->set('oid', $pub_id);
 
 			if (!$ca->save())
 			{

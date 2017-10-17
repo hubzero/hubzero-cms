@@ -102,10 +102,6 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get a needed library
-		include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-		include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-		include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
-		include_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
 		include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 		// Get citations for this publication

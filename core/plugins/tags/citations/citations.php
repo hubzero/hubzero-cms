@@ -41,7 +41,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -86,7 +86,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 
 		$e_fields = "SELECT e.id, e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal, e.url as href,
 					'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
-		$e_from  = " FROM #__citations AS e, #__tags_object AS t"; //", #__users AS u";
+		$e_from  = " FROM `#__citations` AS e, `#__tags_object` AS t"; //", #__users AS u";
 		$e_where = " WHERE t.objectid=e.id AND t.tbl='citations' AND t.tagid IN ($ids)"; //e.uid=u.id AND
 
 		$e_where .= " AND e.published=1 AND e.id!='' ";
@@ -137,12 +137,9 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 			return $types;
 		}
 
-		require_once \Component::path('com_citations') . DS . 'tables' . DS . 'type.php';
+		require_once \Component::path('com_citations') . DS . 'models' . DS . 'type.php';
 
-		$database = App::get('db');
-
-		$ct = new \Components\Citations\Tables\Type($database);
-		$types = $ct->getType();
+		$types = \Components\Citations\Models\Type::all()->rows();
 
 		return $types;
 	}
@@ -170,13 +167,12 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		$row->pages     = isset($row->data2)  ? $row->data2  : '';
 		$row->publisher = isset($row->data3)  ? $row->data3  : '';
 
-		require_once \Component::path('com_citations') . DS . 'tables' . DS . 'type.php';
-		require_once \Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-		require_once \Component::path('com_citations') . DS . 'tables' . DS . 'format.php';
+		require_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 		require_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+
 		$config = \Component::params('com_citations');
 
-		switch ($config->get("citation_label", "number"))
+		switch ($config->get('citation_label', 'number'))
 		{
 			case 'none':
 				$citations_label_class = 'no-label';
@@ -192,12 +188,10 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 				break;
 		}
 
-		$database = \App::get('db');
-		$citationsFormat = new \Components\Citations\Tables\Format($database);
-		$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
+		$template = \Components\Citations\Models\Format::getDefault();
 
 		$formatter = new \Components\Citations\Helpers\Format();
-		$formatter->setTemplate( $template );
+		$formatter->setTemplate($template);
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="citation-entry">' . "\n";
@@ -234,10 +228,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		}
 		$html .= '</p>';
 
-		require_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-		$db = \App::get('db');
-		$cc = new \Components\Citations\Tables\Citation($db);
-		$cc->load($row->id);
+		$cc = \Components\Citations\Models\Citation::oneOrNew($row->id);
 
 		$html .= '<p>' . $formatter->formatCitation($cc, null, $config->get("citation_coins", 1), $config) . '</p>';
 		$html .= "\t" . '</li>'."\n";
