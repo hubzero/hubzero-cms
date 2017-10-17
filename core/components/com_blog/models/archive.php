@@ -175,21 +175,23 @@ class Archive extends Object
 		else
 		{
 			$results->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
-						->orWhere('publish_up', '<=', Date::toSql(), 1);
+						->orWhere('publish_up', '<=', Date::toSql(), 1)
+						->resetDepth();
 		}
 
-		$results->resetDepth();
 		if (!isset($filters['authorized']) || !$filters['authorized'])
 		{
 			$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
-						->orWhere('publish_down', '>=', Date::toSql(), 1);
+						->orWhere('publish_down', '>=', Date::toSql(), 1)
+						->resetDepth();
 		}
 
 		if (isset($filters['search']) && $filters['search'])
 		{
 			$filters['search'] = '%' . strtolower(stripslashes($filters['search'])) . '%';
-			$results->where('title', 'LIKE', $filters['search'])
-				->orWhere('content', 'LIKE', $filters['search']);
+			$results->whereLike('title', $filters['search'], 1)
+				->orWhereLike('content', $filters['search'], 1)
+				->resetDepth();
 		}
 
 		if (isset($filters['limit']) && $filters['limit'])
