@@ -42,31 +42,31 @@ include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.p
 class Citations extends Base
 {
 	/**
-	* Block name
-	*
-	* @var  string
-	*/
+	 * Block name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'citations';
 
 	/**
-	* Parent block name
-	*
-	* @var  string
-	*/
+	 * Parent block name
+	 *
+	 * @var  string
+	 */
 	protected $_parentname = null;
 
 	/**
-	* Default manifest
-	*
-	* @var  string
-	*/
+	 * Default manifest
+	 *
+	 * @var  string
+	 */
 	protected $_manifest = null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var  integer
-	*/
+	 * Numeric block ID
+	 *
+	 * @var  integer
+	 */
 	protected $_blockId = 0;
 
 	/**
@@ -151,8 +151,8 @@ class Citations extends Base
 
 		// Get selector styles
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','selector');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
 		if (!isset($pub->_citations))
 		{
@@ -470,7 +470,7 @@ class Citations extends Base
 				'params'       => array('required' => 0, 'published_editing' => 1)
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;
