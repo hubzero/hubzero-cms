@@ -32,7 +32,7 @@
 
 namespace Components\Citations\Admin\Controllers;
 
-require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'citation.php';
 
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Association;

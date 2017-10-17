@@ -38,12 +38,12 @@ use Hubzero\Database\Rows;
 use Hubzero\Utility\Str;
 use Components\Tags\Models\Tag;
 
-require_once __DIR__ . DS . 'link.php';
+require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'author.php';
+require_once __DIR__ . DS . 'format.php';
+require_once __DIR__ . DS . 'link.php';
 require_once __DIR__ . DS . 'sponsor.php';
 require_once __DIR__ . DS . 'type.php';
-require_once __DIR__ . DS . 'format.php';
-require_once __DIR__ . DS . 'association.php';
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'tag.php';
 require_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 require_once \Component::path('com_publications') . DS . 'models' . DS . 'orm' . DS . 'publication.php';

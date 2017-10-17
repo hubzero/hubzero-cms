@@ -32,10 +32,9 @@
 
 namespace Components\Citations\Site\Controllers;
 
-use Components\Citations\Models\Citation;
-use Components\Citations\Tables\Tags;
 use Components\Citations\Helpers\Download;
 use Components\Citations\Helpers\Format;
+use Components\Citations\Models\Citation;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format as FormatModel;
 use Components\Citations\Models\Author;
@@ -45,8 +44,8 @@ use Hubzero\Utility\Sanitize;
 use Filesystem;
 use Exception;
 use Document;
-use Date;
 use Notify;
+use Date;
 use Lang;
 use App;
 
@@ -125,7 +124,14 @@ class Citations extends SiteController
 		$this->view->config   = $this->config;
 		$this->view->isAdmin  = false;
 
-		$earliest_year = Citation::all()->where('year', '!=', '')->where('year', 'IS NOT', null)->where('year', '!=', 0)->order('year', 'asc')->limit(1)->row()->year;
+		$earliest_year = Citation::all()
+			->where('year', '!=', '')
+			->where('year', 'IS NOT', null)
+			->where('year', '!=', 0)
+			->order('year', 'asc')
+			->limit(1)
+			->row()
+			->get('year');
 		$earliest_year = !empty($earliest_year) ? $earliest_year : 1970;
 
 		// Incoming
@@ -140,7 +146,7 @@ class Citations extends SiteController
 			'author'          => Request::getVar('author', ''),
 			'publishedin'     => Request::getVar('publishedin', ''),
 			'year_start'      => Request::getInt('year_start', $earliest_year),
-			'year_end'        => Request::getInt('year_end', date("Y")),
+			'year_end'        => Request::getInt('year_end', gmdate("Y")),
 			'filter'          => Request::getVar('filter', ''),
 			'sort'            => Request::getVar('sort', 'created DESC'),
 			'reftype'         => Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
@@ -148,7 +154,7 @@ class Citations extends SiteController
 			'aff'             => Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
 			'startuploaddate' => Request::getVar('startuploaddate', '0000-00-00'),
 			'enduploaddate'   => Request::getVar('enduploaddate', '0000-00-00'),
-			'scope'			  => 'hub'
+			'scope'           => 'hub'
 		);
 
 		if (User::authorise('core.manage', $this->_option))
@@ -631,7 +637,6 @@ class Citations extends SiteController
 			$this->view->badges = Format::citationBadges($this->view->row, false);
 		}
 
-
 		// Output HTML
 		foreach ($this->getErrors() as $error)
 		{
@@ -808,10 +813,10 @@ class Citations extends SiteController
 				}
 			}
 		}
+
 		App::redirect(
 			Route::url('index.php?option=com_citations&task=browse')
 		);
-
 	}
 
 	/**
@@ -1129,6 +1134,12 @@ class Citations extends SiteController
 		Document::setTitle($this->_title);
 	}
 
+	/**
+	 * Method to display notification messages
+	 *
+	 * @param   string  $domain
+	 * @return  void
+	 */
 	private function _displayMessages($domain = 'com.citations')
 	{
 		foreach (Notify::messages($domain) as $message)

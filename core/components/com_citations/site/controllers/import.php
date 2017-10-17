@@ -34,7 +34,6 @@ namespace Components\Citations\Site\Controllers;
 
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Format;
-use Components\Citations\Tables\Tags;
 use Components\Citations\Models\Importer;
 use Hubzero\Component\SiteController;
 use Exception;

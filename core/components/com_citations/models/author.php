@@ -63,42 +63,44 @@ class Author extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'    => 'notempty',
-		//'liaison' => 'notempty'
-	);
-
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var array
-	 **/
-	public $always = array(
-		//'name_normalized',
-		//'asset_id'
+		'author' => 'notempty',
+		'cid'    => 'positive|nonzero'
 	);
 
 	/**
 	 * Defines the inverse relationship between a record and a task
 	 *
 	 * @return \Hubzero\Database\Relationship\belongsToOne
-	 * @author
 	 **/
 	public function citation()
 	{
 		return $this->belongsToOne('Citation', 'cid', 'id');
 	}
 
+	/**
+	 * Filter by author
+	 *
+	 * @param   string  $authorString
+	 * @return  object
+	 **/
 	public function filterByAuthor($authorString)
 	{
 		if (!empty($authorString))
 		{
 			$this->orWhereLike('author', $authorString, 1)
-				   ->orWhereLike('givenName', $authorString, 1)
-				   ->orWhereLike('surname', $authorString, 1);
+				->orWhereLike('givenName', $authorString, 1)
+				->orWhereLike('surname', $authorString, 1);
 		}
 		return $this;
 	}
 
+	/**
+	 * Filter by geolocation
+	 *
+	 * @param   array    $geoCodes
+	 * @param   integer  $totalOptions
+	 * @return  object
+	 **/
 	public function filterByGeo($geoCodes, $totalOptions = 4)
 	{
 		$geoFields = array_filter($geoCodes, function($geo){
@@ -130,6 +132,13 @@ class Author extends Relational
 		return $this;
 	}
 
+	/**
+	 * Filter by affiliation
+	 *
+	 * @param   array    $types
+	 * @param   integer  $totalOptions
+	 * @return  object
+	 **/
 	public function filterByAff($types, $totalOptions = 3)
 	{
 		$types = array_filter($types, function($org){

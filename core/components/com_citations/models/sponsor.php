@@ -25,10 +25,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author	Patrick Mulligan <jpmulligan@purdue.edu>
+ * @author    Patrick Mulligan <jpmulligan@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since	 Class available since release 1.3.2
+ * @since     Class available since release 1.3.2
  */
 
 namespace Components\Citations\Models;
@@ -38,7 +38,7 @@ require_once __DIR__ . DS . 'citation.php';
 use Hubzero\Database\Relational;
 
 /**
- * Hubs database model
+ * Citation sponsor model
  *
  * @uses \Hubzero\Database\Relational
  */
@@ -47,28 +47,31 @@ class Sponsor extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = 'citations';
-	// table name jos_citations
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'sponsor';
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $rules = array(
-		//'name'    => 'notempty',
-		//'liaison' => 'notempty'
+		'name' => 'sponsor'
 	);
 
+	/**
+	 * Establish relationship to citations
+	 *
+	 * @return  object
+	 **/
 	public function citations()
 	{
 		return $this->manyToMany('Citation', '#__citations_sponsors_assoc', 'sid', 'cid');

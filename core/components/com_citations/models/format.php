@@ -37,7 +37,7 @@ use Hubzero\Database\Relational;
 use Component;
 
 /**
- * Hubs database model
+ * Citation format model
  *
  * @uses \Hubzero\Database\Relational
  */
@@ -46,21 +46,21 @@ class Format extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = 'citations';
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'name';
 
 	/**
 	 * Table name
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $table = '#__citations_format';
 
@@ -70,18 +70,7 @@ class Format extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'    => 'notempty',
-		//'liaison' => 'notempty'
-	);
-
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var array
-	 **/
-	public $always = array(
-		//'name_normalized',
-		//'asset_id'
+		'style' => 'notempty'
 	);
 
 	/**

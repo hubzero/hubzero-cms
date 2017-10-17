@@ -86,10 +86,10 @@ else
 <section id="import" class="section">
 	<div class="section-inner">
 		<?php
-			foreach ($this->messages as $message)
-			{
-				echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
-			}
+		foreach ($this->messages as $message)
+		{
+			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+		}
 		?>
 
 		<ul id="steps">
@@ -112,10 +112,10 @@ else
 
 		<?php if (count($this->citations) > 0) : ?>
 			<?php
-				$formatter = new \Components\Citations\Helpers\Format();
-				$formatter->setTemplate($template);
+			$formatter = new \Components\Citations\Helpers\Format();
+			$formatter->setTemplate($template);
 
-				$counter = 1;
+			$counter = 1;
 			?>
 
 			<h3><?php echo Lang::txt('COM_CITATIONS_IMPORT_SUCCESS'); ?></h3>
@@ -146,15 +146,18 @@ else
 								</td>
 							<?php endif; ?>
 							<td class="citation-container">
-								<?php $formatted = $cite->formatted(array('format'=>$this->defaultFormat));
-										if ($cite->doi)
-										{
-											$formatted = str_replace('doi:' . $cite->doi,
-												'<a href="' . $cite->url . '" rel="external">'
-												. 'doi:' . $cite->doi . '</a>', $formatted);
-										}
+								<?php
+								$formatted = $cite->formatted(array('format'=>$this->defaultFormat));
+								if ($cite->doi)
+								{
+									$formatted = str_replace(
+										'doi:' . $cite->doi,
+										'<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>',
+										$formatted
+									);
+								}
 
-										echo $formatted; 
+								echo $formatted;
 								?>
 
 								<?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
@@ -164,13 +167,13 @@ else
 								<?php endif; ?>
 
 								<div class="citation-details">
- 									<?php
-                                            $singleCitationView = $this->config->get('citation_single_view', 0);
-                                            if (!$singleCitationView)
-                                            {
-                                                echo $cite->citationDetails($this->openurl);
-                                            }
-                                    ?>
+									<?php
+									$singleCitationView = $this->config->get('citation_single_view', 0);
+									if (!$singleCitationView)
+									{
+										echo $cite->citationDetails($this->openurl);
+									}
+									?>
 
 									<?php if ($this->config->get('citation_show_badges', 'no') == 'yes') : ?>
 										<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>

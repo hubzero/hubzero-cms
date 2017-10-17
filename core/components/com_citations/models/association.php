@@ -25,10 +25,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author	Patrick Mulligan <jpmulligan@purdue.edu>
+ * @author    Patrick Mulligan <jpmulligan@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since	 Class available since release 1.3.2
+ * @since     Class available since release 1.3.2
  */
 
 namespace Components\Citations\Models;
@@ -36,12 +36,25 @@ namespace Components\Citations\Models;
 use Hubzero\Database\Relational;
 
 /**
- * Hubs database model
+ * Citation association model
  *
  * @uses \Hubzero\Database\Relational
  */
 class Association extends Relational
 {
+	/**
+	 * The table namespace
+	 *
+	 * @var string
+	 **/
+	protected $namespace = 'citations';
+
+	/**
+	 * The table name, non-standard naming 
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__citations_assoc';
 
 	/**
 	 * Default order by for model
@@ -50,9 +63,11 @@ class Association extends Relational
 	 **/
 	public $orderBy = 'id';
 
-
-	protected $table = '#__citations_assoc';
-
+	/**
+	 * Establish relationship to citation
+	 *
+	 * @return  object
+	 **/
 	public function citation()
 	{
 		return $this->belongsToOne('Citation', 'cid');

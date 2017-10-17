@@ -33,20 +33,12 @@
 namespace Components\Citations\Api\Controllers;
 
 use Hubzero\Component\ApiController;
+use Components\Citations\Models\Citation;
 use stdClass;
 use Request;
 use Route;
 
-$base = dirname(dirname(__DIR__)) . DS . 'tables' . DS;
-
-require_once($base . 'citation.php');
-require_once($base . 'association.php');
-require_once($base . 'author.php');
-require_once($base . 'secondary.php');
-require_once($base . 'tags.php');
-require_once($base . 'type.php');
-require_once($base . 'sponsor.php');
-require_once($base . 'format.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'citation.php';
 
 /**
  * API controller class for Citations
@@ -99,8 +91,6 @@ class Entriesv1_1 extends ApiController
 	 */
 	public function listTask()
 	{
-		$database = \App::get('db');
-
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
@@ -111,10 +101,15 @@ class Entriesv1_1 extends ApiController
 		);
 
 		//get the earliest year we have citations for
-		$query = "SELECT c.year FROM `#__citations` as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
-		$database->setQuery($query);
-		$earliest_year = $database->loadResult();
-		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
+		$earliest_year = Citation::all()
+			->where('year', '!=', '')
+			->where('year', 'IS NOT', null)
+			->where('year', '!=', 0)
+			->order('year', 'asc')
+			->limit(1)
+			->row()
+			->get('year');
+		$earliest_year = !empty($earliest_year) ? $earliest_year : 1990;
 
 		$filters['id']              = Request::getInt('id', 0);
 		$filters['tag']             = Request::getVar('tag', '', 'request', 'none', 2);
@@ -129,8 +124,7 @@ class Entriesv1_1 extends ApiController
 		$filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
 		$filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
 		$filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
-		$filters['scope']						= Request::getVar('scope', 'all');
-		$filters['scope_id']				= Request::getInt('scope_id', 0);
+		$filters['scope']           = 'all';
 
 		$filters['sort'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
@@ -139,6 +133,7 @@ class Entriesv1_1 extends ApiController
 			$filters['collection_id'] = $collection;
 		}
 
+		$admin = false;
 		if (User::authorise('core.admin', 'com_citations'))
 		{
 			$admin = true;
@@ -148,25 +143,28 @@ class Entriesv1_1 extends ApiController
 		$response = new stdClass;
 		$response->citations = array();
 
-		// Instantiate a new citations object
-		$obj = new \Components\Citations\Tables\Citation($database);
+		$query = Citation::getFilteredRecords($filters);
+		$total = clone $query;
 
 		// Get a record count
-		$response->total = $obj->getCount($filters);
+		$response->total = $total->total();
 
 		// Get records
 		if ($response->total)
 		{
+			$query->limit($filters['limit'])
+				->start($filters['start']);
+
 			$href = 'index.php?option=com_citations&task=view&id=';
 			$base = str_replace('/api', '', rtrim(Request::base(), '/'));
 
-			foreach ($obj->getRecords($filters) as $i => $entry)
+			foreach ($query->rows() as $entry)
 			{
-				$entry->uri = $base . '/' . ltrim(Route::url($href . $entry->id), '/');
+				$entry->set('uri', $base . '/' . ltrim(Route::url($href . $entry->id), '/'));
 
 				if (!isset($searchable) && $admin == false)
 				{
-					$response->citations[] = $entry;
+					$response->citations[] = array_filter($entry->getAttributes());
 				}
 				elseif (isset($searchable) && $admin == true)
 				{

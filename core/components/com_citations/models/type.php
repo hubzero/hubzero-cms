@@ -25,10 +25,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author	Kevin Wojkovich <kevinw@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
- * @since	 Class available since release 1.3.2
+ * @since     Class available since release 1.3.2
  */
 
 namespace Components\Citations\Models;
@@ -62,20 +62,38 @@ class Type extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'    => 'notempty',
-		//'liaison' => 'notempty'
+		'type_title' => 'notempty'
 	);
 
 	/**
 	 * Automatically fillable fields
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	public $always = array(
-		//'name_normalized',
-		//'asset_id'
+		'type'
 	);
 
+	/**
+	 * Generates automatic type field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticType($data)
+	{
+		$alias = (isset($data['type']) && $data['type'] ? $data['type'] : $data['type_title']);
+		$alias = strip_tags($alias);
+		$alias = trim($alias);
+		if (strlen($alias) > 250)
+		{
+			$alias = substr($alias . ' ', 0, 250);
+			$alias = substr($alias, 0, strrpos($alias, ' '));
+		}
+		$alias = str_replace(' ', '_', $alias);
+
+		return preg_replace("/[^a-zA-Z0-9_]/", '', strtolower($alias));
+	}
 
 	/**
 	 * Defines a one to Many relationship with citation

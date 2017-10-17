@@ -38,17 +38,7 @@ use stdClass;
 use Request;
 use Route;
 
-$base = dirname(dirname(__DIR__)) . DS . 'tables' . DS;
-
-require_once($base . 'citation.php');
-require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-require_once($base . 'association.php');
-require_once($base . 'author.php');
-require_once($base . 'secondary.php');
-require_once($base . 'tags.php');
-require_once($base . 'type.php');
-require_once($base . 'sponsor.php');
-require_once($base . 'format.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'citation.php';
 
 /**
  * API controller class for Citations
@@ -101,7 +91,6 @@ class Entriesv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
@@ -112,7 +101,14 @@ class Entriesv1_0 extends ApiController
 		);
 
 		//get the earliest year we have citations for
-		$earliest_year = Citation::all()->where('year', '!=', '')->where('year', 'IS NOT', null)->where('year', '!=', 0)->order('year', 'asc')->limit(1)->row()->year;
+		$earliest_year = Citation::all()
+			->where('year', '!=', '')
+			->where('year', 'IS NOT', null)
+			->where('year', '!=', 0)
+			->order('year', 'asc')
+			->limit(1)
+			->row()
+			->get('year');
 		$earliest_year = !empty($earliest_year) ? $earliest_year : 1990;
 
 		$filters['id']              = Request::getInt('id', 0);
@@ -128,7 +124,7 @@ class Entriesv1_0 extends ApiController
 		$filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
 		$filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
 		$filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
-		$filters['scope']   = 'all';
+		$filters['scope']           = 'all';
 
 		$filters['sort'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
@@ -140,17 +136,22 @@ class Entriesv1_0 extends ApiController
 		$response = new stdClass;
 		$response->citations = array();
 
+		$query = Citation::getFilteredRecords($filters);
+		$total = clone $query;
 
 		// Get a record count
-		$response->total = Citation::getFilteredRecords($filters)->count();
+		$response->total = $total->total();
 
 		// Get records
 		if ($response->total)
 		{
+			$query->limit($filters['limit'])
+				->start($filters['start']);
+
 			$href = 'index.php?option=com_citations&task=view&id=';
 			$base = str_replace('/api', '', rtrim(Request::base(), '/'));
 
-			foreach (Citation::getFilteredRecords($filters)->rows() as $entry)
+			foreach ($query->rows() as $entry)
 			{
 				$entry->set('uri', $base . '/' . ltrim(Route::url($href . $entry->id), '/'));
 

@@ -36,7 +36,9 @@ use Components\Citations\Models\Citation;
 use Components\Citations\Models\Author;
 use Hubzero\Component\SiteController;
 use Exception;
+use Request;
 use User;
+use Lang;
 
 /**
  * Manage a citation's author entries
@@ -118,8 +120,10 @@ class Authors extends SiteController
 				{
 					$surname = array_pop($parts);
 					$user->set('surname', $surname);
+
 					$givenName = array_shift($parts);
 					$user->set('givenName', $givenName);
+
 					if (!empty($parts))
 					{
 						$user->get('middleName', implode(' ', $parts));
@@ -145,7 +149,6 @@ class Authors extends SiteController
 				continue;
 			}
 		}
-
 
 		// Push through to the view
 		$this->displayTask();
@@ -223,17 +226,12 @@ class Authors extends SiteController
 	 */
 	public function displayTask()
 	{
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->set('row', $this->citation)
+			->setErrors($this->getErrors())
 			->setLayout('display');
 		echo $this->view->loadTemplate('authors');
 		exit();
 	}
-
 }
