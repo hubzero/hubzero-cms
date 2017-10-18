@@ -85,11 +85,6 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</field>
-		<field name="launch_ipad" type="list" default="0" label="Launch on iPad" description="Launch tool sessions on iPad?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
-		<field name="launch_ipad_app" type="text" default="" label="iPad app name" description="iPad app name" />
 	</fieldset>
 	<fieldset name="tool">
 		<field name="default_mw" type="text" menu="hide" default="narwhal" label="Default Middleware" description="Name of default middleware" />
