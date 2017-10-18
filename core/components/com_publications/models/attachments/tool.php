@@ -275,23 +275,12 @@ class Tool extends Base
 			return false;
 		}
 
-		//are we on the iPad
-		$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-
 		//get tool params
 		$params = Component::params('com_tools');
-		$launchOnIpad = $params->get('launch_ipad', 0);
 
 		// Generate the URL that launches a tool session
 		$v = $record->object_revision ? $record->object_revision : 'dev';
-		if ($isiPad && $launchOnIpad)
-		{
-			$path = 'nanohub://tools/invoke/' . $record->object_name . '/' . $v;
-		}
-		else
-		{
-			$path = Route::url('index.php?option=com_tools&app=' . $record->object_name . '&task=invoke&version=' . $v);
-		}
+		$path = Route::url('index.php?option=com_tools&app=' . $record->object_name . '&task=invoke&version=' . $v);
 
 		if (!$path)
 		{
