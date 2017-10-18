@@ -143,7 +143,10 @@ if (!$this->app->sess) {
 							</label>
 							<select name="viewer" id="app-viewer">
 								<?php foreach ($plugins as $plugin) {
-									if ($viewer == $plugin->name) continue;
+									if ($viewer == $plugin->name)
+									{
+										continue;
+									}
 								?>
 									<option value="<?php echo $plugin->name; ?>"<?php if ($viewer == $plugin->name) { echo ' selected="selected"'; } ?>><?php echo $plugin->title; ?></option>
 								<?php } ?>
@@ -189,7 +192,7 @@ if (!$this->app->sess) {
 				$this->view('diskusage', 'storage')
 				     ->set('option', $this->option)
 				     ->set('amt', $this->app->percent)
-				     ->set('du', NULL)
+				     ->set('du', null)
 				     ->set('percent', 0)
 				     ->set('msgs', 0)
 				     ->set('ajax', 0)
