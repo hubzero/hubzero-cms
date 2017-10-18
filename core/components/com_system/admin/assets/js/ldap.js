@@ -10,7 +10,10 @@ if (!jq) {
 }
 
 jQuery(document).ready(function(jq){
-	var $ = jq;
+	var $ = jq,
+		_DEBUG = false;
+
+	_DEBUG = document.getElementById('system-debug') ? true : false;
 
 	var BatchRecords = new function() {
 		this.timer     = null;
@@ -44,6 +47,10 @@ jQuery(document).ready(function(jq){
 		this.process = function(url) {
 			var self = this;
 
+			if (_DEBUG) {
+				window.console && console.log('calling: ' + url + self.start);
+			}
+
 			// start processing
 			$.ajax({
 				type: 'get',
@@ -61,6 +68,10 @@ jQuery(document).ready(function(jq){
 				},
 				success: function(data) {
 					var percent = 0;
+
+					if (_DEBUG) {
+						window.console && console.log(data);
+					}
 
 					if (data && typeof data.processed !== 'undefined') {
 						self.processed += parseInt(data.processed);
@@ -102,12 +113,18 @@ jQuery(document).ready(function(jq){
 		};
 
 		this.setProgress = function(newValue) {
+			if (_DEBUG) {
+				window.console && console.log('setting progress: ' + Math.round(newValue));
+			}
 			$('.progress').progressbar("value", newValue);
 			$('.progress-percentage').html(Math.round(newValue) + '%');
 		};
 
 		this.stopImportProgressChecker = function() {
 			clearTimeout(this.checker);
+			if (_DEBUG) {
+				window.console && console.log('stopped progress');
+			}
 		};
 	};
 
