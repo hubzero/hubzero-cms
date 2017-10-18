@@ -1209,8 +1209,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope'    => $this->forum->get('scope'),
 			'scope_id' => $this->forum->get('scope_id'),
 			'state'    => Post::STATE_PUBLISHED,
-			'access'   => User::getAuthorisedViewLevels()
+			'access'   => array(1)
 		);
+		if (!User::isGuest())
+		{
+			$filters['access'][] = 2; // Registered
+			$filters['access'][] = 4; // Protected
+		}
+		if (in_array(User::get('id'), $this->members))
+		{
+			$filters['access'][] = 5; // Private
+		}
 
 		// Section
 		$section = Section::all()
