@@ -99,10 +99,16 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, publish_up';  break;
-			case 'id':    $order_by .= "id DESC";                break;
+			case 'title':
+				$order_by .= 'title ASC, publish_up';
+				break;
+			case 'id':
+				$order_by .= "id DESC";
+				break;
 			case 'date':
-			default:      $order_by .= 'publish_up DESC, title'; break;
+			default:
+				$order_by .= 'publish_up DESC, title';
+				break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
