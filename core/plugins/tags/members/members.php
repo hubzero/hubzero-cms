@@ -80,19 +80,22 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 		$ids = implode(',', $ids);
 
 		// Build the query
-		$f_count = "SELECT COUNT(f.uidNumber) FROM (SELECT a.uidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
+		$f_count = "SELECT COUNT(f.id) FROM (SELECT a.id, COUNT(DISTINCT t.tagid) AS uniques ";
 
-		$f_fields = "SELECT a.uidNumber AS id, a.name AS title, a.username as alias, NULL AS itext, b.bio AS ftext, a.emailConfirmed AS state, a.registerDate AS created,
-					a.uidNumber AS created_by, NULL AS modified, a.registerDate AS publish_up, a.picture AS publish_down,
-					CONCAT('index.php?option=com_members&id=', a.uidNumber) AS href, 'members' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.params, NULL AS rcount,
+		$f_fields = "SELECT a.id, a.name AS title, a.username as alias, NULL AS itext, b.profile_value AS ftext, a.activation AS state, a.registerDate AS created,
+					a.id AS created_by, NULL AS modified, a.registerDate AS publish_up, NULL AS publish_down,
+					CONCAT('index.php?option=com_members&id=', a.id) AS href, 'members' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.params, NULL AS rcount,
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 
-		$f_from = " FROM #__xprofiles AS a LEFT JOIN #__xprofiles_bio AS b ON a.uidNumber=b.uidNumber, #__tags_object AS t
-					WHERE a.public=1
-					AND a.uidNumber=t.objectid
+		$f_from = " FROM #__users AS a
+					LEFT JOIN #__user_profiles AS b ON a.id=b.user_id AND b.profile_key='bio', #__tags_object AS t
+					WHERE a.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")
+					AND a.block=0
+					AND a.activation > 0
+					AND a.id=t.objectid
 					AND t.tbl='xprofiles'
 					AND t.tagid IN ($ids)";
-		$f_from .= " GROUP BY a.uidNumber HAVING uniques=".count($tags);
+		$f_from .= " GROUP BY a.id HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
