@@ -114,7 +114,9 @@ class Html
 					@list($property, $value) = explode(':', $declaration);
 					$property = strtolower(trim($property));
 
-					if (!$property) continue;
+					if (!$property) {
+						continue;
+					}
 
 					if (!in_array($property, $disallowed))
 					{
