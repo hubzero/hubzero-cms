@@ -77,11 +77,17 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 					switch ($video->type)
 					{
 						case 'ogg':
-						case 'ogv':     $type = "video/ogg;";    break;
-						case 'webm':    $type = "video/webm;";   break;
+						case 'ogv':
+							$type = "video/ogg;";
+							break;
+						case 'webm':
+							$type = "video/webm;";
+							break;
 						case 'mp4':
 						case 'm4v':
-						default:        $type = "video/mp4;";    break;
+						default:
+							$type = "video/mp4;";
+							break;
 					}
 
 					//video source
@@ -119,14 +125,14 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 						$auto   = $subtitle->autoplay;
 
 						//if were playing local files
+						$modified = '123456789';
 						if (substr($subtitle->source, 0, 4) != 'http')
 						{
 							$source   = $base . $source;
-							$modified = filemtime( PATH_CORE . $source );
-						}
-						else
-						{
-							$modified = '123456789';
+							if (file_exists(PATH_CORE . $source))
+							{
+								$modified = filemtime(PATH_CORE . $source);
+							}
 						}
 					?>
 					<div
