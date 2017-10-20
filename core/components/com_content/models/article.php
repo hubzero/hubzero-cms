@@ -41,10 +41,11 @@ use User;
 use Date;
 use Hubzero\Form\Form;
 
+require_once __DIR__ . '/featured.php';
 require_once Component::path('com_categories') . '/models/category.php';
 
 /**
- * Model class for a blog entry
+ * Model class for an article
  */
 class Article extends Relational
 {
@@ -163,6 +164,26 @@ class Article extends Relational
 			return parent::automaticAssetId();
 		}
 		return $this->get('asset_id');
+	}
+
+	/**
+	 * Establish relationship to featured
+	 *
+	 * @return  object
+	 */
+	public function featured()
+	{
+		return $this->oneToOne(__NAMESPACE__ . '\\Featured', 'content_id');
+	}
+
+	/**
+	 * Is this a featured article?
+	 *
+	 * @return  bool
+	 */
+	public function isFeatured()
+	{
+		return ($this->featured()->row()->get('content_id', 0) > 0);
 	}
 
 	/**
