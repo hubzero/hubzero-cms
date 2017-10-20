@@ -87,7 +87,7 @@ class Polls extends AdminController
 			'order'  => Request::getState(
 				$this->_option . '.' . $this->_controller . '.filter_order',
 				'filter_order',
-				'm.id',
+				'id',
 				'cmd'
 			),
 			'order_Dir' => Request::getState(
