@@ -220,4 +220,3 @@ class Helper extends Module
 		return $this->getImage($path);
 	}
 }
-

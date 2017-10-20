@@ -49,7 +49,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   string   $extension  The extension for which a language file should be loaded
 	 * @param   string   $basePath   The basepath to use
-	 * @return  boolean  True, if the file has successfully loaded.
+	 * @return  boolean  true, if the file has successfully loaded.
 	 */
 	public function loadLanguage($extension = '', $basePath = PATH_APP)
 	{
@@ -253,7 +253,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
-	public static function getResourcesCount($gid=NULL, $authorized)
+	public static function getResourcesCount($gid=null, $authorized)
 	{
 		if (!$gid)
 		{
@@ -274,7 +274,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param   string   $authorized  Authorization level
 	 * @return  integer
 	 */
-	public static function getWikipageCount($gid=NULL, $authorized)
+	public static function getWikipageCount($gid=null, $authorized)
 	{
 		if (!$gid)
 		{
@@ -293,7 +293,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param   string   $authorized  Authorization level
 	 * @return  integer
 	 */
-	public static function getWikifileCount($gid=NULL, $authorized)
+	public static function getWikifileCount($gid=null, $authorized)
 	{
 		if (!$gid)
 		{
@@ -326,7 +326,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param      string  $state      State of threads
 	 * @return     integer
 	 */
-	public static function getForumCount($gid=NULL, $authorized, $state='')
+	public static function getForumCount($gid=null, $authorized, $state='')
 	{
 		if (!$gid)
 		{
