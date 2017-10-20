@@ -34,14 +34,21 @@
 namespace Components\Resources\Models\Orm;
 
 use Components\Resources\Helpers\Tags;
+use Components\Resources\Models\License;
+use Components\Resources\Models\Type;
+use Components\Resources\Models\Author;
 use Hubzero\Database\Relational;
+use Hubzero\Config\Registry;
 use Hubzero\Utility\Str;
 use Component;
 use Date;
+use Lang;
+use User;
 
 require_once __DIR__ . DS . 'association.php';
 require_once dirname(__DIR__) . DS . 'type.php';
 require_once dirname(__DIR__) . DS . 'author.php';
+require_once dirname(__DIR__) . DS . 'license.php';
 
 /**
  * Resource model
@@ -84,6 +91,17 @@ class Resource extends Relational
 	);
 
 	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias',
+		'modified',
+		'modified_by'
+	);
+
+	/**
 	 * Path to filespace
 	 *
 	 * @var  string
@@ -91,13 +109,123 @@ class Resource extends Relational
 	protected $filespace = null;
 
 	/**
+	 * Params Registry
+	 *
+	 * @var  object
+	 */
+	protected $paramsRegistry = null;
+
+	/**
+	 * Attribs Registry
+	 *
+	 * @var  object
+	 */
+	protected $attribsRegistry = null;
+
+	/**
+	 * Generates automatic alias field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		if (!isset($data['alias']))
+		{
+			$data['alias'] = '';
+		}
+		$alias = str_replace(' ', '-', $data['alias']);
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+	}
+
+	/**
+	 * Generates automatic created field value
+	 *
+	 * @return  string
+	 */
+	public function automaticModified()
+	{
+		return Date::of('now')->toSql();
+	}
+
+	/**
+	 * Generates automatic created by field value
+	 *
+	 * @return  int
+	 */
+	public function automaticModifiedBy()
+	{
+		return User::get('id');
+	}
+
+	/**
 	 * Get parent type
 	 *
 	 * @return  object
 	 */
-	public function type()
+	public function transformType()
 	{
-		return $this->belongsToOne('\Components\Resources\Models\Type', 'type')->row();
+		//return $this->belongsToOne(__NAMESPACE__ . '\\Type', 'type_id')->row();
+		return Type::oneOrNew($this->get('type'));
+	}
+
+	/**
+	 * Get logical type
+	 *
+	 * @return  object
+	 */
+	public function transformLogicaltype()
+	{
+		//return $this->belongsToOne(__NAMESPACE__ . '\\Type', 'logicaltype_id')->row();
+		return Type::oneOrNew($this->get('logicaltype'));
+	}
+
+	/**
+	 * Get associated license
+	 *
+	 * @return  object
+	 */
+	public function license()
+	{
+		//return $this->oneToOne(__NAMESPACE__ . '\\License', 'license_id');
+		return License::oneByName($this->params->get('license'));
+	}
+
+	/**
+	 * Get owning group
+	 *
+	 * @return  object
+	 */
+	public function transformGroup()
+	{
+		//return $this->belongsToOne('Hubzero\User\Group', 'group_owner');
+		return \Hubzero\User\Group::getInstance($this->get('group_owner'));
+	}
+
+	/**
+	 * Get all the groups allowed to access a resource
+	 *
+	 * @return  array
+	 */
+	public function transformGroups()
+	{
+		$allowedgroups = array();
+
+		if ($group_access = $this->get('group_access'))
+		{
+			$group_access = trim($group_access);
+			$group_access = trim($group_access, ';');
+			$group_access = explode(';', $group_access);
+
+			$allowedgroups += $group_access;
+		}
+
+		if ($this->get('group_owner'))
+		{
+			$allowedgroups[] = $this->get('group_owner');
+		}
+
+		return $allowedgroups;
 	}
 
 	/**
@@ -108,6 +236,39 @@ class Resource extends Relational
 	public function authors()
 	{
 		return $this->oneToMany('\Components\Resources\Models\Author', 'subid')->whereEquals('subtable', 'resources');
+	}
+
+	/**
+	 * Get a list of authors
+	 *
+	 * @return  string
+	 */
+	public function authorsList()
+	{
+		$names = array();
+
+		foreach ($this->authors()->ordered()->rows() as $contributor)
+		{
+			if (strtolower($contributor->get('role')) == 'submitter')
+			{
+				continue;
+			}
+
+			// Build the user's name and link to their profile
+			$name = htmlentities($contributor->name);
+			if ($contributor->get('authorid') > 0)
+			{
+				$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $contributor->get('authorid')) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
+			}
+			if ($contributor->get('role'))
+			{
+				$name .= ' (' . $contributor->get('role') . ')';
+			}
+
+			$names[] = $name;
+		}
+
+		return implode(', ', $names);
 	}
 
 	/**
@@ -212,6 +373,155 @@ class Resource extends Relational
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if the resource was deleted
+	 *
+	 * @return  bool
+	 */
+	public function isDeleted()
+	{
+		return ($this->get('published') == 4);
+	}
+
+	/**
+	 * Check if the resource is published
+	 *
+	 * @return  bool
+	 */
+	public function isPublished()
+	{
+		if ($this->isNew())
+		{
+			return false;
+		}
+
+		// Make sure the resource is published and standalone
+		if (in_array($this->get('published'), array(0, 2, 4, 5)))
+		{
+			return false;
+		}
+
+		if ($this->get('publish_up')
+		 && $this->get('publish_up') != '0000-00-00 00:00:00'
+		 && $this->get('publish_up') >= Date::toSql())
+		{
+			return false;
+		}
+
+		if ($this->get('publish_down')
+		 && $this->get('publish_down') != '0000-00-00 00:00:00'
+		 && $this->get('publish_down') <= Date::toSql())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if the resource is owned by a group
+	 *
+	 * @param   mixed  $group
+	 * @return  bool
+	 */
+	public function inGroup($group=null)
+	{
+		if ($group)
+		{
+			if (!is_array($group))
+			{
+				$group = array($group);
+			}
+
+			if (in_array($this->get('group_owner'), $group))
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if ($this->get('group_owner'))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Transform attribs
+	 *
+	 * @return  object
+	 */
+	public function transformAttribs()
+	{
+		if (!is_object($this->attribsRegistry))
+		{
+			$this->attribsRegistry = new Registry($this->get('attribs'));
+		}
+
+		return $this->attribsRegistry;
+	}
+
+	/**
+	 * Transform params
+	 *
+	 * @return  object
+	 */
+	public function transformParams()
+	{
+		if (!is_object($this->paramsRegistry))
+		{
+			$params = new Registry($this->get('params'));
+
+			$p = Component::params('com_resources');
+			$p->merge($params);
+
+			$this->paramsRegistry = $p;
+		}
+
+		return $this->paramsRegistry;
+	}
+
+	/**
+	 * Transform display date
+	 *
+	 * @return  string
+	 */
+	public function transformDate()
+	{
+		if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00')
+		{
+			$this->set('modified', $this->get('created'));
+		}
+
+		if (!$this->get('publish_up') || $this->get('publish_up') == '0000-00-00 00:00:00')
+		{
+			$this->set('publish_up', $this->get('created'));
+		}
+
+		// Set the display date
+		switch ($this->params->get('show_date'))
+		{
+			case 1:
+				$thedate = Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 2:
+				$thedate = Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 3:
+				$thedate = Date::of($this->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 0:
+			default:
+				$thedate = '';
+				break;
+		}
+
+		return $thedate;
 	}
 
 	/**
@@ -385,5 +695,82 @@ class Resource extends Relational
 			->limit($limit);
 
 		return $rows;
+	}
+
+	/**
+	 * Build a query based on commonly used filters
+	 *
+	 * @param   array  $filters
+	 * @return  object
+	 */
+	public static function allWithFilters($filters = array())
+	{
+		$query = self::all();
+
+		$r = $query->getTableName();
+		$a = Author::blank()->getTableName();
+
+		$query
+			->join($a, $a . '.subid', $r . '.id', 'left')
+			->whereEquals($a . '.subtable', 'resource');
+
+		if (isset($filters['standalone']))
+		{
+			$query->whereEquals($r . '.standalone', $filters['standalone']);
+		}
+
+		if (isset($filters['published']))
+		{
+			$query->whereIn($r . '.published', (array) $filters['published']);
+		}
+
+		if (isset($filters['type']))
+		{
+			$query->whereEquals($r . '.type', $filters['type']);
+		}
+
+		if (isset($filters['search']))
+		{
+			$query->whereLike($r . '.title', $filters['search'], 1)
+				->orWhereLike($r . '.fulltxt', $filters['search'], 1)
+				->resetDepth();
+		}
+
+		if (isset($filters['author']))
+		{
+			$query->whereEquals($r . '.created_by', $filters['author'], 1)
+				->orWhereEquals($a . '.authorid', $filters['author'], 1)
+				->resetDepth();
+
+			if (isset($filters['notauthorrole']))
+			{
+				$query->where($a . '.role', '!=', $filters['notauthorrole']);
+			}
+		}
+
+		if (isset($filters['access']) && !empty($filters['access']))
+		{
+			if (isset($filters['usergroups']) && !empty($filters['usergroups']))
+			{
+				$query->whereIn($r . '.access', (array) $filters['access'], 1)
+					->orWhereIn($r . '.group_owner', (array) $filters['usergroups'], 1)
+					->resetDepth();
+			}
+			else
+			{
+				$query->whereIn($r . '.access', (array) $filters['access']);
+			}
+		}
+
+		if (isset($filters['startdate']) && $filters['startdate'])
+		{
+			$query->where($r . '.publish_up', '>', $filters['startdate']);
+		}
+		if (isset($filters['enddate']) && $filters['enddate'])
+		{
+			$query->where($r . '.publish_up', '<', $filters['enddate']);
+		}
+
+		return $query;
 	}
 }

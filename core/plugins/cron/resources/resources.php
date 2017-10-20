@@ -122,7 +122,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		require_once Component::path('com_resources') . DS . 'tables' . DS . 'resource.php';
+		require_once Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 
 		// Go through records
 		foreach ($rows as $row)
@@ -144,11 +144,11 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 			$masterDoi = $doiService->register();
 
 			// Save with publication record
-			$resource = new \Components\Resources\Tables\Resource($database);
-			if ($masterDoi && $resource->load($row->id))
+			$resource = \Components\Resources\Models\Orm\Resource::oneOrNew($row->id);
+			if ($masterDoi && $resource->get('id'))
 			{
-				$resource->master_doi = strtoupper($masterDoi);
-				$resource->store();
+				$resource->set('master_doi', strtoupper($masterDoi));
+				$resource->save();
 			}
 		}
 
@@ -255,7 +255,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		$queued = $database->loadObjectList();
 
-		require_once Component::path('com_resources') . DS . 'models' . DS . 'resource.php';
+		require_once Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 
 		// Loop through each resource and rank it
 		foreach ($queued as $item)
@@ -265,13 +265,18 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				continue;
 			}
 
-			$resource = new \Components\Resources\Models\Resource($item->id);
+			$resource = \Components\Resources\Models\Orm\Resource::oneOrNew($item->id);
+
+			if (!$resource->get('id'))
+			{
+				continue;
+			}
 
 			if ($resource->rank())
 			{
 				// mark as sent and save
-				$resource->ranked = Date::toSql();
-				$resource->store();
+				$resource->set('ranked', Date::toSql());
+				$resource->save();
 			}
 
 			$processed[] = $item->id;

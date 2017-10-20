@@ -56,8 +56,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
+		include_once Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 	}
 
 	/**
@@ -82,8 +81,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		);
 
 		$database = App::get('db');
-		$rt = new \Components\Resources\Tables\Type($database);
-		foreach ($rt->getMajorTypes() as $category)
+
+		foreach (\Components\Resources\Models\Type::getMajorTypes() as $category)
 		{
 			$response['children'][$category->alias] = array(
 				'name'     => $category->alias,
@@ -105,9 +104,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		{
 			$ids[] = $tag->get('id');
 		}
-
-		// Instantiate some needed objects
-		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Build query
 		$filters = array();
@@ -185,14 +181,14 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build a database query
 	 *
-	 * @param      array $filters Options for building the query
-	 * @return     string SQL
+	 * @param   array   $filters  Options for building the query
+	 * @return  string  SQL
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
 		$database = App::get('db');
 
-		$rt = new \Components\Resources\Tables\Type($database);
+		$rt = \Components\Resources\Models\Type::blank();
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
@@ -215,15 +211,15 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			}
 			$query .= ", r.params, r.rating AS rcount, r.type AS data1, rt.type AS data2, r.ranking data3 ";
 		}
-		$query .= "FROM #__resources AS r ";
+		$query .= "FROM `#__resources` AS r ";
 		$query .= "LEFT JOIN " . $rt->getTableName() . " AS rt ON r.type=rt.id ";
 		if (isset($filters['tag']))
 		{
-			$query .= ", #__tags_object AS t, #__tags AS tg ";
+			$query .= ", `#__tags_object` AS t, `#__tags` AS tg ";
 		}
 		if (isset($filters['tags']))
 		{
-			$query .= ", #__tags_object AS t ";
+			$query .= ", `#__tags_object` AS t ";
 		}
 		$query .= "WHERE r.standalone=1 ";
 		if (User::isGuest() || (isset($filters['authorized']) && !$filters['authorized']))
@@ -232,7 +228,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		}
 		if (isset($filters['tag']))
 		{
-			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $filters['tag'] . "' OR tg.alias='" . $filters['tag'] . "') ";
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag=" . $database->quote($filters['tag']) . " OR tg.alias=" . $database->quote($filters['tag']) . ") ";
 		}
 		if (isset($filters['tags']))
 		{
@@ -302,13 +298,12 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
-		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php');
-		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php');
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 
 		if ($row->alias)
 		{
@@ -362,6 +357,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		if ($rparams->get('show_ranking', $config->get('show_ranking')))
 		{
+			include_once Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
+
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
 

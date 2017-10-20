@@ -87,6 +87,8 @@ class Resources extends GroupMacro
 		$limit = $this->_getLimit($args, 5);
 		$class = $this->_getClass($args);
 
+		require_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+
 		// Get resources
 		$groupResources = $this->_getResources($type, $limit);
 
@@ -94,13 +96,12 @@ class Resources extends GroupMacro
 
 		foreach ($groupResources as $resource)
 		{
-			$area = strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $resource->area));
-			$resourceLink     = \Route::url('index.php?option=com_resources&id=' . $resource->id);
-			$resourceTypeLink = \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=resources&area=' . $area);
+			$resourceLink     = \Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
+			$resourceTypeLink = \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=resources&area=' . $resource->type->get('alias'));
 
-			$html .= '<a href="' . $resourceLink . '"><strong>' . $resource->title . '</strong></a>';
-			$html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' . $resource->area . '</a></p>';
-			$html .= '<p>' . \Hubzero\Utility\Str::truncate($resource->itext) . '</p>';
+			$html .= '<a href="' . $resourceLink . '"><strong>' . $resource->get('title') . '</strong></a>';
+			$html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' . $resource->type->get('type') . '</a></p>';
+			$html .= '<p>' . \Hubzero\Utility\Str::truncate($resource->get('introtext')) . '</p>';
 		}
 
 		$html .= '</div>';
@@ -117,12 +118,6 @@ class Resources extends GroupMacro
 	 */
 	private function _getResources($type = 'all', $limit = 5)
 	{
-		// Database object
-		$database = \App::get('db');
-
-		// Instantiate some needed objects
-		$rr = new \Components\Resources\Tables\Resource($database);
-
 		// Build query
 		$filters = array();
 		$filters['now'] = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
@@ -135,19 +130,18 @@ class Resources extends GroupMacro
 		$filters['limitstart'] = 0;
 
 		// Get categories
-		$rt = new \Components\Resources\Tables\Type($database);
-		$categories = $rt->getMajorTypes();
+		$categories = \Components\Resources\Models\Type::getMajorTypes();
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
+		foreach ($categories as $category)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $categories[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $category->type);
 			$normalized = strtolower($normalized);
 
 			$cats[$normalized] = array();
-			$cats[$normalized]['id'] = $categories[$i]->id;
+			$cats[$normalized]['id'] = $category->id;
 		}
 
 		// Do we have a type?
@@ -157,8 +151,20 @@ class Resources extends GroupMacro
 		}
 
 		// Get results
-		$database->setQuery($rr->buildPluginQuery($filters));
-		$rows = $database->loadObjectList();
+		$query = \Components\Resources\Models\Orm\Resource::all()
+			->whereEquals('group_owner', $this->group->get('cn'))
+			->whereEquals('published', \Components\Resources\Models\Orm\Resource::STATE_PUBLISHED);
+
+		if ($filters['type'])
+		{
+			$query->whereEquals('type', $filters['type']);
+		}
+
+		$rows = $query
+			->limit($filters['limit'])
+			->start($filters['limitstart'])
+			->order('created', 'desc')
+			->rows();
 
 		return $rows;
 	}

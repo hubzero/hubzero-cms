@@ -41,8 +41,8 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Is the category one this plugin handles?
 	 *
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     boolean
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  boolean
 	 */
 	private function _canHandle($category)
 	{
@@ -56,10 +56,10 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get items reported as abusive
 	 *
-	 * @param      integer $refid    Comment ID
-	 * @param      string  $category Item type (kb)
-	 * @param      integer $parent   Parent ID
-	 * @return     array
+	 * @param   integer  $refid     Comment ID
+	 * @param   string   $category  Item type (kb)
+	 * @param   integer  $parent    Parent ID
+	 * @return  array
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
@@ -104,9 +104,9 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Looks up ancestors to find root element
 	 *
-	 * @param      integer $parentid ID to check for parents of
-	 * @param      string  $category Element type (determines table to look in)
-	 * @return     integer
+	 * @param   integer  $parentid  ID to check for parents of
+	 * @param   string   $category  Element type (determines table to look in)
+	 * @return  integer
 	 */
 	public function getParentId($parentid, $category)
 	{
@@ -119,24 +119,6 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 			$refid    = $pdata->get('item_id');
 			$category = 'review';
-			/*$category = $pdata->category;
-			$refid = $pdata->referenceid;
-
-			if ($pdata->category == 'reviewcomment')
-			{
-				// Yet another level?
-				$pdata = $this->parent($pdata->referenceid);
-				$category = $pdata->category;
-				$refid = $pdata->referenceid;
-
-				if ($pdata->category == 'reviewcomment')
-				{
-					// Yet another level?
-					$pdata = $this->parent($pdata->referenceid);
-					$category = $pdata->category;
-					$refid = $pdata->referenceid;
-				}
-			}*/
 		}
 
 		if ($category == 'review')
@@ -149,8 +131,8 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieve parent element
 	 *
-	 * @param      integer $parentid ID of element to retrieve
-	 * @return     object
+	 * @param   integer  $parentid  ID of element to retrieve
+	 * @return  object
 	 */
 	public function parent($parentid)
 	{
@@ -160,9 +142,9 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Returns the appropriate text for category
 	 *
-	 * @param      string  $category Element type (determines text)
-	 * @param      integer $parentid ID of element to retrieve
-	 * @return     string
+	 * @param   string   $category  Element type (determines text)
+	 * @param   integer  $parentid  ID of element to retrieve
+	 * @return  string
 	 */
 	public function getTitle($category, $parentid)
 	{
@@ -188,9 +170,9 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark an item as flagged
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     string
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  string
 	 */
 	public function onReportItem($refid, $category)
 	{
@@ -199,14 +181,21 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+		$path = DS . 'plugins' . DS . 'resources' . DS . 'reviews' . DS . 'models' . DS . 'review.php';
+		if (file_exists(PATH_APP . $path))
+		{
+			$path = PATH_APP . $path;
+		}
+		else
+		{
+			$path = PATH_CORE . $path;
+		}
 
-		$database = App::get('db');
+		include_once $path;
 
-		$comment = new \Components\Resources\Tables\Review($database);
-		$comment->load($refid);
-		$comment->state = 3;
-		$comment->store();
+		$comment = \Components\Resources\Reviews\Models\Review::oneOrFail($refid);
+		$comment->set('state', 3);
+		$comment->save();
 
 		return '';
 	}
@@ -214,10 +203,10 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Release a reported item
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $parent    If the element has a parent element
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  array
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
@@ -226,14 +215,21 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+		$path = DS . 'plugins' . DS . 'resources' . DS . 'reviews' . DS . 'models' . DS . 'review.php';
+		if (file_exists(PATH_APP . $path))
+		{
+			$path = PATH_APP . $path;
+		}
+		else
+		{
+			$path = PATH_CORE . $path;
+		}
 
-		$database = App::get('db');
+		include_once $path;
 
-		$comment = new \Components\Resources\Tables\Review($database);
-		$comment->load($refid);
-		$comment->state = 1;
-		$comment->store();
+		$comment = \Components\Resources\Reviews\Models\Review::oneOrFail($refid);
+		$comment->set('state', 1);
+		$comment->save();
 
 		return '';
 	}
@@ -261,20 +257,31 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'review':
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+				$path = DS . 'plugins' . DS . 'resources' . DS . 'reviews' . DS . 'models' . DS . 'review.php';
+				if (file_exists(PATH_APP . $path))
+				{
+					$path = PATH_APP . $path;
+				}
+				else
+				{
+					$path = PATH_CORE . $path;
+				}
+
+				include_once $path;
+				include_once Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 
 				// Delete the review
-				$review = new \Components\Resources\Tables\Review($database);
-				$review->load($referenceid);
-				$review->state = 2;
-				$review->store();
+				$review = \Components\Resources\Reviews\Models\Review::oneOrFail($referenceid);
+				$review->set('state', 2);
+				$review->save();
+
+				$rating = \Components\Resources\Reviews\Models\Review::averageByResource($parentid);
 
 				// Recalculate the average rating for the parent resource
-				$resource = new \Components\Resources\Tables\Resource($database);
-				$resource->load($parentid);
-				$resource->calculateRating();
-				if (!$resource->store())
+				$resource = \Components\Resources\Models\Orm\Resource::oneOrFail($parentid);
+				$resource->set('rating', $rating[0]);
+				$resource->set('times_rated', $rating[1]);
+				if (!$resource->save())
 				{
 					$this->setError($resource->getError());
 					return false;
