@@ -33,7 +33,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
-use Components\Resources\Tables\Resource;
+use Components\Resources\Models\Orm\Resource;
 use Request;
 use Route;
 use Lang;
@@ -105,7 +105,7 @@ class Resources extends GenericItem
 
 		$id = ($id ?: Request::getInt('id', 0));
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 		$resource = null;
 
 		if (!$id)
@@ -126,8 +126,7 @@ class Resources extends GenericItem
 
 		if (!$resource)
 		{
-			$resource = new Resource($this->_db);
-			$resource->load($id);
+			$resource = Resource::oneOrFail($id);
 		}
 
 		if (!$resource->id)

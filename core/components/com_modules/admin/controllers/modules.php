@@ -407,9 +407,13 @@ class Modules extends AdminController
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		if (!isset($fields['id']))
+		{
+			$fields['id'] = 0;
+		}
 
 		// Initiate extended database class
-		$model = Module::oneOrNew($fields['extension_id'])->set($fields);
+		$model = Module::oneOrNew($fields['id'])->set($fields);
 
 		// Get parameters
 		$params = Request::getVar('params', array(), 'post');

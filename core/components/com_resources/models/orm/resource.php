@@ -376,6 +376,16 @@ class Resource extends Relational
 	}
 
 	/**
+	 * Is this a tool?
+	 *
+	 * @return  bool
+	 */
+	public function isTool()
+	{
+		return $this->type->isForTools();
+	}
+
+	/**
 	 * Check if the resource was deleted
 	 *
 	 * @return  bool
@@ -711,8 +721,9 @@ class Resource extends Relational
 		$a = Author::blank()->getTableName();
 
 		$query
+			->select($r . '.*')
 			->join($a, $a . '.subid', $r . '.id', 'left')
-			->whereEquals($a . '.subtable', 'resource');
+			->whereEquals($a . '.subtable', 'resources');
 
 		if (isset($filters['standalone']))
 		{
@@ -726,6 +737,10 @@ class Resource extends Relational
 
 		if (isset($filters['type']))
 		{
+			if (!is_numeric($filters['type']))
+			{
+				$filters['type'] = Type::oneByAlias($filters['type'])->get('id');
+			}
 			$query->whereEquals($r . '.type', $filters['type']);
 		}
 
@@ -736,11 +751,14 @@ class Resource extends Relational
 				->resetDepth();
 		}
 
+		if (isset($filters['created_by']))
+		{
+			$query->whereEquals($r . '.created_by', $filters['created_by']);
+		}
+
 		if (isset($filters['author']))
 		{
-			$query->whereEquals($r . '.created_by', $filters['author'], 1)
-				->orWhereEquals($a . '.authorid', $filters['author'], 1)
-				->resetDepth();
+			$query->whereEquals($a . '.authorid', $filters['author']);
 
 			if (isset($filters['notauthorrole']))
 			{
@@ -750,6 +768,26 @@ class Resource extends Relational
 
 		if (isset($filters['access']) && !empty($filters['access']))
 		{
+			if (!is_array($filters['access']) && !is_numeric($filters['access']))
+			{
+				switch ($filters['access'])
+				{
+					case 'public':
+						$filters['access'] = 0;
+						break;
+					case 'protected':
+						$filters['access'] = 3;
+						break;
+					case 'private':
+						$filters['access'] = 4;
+						break;
+					case 'all':
+					default:
+						$filters['access'] = array(0, 1, 2, 3, 4);
+						break;
+				}
+			}
+
 			if (isset($filters['usergroups']) && !empty($filters['usergroups']))
 			{
 				$query->whereIn($r . '.access', (array) $filters['access'], 1)
@@ -760,6 +798,20 @@ class Resource extends Relational
 			{
 				$query->whereIn($r . '.access', (array) $filters['access']);
 			}
+		}
+		elseif (isset($filters['usergroups']) && !empty($filters['usergroups']))
+		{
+			$query->whereIn($r . '.group_owner', (array) $filters['usergroups']);
+		}
+
+		if (isset($filters['now']))
+		{
+			$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
+				->resetDepth()
+				->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
+				->resetDepth();
 		}
 
 		if (isset($filters['startdate']) && $filters['startdate'])

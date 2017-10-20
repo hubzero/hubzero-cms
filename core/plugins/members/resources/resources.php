@@ -77,8 +77,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once \Component::path('com_resources') . DS . 'tables' . DS . 'type.php';
-		include_once \Component::path('com_resources') . DS . 'tables' . DS . 'resource.php';
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 	}
 
 	/**
@@ -94,25 +93,19 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			return $areas;
 		}
 
-		$categories = $this->_cats;
-		if (!is_array($categories))
+		if (!$this->_cats)
 		{
 			// Get categories
-			$database = App::get('db');
-			$rt = new \Components\Resources\Tables\Type($database);
-			$categories = $rt->getMajorTypes();
-			$this->_cats = $categories;
+			$this->_cats = \Components\Resources\Models\Type::getMajorTypes();
 		}
+		$categories = $this->_cats;
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
+		foreach ($categories as $category)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $categories[$i]->type);
-			$normalized = strtolower($normalized);
-
-			$cats[$normalized] = $categories[$i]->type;
+			$cats[$category->alias] = $category->type;
 		}
 
 		$areas = array(
@@ -186,35 +179,56 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Instantiate some needed objects
-		$rr = new \Components\Resources\Tables\Resource($database);
-
 		// Build query
-		$filters = array();
-		$filters['author'] = $uidNumber;
-		$filters['notauthorrole'] = 'submitter';
-		$filters['sortby'] = $sort;
-		$filters['usergroups'] = $member->groups();
+		$filters = array(
+			'author'        => $uidNumber,
+			'notauthorrole' => 'submitter',
+			'sortby'        => $sort,
+			'usergroups'    => array(),
+			'standalone'    => 1,
+			'published'     => 1
+		);
+
+		/*$groups = $member->groups();
+
+		if (!empty($groups))
+		{
+			foreach ($groups as $group)
+			{
+				if ($group->regconfirmed)
+				{
+					$filters['usergroups'][] = $group->cn;
+				}
+			}
+		}
+		$filters['usergroups'] = array_unique($filters['usergroups']);*/
+
+		// If the visiting user is NOT the same as the member
+		// we want to restrict what they can see
+		if (User::get('id') != $member->get('id'))
+		{
+			//$filters['published'] = 1;
+			$filters['access'] = array(0, 3);
+			if (!\User::isGuest())
+			{
+				$filters['access'][] = 1;
+			}
+		}
 
 		// Get categories
 		$categories = $this->_cats;
-		if (!is_array($categories))
+		if (!$categories)
 		{
-			$rt = new \Components\Resources\Tables\Type($database);
-			$categories = $rt->getMajorTypes();
+			$categories = \Components\Resources\Models\Type::getMajorTypes();
 		}
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		$normalized_valid_chars = 'a-zA-Z0-9';
-		for ($i = 0; $i < count($categories); $i++)
+		foreach ($categories as $category)
 		{
-			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
-			$normalized = strtolower($normalized);
-
-			$cats[$normalized] = array();
-			$cats[$normalized]['id'] = $categories[$i]->id;
+			$cats[$category->alias] = array();
+			$cats[$category->alias]['id'] = $category->id;
 		}
 
 		if ($limit)
@@ -233,46 +247,30 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 				return array();
 			}
 
-			$filters['select'] = 'records';
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
 
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
-			//if (count($areas) == 1 && key($areas[0]) != 'resources') {
 			if (count($areas) == 1 && !isset($areas['resources']))
 			{
 				$filters['type'] = (isset($cats[$areas[0]])) ? $cats[$areas[0]]['id'] : 0;
 			}
 
 			// Get results
-			$database->setQuery($rr->buildPluginQuery($filters));
-			$rows = $database->loadObjectList();
+			$query = \Components\Resources\Models\Orm\Resource::allWithFilters($filters);
 
-			// Did we get any results?
-			if ($rows)
-			{
-				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row)
-				{
-					if ($row->alias)
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
-					}
-					else
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
-					}
-				}
-			}
+			$rows = $query
+				->limit($filters['limit'])
+				->start($filters['limitstart'])
+				->order($query->getTableName() . '.created', 'desc')
+				->rows();
 
 			// Return the results
 			return $rows;
 		}
 		else
 		{
-			$filters['select'] = 'count';
-
 			// Get a count
 			$counts = array();
 			$ares = $this->onMembersContributionsAreas();
@@ -285,14 +283,11 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 					{
 						if ($limitstart == -1)
 						{
+							$counts[] = 0;
+
 							if ($i == 0)
 							{
-								$database->setQuery($rr->buildPluginQuery($filters));
-								$counts[] = $database->loadResult();
-							}
-							else
-							{
-								$counts[] = 0;
+								$counts[] = \Components\Resources\Models\Orm\Resource::allWithFilters($filters)->total();
 							}
 						}
 						else
@@ -300,8 +295,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 							$filters['type'] = $cats[$a]['id'];
 
 							// Execute a count query for each area/category
-							$database->setQuery($rr->buildPluginQuery($filters));
-							$counts[] = $database->loadResult();
+							$counts[] = \Components\Resources\Models\Orm\Resource::allWithFilters($filters)->total();
 						}
 						$i++;
 					}
@@ -322,192 +316,22 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$authorized = false;
-		if (User::authorise('core.manage', 'com_resources'))
-		{
-			$authorized = true;
-		}
-		$database = App::get('db');
-
-		// Instantiate a helper object
-		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
-		$helper->getContributors();
+		$row->set('typetitle', $row->type->get('type'));
 
 		// Get the component params and merge with resource params
 		$config = Component::params('com_resources');
 
-		$rparams = new \Hubzero\Config\Registry($row->params);
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => Component::path('com_resources') . '/site',
+			'name'      => 'browse',
+			'layout'    => 'item'
+		));
+		$view->set('line', $row)
+			->set('option', 'com_resources')
+			->set('config', $config)
+			->set('supported', array());
 
-		if (!isset($row->publish_up) || !$row->publish_up || $row->publish_up == '0000-00-00 00:00:00')
-		{
-			$row->publish_up = $row->created;
-		}
-		if (!isset($row->area))
-		{
-			$row->area = '';
-		}
-
-		// Set the display date
-		switch ($rparams->get('show_date', $config->get('show_date')))
-		{
-			case 0:
-				$thedate = '';
-				break;
-			case 1:
-				$thedate = Date::of($row->created)->toLocal('d M Y');
-				break;
-			case 2:
-				$thedate = Date::of($row->modified)->toLocal('d M Y');
-				break;
-			case 3:
-				$thedate = Date::of($row->publish_up)->toLocal('d M Y');
-				break;
-		}
-
-		$html  = "\t" . '<li class="';
-		switch ($row->access)
-		{
-			case 1:
-				$html .= 'registered';
-				break;
-			case 2:
-				$html .= 'special';
-				break;
-			case 3:
-				$html .= 'protected';
-				break;
-			case 4:
-				$html .= 'private';
-				break;
-			case 0:
-			default:
-				$html .= 'public';
-				break;
-		}
-		$html .= ' resource">' . "\n";
-		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a>';
-		if ($authorized || $row->created_by == User::get('id'))
-		{
-			switch ($row->state)
-			{
-				case 5:
-					$html .= ' <span class="resource-status internal">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL') . '</span>';
-					break;
-				case 4:
-					$html .= ' <span class="resource-status deleted">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_DELETED') . '</span>';
-					break;
-				case 3:
-					$html .= ' <span class="resource-status pending">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_PENDING') . '</span>';
-					break;
-				case 2:
-					$html .= ' <span class="resource-status draft">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_DRAFT') . '</span>';
-					break;
-				case 1:
-					$html .= ' <span class="resource-status published">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_PUBLISHED') . '</span>';
-					break;
-				case 0:
-				default:
-					$html .= ' <span class="resource-status unpublished">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_UNPUBLISHED') . '</span>';
-					break;
-			}
-		}
-		$html .= '</p>' . "\n";
-		if ($rparams->get('show_ranking'))
-		{
-			$helper->getCitationsCount();
-			$helper->getLastCitationDate();
-
-			if ($row->category == 7)
-			{
-				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			}
-			else
-			{
-				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			}
-			$statshtml = $stats->display();
-
-			$row->ranking = round($row->ranking, 1);
-
-			$html .= "\t\t".'<div class="metadata">'."\n";
-
-			$r = (10*$row->ranking);
-			if (intval($r) < 10)
-			{
-				$r = '0' . $r;
-			}
-
-			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('PLG_MEMBERS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . Lang::txt('PLG_MEMBERS_RESOURCES_RANKING') . '</dt>' . "\n";
-			$html .= "\t\t\t\t" . '<dd>' . "\n";
-			$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('PLG_MEMBERS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
-			$html .= "\t\t\t\t\t" . '<div>' . "\n";
-			$html .= $statshtml;
-			$html .= "\t\t\t\t\t" . '</div>' . "\n";
-			$html .= "\t\t\t\t" . '</dd>' . "\n";
-			$html .= "\t\t\t" . '</dl>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-		}
-		elseif ($rparams->get('show_rating'))
-		{
-			switch ($row->rating)
-			{
-				case 0.5:
-					$class = ' half-stars';
-					break;
-				case 1:
-					$class = ' one-stars';
-					break;
-				case 1.5:
-					$class = ' onehalf-stars';
-					break;
-				case 2:
-					$class = ' two-stars';
-					break;
-				case 2.5:
-					$class = ' twohalf-stars';
-					break;
-				case 3:
-					$class = ' three-stars';
-					break;
-				case 3.5:
-					$class = ' threehalf-stars';
-					break;
-				case 4:
-					$class = ' four-stars';
-					break;
-				case 4.5:
-					$class = ' fourhalf-stars';
-					break;
-				case 5:
-					$class = ' five-stars';
-					break;
-				case 0:
-				default:
-					$class = ' no-stars';
-					break;
-			}
-
-			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . Lang::txt('PLG_MEMBERS_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-		}
-		$html .= "\t\t".'<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->area);
-		if ($helper->contributors)
-		{
-			$html .= ' <span>|</span> ' . Lang::txt('PLG_MEMBERS_RESOURCES_CONTRIBUTORS') . ': ' . $helper->contributors;
-		}
-		$html .= '</p>' . "\n";
-		if ($row->itext)
-		{
-			$html .= \Hubzero\Utility\Str::truncate(stripslashes($row->itext), array('html'=>true))."\n";
-		}
-		else if ($row->ftext)
-		{
-			$html .= \Hubzero\Utility\Str::truncate(stripslashes($row->ftext), array('html'=>true))."\n";
-		}
-		$html .= "\t" . '</li>' . "\n";
-		return $html;
+		return $view->loadTemplate();
 	}
 
 	/**

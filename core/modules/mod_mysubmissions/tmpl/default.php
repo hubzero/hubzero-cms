@@ -38,7 +38,7 @@ if (User::isGuest()) { ?>
 <?php } else {
 	$steps = $this->steps;
 
-	if ($this->rows)
+	if ($this->rows->count())
 	{
 		$stepchecks = array();
 		$laststep = (count($steps) - 1);
@@ -57,7 +57,7 @@ if (User::isGuest()) { ?>
 					<tbody>
 						<tr>
 							<th><?php echo Lang::txt('MOD_MYSUBMISSIONS_TYPE'); ?></th>
-							<td colspan="2"><?php echo $this->escape($row->typetitle); ?></td>
+							<td colspan="2"><?php echo $this->escape($row->type->get('type')); ?></td>
 						</tr>
 						<?php
 						for ($i=1, $n=count($steps); $i < $n; $i++)
@@ -65,7 +65,7 @@ if (User::isGuest()) { ?>
 							if ($i != $laststep)
 							{
 								$check = 'step_' . $steps[$i] . '_check';
-								$stepchecks[$steps[$i]] = $this->$check($row->id);
+								$stepchecks[$steps[$i]] = $this->$check($row);
 
 								if ($stepchecks[$steps[$i]])
 								{

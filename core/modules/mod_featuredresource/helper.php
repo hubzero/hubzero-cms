@@ -33,6 +33,7 @@
 
 namespace Modules\Featuredresource;
 
+use Components\Resources\Models\Orm\Resource as Entry;
 use Hubzero\Module\Module;
 use Component;
 use User;
@@ -56,7 +57,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
+		include_once Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 
 		$database = \App::get('db');
 
@@ -68,23 +69,20 @@ class Helper extends Module
 			'sortby'     => 'random',
 			'minranking' => trim($this->params->get('minranking')),
 			'tag'        => trim($this->params->get('tag')),
-			'access'     => 'public',
+			'access'     => 0,
+			'published'  => 1,
 			// Only published tools
 			'toolState'  => 7
 		);
 
-		$row = null;
+		$rows = Entry::allWithFilters($filters)
+			->limit(1000)
+			->rows()
+			->fieldsByKey('id');
 
-		// No - so we need to randomly choose one
-		// Initiate a resource object
-		$rr = new \Components\Resources\Tables\Resource($database);
+		$id = array_rand($rows);
 
-		// Get records
-		$rows = $rr->getRecords($filters, false);
-		if (count($rows) > 0)
-		{
-			$row = $rows[0];
-		}
+		$row = Entry::oneOrFail($id);
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 		$this->txt_length = trim($this->params->get('txt_length'));
@@ -97,12 +95,9 @@ class Helper extends Module
 			// Resource
 			$id = $row->id;
 
-			include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'html.php');
+			$path = $row->filespace();
 
-			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
-			$path = \Components\Resources\Helpers\Html::build_path($row->created, $row->id, $path);
-
-			if ($row->type == 7)
+			if ($row->isTool())
 			{
 				include_once(Component::path('com_tools') . DS . 'tables' . DS . 'version.php');
 

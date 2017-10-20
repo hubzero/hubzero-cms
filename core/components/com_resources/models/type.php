@@ -33,6 +33,7 @@ namespace Components\Resources\Models;
 
 use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
+use Hubzero\Config\Registry;
 
 include_once __DIR__ . DS . 'author' . DS . 'role.php';
 
@@ -83,6 +84,13 @@ class Type extends Relational
 	);
 
 	/**
+	 * Params Registry
+	 *
+	 * @var  object
+	 */
+	protected $paramsRegistry = null;
+
+	/**
 	 * Generates automatic owned by field value
 	 *
 	 * @param   array   $data  the data being saved
@@ -104,6 +112,21 @@ class Type extends Relational
 	}
 
 	/**
+	 * Transform params
+	 *
+	 * @return  object
+	 */
+	public function transformParams()
+	{
+		if (!is_object($this->paramsRegistry))
+		{
+			$this->paramsRegistry = new Registry($this->get('params'));
+		}
+
+		return $this->paramsRegistry;
+	}
+
+	/**
 	 * Get a list of roles for this type
 	 *
 	 * @return  object
@@ -112,6 +135,16 @@ class Type extends Relational
 	{
 		$model = new RoleType();
 		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
+	}
+
+	/**
+	 * Is this the tool type?
+	 *
+	 * @return  bool
+	 */
+	public function isForTools()
+	{
+		return ($this->get('id') == 7);
 	}
 
 	/**

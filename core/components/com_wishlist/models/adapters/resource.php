@@ -35,8 +35,8 @@ namespace Components\Wishlist\Models\Adapters;
 use Pathway;
 use Lang;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+require_once __DIR__ . DS . 'base.php';
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 
 /**
  * Adapter class for a forum post link for course forum
@@ -64,10 +64,7 @@ class Resource extends Base
 		     ->set('category', 'resource')
 		     ->set('option', $this->_segments['option']);
 
-		$database = \App::get('db');
-		$this->_item = new \Components\Resources\Tables\Resource($database);
-		$this->_item->load($this->get('referenceid'));
-		$this->_item->typetitle = $this->_item->getTypeTitle();
+		$this->_item = \Components\Resources\Models\Orm\Resource::oneOrNew($this->get('referenceid'));
 
 		if ($this->_item->standalone != 1 || $this->_item->published != 1)
 		{
@@ -143,7 +140,7 @@ class Resource extends Base
 	 */
 	public function title()
 	{
-		return ($this->_item->type == 7 && isset($this->_item->alias))
+		return ($this->_item->isTool() && isset($this->_item->alias))
 				? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->_item->alias
 				: Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $this->_item->id;
 	}

@@ -259,13 +259,12 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = App::get('db');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		$rr = new \Components\Resources\Tables\Resource($database);
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
 
-		$database->setQuery("SELECT COUNT(*) FROM " . $rr->getTableName() . " AS r WHERE r.group_owner=" . $database->quote($gid));
-		return $database->loadResult();
+		return \Components\Resources\Models\Orm\Resource::all()
+			->whereEquals('group_owner', $gid)
+			->total();
 	}
 
 	/**

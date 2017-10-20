@@ -93,9 +93,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$database = App::get('db');
-		$resource = new \Components\Resources\Tables\Resource($database);
-		$resource->load($id);
+		$resource = \Components\Resources\Models\Orm\Resource::oneOrNew($id);
 
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $resource;
@@ -215,55 +213,4 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		return $arr;
 	}
-
-	/**
-	 * Get all replies for an item
-	 *
-	 * @param   integer  $id
-	 * @param   object   $item      Item to look for reports on
-	 * @param   string   $category  Item type
-	 * @param   integer  $level     Depth
-	 * @param   boolean  $abuse     Abuse flag
-	 * @return  array
-	 */
-	/*public static function getComments($id, $item, $category, $level, $abuse=false)
-	{
-		$level++;
-
-		$comments = \Hubzero\Item\Comment::all()
-			->whereEquals('parent', ($level == 1 ? 0 : $item->id))
-			->whereEquals('item_id', $id)
-			->whereEquals('item_type', $category)
-			->ordered()
-			->rows();
-
-		if ($comments)
-		{
-			foreach ($comments as $comment)
-			{
-				//$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
-
-				if ($abuse)
-				{
-					$comment->abuse_reports = self::getAbuseReports($comment->id, 'review');
-				}
-			}
-		}
-		return $comments;
-	}*/
-
-	/**
-	 * Get abuse reports for a comment
-	 *
-	 * @param   integer  $item      Item to look for reports on
-	 * @param   string   $category  Item type
-	 * @return  integer
-	 */
-	/*public static function getAbuseReports($item, $category)
-	{
-		return \Components\Support\Models\Report::all()
-			->whereEquals('referenceid', $item)
-			->whereEquals('category', $category)
-			->total();
-	}*/
 }
