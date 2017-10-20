@@ -87,7 +87,7 @@ class Polls extends AdminController
 			'order'  => Request::getState(
 				$this->_option . '.' . $this->_controller . '.filter_order',
 				'filter_order',
-				'm.id',
+				'id',
 				'cmd'
 			),
 			'order_Dir' => Request::getState(
@@ -324,10 +324,10 @@ class Polls extends AdminController
 	}
 
 	/**
-	* Publishes or Unpublishes one or more records
-	*
-	* @return  void
-	*/
+	 * Publishes or Unpublishes one or more records
+	 *
+	 * @return  void
+	 */
 	public function publishTask()
 	{
 		// Check for request forgeries
@@ -373,10 +373,10 @@ class Polls extends AdminController
 	}
 
 	/**
-	* Mark a poll as open or closed
-	*
-	* @return  void
-	*/
+	 * Mark a poll as open or closed
+	 *
+	 * @return  void
+	 */
 	public function openTask()
 	{
 		// Check for request forgeries
