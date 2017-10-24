@@ -82,13 +82,13 @@ class Helper extends Module
 
 		$id = array_rand($rows);
 
-		$row = Entry::oneOrFail($id);
+		$row = Entry::oneOrNew($id);
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 		$this->txt_length = trim($this->params->get('txt_length'));
 
 		// Did we get any results?
-		if ($row)
+		if ($row->get('id'))
 		{
 			$config = Component::params('com_resources');
 
@@ -129,7 +129,7 @@ class Helper extends Module
 			$this->thumb = $thumb;
 		}
 
-		$this->row   = $row;
+		$this->row = $row;
 
 		require $this->getLayoutPath();
 	}
