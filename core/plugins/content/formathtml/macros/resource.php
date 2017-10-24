@@ -33,6 +33,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Components\Resources\Models\Orm\Resource as Entry;
 
 /**
  * Wiki macro class that will insert a linked title to a resource
@@ -42,14 +43,14 @@ class Resource extends Macro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  bool
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -62,7 +63,7 @@ class Resource extends Macro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -86,7 +87,7 @@ class Resource extends Macro
 		{
 			$a = trim($a);
 
-			if (substr($a,0,11) == 'screenshots')
+			if (substr($a, 0, 11) == 'screenshots')
 			{
 				$bits = explode('=', $a);
 				$num = intval(end($bits));
@@ -98,40 +99,29 @@ class Resource extends Macro
 			}
 		}
 
+		require_once \Component::path('com_resources') . '/models/orm/resource.php';
+
 		// Is it numeric?
 		if (is_numeric($resource))
 		{
 			// Yes, then get resource by ID
-			$id = intval($resource);
-			$sql = "SELECT id, title, alias FROM #__resources WHERE id=" . $id;
+			$r = Entry::one((int)$id);
 		}
 		else
 		{
-			// No, get resource by alias
-			$sql = "SELECT id, title, alias FROM #__resources WHERE alias=" . $this->_db->quote(trim($resource));
+			$r = Entry::oneByAlias(trim($resource));
 		}
 
-		// Perform query
-		$this->_db->setQuery($sql);
-		$r = $this->_db->loadRow();
-
 		// Did we get a result from the database?
-		if ($r)
+		if ($r && $r->get('id'))
 		{
-			if ($scrnshts && $r[2])
+			if ($scrnshts)
 			{
-				return $this->screenshots($r[2], $num);
+				return $this->screenshots($r->get('alias'), $num);
 			}
 
 			// Build and return the link
-			if ($r[2])
-			{
-				$link = 'index.php?option=com_resources&amp;alias=' . $r[2];
-			}
-			else
-			{
-				$link = 'index.php?option=com_resources&amp;id=' . $id;
-			}
+			$link = $r->link();
 
 			$this->linkLog[] = array(
 				'link'     => '[[Resource(' . $et . ')]]',
@@ -143,11 +133,11 @@ class Resource extends Macro
 
 			if ($nolink)
 			{
-				return stripslashes($r[1]);
+				return stripslashes($r->get('title'));
 			}
 			else
 			{
-				return '<a href="' . \Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
+				return '<a href="' . \Route::url($link) . '">' . stripslashes($r->get('title')) . '</a>';
 			}
 		}
 		else
@@ -160,9 +150,9 @@ class Resource extends Macro
 	/**
 	 * Get a list of screenshots
 	 *
-	 * @param      string  $alias Resource alias
-	 * @param      integer $num   Number of screenshots to show
-	 * @return     string
+	 * @param   string   $alias  Resource alias
+	 * @param   integer  $num    Number of screenshots to show
+	 * @return  string
 	 */
 	public function screenshots($alias, $num=1)
 	{
@@ -177,12 +167,13 @@ class Resource extends Macro
 		{
 			while (false !== ($entry = $d->read()))
 			{
-				$img_file = $entry;
-				if (is_file(PATH_APP . $path . DS . $alias . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
+				if (is_file(PATH_APP . $path . DS . $alias . DS . $entry)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file))
+					if (preg_match("#bmp|gif|jpg|png|swf#i", $entry))
 					{
-						$images[] = $img_file;
+						$images[] = $entry;
 					}
 				}
 			}
@@ -195,7 +186,7 @@ class Resource extends Macro
 		if (count($images) > 0)
 		{
 			$k = 0;
-			for ($i=0, $n=count($images); $i < $n; $i++)
+			for ($i = 0, $n = count($images); $i < $n; $i++)
 			{
 				$tn = $this->thumbnail($images[$i]);
 				$type = explode('.', $images[$i]);
@@ -216,8 +207,8 @@ class Resource extends Macro
 	/**
 	 * Generate a thumbnail name from a picture name
 	 *
-	 * @param      string $pic Picture name
-	 * @return     string
+	 * @param   string  $pic  Picture name
+	 * @return  string
 	 */
 	public function thumbnail($pic)
 	{
@@ -230,4 +221,3 @@ class Resource extends Macro
 		return $tn;
 	}
 }
-
