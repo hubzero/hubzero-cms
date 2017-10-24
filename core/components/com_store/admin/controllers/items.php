@@ -205,15 +205,8 @@ class Items extends AdminController
 		$sizes = Request::getVar('sizes', '', 'post', 'none', 2);
 		$sizes = str_replace(' ', '', $sizes);
 		$sizes = explode(',', $sizes);
-		$sizes_cl = '';
-		foreach ($sizes as $s)
-		{
-			if (trim($s) != '')
-			{
-				$sizes_cl .= $s;
-				$sizes_cl .= ($s == end($sizes)) ? '' : ', ';
-			}
-		}
+		$sizes = array_filter($sizes);
+		$sizes_cl = implode(', ', $sizes);
 
 		$row->params->set('size', $sizes_cl);
 
