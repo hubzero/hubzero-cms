@@ -1596,7 +1596,7 @@ class Publications extends SiteController
 		// Copy citations
 		include_once Component::path('com_citations')  . '/models/association.php';
 
-		$citations = new \Components\Citations\Models\Association::all()
+		$citations = \Components\Citations\Models\Association::all()
 			->whereEquals('tbl', 'publication')
 			->whereEquals('oid', $pub_id)
 			->rows();
