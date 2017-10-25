@@ -33,10 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'orm' . DS . 'resource.php';
-include_once 'children.php';
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+include_once __DIR__ . '/children.php';
 
 /**
  * Search plugin for resources

@@ -33,7 +33,7 @@
 namespace Components\Tools\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 use Request;
 use Config;
 use Notify;
@@ -43,7 +43,7 @@ use User;
 use Date;
 use App;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'orm' . DS . 'resource.php');
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for Windows tools
@@ -94,7 +94,7 @@ class Windows extends AdminController
 		);
 
 		// Get a list of tools
-		$rows = Resource::all()
+		$rows = Entry::all()
 			->whereEquals('type', $this->config->get('windows_type'))
 		//	->ordered('filter_order', 'filter_order_Dir')
 		//	->paginated('limitstart', 'limit')
@@ -128,7 +128,7 @@ class Windows extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$row = Resource::oneOrNew($id);
+			$row = Entry::oneOrNew($id);
 		}
 
 		if ($row->isNew())
@@ -158,7 +158,7 @@ class Windows extends AdminController
 		$fields['standalone'] = 1;
 
 		// Load the profile
-		$row = Resource::oneOrNew($fields['id'])->set($fields);
+		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
 		if ($row->isNew())
 		{
@@ -230,7 +230,7 @@ class Windows extends AdminController
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
-				$row = Resource::oneOrFail($id);
+				$row = Entry::oneOrFail($id);
 
 				if (!$row->destroy())
 				{
@@ -298,7 +298,7 @@ class Windows extends AdminController
 
 		// Get a list of all apps for the filters bar
 		$apps =
-			Resource::all()
+			Entry::all()
 			->whereEquals('type', $this->config->get('windows_type'))
 //			->ordered('filter_order', 'filter_order_Dir')
 //			->paginated('limitstart', 'limit')

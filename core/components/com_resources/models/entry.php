@@ -31,12 +31,9 @@
  * @since     Class available since release 1.3.2
  */
 
-namespace Components\Resources\Models\Orm;
+namespace Components\Resources\Models;
 
 use Components\Resources\Helpers\Tags;
-use Components\Resources\Models\License;
-use Components\Resources\Models\Type;
-use Components\Resources\Models\Author;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\Str;
@@ -46,16 +43,19 @@ use Lang;
 use User;
 
 require_once __DIR__ . DS . 'association.php';
-require_once dirname(__DIR__) . DS . 'type.php';
-require_once dirname(__DIR__) . DS . 'author.php';
-require_once dirname(__DIR__) . DS . 'license.php';
+require_once __DIR__ . DS . 'type.php';
+require_once __DIR__ . DS . 'author.php';
+require_once __DIR__ . DS . 'license.php';
 
 /**
  * Resource model
  *
+ * NOTE: This isn't named 'Resource' because it's
+ * a reserved word in PHP 7+
+ *
  * @uses \Hubzero\Database\Relational
  */
-class Resource extends Relational
+class Entry extends Relational
 {
 	/**
 	 * The table namespace
@@ -63,6 +63,13 @@ class Resource extends Relational
 	 * @var  string
 	 */
 	protected $namespace = '';
+
+	/**
+	 * The table name, non-standard naming 
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__resources';
 
 	/**
 	 * Default order by for model
@@ -235,7 +242,7 @@ class Resource extends Relational
 	 */
 	public function authors()
 	{
-		return $this->oneToMany('\Components\Resources\Models\Author', 'subid')->whereEquals('subtable', 'resources');
+		return $this->oneToMany(__NAMESPACE__ . '\\Author', 'subid')->whereEquals('subtable', 'resources');
 	}
 
 	/**
@@ -279,7 +286,7 @@ class Resource extends Relational
 	public function parents()
 	{
 		$model = new Association();
-		return $model->manyToMany('Resource', $model->getTableName(), 'child_id', 'parent_id');
+		return $model->manyToMany(__NAMESPACE__ . '\\Entry', $model->getTableName(), 'child_id', 'parent_id');
 	}
 
 	/**
@@ -291,7 +298,7 @@ class Resource extends Relational
 	public function children()
 	{
 		$model = new Association();
-		return $this->manyToMany('Resource', $model->getTableName(), 'parent_id', 'child_id');
+		return $this->manyToMany(__NAMESPACE__ . '\\Entry', $model->getTableName(), 'parent_id', 'child_id');
 	}
 
 	/**
@@ -671,7 +678,7 @@ class Resource extends Relational
 	 */
 	public function tags($as = 'list')
 	{
-		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
+		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 		$cloud = new Tags($this->get('id'));
 

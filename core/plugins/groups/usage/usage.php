@@ -260,9 +260,9 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			return 0;
 		}
 
-		include_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
-		return \Components\Resources\Models\Orm\Resource::all()
+		return \Components\Resources\Models\Entry::all()
 			->whereEquals('group_owner', $gid)
 			->total();
 	}
@@ -333,7 +333,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			return 0;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
+		include_once \Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 		$filters = array();
 		switch ($state)
@@ -523,7 +523,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			return 0;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
 		$total = \Components\Blog\Models\Entry::all()
 			->whereEquals('scope', 'group')

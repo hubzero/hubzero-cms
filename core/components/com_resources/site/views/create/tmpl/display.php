@@ -104,15 +104,23 @@ $this->css('introduction.css', 'system')
 				{
 					$cls = ($cls == 'even') ? 'odd' : 'even';
 
-					$resource = Components\Resources\Models\Orm\Resource::oneOrNew($submission->id);
+					$resource = Components\Resources\Models\Entry::oneOrNew($submission->id);
 
 					switch ($resource->get('published'))
 					{
-						case 1: $state = 'published';  break;  // published
-						case 2: $state = 'draft';      break;  // draft
-						case 3: $state = 'pending';    break;  // pending
+						case 1:
+							$state = 'published';
+							break;  // published
+						case 2:
+							$state = 'draft';
+							break;  // draft
+						case 3:
+							$state = 'pending';
+							break;  // pending
 						case 0:
-						default: $state = 'unpublished';  break;  // unpublished
+						default:
+							$state = 'unpublished';
+							break;  // unpublished
 					}
 
 					$attachments = $resource->children()->total();

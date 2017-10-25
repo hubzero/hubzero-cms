@@ -36,7 +36,7 @@ use Pathway;
 use Lang;
 
 require_once __DIR__ . DS . 'base.php';
-require_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Adapter class for a forum post link for course forum
@@ -64,7 +64,7 @@ class Resource extends Base
 		     ->set('category', 'resource')
 		     ->set('option', $this->_segments['option']);
 
-		$this->_item = \Components\Resources\Models\Orm\Resource::oneOrNew($this->get('referenceid'));
+		$this->_item = \Components\Resources\Models\Entry::oneOrNew($this->get('referenceid'));
 
 		if ($this->_item->standalone != 1 || $this->_item->published != 1)
 		{

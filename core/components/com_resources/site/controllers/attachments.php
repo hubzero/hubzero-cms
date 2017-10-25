@@ -31,8 +31,8 @@
 
 namespace Components\Resources\Site\Controllers;
 
-use Components\Resources\Models\Orm\Resource;
-use Components\Resources\Models\Orm\Association;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\Str;
@@ -45,7 +45,7 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for adding attachments to a parent resource
@@ -91,7 +91,7 @@ class Attachments extends SiteController
 		}
 
 		// Create new record
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => 'A link',
 			'introtext'    => 'A link',
 			'created'      => Date::toSql(),
@@ -138,7 +138,7 @@ class Attachments extends SiteController
 		}
 
 		// Create new record
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => 'A link',
 			'introtext'    => 'A link',
 			'created'      => Date::toSql(),
@@ -279,7 +279,7 @@ class Attachments extends SiteController
 		}*/
 
 		// Instantiate a new resource object
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => $filename . '.' . $ext,
 			'introtext'    => $filename . '.' . $ext,
 			'created'      => Date::toSql(),
@@ -303,7 +303,7 @@ class Attachments extends SiteController
 		}
 
 		// File already exists
-		$parent = Resource::oneOrFail($pid);
+		$parent = Entry::oneOrFail($pid);
 
 		if ($parent->hasChild($filename))
 		{
@@ -483,7 +483,7 @@ class Attachments extends SiteController
 		// Ensure we have everything we need
 		if ($id && $name)
 		{
-			$resource = Resource::oneOrFail($id);
+			$resource = Entry::oneOrFail($id);
 			$resource->set('title', (string)$name);
 			$resource->save();
 		}
@@ -533,7 +533,7 @@ class Attachments extends SiteController
 		}
 
 		// Instantiate a new resource object
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => $file['name'],
 			'introtext'    => $file['name'],
 			'created'      => Date::toSql(),
@@ -548,7 +548,7 @@ class Attachments extends SiteController
 		));
 
 		// File already exists
-		$parent = Resource::oneOrFail($pid);
+		$parent = Entry::oneOrFail($pid);
 
 		if ($parent->hasChild($file['name']))
 		{
@@ -692,7 +692,7 @@ class Attachments extends SiteController
 		}
 
 		// Load resource info
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		// Check for stored file
 		if ($resource->get('path') != '')
@@ -764,7 +764,7 @@ class Attachments extends SiteController
 		}
 
 		// Load resource info
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		// Set value
 		$access = Request::getInt('access', 0);
@@ -806,7 +806,7 @@ class Attachments extends SiteController
 		}
 
 		// Initiate a resource
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		$children = $resource->children()->order('ordering', 'ASC')->rows();
 

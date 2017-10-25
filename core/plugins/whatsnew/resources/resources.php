@@ -77,7 +77,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 	}
 
 	/**
@@ -220,9 +220,9 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get results
-			$query = \Components\Resources\Models\Orm\Resource::all()
+			$query = \Components\Resources\Models\Entry::all()
 				->whereEquals('standalone', 1)
-				->whereEquals('published', \Components\Resources\Models\Orm\Resource::STATE_PUBLISHED);
+				->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED);
 
 			if (isset($filters['type']))
 			{
@@ -272,9 +272,9 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 					{
 						$filters['type'] = $cats[$a]['id'];
 
-						$query = \Components\Resources\Models\Orm\Resource::all()
+						$query = \Components\Resources\Models\Entry::all()
 							->whereEquals('standalone', 1)
-							->whereEquals('published', \Components\Resources\Models\Orm\Resource::STATE_PUBLISHED);
+							->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED);
 
 						if ($filters['type'])
 						{

@@ -77,6 +77,6 @@ class User extends Relational
 	 */
 	public function resource()
 	{
-		return $this->belongsToOne('Components\Resources\Models\Orm\Resource', 'resid');
+		return $this->belongsToOne('Components\Resources\Models\Entry', 'resid');
 	}
 }

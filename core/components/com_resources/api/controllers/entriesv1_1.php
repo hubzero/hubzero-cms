@@ -33,15 +33,17 @@
 
 namespace Components\Resources\Api\Controllers;
 
-use Components\Resources\Tables\Resource;
-use Components\Resources\Tables\Type;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Type;
 use Components\Tags\Models\Cloud;
-use Components\Resources\Models\Orm\Resource as ResourceORM;
 use Hubzero\Component\ApiController;
 use Component;
 use Exception;
 use stdClass;
 use Request;
+use Route;
+use Lang;
+use Date;
 use App;
 
 /**
@@ -111,7 +113,6 @@ class Entriesv1_1 extends ApiController
 			$searchable = Request::getVar('searchable', false);
 
 			require_once Component::path('com_tags') . '/models/cloud.php';
-			require_once Component::path('com_resources') . '/models/orm/resource.php';
 		}
 
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
@@ -119,25 +120,75 @@ class Entriesv1_1 extends ApiController
 			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
 		}
 
-		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
-		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
+		require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
-		$database = App::get('db');
+		$query = Entry::all();
 
-		// Instantiate a resource object
-		$rr = new Resource($database);
+		$r = $query->getTableName();
+
+		$query->whereEquals($r . '.standalone', 1);
+
+		if ($filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
+
+			$query->whereLike($r . '.title', $filters['search'], 1)
+					->orWhereLike($r . '.fulltxt', $filters['search'], 1)
+					->resetDepth();
+		}
+
+		if ($filters['type'])
+		{
+			$query->whereEquals($r . '.type', $filters['type']);
+		}
+
+		$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
+			->resetDepth();
+
+		$query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
+			->resetDepth();
+
+		$query->whereEquals($r . '.published', Entry::STATE_PUBLISHED);
+
+		switch ($filters['sortby'])
+		{
+			case 'date_created':
+				$query->order($r . '.created', 'desc');
+				break;
+			case 'date_modified':
+				$query->order($r . '.modified', 'desc');
+				break;
+			case 'title':
+				$query->order($r . '.title', 'asc');
+				$query->order($r . '.publish_up', 'asc');
+				break;
+			case 'rating':
+				$query->order($r . '.rating', 'desc');
+				$query->order($r . '.times_rated', 'desc');
+				break;
+			case 'ranking':
+				$query->order($r . '.ranking', 'desc');
+				break;
+			case 'date':
+			case 'date_published':
+			default:
+				$query->order($r . '.publish_up', 'desc');
+				$query->order($r . '.created', 'desc');
+				break;
+		}
 
 		// encode results and return response
 		$response = new stdClass;
 		$response->records = array();
-		$response->total   = count($rr->getCount($filters, $admin));
+		$response->total   = with(clone $query)->total();
 
 		if ($response->total)
 		{
 			// Get major types
-			$t = new Type($database);
 			$types = array();
-			foreach ($t->getMajorTypes() as $type)
+			foreach (Type::getMajorTypes()->toObject() as $type)
 			{
 				unset($type->params);
 				unset($type->customFields);
@@ -145,11 +196,13 @@ class Entriesv1_1 extends ApiController
 				$types[$type->id] = $type;
 			}
 
-			$records = $rr->getRecords($filters, $admin);
+			$records = $query
+				->paginated()
+				->rows();
 
 			if (isset($searchable) && $admin)
 			{
-				foreach ($records as $i => $entry)
+				foreach ($records as $entry)
 				{
 					$obj = new stdClass;
 
@@ -162,21 +215,21 @@ class Entriesv1_1 extends ApiController
 						$obj->url = '/resources/' . $entry->id;
 					}
 
-					$obj->title = $entry->title;
-					$obj->id = 'resource-' . $entry->id;
+					$obj->title   = $entry->title;
+					$obj->id      = 'resource-' . $entry->id;
 					$obj->hubtype = 'resource';
 
-					if (isset($types[$entry->type]))
+					if (isset($types[$entry->get('type')]))
 					{
-						$obj->type = $types[$entry->type]->type;
+						$obj->type = $types[$entry->get('type')]->type;
 					}
 
-					$description = $entry->fulltxt . ' ' . $entry->introtext;
+					$description = $entry->get('fulltxt') . ' ' . $entry->get('introtext');
 					$description = html_entity_decode($description);
 					$description = \Hubzero\Utility\Sanitize::stripAll($description);
 					$obj->description = $description;
 
-					$authors = ResourceORM::one($entry->id)
+					$authors = $entry
 						->authors()
 						->select('name')
 						->rows()
@@ -208,10 +261,6 @@ class Entriesv1_1 extends ApiController
 						}
 					}
 
-					$db = App::get('db');
-					$resource = new Resource($db);
-					$resource->load($entry->id);
-					$groups = $resource->getGroups();
 					$tagCloud = new Cloud($entry->id, 'resources');
 					$tags = $tagCloud->tags()->toObject();
 
@@ -223,6 +272,7 @@ class Entriesv1_1 extends ApiController
 						}
 					}
 
+					$groups = $entry->groups;
 					if (!empty($groups))
 					{
 						foreach ($groups as $g => $group)
@@ -248,23 +298,26 @@ class Entriesv1_1 extends ApiController
 						$obj->owner = $entry->created_by;
 					}
 
-					$response->resources[$i] = $obj;
+					$response->resources[] = $obj;
 				}
 			}
 			else
 			{
 				$base = rtrim(Request::base(), '/');
 
-				foreach ($records as $i => $entry)
+				foreach ($records as $record)
 				{
-					$entry->url = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_resources&' . ($entry->alias ? 'alias=' . $entry->alias : 'id=' . $entry->id)), '/'));
+					$entry = $record->toObject();
+					$entry->params = $record->params->toObject();
+					$entry->attribs = $record->attribs->toObject();
+					$entry->url = str_replace('/api', '', $base . '/' . ltrim(Route::url($record->link()), '/'));
 
 					if (isset($types[$entry->type]))
 					{
 						$entry->type = $types[$entry->type];
 					}
 
-					$response->resources[$i] = $entry;
+					$response->resources[] = $entry;
 				}
 			}
 		}
@@ -315,7 +368,7 @@ class Entriesv1_1 extends ApiController
 		$period   = Request::getVar('period', 'month');
 		$category = Request::getVar('category', 'resources');
 
-		require_once(Component::path('com_whatsnew') . DS . 'helpers' . DS . 'finder.php');
+		require_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'finder.php';
 
 		$whatsnew = \Components\Whatsnew\Helpers\Finder::getBasedOnPeriodAndCategory($period, $category, $limit);
 

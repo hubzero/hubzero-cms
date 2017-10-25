@@ -87,7 +87,7 @@ class Resources extends GroupMacro
 		$limit = $this->_getLimit($args, 5);
 		$class = $this->_getClass($args);
 
-		require_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+		require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 		//get resources
 		$groupResources = $this->_getResources($type, $limit);
@@ -151,9 +151,9 @@ class Resources extends GroupMacro
 		}
 
 		// Get results
-		$query = \Components\Resources\Models\Orm\Resource::all()
+		$query = \Components\Resources\Models\Entry::all()
 			->whereEquals('group_owner', $this->group->get('cn'))
-			->whereEquals('published', \Components\Resources\Models\Orm\Resource::STATE_PUBLISHED);
+			->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED);
 
 		if ($filters['type'])
 		{

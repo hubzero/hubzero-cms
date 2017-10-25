@@ -77,7 +77,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 	}
 
 	/**
@@ -258,7 +258,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get results
-			$query = \Components\Resources\Models\Orm\Resource::allWithFilters($filters);
+			$query = \Components\Resources\Models\Entry::allWithFilters($filters);
 
 			$rows = $query
 				->limit($filters['limit'])
@@ -287,7 +287,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 							if ($i == 0)
 							{
-								$counts[] = \Components\Resources\Models\Orm\Resource::allWithFilters($filters)->total();
+								$counts[] = \Components\Resources\Models\Entry::allWithFilters($filters)->total();
 							}
 						}
 						else
@@ -295,7 +295,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 							$filters['type'] = $cats[$a]['id'];
 
 							// Execute a count query for each area/category
-							$counts[] = \Components\Resources\Models\Orm\Resource::allWithFilters($filters)->total();
+							$counts[] = \Components\Resources\Models\Entry::allWithFilters($filters)->total();
 						}
 						$i++;
 					}

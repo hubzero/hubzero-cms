@@ -31,7 +31,7 @@
  * @since     Class available since release 1.3.2
  */
 
-namespace Components\Resources\Models\Orm;
+namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
 
@@ -136,7 +136,7 @@ class Association extends Relational
 	 */
 	public function parent()
 	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Resource', 'parent_id', 'id');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Entry', 'parent_id', 'id');
 	}
 
 	/**
@@ -146,7 +146,7 @@ class Association extends Relational
 	 */
 	public function resource()
 	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Resource', 'child_id', 'id');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Entry', 'child_id', 'id');
 	}
 
 	/**

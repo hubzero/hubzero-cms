@@ -33,7 +33,7 @@
 namespace Components\Resources\Admin\Controllers;
 
 use Components\Resources\Models\Type;
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
@@ -42,7 +42,7 @@ use Route;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
 
 /**
  * Manage resource types
@@ -225,7 +225,7 @@ class Types extends AdminController
 				}
 			}
 
-			include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 			$re = new \Components\Resources\Models\Elements($elements);
 
 			$row->set('customFields', $re->toString());
@@ -312,7 +312,7 @@ class Types extends AdminController
 			// Check if the type is being used
 			$rt = Type::oneOrFail($id);
 
-			$usage = Resource::all()
+			$usage = Entry::all()
 				->whereEquals('type', $id)
 				->total();
 

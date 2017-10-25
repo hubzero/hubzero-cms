@@ -268,7 +268,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 				}
 
 				include_once $path;
-				include_once Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+				include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 				// Delete the review
 				$review = \Components\Resources\Reviews\Models\Review::oneOrFail($referenceid);
@@ -278,7 +278,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 				$rating = \Components\Resources\Reviews\Models\Review::averageByResource($parentid);
 
 				// Recalculate the average rating for the parent resource
-				$resource = \Components\Resources\Models\Orm\Resource::oneOrFail($parentid);
+				$resource = \Components\Resources\Models\Entry::oneOrFail($parentid);
 				$resource->set('rating', $rating[0]);
 				$resource->set('times_rated', $rating[1]);
 				if (!$resource->save())

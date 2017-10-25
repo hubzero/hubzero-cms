@@ -33,7 +33,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
-use Components\Resources\Models\Orm\Resource as Entry;
+use Components\Resources\Models\Entry;
 
 /**
  * Wiki macro class that will insert a linked title to a resource
@@ -99,7 +99,7 @@ class Resource extends Macro
 			}
 		}
 
-		require_once \Component::path('com_resources') . '/models/orm/resource.php';
+		require_once \Component::path('com_resources') . '/models/entry.php';
 
 		// Is it numeric?
 		if (is_numeric($resource))

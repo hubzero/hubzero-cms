@@ -46,7 +46,7 @@ require_once __DIR__ . DS . 'secondary.php';
 require_once __DIR__ . DS . 'sponsor.php';
 require_once __DIR__ . DS . 'type.php';
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'tag.php';
-require_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 require_once \Component::path('com_publications') . DS . 'models' . DS . 'orm' . DS . 'publication.php';
 
 /**
@@ -487,7 +487,7 @@ class Citation extends Relational
 	 */
 	public function resources()
 	{
-		return $this->manyToMany('\Components\Resources\Models\Orm\Resource', '#__citations_assoc', 'cid', 'oid');
+		return $this->manyToMany('\Components\Resources\Models\Entry', '#__citations_assoc', 'cid', 'oid');
 	}
 
 	/**

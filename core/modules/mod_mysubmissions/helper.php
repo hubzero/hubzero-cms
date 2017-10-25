@@ -32,7 +32,7 @@
 
 namespace Modules\MySubmissions;
 
-use Components\Resources\Models\Orm\Resource as Entry;
+use Components\Resources\Models\Entry;
 use Hubzero\Module\Module;
 use Component;
 use User;
@@ -145,7 +145,7 @@ class Helper extends Module
 			return false;
 		}
 
-		include_once Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+		include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 		$this->steps = array(
 			'Type',

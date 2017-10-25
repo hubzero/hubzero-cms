@@ -33,12 +33,12 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 use Request;
 use Route;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'item.php');
+require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for an item
@@ -105,15 +105,14 @@ class Resources extends GenericItem
 
 		$id = ($id ?: Request::getInt('id', 0));
 
-		include_once \Component::path('com_resources') . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 		$resource = null;
 
 		if (!$id)
 		{
 			$alias = Request::getVar('alias', '');
 
-			$resource = new Resource($this->_db);
-			$resource->loadAlias($alias);
+			$resource = Entry::oneByAlias($alias);
 			$id = $resource->id;
 		}
 
@@ -126,7 +125,7 @@ class Resources extends GenericItem
 
 		if (!$resource)
 		{
-			$resource = Resource::oneOrFail($id);
+			$resource = Entry::oneOrFail($id);
 		}
 
 		if (!$resource->id)

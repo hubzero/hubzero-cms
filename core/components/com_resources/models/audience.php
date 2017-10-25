@@ -164,7 +164,7 @@ class Audience extends Relational
 	 */
 	public function resource()
 	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Orm\\Resource', 'rid');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Entry', 'rid');
 	}
 
 	/**

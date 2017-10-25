@@ -97,7 +97,9 @@ class Slider extends Macro
 			break;
 
 			case 'com_resources':
-				$row = \Components\Resources\Models\Orm\Resource::oneOrNew($this->pageid);
+				require_once \Component::path('com_resources') . '/models/entry.php';
+
+				$row = \Components\Resources\Models\Entry::oneOrNew($this->pageid);
 
 				$base_url  = DS . trim($config->get('uploadpath', 'site/resources'), DS) . DS;
 				$base_url .= trim($row->relativePath(), DS) . DS . 'media';

@@ -93,7 +93,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$resource = \Components\Resources\Models\Orm\Resource::oneOrNew($id);
+		$resource = \Components\Resources\Models\Entry::oneOrNew($id);
 
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $resource;
