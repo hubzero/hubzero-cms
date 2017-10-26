@@ -129,9 +129,9 @@ class Rank extends \JTable
 		}
 
 		$query = "DELETE FROM $this->_tbl WHERE wishid=" . $this->_db->quote($wishid);
-		if ($oid)
+		if ($userid)
 		{
-			$query .= " AND userid=" . $this->_db->quote($oid);
+			$query .= " AND userid=" . $this->_db->quote($userid);
 		}
 
 		$this->_db->setQuery($query);
