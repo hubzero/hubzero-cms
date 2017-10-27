@@ -44,10 +44,10 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'connection.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'provider.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'connection.php');
+require_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'provider.php');
 
 /**
  * API controller for the projects files
@@ -171,7 +171,7 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid) //connection specific listing
 		{
-			$dir   = Entity::fromPath(Request::getVar('subdir','','post'), $this->ormconn->adapter());
+			$dir   = Entity::fromPath(Request::getVar('subdir', '', 'post'), $this->ormconn->adapter());
 			try
 			{
 				$files = $dir->listContents();
@@ -257,7 +257,7 @@ class Filesv1_0 extends ApiController
 			foreach ($files as $file)
 			{
 				try {
-					$entities[] = Entity::fromPath(Request::getVar('subdir','','post') . DS . $file, $this->ormconn->adapter());
+					$entities[] = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
 				}
 				catch (Exception $e) {}
 			}
@@ -319,7 +319,7 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid) //connection specific operation
 		{
-			$entity  = Entity::fromPath(Request::getVar('subdir','','post') . DS . $directory, $this->ormconn->adapter());
+			$entity  = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $directory, $this->ormconn->adapter());
 			if (!$entity->create())
 			{
 				$response->error = Lang::txt('Error creating directory');
@@ -417,7 +417,7 @@ class Filesv1_0 extends ApiController
 
 			if ($this->cid) //connection specific operation
 			{
-				$entity  = Entity::fromPath(Request::getVar('subdir','','post') . DS . $item, $this->ormconn->adapter());
+				$entity  = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $item, $this->ormconn->adapter());
 				try
 				{
 					if ($entity->delete())
@@ -610,10 +610,10 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid)
 		{
-			$entity   = Entity::fromPath(Request::getVar('subdir','','post') . DS . Request::getVar('from',''), $this->ormconn->adapter());
+			$entity   = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . Request::getVar('from', ''), $this->ormconn->adapter());
 			try
 			{
-				if ($entity->rename(Request::getVar('to','')))
+				if ($entity->rename(Request::getVar('to', '')))
 				{
 					$response->success = 1;
 				}
@@ -695,7 +695,7 @@ class Filesv1_0 extends ApiController
 			if (is_uploaded_file($_FILES["file"]["tmp_name"]))
 			{
 				$updateType = 'uploaded';
-				$file  = Entity::fromPath(Request::getVar('subdir','','post') . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
+				$file  = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
 				if ($file->exists())
 				{
 					$updateType = 'updated';
@@ -730,6 +730,229 @@ class Filesv1_0 extends ApiController
 
 		$this->send($response);
 
+	}
+
+	/**
+	 * Uploads file chunk(s) and combines them before adding the
+	 * final file to repository
+	 *
+	 * @apiMethod GET,POST
+	 * @apiUri    /projects/{id}/files/connections/{cid}/chunkedUpload
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Project identifier (numeric ID or alias)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "cid",
+	 * 		"description": "Connection identifier (numeric ID)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "subdir",
+	 * 		"description":   "Directory path to upload to",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "flowFilename",
+	 * 		"description":   "Name of file being uploaded",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "flowIdentifier",
+	 * 		"description":   "Temporary file basename for chunk parts",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "flowTotalChunks",
+	 * 		"description":   "Total number of file chunks",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "flowTotalSize",
+	 * 		"description":   "Total file size",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "flowChunkNumber",
+	 * 		"description":   "Index of the chunk in the request",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "flowChunkSize",
+	 * 		"description":   "Size of ths chunk in the request",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "flowChunkHash",
+	 * 		"description":   "MD5 hash of the chunk in the request",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 *
+	 * @return  void
+	 */
+
+	public function chunkedUploadTask()
+	{
+
+		// Check if request is GET and the requested chunk exists or not.
+		if (Request::getMethod() === 'GET')
+		{
+			$flowIdentifier = Request::getVar('flowIdentifier', '', 'GET');
+			$flowFilename = Request::getVar('flowFilename', '', 'GET');
+			$flowChunkNumber = Request::getVar('flowChunkNumber', '', 'GET');
+			$flowChunkHash = Request::getVar('flowChunkHash', '', 'GET');
+			$subdir = Request::getVar('subdir', '', 'GET');
+
+			$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
+			$temp_dir .= base64_encode($subdir) . '_' . $flowIdentifier;
+
+			$chunk_file = $temp_dir . DS . $flowFilename . '.part' . $flowChunkNumber;
+
+			if (file_exists($chunk_file))
+			{
+				// Also compare MD5 hash to make sure this is the same part as before
+				$hash = md5_file($chunk_file);
+				if (strcmp($hash, $flowChunkHash) === 0)
+				{
+					header("HTTP/1.0 200 OK");
+					exit;
+				}
+				else
+				{
+					unlink($chunk_file);
+					header("HTTP/1.0 204 Not Found");
+					exit;
+				}
+			}
+			else
+			{
+				header("HTTP/1.0 204 Not Found");
+				exit;
+			}
+		}
+
+		// Loop through files and move the chunks to a temporarily created directory
+		if (!empty($_FILES))
+		{
+			foreach ($_FILES as $file)
+			{
+				// check the error status
+				if ($file['error'] != 0)
+				{
+					continue;
+				}
+
+				// Init the destination file (format <filename.ext>.part<#chunk>)
+				// The file is stored in a temporary directory identified by the
+				// project ID, the base64 encoded destination and the filename
+				$flowIdentifier = Request::getVar('flowIdentifier', '', 'POST');
+				$subdir = Request::getVar('subdir', '', 'POST');
+				if (trim($flowIdentifier) != '')
+				{
+					$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
+					$temp_dir .= base64_encode($subdir) . '_' . $flowIdentifier;
+				}
+
+				$flowFilename = Request::getVar('flowFilename', '', 'POST');
+				$flowChunkNumber = Request::getVar('flowChunkNumber', '', 'POST');
+				$flowChunkSize = Request::getVar('flowChunkSize', '', 'POST');
+				$flowTotalChunks = Request::getVar('flowTotalChunks', '', 'POST');
+				$flowTotalSize = Request::getVar('flowTotalSize', '', 'POST');
+
+				$dest_file = $temp_dir . DS . $flowFilename . '.part' . $flowChunkNumber;
+
+				// Create the temporary directory
+				if (!is_dir($temp_dir))
+				{
+					mkdir($temp_dir, 0777, true);
+				}
+
+				// Move the temporary file
+				if (!move_uploaded_file($file['tmp_name'], $dest_file))
+				{
+					header("HTTP/1.0 404 Error Uploading File");
+					exit;
+				}
+				else
+				{
+					// Check if all the parts present, and create the final destination file
+					$result = $this->createFileFromChunks(
+						$temp_dir,
+						$flowFilename,
+						$flowChunkSize,
+						$flowTotalSize,
+						$flowTotalChunks,
+						$subdir
+					);
+				}
+			}
+		}
+
+		if ($result)
+		{
+			$file  = Entity::fromPath($subdir . DS . $_FILES["file"]["name"],
+																$this->ormconn->adapter());
+			if ($file->exists())
+			{
+				$updateType = 'updated';
+			}
+			$file->contents = file_get_contents($_FILES["file"]["tmp_name"]);
+			$file->size = (int) $_FILES["file"]["size"];
+			if ($file->save())
+			{
+
+				$parsedResults = array();
+
+				// Get metadata
+				$parsedResults[] = $this->ormconn->adapter()->getMetadata($file->getPath());
+
+				$response->results = $parsedResults;
+				$this->send($response);
+			}
+
+		}
+		else {
+			//all chunks have been sent, but couldn't be recombined
+			if ($flowTotalChunks == $flowChunkNumber)
+			{
+				$response->error = "Error uploading file";
+				$this->send($response);
+			}
+			else {
+				//not all chunks have been sent yet, just succeed
+				header("HTTP/1.0 200 OK");
+				exit;
+			}
+		}
 	}
 
 	/**
@@ -867,7 +1090,7 @@ class Filesv1_0 extends ApiController
 		if (!empty($response->results))
 		{
 			$parsedResults = array();
-			$names = NULL;
+			$names = null;
 			foreach ($response->results as $updateType => $files)
 			{
 				foreach ($files as $file)
@@ -954,7 +1177,7 @@ class Filesv1_0 extends ApiController
 		$response = new stdClass;
 		$response->success = 0;
 
-		$files = Request::getVar('asset',array());
+		$files = Request::getVar('asset', array());
 		$fields   = Request::getVar( 'fields', array() );
 		$response->metadata = array();
 
@@ -962,7 +1185,7 @@ class Filesv1_0 extends ApiController
 		{
 			foreach ($files as $file)
 			{
-				$entity   = Entity::fromPath(Request::getVar('subdir','','post')
+				$entity   = Entity::fromPath(Request::getVar('subdir', '', 'post')
 							. DS . $file, $this->ormconn->adapter());
 
 				if ($entity->exists())
@@ -973,12 +1196,12 @@ class Filesv1_0 extends ApiController
 						$metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
 						if (empty($fields))
 						{
-							error_log('metadata returned to API : '.print_r($metadata,true));
+							error_log('metadata returned to API : '.print_r($metadata, true));
 							$response->metadata[$file] = $metadata[0];
 						}
 						else
 						{
-							$response->metadata[$file] = $this->_filter($metadata[0],$fields);
+							$response->metadata[$file] = $this->_filter($metadata[0], $fields);
 						}
 						$response->success = 1;
 					}
@@ -1052,7 +1275,7 @@ class Filesv1_0 extends ApiController
 		$response = new stdClass;
 		$response->success = 0;
 
-		$files = Request::getVar('asset',array());
+		$files = Request::getVar('asset', array());
 		$metadata   = Request::getVar( 'metadata', array() );
 
 		if (is_array($files))
@@ -1061,7 +1284,7 @@ class Filesv1_0 extends ApiController
 			{
 				foreach ($files as $file)
 				{
-					$entity   = Entity::fromPath(Request::getVar('subdir','','post')
+					$entity   = Entity::fromPath(Request::getVar('subdir', '', 'post')
 								. DS . $file, $this->ormconn->adapter());
 
 					if ($entity->exists())
@@ -1069,10 +1292,10 @@ class Filesv1_0 extends ApiController
 
 						try
 						{
-							$tmpoldmetadata = Event::trigger('metadata.onMetadataGet',[$entity]);
+							$tmpoldmetadata = Event::trigger('metadata.onMetadataGet', [$entity]);
 							$oldmetadata = $this->_packMetadata($tmpoldmetadata[0]);
 							$error = Event::trigger('metadata.onMetadataSave',
-												[$entity,array_merge($oldmetadata,$metadata)]);
+												[$entity,array_merge($oldmetadata, $metadata)]);
 							if (empty($error))
 							{
 								$response->success = 1;
@@ -1166,7 +1389,7 @@ class Filesv1_0 extends ApiController
 		$result = array();
 		foreach ($source as $key => $value)
 		{
-			if (in_array($key,$filter))
+			if (in_array($key, $filter))
 			{
 				$result[$key] = $value;
 			}
@@ -1193,7 +1416,7 @@ class Filesv1_0 extends ApiController
 		{
 			foreach ($entities as $entity)
 			{
-				$path = trim(Request::getVar('subdir',''), '/') . '/' . urldecode($entity);
+				$path = trim(Request::getVar('subdir', ''), '/') . '/' . urldecode($entity);
 				$collection->add(Entity::fromPath($path, $this->ormconn->adapter()));
 			}
 		}
@@ -1325,6 +1548,88 @@ class Filesv1_0 extends ApiController
 		}
 
 		$this->send($response);
+	}
+
+	/**
+	 * Check if all the chunks exist, and combine them into a final file
+	 *
+	 * @param   string  $temp_dir     The temporary directory holding all the parts of the file
+	 * @param   string  $fileName     The original file name
+	 * @param   string  $chunkSize    Each chunk size (in bytes)
+	 * @param   string  $totalSize    Original file size (in bytes)
+	 * @param   int     $total_files  The total number of chunks for this file
+	 * @param   int     $expand       Whether to automatically expand zip,tar,gz files
+	 *
+	 * @return  array
+	 */
+	protected function createFileFromChunks($temp_dir, $fileName, $chunkSize, $totalSize, $total_files, $subdir)
+	{
+		// Count all the parts of this file
+		$total_files_on_server_size = 0;
+		$temp_total = 0;
+
+		$result = false;
+
+		foreach (scandir($temp_dir) as $file)
+		{
+			$temp_total = $total_files_on_server_size;
+			$tempfilesize = filesize($temp_dir . DS . $file);
+			$total_files_on_server_size = $temp_total + $tempfilesize;
+		}
+
+		// Check that all the parts are present
+		// If the Size of all the chunks on the server is equal to the size of the file uploaded.
+		if ($total_files_on_server_size >= $totalSize)
+		{
+			// Create a temporary file to combine all the chunks into
+			$fp = tmpfile();
+
+			for ($i=1; $i<=$total_files; $i++)
+			{
+				fwrite($fp, file_get_contents($temp_dir . DS . $fileName . '.part' . $i));
+				unlink($temp_dir . DS . $fileName . '.part' . $i);
+			}
+
+			fseek($fp, 0);
+
+			$path = trim($subdir, DS) . DS . $fileName;
+
+			// Final destination file
+			$file = Entity::fromPath($path, $this->ormconn->adapter());
+
+			$file->contents = $fp;
+			$file->size     = $totalSize;
+
+			if ($file->save())
+			{
+				$result = true;
+			}
+			else
+			{
+				$result = false;
+			}
+
+			if (is_resource($file))
+			{
+				// Some (3rd party) adapters close the stream internally.
+				fclose($file);
+			}
+
+			// Rename the temporary directory (to avoid access from other
+			// Concurrent chunks uploads) and then delete it
+			if (rename($temp_dir, $temp_dir . '_UNUSED'))
+			{
+				Filesystem::deleteDirectory($temp_dir . '_UNUSED');
+			}
+			else
+			{
+				Filesystem::deleteDirectory($temp_dir);
+			}
+
+		}
+
+		return $result;
+
 	}
 
 }
