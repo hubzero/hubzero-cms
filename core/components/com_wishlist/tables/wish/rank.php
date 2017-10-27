@@ -73,12 +73,12 @@ class Rank extends \JTable
 	 * @param   integer  $wishid  Wish ID
 	 * @return  boolean  False if error, True on success
 	 */
-	public function load_vote($userid=NULL, $wishid=NULL)
+	public function load_vote($userid=null, $wishid=NULL)
 	{
 		$userid = $userid ?: $this->userid;
 		$wishid = $wishid ?: $this->wishid;
 
-		if ($userid === NULL or $wishid === NULL)
+		if ($userid === null or $wishid === NULL)
 		{
 			$this->setError(Lang::txt('Missing wish or user ID'));
 			return false;
@@ -96,11 +96,11 @@ class Rank extends \JTable
 	 * @param   integer  $wishid  Wish ID
 	 * @return  mixed    False if error, array on success
 	 */
-	public function get_votes($wishid=NULL)
+	public function get_votes($wishid=null)
 	{
 		$wishid = $wishid ?: $this->wishid;
 
-		if ($wishid === NULL)
+		if ($wishid === null)
 		{
 			$this->setError(Lang::txt('Missing wish ID'));
 			return false;
@@ -117,12 +117,12 @@ class Rank extends \JTable
 	 * @param   integer  $userid  User ID
 	 * @return  boolean  False if error, True on success
 	 */
-	public function remove_vote($wishid=NULL, $userid=NULL)
+	public function remove_vote($wishid=null, $userid=NULL)
 	{
 		$userid = $userid ?: $this->userid;
 		$wishid = $wishid ?: $this->wishid;
 
-		if ($wishid === NULL)
+		if ($wishid === null)
 		{
 			$this->setError(Lang::txt('Missing wish ID'));
 			return false;
@@ -144,4 +144,3 @@ class Rank extends \JTable
 		return true;
 	}
 }
-
