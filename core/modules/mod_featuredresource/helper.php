@@ -86,6 +86,7 @@ class Helper extends Module
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 		$this->txt_length = trim($this->params->get('txt_length'));
+		$this->thumb = '';
 
 		// Did we get any results?
 		if ($row->get('id'))
