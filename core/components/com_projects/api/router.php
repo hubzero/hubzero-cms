@@ -104,6 +104,7 @@ class Router extends Base
 			//  /projects/##/files/connections/##/rename
 			//  /projects/##/files/connections/##/move
 			//  /projects/##/files/connections/##/upload
+			//  /projects/##/files/connections/##/chunkedUpload
 			//  /projects/##/files/connections/##/download
 			//  /projects/##/files/connections/##/getmetadata
 			//  /projects/##/files/connections/##/setmetadata
