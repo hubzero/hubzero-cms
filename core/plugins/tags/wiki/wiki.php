@@ -167,8 +167,8 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			$query = "SELECT v.page_id AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
 						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
 						CASE
-							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&scope=', w.path, '&pagename=', w.pagename)
-							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&scope=', w.path, '&pagename=', w.pagename)
+							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=', xp.alias, '&active=notes&pagename=', w.path, '/', w.pagename)
+							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=', xg.cn, '&active=wiki&pagename=', w.path, '/', w.pagename)
 							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
 						END AS href,
 						'wiki' AS section ";
@@ -180,7 +180,8 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 		}
 		$query .= "FROM #__wiki_pages AS w
 					INNER JOIN #__wiki_versions AS v ON v.id=w.version_id
-					LEFT JOIN `#__xgroups` xg ON xg.gidNumber = w.scope_id AND w.scope='group'";
+					LEFT JOIN `#__xgroups` xg ON xg.gidNumber = w.scope_id AND w.scope='group'
+					LEFT JOIN `#__projects` xp ON xp.id = w.scope_id AND w.scope='project'";
 		if (isset($filters['tags']))
 		{
 			$query .= ", #__tags_object AS t ";
@@ -204,15 +205,29 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
 				{
-					case 'title':     $query .= 'title ASC';      break;
-					case 'id':        $query .= "id DESC";        break;
-					case 'rating':    $query .= "rating DESC";    break;
-					case 'ranking':   $query .= "ranking DESC";   break;
-					case 'relevance': $query .= "relevance DESC"; break;
+					case 'title':
+						$query .= 'title ASC';
+						break;
+					case 'id':
+						$query .= "id DESC";
+						break;
+					case 'rating':
+						$query .= "rating DESC";
+						break;
+					case 'ranking':
+						$query .= "ranking DESC";
+						break;
+					case 'relevance':
+						$query .= "relevance DESC";
+						break;
 					case 'usage':
-					case 'hits':      $query .= 'hits DESC';      break;
+					case 'hits':
+						$query .= 'hits DESC';
+						break;
 					case 'date':
-					default:          $query .= 'created DESC';   break;
+					default:
+						$query .= 'created DESC';
+						break;
 				}
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all')
