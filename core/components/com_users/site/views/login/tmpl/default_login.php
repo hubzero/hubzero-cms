@@ -84,7 +84,7 @@ foreach ($this->authenticators as $a)
 	}
 }
 // Make sure the currently chosen primary actuall exists
-if (!isset($refl[$primary]))
+if ($primary != 'hubzero' && !isset($refl[$primary]))
 {
 	$primary = null;
 }
