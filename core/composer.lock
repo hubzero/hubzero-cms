@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b8e2bf023664740baedba8a1a70c3e4a",
-    "content-hash": "767d0507e44f7eb75ec86b72fcfd1db7",
+    "hash": "0f9c944ef0617b7707c4963c1fd13363",
+    "content-hash": "6afb21f9dcffd616bb59a3e549f0dbc1",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -941,12 +941,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "bd679e50d20ae7d3bba66dfbb563b8c30fb38dd8"
+                "reference": "1469b415d3e3939e1d1c8dac107e163295003930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/bd679e50d20ae7d3bba66dfbb563b8c30fb38dd8",
-                "reference": "bd679e50d20ae7d3bba66dfbb563b8c30fb38dd8",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/1469b415d3e3939e1d1c8dac107e163295003930",
+                "reference": "1469b415d3e3939e1d1c8dac107e163295003930",
                 "shasum": ""
             },
             "require": {
@@ -979,7 +979,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2017-10-12 13:20:33"
+            "time": "2017-10-27 18:59:59"
         },
         {
             "name": "hubzero/orcid-php",
