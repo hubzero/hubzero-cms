@@ -1393,6 +1393,12 @@ class Wishlists extends SiteController
 
 			if ($listid != $newlist->get('id'))
 			{
+				// Check if user is in group
+				if($refid != 1 && !in_array(User::get('id'), \Hubzero\User\Group::getInstance($refid)->get('members')))
+				{
+					throw new Exception(Lang::txt('COM_WISHLIST_ERROR_NOT_IN_GROUP'));
+				}
+
 				// Transfer wish
 				$wish = new Wish($wishid);
 				$wish->set('wishlist', $newlist->get('id'));
