@@ -148,6 +148,7 @@ if ($this->rows)
 				</td>
 			</tr>
 <?php
+		$i++;
 	}
 }
 ?>
