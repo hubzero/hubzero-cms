@@ -128,7 +128,7 @@ class Host extends \JTable
 		}
 		if (!$ret)
 		{
-			$this->setError(get_clase($this) . '::store failed - ' . $this->_db->getErrorMsg());
+			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
 			return false;
 		}
 		else
