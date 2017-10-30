@@ -38,6 +38,7 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_HOSTS') . ': '. $text, 'tools.png');
 Toolbar::apply();
 Toolbar::save();
+Toolbar::spacer();
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('host');
