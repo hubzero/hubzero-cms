@@ -349,7 +349,7 @@ class Licenses extends AdminController
 
 		foreach ($ids as $id)
 		{
-			$row = License::onrOrFail($id);
+			$row = License::oneOrFail($id);
 
 			if ($row->isUsed())
 			{
