@@ -68,19 +68,29 @@ class UsersViewLogin extends JViewLegacy
 		$auth = '';
 		if ($return = Request::getVar('return', null, 'GET', 'BASE64'))
 		{
-			$decoded_return = base64_decode($return);
-			$query  = parse_url($decoded_return);
-			if (is_array($query) && isset($query['query']))
+			if (strpos($return, '<') !== false
+			 || strpos($return, '>') !== false)
 			{
-				$query  = $query['query'];
-				$query  = explode('&', $query);
-				$auth   = '';
-				foreach ($query as $q)
+				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
+				$return = null;
+				Request::setVar('return', null);
+			}
+			else
+			{
+				$decoded_return = base64_decode($return);
+				$query  = parse_url($decoded_return);
+				if (is_array($query) && isset($query['query']))
 				{
-					$n = explode('=', $q);
-					if ($n[0] == 'authenticator')
+					$query  = $query['query'];
+					$query  = explode('&', $query);
+					$auth   = '';
+					foreach ($query as $q)
 					{
-						$auth = $n[1];
+						$n = explode('=', $q);
+						if ($n[0] == 'authenticator')
+						{
+							$auth = $n[1];
+						}
 					}
 				}
 			}
