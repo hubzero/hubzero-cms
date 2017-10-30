@@ -83,6 +83,11 @@ foreach ($this->authenticators as $a)
 		$login_provider_html .= '</a>';
 	}
 }
+// Make sure the currently chosen primary actuall exists
+if (!isset($refl[$primary]))
+{
+	$primary = null;
+}
 ?>
 <?php if ($this->params->get('show_page_title', 1)) : ?>
 	<header id="content-header">
