@@ -113,7 +113,8 @@ class Host extends \JTable
 					}
 					else
 					{
-						$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
+						//$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
+						$val = $this->_db->quote($v); 
 					}
 					$tmp[] = $this->_db->quoteName($ky) . '=' . $val;
 				}
@@ -127,7 +128,7 @@ class Host extends \JTable
 		}
 		if (!$ret)
 		{
-			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
+			$this->setError(get_clase($this) . '::store failed - ' . $this->_db->getErrorMsg());
 			return false;
 		}
 		else
