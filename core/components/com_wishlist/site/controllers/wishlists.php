@@ -1394,7 +1394,7 @@ class Wishlists extends SiteController
 			if ($listid != $newlist->get('id'))
 			{
 				// Check if user is in group
-				if($refid != 1 && !in_array(User::get('id'), \Hubzero\User\Group::getInstance($refid)->get('members')))
+				if ($refid != 1 && !in_array(User::get('id'), \Hubzero\User\Group::getInstance($refid)->get('members')))
 				{
 					throw new Exception(Lang::txt('COM_WISHLIST_ERROR_NOT_IN_GROUP'));
 				}
@@ -2073,7 +2073,7 @@ class Wishlists extends SiteController
 		if ($row->get('created_by') != User::get('id'))
 		{
 			App::redirect(
-				Request::getVar('HTTP_REFERER', NULL, 'server'),
+				Request::getVar('HTTP_REFERER', null, 'server'),
 				Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
 				'error'
 			);
@@ -2117,7 +2117,7 @@ class Wishlists extends SiteController
 
 		// Go back to the page
 		App::redirect(
-			Request::getVar('HTTP_REFERER', NULL, 'server')
+			Request::getVar('HTTP_REFERER', null, 'server')
 		);
 	}
 
@@ -2294,7 +2294,7 @@ class Wishlists extends SiteController
 
 			// Get list administrators
 			$objOwner = new Tables\Owner($this->database);
-			$owners = $objOwner->get_owners($listid,  $admingroup);
+			$owners = $objOwner->get_owners($listid, $admingroup);
 			$managers =  $owners['individuals'];
 			$advisory =  $owners['advisory'];
 
@@ -2325,7 +2325,7 @@ class Wishlists extends SiteController
 	 * @param   string   $order
 	 * @return  array
 	 */
-	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
 		$database = \App::get('db');
 
@@ -2340,7 +2340,7 @@ class Wishlists extends SiteController
 			{
 				$tquery .= "'" . $owner . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 
 			$query .= $tquery . ")) ";
 		}
