@@ -2012,7 +2012,6 @@ class Curation extends Obj
 		if (empty($this->_pub))
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
-			return;
 		}
 
 		$bundle = $this->_pub->path('base', true) . DS . $this->getBundleName();
@@ -2033,7 +2032,6 @@ class Curation extends Obj
 		if (!is_file($bundle))
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Initiate a new content server and serve up the file
@@ -2048,13 +2046,8 @@ class Curation extends Obj
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
 		}
-		else
-		{
-			exit;
-		}
 
-		return;
-
+		exit;
 	}
 
 	/**
@@ -2108,6 +2101,13 @@ class Curation extends Obj
 		$tarpath    = $this->_pub->path('base', true) . DS . $tarname;
 		$licFile    = $this->_pub->path('base', true) . DS . 'LICENSE.txt';
 		$readmeFile = $this->_pub->path('base', true) . DS . 'README.txt';
+
+		// If we're NOT overwriting and the file already exists
+		// then we're done!
+		if (!$bundleOverwrite && is_file($tarpath))
+		{
+			return true;
+		}
 
 		// Get attachment type model
 		$attModel = new Attachments($this->_db);
