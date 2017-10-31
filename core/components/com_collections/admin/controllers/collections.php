@@ -336,7 +336,7 @@ class Collections extends AdminController
 		}
 
 		// Load the entry
-		$row = Collection::onrOrFail($id);
+		$row = Collection::oneOrFail($id);
 		$row->set('access', $access);
 
 		// Check and store the changes
