@@ -55,7 +55,7 @@ elseif ($this->project->isProvisioned())
 }
 else
 {
-	$subtitle  = $this->project->owner('name') . ' ';
+	$subtitle  = User::get('name') . ' ';//$this->project->owner('name') . ' ';
 	$subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
 	$subtitle .= ' "' . $this->project->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
 	if ($this->role == 1)
