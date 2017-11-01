@@ -567,10 +567,11 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		// set editor skin
 		$config->skin = $this->params->get('skin', 'moono');
 
-		if (User::authorise('core.manage', 'com_system'))
-		{
+		// Let the global filters handle what HTML tags are or aren't allowed
+		//if (User::authorise('core.manage'))
+		//{
 			$config->allowedContent = true;
-		}
+		//}
 
 		return $config;
 	}
