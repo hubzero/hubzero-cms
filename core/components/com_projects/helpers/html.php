@@ -92,30 +92,29 @@ class Html extends Obj
 	public static function formatTime($time, $full = false, $utc = false)
 	{
 		$parsed 	= date_parse($time);
-		$timestamp	= strtotime($time);
 
 		$now 		= $utc ? Date::toSql() : date('c');
 		$current  	= date_parse($now);
 
 		if ($full)
 		{
-			return Date::of($timestamp)->toLocal('M d, Y H:i:s');
+			return Date::of($time)->toLocal('M d, Y H:i:s');
 		}
 
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
 			{
-				return Date::of($timestamp)->toLocal('g:i A');
+				return Date::of($time)->toLocal('g:i A');
 			}
 			else
 			{
-				return Date::of($timestamp)->toLocal('M j');
+				return Date::of($time)->toLocal('M j');
 			}
 		}
 		else
 		{
-			return Date::of($timestamp)->toLocal('M j, Y');
+			return Date::of($time)->toLocal('M j, Y');
 		}
 	}
 
