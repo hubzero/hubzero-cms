@@ -154,7 +154,15 @@ class Html extends Object
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
+		$val = count($lengths) - 1;
+		while ($val >= 0)
+		{
+			$number = $difference / $lengths[$val];
+			if ($number > 1)
+			{
+				break;
+			}
+		}
 
 		// Ensure the script has found a match
 		if ($val < 0)
@@ -218,7 +226,7 @@ class Html extends Object
 
 			return strtolower(substr($file, $dot));
 		}
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -242,7 +250,7 @@ class Html extends Object
 			}
 			elseif ($to == 'MB')
 			{
-				$file_size = round(($file_size / 1048576 * 100), $round) / 100 ;
+				$file_size = round(($file_size / 1048576 * 100), $round) / 100;
 			}
 			elseif ($to == 'KB')
 			{
@@ -275,7 +283,7 @@ class Html extends Object
 	 * @param      string $mimeType
 	 * @return     string
 	 */
-	public static function fixUpMimeType ($file = NULL, $mimeType = NULL)
+	public static function fixUpMimeType ($file = null, $mimeType = null)
 	{
 		if ($file)
 		{
@@ -421,7 +429,7 @@ class Html extends Object
 	 * @param      string $text
 	 * @return     string
 	 */
-	public static function replaceEmoIcons($text = NULL)
+	public static function replaceEmoIcons($text = null)
 	{
 		$icons = self::getEmoIcons();
 
@@ -491,7 +499,7 @@ class Html extends Object
 		}
 		for ($i=0; $i<$length; $i++)
 		{
-			$key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
+			$key .= $charset[(mt_rand(0, (strlen($charset)-1)))];
 		}
 		return $key;
 	}
@@ -706,7 +714,7 @@ class Html extends Object
 
 			$end = array_pop($file);
 			$file[] = $end;
-			$filename = implode('.',$file);
+			$filename = implode('.', $file);
 		}
 		else
 		{
@@ -785,7 +793,7 @@ class Html extends Object
 
 		if (strlen($name) > $chars)
 		{
-			$names = explode(' ',$name);
+			$names = explode(' ', $name);
 			$name = $names[0];
 			if (count($names) > 0 && $names[1] != '')
 			{
@@ -889,8 +897,8 @@ class Html extends Object
 	 */
 	public static function parseAdminNote($note = '', $reviewer = '', $showmeta = 1, $shorten = 0)
 	{
-		$note = str_replace('<nb:' . $reviewer . '>','', $note);
-		$note = str_replace('</nb:' . $reviewer . '>','', $note);
+		$note = str_replace('<nb:' . $reviewer . '>', '', $note);
+		$note = str_replace('</nb:' . $reviewer . '>', '', $note);
 
 		preg_match("#<meta>(.*?)</meta>#s", $note, $matches);
 		if (count($matches) > 0)
@@ -957,7 +965,7 @@ class Html extends Object
 		if ($from)
 		{
 			$body_plain = is_array($body) && isset($body['plaintext']) ? $body['plaintext'] : $body;
-			$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : NULL;
+			$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : null;
 
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject($subject)
@@ -1219,9 +1227,9 @@ class Html extends Object
 	 * @param      string $url
 	 * @return     string
 	 */
-	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = NULL, $linkit = true, $adapter = NULL, $seperator = '&raquo;')
+	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = null, $linkit = true, $adapter = null, $seperator = '&raquo;')
 	{
-		$bc = NULL;
+		$bc = null;
 		$href = '';
 
 		$desectPath = explode(DS, $dir);
@@ -1350,7 +1358,7 @@ class Html extends Object
 		$html .= '"><input type="radio" name="newpath" value="';
 		$html .= urlencode($dir->path);
 		$html .= '"';
-		
+
 		if ($currentDir == $dir->path)
 		{
 			$html .= 'disabled="disabled" ';
@@ -1363,12 +1371,12 @@ class Html extends Object
 		$html .= '">';
 		$html .= $dir->name;
 		$html .= '</span></span></li>';
-		
+
 		if (count($dir->subdirs) > 0)
 		{
-			foreach($dir->subdirs as $subdir)
+			foreach ($dir->subdirs as $subdir)
 			{
-				$html .= \Components\Projects\Helpers\Html::listDirHtml($subdir, $currentDir);
+				$html .= self::listDirHtml($subdir, $currentDir);
 			}
 		}
 
