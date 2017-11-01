@@ -162,6 +162,7 @@ class Html extends Object
 			{
 				break;
 			}
+			$val--;
 		}
 
 		// Ensure the script has found a match
