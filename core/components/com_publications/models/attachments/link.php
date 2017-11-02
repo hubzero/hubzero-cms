@@ -60,6 +60,10 @@ class Link extends Base
 	/**
 	 * Get configs
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
 	 * @return  boolean
 	 */
 	public function getConfigs($element, $elementId, $pub, $blockParams)
@@ -96,7 +100,13 @@ class Link extends Base
 	/**
 	 * Draw list
 	 *
-	 * @return  string HTML
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @param   boolean  $authorized
+	 * @return  string   HTML
 	 */
 	public function drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
@@ -131,7 +141,13 @@ class Link extends Base
 	/**
 	 * Draw launcher
 	 *
-	 * @return  string HTML
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $elements
+	 * @param   boolean  $authorized
+	 * @return  string   HTML
 	 */
 	public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized)
 	{
@@ -189,11 +205,11 @@ class Link extends Base
 			}
 
 			// One launcher for all files
-			$label = Lang::txt('View publication');
+			$label  = Lang::txt('View publication');
 			$class  = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
-			$title = $configs->title ? $configs->title : Lang::txt('View publication');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
+			$title  = $configs->title ? $configs->title : Lang::txt('View publication');
+			$html   = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
 		{
@@ -208,7 +224,14 @@ class Link extends Base
 	/**
 	 * Transfer files from one version to another
 	 *
-	 * @return  boolean
+	 * @param   object   $elementparams
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $attachments
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
+	 * @return  void
 	 */
 	public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
 	{
@@ -227,6 +250,11 @@ class Link extends Base
 	/**
 	 * Serve
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   integer  $itemId
 	 * @return  boolean
 	 */
 	public function serve($element, $elementId, $pub, $blockParams, $itemId = 0)
@@ -274,6 +302,11 @@ class Link extends Base
 	/**
 	 * Save incoming
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $toAttach
 	 * @return  boolean
 	 */
 	public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
@@ -369,8 +402,15 @@ class Link extends Base
 	/**
 	 * Add/edit file attachment
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   integer  $id
+	 * @param   string   $title
+	 * @param   object   $pub
+	 * @param   object   $configs
+	 * @param   integer  $uid
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   integer  $ordering
+	 * @return  boolean
 	 */
 	public function addAttachment($path, $title, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
@@ -422,7 +462,12 @@ class Link extends Base
 	/**
 	 * Remove attachment
 	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @return  boolean
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
@@ -453,7 +498,12 @@ class Link extends Base
 	/**
 	 * Update attachment properties
 	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @return  boolean
 	 */
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
@@ -489,6 +539,8 @@ class Link extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object  $element
+	 * @param   array   $attachments
 	 * @return  object
 	 */
 	public function getStatus($element, $attachments)
@@ -551,7 +603,9 @@ class Link extends Base
 	/**
 	 * Check for allowed formats
 	 *
-	 * @return  object
+	 * @param   array    $attachments
+	 * @param   array    $formats
+	 * @return  boolean
 	 */
 	public function checkAllowed($attachments, $formats = array())
 	{
@@ -579,7 +633,9 @@ class Link extends Base
 	/**
 	 * Draw attachment
 	 *
-	 * @return  HTML string
+	 * @param   object  $data
+	 * @param   object  $params
+	 * @return  string
 	 */
 	public function drawAttachment($data, $params)
 	{
@@ -605,7 +661,10 @@ class Link extends Base
 	/**
 	 * Build Data object
 	 *
-	 * @return  HTML string
+	 * @param   object   $att
+	 * @param   object   $view
+	 * @param   integer  $i
+	 * @return  object
 	 */
 	public function buildDataObject($att, $view, $i = 1)
 	{
@@ -623,6 +682,14 @@ class Link extends Base
 	/**
 	 * Add to zip bundle
 	 *
+	 * @param   object   $zip
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   object   $readme
+	 * @param   string   $bundleDir
 	 * @return  boolean
 	 */
 	public function addToBundle($zip, $attachments, $element, $elementId, $pub, $blockParams, &$readme, $bundleDir)
@@ -633,6 +700,12 @@ class Link extends Base
 	/**
 	 * Draw list
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   boolean  $authorized
 	 * @return  boolean
 	 */
 	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
