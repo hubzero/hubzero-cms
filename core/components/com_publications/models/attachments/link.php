@@ -32,6 +32,11 @@ namespace Components\Publications\Models\Attachment;
 
 use Components\Publications\Models\Attachment as Base;
 use stdClass;
+use Request;
+use Route;
+use Lang;
+use User;
+use Date;
 
 /**
  * Handles a link attachment
@@ -453,8 +458,8 @@ class Link extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= Request::getVar('title', '');
-		$thumb 	= Request::getInt('makedefault', 0);
+		$title = Request::getVar('title', '');
+		$thumb = Request::getInt('makedefault', 0);
 
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);

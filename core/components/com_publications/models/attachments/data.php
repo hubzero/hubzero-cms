@@ -32,6 +32,11 @@ namespace Components\Publications\Models\Attachment;
 
 use Components\Publications\Models\Attachment as Base;
 use stdClass;
+use Filesystem;
+use Route;
+use Event;
+use Lang;
+use Date;
 
 /**
  * Handles a Datastore Lite attachment

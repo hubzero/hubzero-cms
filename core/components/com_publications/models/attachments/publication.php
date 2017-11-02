@@ -37,6 +37,7 @@ use Request;
 use Route;
 use Lang;
 use Date;
+use User;
 
 /**
  * Handles a publication link attachment
