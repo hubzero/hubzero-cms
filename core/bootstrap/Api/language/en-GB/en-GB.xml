@@ -8,7 +8,7 @@
 	<authorUrl>hubzero.org</authorUrl>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>en-GB administrator language</description>
+	<description>en-GB API language</description>
 	<files>
 		<filename>en-GB.ini</filename>
 		<filename>en-GB.lib_joomla.ini</filename>
