@@ -37,6 +37,11 @@ use Hubzero\Filesystem\Entity;
 use Components\Projects\Models\Orm\Connection;
 use stdClass;
 use ZipArchive;
+use Filesystem;
+use Route;
+use Lang;
+use User;
+use Date;
 
 /**
  * Handles a file attachment

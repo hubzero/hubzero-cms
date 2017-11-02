@@ -37,6 +37,7 @@ use Request;
 use Route;
 use Lang;
 use Date;
+use User;
 
 /**
  * Handles a publication link attachment
@@ -44,10 +45,10 @@ use Date;
 class Publication extends Base
 {
 	/**
-	* Attachment type name
-	*
-	* @var  string
-	*/
+	 * Attachment type name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'publication';
 
 	/**
@@ -133,11 +134,11 @@ class Publication extends Base
 				$description = '';
 				if ($publication->get('abstract'))
 				{
-					$description = \Hubzero\Utility\String::truncate(stripslashes($publication->get('abstract')), 300) . "\n";
+					$description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('abstract')), 300) . "\n";
 				}
 				else if ($publication->get('description'))
 				{
-					$description = \Hubzero\Utility\String::truncate(stripslashes($publication->get('description')), 300) . "\n";
+					$description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('description')), 300) . "\n";
 				}
 
 				$pop = Lang::txt('View link') . ' ' . $title;
