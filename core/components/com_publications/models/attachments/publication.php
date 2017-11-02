@@ -444,7 +444,7 @@ class Publication extends Base
 		}
 		else
 		{
-			$objPA->publication_id         = $pub->id;
+			$objPA->publication_id = $pub->id;
 			$objPA->publication_version_id = $pub->version_id;
 			$objPA->path        = $path;
 			$objPA->type        = $this->_name;
@@ -474,6 +474,11 @@ class Publication extends Base
 	/**
 	 * Remove attachment
 	 *
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
 	 * @return  boolean
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -506,6 +511,11 @@ class Publication extends Base
 	/**
 	 * Update attachment properties
 	 *
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
 	 * @return  boolean
 	 */
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)

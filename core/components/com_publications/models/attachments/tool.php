@@ -32,6 +32,13 @@ namespace Components\Publications\Models\Attachment;
 
 use Components\Publications\Models\Attachment as Base;
 use stdClass;
+use Filesystem;
+use Component;
+use Request;
+use Route;
+use User;
+use Date;
+use Lang;
 
 /**
  * Handles a tool attachment
@@ -39,38 +46,42 @@ use stdClass;
 class Tool extends Base
 {
 	/**
-	 * Attachment type name
-	 *
-	 * @var		string
-	 */
-	protected	$_name = 'tool';
+	* Attachment type name
+	*
+	* @var  string
+	*/
+	protected $_name = 'tool';
 
 	/**
 	 * Unique attachment properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_connector  = array('object_name', 'object_instance');
 
 	/**
 	 * Get configs
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
 	 * @return  boolean
 	 */
-	public function getConfigs( $element, $elementId, $pub, $blockParams )
+	public function getConfigs($element, $elementId, $pub, $blockParams)
 	{
-		$configs	= new stdClass;
+		$configs = new stdClass;
 		$typeParams = $element->typeParams;
 
 		// Allow changes in non-draft version?
-		$configs->freeze 	= isset($blockParams->published_editing)
+		$configs->freeze = isset($blockParams->published_editing)
 							&& $blockParams->published_editing == 0
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 		// Get project path
 		$configs->path 	= $pub->_project->repo()->get('path');
 
-		$pubconfig = Component::params( 'com_publications' );
+		$pubconfig = Component::params('com_publications');
 		$base = $pubconfig->get('webpath');
 
 		// Log path
@@ -85,7 +96,8 @@ class Tool extends Base
 
 		// Fancy launcher?
 		$configs->fancyLauncher = isset($typeParams->fancyLauncher)
-			? $typeParams->fancyLauncher : 0;
+			? $typeParams->fancyLauncher
+			: 0;
 
 		return $configs;
 	}
@@ -93,18 +105,22 @@ class Tool extends Base
 	/**
 	 * Draw list
 	 *
-	 * @return  string HTML
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @param   boolean  $authorized
+	 * @return  string   HTML
 	 */
-	public function drawList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$html = '';
 
-		$url =  Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
+		$url =  Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId);
 		$url = preg_replace('/\/administrator/', '', $url);
 
 		if ($attachments)
@@ -112,10 +128,10 @@ class Tool extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
-				$itemUrl 	= $url . '&a=' . $attach->id;
-				$title 		= $attach->title ? $attach->title : $configs->title;
-				$title 		= $title ? $title : $attach->path;
-				$pop		= Lang::txt('Launch tool') . ' ' . $title;
+				$itemUrl = $url . '&a=' . $attach->id;
+				$title   = $attach->title ? $attach->title : $configs->title;
+				$title   = $title ? $title : $attach->path;
+				$pop     = Lang::txt('Launch tool') . ' ' . $title;
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
@@ -130,9 +146,15 @@ class Tool extends Base
 	/**
 	 * Draw launcher
 	 *
-	 * @return  string HTML
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $elements
+	 * @param   boolean  $authorized
+	 * @return  string   HTML
 	 */
-	public function drawLauncher( $element, $elementId, $pub, $blockParams, $elements, $authorized )
+	public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -149,26 +171,26 @@ class Tool extends Base
 		);
 
 		$disabled = 0;
-		$pop 	  = null;
+		$pop      = null;
 
 		$mconfig = Component::params('com_tools');
 
 		// Ensure we have a connection to the middleware
 		if (!$mconfig->get('mw_on'))
 		{
-			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_SESSION_INVOKE_DISABLED_POP');
-			$disabled 	= 1;
+			$pop = Lang::txt('COM_PUBLICATIONS_STATE_SESSION_INVOKE_DISABLED_POP');
+			$disabled = 1;
 		}
 		elseif ($pub->isUnpublished() || $pub->isDown())
 		{
-			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-			$disabled 	= 1;
+			$pop = Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$disabled = 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+				? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+				: Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
@@ -184,9 +206,7 @@ class Tool extends Base
 		// Which role?
 		$role = $element->params->role;
 
-		$url = Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number )
-				. '?el=' . $elementId;
+		$url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
 
 		// Primary button
 		if ($role == 1)
@@ -202,14 +222,12 @@ class Tool extends Base
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : Lang::txt('COM_PUBLICATIONS_LAUNCH_TOOL');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null,
-					$title, 'rel="external"', $disabled, $pop);
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
 		{
 			$html .= '<ul>';
-			$html .= self::drawList( $attachments, $element, $elementId,
-					$pub, $blockParams, $authorized);
+			$html .= self::drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized);
 			$html .= '</ul>';
 		}
 
@@ -219,17 +237,23 @@ class Tool extends Base
 	/**
 	 * Transfer files from one version to another
 	 *
-	 * @return  boolean
+	 * @param   object   $elementparams
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $attachments
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
+	 * @return  void
 	 */
-	public function transferData( $elementparams, $elementId, $pub, $blockParams,
-			$attachments, $oldVersion, $newVersion)
+	public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
 	{
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
 			// Make new attachment record
-			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id') ))
+			$pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id')))
 			{
 				continue;
 			}
@@ -241,9 +265,14 @@ class Tool extends Base
 	/**
 	 * Serve
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   integer  $itemId
 	 * @return  boolean
 	 */
-	public function serve( $element, $elementId, $pub, $blockParams, $itemId = 0)
+	public function serve($element, $elementId, $pub, $blockParams, $itemId = 0)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -271,20 +300,31 @@ class Tool extends Base
 		// Attachment missing
 		if (!$record)
 		{
-			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
+			$this->setError(Lang::txt('Oops! Something went wrong. Cannot redirect to content.'));
 			return false;
 		}
 
+		//are we on the iPad
+		$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
+
 		//get tool params
 		$params = Component::params('com_tools');
+		$launchOnIpad = $params->get('launch_ipad', 0);
 
 		// Generate the URL that launches a tool session
 		$v = $record->object_revision ? $record->object_revision : 'dev';
-		$path = Route::url('index.php?option=com_tools&app=' . $record->object_name . '&task=invoke&version=' . $v);
+		if ($isiPad && $launchOnIpad)
+		{
+			$path = 'nanohub://tools/invoke/' . $record->object_name . '/' . $v;
+		}
+		else
+		{
+			$path = Route::url('index.php?option=com_tools&app=' . $record->object_name . '&task=invoke&version=' . $v);
+		}
 
 		if (!$path)
 		{
-			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
+			$this->setError(Lang::txt('Oops! Something went wrong. Cannot redirect to content.'));
 			return false;
 		}
 
@@ -299,14 +339,19 @@ class Tool extends Base
 	/**
 	 * Save incoming
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $toAttach
 	 * @return  boolean
 	 */
-	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
+	public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
 	{
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = Request::getVar( 'selecteditems', '');
+			$selections = Request::getVar('selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -326,11 +371,11 @@ class Tool extends Base
 		}
 
 		// Create new version path
-		if (!is_dir( $configs->dataPath ))
+		if (!is_dir($configs->dataPath))
 		{
-			if (!Filesystem::makeDirectory( $configs->dataPath, 0755, true, true ))
+			if (!Filesystem::makeDirectory($configs->dataPath, 0755, true, true))
 			{
-				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
 				return false;
 			}
 		}
@@ -369,8 +414,15 @@ class Tool extends Base
 	/**
 	 * Add/edit attachment
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   integer  $id
+	 * @param   string   $title
+	 * @param   object   $pub
+	 * @param   object   $configs
+	 * @param   integer  $uid
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   integer  $ordering
+	 * @return  boolean
 	 */
 	public function addAttachment($toolObject, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
@@ -381,8 +433,12 @@ class Tool extends Base
 	/**
 	 * Remove attachment
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @return  boolean
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
@@ -393,13 +449,18 @@ class Tool extends Base
 	/**
 	 * Update attachment properties
 	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @return  boolean
 	 */
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= Request::getVar( 'title', '' );
-		$thumb 	= Request::getInt( 'makedefault', 0 );
+		$title = Request::getVar('title', '');
+		$thumb = Request::getInt('makedefault', 0);
 
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
@@ -411,9 +472,9 @@ class Tool extends Base
 		}
 
 		// Update label
-		$row->title 		= $title;
-		$row->modified_by 	= User::get('id');
-		$row->modified 		= Date::toSql();
+		$row->title       = $title;
+		$row->modified_by = User::get('id');
+		$row->modified    = Date::toSql();
 
 		// Update record
 		if (!$row->store())
@@ -429,19 +490,21 @@ class Tool extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object  $element
+	 * @param   array   $attachments
 	 * @return  object
 	 */
-	public function getStatus( $element, $attachments )
+	public function getStatus($element, $attachments)
 	{
 		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
-		$max 		= $element->max;
-		$min 		= $element->min;
-		$role 		= $element->role;
-		$params		= $element->typeParams;
-		$required	= $element->required;
-		$counter 	= count($attachments);
+		$max      = $element->max;
+		$min      = $element->min;
+		$role     = $element->role;
+		$params   = $element->typeParams;
+		$required = $element->required;
+		$counter  = count($attachments);
 
 		if (!$required)
 		{
@@ -454,7 +517,7 @@ class Tool extends Base
 		{
 			if ($counter)
 			{
-				$status->setError( Lang::txt('Need at least ' . $min . ' attachment') );
+				$status->setError(Lang::txt('Need at least ' . $min . ' attachment'));
 			}
 			else
 			{
@@ -465,7 +528,7 @@ class Tool extends Base
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( Lang::txt('Maximum ' . $max . ' attachment(s) allowed') );
+			$status->setError(Lang::txt('Maximum ' . $max . ' attachment(s) allowed'));
 		}
 
 		$status->status = $status->getError() ? 0 : 1;
@@ -476,43 +539,48 @@ class Tool extends Base
 	/**
 	 * Build Data object
 	 *
-	 * @return  HTML string
+	 * @param   object   $att
+	 * @param   object   $view
+	 * @param   integer  $i
+	 * @return  object
 	 */
 	public function buildDataObject($att, $view, $i = 1)
 	{
-		$data 			= new stdClass;
-		$data->row 		= $att;
+		$data = new stdClass;
+		$data->row      = $att;
 		$data->ordering = $i;
 		$data->editUrl  = $view->editUrl;
-		$data->id		= $att->id;
-		$data->props	= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
-		$data->viewer	= $view->viewer;
-		$data->version	= $view->pub->version_number;
+		$data->id       = $att->id;
+		$data->props    = $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
+		$data->viewer   = $view->viewer;
+		$data->version  = $view->pub->version_number;
 		return $data;
 	}
 
 	/**
 	 * Draw attachment
 	 *
-	 * @return  HTML string
+	 * @param   object  $data
+	 * @param   object  $params
+	 * @return  string
 	 */
 	public function drawAttachment($data, $params)
 	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'attachments',
-				'layout'	=> $this->_name
+				'folder'  =>'projects',
+				'element' =>'publications',
+				'name'    =>'attachments',
+				'layout'  => $this->_name
 			)
 		);
-		$view->data 	= $data;
-		$view->params   = $params;
+		$view->data   = $data;
+		$view->params = $params;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -520,10 +588,17 @@ class Tool extends Base
 	/**
 	 * Add to zip bundle
 	 *
+	 * @param   object   $zip
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @param   string   $readme
+	 * @param   string   $bundledir
 	 * @return  boolean
 	 */
-	public function addToBundle( $zip, $attachments, $element, $elementId,
-		$pub, $blockParams, &$readme, $bundleDir)
+	public function addToBundle($zip, $attachments, $element, $elementId, $pub, $blockParams, &$readme, $bundleDir)
 	{
 		return false;
 	}
@@ -531,10 +606,15 @@ class Tool extends Base
 	/**
 	 * Draw list
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @param   boolean  $authorized
 	 * @return  boolean
 	 */
-	public function drawPackageList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		return false;
 	}

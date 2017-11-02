@@ -46,36 +46,40 @@ class Data extends Base
 	/**
 	* Attachment type name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'data';
+	protected $_name = 'data';
 
 	/**
 	* Image Helper
 	*
-	* @var
+	* @var  object
 	*/
-	protected	$_imgHelper = null;
+	protected $_imgHelper = null;
 
 	/**
 	 * Unique attachment properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
-	protected $_connector  = array('object_name', 'object_revision');
+	protected $_connector = array('object_name', 'object_revision');
 
 	/**
 	 * Get configs
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
 	 * @return  boolean
 	 */
-	public function getConfigs( $element, $elementId, $pub, $blockParams )
+	public function getConfigs($element, $elementId, $pub, $blockParams)
 	{
-		$configs	= new stdClass;
+		$configs = new stdClass;
 		$typeParams = $element->typeParams;
 
 		// Allow changes in non-draft version?
-		$configs->freeze 	= isset($blockParams->published_editing)
+		$configs->freeze = isset($blockParams->published_editing)
 							&& $blockParams->published_editing == 0
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
@@ -105,18 +109,22 @@ class Data extends Base
 	/**
 	 * Draw list
 	 *
-	 * @return  string HTML
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @param   boolean  $authorized
+	 * @return  string   HTML
 	 */
-	public function drawList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$html = '';
 
-		$url =  Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
+		$url =  Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId);
 		$url = preg_replace('/\/administrator/', '', $url);
 
 		if ($attachments)
@@ -124,10 +132,10 @@ class Data extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
-				$itemUrl 	= $url . '&a=' . $attach->id;
-				$title 		= $attach->title ? $attach->title : $configs->title;
-				$title 		= $title ? $title : $attach->path;
-				$pop		= Lang::txt('Browse database') . ' ' . $title;
+				$itemUrl = $url . '&a=' . $attach->id;
+				$title   = $attach->title ? $attach->title : $configs->title;
+				$title   = $title ? $title : $attach->path;
+				$pop     = Lang::txt('Browse database') . ' ' . $title;
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
@@ -142,9 +150,15 @@ class Data extends Base
 	/**
 	 * Draw launcher
 	 *
-	 * @return  string HTML
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $elements
+	 * @param   boolean  $authorized
+	 * @return  string   HTML
 	 */
-	public function drawLauncher( $element, $elementId, $pub, $blockParams, $elements, $authorized )
+	public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -161,18 +175,18 @@ class Data extends Base
 		);
 
 		$disabled = 0;
-		$pop 	  = null;
+		$pop      = null;
 
 		if ($pub->isUnpublished() || $pub->isDown())
 		{
-			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-			$disabled 	= 1;
+			$pop = Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$disabled = 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+				? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+				: Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
@@ -181,16 +195,14 @@ class Data extends Base
 			$pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
-		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
+		$pop = $pop ? '<p class="warning">' . $pop . '</p>' : '';
 
 		$html = '';
 
 		// Which role?
 		$role = $element->params->role;
 
-		$url = Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number )
-				. '?el=' . $elementId;
+		$url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
 
 		// Primary button
 		if ($role == 1)
@@ -206,14 +218,12 @@ class Data extends Base
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : Lang::txt('Go to data');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null,
-					$title, 'rel="external"', $disabled, $pop);
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
 		{
 			$html .= '<ul>';
-			$html .= self::drawList( $attachments, $element, $elementId,
-					$pub, $blockParams, $authorized);
+			$html .= self::drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized);
 			$html .= '</ul>';
 		}
 
@@ -223,10 +233,16 @@ class Data extends Base
 	/**
 	 * Transfer files from one version to another
 	 *
-	 * @return  boolean
+	 * @param   object   $elementparams
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $attachments
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
+	 * @return  void
 	 */
-	public function transferData( $elementparams, $elementId, $pub, $blockParams,
-			$attachments, $oldVersion, $newVersion)
+	public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
 	{
 		// Get configs
 		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
@@ -257,25 +273,25 @@ class Data extends Base
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->_parent->setError( Lang::txt('Oops! Cannot attach selected database: database not found') );
+				$this->_parent->setError(Lang::txt('Oops! Cannot attach selected database: database not found'));
 				return false;
 			}
 
 			// Make new attachment record
-			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id') ))
+			$pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id')))
 			{
 				continue;
 			}
 
 			// New database instance - need to clone again and get a new version number
-			$result 			= Event::trigger( 'projects.clone_database', array( $pAttach->object_name, $pub->_project, $newConfigs->servePath) );
-			$dbVersion 			= $result && isset($result[0]) ? $result[0] : null;
+			$result    = Event::trigger('projects.clone_database', array($pAttach->object_name, $pub->_project, $newConfigs->servePath));
+			$dbVersion = $result && isset($result[0]) ? $result[0] : null;
 
 			// Failed to clone
 			if (!$dbVersion)
 			{
-				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE'));
 				$pAttach->delete();
 				return false;
 			}
@@ -283,8 +299,7 @@ class Data extends Base
 			$pAttach->modified_by = null;
 			$pAttach->modified 	= null;
 			$pAttach->object_revision = $dbVersion;
-			$pAttach->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
-										. DS . $pAttach->object_name . DS . '?v=' . $dbVersion;
+			$pAttach->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $pAttach->object_name . DS . '?v=' . $dbVersion;
 			$pAttach->store();
 		}
 
@@ -297,9 +312,14 @@ class Data extends Base
 	/**
 	 * Serve
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   integer  $itemId
 	 * @return  boolean
 	 */
-	public function serve( $element, $elementId, $pub, $blockParams, $itemId = 0)
+	public function serve($element, $elementId, $pub, $blockParams, $itemId = 0)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -329,7 +349,7 @@ class Data extends Base
 
 		if (!$path)
 		{
-			$this->setError( Lang::txt('Oops! Something went wrong. Cannot redirect to content.') );
+			$this->setError(Lang::txt('Oops! Something went wrong. Cannot redirect to content.'));
 			return false;
 		}
 
@@ -344,14 +364,19 @@ class Data extends Base
 	/**
 	 * Save incoming
 	 *
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $blockParams
+	 * @param   array    $toAttach
 	 * @return  boolean
 	 */
-	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
+	public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
 	{
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = Request::getVar( 'selecteditems', '');
+			$selections = Request::getVar('selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -371,11 +396,11 @@ class Data extends Base
 		}
 
 		// Create new version path
-		if (!is_dir( $configs->dataPath ))
+		if (!is_dir($configs->dataPath))
 		{
-			if (!Filesystem::makeDirectory( $configs->dataPath, 0755, true, true ))
+			if (!Filesystem::makeDirectory($configs->dataPath, 0755, true, true))
 			{
-				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
 				return false;
 			}
 		}
@@ -417,8 +442,15 @@ class Data extends Base
 	/**
 	 * Add/edit attachment
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   integer  $id
+	 * @param   string   $title
+	 * @param   object   $pub
+	 * @param   object   $configs
+	 * @param   integer  $uid
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   integer  $ordering
+	 * @return  boolean
 	 */
 	public function addAttachment($database_name, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
@@ -427,8 +459,8 @@ class Data extends Base
 		$objData->loadRecord($database_name);
 		$dbVersion = null;
 
-		$objPA = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-		if ($objPA->loadElementAttachment($pub->version_id, array( 'object_name' => $database_name),
+		$objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+		if ($objPA->loadElementAttachment($pub->version_id, array('object_name' => $database_name),
 			$elementId, $this->_name, $element->role))
 		{
 			// Already attached
@@ -445,15 +477,15 @@ class Data extends Base
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->setError( Lang::txt('Oops! Cannot attach selected database: database not found') );
+				$this->setError(Lang::txt('Oops! Cannot attach selected database: database not found'));
 				return false;
 			}
-			$objPA->publication_id 			= $pub->id;
-			$objPA->publication_version_id 	= $pub->version_id;
-			$objPA->type 					= $this->_name;
-			$objPA->created_by 				= $uid;
-			$objPA->created 				= Date::toSql();
-			$objPA->role 					= $element->role;
+			$objPA->publication_id         = $pub->id;
+			$objPA->publication_version_id = $pub->version_id;
+			$objPA->type                   = $this->_name;
+			$objPA->created_by             = $uid;
+			$objPA->created                = Date::toSql();
+			$objPA->role                   = $element->role;
 			$new = 1;
 
 			// Reflect the update in curation record
@@ -462,7 +494,7 @@ class Data extends Base
 
 		if ($new)
 		{
-			$result = Event::trigger( 'projects.clone_database', array( $database_name, $pub->_project, $configs->servePath) );
+			$result = Event::trigger('projects.clone_database', array($database_name, $pub->_project, $configs->servePath));
 			$dbVersion = $result && isset($result[0]) ? $result[0] : null;
 		}
 		else
@@ -471,10 +503,10 @@ class Data extends Base
 			if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime)
 			{
 				// New database instance - need to clone again and get a new version number
-				$result 			= Event::trigger( 'projects.clone_database', array( $database_name, $pub->_project, $configs->servePath) );
-				$dbVersion 			= $result && isset($result[0]) ? $result[0] : null;
+				$result             = Event::trigger('projects.clone_database', array($database_name, $pub->_project, $configs->servePath));
+				$dbVersion          = $result && isset($result[0]) ? $result[0] : null;
 				$objPA->modified_by = $uid;
-				$objPA->modified 	= Date::toSql();
+				$objPA->modified    = Date::toSql();
 			}
 			else
 			{
@@ -485,20 +517,19 @@ class Data extends Base
 		// Failed to clone
 		if (!$dbVersion)
 		{
-			$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
+			$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE'));
 			return false;
 		}
 
-		$objPA->object_id   	= $objData->id;
-		$objPA->object_name 	= $database_name;
+		$objPA->object_id       = $objData->id;
+		$objPA->object_name     = $database_name;
 		$objPA->object_revision = $dbVersion;
-		$objPA->element_id 		= $elementId;
-		$objPA->ordering 		= $ordering;
-		$objPA->title 			= $objPA->title ? $objPA->title : $objData->title;
+		$objPA->element_id      = $elementId;
+		$objPA->ordering        = $ordering;
+		$objPA->title           = $objPA->title ? $objPA->title : $objData->title;
 
 		// Build link path
-		$objPA->path 			= 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
-									. DS . $database_name . DS . '?v=' . $dbVersion;
+		$objPA->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
 
 		if (!$objPA->store())
 		{
@@ -514,8 +545,12 @@ class Data extends Base
 	/**
 	 * Remove attachment
 	 *
-	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @return  boolean
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
@@ -533,7 +568,7 @@ class Data extends Base
 		// Remove link
 		if (!$this->getError())
 		{
-			$result = Event::trigger( 'projects.remove_database', array( $row->object_name, $pub->_project, $row->object_revision) );
+			$result = Event::trigger('projects.remove_database', array($row->object_name, $pub->_project, $row->object_revision));
 
 			$row->delete();
 
@@ -551,13 +586,18 @@ class Data extends Base
 	/**
 	 * Update attachment properties
 	 *
-	 * @return     boolean or error
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @return  boolean
 	 */
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title = Request::getVar( 'title', '' );
-		$thumb = Request::getInt( 'makedefault', 0 );
+		$title = Request::getVar('title', '');
+		$thumb = Request::getInt('makedefault', 0);
 		$uid   = User::get('id');
 
 		// Get configs
@@ -570,9 +610,9 @@ class Data extends Base
 		}
 
 		// Update label
-		$row->title 		= $title;
-		$row->modified_by 	= $uid;
-		$row->modified 		= Date::toSql();
+		$row->title       = $title;
+		$row->modified_by = $uid;
+		$row->modified    = Date::toSql();
 
 		// Update record
 		if (!$row->store())
@@ -588,19 +628,21 @@ class Data extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object  $element
+	 * @param   array   $attachments
 	 * @return  object
 	 */
-	public function getStatus( $element, $attachments )
+	public function getStatus($element, $attachments)
 	{
 		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
-		$max 		= $element->max;
-		$min 		= $element->min;
-		$role 		= $element->role;
-		$params		= $element->typeParams;
-		$required	= $element->required;
-		$counter 	= count($attachments);
+		$max      = $element->max;
+		$min      = $element->min;
+		$role     = $element->role;
+		$params   = $element->typeParams;
+		$required = $element->required;
+		$counter  = count($attachments);
 
 		if (!$required)
 		{
@@ -613,7 +655,7 @@ class Data extends Base
 		{
 			if ($counter)
 			{
-				$status->setError( Lang::txt('Need at least ' . $min . ' attachment') );
+				$status->setError(Lang::txt('Need at least ' . $min . ' attachment'));
 			}
 			else
 			{
@@ -624,7 +666,7 @@ class Data extends Base
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( Lang::txt('Maximum ' . $max . ' attachment(s) allowed') );
+			$status->setError(Lang::txt('Maximum ' . $max . ' attachment(s) allowed'));
 		}
 
 		$status->status = $status->getError() ? 0 : 1;
@@ -635,43 +677,48 @@ class Data extends Base
 	/**
 	 * Build Data object
 	 *
-	 * @return  HTML string
+	 * @param   object   $att
+	 * @param   object   $view
+	 * @param   integer  $i
+	 * @return  object
 	 */
 	public function buildDataObject($att, $view, $i = 1)
 	{
-		$data 			= new stdClass;
-		$data->row 		= $att;
+		$data = new stdClass;
+		$data->row      = $att;
 		$data->ordering = $i;
 		$data->editUrl  = $view->pub->link('editversion');
-		$data->id		= $att->id;
-		$data->props	= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
-		$data->viewer	= $view->viewer;
-		$data->version	= $view->pub->version_number;
+		$data->id       = $att->id;
+		$data->props    = $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
+		$data->viewer   = $view->viewer;
+		$data->version  = $view->pub->version_number;
 		return $data;
 	}
 
 	/**
 	 * Draw attachment
 	 *
-	 * @return  HTML string
+	 * @param   object  $data
+	 * @param   object  $params
+	 * @return  string
 	 */
 	public function drawAttachment($data, $params)
 	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'attachments',
-				'layout'	=> $this->_name
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'attachments',
+				'layout'  => $this->_name
 			)
 		);
-		$view->data 	= $data;
-		$view->params   = $params;
+		$view->data   = $data;
+		$view->params = $params;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -679,10 +726,17 @@ class Data extends Base
 	/**
 	 * Add to zip bundle
 	 *
+	 * @param   object   $zip
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @param   string   $readme
+	 * @param   string   $bundledir
 	 * @return  boolean
 	 */
-	public function addToBundle( $zip, $attachments, $element, $elementId,
-		$pub, $blockParams, &$readme, $bundleDir)
+	public function addToBundle($zip, $attachments, $element, $elementId, $pub, $blockParams, &$readme, $bundleDir)
 	{
 		if (!$attachments)
 		{
@@ -699,7 +753,7 @@ class Data extends Base
 				return false;
 			}
 
-			$db_name 	= $attachment->object_name;
+			$db_name    = $attachment->object_name;
 			$db_version = $attachment->object_revision;
 
 			if ($attachment->title != '')
@@ -714,8 +768,8 @@ class Data extends Base
 			// Add CSV file
 			if ($db_name && $db_version && $title)
 			{
-				$tmpFile 	= $configs->dataPath . DS . $title . '-' . $db_version . '.csv';
-				$csv 		= $this->getCsvData($db_name, $db_version, $tmpFile);
+				$tmpFile = $configs->dataPath . DS . $title . '-' . $db_version . '.csv';
+				$csv = $this->getCsvData($db_name, $db_version, $tmpFile);
 
 				if ($csv && file_exists($tmpFile))
 				{
@@ -746,15 +800,15 @@ class Data extends Base
 				}
 
 				$fileinfo = pathinfo($e);
-				$a_dir  = $fileinfo['dirname'];
-				$a_dir	= trim(str_replace($configs->dataPath, '', $a_dir), DS);
+				$a_dir = $fileinfo['dirname'];
+				$a_dir = trim(str_replace($configs->dataPath, '', $a_dir), DS);
 
 				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$where = $bundleDir . DS . 'data' . DS . $fPath . basename($e);
 
 				if ($zip->addFile($e, $where))
 				{
-					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+					$readme .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
 				}
 			}
 		}
@@ -765,10 +819,10 @@ class Data extends Base
 	/**
 	 * Get data as CSV file
 	 *
-	 * @param      string  	$db_name
-	 * @param      integer  	$version
-	 *
-	 * @return     string data
+	 * @param   string   $db_name
+	 * @param   integer  $version
+	 * @param   string   $tmpFile
+	 * @return  string   data
 	 */
 	public function getCsvData($db_name = '', $version = '', $tmpFile = '')
 	{
@@ -780,12 +834,12 @@ class Data extends Base
 		mb_internal_encoding('UTF-8');
 
 		// component path for "com_dataviewer"
-		$dv_com_path = PATH_CORE . DS . 'components' . DS . 'com_dataviewer' . DS . 'site';
+		$dv_com_path = \Component::path('com_dataviewer') . DS . 'site';
 
-		require_once($dv_com_path . DS . 'dv_config.php');
-		require_once($dv_com_path . DS . 'lib' . DS . 'db.php');
-		require_once($dv_com_path . DS . 'modes' . DS . 'mode_dsl.php');
-		require_once($dv_com_path . DS . 'filter' . DS . 'csv.php');
+		require_once $dv_com_path . DS . 'dv_config.php';
+		require_once $dv_com_path . DS . 'lib' . DS . 'db.php';
+		require_once $dv_com_path . DS . 'modes' . DS . 'mode_dsl.php';
+		require_once $dv_com_path . DS . 'filter' . DS . 'csv.php';
 
 		$dv_conf = get_conf(null);
 		$dd = get_dd(null, $db_name, $version);
@@ -814,10 +868,15 @@ class Data extends Base
 	/**
 	 * Draw list
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
+	 * @param   boolean  $authorized
 	 * @return  boolean
 	 */
-	public function drawPackageList( $attachments, $element, $elementId,
-		$pub, $blockParams, $authorized)
+	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -851,8 +910,8 @@ class Data extends Base
 				$file = new \Components\Projects\Models\File($e);
 
 				$fileinfo = pathinfo($e);
-				$a_dir  = $fileinfo['dirname'];
-				$a_dir	= trim(str_replace($configs->dataPath, '', $a_dir), DS);
+				$a_dir = $fileinfo['dirname'];
+				$a_dir = trim(str_replace($configs->dataPath, '', $a_dir), DS);
 
 				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$where = 'data' . DS . $fPath . basename($e);
@@ -867,9 +926,9 @@ class Data extends Base
 	/**
 	 * Publish supporting database files
 	 *
-	 * @param      object  	$objPD
-	 *
-	 * @return     boolean or error
+	 * @param   object   $objPD
+	 * @param   array    $configs
+	 * @return  boolean  or error
 	 */
 	public function publishDataFiles($objPD, $configs)
 	{
@@ -928,7 +987,7 @@ class Data extends Base
 						if ((isset($r[$i]) && $r[$i] != ''))
 						{
 							$file = $columns[$i] ? $columns[$i] . DS . trim($r[$i]) : trim($r[$i]);
-							if (file_exists( $repoPath . DS . $file))
+							if (file_exists($repoPath . DS . $file))
 							{
 								$files[] = $file;
 							}
@@ -943,7 +1002,7 @@ class Data extends Base
 		{
 			foreach ($files as $file)
 			{
-				if (!file_exists( $repoPath . DS . $file))
+				if (!file_exists($repoPath . DS . $file))
 				{
 					continue;
 				}
