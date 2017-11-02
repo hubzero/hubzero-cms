@@ -821,13 +821,12 @@ class Git extends Models\Adapter
 				return 0;
 			}
 
-			exec('du -sk ' . $where, $out);
+			exec('du -sb --exclude=.git ' . $where, $out);
 
 			if ($out && isset($out[0]))
 			{
 				$dir = $git == true ? '.git' : '.';
-				$kb = str_replace($dir, '', trim($out[0]));
-				$used = $kb * 1024;
+				$used = str_replace($dir, '', trim($out[0]));
 			}
 		}
 

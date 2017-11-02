@@ -484,12 +484,11 @@ class Nogit extends Models\Adapter
 		{
 			chdir($path);
 
-			exec('du -sk', $out);
+			exec('du -sb --exclude=.git ', $out);
 
 			if ($out && isset($out[0]))
 			{
-				$kb = str_replace('.', '', trim($out[0]));
-				$used = $kb * 1024;
+				$used = str_replace('.', '', trim($out[0]));
 			}
 		}
 

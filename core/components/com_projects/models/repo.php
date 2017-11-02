@@ -1528,13 +1528,12 @@ class Repo extends Object
 			$base_path = DS . trim($pubconfig->get('webpath'), DS);
 
 			chdir(PATH_APP . $base_path);
-			exec('du -sk ', $out);
+			exec('du -sb ', $out);
 			$used = 0;
 
 			if ($out && isset($out[0]))
 			{
-				$kb = str_replace('.', '', trim($out[0]));
-				$used = $kb * 1024;
+				$used = str_replace('.', '', trim($out[0]));
 			}
 
 			return $used;
