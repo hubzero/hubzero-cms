@@ -1134,13 +1134,12 @@ class Html
 			chdir($prefix . $path);
 
 			$where = $git == true ? ' .[!.]*' : '';
-			exec('du -sk ' . $where, $out);
+			exec('du -sb ' . $where, $out);
 
 			if ($out && isset($out[0]))
 			{
 				$dir = $git == true ? '.git' : '.';
-				$kb = str_replace($dir, '', trim($out[0]));
-				$used = $kb * 1024;
+				$used = str_replace($dir, '', trim($out[0]));
 			}
 		}
 
