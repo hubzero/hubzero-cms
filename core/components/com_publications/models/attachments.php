@@ -32,7 +32,9 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
+use Filesystem;
+use Lang;
 
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'status.php');
@@ -43,41 +45,46 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
  * Publications attachments class
  *
  */
-class Attachments extends Object
+class Attachments extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	public $_db   		= NULL;
+	public $_db = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
-	protected $_types 	= array();
+	 * Loaded elements
+	 *
+	 * @var  array
+	 */
+	protected $_types = array();
 
 	/**
-	* @var    array  Directories, where attachment types can be stored
-	*/
-	protected $_path 	= array();
+	 * Directories, where attachment types can be stored
+	 *
+	 * @var  array
+	 */
+	protected $_path = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      	 JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
-		$this->_db 		= $db;
-		$this->_path[] 	= dirname(__FILE__) . DS . 'attachments';
+		$this->_db = $db;
+		$this->_path[] = dirname(__FILE__) . DS . 'attachments';
 	}
 
 	/**
 	 * Get attachments connector
 	 *
-	 * @return object
+	 * @param   string  $name
+	 * @return  mixed   bool or object
 	 */
 	public function connector($name)
 	{
@@ -94,9 +101,13 @@ class Attachments extends Object
 	/**
 	 * Get status for an attachment within publication
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   array    $attachments
+	 * @return  object
 	 */
-	public function getStatus($name, $element = NULL, $elementId = 0, $attachments = NULL)
+	public function getStatus($name, $element = null, $elementId = 0, $attachments = null)
 	{
 		// Load attachment type
 		$type = $this->loadAttach($name);
@@ -104,11 +115,11 @@ class Attachments extends Object
 		if ($type === false)
 		{
 			$status = new \Components\Publications\Models\Status();
-			$status->setError(Lang::txt('Attachment type not found') );
+			$status->setError(Lang::txt('Attachment type not found'));
 		}
 		else
 		{
-			$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+			$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 			// Sort out attachments for this element
 			$attachments = self::getElementAttachments($elementId, $attachments, $name);
@@ -123,41 +134,57 @@ class Attachments extends Object
 	/**
 	 * Transfer data
 	 *
-	 * @return boolean
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $params
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
+	 * @return  void
 	 */
-	public function transferData($name, $element = NULL, $elementId = 0,
-		$pub = NULL, $params = NULL, $oldVersion, $newVersion)
+	public function transferData($name, $element = null, $elementId = 0, $pub = null, $params = null, $oldVersion, $newVersion)
 	{
 		// Load attachment type
 		$type = $this->loadAttach($name);
 
 		if ($type === false)
 		{
-			$status->setError(Lang::txt('Attachment type not found') );
+			$status->setError(Lang::txt('Attachment type not found'));
 		}
 		else
 		{
 			$attachments = $pub->_attachments;
-			$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+			$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 			// Sort out attachments for this element
 			$attachments = self::getElementAttachments($elementId, $attachments, $name);
 			if ($attachments)
 			{
-				$type->transferData($element->params, $elementId, $pub, $params,
-					$attachments, $oldVersion, $newVersion
+				$type->transferData(
+					$element->params,
+					$elementId,
+					$pub,
+					$params,
+					$attachments,
+					$oldVersion,
+					$newVersion
 				);
 			}
 		}
-
 	}
 
 	/**
 	 * Attach items to publication
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $params
+	 * @return  boolean
 	 */
-	public function attach($name, $element = NULL, $elementId = 0, $pub = NULL, $params = NULL)
+	public function attach($name, $element = null, $elementId = 0, $pub = null, $params = null)
 	{
 		// Load attachment type
 		$type = $this->loadAttach($name);
@@ -185,12 +212,17 @@ class Attachments extends Object
 	/**
 	 * Serve attachments within element
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $params
+	 * @param   integer  $itemId
+	 * @return  mixed    string or boolean
 	 */
-	public function serve($name = NULL, $element = NULL,
-		$elementId = 0, $pub = NULL, $params = NULL, $itemId = NULL)
+	public function serve($name = null, $element = null, $elementId = 0, $pub = null, $params = null, $itemId = null)
 	{
-		if ($name === NULL)
+		if ($name === null)
 		{
 			return false;
 		}
@@ -220,11 +252,15 @@ class Attachments extends Object
 	/**
 	 * Draw list of element items
 	 *
-	 * @return object
+	 * @param   array    $elements
+	 * @param   object   $pub
+	 * @param   boolean  $authorized
+	 * @param   string   $append
+	 * @return  mixed    string or bool
 	 */
-	public function listItems($elements = NULL, $pub = NULL, $authorized = true, $append = NULL)
+	public function listItems($elements = null, $pub = null, $authorized = true, $append = null)
 	{
-		if (empty($elements) || $pub === NULL)
+		if (empty($elements) || $pub === null)
 		{
 			return false;
 		}
@@ -244,7 +280,7 @@ class Attachments extends Object
 
 			$attachments = $pub->_attachments;
 			$attachments = isset($attachments['elements'][$element->id])
-						 ? $attachments['elements'][$element->id] : NULL;
+						 ? $attachments['elements'][$element->id] : null;
 
 			if ($attachments)
 			{
@@ -270,11 +306,17 @@ class Attachments extends Object
 	/**
 	 * Draw launching button/link for element
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   object   $element
+	 * @param   array    $elements
+	 * @param   boolean  $authorized
+	 * @return  mixed    object or boolean
 	 */
-	public function drawLauncher($name = NULL, $pub = NULL, $element = NULL, $elements = NULL, $authorized = true)
+	public function drawLauncher($name = null, $pub = null, $element = null, $elements = null, $authorized = true)
 	{
-		if ($name === NULL || $element === NULL || $pub === NULL)
+		if ($name === null || $element === null || $pub === null)
 		{
 			return false;
 		}
@@ -294,9 +336,13 @@ class Attachments extends Object
 	/**
 	 * Draws attachment
 	 *
-	 * @return  object
+	 * @param   string  $name
+	 * @param   array   $data
+	 * @param   object  $typeParams
+	 * @param   object  $handler
+	 * @return  mixed   object or bool
 	 */
-	public function drawAttachment( $name, $data = NULL, $typeParams = NULL, $handler = NULL )
+	public function drawAttachment($name, $data = null, $typeParams = null, $handler = null)
 	{
 		// Load attachment type
 		$type = $this->loadAttach($name);
@@ -317,9 +363,13 @@ class Attachments extends Object
 	/**
 	 * Draws attachment
 	 *
-	 * @return  object
+	 * @param   string   $name
+	 * @param   object   $attachment
+	 * @param   object   $view
+	 * @param   integer  $ordering
+	 * @return  mixed    object or bool
 	 */
-	public function buildDataObject( $name, $attachment, $view, $ordering = 1 )
+	public function buildDataObject($name, $attachment, $view, $ordering = 1)
 	{
 		// Load attachment type
 		$type = $this->loadAttach($name);
@@ -336,7 +386,14 @@ class Attachments extends Object
 	/**
 	 * Update attachment record
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $row
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   object   $params
+	 * @return  boolean
 	 */
 	public function update($name, $row, $pub, $actor, $elementId, $element, $params)
 	{
@@ -372,7 +429,14 @@ class Attachments extends Object
 	/**
 	 * Remove attachment
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $row
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   object   $params
+	 * @return  boolean
 	 */
 	public function remove($name, $row, $pub, $actor, $elementId, $element, $params)
 	{
@@ -407,10 +471,14 @@ class Attachments extends Object
 	/**
 	 * Get element attachments (ween out inapplicable attachments)
 	 *
+	 * @param   integer  $elementId
+	 * @param   array    $attachments
+	 * @param   string   $type
+	 * @param   string   $role
+	 * @param   boolean  $includeUnattached
 	 * @return  object
 	 */
-	public function getElementAttachments( $elementId = 0, $attachments = array(),
-		$type = '', $role = '', $includeUnattached = true )
+	public function getElementAttachments($elementId = 0, $attachments = array(), $type = '', $role = '', $includeUnattached = true)
 	{
 		$collect = array();
 
@@ -449,9 +517,11 @@ class Attachments extends Object
 	/**
 	 * Loads a block
 	 *
+	 * @param   string   $name
+	 * @param   boolean  $new
 	 * @return  object
 	 */
-	public function loadAttach( $name, $new = false )
+	public function loadAttach($name, $new = false)
 	{
 		$signature = md5($name);
 
@@ -459,7 +529,7 @@ class Attachments extends Object
 			&& !($this->_types[$signature] instanceof __PHP_Incomplete_Class))
 			&& $new === false)
 		{
-			return	$this->_types[$signature];
+			return $this->_types[$signature];
 		}
 
 		$elementClass = __NAMESPACE__ . '\\Attachment\\' . ucfirst($name);
@@ -474,10 +544,9 @@ class Attachments extends Object
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $name) . '.php');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}
@@ -501,12 +570,16 @@ class Attachments extends Object
 	/**
 	 * Bundle elements
 	 *
-	 * @return object
+	 * @param   object  $zip
+	 * @param   array   $elements
+	 * @param   object  $pub
+	 * @param   string  $readme
+	 * @param   string  $bundleDir
+	 * @return  mixed   object or bool
 	 */
-	public function bundleItems($zip = NULL, $elements = NULL,
-		$pub = NULL, &$readme, $bundleDir)
+	public function bundleItems($zip = null, $elements = null, $pub = null, &$readme, $bundleDir)
 	{
-		if ($zip === NULL || empty($elements) || $pub === NULL)
+		if ($zip === null || empty($elements) || $pub === null)
 		{
 			return false;
 		}
@@ -529,7 +602,7 @@ class Attachments extends Object
 
 			$attachments = $pub->_attachments;
 			$attachments = isset($attachments['elements'][$element->id])
-						 ? $attachments['elements'][$element->id] : NULL;
+						 ? $attachments['elements'][$element->id] : null;
 
 			// Add to bundle
 			$type->addToBundle(
@@ -549,16 +622,18 @@ class Attachments extends Object
 	/**
 	 * Show bundle elements
 	 *
-	 * @return object
+	 * @param   array   $elements
+	 * @param   object  $pub
+	 * @return  mixed   object or bool
 	 */
-	public function showPackagedItems($elements = NULL, $pub = NULL)
+	public function showPackagedItems($elements = null, $pub = null)
 	{
-		if (empty($elements) || $pub === NULL)
+		if (empty($elements) || $pub === null)
 		{
 			return false;
 		}
 
-		$contents = NULL;
+		$contents = null;
 		foreach ($elements as $element)
 		{
 			// File?
@@ -577,7 +652,7 @@ class Attachments extends Object
 
 			$attachments = $pub->_attachments;
 			$attachments = isset($attachments['elements'][$element->id])
-						 ? $attachments['elements'][$element->id] : NULL;
+						 ? $attachments['elements'][$element->id] : null;
 
 			// Add to bundle
 			$contents .= $type->drawPackageList(

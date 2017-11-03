@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
 
 use stdClass;
+use Filesystem;
+use Lang;
 
 include_once(__DIR__ . DS . 'format.php');
 include_once(__DIR__ . DS . 'element.php');
@@ -43,29 +47,37 @@ include_once(__DIR__ . DS . 'element.php');
 class Elements
 {
 	/**
-	 * @var    string  The raw params string
+	 * The raw params string
+	 *
+	 * @var  string
 	 */
 	protected $_raw = null;
 
 	/**
-	 * @var    object  The XML params element
+	 * The XML params element
+	 *
+	 * @var  object
 	 */
 	protected $_schema = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
+	 * Loaded elements
+	 *
+	 * @var  array
+	 */
 	protected $_elements = array();
 
 	/**
-	* @var    array  Directories, where element types can be stored
-	*/
+	 * Directories, where element types can be stored
+	 *
+	 * @var  array
+	 */
 	protected $_elementPath = array();
 
 	/**
 	 * Registry Object
 	 *
-	 * @var    object
+	 * @var  object
 	 */
 	protected $data;
 
@@ -103,7 +115,7 @@ class Elements
 	/**
 	 * Magic function to clone the registry object.
 	 *
-	 * @return  Registry
+	 * @return  void
 	 */
 	public function __clone()
 	{
@@ -767,10 +779,9 @@ class Elements
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $type).'.php', 'path');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

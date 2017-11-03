@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,48 +22,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Publications block base class
  */
-class Block extends Object
+class Block extends Obj
 {
 	/**
-	* Element name
-	*
-	* This has to be set in the final
-	* renderer classes.
-	*
-	* @var string
-	*/
+	 * Element name
+	 *
+	 * This has to be set in the final
+	 * renderer classes.
+	 *
+	 * @var  string
+	 */
 	protected $_name = null;
 
 	/**
-	* Block manifest
-	*
-	* This has to be set in the final
-	* renderer classes.
-	*
-	* @var string
-	*/
+	 * Block manifest
+	 *
+	 * This has to be set in the final
+	 * renderer classes.
+	 *
+	 * @var  string
+	 */
 	protected $_manifest = null;
 
 	/**
-	* Reference to the object that instantiated the element
-	*
-	* @var object
-	*/
+	 * Reference to the object that instantiated the element
+	 *
+	 * @var  object
+	 */
 	protected $_parent = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @access protected
+	 * @param   object  $parent
+	 * @return  void
 	 */
 	public function __construct($parent = null)
 	{
@@ -75,22 +78,21 @@ class Block extends Object
 	}
 
 	/**
-	* Get the block name
-	*
-	* @access public
-	* @return string type of the parameter
-	*/
+	 * Get the block name
+	 *
+	 * @return  string
+	 */
 	public function getName()
 	{
 		return $this->_name;
 	}
 
 	/**
-	* Get property
-	*
-	* @access public
-	* @return string type of the parameter
-	*/
+	 * Get property
+	 *
+	 * @param   string  $name
+	 * @return  mixed
+	 */
 	public function getProperty($name)
 	{
 		if (isset($this->$name))

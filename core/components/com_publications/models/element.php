@@ -32,6 +32,7 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Object;
 use stdClass;
+use Lang;
 
 /**
  * Publication element base class
@@ -44,21 +45,22 @@ class Element extends Object
 	* This has to be set in the final
 	* renderer classes.
 	*
-	* @var string
+	* @var  string
 	*/
 	protected $_name = null;
 
 	/**
 	* Reference to the object that instantiated the element
 	*
-	* @var object
+	* @var  object
 	*/
 	protected $_parent = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @access protected
+	 * @param   object  $parent
+	 * @return  void
 	 */
 	public function __construct($parent = null)
 	{
@@ -68,8 +70,7 @@ class Element extends Object
 	/**
 	* Get the element name
 	*
-	* @access public
-	* @return string type of the parameter
+	* @return  string  type of the parameter
 	*/
 	public function getName()
 	{
@@ -164,7 +165,7 @@ class Element extends Object
 	/**
 	 * Display a value
 	 *
-	 * @param   string  $value   Data
+	 * @param   string  $value  Data
 	 * @return  string  Formatted string.
 	 */
 	public function display($value)
@@ -175,10 +176,10 @@ class Element extends Object
 	/**
 	 * Create html tag for element.
 	 *
-	 * @param  string $tag    Tag Name
-	 * @param  sting  $value  Tag Value
-	 * @param  string $prefix Tag prefix
-	 * @return string HTML
+	 * @param   string  $tag     Tag Name
+	 * @param   sting   $value   Tag Value
+	 * @param   string  $prefix  Tag prefix
+	 * @return  string  HTML
 	 */
 	public function toHtmlTag($tag, $value, $prefix = 'nb:')
 	{

@@ -32,7 +32,8 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
+use Filesystem;
 
 include_once(dirname(__FILE__) . DS . 'blockelement.php');
 include_once(dirname(__FILE__) . DS . 'status.php');
@@ -41,43 +42,50 @@ include_once(dirname(__FILE__) . DS . 'status.php');
  * Publications block elements class
  *
  */
-class BlockElements extends Object
+class BlockElements extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	public $_db   		= NULL;
+	public $_db = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
-	protected $_elements 	= array();
+	 * Loaded elements
+	 *
+	 * @var  array
+	 */
+	protected $_elements = array();
 
 	/**
-	* @var    array  Directories, where block elements can be stored
-	*/
-	protected $_path 	= array();
+	 * Directories, where block elements can be stored
+	 *
+	 * @var  array
+	 */
+	protected $_path = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      	 JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
-		$this->_db 		= $db;
-		$this->_path[] 	= dirname(__FILE__) . DS . 'blockelements';
+		$this->_db = $db;
+		$this->_path[] = dirname(__FILE__) . DS . 'blockelements';
 	}
 
 	/**
 	 * Get status for a block element within publication
 	 *
-	 * @return object
+	 * @param   string  $name
+	 * @param   object  $manifest
+	 * @param   object  $pub
+	 * @return  object
 	 */
-	public function getStatus($name, $manifest = NULL, $pub = NULL)
+	public function getStatus($name, $manifest = null, $pub = null)
 	{
 		// Load attachment type
 		$element = $this->loadElement($name);
@@ -98,10 +106,17 @@ class BlockElements extends Object
 	/**
 	 * Draw element for
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   integer  $elementId
+	 * @param   string   $manifest
+	 * @param   object   $master
+	 * @param   object   $pub
+	 * @param   object   $status
+	 * @param   string   $viewname
+	 * @param   integer  $order
+	 * @return  object
 	 */
-	public function drawElement($name, $elementId = 0, $manifest = NULL,
-		$master = NULL, $pub = NULL, $status = NULL, $viewname = 'edit', $order = 0)
+	public function drawElement($name, $elementId = 0, $manifest = null, $master = null, $pub = null, $status = null, $viewname = 'edit', $order = 0)
 	{
 		// Load attachment type
 		$element = $this->loadElement($name);
@@ -119,17 +134,19 @@ class BlockElements extends Object
 	/**
 	 * Get active element
 	 *
-	 * @return object
+	 * @param   array   $elements
+	 * @param   object  $review
+	 * @return  array
 	 */
 	public function getActiveElement($elements, $review)
 	{
 		// What is the last incomplete element?
-		$lastComplete 	= 0;
+		$lastComplete   = 0;
 		$lastIncomplete = 0;
-		$total 			= 0;
-		$showElement 	= 1;
-		$collector		= array();
-		$i				= 1;
+		$total          = 0;
+		$showElement    = 1;
+		$collector      = array();
+		$i              = 1;
 
 		foreach ($elements as $elId => $el)
 		{
@@ -165,7 +182,8 @@ class BlockElements extends Object
 		}
 
 		$nextElement = isset($collector[$lastComplete + 1])
-					 ? $collector[$lastComplete + 1] : $collector[$lastComplete];
+					 ? $collector[$lastComplete + 1]
+					 : $collector[$lastComplete];
 
 		if ($lastIncomplete)
 		{
@@ -173,8 +191,7 @@ class BlockElements extends Object
 		}
 		else
 		{
-			$showElement = isset($elements->$nextElement)
-						? $nextElement : $collector[$lastComplete];
+			$showElement = isset($elements->$nextElement) ? $nextElement : $collector[$lastComplete];
 		}
 
 		return array('showElement' => $showElement, 'total' => $total);
@@ -183,9 +200,11 @@ class BlockElements extends Object
 	/**
 	 * Loads a block
 	 *
+	 * @param   string   $name
+	 * @param   boolean  $new
 	 * @return  object
 	 */
-	public function loadElement( $name, $new = false )
+	public function loadElement($name, $new = false)
 	{
 		$signature = md5($name);
 
@@ -193,7 +212,7 @@ class BlockElements extends Object
 			&& !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))
 			&& $new === false)
 		{
-			return	$this->_elements[$signature];
+			return $this->_elements[$signature];
 		}
 
 		$elementClass = __NAMESPACE__ . '\\BlockElement\\' . ucfirst($name);
@@ -208,10 +227,9 @@ class BlockElements extends Object
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $name).'.php', 'path');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

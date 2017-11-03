@@ -32,10 +32,16 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Publications\Helpers;
 use Components\Publications\Tables;
 use Hubzero\Base\ItemList;
+use Filesystem;
+use Component;
+use Event;
+use User;
+use Date;
+use Lang;
 
 // Include table classes
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
@@ -52,8 +58,8 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
 
 // Projects
-require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'models' . DS . 'project.php');
-require_once(PATH_CORE . DS . 'components'.DS .'com_projects' . DS . 'models' . DS . 'repo.php');
+require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+require_once \Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
 
 // Common models
 require_once(__DIR__ . DS . 'curation.php');
@@ -67,7 +73,7 @@ require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
 /**
  * Information retrieval for items/info linked to a publication
  */
-class Publication extends Object
+class Publication extends Obj
 {
 	/**
 	 * Authorized
@@ -1324,7 +1330,7 @@ class Publication extends Object
 	{
 		if (!($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = \User::getInstance($this->get('created_by'));
+			$this->_creator = User::getInstance($this->get('created_by'));
 		}
 		if ($property)
 		{
@@ -1348,7 +1354,7 @@ class Publication extends Object
 	{
 		if (!($this->_modifier instanceof \Hubzero\User\User))
 		{
-			$this->_modifier = \User::getInstance($this->get('modified_by'));
+			$this->_modifier = User::getInstance($this->get('modified_by'));
 		}
 		if ($property)
 		{
@@ -1376,7 +1382,7 @@ class Publication extends Object
 		}
 		if (!($this->_curator instanceof \Hubzero\User\User))
 		{
-			$this->_curator = \User::getInstance($this->get('curator'));
+			$this->_curator = User::getInstance($this->get('curator'));
 		}
 		if ($property)
 		{
@@ -1456,7 +1462,7 @@ class Publication extends Object
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -1531,7 +1537,7 @@ class Publication extends Object
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -1648,7 +1654,7 @@ class Publication extends Object
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -1696,14 +1702,21 @@ class Publication extends Object
 		}
 		if (!isset($this->_citations))
 		{
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-			$cc = new \Components\Citations\Tables\Citation($this->_db);
+			$cc = \Components\Citations\Models\Citation::all();
 
-			$this->_citations = $cc->getCitations('publication', $this->get('id'));
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
+
+			$this->_citations = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'publication')
+				->whereEquals($a . '.oid', $this->get('id'))
+				->order($c . '.affiliated', 'asc')
+				->order($c . '.year', 'desc')
+				->rows();
 		}
 
 		return $this->_citations;
@@ -1734,14 +1747,21 @@ class Publication extends Object
 		}
 		if (!isset($this->_lastCitationDate))
 		{
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'author.php';
-			include_once Component::path('com_citations') . DS . 'tables' . DS . 'secondary.php';
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-			$cc = new \Components\Citations\Tables\Citation($this->_db);
+			$cc = \Components\Citations\Models\Citation::all();
 
-			$this->_lastCitationDate = $cc->getLastCitationDate('publication', $this->get('id'));
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
+
+			$this->lastCitationDate = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'publication')
+				->whereEquals($a . '.oid', $this->get('id'))
+				->order($c . '.created', 'desc')
+				->row()
+				->get('created');
 		}
 
 		return $this->_lastCitationDate;
@@ -1893,7 +1913,7 @@ class Publication extends Object
 	{
 		if (!isset($this->_basePath))
 		{
-			$this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\String::pad($this->get('id')) . DS . \Hubzero\Utility\String::pad($this->get('version_id'));
+			$this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($this->get('id')) . DS . \Hubzero\Utility\Str::pad($this->get('version_id'));
 		}
 		switch (strtolower($type))
 		{

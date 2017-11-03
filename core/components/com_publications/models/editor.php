@@ -42,28 +42,29 @@ class Editor extends Object
 	/**
 	 * Handler object
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $handler = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_db = null;
 
 	/**
 	 * Configs
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $_configs = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param   string $scope
+	 * @param   object  $handler
+	 * @param   object  $configs
 	 * @return  void
 	 */
 	public function __construct($handler, $configs)
@@ -94,4 +95,3 @@ class Editor extends Object
 		return $this->handler->drawEditor($this);
 	}
 }
-
