@@ -34,7 +34,7 @@ defined('_HZEXE_') or die();
  * @link        http://sourceforge.net/projects/openflashchart/files/open-flash-chart/open-flash-chart-2-hyperion.zip/download
  *
  * @package     SWFObject
- * @copuright   Copyright (c) 2007 Geoff Stearns, Michael Williams, and Bobby van der Sluis
+ * @copyright   Copyright (c) 2007 Geoff Stearns, Michael Williams, and Bobby van der Sluis
  * @license     http://www.opensource.org/licenses/mit-license.php
  * @version     2.0
  * @link        http://code.google.com/p/swfobject/
@@ -63,9 +63,9 @@ defined('_HZEXE_') or die();
  * @copyright   Copyright 2001 Robert Penner. All rights reserved.
  * @license     Open source under the BSD License.
  *
- * @package Tweener
+ * @package     Tweener
  * @author      Zeh Fernando, Nate Chatellier, Arthur Debert
- * @copuright   Copyright (c) 2006-2007 Zeh Fernando and Nate Chatellier
+ * @copyright   Copyright (c) 2006-2007 Zeh Fernando and Nate Chatellier
  * @version     1.26.62
  * @license     MIT
  *
@@ -107,69 +107,15 @@ defined('_HZEXE_') or die();
  * @license     Creative Commons "Attribution-ShareAlike 2.0 France" BY-SA (FR)
  * @link        http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/
  *
- * CSS - Reset
- *
- * @package     reset css
- * @file        templates/hubbasic/css/reset.css
- * @copyright   Copyright (c) 2006, Yahoo! Inc. All rights reserved.
- * @license     Code licensed under the BSD License:
- * @link        http://developer.yahoo.net/yui/license.txt
- * @version     0.11.3
- *
  * Javascript - Calendar
  *
- * @package Javascript - Calendar
+ * @package     Javascript - Calendar
  * @file        components/com_events/calendar.css
  * @file        components/com_events/js/calendar.rc4.js
  * @author      Aeron Glemann
  * @copyright   Copyright (c) 2007 Aeron Glemann
  * @license     MIT
  * @link        http://electricprism.com/aeron/calendar
- *
- * Javascript - Autocompleter
- *
- * @package     autocompleter
- * @file        components/com_support/autocompleter.css
- * @file        components/com_support/autocompleter.js
- * @file        plugins/tageditor/autocompleter/observer.js
- * @file        plugins/tageditor/autocompleter/autocompleter.js
- * @file        plugins/tageditor/autocompleter/textboxlist.js
- * @author      Harald Kirschner <mail [at] digitarald.de>
- * @copyright   Harald Kirschner
- * @license     MIT-style license
- * @version     1.0rc4
- *
- * Javascript - HUB Framework
- *
- * @package     HUBzero
- * @file        templates/hubbasic/js/hub.js
- * @author      Shawn Rice
- * @author      Thomas Fuchs
- * @copyright   Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
- * @license
- *
- * Javascript - Balloons
- *
- * @package     Javascript - Balloons
- * @file        /templates/hubbasic/js/balloons.js
- * @license     MIT
- * @version     1.11
- * @link        http://www.uhleeka.com/archives/mootools/1.1/mootips/MooTips.v1.11.js
- *
- * Javascript - Slimbox
- *
- * @package     Javascript - Slimbox
- * @file        templates/hubbasic/js/slimbox.js
- * @auhtor      Christopher Beyls
- * @version     v1.41
- * @license     MIT-style license
- *
- * Javascript - Insertflash
- *
- * @package     Javascript - Insert Flash
- * @file        templates/hubbasic/js/insertflash.js
- * @copyright   Copyright(c) 2005-2006 Adobe Macromedia Software, LLC. All rights reserved.
- * @license
  *
  * Javascript - Clusterer
  *
@@ -181,39 +127,6 @@ defined('_HZEXE_') or die();
  * @license     http://www.acme.com/license.html
  * @link        http://www.acme.com/javascript/
  *
- * Javascript - Elabel
- *
- * @package     Javascript - ELabel
- * @author      Mike Williams
- * @author      Blackpool Community Church Javascript Team
- * @license     Creative Commons Licence http://creativecommons.org/licenses/by/2.0/uk
- *
- * Javascript - SqueezeBoxHub
- *
- * @package     Javascript - SqueezeBoxHub
- * @file        templates/hubbasic/js/modal.js
- * @author      Harald Kirschner
- * @author      Shawn Rice
- * @copyright   Copyright Harald Kirschner
- * @license     MIT-style license
- * @version     1.0rc1
- *
- * Javascript - Tooltips
- *
- * @package     Javascript - Tooltips
- * @file        templates/hubbasic/js/tooltips.js
- * @license     MIT
- * @version     1.11
- * @link        http://www.uhleeka.com/archives/mootools/1.1/mootips/MooTips.v1.11.js
- *
- * Javascript - Window.Growl
- *
- * @package     Javascript - Window.Growl
- * @file        templates/hubbasic/js/growl.js
- * @author      Daniel Mota aka IceBeat
- * @version     2.0
- * @link        http://icebeat.bitacoras.com/mootools/growl/1.1.html
- *
  * PHP - Math Wiki Class
  *
  * @package     math wiki
@@ -224,9 +137,9 @@ defined('_HZEXE_') or die();
  *
  * Javascript - Flash Player Version Detection
  *
- * @package Javascript - Flash Player Version Detection
+ * @package     Javascript - Flash Player Version Detection
  * @copyright   Copyright 2005-2007 Adobe Systems Incorporated.  All rights reserved.
- * @file        modules/mod_slideshow/images/AC_RunActiveContent.js
+ * @file        modules/mod_slideshow/assets/js/AC_RunActiveContent.js
  *
  * Flash - Tweener
  *
