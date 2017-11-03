@@ -33,6 +33,8 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
+use Filesystem;
+use Lang;
 
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'status.php');
@@ -53,12 +55,16 @@ class Attachments extends Obj
 	public $_db = null;
 
 	/**
-	 * @var    array  Loaded elements
+	 * Loaded elements
+	 *
+	 * @var  array
 	 */
 	protected $_types = array();
 
 	/**
-	 * @var    array  Directories, where attachment types can be stored
+	 * Directories, where attachment types can be stored
+	 *
+	 * @var  array
 	 */
 	protected $_path = array();
 
@@ -77,7 +83,8 @@ class Attachments extends Obj
 	/**
 	 * Get attachments connector
 	 *
-	 * @return object
+	 * @param   string  $name
+	 * @return  mixed   bool or object
 	 */
 	public function connector($name)
 	{
@@ -94,7 +101,11 @@ class Attachments extends Obj
 	/**
 	 * Get status for an attachment within publication
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   array    $attachments
+	 * @return  object
 	 */
 	public function getStatus($name, $element = null, $elementId = 0, $attachments = null)
 	{
@@ -123,7 +134,14 @@ class Attachments extends Obj
 	/**
 	 * Transfer data
 	 *
-	 * @return boolean
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $params
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
+	 * @return  void
 	 */
 	public function transferData($name, $element = null, $elementId = 0, $pub = null, $params = null, $oldVersion, $newVersion)
 	{
@@ -143,8 +161,14 @@ class Attachments extends Obj
 			$attachments = self::getElementAttachments($elementId, $attachments, $name);
 			if ($attachments)
 			{
-				$type->transferData($element->params, $elementId, $pub, $params,
-					$attachments, $oldVersion, $newVersion
+				$type->transferData(
+					$element->params,
+					$elementId,
+					$pub,
+					$params,
+					$attachments,
+					$oldVersion,
+					$newVersion
 				);
 			}
 		}
@@ -153,7 +177,12 @@ class Attachments extends Obj
 	/**
 	 * Attach items to publication
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $params
+	 * @return  boolean
 	 */
 	public function attach($name, $element = null, $elementId = 0, $pub = null, $params = null)
 	{
@@ -183,7 +212,13 @@ class Attachments extends Obj
 	/**
 	 * Serve attachments within element
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   object   $params
+	 * @param   integer  $itemId
+	 * @return  mixed    string or boolean
 	 */
 	public function serve($name = null, $element = null, $elementId = 0, $pub = null, $params = null, $itemId = null)
 	{
@@ -217,7 +252,11 @@ class Attachments extends Obj
 	/**
 	 * Draw list of element items
 	 *
-	 * @return object
+	 * @param   array    $elements
+	 * @param   object   $pub
+	 * @param   boolean  $authorized
+	 * @param   string   $append
+	 * @return  mixed    string or bool
 	 */
 	public function listItems($elements = null, $pub = null, $authorized = true, $append = null)
 	{
@@ -267,7 +306,13 @@ class Attachments extends Obj
 	/**
 	 * Draw launching button/link for element
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   object   $element
+	 * @param   array    $elements
+	 * @param   boolean  $authorized
+	 * @return  mixed    object or boolean
 	 */
 	public function drawLauncher($name = null, $pub = null, $element = null, $elements = null, $authorized = true)
 	{
@@ -291,7 +336,11 @@ class Attachments extends Obj
 	/**
 	 * Draws attachment
 	 *
-	 * @return  object
+	 * @param   string  $name
+	 * @param   array   $data
+	 * @param   object  $typeParams
+	 * @param   object  $handler
+	 * @return  mixed   object or bool
 	 */
 	public function drawAttachment($name, $data = null, $typeParams = null, $handler = null)
 	{
@@ -314,7 +363,11 @@ class Attachments extends Obj
 	/**
 	 * Draws attachment
 	 *
-	 * @return  object
+	 * @param   string   $name
+	 * @param   object   $attachment
+	 * @param   object   $view
+	 * @param   integer  $ordering
+	 * @return  mixed    object or bool
 	 */
 	public function buildDataObject($name, $attachment, $view, $ordering = 1)
 	{
@@ -333,7 +386,14 @@ class Attachments extends Obj
 	/**
 	 * Update attachment record
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $row
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   object   $params
+	 * @return  boolean
 	 */
 	public function update($name, $row, $pub, $actor, $elementId, $element, $params)
 	{
@@ -369,7 +429,14 @@ class Attachments extends Obj
 	/**
 	 * Remove attachment
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $row
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   object   $element
+	 * @param   object   $params
+	 * @return  boolean
 	 */
 	public function remove($name, $row, $pub, $actor, $elementId, $element, $params)
 	{
@@ -404,6 +471,11 @@ class Attachments extends Obj
 	/**
 	 * Get element attachments (ween out inapplicable attachments)
 	 *
+	 * @param   integer  $elementId
+	 * @param   array    $attachments
+	 * @param   string   $type
+	 * @param   string   $role
+	 * @param   boolean  $includeUnattached
 	 * @return  object
 	 */
 	public function getElementAttachments($elementId = 0, $attachments = array(), $type = '', $role = '', $includeUnattached = true)
@@ -445,6 +517,8 @@ class Attachments extends Obj
 	/**
 	 * Loads a block
 	 *
+	 * @param   string   $name
+	 * @param   boolean  $new
 	 * @return  object
 	 */
 	public function loadAttach($name, $new = false)
@@ -470,10 +544,9 @@ class Attachments extends Obj
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $name) . '.php');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}
@@ -497,7 +570,12 @@ class Attachments extends Obj
 	/**
 	 * Bundle elements
 	 *
-	 * @return object
+	 * @param   object  $zip
+	 * @param   array   $elements
+	 * @param   object  $pub
+	 * @param   string  $readme
+	 * @param   string  $bundleDir
+	 * @return  mixed   object or bool
 	 */
 	public function bundleItems($zip = null, $elements = null, $pub = null, &$readme, $bundleDir)
 	{
@@ -544,7 +622,9 @@ class Attachments extends Obj
 	/**
 	 * Show bundle elements
 	 *
-	 * @return object
+	 * @param   array   $elements
+	 * @param   object  $pub
+	 * @return  mixed   object or bool
 	 */
 	public function showPackagedItems($elements = null, $pub = null)
 	{

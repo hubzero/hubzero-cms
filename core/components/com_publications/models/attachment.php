@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
@@ -45,21 +47,22 @@ class Attachment extends Obj
 	 * This has to be set in the final
 	 * renderer classes.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_name = null;
 
 	/**
 	 * Reference to the object that instantiated the element
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_parent = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @access protected
+	 * @param   object  $parent
+	 * @return  void
 	 */
 	public function __construct($parent = null)
 	{
@@ -69,8 +72,7 @@ class Attachment extends Obj
 	/**
 	 * Get the element name
 	 *
-	 * @access public
-	 * @return string type of the parameter
+	 * @return  string  type of the parameter
 	 */
 	public function getName()
 	{
@@ -80,8 +82,7 @@ class Attachment extends Obj
 	/**
 	 * Get the element connector property
 	 *
-	 * @access public
-	 * @return string type of the parameter
+	 * @return  string  type of the parameter
 	 */
 	public function getConnector()
 	{

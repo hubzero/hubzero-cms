@@ -37,6 +37,10 @@ use Components\Publications\Helpers;
 use Components\Publications\Tables;
 use stdClass;
 use ZipArchive;
+use Request;
+use Lang;
+use User;
+use Date;
 
 // Include building blocks
 include_once __DIR__ . DS . 'blocks.php';

@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,22 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Obj;
-use Config;
-use Request;
-use Lang;
+use Hubzero\Base\Object;
 use stdClass;
+use Component;
+use Request;
+use Config;
+use Lang;
+use User;
 
 include_once __DIR__ . DS . 'publication.php';
 
 /**
  * Publication doi model class
  */
-class Doi extends Obj
+class Doi extends Object
 {
 	/**
 	 * DOI Configs
@@ -266,7 +270,7 @@ class Doi extends Obj
 		}
 		elseif ($uid)
 		{
-			$user = \User::getInstance($uid);
+			$user = User::getInstance($uid);
 			if ($user)
 			{
 				$name  = $user->get('name');
@@ -337,11 +341,12 @@ class Doi extends Obj
 	{
 		// Check required
 		if ($this->get('pubYear')
-		 && $this->get('publisher')
-		 && $this->get('resourceType')
-		 && $this->get('title')
-		 && $this->get('creator')
-		 && $this->get('url'))
+			&& $this->get('publisher')
+			&& $this->get('resourceType')
+			&& $this->get('title')
+			&& $this->get('creator')
+			&& $this->get('url')
+		)
 		{
 			return true;
 		}

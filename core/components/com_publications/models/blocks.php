@@ -33,6 +33,7 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
+use Filesystem;
 
 include_once(__DIR__ . DS . 'format.php');
 include_once(__DIR__ . DS . 'block.php');
@@ -48,24 +49,28 @@ class Blocks extends Obj
 	/**
 	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $_db = null;
 
 	/**
 	 * Table class
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $_objBlock = null;
 
 	/**
-	 * @var    array  Loaded elements
+	 * Loaded elements
+	 *
+	 * @var  array
 	 */
 	protected $_blocks = array();
 
 	/**
-	 * @var    array  Directories, where block types can be stored
+	 * Directories, where block types can be stored
+	 *
+	 * @var  array
 	 */
 	protected $_blockPath = array();
 
@@ -86,7 +91,12 @@ class Blocks extends Obj
 	/**
 	 * Get status for a block within publication
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   object   $pub
+	 * @param   string   $manifest
+	 * @param   integer  $blockId
+	 * @param   integer  $elementId
+	 * @return  object
 	 */
 	public function getStatus($name, $pub = null, $manifest = null, $blockId = 0, $elementId = null)
 	{
@@ -109,6 +119,9 @@ class Blocks extends Obj
 	/**
 	 * Loads a block
 	 *
+	 * @param   string   $name
+	 * @param   integer  $blockId
+	 * @param   boolean  $new
 	 * @return  object
 	 */
 	public function loadBlock($name, $blockId = 0, $new = false)
@@ -134,10 +147,9 @@ class Blocks extends Obj
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $name).'.php', 'path');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}
@@ -161,7 +173,10 @@ class Blocks extends Obj
 	/**
 	 * Get list of all available blocks
 	 *
-	 * @return  array  An array of all available blocks
+	 * @param   string  $select
+	 * @param   string  $where
+	 * @param   string  $order
+	 * @return  array   An array of all available blocks
 	 */
 	public function getBlocks($select = '*', $where = '', $order = '')
 	{
@@ -171,7 +186,8 @@ class Blocks extends Obj
 	/**
 	 * Get default block manifest
 	 *
-	 * @param   string  $name   	Name of block to render
+	 * @param   string   $name  Name of block to render
+	 * @param   boolean  $new
 	 * @return  object
 	 */
 	public function getManifest($name, $new = false)
@@ -220,8 +236,9 @@ class Blocks extends Obj
 	/**
 	 * Get block property
 	 *
+	 * @param   string  $name
 	 * @param   string  $property  Name of property
-	 * @return  object
+	 * @return  mixed
 	 */
 	public function getBlockProperty($name = null, $property = null)
 	{
@@ -246,6 +263,11 @@ class Blocks extends Obj
 	/**
 	 * Transfers data
 	 *
+	 * @param   string   $name
+	 * @param   string   $manifest
+	 * @param   object   $pub
+	 * @param   object   $old
+	 * @param   object   $new
 	 * @return  boolean
 	 */
 	public function transferData($name, $manifest = null, $pub = null, $old, $new)
@@ -266,9 +288,12 @@ class Blocks extends Obj
 	/**
 	 * Renders a block
 	 *
-	 * @param   string  $name   Name of block to render
-	 * @param   string  $view   Name of rendering view (edit / curation / admin / review)
-	 * @return  string HTML
+	 * @param   string   $name      Name of block to render
+	 * @param   string   $viewname  Name of rendering view (edit / curation / admin / review)
+	 * @param   string   $manifest
+	 * @param   object   $pub
+	 * @param   integer  $blockId
+	 * @return  string   HTML
 	 */
 	public function renderBlock($name, $viewname = 'edit', $manifest = null, $pub = null, $blockId = 0)
 	{
@@ -298,12 +323,14 @@ class Blocks extends Obj
 	/**
 	 * Check if changes are allowed
 	 *
+	 * @param   object   $blockParams
+	 * @param   object   $pub
 	 * @return  boolean
 	 */
 	public function checkFreeze($blockParams, $pub)
 	{
 		// Allow changes in non-draft version?
-		$freeze 	= isset($blockParams->published_editing)
+		$freeze = isset($blockParams->published_editing)
 					 && $blockParams->published_editing == 0
 					 && ($pub->state == 1 || $pub->state == 5)
 					? true : false;
@@ -314,8 +341,13 @@ class Blocks extends Obj
 	/**
 	 * Saves input in a block
 	 *
-	 * @param   string  $name   Name of block to save
-	 * @return  string HTML
+	 * @param   string   $name    Name of block to save
+	 * @param   string   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  booelan
 	 */
 	public function saveBlock($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
@@ -350,8 +382,13 @@ class Blocks extends Obj
 	/**
 	 * Reorders items in block/element
 	 *
-	 * @param   string  $name   Name of block to save
-	 * @return  string HTML
+	 * @param   string   $name    Name of block to save
+	 * @param   string   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  booelan
 	 */
 	public function reorder($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
@@ -386,8 +423,13 @@ class Blocks extends Obj
 	/**
 	 * Save block/element item
 	 *
-	 * @param   string  $name   Name of block to save
-	 * @return  string HTML
+	 * @param   string   $name    Name of block to save
+	 * @param   string   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  booelan
 	 */
 	public function saveItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
@@ -422,8 +464,13 @@ class Blocks extends Obj
 	/**
 	 * Save block/element item
 	 *
-	 * @param   string  $name   Name of block to save
-	 * @return  string HTML
+	 * @param   string   $name    Name of block to save
+	 * @param   string   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  booelan
 	 */
 	public function deleteItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
@@ -458,8 +505,13 @@ class Blocks extends Obj
 	/**
 	 * Add item
 	 *
-	 * @param   string  $name   Name of block to save
-	 * @return  string HTML
+	 * @param   string   $name      Name of block to save
+	 * @param   string   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  boolean
 	 */
 	public function addItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{

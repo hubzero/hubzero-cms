@@ -42,28 +42,29 @@ class Editor extends Obj
 	/**
 	 * Handler object
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $handler = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_db = null;
 
 	/**
 	 * Configs
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $_configs = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param   string $scope
+	 * @param   object  $handler
+	 * @param   object  $configs
 	 * @return  void
 	 */
 	public function __construct($handler, $configs)

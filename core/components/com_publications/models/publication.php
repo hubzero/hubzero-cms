@@ -36,7 +36,12 @@ use Hubzero\Base\Obj;
 use Components\Publications\Helpers;
 use Components\Publications\Tables;
 use Hubzero\Base\ItemList;
+use Filesystem;
 use Component;
+use Event;
+use User;
+use Date;
+use Lang;
 
 // Include table classes
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
@@ -1325,7 +1330,7 @@ class Publication extends Obj
 	{
 		if (!($this->_creator instanceof \Hubzero\User\User))
 		{
-			$this->_creator = \User::getInstance($this->get('created_by'));
+			$this->_creator = User::getInstance($this->get('created_by'));
 		}
 		if ($property)
 		{
@@ -1349,7 +1354,7 @@ class Publication extends Obj
 	{
 		if (!($this->_modifier instanceof \Hubzero\User\User))
 		{
-			$this->_modifier = \User::getInstance($this->get('modified_by'));
+			$this->_modifier = User::getInstance($this->get('modified_by'));
 		}
 		if ($property)
 		{
@@ -1377,7 +1382,7 @@ class Publication extends Obj
 		}
 		if (!($this->_curator instanceof \Hubzero\User\User))
 		{
-			$this->_curator = \User::getInstance($this->get('curator'));
+			$this->_curator = User::getInstance($this->get('curator'));
 		}
 		if ($property)
 		{
@@ -1742,7 +1747,7 @@ class Publication extends Obj
 		}
 		if (!isset($this->_lastCitationDate))
 		{
-			include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 			$cc = \Components\Citations\Models\Citation::all();
 

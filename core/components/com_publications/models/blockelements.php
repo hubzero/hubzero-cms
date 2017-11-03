@@ -33,6 +33,7 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
+use Filesystem;
 
 include_once(dirname(__FILE__) . DS . 'blockelement.php');
 include_once(dirname(__FILE__) . DS . 'status.php');
@@ -46,17 +47,21 @@ class BlockElements extends Obj
 	/**
 	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $_db = null;
 
 	/**
-	 * @var    array  Loaded elements
+	 * Loaded elements
+	 *
+	 * @var  array
 	 */
 	protected $_elements = array();
 
 	/**
-	 * @var    array  Directories, where block elements can be stored
+	 * Directories, where block elements can be stored
+	 *
+	 * @var  array
 	 */
 	protected $_path = array();
 
@@ -75,7 +80,10 @@ class BlockElements extends Obj
 	/**
 	 * Get status for a block element within publication
 	 *
-	 * @return object
+	 * @param   string  $name
+	 * @param   object  $manifest
+	 * @param   object  $pub
+	 * @return  object
 	 */
 	public function getStatus($name, $manifest = null, $pub = null)
 	{
@@ -98,7 +106,15 @@ class BlockElements extends Obj
 	/**
 	 * Draw element for
 	 *
-	 * @return object
+	 * @param   string   $name
+	 * @param   integer  $elementId
+	 * @param   string   $manifest
+	 * @param   object   $master
+	 * @param   object   $pub
+	 * @param   object   $status
+	 * @param   string   $viewname
+	 * @param   integer  $order
+	 * @return  object
 	 */
 	public function drawElement($name, $elementId = 0, $manifest = null, $master = null, $pub = null, $status = null, $viewname = 'edit', $order = 0)
 	{
@@ -118,7 +134,9 @@ class BlockElements extends Obj
 	/**
 	 * Get active element
 	 *
-	 * @return object
+	 * @param   array   $elements
+	 * @param   object  $review
+	 * @return  array
 	 */
 	public function getActiveElement($elements, $review)
 	{
@@ -164,7 +182,8 @@ class BlockElements extends Obj
 		}
 
 		$nextElement = isset($collector[$lastComplete + 1])
-					 ? $collector[$lastComplete + 1] : $collector[$lastComplete];
+					 ? $collector[$lastComplete + 1]
+					 : $collector[$lastComplete];
 
 		if ($lastIncomplete)
 		{
@@ -172,8 +191,7 @@ class BlockElements extends Obj
 		}
 		else
 		{
-			$showElement = isset($elements->$nextElement)
-						? $nextElement : $collector[$lastComplete];
+			$showElement = isset($elements->$nextElement) ? $nextElement : $collector[$lastComplete];
 		}
 
 		return array('showElement' => $showElement, 'total' => $total);
@@ -182,9 +200,11 @@ class BlockElements extends Obj
 	/**
 	 * Loads a block
 	 *
+	 * @param   string   $name
+	 * @param   boolean  $new
 	 * @return  object
 	 */
-	public function loadElement( $name, $new = false )
+	public function loadElement($name, $new = false)
 	{
 		$signature = md5($name);
 
@@ -207,10 +227,9 @@ class BlockElements extends Obj
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $name).'.php', 'path');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

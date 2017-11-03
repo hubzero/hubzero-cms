@@ -33,6 +33,8 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
+use Filesystem;
+use Component;
 
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'handler.php');
@@ -55,12 +57,16 @@ class Handlers extends Obj
 	public $_db = null;
 
 	/**
-	 * @var    array  Loaded elements
+	 * Loaded elements
+	 *
+	 * @var  array
 	 */
 	protected $_types = array();
 
 	/**
-	 * @var    array  Directories, where handlers can be stored
+	 * Directories, where handlers can be stored
+	 *
+	 * @var  array
 	 */
 	protected $_path = array();
 
@@ -93,7 +99,13 @@ class Handlers extends Obj
 	/**
 	 * Show handler selection
 	 *
-	 * @return object
+	 * @param   object   $pub
+	 * @param   integer  $elementid
+	 * @param   array    $handlers
+	 * @param   object   $handler
+	 * @param   array    $attachments
+	 * @param   object   $props
+	 * @return  string
 	 */
 	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments, $props = null)
 	{
@@ -116,7 +128,7 @@ class Handlers extends Obj
 		elseif ($handlers)
 		{
 			// TEMP
-			return false;
+			return '';
 
 			// Load needed objects
 			$obj = new \Components\Publications\Tables\Handler($this->_db);
@@ -133,9 +145,9 @@ class Handlers extends Obj
 
 			// Header
 			$view = new \Hubzero\Component\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-				'name'   => 'handlers',
-				'layout' => '_header',
+				'base_path' => Component::path('com_publications') . DS . 'site',
+				'name'      => 'handlers',
+				'layout'    => '_header',
 			));
 			$html = $view->loadTemplate();
 
@@ -146,9 +158,9 @@ class Handlers extends Obj
 				if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned)
 				{
 					$hview = new \Hubzero\Component\View(array(
-						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-						'name'   => 'handlers',
-						'layout' => '_choice',
+						'base_path' => Component::path('com_publications') . DS . 'site',
+						'name'      => 'handlers',
+						'layout'    => '_choice',
 					));
 					$configs = $handler->get('_configs');
 					if (!$configs)
@@ -156,12 +168,12 @@ class Handlers extends Obj
 						$saved = $obj->getConfig($item->name, $item);
 						$configs = $handler->getConfig($saved);
 					}
-					$hview->handler  	= $handler;
-					$hview->configs  	= $configs;
-					$hview->item	 	= $item;
+					$hview->handler     = $handler;
+					$hview->configs     = $configs;
+					$hview->item        = $item;
 					$hview->publication = $pub;
-					$hview->props 		= $props;
-					$hview->relevant	= $relevant;
+					$hview->props       = $props;
+					$hview->relevant    = $relevant;
 					$html .= $hview->loadTemplate();
 					$i++;
 				}
@@ -180,6 +192,10 @@ class Handlers extends Obj
 	/**
 	 * Update handler status / perform handler action
 	 *
+	 * @param   object   $handler
+	 * @param   object   $pub
+	 * @param   integer  $elementId
+	 * @param   string   $action
 	 * @return  void
 	 */
 	public function update($handler, $pub, $elementId = 0, $action = '')
@@ -195,7 +211,10 @@ class Handlers extends Obj
 	/**
 	 * Load content editor for handler
 	 *
-	 * @return  void
+	 * @param   object   $handler
+	 * @param   object   $pub
+	 * @param   integer  $elementId
+	 * @return  object
 	 */
 	public function loadEditor($handler, $pub, $elementId = 0)
 	{
@@ -245,6 +264,8 @@ class Handlers extends Obj
 	/**
 	 * Check if handler applies to selection
 	 *
+	 * @param   object   $handler
+	 * @param   array    $attachments
 	 * @return  boolean
 	 */
 	public function isRelevant($handler, $attachments)
@@ -283,6 +304,8 @@ class Handlers extends Obj
 	/**
 	 * Check for allowed formats
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $params
 	 * @return  boolean
 	 */
 	public function checkAllowed($attachments, $params)
@@ -334,6 +357,8 @@ class Handlers extends Obj
 	/**
 	 * Check for required formats
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $params
 	 * @return  boolean
 	 */
 	public function checkRequired($attachments, $params)
@@ -372,7 +397,9 @@ class Handlers extends Obj
 	/**
 	 * Side controls for handler
 	 *
-	 * @return  string HTML
+	 * @param   object   $handler
+	 * @param   boolean  $assigned
+	 * @return  string   HTML
 	 */
 	public function drawSelectedHandler($handler, $assigned = null)
 	{
@@ -383,7 +410,7 @@ class Handlers extends Obj
 		}
 
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => Component::path('com_publications') . DS . 'site',
 			'name'   => 'handlers',
 			'layout' => '_selected',
 		));
@@ -396,7 +423,8 @@ class Handlers extends Obj
 	/**
 	 * Initialize
 	 *
-	 * @return object
+	 * @param   string  $name
+	 * @return  object
 	 */
 	public function ini($name)
 	{
@@ -414,6 +442,8 @@ class Handlers extends Obj
 	/**
 	 * Loads a handler
 	 *
+	 * @param   string   $name
+	 * @param   boolean  $new
 	 * @return  object
 	 */
 	public function loadHandler($name, $new = false)
@@ -439,10 +469,9 @@ class Handlers extends Obj
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $name).'.php', 'path');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}
@@ -466,7 +495,10 @@ class Handlers extends Obj
 	/**
 	 * Get params for the handler
 	 *
-	 * @return  void
+	 * @param   string  $name
+	 * @param   array   $configs
+	 * @param   array   $savedConfig
+	 * @return  array
 	 */
 	public function parseConfig($name, $configs = array(), $savedConfig = array())
 	{
