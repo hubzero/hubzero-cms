@@ -71,21 +71,17 @@ Pathway::append(
 						<tr>
 							
 							<td>
-								<a href="<?php echo Route::url($record->link()); ?>">
+								<a href="<?php echo Route::url('groups' . DS . $record->get('groups_cn')); ?>">
 									<?php echo $this->escape($record->get('name')); ?>
 								</a>
 							</td>
 
 							<td>
-							<a href= "<?php echo $record->get('site_url'); ?>">
 								<?php echo $this->escape($record->partner_type()->get('external')); ?>
-							</a>
 							</td>
 
 							<td>
-							<a href= "">
 								<?php echo $this->escape(strip_tags($record->get('activities'))); ?>
-							</a>
 							</td>
 
 						</tr>
