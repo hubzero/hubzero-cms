@@ -105,7 +105,7 @@ Html::behavior('framework');
 				<!-- this calls the description method in the partner type model and passes 'parsed' which echos the description without the format tag-->
 				<td class="priority-4">
 					<span>
-						<?php echo $this->escape($row->description('parsed')); ?>
+						<?php echo $this->escape($row->description('clean')); ?>
 					</span>
 				</td>
 

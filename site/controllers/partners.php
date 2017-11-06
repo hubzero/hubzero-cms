@@ -106,5 +106,4 @@ class Partners extends SiteController
 		     ->setLayout('display')
 		     ->display();
 	}
-
-	}
+}

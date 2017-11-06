@@ -1,28 +1,29 @@
 <?php 
 namespace Components\Partners\Models;
-use Date;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Session;
+use Date;
+
 //needs to be required in admin!
-class Partner extends Relational{
-		/**
+class Partner extends Relational
+{
+	/**
 	 * The table namespace, access to the SQL database
 	 *
 	 * @var string
 	 */
 	protected $namespace = 'partner';
 
-		/**
-	 * Default order by for model
+	/**
+	 * Default order-by for model
 	 *
 	 * @var string
 	 */
 	public $orderBy = 'name';
 
-
-		/**
+	/**
 	 * Fields and their validation criteria
 	 *
 	 * @var array
@@ -31,7 +32,7 @@ class Partner extends Relational{
 		'name' => 'notempty'
 	);
 
-		/**
+	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
@@ -70,8 +71,17 @@ class Partner extends Relational{
 
 		return $link;
 	}
+
 	//this function is for the about text box in the edit, display and site. the different cases are for the different pages
 	//raw takes out the format tag and clean takes out the html tags
+
+	/**
+	 * Get the partner's bio
+	 * 
+	 * @param  string  $as      Format to return state in [text, number]
+	 * @param  integer $shorten Number of characters to shorten text to
+	 * @return string
+	 */
 	public function about($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
@@ -79,7 +89,7 @@ class Partner extends Relational{
 
 		switch ($as)
 		{
-			//site view
+			// site view
 			case 'parsed':
 				$content = $this->get('about.parsed', null);
 
@@ -98,7 +108,8 @@ class Partner extends Relational{
 			case 'clean':
 				$content = strip_tags($this->about('parsed'));
 			break;
-			//admin view
+
+			// admin view
 			case 'raw':
 			default:
 				$content = $this->get('about');
@@ -114,7 +125,7 @@ class Partner extends Relational{
 	}
 
 	
-		/**
+	/**
 	 * Deletes the existing/current model
 	 *
 	 * @return  bool

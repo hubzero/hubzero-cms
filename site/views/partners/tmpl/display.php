@@ -36,10 +36,13 @@ Document::setTitle(Lang::txt('COM_PARTNERS'));
 // all hubs and/or templates. In general, it's good practice to set the pathway
 // even if it's unknown if hey will be displayed or not.
 // Pathway::append(
-// 	Lang::txt('COM_PARTNERS'),  // Text to display
-// 	'index.php?option=' . $this->option  // Link. Route::url() not needed.
+//	Lang::txt('COM_PARTNERS'),  // Text to display
+//	'index.php?option=' . $this->option  // Link. Route::url() not needed.
 // );
-
+Pathway::append(
+	Lang::txt('COM_PARTNERS'),
+	'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
 ?>
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_PARTNERS'); ?></h2>
@@ -79,14 +82,14 @@ Document::setTitle(Lang::txt('COM_PARTNERS'));
 							</td>
 							
 							<td>
-							<a href= "<?php echo $record->get('site_url')?>">
+							<a href= "<?php echo $record->get('site_url'); ?>">
 								<?php echo $this->escape($record->get('partner_type')); ?>
 							</a>
 							</td>
 
 							<td>
 							<a href= "">
-								<?php echo $this->escape($record->get('activities')); ?>
+								<?php echo $this->escape(strip_tags($record->get('activities'))); ?>
 							</a>
 							</td>
 
