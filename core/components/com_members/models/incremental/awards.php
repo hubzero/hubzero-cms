@@ -137,7 +137,7 @@ class Awards
 	{
 		if (!$this->uid)
 		{
-			return NULL;
+			return null;
 		}
 		$opts = new Options;
 		$awardPer = $opts->getAwardPerField();
@@ -159,7 +159,7 @@ class Awards
 		$eligible = array();
 		$newAmount = 0;
 		$completeSql = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1';
-		$optedOut = NULL;
+		$optedOut = null;
 
 		foreach ($this->awards as $k => $complete)
 		{
