@@ -124,7 +124,16 @@ class Partner extends Relational
 		return $content;
 	}
 
-	
+	/**
+	 * Returns partner_type object
+	 * 
+	 * @return object Partner_type object of partner
+	 */
+	public function partner_type()
+	{
+		return Partner_type::oneOrFail($this->get('partner_type'));
+	}
+
 	/**
 	 * Deletes the existing/current model
 	 *

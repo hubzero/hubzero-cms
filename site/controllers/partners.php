@@ -80,17 +80,19 @@ class Partners extends SiteController
 		// A new layout or name can be chosen by calling setLayout('newlayout')
 		// or setName('newname') respectively.
 
-		// Incoming filters
+		// Incoming filters:
+		// Assumes URL has 'partner_type=#' - see views/partners/tmpl/display.php (in aside, value is set to '#')
 		$this->view->filters = array(
 			'partner_type' => Request::getInt('partner_type', 0)
 		);
 
 		$records = Partner::all();
 
-		// IF a partner_type's ID was passed in the URL, we load that partner_type and
-		// retrieve the partner type associated with only that season.
+		// If a partner_type's ID was passed in the URL, we load that partner_type and
+		// retrieve the partners associated with only that partner_type.
 		if ($partner_type = $this->view->filters['partner_type'])
 		{
+			// oneOrFail works on $id of object
 			$records = Partner_type::oneOrFail($partner_type)->partners();
 		}
 

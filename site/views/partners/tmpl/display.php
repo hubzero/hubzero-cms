@@ -75,10 +75,10 @@ Pathway::append(
 									<?php echo $this->escape($record->get('name')); ?>
 								</a>
 							</td>
-							
+
 							<td>
 							<a href= "<?php echo $record->get('site_url'); ?>">
-								<?php echo $this->escape($record->get('partner_type')); ?>
+								<?php echo $this->escape($record->partner_type()->get('external')); ?>
 							</a>
 							</td>
 
@@ -109,7 +109,7 @@ Pathway::append(
 				<select name="partner_type">
 					<option value=""><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES_ALL'); ?></option>
 					<?php foreach (\Components\Partners\Models\Partner_type::all() as $partner_type) { ?>
-						<option<?php if ($this->filters['partner_type'] == $partner_type->get('id')) { echo ' selected="selected"'; } ?> value="<?php echo 'partner_type' . $this->escape($partner_type->get('id')); ?>"><?php echo $this->escape($partner_type->get('external')); ?></option>
+						<option<?php if ($this->filters['partner_type'] == $partner_type->get('id')) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($partner_type->get('id')); ?>"><?php echo $this->escape($partner_type->get('external')); ?></option>
 					<?php } ?>
 				</select>
 				<input type="submit" value="<?php echo Lang::txt('COM_PARTNERS_GO'); ?>" />
