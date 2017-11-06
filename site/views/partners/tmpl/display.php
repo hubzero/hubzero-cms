@@ -81,7 +81,7 @@ Pathway::append(
 							</td>
 
 							<td>
-								<?php echo $this->escape(strip_tags($record->get('activities'))); ?>
+								<?php echo $this->escape(strip_tags($record->get('about'))); ?>
 							</td>
 
 						</tr>
