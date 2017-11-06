@@ -37,6 +37,7 @@ use Lang;
 use Date;
 use User;
 
+require_once __DIR__ . '/usersCategory.php';
 require_once __DIR__ . DS . 'post.php';
 
 /**
@@ -278,6 +279,16 @@ class Category extends Relational
 	public function threads()
 	{
 		return $this->posts()->whereEquals('parent', 0);
+	}
+
+	/**
+	 * Get a list of users' category subscriptions
+	 *
+	 * @return  object
+	 */
+	public function usersCategories()
+	{
+		return $this->oneToMany('Components\Forum\Models\UsersCategory', 'category_id', 'id');
 	}
 
 	/**
