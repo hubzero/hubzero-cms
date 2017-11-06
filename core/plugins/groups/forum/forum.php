@@ -549,6 +549,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->ordered()
 			->rows();
 
+		$categories = $this->forum->categories()->rows();
+
 		//get authorization
 		$this->_authorize('section');
 		$this->_authorize('category');
@@ -609,6 +611,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->set('config', $this->params)
 			->set('forum', $this->forum)
 			->set('sections', $sections)
+			->set('categories', $categories)
 			->set('edit', $edit)
 			->loadTemplate();
 	}
