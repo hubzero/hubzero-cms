@@ -257,6 +257,7 @@ if ($this->config->get('access-manage-section')) {
 					->set('base', $base)
 					->set('recvEmailOptionID', $this->recvEmailOptionID)
 					->set('recvEmailOptionValue', $this->recvEmailOptionValue)
+					->set('categories', $this->categories)
 					->display();
 		?>
 
