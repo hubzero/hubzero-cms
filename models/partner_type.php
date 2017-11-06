@@ -83,11 +83,19 @@ class Partner_type extends Relational
 		return $link;
 	}
 
+	/**
+	 * Defines a one to many through relationship with records by way of tasks
+	 *
+	 * @return  $this
+	 */
+	public function partners()
+	{
+		return $this->oneToMany('Partner', 'partner_type');
+	}
 
-
-		//makes our description box text look better for the site, display or edit pages
-		//raw takes out format comment and clean takes out html tags
-		public function description($as='parsed', $shorten=0)
+	//makes our description box text look better for the site, display or edit pages
+	//raw takes out format comment and clean takes out html tags
+	public function description($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
 		$options = array();

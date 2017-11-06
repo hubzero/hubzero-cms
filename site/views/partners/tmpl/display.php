@@ -54,11 +54,6 @@ Pathway::append(
 	</div>
 </header>
 
-
-<p>
-<?php print_r(\Components\Partners\Models\Partner_type::all()['partner_type']); ?>
-</p>
-
 <section class="main section">
 	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
 		<div class="subject">
@@ -114,9 +109,7 @@ Pathway::append(
 				<select name="partner_type">
 					<option value=""><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES_ALL'); ?></option>
 					<?php foreach (\Components\Partners\Models\Partner_type::all() as $partner_type) { ?>
-						<?php
-						?>
-						<option<?php if ($this->filters['partner_type'] == $partner_type->get('id')) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($partner_type->get('external')); ?>"><?php echo $this->escape($partner_type->get('external')); ?></option>
+						<option<?php if ($this->filters['partner_type'] == $partner_type->get('id')) { echo ' selected="selected"'; } ?> value="<?php echo 'partner_type' . $this->escape($partner_type->get('id')); ?>"><?php echo $this->escape($partner_type->get('external')); ?></option>
 					<?php } ?>
 				</select>
 				<input type="submit" value="<?php echo Lang::txt('COM_PARTNERS_GO'); ?>" />
