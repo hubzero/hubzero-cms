@@ -794,7 +794,7 @@ class Entries extends SiteController
 		}
 		else
 		{
-			$item->author = $row->creator()->get('email') . ' (' . $row->creator()->get('name') . ')';
+			$item->author = $row->creator->get('email') . ' (' . $row->creator->get('name') . ')';
 		}
 		$item->date     = $row->created();
 		$item->category = '';
@@ -816,13 +816,8 @@ class Entries extends SiteController
 	 * Method to check admin access permission
 	 *
 	 * @param   string   $assetType
-<<<<<<< HEAD
-	 * @param   unknown  $assetId
-	 * @return  boolean  True on success
-=======
 	 * @param   integer  $assetId
 	 * @return  void
->>>>>>> 19bb788... [COM_BLOG] Adding save and delete event triggers, some clean-up, removing Joomla-based code
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
