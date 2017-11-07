@@ -88,6 +88,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="enable_forum_email_categories" type="list" default="0" label="COM_GROUPS_CONFIG_EMAIL_FORUM_CATEGORIES" description="COM_GROUPS_CONFIG_EMAIL_FORUM_CATEGORIES_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	</fieldset>
 
 	<fieldset name="upload" label="COM_GROUPS_CONFIG_FIELDSET_UPLOAD">
