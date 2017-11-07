@@ -91,7 +91,7 @@ class Orcid extends Text
 		$html[] = '		<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />';
 		$html[] = '	</div>';
 		$html[] = '	<div class="col span3 omega">';
-		$html[] = '		<a class="btn button icon-search orcid-fetch" data-base="' . rtrim(Request::base(true), '/') . '" data-id="' . $this->id . '" href="' . Request::base() . '/' . Route::url('index.php?option=com_members&controller=orcid') . '">' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIND') . '</a>';
+		$html[] = '		<a class="btn button icon-search orcid-fetch" data-base="' . rtrim(Request::base(true), '/') . '" data-id="' . $this->id . '" href="' . rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&controller=orcid'), '/') . '">' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIND') . '</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
 		$html[] = '<p><img src="' . Request::root()  . '/core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="ORCID" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
