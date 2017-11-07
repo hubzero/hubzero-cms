@@ -47,12 +47,13 @@ Html::behavior('formvalidation');
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate">
 	<fieldset>
-		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('component.apply', this.form);"><?php echo Lang::txt('JAPPLY');?></button>
-			<button type="button" onclick="Joomla.submitform('component.save', this.form);"><?php echo Lang::txt('JSAVE');?></button>
-			<button type="button" onclick="<?php echo Request::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
-		</div>
 		<div class="configuration">
+			<div class="configuration-options">
+				<button type="button" onclick="Joomla.submitform('component.apply', this.form);"><?php echo Lang::txt('JAPPLY');?></button>
+				<button type="button" onclick="Joomla.submitform('component.save', this.form);"><?php echo Lang::txt('JSAVE');?></button>
+				<button type="button" onclick="<?php echo Request::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href; ' : ''; ?>window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
+			</div>
+
 			<?php echo Lang::txt($this->component->option . '_configuration'); ?>
 		</div>
 	</fieldset>
@@ -93,7 +94,7 @@ Html::behavior('formvalidation');
 	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
 	<input type="hidden" name="component" value="<?php echo $this->component->option; ?>" />
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="path" value="<?php echo $this->model->getState('component.path'); ?>" />
+	<input type="hidden" name="path" value="<?php echo $this->model->get('component.path'); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

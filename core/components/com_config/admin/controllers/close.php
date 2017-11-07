@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Config\Controllers;
+namespace Components\Config\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Document;

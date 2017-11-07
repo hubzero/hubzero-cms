@@ -3,23 +3,13 @@
 	<name>com_config</name>
 	<author>HUBzero</author>
 	<creationDate>February 2015</creationDate>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<copyright>Copyright 2005-2017 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>http://hubzero.org</authorUrl>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<description>COM_CONFIG_XML_DESCRIPTION</description>
 	<administration>
-		<files folder="admin">
-			<filename>config.php</filename>
-			<filename>controllers/application.php</filename>
-			<filename>controllers/close.php</filename>
-			<filename>controllers/component.php</filename>
-			<filename>index.html</filename>
-			<folder>controllers</folder>
-			<folder>models</folder>
-			<folder>views</folder>
-		</files>
 		<languages folder="admin">
 			<language tag="en-GB">language/en-GB.com_config.ini</language>
 		</languages>

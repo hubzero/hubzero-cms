@@ -30,12 +30,16 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('JPATH_BASE') or die;
+namespace Hubzero\Form\Fields;
+
+use Hubzero\Form\Field;
+use Lang;
+use App;
 
 /**
  * Text Filters form field.
  */
-class JFormFieldFilters extends JFormField
+class Filters extends Field
 {
 	/**
 	 * The form field type.
@@ -95,19 +99,19 @@ class JFormFieldFilters extends JFormField
 			$html[] = '			'.str_repeat('<span class="gi">|&mdash;</span>', $group->level).$group->text;
 			$html[] = '		</th>';
 			$html[] = '		<td>';
-			$html[] = '				<select name="'.$this->name.'['.$group->value.'][filter_type]" id="'.$this->id.$group->value.'_filter_type" class="hasTip" title="'.Lang::txt('JGLOBAL_FILTER_TYPE_LABEL').'::'.Lang::txt('JGLOBAL_FILTER_TYPE_DESC').'">';
-			$html[] = '					<option value="BL"'.($group_filter['filter_type'] == 'BL' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_DEFAULT_BLACK_LIST').'</option>';
-			$html[] = '					<option value="CBL"'.($group_filter['filter_type'] == 'CBL' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_CUSTOM_BLACK_LIST').'</option>';
-			$html[] = '					<option value="WL"'.($group_filter['filter_type'] == 'WL' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_WHITE_LIST').'</option>';
-			$html[] = '					<option value="NH"'.($group_filter['filter_type'] == 'NH' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_HTML').'</option>';
-			$html[] = '					<option value="NONE"'.($group_filter['filter_type'] == 'NONE' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_FILTER').'</option>';
-			$html[] = '				</select>';
+			$html[] = '			<select name="'.$this->name.'['.$group->value.'][filter_type]" id="'.$this->id.$group->value.'_filter_type" class="hasTip" title="'.Lang::txt('JGLOBAL_FILTER_TYPE_LABEL').'::'.Lang::txt('JGLOBAL_FILTER_TYPE_DESC').'">';
+			$html[] = '				<option value="BL"'.($group_filter['filter_type'] == 'BL' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_DEFAULT_BLACK_LIST').'</option>';
+			$html[] = '				<option value="CBL"'.($group_filter['filter_type'] == 'CBL' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_CUSTOM_BLACK_LIST').'</option>';
+			$html[] = '				<option value="WL"'.($group_filter['filter_type'] == 'WL' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_WHITE_LIST').'</option>';
+			$html[] = '				<option value="NH"'.($group_filter['filter_type'] == 'NH' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_HTML').'</option>';
+			$html[] = '				<option value="NONE"'.($group_filter['filter_type'] == 'NONE' ? ' selected="selected"' : '').'>'.Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_FILTER').'</option>';
+			$html[] = '			</select>';
 			$html[] = '		</td>';
 			$html[] = '		<td>';
-			$html[] = '				<input name="'.$this->name.'['.$group->value.'][filter_tags]" id="'.$this->id.$group->value.'_filter_tags" title="'.Lang::txt('JGLOBAL_FILTER_TAGS_LABEL').'" value="'.$group_filter['filter_tags'].'"/>';
+			$html[] = '			<input name="'.$this->name.'['.$group->value.'][filter_tags]" id="'.$this->id.$group->value.'_filter_tags" title="'.Lang::txt('JGLOBAL_FILTER_TAGS_LABEL').'" value="'.$group_filter['filter_tags'].'"/>';
 			$html[] = '		</td>';
 			$html[] = '		<td>';
-			$html[] = '				<input name="'.$this->name.'['.$group->value.'][filter_attributes]" id="'.$this->id.$group->value.'_filter_attributes" title="'.Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL').'" value="'.$group_filter['filter_attributes'].'"/>';
+			$html[] = '			<input name="'.$this->name.'['.$group->value.'][filter_attributes]" id="'.$this->id.$group->value.'_filter_attributes" title="'.Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL').'" value="'.$group_filter['filter_attributes'].'"/>';
 			$html[] = '		</td>';
 			$html[] = '	</tr>';
 		}
@@ -128,13 +132,17 @@ class JFormFieldFilters extends JFormField
 		// Get a database object.
 		$db = App::get('db');
 		// Get the user groups from the database.
-		$query = $db->getQuery(true);
-		$query->select('a.id AS value, a.title AS text, COUNT(DISTINCT b.id) AS level');
-		$query->from('#__usergroups AS a');
-		$query->join('LEFT', '#__usergroups AS b on a.lft > b.lft AND a.rgt < b.rgt');
-		$query->group('a.id, a.title, a.lft');
-		$query->order('a.lft ASC');
-		$db->setQuery($query);
+		$query = $db->getQuery();
+		$query->select('a.id', 'value')
+			->select('a.title', 'text')
+			->select('COUNT(DISTINCT b.id)', 'level')
+			->from('#__usergroups', 'a')
+			->joinRaw('#__usergroups AS b', 'a.lft > b.lft AND a.rgt < b.rgt', 'left')
+			->group('a.id')
+			->group('a.title')
+			->group('a.lft')
+			->order('a.lft', 'ASC');
+		$db->setQuery($query->toString());
 		$options = $db->loadObjectList();
 
 		return $options;

@@ -32,40 +32,48 @@
 
 namespace Components\Config\Models;
 
-use JModelForm;
-use JAccessRules;
-use JAccess;
-use JFactory;
-use JConfig;
-use JPath;
-use Lang;
-use JTable;
+use Components\Config\Models\Extension;
 use Hubzero\Config\Registry;
-use JClientHelper;
-use JFilterOutput;
+use Hubzero\Form\Form;
+use Hubzero\Base\Obj;
+use Filesystem;
+use Config;
+use Notify;
+use Cache;
+use Lang;
+use User;
+use App;
 
-jimport('joomla.application.component.modelform');
+include_once __DIR__ . '/extension.php';
 
 /**
  * Model class for Application config
  */
-class Application extends JModelForm
+class Application extends Obj
 {
 	/**
 	 * Method to get a form object.
 	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
-	 * @return  mixed    A JForm object on success, false on failure
-	 * @since   1.6
+	 * @param   array   $data  Data for the form.
+	 * @return  object
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = array())
 	{
-		// Get the form.
-		$form = $this->loadForm('com_config.application', 'application', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form))
+		$file = __DIR__ . '/forms/application.xml';
+		$file = Filesystem::cleanPath($file);
+
+		Form::addFieldPath(__DIR__ . '/fields');
+
+		$form = new Form('com_config.application', array('control' => 'hzform'));
+
+		if (!$form->loadFile($file, false, '//form'))
 		{
-			return false;
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		if (!empty($data))
+		{
+			$form->bind($data);
 		}
 
 		return $form;
@@ -75,17 +83,15 @@ class Application extends JModelForm
 	 * Method to get the configuration data.
 	 *
 	 * This method will load the global configuration data straight from
-	 * JConfig. If configuration data has been saved in the session, that
+	 * Config. If configuration data has been saved in the session, that
 	 * data will be merged into the original data, overwriting it.
 	 *
 	 * @return  array  An array containg all global config data.
-	 * @since   1.6
 	 */
 	public function getData()
 	{
 		// Get the config data.
-		//$config = new JConfig();
-		$data = Config::getRoot()->toArray(); //\Hubzero\Utility\Arr::fromObject($config);
+		$data = Config::getRoot()->toArray();
 
 		// Prime the asset_id for the rules.
 		$data['asset_id'] = 1;
@@ -114,22 +120,57 @@ class Application extends JModelForm
 	}
 
 	/**
+	 * Method to validate the form data.
+	 *
+	 * @param   object  $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 * @return  mixed   Array of filtered data if valid, false otherwise.
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		// Filter and validate the form data.
+		$data = $form->filter($data);
+		$return = $form->validate($data, $group);
+
+		// Check for an error.
+		if ($return instanceof \Exception)
+		{
+			$this->setError($return->getMessage());
+			return false;
+		}
+
+		// Check the validation results.
+		if ($return === false)
+		{
+			// Get the validation messages from the form.
+			foreach ($form->getErrors() as $message)
+			{
+				$this->setError(Lang::txt($message));
+			}
+
+			return false;
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Method to save the configuration data.
 	 *
 	 * @param   array  An array containing all global config data.
 	 * @return  bool   True on success, false on failure.
-	 * @since   1.6
 	 */
 	public function save($data)
 	{
 		// Save the rules
 		if (isset($data['rules']))
 		{
-			$rules = new JAccessRules($data['rules']);
+			$rules = new \Hubzero\Access\Rules($data['rules']);
 
 			// Check that we aren't removing our Super User permission
 			// Need to get groups from database, since they might have changed
-			$myGroups = JAccess::getGroupsByUser(\User::get('id'));
+			$myGroups = \Hubzero\Access\Access::getGroupsByUser(\User::get('id'));
 			$myRules = $rules->getData();
 			$hasSuperAdmin = $myRules['core.admin']->allow($myGroups);
 			if (!$hasSuperAdmin)
@@ -138,12 +179,12 @@ class Application extends JModelForm
 				return false;
 			}
 
-			$asset = JTable::getInstance('asset');
-			if ($asset->loadByName('root.1'))
+			$asset = \Hubzero\Access\Asset::oneByName('root.1');
+			if ($asset->get('id'))
 			{
-				$asset->rules = (string) $rules;
+				$asset->set('rules', (string) $rules);
 
-				if (!$asset->check() || !$asset->store())
+				if (!$asset->save())
 				{
 					Notify::error('SOME_ERROR_CODE', $asset->getError());
 				}
@@ -161,15 +202,12 @@ class Application extends JModelForm
 		{
 			$registry = new Registry(array('filters' => $data['filters']));
 
-			$extension = JTable::getInstance('extension');
+			$extension = Extension::oneByElement('com_config');
 
-			// Get extension_id
-			$extension_id = $extension->find(array('name' => 'com_config'));
-
-			if ($extension->load((int) $extension_id))
+			if (!$extension->isNew())
 			{
-				$extension->params = (string) $registry;
-				if (!$extension->check() || !$extension->store())
+				$extension->set('params', (string) $registry);
+				if (!$extension->save())
 				{
 					Notify::error('SOME_ERROR_CODE', $extension->getError());
 				}
@@ -219,8 +257,18 @@ class Application extends JModelForm
 		// Purge the database session table if we are changing to the database handler.
 		if ($prev['session']['session_handler'] != 'database' && $data['session']['session_handler'] == 'database')
 		{
-			$table = JTable::getInstance('session');
-			$table->purge(-1);
+			//$table = JTable::getInstance('session');
+			//$table->purge(-1);
+
+			$db = App::get('db');
+
+			$past = time() + 1;
+			$query = $db->getQuery()
+				->delete('#__sessions')
+				->where('time', '<', (int) $past);
+
+			$db->setQuery($query->toString());
+			$db->execute();
 		}
 
 		if (empty($data['cache']['cache_handler']))
@@ -231,7 +279,7 @@ class Application extends JModelForm
 		// Clean the cache if disabled but previously enabled.
 		if (!$data['cache']['caching'] && $prev['cache']['caching'])
 		{
-			\Cache::clean();
+			Cache::clean();
 		}
 
 		foreach ($data as $group => $values)
@@ -252,7 +300,7 @@ class Application extends JModelForm
 		// Overwrite the old FTP credentials with the new ones.
 		if (isset($data['ftp']))
 		{
-			$temp = \Config::getRoot();
+			$temp = Config::getRoot();
 			$temp->set('ftp.ftp_enable', $data['ftp']['ftp_enable']);
 			$temp->set('ftp.ftp_host', $data['ftp']['ftp_host']);
 			$temp->set('ftp.ftp_port', $data['ftp']['ftp_port']);
@@ -262,7 +310,7 @@ class Application extends JModelForm
 		}
 
 		// Clear cache of com_config component.
-		$this->cleanCache('_system');
+		Cache::clean('_system');
 
 		// Write the configuration file.
 		return $this->writeConfigFile($prev);
@@ -272,7 +320,7 @@ class Application extends JModelForm
 	 * Method to unset the root_user value from configuration data.
 	 *
 	 * This method will load the global configuration data straight from
-	 * JConfig and remove the root_user value for security, then save the configuration.
+	 * Config and remove the root_user value for security, then save the configuration.
 	 *
 	 * @return  boolean
 	 * @since   1.6
@@ -280,8 +328,7 @@ class Application extends JModelForm
 	public function removeroot()
 	{
 		// Get the previous configuration.
-		$prev = new JConfig();
-		$prev = \Hubzero\Utility\Arr::fromObject($prev);
+		$prev = Config::getRoot()->toArray();
 
 		// Create the new configuration object, and unset the root_user property
 		unset($prev['root_user']);

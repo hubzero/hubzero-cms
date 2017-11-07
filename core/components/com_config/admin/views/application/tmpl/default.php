@@ -47,7 +47,7 @@ Html::behavior('switcher', 'submenu');
 Html::behavior('tooltip');
 
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher
-$this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 ?>
 <script type="text/javascript">
