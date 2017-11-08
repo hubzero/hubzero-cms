@@ -108,4 +108,60 @@ class Partners extends SiteController
 		     ->setLayout('display')
 		     ->display();
 	}
+
+	/**
+	 * Default task. Displays a list of partners in card form.
+	 *
+	 * @return	void
+	 */
+	public function cardsTask()
+	{
+		// Get our model
+		// This is the entry point to the database and the 
+		// table of characters we'll be retrieving data from
+		$this->view->model = new Partner();
+
+		// NOTE:
+		// A \Hubzero\Component\View object is auto-created when calling
+		// execute() on the controller. By default, the view directory is 
+		// set to the controller name and layout is set to task name.
+		//
+		// controller=foo&task=bar   loads a view from:
+		//
+		//   view/
+		//     foo/
+		//       tmpl/
+		//         bar.php
+		//
+		// A new layout or name can be chosen by calling setLayout('newlayout')
+		// or setName('newname') respectively.
+
+		// Incoming filters:
+		// Assumes URL has 'partner_type=#' - see views/partners/tmpl/display.php (in aside, value is set to '#')
+		$this->view->filters = array(
+			'partner_type' => Request::getInt('partner_type', 0)
+		);
+
+		$records = Partner::all();
+
+		// If a partner_type's ID was passed in the URL, we load that partner_type and
+		// retrieve the partners associated with only that partner_type.
+		if ($partner_type = $this->view->filters['partner_type'])
+		{
+			// oneOrFail works on $id of object
+			$records = Partner_type::oneOrFail($partner_type)->partners();
+		}
+
+		// Get a list of records
+		$this->view->records = $records->paginated()->ordered();
+
+		// Output the view
+		// 
+		// Make sure we load the correct view. This is for cases where 
+		// we may be redirected from editTask(), which can happen if the
+		// user is not logged in.
+		$this->view
+		     ->setLayout('cards')
+		     ->display();
+	}
 }
