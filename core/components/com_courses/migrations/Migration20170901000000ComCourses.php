@@ -184,24 +184,24 @@ class Migration20170901000000ComCourses extends Base
 		if (!$this->db->tableExists('#__collections_items'))
 		{
 			$query = "CREATE TABLE `jos_courses_announcements` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `offering_id` int(11) NOT NULL DEFAULT '0',
-  `content` text,
-  `priority` tinyint(2) NOT NULL DEFAULT '0',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT '0',
-  `section_id` int(11) NOT NULL DEFAULT '0',
-  `state` tinyint(2) NOT NULL DEFAULT '0',
-  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `sticky` tinyint(2) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `idx_offering_id` (`offering_id`),
-  KEY `idx_section_id` (`section_id`),
-  KEY `idx_created_by` (`created_by`),
-  KEY `idx_state` (`state`),
-  KEY `idx_priority` (`priority`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `offering_id` int(11) NOT NULL DEFAULT '0',
+			  `content` text,
+			  `priority` tinyint(2) NOT NULL DEFAULT '0',
+			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created_by` int(11) NOT NULL DEFAULT '0',
+			  `section_id` int(11) NOT NULL DEFAULT '0',
+			  `state` tinyint(2) NOT NULL DEFAULT '0',
+			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `sticky` tinyint(2) NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`id`),
+			  KEY `idx_offering_id` (`offering_id`),
+			  KEY `idx_section_id` (`section_id`),
+			  KEY `idx_created_by` (`created_by`),
+			  KEY `idx_state` (`state`),
+			  KEY `idx_priority` (`priority`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -390,32 +390,6 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_user_id` (`user_id`),
 			  KEY `idx_role_id` (`role_id`),
 			  KEY `idx_section_id` (`section_id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if (!$this->db->tableExists('#__courses_member_notes'))
-		{
-			$query = "CREATE TABLE `#__courses_member_notes` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `scope` varchar(255) NOT NULL DEFAULT '',
-			  `scope_id` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `content` mediumtext NOT NULL,
-			  `pos_x` int(11) NOT NULL DEFAULT '0',
-			  `pos_y` int(11) NOT NULL DEFAULT '0',
-			  `width` int(11) NOT NULL DEFAULT '0',
-			  `height` int(11) NOT NULL DEFAULT '0',
-			  `state` tinyint(2) NOT NULL DEFAULT '0',
-			  `timestamp` time NOT NULL DEFAULT '00:00:00',
-			  `section_id` int(11) NOT NULL DEFAULT '0',
-			  `access` tinyint(2) NOT NULL DEFAULT '0',
-			  PRIMARY KEY (`id`),
-			  KEY `idx_scoped` (`scope`,`scope_id`),
-			  KEY `idx_createdby` (`created_by`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
@@ -777,13 +751,6 @@ class Migration20170901000000ComCourses extends Base
 		if ($this->db->tableExists('#__courses_members'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__courses_members`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__courses_member_notes'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_member_notes`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
