@@ -336,7 +336,7 @@ class Partners extends AdminController
 		
 
 		// Notify the user that the entry was saved
-		Notify::success(Lang::txt('COM_PARTNER_ENTRY_SAVED'));
+		Notify::success(Lang::txt('COM_PARTNERS_ENTRY_SAVED'));
 
 		if ($this->_task == 'apply')
 		{
