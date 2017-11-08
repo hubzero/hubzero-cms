@@ -172,8 +172,8 @@ class Orcid extends SiteController
 				if ($child->getName() == 'name')
 				{
 					$name = array('given-names' => (string)$child->{'given-names'}, 'family-name' => (string)$child->{'family-name'});
+					break;
 				}
-				break;
 			}
 		}
 		return $name;
@@ -415,7 +415,7 @@ class Orcid extends SiteController
 		$returnOrcid = Request::getInt('return', 0);
 		$isRegister  = $returnOrcid == 1;
 		$records = array();
-
+		
 		$ins_option = $this->config->get('orcid_institution_field_option');
 
 		$ins_name = $this->config->get('orcid_user_institution_name', 'Purdue University');
@@ -428,7 +428,7 @@ class Orcid extends SiteController
 
 		// The default option is searching by first name and last name. 
 		$defSearch = array();
-
+		
 		// The configurable option is searching by first name, last name, and instituation name
 		$optSearch = array();
 
@@ -436,7 +436,7 @@ class Orcid extends SiteController
 
 		// Get ORCID record public access token
 		$token = $this->_getAccessToken();
-
+		
 		if (false == $token)
 		{
 			return;
