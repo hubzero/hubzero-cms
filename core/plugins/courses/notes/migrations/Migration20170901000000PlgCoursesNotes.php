@@ -35,7 +35,7 @@ class Migration20170901000000PlgCoursesNotes extends Base
 			  PRIMARY KEY (`id`),
 			  KEY `idx_scoped` (`scope`,`scope_id`),
 			  KEY `idx_createdby` (`created_by`)
-			) ENGINE=MyISAM AUTO_INCREMENT=632 DEFAULT CHARSET=utf8;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
