@@ -127,23 +127,6 @@ class Migration20170901000000ComWiki extends Base
 			$this->db->query();
 		}
 
-		if (!$this->db->tableExists('#__wiki_formulas'))
-		{
-			$query = "CREATE TABLE `#__wiki_formulas` (
-			  `inputhash` varchar(32) NOT NULL DEFAULT '',
-			  `outputhash` varchar(32) NOT NULL DEFAULT '',
-			  `conservativeness` tinyint(4) NOT NULL,
-			  `html` text,
-			  `mathml` text,
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  PRIMARY KEY (`id`),
-			  UNIQUE KEY `uidx_inputhash` (`inputhash`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
 		if (!$this->db->tableExists('#__wiki_links'))
 		{
 			$query = "CREATE TABLE `#__wiki_links` (
@@ -232,13 +215,6 @@ class Migration20170901000000ComWiki extends Base
 		if ($this->db->tableExists('#__wiki_comments'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__wiki_comments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__wiki_formulas'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_formulas`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
