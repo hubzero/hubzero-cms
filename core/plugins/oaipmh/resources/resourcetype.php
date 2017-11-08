@@ -30,14 +30,17 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Hubzero\Form\Fields;
 
-JFormHelper::loadFieldClass('list');
+use Hubzero\Form\Fields\Select;
+use Components\Resources\Models\Type;
+use Html;
+use Lang;
 
 /**
  * Renders a list of support ticket statuses
  */
-class JFormFieldResourcetype extends JFormFieldList
+class Resourcetype extends Select
 {
 	/**
 	 * Element name
@@ -52,20 +55,16 @@ class JFormFieldResourcetype extends JFormFieldList
 	 * which categories should be displayed.
 	 * Use the show_root attribute to specify whether to show the global category root in the list.
 	 *
-	 * @return  array    The field option objects.
+	 * @return  array  The field option objects.
 	 */
 	protected function getOptions()
 	{
-		$options = array();
-
+		$options   = array();
 		$options[] =  Html::select('option', '0', Lang::txt('All'));
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		include_once \Component::path('com_resources') . '/models/type.php';
 
-		$db = App::get('db');
-		$sr = new \Components\Resources\Tables\Type($db);
-
-		$types = $sr->getMajorTypes();
+		$types = Type::getMajorTypes();
 
 		foreach ($types as $anode)
 		{
