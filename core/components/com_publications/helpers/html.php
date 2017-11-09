@@ -340,7 +340,6 @@ class Html
 	public static function citation($cite, $pub, $citations)
 	{
 		include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
-		include_once Component::path('com_citations') . DS . 'tables' . DS . 'type.php';
 
 		$cconfig  = Component::params('com_citations');
 
