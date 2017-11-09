@@ -100,11 +100,17 @@ $this->view('_submenu')
 	->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
-			<div class="col span12 align-right">
+			<div class="col span5">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 
+				<input type="submit" value="<?php echo Lang::txt('COM_CART_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-report-from').val('<?php echo date('m/d/Y', strtotime('-1 month')); ?>');$('#filter-report-to').val('<?php echo date('m/d/Y'); ?>');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span7 align-right">
 				<?php
 				if (!empty($this->filters['skuRequested']))
 				{
@@ -117,16 +123,16 @@ $this->view('_submenu')
 				<?php
 				}
 				?>
-
-				<label for="filter-report-from">From:</label>
+				<label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
 				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
 				&mdash;
-				<label for="filter-report-to">To:</label>
+				<label for="filter-report-to"><?php echo Lang::txt('To'); ?>:</label>
 				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
 				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
 			</div>
 		</div>
 	</fieldset>
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -141,38 +147,40 @@ $this->view('_submenu')
 			</tr>
 		</thead>
 		<tfoot>
-		<tr>
-			<td colspan="8"><?php
-				// Initiate paging
-				echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-				);
-				?></td>
-		</tr>
+			<tr>
+				<td colspan="8">
+					<?php
+					// Initiate paging
+					echo $this->pagination(
+							$this->total,
+							$this->filters['start'],
+							$this->filters['limit']
+					);
+					?>
+				</td>
+			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-$i = 0;
+		<?php
+		$k = 0;
+		$i = 0;
 
-foreach ($this->rows as $row)
-{
-	switch ($row->dStatus)
-	{
-		case 1:
-			$class = 'publish';
-			$task = 'inactive';
-			$alt = Lang::txt('COM_CART_ACTIVE');
-			break;
-		case 0:
-			$class = 'unpublish';
-			$task = 'active';
-			$alt = Lang::txt('COM_CART_INACTIVE');
-			break;
-	}
-?>
+		foreach ($this->rows as $row)
+		{
+			switch ($row->dStatus)
+			{
+				case 1:
+					$class = 'publish';
+					$task = 'inactive';
+					$alt = Lang::txt('COM_CART_ACTIVE');
+					break;
+				case 0:
+					$class = 'unpublish';
+					$task = 'active';
+					$alt = Lang::txt('COM_CART_INACTIVE');
+					break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" onclick="isChecked(this.checked, this);" />
@@ -256,11 +264,11 @@ foreach ($this->rows as $row)
 				<?php } ?>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

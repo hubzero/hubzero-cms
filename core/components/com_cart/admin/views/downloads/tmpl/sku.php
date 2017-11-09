@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('download');
 
-Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS') . ' by SKU', 'cart.png');
+Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS') . ' by SKU', 'cart');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -94,14 +94,21 @@ $this->view('_submenu')
 	->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
-			<div class="col span12 align-right">
-				<label for="filter-report-from">From:</label>
+			<div class="col span5">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+
+				<input type="submit" value="<?php echo Lang::txt('COM_CART_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-report-from').val('<?php echo date('m/d/Y', strtotime('-1 month')); ?>');$('#filter-report-to').val('<?php echo date('m/d/Y'); ?>');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span7 align-right">
+				<label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
 				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
 				&mdash;
-				<label for="filter-report-to">To:</label>
+				<label for="filter-report-to"><?php echo Lang::txt('To'); ?>:</label>
 				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
 				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
 			</div>
@@ -111,31 +118,31 @@ $this->view('_submenu')
 		<thead>
 			<tr>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_SKU'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'downloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
-		<tr>
-			<td colspan="6"><?php
-				// Initiate paging
-				echo $this->pagination(
+			<tr>
+				<td colspan="3">
+					<?php
+					// Initiate paging
+					echo $this->pagination(
 						$this->total,
 						$this->filters['start'],
 						$this->filters['limit']
-				);
-				?></td>
-		</tr>
+					);
+					?>
+				</td>
+			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
-$i = 0;
-
-foreach ($this->rows as $row)
-{
-	//print_r($row); die;
-?>
+		<?php
+		$k = 0;
+		$i = 0;
+		foreach ($this->rows as $row)
+		{
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php
@@ -144,15 +151,21 @@ foreach ($this->rows as $row)
 					{
 						$product = '<span class="missing">Product n/a</span>';
 					}
-					if (!stripslashes($row->sSku))
-					{
-						$product .= ', <span class="missing">SKU n/a</span>';
-					}
-					else {
-						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
-					}
 					?>
 					<span><?php echo $product; ?></span>
+				</td>
+				<td>
+					<?php
+					if (!stripslashes($row->sSku))
+					{
+						$sku = '<span class="missing">SKU n/a</span>';
+					}
+					else
+					{
+						$sku = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+					}
+					?>
+					<span><?php echo $sku; ?></span>
 				</td>
 				<td>
 					<?php
@@ -161,11 +174,11 @@ foreach ($this->rows as $row)
 					<span><?php echo $downloaded; ?></span>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

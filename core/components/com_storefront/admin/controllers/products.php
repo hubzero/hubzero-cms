@@ -36,6 +36,10 @@ use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;
 use Hubzero\Html\Builder\Access;
 use Components\Cart\Helpers\CartDownload;
+use Request;
+use Route;
+use Lang;
+use App;
 
 require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Download.php';
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
@@ -55,6 +59,18 @@ class Products extends AdminController
 	{
 		// Get filters
 		$this->view->filters = array(
+			// Get sorting variables
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'type' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.type',
+				'type',
+				-1,
+				'int'
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -138,6 +154,10 @@ class Products extends AdminController
 			}
 		}
 		$this->view->ag = $accessGroups;
+
+		$db = App::get('db');
+		$db->setQuery("SELECT * FROM `#__storefront_product_types`");
+		$this->view->types = $db->loadObjectList();
 
 		// Output the HTML
 		$this->view
