@@ -130,7 +130,7 @@ $this->css()
 							?>
 							<tr class="<?php echo $cls; ?>">
 								<td>
-									<a class="tag <?php echo ($row->get('admin') ? ' admin' : ''); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+									<a class="tag <?php echo ($row->get('admin') ? ' admin' : ''); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&search=' . $row->get('tag')); ?>">
 										<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 									</a>
 								</td>

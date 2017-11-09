@@ -685,7 +685,7 @@ class Tag extends Relational
 	 */
 	public function link($type='')
 	{
-		$link = 'index.php?option=com_tags&tag=' . $this->get('tag');
+		$link = 'index.php?option=com_tags&task=browse&search=' . $this->get('tag');
 
 		switch (strtolower($type))
 		{
