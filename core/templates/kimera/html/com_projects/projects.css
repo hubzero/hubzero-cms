@@ -1253,17 +1253,22 @@
 		padding: 0;
 		margin: 0 0 2em 0;
 		list-style: none;
-		float: left;
 		color: #666;
 		background: #f8f9f9;
 		width: 100%;
 	}
+	ol.steps:after {
+		content: "";
+		clear: left;
+		display: table;
+		line-height: 0;
+	}
 	ol.steps li {
-		display: inline-block;
+		display: block;
+		float: left;
 		margin: 0;
-		padding: 0.5em 1em;
+		padding: 0.5em 1em 0.5em 2em;
 		position: relative;
-		padding-left: 2em;
 	}
 	ol.steps li:first-child {
 		margin-left: 0;
@@ -1279,7 +1284,7 @@
 		position: absolute;
 		top: 0;
 		right: -16px;
-		z-index: 1000;
+		z-index: 1;
 	}
 	ol.steps li a {
 		color: #333;
