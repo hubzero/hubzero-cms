@@ -112,15 +112,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$database = App::get('db');
 
-			// Instantiate project publication
-			$objP = new \Components\Publications\Tables\Publication($database);
+			// Instantiate a publication object
+			$pub_model = new \Components\Publications\Models\Publication();
 
 			$filters = array();
 			$filters['project']       = $model->get('id');
 			$filters['ignore_access'] = 1;
 			$filters['dev']           = 1;
 
-			$counts['publications'] = $objP->getCount($filters);
+			$counts['publications'] = $pub_model->entries('count', $filters);
 			return $counts;
 		}
 	}
@@ -1950,14 +1950,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _overQuota()
 	{
-		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication($this->_database);
+		// Instantiate a publication object
+		$pub_model = new \Components\Publications\Models\Publication();
 
 		// Get all publications
-		$rows = $objP->getRecords(array('project' => $this->model->get('id'), 'dev' => 1, 'ignore_access' => 1));
+		$rows = $pub_model->entries('list', array('project' => $this->model->get('id'), 'dev' => 1, 'ignore_access' => 1));
 
 		// Get used space
-		$dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows, false);
+		$dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows);
 		$quota   = $this->model->params->get('pubQuota')
 				? $this->model->params->get('pubQuota')
 				: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
@@ -2881,21 +2881,21 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$filters['ignore_access'] = 1;
 		$filters['dev']           = 1; // get dev versions
 
-		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication($database);
+		// Instantiate a publication object
+		$pub_model = new \Components\Publications\Models\Publication();
 
 		// Get all publications
-		$view->rows = $objP->getRecords($filters);
+		$view->rows = $pub_model->entries('list', $filters);
 
 		// Get used space
-		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows, false);
+		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows);
 		$view->params  = $model->params;
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
 						: \Components\Projects\Helpers\Html::convertSize(floatval($model->config()->get('pubQuota', '1')), 'GB', 'b');
 
 		// Get total count
-		$view->total = $objP->getCount($filters);
+		$view->total = $pub_model->entries('count', $filters);
 
 		$view->project = $model;
 		$view->option  = $this->_option;

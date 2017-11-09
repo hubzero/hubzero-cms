@@ -1099,19 +1099,33 @@ class Html
 	 * @param   array    $rows  Publications objet array
 	 * @return  integer
 	 */
-	public static function getDiskUsage($rows = array())
+	public static function getDiskUsage($rows = array(), $simple = false)
 	{
 		$used = 0;
 
 		if (!empty($rows))
 		{
 			$pubconfig = Component::params('com_publications');
+			$projconfig = Component::params('com_projects');
 			$base = trim($pubconfig->get('webpath'), DS);
+			$simple = $projconfig->get('simpleSizeReporting', 0);
 
 			foreach ($rows as $row)
 			{
 				$path = DS . $base . DS . \Hubzero\Utility\String::pad($row->id);
-				$used = $used + self::computeDiskUsage($path, PATH_APP, false);
+				// For simple reporting, we only count the current version's raw content size
+				// This does not count the bundle or previous versions of each publication	
+				if ($simple)
+				{
+					$pub_size = self::computeDiskUsage($row->path('content'), PATH_APP, false);
+					$pub_size = $pub_size + self::computeDiskUsage($row->path('data'), PATH_APP, false);
+					$used += $pub_size;
+				}
+				// Otherwise, we'll count the size of everything in the entire publication directory
+				else
+				{
+					$used = $used + self::computeDiskUsage($path, PATH_APP, false);
+				}
 			}
 		}
 
