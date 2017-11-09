@@ -143,29 +143,6 @@ class Migration20170901000000ComPublications extends Base
 			$this->db->query();
 		}
 
-		if (!$this->db->tableExists('#__publication_ratings'))
-		{
-			$query = "CREATE TABLE `#__publication_ratings` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `publication_id` int(11) NOT NULL DEFAULT '0',
-			  `publication_version_id` int(11) NOT NULL DEFAULT '0',
-			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
-			  `comment` text NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `anonymous` tinyint(3) NOT NULL DEFAULT '0',
-			  `state` tinyint(2) NOT NULL DEFAULT '1',
-			  PRIMARY KEY (`id`),
-			  KEY `idx_publication_id` (`publication_id`),
-			  KEY `idx_publication_version_id` (`publication_version_id`),
-			  KEY `idx_state` (`state`),
-			  KEY `idx_created_by` (`created_by`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
 		if (!$this->db->tableExists('#__publication_master_types'))
 		{
 			$query = "CREATE TABLE `#__publication_master_types` (
@@ -526,13 +503,6 @@ class Migration20170901000000ComPublications extends Base
 		if ($this->db->tableExists('#__publication_screenshots'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__publication_screenshots`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__publication_ratings'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__publication_ratings`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

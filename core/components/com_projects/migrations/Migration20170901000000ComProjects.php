@@ -167,33 +167,6 @@ class Migration20170901000000ComProjects extends Base
 			$this->db->query();
 		}
 
-		if (!$this->db->tableExists('#__project_todo'))
-		{
-			$query = "CREATE TABLE `#__project_todo` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `projectid` int(11) NOT NULL DEFAULT '0',
-			  `todolist` varchar(255) DEFAULT NULL,
-			  `created` datetime NOT NULL,
-			  `duedate` datetime DEFAULT NULL,
-			  `closed` datetime DEFAULT NULL,
-			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `assigned_to` int(11) DEFAULT '0',
-			  `closed_by` int(11) DEFAULT '0',
-			  `priority` int(11) DEFAULT '0',
-			  `activityid` int(11) NOT NULL DEFAULT '0',
-			  `state` tinyint(1) NOT NULL DEFAULT '0',
-			  `milestone` tinyint(1) NOT NULL DEFAULT '0',
-			  `private` tinyint(1) NOT NULL DEFAULT '0',
-			  `details` text,
-			  `content` varchar(255) NOT NULL,
-			  `color` varchar(20) DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
 		if (!$this->db->tableExists('#__project_stats'))
 		{
 			$query = "CREATE TABLE `#__project_stats` (
@@ -550,13 +523,6 @@ class Migration20170901000000ComProjects extends Base
 		if ($this->db->tableExists('#__project_tool_instances'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__project_tool_instances`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__project_todo'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_todo`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
