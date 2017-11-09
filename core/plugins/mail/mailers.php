@@ -30,14 +30,17 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Hubzero\Form\Fields;
 
-JFormHelper::loadFieldClass('list');
+use Hubzero\Form\Fields\Select;
+use Plugin;
+use Html;
+use Lang;
 
 /**
  * Renders a list of support ticket statuses
  */
-class JFormFieldMailers extends JFormFieldList
+class Mailers extends Select
 {
 	/**
 	 * Element name

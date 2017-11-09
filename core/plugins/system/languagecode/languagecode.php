@@ -112,7 +112,7 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
 	public function onContentPrepareForm($form, $data)
 	{
 		// Check we have a form
-		if (!($form instanceof JForm))
+		if (!($form instanceof Hubzero\Form\Form))
 		{
 			$this->setError('JERROR_NOT_A_FORM');
 			return false;

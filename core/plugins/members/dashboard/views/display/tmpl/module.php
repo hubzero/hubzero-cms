@@ -40,7 +40,7 @@ if (!file_exists($manifest))
 {
 	$manifest = PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml';
 }
-$fields = new JForm($this->module->module);
+$fields = new Hubzero\Form\Form($this->module->module);
 $fields->loadFile($manifest, true, 'config/fields');
 
 // This is done first as the 'renderModule' method loads the language file

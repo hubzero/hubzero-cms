@@ -28,10 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Hubzero\Form\Fields;
+
+use Hubzero\Form\Field;
+
 /**
  * Renders a list of support ticket statuses
  */
-class JFormFieldTicketstate extends JFormField
+class Ticketstate extends Field
 {
 	/**
 	 * The form field type.
