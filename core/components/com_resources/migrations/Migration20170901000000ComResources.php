@@ -117,24 +117,6 @@ class Migration20170901000000ComResources extends Base
 			$this->db->query();
 		}
 
-		if (!$this->db->tableExists('#__resource_ratings'))
-		{
-			$query = "CREATE TABLE `#__resource_ratings` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `resource_id` int(11) NOT NULL DEFAULT '0',
-			  `user_id` int(11) NOT NULL DEFAULT '0',
-			  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
-			  `comment` text NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `anonymous` tinyint(3) NOT NULL DEFAULT '0',
-			  `state` tinyint(2) NOT NULL DEFAULT '0',
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
 		// Authors
 		if (!$this->db->tableExists('#__author_assoc'))
 		{
@@ -312,13 +294,6 @@ class Migration20170901000000ComResources extends Base
 		if ($this->db->tableExists('#__resource_licenses'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__resource_licenses`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__resource_ratings'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_ratings`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
