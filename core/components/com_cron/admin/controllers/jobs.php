@@ -447,4 +447,43 @@ class Jobs extends AdminController
 
 		$this->cancelTask();
 	}
+
+	/**
+	 * Forcefully set a task to NOT running
+	 *
+	 * @return  void
+	 */
+	public function stopTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$total = 0;
+		foreach ($ids as $id)
+		{
+			// Update record(s)
+			$row = Job::oneOrFail(intval($id));
+			$row->set('active', 0);
+
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$total++;
+		}
+
+		// Set message
+		if ($total)
+		{
+			Notify::success(Lang::txt('COM_CRON_ITEMS_STOPPED', $total));
+		}
+
+		$this->cancelTask();
+	}
 }

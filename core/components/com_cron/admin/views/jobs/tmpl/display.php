@@ -41,9 +41,11 @@ if ($canDo->get('core.admin'))
 	Toolbar::spacer();
 }
 Toolbar::custom('run', 'purge', '', 'COM_CRON_RUN', false);
+Toolbar::custom('stop', 'stop', '', 'COM_CRON_STOP', false);
 Toolbar::spacer();
 if ($canDo->get('core.edit.state'))
 {
+	Toolbar::spacer();
 	Toolbar::publishList();
 	Toolbar::unpublishList();
 	Toolbar::spacer();
