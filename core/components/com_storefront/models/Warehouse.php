@@ -593,7 +593,19 @@ class Warehouse extends \Hubzero\Base\Obj
 		}
 
 		// Filter by filters
-		//print_r($filters);
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$where   = array();
+			$where[] = "p.`pName` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+			$where[] = "p.`pDescription` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+
+			$sql .= " AND (" . implode(" OR ", $where) . ")";
+		}
+
+		if (isset($filters['type']) && $filters['type'] >= 0)
+		{
+			$sql .= " AND p.`ptId`=" . $this->_db->quote((int)$filters['type']);
+		}
 
 		if (isset($filters['sort']))
 		{

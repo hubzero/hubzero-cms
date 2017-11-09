@@ -72,6 +72,27 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<div class="grid">
+			<div class="col span5">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+
+				<input type="submit" value="<?php echo Lang::txt('COM_STOREFRONT_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-type').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span7">
+				<label for="filter-type"><?php echo Lang::txt('COM_STOREFRONT_TYPE'); ?>:</label>
+				<select id="filter-type" name="type" onchange="this.form.submit()">
+					<option value="-1"<?php if ($this->filters['type'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_FILTER_TYPE'); ?></option>
+					<?php foreach ($this->types as $type) { ?>
+						<option value="<?php echo $type->ptId; ?>"<?php if ($this->filters['type'] == $type->ptId) { echo ' selected="selected"'; } ?>><?php echo $type->ptName; ?></option>
+					<?php } ?>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+
 	<table class="adminlist">
 		<thead>
 			<tr>
