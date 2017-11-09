@@ -1338,7 +1338,6 @@ class Wishlists extends SiteController
 		{
 			$refid    = Request::getCmd('group', '');
 		}
-
 		// some transfer options
 		$options = array();
 		$options['keepplan']     = Request::getInt('keepplan', 0);
@@ -1371,6 +1370,12 @@ class Wishlists extends SiteController
 		}
 		else
 		{
+			// create new wish
+			$wish = new Wish($wishid);
+			if(!$wish->canMoveWish($refid, $category)) {
+				//ddie("Can't move wish");
+			}
+
 			// moving to another list
 			$oldlist = Wishlist::getInstance($listid);
 
@@ -1394,7 +1399,6 @@ class Wishlists extends SiteController
 			if ($listid != $newlist->get('id'))
 			{
 				// Transfer wish
-				$wish = new Wish($wishid);
 				$wish->set('wishlist', $newlist->get('id'));
 				$wish->set('assigned', 0); // moved wish is not assigned to anyone yet
 				$wish->set('ranking', 0); // zero ranking
@@ -2067,7 +2071,7 @@ class Wishlists extends SiteController
 		if ($row->get('created_by') != User::get('id'))
 		{
 			App::redirect(
-				Request::getVar('HTTP_REFERER', NULL, 'server'),
+				Request::getVar('HTTP_REFERER', null, 'server'),
 				Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
 				'error'
 			);
@@ -2111,7 +2115,7 @@ class Wishlists extends SiteController
 
 		// Go back to the page
 		App::redirect(
-			Request::getVar('HTTP_REFERER', NULL, 'server')
+			Request::getVar('HTTP_REFERER', null, 'server')
 		);
 	}
 
@@ -2288,7 +2292,7 @@ class Wishlists extends SiteController
 
 			// Get list administrators
 			$objOwner = new Tables\Owner($this->database);
-			$owners = $objOwner->get_owners($listid,  $admingroup);
+			$owners = $objOwner->get_owners($listid, $admingroup);
 			$managers =  $owners['individuals'];
 			$advisory =  $owners['advisory'];
 
@@ -2319,7 +2323,7 @@ class Wishlists extends SiteController
 	 * @param   string   $order
 	 * @return  array
 	 */
-	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
 		$database = \App::get('db');
 
@@ -2334,7 +2338,7 @@ class Wishlists extends SiteController
 			{
 				$tquery .= "'" . $owner . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 
 			$query .= $tquery . ")) ";
 		}

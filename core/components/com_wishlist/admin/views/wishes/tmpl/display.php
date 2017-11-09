@@ -125,7 +125,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php
+				<td colspan="10"><?php
 				// Initiate paging
 				echo $this->pagination(
 					$this->total,

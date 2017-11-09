@@ -137,7 +137,7 @@ class Wish extends \JTable
 			$sql .= "\n LEFT JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
 
-		$sql .= " WHERE 1=1 ";
+		$sql .= " WHERE TRUE ";
 		$sql .= ($listid > 0) ? " AND ws.wishlist='" . $listid . "'" : '';
 
 		// list  filtering
@@ -189,7 +189,7 @@ class Wish extends \JTable
 				}
 				break;
 			case 'assigned':
-				$sql .= ' AND ws.assigned NOT NULL AND ws.status!=2';
+				$sql .= ' AND ws.assigned IS NOT NULL AND ws.assigned!=0 AND ws.status!=2';
 			break;
 			default:
 				$sql .= ' AND ws.status!=2';
@@ -418,7 +418,7 @@ class Wish extends \JTable
 					}
 				break;
 				case 'assigned':
-					$sql .= ' AND ws.assigned NOT NULL AND ws.status!=2';
+					$sql .= ' AND ws.assigned IS NOT NULL AND ws.assigned!=0 AND ws.status!=2';
 				break;
 				default:
 					$sql .= ' AND ws.status!=2';

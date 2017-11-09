@@ -36,6 +36,7 @@ use Components\Members\Models\Member;
 use Hubzero\Utility\String;
 use Hubzero\Base\ItemList;
 use Components\Wishlist\Tables;
+use Event;
 use User;
 use Lang;
 use Date;
@@ -1245,5 +1246,12 @@ class Wish extends Base
 
 		return true;
 	}
-}
 
+	public function canMoveWish($refid, $category) {
+		if(!Event::trigger('wishlist.onBeforeMoveWish', array($refid, $category))) {
+			//ddie(Event::trigger('wishlist.onBeforeMoveWish', array($refid, $category)));
+			return false;
+		}
+		return true;
+	}
+}
