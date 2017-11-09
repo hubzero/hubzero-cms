@@ -18,7 +18,6 @@ class Migration20171109000000Tpl extends Base
 		$this->deleteTemplateEntry('hubbasic2012', 0);
 		$this->deleteTemplateEntry('hubbasic2013', 0);
 		$this->deleteTemplateEntry('baselayer', 0);
-		
 	}
 
 	/**
