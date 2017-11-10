@@ -33,8 +33,8 @@
 namespace Components\Installer\Admin\Helpers;
 
 /**
-* CLI helper class
-*/
+ * CLI helper class
+ */
 class Cli
 {
 	/**
