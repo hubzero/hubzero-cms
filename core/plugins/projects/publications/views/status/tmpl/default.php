@@ -241,7 +241,7 @@ if ($revertAllowed && $this->pub->accepted())
 							if ($past->details->get('admin') != 1) { ?>
 								<li>
 									<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH'); ?></p>
-									<?php echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ; ?>
+									<?php echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1&selected_version=' . $this->selected_version) . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> '; ?>
 								</li>
 							<?php } ?>
 							<?php if ($past->details->get('admin') == 1) { ?>
@@ -282,7 +282,7 @@ if ($revertAllowed && $this->pub->accepted())
 								{
 									echo ' <a href="' . Route::url($this->pub->link('editversion') . '&action=revert') .'" class="btn icon-revert" id="action-revert">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT') . '</a> <span class="block and_or">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR') . '</span>';
 								}
-								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ;  ?>
+								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1&selected_version=' . $this->selected_version) . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ';  ?>
 								</span>
 								</p></li>
 							<?php } ?>

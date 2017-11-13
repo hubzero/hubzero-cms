@@ -69,6 +69,7 @@ if ($this->getError()) {
 		<input type="hidden" name="action" value="savenew" />
 		<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
+		<input type="hidden" name="selected_version" value="<?php echo $this->selected_version; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->isProvisioned() ? 1 : 0; ?>" />
 		<?php if ($this->project->isProvisioned()) { ?>
 		<input type="hidden" name="task" value="submit" />
