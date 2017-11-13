@@ -9,10 +9,9 @@
 @font-face {
 	font-family: 'Socicons';
 	src: url('/core/assets/css/fonts/socicons-webfont.eot');
-	src: url('/core/assets/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'), 
-		url('/core/assets/css/fonts/socicons-webfont.woff') format('woff'), 
-		url('/core/assets/css/fonts/socicons-webfont.ttf') format('truetype'), 
-		url('/core/assets/css/fonts/socicons-webfont.svgz#SociconsRegular') format('svg'), 
+	src: url('/core/assets/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'),
+		url('/core/assets/css/fonts/socicons-webfont.woff') format('woff'),
+		url('/core/assets/css/fonts/socicons-webfont.ttf') format('truetype'),
 		url('/core/assets/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
 	font-weight: normal;
 	font-style: normal;
