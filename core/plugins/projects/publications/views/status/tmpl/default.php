@@ -228,7 +228,7 @@ if ($revertAllowed && $this->pub->accepted())
 							$admin = $this->project->table('Activity')->checkActivity( $this->project->get('id'), $activity);
 							 if ($admin != 1) { ?>
 							<li><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH'); ?></p>
-								<?php echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">'
+								<?php echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1&selected_version=' . $this->selected_version) . '" class="showinbox btn icon-add">'
 							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ; ?></li>
 							<?php } ?>
 							<?php if ($admin == 1) { ?>
@@ -271,7 +271,7 @@ if ($revertAllowed && $this->pub->accepted())
 								. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT')
 								. '</a> <span class="block and_or">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR') . '</span>';
 								}
-								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">'
+								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1&selected_version=' . $this->selected_version) . '" class="showinbox btn icon-add">'
 							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ;  ?>
 								</span>
 								</p></li>

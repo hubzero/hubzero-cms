@@ -1428,16 +1428,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Output HTML
-		$view->option    = $this->_option;
-		$view->database  = $this->_database;
-		$view->project   = $this->model;
-		$view->uid       = $this->_uid;
-		$view->config    = $this->model->config();
-		$view->title     = $this->_area['title'];
-		$view->active    = $block;
-		$view->pub       = $pub;
-		$view->pubconfig = $this->_pubconfig;
-		$view->task      = $this->_task;
+		$view->option           = $this->_option;
+		$view->database         = $this->_database;
+		$view->project          = $this->model;
+		$view->uid              = $this->_uid;
+		$view->config           = $this->model->config();
+		$view->title            = $this->_area['title'];
+		$view->active           = $block;
+		$view->pub              = $pub;
+		$view->selected_version = $version;
+		$view->pubconfig        = $this->_pubconfig;
+		$view->task             = $this->_task;
 
 		// Append breadcrumbs
 		$this->_appendBreadcrumbs($pub->get('title'), $pub->link('edit'), $version);
@@ -1786,6 +1787,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$ajax  = Request::getInt('ajax', 0);
 		$label = trim(Request::getVar('version_label', '', 'post'));
+		$selected_version = Request::getVar('selected_version', 'default');
 
 		// Check permission
 		if (!$this->model->access('content'))
@@ -1795,7 +1797,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load default version
-		$pub = new \Components\Publications\Models\Publication($pid, 'default');
+		$pub = new \Components\Publications\Models\Publication($pid, $selected_version);
 		if (!$pub->exists())
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
@@ -1907,17 +1909,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			);
 
 			// Output HTML
-			$view->option    = $this->_option;
-			$view->database  = $this->_database;
-			$view->project   = $this->model;
-			$view->uid       = $this->_uid;
-			$view->pid       = $pid;
-			$view->pub       = $pub;
-			$view->task      = $this->_task;
-			$view->config    = $this->model->config();
-			$view->pubconfig = $this->_pubconfig;
-			$view->ajax      = $ajax;
-			$view->title     = $this->_area['title'];
+			$view->option           = $this->_option;
+			$view->database         = $this->_database;
+			$view->project          = $this->model;
+			$view->uid              = $this->_uid;
+			$view->pid              = $pid;
+			$view->pub              = $pub;
+			$view->task             = $this->_task;
+			$view->config           = $this->model->config();
+			$view->pubconfig        = $this->_pubconfig;
+			$view->selected_version = $selected_version;
+			$view->ajax             = $ajax;
+			$view->title            = $this->_area['title'];
 
 			// Get messages	and errors
 			$view->msg = $this->_msg;
