@@ -29,33 +29,50 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Answers\Models;
-
-use Components\Tags\Models\Cloud;
-
-require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
-
 /**
- * Answers Tagging class
+ * Answers plugin for members
  */
-class Tags extends Cloud
+class plgAnswersMembers extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Object type, used for linking objects (such as resources) to tags
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var  string
+	 * @var  boolean
 	 */
-	protected $_scope = 'answers';
+	protected $_autoloadLanguage = true;
 
 	/**
-	 * Turn a comma-separated string of tags into an array of normalized tags
+	 * Modify or append to query filters
 	 *
-	 * @param   string   $tag_string  Comma-separated string of tags
-	 * @param   integer  $keep        Use normalized tag as array key
+	 * @param   array  $filters
 	 * @return  array
 	 */
-	public function parse($tag_string, $keep=0)
+	public function onQuestionsPrepareFilters($filters)
 	{
-		return $this->_parse($tag_string, $keep);
+		if ($filters['area'] == 'interest')
+		{
+			require_once Component::path('com_members') . DS . 'models' . DS . 'tags.php';
+
+			// Get tags of interest
+			$mt = new Components\Members\Models\Tags(User::get('id'));
+
+			$filters['tag'] .= ($filters['tag'] ? ',' : '') . $mt->render('string');
+
+			return $filters;
+		}
+	}
+
+	/**
+	 * Return a list of filters that can be applied
+	 *
+	 * @return  array
+	 */
+	public function onQuestionsFilters()
+	{
+		return array(
+			'name'  => 'area',
+			'value' => 'interest',
+			'label' => Lang::txt('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS')
+		);
 	}
 }

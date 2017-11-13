@@ -44,6 +44,7 @@ use Exception;
 use Document;
 use Pathway;
 use Request;
+use Session;
 use Config;
 use Event;
 use Route;
@@ -51,8 +52,6 @@ use Lang;
 use Date;
 use User;
 use App;
-
-require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 
 /**
  * Answers controller class for questions
@@ -437,41 +436,17 @@ class Questions extends SiteController
 			$filters['area'] = '';
 		}
 
-		// Get questions of interest
-		// @TODO: Remove reference to members. Add getTags() to user?
-		if ($filters['area'] == 'interest')
+		// Give plugins a chance to manipulate the incoming filters
+		$results = Event::trigger('answers.onQuestionsPrepareFilters', array($filters));
+		foreach ($results as $result)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-
-			// Get tags of interest
-			$mt = new \Components\Members\Models\Tags(User::get('id'));
-
-			$filters['tag'] = $mt->render('string');
-		}
-
-		// Get assigned questions
-		// @TODO: Remove reference to tools. Turn into an event call?
-		if ($filters['area'] == 'assigned')
-		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-
-			// What tools did this user contribute?
-			$db = App::get('db');
-
-			$TA = new \Components\Tools\Tables\Author($db);
-			$tools = $TA->getToolContributions(User::get('id'));
-			$mytooltags = array();
-			if ($tools)
+			if (!empty($result))
 			{
-				foreach ($tools as $tool)
-				{
-					$mytooltags[] = 'tool' . $tool->toolname;
-				}
+				$filters = array_merge($filters, $result);
 			}
-
-			$filters['tag'] = implode(',', $mytooltags);
 		}
 
+		// Build the query
 		$records = Question::all()
 			->including(['responses', function ($response)
 			{
@@ -569,9 +544,11 @@ class Questions extends SiteController
 		$question = Question::oneOrFail($id);
 
 		// Check session if this is a newly submitted entry. Trigger a proper event if so.
-		if (Session::get('newsubmission.question')) {
+		if (Session::get('newsubmission.question'))
+		{
 			// Unset the new submission session flag
 			Session::set('newsubmission.question');
+
 			Event::trigger('content.onAfterContentSubmission', array('Question'));
 		}
 
@@ -606,6 +583,7 @@ class Questions extends SiteController
 	/**
 	 * Create a new question
 	 *
+	 * @param   object  $question
 	 * @return  void
 	 */
 	public function newTask($question = null)
@@ -713,6 +691,15 @@ class Questions extends SiteController
 			$row->set('reward', 1);
 		}
 
+		$isNew = $row->isNew();
+		$result = Event::trigger('onQuestionBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->newtTask($row);
+		}
+
 		// Store new content
 		if (!Request::checkHoneypot())
 		{
@@ -736,6 +723,9 @@ class Questions extends SiteController
 			return $this->newTask($row);
 		}
 
+		// Trigger after save event
+		Event::trigger('onQuestionAfterSave', array(&$row, $isNew));
+
 		// Hold the reward for this question if we're banking
 		if ($fields['reward'] && $this->config->get('banking'))
 		{
@@ -754,45 +744,11 @@ class Questions extends SiteController
 		$recipients = array($row->get('created_by'));
 		$recipients = $this->recipients($recipients);
 
-		// Get tool contributors if question is about a tool
-		if ($tags)
+		foreach (Event::trigger('answers.onQuestionNotify') as $results)
 		{
-			$tags = preg_split("/[,;]/", $tags);
-			if (count($tags) > 0)
-			{
-				require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
-				require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
-
-				$db = \App::get('db');
-				$TA = new \Components\Tools\Tables\Author($db);
-				$objV = new \Components\Tools\Tables\Version($db);
-
-				foreach ($tags as $tag)
-				{
-					if ($tag == '')
-					{
-						continue;
-					}
-
-					if (preg_match('/tool:/', $tag))
-					{
-						$toolname = preg_replace('/tool:/', '', $tag);
-						if (trim($toolname))
-						{
-							$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
-							$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
-							if (count($authors) > 0)
-							{
-								foreach ($authors as $author)
-								{
-									$recipients[] = $author->uidNumber;
-								}
-							}
-						}
-					}
-				}
-			}
+			$recipients = array_merge($recipients, $results);
 		}
+		$recipients = array_unique($recipients);
 
 		// Send the message
 		if (!empty($recipients))

@@ -103,11 +103,22 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 										<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_RELATED_TO_CONTRIBUTIONS'); ?>
 									</a>
 								</li>
-								<li>
-									<a<?php echo ($this->filters['area'] == 'interest') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=interest&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
-										<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS'); ?>
-									</a>
-								</li>
+								<?php
+								foreach (Event::trigger('answers.onQuestionsFilters') as $opt)
+								{
+									if (empty($opt))
+									{
+										continue;
+									}
+									?>
+									<li>
+										<a<?php echo ($this->filters['area'] == $opt['value']) ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . $opt['value'] . '&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+											<?php echo $opt['label']; ?>
+										</a>
+									</li>
+									<?php
+								}
+								?>
 							</ul>
 						</nav>
 					<?php } ?>

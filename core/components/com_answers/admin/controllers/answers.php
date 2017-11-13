@@ -327,34 +327,6 @@ class Answers extends AdminController
 
 		$ar = Response::oneOrFail($id[0]);
 
-		/*if ($publish == 1)
-		{
-			// Unmark all other entries
-			$tbl = new Tables\Response($this->database);
-			if ($results = $tbl->find('list', array('question_id' => $ar->get('question_id'))))
-			{
-				foreach ($results as $result)
-				{
-					$result = new Response($result);
-					if ($result->get('state') != 0 && $result->get('state') != 1)
-					{
-						continue;
-					}
-					$result->set('state', 0);
-					$result->store(false);
-				}
-			}
-		}
-
-		// Mark this entry
-		$ar->set('state', $publish);
-
-		if (!$ar->save())
-		{
-			Notify::error($ar->getError());
-			return $this->cancelTask();
-		}*/
-
 		if ($publish == 1)
 		{
 			if (!$ar->accept())
