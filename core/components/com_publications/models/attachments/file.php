@@ -873,6 +873,10 @@ class File extends Base
 			{
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 				$fname = trim(str_replace($configs->pubPath . DS, '', $fpath), DS);
+				// Window's built-in archive utility can't seem to handle paths with "./" in them
+				// So, we strip out "./", It has no effect on the resulting path.
+				// @TODO: Maybe find a better, more reliable way to do this?
+				$fname = str_replace('./', '', $fname);
 
 				if (is_file($fpath))
 				{
