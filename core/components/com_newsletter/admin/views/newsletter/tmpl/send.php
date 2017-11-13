@@ -120,7 +120,7 @@ function submitbutton(pressbutton)
 										<strong>
 											<font color="<?php echo $color; ?>"><?php echo $status; ?></font> - 
 										</strong>
-										<?php echo $sent->format("l, F d, Y @ g:ia"); ?>
+										<?php echo $sent->toLocal("l, F d, Y @ g:ia"); ?>
 										<br />
 									<?php endforeach; ?>
 								<?php else : ?>
