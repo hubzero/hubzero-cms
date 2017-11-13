@@ -46,7 +46,7 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 <?php
 // Display error  message
 if ($this->getError()) {
-	echo ('<p class="error">' . $this->getError() . '</p>');
+	echo '<p class="error">' . $this->getError() . '</p>';
 } ?>
 
 <?php if (!$this->ajax) { ?>
@@ -55,7 +55,7 @@ if ($this->getError()) {
 	<?php if ($this->project->isProvisioned()) { ?>
 		<h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications"><a href="<?php echo  Route::url($this->project->link('publications')); ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></span>
+		<h3 class="publications"><a href="<?php echo Route::url($this->project->link('publications')); ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></span>
 		</h3>
 	<?php } ?>
 	</div>
@@ -97,4 +97,4 @@ if ($this->getError()) {
 </form>
 <?php if ($this->ajax) { ?>
 </div>
-<?php } ?>
+<?php }

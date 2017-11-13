@@ -158,7 +158,7 @@ if ($revertAllowed && $this->pub->accepted())
 						<?php if ($this->pub->version->get('doi')) { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOI'); ?>:</td>
-							<td class="tbl-input"><?php echo $this->pub->version->get('doi') ? $this->pub->version->get('doi') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
+							<td class="tbl-input"><?php echo $this->pub->version->get('doi') ? $this->pub->version->get('doi') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NA'); ?>
 							<?php if ($this->pub->version->get('doi')) { echo ' <a href="' . $this->pub->config('doi_verify', 'http://data.datacite.org/') . $this->pub->version->get('doi') . '" rel="external">[&rarr;]</a>'; } ?>
 							</td>
 						</tr>
@@ -275,7 +275,11 @@ if ($revertAllowed && $this->pub->accepted())
 							<?php } else if (!$this->pub->versionProperty('version_label', 'dev')) {
 							?>
 							<li id="next-edit">
-								<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CHANGES_NEEDED_OPTION'); if ($revertAllowed) { echo ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_GRACE_PERIOD'); } ?>
+								<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CHANGES_NEEDED_OPTION');
+								if ($revertAllowed)
+								{
+									echo ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_GRACE_PERIOD');
+								} ?>
 								<?php if ($revertAllowed && $allowArchive && $archiveDate) { echo '<p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED') . ' <strong class="highlighted">' . Date::of($archiveDate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</strong>, ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED_NO_CHANGE') . '</p>'; } ?>
 								<span class="revert-options">
 								<?php if ($revertAllowed)
