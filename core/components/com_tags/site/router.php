@@ -49,11 +49,6 @@ class Router extends Base
 	{
 		$segments = array();
 
-		if (!empty($query['tag']))
-		{
-			$segments[] = $query['tag'];
-			unset($query['tag']);
-		}
 		if (!empty($query['area']))
 		{
 			$segments[] = $query['area'];
@@ -66,6 +61,11 @@ class Router extends Base
 				$segments[] = $query['task'];
 				unset($query['task']);
 			}
+		}
+		if (!empty($query['tag']))
+		{
+			$segments[] = $query['tag'];
+			unset($query['tag']);
 		}
 		if (!empty($query['controller']))
 		{
@@ -91,14 +91,18 @@ class Router extends Base
 
 		if (isset($segments[0]))
 		{
-			if ($segments[0] == 'browse' || $segments[0] == 'delete' || $segments[0] == 'edit')
+			if (in_array($segments[0], array('browse', 'delete', 'edit', 'view')))
 			{
 				$vars['task'] = $segments[0];
+				if ($segments[0] == 'view')
+				{
+					$vars['tag']  = $segments[1];
+				}
 			}
 			else
 			{
-				$vars['tag']  = $segments[0];
-				$vars['task'] = 'view';
+				$vars['area'] = $segments[0];
+				$vars['tag'] = $segments[0];
 			}
 		}
 		if (isset($segments[1]))
@@ -106,10 +110,6 @@ class Router extends Base
 			if ($segments[1] == 'feed' || $segments[1] == 'feed.rss')
 			{
 				$vars['task'] = $segments[1];
-			}
-			else
-			{
-				$vars['area'] = $segments[1];
 			}
 		}
 		if (isset($segments[2]))

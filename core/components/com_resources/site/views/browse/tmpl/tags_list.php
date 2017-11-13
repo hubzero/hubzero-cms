@@ -251,7 +251,7 @@ switch ($this->level)
 			if ($sl) {
 				$link = $sl;
 			} else {
-				$link = Route::url('index.php?option=com_tags&task=browse&search='.$tag->get('tag'));
+				$link = Route::url('index.php?option=com_tags&task=view&tag='.$tag->get('tag'));
 			}
 
 			$xtra .= '<p class="supported"><a href="'.$link.'">'.$tag->get('raw_tag').'</a></p>';

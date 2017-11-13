@@ -809,7 +809,7 @@ class Tags extends SiteController
 		$search = urldecode(Request::getString('search', ''));
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=browse&search=' . urlencode($search) . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start)
+			Route::url('index.php?option=' . $this->_option . '&task=view&tag=' . urlencode($search) . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start)
 		);
 	}
 
@@ -862,7 +862,7 @@ class Tags extends SiteController
 
 		// Redirect back to browse mode
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=browse&search=' . $search . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count)
+			Route::url('index.php?option=' . $this->_option . '&task=view&tag=' . $search . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count)
 		);
 	}
 

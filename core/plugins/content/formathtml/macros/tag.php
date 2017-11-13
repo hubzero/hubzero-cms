@@ -78,7 +78,7 @@ class Tag extends Macro
 			if ($a)
 			{
 				// Build and return the link
-				return '<a href="' . \Route::url('index.php?option=com_tags&task=browse&search=' . $tag) . '">' . stripslashes($a) . '</a>';
+				return '<a href="' . \Route::url('index.php?option=com_tags&task=view&tag=' . $tag) . '">' . stripslashes($a) . '</a>';
 			}
 			else
 			{
