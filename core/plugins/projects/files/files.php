@@ -188,9 +188,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Project model
 		$this->model = $model;
+		$subdirectory = Request::getVar('subdir');
 
 		// Check authorization
-		if ($this->model->exists() && !$this->model->access('member'))
+		if ($this->model->exists() && !$this->model->access('member') && $subdirectory != 'public')
 		{
 			return $arr;
 		}
