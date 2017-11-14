@@ -246,14 +246,14 @@ class Hosts extends AdminController
 		if ($this->view->row->hostname != '')
 		{
 			//get tool instance counts
-			$sql = "SELECT appname, count(*) as count from session where exechost=" . $this->database->quote($this->view->row->hostname) . " group by appname";
-			$this->database->setQuery($sql);
-			$this->view->toolCounts = $this->database->loadObjectList();
+			$sql = "SELECT appname, count(*) as count from session where exechost=" . $mwdb->quote($this->view->row->hostname) . " group by appname";
+			$mwdb->setQuery($sql);
+			$this->view->toolCounts = $mwdb->loadObjectList();
 
 			//get status counts
-			$sql = "SELECT status, count(*) as count from display where hostname=" . $this->database->quote($this->view->row->hostname) . " group by status";
-			$this->database->setQuery($sql);
-			$this->view->statusCounts = $this->database->loadObjectList();
+			$sql = "SELECT status, count(*) as count from display where hostname=" . $mwdb->quote($this->view->row->hostname) . " group by status";
+			$mwdb->setQuery($sql);
+			$this->view->statusCounts = $mwdb->loadObjectList();
 		}
 
 		// Set any errors
