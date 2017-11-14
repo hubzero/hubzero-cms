@@ -35,6 +35,7 @@ namespace Components\Projects\Site\Controllers;
 use Components\Projects\Tables;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
+use Components\Projects\Helpers\LayoutHelper;
 use Components\Projects\Models\Orm\Description;
 use Components\Projects\Models\Orm\Description\Field;
 use Exception;
@@ -42,6 +43,7 @@ use stdClass;
 
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description.php';
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
+require_once Component::path('com_projects') . '/helpers/layoutHelper.php';
 
 /**
  * Primary component controller
@@ -561,6 +563,8 @@ class Projects extends Base
 
 		// Get tabbed plugins
 		$this->view->tabs = Helpers\Html::getTabs($plugins);
+
+		$layout = LayoutHelper::accessPublic(Request::getVar('subdir'), $layout);
 
 		// Go through plugins
 		$this->view->content = '';
