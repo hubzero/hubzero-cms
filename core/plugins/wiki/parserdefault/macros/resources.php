@@ -85,7 +85,7 @@ class ResourcesMacro extends WikiMacro
 		{
 			$a = trim($a);
 
-			if (substr($a,0,11) == 'screenshots')
+			if (substr($a, 0, 11) == 'screenshots')
 			{
 				$bits = explode('=', $a);
 				$num = intval(end($bits));
@@ -175,7 +175,7 @@ class ResourcesMacro extends WikiMacro
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(PATH_APP . $path . DS . $alias . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
+				if (is_file(PATH_APP . $path . DS . $alias . DS . $img_file) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html')
 				{
 					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file))
 					{
