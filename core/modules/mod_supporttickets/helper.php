@@ -32,8 +32,8 @@
 
 namespace Modules\Supporttickets;
 
-use Components\Support\Tables\Query;
-use Components\Support\Tables\Ticket;
+use Components\Support\Models\Query;
+use Components\Support\Models\Ticket;
 use Hubzero\Module\Module;
 use Component;
 use stdClass;
@@ -58,16 +58,14 @@ class Helper extends Module
 			return;
 		}
 
-		include_once(Component::path('com_support') . DS . 'tables' . DS . 'query.php');
-		include_once(Component::path('com_support') . DS . 'tables' . DS . 'ticket.php');
+		include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
 		$database = App::get('db');
 
 		$st = new Ticket($database);
 
-		$sq = new Query($database);
 		$types = array(
-			'common' => $sq->getCommon()
+			'common' => Query::allCommon()->rows()
 			//'mine'   => $sq->getMine()
 		);
 		// Loop through each grouping
@@ -98,13 +96,8 @@ class Helper extends Module
 			{
 				if ($query->id)
 				{
-					// Build the query from the condition set
-					if (!$query->query)
-					{
-						$query->query = $sq->getQuery($query->conditions);
-					}
 					// Get a record count
-					$types[$key][$k]->count = $st->getCount($query->query);
+					$types[$key][$k]->count = Ticket::countWithQuery($query);
 				}
 			}
 		}

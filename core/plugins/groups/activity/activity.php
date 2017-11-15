@@ -209,11 +209,17 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$r = $recipient->getTableName();
 		$l = Hubzero\Activity\Log::blank()->getTableName();
 
+		$scopes = array('group');
+		if (in_array(User::get('id'), $this->group->get('managers')))
+		{
+			$scopes[] = 'group_managers';
+		}
+
 		$recipient
 			->select($r . '.*')
 			->including('log')
 			->join($l, $l . '.id', $r . '.log_id')
-			->whereEquals($r . '.scope', 'group')
+			->whereIn($r . '.scope', $scopes)
 			->whereEquals($r . '.scope_id', $this->group->get('gidNumber'))
 			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
 
@@ -422,11 +428,20 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			);
 		}
 
+		$who = Request::getWord('activity_recipients', 'all');
+
 		// Record the activity
-		$recipients = array(
-			['group', $this->group->get('gidNumber')],
-			['user', $row->get('created_by')]
-		);
+		$recipients = array();
+
+		if ($who == 'managers')
+		{
+			$recipients[] = ['group_managers', $this->group->get('gidNumber')];
+		}
+		else
+		{
+			$recipients[] = ['group', $this->group->get('gidNumber')];
+		}
+		$recipients[] = ['user', $row->get('created_by')];
 		if ($row->get('parent'))
 		{
 			$recipients[] = ['user', $row->parent()->get('created_by')];
@@ -442,6 +457,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 				'description' => $row->get('description'),
 				'details'     => array(
 					'url'         => Route::url($this->base . '&active=' . $this->_name . '#activity' . $row->get('id')),
+					'title'       => $this->group->get('description'),
 					'attachments' => $row->details->get('attachments')
 				)
 			],

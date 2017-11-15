@@ -39,9 +39,9 @@ use Components\Publications\Helpers;
 use stdClass;
 use Exception;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'curation.php';
+require_once \Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
@@ -57,7 +57,7 @@ class Curation extends SiteController
 	{
 		$this->_task  = Request::getVar('task', '');
 		$this->_id    = Request::getInt('id', 0);
-		$this->_pub   = NULL;
+		$this->_pub   = null;
 
 		// View individual curation
 		if ($this->_id && !$this->_task)
@@ -113,7 +113,7 @@ class Curation extends SiteController
 
 		$filters['dev']     = 1; // get dev versions
 		$filters['status']  = array(5, 7); // submitted/pending
-		$filters['curator'] = $assigned || $authorized == false ? 'owner' : NULL;
+		$filters['curator'] = $assigned || $authorized == false ? 'owner' : null;
 		$this->view->filters = $filters;
 
 		// Instantiate project publication
@@ -219,7 +219,7 @@ class Curation extends SiteController
 		}
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, $version, $vid );
+		$this->_pub = new \Components\Publications\Models\Publication($pid, $version, $vid);
 
 		// If publication not found, raise error
 		if (!$this->_pub->exists())
@@ -363,13 +363,13 @@ class Curation extends SiteController
 		$ajax    = Request::getInt('ajax', 0);
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
+		$this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		if (!$this->_pub->exists())
 		{
 			if ($ajax)
 			{
-				$this->view = new \Hubzero\Component\View(array('name'=>'error', 'layout' =>'restricted'));
+				$this->view = new \Hubzero\Component\View(array('name' => 'error', 'layout' => 'restricted'));
 				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
 				$this->view->title = $this->title;
 				$this->view->display();
@@ -383,7 +383,7 @@ class Curation extends SiteController
 		{
 			if ($ajax)
 			{
-				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view = new \Hubzero\Component\View(array('name' => 'error', 'layout' => 'restricted'));
 				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
 				$this->view->title = $this->title;
 				$this->view->display();
@@ -510,7 +510,7 @@ class Curation extends SiteController
 		$vid = Request::getInt('vid', 0);
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
+		$this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		if (!$this->_pub->exists())
 		{
@@ -601,7 +601,7 @@ class Curation extends SiteController
 		$vid = Request::getInt('vid', 0);
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
+		$this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		if (!$this->_pub->exists())
 		{
@@ -685,7 +685,7 @@ class Curation extends SiteController
 		}
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
+		$this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		// If publication not found, raise error
 		if (!$this->_pub)
@@ -764,7 +764,7 @@ class Curation extends SiteController
 					? Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
 					: Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_KICKBACK');
 
-		$pubtitle = \Hubzero\Utility\String::truncate($pub->title, 100);
+		$pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
 
 		// Log activity in curation history
 		$pub->_curationModel->saveHistory(User::get('id'), $pub->state, $status, 1);
@@ -801,7 +801,7 @@ class Curation extends SiteController
 			$message .= ' ' . $link;
 		}
 
-		$pubtitle = \Hubzero\Utility\String::truncate($pub->title, 100);
+		$pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
 		$subject  = ucfirst(Lang::txt('COM_PUBLICATIONS_CURATION_VERSION'))
 					. ' ' . $pub->version_label . ' ' . Lang::txt('COM_PUBLICATIONS_OF') . ' '
 					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))

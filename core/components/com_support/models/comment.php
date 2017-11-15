@@ -25,53 +25,66 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Support\Models;
 
-use Components\Members\Models\Member;
-use Components\Support\Tables;
-use Hubzero\Base\Model;
-use Hubzero\Base\ItemList;
-use Hubzero\Utility\String;
+use Hubzero\Database\Relational;
 use Hubzero\Utility\Validate;
-use Component;
-use Request;
 use Route;
-use Lang;
 use User;
-use Date;
+use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
-require_once(__DIR__ . DS . 'attachment.php');
-require_once(__DIR__ . DS . 'changelog.php');
-require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
+require_once __DIR__ . DS . 'attachment.php';
+require_once __DIR__ . DS . 'changelog.php';
 
 /**
- * Support mdoel for a ticket comment
+ * Support ticket comment model
  */
-class Comment extends Model
+class Comment extends Relational
 {
 	/**
-	 * Table name
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Support\\Tables\\Comment';
+	public $namespace = 'support';
 
 	/**
-	 * Cached data
+	 * Default order by for model
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	private $_cache = array(
-		'attachments.count' => null,
-		'attachments.list'  => null,
-		'recipients.added'  => array(),
-		'recipients.failed' => array()
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		//'comment' => 'notempty',
+		'ticket'  => 'positive|nonzero'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
 	);
 
 	/**
@@ -82,31 +95,60 @@ class Comment extends Model
 	private $_base = null;
 
 	/**
-	 * User
-	 *
-	 * @var object
-	 */
-	private $_creator = NULL;
-
-	/**
 	 * Changelog
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	private $_log;
+	private $_log = null;
 
 	/**
-	 * Is the question open?
+	 * Cached data
+	 *
+	 * @var array
+	 */
+	private $_cache = array(
+		'recipients.added'  => array(),
+		'recipients.failed' => array()
+	);
+
+	/**
+	 * Is the comment private?
 	 *
 	 * @return  boolean
 	 */
 	public function isPrivate()
 	{
-		if ($this->get('access') == 1)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('access') == 1);
+	}
+
+	/**
+	 * Get parent ticket
+	 *
+	 * @return  object
+	 */
+	public function ticket()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Ticket', 'ticket');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between comment and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
+
+	/**
+	 * Get a list of attachments
+	 *
+	 * @return  object
+	 */
+	public function attachments()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Attachment', 'comment_id');
 	}
 
 	/**
@@ -117,268 +159,101 @@ class Comment extends Model
 	 */
 	public function created($as='')
 	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire User object
-	 *
-	 * @param   string  $property  Property to retrieve
-	 * @param   mixed   $default   Default value if property not set
-	 * @return  mixed
-	 */
-	public function creator($property=null, $default=null)
-	{
-		if (!($this->_creator instanceof Member))
-		{
-			$this->_creator = Member::oneOrNew($this->get('created_by'));
-		}
-		if ($property)
-		{
-			$property = ($property == 'uidNumber' ? 'id' : $property);
-			if ($property == 'picture')
-			{
-				return $this->_creator->picture(($this->_creator->get('id') ? 0 : 1));
-			}
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
-	}
-
-	/**
-	 * Get a count of or list of attachments on this model
-	 *
-	 * @param   string   $rtrn     Data to return state in [count, list]
-	 * @param   array    $filters  Filters to apply to the query
-	 * @param   boolean  $clear    Clear data cache?
-	 * @return  mixed
-	 */
-	public function attachments($rtrn='list', $filters=array(), $clear=false)
-	{
-		if (!isset($filters['ticket']))
-		{
-			$filters['ticket'] = $this->get('ticket');
-		}
-		if (!isset($filters['comment_id']))
-		{
-			$filters['comment_id'] = $this->get('id');
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!isset($this->_cache['attachments.count']) || $clear)
-				{
-					$tbl = new Tables\Attachment($this->_db);
-					$this->_cache['attachments.count'] = $tbl->find('count', $filters);
-				}
-				return $this->_cache['attachments.count'];
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['attachments.list'] instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Attachment($this->_db);
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Attachment($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_cache['attachments.list'] = new ItemList($results);
-				}
-				return $this->_cache['attachments.list'];
-			break;
-		}
-	}
-
-	/**
-	 * Get the content of the entry is various formats
-	 *
-	 * @param   string   $as       Format to return state in [text, number]
-	 * @param   integer  $shorten  Number of characters to shorten text to
-	 * @return  mixed    String or Integer
-	 */
-	public function content($as='parsed', $shorten=0)
-	{
-		static $attach;
-
 		$as = strtolower($as);
-		$options = array();
+		$dt = $this->get('created');
 
-		switch ($as)
+		if ($as == 'date')
 		{
-			case 'parsed':
-				$content = $this->get('comment.parsed', null);
-
-				if ($content === null)
-				{
-					if (!$attach)
-					{
-						$config = Component::params('com_support');
-						$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('ticket');
-
-						$webpath = str_replace('//', '/', rtrim(Request::base(), '/') . '/' . $path);
-						if (isset($_SERVER['HTTPS']))
-						{
-							$webpath = str_replace('http:', 'https:', $webpath);
-						}
-						if (!strstr($webpath, '://'))
-						{
-							$webpath = str_replace(':/', '://', $webpath);
-						}
-
-						$attach = new Tables\Attachment($this->_db);
-						$attach->webpath = $webpath;
-						$attach->uppath  = PATH_APP . DS . $path;
-						$attach->output  = 'web';
-					}
-
-					$comment = $this->get('comment');
-
-					//if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
-					//{
-						$comment = preg_replace("/<br\s?\/>/i", '', $comment);
-						$comment = htmlentities($comment, ENT_COMPAT, 'UTF-8');
-						$comment = nl2br($comment);
-						$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
-						$comment = preg_replace('/  /', ' &nbsp;', $comment);
-					//}
-					$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . Route::url("index.php?option=com_support&task=ticket&id=$1") . '">' . Lang::txt('ticket #%s', "$1") . '</a>', $comment);
-
-					$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
-					$this->set('comment.parsed', $comment);
-
-					return $this->content($as, $shorten);
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = html_entity_decode(strip_tags($this->content('parsed')));
-				$content = str_replace('&nbsp;', ' ', $content);
-			break;
-
-			case 'raw':
-			default:
-				$content = stripslashes($this->get('comment'));
-			break;
+			$dt = Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($shorten)
+		if ($as == 'time')
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$dt = Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
-		return $content;
+
+		return $dt;
+	}
+
+	/**
+	 * Save the record
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function save()
+	{
+		$this->set('changelog', $this->changelog()->toString());
+
+		return parent::save();
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove data
+		foreach ($this->attachments()->rows() as $attachment)
+		{
+			if (!$attachment->destroy())
+			{
+				$this->addError($attachment->getError());
+				return false;
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+
+	/**
+	 * Get a list of attachments
+	 *
+	 * @return  object
+	 */
+	public function transformComment()
+	{
+		$comment = $this->get('comment');
+
+		$comment = preg_replace("/<br\s?\/>/i", '', $comment);
+		$comment = htmlentities($comment, ENT_COMPAT, 'UTF-8');
+		$comment = nl2br($comment);
+		$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
+		$comment = preg_replace('/  /', ' &nbsp;', $comment);
+
+		$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . Route::url("index.php?option=com_support&task=ticket&id=$1") . '">' . Lang::txt('ticket #%s', "$1") . '</a>', $comment);
+
+		// Handle legacy attachment strings
+		$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
+
+		return $comment;
 	}
 
 	/**
 	 * Process an attachment macro and output a link to the file
 	 *
 	 * @param   array   $matches  Macro info
-	 * @return  string  HTML
+	 * @return  string
 	 */
 	protected function _getAttachment($matches)
 	{
 		$tokens = explode('#', $matches[0]);
+
 		$id = intval(end($tokens));
 
-		$attach = new Tables\Attachment($this->_db);
-		$attach->load($id);
-		if ($attach->id && !$attach->comment_id)
-		{
-			$attach->comment_id = $this->get('id');
-			$attach->created    = $this->get('created');
-			$attach->created_by = $this->creator('id');
-			$attach->store();
-		}
+		$attach = Attachment::oneOrNew($id);
 
-		if (!($this->_cache['attachments.list'] instanceof ItemList))
+		if ($attach->get('id') && !$attach->get('comment_id'))
 		{
-			$this->_cache['attachments.list'] = new ItemList(array());
+			$attach->set('comment_id', $this->get('id'));
+			$attach->set('created', $this->get('created'));
+			$attach->set('created_by', $this->get('created_by'));
+			$attach->save();
 		}
-
-		$this->_cache['attachments.list']->add(new Attachment($attach));
 
 		return '';
-	}
-
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @param   boolean  $check  Validate data?
-	 * @return  boolean  False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		$this->set('changelog', $this->changelog()->__toString());
-
-		return parent::store($check);
-	}
-
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function delete()
-	{
-		// Can't delete what doesn't exist
-		if (!$this->exists())
-		{
-			return true;
-		}
-
-		// Remove comments
-		foreach ($this->attachments('list') as $attachment)
-		{
-			if (!$attachment->delete())
-			{
-				$this->setError($attachment->getError());
-				return false;
-			}
-		}
-
-		return parent::delete();
-	}
-
-	/**
-	 * Get the changelog
-	 *
-	 * @return  object
-	 */
-	public function changelog()
-	{
-		if (!($this->_log instanceof Changelog))
-		{
-			$this->_log = new Changelog($this->get('changelog'));
-		}
-		return $this->_log;
 	}
 
 	/**
@@ -394,7 +269,7 @@ class Comment extends Model
 		{
 			$this->_base = 'index.php?option=com_support&task=ticket&id=' . $this->get('ticket');
 		}
-		$link  = $this->_base;
+		$link = $this->_base;
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
@@ -414,6 +289,20 @@ class Comment extends Model
 	}
 
 	/**
+	 * Get the changelog
+	 *
+	 * @return  object
+	 */
+	public function changelog()
+	{
+		if (!($this->_log instanceof Changelog))
+		{
+			$this->_log = new Changelog($this->get('changelog'));
+		}
+		return $this->_log;
+	}
+
+	/**
 	 * Add to the recipient list
 	 *
 	 * @param   string  $to
@@ -428,6 +317,7 @@ class Comment extends Model
 		if (is_numeric($to))
 		{
 			$user = User::getInstance($to);
+
 			if (is_object($user) && $user->get('id'))
 			{
 				if (isset($this->_cache['recipients.added'][$user->get('email')]))
@@ -540,4 +430,3 @@ class Comment extends Model
 		return $this->_cache['recipients.added'];
 	}
 }
-

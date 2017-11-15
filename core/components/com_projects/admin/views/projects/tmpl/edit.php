@@ -213,7 +213,7 @@ function submitbutton(pressbutton)
 										continue;
 									}
 									$used[] = $g->gidNumber; ?>
-									<option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+									<option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
 								<?php } ?>
 							</select>
 						</label>
@@ -232,7 +232,8 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
 					<select name="private">
-						<option value="0" <?php if ($this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
+						<option value="-1" <?php if ($this->model->get('private') < 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_OPEN'); ?></option>
+						<option value="0" <?php if ($this->model->get('private') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
 						<option value="1" <?php if (!$this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
 					</select>
 				</div>
@@ -287,7 +288,10 @@ function submitbutton(pressbutton)
 					</div>
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_APPROVAL_CODE'); ?>:</label>
-						<?php $approval = $this->escape(html_entity_decode($this->params->get( 'grant_approval'))); echo $approval ? $approval : Lang::txt('COM_PROJECTS_NA'); ?>
+						<?php 
+						$approval = $this->escape(html_entity_decode($this->params->get( 'grant_approval')));
+						echo $approval ? $approval : Lang::txt('COM_PROJECTS_NA');
+						?>
 					</div>
 				<?php } ?>
 			</fieldset>
@@ -295,6 +299,11 @@ function submitbutton(pressbutton)
 			<?php if (!$this->model->inSetup()) { ?>
 				<fieldset class="adminform">
 					<legend><?php echo Lang::txt('COM_PROJECTS_FILES'); ?></legend>
+
+					<div class="input-wrap">
+						<input name="params[versionTracking]" type="hidden" value="0" />
+						<input name="params[versionTracking]" type="checkbox" value="1" <?php echo ($this->params->get('versionTracking', '0') == '1') ? 'checked="checked"' : '';?> class="option" ><label><?php echo Lang::txt('Version Tracking'); ?> </label></input>
+					</div>
 
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('Files Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES').')'; ?></label>
@@ -370,10 +379,10 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_PROJECTS_LAST_ACTIVITY'); ?>:</th>
 						<td><?php if ($this->last_activity) {
-							$activity = preg_replace('/said/', "posted an update", $this->last_activity->activity);
+							$activity = preg_replace('/said/', "posted an update", $this->last_activity->description);
 							$activity = preg_replace('/&#58;/', "", $activity);
 							?>
-							<?php echo $this->last_activity->recorded; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->recorded) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->name; ?></span> <?php echo $activity; ?>
+							<?php echo $this->last_activity->created; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->creator->name; ?></span> <?php echo $activity; ?>
 							<?php } else { echo Lang::txt('COM_PROJECTS_NA'); }?>
 						</td>
 					</tr>
@@ -451,9 +460,7 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<div class="width-100">
-		<p class="notice"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
-	</div>
+	<p class="notice"><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a> <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
 
 	<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

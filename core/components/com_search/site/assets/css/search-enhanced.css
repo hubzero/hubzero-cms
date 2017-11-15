@@ -217,3 +217,25 @@
 		height: 500px;
 		width: 80%;
 	}
+
+	#ui-id-1 {
+		width: 500px;
+		border: 1px solid #8C8787;
+		background-color: white;
+	}
+	.ui-menu-item {
+		list-style-type: none;
+		margin: 0px;
+	    color: black;
+		padding: 5px 15px;
+		display: block;
+		font-weight: bold;
+	}
+
+	.ui-menu-item:hover {
+		background-color: #BDB8B8;
+	}
+
+	.ui-state-focus {
+		background-color: #BDB8B8;
+	}

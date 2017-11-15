@@ -180,17 +180,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$this->group_plugin_acl = $group_plugin_acl;
 			$this->authorized = $authorized;
 
-			//group vars
-			//$this->members = $members;
-			//get the plugins params
-			$p = new \Hubzero\Plugin\Params($this->database);
-			$this->params = $p->getParams($this->group->get('gidNumber'), 'groups', $this->_name);
-
+			// Get the plugins params
+			$this->params = \Hubzero\Plugin\Params::getParams($this->group->get('gidNumber'), 'groups', $this->_name);
+			$this->params->def('allow_anonymous', 1);
+			$this->params->def('threading', 'list');
+			$this->params->def('threading_depth', 3);
 			$this->params->set('access-plugin', $group_plugin_acl);
 
 			//option and paging vars
 			$this->option = $option;
-			//$this->name = substr($option, 4, strlen($option));
 			$this->limitstart = $limitstart;
 			$this->limit = $limit;
 			$this->base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
@@ -577,6 +575,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$this->setError($this->forum->getError());
 			}
 			$sections = $this->forum->sections($filters)
+				->purgeCache() // Previous query cached 'no results'
 				->ordered()
 				->rows();
 		}
@@ -891,6 +890,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'search'     => Request::getVar('q', ''),
+			'orderBy'    => Request::getVar('orderBy', 'created'),
+			'orderDir'   => Request::getVar('orderDir', 'DESC'),
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => 1,
@@ -1208,8 +1209,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope'    => $this->forum->get('scope'),
 			'scope_id' => $this->forum->get('scope_id'),
 			'state'    => Post::STATE_PUBLISHED,
-			'access'   => User::getAuthorisedViewLevels()
+			'access'   => array(1)
 		);
+		if (!User::isGuest())
+		{
+			$filters['access'][] = 2; // Registered
+			$filters['access'][] = 4; // Protected
+		}
+		if (in_array(User::get('id'), $this->members))
+		{
+			$filters['access'][] = 5; // Private
+		}
 
 		// Section
 		$section = Section::all()

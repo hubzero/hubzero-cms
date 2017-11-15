@@ -36,28 +36,24 @@ Toolbar::title(Lang::txt('Solr Search: Edit Facet'));
 Toolbar::spacer();
 
 Toolbar::custom('savefacet', 'save', 'savefacet', 'COM_SEARCH_SAVE_FACET', false);
-Toolbar::custom('managefacets', 'cancel', 'cancel', 'COM_SEARCH_CANCEL', false);
+Toolbar::custom('searchindex', 'cancel', 'cancel', 'COM_SEARCH_CANCEL', false);
 //Toolbar::cancel();
 Toolbar::spacer();
 
 $option = $this->option;
 
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Overview'),
-	'index.php?option='.$option.'&task=configure',
+	'index.php?option='.$option.'&task=configure'
+);
+Submenu::addEntry(
+	Lang::txt('Search Index'),
+	'index.php?option='.$option.'&task=searchindex',
 	true
 );
-\Submenu::addEntry(
-	Lang::txt('Search Index'),
-	'index.php?option='.$option.'&task=searchindex'
-);
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
 	'index.php?option='.$option.'&task=manageBlacklist'
-);
-\Submenu::addEntry(
-	Lang::txt('Manage Search Facets'),
-	'index.php?option='.$option.'&task=manageFacets'
 );
 ?>
 
@@ -111,9 +107,27 @@ function submitbutton(pressbutton)
 
 			</fieldset> <!-- /.adminform -->
 		</div><!-- /.col span7 -->
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('ID'); ?>:</th>
+						<td>
+							<?php echo $this->facet->get('id', 0); ?>
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('Protected'); ?>:</th>
+						<td>
+							<?php echo ($this->facet->get('protected') ? Lang::txt('JYES') : Lang::txt('JNO')); ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!-- /.col span7 -->
 	</div><!-- /.grid -->
 	<?php echo Html::input('token'); ?>
-	<input type="hidden" name="fields[protected]" value="0" />
+	<input type="hidden" name="fields[protected]" value="<?php echo $this->facet->get('protected', 0); ?>" />
 	<input type="hidden" name="fields[id]" value="<?php echo $this->facet->id; ?>" />
 	<input type="hidden" name="option" value="com_search" />
 	<input type="hidden" name="controller" value="solr" />

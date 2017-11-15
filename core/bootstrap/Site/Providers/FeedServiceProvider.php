@@ -50,9 +50,9 @@ class FeedServiceProvider extends ServiceProvider
 			$cache  = PATH_APP . DS . 'cache';
 			$cache .= DS . (isset($app['client']->alias) ? $app['client']->alias : $app['client']->name);
 
-			include_once PATH_CORE . DS . 'libraries' . DS . 'simplepie' . DS . 'simplepie.php';
-
-			$reader = new \SimplePie(null, $cache, $app['config']->get('cachetime', 15));
+			$reader = new \SimplePie();
+			$reader->set_cache_location($cache);
+			$reader->set_cache_duration($app['config']->get('cachetime', 15));
 			$reader->enable_cache(false);
 			$reader->force_feed(true);
 

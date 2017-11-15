@@ -32,6 +32,8 @@
 namespace Components\Answers\Models;
 
 use Hubzero\Item\Comment as ItemComment;
+use Event;
+use Lang;
 
 /**
  * Comment model
@@ -98,7 +100,7 @@ class Comment extends ItemComment
 
 		if ($valid)
 		{
-			$results = \Event::trigger('content.onContentBeforeSave', array(
+			$results = Event::trigger('content.onContentBeforeSave', array(
 				'com_answers.comment.content',
 				&$this,
 				$this->isNew()

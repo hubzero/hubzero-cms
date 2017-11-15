@@ -51,10 +51,10 @@ $link    = null;
 $image   = null;
 if ($this->sponsor)
 {
-	$id      = $this->sponsor[0]['id'];
-	$sponsor = $this->escape(stripslashes($this->sponsor[0]['sponsor']));
-	$link    = $this->escape(stripslashes($this->sponsor[0]['link']));
-	$image   = $this->escape(stripslashes($this->sponsor[0]['image']));
+	$id      = $this->sponsor->get('id');
+	$sponsor = $this->escape(stripslashes($this->sponsor->get('sponsor')));
+	$link    = $this->escape(stripslashes($this->sponsor->get('link')));
+	$image   = $this->escape(stripslashes($this->sponsor->get('image')));
 }
 ?>
 <script type="text/javascript">

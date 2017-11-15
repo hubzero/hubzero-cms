@@ -35,12 +35,13 @@ use Components\Blog\Models\Archive;
 use Components\Blog\Models\Comment;
 use Components\Blog\Models\Entry;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Utility\Sanitize;
 use Exception;
 use Document;
 use Request;
 use Pathway;
+use Event;
 use Lang;
 use Route;
 use User;
@@ -180,6 +181,13 @@ class Entries extends SiteController
 			}
 		}
 
+		// Check session if this is a newly submitted entry. Trigger a proper event if so.
+		if (Session::get('newsubmission.blog')) {
+			// Unset the new submission session flag
+			Session::set('newsubmission.blog');
+			Event::trigger('content.onAfterContentSubmission', array('Blog'));
+		}
+
 		// Output HTML
 		$this->view
 			->set('archive', $this->model)
@@ -193,6 +201,7 @@ class Entries extends SiteController
 	/**
 	 * Show a form for editing an entry
 	 *
+	 * @param   object  $entry
 	 * @return  void
 	 */
 	public function editTask($entry = null)
@@ -287,6 +296,16 @@ class Entries extends SiteController
 
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->save())
 		{
@@ -300,6 +319,9 @@ class Entries extends SiteController
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
+
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
 
 		// Log activity
 		Event::trigger('system.logActivity', [
@@ -317,6 +339,12 @@ class Entries extends SiteController
 				$row->get('created_by')
 			]
 		]);
+
+		// If the new resource is published, set the session flag indicating the new submission
+		if ($isNew)
+		{
+			Session::set('newsubmission.blog', true);
+		}
 
 		// Redirect to the entry
 		App::redirect(
@@ -501,7 +529,7 @@ class Entries extends SiteController
 				$item->description = html_entity_decode(Sanitize::stripAll($item->description));
 				if ($this->config->get('feed_entries') == 'partial')
 				{
-					$item->description = String::truncate($item->description, 300);
+					$item->description = Str::truncate($item->description, 300);
 				}
 				$item->description = '<![CDATA[' . $item->description . ']]>';
 
@@ -546,6 +574,16 @@ class Entries extends SiteController
 		// Instantiate a new comment object and pass it the data
 		$comment = Comment::oneOrNew($data['id'])->set($data);
 
+		// Trigger before save event
+		$isNew  = $comment->isNew();
+		$result = Event::trigger('onBlogCommentBeforeSave', array(&$comment, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			$this->setError($comment->getError());
+			return $this->entryTask();
+		}
+
 		// Store new content
 		if (!$comment->save())
 		{
@@ -553,8 +591,11 @@ class Entries extends SiteController
 			return $this->entryTask();
 		}
 
+		// Trigger after save event
+		Event::trigger('onBlogCommentAfterSave', array(&$comment, $isNew));
+
 		// Log the activity
-		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+		$entry = Entry::oneOrFail($comment->get('entry_id'));
 
 		$recipients = array($comment->get('created_by'));
 		if ($comment->get('created_by') != $entry->get('created_by'))
@@ -629,7 +670,7 @@ class Entries extends SiteController
 		$comment->save();
 
 		// Log the activity
-		$entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+		$entry = Entry::oneOrFail($comment->get('entry_id'));
 
 		$recipients = array($comment->get('created_by'));
 		if ($comment->get('created_by') != $entry->get('created_by'))
@@ -663,7 +704,7 @@ class Entries extends SiteController
 	/**
 	 * Display an RSS feed of comments
 	 *
-	 * @return  string  RSS
+	 * @return  void
 	 */
 	public function commentsTask()
 	{
@@ -726,9 +767,9 @@ class Entries extends SiteController
 	/**
 	 * Recursive method to add comments to a flat RSS feed
 	 *
-	 * @param   object $doc JDocumentFeed
-	 * @param   object $row BlogModelComment
-	 * @return	void
+	 * @param   object  $doc  Document
+	 * @param   object  $row  Comment
+	 * @return  void
 	 */
 	private function _comment(&$doc, $row)
 	{
@@ -753,7 +794,7 @@ class Entries extends SiteController
 		}
 		else
 		{
-			$item->author = $row->creator()->get('email') . ' (' . $row->creator()->get('name') . ')';
+			$item->author = $row->creator->get('email') . ' (' . $row->creator->get('name') . ')';
 		}
 		$item->date     = $row->created();
 		$item->category = '';
@@ -774,7 +815,9 @@ class Entries extends SiteController
 	/**
 	 * Method to check admin access permission
 	 *
-	 * @return  boolean  True on success
+	 * @param   string   $assetType
+	 * @param   integer  $assetId
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -787,13 +830,18 @@ class Entries extends SiteController
 			{
 				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
 				$asset .= ($assetId) ? '.' . $assetId : '';
+
+				if ($assetType != 'component')
+				{
+					$at .= '.' . $assetType;
+				}
 			}
 
 			$at = '';
-			if ($assetType != 'component')
+			/*if ($assetType != 'component')
 			{
 				$at .= '.' . $assetType;
-			}
+			}*/
 
 			// Admin
 			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));

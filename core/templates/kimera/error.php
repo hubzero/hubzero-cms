@@ -65,7 +65,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 	<body id="error-page">
 
 		<div id="errorbox">
-			<header id="masthead" role="banner">
+			<header id="masthead">
 				<h1>
 					<a href="<?php echo empty($this->baseurl) ? '/' : $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
 						<span><?php echo Config::get('sitename'); ?></span>
@@ -74,7 +74,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 				<p class="tagline"><?php echo Lang::txt('TPL_KIMERA_TAGLINE'); ?></p>
 			</header>
 
-			<main id="content" class="<?php echo 'code' . $this->error->getCode(); ?>" role="main">
+			<main id="content" class="<?php echo 'code' . $this->error->getCode(); ?>">
 				<div class="inner">
 					<h2 class="error-code">
 						<?php echo $code; ?>

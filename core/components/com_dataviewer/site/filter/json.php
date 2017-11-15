@@ -44,7 +44,7 @@ function filter($res, $dd)
 
 	foreach ($header as $key => $val) {
 		if (count($data)>0) {
-			$field_type = mysql_field_type($data, $field_offset);
+			$field_type = mysqli_fetch_field_direct($data, $field_offset)->type;
 		} else {
 			$field_type = 'string';
 		}
@@ -197,7 +197,7 @@ function filter($res, $dd)
 	}
 
 	$res_count = 0;
-	while ($rec = mysql_fetch_assoc($data)) {
+	while ($rec = mysqli_fetch_assoc($data)) {
 		$row = array();
 		foreach ($rec as $key => $val) {
 			$null_val = false;
@@ -585,6 +585,10 @@ function filter($res, $dd)
 
 						$val = '<div ' . $title . $class . ' style="' . $nowrap . $opmod_style . ' width: ' . $dd['cols'][$key]['width'] . 'px; max-height: ' . $dd['cols'][$key]['height'] . 'px; overflow: clip;">' . $val . '</div>';
 					} else {
+						if (isset($dd['cols'][$key]['forcetruncate']))
+						{
+							$class = 'class="forcetruncate"';
+						}
 						$val = '<p ' . $title . ' ' . $class . ' style="' . $nowrap . $opmod_style . ' width: ' . $dd['cols'][$key]['width'] . 'px;">' . $val . '</p>';
 					}
 				} elseif ($opmod_style != '') {

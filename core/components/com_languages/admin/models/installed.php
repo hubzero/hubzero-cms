@@ -173,7 +173,7 @@ class LanguagesModelInstalled extends JModelList
 				$file = file_exists(PATH_APP . $file) ? PATH_APP . $file : PATH_CORE . $file;
 
 				$info = JApplicationHelper::parseXMLLangMetaFile($file);
-				$row = new \Hubzero\Base\Object();
+				$row = new \Hubzero\Base\Obj();
 				$row->language = $lang;
 
 				if (!is_array($info))
@@ -239,7 +239,7 @@ class LanguagesModelInstalled extends JModelList
 
 			// Compute the displayed languages
 			$this->data	= array();
-			for ($i = $start;$i < $end;$i++)
+			for ($i = $start; $i < $end; $i++)
 			{
 				$this->data[] = & $data[$i];
 			}

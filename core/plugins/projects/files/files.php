@@ -449,7 +449,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Load member params
 		$member = $this->model->member(true);
-		$view->oparams = new \Hubzero\Config\Registry($member->params);
+		$view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
 
 		// Sync active?
 		$remotes = array();
@@ -485,6 +485,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			'showUntracked'        => true,
 			'getPubConnections'    => false,
 			'remoteConnections'    => $remotes,
+			'versionTracking'      => $this->model->params->get('versionTracking', '0'),
 		);
 
 		// Retrieve items
@@ -2324,9 +2325,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  =>'projects',
-					'element' =>'files',
-					'name'    =>'share'
+					'folder'  => 'projects',
+					'element' => 'files',
+					'name'    => 'share'
 				)
 			);
 
@@ -2634,14 +2635,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if ($this->params->get('project_quota'))
 			{
 				// Report usage only with current files and not with history
-				$view->totalspace = $this->repo->call('getDiskUsage', $params = array('working' => true, 'history' => false)   
-			);
+				$view->totalspace = $this->repo->call('getDiskUsage', $params = array('working' => true, 'history' => false));
 			}
 			else
 			{
 				// Original Code
-				$view->totalspace = $this->repo->call('getDiskUsage', $params = array('working' => false, 'history' => true)   
-			);				
+				$view->totalspace = $this->repo->call('getDiskUsage', $params = array('working' => false, 'history' => true));
 			}
 
 			$view->dirsize = $view->totalspace;
@@ -2677,6 +2676,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->config = $model->config();
 		$view->title  = isset($this->_area['title']) ? $this->_area['title'] : '';
 		$view->params = $this->params;
+		$view->versionTracking = $model->params->get('versionTracking', '0');
 
 		return $view->loadTemplate();
 	}
@@ -2691,9 +2691,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  =>'projects',
-				'element' =>'files',
-				'name'    =>'trash'
+				'folder'  => 'projects',
+				'element' => 'files',
+				'name'    => 'trash'
 			)
 		);
 
@@ -2804,7 +2804,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get connection details for user
 		$member = $this->model->member(true);
-		$view->oparams = new \Hubzero\Config\Registry($member->params);
+		$view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -3007,7 +3007,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$zip = new ZipArchive;
 
-		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === true)
+		if ($zip->open($tarpath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true)
 		{
 			$i = 0;
 
@@ -3094,7 +3094,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$mconfig = Component::params('com_members');
 
 		// Build upload path
-		$dir  = \Hubzero\Utility\String::pad($this->_uid);
+		$dir  = \Hubzero\Utility\Str::pad($this->_uid);
 		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
 		if (!is_dir(PATH_APP . $path))

@@ -37,6 +37,7 @@ use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
 use Request;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -117,6 +118,16 @@ class Groupsv1_0 extends ApiController
 
 		$response = \Hubzero\User\Group::find($filters);
 
+		$base = rtrim(Request::base(), '/');
+
+		foreach ($response as $i => $r)
+		{
+			$group = \Hubzero\User\Group::getInstance($r->gidNumber);
+
+			$response[$i]->url  = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $group->get('cn')), '/'));
+			$response[$i]->logo = str_replace('/api', '', $base . '/' . ltrim($group->getLogo(), '/'));
+		}
+
 		$this->send($response);
 	}
 
@@ -183,7 +194,7 @@ class Groupsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$cn              = Request::getWord('cn', '');
-		$title           = Request::getVar('title','');
+		$title           = Request::getVar('title', '');
 		$tags            = Request::getVar('tags', '');
 		$publicDesc      = Request::getVar('public_description', '');
 		$privateDesc     = Request::getVar('private_description', '');
@@ -358,6 +369,56 @@ class Groupsv1_0 extends ApiController
 			}
 		}
 
+		$base = rtrim(Request::base(), '/');
+		$group['url'] = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'));
+
+		$sections = array();
+
+		$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($group);
+		$plugins = Event::trigger('groups.onGroupAreas', array());
+
+		if ($plugins)
+		{
+			$isMember = (in_array(User::get('id'), $record->get('members')));
+
+			foreach ($plugins as $section)
+			{
+				if (!$section['display_menu_tab'])
+				{
+					continue;
+				}
+
+				if (User::isGuest() && $pluginAccess[$section['name']] != 'anyone')
+				{
+					continue;
+				}
+
+				if ($pluginAccess[$section['name']] == 'nobody')
+				{
+					continue;
+				}
+
+				if (!$isMember && $pluginAccess[$section['name']] == 'members')
+				{
+					continue;
+				}
+
+				$section['url'] = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=' . $section['name']), '/'));
+
+				$sections[] = $section;
+			}
+		}
+
+		array_unshift($sections, array(
+			'name'             => 'overview',
+			'title'            => 'Overview',
+			'default_access'   => 'anyone',
+			'display_menu_tab' => true,
+			'url'              => str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=overview'), '/'))
+		));
+
+		$group['sections'] = $sections;
+
 		$this->send($group);
 	}
 
@@ -444,7 +505,7 @@ class Groupsv1_0 extends ApiController
 		$publicDesc      = Request::getVar('public_description', $group->get('public_desc'));
 		$privateDesc     = Request::getVar('private_description', $group->get('private_desc'));
 		$joinPolicy      = strtolower(Request::getVar('join_policy', $group->get('join_policy')));
-		$discoverability = strtolower(Request::getVar('discoverability',  $group->get('discoverability')));
+		$discoverability = strtolower(Request::getVar('discoverability', $group->get('discoverability')));
 
 		// var to hold errors
 		$errors = array();

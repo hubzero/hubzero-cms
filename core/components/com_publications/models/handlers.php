@@ -32,7 +32,9 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
+use Filesystem;
+use Component;
 
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'handler.php');
@@ -45,62 +47,72 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'handlerassoc.php');
  * Publications handlers class
  *
  */
-class Handlers extends Object
+class Handlers extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	public $_db   		= NULL;
+	public $_db = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
-	protected $_types 	= array();
+	 * Loaded elements
+	 *
+	 * @var  array
+	 */
+	protected $_types = array();
 
 	/**
-	* @var    array  Directories, where handlers can be stored
-	*/
-	protected $_path 	= array();
+	 * Directories, where handlers can be stored
+	 *
+	 * @var  array
+	 */
+	protected $_path = array();
 
 	/**
-	* Configs
-	*
-	* @var
-	*/
-	protected	$_configs 	= NULL;
+	 * Configs
+	 *
+	 * @var
+	 */
+	protected $_configs = null;
 
 	/**
-	* Editor
-	*
-	* @var
-	*/
-	public	$editor = NULL;
+	 * Editor
+	 *
+	 * @var
+	 */
+	public $editor = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      	 JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
-		$this->_db 		= $db;
-		$this->_path[] 	= dirname(__FILE__) . DS . 'handlers';
+		$this->_db     = $db;
+		$this->_path[] = dirname(__FILE__) . DS . 'handlers';
 	}
 
 	/**
 	 * Show handler selection
 	 *
-	 * @return object
+	 * @param   object   $pub
+	 * @param   integer  $elementid
+	 * @param   array    $handlers
+	 * @param   object   $handler
+	 * @param   array    $attachments
+	 * @param   object   $props
+	 * @return  string
 	 */
-	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments, $props = NULL)
+	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments, $props = null)
 	{
 		$html = '';
 
 		// TBD - Get handler configs from pub/type manifest
-		$this->_configs = isset($pub->_curationModel->handlers) ? $pub->_curationModel->handlers : NULL;
+		$this->_configs = isset($pub->_curationModel->handlers) ? $pub->_curationModel->handlers : null;
 
 		// We have a forced handler
 		if ($handler)
@@ -116,7 +128,7 @@ class Handlers extends Object
 		elseif ($handlers)
 		{
 			// TEMP
-			return false;
+			return '';
 
 			// Load needed objects
 			$obj = new \Components\Publications\Tables\Handler($this->_db);
@@ -133,9 +145,9 @@ class Handlers extends Object
 
 			// Header
 			$view = new \Hubzero\Component\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-				'name'   => 'handlers',
-				'layout' => '_header',
+				'base_path' => Component::path('com_publications') . DS . 'site',
+				'name'      => 'handlers',
+				'layout'    => '_header',
 			));
 			$html = $view->loadTemplate();
 
@@ -146,9 +158,9 @@ class Handlers extends Object
 				if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned)
 				{
 					$hview = new \Hubzero\Component\View(array(
-						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-						'name'   => 'handlers',
-						'layout' => '_choice',
+						'base_path' => Component::path('com_publications') . DS . 'site',
+						'name'      => 'handlers',
+						'layout'    => '_choice',
 					));
 					$configs = $handler->get('_configs');
 					if (!$configs)
@@ -156,12 +168,12 @@ class Handlers extends Object
 						$saved = $obj->getConfig($item->name, $item);
 						$configs = $handler->getConfig($saved);
 					}
-					$hview->handler  	= $handler;
-					$hview->configs  	= $configs;
-					$hview->item	 	= $item;
+					$hview->handler     = $handler;
+					$hview->configs     = $configs;
+					$hview->item        = $item;
 					$hview->publication = $pub;
-					$hview->props 		= $props;
-					$hview->relevant	= $relevant;
+					$hview->props       = $props;
+					$hview->relevant    = $relevant;
 					$html .= $hview->loadTemplate();
 					$i++;
 				}
@@ -180,9 +192,13 @@ class Handlers extends Object
 	/**
 	 * Update handler status / perform handler action
 	 *
+	 * @param   object   $handler
+	 * @param   object   $pub
+	 * @param   integer  $elementId
+	 * @param   string   $action
 	 * @return  void
 	 */
-	public function update( $handler, $pub, $elementId = 0, $action = '' )
+	public function update($handler, $pub, $elementId = 0, $action = '')
 	{
 		if (!$action)
 		{
@@ -195,9 +211,12 @@ class Handlers extends Object
 	/**
 	 * Load content editor for handler
 	 *
-	 * @return  void
+	 * @param   object   $handler
+	 * @param   object   $pub
+	 * @param   integer  $elementId
+	 * @return  object
 	 */
-	public function loadEditor( $handler, $pub, $elementId = 0 )
+	public function loadEditor($handler, $pub, $elementId = 0)
 	{
 		// Get handler configs
 		$configs = $handler->get('_configs');
@@ -213,13 +232,13 @@ class Handlers extends Object
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
+			$pContent = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+			$pub->_attachments = $pContent->sortAttachments($pub->version_id);
 		}
 
 		// Sort out attachments for this element
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Set editor properties
 		$editor->set('pub', $pub);
@@ -232,7 +251,7 @@ class Handlers extends Object
 		$editor->set('assoc', $association);
 
 		// Check status
-		$editor->set('configured', $association && $association->params ? true : false );
+		$editor->set('configured', $association && $association->params ? true : false);
 		$editor->set('assigned', $association ? true : false);
 		$editor->set('relevant', self::isRelevant($handler, $attachments));
 
@@ -245,9 +264,11 @@ class Handlers extends Object
 	/**
 	 * Check if handler applies to selection
 	 *
+	 * @param   object   $handler
+	 * @param   array    $attachments
 	 * @return  boolean
 	 */
-	public function isRelevant( $handler, $attachments )
+	public function isRelevant($handler, $attachments)
 	{
 		// Get handler configs
 		$configs = $handler->get('_configs');
@@ -283,19 +304,21 @@ class Handlers extends Object
 	/**
 	 * Check for allowed formats
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $params
 	 * @return  boolean
 	 */
-	public function checkAllowed( $attachments, $params )
+	public function checkAllowed($attachments, $params)
 	{
 		if (empty($attachments))
 		{
 			return true;
 		}
-		$formats 	= $params->allowed_ext;
-		$min 		= $params->min_allowed;
-		$max 		= $params->max_allowed;
-		$min		= $min ? $min : 1;
-		$enforced   = isset($params->enforced) ? $params->enforced : 0;
+		$formats  = $params->allowed_ext;
+		$min      = $params->min_allowed;
+		$max      = $params->max_allowed;
+		$min      = $min ? $min : 1;
+		$enforced = isset($params->enforced) ? $params->enforced : 0;
 
 		if (empty($formats))
 		{
@@ -334,15 +357,17 @@ class Handlers extends Object
 	/**
 	 * Check for required formats
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $params
 	 * @return  boolean
 	 */
-	public function checkRequired( $attachments, $params )
+	public function checkRequired($attachments, $params)
 	{
 		if (empty($attachments))
 		{
 			return true;
 		}
-		$formats 	= $params->required_ext;
+		$formats = $params->required_ext;
 
 		if (empty($formats))
 		{
@@ -372,9 +397,11 @@ class Handlers extends Object
 	/**
 	 * Side controls for handler
 	 *
-	 * @return  string HTML
+	 * @param   object   $handler
+	 * @param   boolean  $assigned
+	 * @return  string   HTML
 	 */
-	public function drawSelectedHandler($handler, $assigned = NULL)
+	public function drawSelectedHandler($handler, $assigned = null)
 	{
 		$configs = $handler->get('_configs');
 		if (!$configs)
@@ -383,7 +410,7 @@ class Handlers extends Object
 		}
 
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => Component::path('com_publications') . DS . 'site',
 			'name'   => 'handlers',
 			'layout' => '_selected',
 		));
@@ -396,7 +423,8 @@ class Handlers extends Object
 	/**
 	 * Initialize
 	 *
-	 * @return object
+	 * @param   string  $name
+	 * @return  object
 	 */
 	public function ini($name)
 	{
@@ -414,9 +442,11 @@ class Handlers extends Object
 	/**
 	 * Loads a handler
 	 *
+	 * @param   string   $name
+	 * @param   boolean  $new
 	 * @return  object
 	 */
-	public function loadHandler( $name, $new = false )
+	public function loadHandler($name, $new = false)
 	{
 		$signature = md5($name);
 
@@ -424,7 +454,7 @@ class Handlers extends Object
 			&& !($this->_types[$signature] instanceof __PHP_Incomplete_Class))
 			&& $new === false)
 		{
-			return	$this->_types[$signature];
+			return $this->_types[$signature];
 		}
 
 		$elementClass = '\Components\Publications\Models\Handlers\\' . ucfirst($name);
@@ -439,10 +469,9 @@ class Handlers extends Object
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = Filesystem::clean(str_replace('_', DS, $name).'.php', 'path');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}
@@ -466,7 +495,10 @@ class Handlers extends Object
 	/**
 	 * Get params for the handler
 	 *
-	 * @return  void
+	 * @param   string  $name
+	 * @param   array   $configs
+	 * @param   array   $savedConfig
+	 * @return  array
 	 */
 	public function parseConfig($name, $configs = array(), $savedConfig = array())
 	{

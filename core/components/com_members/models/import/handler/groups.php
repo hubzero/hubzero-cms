@@ -32,7 +32,7 @@
 
 namespace Components\Members\Models\Import\Handler;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\User\Group;
 use User;
 use Lang;
@@ -40,7 +40,7 @@ use Lang;
 /**
  * Member Groups import handler
  */
-class Groups extends Object
+class Groups extends Obj
 {
 	/**
 	 * Return a sample for import header and content

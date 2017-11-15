@@ -41,51 +41,51 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Resource types and "all" category
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_areas = null;
 
 	/**
 	 * Resource types
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_cats  = null;
 
 	/**
 	 * Results total
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		include_once \Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
+		include_once \Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
+		include_once \Component::path('com_publications') . DS . 'tables' . DS . 'author.php';
 	}
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onWhatsnewAreas()
 	{
@@ -97,12 +97,12 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
 	 *
-	 * @param      object  $period     Time period to pull results for
-	 * @param      mixed   $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      array   $areas      Active area(s)
-	 * @param      array   $tagids     Array of tag IDs
-	 * @return     array
+	 * @param   object   $period      Time period to pull results for
+	 * @param   mixed    $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   array    $areas       Active area(s)
+	 * @param   array    $tagids      Array of tag IDs
+	 * @return  array
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
@@ -165,7 +165,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->text = NULL;
+					$rows[$key]->text = null;
 					if ($row->alias)
 					{
 						$rows[$key]->href = Route::url('index.php?option=com_publications&alias=' . $row->alias);
@@ -178,7 +178,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 					{
 						$rows[$key]->text = $rows[$key]->abstract;
 					}
-					$rows[$key]->section = NULL;
+					$rows[$key]->section = null;
 					$rows[$key]->area = $row->cat_name;
 					$rows[$key]->publish_up = $row->published_up;
 				}
@@ -201,21 +201,21 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Push styles and scripts to the document
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public static function documents()
 	{
 		\Hubzero\Document\Assets::addComponentStylesheet('com_publications');
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
+		require_once \Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
 	}
 
 	/**
 	 * Special formatting for results
 	 *
-	 * @param      object $row    Database row
-	 * @param      string $period Time period
-	 * @return     string
+	 * @param   object  $row     Database row
+	 * @param   string  $period  Time period
+	 * @return  string
 	 */
 	public static function out($row, $period)
 	{
@@ -239,7 +239,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$html .= '</span></span></p>' . "\n";
 		if ($row->text)
 		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";

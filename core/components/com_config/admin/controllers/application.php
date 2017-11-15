@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Config\Controllers;
+namespace Components\Config\Admin\Controllers;
 
 use Components\Config\Models;
 use Hubzero\Component\AdminController;
@@ -42,7 +42,7 @@ use Route;
 use User;
 use App;
 
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'application.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'application.php';
 
 /**
  * Controller class for the Application config
@@ -50,17 +50,16 @@ include_once(dirname(__DIR__) . DS . 'models' . DS . 'application.php');
 class Application extends AdminController
 {
 	/**
-	 * Class Constructor
+	 * Execute a task
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
 	 * @return  void
 	 */
-	public function __construct($config = array())
+	public function execute()
 	{
-		parent::__construct($config);
-
 		// Map the apply task to the save method.
 		$this->registerTask('apply', 'save');
+
+		parent::execute();
 	}
 
 	/**
@@ -70,16 +69,13 @@ class Application extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get the document object.
-		$document = App::get('document');
-
-		$model = new Models\Application();
-
 		// Access check.
-		if (!User::authorise('core.admin', $model->getState('component.option')))
+		if (!User::authorise('core.admin', $this->_option))
 		{
 			App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
+
+		$model = new Models\Application();
 
 		$form = $model->getForm();
 		$data = $model->getData();
@@ -103,7 +99,7 @@ class Application extends AdminController
 		$mediaParams = Component::params('com_media');
 
 		// Load settings for the FTP layer.
-		$ftp = \JClientHelper::setCredentialsFromRequest('ftp');
+		$ftp = null; //\JClientHelper::setCredentialsFromRequest('ftp');
 
 		$this->view
 			->set('model', $model)
@@ -112,7 +108,6 @@ class Application extends AdminController
 			->set('ftp', $ftp)
 			->set('usersParams', $usersParams)
 			->set('mediaParams', $mediaParams)
-			->set('document', $document)
 			->setLayout('default')
 			->display();
 	}
@@ -125,7 +120,7 @@ class Application extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken();
 
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin'))
@@ -138,12 +133,12 @@ class Application extends AdminController
 		}
 
 		// Set FTP credentials, if given.
-		\JClientHelper::setCredentialsFromRequest('ftp');
+		//\JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Initialise variables.
 		$model = new Models\Application();
 		$form  = $model->getForm();
-		$data  = Request::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getVar('hzform', array(), 'post', 'array');
 
 		// Validate the posted data.
 		$return = $model->validate($form, $data);
@@ -182,7 +177,6 @@ class Application extends AdminController
 			// Attempt to save the configuration.
 			$data   = $return;
 			$return = $model->save($data);
-
 		}
 		catch (\Hubzero\Config\Exception\FileNotFoundException $e)
 		{
@@ -212,19 +206,22 @@ class Application extends AdminController
 			return false;
 		}
 
+		// Clean the session data.
+		User::setState('com_config.config.global.data', null);
+
 		// Set the success message.
-		$message = Lang::txt('COM_CONFIG_SAVE_SUCCESS');
+		Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
 
 		// Set the redirect based on the task.
 		switch (Request::getCmd('task'))
 		{
 			case 'apply':
-				App::redirect(Route::url('index.php?option=' . $this->_option, false), $message);
+				App::redirect(Route::url('index.php?option=' . $this->_option, false));
 				break;
 
 			case 'save':
 			default:
-				App::redirect(Route::url('index.php', false), $message);
+				App::redirect(Route::url('index.php', false));
 				break;
 		}
 	}
@@ -237,14 +234,17 @@ class Application extends AdminController
 	public function cancelTask()
 	{
 		// Check if the user is authorized to do this.
-		if (!User::authorise('core.admin', 'com_config'))
+		if (!User::authorise('core.admin', $this->_option))
 		{
-			App::redirect(Route::url('index.php', false), Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::redirect(
+				Route::url('index.php', false),
+				Lang::txt('JERROR_ALERTNOAUTHOR')
+			);
 			return;
 		}
 
 		// Set FTP credentials, if given
-		\JClientHelper::setCredentialsFromRequest('ftp');
+		//\JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Clean the session data.
 		User::setState('com_config.config.global.data', null);
@@ -260,13 +260,13 @@ class Application extends AdminController
 	public function refreshHelp()
 	{
 		// Set FTP credentials, if given
-		\JClientHelper::setCredentialsFromRequest('ftp');
+		//\JClientHelper::setCredentialsFromRequest('ftp');
 
-		if (($data = file_get_contents('http://help.joomla.org/helpsites.xml')) === false)
+		if (($data = file_get_contents('http://help.hubzero.org/helpsites.xml')) === false)
 		{
 			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
 		}
-		elseif (!\Filesystem::write(JPATH_BASE . '/help/helpsites.xml', $data))
+		elseif (!\Filesystem::write(PATH_APP . '/help/helpsites.xml', $data))
 		{
 			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
 		}
@@ -284,7 +284,7 @@ class Application extends AdminController
 	public function removerootTask()
 	{
 		// Check for request forgeries.
-		\Session::checkToken('get');
+		Request::checkToken(['get']);
 
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin'))
@@ -306,18 +306,16 @@ class Application extends AdminController
 		if ($return === false)
 		{
 			// Save failed, go back to the screen and display a notice.
-			App::redirect(
-				Route::url('index.php', false),
-				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('JERROR_SAVE_FAILED', $model->getError()));
+		}
+		else
+		{
+			Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
 		}
 
 		// Set the redirect based on the task.
 		App::redirect(
-			Route::url('index.php', false),
-			Lang::txt('COM_CONFIG_SAVE_SUCCESS')
+			Route::url('index.php', false)
 		);
 	}
 }

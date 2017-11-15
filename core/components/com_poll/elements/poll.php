@@ -32,15 +32,26 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * JElementPoll class
+ */
 class JElementPoll extends JElement
 {
 	/**
 	 * Element name
 	 *
-	 * @var  string
+	 * @var  string $_name
 	 */
 	var $_name = 'Poll';
 
+	/**
+	 * Retrieve element
+	 * 
+	 * @param  string   $name
+	 * @param  unknown  $value
+	 * @param  unknown  &$node
+	 * @param  string   $control_name
+	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
 		require_once(dirname(__DIR__) . DS . 'models' . DS . 'poll.php');

@@ -30,16 +30,11 @@
 use Hubzero\Html\Builder\Behavior;
 
 defined('_HZEXEC_') or die();
-//print_r($this->sku->getId()); die;
 
-function fetchButton($type = 'Popup', $name = '', $text = '', $url = '', $width = 640, $height = 480, $top = 0, $left = 0, $onClose = '')
-{
-	echo '5555'; die;
-}
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s permitted users', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s permitted users', 'storefront');
 
 Toolbar::appendButton('Popup', 'new', 'Add Users', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId(), 570, 170);
 if ($canDo->get('core.delete'))
@@ -62,11 +57,10 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 
 ?>
 <script type="text/javascript">
-	function refreshMe() {
+	function refreshMe()
+	{
 		location.reload();
 	}
-</script>
-<script type="text/javascript">
 
 	function submitbutton(pressbutton)
 	{
@@ -80,18 +74,18 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 	}
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan=5">
+				<th colspan="5">
 					Users for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=edit&id=' . $this->sku->getId()); ?>" title="<?php echo Lang::txt('Edit SKU'); ?>"><?php echo $this->sku->getName(); ?></a>
 				</th>
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'ID', 'uId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'ID', 'uId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">Email</th>
 			</tr>
 		</thead>
@@ -100,22 +94,28 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 			<td colspan="5"><?php
 				// Initiate paging
 				echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
 				);
 				?></td>
 		</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
-$i = 0;
+		<?php
+		$k = 0;
+		$i = 0;
 
-foreach ($this->rows as $row)
-{
-?>
+		foreach ($this->rows as $row)
+		{
+			if (!$row->uId)
+			{
+				$row->uId   = '--';
+				$row->name  = '[UNREGISTERED]';
+				$row->email = '--';
+				$row->username = $row->uName;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
@@ -136,11 +136,11 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

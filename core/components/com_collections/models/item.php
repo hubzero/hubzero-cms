@@ -36,7 +36,7 @@ use Components\Members\Models\Member;
 use Components\Collections\Tables;
 use Hubzero\Item\Comment;
 use Hubzero\Base\ItemList;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Filesystem;
 use Request;
 use Date;
@@ -79,7 +79,7 @@ class Item extends Base
 	 *
 	 * @var object
 	 */
-	private $_modifier = NULL;
+	private $_modifier = null;
 
 	/**
 	 * Container for properties
@@ -182,7 +182,7 @@ class Item extends Base
 	 * @param   string  $property  The name of the property
 	 * @param   mixed   $default   The default value
 	 * @return  mixed   The value of the property
- 	 */
+	 */
 	public function get($property, $default=null)
 	{
 		switch (strtolower($property))
@@ -443,7 +443,7 @@ class Item extends Base
 		return $this->_tags->render($as, array('admin' => $admin));
 	}
 
-		/**
+	/**
 	 * Tag the entry
 	 *
 	 * @return  boolean
@@ -717,7 +717,7 @@ class Item extends Base
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten);
+			$content = Str::truncate($content, $shorten);
 		}
 		return $content;
 	}
@@ -917,4 +917,3 @@ class Item extends Base
 		return true;
 	}
 }
-

@@ -31,18 +31,18 @@
 
 namespace Components\Forum\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
 use Component;
 use Lang;
 use User;
 
-require_once(__DIR__ . DS . 'section.php');
+require_once __DIR__ . DS . 'section.php';
 
 /**
  * Model class for a forum
  */
-class Manager extends Object
+class Manager extends Obj
 {
 	/**
 	 * Cached data
@@ -314,6 +314,12 @@ class Manager extends Object
 
 			$model->whereIn('access', $filters['access']);
 		}
+		if (isset($filters['orderBy']))
+		{
+			$orderBy = $filters['orderBy'];
+			$orderDir = isset($filters['orderDir']) ? $filters['orderDir'] : 'ASC';
+			$model->order($orderBy, $orderDir);
+		}
 
 		return $model;
 	}
@@ -514,4 +520,3 @@ class Manager extends Object
 		return $this->config;
 	}
 }
-

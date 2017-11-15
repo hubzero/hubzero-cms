@@ -37,7 +37,11 @@ use \Components\Tools\Models\Orm\Handler;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'projects'), DS) . DS;
+$handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'projects'), DS);
+if (!strstr($handlerBase, '{'))
+{
+	$handlerBase .= '/{project}/files/{file}';
+}
 ?>
 
 <?php foreach ($this->items as $item) : ?>
@@ -53,7 +57,14 @@ $handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'pr
 		<td class="middle_valign nobsp is-relative">
 			<?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
 			<?php if ($item->isFile()) : ?>
-				<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase . $this->model->get('alias') . DS . $item->getPath())) ? ' hasMultiple' : ''; ?>">
+				<div class="file-action-dropdown<?php
+					$handlerPath = str_replace(
+						array('{project}', '{file}'),
+						array($this->model->get('alias'), $item->getPath()),
+						$handlerBase
+					);
+
+					echo ($handlers = Handler::getLaunchUrlsForFile($handlerPath)) ? ' hasMultiple' : ''; ?>">
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
 						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getFileName(), 60); ?>
 					</a>

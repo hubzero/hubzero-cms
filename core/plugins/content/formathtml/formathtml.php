@@ -51,7 +51,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentBeforeSave($context, &$article, $isNew)
 	{
-		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
 		{
 			return;
 		}
@@ -60,7 +60,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 
 		$key = $this->_key($context);
 
-		if ($article instanceof \Hubzero\Base\Object
+		if ($article instanceof \Hubzero\Base\Obj
 		 || $article instanceof \Hubzero\Database\Relational)
 		{
 			$content = $article->get($key);
@@ -108,7 +108,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			$content = '<!-- {FORMAT:HTML} -->' . $content;
 		}
 
-		if ($article instanceof \Hubzero\Base\Object
+		if ($article instanceof \Hubzero\Base\Obj
 		 || $article instanceof \Hubzero\Database\Relational)
 		{
 			$article->set($key, $content);
@@ -129,7 +129,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		//if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		//if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
 		if ($context == 'com_content.article')
 		{
 			return;
@@ -139,7 +139,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 
 		$key = $this->_key($context);
 
-		if ($article instanceof \Hubzero\Base\Object
+		if ($article instanceof \Hubzero\Base\Obj
 		 || $article instanceof \Hubzero\Database\Relational)
 		{
 			$content = $article->get($key);
@@ -197,7 +197,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			$content = $parser->parse($content);
 		}
 
-		if ($article instanceof \Hubzero\Base\Object
+		if ($article instanceof \Hubzero\Base\Obj
 		 || $article instanceof \Hubzero\Database\Relational)
 		{
 			$article->set($key, $content);
@@ -228,7 +228,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 	 * Check if the context provided the content field name as
 	 * it may vary between models.
 	 *
-	 * @param   string $context A dot-notation string
+	 * @param   string  $context  A dot-notation string
 	 * @return  string
 	 */
 	private function _key($context)

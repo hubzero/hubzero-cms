@@ -1,248 +1,147 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
+namespace Components\Templates\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Templates\Models\File;
+use Request;
+use Notify;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
- * Template style controller class.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_templates
- * @since		1.6
+ * Source controller for templates
  */
-class TemplatesControllerSource extends JControllerLegacy
+class Source extends AdminController
 {
 	/**
-	 * Constructor.
+	 * Execute a task
 	 *
-	 * @param	array An optional associative array of configuration settings.
-	 * @see		JController
+	 * @return  void
 	 */
-	public function __construct($config = array())
+	public function execute()
 	{
-		parent::__construct($config);
-
-		// Apply, Save & New, and Save As copy should be standard on forms.
 		$this->registerTask('apply', 'save');
+		$this->registerTask('cancel', 'display');
+
+		parent::execute();
 	}
 
 	/**
-	 * Method to check if you can add a new record.
+	 * List all entries
 	 *
-	 * Extended classes can override this if necessary.
-	 *
-	 * @param	array	An array of input data.
-	 * @param	string	The name of the key for the primary key.
-	 *
-	 * @return	boolean
+	 * @return  void
 	 */
-	protected function allowEdit()
+	public function displayTask()
 	{
-		return User::authorise('core.edit', 'com_templates');
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=templates', false)
+		);
 	}
 
 	/**
-	 * Method to check if you can save a new or existing record.
+	 * Edit an entry
 	 *
-	 * Extended classes can override this if necessary.
-	 *
-	 * @param	array	An array of input data.
-	 * @param	string	The name of the key for the primary key.
-	 *
-	 * @return	boolean
+	 * @param   object  $file
+	 * @return  void
 	 */
-	protected function allowSave()
+	public function editTask($file = null)
 	{
-		return $this->allowEdit();
-	}
-
-	/**
-	 * Method to get a model object, loading it if required.
-	 *
-	 * @param	string	The model name. Optional.
-	 * @param	string	The class prefix. Optional.
-	 * @param	array	Configuration array for model. Optional (note, the empty array is atypical compared to other models).
-	 *
-	 * @return	object	The model.
-	 */
-	public function getModel($name = 'Source', $prefix = 'TemplatesModel', $config = array())
-	{
-		$model = parent::getModel($name, $prefix, $config);
-		return $model;
-	}
-
-	/**
-	 * This controller does not have a display method. Redirect back to the list view of the component.
-	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return	JController		This object to support chaining.
-	 * @since	1.5
-	 */
-	public function display($cachable = false, $urlparams = false)
-	{
-		$this->setRedirect(Route::url('index.php?option=com_templates&view=templates', false));
-	}
-
-	/**
-	 * Method to edit an existing record.
-	 *
-	 * @return	void
-	 */
-	public function edit()
-	{
-		// Initialise variables.
-		$model    = $this->getModel();
-		$recordId = Request::getVar('id');
-		$context  = 'com_templates.edit.source';
-
-		if (preg_match('#\.\.#', base64_decode($recordId)))
+		// Access checks.
+		if (!User::authorise('core.edit', $this->option))
 		{
-			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'), 500);
+			App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
 		}
 
-		// Access check.
-		if (!$this->allowEdit())
+		if (!$file)
 		{
-			return new Exception(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 401);
-		}
+			$recordId = base64_decode(Request::getVar('id'));
+			$context  = 'com_templates.edit.source';
 
-		// Check-out succeeded, push the new record id into the session.
-		User::setState($context.'.id', $recordId);
-		User::setState($context.'.data', null);
-		$this->setRedirect('index.php?option=com_templates&view=source&layout=edit');
-
-		return true;
-	}
-
-	/**
-	 * Method to cancel an edit
-	 *
-	 * @return	void
-	 */
-	public function cancel()
-	{
-		// Check for request forgeries.
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
-
-		// Initialise variables.
-		$model    = $this->getModel();
-		$context  = 'com_templates.edit.source';
-		$returnId = (int) $model->getState('extension.id');
-
-		// Clean the session data and redirect.
-		User::setState($context.'.id', null);
-		User::setState($context.'.data', null);
-		$this->setRedirect(Route::url('index.php?option=com_templates&view=template&id='.$returnId, false));
-	}
-
-	/**
-	 * Saves a template source file.
-	 */
-	public function save()
-	{
-		// Check for request forgeries.
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
-
-		// Initialise variables.
-		$data    = Request::getVar('jform', array(), 'post', 'array');
-		$context = 'com_templates.edit.source';
-		$task    = $this->getTask();
-		$model   = $this->getModel();
-
-		// Access check.
-		if (!$this->allowSave())
-		{
-			return new Exception(Lang::txt('JERROR_SAVE_NOT_PERMITTED'), 403);
-		}
-
-		// Match the stored id's with the submitted.
-		if (empty($data['extension_id']) || empty($data['filename']))
-		{
-			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'), 500);
-		}
-		elseif ($data['extension_id'] != $model->getState('extension.id'))
-		{
-			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'));
-		}
-		elseif ($data['filename'] != $model->getState('filename'))
-		{
-			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'));
-		}
-
-		// Validate the posted data.
-		$form = $model->getForm();
-		if (!$form)
-		{
-			throw new Exception($model->getError(), 500);
-			return false;
-		}
-		$data = $model->validate($form, $data);
-
-		// Check for validation errors.
-		if ($data === false)
-		{
-			// Get the validation messages.
-			$errors = $model->getErrors();
-
-			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			if (preg_match('#\.\.#', $recordId))
 			{
-				if ($errors[$i] instanceof Exception)
-				{
-					Notify::warning($errors[$i]->getMessage());
-				}
-				else
-				{
-					Notify::warning($errors[$i]);
-				}
+				App::abort(500, Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}
 
-			// Save the data in the session.
-			User::setState($context.'.data', $data);
+			$recordId = explode(':', $recordId);
 
-			// Redirect back to the edit screen.
-			$this->setRedirect(Route::url('index.php?option=com_templates&view=source&layout=edit', false));
-			return false;
+			if (count($recordId) < 2)
+			{
+				App::abort(500, Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
+			}
+
+			$file = new File($recordId[1], $recordId[0]);
 		}
 
-		// Attempt to save the data.
-		if (!$model->save($data))
+		$this->view
+			->set('file', $file)
+			->setLayout('edit')
+			->display();
+	}
+
+	/**
+	 * Save an entry
+	 *
+	 * @return  void
+	 */
+	public function saveTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Access checks.
+		if (!User::authorise('core.edit', $this->option))
 		{
-			// Save the data in the session.
-			User::setState($context.'.data', $data);
-
-			// Redirect back to the edit screen.
-			$this->setMessage(Lang::txt('JERROR_SAVE_FAILED', $model->getError()), 'warning');
-			$this->setRedirect(Route::url('index.php?option=com_templates&view=source&layout=edit', false));
-			return false;
+			App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
 		}
 
-		$this->setMessage(Lang::txt('COM_TEMPLATES_FILE_SAVE_SUCCESS'));
+		$fields = Request::getVar('fields', array(), 'post');
 
-		// Redirect the user and adjust session state based on the chosen task.
-		switch ($task)
+		$file = new File($fields['filename'], $fields['extension_id']);
+
+		if (!$file->save($fields['source']))
 		{
-			case 'apply':
-				// Reset the record data in the session.
-				User::setState($context.'.data', null);
-
-				// Redirect back to the edit screen.
-				$this->setRedirect(Route::url('index.php?option=com_templates&view=source&layout=edit', false));
-				break;
-
-			default:
-				// Clear the record id and data from the session.
-				User::setState($context.'.id', null);
-				User::setState($context.'.data', null);
-
-				// Redirect to the list screen.
-				$this->setRedirect(Route::url('index.php?option=com_templates&view=template&id='.$model->getState('extension.id'), false));
-				break;
+			Notify::error($file->getError());
 		}
+
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($file);
+		}
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=templates', false)
+		);
 	}
 }

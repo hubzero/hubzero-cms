@@ -37,7 +37,7 @@ $this->css()
      ->js();
 
 //citation params
-$label    = $this->config->get('citation_label', 'number');
+$label    = $this->config->get('citation_label', 'type');
 $rollover = $this->config->get('citation_rollover', 'no');
 
 $citationsFormat = new \Components\Citations\Helpers\Format($this->database);
@@ -86,10 +86,10 @@ else
 <section id="import" class="section">
 	<div class="section-inner">
 		<?php
-			foreach ($this->messages as $message)
-			{
-				echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
-			}
+		foreach ($this->messages as $message)
+		{
+			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+		}
 		?>
 
 		<ul id="steps">
@@ -112,10 +112,10 @@ else
 
 		<?php if (count($this->citations) > 0) : ?>
 			<?php
-				$formatter = new \Components\Citations\Helpers\Format();
-				$formatter->setTemplate($template);
+			$formatter = new \Components\Citations\Helpers\Format();
+			$formatter->setTemplate($template);
 
-				$counter = 1;
+			$counter = 1;
 			?>
 
 			<h3><?php echo Lang::txt('COM_CITATIONS_IMPORT_SUCCESS'); ?></h3>
@@ -127,15 +127,7 @@ else
 							<?php if ($label != "none") : ?>
 								<td class="citation-label <?php echo $this->escape($citations_label_class); ?>">
 									<?php
-										$type = '';
-										foreach ($this->types as $t)
-										{
-											if ($t['id'] == $cite->type)
-											{
-												$type = $t['type_title'];
-											}
-										}
-										$type = ($type != '') ? $type : 'Generic';
+										$type = $cite->relatedType()->row()->get('type_title', 'Generic');
 
 										switch ($label)
 										{
@@ -154,7 +146,19 @@ else
 								</td>
 							<?php endif; ?>
 							<td class="citation-container">
-								<?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
+								<?php
+								$formatted = $cite->formatted(array('format'=>$this->defaultFormat));
+								if ($cite->doi)
+								{
+									$formatted = str_replace(
+										'doi:' . $cite->doi,
+										'<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>',
+										$formatted
+									);
+								}
+
+								echo $formatted;
+								?>
 
 								<?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
 									<div class="citation-notes">
@@ -163,14 +167,20 @@ else
 								<?php endif; ?>
 
 								<div class="citation-details">
-									<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
+									<?php
+									$singleCitationView = $this->config->get('citation_single_view', 0);
+									if (!$singleCitationView)
+									{
+										echo $cite->citationDetails($this->openurl);
+									}
+									?>
 
 									<?php if ($this->config->get('citation_show_badges', 'no') == 'yes') : ?>
-										<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+										<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>
 									<?php endif; ?>
 
 									<?php if ($this->config->get('citation_show_tags', 'no') == 'yes') : ?>
-										<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+										<?php echo \Components\Citations\Helpers\Format::citationTags($cite); ?>
 									<?php endif; ?>
 								</div>
 							</td>

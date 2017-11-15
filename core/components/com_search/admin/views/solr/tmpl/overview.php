@@ -32,20 +32,21 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('Search: Overview'));
+Toolbar::title(Lang::txt('Solr Search: Overview'));
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
 
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Overview'),
-	'index.php?option='.$option.'&task=configure'
+	'index.php?option='.$option.'&task=configure',
+	true
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Search Index'),
 	'index.php?option='.$option.'&task=searchindex'
 );
-\Submenu::addEntry(
+Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
 	'index.php?option='.$option.'&task=manageBlacklist'
 );
@@ -62,8 +63,8 @@ $option = $this->option;
 						<?php if ($this->status === true) : ?>
 							<div class="status-message">
 								<div class="good"></div>
-									<p>The search engine is responding.</p>
-									<p class="emph">Last insert was <?php echo $this->lastInsert; ?></p>
+								<p>The search engine is responding.</p>
+								<p class="emph">Last insert was <?php echo $this->lastInsert; ?></p>
 							</div> <!-- /.status-message -->
 						<?php else : ?>
 							<div class="alert"></div>
@@ -73,35 +74,34 @@ $option = $this->option;
 							</div> <!-- /.status-message -->
 						<?php endif; ?>
 					</div> <!-- /.status -->
-				</div> <!-- /.status-message -->
-			</div><!-- /.content-inner -->
-		</div><!-- /.content -->
+				</div><!-- /.content-inner -->
+			</div><!-- /.content -->
 		</div><!-- /.inner -->
 	</div>
 
 	<!-- @TODO: Make view -->
 	<?php if (isset($this->queueStats) && false): ?>
-	<div class="widget">
-		<div class="inner">
-			<div class="title"><div><?php echo Lang::txt('COM_SEARCH_QUEUE_STATUS'); ?></div></div>
-			<div class="sub-title">
-				<div class="sub-title-inner">
-				<?php echo Lang::txt('COM_SEARCH_QUEUE_LAST_SERVICE') . ':' . Date::of($this->queueStats['modified'])->relative(); ?>
+		<div class="widget">
+			<div class="inner">
+				<div class="title">
+					<div><?php echo Lang::txt('COM_SEARCH_QUEUE_STATUS'); ?></div>
 				</div>
-			</div>
-			<div class="sub-title">
-				<div class="sub-title-inner">
-				<?php echo Lang::txt('COM_SEARCH_QUEUE_AVERAGE_SERVICE') . ':' . $this->queueStats['serviceTime'] . 'minutes'; ?>
+				<div class="sub-title">
+					<div class="sub-title-inner">
+						<?php echo Lang::txt('COM_SEARCH_QUEUE_LAST_SERVICE') . ':' . Date::of($this->queueStats['modified'])->relative(); ?>
+					</div>
 				</div>
-			</div>
-			<div class="content">
-				<div class="content-inner">
-					<div class="status">
-					</div> <!-- /.status -->
-			</div><!-- /.content-inner -->
-		</div><!-- /.content -->
-		</div><!-- /.inner -->
-	</div>
+				<div class="sub-title">
+					<div class="sub-title-inner">
+						<?php echo Lang::txt('COM_SEARCH_QUEUE_AVERAGE_SERVICE') . ':' . $this->queueStats['serviceTime'] . 'minutes'; ?>
+					</div>
+				</div>
+				<div class="content">
+					<div class="content-inner">
+						<div class="status"></div> <!-- /.status -->
+					</div><!-- /.content-inner -->
+				</div><!-- /.content -->
+			</div><!-- /.inner -->
+		</div>
 	<?php endif; ?>
-
 </div>

@@ -1,0 +1,28 @@
+<?php
+
+use Hubzero\Content\Migration\Base;
+
+// No direct access
+defined('_HZEXEC_') or die();
+
+/**
+ * Migration script for adding Wiki - Editortoolbar plugin
+ **/
+class Migration20170831000000PlgWikiEditortoolbar extends Base
+{
+	/**
+	 * Up
+	 **/
+	public function up()
+	{
+		$this->addPluginEntry('wiki', 'editortoolbar');
+	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		$this->deletePluginEntry('wiki', 'editortoolbar');
+	}
+}

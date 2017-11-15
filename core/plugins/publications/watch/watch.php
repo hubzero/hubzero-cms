@@ -88,10 +88,10 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 		}
 
 		// Only show for logged-in users
-		if (User::isGuest())
+		/*if (User::isGuest())
 		{
 			return false;
-		}
+		}*/
 
 		$this->publication = $publication;
 		$this->action = strtolower(Request::getWord('action', ''));
@@ -118,9 +118,15 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	private function _status()
 	{
+		$watching = \Hubzero\Item\Watch::all()
+			->whereEquals('item_id', (int)$this->publication->get('id'))
+			->whereEquals('item_type', (string)'publication')
+			->total();
+
 		// Instantiate a view
 		$view = $this->view('default', 'index')
 			->set('publication', $this->publication)
+			->set('watching', $watching)
 			->set('watched', \Hubzero\Item\Watch::isWatching(
 				$this->publication->get('id'),
 				'publication',

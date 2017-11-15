@@ -44,10 +44,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-				<field name="miniview" type="radio" default="0" label="Minimal view" description="Determines detailed or minimal display of related items">
-					<option value="1">yes</option>
-					<option value="0">no</option>
+				<field name="display_limit" type="text" size="5" default="50" label="PLG_PUBLICATIONS_RELATED_PARAM_LIMIT_LABEL" description="PLG_PUBLICATIONS_RELATED_PARAM_LIMIT_DESC"/>
+				<field name="miniview" type="radio" default="0" label="PLG_PUBLICATIONS_RELATED_PARAM_MINIVIEW_LABEL" description="PLG_PUBLICATIONS_RELATED_PARAM_MINIVIEW_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 			</fieldset>
 		</fields>

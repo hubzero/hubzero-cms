@@ -76,6 +76,9 @@ class Link extends Relational
 	 * @var  array
 	 */
 	public $always = array(
+		'old_url',
+		'new_url',
+		'status_code',
 		'created_date',
 		'modified_date'
 	);
@@ -104,7 +107,58 @@ class Link extends Relational
 	}
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic old_url field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOldUrl($data)
+	{
+		if (substr($data['old_url'], 0, strlen('http')) != 'http')
+		{
+			$data['old_url'] = '/' . ltrim($data['old_url'], '/');
+		}
+		return rtrim($data['old_url'], '/');
+	}
+
+	/**
+	 * Generates automatic new_url field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticNewUrl($data)
+	{
+		if ($data['new_url'])
+		{
+			$data['new_url'] = trim($data['new_url']);
+			$data['new_url'] = trim($data['new_url'], '/');
+			if (substr($data['new_url'], 0, strlen('http')) != 'http')
+			{
+				$data['new_url'] = '/' . $data['new_url'];
+			}
+		}
+		return $data['new_url'];
+	}
+
+	/**
+	 * Generates automatic status_code field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticStatusCode($data)
+	{
+		// Redirects must be either a 301 or 302
+		if (isset($data['new_url']) && $data['new_url'] && !in_array($data['status_code'], array(301, 302)))
+		{
+			$data['status_code'] = 301;
+		}
+		return $data['status_code'];
+	}
+
+	/**
+	 * Generates automatic created date field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -127,7 +181,7 @@ class Link extends Relational
 	}
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic modified date field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -144,5 +198,14 @@ class Link extends Relational
 		}
 		return $data['modified_date'];
 	}
-}
 
+	/**
+	 * Determine if an entry is published
+	 *
+	 * @return  bool
+	 */
+	public function isPublished()
+	{
+		return ($this->get('published') == self::STATE_PUBLISHED);
+	}
+}

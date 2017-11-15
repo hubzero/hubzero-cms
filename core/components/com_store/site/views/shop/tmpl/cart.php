@@ -83,65 +83,68 @@ $this->css()
 						</thead>
 						<tbody>
 						<?php
-							$total = 0;
-							foreach ($this->rows as $row)
+						$total = 0;
+						foreach ($this->rows as $row)
+						{
+							$price = $row->item->price * $row->quantity;
+							if ($row->available)
+							{ // do not add if not available
+								$total += $price;
+							}
+
+							$sizes = array(); // build size options
+							if ($row->item->sizes && count($row->item->sizes) > 0)
 							{
-								$price = $row->price*$row->quantity;
-								if ($row->available)
-								{ // do not add if not available
-									$total = $total+$price;
-								}
-								$sizes = array(); // build size options
-								if ($row->sizes && count($row->sizes) > 0)
+								foreach ($row->item->sizes as $rs)
 								{
-									foreach ($row->sizes as $rs)
+									if (trim($rs) != '')
 									{
-										if (trim($rs) != '')
-										{
-											$sizes[$rs] = $rs;
-										}
+										$sizes[$rs] = $rs;
 									}
-									$selectedsize = ($row->selectedsize) ? $row->selectedsize : $row->sizes[0];
 								}
-						?>
+								$selectedsize = ($row->selections->get('size') ? $row->selections->get('size') : $row->sizes[0]);
+							}
+							?>
 							<tr>
-								<td><?php echo $this->escape($row->title); ?></td>
 								<td>
-								<?php
-								if ($row->category!='service') {
-									if ($row->available) {
-								?>
-									<span class="yes"><?php echo Lang::txt('COM_STORE_INSTOCK'); ?></span>
-								<?php } else { ?>
-									<span class="no"><?php echo Lang::txt('COM_STORE_SOLDOUT'); ?></span>
-								<?php
-									}
-								}
-								?>
+									<?php echo $this->escape($row->item->title); ?>
+								</td>
+								<td>
+									<?php if ($row->item->category != 'service') { ?>
+										<?php if ($row->item->available) { ?>
+											<span class="yes"><?php echo Lang::txt('COM_STORE_INSTOCK'); ?></span>
+										<?php } else { ?>
+											<span class="no"><?php echo Lang::txt('COM_STORE_SOLDOUT'); ?></span>
+										<?php } ?>
+									<?php } ?>
 								</td>
 								<td class="quantityspecs">
-								<?php if ($row->category!='service') { ?>
-									<input type="text" name="num<?php echo $row->itemid; ?>" id="num<?php echo $row->itemid; ?>" value="<?php echo $row->quantity; ?>" size="1" maxlength = "1" class="quantity" />
-								<?php } else { ?>
-									1 
-								<?php } ?>
-									<span class="removeitem"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=remove&item=' . $row->itemid); ?>" class="tooltips" title="<?php echo Lang::txt('COM_STORE_REMOVE_FROM_CART'); ?>"></a></span>
+									<?php if ($row->item->category != 'service') { ?>
+										<input type="text" name="num<?php echo $row->itemid; ?>" id="num<?php echo $row->itemid; ?>" value="<?php echo $row->quantity; ?>" size="1" maxlength = "1" class="quantity" />
+									<?php } else { ?>
+										1 
+									<?php } ?>
+									<span class="removeitem">
+										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=remove&item=' . $row->itemid); ?>" class="tooltips" title="<?php echo Lang::txt('COM_STORE_REMOVE_FROM_CART'); ?>"></a>
+									</span>
 								</td>
 								<td>
-								<?php if (count($sizes)>0) { ?>
-									<select name="size<?php echo $row->itemid; ?>" id="size<?php echo $row->itemid; ?>">
-									<?php foreach ($sizes as $anode) { ?>
-										<option value="<?php echo $this->escape(stripslashes($anode)); ?>"<?php echo ($anode == $selectedsize) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($anode)); ?></option>
+									<?php if (count($sizes) > 0) { ?>
+										<select name="size<?php echo $row->itemid; ?>" id="size<?php echo $row->itemid; ?>">
+											<?php foreach ($sizes as $anode) { ?>
+												<option value="<?php echo $this->escape(stripslashes($anode)); ?>"<?php echo ($anode == $selectedsize) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($anode)); ?></option>
+											<?php } ?>
+										</select>
+									<?php } else { ?>
+										N/A
 									<?php } ?>
-									</select>
-								<?php } else { ?>
-									N/A
-								<?php } ?>
 								</td>
-								<td><?php echo $price; ?></td>
+								<td>
+									<?php echo $price; ?>
+								</td>
 							</tr>
-						<?php
-							}
+							<?php
+						}
 						?>
 							<tr class="totals">
 								<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=empty'); ?>" class="actionlink" title="<?php echo Lang::txt('COM_STORE_EMPTY_CART'); ?>"><?php echo Lang::txt('COM_STORE_EMPTY_CART'); ?></a></td>

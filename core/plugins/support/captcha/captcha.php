@@ -194,7 +194,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	 * @param      array  $config   Optional config values
 	 * @return     void
 	 */
-	public function plgSupportCaptcha(&$subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -232,6 +232,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Displays either an image or text-based CAPTCHA
 	 *
+	 * @param  string  $ext
 	 * @return string
 	 */
 	public function onGetCaptcha($ext='com')
@@ -258,7 +259,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Checks for a CAPTCHA response and Calls the CAPTCHA validity check
 	 *
-	 * @return boolean True if valid CAPTCHA response
+	 * @return  boolean  True if valid CAPTCHA response
 	 */
 	public function onValidateCaptcha()
 	{
@@ -297,7 +298,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Randomly chooses a text-based CAPTCHA to display
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	private function _generateTextCaptcha()
 	{
@@ -370,8 +371,8 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Generates a hash
 	 *
-	 * @param  string $input Text to use as base for the hash
-	 * @param  string $day   Day of the week
+	 * @param  string  $input  Text to use as base for the hash
+	 * @param  string  $day    Day of the week
 	 * @return string
 	 */
 	private function _generateHash($input, $day)
@@ -391,7 +392,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Displays either a CAPTCHA image or form field
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	private function _generateImageCaptcha()
 	{
@@ -406,7 +407,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Displays a CAPTCHA image
 	 *
-	 * @return boolean
+	 * @return  boolean
 	 */
 	private function _displayImage()
 	{
@@ -422,9 +423,10 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Checks if a CAPTCHA response is valid
 	 *
-	 * @param  string  $word       Supplied CAPTCHA response to check
-	 * @param  string  $instanceNo CAPTCHA instance number
-	 * @return boolean True if valid
+	 * @param   string   $word          Supplied CAPTCHA response to check
+	 * @param   string   $instanceNo    CAPTCHA instance number
+	 * @param   string   $hash
+	 * @return  boolean  True if valid
 	 */
 	private function _confirm($word, $instanceNo='', $hash='')
 	{
@@ -449,7 +451,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Displays a form field and image
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	private function _getImageCaptchaHtml()
 	{
@@ -472,7 +474,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Sets some internal variables
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _setColors()
 	{
@@ -483,7 +485,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Creates a distorted image
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _createImageAdv()
 	{
@@ -514,7 +516,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 		do
 		{
-			// generating random keystring
+			// Generating random keystring
 			while (true)
 			{
 				$this->keystring = '';
@@ -537,7 +539,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 			$symbol = 0;
 			$reading_symbol = false;
 
-			// loading font
+			// Loading font
 			for ($i=0; $i<$fontfile_width && $symbol<$alphabet_length; $i++)
 			{
 				$transparent = (imagecolorat($font, $i, 0) >> 24) == 127;
@@ -565,7 +567,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 			imagefilledrectangle($img, 0, 0, $width-1, $height-1, $white);
 
-			// draw text
+			// Draw text
 			$x = 1;
 			for ($i=0; $i<$length; $i++)
 			{
@@ -593,7 +595,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 									{
 										break;
 									}
-									for ($px=min($left,$width-1); $px>$left-12 && $px>=0; $px-=1)
+									for ($px=min($left, $width-1); $px>$left-12 && $px>=0; $px-=1)
 									{
 										$color = imagecolorat($img, $px, $py) & 0xff;
 										if ($color+$opacity < 190) {
@@ -612,7 +614,6 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 						{
 							$shift = mt_rand(4,6);
 						}
-
 					}
 				}
 				else
@@ -623,7 +624,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 				$x += $m['end']-$m['start']-$shift;
 			}
 		}
-		while ($x >= $width-10); // while not fit in canvas
+		while ($x >= $width-10); // While not fit in canvas
 
 		$center = $x/2;
 
@@ -633,21 +634,21 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		imagefilledrectangle($img2, 0, 0, $width-1, $height-1, $background);
 		imagefilledrectangle($img2, 0, $height, $width-1, $height+12, $foreground);
 
-		// periods
-		$rand1 = mt_rand(750000,1200000)/10000000;
-		$rand2 = mt_rand(750000,1200000)/10000000;
-		$rand3 = mt_rand(750000,1200000)/10000000;
-		$rand4 = mt_rand(750000,1200000)/10000000;
-		// phases
-		$rand5 = mt_rand(0,31415926)/10000000;
-		$rand6 = mt_rand(0,31415926)/10000000;
-		$rand7 = mt_rand(0,31415926)/10000000;
-		$rand8 = mt_rand(0,31415926)/10000000;
-		// amplitudes
-		$rand9 = mt_rand(330,420)/110;
-		$rand10 = mt_rand(330,450)/110;
+		// Periods
+		$rand1 = mt_rand(750000, 1200000)/10000000;
+		$rand2 = mt_rand(750000, 1200000)/10000000;
+		$rand3 = mt_rand(750000, 1200000)/10000000;
+		$rand4 = mt_rand(750000, 1200000)/10000000;
+		// Phases
+		$rand5 = mt_rand(0, 31415926)/10000000;
+		$rand6 = mt_rand(0, 31415926)/10000000;
+		$rand7 = mt_rand(0, 31415926)/10000000;
+		$rand8 = mt_rand(0, 31415926)/10000000;
+		// Amplitudes
+		$rand9 = mt_rand(330, 420)/110;
+		$rand10 = mt_rand(330, 450)/110;
 
-		// wave distortion
+		// Wave distortion
 		for ($x=0; $x<$width; $x++)
 		{
 			for ($y=0; $y<$height; $y++)
@@ -709,7 +710,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Cache-Control: no-store, no-cache, must-revalidate');
-		header('Cache-Control: post-check=0, pre-check=0', FALSE);
+		header('Cache-Control: post-check=0, pre-check=0', false);
 		header('Pragma: no-cache');
 
 		if (function_exists('imagejpeg'))
@@ -738,12 +739,12 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Creates a plain letter image
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _createImagePlain()
 	{
-		// Let's generate a totally random string using md5
-		$md5_hash = md5(rand(0,999));
+		// Let's generate a totally random string using MD5
+		$md5_hash = md5(rand(0, 999));
 
 		// We don't need a 32 character long string so we trim it down to 5
 		$security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5));
@@ -772,7 +773,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$x = 20;
 		for ($i=0; $i<strlen($security_code); $i++)
 		{
-			$angle = rand(-45,45);
+			$angle = rand(-45, 45);
 			$y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
 
 			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
@@ -786,8 +787,8 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Converts HEX color to RGB
 	 *
-	 * @param  string $hex Hex value to convert
-	 * @return string
+	 * @param   string  $hex  Hex value to convert
+	 * @return  string
 	 */
 	private function _hexToRgb($hex)
 	{
@@ -813,10 +814,10 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Converts RGB color to HEX
 	 *
-	 * @param  string $r R color to convert
-	 * @param  string $g G color to convert
-	 * @param  string $b B color to convert
-	 * @return string
+	 * @param   string  $r  R color to convert
+	 * @param   string  $g  G color to convert
+	 * @param   string  $b  B color to convert
+	 * @return  string
 	 */
 	private function _rgbToHex($r, $g, $b)
 	{

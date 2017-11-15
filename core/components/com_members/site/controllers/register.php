@@ -196,14 +196,14 @@ class Register extends SiteController
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
 				$eview->sitename   = Config::get('sitename');
-				$eview->xprofile   = $target_xprofile;
+				$eview->xprofile   = $xprofile;
 				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
 				$msg = new \Hubzero\Mail\Message();
 				$msg->setSubject($subject)
-				    ->addTo($target_xprofile->get('email'))
+				    ->addTo($xprofile->get('email'))
 				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 				    ->addHeader('X-Component', $this->_option)
 				    ->setBody($message);
@@ -225,7 +225,7 @@ class Register extends SiteController
 			$eaview->option     = $this->_option;
 			$eaview->controller = $this->_controller;
 			$eaview->sitename   = Config::get('sitename');
-			$eaview->xprofile   = $target_xprofile;
+			$eaview->xprofile   = $xprofile;
 			$eaview->baseURL    = $this->baseURL;
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
@@ -263,14 +263,14 @@ class Register extends SiteController
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
 				$eview->sitename   = Config::get('sitename');
-				$eview->xprofile   = $target_profile;
+				$eview->xprofile   = $xprofile;
 				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
 				$msg = new \Hubzero\Mail\Message();
 				$msg->setSubject($subject)
-				    ->addTo($target_xprofile->get('email'))
+				    ->addTo($xprofile->get('email'))
 				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 				    ->addHeader('X-Component', $this->_option)
 				    ->setBody($message);
@@ -292,7 +292,7 @@ class Register extends SiteController
 			$eaview->option     = $this->_option;
 			$eaview->controller = $this->_controller;
 			$eaview->sitename   = Config::get('sitename');
-			$eaview->xprofile   = $target_xprofile;
+			$eaview->xprofile   = $xprofile;
 			$eaview->baseURL    = $this->baseURL;
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
@@ -483,11 +483,15 @@ class Register extends SiteController
 				$suser->set('name', $xprofile->get('name'));
 				Session::set('user', $suser);
 
-				// Get the session object
-				$table = \JTable::getInstance('session');
-				$table->load(Session::getId());
-				$table->username = $xprofile->get('username');
-				$table->update();
+				// Update the session entry
+				// @TODO: Use a model rather than direct query
+				$database = App::get('db');
+				$database->setQuery(
+					"UPDATE `#__session`
+					SET `username`=" . $database->quote($xprofile->get('username')) . "
+					WHERE `session_id`=" . $database->quote(Session::getId())
+				);
+				$database->query();
 			}
 
 			Session::set('registration.incomplete', false);
@@ -788,7 +792,11 @@ class Register extends SiteController
 
 					// Save profile data
 					$member = Member::oneOrNew($user->get('id'));
-
+					$orcidID = Session::get('orcid');
+					if ($orcidID != null)
+					{
+						$profile['orcid'] = $orcidID;
+					}
 					if (!$member->saveProfile($profile, $access))
 					{
 						\Notify::error($member->getError());

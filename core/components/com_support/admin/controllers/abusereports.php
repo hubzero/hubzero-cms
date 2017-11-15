@@ -33,7 +33,7 @@
 namespace Components\Support\Admin\Controllers;
 
 use Components\Support\Helpers\Utilities;
-use Components\Support\Tables\ReportAbuse;
+use Components\Support\Models\Report;
 use Hubzero\Component\AdminController;
 use Hubzero\Mail\Message;
 use Hubzero\Mail\View;
@@ -48,7 +48,7 @@ use User;
 use Date;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'reportabuse.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'report.php';
 
 /**
  * Support cotnroller for Abuse Reports
@@ -63,38 +63,39 @@ class Abusereports extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
 			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				0,
 				'int'
 			),
-			'sortby' => Request::getVar('sortby', 'a.created DESC')
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
 
-		$model = new ReportAbuse($this->database);
+		// Fetch results
+		$query = Report::all()
+			->whereEquals('state', $filters['state']);
 
-		// Get record count
-		$this->view->total = $model->getCount($this->view->filters);
-
-		// Get records
-		$this->view->rows  = $model->getRecords($this->view->filters);
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -107,26 +108,22 @@ class Abusereports extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = Request::getInt('id', 0);
+		$id   = Request::getInt('id', 0);
 		$cat = Request::getVar('cat', '');
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		// Load the report
-		$report = new ReportAbuse($this->database);
-		$report->load($id);
+		$report =  Report::oneOrFail($id);
 
 		// Get the parent ID
 		$results = Event::trigger('support.getParentId', array(
-			$report->referenceid,
-			$report->category
+			$report->get('referenceid'),
+			$report->get('category')
 		));
 
 		// Check the results returned for a parent ID
@@ -144,7 +141,7 @@ class Abusereports extends AdminController
 
 		// Get the reported item
 		$results = Event::trigger('support.getReportedItem', array(
-			$report->referenceid,
+			$report->get('referenceid'),
 			$cat,
 			$parentid
 		));
@@ -164,7 +161,7 @@ class Abusereports extends AdminController
 
 		// Get the title
 		$titles = Event::trigger('support.getTitle', array(
-			$report->category,
+			$report->get('category'),
 			$parentid
 		));
 
@@ -181,19 +178,13 @@ class Abusereports extends AdminController
 			}
 		}
 
-		$this->view->report = $report;
-		$this->view->reported = $reported;
-		$this->view->parentid = $parentid;
-		$this->view->title = $title;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('report', $report)
+			->set('title', $title)
+			->set('reported', $reported)
+			->set('parentid', $parentid)
+			->display();
 	}
 
 	/**
@@ -213,35 +204,31 @@ class Abusereports extends AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		// Load the report
-		$report = new ReportAbuse($this->database);
-		$report->load($id);
-		$report->state = 1;
-		$report->reviewed = Date::toSql();
-		$report->reviewed_by = User::get('id');
-		if (!$report->store())
+		$report = Report::oneOrFail($id);
+		$report->set('state', 1);
+		$report->set('reviewed', Date::toSql());
+		$report->set('reviewed_by', User::get('id'));
+
+		if (!$report->save())
 		{
-			throw new Exception($report->getError(), 500);
+			Notify::error($report->getError());
+			return $this->cancelTask();
 		}
 
 		// Remove the reported item and any other related processes that need be performed
 		$results = Event::trigger('support.releaseReportedItem', array(
-			$report->referenceid,
+			$report->get('referenceid'),
 			$parentid,
-			$report->category
+			$report->get('category')
 		));
 
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_REPORT_ITEM_RELEASED_SUCCESSFULLY')
-		);
+		Notify::success(Lang::txt('COM_SUPPORT_REPORT_ITEM_RELEASED_SUCCESSFULLY'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -272,10 +259,7 @@ class Abusereports extends AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-			);
-			return;
+			return $this->cancelTask();
 		}
 
 		$email     = 1; // Turn off/on
@@ -283,17 +267,16 @@ class Abusereports extends AdminController
 		$message   = '';
 
 		// Load the report
-		$report = new ReportAbuse($this->database);
-		$report->load($id);
+		$report = Report::oneOrFail($id);
 
-		$report->reviewed = Date::toSql();
-		$report->reviewed_by = User::get('id');
-		$report->note = Request::getVar('note', '');
+		$report->set('reviewed', Date::toSql());
+		$report->set('reviewed_by', User::get('id'));
+		$report->set('note', Request::getVar('note', ''));
 
 		// Get the reported item
 		$results = Event::trigger('support.getReportedItem', array(
-			$report->referenceid,
-			$report->category,
+			$report->get('referenceid'),
+			$report->get('category'),
 			$parentid
 		));
 
@@ -312,9 +295,9 @@ class Abusereports extends AdminController
 
 		// Remove the reported item and any other related processes that need be performed
 		$results = Event::trigger('support.deleteReportedItem', array(
-			$report->referenceid,
+			$report->get('referenceid'),
 			$parentid,
-			$report->category,
+			$report->get('category'),
 			$message
 		));
 
@@ -338,10 +321,12 @@ class Abusereports extends AdminController
 		}
 
 		// Mark abuse report as deleted
-		$report->state = 2;
-		if (!$report->store())
+		$report->get('state', 2);
+
+		if (!$report->save())
 		{
-			throw new Exception($report->getError(), 500);
+			Notify::error($report->getError());
+			return $this->cancelTask();
 		}
 
 		// Notify item owner
@@ -400,8 +385,7 @@ class Abusereports extends AdminController
 		}
 
 		// Check the HUB configuration to see if banking is turned on
-		$upconfig = Component::params('com_members');
-		$banking = $upconfig->get('bankAccounts');
+		$banking = \Component::params('com_members')->get('bankAccounts');
 
 		// Give some points to whoever reported abuse
 		if ($banking && $gratitude)
@@ -410,7 +394,8 @@ class Abusereports extends AdminController
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar)
 			{
-				$ruser = User::getInstance($report->created_by);
+				$ruser = User::getInstance($report->get('created_by'));
+
 				if (is_object($ruser) && $ruser->get('id'))
 				{
 					$BTL = new \Hubzero\Bank\Teller($ruser->get('id'));
@@ -419,11 +404,9 @@ class Abusereports extends AdminController
 			}
 		}
 
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_REPORT_ITEM_TAKEN_DOWN')
-		);
+		Notify::success(Lang::txt('COM_SUPPORT_REPORT_ITEM_TAKEN_DOWN'));
+
+		$this->cancelTask();
 	}
 
 	/**

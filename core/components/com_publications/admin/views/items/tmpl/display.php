@@ -37,7 +37,7 @@ $this->js();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('item');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'publications');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -50,7 +50,7 @@ if ($canDo->get('core.edit'))
 if ($canDo->get('core.delete'))
 {
 	Toolbar::spacer();
-	Toolbar::deleteList(Lang::txt('COM_PUBLICATIONS_CONFIRM_DELETE_ITEM'));
+	Toolbar::deleteList('COM_PUBLICATIONS_CONFIRM_DELETE_ITEM');
 }
 
 Html::behavior('tooltip');
@@ -105,11 +105,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th></th>
-				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('@v.'); ?></th>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-2"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_PROJECT', 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
 				<th class="priority-4" colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
 				<th class="priority-5"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
@@ -201,7 +201,7 @@ function submitbutton(pressbutton)
 					<span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
 				</td>
 				<td class="priority-2">
-					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->project_title, 50);  ?></a>
 				</td>
 				<td class="priority-4">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id=' . $row->id . $filterstring ); ?>"><?php echo $this->escape($row->versions); ?></a>

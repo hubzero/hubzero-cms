@@ -32,84 +32,84 @@
 
 namespace Components\Members\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Filesystem;
 use Lang;
 
 /**
  * Image manipulation class
  */
-class ImgHandler extends Object
+class ImgHandler extends Obj
 {
 	/**
 	 * Description for 'path'
 	 *
 	 * @var unknown
 	 */
-	var $path = NULL;
+	public $path = null;
 
 	/**
 	 * Description for 'image'
 	 *
 	 * @var unknown
 	 */
-	var $image = NULL;
+	public $image = null;
 
 	/**
 	 * Description for 'maxWidth'
 	 *
 	 * @var integer
 	 */
-	var $maxWidth = 186;
+	public $maxWidth = 186;
 
 	/**
 	 * Description for 'maxHeight'
 	 *
 	 * @var integer
 	 */
-	var $maxHeight = 186;
+	public $maxHeight = 186;
 
 	/**
 	 * Description for 'cropratio'
 	 *
 	 * @var unknown
 	 */
-	var $cropratio = NULL;
+	public $cropratio = null;
 
 	/**
 	 * Description for 'quality'
 	 *
 	 * @var integer
 	 */
-	var $quality = 90;
+	public $quality = 90;
 
 	/**
 	 * Description for 'color'
 	 *
 	 * @var boolean
 	 */
-	var $color = false;
+	public $color = false;
 
 	/**
 	 * Description for 'overwrite'
 	 *
 	 * @var boolean
 	 */
-	var $overwrite = true;
+	public $overwrite = true;
 
 	/**
 	 * Description for 'outputName'
 	 *
 	 * @var unknown
 	 */
-	var $outputName = NULL;
+	public $outputName = null;
 
 	/**
 	 * Description for '_MEMORY_TO_ALLOCATE'
 	 *
 	 * @var string
 	 */
-	var $_MEMORY_TO_ALLOCATE = '100M';
+	public $_MEMORY_TO_ALLOCATE = '100M';
 
 	/**
 	 * Process an image
@@ -175,7 +175,7 @@ class ImgHandler extends Object
 		}
 		else
 		{
-			$color = FALSE;
+			$color = false;
 		}
 
 		// Ratio cropping
@@ -253,25 +253,25 @@ class ImgHandler extends Object
 			case 'image/gif':
 				// We will be converting GIFs to PNGs to avoid transparency issues when resizing GIFs
 				// This is maybe not the ideal solution, but IE6 can suck it
-				$creationFunction	= 'ImageCreateFromGif';
-				$outputFunction		= 'ImagePng';
-				$mime				= 'image/png'; // We need to convert GIFs to PNGs
-				$doSharpen			= FALSE;
-				$quality			= round(10 - ($quality / 10)); // We are converting the GIF to a PNG and PNG needs a compression level of 0 (no compression) through 9
+				$creationFunction = 'ImageCreateFromGif';
+				$outputFunction   = 'ImagePng';
+				$mime             = 'image/png'; // We need to convert GIFs to PNGs
+				$doSharpen        = false;
+				$quality          = round(10 - ($quality / 10)); // We are converting the GIF to a PNG and PNG needs a compression level of 0 (no compression) through 9
 			break;
 
 			case 'image/x-png':
 			case 'image/png':
-				$creationFunction	= 'ImageCreateFromPng';
-				$outputFunction		= 'ImagePng';
-				$doSharpen			= FALSE;
-				$quality			= round(10 - ($quality / 10)); // PNG needs a compression level of 0 (no compression) through 9
+				$creationFunction = 'ImageCreateFromPng';
+				$outputFunction   = 'ImagePng';
+				$doSharpen        = false;
+				$quality          = round(10 - ($quality / 10)); // PNG needs a compression level of 0 (no compression) through 9
 			break;
 
 			default:
-				$creationFunction	= 'ImageCreateFromJpeg';
-				$outputFunction	 	= 'ImageJpeg';
-				$doSharpen			= TRUE;
+				$creationFunction = 'ImageCreateFromJpeg';
+				$outputFunction   = 'ImageJpeg';
+				$doSharpen        = true;
 			break;
 		}
 
@@ -294,7 +294,7 @@ class ImgHandler extends Object
 					$color = substr($color, 1);
 				}
 
-				$background	= FALSE;
+				$background = false;
 
 				if (strlen($color) == 6)
 				{
@@ -414,4 +414,3 @@ class ImgHandler extends Object
 		return max(round($result), 0);
 	}
 }
-

@@ -38,7 +38,7 @@ class UsersModelGroup extends JModelAdmin
 	 * @param	array	Configuration array for model. Optional.
 	 * @return	JTable	A database object
 	 * @since	1.6
-	*/
+	 */
 	public function getTable($type = 'Usergroup', $prefix = 'JTable', $config = array())
 	{
 		$return = JTable::getInstance($type, $prefix, $config);
@@ -94,7 +94,7 @@ class UsersModelGroup extends JModelAdmin
 	 */
 	protected function preprocessForm(JForm $form, $data, $groups = '')
 	{
-		$obj = is_array($data) ? \Hubzero\Utility\Arr::toObject($data, '\\Hubzero\\Base\\Object') : $data;
+		$obj = is_array($data) ? \Hubzero\Utility\Arr::toObject($data, '\\Hubzero\\Base\\Obj') : $data;
 		if (isset($obj->parent_id) && $obj->parent_id == 0 && $obj->id > 0)
 		{
 			$form->setFieldAttribute('parent_id', 'type', 'hidden');

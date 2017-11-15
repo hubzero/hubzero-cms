@@ -30,7 +30,7 @@
 
 namespace Components\Projects\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'comment.php';
 
 use Hubzero\Base\Model;
 
@@ -58,28 +58,27 @@ class Comment extends Model
 	 *
 	 * @var object
 	 */
-	private $_creator = NULL;
+	private $_creator = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
 	 *
 	 * @var object
 	 */
-	private $_comments = NULL;
+	private $_comments = null;
 
 	/**
 	 * Commen count
 	 *
 	 * @var integer
 	 */
-	private $_comments_count = NULL;
+	private $_comments_count = null;
 
 	/**
 	 * Returns a reference to a blog comment model
 	 *
-	 *
-	 * @param	   mixed $oid ID (int) or alias (string)
-	 * @return	   object Comment
+	 * @param   mixed   $oid  ID (int) or alias (string)
+	 * @return  object  Comment
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -101,8 +100,8 @@ class Comment extends Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param	   string $as What format to return
-	 * @return	   boolean
+	 * @param   string  $as  What format to return
+	 * @return  boolean
 	 */
 	public function created($as='')
 	{
@@ -129,9 +128,9 @@ class Comment extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @param	   string $property What data to return
-	 * @param	   mixed  $default	Default value
-	 * @return	   mixed
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
@@ -154,9 +153,9 @@ class Comment extends Model
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param	   string  $as		Format to return state in [text, number]
-	 * @param	   integer $shorten Number of characters to shorten text to
-	 * @return	   string
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -208,7 +207,7 @@ class Comment extends Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -216,10 +215,10 @@ class Comment extends Model
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param	   string  $rtrn	Data format to return
-	 * @param	   array   $filters Filters to apply to data fetch
-	 * @param	   boolean $clear	Clear cached data?
-	 * @return	   mixed
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{

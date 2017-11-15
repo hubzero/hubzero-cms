@@ -36,6 +36,6 @@ defined('_HZEXEC_') or die();
 An administrative process has updated your account on <?php echo $this->sitename; ?>!
 
 This process has changed your registered e-mail address. You must click the following link to confirm that you received this e-mail at the new address and reactivate your account:
-<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->xprofile->get('emailConfirmed')); ?>
+<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->xprofile->get('activation')); ?>
 
 Do not reply to this email.  Replying to this email will not confirm or activate your account.

@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,104 +22,146 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <aliasa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Publication DOI metadata base class
  */
-class Metadata extends Object
+class Metadata extends Obj
 {
 	/**
 	 *  Object title
+	 *
+	 * @var  string
 	 */
-	var $title						= NULL;
+	public $title = null;
 
 	/**
 	 * Object abstract
+	 *
+	 * @var  string
 	 */
-	var $abstract					= NULL;
+	public $abstract = null;
 
 	/**
 	 * Object description
+	 *
+	 * @var  string
 	 */
-	var $description				= NULL;
+	public $description = null;
 
 	/**
 	 * Object dc type
+	 *
+	 * @var  string
 	 */
-	var $type						= NULL;
+	public $type = null;
 
 	/**
-	 * URL to resource
+	 * URL
+	 *
+	 * @var  string
 	 */
-	var $url						= NULL;
+	public $url = null;
 
 	/**
-	 * URL to resource
+	 * DOI
+	 *
+	 * @var  string
 	 */
-	var $doi						= NULL;
+	public $doi = null;
 
 	/**
 	 * Publisher
+	 *
+	 * @var  string
 	 */
-	var $publisher					= NULL;
+	public $publisher = null;
 
 	/**
 	 * Journal
+	 *
+	 * @var  string
 	 */
-	var $journal					= NULL;
+	public $journal = null;
 
 	/**
 	 * Subject
+	 *
+	 * @var  string
 	 */
-	var $subject					= NULL;
+	public $subject = null;
 
 	/**
 	 * Language
+	 *
+	 * @var  string
 	 */
-	var $language					= NULL;
+	public $language = null;
 
 	/**
 	 * Format
+	 *
+	 * @var  string
 	 */
-	var $format						= NULL;
+	public $format = null;
 
 	/**
 	 * Date
+	 *
+	 * @var  string
 	 */
-	var $date						= NULL;
+	public $date = null;
 
 	/**
 	 * Date
+	 *
+	 * @var  string
 	 */
-	var $issued						= NULL;
+	public $issued = null;
 
 	/**
 	 * Volume
+	 *
+	 * @var  string
 	 */
-	var $volume						= NULL;
+	public $volume = null;
 
 	/**
 	 * Issue
+	 *
+	 * @var  string
 	 */
-	var $issue						= NULL;
+	public $issue = null;
 
 	/**
 	 * Page
+	 *
+	 * @var  string
 	 */
-	var $page						= NULL;
+	public $page = null;
 
 	/**
 	 * ISBN
+	 *
+	 * @var  string
 	 */
-	var $isbn						= NULL;
+	public $isbn = null;
 
 	/**
 	 * Author
+	 *
+	 * @var  string
 	 */
-	var $author						= NULL;
+	public $author = null;
 }

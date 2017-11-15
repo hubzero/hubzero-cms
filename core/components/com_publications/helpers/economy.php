@@ -32,7 +32,7 @@
 
 namespace Components\Publications\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 
 include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
@@ -41,20 +41,20 @@ include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
  * Publications Economy class:
  * Stores economy functions for publication
  */
-class Economy extends Object
+class Economy extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	var $_db = NULL;
+	var $_db = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{

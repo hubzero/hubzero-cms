@@ -41,14 +41,14 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onWhatsnewAreas()
 	{
@@ -60,12 +60,12 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
 	 *
-	 * @param      object  $period     Time period to pull results for
-	 * @param      mixed   $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      array   $areas      Active area(s)
-	 * @param      array   $tagids     Array of tag IDs
-	 * @return     array
+	 * @param   object   $period      Time period to pull results for
+	 * @param   mixed    $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   array    $areas       Active area(s)
+	 * @param   array    $tagids      Array of tag IDs
+	 * @return  array
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
@@ -148,9 +148,9 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	/**
 	 * Special formatting for results
 	 * 
-	 * @param      object $row    Database row
-	 * @param      string $period Time period
-	 * @return     string
+	 * @param   object  $row     Database row
+	 * @param   string  $period  Time period
+	 * @return  string
 	 */
 	public static function out($row, $period)
 	{
@@ -163,7 +163,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		if ($row->text)
 		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
@@ -175,9 +175,9 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	/**
 	 * Find the menu item alias for a page
 	 *
-	 * @param      integer $id       Menu item ID
-	 * @param      boolean $startnew Reset the array?
-	 * @return     array
+	 * @param   integer  $id        Menu item ID
+	 * @param   boolean  $startnew  Reset the array?
+	 * @return  array
 	 */
 	private function _recursiveMenuLookup($id, $startnew=true)
 	{
@@ -201,4 +201,3 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		return $aliases;
 	}
 }
-

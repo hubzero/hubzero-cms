@@ -32,6 +32,9 @@
 namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
+use stdClass;
+use Date;
+use Lang;
 
 /**
  * Tag substitute
@@ -176,7 +179,7 @@ class Substitute extends Relational
 	 */
 	public function tag()
 	{
-		return $this->belongsToOne('Tag', 'tag_id');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Tag', 'tag_id');
 	}
 
 	/**
@@ -207,7 +210,7 @@ class Substitute extends Relational
 			$entries[] = $item->toArray();
 		}
 
-		$data = new \stdClass;
+		$data = new stdClass;
 		$data->old_id  = $oldtagid;
 		$data->new_id  = $newtagid;
 		$data->entries = $entries;
@@ -295,7 +298,7 @@ class Substitute extends Relational
 				$entries[] = $row->get('id');
 			}
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $entries;

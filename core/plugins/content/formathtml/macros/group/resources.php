@@ -32,7 +32,7 @@
 
 namespace Plugins\Content\Formathtml\Macros\Group;
 
-require_once PATH_CORE.'/plugins/content/formathtml/macros/group.php';
+require_once dirname(__DIR__) . '/group.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 
@@ -44,14 +44,14 @@ class Resources extends GroupMacro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  bool
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -69,38 +69,39 @@ class Resources extends GroupMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
-		// check if we can render
+		// Check if we can render
 		if (!parent::canRender())
 		{
 			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
-		// get args
+		// Get args
 		$args = $this->getArgs();
 
-		// get details
+		// Get details
 		$type  = $this->_getType($args, 'all');
 		$limit = $this->_getLimit($args, 5);
 		$class = $this->_getClass($args);
 
-		//get resources
+		require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+
+		// Get resources
 		$groupResources = $this->_getResources($type, $limit);
 
 		$html = '<div class="resources ' . $class . '">';
 
 		foreach ($groupResources as $resource)
 		{
-			$area = strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $resource->area));
-			$resourceLink     = \Route::url('index.php?option=com_resources&id=' . $resource->id);
-			$resourceTypeLink = \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=resources&area=' . $area);
+			$resourceLink     = \Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
+			$resourceTypeLink = \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=resources&area=' . $resource->type->get('alias'));
 
-			$html .= '<a href="' . $resourceLink . '"><strong>' . $resource->title . '</strong></a>';
-			$html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' . $resource->area . '</a></p>';
-			$html .= '<p>' . \Hubzero\Utility\String::truncate($resource->itext) . '</p>';
+			$html .= '<a href="' . $resourceLink . '"><strong>' . $resource->get('title') . '</strong></a>';
+			$html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' . $resource->type->get('type') . '</a></p>';
+			$html .= '<p>' . \Hubzero\Utility\Str::truncate($resource->get('introtext')) . '</p>';
 		}
 
 		$html .= '</div>';
@@ -109,19 +110,14 @@ class Resources extends GroupMacro
 	}
 
 	/**
-	 * [_getResources description]
-	 * @param  string  $type  [description]
-	 * @param  integer $limit [description]
-	 * @return [type]         [description]
+	 * Get resources for a resource type
+	 *
+	 * @param   string   $type
+	 * @param   integer  $limit
+	 * @return  array
 	 */
 	private function _getResources($type = 'all', $limit = 5)
 	{
-		// database object
-		$database = \App::get('db');
-
-		// Instantiate some needed objects
-		$rr = new \Components\Resources\Tables\Resource($database);
-
 		// Build query
 		$filters = array();
 		$filters['now'] = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
@@ -134,30 +130,41 @@ class Resources extends GroupMacro
 		$filters['limitstart'] = 0;
 
 		// Get categories
-		$rt = new \Components\Resources\Tables\Type($database);
-		$categories = $rt->getMajorTypes();
+		$categories = \Components\Resources\Models\Type::getMajorTypes();
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
+		foreach ($categories as $category)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $categories[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $category->type);
 			$normalized = strtolower($normalized);
 
 			$cats[$normalized] = array();
-			$cats[$normalized]['id'] = $categories[$i]->id;
+			$cats[$normalized]['id'] = $category->id;
 		}
 
-		// do we have a type?
+		// Do we have a type?
 		if (in_array($type, array_keys($cats)))
 		{
 			$filters['type'] = $cats[$type]['id'];
 		}
 
 		// Get results
-		$database->setQuery($rr->buildPluginQuery($filters));
-		$rows = $database->loadObjectList();
+		$query = \Components\Resources\Models\Entry::all()
+			->whereEquals('group_owner', $this->group->get('cn'))
+			->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED);
+
+		if ($filters['type'])
+		{
+			$query->whereEquals('type', $filters['type']);
+		}
+
+		$rows = $query
+			->limit($filters['limit'])
+			->start($filters['limitstart'])
+			->order('created', 'desc')
+			->rows();
 
 		return $rows;
 	}
@@ -165,10 +172,11 @@ class Resources extends GroupMacro
 	/**
 	 * Get item limit
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array    $args     Macro Arguments
+	 * @param   integer  $default  Default return value
+	 * @return  mixed
 	 */
-	private function _getLimit( &$args, $default = 5 )
+	private function _getLimit(&$args, $default = 5)
 	{
 		foreach ($args as $k => $arg)
 		{
@@ -187,10 +195,10 @@ class Resources extends GroupMacro
 	/**
 	 * Get class
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array  $args  Macro Arguments
+	 * @return  mixed
 	 */
-	private function _getClass( &$args )
+	private function _getClass(&$args)
 	{
 		foreach ($args as $k => $arg)
 		{
@@ -206,10 +214,10 @@ class Resources extends GroupMacro
 	/**
 	 * Get type
 	 *
-	 * @param  array  $args  Macro Arguments
-	 * @return mixed
+	 * @param   array  $args  Macro Arguments
+	 * @return  mixed
 	 */
-	private function _getType( &$args )
+	private function _getType(&$args)
 	{
 		foreach ($args as $k => $arg)
 		{

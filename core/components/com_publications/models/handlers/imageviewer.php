@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models\Handlers;
 
 use Components\Publications\Models\Handler as Base;
 use stdClass;
+use Filesystem;
+use Component;
+use Route;
 
 /**
  * Image Viewer Handler
@@ -39,65 +44,69 @@ use stdClass;
 class ImageViewer extends Base
 {
 	/**
-	* Handler type name
-	*
-	* @var		string
-	*/
-	protected	$_name 		= 'imageviewer';
+	 * Handler type name
+	 *
+	 * @var  string
+	 */
+	protected $_name = 'imageviewer';
 
 	/**
-	* Configs
-	*
-	* @var
-	*/
-	protected	$_config 	= NULL;
+	 * Configs
+	 *
+	 * @var  object
+	 */
+	protected $_config = null;
 
 	/**
-	* Image Helper
-	*
-	* @var
-	*/
-	protected	$_imgHelper = NULL;
+	 * Image Helper
+	 *
+	 * @var  object
+	 */
+	protected $_imgHelper = null;
 
 	/**
 	 * Get default params for the handler
 	 *
+	 * @param   array  $savedConfig
 	 * @return  void
 	 */
 	public function getConfig($savedConfig = array())
 	{
 		// Defaults
 		$configs = array(
-			'name' 			=> 'imageviewer',
-			'label' 		=> 'Image Gallery',
-			'title' 		=> 'Viewer for image files',
-			'about'			=> 'Selected images will be viewed together in a slideshow',
-			'params'	=> array(
-				'allowed_ext' 		=> array('gif', 'jpg', 'png', 'bmp', 'jpeg'),
-				'required_ext' 		=> array(),
-				'min_allowed' 		=> 1,
-				'max_allowed' 		=> 1000,
-				'thumbSuffix' 		=> '_tn',
-				'thumbFormat' 		=> 'png',
-				'thumbWidth' 		=> '100',
-				'thumbHeight' 		=> '60',
-				'masterWidth' 		=> '600',
-				'masterHeight' 		=> '400',
-				'defaultThumb'		=> '/core/components/com_publications/site/assets/img/resource_thumb.gif',
-				'enforced'			=> 0
+			'name'   => 'imageviewer',
+			'label'  => 'Image Gallery',
+			'title'  => 'Viewer for image files',
+			'about'  => 'Selected images will be viewed together in a slideshow',
+			'params' => array(
+				'allowed_ext'  => array('gif', 'jpg', 'png', 'bmp', 'jpeg'),
+				'required_ext' => array(),
+				'min_allowed'  => 1,
+				'max_allowed'  => 1000,
+				'thumbSuffix'  => '_tn',
+				'thumbFormat'  => 'png',
+				'thumbWidth'   => '100',
+				'thumbHeight'  => '60',
+				'masterWidth'  => '600',
+				'masterHeight' => '400',
+				'defaultThumb' => '/core/components/com_publications/site/assets/img/resource_thumb.gif',
+				'enforced'     => 0
 			)
 		);
 
-		$this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), FALSE);
+		$this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), false);
 		return $this->_config;
 	}
 
 	/**
 	 * Clean-up related files
 	 *
-	 * @return  void
+	 * @param   string  $path
+	 * @param   array   $configs
+	 * @param   string  $md5
+	 * @return  bool
 	 */
-	public function cleanUp( $path, $configs = NULL, $md5 = NULL )
+	public function cleanUp($path, $configs = null, $md5 = null)
 	{
 		// Make sure we got config
 		if (!$this->_config)
@@ -144,9 +153,12 @@ class ImageViewer extends Base
 	/**
 	 * Make image default for publication
 	 *
+	 * @param   object  $row
+	 * @param   object  $pub
+	 * @param   array   $configs
 	 * @return  void
 	 */
-	public function makeDefault( $row, $pub, $configs)
+	public function makeDefault($row, $pub, $configs)
 	{
 		// Make sure we got config
 		if (!$this->_config)
@@ -155,8 +167,8 @@ class ImageViewer extends Base
 		}
 
 		// TBD - to come from component configs
-		$defaultMasterName  = 'master.png';
-		$defaultThumbName 	= 'thumb.gif';
+		$defaultMasterName = 'master.png';
+		$defaultThumbName  = 'thumb.gif';
 
 		$path = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
@@ -203,7 +215,7 @@ class ImageViewer extends Base
 		}
 
 		// Get current default
-		$currentDefault = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
+		$currentDefault = new \Components\Publications\Tables\Attachment($this->_parent->_db);
 		$currentDefault->getDefault($row->publication_version_id);
 
 		// Unmark as default
@@ -221,7 +233,8 @@ class ImageViewer extends Base
 	/**
 	 * Show attachments in an image band (gallery)
 	 *
-	 * @return  void
+	 * @param   object  $pub
+	 * @return  bool
 	 */
 	public function showImageBand($pub)
 	{
@@ -242,22 +255,24 @@ class ImageViewer extends Base
 		// Show first element
 		$element = $elements[0];
 
-		$manifest 		= $element->manifest;
-		$params   		= $manifest->params->typeParams;
-		$dirHierarchy 	= isset($params->dirHierarchy) ? $params->dirHierarchy : 1;
+		$manifest     = $element->manifest;
+		$params       = $manifest->params->typeParams;
+		$dirHierarchy = isset($params->dirHierarchy) ? $params->dirHierarchy : 1;
 
 		// Get files directory
 		$directory = isset($params->directory) && $params->directory
-							? $params->directory : $pub->secret;
+					? $params->directory
+					: $pub->secret;
 		$pubPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', $directory, 0);
 
-		$configs 		= new stdClass;
+		$configs = new stdClass;
 		$configs->dirHierarchy = $dirHierarchy;
 		$configs->pubPath = $pubPath;
 
 		// Do we have attachments?
 		$attachments = isset($pub->_attachments['elements'][$element->id])
-					? $pub->_attachments['elements'][$element->id] : NULL;
+					? $pub->_attachments['elements'][$element->id]
+					: null;
 
 		if (!$attachments)
 		{
@@ -298,7 +313,7 @@ class ImageViewer extends Base
 		if ($i > 0)
 		{
 			$view = new \Hubzero\Component\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+				'base_path' => Component::path('com_publications') . DS . 'site',
 				'name'      => 'view',
 				'layout'    => '_gallery',
 			));
@@ -313,9 +328,13 @@ class ImageViewer extends Base
 	/**
 	 * Draw list of included files
 	 *
+	 * @param   array    $attachments
+	 * @param   object   $attConfigs
+	 * @param   object   $pub
+	 * @param   boolean  $authorized
 	 * @return  void
 	 */
-	public function drawList($attachments, $attConfigs, $pub, $authorized )
+	public function drawList($attachments, $attConfigs, $pub, $authorized)
 	{
 		if (!$attachments)
 		{
@@ -342,15 +361,15 @@ class ImageViewer extends Base
 				$this->_config->params->thumbSuffix,
 				$this->_config->params->thumbFormat
 			);
-			$title 		= $attach->title ? $attach->title : $attConfigs->title;
-			$title 		= $title ? $title : basename($attach->path);
+			$title = $attach->title ? $attach->title : $attConfigs->title;
+			$title = $title ? $title : basename($attach->path);
 
-			$params = new \Hubzero\Config\Registry( $attach->params );
+			$params = new \Hubzero\Config\Registry($attach->params);
 
 			$html .= '<li>';
 			$html .= ' <a rel="lightbox" href="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . basename($fpath) . '">';
 			$html .= '<span class="item-image';
-			$html .= $params->get('pubThumb', NULL) && $authorized == 'administrator' ? ' starred' : '';
+			$html .= $params->get('pubThumb', null) && $authorized == 'administrator' ? ' starred' : '';
 			$html .= '"><img src="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></span>';
 			$html .= '<span class="item-title">' . $title . '<span class="details">' . $attach->path . '</span></span>';
 			$html .= '</a>';
@@ -364,9 +383,12 @@ class ImageViewer extends Base
 	/**
 	 * Make thumb
 	 *
+	 * @param   object  $row
+	 * @param   object  $pub
+	 * @param   object  $configs
 	 * @return  void
 	 */
-	public function makeThumbnail( $row, $pub, $configs)
+	public function makeThumbnail($row, $pub, $configs)
 	{
 		// Make sure we got config
 		if (!$this->_config)
@@ -419,7 +441,9 @@ class ImageViewer extends Base
 	/**
 	 * Draw attachment
 	 *
-	 * @return  void
+	 * @param   array   $data
+	 * @param   object  $params
+	 * @return  string
 	 */
 	public function drawAttachment($data, $params)
 	{
@@ -430,24 +454,24 @@ class ImageViewer extends Base
 		}
 
 		// Metadata file?
-		$layout =  ($data->get('ext') == 'csv') ? 'file' : 'image';
+		$layout = ($data->get('ext') == 'csv') ? 'file' : 'image';
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'attachments',
-				'layout'	=>$layout
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'attachments',
+				'layout'  => $layout
 			)
 		);
-		$view->data    		= $data;
-		$view->config  		= $this->_config;
-		$view->params 		= $params;
+		$view->data   = $data;
+		$view->config = $this->_config;
+		$view->params = $params;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -455,9 +479,14 @@ class ImageViewer extends Base
 	/**
 	 * Build file path depending on configs
 	 *
+	 * @param   string   $path
+	 * @param   integer  $id
+	 * @param   object   $configs
+	 * @param   object   $params
+	 * @param   string   $suffix
 	 * @return  string
 	 */
-	public function getFilePath( $path, $id, $configs = NULL, $params = NULL, $suffix = NULL )
+	public function getFilePath($path, $id, $configs = null, $params = null, $suffix = null)
 	{
 		// Do we transfer file with subdirectories?
 		if ($configs->dirHierarchy == 1)
@@ -469,19 +498,19 @@ class ImageViewer extends Base
 			if (!$suffix && $params)
 			{
 				// Get file attachment params
-				$fParams = new \Hubzero\Config\Registry( $params );
+				$fParams = new \Hubzero\Config\Registry($params);
 				$suffix  = $fParams->get('suffix');
 			}
 
 			// Do not preserve dir hierarchy, but append number for same-name files
-			$name 	= $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
-			$fpath  = $configs->pubPath . DS . $name;
+			$name  = $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+			$fpath = $configs->pubPath . DS . $name;
 		}
 		else
 		{
 			// Attach record number to file name
-			$name 	= \Components\Projects\Helpers\Html::fixFileName(basename($path), '-' . $id);
-			$fpath  = $configs->pubPath . DS . $name;
+			$name  = \Components\Projects\Helpers\Html::fixFileName(basename($path), '-' . $id);
+			$fpath = $configs->pubPath . DS . $name;
 		}
 
 		return $fpath;
@@ -490,7 +519,8 @@ class ImageViewer extends Base
 	/**
 	 * Draw handler status in editor
 	 *
-	 * @return  object
+	 * @param   object  $editor
+	 * @return  void
 	 */
 	public function drawStatus($editor)
 	{
@@ -500,12 +530,13 @@ class ImageViewer extends Base
 	/**
 	 * Draw handler editor content
 	 *
-	 * @return  object
+	 * @param   object  $editor
+	 * @return  string
 	 */
 	public function drawEditor($editor)
 	{
 		// Incoming
-		$active = trim(Request::getVar( 'o', NULL )); // Requested image
+		$active = trim(Request::getVar('o', null)); // Requested image
 
 		$database = \App::get('db');
 
@@ -527,7 +558,7 @@ class ImageViewer extends Base
 
 		// Draw images
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => Component::path('com_publications') . DS . 'site',
 			'name'      => 'handlers',
 			'layout'    => 'imagegallery',
 		));
@@ -537,9 +568,10 @@ class ImageViewer extends Base
 	/**
 	 * Check against handler-specific requirements
 	 *
-	 * @return  object
+	 * @param   array  $attachments
+	 * @return  bool
 	 */
-	public function checkRequired( $attachments )
+	public function checkRequired($attachments)
 	{
 		return true;
 	}

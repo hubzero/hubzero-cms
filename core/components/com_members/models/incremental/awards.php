@@ -88,11 +88,30 @@ class Awards
 		self::getDbh();
 		do
 		{
-			self::$dbh->setQuery('SELECT opted_out, name, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture, disability FROM `#__profile_completion_awards` WHERE user_id = ' . $this->uid);
-			if (!($this->awards = self::$dbh->loadAssoc()))
+			$columns = array('opted_out', 'name', 'orgtype', 'organization', 'countryresident', 'countryorigin', 'gender', 'url', 'reason', 'race', 'phone', 'picture', 'disability');
+
+			foreach ($columns as $key => $val)
 			{
-				self::$dbh->setQuery('INSERT INTO `#__profile_completion_awards` (user_id) VALUES (' . $this->uid . ')');
-				self::$dbh->execute();
+				// Make sure the column exists
+				// This seems to have varied from hub to hub
+				if (!self::$dbh->tableHasField('#__profile_completion_awards', $val))
+				{
+					unset($columns[$key]);
+				}
+			}
+
+			if (!empty($columns))
+			{
+				self::$dbh->setQuery('SELECT ' . implode(', ', $columns) . ' FROM `#__profile_completion_awards` WHERE user_id = ' . $this->uid);
+				if (!($this->awards = self::$dbh->loadAssoc()))
+				{
+					self::$dbh->setQuery('INSERT INTO `#__profile_completion_awards` (user_id) VALUES (' . $this->uid . ')');
+					self::$dbh->execute();
+				}
+			}
+			else
+			{
+				$this->awards = 1;
 			}
 		}
 		while (!$this->awards);
@@ -118,7 +137,7 @@ class Awards
 	{
 		if (!$this->uid)
 		{
-			return NULL;
+			return null;
 		}
 		$opts = new Options;
 		$awardPer = $opts->getAwardPerField();
@@ -140,7 +159,7 @@ class Awards
 		$eligible = array();
 		$newAmount = 0;
 		$completeSql = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1';
-		$optedOut = NULL;
+		$optedOut = null;
 
 		foreach ($this->awards as $k => $complete)
 		{

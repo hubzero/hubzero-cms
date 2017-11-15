@@ -68,7 +68,7 @@ $this->css()
 						</div>
 						<div class="infoholder col span8">
 							<h4><?php echo $row->title; ?></h4>
-							<p class="desc"><?php echo \Hubzero\Utility\String::truncate($row->description, 200); ?></p>
+							<p class="desc"><?php echo \Hubzero\Utility\Str::truncate($row->description, 200); ?></p>
 							<p>
 								<?php if ($row->category ) { ?>
 									<span class="details"><span><?php echo Lang::txt('COM_STORE_CATEGORY'); ?>:</span> <?php echo $row->category; ?></span>

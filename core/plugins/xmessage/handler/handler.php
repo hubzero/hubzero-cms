@@ -98,15 +98,17 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send a message to one or more users
 	 *
-	 * @param   string   $type         Message type (maps to #__xmessage_component table)
-	 * @param   string   $subject      Message subject
-	 * @param   string   $message      Message to send
-	 * @param   array    $from         Message 'from' data (e.g., name, address)
-	 * @param   array    $to           List of user IDs
-	 * @param   string   $component    Component name
-	 * @param   integer  $element      ID of object that needs an action item
-	 * @param   string   $description  Action item description
-	 * @param   integer  $group_id     Parameter description (if any) ...
+	 * @param   string   $type               Message type (maps to #__xmessage_component table)
+	 * @param   string   $subject            Message subject
+	 * @param   string   $message            Message to send
+	 * @param   array    $from               Message 'from' data (e.g., name, address)
+	 * @param   array    $to                 List of user IDs
+	 * @param   string   $component          Component name
+	 * @param   integer  $element            ID of object that needs an action item
+	 * @param   string   $description        Action item description
+	 * @param   integer  $group_id           Parameter description (if any) ...
+	 * @param   boolean  $bypassGroupsCheck  Can bypass checks or not?
+	 * @param   integer  $anonymous          Anonymous value in message
 	 * @return  mixed    True if no errors else error message
 	 */
 	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0, $bypassGroupsCheck=false, $anonymous=0)

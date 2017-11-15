@@ -32,10 +32,10 @@
 defined('_HZEXEC_') or die();
 
 // Check used space against quota (percentage)
-$inuse = round(((($this->dirsize)/ $this->quota)*100), 1);
+$inuse = round((($this->dirsize / $this->quota)*100), 1);
 if ($this->total > 0 && $inuse < 1)
 {
-	$inuse = round((($this->dirsize * 100 )/ $this->quota*100), 2);
+	$inuse = round((($this->dirsize / $this->quota)*100), 2);
 	if ($inuse < 0.1)
 	{
 		$inuse = 0.01;
@@ -59,7 +59,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 		<div class="disk-usage-wrapper">
 			<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . $quota; ?></h3>
 				<div id="indicator-wrapper">
-					<span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse . '% ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED') . ' (' . $used . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OUT_OF') . ' ' . $quota . ')'; ?></span> <?php if ($warning) { ?><span class="approaching-quota"> - <?php echo ($inuse == 100) ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_OVER_QUOTA')  : Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_APPROACHING_QUOTA') ; ?></span><?php } ?></span>
+					<span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse . '% ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED') . ' (' . $used . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OUT_OF') . ' ' . $quota . ')'; ?></span> <?php if ($warning) { ?><span class="approaching-quota"> - <?php echo ($inuse == 100) ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_OVER_QUOTA')  : Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_APPROACHING_QUOTA'); ?></span><?php } ?></span>
 				</div>
 
 				<div id="usage-labels">

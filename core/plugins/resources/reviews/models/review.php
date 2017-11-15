@@ -251,7 +251,8 @@ class Review extends Relational
 	 *
 	 * @param   integer  $vote     The vote [0, 1]
 	 * @param   integer  $user_id  Optinal user ID to set as voter
-	 * @return  boolean  False if error, True on success
+	 * @param   string   $ip       IP address
+	 * @return  boolean            False if error, True on success
 	 */
 	public function vote($vote = 0, $user_id = 0, $ip = null)
 	{
@@ -414,5 +415,36 @@ class Review extends Relational
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Calculate the rating for a resource
+	 *
+	 * @param   integer  $resource_id
+	 * @return  array
+	 */
+	public static function averageByResource($resource_id)
+	{
+		$ratings = self::all()
+			->whereEquals('resource_id', $resource_id)
+			->rows();
+
+		$totalcount = count($ratings);
+		$totalvalue = 0;
+
+		// Add the ratings up
+		foreach ($ratings as $item)
+		{
+			$totalvalue = $totalvalue + $item->get('rating');
+		}
+
+		// Find the average of all ratings
+		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
+
+		// Round to the nearest half
+		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
+
+		// Update page with new rating
+		return array($newrating, $totalcount);
 	}
 }

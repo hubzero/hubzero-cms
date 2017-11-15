@@ -58,7 +58,7 @@ $this->css('quotas.css');
 				var usage = $(el).find('.usage-outer');
 
 				$.ajax({
-					url      : '<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage'); ?>',
+					url      : '<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage', false); ?>',
 					dataType : 'JSON',
 					type     : 'GET',
 					data     : {"id":id},

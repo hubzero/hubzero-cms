@@ -131,12 +131,11 @@ class Attachment extends Relational
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Load a record by filename and optional page ID
 	 *
-	 * @param   string   $type    The type of link to return
-	 * @param   string   $params
-	 * @return  boolean
+	 * @param   string   $filename
+	 * @param   integer  $page_id
+	 * @return  object
 	 */
 	public static function oneByFilename($filename, $page_id=null)
 	{

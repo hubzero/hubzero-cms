@@ -188,10 +188,7 @@ class Articles extends AdminController
 			->ordered()
 			->rows();
 
-		/*
-		$m = new KbModelAdminArticle();
-		$form = $m->getForm();
-		*/
+		//$form = $row->getForm();
 
 		// Output the HTML
 		$this->view

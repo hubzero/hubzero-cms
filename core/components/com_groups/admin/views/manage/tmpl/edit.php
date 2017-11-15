@@ -32,13 +32,14 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$text = ($this->task == 'edit' ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
+$text = ($this->group->get('gidNumber') ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
 
 $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS').': ' . $text, 'groups.png');
 if ($canDo->get('core.edit'))
 {
+	Toolbar::apply();
 	Toolbar::save();
 }
 Toolbar::cancel();
@@ -49,7 +50,7 @@ Html::behavior('framework');
 Html::behavior('switcher', 'submenu');
 
 // are we using the email gateway for group forum
-$params =  Component::params('com_groups');
+$params = Component::params('com_groups');
 $allowEmailResponses = $params->get('email_comment_processing', 0);
 
 $autoEmailResponses  = $this->group->get('discussion_email_autosubscribe');
@@ -84,10 +85,10 @@ function submitbutton(pressbutton)
 	<?php echo $this->editor()->save('text'); ?>
 
 	// form field validation
-	if ($('#field-description').val() == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
+	if ($('#field-type').val() == '') {
+		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_TYPE'); ?>');
 	} else if ($('#field-cn').val() == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
+		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_CN'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -257,10 +258,10 @@ function submitbutton(pressbutton)
 							<fieldset>
 								<legend><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?>:</legend>
 								<div class="input-wrap">
-									<input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?php if ($this->group->join_policy == 0) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy0"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC'); ?></label><br />
-									<input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?php if ($this->group->join_policy == 1) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy1"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED'); ?></label><br />
-									<input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?php if ($this->group->join_policy == 2) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy2"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE'); ?></label><br />
-									<input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?php if ($this->group->join_policy == 3) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy3"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED'); ?></label>
+									<input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?php if ($this->group->join_policy == 0) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy0"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC'); ?></label><br />
+									<input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?php if ($this->group->join_policy == 1) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy1"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC'); ?></label><br />
+									<input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?php if ($this->group->join_policy == 2) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy2"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC'); ?></label><br />
+									<input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?php if ($this->group->join_policy == 3) { echo ' checked="checked"'; } ?> /> <label for="field-join_policy3"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC'); ?></label>
 								</div>
 							</fieldset>
 							<div class="input-wrap">

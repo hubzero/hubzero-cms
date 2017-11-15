@@ -33,7 +33,7 @@ namespace Components\Search\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Inflector;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Search\Query;
 use Component;
 use stdClass;
@@ -160,7 +160,7 @@ class Searchv1_0 extends ApiController
 
 				if ($field != 'url')
 				{
-					$r = String::highlight($r, $terms, $highlightOptions);
+					$r = Str::highlight($r, $terms, $highlightOptions);
 				}
 
 				if ($field == 'description' || $field == 'fulltext' || $field == 'abstract')
@@ -174,7 +174,7 @@ class Searchv1_0 extends ApiController
 
 			$snippet = str_replace("\n", "", $snippet);
 			$snippet = str_replace("\r", "", $snippet);
-			$snippet  = String::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+			$snippet  = Str::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
 
 			$result['snippet'] = $snippet;
 		}
@@ -222,16 +222,54 @@ class Searchv1_0 extends ApiController
 	}
 
 	/**
+	 * Get suggestions for submitted terms
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /search/typeSuggestions
+	 * @apiParameter {
+	 * 		"name":          "terms",
+	 * 		"description":   "Terms to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @return  void
+	 */
+	public function typeSuggestionsTask()
+	{
+		$terms = Request::getVar('terms', '');
+		$suggestedWords = array();
+
+		if ($terms != '')
+		{
+			$config = Component::params('com_search');
+			$query = new Query($config);
+			$typeSuggestions = $query->spellCheck($terms);
+
+			if (!empty($typeSuggestions))
+			{
+				foreach ($typeSuggestions as $suggestion)
+				{
+					foreach ($suggestion->getWords() as $word)
+					{
+						array_push($suggestedWords, $word['word']);
+					}
+				}
+			}
+		}
+
+		$response = new stdClass;
+		$response->results = json_encode($suggestedWords);
+		$response->success = true;
+
+		$this->send($response);
+	}
+
+	/**
 	 * Display a list of hub types for a term
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /search/getHubTypes
-	 * 		"name":          "type",
-	 * 		"description":   "Content type (groups, members, etc.)",
-	 * 		"type":          "string",
-	 * 		"required":      false,
-	 * 		"default":       ""
-	 * }
 	 * @apiParameter {
 	 * 		"name":          "terms",
 	 * 		"description":   "Terms to search for.",

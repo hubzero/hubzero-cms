@@ -108,10 +108,8 @@ class Media extends SiteController
 			// Should only get here on error
 			throw new RuntimeException(Lang::txt('An error occurred while trying to output the file'), 500);
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 
 	/**
@@ -124,17 +122,16 @@ class Media extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
-		if (!$file['name'])
+
+		if (!$file['name'] || $file['size'] == 0)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming
@@ -151,8 +148,7 @@ class Media extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_BLOG_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 		}
 
@@ -162,10 +158,35 @@ class Media extends SiteController
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
 
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+
+			return $this->displayTask();
+		}
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize');
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+
+			return $this->displayTask();
+		}
+
+		// Make sure the file name is unique
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
-			$file['name'] = substr($file['name'], 0, 230);
+			$file['name']  = substr($file['name'], 0, 230);
 			$file['name'] .= '.' . $ext;
 		}
 
@@ -175,6 +196,7 @@ class Media extends SiteController
 			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING'));
 		}
 
+		// Virus scan
 		if (!Filesystem::isSafe($path . DS . $file['name']))
 		{
 			Filesystem::delete($path . DS . $file['name']);
@@ -199,8 +221,7 @@ class Media extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
@@ -208,8 +229,7 @@ class Media extends SiteController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming
@@ -248,8 +268,7 @@ class Media extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
@@ -257,8 +276,7 @@ class Media extends SiteController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming
@@ -273,8 +291,7 @@ class Media extends SiteController
 		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError(Lang::txt('COM_BLOG_FILE_NOT_FOUND'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Attempt to delete the file
@@ -295,18 +312,15 @@ class Media extends SiteController
 	public function displayTask()
 	{
 		// Output HTML
-		$this->view->archive = new Archive(
+		$archive = new Archive(
 			Request::getWord('scope', 'site'),
 			Request::getInt('id', 0)
 		);
 
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		$this->view
+			->set('archive', $archive)
 			->setLayout('display')
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -318,13 +332,13 @@ class Media extends SiteController
 	public function listTask()
 	{
 		// Incoming
-		$this->view->archive = new Archive(
+		$archive = new Archive(
 			Request::getWord('scope', 'site'),
 			Request::getInt('id', 0)
 		);
 
 		// Build the file path
-		$path = $this->view->archive->filespace();
+		$path = $archive->filespace();
 
 		$folders = array();
 		$files   = array();
@@ -335,14 +349,11 @@ class Media extends SiteController
 			$folders = Filesystem::directories($path);
 		}
 
-		$this->view->docs    = $files;
-		$this->view->folders = $folders;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('archive', $archive)
+			->set('docs', $files)
+			->set('folders', $folders)
+			->setErrors($this->getErrors())
+			->display();
 	}
 }

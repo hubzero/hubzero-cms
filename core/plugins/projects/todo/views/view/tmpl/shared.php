@@ -100,7 +100,7 @@ $rows = $this->todo->entries('list', $this->filters);
 		?>
 		<tr class="pin_grey" id="todo-<?php echo $row->get('id'); ?>">
 			<td><span class="ordernum"><?php echo $order; ?></span></td>
-			<td><a href="<?php echo Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')); ?>"><?php echo \Hubzero\Utility\String::truncate($row->get('content'), 200); ?></a>
+			<td><a href="<?php echo Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 200); ?></a>
 				<span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $row->created('date') . ' ' . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name'); ?>
 					| <?php echo Lang::txt('PLG_PROJECTS_TODO_COMMENTS'); ?>: <a href="<?php echo Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')); ?>"><?php echo $row->comments('count'); ?></a></span>
 			</td>

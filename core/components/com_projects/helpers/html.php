@@ -33,7 +33,7 @@
 namespace Components\Projects\Helpers;
 
 use Exception;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Entity;
 use Filesystem;
 use StdClass;
@@ -46,22 +46,22 @@ use Date;
 /**
  * Html helper class
  */
-class Html extends Object
+class Html extends Obj
 {
 	/**
 	 * Show time since present moment or an actual date
 	 *
-	 * @param      string 	$time
-	 * @param      boolean 	$utc	UTC
-	 * @return     string
+	 * @param   string   $time
+	 * @param   boolean  $utc   UTC
+	 * @return  string
 	 */
 	public static function showTime($time, $utc = false)
 	{
-		$parsed 		= date_parse($time);
-		$timestamp		= strtotime($time);
-		$current_time 	= $utc ? Date::toSql() : date('c');
-		$current  		= date_parse($current_time);
-		$lapsed 		= strtotime($current_time) - $timestamp;
+		$parsed       = date_parse($time);
+		$timestamp    = strtotime($time);
+		$current_time = $utc ? Date::toSql() : date('c');
+		$current      = date_parse($current_time);
+		$lapsed       = strtotime($current_time) - $timestamp;
 
 		if ($lapsed < 30)
 		{
@@ -84,47 +84,46 @@ class Html extends Object
 	/**
 	 * Specially formatted time display
 	 *
-	 * @param      string 	$time
-	 * @param      boolean 	$full	Return detailed date/time?
-	 * @param      boolean 	$utc	UTC
-	 * @return     string
+	 * @param   string   $time
+	 * @param   boolean  $full  Return detailed date/time?
+	 * @param   boolean  $utc   UTC
+	 * @return  string
 	 */
 	public static function formatTime($time, $full = false, $utc = false)
 	{
 		$parsed 	= date_parse($time);
-		$timestamp	= strtotime($time);
 
 		$now 		= $utc ? Date::toSql() : date('c');
 		$current  	= date_parse($now);
 
 		if ($full)
 		{
-			return Date::of($timestamp)->toLocal('M d, Y H:i:s');
+			return Date::of($time)->toLocal('M d, Y H:i:s');
 		}
 
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
 			{
-				return Date::of($timestamp)->toLocal('g:i A');
+				return Date::of($time)->toLocal('g:i A');
 			}
 			else
 			{
-				return Date::of($timestamp)->toLocal('M j');
+				return Date::of($time)->toLocal('M j');
 			}
 		}
 		else
 		{
-			return Date::of($timestamp)->toLocal('M j, Y');
+			return Date::of($time)->toLocal('M j, Y');
 		}
 	}
 
 	/**
 	 * Time elapsed from moment
 	 *
-	 * @param      string 	$timestamp
-	 * @param      boolean 	$utc	UTC
-	 * @return     string
+	 * @param   string   $timestamp
+	 * @param   boolean  $utc        UTC
+	 * @return  string
 	 */
 	public static function timeAgo($timestamp, $utc = true)
 	{
@@ -141,10 +140,10 @@ class Html extends Object
 	/**
 	 * Get time difference
 	 *
-	 * @param      string $difference
-	 * @return     string
+	 * @param   string  $difference
+	 * @return  string
 	 */
-	public static function timeDifference ($difference)
+	public static function timeDifference($difference)
 	{
 		// Set the periods of time
 		$periods = array('sec', 'min', 'hr', 'day', 'week', 'month', 'year', 'decade');
@@ -155,7 +154,16 @@ class Html extends Object
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
+		$val = count($lengths) - 1;
+		while ($val >= 0)
+		{
+			$number = $difference / $lengths[$val];
+			if ($number > 1)
+			{
+				break;
+			}
+			$val--;
+		}
 
 		// Ensure the script has found a match
 		if ($val < 0)
@@ -194,9 +202,8 @@ class Html extends Object
 	 * Makes path name safe to use.
 	 * Filesystem::cleanDirectory() is too limiting
 	 *
-	 * @access	public
-	 * @param	string The full path to sanitize.
-	 * @return	string The sanitized string.
+	 * @param   string  $path  The full path to sanitize.
+	 * @return  string  The sanitized string.
 	 */
 	public static function makeSafeDir($path)
 	{
@@ -208,10 +215,10 @@ class Html extends Object
 	/**
 	 * Get file extension
 	 *
-	 * @param      string $file
-	 * @return     string
+	 * @param   string  $file
+	 * @return  string
 	 */
-	public static function getFileExtension( $file = '')
+	public static function getFileExtension($file = '')
 	{
 		if (!is_null($file))
 		{
@@ -219,17 +226,17 @@ class Html extends Object
 
 			return strtolower(substr($file, $dot));
 		}
-		return NULL;
+		return null;
 	}
 
 	/**
 	 * Convert file size
 	 *
-	 * @param      int $file_size
-	 * @param      string $from
-	 * @param      string $to
-	 * @param      string $round
-	 * @return     string
+	 * @param   int     $file_size
+	 * @param   string  $from
+	 * @param   string  $to
+	 * @param   string  $round
+	 * @return  string
 	 */
 	public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0)
 	{
@@ -243,7 +250,7 @@ class Html extends Object
 			}
 			elseif ($to == 'MB')
 			{
-				$file_size = round(($file_size / 1048576 * 100), $round) / 100 ;
+				$file_size = round(($file_size / 1048576 * 100), $round) / 100;
 			}
 			elseif ($to == 'KB')
 			{
@@ -272,11 +279,11 @@ class Html extends Object
 	/**
 	 * Fix up some mimetypes
 	 *
-	 * @param      string $file
-	 * @param      string $mimeType
-	 * @return     string
+	 * @param   string  $file
+	 * @param   string  $mimeType
+	 * @return  string
 	 */
-	public static function fixUpMimeType ($file = NULL, $mimeType = NULL)
+	public static function fixUpMimeType ($file = null, $mimeType = null)
 	{
 		if ($file)
 		{
@@ -311,8 +318,8 @@ class Html extends Object
 	/**
 	 * Get name for a number
 	 *
-	 * @param      integer $int
-	 * @return     string
+	 * @param   integer  $int
+	 * @return  string
 	 */
 	public static function getNumberName($int = 0)
 	{
@@ -367,7 +374,7 @@ class Html extends Object
 	/**
 	 * Get array of available emotion icons
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public static function getEmoIcons()
 	{
@@ -406,9 +413,8 @@ class Html extends Object
 	/**
 	 * Check if file is binary
 	 *
-	 * @param      string	$file
-	 *
-	 * @return     integer
+	 * @param   string  $file
+	 * @return  integer
 	 */
 	public static function isBinary($file)
 	{
@@ -419,18 +425,18 @@ class Html extends Object
 	/**
 	 * Replace with emotion icons
 	 *
-	 * @param      string $text
-	 * @return     string
+	 * @param   string  $text
+	 * @return  string
 	 */
-	public static function replaceEmoIcons($text = NULL)
+	public static function replaceEmoIcons($text = null)
 	{
 		$icons = self::getEmoIcons();
 
 		foreach ($icons as $icon => $image)
 		{
-			$pat 	=  '#(?<=\s|^)(' . preg_quote($icon) .')(?=\s|$)#';
-			$rep  	= '<span class="icon-emo-' . $image . '"></span>';
-			$text 	= preg_replace($pat, $rep, $text);
+			$pat  =  '#(?<=\s|^)(' . preg_quote($icon) .')(?=\s|$)#';
+			$rep  = '<span class="icon-emo-' . $image . '"></span>';
+			$text = preg_replace($pat, $rep, $text);
 		}
 
 		return $text;
@@ -439,12 +445,12 @@ class Html extends Object
 	/**
 	 * Create a thumbnail name
 	 *
-	 * @param      string $image Image name
-	 * @param      string $tn    Thumbnail prefix
-	 * @param      string $ext
-	 * @return     string
+	 * @param   string  $image  Image name
+	 * @param   string  $tn     Thumbnail prefix
+	 * @param   string  $ext
+	 * @return  string
 	 */
-	public static function createThumbName( $image = null, $tn = '_thumb', $ext = 'png' )
+	public static function createThumbName($image = null, $tn = '_thumb', $ext = 'png')
 	{
 		return Filesystem::name($image) . $tn . '.' . $ext;
 	}
@@ -452,17 +458,14 @@ class Html extends Object
 	/**
 	 * Generate random code
 	 *
-	 * @param      int $minlength
-	 * @param      int $maxlength
-	 * @param      boolean $usespecial
-	 * @param      boolean $usenumbers
-	 * @param      boolean $useletters
-	 * @return     string HTML
+	 * @param   int      $minlength
+	 * @param   int      $maxlength
+	 * @param   boolean  $usespecial
+	 * @param   boolean  $usenumbers
+	 * @param   boolean  $useletters
+	 * @return  string   HTML
 	 */
-	public static function generateCode(
-		$minlength = 10, $maxlength = 10, $usespecial = 0,
-		$usenumbers = 0, $useletters = 1, $mixedcaps = false
-	)
+	public static function generateCode($minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1, $mixedcaps = false)
 	{
 		$key = '';
 		$charset = '';
@@ -484,15 +487,15 @@ class Html extends Object
 		}
 		if ($minlength > $maxlength)
 		{
-			$length = mt_rand ($maxlength, $minlength);
+			$length = mt_rand($maxlength, $minlength);
 		}
 		else
 		{
-			$length = mt_rand ($minlength, $maxlength);
+			$length = mt_rand($minlength, $maxlength);
 		}
 		for ($i=0; $i<$length; $i++)
 		{
-			$key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
+			$key .= $charset[(mt_rand(0, (strlen($charset)-1)))];
 		}
 		return $key;
 	}
@@ -500,9 +503,9 @@ class Html extends Object
 	/**
 	 * Replace urls in text
 	 *
-	 * @param      string $string
-	 * @param      string $rel
-	 * @return     string HTML
+	 * @param   string  $string
+	 * @param   string  $rel
+	 * @return  string  HTML
 	 */
 	public static function replaceUrls($string, $rel = 'nofollow')
 	{
@@ -519,13 +522,13 @@ class Html extends Object
 	/**
 	 * Search for value in array
 	 *
-	 * @param      string $needle
-	 * @param      string $haystack
-	 * @return     boolean
+	 * @param   string  $needle
+	 * @param   string  $haystack
+	 * @return  boolean
 	 */
-	public static function myArraySearch( $needle, $haystack )
+	public static function myArraySearch($needle, $haystack)
 	{
-	    if (empty($needle) || empty($haystack))
+		if (empty($needle) || empty($haystack))
 		{
 			return false;
 		}
@@ -556,9 +559,8 @@ class Html extends Object
 	/**
 	 * Covert param to array of values
 	 *
-	 * @param      string $param
-	 *
-	 * @return     array
+	 * @param   string  $param
+	 * @return  array
 	 */
 	public static function getParamArray($param = '')
 	{
@@ -573,9 +575,8 @@ class Html extends Object
 	/**
 	 * Covert param to array of values
 	 *
-	 * @param      string $param
-	 *
-	 * @return     array
+	 * @param   string  $param
+	 * @return  array
 	 */
 	public static function getCountArray($array = array())
 	{
@@ -599,17 +600,16 @@ class Html extends Object
 	/**
 	 * Get the random number appended to file name
 	 *
-	 * @param      string $path
-	 *
-	 * @return     string
+	 * @param   string  $path
+	 * @return  string
 	 */
-	public static function getAppendedNumber ( $path = null )
+	public static function getAppendedNumber($path = null)
 	{
 		$append = '';
 
-		$dirname 	= dirname($path);
-		$filename 	= basename($path);
-		$name 		= '';
+		$dirname  = dirname($path);
+		$filename = basename($path);
+		$name     = '';
 		$file = explode('.', $filename);
 
 		$n = count($file);
@@ -639,7 +639,7 @@ class Html extends Object
 	 * @param      string $delim
 	 * @return     string
 	 */
-	public static function cleanFileNum ( $path = null, $end = '', $delim = '-' )
+	public static function cleanFileNum($path = null, $end = '', $delim = '-')
 	{
 		$newpath = $path;
 
@@ -683,7 +683,7 @@ class Html extends Object
 	 * @param      string $ext
 	 * @return     string
 	 */
-	public static function fixFileName ( $path = null, $append = '', $ext = '' )
+	public static function fixFileName($path = null, $append = '', $ext = '')
 	{
 		if (!$path)
 		{
@@ -695,9 +695,9 @@ class Html extends Object
 			return $path;
 		}
 
-		$newname 	= '';
-		$dirname 	= dirname($path);
-		$filename 	= basename($path);
+		$newname  = '';
+		$dirname  = dirname($path);
+		$filename = basename($path);
 
 		$file = explode('.', $filename);
 		$n = count($file);
@@ -707,7 +707,7 @@ class Html extends Object
 
 			$end = array_pop($file);
 			$file[] = $end;
-			$filename = implode('.',$file);
+			$filename = implode('.', $file);
 		}
 		else
 		{
@@ -727,8 +727,8 @@ class Html extends Object
 	/**
 	 * Return filename without extension
 	 *
-	 * @param      string  $filename      Filename string to shorten
-	 * @return     string
+	 * @param   string  $filename  Filename string to shorten
+	 * @return  string
 	 */
 	public static function takeOutExt($filename = '')
 	{
@@ -756,9 +756,9 @@ class Html extends Object
 	/**
 	 * Shorten a string to a max length, preserving whole words
 	 *
-	 * @param      string  $text      String to shorten
-	 * @param      integer $chars     Max length to allow
-	 * @return     string
+	 * @param   string   $text   String to shorten
+	 * @param   integer  $chars  Max length to allow
+	 * @return  string
 	 */
 	public static function shortenText($text, $chars=300)
 	{
@@ -776,17 +776,17 @@ class Html extends Object
 	/**
 	 * Shorten user full name
 	 *
-	 * @param      string $name
-	 * @param      int $chars
-	 * @return     string
+	 * @param   string  $name
+	 * @param   int     $chars
+	 * @return  string
 	 */
-	public static function shortenName( $name, $chars = 12 )
+	public static function shortenName($name, $chars = 12)
 	{
 		$name = trim($name);
 
 		if (strlen($name) > $chars)
 		{
-			$names = explode(' ',$name);
+			$names = explode(' ', $name);
 			$name = $names[0];
 			if (count($names) > 0 && $names[1] != '')
 			{
@@ -806,11 +806,11 @@ class Html extends Object
 	/**
 	 * Shorten file name
 	 *
-	 * @param      string $name
-	 * @param      int $chars
-	 * @return     string
+	 * @param   string  $name
+	 * @param   int     $chars
+	 * @return  string
 	 */
-	public static function shortenFileName( $name, $chars = 30 )
+	public static function shortenFileName($name, $chars = 30)
 	{
 		$name = trim($name);
 		$original = $name;
@@ -835,13 +835,14 @@ class Html extends Object
 	/**
 	 * Get admin notes
 	 *
-	 * @param      string $notes
-	 * @param      string $reviewer
-	 * @return     string
+	 * @param   string  $notes
+	 * @param   string  $reviewer
+	 * @return  string
 	 */
 	public static function getAdminNotes($notes = '', $reviewer = '')
 	{
 		preg_match_all("#<nb:" . $reviewer . ">(.*?)</nb:" . $reviewer . ">#s", $notes, $matches);
+
 		$ntext = '';
 		if (count($matches) > 0)
 		{
@@ -862,9 +863,9 @@ class Html extends Object
 	/**
 	 * Get admin notes count
 	 *
-	 * @param      string $notes
-	 * @param      string $reviewer
-	 * @return     string
+	 * @param   string  $notes
+	 * @param   string  $reviewer
+	 * @return  string
 	 */
 	public static function getAdminNoteCount($notes = '', $reviewer = '')
 	{
@@ -882,16 +883,16 @@ class Html extends Object
 	/**
 	 * Parse admin notes
 	 *
-	 * @param      string $note
-	 * @param      string $reviewer
-	 * @param      boolean $showmeta
-	 * @param      int $shorten
-	 * @return     string
+	 * @param   string   $note
+	 * @param   string   $reviewer
+	 * @param   boolean  $showmeta
+	 * @param   int      $shorten
+	 * @return  string
 	 */
 	public static function parseAdminNote($note = '', $reviewer = '', $showmeta = 1, $shorten = 0)
 	{
-		$note = str_replace('<nb:' . $reviewer . '>','', $note);
-		$note = str_replace('</nb:' . $reviewer . '>','', $note);
+		$note = str_replace('<nb:' . $reviewer . '>', '', $note);
+		$note = str_replace('</nb:' . $reviewer . '>', '', $note);
 
 		preg_match("#<meta>(.*?)</meta>#s", $note, $matches);
 		if (count($matches) > 0)
@@ -901,7 +902,7 @@ class Html extends Object
 
 			if ($shorten)
 			{
-				$note   = \Hubzero\Utility\String::truncate($note, $shorten);
+				$note   = \Hubzero\Utility\Str::truncate($note, $shorten);
 			}
 			if ($showmeta)
 			{
@@ -919,9 +920,9 @@ class Html extends Object
 	/**
 	 * Get last admin note
 	 *
-	 * @param      string $notes
-	 * @param      string $reviewer
-	 * @return     string
+	 * @param   string  $notes
+	 * @param   string  $reviewer
+	 * @return  string
 	 */
 	public static function getLastAdminNote($notes = '', $reviewer = '')
 	{
@@ -947,18 +948,18 @@ class Html extends Object
 	/**
 	 * Email
 	 *
-	 * @param      string $email
-	 * @param      string $subject
-	 * @param      string $body
-	 * @param      array $from
-	 * @return     void
+	 * @param   string  $email
+	 * @param   string  $subject
+	 * @param   string  $body
+	 * @param   array   $from
+	 * @return  bool
 	 */
 	public static function email($email, $subject, $body, $from)
 	{
 		if ($from)
 		{
 			$body_plain = is_array($body) && isset($body['plaintext']) ? $body['plaintext'] : $body;
-			$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : NULL;
+			$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : null;
 
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject($subject)
@@ -984,14 +985,14 @@ class Html extends Object
 	/**
 	 * Get suggestions for new project members
 	 *
-	 * @param      object $project
-	 * @param      string $option
-	 * @param      int $uid
-	 * @param      array $config
-	 * @param      array $params
-	 * @return     void
+	 * @param   object  $project
+	 * @param   string  $option
+	 * @param   int     $uid
+	 * @param   array   $config
+	 * @param   array   $params
+	 * @return  void
 	 */
-	public static function getSuggestions( $model )
+	public static function getSuggestions($model)
 	{
 		$suggestions = array();
 
@@ -1073,10 +1074,10 @@ class Html extends Object
 	/**
 	 * Suggest alias name from title
 	 *
-	 * @param  string $title
-	 * @return     void
+	 * @param   string  $title
+	 * @return  void
 	 */
-	public static function suggestAlias ($title = '', $maxLength = 30)
+	public static function suggestAlias($title = '', $maxLength = 30)
 	{
 		if ($title)
 		{
@@ -1092,11 +1093,10 @@ class Html extends Object
 	/**
 	 * Check file for viruses
 	 *
-	 * @param      string 	$fpath		Full path to scanned file
-	 *
-	 * @return     mixed
+	 * @param   string  $fpath  Full path to scanned file
+	 * @return  mixed
 	 */
-	public static function virusCheck( $fpath = '' )
+	public static function virusCheck($fpath = '')
 	{
 		if (!Filesystem::isSafe($fpath))
 		{
@@ -1110,8 +1110,8 @@ class Html extends Object
 	/**
 	 * Get group members
 	 *
-	 * @param  string $groupname
-	 * @return void
+	 * @param   string  $groupname
+	 * @return  void
 	 */
 	public static function getGroupMembers($groupname)
 	{
@@ -1121,10 +1121,10 @@ class Html extends Object
 			$group = \Hubzero\User\Group::getInstance($groupname);
 			if ($group && $group->get('gidNumber'))
 			{
-				$members 	= $group->get('members');
-				$managers 	= $group->get('managers');
-				$team 		= array_merge($members, $managers);
-				$team 		= array_unique($team);
+				$members  = $group->get('members');
+				$managers = $group->get('managers');
+				$team     = array_merge($members, $managers);
+				$team     = array_unique($team);
 			}
 		}
 
@@ -1134,9 +1134,9 @@ class Html extends Object
 	/**
 	 * Get tabs
 	 *
-	 * @return    array
+	 * @return  array
 	 */
-	public static function getPluginNames( &$plugins )
+	public static function getPluginNames(&$plugins)
 	{
 		// Make sure we have name and title
 		$names = array();
@@ -1158,9 +1158,9 @@ class Html extends Object
 	/**
 	 * Get active tabs
 	 *
-	 * @return    array
+	 * @return  array
 	 */
-	public static function getTabs( &$plugins )
+	public static function getTabs(&$plugins)
 	{
 		// Make sure we have name and title
 		$tabs = array();
@@ -1189,11 +1189,11 @@ class Html extends Object
 	/**
 	 * Get project Git repo path
 	 *
-	 * @param      string $projectAlias
-	 * @param      string $case
-	 * @return     string
+	 * @param   string  $projectAlias
+	 * @param   string  $case
+	 * @return  string
 	 */
-	public static function getProjectRepoPath( $projectAlias = '', $case = 'files', $exists = true )
+	public static function getProjectRepoPath($projectAlias = '', $case = 'files', $exists = true)
 	{
 		if (!trim($projectAlias))
 		{
@@ -1216,13 +1216,17 @@ class Html extends Object
 	/**
 	 * Build breadcrumbs inside files plugin
 	 *
-	 * @param      string $dir
-	 * @param      string $url
-	 * @return     string
+	 * @param   string  $dir
+	 * @param   string  $url
+	 * @param   string  $parent
+	 * @param   bool    $linkit
+	 * @param   object  $adapter
+	 * @param   string  $seperator
+	 * @return  string
 	 */
-	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = NULL, $linkit = true, $adapter = NULL, $seperator = '&raquo;')
+	public static function buildFileBrowserCrumbs($dir = '', $url = '', &$parent = null, $linkit = true, $adapter = null, $seperator = '&raquo;')
 	{
-		$bc = NULL;
+		$bc = null;
 		$href = '';
 
 		$desectPath = explode(DS, $dir);
@@ -1231,8 +1235,8 @@ class Html extends Object
 		{
 			for ($p = 0; $p < count($desectPath); $p++)
 			{
-				$parent   = count($desectPath) > 1 && $p != count($desectPath)  ? $href  : '';
-				$href  	 .= DS . $desectPath[$p];
+				$parent  = count($desectPath) > 1 && $p != count($desectPath) ? $href : '';
+				$href   .= DS . $desectPath[$p];
 				$name = $desectPath[$p];
 				if ($adapter)
 				{
@@ -1268,21 +1272,17 @@ class Html extends Object
 	/**
 	 * Send hub message
 	 *
-	 * @param      string 	$option
-	 * @param      object 	$project    Models\Project
-	 * @param      array 	$addressees
-	 * @param      string 	$subject
-	 * @param      string 	$component
-	 * @param      string 	$layout
-	 * @param      string 	$message
-	 * @param      string 	$reviewer
-	 * @return     void
+	 * @param   string  $option
+	 * @param   object  $project    Models\Project
+	 * @param   array   $addressees
+	 * @param   string  $subject
+	 * @param   string  $component
+	 * @param   string  $layout
+	 * @param   string  $message
+	 * @param   string  $reviewer
+	 * @return  void
 	 */
-	public static function sendHUBMessage(
-		$option, $project,
-		$addressees = array(), $subject = '',
-		$component = '', $layout = 'admin',
-		$message = '', $reviewer = '')
+	public static function sendHUBMessage($option, $project, $addressees = array(), $subject = '', $component = '', $layout = 'admin', $message = '', $reviewer = '')
 	{
 		if (!$layout || !$subject || !$component || empty($addressees))
 		{
@@ -1310,14 +1310,14 @@ class Html extends Object
 			'layout'    => $layout . '_plain'
 		));
 
-		$eview->option 			= $option;
-		$eview->project 		= $project;
-		$eview->message			= $message;
-		$eview->reviewer		= $reviewer;
+		$eview->option   = $option;
+		$eview->project  = $project;
+		$eview->message  = $message;
+		$eview->reviewer = $reviewer;
 
 		$body = array();
-		$body['plaintext'] 	= $eview->loadTemplate(false);
-		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
+		$body['plaintext'] = $eview->loadTemplate(false);
+		$body['plaintext'] = str_replace("\n", "\r\n", $body['plaintext']);
 
 		// HTML email
 		$eview->setLayout($layout . '_html');
@@ -1337,6 +1337,13 @@ class Html extends Object
 		);
 	}
 
+	/**
+	 * Build list html
+	 *
+	 * @param   string  $dir
+	 * @param   string  $currentDir
+	 * @return  string
+	 */
 	public static function listDirHtml($dir = null, $currentDir = '')
 	{
 		if ($dir == null)
@@ -1351,7 +1358,7 @@ class Html extends Object
 		$html .= '"><input type="radio" name="newpath" value="';
 		$html .= urlencode($dir->path);
 		$html .= '"';
-		
+
 		if ($currentDir == $dir->path)
 		{
 			$html .= 'disabled="disabled" ';
@@ -1364,12 +1371,12 @@ class Html extends Object
 		$html .= '">';
 		$html .= $dir->name;
 		$html .= '</span></span></li>';
-		
+
 		if (count($dir->subdirs) > 0)
 		{
-			foreach($dir->subdirs as $subdir)
+			foreach ($dir->subdirs as $subdir)
 			{
-				$html .= \Components\Projects\Helpers\Html::listDirHtml($subdir, $currentDir);
+				$html .= self::listDirHtml($subdir, $currentDir);
 			}
 		}
 

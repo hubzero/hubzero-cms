@@ -36,7 +36,7 @@ $canDo = \Components\Resources\Helpers\Permissions::getActions('role');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_ROLES') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_ROLES') . ': ' . $text, 'resources');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();

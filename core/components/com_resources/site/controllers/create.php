@@ -32,14 +32,14 @@
 
 namespace Components\Resources\Site\Controllers;
 
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 use Components\Resources\Models\License;
 use Components\Resources\Models\Type;
 use Components\Resources\Models\Elements;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Html;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Pathway;
 use Request;
 use Route;
@@ -49,9 +49,7 @@ use User;
 use Date;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'license.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
 
 /**
  * Resources controller for creating a resource
@@ -89,7 +87,7 @@ class Create extends SiteController
 			Request::setVar('task', 'login');
 		}
 
-		$row = Resource::oneOrNew(Request::getInt('id', 0));
+		$row = Entry::oneOrNew(Request::getInt('id', 0));
 
 		// Build the title
 		$this->_buildTitle($row);
@@ -343,7 +341,7 @@ class Create extends SiteController
 		if (!is_object($row))
 		{
 			// Instantiate a new resource object
-			$row = Resource::oneOrNew($id);
+			$row = Entry::oneOrNew($id);
 
 			if (!$id)
 			{
@@ -356,7 +354,7 @@ class Create extends SiteController
 				$session = App::get('session');
 				if (!$session->get('resources_temp_id'))
 				{
-					$row->set('id', '9999' . rand(1000,10000));
+					$row->set('id', '9999' . rand(1000, 10000));
 					$session->set('resources_temp_id', $row->get('id'));
 				}
 				else
@@ -382,7 +380,7 @@ class Create extends SiteController
 	 * @param   boolean  $check
 	 * @return  void
 	 */
-	public function step_attach($check = FALSE)
+	public function step_attach($check = false)
 	{
 		if ($this->view->getName() != 'steps')
 		{
@@ -391,7 +389,7 @@ class Create extends SiteController
 
 		if (!isset($this->view->database))
 		{
-			if ($check == TRUE)
+			if ($check == true)
 			{
 				foreach ($this->steps as $step => $name)
 				{
@@ -424,7 +422,7 @@ class Create extends SiteController
 		}
 
 		// Load the resource
-		$row = Resource::oneOrFail($id);
+		$row = Entry::oneOrFail($id);
 
 		// Output HTML
 		$this->view
@@ -453,7 +451,7 @@ class Create extends SiteController
 		}
 
 		// Load the resource
-		$row = Resource::oneOrFail($id);
+		$row = Entry::oneOrFail($id);
 
 		// Get groups
 		$groups = User::groups('members');
@@ -475,13 +473,13 @@ class Create extends SiteController
 	/**
 	 * Recursive method for loading hierarchical focus areas (tags)
 	 *
-	 * @param   integer  $id            Resource type ID
-	 * @param   array    $labels        Tags
+	 * @param   unknown  $type
+	 * @param   unknown  $labels
 	 * @param   integer  $parent_id     Tag ID
 	 * @param   string   $parent_label  Tag
 	 * @return  void
 	 */
-	private function _loadFocusAreas($type, $labels = null, $parent_id = NULL, $parent_label = NULL)
+	private function _loadFocusAreas($type, $labels = null, $parent_id = null, $parent_label = null)
 	{
 		if (is_null($labels))
 		{
@@ -559,7 +557,7 @@ class Create extends SiteController
 		$this->_checkProgress($id);
 
 		// Load the resource
-		$row = Resource::oneOrFail($id);
+		$row = Entry::oneOrFail($id);
 
 		// Get focus areas
 		$this->database->setQuery('SELECT type FROM `#__resources` WHERE id = ' . $this->database->quote($id));
@@ -640,7 +638,7 @@ class Create extends SiteController
 		}
 
 		// Load resource info
-		$row = Resource::oneOrFail($id);
+		$row = Entry::oneOrFail($id);
 
 		$usersgroups = array();
 		if (!User::isGuest())
@@ -712,7 +710,7 @@ class Create extends SiteController
 		// Initiate extended database class
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = Resource::oneOrNew($fields['id'])->set($fields);
+		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
 		$isNew = $row->get('id') < 1 || substr($row->get('id'), 0, 4) == '9999';
 
@@ -733,7 +731,7 @@ class Create extends SiteController
 		$row->set('access', (int)$row->get('access', 0));
 
 		$row->set('fulltxt', trim(preg_replace('/\\\/', "%5C", $row->get('fulltxt'))));
-		$row->set('introtext', String::truncate(strip_tags($row->get('fulltxt')), 500));
+		$row->set('introtext', Str::truncate(strip_tags($row->get('fulltxt')), 500));
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
 		$type = Type::oneOrFail($row->get('type'));
@@ -845,7 +843,7 @@ class Create extends SiteController
 		// build path to temp upload folder and future permanent folder
 		$session = App::get('session');
 		$created = Date::format('Y-m-d 00:00:00');
-		$oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id'),'');
+		$oldPath = $row->basepath() . Html::build_path($created, $session->get('resources_temp_id'), '');
 		$newPath = $row->filespace();
 
 		// if we have a temp dir, move it to permanent location
@@ -930,7 +928,7 @@ class Create extends SiteController
 		}
 
 		// Load the resource
-		$row = Resource::oneOrFail($id);
+		$row = Entry::oneOrFail($id);
 
 		$prev = $row->get('group_owner');
 
@@ -978,8 +976,24 @@ class Create extends SiteController
 			{
 				$recipients[] = ['user', $author->get('authorid')];
 			}
-			$group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
-			$recipients[] = ['group', $group->get('gidNumber')];
+
+			if (!$prev && $row->get('group_owner'))
+			{
+				$group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
+			}
+			if ($prev && !$row->get('group_owner'))
+			{
+				$group = \Hubzero\User\Group::getInstance($prev);
+			}
+			if (!$group)
+			{
+				$group = new \Hubzero\User\Group();
+			}
+
+			if ($group->get('gidNumber'))
+			{
+				$recipients[] = ['group', $group->get('gidNumber')];
+			}
 
 			Event::trigger('system.logActivity', [
 				'activity' => [
@@ -1197,7 +1211,7 @@ class Create extends SiteController
 		}
 
 		// Load resource info
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		// Set a flag for if the resource was already published or not
 		$published = 0;
@@ -1412,6 +1426,12 @@ class Create extends SiteController
 			return;
 		}
 
+		// If the resource gets published (auto-publish or the user is in the auto-approved list), trigger the onAfterContentSubmission event
+		if ($resource->get('published'))
+		{
+			Event::trigger('content.onAfterContentSubmission', array('Resource'));
+		}
+
 		// Output HTML
 		$this->setView($this->_controller, 'thanks');
 
@@ -1443,7 +1463,7 @@ class Create extends SiteController
 		}
 
 		// Load the resource
-		$resource = Resource::oneOrNew($id);
+		$resource = Entry::oneOrNew($id);
 
 		// Incoming step
 		$step = Request::getVar('step', 1);
@@ -1558,7 +1578,7 @@ class Create extends SiteController
 		if ($id)
 		{
 			// Load the resource
-			$resource = Resource::oneOrFail($id);
+			$resource = Entry::oneOrFail($id);
 
 			// Check if it's in pending status
 			if ($resource->get('published') == 3)
@@ -1611,7 +1631,7 @@ class Create extends SiteController
 
 		if ($id)
 		{
-			$resource = Resource::oneOrNew($id);
+			$resource = Entry::oneOrNew($id);
 			$total = $resource->children()->total();
 		}
 
@@ -1630,7 +1650,7 @@ class Create extends SiteController
 
 		if ($id)
 		{
-			$resource = Resource::oneOrNew($id);
+			$resource = Entry::oneOrNew($id);
 			$total = $resource->authors()->total();
 		}
 
@@ -1667,7 +1687,7 @@ class Create extends SiteController
 	 */
 	public function step_review_check($id)
 	{
-		$resource = Resource::oneOrNew($id);
+		$resource = Entry::oneOrNew($id);
 
 		if ($resource->get('published') == 1)
 		{
@@ -1687,10 +1707,10 @@ class Create extends SiteController
 	private function _txtClean($text)
 	{
 		// Handle special characters copied from MS Word
-		$text = str_replace('“','"', $text);
-		$text = str_replace('”','"', $text);
-		$text = str_replace("’","'", $text);
-		$text = str_replace("‘","'", $text);
+		$text = str_replace('“', '"', $text);
+		$text = str_replace('”', '"', $text);
+		$text = str_replace("’", "'", $text);
+		$text = str_replace("‘", "'", $text);
 
 		//$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
 		//$text = preg_replace('/{.+?}/', '', $text);

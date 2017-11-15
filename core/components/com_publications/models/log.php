@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,6 +38,7 @@ require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 use Hubzero\Base\Model;
 use Components\Publications\Helpers\Html;
 use Components\Publications\Tables;
+use Component;
 
 /**
  * Publications log model class
@@ -47,32 +48,34 @@ class Log extends Model
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = '\\Components\\Publications\\Tables\\Log';
 
 	/**
 	 * Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_config = null;
 
 	/**
 	 * Table class object
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $pubLog = null;
 
 	/**
 	 * Parse log file
 	 *
-	 * @param      string  $logFile
-	 * @param      string  $type     primary or view
-	 * @return     void
+	 * @param   object  $pubLog
+	 * @param   string  $logFile
+	 * @param   string  $type     primary or view
+	 * @param   string  $category
+	 * @return  void
 	 */
-	public function parseLog($pubLog = NULL, $logFile = NULL, $type = 'view', $category = 'unique')
+	public function parseLog($pubLog = null, $logFile = null, $type = 'view', $category = 'unique')
 	{
 		$ips = array();
 		$filtered = array();
@@ -81,7 +84,7 @@ class Log extends Model
 
 		if (!is_file($logFile))
 		{
-			return NULL;
+			return null;
 		}
 		if (!$pubLog)
 		{
@@ -122,9 +125,13 @@ class Log extends Model
 	/**
 	 * Get user data from log file
 	 *
-	 * @return     void
+	 * @param   integer  $pid
+	 * @param   string   $type
+	 * @param   integer  $numMonths
+	 * @param   boolean  $includeCurrent
+	 * @return  mixed
 	 */
-	public function digestLogs($pid = NULL, $type = 'view', $numMonths = 1, $includeCurrent = false)
+	public function digestLogs($pid = null, $type = 'view', $numMonths = 1, $includeCurrent = false)
 	{
 		if (!$pid)
 		{
@@ -230,7 +237,9 @@ class Log extends Model
 	/**
 	 * Get path to log file
 	 *
-	 * @return     void
+	 * @param   integer  $pid
+	 * @param   integer  $vid
+	 * @return  mixed
 	 */
 	public function getLogPath($pid = 0, $vid = 0)
 	{
@@ -253,4 +262,3 @@ class Log extends Model
 		return $logPath;
 	}
 }
-

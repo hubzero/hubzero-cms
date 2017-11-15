@@ -33,11 +33,6 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if (!($this->ticket instanceof \Components\Support\Models\Ticket))
-{
-	$this->ticket = new \Components\Support\Models\Ticket($this->ticket);
-}
-
 $base = rtrim(Request::base(), '/');
 if (substr($base, -13) == 'administrator')
 {
@@ -52,23 +47,38 @@ $link = $base . '/' . trim($sef, '/');
 
 switch ($this->ticket->get('severity'))
 {
-	case 'critical': $bgcolor = '#ffd3d4'; $bdcolor = '#e9bcbc'; break;
-	case 'major':    $bgcolor = '#fbf1be'; $bdcolor = '#e9e1bc'; break;
-	case 'minor':    $bgcolor = '#d3e3ff'; $bdcolor = '#bccbe9'; break;
-	case 'trivial':  $bgcolor = '#d3f9ff'; $bdcolor = '#bce1e9'; break;
-
+	case 'critical':
+		$bgcolor = '#ffd3d4';
+		$bdcolor = '#e9bcbc';
+		break;
+	case 'major':
+		$bgcolor = '#fbf1be';
+		$bdcolor = '#e9e1bc';
+		break;
+	case 'minor':
+		$bgcolor = '#d3e3ff';
+		$bdcolor = '#bccbe9';
+		break;
+	case 'trivial':
+		$bgcolor = '#d3f9ff';
+		$bdcolor = '#bce1e9';
+		break;
 	case 'normal':
 	default:
 		$bgcolor = '#f1f1f1';
 		$bdcolor = '#e1e1e1';
-	break;
+		break;
 }
 
 $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
-if ($this->ticket->submitter('id'))
+if ($this->ticket->submitter()->get('id'))
 {
-	jimport('joomla.user.helper');
-	$usertype = implode(', ', \JUserHelper::getUserGroups($this->ticket->submitter('id')));
+	$gids = array();
+	foreach (User::getInstance($this->ticket->submitter->get('id'))->accessgroups() as $g)
+	{
+		$gids[] = $g->group_id;
+	}
+	$usertype = implode(', ', $gids);
 }
 
 $this->css(
@@ -237,11 +247,11 @@ $this->css(
 		<tbody>
 			<tr>
 				<td style="padding: 0 2em;">
-					<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->ticket->content('parsed'); ?></p>
-					<?php if ($this->ticket->attachments()->total()) { ?>
+					<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->ticket->content; ?></p>
+					<?php if ($this->ticket->attachments->count()) { ?>
 						<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
 							<?php
-							foreach ($this->ticket->attachments() as $attachment)
+							foreach ($this->ticket->attachments as $attachment)
 							{
 								if (!trim($attachment->get('description')))
 								{

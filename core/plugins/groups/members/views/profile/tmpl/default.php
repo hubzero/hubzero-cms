@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $this->css('profile.css');
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'html.php');
+include_once Component::path('com_members') . DS . 'helpers' . DS . 'html.php';
 
 $loggedin = (! User::isGuest());
 $isUser   = false;
@@ -124,8 +124,8 @@ foreach ($profiles as $profile)
 						<div class="field-content">
 							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_EMAIL'); ?></div>
 							<div class="value">
-								<a class="email" href="mailto:<?php echo \Hubzero\Utility\String::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
-									<?php echo \Hubzero\Utility\String::obfuscate($this->profile->get('email')); ?>
+								<a class="email" href="mailto:<?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
+									<?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>
 								</a>
 							</div>
 						</div>

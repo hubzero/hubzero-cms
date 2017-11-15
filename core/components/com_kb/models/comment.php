@@ -32,7 +32,6 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Request;
 use Lang;
 use Date;
@@ -414,7 +413,7 @@ class Comment extends Relational
 		return parent::destroy();
 	}
 
-		/**
+	/**
 	 * Validates the set data attributes against the model rules
 	 *
 	 * @return  bool

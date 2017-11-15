@@ -53,7 +53,7 @@ else if ($this->row)
 				<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 			</a>:
 			<?php if ($row->get('content')) { ?>
-				<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content()), $this->txt_length); ?>
+				<?php echo \Hubzero\Utility\Str::truncate(strip_tags($row->content()), $this->txt_length); ?>
 			<?php } ?>
 		</p>
 	</div>

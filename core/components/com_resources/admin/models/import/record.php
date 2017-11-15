@@ -34,7 +34,7 @@ namespace Components\Resources\Models\Import;
 
 use Components\Resources\Tables;
 use Components\Resources\Helpers\Tags;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Exception;
 use stdClass;
 
@@ -44,9 +44,9 @@ include_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models
 /**
  * Resource Import Record Model
  */
-class Record extends Object
+class Record extends Obj
 {
-	CONST TITLE_MATCH = 10;
+	const TITLE_MATCH = 10;
 
 	public $raw;
 	public $record;

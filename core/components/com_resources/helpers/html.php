@@ -114,7 +114,10 @@ class Html
 					@list($property, $value) = explode(':', $declaration);
 					$property = strtolower(trim($property));
 
-					if (!$property) continue;
+					if (!$property)
+					{
+						continue;
+					}
 
 					if (!in_array($property, $disallowed))
 					{
@@ -133,29 +136,49 @@ class Html
 	}
 
 	/**
-	 * Short description for 'writeRating'
+	 * Turn a rating into a string representation
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $rating Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   float  $rating
+	 * @return  string
 	 */
 	public static function writeRating($rating)
 	{
 		switch ($rating)
 		{
-			case 0.5: $class = ' half';      break;
-			case 1:   $class = ' one';       break;
-			case 1.5: $class = ' onehalf';   break;
-			case 2:   $class = ' two';       break;
-			case 2.5: $class = ' twohalf';   break;
-			case 3:   $class = ' three';     break;
-			case 3.5: $class = ' threehalf'; break;
-			case 4:   $class = ' four';      break;
-			case 4.5: $class = ' fourhalf';  break;
-			case 5:   $class = ' five';      break;
+			case 0.5:
+				$class = ' half';
+				break;
+			case 1:
+				$class = ' one';
+				break;
+			case 1.5:
+				$class = ' onehalf';
+				break;
+			case 2:
+				$class = ' two';
+				break;
+			case 2.5:
+				$class = ' twohalf';
+				break;
+			case 3:
+				$class = ' three';
+				break;
+			case 3.5:
+				$class = ' threehalf';
+				break;
+			case 4:
+				$class = ' four';
+				break;
+			case 4.5:
+				$class = ' fourhalf';
+				break;
+			case 5:
+				$class = ' five';
+				break;
 			case 0:
-			default:  $class = ' none';      break;
+			default:
+				$class = ' none';
+				break;
 		}
 
 		return '<p class="avgrating'.$class.'"><span>Rating: '.$rating.' out of 5 stars</span></p>';
@@ -166,6 +189,7 @@ class Html
 	 *
 	 * @param      array  $as    Access levels
 	 * @param      string $value Value to select
+	 * @param      string $name
 	 * @return     string HTML
 	 */
 	public static function selectAccess($as, $value, $name = 'access')
@@ -190,6 +214,8 @@ class Html
 	 *
 	 * @param      array  $groups Groups to populate list
 	 * @param      string $value  Value to select
+	 * @param      string $name
+	 * @param      string $class
 	 * @return     string HTML
 	 */
 	public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
@@ -322,7 +348,7 @@ class Html
 	 */
 	public static function niceidformat($someid)
 	{
-		return \Hubzero\Utility\String::pad($someid);
+		return \Hubzero\Utility\Str::pad($someid);
 	}
 
 	/**
@@ -637,9 +663,7 @@ class Html
 	 * Generate COins microformat
 	 *
 	 * @param      object $cite     Resource citation data
-	 * @param      object $resource Resource
-	 * @param      object $config   Component config
-	 * @param      object $helper   Helper
+	 * @param      object $model
 	 * @return     string HTML
 	 */
 	//public static function citationCOins($cite, $resource, $config, $helper)
@@ -692,7 +716,7 @@ class Html
 				if ($author_array[$i]->surname || $author_array[$i]->givenName)
 				{
 					$name = stripslashes($author_array[$i]->givenName) . ' ';
-					if ($author_array[$i]->middleName != NULL)
+					if ($author_array[$i]->middleName != null)
 					{
 						$name .= stripslashes($author_array[$i]->middleName) . ' ';
 					}
@@ -730,7 +754,7 @@ class Html
 	 */
 	public static function citation($option, $cite, $id, $citations, $type, $rev='')
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 		$html  = '<p>' . Lang::txt('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
 		if (trim($citations))
@@ -773,26 +797,49 @@ class Html
 	/**
 	 * Get the classname for a rating value
 	 *
-	 * @param      integer $rating Rating (out of 5 total)
-	 * @return     string
+	 * @param   integer  $rating  Rating (out of 5 total)
+	 * @return  string
 	 */
 	public static function getRatingClass($rating=0)
 	{
 		switch ($rating)
 		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
+			case 0.5:
+				$class = ' half-stars';
+				break;
+			case 1:
+				$class = ' one-stars';
+				break;
+			case 1.5:
+				$class = ' onehalf-stars';
+				break;
+			case 2:
+				$class = ' two-stars';
+				break;
+			case 2.5:
+				$class = ' twohalf-stars';
+				break;
+			case 3:
+				$class = ' three-stars';
+				break;
+			case 3.5:
+				$class = ' threehalf-stars';
+				break;
+			case 4:
+				$class = ' four-stars';
+				break;
+			case 4.5:
+				$class = ' fourhalf-stars';
+				break;
+			case 5:
+				$class = ' five-stars';
+				break;
 			case 0:
-			default:  $class = ' no-stars';      break;
+			default:
+				$class = ' no-stars';
+				break;
 		}
+
 		return $class;
 	}
 
@@ -923,7 +970,7 @@ class Html
 				$tables = $database->getTableList();
 				$table = $database->getPrefix() . 'tool_version';
 
-				if (in_array($table,$tables))
+				if (in_array($table, $tables))
 				{
 					if (isset($resource->revision) && $resource->toolpublished)
 					{
@@ -944,7 +991,7 @@ class Html
 					$lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
 				}
 
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+				require_once \Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
 				// Create some tool objects
 				$toolgroups = null;
@@ -1396,7 +1443,7 @@ class Html
 	/**
 	 * Format a filesize to more understandable Gb/Mb/Kb/b
 	 *
-	 * @param      integer $fileSize File size to format
+	 * @param      integer $file_size File size to format
 	 * @return     string
 	 */
 	public static function formatsize($file_size)

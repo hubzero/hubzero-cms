@@ -41,10 +41,10 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieves a row from the database
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $parent   If the element has a parent element
-	 * @return     array
+	 * @param   string $refid    ID of the database table row
+	 * @param   string $category Element type (determines table to look in)
+	 * @param   string $parent   If the element has a parent element
+	 * @return  array
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
@@ -114,13 +114,11 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Retrieves a row from the database
+	 * Retrieves a row from the database?
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $message  If the element has a parent element
-	 * @return     array
+	 * @param   string $refid    ID of the database table row
+	 * @param   string $category Element type (determines table to look in)
+	 * @return  string
 	 */
 	public function onReportItem($refid, $category)
 	{
@@ -139,10 +137,10 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Release a reported item
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     array
+	 * @param   string $refid    ID of the database table row
+	 * @param   string $parent   If the element has a parent element
+	 * @param   string $category Element type (determines table to look in)
+	 * @return  array
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
@@ -161,11 +159,11 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieves a row from the database
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $message  If the element has a parent element
-	 * @return     array
+	 * @param   string $refid    ID of the database table row
+	 * @param   string $parent   If the element has a parent element
+	 * @param   string $category Element type (determines table to look in)
+	 * @param   string $message  If the element has a parent element
+	 * @return  array
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{

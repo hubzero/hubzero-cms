@@ -86,7 +86,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourse($course, $offering, $describe=false)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
@@ -136,9 +136,13 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'mark': $this->_mark(); break;
+				case 'mark':
+					$this->_mark();
+					break;
 
-				default: $this->_default(); break;
+				default:
+					$this->_default();
+					break;
 			}
 
 			if (Request::getInt('no_html', 0))

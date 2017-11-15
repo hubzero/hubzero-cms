@@ -34,8 +34,6 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Tag (for citations) database model
@@ -63,7 +61,7 @@ class Tag extends Relational
 	 *
 	 * @var string
 	 **/
-//	protected $table = '#__citations_format';
+	//protected $table = '#__citations_format';
 
 	/**
 	 * Fields and their validation criteria
@@ -71,7 +69,7 @@ class Tag extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'	=> 'notempty',
+		//'name'    => 'notempty',
 		//'liaison' => 'notempty'
 	);
 
@@ -96,5 +94,4 @@ class Tag extends Relational
 	{
 		return $this->belongsToOne('TagObject', 'id', 'tagid');
 	}
-
 }

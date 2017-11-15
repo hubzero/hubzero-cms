@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Config;
+namespace Components\Config\Admin;
 
 // Access checks are done internally because of different requirements for the two controllers.
 
@@ -49,11 +49,10 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	\App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Execute the controller.
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

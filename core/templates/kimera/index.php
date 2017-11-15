@@ -92,7 +92,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 				<div id="splash">
 					<div class="inner-wrap">
 
-						<header id="masthead" role="banner">
+						<header id="masthead">
 							<jdoc:include type="modules" name="notices" />
 
 							<h1>
@@ -101,10 +101,10 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								</a>
 							</h1>
 
-							<nav id="account" class="account-navigation" role="navigation">
+							<nav id="account" class="account-navigation">
 								<ul>
 									<li>
-										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('Search'); ?></a>
+										<a class="icon-search" href="<?php echo Route::url('index.php?option=com_search'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>"><?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?></a>
 										<jdoc:include type="modules" name="search" />
 									</li>
 								<?php if (!User::isGuest()) { ?>
@@ -132,7 +132,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 									<li>
 										<a class="icon-login" href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></a>
 									</li>
-									<?php if ($this->params->get('registerLink') && Component::params('com_users')->get('allowUserRegistration')) : ?>
+									<?php if ($this->params->get('registerLink') && Component::params('com_members')->get('allowUserRegistration')) : ?>
 										<li>
 											<a class="icon-register" href="<?php echo Route::url('index.php?option=com_register'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SIGN_UP'); ?>"><?php echo Lang::txt('TPL_KIMERA_REGISTER'); ?></a>
 										</li>
@@ -141,7 +141,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								</ul>
 							</nav>
 
-							<nav id="nav" class="main-navigation" role="main">
+							<nav id="nav" class="main-navigation" aria-label="<?php echo Lang::txt('TPL_KIMERA_MAINMENU'); ?>">
 								<jdoc:include type="modules" name="user3" />
 							</nav>
 						</header>
@@ -166,9 +166,9 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 						<div class="inner">
 							<div class="wrap">
-							<?php if ($this->getBuffer('message')) : ?>
-								<jdoc:include type="message" />
-							<?php endif; ?>
+								<?php if ($this->getBuffer('message')) : ?>
+									<jdoc:include type="message" />
+								<?php endif; ?>
 								<jdoc:include type="modules" name="welcome" />
 							</div>
 						</div><!-- / .inner -->
@@ -178,7 +178,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 			</div><!-- / #top -->
 
 			<div id="wrap">
-				<main id="content" class="<?php echo Request::getCmd('option', ''); ?>" role="main">
+				<main id="content" class="<?php echo Request::getCmd('option', ''); ?>">
 					<div class="inner<?php if ($this->countModules('left or right')) { echo ' withmenu'; } ?>">
 					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">

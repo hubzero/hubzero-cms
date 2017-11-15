@@ -34,50 +34,46 @@
 defined('_HZEXEC_') or die();
 
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . DS . 'css' . DS . 'login.css'));
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . '/css/login.css'));
 // Load theme
 if ($theme = $this->params->get('theme'))
 {
 	if ($theme == 'custom')
 	{
 		$color = $this->params->get('color');
-		$this->addStyleDeclaration(include_once(__DIR__ . DS . 'css' . DS . 'themes' . DS . 'custom.php'));
+		$this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
 	}
 	else if ($theme != 'gray')
 	{
-		$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $theme . '.css');
+		$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $theme . '.css?v=' . filemtime(__DIR__ . '/css/themes/' . $theme . '.css'));
 	}
 }
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css?v=' . filemtime(__DIR__ . '/css/common/rtl.css'));
 }
 
 $browser = new \Hubzero\Browser\Detector();
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $browser->name() . ' ' . $browser->name() . $browser->major(); ?>">
 	<head>
 		<meta name="viewport" content="width=device-width" />
 
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js?v=<?php echo filemtime(__DIR__ . '/js/placeholder.js'); ?>"></script>
 
 		<!--[if lt IE 9]>
-			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js?v=<?php echo filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
 		<![endif]-->
 
 		<!--[if IE 9]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie8.css'); ?>" />
 		<![endif]-->
 
 		<script type="text/javascript">
@@ -143,11 +139,11 @@ $browser = new \Hubzero\Browser\Detector();
 			}
 			if ($m < 4 || $m > 10)
 			{
-				?><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/snow.js"></script><?php
+				?><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/snow.js?v=<?php echo filemtime(__DIR__ . '/js/snow.js'); ?>"></script><?php
 			}
 			if ($m > 3 && $m < 6)
 			{
-				?><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/rain.js"></script><?php
+				?><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/rain.js?v=<?php echo filemtime(__DIR__ . '/js/rain.js'); ?>"></script><?php
 			}
 		}
 		?>

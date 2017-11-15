@@ -62,6 +62,10 @@ $this->css('create.css')
 		$clm = '';
 		foreach ($this->types as $type)
 		{
+			if (!$type->state)
+			{
+				continue;
+			}
 			if ($type->contributable != 1)
 			{
 				continue;

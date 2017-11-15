@@ -37,7 +37,6 @@ use Components\Answers\Models\Response;
 use Components\Answers\Models\Comment;
 use Components\Answers\Models\Tags;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
@@ -45,6 +44,7 @@ use Exception;
 use Document;
 use Pathway;
 use Request;
+use Session;
 use Config;
 use Event;
 use Route;
@@ -52,8 +52,6 @@ use Lang;
 use Date;
 use User;
 use App;
-
-require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
 
 /**
  * Answers controller class for questions
@@ -438,41 +436,17 @@ class Questions extends SiteController
 			$filters['area'] = '';
 		}
 
-		// Get questions of interest
-		// @TODO: Remove reference to members. Add getTags() to user?
-		if ($filters['area'] == 'interest')
+		// Give plugins a chance to manipulate the incoming filters
+		$results = Event::trigger('answers.onQuestionsPrepareFilters', array($filters));
+		foreach ($results as $result)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-
-			// Get tags of interest
-			$mt = new \Components\Members\Models\Tags(User::get('id'));
-
-			$filters['tag'] = $mt->render('string');
-		}
-
-		// Get assigned questions
-		// @TODO: Remove reference to tools. Turn into an event call?
-		if ($filters['area'] == 'assigned')
-		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-
-			// What tools did this user contribute?
-			$db = App::get('db');
-
-			$TA = new \Components\Tools\Tables\Author($db);
-			$tools = $TA->getToolContributions(User::get('id'));
-			$mytooltags = array();
-			if ($tools)
+			if (!empty($result))
 			{
-				foreach ($tools as $tool)
-				{
-					$mytooltags[] = 'tool' . $tool->toolname;
-				}
+				$filters = array_merge($filters, $result);
 			}
-
-			$filters['tag'] = implode(',', $mytooltags);
 		}
 
+		// Build the query
 		$records = Question::all()
 			->including(['responses', function ($response)
 			{
@@ -524,10 +498,16 @@ class Questions extends SiteController
 
 		switch ($filters['sortby'])
 		{
-			case 'rewards': $order = 'reward';  break;
-			case 'votes':   $order = 'helpful'; break;
+			case 'rewards':
+				$order = 'reward';
+				break;
+			case 'votes':
+				$order = 'helpful';
+				break;
 			case 'date':
-			default:        $order = 'created'; break;
+			default:
+				$order = 'created';
+				break;
 		}
 
 		$results = $records
@@ -563,6 +543,15 @@ class Questions extends SiteController
 
 		$question = Question::oneOrFail($id);
 
+		// Check session if this is a newly submitted entry. Trigger a proper event if so.
+		if (Session::get('newsubmission.question'))
+		{
+			// Unset the new submission session flag
+			Session::set('newsubmission.question');
+
+			Event::trigger('content.onAfterContentSubmission', array('Question'));
+		}
+
 		$this->view
 			->set('question', $question)
 			->set('config', $this->config)
@@ -594,6 +583,7 @@ class Questions extends SiteController
 	/**
 	 * Create a new question
 	 *
+	 * @param   object  $question
 	 * @return  void
 	 */
 	public function newTask($question = null)
@@ -701,17 +691,26 @@ class Questions extends SiteController
 			$row->set('reward', 1);
 		}
 
+		$isNew = $row->isNew();
+		$result = Event::trigger('onQuestionBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->newtTask($row);
+		}
+
 		// Store new content
 		if (!Request::checkHoneypot())
 		{
-			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_INVALID_CONTENT'));
+			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_INVALID_CONTENT'));
 			return $this->newTask($row);
 		}
 
 		// Ensure the user added a tag
 		if (!$tags)
 		{
-			$this->setError(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
+			Notify::error(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
 			return $this->newTask($row);
 		}
 
@@ -720,9 +719,12 @@ class Questions extends SiteController
 		{
 			Request::setVar('tag', $tags);
 
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->newTask($row);
 		}
+
+		// Trigger after save event
+		Event::trigger('onQuestionAfterSave', array(&$row, $isNew));
 
 		// Hold the reward for this question if we're banking
 		if ($fields['reward'] && $this->config->get('banking'))
@@ -739,11 +741,57 @@ class Questions extends SiteController
 		// Add the tags
 		$row->tag($tags);
 
-
-		// Log activity
 		$recipients = array($row->get('created_by'));
 		$recipients = $this->recipients($recipients);
 
+		foreach (Event::trigger('answers.onQuestionNotify') as $results)
+		{
+			$recipients = array_merge($recipients, $results);
+		}
+		$recipients = array_unique($recipients);
+
+		// Send the message
+		if (!empty($recipients))
+		{
+			// Send a message about the new question to authorized users (specified admins or related content authors)
+			$from = array(
+				'email'     => Config::get('mailfrom'),
+				'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
+				'multipart' => md5(date('U'))
+			);
+
+			// Build the message subject
+			$subject = Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('new question about content you author or manage');
+
+			$message = array();
+
+			// Plain text message
+			$eview = new \Hubzero\Mail\View(array(
+				'name'   => 'emails',
+				'layout' => 'question_plaintext'
+			));
+			$eview->option   = $this->_option;
+			$eview->sitename = Config::get('sitename');
+			$eview->question = $row;
+			$eview->id       = $row->get('id', 0);
+			$eview->boundary = $from['multipart'];
+
+			$message['plaintext'] = $eview->loadTemplate(false);
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+			// HTML message
+			$eview->setLayout('question_html');
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+			if (!Event::trigger('xmessage.onSendMessage', array('new_question_admin', $subject, $message, $from, $recipients, $this->_option)))
+			{
+				Notify::error(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
+			}
+		}
+
+		// Log activity
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
@@ -758,6 +806,9 @@ class Questions extends SiteController
 			],
 			'recipients' => $recipients
 		]);
+
+		// Set the session flag indicating the new submission
+		Session::set('newsubmission.question', true);
 
 		// Redirect to the question
 		App::redirect(

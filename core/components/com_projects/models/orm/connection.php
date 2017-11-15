@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,9 +33,12 @@ namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Filesystem\Manager;
+use User;
+
+include_once __DIR__ . '/provider.php';
 
 /**
- * Connections database model
+ * Connections model
  *
  * @uses  \Hubzero\Database\Relational
  */
@@ -50,13 +52,23 @@ class Connection extends Relational
 	protected $namespace = 'projects';
 
 	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'project_id'  => 'positive|nonzero',
+		'provider_id' => 'positive|nonzero'
+	);
+
+	/**
 	 * Defines a belongs to one relationship between connections and connection providers
 	 *
 	 * @return  \Hubzero\Database\Relationship\BelongsToOne
 	 **/
 	public function provider()
 	{
-		return $this->belongsToOne('Provider');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Provider', 'provider_id');
 	}
 
 	/**
@@ -80,7 +92,10 @@ class Connection extends Relational
 	 **/
 	public function transformName()
 	{
-		if ($this->hasAttribute('name')) return $this->get('name');
+		if ($this->hasAttribute('name'))
+		{
+			return $this->get('name');
+		}
 
 		return $this->provider->name;
 	}
@@ -93,8 +108,8 @@ class Connection extends Relational
 	public function thatICanView()
 	{
 		return $this->whereEquals('owner_id', User::get('id'), 1)
-		            ->orWhereEquals('owner_id', 0, 1)
-		            ->orWhereRaw('owner_id IS NULL', [], 1);
+			->orWhereEquals('owner_id', 0, 1)
+			->orWhereRaw('owner_id IS NULL', [], 1);
 	}
 
 	/**

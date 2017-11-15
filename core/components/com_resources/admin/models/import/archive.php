@@ -33,7 +33,7 @@
 namespace Components\Resources\Models\Import;
 
 use Hubzero\Base\Model\ItemList;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 // include models
 require_once dirname(__DIR__) . DS . 'import.php';
@@ -42,21 +42,21 @@ require_once __DIR__ . DS . 'run.php';
 /**
  * Import archive model
  */
-class Archive extends Object
+class Archive extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var  object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Import list
 	 *
 	 * @var  object
 	 */
-	private $_imports = NULL;
+	private $_imports = null;
 
 	/**
 	 * Constructor
@@ -96,7 +96,7 @@ class Archive extends Object
 	 *
 	 * @param   string   $rtrn     What data to return
 	 * @param   array    $filters  Filters to apply to data retrieval
-	 * @param   boolean  $boolean  Clear cached data?
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function imports($rtrn = 'list', $filters = array(), $clear = false)

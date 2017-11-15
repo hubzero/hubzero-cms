@@ -34,7 +34,7 @@ namespace Components\Groups\Models\Module;
 
 use Components\Groups\Tables;
 use Components\Groups\Models\Module;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Base\Model\ItemList;
 
 // include needed models
@@ -44,7 +44,7 @@ require_once __DIR__ . DS . 'menu.php';
 /**
  * Group module archive model class
  */
-class Archive extends Object
+class Archive extends Obj
 {
 	/**
 	 * \Hubzero\Base\Model
@@ -65,7 +65,7 @@ class Archive extends Object
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Registry

@@ -54,6 +54,10 @@ $base = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANIT
 	<?php } ?>
 	<?php if (count($this->quotes) > 0) { ?>
 		<?php foreach ($this->quotes as $quote) { ?>
+			<?php
+				$fullQuote = $this->escape((stripslashes($quote->get('quote'))));
+				$fullQuote = preg_replace("/&lt;br ?\/&gt;|\n/", "<br/>", $fullQuote);
+			 ?>
 			<div class="quote">
 				<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
 					<div class="breadcrumbs">
@@ -66,13 +70,13 @@ $base = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANIT
 				<?php } ?>
 				<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 					<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
-						<?php echo $this->escape(stripslashes($quote->get('quote'))); ?>
+						<?php echo $fullQuote; ?>
 					<?php } else { ?>
 						<p>
 							<?php
 							if (!trim($quote->get('short_quote')))
 							{
-								$quote->set('short_quote', \Hubzero\Utility\String::truncate($quote->get('quote'), 250));
+								$quote->set('short_quote', \Hubzero\Utility\Str::truncate($quote->get('quote'), 250));
 							}
 							$quote->set('short_quote', html_entity_decode(stripslashes($quote->get('short_quote'))));
 							$quote->set('short_quote', strip_tags($quote->get('short_quote')));

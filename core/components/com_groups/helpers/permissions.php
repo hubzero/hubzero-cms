@@ -31,7 +31,7 @@
 
 namespace Components\Groups\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 use App;
 
@@ -73,7 +73,7 @@ class Permissions
 		);
 
 		$user = User::getInstance();
-		$result = new Object;
+		$result = new Obj;
 
 		foreach ($actions as $action)
 		{
@@ -127,4 +127,3 @@ class Permissions
 		return false;
 	}
 }
-

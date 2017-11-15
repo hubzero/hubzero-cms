@@ -32,7 +32,7 @@
 
 namespace Components\Forum\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 
 /**
@@ -50,7 +50,7 @@ class Permissions
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param   string   $extension  The extension.
+	 * @param   string   $assetType  Type of asset.
 	 * @param   integer  $assetId    The asset ID.
 	 * @return  object   Object
 	 */
@@ -63,7 +63,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = array(
 			'core.admin',
@@ -82,4 +82,3 @@ class Permissions
 		return $result;
 	}
 }
-

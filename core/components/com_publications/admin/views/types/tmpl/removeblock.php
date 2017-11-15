@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('curation.js');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_REMOVE_BLOCK'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_REMOVE_BLOCK'), 'publications');
 
 $manifest  = $this->curation->_manifest;
 $blocks    = $manifest->blocks;

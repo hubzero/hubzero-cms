@@ -43,7 +43,7 @@ else
 	$linktype = $item->title;
 }
 $flink = $item->flink;
-$flink = \Hubzero\Utility\String::ampReplace(htmlspecialchars($flink));
+$flink = \Hubzero\Utility\Str::ampReplace(htmlspecialchars($flink));
 
 switch ($item->browserNav) :
 	default:

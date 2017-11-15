@@ -613,22 +613,22 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		<dl class="debug-varlist">
 			<dt class="key">$_GET</dt>
 			<dd class="value">
-				<span id="debug-get-short" class="open" onclick="Debugger.toggleShortFull(\'get\');">' . \Hubzero\Utility\String::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
+				<span id="debug-get-short" class="open" onclick="Debugger.toggleShortFull(\'get\');">' . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
 				<span id="debug-get-full" onclick="Debugger.toggleShortFull(\'get\');">' . nl2br($get) . '</span>
 			</dd>
 			<dt class="key">$_POST</dt>
 			<dd class="value">
-				<span id="debug-post-short" class="open" onclick="Debugger.toggleShortFull(\'post\');">' . \Hubzero\Utility\String::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
+				<span id="debug-post-short" class="open" onclick="Debugger.toggleShortFull(\'post\');">' . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
 				<span id="debug-post-full" onclick="Debugger.toggleShortFull(\'post\');">' . nl2br($post) . '</span>
 			</dd>
 			<dt class="key">$_COOKIE</dt>
 			<dd class="value">
-				<span id="debug-cookies-short" class="open" onclick="Debugger.toggleShortFull(\'cookies\');">' . \Hubzero\Utility\String::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
+				<span id="debug-cookies-short" class="open" onclick="Debugger.toggleShortFull(\'cookies\');">' . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
 				<span id="debug-cookies-full" onclick="Debugger.toggleShortFull(\'cookies\');">' . nl2br($cookies) . '</span>
 			</dd>
 			<dt class="key">$_SERVER</dt>
 			<dd class="value">
-				<span id="debug-server-short" class="open" onclick="Debugger.toggleShortFull(\'server\');">' . \Hubzero\Utility\String::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
+				<span id="debug-server-short" class="open" onclick="Debugger.toggleShortFull(\'server\');">' . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
 				<span id="debug-server-full" onclick="Debugger.toggleShortFull(\'server\');">' . nl2br($server) . '</span>
 			</dd>
 		</dl>';
@@ -827,7 +827,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$html  = '<div class="status"><h4>' . Lang::txt('PLG_DEBUG_QUERIES_LOGGED',  $db->getCount()) . ': ' . $db->getTimer() .' seconds</h4></div>';
+		$html  = '<div class="status"><h4>' . Lang::txt('PLG_DEBUG_QUERIES_LOGGED', $db->getCount()) . ': ' . $db->getTimer() .' seconds</h4></div>';
 		$html .= '<ol>';
 
 		$selectQueryTypeTicker = array();
@@ -938,9 +938,10 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		}
 
 		$html  = '<ul>';
-
 		foreach ($called as $info)
 		{
+			$file = !empty($info['file']) ? substr($info['file'], strlen(PATH_ROOT)) : "";
+			$line = !empty($info['line']) ? $info['line'] : "";
 			$html .= '<li><code>';
 			$html .= '<span class="tm">' . $info['event'] . '</span> ';
 			$html .= '<span class="op">&mdash;</span> ';
@@ -954,7 +955,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			{
 				$html .= '<span class="ky">' . $info['class'] . '</span><span class="op">::</span><span class="vl">' . $info['method'] . '</span>';
 			}
-			$html .= ' <span class="op">&rarr;</span> <span class="op">' . substr($info['file'], strlen(PATH_ROOT)) . ':<span class="tm">' . $info['line'] . '</span></span>';
+			$html .= ' <span class="op">&rarr;</span> <span class="op">' . $file . ':<span class="tm">' . $line . '</span></span>';
 			$html .= '</code></li>';
 		}
 

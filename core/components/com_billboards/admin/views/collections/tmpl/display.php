@@ -33,7 +33,7 @@
 defined('_HZEXEC_') or die();
 
 // Add the toolbar items
-Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS'), 'billboards');
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::spacer();

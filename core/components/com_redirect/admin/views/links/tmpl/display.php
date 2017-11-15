@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Redirect\Helpers\Redirect::getActions();
+$canDo = Components\Redirect\Helpers\Redirect::getActions();
 
 Toolbar::title(Lang::txt('COM_REDIRECT_MANAGER_LINKS'), 'redirect');
 if ($canDo->get('core.create'))
@@ -81,8 +81,6 @@ if ($canDo->get('core.admin'))
 }
 Toolbar::help('links');
 
-// Include the component HTML helpers.
-Html::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
@@ -108,7 +106,7 @@ $this->css('.adminlist tr td {
 			<div class="col span6">
 				<label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
 				<select name="state" id="filter_state" class="inputbox" onchange="this.form.submit()">
-					<?php echo Html::select('options', \Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->filters['state'], true);?>
+					<?php echo Html::select('options', Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->filters['state'], true);?>
 				</select>
 			</div>
 		</div>
@@ -123,12 +121,15 @@ $this->css('.adminlist tr td {
 				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_OLD_URL', 'old_url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
+				<?php if ($this->filters['type'] == 'redirect') { ?>
 				<th scope="col">
 					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_NEW_URL', 'new_url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
+				<?php } else { ?>
 				<th scope="col" class="priority-4">
 					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_REFERRER', 'referer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
+				<?php } ?>
 				<th scope="col" class="priority-5">
 					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_CREATED_DATE', 'created_date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
@@ -145,12 +146,12 @@ $this->css('.adminlist tr td {
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8">
+				<td colspan="7">
 					<?php echo $this->rows->pagination; ?>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="8">
+				<td colspan="7">
 					<p class="info">
 						<?php if ($this->enabled) : ?>
 							<span class="enabled"><?php echo Lang::txt('COM_REDIRECT_PLUGIN_ENABLED'); ?></span>
@@ -176,23 +177,34 @@ $this->css('.adminlist tr td {
 				<td>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $item->id);?>" title="<?php echo $this->escape($item->old_url); ?>">
-							<?php echo $this->escape(str_replace(Request::root(), '', $item->old_url)); ?>
+							<?php
+							$old = str_replace(Request::root(), '', $item->old_url);
+							echo '<span style="color:#ccc">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/' . $this->escape(ltrim($old, '/')); ?>
 						</a>
 					<?php else : ?>
 						<?php echo $this->escape(str_replace(Request::root(), '', $item->old_url)); ?>
 					<?php endif; ?>
 				</td>
+				<?php if ($this->filters['type'] == 'redirect') { ?>
 				<td>
-					<?php echo $this->escape($item->new_url); ?>
+					<?php
+					if (substr($item->new_url, 0, strlen('http')) != 'http')
+					{
+						echo '<span style="color:#ccc">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/';
+					}
+					echo $this->escape(ltrim($item->new_url, '/'));
+					?>
 				</td>
+				<?php } else { ?>
 				<td class="priority-4">
 					<?php echo $this->escape($item->referer); ?>
 				</td>
+				<?php } ?>
 				<td class="priority-5 center">
 					<?php echo Date::of($item->created_date)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
 				</td>
 				<td class="priority-2 center">
-					<?php echo Html::redirect('published', $item->published, $i); ?>
+					<?php echo Components\Redirect\Helpers\Redirect::published($item->published, $i); ?>
 				</td>
 				<td class="priority-3 center">
 					<?php echo (int) $item->hits; ?>

@@ -32,243 +32,144 @@
 
 namespace Components\Wishlist\Models;
 
-use Components\Members\Models\Member;
-use Hubzero\Utility\String;
+use Hubzero\Database\Relational;
 use Lang;
 use Date;
-
-require_once(__DIR__ . DS . 'base.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
 
 /**
  * Wishlist class for a wish plan model
  */
-class Plan extends Base
+class Plan extends Relational
 {
 	/**
-	 * Table class name
-	 *
-	 * @var object
-	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Wish\\Plan';
-
-	/**
-	 * Model context
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_context = 'com_wishlist.plan.pagetext';
+	protected $namespace = 'wishlist';
 
 	/**
-	 * Attachment
+	 * The table to which the class pertains
 	 *
-	 * @var object
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 **/
+	protected $table = '#__wishlist_implementation';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var string
 	 */
-	protected $_attachment = null;
+	public $orderBy = 'id';
 
 	/**
-	 * User
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_creator = null;
+	public $orderDir = 'asc';
 
 	/**
-	 * Constructor
+	 * Fields and their validation criteria
 	 *
-	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
-	 * @return  void
+	 * @var  array
 	 */
-	public function __construct($oid=null, $wish=null)
-	{
-		$this->_db = \App::get('db');
-
-		if ($this->_tbl_name)
-		{
-			$cls = $this->_tbl_name;
-			$this->_tbl = new $cls($this->_db);
-
-			if (!($this->_tbl instanceof \JTable))
-			{
-				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
-				);
-				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
-			}
-
-			if ($oid)
-			{
-				if (is_numeric($oid) || is_string($oid))
-				{
-					// Make sure $oid isn't empty
-					// This saves a database call
-					$this->_tbl->load($oid);
-				}
-				else if (is_object($oid) || is_array($oid))
-				{
-					$this->bind($oid);
-				}
-			}
-			else if ($wish)
-			{
-				if ($plans = $this->_tbl->getPlan($wish))
-				{
-					$this->bind($plans[0]);
-				}
-			}
-		}
-	}
+	protected $rules = array(
+		'pagetext' => 'notempty',
+		'wishid'   => 'positive|nonzero'
+	);
 
 	/**
-	 * Returns a reference to this model
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @param   mixed   $oid  ID (int) or array or object
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Fields to be parsed
+	 *
+	 * @var  array
+	 */
+	protected $parsed = array(
+		'pagetext'
+	);
+
+	/**
+	 * Get the owning wish
+	 *
 	 * @return  object
 	 */
-	static function &getInstance($oid=null, $wish=null)
+	public function wish()
 	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid, $wish);
-		}
-
-		return $instances[$oid];
+		return $this->belongsToOne(__NAMESPACE__ . '\\Wish', 'wishid');
 	}
 
 	/**
 	 * Get the creator of this entry
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property  Property to retrieve
-	 * @param   mixed   $default   Default value if property not set
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function creator($property=null, $default=null)
+	public function creator()
 	{
-		if (!($this->_creator instanceof \Hubzero\User\User))
-		{
-			$this->_creator = \User::getInstance($this->get('created_by'));
-		}
-		if ($property)
-		{
-			if ($property == 'picture')
-			{
-				return $this->_creator->picture($this->get('anonymous'));
-			}
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
 
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string   $rtrn  What data to return
-	 * @return  boolean
+	 * @param   string  $rtrn  What data to return
+	 * @return  string
 	 */
 	public function created($rtrn='')
 	{
-		switch (strtolower($rtrn))
+		$rtrn = strtolower($rtrn);
+
+		if ($rtrn == 'date')
 		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
+			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
+
+		if ($rtrn == 'time')
+		{
+			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $this->get('created');
 	}
 
 	/**
-	 * Get the content of the entry in various formats
+	 * Parses content string as directed
 	 *
-	 * @param   string   $as       Format to return state in [text, number]
-	 * @param   integer  $shorten  Number of characters to shorten text to
-	 * @return  mixed    String or Integer
+	 * @return  string
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function transformContent()
 	{
-		$as = strtolower($as);
-		$options = array();
+		$field = 'about';
 
-		switch ($as)
+		$property = "_{$field}Parsed";
+
+		if (!isset($this->$property))
 		{
-			case 'parsed':
-				$content = $this->get('pagetext.parsed', null);
+			$params = array(
+				'option'   => 'com_wishlist',
+				'scope'    => 'wishlist',
+				'pagename' => 'wishlist',
+				'pageid'   => $this->get('wishid'),
+				'filepath' => '',
+				'domain'   => $this->get('wishid')
+			);
 
-				if ($content == null)
-				{
-					$config = array(
-						'option'   => 'com_wishlist',
-						'scope'    => 'wishlist/' . $this->get('wishid'),
-						'pagename' => 'wishlist',
-						'pageid'   => $this->get('wishid'),
-						'filepath' => '',
-						'domain'   => $this->get('wishid')
-					);
-
-					$this->set('pagetext', stripslashes($this->get('pagetext')));
-
-					$content = $this->get('pagetext');
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('pagetext.parsed', $this->get('pagetext'));
-					$this->set('pagetext', $content);
-
-					return $this->content($as, $shorten);
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-			break;
-
-			case 'raw':
-			default:
-				$content = stripslashes($this->get('pagetext'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
+			$this->$property = Html::content('prepare', $this->get($field, ''), $params);
 		}
 
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-		return $content;
+		return $this->$property;
 	}
 }
-

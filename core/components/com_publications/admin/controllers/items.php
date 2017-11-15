@@ -278,13 +278,12 @@ class Items extends AdminController
 
 		// Output the HTML
 		$this->view->display();
-
 	}
 
 	/**
 	 * Save content item details
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savecontentTask()
 	{
@@ -292,8 +291,8 @@ class Items extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$el 	 = Request::getInt('el', 0);
-		$id 	 = Request::getInt('id', 0);
+		$el      = Request::getInt('el', 0);
+		$id      = Request::getInt('id', 0);
 		$version = Request::getVar('version', '');
 		$params  = Request::getVar('params', array(), 'request', 'array');
 		$attachments = Request::getVar('attachments', array(), 'request', 'array');
@@ -461,7 +460,7 @@ class Items extends AdminController
 	/**
 	 * Save author order
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveauthororderTask()
 	{
@@ -711,6 +710,7 @@ class Items extends AdminController
 		$published_up   = trim(Request::getVar('published_up', '', 'post'));
 		$published_down = trim(Request::getVar('published_down', '', 'post'));
 		$state          = Request::getInt('state', 0);
+		$featured       = Request::getInt('featured', 0);
 		$metadata       = '';
 		$activity       = '';
 
@@ -719,6 +719,7 @@ class Items extends AdminController
 		$this->model->publication->category = trim(Request::getInt('category', 0, 'post'));
 		$this->model->publication->access   = Request::getInt('access', 0, 'post');
 		$this->model->publication->group_owner = $group_owner;
+		$this->model->publication->featured = $featured;
 		/*if (!$project->get('owned_by_group'))
 		{
 			$this->model->publication->group_owner = $group_owner;
@@ -764,13 +765,17 @@ class Items extends AdminController
 
 		// Save incoming
 		$this->model->version->title        = $title;
-		$this->model->version->abstract     = \Hubzero\Utility\String::truncate($abstract, 250);
+		$this->model->version->abstract     = \Hubzero\Utility\Str::truncate($abstract, 250);
 		$this->model->version->description  = $description;
 		$this->model->version->metadata     = $metadata;
 		$this->model->version->release_notes= $release_notes;
 		$this->model->version->license_text = trim(Request::getVar('license_text', '', 'post'));
 		$this->model->version->license_type = Request::getInt('license_type', 0, 'post');
 		$this->model->version->access       = Request::getInt('access', 0, 'post');
+		if ($version_label = Request::getVar('version_label', null, 'post'))
+		{
+			$this->model->version->version_label = $version_label;
+		}
 
 		// Get DOI service
 		$doiService = new Models\Doi($this->model);
@@ -831,7 +836,7 @@ class Items extends AdminController
 		$rt->tag_object(User::get('id'), $id, $tags, 1, true);
 
 		// Email config
-		$pubtitle = \Hubzero\Utility\String::truncate($this->model->version->title, 100);
+		$pubtitle = \Hubzero\Utility\Str::truncate($this->model->version->title, 100);
 		$subject  = Lang::txt('Version') . ' ' . $this->model->version->version_label . ' '
 					. Lang::txt('COM_PUBLICATIONS_OF') . ' '
 					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))
@@ -1004,10 +1009,10 @@ class Items extends AdminController
 					// Append comment to activity
 					if ($message && $aid)
 					{
-						require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+						require_once \Component::path('com_projects') . DS . 'tables' . DS . 'comment.php';
 						$objC = new \Components\Projects\Tables\Comment($this->database);
 
-						$comment = \Hubzero\Utility\String::truncate($message, 250);
+						$comment = \Hubzero\Utility\Str::truncate($message, 250);
 						$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
 
 						$objC->itemid           = $aid;
@@ -1109,9 +1114,9 @@ class Items extends AdminController
 	 * Sends a message to authors (or creator) of a publication
 	 *
 	 * @param   string  $subject
-	 * @param   string  $subject
+	 * @param   string  $message
 	 * @param   array   $authors
-	 * @param   string  $subject
+	 * @param   string  $action
 	 * @return  void
 	 */
 	private function _emailContributors($subject = '', $message = '', $authors = array(), $action = 'publish')
@@ -1350,11 +1355,32 @@ class Items extends AdminController
 					$objP->deleteExistence($id);
 
 					// Delete related publishing activity from feed
-					$objAA = new \Components\Projects\Tables\Activity($this->database);
-					$objAA->deleteActivityByReference($projectId, $id, 'publication');
+					$activities = Hubzero\Activity\Log::all()
+						->whereEquals('scope', 'publication')
+						->whereEquals('scope_id', $id)
+						->whereEquals('state', 1)
+						->rows()
+						->toArray();
+
+					$logs = array();
+					foreach ($activities as $activity)
+					{
+						$logs[] = $activity['id'];
+					}
+
+					$past = Hubzero\Activity\Recipient::all()
+						->whereIn('log_id', $logs)
+						->whereEquals('state', 1)
+						->rows();
+
+					foreach ($past as $p)
+					{
+						$p->set('state', 0);
+						$p->save();
+					}
 
 					// Build publication path
-					$path =  PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\String::pad($id);
+					$path =  PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($id);
 
 					// Delete all files
 					if (is_dir($path))
@@ -1544,7 +1570,7 @@ class Items extends AdminController
 		$pub->setCuration();
 
 		// Produce archival package
-		if (!$pub->_curationModel->package())
+		if (!$pub->_curationModel->package(true))
 		{
 			// Checkin the resource
 			$pub->publication->checkin();

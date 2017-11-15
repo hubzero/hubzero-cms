@@ -106,7 +106,7 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
 		}
 
 		// Prepare response
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
@@ -126,4 +126,3 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
 		return $response;
 	}
 }
-

@@ -47,7 +47,7 @@ Html::behavior('switcher', 'submenu');
 Html::behavior('tooltip');
 
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher
-$this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 ?>
 <script type="text/javascript">
@@ -100,6 +100,11 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 					<?php echo $this->loadTemplate('database'); ?>
 					<?php echo $this->loadTemplate('mail'); ?>
 				</div>
+			</div>
+		</div>
+		<div id="page-api" class="tab">
+			<div class="noshow">
+				<?php echo $this->loadTemplate('api'); ?>
 			</div>
 		</div>
 		<div id="page-permissions" class="tab">

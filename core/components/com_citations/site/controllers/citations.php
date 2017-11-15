@@ -32,18 +32,19 @@
 
 namespace Components\Citations\Site\Controllers;
 
-use Components\Citations\Tables\Citation;
-use Components\Citations\Tables\Association;
-use Components\Citations\Tables\Type;
-use Components\Citations\Tables\Author;
-use Components\Citations\Tables\Tags;
 use Components\Citations\Helpers\Download;
 use Components\Citations\Helpers\Format;
+use Components\Citations\Models\Citation;
+use Components\Citations\Models\Type;
+use Components\Citations\Models\Format as FormatModel;
+use Components\Citations\Models\Author;
+use Components\Citations\Models\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Filesystem;
 use Exception;
 use Document;
+use Notify;
 use Date;
 use Lang;
 use App;
@@ -66,6 +67,7 @@ class Citations extends SiteController
 		// register empty task and intro as the main display task
 		$this->registerTask('', 'display');
 		$this->registerTask('intro', 'display');
+		$this->registerTask('add', 'edit');
 
 		// execute parent function
 		parent::execute();
@@ -89,18 +91,10 @@ class Citations extends SiteController
 
 		$this->view->database = $this->database;
 
-		// Load the object
-		$row = new Citation($this->database);
-		$this->view->yearlystats = $row->getStats();
+		$this->view->yearlystats = Citation::getYearlyStats();
 
 		// Get some stats
-		$this->view->typestats = array();
-		$ct = new Type($this->database);
-		$types = $ct->getType();
-		foreach ($types as $t)
-		{
-			$this->view->typestats[$t['type_title']] = $row->getCount(array('type' => $t['id'], 'scope' => 'hub'), false);
-		}
+		$this->view->typestats = Type::getCitationsCountByType();
 
 		//are we allowing importing
 		$this->view->allow_import = $this->config->get('citation_import', 1);
@@ -111,9 +105,7 @@ class Citations extends SiteController
 			$this->view->isAdmin = true;
 		}
 
-		// Output HTML
-		$this->view->messages = \Notify::messages('citations');
-
+		$this->_displayMessages();
 		$this->view
 			->setLayout('display')
 			->display();
@@ -131,31 +123,30 @@ class Citations extends SiteController
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
 		$this->view->isAdmin  = false;
-		if (User::authorise('core.manage', $this->_option))
-		{
-			$this->view->isAdmin = true;
-		}
 
-		// get the earliest year we have citations for
-		$query = "SELECT c.year FROM `#__citations` as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
-		$this->view->database->setQuery($query);
-		$earliest_year = $this->view->database->loadResult();
-		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
+		$earliest_year = Citation::all()
+			->where('year', '!=', '')
+			->where('year', 'IS NOT', null)
+			->where('year', '!=', 0)
+			->order('year', 'asc')
+			->limit(1)
+			->row()
+			->get('year');
+		$earliest_year = !empty($earliest_year) ? $earliest_year : 1970;
 
 		// Incoming
 		$this->view->filters = array(
-			// Paging filters
-			'limit'           => Request::getInt('limit', 50, 'request'),
-			'start'           => Request::getInt('limitstart', 0, 'get'),
 			// Search/filtering params
 			'id'              => Request::getInt('id', 0),
 			'tag'             => Request::getVar('tag', '', 'request', 'none', 2),
+			'limit'           => Request::getInt('limit', 50, 'request'),
+			'limitstart'      => Request::getInt('limitstart', 0, 'get'),
 			'search'          => Request::getVar('search', ''),
 			'type'            => Request::getVar('type', ''),
 			'author'          => Request::getVar('author', ''),
 			'publishedin'     => Request::getVar('publishedin', ''),
 			'year_start'      => Request::getInt('year_start', $earliest_year),
-			'year_end'        => Request::getInt('year_end', date("Y")),
+			'year_end'        => Request::getInt('year_end', gmdate("Y")),
 			'filter'          => Request::getVar('filter', ''),
 			'sort'            => Request::getVar('sort', 'created DESC'),
 			'reftype'         => Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
@@ -163,8 +154,14 @@ class Citations extends SiteController
 			'aff'             => Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
 			'startuploaddate' => Request::getVar('startuploaddate', '0000-00-00'),
 			'enduploaddate'   => Request::getVar('enduploaddate', '0000-00-00'),
-			'scope'						=> 'hub'
+			'scope'           => 'hub'
 		);
+
+		if (User::authorise('core.manage', $this->_option))
+		{
+			$this->view->isAdmin = true;
+			$this->view->filters['published'] = array(0, 1);
+		}
 
 		$this->view->filter = array(
 			'all'    => Lang::txt('COM_CITATIONS_ALL'),
@@ -256,19 +253,17 @@ class Citations extends SiteController
 				$key = $val;
 			}
 		});
-
-		// Instantiate a new citations object
-		$obj = new Citation($this->database);
-
-		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters, $this->view->isAdmin);
+		$citations = Citation::getFilteredRecords($this->view->filters);
+		$citations = $citations->paginated('limitstart', 'limit')->rows();
 
 		// Get records
-		$this->view->citations = $obj->getRecords($this->view->filters, $this->view->isAdmin);
+		$this->view->citations = $citations;
+
+		// Get default format
+		$this->view->defaultFormat = FormatModel::getDefault();
 
 		// Add some data to our view for form filtering/sorting
-		$ct = new Type($this->database);
-		$this->view->types = $ct->getType();
+		$this->view->types = Type::all()->rows();
 
 		// Get the users id to make lookup
 		$users_ip = Request::ip();
@@ -340,18 +335,17 @@ class Citations extends SiteController
 		// Pass any error messages to the view
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error, 'com.citations');
 		}
 
-		// Get any messages
-		$this->view->messages = \Notify::messages('citations');
+		$this->_displayMessages();
 
 		// Are we allowing importing?
 		$this->view->allow_import = $this->config->get('citation_import', 1);
 		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
 
 		// Output HTML
-		$this->view->display();
+		$this->view->setLayout('browse')->display();
 	}
 
 	/**
@@ -375,15 +369,8 @@ class Citations extends SiteController
 		$this->view->database = $this->database;
 
 		//get the citation
-		$this->view->citation = new Citation($this->view->database);
-		$this->view->citation->load($id);
+		$this->view->citation = Citation::oneOrFail($id);
 
-		//make sure we got a citation
-		if (!isset($this->view->citation->title) || $this->view->citation->title == '')
-		{
-			App::abort(404, Lang::txt('COM_CITATIONS_NO_CITATION_WITH_ID'));
-			return;
-		}
 
 		// make sure citation is published
 		if (!$this->view->citation->published)
@@ -392,9 +379,8 @@ class Citations extends SiteController
 			return;
 		}
 
-		//load citation associations
-		$assoc = new Association($this->database);
-		$this->view->associations = $assoc->getRecords(array('cid' => $id));
+		$this->view->associations = $this->view->citation->resources()->whereEquals('#__citations_assoc.tbl', 'resource');
+		$this->view->sponsors = $this->view->citation->sponsors;
 
 		//open url stuff
 		$this->view->openUrl = $this->openUrl();
@@ -414,13 +400,11 @@ class Citations extends SiteController
 		Pathway::append(Lang::txt('COM_CITATIONS_BROWSE'), 'index.php?option=' . $this->_option . '&task=browse');
 		Pathway::append($this->view->shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->citation->id);
 
-		//get this citation type to see if we have a template override for this type
-		$citationType = new Type($this->database);
-		$type = $citationType->getType($this->view->citation->type);
-		$typeAlias = $type[0]['type'];
+		$this->view->citationType = $this->view->citation->relatedType;
+		$typeAlias = $this->view->citationType->type;
 
 		// Build paths to type specific overrides
-		$componentTypeOverride = PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
+		$componentTypeOverride = Component::path('com_citations') . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
 		$tempalteTypeOverride  = PATH_CORE . DS . 'templates' . DS . App::get('template')->template . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
 
 		//if we found an override use it
@@ -429,8 +413,7 @@ class Citations extends SiteController
 			$this->view->setLayout($typeAlias);
 		}
 
-		//get any messages & display view
-		$this->view->messages = \Notify::messages('citations');
+		$this->_displayMessages();
 		$this->view->config   = $this->config;
 		$this->view->display();
 	}
@@ -518,21 +501,11 @@ class Citations extends SiteController
 	}
 
 	/**
-	 * Show a form for adding an entry
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Show a form for editing an entry
 	 *
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($citation = null)
 	{
 		// Check if they're logged in
 		if (User::isGuest())
@@ -556,15 +529,15 @@ class Citations extends SiteController
 			// Redirect
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false),
-				Lang::txt('COM_CITATION_EDIT_NOTALLOWED'),
+				Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
 				'warning'
 			);
 			return;
 		}
 
+
 		// get the citation types
-		$ct = new Type($this->database);
-		$types = $ct->getType();
+		$types = Type::all()->rows()->toArray();
 
 		$fields = array();
 		foreach ($types as $type)
@@ -586,36 +559,37 @@ class Citations extends SiteController
 
 		// add an empty value for the first type
 		array_unshift($types, array(
-			'type'       => '',
+			'id' => '',
+			'type' => '',
 			'type_title' => ' - Select a Type &mdash;'
 		));
+
+		$this->view->types = $types;
 
 		// Incoming - expecting an array id[]=4232
 		$id = Request::getInt('id', 0);
 
-		// Pub author
-		$pubAuthor = false;
-
-		// Load the associations object
-		$assoc = new Association($this->database);
-
-		// Get associations
-		if ($id)
+		if (!($citation instanceof Citation))
 		{
-			$this->view->assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
-
-			$pubAuthor = $this->isPubAuthor($this->view->assocs);
+			$citation = Citation::oneOrNew($id);
 		}
 
-		// Is user authorized to edit citations?
-		if (!$isAdmin && !$pubAuthor)
+		$associations = array();
+		foreach ($citation->associations as $cite)
 		{
-			$id = 0;
+			$associations[] = $cite;
+		}
+
+		$this->view->assocs = $associations;
+
+		// Is user authorized to edit citations?
+		if (!$isAdmin && !$citation->canEdit())
+		{
+			App::abort(404, Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'));
 		}
 
 		// Load the object
-		$this->view->row = new Citation($this->database);
-		$this->view->row->load($id);
+		$this->view->row = $citation;
 
 		//make sure title isnt too long
 		$maxTitleLength = 30;
@@ -643,9 +617,11 @@ class Citations extends SiteController
 
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
-		if (!$id)
+		if ($this->view->row->isNew())
 		{
 			$this->view->row->uid = User::get('id');
+			// Temporarily set ID with negative timestamp to add authors temporarily
+			$citation->set('id', -time());
 
 			// It's new - no associations to get
 			$this->view->assocs = array();
@@ -657,66 +633,19 @@ class Citations extends SiteController
 		else
 		{
 			//tags & badges
-			$this->view->tags   = Format::citationTags($this->view->row, $this->database, false);
-			$this->view->badges = Format::citationBadges($this->view->row, $this->database, false);
+			$this->view->tags   = Format::citationTags($this->view->row, false);
+			$this->view->badges = Format::citationBadges($this->view->row, false);
 		}
-
-		//get the citation types
-		$ct = new Type($this->database);
-		$this->view->types = $ct->getType();
 
 		// Output HTML
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error, 'com.citations');
 		}
-
+		$this->view->token = App::get('session')->getFormToken();
 		$this->view
 			->setLayout('edit')
 			->display();
-	}
-
-	/**
-	 * Determine if user is part of publication project and is allowed to edit citation
-	 *
-	 * @param   array  $assocs
-	 * @return  void
-	 */
-	public function isPubAuthor($assocs)
-	{
-		if (!$assocs)
-		{
-			return false;
-		}
-		if (!is_file(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php'))
-		{
-			return false;
-		}
-
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
-
-		// Get connections to publications
-		foreach ($assocs as $entry)
-		{
-			if ($entry->tbl == 'publication')
-			{
-				$pubID = $entry->oid;
-				$objP = new \Components\Publications\Tables\Publication($this->database);
-
-				if ($objP->load($pubID))
-				{
-					$objO = new \ProjectOwner($this->database);
-
-					if ($objO->isOwner(User::get('id'), $objP->project_id))
-					{
-						return true;
-					}
-				}
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -738,124 +667,80 @@ class Citations extends SiteController
 		// get the posted vars
 		$id = Request::getInt('id', 0, 'post');
 		$c  = Request::getVar('fields', array(), 'post');
-		$c['id'] = $id;
 
-		// clean vars
-		foreach ($c as $key => $val)
-		{
-			if (!is_array($val))
-			{
-				$val = html_entity_decode(urldecode($val));
-				$val = Sanitize::stripAll($val);
-				$c[$key] = Sanitize::clean($val);
-			}
-		}
 
 		// Bind incoming data to object
-		$row = new Citation($this->database);
-		if (!$row->bind($c))
-		{
-			$this->setError($row->getError());
-			$this->editTask();
-			return;
-		}
+		$row = Citation::oneOrNew($id);
+		$row->set($c);
 
-		// New entry so set the created date
-		if (!$row->id)
+		$updateAuthorsId = false;
+		if ($row->isNew())
 		{
-			$row->created = Date::toSql();
+			$row->set('created', Date::toSql());
+			$updateAuthorsId = (isset($id) && $id < 0) ? $id : false;
 		}
 
 		if (!filter_var($row->url, FILTER_VALIDATE_URL))
 		{
 			$row->url = null;
 		}
-
-		// Check content for missing required data
-		if (!$row->check())
+		if ($updateAuthorsId)
 		{
-			$this->setError($row->getError());
-			$this->editTask();
-			return;
-		}
-
-		// Store new content
-		if (!$row->store())
-		{
-			$this->setError($row->getError());
-			$this->editTask();
-			return;
+			$authors = Author::all()->whereEquals('cid', $updateAuthorsId)->rows();
+			foreach ($authors as $author)
+			{
+				$author->removeAttribute('cid');
+			}
+			$row->tempId = $updateAuthorsId;
+			$row->attach('relatedAuthors', $authors);
 		}
 
 		// Incoming associations
-		$arr = Request::getVar('assocs', array(), 'post');
-
-		$ignored = array();
-
-		foreach ($arr as $a)
+		$associations = array();
+		$assocParams = Request::getVar('assocs', array(), 'post');
+		foreach ($assocParams as $assoc)
 		{
-			$a = array_map('trim', $a);
-
-			// Initiate extended database class
-			$assoc = new Association($this->database);
-
-			//check to see if we should delete
-			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
+			$assoc = array_map('trim', $assoc);
+			$assocId = !empty($assoc['id']) ? $assoc['id'] : null;
+			unset($assoc['id']);
+			$newAssociation = Association::oneOrNew($assocId)->set($assoc);
+			if (!$newAssociation->isNew() && (empty($assoc['tbl']) || empty($assoc['oid'])))
 			{
-				// Delete the row
-				if (!$assoc->delete($a['id']))
+				$newAssociation->destroy();
+			}
+			else
+			{
+				if (!empty($assoc['tbl']) && !empty($assoc['oid']))
 				{
-					$this->setError($assoc->getError());
-					$this->editTask();
-					return;
+					$associations[] = $newAssociation;
 				}
 			}
-			else if ($a['tbl'] != '' || $a['oid'] != '')
+		}
+
+		$row->attach('associations', $associations);
+		if (!$row->saveAndPropagate())
+		{
+			$this->setError($row->getError());
+			if ($row->isNew())
 			{
-				$a['cid'] = $row->id;
-
-				// bind the data
-				if (!$assoc->bind($a))
-				{
-					$this->setError($assoc->getError());
-					$this->editTask();
-					return;
-				}
-
-				// Check content
-				if (!$assoc->check())
-				{
-					$this->setError($assoc->getError());
-					$this->editTask();
-					return;
-				}
-
-				// Store new content
-				if (!$assoc->store())
-				{
-					$this->setError($assoc->getError());
-					$this->editTask();
-					return;
-				}
+				$row->set('id', $updateAuthorsId);
 			}
+			$this->editTask($row);
+			return;
 		}
 
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
 			$tags = trim(Request::getVar('tags', '', 'post'));
-
-			$ct1 = new Tags($row->id);
-			$ct1->setTags($tags, User::get('id'), 0, 1, '');
+			$row->updateTags($tags);
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
 			$badges = trim(Request::getVar('badges', '', 'post'));
-
-			$ct2 = new Tags($row->id);
-			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
+			$row->updateTags($badges, 'badge');
 		}
 
 		// Redirect
@@ -865,9 +750,10 @@ class Citations extends SiteController
 			$task = '&task=view&id=' . $row->id;
 		}
 
+
+		Notify::success(Lang::txt('COM_CITATIONS_CITATION_SAVED'), 'com.citations');
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . $task),
-			Lang::txt('COM_CITATIONS_CITATION_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&task=browse')
 		);
 	}
 
@@ -885,45 +771,51 @@ class Citations extends SiteController
 			return;
 		}
 
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=browse'),
+				Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
+				"error"
+			);
+			return false;
+		}
+
 		// Incoming (we're expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = (array) Request::getVar('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have IDs to work with
-		if (count($ids) > 0)
+		if (count($ids) > 0 && User::authorise('core.delete', 'com_citations'))
 		{
 			// Loop through the IDs and delete the citation
-			$citation = new Citation($this->database);
-			$assoc    = new Association($this->database);
-			$author   = new Author($this->database);
-			foreach ($ids as $id)
+			$citations = Citation::whereIn('id', $ids)->rows();
+			$citationsRemoved = array();
+			foreach ($citations as $citation)
 			{
-				// Fetch and delete all the associations to this citation
-				$isAdmin = (User::get("usertype") == "Super Administrator") ? true : false;
-				$assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
-				foreach ($assocs as $a)
+				$citationId = $citation->get('id');
+				if (!$citation->destroy())
 				{
-					$assoc->delete($a->id);
+					foreach ($citation->getErrors() as $error)
+					{
+						Notify::error($citation->getError(), 'com.citations');
+					}
+					App::redirect(
+						Route::url('index.php?option=com_citations&task=browse')
+					);
 				}
-
-				// Fetch and delete all the authors to this citation
-				$authors = $author->getRecords(array('cid' => $id), $isAdmin);
-				foreach ($authors as $a)
+				else
 				{
-					$author->delete($a->id);
+					Notify::success(Lang::txt('COM_CITATIONS_CITATION_DELETE', $citationId), 'com.citations');
 				}
-
-				// Delete the citation
-				$citation->delete($id);
 			}
 		}
 
-		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option)
+			Route::url('index.php?option=com_citations&task=browse')
 		);
 	}
 
@@ -945,8 +837,7 @@ class Citations extends SiteController
 		}
 
 		// Load the citation
-		$row = new Citation($this->database);
-		$row->load($id);
+		$row = Citation::one($id);
 
 		// Set the write path
 		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/citations'), DS);
@@ -991,7 +882,7 @@ class Citations extends SiteController
 
 		// get the citations we want to export
 		$citationsString = Request::getVar('idlist', '');
-		$citations       = explode('-', $citationsString);
+		$citationIds       = explode('-', $citationsString);
 
 		// return to browse mode if we really dont wanna download
 		if (strtolower($download) != 'endnote'
@@ -1009,20 +900,16 @@ class Citations extends SiteController
 
 		// var to hold output
 		$doc = '';
+		$citations = Citation::all()->whereIn('id', $citationIds);
 
 		// for each citation we want to downlaod
-		foreach ($citations as $c)
+		foreach ($citations as $citation)
 		{
-			$cc = new Citation($this->database);
-			$cc->load($c);
-
 			//get the badges
-			$ct = new Tags($cc->id);
-			$cc->badges = $ct->render('string', array('label' => 'badge'));
-
+			$citation->set('badges', Format::citationBadges($citation, false));
 			$cd = new Download();
 			$cd->setFormat(strtolower($download));
-			$doc .= $cd->formatReference($cc) . "\r\n\r\n";
+			$doc .= $cd->formatReference($citation) . "\r\n\r\n";
 
 			$mine = $cd->getMimeType();
 		}
@@ -1053,12 +940,12 @@ class Citations extends SiteController
 		{
 			if (array_key_exists($ignore, $b))
 			{
-				$b[$ignore] = NULL;
+				$b[$ignore] = null;
 			}
 		}
 		if (array_key_exists('id', $b))
 		{
-			$b['id'] = NULL;
+			$b['id'] = null;
 		}
 		$values = array_values($b);
 		$e = true;
@@ -1084,7 +971,10 @@ class Citations extends SiteController
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+			continue;
+		}
 
 		$fsize = filesize($p . DS. $f);
 		$mod_date = date('r', filemtime($p . DS . $f));
@@ -1168,7 +1058,10 @@ class Citations extends SiteController
 		$image = Request::getVar('image', '');
 
 		// if we dont have an image were done
-		if ($image == '') return;
+		if ($image == '')
+		{
+			return;
+		}
 
 		// file details
 		$image_details = pathinfo($image);
@@ -1239,5 +1132,19 @@ class Citations extends SiteController
 			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
 		Document::setTitle($this->_title);
+	}
+
+	/**
+	 * Method to display notification messages
+	 *
+	 * @param   string  $domain
+	 * @return  void
+	 */
+	private function _displayMessages($domain = 'com.citations')
+	{
+		foreach (Notify::messages($domain) as $message)
+		{
+			Notify::message($message['message'], $message['type']);
+		}
 	}
 }

@@ -83,7 +83,9 @@ class Category extends \JTable
 	/**
 	 * Set en entry to unpublished
 	 *
-	 * @param      integer $oid Category ID
+	 * @param      integer  $oid Category ID
+	 * @param      integer  $state
+	 * @param      integer  $userId
 	 * @return     void
 	 */
 	public function publish($oid = NULL, $state = 1, $userId = 0)

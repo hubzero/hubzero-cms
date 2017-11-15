@@ -34,8 +34,6 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Tag (for citations) database model
@@ -71,7 +69,7 @@ class TagObject extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'	=> 'notempty',
+		//'name'    => 'notempty',
 		//'liaison' => 'notempty'
 	);
 
@@ -96,5 +94,4 @@ class TagObject extends Relational
 	{
 		return $this->belongsToOne('Tag', 'tagid', 'id');
 	}
-
 }

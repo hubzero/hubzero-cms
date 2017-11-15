@@ -49,12 +49,10 @@ class MediaControllerFile extends JControllerLegacy
 		{
 			return false;
 		}
-		if (
-			$_SERVER['CONTENT_LENGTH']>($params->get('upload_maxsize', 0) * 1024 * 1024) ||
-			$_SERVER['CONTENT_LENGTH']>(int)(ini_get('upload_max_filesize'))* 1024 * 1024 ||
-			$_SERVER['CONTENT_LENGTH']>(int)(ini_get('post_max_size'))* 1024 * 1024 ||
-			(($_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1))
-		)
+		if ($_SERVER['CONTENT_LENGTH']>($params->get('upload_maxsize', 0) * 1024 * 1024)
+		 || $_SERVER['CONTENT_LENGTH']>(int)(ini_get('upload_max_filesize'))* 1024 * 1024
+		 || $_SERVER['CONTENT_LENGTH']>(int)(ini_get('post_max_size'))* 1024 * 1024
+		 || (($_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1)))
 		{
 			Notify::warning(Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 			return false;
@@ -110,7 +108,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$object_file = new \Hubzero\Base\Object($file);
+			$object_file = new \Hubzero\Base\Obj($file);
 			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
 			if (in_array(false, $result, true))
 			{
@@ -232,7 +230,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			$fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
-			$object_file = new \Hubzero\Base\Object(array('filepath' => $fullPath));
+			$object_file = new \Hubzero\Base\Obj(array('filepath' => $fullPath));
 			if (is_file($fullPath))
 			{
 				// Trigger the onContentBeforeDelete event.

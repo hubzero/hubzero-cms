@@ -33,7 +33,7 @@
 namespace Components\Kb\Admin\Helpers;
 
 /**
- * Knowledgebase helper class for HTML
+ * Knowledge Base helper class for HTML
  */
 class Html
 {
@@ -70,4 +70,3 @@ class Html
 		return $out;
 	}
 }
-

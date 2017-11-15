@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+include_once \Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
 
 // Parse data
 $data = array();
@@ -51,30 +51,30 @@ $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
 $required = $this->pub->curation('blocks', $this->master->blockId, 'elements', $this->elementId)->params->required;
 
-$elName   		= 'element' . $this->elementId;
-$aliasmap 		= $this->manifest->params->aliasmap;
-$field 			= $this->manifest->params->field;
-$value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
-$size  			= isset($this->manifest->params->maxlength)
-				&& $this->manifest->params->maxlength
-				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
-$placeholder 	= isset($this->manifest->params->placeholder)
-				? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
-$editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
-$cols 			= isset($this->manifest->params->cols) ? $this->manifest->params->cols : 50;
-$rows 			= isset($this->manifest->params->rows) ? $this->manifest->params->rows : 6;
-$editorMacros 	= isset($this->manifest->params->editorMacros)
-				? $this->manifest->params->editorMacros : 0;
-$editorMinimal 	= isset($this->manifest->params->editorMinimal)
-				? $this->manifest->params->editorMinimal : 1;
-$editorImages 	= isset($this->manifest->params->editorImages)
-				? $this->manifest->params->editorImages : 0;
+$elName   = 'element' . $this->elementId;
+$aliasmap = $this->manifest->params->aliasmap;
+$field    = $this->manifest->params->field;
+$value    = $this->pub && isset($this->pub->$field) ? $this->pub->$field : null;
+$size = isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
+	? 'maxlength="' . $this->manifest->params->maxlength . '"'
+	: '';
+$placeholder = isset($this->manifest->params->placeholder)
+			? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
+$editor = $this->manifest->params->input == 'editor' ? 1 : 0;
+$cols   = isset($this->manifest->params->cols) ? $this->manifest->params->cols : 50;
+$rows   = isset($this->manifest->params->rows) ? $this->manifest->params->rows : 6;
+$editorMacros = isset($this->manifest->params->editorMacros)
+			? $this->manifest->params->editorMacros : 0;
+$editorMinimal = isset($this->manifest->params->editorMinimal)
+			? $this->manifest->params->editorMinimal : 1;
+$editorImages = isset($this->manifest->params->editorImages)
+			? $this->manifest->params->editorImages : 0;
 
 // Metadata field?
 if ($field == 'metadata')
 {
-	$field  = 'nbtag[' . $aliasmap . ']';
-	$value	= isset($data[$aliasmap]) ? $data[$aliasmap] : NULL;
+	$field = 'nbtag[' . $aliasmap . ']';
+	$value = isset($data[$aliasmap]) ? $data[$aliasmap] : null;
 }
 
 $class = $value ? ' be-complete' : '';
@@ -93,7 +93,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus(
 	'author'
 );
 
-$aboutText = $this->manifest->about ? $this->manifest->about : NULL;
+$aboutText = $this->manifest->about ? $this->manifest->about : null;
 
 if ($this->pub->_project->isProvisioned() && isset($this->manifest->aboutProv))
 {
@@ -109,13 +109,10 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
 $updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
 
-$elementUrl = Route::url($this->pub->link('editversion') . '&section='
-	. $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
-
+$elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
 ?>
 
-<div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo ' el-editor'; } ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed el-reviewed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $updated ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
+<div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo ' el-editor'; } ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed el-reviewed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $updated ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-aside"></div>
@@ -146,7 +143,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 
 				if ($shorten)
 				{
-					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
+					$about = \Hubzero\Utility\Str::truncate($aboutText, 200, array('html' => true));
 					$about.= ' <a href="#more-' . $elName . '" class="more-content">'
 								. Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . ' &raquo;</a>';
 					$about.= ' <div class="hidden">';
@@ -171,28 +168,21 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 				switch ($this->manifest->params->input)
 				{
 					case 'editor':
-
 						$classes  = $editorMinimal == 1 ? 'minimal ' : '';
 						$classes .= ' no-footer ';
 						$classes .= $editorImages == 1 ? 'images ' : '';
 						$classes .= $editorMacros == 1 ? 'macros ' : '';
-						$output .= App::get('editor')->display($field, $value
-							, '', '', $cols, $rows, false
-							, 'pub-' . $elName, null, null, array('class' => $classes));
-
+						$output .= App::get('editor')->display($field, $value, '', '', $cols, $rows, false, 'pub-' . $elName, null, null, array('class' => $classes));
 					break;
 
 					case 'textarea':
 						$value = preg_replace("/\r\n/", "\r", trim($value));
-						$output .= '<textarea name="' . $field . '" id="pub-' . $elName
-							. '" ' . $size.' ' . $placeholder . ' cols="' . $cols . '" rows="' . $rows . '">' . $value . '</textarea>';
+						$output .= '<textarea name="' . $field . '" id="pub-' . $elName . '" ' . $size.' ' . $placeholder . ' cols="' . $cols . '" rows="' . $rows . '">' . $value . '</textarea>';
 					break;
 
 					case 'text':
 					default:
-						$output .= '<input type="text" name="' . $field . '" id="pub-' . $elName
-							. '" value="' . $this->escape($value) . '" ' . $size .' ' . $placeholder . ' />';
-
+						$output .= '<input type="text" name="' . $field . '" id="pub-' . $elName . '" value="' . $this->escape($value) . '" ' . $size .' ' . $placeholder . ' />';
 					break;
 				}
 				$output .= '  </span>';

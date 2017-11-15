@@ -32,38 +32,39 @@
 
 namespace Components\Projects\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Projects Git helper class
  */
-class Git extends Object
+class Git extends Obj
 {
 	/**
 	 * Git path
 	 *
 	 * @var string
 	 */
-	private $_gitpath 		= null;
+	private $_gitpath = null;
 
 	/**
 	 * User ID
 	 *
 	 * @var integer
 	 */
-	private $_uid 			= null;
+	private $_uid = null;
 
 	/**
 	 * Full path to Git repo
 	 *
 	 * @var string
 	 */
-	private $_path 		    = null;
+	private $_path = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @param   string  $path
+	 * @return  void
 	 */
 	public function __construct($path = null)
 	{
@@ -83,11 +84,10 @@ class Git extends Object
 	/**
 	 * Init Git repository
 	 *
-	 * @param      string	$path	Repo path
-	 *
-	 * @return     string
+	 * @param   string  $path  Repo path
+	 * @return  string
 	 */
-	public function iniGit( $path = null)
+	public function iniGit($path = null)
 	{
 		if (!$path)
 		{
@@ -105,17 +105,22 @@ class Git extends Object
 		// Build .git repo
 		$gitRepoBase = $path . DS . '.git';
 
-		// Check to see if a commit needs to be made
-		$gitInitCheck = $this->callGit('status');
-		if (in_array('# Changes to be committed:', $gitInitCheck))
-		{
-			$this->callGit('commit -am "Initial commit"');
-		}
-
 		// Need to create .git repository if not yet there
 		if (!is_dir($gitRepoBase))
 		{
 			$this->callGit('init');
+		}
+		$gitInitCheck = $this->callGit('status');
+		// Check to see if there are untracked files, and start tracking them
+		if (is_array($gitInitCheck) && in_array('# Untracked files:', $gitInitCheck))
+		{
+			$this->callGit('add .');
+			$gitInitCheck = $this->callGit('status');
+		}
+		// Check to see if a commit needs to be made
+		if (in_array('# Changes to be committed:', $gitInitCheck))
+		{
+			$this->callGit('commit -am "Initial commit or version control enabled"');
 		}
 
 		return true;
@@ -124,11 +129,10 @@ class Git extends Object
 	/**
 	 * Make Git call
 	 *
-	 * @param      string	$call
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $call
+	 * @return  array   to be parsed
 	 */
-	public function callGit ($call = '')
+	public function callGit($call = '')
 	{
 		if (!$this->_path || !is_dir($this->_path) || !$call)
 		{
@@ -145,9 +149,8 @@ class Git extends Object
 	/**
 	 * Exec call
 	 *
-	 * @param      string	$call
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $call
+	 * @return  array   to be parsed
 	 */
 	protected function _exec($call = '')
 	{
@@ -166,12 +169,10 @@ class Git extends Object
 	/**
 	 * Run Git status
 	 *
-	 * @param      string	$path
-	 * @param      string	$status
-	 *
-	 * @return     string
+	 * @param   string  $status
+	 * @return  string
 	 */
-	public function gitStatus ($status = null)
+	public function gitStatus($status = null)
 	{
 		// Clean up
 		$this->cleanup();
@@ -183,7 +184,7 @@ class Git extends Object
 		{
 			foreach ($out as $line)
 			{
-				$status.=  '<br />' . $line;
+				$status .=  '<br />' . $line;
 			}
 		}
 
@@ -193,10 +194,7 @@ class Git extends Object
 	/**
 	 * Clean up junk system files
 	 *
-	 * @param      string	$path
-	 * @param      string	$status
-	 *
-	 * @return     string
+	 * @return  bool
 	 */
 	public function cleanup()
 	{
@@ -207,13 +205,12 @@ class Git extends Object
 	/**
 	 * Git commit
 	 *
-	 * @param      string	$commitMsg
-	 * @param      string	$author
-	 * @param      string	$date
-	 *
-	 * @return     void
+	 * @param   string  $commitMsg
+	 * @param   string  $author
+	 * @param   string  $date
+	 * @return  bool
 	 */
-	public function gitCommit ($commitMsg = '', $author = '', $date = '' )
+	public function gitCommit($commitMsg = '', $author = '', $date = '')
 	{
 		// Check if there is anything to commit
 		$changes = $this->callGit('diff --cached --name-only');
@@ -233,10 +230,9 @@ class Git extends Object
 	/**
 	 * Get author for Git commits
 	 *
-	 * @param      string 	$name	Author name
-	 * @param      string 	$email 	Author email
-	 *
-	 * @return     string
+	 * @param   string  $name   Author name
+	 * @param   string  $email  Author email
+	 * @return  string
 	 */
 	public function getGitAuthor($name = '', $email = '')
 	{
@@ -250,11 +246,11 @@ class Git extends Object
 			// Get author profile
 			$profile = \User::getInstance($this->_uid);
 
-			$name    = $profile->get('name');
-			$email   = $profile->get('email');
+			$name  = $profile->get('name');
+			$email = $profile->get('email');
 		}
 
-		$author  = escapeshellarg($name . ' <' . $email . '> ');
+		$author = escapeshellarg($name . ' <' . $email . '> ');
 
 		return $author;
 	}
@@ -262,13 +258,12 @@ class Git extends Object
 	/**
 	 * Add/update local repo item
 	 *
-	 * @param      string	$item		file path
-	 * @param      string	&$commitMsg
-	 * @param      boolean	$new
-	 *
-	 * @return     void
+	 * @param   string   $item        file path
+	 * @param   string   &$commitMsg
+	 * @param   boolean  $new
+	 * @return  bool
 	 */
-	public function gitAdd ($item = '', &$commitMsg = '', $new = true )
+	public function gitAdd($item = '', &$commitMsg = '', $new = true)
 	{
 		// Check for repo
 		if (!$this->_path || !is_dir($this->_path))
@@ -292,13 +287,12 @@ class Git extends Object
 	/**
 	 * Delete item from local repo
 	 *
-	 * @param      string	$item		file path
-	 * @param      string	$type		'file' or 'folder'
-	 * @param      string	&$commitMsg
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $item       file path
+	 * @param   string  $type       'file' or 'folder'
+	 * @param   string  &$commitMsg
+	 * @return  mixed
 	 */
-	public function gitDelete ($item = '', $type = 'file', &$commitMsg = '' )
+	public function gitDelete($item = '', $type = 'file', &$commitMsg = '')
 	{
 		// Check for repo
 		if (!$this->_path || !is_dir($this->_path))
@@ -341,14 +335,13 @@ class Git extends Object
 	/**
 	 * Move/rename item
 	 *
-	 * @param      string	$from		From file path
-	 * @param      string	$where		To file path
-	 * @param      string	$type		'file' or 'folder'
-	 * @param      string	&$commitMsg
-	 *
-	 * @return     integer
+	 * @param   string   $from        From file path
+	 * @param   string   $where       To file path
+	 * @param   string   $type        'file' or 'folder'
+	 * @param   string   &$commitMsg
+	 * @return  integer
 	 */
-	public function gitMove ($from = '', $where = '', $type = 'file', &$commitMsg = '' )
+	public function gitMove($from = '', $where = '', $type = 'file', &$commitMsg = '')
 	{
 		// Check for repo
 		if (!$this->_path || !is_dir($this->_path))
@@ -365,8 +358,7 @@ class Git extends Object
 		if ($type == 'folder' && $from != '' && $from != $where  && is_dir($this->_path . DS . $from))
 		{
 			// Make Git call
-			$out = $this->callGit(' mv ' . escapeshellarg($from)
-				. ' ' . escapeshellarg($where) . ' -f');
+			$out = $this->callGit(' mv ' . escapeshellarg($from) . ' ' . escapeshellarg($where) . ' -f');
 
 			$commitMsg .= 'Moved folder ' . escapeshellarg($from) . ' to ' . escapeshellarg($where) . "\n";
 			$moved++;
@@ -374,8 +366,7 @@ class Git extends Object
 		elseif ($type == 'file' && $from != '' && $from != $where  && file_exists($this->_path . DS . $from))
 		{
 			// Make Git call
-			$out = $this->callGit(' mv ' . escapeshellarg($from)
-				. ' ' . escapeshellarg($where) . ' -f');
+			$out = $this->callGit(' mv ' . escapeshellarg($from) . ' ' . escapeshellarg($where) . ' -f');
 
 			$commitMsg .= 'Moved file ' . escapeshellarg($from) . ' to ' . escapeshellarg($where) . "\n";
 			$moved++;
@@ -387,13 +378,12 @@ class Git extends Object
 	/**
 	 * Diff revisions
 	 *
-	 * @param      string  	$path
-	 * @param      array  	$old
-	 * @param      array  	$new
-	 *
-	 * @return     string
+	 * @param   string  $path
+	 * @param   array  	$old
+	 * @param   array  	$new
+	 * @return  mixed
 	 */
-	public function gitDiff ($old = array(), $new = array())
+	public function gitDiff($old = array(), $new = array())
 	{
 		// Check for repo
 		if (!$this->_path || !is_dir($this->_path))
@@ -417,8 +407,7 @@ class Git extends Object
 		}
 		else
 		{
-			$out = $this->callGit(' diff -M -C ' . $old['hash'] . ':' . $old['fpath'] . ' '
-			. $new['hash'] . ':' . $new['fpath']);
+			$out = $this->callGit(' diff -M -C ' . $old['hash'] . ':' . $old['fpath'] . ' ' . $new['hash'] . ':' . $new['fpath']);
 		}
 
 		return $out;
@@ -427,11 +416,10 @@ class Git extends Object
 	/**
 	 * Get file content
 	 *
-	 * @param      string  	$file		file path
-	 * @param      string  	$hash		Git hash
-	 * @param      string  	$target		Output content to path
-	 *
-	 * @return     void
+	 * @param   string  $file    file path
+	 * @param   string  $hash    Git hash
+	 * @param   string  $target  Output content to path
+	 * @return  bool
 	 */
 	public function getContent($file = '', $hash = '', $target = '')
 	{
@@ -439,8 +427,8 @@ class Git extends Object
 		{
 			return false;
 		}
-		$call = 'show  ' . $hash . ':' . escapeshellarg($file);
-		$call.= $target ? ' > ' . escapeshellarg($target) : '';
+		$call  = 'show  ' . $hash . ':' . escapeshellarg($file);
+		$call .= $target ? ' > ' . escapeshellarg($target) : '';
 
 		// Make Git call
 		$this->callGit($call);
@@ -451,13 +439,12 @@ class Git extends Object
 	/**
 	 * Show commit log detail
 	 *
-	 * @param      string  	$file		file path
-	 * @param      string  	$hash		Git hash
-	 * @param      string  	$return
-	 *
-	 * @return     string
+	 * @param   string  $file    file path
+	 * @param   string  $hash    Git hash
+	 * @param   string  $return
+	 * @return  mixed
 	 */
-	public function gitLog ($file = '', $hash = '', $return = 'date')
+	public function gitLog($file = '', $hash = '', $return = 'date')
 	{
 		if (!$this->_path || !is_dir($this->_path))
 		{
@@ -549,12 +536,11 @@ class Git extends Object
 	/**
 	 * Show logs in subdir
 	 *
-	 * @param      string  	$file		file path
-	 * @param      integer  $limit		limit results
-	 *
-	 * @return     string
+	 * @param   string   $file   file path
+	 * @param   integer  $limit	 limit results
+	 * @return  mixed
 	 */
-	public function gitLogAll ($subdir = '', $limit = 500)
+	public function gitLogAll($subdir = '', $limit = 500)
 	{
 		if (!$this->_path || !is_dir($this->_path))
 		{
@@ -598,12 +584,11 @@ class Git extends Object
 	/**
 	 * Parse response
 	 *
-	 * @param      array  	$out		Array of data to parse
-	 * @param      string  	$return
-	 *
-	 * @return     mixed
+	 * @param   array  	$out     Array of data to parse
+	 * @param   string  $return
+	 * @return  mixed
 	 */
-	public function parseLog ($out = array(), $return = 'date')
+	public function parseLog($out = array(), $return = 'date')
 	{
 		if (empty($out))
 		{
@@ -618,11 +603,11 @@ class Git extends Object
 				$data = explode("||", $arr[0]);
 
 				$entry = array();
-				$entry['date']  	= $data[0];
-				$entry['author'] 	= $data[1];
-				$entry['email'] 	= $data[2];
-				$entry['hash'] 		= $data[3];
-				$entry['message'] 	= substr($data[4], 0, 100);
+				$entry['date']    = $data[0];
+				$entry['author']  = $data[1];
+				$entry['email']   = $data[2];
+				$entry['hash']    = $data[3];
+				$entry['message'] = substr($data[4], 0, 100);
 				$response = $entry;
 				break;
 
@@ -634,7 +619,7 @@ class Git extends Object
 			case 'date':
 				$arr = explode("\t", $out[0]);
 				$timestamp = strtotime($arr[0]);
-				$response = date ('m/d/Y g:i A', $timestamp);
+				$response = date('m/d/Y g:i A', $timestamp);
 				break;
 
 			case 'num':
@@ -682,12 +667,11 @@ class Git extends Object
 	/**
 	 * Git checkout
 	 *
-	 * @param      string	$item
-	 * @param      string	$hash
-	 *
-	 * @return     boolean
+	 * @param   string  $item
+	 * @param   string  $hash
+	 * @return  boolean
 	 */
-	public function gitCheckout ($item = '' , $hash = '')
+	public function gitCheckout($item = '' , $hash = '')
 	{
 		// Check for repo
 		if (!$this->_path || !is_dir($this->_path))
@@ -786,7 +770,7 @@ class Git extends Object
 	/**
 	 * List deleted files
 	 *
-	 * @return     array to be parsed
+	 * @return  array  to be parsed
 	 */
 	public function listDeleted()
 	{
@@ -808,11 +792,11 @@ class Git extends Object
 				$data = explode("||", $line);
 
 				$entry = array();
-				$entry['date']  	= $data[0];
-				$entry['author'] 	= $data[1];
-				$entry['email'] 	= $data[2];
-				$entry['hash'] 		= $data[3];
-				$entry['message']	= $data[4];
+				$entry['date']    = $data[0];
+				$entry['author']  = $data[1];
+				$entry['email']   = $data[2];
+				$entry['hash']    = $data[3];
+				$entry['message'] = $data[4];
 			}
 			elseif (isset($entry) && $line != '' && !isset($collector[$line]))
 			{
@@ -829,7 +813,7 @@ class Git extends Object
 		foreach ($collector as $filename => $gitData)
 		{
 			// File is still there - skip
-			if (is_file( $this->_path . DS . $filename))
+			if (is_file($this->_path . DS . $filename))
 			{
 				continue;
 			}
@@ -847,11 +831,11 @@ class Git extends Object
 			}
 
 			$files[$filename] = array(
-				'hash'			=> $gitData['hash'],
-				'author'		=> $gitData['author'],
-				'date'			=> date('c', $gitData['date']),
-				'size'			=> null,
-				'message'		=> null
+				'hash'    => $gitData['hash'],
+				'author'  => $gitData['author'],
+				'date'    => date('c', $gitData['date']),
+				'size'    => null,
+				'message' => null
 			);
 		}
 
@@ -861,10 +845,14 @@ class Git extends Object
 	/**
 	 * Get changes for sync
 	 *
-	 * @return     array
+	 * @param   string  $localPath
+	 * @param   string  $synced
+	 * @param   string  $localDir
+	 * @param   array   $localRenames
+	 * @param   array   $connections
+	 * @return  array
 	 */
-	public function getChanges ($localPath = '', $synced = '',
-		$localDir = '', &$localRenames, $connections)
+	public function getChanges($localPath = '', $synced = '', $localDir = '', &$localRenames, $connections)
 	{
 		// Collector array
 		$locals = array();
@@ -887,24 +875,24 @@ class Git extends Object
 				// We are only interested in last local change on the file
 				if (!isset($locals[$filename]))
 				{
-					$time = strtotime(date('c', time() )); // Important! needs to be local time, NOT UTC
+					$time = strtotime(date('c', time())); // Important! needs to be local time, NOT UTC
 
 					$locals[$filename] = array(
-						'status' 		=> 'A',
-						'time' 			=> $time,
-						'type' 			=> $type,
-						'remoteid' 		=> 0,
-						'converted' 	=> 0,
-						'rParent'		=> null,
-						'local_path'	=> $filename,
-						'title'			=> basename($filename),
-						'author'		=> null,
-						'modified'		=> gmdate('Y-m-d H:i:s', $time),
-						'synced'		=> null,
-						'fullPath' 		=> $localPath . DS . $filename,
-						'mimeType'		=> Filesystem::mimetype($localPath . DS . $filename),
-						'md5' 			=> null,
-						'rename'		=> null
+						'status'     => 'A',
+						'time'       => $time,
+						'type'       => $type,
+						'remoteid'   => 0,
+						'converted'  => 0,
+						'rParent'    => null,
+						'local_path' => $filename,
+						'title'      => basename($filename),
+						'author'     => null,
+						'modified'   => gmdate('Y-m-d H:i:s', $time),
+						'synced'     => null,
+						'fullPath'   => $localPath . DS . $filename,
+						'mimeType'   => Filesystem::mimetype($localPath . DS . $filename),
+						'md5'        => null,
+						'rename'     => null
 					);
 				}
 			}
@@ -913,9 +901,9 @@ class Git extends Object
 		else
 		{
 			// Collect
-			$since 			= $synced != 1 ? ' --since="' . $synced . '"' : '';
-			$where 			= $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';
-			$changes 		= $this->callGit( 'rev-list ' . $where . $since);
+			$since   = $synced != 1 ? ' --since="' . $synced . '"' : '';
+			$where   = $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';
+			$changes = $this->callGit('rev-list ' . $where . $since);
 
 			// Empty repo or no changes?
 			if (empty($changes) || trim(substr($changes[0], 0, 5)) == 'usage')
@@ -936,12 +924,12 @@ class Git extends Object
 					$author = $this->gitLog('', $hash, 'author');
 
 					// Get filename and change
-					$fileinfo = $this->callGit('diff --name-status ' . $hash . '^ ' . $hash );
+					$fileinfo = $this->callGit('diff --name-status ' . $hash . '^ ' . $hash);
 
 					// First commit
 					if (!empty($fileinfo) && !empty($fileinfo[0]) && substr($fileinfo[0], 0, 5) == 'fatal')
 					{
-						$fileinfo = $this->callGit('log --pretty=oneline --name-status --root' );
+						$fileinfo = $this->callGit('log --pretty=oneline --name-status --root');
 
 						if (!empty($fileinfo))
 						{
@@ -962,7 +950,7 @@ class Git extends Object
 						if ($n == 'f')
 						{
 							// First file in repository
-							$finfo = $this->callGit('log --pretty=oneline --name-status ' . $hash );
+							$finfo = $this->callGit('log --pretty=oneline --name-status ' . $hash);
 							$status = 'A';
 							$filename = trim(substr($finfo[1], 1));
 							break;
@@ -1016,22 +1004,22 @@ class Git extends Object
 						}
 
 						// Specific local directory is synced?
-						$lFilename = $localDir ? preg_replace( "/^" . $localDir. "\//", "", $filename) : $filename;
+						$lFilename = $localDir ? preg_replace("/^" . $localDir. "\//", "", $filename) : $filename;
 
-						$conn 		= isset($connections['paths']) ? $connections['paths'] : null;
-						$search 	= $status == 'R' || $status == 'W' ? $rename : $filename;
-						$found 		= isset($conn[$search]) && $conn[$search]['type'] == $type ? $conn[$search] : false;
+						$conn   = isset($connections['paths']) ? $connections['paths'] : null;
+						$search = $status == 'R' || $status == 'W' ? $rename : $filename;
+						$found  = isset($conn[$search]) && $conn[$search]['type'] == $type ? $conn[$search] : false;
 
 						// Rename/move connection not found  - check against new name in case of repeat sync
 						if (!$found && ($status == 'R' || $status == 'W'))
 						{
-							$found 	= isset($conn[$filename]) && $conn[$filename]['type'] == $type ? $conn[$filename] : false;
+							$found = isset($conn[$filename]) && $conn[$filename]['type'] == $type ? $conn[$filename] : false;
 						}
 
-						$remoteid 	= $found ? $found['remote_id'] : null;
-						$converted 	= $found ? $found['converted']: 0;
-						$rParent	= $found ? $found['rParent'] : null;
-						$syncT		= $found ? $found['synced'] : null;
+						$remoteid  = $found ? $found['remote_id'] : null;
+						$converted = $found ? $found['converted']: 0;
+						$rParent   = $found ? $found['rParent'] : null;
+						$syncT     = $found ? $found['synced'] : null;
 
 						$md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename)
 							? hash_file('md5', $localPath . DS . $filename) : null;
@@ -1042,21 +1030,21 @@ class Git extends Object
 						if (!isset($locals[$lFilename]))
 						{
 							$locals[$lFilename] = array(
-								'status' 		=> $status,
-								'time' 			=> $time,
-								'type' 			=> $type,
-								'remoteid' 		=> $remoteid,
-								'converted' 	=> $converted,
-								'rParent'		=> $rParent,
-								'local_path'	=> $filename,
-								'title'			=> basename($filename),
-								'author'		=> $author,
-								'modified' 		=> gmdate('Y-m-d H:i:s', $time),
-								'synced'		=> $syncT,
-								'fullPath' 		=> $localPath . DS . $filename,
-								'mimeType'		=> $mimeType,
-								'md5' 			=> $md5Checksum,
-								'rename'		=> $rename
+								'status'     => $status,
+								'time'       => $time,
+								'type'       => $type,
+								'remoteid'   => $remoteid,
+								'converted'  => $converted,
+								'rParent'    => $rParent,
+								'local_path' => $filename,
+								'title'      => basename($filename),
+								'author'     => $author,
+								'modified'   => gmdate('Y-m-d H:i:s', $time),
+								'synced'     => $syncT,
+								'fullPath'   => $localPath . DS . $filename,
+								'mimeType'   => $mimeType,
+								'md5'        => $md5Checksum,
+								'rename'     => $rename
 							);
 
 							$timestamps[] = $time;
@@ -1076,12 +1064,12 @@ class Git extends Object
 	/**
 	 * Make Git recognize empty folder
 	 *
-	 * @param      string	$path
-	 * @param      string	$dir
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $dir
+	 * @param   bool    $commit
+	 * @param   string  $commitMsg
+	 * @return  bool
 	 */
-	public function makeEmptyFolder ( $dir = '', $commit = true, $commitMsg = '' )
+	public function makeEmptyFolder($dir = '', $commit = true, $commitMsg = '')
 	{
 		// Check for repo
 		if (!$this->_path || !is_dir($this->_path))
@@ -1096,7 +1084,7 @@ class Git extends Object
 		$this->_exec('touch ' . escapeshellarg($dir) . '/.gitignore ');
 
 		// Git add
-		$this->gitAdd($dir, $commitMsg );
+		$this->gitAdd($dir, $commitMsg);
 
 		if ($commit == false)
 		{
@@ -1115,19 +1103,17 @@ class Git extends Object
 	/**
 	 * Get local file history
 	 *
-	 * @param      string	$file
-	 * @param      string	$rev
-	 * @param      string	$since
-	 *
-	 * @return     array of hashes
+	 * @param   string  $file
+	 * @param   string  $rev
+	 * @param   string  $since
+	 * @return  array   array of hashes
 	 */
 	public function getLocalFileHistory($file = '', $rev = '', $since = '')
 	{
 		$hashes = array();
 
 		// Get local file history
-		$out = $this->callGit('log --follow --pretty=format:%H ' . $since . ' ' . $rev . ' '
-			. escapeshellarg($file));
+		$out = $this->callGit('log --follow --pretty=format:%H ' . $since . ' ' . $rev . ' ' . escapeshellarg($file));
 
 		if (empty($out) || count($out) == 0)
 		{
@@ -1149,15 +1135,13 @@ class Git extends Object
 	/**
 	 * Get details on file history
 	 *
-	 * @param      string	$local_path			file path
-	 * @param      array 	&$versions			Versions collector array
-	 * @param      array 	&$timestamps		Collector array
-	 * @param      integer	$original			Source file?
-	 *
-	 * @return     array of version info
+	 * @param   string   $local_path   file path
+	 * @param   array    &$versions    Versions collector array
+	 * @param   array    &$timestamps  Collector array
+	 * @param   integer  $original     Source file?
+	 * @return  array    array of version info
 	 */
-	public function sortLocalRevisions($local_path = '',
-		&$versions = array(), &$timestamps = array(), $original = 0 )
+	public function sortLocalRevisions($local_path = '', &$versions = array(), &$timestamps = array(), $original = 0)
 	{
 		// Get local file history
 		$hashes = $this->getLocalFileHistory($local_path, '--');
@@ -1171,14 +1155,14 @@ class Git extends Object
 			$h = 1;
 
 			// Get all names for this file
-			$renames 		= $this->gitLog($local_path, '', 'rename');
-			$currentName	= $local_path;
-			$rename			= 0;
+			$renames     = $this->gitLog($local_path, '', 'rename');
+			$currentName = $local_path;
+			$rename      = 0;
 
 			foreach ($hashes as $hash)
 			{
-				$order 	= $h == 1 ? 'first' : '';
-				$order 	= $h == count($hashes) ? 'last' : $order;
+				$order = $h == 1 ? 'first' : '';
+				$order = $h == count($hashes) ? 'last' : $order;
 
 				// Dealing with renames
 				$abbr = substr($hash, 0, 7);
@@ -1193,12 +1177,12 @@ class Git extends Object
 					$currentName = $name;
 				}
 
-				$gitData 	= $this->gitLog($name, $hash, 'combined');
-				$date		= isset($gitData['date']) ? $gitData['date'] : null;
-				$author 	= isset($gitData['author']) ? $gitData['author'] : null;
-				$email 		= isset($gitData['email']) ? $gitData['email'] : null;
-				$message 	= $this->gitLog($name, $hash, 'message');
-				$content	= $binary ? null : $this->gitLog($name, $hash, 'content');
+				$gitData = $this->gitLog($name, $hash, 'combined');
+				$date    = isset($gitData['date']) ? $gitData['date'] : null;
+				$author  = isset($gitData['author']) ? $gitData['author'] : null;
+				$email   = isset($gitData['email']) ? $gitData['email'] : null;
+				$message = $this->gitLog($name, $hash, 'message');
+				$content = $binary ? null : $this->gitLog($name, $hash, 'content');
 
 				// SFTP?
 				if (strpos($message, '[SFTP]') !== false)
@@ -1212,27 +1196,27 @@ class Git extends Object
 				}
 
 				$revision = array(
-					'date' 			=> $date,
-					'author' 		=> $author,
-					'email'			=> $email,
-					'hash' 			=> $hash,
-					'file' 			=> $serveas,
-					'base' 			=> $local_path,
-					'remote'		=> null,
-					'local'			=> true,
-					'content'		=> '',
-					'preview'		=> null,
-					'original'		=> $original,
-					'hide'			=> 0,
-					'message'		=> $message,
-					'rename'		=> $rename,
-					'name'			=> $name,
-					'change'		=> '',
-					'movedTo'		=> '',
-					'size'			=> '',
-					'order'			=> $order,
-					'count'			=> count($hashes),
-					'commitStatus'	=> $this->gitLog($name, $hash, 'namestatus')
+					'date'         => $date,
+					'author'       => $author,
+					'email'        => $email,
+					'hash'         => $hash,
+					'file'         => $serveas,
+					'base'         => $local_path,
+					'remote'       => null,
+					'local'        => true,
+					'content'      => '',
+					'preview'      => null,
+					'original'     => $original,
+					'hide'         => 0,
+					'message'      => $message,
+					'rename'       => $rename,
+					'name'         => $name,
+					'change'       => '',
+					'movedTo'      => '',
+					'size'         => '',
+					'order'        => $order,
+					'count'        => count($hashes),
+					'commitStatus' => $this->gitLog($name, $hash, 'namestatus')
 				);
 
 				if (in_array($revision['commitStatus'], array('A', 'M')))
@@ -1246,8 +1230,8 @@ class Git extends Object
 					$revision['content'] = self::filterASCII($content, false, false, 10000);
 				}
 
-				$versions[] 	= $revision;
-				$timestamps[]	= strtotime($date);
+				$versions[]   = $revision;
+				$timestamps[] = strtotime($date);
 				$h++;
 			}
 		}
@@ -1256,12 +1240,11 @@ class Git extends Object
 	/**
 	 * Filter ASCII
 	 *
-	 * @param      array	$out
-	 * @param      boolean	$diff	Format as diff?
-	 * @param      boolean	$color	Color changes?
-	 * @param      int		$max	Max number of lines
-	 *
-	 * @return     string
+	 * @param   array    $out
+	 * @param   boolean  $diff   Format as diff?
+	 * @param   boolean  $color  Color changes?
+	 * @param   int      $max    Max number of lines
+	 * @return  string
 	 */
 	public static function filterASCII($out = array(), $diff = false, $color = false, $max = 200)
 	{
@@ -1338,19 +1321,18 @@ class Git extends Object
 	/**
 	 * Determine if last change was a rename
 	 *
-	 * @param      string	$file		file path
-	 * @param      string	$hash		Git hash
-	 * @param      string	$since
-	 *
-	 * @return     array to be parsed
+	 * @param   string  $file   file path
+	 * @param   string  $hash   Git hash
+	 * @param   string  $since
+	 * @return  array   to be parsed
 	 */
-	public function getRename ($file = '', $hash = '', $since = '' )
+	public function getRename($file = '', $hash = '', $since = '')
 	{
 		$renames = $this->gitLog($file, '', 'rename');
 		$rename = '';
 
 		$hashes = $this->getLocalFileHistory($file);
-		$new	= $this->getLocalFileHistory($file, '', $since);
+		$new    = $this->getLocalFileHistory($file, '', $since);
 		$fetch  = 1;
 
 		if (count($renames) > 0)
@@ -1399,10 +1381,10 @@ class Git extends Object
 	/**
 	 * Parse status for each file revision
 	 *
-	 * @param      array	$versions	Array of file version data
-	 * @return     array
+	 * @param   array  $versions  Array of file version data
+	 * @return  array
 	 */
-	public function getVersionStatus( $versions = array())
+	public function getVersionStatus($versions = array())
 	{
 		if (count($versions) == 0)
 		{
@@ -1412,9 +1394,9 @@ class Git extends Object
 		// Go through versions in reverse (from oldest to newest)
 		for ($k = (count($versions) - 1); $k >= 0; $k--)
 		{
-			$current 	= $versions[$k];
-			$previous 	= ($k - 1) >= 0 ? $versions[$k - 1] : null;
-			$next 		= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : null;
+			$current  = $versions[$k];
+			$previous = ($k - 1) >= 0 ? $versions[$k - 1] : null;
+			$next     = ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : null;
 
 			// Deleted?
 			if ($current['commitStatus'] == 'D')
@@ -1496,9 +1478,9 @@ class Git extends Object
 	/**
 	 * Show text content
 	 *
-	 * @param      string  	$fpath		file name or commit hash
-	 *
-	 * @return     string
+	 * @param   string   $fpath  file name or commit hash
+	 * @param   integer  $max
+	 * @return  string
 	 */
 	public function showTextContent($fpath = '', $max = 10000)
 	{

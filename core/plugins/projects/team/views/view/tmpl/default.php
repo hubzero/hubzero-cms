@@ -139,7 +139,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 					</td>
 					<?php if ($this->count_groups) { ?>
 						<td class="priority-2">
-							<?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span>
+							<?php echo $owner->groupdesc ? \Hubzero\Utility\Str::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span>
 						</td>
 					<?php } ?>
 					<td class="priority-4">
@@ -185,4 +185,4 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 
 <?php if ((!$this->model->access('manager') || $this->managers_count > 1) && !$this->setup && !$this->model->groupOwner()) { ?>
 	<p class="extras"><span class="rightfloat"><a href="<?php echo Route::url($this->model->link('team') . '&action=quit'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT'); ?></a></span></p>
-<?php } ?>
+<?php }

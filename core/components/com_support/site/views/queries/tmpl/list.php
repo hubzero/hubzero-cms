@@ -48,15 +48,10 @@ if (count($this->folders) > 0) { ?>
 			</span>
 			<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
 				<?php
-				if (!isset($folder->queries))
-				{
-					$folder->queries = array();
-				}
-
-				foreach ($folder->queries as $query) { ?>
+				foreach ($folder->queries()->order('ordering', 'asc')->rows() as $query) { ?>
 					<li id="query_<?php echo $this->escape($query->id); ?>" <?php if ($this->show == $query->id) { echo ' class="active"'; }?>>
 						<a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id . (intval($this->show) != $query->id ? '&search=' : '')); ?>">
-							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
+							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo Components\Support\Models\Ticket::countWithQuery($query, array()); ?></span>
 						</a>
 						<span class="query-options">
 							<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">

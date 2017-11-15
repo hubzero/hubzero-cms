@@ -100,16 +100,16 @@ class Project extends \JTable
 
 		if (isset($filters['timed']) && isset($filters['active']))
 		{
-			$query .= " JOIN #__project_activity AS pa
-						ON pa.projectid=p.id AND pa.state != 2 ";
-			$query .= "AND pa.recorded >= " . $this->_db->quote($filters['timed']);
+			$query .= " INNER JOIN #__activity_recipients AS pa
+						ON pa.scope='project' AND pa.scope_id=p.id AND pa.state != 2
+						AND pa.created >= " . $this->_db->quote($filters['timed']);
 		}
 
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid);
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
-			$query .=  " JOIN #__users as x ON x.id=p.owned_by_user ";
+			$query .=  ($admin ? ' LEFT' : '') . " JOIN #__users as x ON x.id=p.owned_by_user ";
 			$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 		}
 
@@ -188,16 +188,29 @@ class Project extends \JTable
 			{
 				if ($filterby == 'archived')
 				{
-					$query .= " WHERE p.state = 3 AND p.private = 0 ";
+					$query .= " WHERE p.state = 3 AND p.private <= 0 ";
 				}
 				else
 				{
+					if ($filterby == 'public')
+					{
+						$privacy = " AND p.private = 0 ";
+					}
+					else if ($filterby == 'open')
+					{
+						$privacy = " AND p.private < 0 ";
+					}
+					else
+					{
+						$privacy = " AND p.private <= 0 ";
+					}
+
 					$query .= $uid
-							? " WHERE ((p.state = 1 AND p.private = 0)
+							? " WHERE ((p.state = 1 " . $privacy . ")
 								OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND ((p.state = 1
 								AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
 								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state != 3)))) "
-							: " WHERE p.state = 1 AND p.private = 0 ";
+							: " WHERE p.state = 1 " . $privacy;
 				}
 			}
 		}
@@ -275,10 +288,6 @@ class Project extends \JTable
 		{
 			$query .= " AND p.setup_stage >= $setup_complete ";
 		}
-		if (isset($filters['timed']) && isset($filters['active']))
-		{
-			$query .= " GROUP BY p.id ";
-		}
 
 		if (!$filters['count'])
 		{
@@ -311,6 +320,10 @@ class Project extends \JTable
 
 				case 'created':
 					$sort .= 'p.created ' . $sortdir . ' ';
+					break;
+
+				case 'grant_status':
+					$sort .= 'grant_status ' . $sortdir . ' ';
 					break;
 
 				case 'type':
@@ -380,6 +393,7 @@ class Project extends \JTable
 		$updates  = isset($filters['updates']) && $filters['updates'] == 1 ? 1: 0;
 		$getowner = isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
 		$activity = isset($filters['activity']) && $filters['activity'] == 1 ? 1: 0;
+		$grantStatus = isset($filters['sortby']) && $filters['sortby'] == 'grant_status' ? true: false;
 
 		$query  = "SELECT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 
@@ -387,20 +401,29 @@ class Project extends \JTable
 		{
 			$query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
 		}
-		$query .= " ,(SELECT t.type FROM #__project_types as t WHERE t.id=p.type) as projecttype ";
+		$query .= ", (SELECT t.type FROM `#__project_types` as t WHERE t.id=p.type) as projecttype ";
 
 		if ($updates)
 		{
-			$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa
-						WHERE pa.projectid=p.id AND pa.recorded >= o.lastvisit
-						AND o.lastvisit IS NOT NULL AND o.id IS NOT NULL
-						AND pa.state != 2 AND (pa.managers_only = 0
-						OR (pa.managers_only=1 AND o.role=1))) as newactivity ";
+			$query .= ", (
+						SELECT COUNT(*) FROM `#__activity_recipients` AS pa
+						WHERE pa.scope='project'
+						AND pa.scope_id=p.id
+						AND pa.created >= o.lastvisit
+						AND o.lastvisit IS NOT NULL
+						AND o.id IS NOT NULL
+						AND pa.state != 2
+					) as newactivity ";
 		}
 		if ($activity)
 		{
-			$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa
-						WHERE pa.projectid=p.id AND pa.state != 2) as activity ";
+			$query .= ", (SELECT COUNT(*) FROM `#__activity_recipients` AS pa
+						WHERE pa.scope='project' AND pa.scope_id=p.id AND pa.state != 2) as activity ";
+		}
+
+		if ($grantStatus)
+		{
+			$query .= ", SUBSTR(SUBSTRING_INDEX(p.params, 'grant_status=', -1), 1, 1) as grant_status ";
 		}
 		$query .= $this->buildQuery($filters, $admin, $uid, $showall, $setup_complete);
 
@@ -463,8 +486,8 @@ class Project extends \JTable
 	{
 		$query  = "SELECT DISTINCT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
 		$query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
-		$query .= ", (SELECT COUNT(*) FROM #__project_activity AS pa WHERE pa.projectid=p.id
-					AND pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
+		$query .= ", (SELECT COUNT(*) FROM `#__activity_recipients` AS pa WHERE pa.scope='project' AND pa.scope_id=p.id
+					AND pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND o.id IS NOT NULL AND pa.state != 2) as newactivity ";
 		$query .= " FROM #__project_owners as po, $this->_tbl AS p";
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
@@ -497,11 +520,11 @@ class Project extends \JTable
 			$query .= " AND p.owned_by_group != '$groupid' ";
 		}
 
-		$query .= $uid
+		/*$query .= $uid
 				? " AND (p.state = 1 OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
 					AND ((p.state = 1 AND p.setup_stage = " . $setup_complete . ")
 					OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . ")))) "
-				: " AND p.state = 1 ";
+				: " AND p.state = 1 ";*/
 
 		// Sorting
 		if (!isset($filters['count']) or $filters['count'] == 0)
@@ -607,16 +630,20 @@ class Project extends \JTable
 			$query .= " AND p.provisioned=0";*/
 			$query  = "SELECT DISTINCT p.id
 					FROM `#__project_owners` AS po
-					INNER JOIN $this->_tbl AS p ON p.id=po.projectid
-					WHERE p.provisioned=0
+					INNER JOIN $this->_tbl AS p ON p.id=po.projectid ";
+			if ($uid)
+			{
+				$query .= " LEFT JOIN `#__project_owners` AS o ON p.id=o.projectid ";
+			}
+			$query .= "WHERE p.provisioned=0
 					AND po.status=1
 					AND po.groupid=" . $this->_db->quote($groupid);
 			if ($uid)
 			{
-				$query .= " AND po.userid=" . $this->_db->quote($uid);
+				$query .= " AND o.userid=" . $this->_db->quote($uid);
 			}
 			$query .= $active == 1
-					? " AND p.state != 2 "
+					? " AND p.state NOT IN (2, 3) "
 					: " AND p.state = 2 ";
 
 			$this->_db->setQuery($query);
@@ -644,19 +671,20 @@ class Project extends \JTable
 	{
 		if (!empty($projects) && $uid != 0)
 		{
-			$query  = "SELECT COUNT(*) FROM `#__project_activity` AS pa ";
-			$query .= " JOIN `#__project_owners` as o ON o.projectid=pa.projectid AND o.userid=" . $this->_db->quote($uid);
-			$query .= " WHERE pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
-						AND pa.state !=2 AND pa.recorded >= o.added";
-			$query .= " AND pa.projectid IN (";
-
 			$tquery = array();
 			foreach ($projects as $project)
 			{
 				$tquery[] = $this->_db->quote($project);
 			}
 
-			$query .= implode(',', $tquery) . ") ";
+			$query = "SELECT COUNT(*)
+					FROM `#__activity_recipients` AS pa
+					INNER JOIN `#__project_owners` as o ON o.projectid=pa.scope_id AND o.userid=" . $this->_db->quote($uid) . "
+					WHERE pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
+					AND pa.state !=2 AND pa.created >= o.added
+					AND pa.scope='project'
+					AND pa.scope_id IN (" . implode(',', $tquery) . ")";
+
 			$this->_db->setQuery($query);
 
 			return $this->_db->loadResult();

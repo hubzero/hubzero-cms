@@ -16,12 +16,18 @@ defined('_HZEXEC_') or die();
  */
 class NewsfeedsHelper
 {
+	/**
+	 * Extension name.
+	 *
+	 * @var  string
+	 */
 	public static $extension = 'com_newsfeeds';
 
 	/**
 	 * Configure the Linkbar.
 	 *
-	 * @param	string	The name of the active view.
+	 * @param   string  $vName  The name of the active view.
+	 * @return  void
 	 */
 	public static function addSubmenu($vName)
 	{
@@ -35,6 +41,7 @@ class NewsfeedsHelper
 			Route::url('index.php?option=com_categories&extension=com_newsfeeds'),
 			$vName == 'categories'
 		);
+
 		if ($vName=='categories')
 		{
 			Toolbar::title(
@@ -47,13 +54,13 @@ class NewsfeedsHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	int		The category ID.
-	 *
-	 * @return	Object
+	 * @param   integer  $categoryId  The category ID.
+	 * @param   integer  $newsfeedId  The newsfeed ID.
+	 * @return  object   Obj
 	 */
 	public static function getActions($categoryId = 0, $newsfeedId = 0)
 	{
-		$result	= new \Hubzero\Base\Object;
+		$result	= new \Hubzero\Base\Obj;
 
 		if (empty($categoryId))
 		{
@@ -70,7 +77,7 @@ class NewsfeedsHelper
 
 		foreach ($actions as $action)
 		{
-			$result->set($action->name,	User::authorise($action->name, $assetName));
+			$result->set($action->name, User::authorise($action->name, $assetName));
 		}
 
 		return $result;

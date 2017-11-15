@@ -56,15 +56,15 @@ if ($results)
 {
 	foreach ($results as $result)
 	{
-		$views[]     = "[new Date('20" . $result->year . '-' . \Hubzero\Utility\String::pad($result->month, 2) . "-01')," . $result->page_views . "]";
+		$views[]     = "[new Date('20" . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . "-01')," . $result->page_views . "]";
 		$viewshighest = $result->page_views > $viewshighest ? $result->page_views : $viewshighest;
-		$downloads[] = "[new Date('20" . $result->year . '-' . \Hubzero\Utility\String::pad($result->month, 2) . "-01')," . $result->primary_accesses . "]";
+		$downloads[] = "[new Date('20" . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . "-01')," . $result->primary_accesses . "]";
 		$downhighest = $result->primary_accesses > $downhighest ? $result->primary_accesses : $downhighest;
 	}
 
 	$current = end($results);
 }
-$current->datetime = $current->year . '-' . \Hubzero\Utility\String::pad($current->month, 2) . '-01 00:00:00';
+$current->datetime = $current->year . '-' . \Hubzero\Utility\Str::pad($current->month, 2) . '-01 00:00:00';
 
 $this->css();
 $this->js('flot/jquery.colorhelpers.min.js', 'system')
@@ -100,7 +100,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						{
 							$height = ($viewshighest) ? round(($result->page_views / $viewshighest)*100) : 0;
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\String::pad($result->month, 2) . ': ' . $result->page_views . '">';
+							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->page_views . '">';
 							$sparkline .= number_format($result->page_views);
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";
@@ -131,7 +131,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						{
 							$height = ($downhighest) ? round(($result->primary_accesses / $downhighest)*100) : 0;
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\String::pad($result->month, 2) . ': ' . $result->primary_accesses . '">';
+							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->primary_accesses . '">';
 							$sparkline .= number_format($result->primary_accesses);
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";

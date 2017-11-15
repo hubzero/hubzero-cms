@@ -34,18 +34,18 @@ namespace Components\Resources\Models;
 
 use Components\Resources\Tables;
 use Components\Resources\Helpers;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Component;
 use Request;
 use Event;
 use Lang;
 
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'resource.php');
+include_once dirname(__DIR__) . DS . 'tables' . DS . 'resource.php';
 
 /**
  * Information retrieval for items/info linked to a resource
  */
-class Resource extends Object
+class Resource extends Obj
 {
 	/**
 	 * Resource ID
@@ -59,7 +59,7 @@ class Resource extends Object
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Container for properties
@@ -71,8 +71,8 @@ class Resource extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      integer  $oid  Resource ID or alias
+	 * @param      unknown  $revision
 	 * @return     void
 	 */
 	public function __construct($oid, $revision=null)
@@ -154,8 +154,8 @@ class Resource extends Object
 	/**
 	 * Returns a reference to a wiki page object
 	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
+	 * @param      integer  $oid
+	 * @param      unknown  $revision
 	 * @return     object
 	 */
 	static function &getInstance($oid=null, $revision=null)
@@ -584,7 +584,7 @@ class Resource extends Object
 	/**
 	 * Check if the resource is a tool or not
 	 *
-	 * @param      mixed $idx Index value
+	 * @param      array  $group
 	 * @return     array
 	 */
 	public function inGroup($group=null)
@@ -743,7 +743,7 @@ class Resource extends Object
 							if ($contributor->surname || $contributor->givenName)
 							{
 								$name = stripslashes($contributor->givenName) . ' ';
-								if ($contributor->middleName != NULL)
+								if ($contributor->middleName != null)
 								{
 									$name .= stripslashes($contributor->middleName) . ' ';
 								}
@@ -837,7 +837,10 @@ class Resource extends Object
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
 	 *
-	 * @param      mixed $idx Index value
+	 * @param      mixed    $idx Index value
+	 * @param      integer  $limit
+	 * @param      integer  $start
+	 * @param      string   $order
 	 * @return     array
 	 */
 	public function children($idx=null, $limit=0, $start=0, $order='ordering')
@@ -861,12 +864,24 @@ class Resource extends Object
 				 . " ORDER BY "; //a.ordering ASC, a.grouping ASC";
 			switch ($order)
 			{
-				case 'ordering': $sql .= "a.ordering ASC, a.grouping ASC";    break;
-				case 'date':     $sql .= "r.publish_up DESC";                 break;
-				case 'title':    $sql .= "r.title ASC, r.publish_up";         break;
-				case 'rating':   $sql .= "r.rating DESC, r.times_rated DESC"; break;
-				case 'ranking':  $sql .= "r.ranking DESC";                    break;
-				case 'author':   $sql .= "author";                            break;
+				case 'ordering':
+					$sql .= "a.ordering ASC, a.grouping ASC";
+					break;
+				case 'date':
+					$sql .= "r.publish_up DESC";
+					break;
+				case 'title':
+					$sql .= "r.title ASC, r.publish_up";
+					break;
+				case 'rating':
+					$sql .= "r.rating DESC, r.times_rated DESC";
+					break;
+				case 'ranking':
+					$sql .= "r.ranking DESC";
+					break;
+				case 'author':
+					$sql .= "author";
+					break;
 			}
 			/*if ($limit != 0)
 			{
@@ -1033,7 +1048,7 @@ class Resource extends Object
 		{
 			$this->tags = array();
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 			$rt = new Helpers\Tags($this->resource->id);
 			if ($results = $rt->tags('list')) // get_tags_on_object
@@ -1104,19 +1119,21 @@ class Resource extends Object
 
 		if (!isset($this->citations))
 		{
-			$this->citations = array();
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+			$cc = \Components\Citations\Models\Citation::all();
 
-			$cc = new \Components\Citations\Tables\Citation($this->_db);
+			$a = \Components\Citations\Models\Association::blank()->getTableName();
+			$c = $cc->getTableName();
 
-			if ($results = $cc->getCitations('resource', $this->resource->id))
-			{
-				$this->citations = $results;
-			}
+			$this->citations = $cc
+				->join($a, $a . '.cid', $c . '.id', 'inner')
+				->whereEquals($c . '.published', 1)
+				->whereEquals($a . '.tbl', 'resource')
+				->whereEquals($a . '.oid', $this->resource->id)
+				->order($c . '.affiliated', 'asc')
+				->order($c . '.year', 'desc')
+				->rows();
 		}
 
 		if ($idx !== null && is_numeric($idx))
@@ -1243,7 +1260,7 @@ class Resource extends Object
 		{
 			$content = stripslashes($this->resource->fulltxt);
 			$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
-			$content = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
+			$content = str_replace(array('="/site/', '="site/'), '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site/', $content);
 
 			$this->set('description', trim($content));
 		}
@@ -1294,7 +1311,7 @@ class Resource extends Object
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 
 		return $content;

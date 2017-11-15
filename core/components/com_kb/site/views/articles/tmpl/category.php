@@ -113,7 +113,9 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 
 						if (isset($this->filters['search']) && $this->filters['search'])
 						{
-							$articles->where('title', 'LIKE', '%' . $this->filters['search'] . '%')->orWhere('fulltxt', 'LIKE', '%' . $this->filters['search'] . '%');
+							$articles->whereLike('title', $this->filters['search'], 1)
+								->orWhereLike('fulltxt', $this->filters['search'], 1)
+								->resetDepth();
 						}
 						if ($this->filters['sort'] == 'popularity')
 						{

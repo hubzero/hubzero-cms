@@ -32,11 +32,11 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Store\Helpers\PErmissions::getActions('item');
+$canDo = Components\Store\Helpers\Permissions::getActions('item');
 
-$text = (!$this->store_enabled) ? ' (store is disabled)' : '';
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store.png');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER') . ': ' . $text, 'store');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -44,13 +44,6 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('item');
-
-$created = NULL;
-if (intval($this->row->created) <> 0)
-{
-	$created = Date::of($this->row->created)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'));
-}
-
 ?>
 
 <script type="text/javascript">
@@ -70,11 +63,11 @@ function submitbutton(pressbutton)
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
-				<legend><span><?php echo isset($this->row->id) ? Lang::txt('COM_STORE_STORE') . ' ' . Lang::txt('COM_STORE_ITEM') . ' #' . $this->row->id . ' ' . Lang::txt('COM_STORE_DETAILS') : Lang::txt('COM_STORE_NEW_ITEM'); ?></span></legend>
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 				<div class="input-wrap">
 					<label for="field-category"><?php echo Lang::txt('COM_STORE_CATEGORY'); ?>:</label><br />
-					<select name="category" id="field-category">
+					<select name="fields[category]" id="field-category">
 						<option value="service"<?php if ($this->row->category == 'service') { echo ' selected="selected"'; } ?>>Service</option>
 						<option value="wear"<?php if ($this->row->category == 'wear') { echo ' selected="selected"'; } ?>>Wear</option>
 						<option value="office"<?php if ($this->row->category == 'office') { echo ' selected="selected"'; } ?>>Office</option>
@@ -83,46 +76,65 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-price"><?php echo Lang::txt('COM_STORE_PRICE'); ?>:</label>
-					<input type="text" name="price" id="field-price" value="<?php echo $this->escape(stripslashes($this->row->price)); ?>" />
+					<input type="text" name="fields[price]" id="field-price" value="<?php echo $this->escape(stripslashes($this->row->price)); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_STORE_TITLE'); ?>:</label>
-					<input type="text" name="title" id="field-title" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_STORE_WARNING_DESCR'); ?>">
 					<label for="field-description"><?php echo Lang::txt('COM_STORE_DESCRIPTION'); ?>:</label>
-					<textarea name="description" id="field-description" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
+					<textarea name="fields[description]" id="field-description" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
 					<span class="hint"><?php echo Lang::txt('COM_STORE_WARNING_DESCR'); ?></span>
 				</div>
 			</fieldset>
 		</div>
 		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_STORE_ID'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('id', 0); ?>
+							<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />
+							<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_STORE_CREATED'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('created'); ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_STORE_OPTIONS'); ?></span></legend>
 
 				<div class="input-wrap">
-					<input type="checkbox" name="published" id="field-published" value="1" <?php echo ($this->row->published) ? 'checked="checked"' : ''; ?> />
+					<input type="checkbox" name="fields[published]" id="field-published" value="1" <?php echo ($this->row->published) ? 'checked="checked"' : ''; ?> />
 					<label for="field-published"><?php echo Lang::txt('COM_STORE_PUBLISHED'); ?></label>
 				</div>
 				<div class="input-wrap">
-					<input type="checkbox" name="available" id="field-available" value="1" <?php echo ($this->row->available) ? 'checked="checked"' : ''; ?> />
+					<input type="checkbox" name="fields[available]" id="field-available" value="1" <?php echo ($this->row->available) ? 'checked="checked"' : ''; ?> />
 					<label for="field-available"><?php echo ucfirst(Lang::txt('COM_STORE_INSTOCK')); ?></label>
 				</div>
 				<div class="input-wrap">
-					<input type="checkbox" name="featured" id="field-featured" value="1" <?php echo ($this->row->featured) ? 'checked="checked"' : ''; ?> />
+					<input type="checkbox" name="fields[featured]" id="field-featured" value="1" <?php echo ($this->row->featured) ? 'checked="checked"' : ''; ?> />
 					<label for="field-featured"><?php echo Lang::txt('COM_STORE_FEATURED'); ?></label>
 				</div>
 				<div class="input-wrap">
 					<label for="field-sizes"><?php echo Lang::txt('COM_STORE_AV_SIZES'); ?>:</label><br />
-					<input type="text" name="sizes" id="field-sizes" size="15" value="<?php echo (isset($this->row->size)) ? $this->escape(stripslashes($this->row->size)) : '' ; ?>" /><br /><?php echo Lang::txt('COM_STORE_SAMPLE_SIZES'); ?>:
+					<input type="text" name="sizes" id="field-sizes" size="15" value="<?php echo $this->row->params->get('sizes', ''); ?>" /><br /><?php echo Lang::txt('COM_STORE_SAMPLE_SIZES'); ?>:
 				</div>
 			</fieldset>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_STORE_PICTURE'); ?></span></legend>
 			<?php
-				if ($this->row->id != 0) {
+				if ($this->row->get('id')) {
 			?>
-				<iframe style="width: 100%" height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&id=' . $this->row->id); ?>"></iframe>
+				<iframe style="width: 100%" height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&id=' . $this->row->get('id')); ?>"></iframe>
 			<?php
 				} else {
 					echo '<p class="alert">' . Lang::txt('COM_STORE_MUST_BE_SAVED_BEFORE_PICTURE') . '</p>';
@@ -132,7 +144,6 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

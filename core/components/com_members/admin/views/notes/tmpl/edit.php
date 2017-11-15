@@ -42,21 +42,21 @@ Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_NOTES') 
 // If not checked out, can save the item.
 if (!$checkedOut && ($canDo->get('core.edit') || (count(User::getAuthorisedCategories('com_users', 'core.create')))))
 {
-	Toolbar::apply('note.apply');
-	Toolbar::save('note.save');
+	Toolbar::apply();
+	Toolbar::save();
 }
 
 if (!$checkedOut && (count(User::getAuthorisedCategories('com_users', 'core.create'))))
 {
-	Toolbar::save2new('note.save2new');
+	Toolbar::save2new();
 }
 
 // If an existing item, can save to a copy.
 if (!$this->row->isNew() && (count(User::getAuthorisedCategories('com_users', 'core.create')) > 0))
 {
-	Toolbar::save2copy('note.save2copy');
+	Toolbar::save2copy();
 }
-Toolbar::cancel('note.cancel');
+Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('note');
 
@@ -98,7 +98,7 @@ function submitbutton(pressbutton)
 					<label for="field-category_id"><?php echo Lang::txt('COM_MEMBERS_FIELD_CATEGORY'); ?>:</label>
 					<select name="fields[catid]" id="field-category_id">
 						<option value="0"><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-						<?php echo Html::select('options', Html::category('options', 'com_users.notes'), 'value', 'text', $this->row->get('category_id')); ?>
+						<?php echo Html::select('options', Html::category('options', 'com_members'), 'value', 'text', $this->row->get('category_id')); ?>
 					</select>
 				</div>
 

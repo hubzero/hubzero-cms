@@ -32,26 +32,26 @@
 
 namespace Components\Collections\Models\Following;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Abstract model class for following
  */
-abstract class Base extends Object
+abstract class Base extends Obj
 {
 	/**
 	 * Varies
 	 *
 	 * @var object
 	 */
-	private $_obj = NULL;
+	private $_obj = null;
 
 	/**
 	 * File path
 	 *
 	 * @var string
 	 */
-	private $_image = NULL;
+	private $_image = null;
 
 	/**
 	 * URL
@@ -140,6 +140,7 @@ abstract class Base extends Object
 	/**
 	 * Get the URL for this item
 	 *
+	 * @param   string  $what
 	 * @return  string
 	 */
 	public function link($what='base')

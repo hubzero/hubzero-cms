@@ -32,7 +32,7 @@
 
 namespace Components\Resources\Site\Controllers;
 
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 use Components\Resources\Tables\MediaTracking;
 use Components\Resources\Tables\MediaTrackingDetailed;
 use Hubzero\Component\SiteController;
@@ -45,7 +45,7 @@ use Lang;
 use App;
 
 // Include need media tracking library
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
 
 /**
  * Resources controller class for media
@@ -73,11 +73,11 @@ class Media extends SiteController
 
 		if ($resource < 1 || substr($resource, 0, 4) == '9999')
 		{
-			$row = Resource::blank();
+			$row = Entry::blank();
 		}
 		else
 		{
-			$row = Resource::oneOrFail($resource);
+			$row = Entry::oneOrFail($resource);
 		}
 		$row->set('id', $resource);
 
@@ -160,11 +160,11 @@ class Media extends SiteController
 
 		if ($resource < 1 || substr($resource, 0, 4) == '9999')
 		{
-			$row = Resource::blank();
+			$row = Entry::blank();
 		}
 		else
 		{
-			$row = Resource::oneOrFail($resource);
+			$row = Entry::oneOrFail($resource);
 		}
 		$row->set('id', $resource);
 
@@ -229,11 +229,11 @@ class Media extends SiteController
 
 		if ($resource < 1 || substr($resource, 0, 4) == '9999')
 		{
-			$row = Resource::blank();
+			$row = Entry::blank();
 		}
 		else
 		{
-			$row = Resource::oneOrFail($resource);
+			$row = Entry::oneOrFail($resource);
 		}
 		$row->set('id', $resource);
 

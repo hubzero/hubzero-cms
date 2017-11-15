@@ -160,10 +160,10 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<?php echo Html::input('token'); ?>
 
 			<p class="submit">
-				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_BLOG_SAVE'); ?>" />
+				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('JSAVE'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo $this->entry->get('id') ? Route::url($this->entry->link()) : Route::url('index.php?option=' . $this->option); ?>">
-					<?php echo Lang::txt('COM_BLOG_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 		</form>

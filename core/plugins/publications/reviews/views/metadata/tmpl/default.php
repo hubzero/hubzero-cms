@@ -33,8 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-
 <p class="review">
-	<a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_NUM_REVIEWS',count($this->reviews)); ?></a>
+	<a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_NUM_REVIEWS', $this->reviews); ?></a>
 	(<a href="<?php echo $this->url2; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_THIS'); ?></a>)
 </p>

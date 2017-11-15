@@ -32,7 +32,7 @@
 
 namespace Components\Members\Models\Import\Handler;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 
 include_once dirname(dirname(__DIR__)) . '/tags.php';
@@ -40,7 +40,7 @@ include_once dirname(dirname(__DIR__)) . '/tags.php';
 /**
  * Member Tags import handler
  */
-class Tags extends Object
+class Tags extends Obj
 {
 	/**
 	 * Return a sample for import header and content

@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('PLG_RESOURCES') . ': '.Lang::txt('PLG_RESOURCES_SPONSOR').': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('PLG_RESOURCES') . ': '.Lang::txt('PLG_RESOURCES_SPONSOR').': ' . $text, 'resources');
 Toolbar::save();
 Toolbar::cancel();
 

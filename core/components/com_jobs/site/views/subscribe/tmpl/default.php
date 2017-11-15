@@ -136,43 +136,55 @@ defined('_HZEXEC_') or die();
 
 					$unitsChoice = \Components\Jobs\Helpers\Html::formSelect('units_' . $this->services[$i]->id, $units_select, '', "option units");
 					$iniprice = $thissub ? 0 : $this->services[$i]->unitprice;
-
-					$html .= '<div class="bindtogether product">' . "\n";
-					$html .= '  <input class="option service" type="radio" name="serviceid" id="service_' . $this->services[$i]->id . '" value="' . $this->services[$i]->id . '" ';
-					if ($thissub or ($this->subscription->serviceid==0 && $i==0) )
-					{
-						$html .= 'checked="checked"';
+					?>
+					<div class="bindtogether product">
+					<input class="option service" type="radio" name="serviceid" id="service_<?php echo $this->services[$i]->id; ?>" value="<?php echo $this->services[$i]->id; ?>"
+					<?php if ($thissub or ($this->subscription->serviceid==0 && $i==0)) {
+						echo 'checked="checked"';
 					}
-					$html .= ' /> ';
-					$html .= $this->services[$i]->title . ' - <span class="priceline">' . $this->services[$i]->currency . ' ' . $this->services[$i]->unitprice.'  ' . Lang::txt( 'COM_JOBS_PER' ) . ' ' . $this->services[$i]->unitmeasure . '</span>' . "\n";
-					$html .= '<span> ' . $this->services[$i]->description.'</span>' . "\n";
+					echo $this->services[$i]->title . ' - '; ?>
+					<span class="priceline"><?php echo $this->services[$i]->currency . ' ' . $this->services[$i]->unitprice.'  ' . Lang::txt( 'COM_JOBS_PER' ) . ' ' . $this->services[$i]->unitmeasure; ?></span>
+					<span><?php echo $this->services[$i]->description; ?></span>
 
-					$html .= '<div class="subdetails" id="plan_' . $this->services[$i]->id . '">' . "\n";
-					$html .= $thissub ? $expires : '';
-					if ($thissub or ($this->subscription->serviceid==0 && $i==0))
-					{
-						$html .= \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid), Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid));
+					<div class="subdetails" id="plan_<?php echo $this->services[$i]->id; ?>">
+					<?php if ($thissub) {
+						echo  $expires;
+					} else {
+						echo '';
 					}
+					if ($thissub or ($this->subscription->serviceid==0 && $i==0)) {
+						\Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid), Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid));
+					}
+					?>
+					<label>
+					<?php if ($thissub) { 
+						echo Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW'); 
+					} else {
+						echo Lang::txt('COM_JOBS_ACTION_SIGN_UP');
+					}
+					echo ' ' . Lang::txt('for') . ' ';
+					echo $unitsChoice;
+					echo $this->services[$i]->unitmeasure; ?>
+					(s) </label>
+					<span class="totalprice"><?php echo Lang::txt( 'COM_JOBS_SUBSCRIBE_YOUR_TOTAL' ) . ' ';
+					if ($thissub) {
+						echo strtolower(Lang::txt( 'COM_JOBS_NEW' )) . ' ';
+					} else {
+						echo '';
+					}
+					echo Lang::txt('COM_JOBS_SUBSCRIBE_PAYMENT_WILL_BE'); ?>
+					<span class="no"><?php echo $this->services[$i]->currency; ?></span> 
+					<span id="injecttotal_<?php echo $this->services[$i]->id; ?>"><?php echo $iniprice; ?></span>
+					</span>
 
-					$html .= '<label> ';
-					$html .= $thissub ? Lang::txt( 'COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW' ) : Lang::txt( 'COM_JOBS_ACTION_SIGN_UP' );
-					$html .= ' ' . Lang::txt( 'for' ) . ' ' . "\n";
-					$html .= $unitsChoice;
-					$html .= $this->services[$i]->unitmeasure.'(s) </label>' . "\n";
-					$html .= '<span class="totalprice">' . Lang::txt( 'COM_JOBS_SUBSCRIBE_YOUR_TOTAL' ) . ' ';
-					$html .= $thissub ? strtolower(Lang::txt( 'COM_JOBS_NEW' )) . ' ' : '';
-					$html .= Lang::txt( 'COM_JOBS_SUBSCRIBE_PAYMENT_WILL_BE' ) . ' <span class="no">' . $this->services[$i]->currency . '</span> <span id="injecttotal_' . $this->services[$i]->id . '"> ' . $iniprice . '</span>';
-					$html .= '.</span>' . "\n";
+					<!-- GOOGLE Checkout (TBD) -->
+					<input type="hidden" class="product-price" value="<?php echo $this->escape($this->services[$i]->unitprice); ?>" />
+					<input type="hidden" class="product-title" value="<?php echo $this->escape($this->services[$i]->title); ?>" />
 
-					// GOOGLE Checkout (TBD)
-					$html .= '<input type="hidden" class="product-price" value="' . $this->escape($this->services[$i]->unitprice) . '" />' . "\n";
-					$html .= '<input type="hidden" class="product-title" value="' . $this->escape($this->services[$i]->title) . '" />' . "\n";
-
-					$html .= '</div>' . "\n";
-					$html .= '</div>' . "\n";
-					$html .= '<input type="hidden" name="price_' . $this->services[$i]->id . '" id="price_' . $this->services[$i]->id . '" value="' . $this->escape($this->services[$i]->unitprice) . '" />' . "\n";
-				}
-				echo $html;
+					</div>
+					</div>
+					<input type="hidden" name="price_<?php echo $this->services[$i]->id; ?>" id="price_<?php echo $this->services[$i]->id; ?>" value="<?php echo $this->escape($this->services[$i]->unitprice); ?>" />
+				<?php }	
 				$btn = $this->subscription->id ? Lang::txt( 'COM_JOBS_SUBSCRIPTION_SAVE' ) : Lang::txt( 'COM_JOBS_SUBSCRIPTION_PROCESS_ORDER' );
 			?>
 			<label for="contact">

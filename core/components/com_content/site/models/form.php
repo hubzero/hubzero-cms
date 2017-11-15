@@ -55,7 +55,7 @@ class ContentModelForm extends ContentModelArticle
 	 *
 	 * @return	mixed	Content item data object on success, false on failure.
 	 */
-	public function &getItem($pk = NULL)
+	public function &getItem($pk = null)
 	{
 		// Initialise variables.
 		$itemId = $pk;
@@ -75,7 +75,7 @@ class ContentModelForm extends ContentModelArticle
 		}
 
 		$properties = $table->getProperties(1);
-		$value = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
+		$value = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Obj');
 
 		// Convert attrib field to Registry.
 		$value->params = new \Hubzero\Config\Registry($value->attribs);

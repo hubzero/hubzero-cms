@@ -28,8 +28,6 @@
 
 namespace Components\Storefront\Helpers;
 
-use Hubzero\Base\Object;
-
 
 class Serials
 {
@@ -46,7 +44,6 @@ class Serials
 		$sql .= " WHERE srStatus='available' AND srSId = " . $db->quote($sId);
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 		$serialsCount = $db->loadResult();
 
@@ -67,7 +64,6 @@ class Serials
 		$sql .= " WHERE srStatus='available' AND srSId = " . $db->quote($sId) . " LIMIT " . intval($qty);
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 
 		return true;
@@ -87,7 +83,6 @@ class Serials
 		$sql .= " WHERE srStatus='reserved' AND srSId = " . $db->quote($sId) . " LIMIT " . intval($qty);
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 
 		return true;
@@ -107,10 +102,8 @@ class Serials
 		$sql .= " WHERE srStatus='reserved' AND srSId = " . $db->quote($sId) . " LIMIT " . intval($qty);
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 		$serials = $db->loadObjectList();
-		//print_r($serials); die;
 
 		// Mark serials as used
 		$serialIds = '0';
@@ -125,7 +118,6 @@ class Serials
 		$sql .= " WHERE srId IN (" . $serialIds . ")";
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 
 		return $serialNumbers;
@@ -181,7 +173,6 @@ class Serials
 		}
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 		if ($filters['return'] == 'count')
 		{
@@ -209,7 +200,6 @@ class Serials
 		$sql .= " WHERE srStatus='available' AND srId IN (" . $sIds . ")";
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 		$deleted = $db->getNumRows();
 
@@ -241,14 +231,12 @@ class Serials
 		$serial = trim($serial);
 
 		$db = \App::get('db');
-		$sql = "INSERT IGNORE INTO #__storefront_serials";
+		$sql = "INSERT IGNORE INTO `#__storefront_serials`";
 		$sql .= " SET `srStatus` = 'available', `srNumber` = '{$serial}', `srSId` = {$sId}";
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 
 		return $db->getAffectedRows();
 	}
 }
-

@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 Request::setVar('hidemainmenu', true);
 
-$canDo = \Components\Redirect\Helpers\Redirect::getActions();
+$canDo = Components\Redirect\Helpers\Redirect::getActions();
 
 Toolbar::title(Lang::txt('COM_REDIRECT_MANAGER_LINK'), 'redirect');
 // If not checked out, can save the item.
@@ -65,7 +65,6 @@ Toolbar::spacer();
 Toolbar::help('link');
 
 // Include the HTML helpers.
-Html::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
@@ -94,6 +93,15 @@ Html::behavior('keepalive');
 					<label id="fields-new_url-lbl" for="fields-new_url"><?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_LABEL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 					<input type="text" name="fields[new_url]" id="fields-new_url" value="<?php echo $this->escape($this->row->new_url); ?>" class="inputbox required" maxlength="255" />
 					<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?></span>
+				</div>
+
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('JFIELD_PUBLISHED_DESC'); ?>">
+					<label for="fields-status_code"><?php echo Lang::txt('COM_REDIRECT_STATUS'); ?></label>
+					<select name="fields[status_code]" id="fields-status_code">
+						<option value="404"<?php if ((!$this->row->new_url && !$this->row->status_code) || $this->row->status_code == 404) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_REDIRECT_STATUS_NOTFOUND'); ?></option>
+						<option value="301"<?php if ($this->row->status_code == 301) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_REDIRECT_STATUS_PERMANENT'); ?></option>
+						<option value="302"<?php if (($this->row->new_url && !$this->row->status_code) || $this->row->status_code == 302) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_REDIRECT_STATUS_FOUND'); ?></option>
+					</select>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_DESC'); ?>">

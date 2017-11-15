@@ -86,13 +86,18 @@ class TitleIndexMacro extends WikiMacro
 
 		if ($et)
 		{
-			$pages->whereLike('pagename', strtolower($et) . '%');
+			$pages->whereLike('pagename', strtolower($et));
 		}
 
 		if ($this->domain && substr(strtolower($et), 0, 4) != 'help')
 		{
 			$pages->whereEquals('scope', $this->domain);
 			$pages->whereEquals('scope_id', $this->domain_id);
+		}
+		else
+		{
+			$pages->whereEquals('scope', 'site');
+			$pages->whereEquals('scope_id', 0);
 		}
 
 		switch ($sort)

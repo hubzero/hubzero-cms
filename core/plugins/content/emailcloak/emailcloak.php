@@ -49,7 +49,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	public function onContentPrepare($context, &$row, &$params, $page = 0)
 	{
 		// Don't run this plugin when the content is being indexed
-		if ($context == 'com_finder.indexer' || $row instanceof \Hubzero\Base\Object)
+		if ($context == 'com_finder.indexer' || $row instanceof \Hubzero\Base\Obj)
 		{
 			return true;
 		}
@@ -69,7 +69,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	 * @param   string  $text  The text enclosed by the link.
 	 * @return  string  A regular expression that matches a link containing the parameters.
 	 */
-	protected function _getPattern ($link, $text)
+	protected function _getPattern($link, $text)
 	{
 		$pattern = '~(?:<a ([^>]*)href\s*=\s*"mailto:' . $link . '"([^>]*))>' . $text . '</a>~i';
 		return $pattern;
@@ -113,14 +113,14 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 * Check for presence of {emailcloak=off} which is explicits disables this
 		 * bot for the item.
 		 */
-		if (Hubzero\Utility\String::contains($text, '{emailcloak=off}') !== false)
+		if (Hubzero\Utility\Str::contains($text, '{emailcloak=off}') !== false)
 		{
 			$text = str_ireplace('{emailcloak=off}', '', $text);
 			return true;
 		}
 
 		// Simple performance check to determine whether bot should process further.
-		if (Hubzero\Utility\String::contains($text, '@') === false)
+		if (Hubzero\Utility\Str::contains($text, '@') === false)
 		{
 			return true;
 		}

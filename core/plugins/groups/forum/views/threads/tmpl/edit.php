@@ -200,10 +200,12 @@ $this->css()
 					<input class="option" type="hidden" name="notify" id="field-notify" value="1" />
 				<?php } ?>
 
-				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
-					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
-				</label>
+				<?php if ($this->config->get('allow_anonymous')) { ?>
+					<label for="field-anonymous" id="comment-anonymous-label">
+						<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+					</label>
+				<?php } ?>
 
 				<p class="submit">
 					<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />

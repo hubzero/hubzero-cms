@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('curation.js');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'), 'publications');
 Toolbar::save('saveblock');
 Toolbar::cancel();
 
@@ -78,11 +78,17 @@ function submitbutton(pressbutton)
 		<div class="input-wrap">
 			<label for="field-newblock"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SELECT_BLOCK'); ?>:</label>
 			<select name="newblock" id="field-newblock">
-			<?php foreach ($this->blocks as $sBlock) {
-				if (!in_array($sBlock->block, $blockSelection['active']) || $sBlock->maximum > 1) {  ?>
-				<option value="<?php echo $sBlock->block; ?>"><?php echo $sBlock->block; ?></option>
-			<?php  }
-			} ?>
+			<?php
+			foreach ($this->blocks as $sBlock)
+			{
+				if (!in_array($sBlock->block, $blockSelection['active']) || $sBlock->maximum > 1)
+				{
+					?>
+					<option value="<?php echo $sBlock->block; ?>"><?php echo $sBlock->block; ?></option>
+					<?php
+				}
+			}
+			?>
 			</select>
 		</div>
 		<div class="input-wrap">

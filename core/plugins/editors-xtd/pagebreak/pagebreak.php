@@ -51,6 +51,7 @@ class plgButtonPagebreak extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display the button
 	 *
+	 * @param  string  $name  Value of name
 	 * @return array A two element array of (imageName, textToInsert)
 	 */
 	public function onDisplay($name)
@@ -61,7 +62,7 @@ class plgButtonPagebreak extends \Hubzero\Plugin\Plugin
 
 		Html::behavior('modal');
 
-		$button = new \Hubzero\Base\Object;
+		$button = new \Hubzero\Base\Obj;
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', Lang::txt('PLG_EDITORSXTD_PAGEBREAK_BUTTON_PAGEBREAK'));

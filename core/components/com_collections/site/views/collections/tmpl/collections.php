@@ -36,6 +36,11 @@ defined('_HZEXEC_') or die();
 $base  = 'index.php?option=' . $this->option;
 $mode  = Request::getWord('mode', 'grid');
 
+if (!User::isGuest())
+{
+	$foo = $this->editor('description', '', 35, 5, 'field_description', array('class' => 'minimal no-footer'));
+}
+
 $this->css()
      ->js('jquery.masonry')
      ->js('jquery.infinitescroll')
@@ -64,7 +69,7 @@ $this->css()
 	?>
 
 	<section class="section filters">
-		<field class="input-group">
+		<fieldset class="input-group">
 			<span class="input-cell">
 				<label for="filter-search">
 					<span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>

@@ -45,12 +45,10 @@ $citation = $this->citation;
 $profile = User::getInstance($citation->uid);
 
 //get citation type
-$ct = new \Components\Citations\Tables\Type($database);
-$type = $ct->getType($citation->type);
+$type = $citation->relatedType;
 
 //get citation sponsors
-$cs = new \Components\Citations\Tables\Sponsor($database);
-$sponsors = $cs->getSponsorsForCitationWithId($citation->id);
+$sponsors = $citation->sponsors;
 
 //determine the separator
 $urlSeparator = PHP_EOL;
@@ -129,19 +127,10 @@ $showBadges = $config->get('citation_show_badges', 'yes');
 
 //get internal associations
 $associationLinks = array();
-foreach ($this->associations as $a)
+foreach ($citation->resources()->whereEquals('#_citations_assoc.tbl', 'resource')->rows() as $a)
 {
-	if ($a->tbl == 'resource')
-	{
-		$sql = "SELECT * FROM `#__resources` WHERE id=" . $a->oid;
-		$database->setQuery($sql);
-		$resource = $database->loadObject();
 
-		if (is_object($resource))
-		{
-			$associationLinks[] = '<a href="'.Route::url('index.php?option=com_resources&id='.$a->oid).'">'.$resource->title.'</a>';
-		}
-	}
+	$associationLinks[] = '<a href="'.Route::url($a->link()).'">'.$a->title.'</a>';
 }
 
 //get the sub area we are trying to load
@@ -213,8 +202,7 @@ $area = Request::getVar('area', 'about');
 
 		<div class="citation-citation">
 			<?php
-				$citationsFormat = new \Components\Citations\Tables\Format( $this->database );
-				$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
+				$template = \Components\Citations\Models\Format::getDefault();
 
 				$cf = new \Components\Citations\Helpers\Format();
 				$cf->setTemplate($template);
@@ -299,7 +287,7 @@ $area = Request::getVar('area', 'about');
 				<tr>
 					<th><?php echo Lang::txt('COM_CITATIONS_TYPE'); ?></th>
 					<td>
-						<a href="<?php echo Route::url('index.php?option=com_citations&task=browse&type='.$type[0]['id']); ?>"><?php echo $type[0]['type_title']; ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_citations&task=browse&type='.$type->get('id')); ?>"><?php echo $type->get('type_title'); ?></a>
 					</td>
 				</tr>
 
@@ -653,7 +641,7 @@ $area = Request::getVar('area', 'about');
 						}
 						?>
 						<a target="_blank" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
-							<img src="/components/com_citations/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
+							<img src="<?php echo Request::base(true); ?>/core/components/com_citations/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
 						</a>
 					</td>
 				</tr>
@@ -685,7 +673,7 @@ $area = Request::getVar('area', 'about');
 	$hubUrl = rtrim(Request::base(), '/');
 
 	//get the type of resource for coins
-	switch (strtolower($type[0]['type_title']))
+	switch (strtolower($type->get('type_title')))
 	{
 		case 'book':
 		case 'book section':

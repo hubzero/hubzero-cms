@@ -59,6 +59,14 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="author ASC">Author</option>
 					<option value="journal ASC">Journal</option>
 				</field>
+				<field name="labeling_scheme" type="list" default="both" label="Labeling Scheme" description="Select the metadata information to be shown.">
+					<option value="both">Record ID and Citation Type</option>
+					<option value="numtype">Sequential Number and Citation Type</option>
+					<option value="id">Record ID</option>
+					<option value="number">Sequential Number</option>
+					<option value="type">Citation Type</option>
+					<option value="none">None</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

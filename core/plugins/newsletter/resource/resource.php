@@ -33,9 +33,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'orm' . DS . 'resource.php');
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Plugin class for Newsletter resources
@@ -63,7 +63,7 @@ class plgNewsletterResource extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGetLatest($num = 5, $dateField = 'created', $sort = 'DESC')
 	{
-		$model = Resource::getLatest($num, $dateField, $sort)->rows()->toObject();
+		$model = Entry::getLatest($num, $dateField, $sort)->rows()->toObject();
 
 		$objects = array();
 

@@ -43,11 +43,14 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 	 * Article is passed by reference, but after the save, so no changes will be saved.
 	 * Method is called right after the content is saved
 	 *
-	 * @param   string The context of the content passed to the plugin
+	 * @param  string  $content The context of the content passed to the plugin
+	 * @param  object  $article
+	 * @param  boolean $isNew Unnecessary?
+	 * @return multi
 	 */
 	public function onContentBeforeSave($context, &$article, $isNew)
 	{
-		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
 		{
 			return;
 		}
@@ -84,7 +87,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		if (!($article instanceof \Hubzero\Base\Object) || $context == 'com_content.article')
+		if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
 		{
 			return;
 		}

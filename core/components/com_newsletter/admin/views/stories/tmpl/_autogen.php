@@ -37,7 +37,7 @@ $canDo = Components\Newsletter\Helpers\Permissions::getActions('story');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
 
-Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)) . ': ' . $text, 'addedit');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)) . ': ' . $text, 'newsletter');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();

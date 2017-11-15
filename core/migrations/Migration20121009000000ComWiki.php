@@ -16,7 +16,7 @@ class Migration20121009000000ComWiki extends Base
 		{
 			$query = "UPDATE `#__plugins` SET element='wiki' WHERE element='topics';\n";
 		}
-		else
+		else if ($this->db->tableExists('#__extensions'))
 		{
 			$query = "UPDATE `#__extensions` SET element='wiki' WHERE element='topics';\n";
 		}

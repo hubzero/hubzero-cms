@@ -1,11 +1,9 @@
 {
     "name": "hubzero/cms",
     "description": "HUBzero CMS",
-    "version": "1.1.4",
     "type": "project",
     "keywords": [ "cms" , "hubzero" ],
     "homepage": "http://hubzero.org",
-    "time": "2016-07-11 10:13:22",
     "license": "LGPL-2.1",
     "authors": [
         {
@@ -16,7 +14,7 @@
     ],
     "support": {
         "email": "support@hubzero.org",
-        "issues": "http://hubzero.org/support/ticket/new",
+        "issues": "http://help.hubzero.org/support/ticket/new",
         "source": "http://hubzero.org/download"
     },
     "repositories": [
@@ -27,7 +25,7 @@
     ],
     "require": {
         "ezyang/htmlpurifier": "4.5.0",
-        "facebook/php-sdk-v4": "4.0.11",
+        "facebook/graph-sdk": "^5.0",
         "tecnickcom/tcpdf": "6.0.017",
         "leafo/lessphp": "0.5.0",
         "swiftmailer/swiftmailer": "v5.0.2",
@@ -41,7 +39,7 @@
         "pelago/emogrifier": "dev-master",
         "aferrandini/phpqrcode": "1.0.1",
         "google/apiclient": "^2.0",
-        "guzzlehttp/guzzle": "5.3.*",
+        "guzzlehttp/guzzle": "^6.0",
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
         "phpdocumentor/reflection-docblock": "2.0.4",
@@ -54,9 +52,9 @@
         "solarium/solarium": "3.5.1",
         "hubzero/flysystem-github": "dev-develop",
         "nao-pon/flysystem-google-drive": "~1.1",
-				"php-amqplib/php-amqplib": "2.5.*",
-        "facebook/graph-sdk": "^5.4",
-        "league/flysystem-aws-s3-v2": "^1.0"
+        "php-amqplib/php-amqplib": "2.5.*",
+        "league/flysystem-aws-s3-v2": "^1.0",
+        "simplepie/simplepie": "1.5"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"

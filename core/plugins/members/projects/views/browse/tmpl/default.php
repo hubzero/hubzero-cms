@@ -34,7 +34,6 @@
 defined('_HZEXEC_') or die();
 
 $this->css();
-
 ?>
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS'); ?></h3>
 
@@ -48,18 +47,20 @@ $this->css();
 	</ul>
 <?php } ?>
 
-<ul class="sub-menu">
-	<li class="active">
-		<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
-		</a>
-	</li>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
-		</a>
-	</li>
-</ul>
+<?php if (User::get('id') == $this->user->get('id')) { ?>
+	<ul class="sub-menu">
+		<li class="active">
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
+			</a>
+		</li>
+	</ul>
+<?php } ?>
 
 <div id="s-projects">
 	<div class="container">

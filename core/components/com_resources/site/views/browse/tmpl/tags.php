@@ -80,7 +80,12 @@ $this->css()
 			<label for="browse-type">
 				<span><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?>:</span>
 				<select name="type" id="browse-type">
-				<?php foreach ($this->types as $type) { ?>
+				<?php foreach ($this->types as $type) {
+					if (!$type->state)
+					{
+						continue;
+					}
+					?>
 					<option value="<?php echo $this->escape($type->alias); ?>"<?php if ($type->id == $this->filters['type']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
 				<?php } ?>
 				</select>
@@ -99,7 +104,7 @@ $this->css()
 				</ul>
 			</div><!-- / #level-1 -->
 			<div id="level-2">
-				<h3><?php echo Lang::txt('COM_RESOURCES'); ?> <select name="sortby" id="sortby"></select></h3>
+				<h3><?php echo Lang::txt('COM_RESOURCES'); ?></h3>
 				<ul>
 					<li id="level-2-loading"></li>
 				</ul>

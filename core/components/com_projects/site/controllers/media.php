@@ -161,7 +161,7 @@ class Media extends Base
 			}
 
 			//move from temp location to target location which is user folder
-			$target = fopen($path . DS . $file , "w");
+			$target = fopen($path . DS . $file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -183,24 +183,38 @@ class Media extends Base
 			$hi = new \Hubzero\Image\Processor($path . DS . $file);
 			if (count($hi->getErrors()) == 0)
 			{
+				// PHP versions < 7 has issues with reading EXIF data
+				// So, we want to try and catch those specific errors
+				// and ignore them.
 				try
 				{
 					$hi->autoRotate();
+				}
+				catch (\Exception $e)
+				{
+					if (strpos($e->getMessage(), 'Illegal IFD size') !== false
+					 || strpos($e->getMessage(), 'Illegal IFD offset') !== false)
+					{
+						// PURR #1186, QUBES #618
+						// Ignore. Let's just move on.
+					}
+					else
+					{
+						echo json_encode(array('error' => $e->getMessage()));
+						return;
+					}
+				}
+
+				try
+				{
 					$hi->resize(200);
 					$hi->setImageType(IMAGETYPE_PNG);
 					$hi->save($path . DS . $file);
 				}
 				catch (\Exception $e)
 				{
-					if (strpos($e->getMessage(), 'Illegal IFD size') !== false)
-					{
-						// PURR #1186, QUBES #618
-						continue;
-					}
-					else
-					{
-						App::abort('500', $e);
-					}
+					echo json_encode(array('error' => $e->getMessage()));
+					return;
 				}
 			}
 			else
@@ -226,7 +240,8 @@ class Media extends Base
 				}
 				catch (\Exception $e)
 				{
-					error_log($e->getMessage());
+					echo json_encode(array('error' => $e->getMessage()));
+					return;
 				}
 			}
 			else
@@ -403,7 +418,7 @@ class Media extends Base
 	{
 		// Incoming
 		$media    = trim(Request::getVar('media', 'thumb'));
-		$source   = NULL;
+		$source   = null;
 		$redirect = false;
 		$dir      = 'preview';
 
@@ -426,18 +441,13 @@ class Media extends Base
 		}
 
 		// Show project thumbnail
-		if ($media == 'thumb')
+		if ($media == 'thumb' || $media == 'master')
 		{
-			$source = $this->getThumbSrc();
+			$source = $this->model->picture($media, true);
 		}
 		elseif ($media)
 		{
-			if ($media == 'master')
-			{
-				// Public picture
-				$source = $this->getProjectImageSrc();
-			}
-			elseif ($dir == 'tools')
+			if ($dir == 'tools')
 			{
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
 				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media . '.png';
@@ -457,7 +467,7 @@ class Media extends Base
 				}
 
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media;
+				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . urldecode($media);
 				$redirect = true;
 			}
 		}
@@ -475,73 +485,5 @@ class Media extends Base
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
-	}
-
-	/**
-	 * Get project image source
-	 *
-	 * @return  string
-	 */
-	public function getProjectImageSrc()
-	{
-		if (!$this->model->exists())
-		{
-			return false;
-		}
-
-		$path      = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
-		$masterpic = trim($this->config->get('masterpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
-		if ($masterpic == 'components/com_projects/assets/img/projects-large.gif')
-		{
-			$masterpic = 'components/com_projects/site/assets/img/projects-large.gif';
-		}
-		$default = PATH_CORE . DS . $masterpic;
-
-		$default = is_file($default) ? $default : NULL;
-
-		$src  = $this->model->get('picture')
-				&& is_file(PATH_APP . DS . $path . DS . $this->model->get('picture'))
-				? PATH_APP . DS . $path . DS . $this->model->get('picture')
-				: $default;
-		return $src;
-	}
-
-	/**
-	 * Get project thumbnail source
-	 *
-	 * @return  string
-	 */
-	public function getThumbSrc()
-	{
-		if (!$this->model->exists())
-		{
-			return false;
-		}
-
-		$src  = '';
-		$path = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
-
-		if (file_exists($path . DS . 'thumb.png'))
-		{
-			return $path . DS . 'thumb.png';
-		}
-
-		if ($this->model->get('picture'))
-		{
-			$thumb = Helpers\Html::createThumbName($this->model->get('picture'));
-			$src = $thumb && file_exists($path . DS . $thumb) ? $path . DS . $thumb : NULL;
-		}
-
-		if (!$src)
-		{
-			$path = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
-			if ($path == 'components/com_projects/assets/img/project.png')
-			{
-				$path = 'components/com_projects/site/assets/img/project.png';
-			}
-			$src = PATH_CORE . DS . $path;
-		}
-
-		return $src;
 	}
 }

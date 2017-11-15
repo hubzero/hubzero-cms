@@ -51,6 +51,11 @@ class Downloads extends AdminController
 	{
 		// Get filters
 		$this->view->filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
 					$this->_option . '.' . $this->_controller . '.sort',
@@ -79,6 +84,16 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.skuRequested',
 				'skuRequested',
 				0
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 
@@ -132,29 +147,44 @@ class Downloads extends AdminController
 	{
 		// Get filters
 		$this->view->filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . 'sku.search',
+				'search',
+				''
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
+				$this->_option . '.' . $this->_controller . 'sku.sort',
 				'filter_order',
 				'pName'
 			),
 			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
+				$this->_option . '.' . $this->_controller . 'sku.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
+				$this->_option . '.' . $this->_controller . 'sku.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
 			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
+				$this->_option . '.' . $this->_controller . 'sku.limitstart',
 				'limitstart',
 				0,
 				'int'
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . 'sku.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . 'sku.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 		//print_r($this->view->filters);
@@ -264,10 +294,19 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.skuRequested',
 				'skuRequested',
 				0
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 		$rowsRaw = CartDownload::getDownloads('array', $filters);
-		$date = date('d-m-Y');
 
 		$rows = array();
 
@@ -318,8 +357,12 @@ class Downloads extends AdminController
 			$rows[] = array($row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username, $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status);
 		}
 
+		$dateFrom = date('dMY', strtotime($filters['report-from']));
+		$dateTo = date('dMY', strtotime($filters['report-to']));
+		$date = date('d-m-Y');
+
 		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=cart-downloads-" . $date . ".csv");
+		header("Content-Disposition: attachment; filename=cart-downloads-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
 		// Disable caching
 		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 		header("Pragma: no-cache"); // HTTP 1.0
@@ -354,6 +397,16 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
+			),
+			'report-from' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-from',
+				'report-from',
+				date('m/d/Y', strtotime('-1 month'))
+			),
+			'report-to' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.report-to',
+				'report-to',
+				date('m/d/Y')
 			)
 		);
 		$rowsRaw = CartDownload::getDownloadsSku('array', $filters);
@@ -365,10 +418,12 @@ class Downloads extends AdminController
 			$rows[] = array($row['pName'], $row['sSku'], $row['downloaded']);
 		}
 
+		$dateFrom = date('dMY', strtotime($filters['report-from']));
+		$dateTo = date('dMY', strtotime($filters['report-to']));
 		$date = date('d-m-Y');
 
 		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=cart-downloads-sku-" . $date . ".csv");
+		header("Content-Disposition: attachment; filename=cart-downloads-sku-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
 		// Disable caching
 		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 		header("Pragma: no-cache"); // HTTP 1.0

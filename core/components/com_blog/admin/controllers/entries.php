@@ -37,6 +37,7 @@ use Request;
 use Config;
 use Notify;
 use Route;
+use Event;
 use User;
 use Lang;
 use Date;
@@ -225,7 +226,17 @@ class Entries extends AdminController
 		// Initiate extended database class
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
-		// Store new content
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Store content
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
@@ -235,14 +246,18 @@ class Entries extends AdminController
 		// Process tags
 		$row->tag(trim(Request::getVar('tags', '')));
 
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+
+		// Notify of success
 		Notify::success(Lang::txt('COM_BLOG_ENTRY_SAVED'));
 
-		if ($this->_task == 'apply')
+		// Redirect to main listing or go back to edit form
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
-		// Set the redirect
 		$this->cancelTask();
 	}
 
@@ -263,25 +278,25 @@ class Entries extends AdminController
 
 		// Incoming
 		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		if (count($ids) > 0)
+		$removed = 0;
+
+		foreach ($ids as $id)
 		{
-			$removed = 0;
+			$entry = Entry::oneOrFail(intval($id));
 
-			// Loop through all the IDs
-			foreach ($ids as $id)
+			// Delete the entry
+			if (!$entry->destroy())
 			{
-				$entry = Entry::oneOrFail(intval($id));
-
-				// Delete the entry
-				if (!$entry->destroy())
-				{
-					Notify::error($entry->getError());
-					continue;
-				}
-
-				$removed++;
+				Notify::error($entry->getError());
+				continue;
 			}
+
+			// Trigger before delete event
+			Event::trigger('onBlogAfterDelete', array($id));
+
+			$removed++;
 		}
 
 		if ($removed)

@@ -33,7 +33,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Request;
 use Route;
 use Lang;
@@ -135,7 +135,7 @@ class Content extends GenericItem
 		     ->set('created', $article->created)
 		     ->set('created_by', $article->created_by)
 		     ->set('title', $article->title)
-		     ->set('description', String::truncate($text, 300, array('html' => true)))
+		     ->set('description', Str::truncate($text, 300, array('html' => true)))
 		     ->set('url', $url);
 
 		if (!$this->store())

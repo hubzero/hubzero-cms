@@ -82,6 +82,7 @@ class Elements
 	 * Constructor
 	 *
 	 * @param   mixed  $data  The data to bind to the new object.
+	 * @param   mixed  $setup
 	 * @return  void
 	 */
 	public function __construct($data = null, $setup = null)
@@ -160,9 +161,9 @@ class Elements
 			// Traverse the registry to find the correct node for the result.
 			for ($i = 0,$n = count($nodes); $i < $n; $i++)
 			{
-				if (isset($node->$nodes[$i]))
+				if (isset($node->{$nodes[$i]}))
 				{
-					$node = $node->$nodes[$i];
+					$node = $node->{$nodes[$i]};
 				}
 				else
 				{
@@ -314,7 +315,8 @@ class Elements
 	/**
 	 * Loads an XML setup file and parses it.
 	 *
-	 * @param   string  A path to the XML setup file.
+	 * @param   string  $setup  A path to the XML setup file.
+	 * @param   string  $group
 	 * @return  object
 	 */
 	public function loadSetup($setup, $group = '_default')
@@ -412,15 +414,15 @@ class Elements
 			// Traverse the registry to find the correct node for the result.
 			for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++)
 			{
-				if (!isset($node->$nodes[$i]) && ($i != $n))
+				if (!isset($node->{$nodes[$i]}) && ($i != $n))
 				{
-					$node->$nodes[$i] = new stdClass;
+					$node->{$nodes[$i]} = new stdClass;
 				}
-				$node = $node->$nodes[$i];
+				$node = $node->{$nodes[$i]};
 			}
 
 			// Get the old value if exists so we can return it
-			$result = $node->$nodes[$i] = $value;
+			$result = $node->{$nodes[$i]} = $value;
 		}
 
 		return $result;
@@ -757,10 +759,11 @@ class Elements
 	/**
 	 * Render a parameter type.
 	 *
+	 * @param   string  $name
 	 * @param   object  $node          A parameter XML element.
 	 * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-	 * @return  array   Any array of the label, the form element and the tooltip.
+	 * @return  array                  Any array of the label, the form element and the tooltip.
 	 */
 	public function getElementOptions($name, &$node, $control_name = 'nbtag', $group = '_default')
 	{

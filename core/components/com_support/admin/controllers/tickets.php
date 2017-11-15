@@ -37,7 +37,11 @@ use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Comment;
 use Components\Support\Models\Tags;
-use Components\Support\Tables;
+use Components\Support\Models\QueryFolder;
+use Components\Support\Models\Attachment;
+use Components\Support\Models\Watching;
+use Components\Support\Models\Message;
+use Components\Support\Models\Category;
 use Hubzero\Component\AdminController;
 use Hubzero\Browser\Detector;
 use Hubzero\Content\Server;
@@ -52,8 +56,6 @@ use Lang;
 use User;
 use App;
 
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'queryfolder.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 
 /**
@@ -62,19 +64,30 @@ include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 class Tickets extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Displays a list of tickets
 	 *
 	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$obj = new Tables\Ticket($this->database);
-
 		// Get filters
-		$this->view->total = 0;
-		$this->view->rows = array();
+		$total = 0;
+		$tickets = array();
 
-		$this->view->filters = array(
+		$filters = array(
 			// Paging
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
@@ -101,195 +114,149 @@ class Tickets extends AdminController
 		);
 
 		// Get query list
-		$sf = new Tables\QueryFolder($this->database);
-		$this->view->folders = $sf->find('list', array(
-			'user_id'  => User::get('id'),
-			'sort'     => 'ordering',
-			'sort_Dir' => 'asc'
-		));
+		$folders = QueryFolder::all()
+			->whereEquals('user_id', User::get('id'))
+			->order('ordering', 'asc')
+			->rows();
 
 		// Does the user have any folders?
-		if (!count($this->view->folders))
+		if (!count($folders))
 		{
 			// Get all the default folders
-			$this->view->folders = $sf->cloneCore(User::get('id'));
+			$folders = QueryFolder::cloneCore(User::get('id'));
 		}
 
-		$sq = new Tables\Query($this->database);
-		$queries = $sq->getRecords(array(
-			'user_id'  => User::get('id'),
-			'sort'     => 'ordering',
-			'sort_Dir' => 'asc'
-		));
-
-		foreach ($queries as $query)
+		foreach ($folders as $folder)
 		{
-			$filters = $this->view->filters;
-			if ($query->id != $this->view->filters['show'])
+			foreach ($folder->queries->sort('ordering') as $query)
 			{
-				$filters['search'] = '';
-			}
-
-			$query->query = $sq->getQuery($query->conditions);
-
-			// Get a record count
-			$query->count = $obj->getCount($query->query, $filters);
-
-			foreach ($this->view->folders as $k => $v)
-			{
-				if (!isset($this->view->folders[$k]->queries))
+				if ($query->id != $filters['show'])
 				{
-					$this->view->folders[$k]->queries = array();
+					$filters['search'] = '';
 				}
-				if ($query->folder_id == $v->id)
+
+				$query->set('count', Ticket::countWithQuery($query, $filters));
+
+				if ($query->id == $filters['show'])
 				{
-					$this->view->folders[$k]->queries[] = $query;
+					// Search
+					$filters['search'] = urldecode(Request::getState(
+						$this->_option . '.' . $this->_controller . '.search',
+						'search',
+						''
+					));
+					// Incoming sort
+					$filters['sort'] = trim(Request::getState(
+						$this->_option . '.' . $this->_controller . '.sort',
+						'filter_order',
+						$query->get('sort')
+					));
+					$filters['sortdir'] = trim(Request::getState(
+						$this->_option . '.' . $this->_controller . '.sortdir',
+						'filter_order_Dir',
+						$query->get('sort_dir')
+					));
+
+					// Get the records
+					$tickets = Ticket::allWithQuery($query, $filters);
 				}
-			}
-
-			if ($query->id == $this->view->filters['show'])
-			{
-				// Search
-				$this->view->filters['search']       = urldecode(Request::getState(
-					$this->_option . '.' . $this->_controller . '.search',
-					'search',
-					''
-				));
-				// Set the total for the pagination
-				$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
-
-				// Incoming sort
-				$this->view->filters['sort']         = trim(Request::getState(
-					$this->_option . '.' . $this->_controller . '.sort',
-					'filter_order',
-					$query->sort
-				));
-				$this->view->filters['sortdir']     = trim(Request::getState(
-					$this->_option . '.' . $this->_controller . '.sortdir',
-					'filter_order_Dir',
-					$query->sort_dir
-				));
-				// Get the records
-				$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
 			}
 		}
 
-		if (!$this->view->filters['show'])
+		if (!$filters['show'])
 		{
 			// Jump back to the beginning of the folders list
 			// and try to find the first query available
 			// to make it the current "active" query
-			reset($this->view->folders);
-			foreach ($this->view->folders as $folder)
+			foreach ($folders as $folder)
 			{
-				if (!empty($folder->queries))
+				if (count($folder->queries) > 0)
 				{
-					$query = $folder->queries[0];
-					$this->view->filters['show'] = $query->id;
+					$query = $folder->queries->first();
+					$filters['show'] = $query->get('id');
 					break;
 				}
 				else
 				{	// for no custom queries.
-					$query = new Tables\Query($this->database);
-					$query->count = 0;
+					$query = Query::blank();
+					$query->set('count', 0);
 				}
 			}
-			//$folder = reset($this->view->folders);
-			//$query = $folder->queries[0];
+
 			// Search
-			$this->view->filters['search'] = urldecode(Request::getState(
+			$filters['search'] = urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			));
 			// Set the total for the pagination
-			$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
+			$total = ($filters['search']) ? Ticket::countWithQuery($query, $filters) : $query->get('count');
 
 			// Incoming sort
-			$this->view->filters['sort']   = trim(Request::getState(
+			$filters['sort']   = trim(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				$query->sort
+				$query->get('sort')
 			));
-			$this->view->filters['sortdir'] = trim(Request::getState(
+			$filters['sortdir'] = trim(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
-				$query->sort_dir
+				$query->get('sort_dir')
 			));
 			// Get the records
-			$this->view->rows = $obj->getRecords($query->query, $this->view->filters);
-
+			$tickets = Ticket::allWithQuery($query, $filters);
 		}
 
-		$watching = new Tables\Watching($this->database);
-		$this->view->watch = array(
-			'open' => $watching->count(array(
-				'user_id' => User::get('id'),
-				'open'    => 1
-			)),
-			'closed' => $watching->count(array(
-				'user_id' => User::get('id'),
-				'open'    => 0
-			))
+		$watching = Watching::all()
+			->whereEquals('user_id', User::get('id'))
+			->rows()
+			->fieldsByKey('ticket_id');
+
+		$watch = array(
+			'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
+			'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
 		);
-		if ($this->view->filters['show'] < 0)
+
+		if ($filters['show'] < 0)
 		{
-			if (!isset($this->view->filters['sort']) || !$this->view->filters['sort'])
+			if (!isset($filters['sort']) || !$filters['sort'])
 			{
-				$this->view->filters['sort']         = trim(Request::getState(
+				$filters['sort'] = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sort',
 					'filter_order',
 					'created'
 				));
 			}
-			if (!isset($this->view->filters['sortdir']) || !$this->view->filters['sortdir'])
+			if (!isset($filters['sortdir']) || !$filters['sortdir'])
 			{
-				$this->view->filters['sortdir']         = trim(Request::getState(
+				$filters['sortdir'] = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sortdir',
 					'filter_order_Dir',
 					'DESC'
 				));
 			}
-			$records = $watching->find(array(
-				'user_id' => User::get('id'),
-				'open'    => ($this->view->filters['show'] == -1 ? 1 : 0)
-			));
-			if (count($records))
-			{
-				$ids = array();
-				foreach ($records as $record)
-				{
-					$ids[] = $record->ticket_id;
-				}
-				$this->view->rows = $obj->getRecords("(f.id IN ('" . implode("','", $ids) . "'))", $this->view->filters);
 
-			}
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$tickets = Ticket::all()
+				->whereEquals('open', ($filters['show'] == -1 ? 1 : 0))
+				->whereIn('id', $watching)
+				->order('created', 'desc')
+				->rows();
 		}
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Show a form for creating a ticket
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		$this->view
+			->set('watch', $watch)
+			->set('filters', $filters)
+			->set('folders', $folders)
+			->set('total', $total)
+			->set('rows', $tickets)
+			->display();
 	}
 
 	/**
 	 * Displays a ticket and comments
 	 *
-	 * @param   mixed  $comment
+	 * @param   object  $comment
 	 * @return  void
 	 */
 	public function editTask($comment = null)
@@ -302,74 +269,70 @@ class Tickets extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// Initiate database class and load info
-		$row = Ticket::getInstance($id);
+		$ticket = Ticket::oneOrNew($id);
 
 		// Editing or creating a ticket?
-		if (!$row->exists())
+		if ($ticket->isNew())
 		{
 			$layout = 'add';
 
 			// Creating a new ticket
-			$row->set('severity', 'normal');
-			$row->set('status', 0);
-			$row->set('created', Date::toSql());
-			$row->set('login', User::get('username'));
-			$row->set('name', User::get('name'));
-			$row->set('email', User::get('email'));
-			$row->set('cookies', 1);
+			$ticket->set('severity', 'normal');
+			$ticket->set('status', 0);
+			$ticket->set('created', Date::toSql());
+			$ticket->set('login', User::get('username'));
+			$ticket->set('name', User::get('name'));
+			$ticket->set('email', User::get('email'));
+			$ticket->set('cookies', 1);
 
 			$browser = new \Hubzero\Browser\Detector();
 
-			$row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
-			$row->set('browser', $browser->name() . ' ' . $browser->version());
+			$ticket->set('os', $browser->platform() . ' ' . $browser->platformVersion());
+			$ticket->set('browser', $browser->name() . ' ' . $browser->version());
 
-			$row->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
+			$ticket->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
 
-			$row->set('ip', Request::ip());
-			$row->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
-			$row->set('section', 1);
+			$ticket->set('ip', Request::ip());
+			$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
+			$ticket->set('section', 1);
 		}
 
-		$this->view->filters = Utilities::getFilters();
-		$this->view->lists = array();
+		$filters = Utilities::getFilters();
+		$lists = array();
 
 		// Get messages
-		$sm = new Tables\Message($this->database);
-		$this->view->lists['messages'] = $sm->getMessages();
+		$lists['messages'] = Message::all()->rows();
 
 		// Get categories
-		$sa = new Tables\Category($this->database);
-		$this->view->lists['categories'] = $sa->find('list');
+		$lists['categories'] = Category::all()->rows();
 
 		// Get severities
-		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
+		$lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-		if (trim($row->get('group_id')))
+		if (trim($ticket->get('group_id')))
 		{
-			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->get('owner'), 1, '', trim($row->get('group_id')));
+			$lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($ticket->get('group_id')));
 		}
 		elseif (trim($this->config->get('group')))
 		{
-			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->get('owner'), 1, '', trim($this->config->get('group')));
+			$lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($this->config->get('group')));
 		}
 		else
 		{
-			$this->view->lists['owner'] = $this->_userSelect('owner', $row->get('owner'), 1);
+			$lists['owner'] = $this->_userSelect('ticket[owner]', $ticket->get('owner'), 1);
 		}
-
-		$this->view->row = $row;
 
 		if ($watch = Request::getWord('watch', ''))
 		{
 			$watch = strtolower($watch);
 
 			// Already watching
-			if ($this->view->row->isWatching(User::getInstance()))
+			if ($ticket->isWatching(User::get('id')))
 			{
 				// Stop watching?
 				if ($watch == 'stop')
 				{
-					$this->view->row->stopWatching(User::getInstance());
+					$ticket->stopWatching(User::get('id'));
 				}
 			}
 			// Not already watching
@@ -378,8 +341,7 @@ class Tickets extends AdminController
 				// Start watching?
 				if ($watch == 'start')
 				{
-					$this->view->row->watch(User::getInstance());
-					if (!$this->view->row->isWatching(User::getInstance(), true))
+					if (!$ticket->watch(User::get('id')))
 					{
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
 					}
@@ -389,41 +351,27 @@ class Tickets extends AdminController
 
 		if (!$comment)
 		{
-			$comment = new Comment();
-		}
-		$this->view->comment = $comment;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$comment = Comment::blank();
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $ticket)
+			->set('filters', $filters)
 			->set('config', $this->config)
+			->set('comment', $comment)
+			->set('lists', $lists)
 			->setLayout($layout)
 			->display();
-	}
-
-	/**
-	 * Save an entry and return t the edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(0);
 	}
 
 	/**
 	 * Saves changes to a ticket, adds a new comment/changelog,
 	 * notifies any relevant parties
 	 *
-	 * @param   integer  $redirect
 	 * @return  void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
@@ -437,80 +385,70 @@ class Tickets extends AdminController
 		}
 
 		// Load the old ticket so we can compare for the changelog
-		$old = new Ticket($id);
+		$old = Ticket::oneOrNew($id);
 		$old->set('tags', $old->tags('string'));
 
 		// Initiate class and bind posted items to database fields
-		$row = new Ticket($id);
+		$data = Request::getVar('ticket', array(), 'post', 'none', 2);
+		$ticket = Ticket::oneOrNew($id)->set($data);
 
-		if (!$row->bind($_POST))
+		if ($ticket->get('target_date') && $ticket->get('target_date') != '0000-00-00 00:00:00')
 		{
-			throw new Exception($row->getError(), 500);
-		}
-
-		if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00')
-		{
-			$row->set('target_date', Date::of($row->get('target_date'), Config::get('offset'))->toSql());
+			$ticket->set('target_date', Date::of($ticket->get('target_date'), Config::get('offset'))->toSql());
 		}
 		else
 		{
-			$row->set('target_date', '0000-00-00 00:00:00');
+			$ticket->set('target_date', '0000-00-00 00:00:00');
 		}
 
-		$comment = Request::getVar('comment', '', 'post', 'none', 2);
-		$rowc = new Comment();
-		$rowc->set('ticket', $id);
+		$text = Request::getVar('comment', '', 'post', 'none', 2);
+		$comment = Comment::blank();
+		$comment->set('ticket', $id);
 
 		// Check if changes were made inbetween the time the comment was started and posted
 		if ($id)
 		{
 			$started = Request::getVar('started', Date::toSql(), 'post');
-			$lastcomment = $row->comments('list', array(
-				'sort'     => 'created',
-				'sort_Dir' => 'DESC',
-				'limit'    => 1,
-				'start'    => 0,
-				'ticket'   => $id
-			))->first();
 
-			if (isset($lastcomment) && $lastcomment->created() >= $started)
+			$lastcomment = $ticket->comments()
+				->order('created', 'DESC')
+				->limit(1)
+				->start(0)
+				->row();
+
+			if ($lastcomment && $lastcomment->get('created') >= $started)
 			{
-				$rowc->set('comment', $comment);
-				\Notify::error(Lang::txt('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'));
-				return $this->editTask($rowc);
+				$comment->set('comment', $text);
+
+				Notify::error(Lang::txt('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.' . $lastcomment->get('created'). ' > ' . $started));
+				return $this->editTask($comment);
 			}
 		}
 
-		if ($id && isset($_POST['status']) && $_POST['status'] == 0)
+		if ($id && $ticket->get('status') == 0)
 		{
-			$row->set('open', 0);
-			$row->set('resolved', Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'));
+			$ticket->set('open', 0);
+			$ticket->set('resolved', Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'));
 		}
 
-		$row->set('open', $row->status('open'));
+		$ticket->set('open', $ticket->status->get('open', 1));
 
 		// If an existing ticket AND closed AND previously open
-		if ($id && !$row->get('open') && $row->get('open') != $old->get('open'))
+		if ($id && !$ticket->get('open') && $ticket->get('open') != $old->get('open'))
 		{
 			// Record the closing time
-			$row->set('closed', Date::toSql());
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			throw new Exception($row->getError(), 500);
+			$ticket->set('closed', Date::toSql());
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$ticket->save())
 		{
-			throw new Exception($row->getError(), 500);
+			throw new Exception($ticket->getError(), 500);
 		}
 
 		// Save the tags
-		$row->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
-		$row->set('tags', $row->tags('string'));
+		$ticket->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
+		$ticket->set('tags', $ticket->tags('string'));
 
 		$base = Request::base();
 		if (substr($base, -14) == 'administrator/')
@@ -550,7 +488,7 @@ class Tickets extends AdminController
 			{
 				// Get some email settings
 				$msg = new \Hubzero\Mail\Message();
-				$msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT') . ', ' . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $row->get('id')));
+				$msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT') . ', ' . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $ticket->get('id')));
 				$msg->addFrom(
 					Config::get('mailfrom'),
 					Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
@@ -564,7 +502,7 @@ class Tickets extends AdminController
 				));
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
-				$eview->ticket     = $row;
+				$eview->ticket     = $ticket;
 				$eview->config     = $this->config;
 				$eview->delimiter  = '';
 
@@ -581,18 +519,18 @@ class Tickets extends AdminController
 
 				if (!$this->config->get('email_terse'))
 				{
-					foreach ($row->attachments() as $attachment)
+					foreach ($ticket->attachments as $attachment)
 					{
 						if ($attachment->size() < 2097152)
 						{
 							if ($attachment->isImage())
 							{
-								$file = basename($attachment->link('filepath'));
-								$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->link('filepath')) . '" alt="" />', $html);
+								$file = basename($attachment->path());
+								$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->path()) . '" alt="" />', $html);
 							}
 							else
 							{
-								$message->addAttachment($attachment->link('filepath'));
+								$message->addAttachment($attachment->path());
 							}
 						}
 					}
@@ -622,68 +560,75 @@ class Tickets extends AdminController
 		}
 
 		// Incoming comment
-		if ($comment)
+		if ($text)
 		{
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-			if ($row->isWaiting() && User::get('username') == $row->get('login'))
+			if ($ticket->isWaiting() && User::get('username') == $ticket->get('login'))
 			{
-				$row->open();
+				$ticket->open();
 			}
 		}
 
 		// Create a new support comment object and populate it
 		$access = Request::getInt('access', 0);
 
-		//$rowc = new Comment();
-		$rowc->set('ticket', $row->get('id'));
-		$rowc->set('comment', nl2br($comment));
-		$rowc->set('created', Date::toSql());
-		$rowc->set('created_by', User::get('id'));
-		$rowc->set('access', $access);
+		//$comment = new Comment();
+		$comment->set('ticket', $ticket->get('id'));
+		$comment->set('comment', nl2br($text));
+		$comment->set('created', Date::toSql());
+		$comment->set('created_by', User::get('id'));
+		$comment->set('access', $access);
 
 		// Compare fields to find out what has changed for this ticket and build a changelog
-		$rowc->changelog()->diff($old, $row);
+		$comment->changelog()->diff($old, $ticket);
 
-		$rowc->changelog()->cced(Request::getVar('cc', ''));
+		$comment->changelog()->cced(Request::getVar('cc', ''));
 
 		// Save the data
-		if (!$rowc->store())
+		if (!$comment->save())
 		{
-			throw new Exception($rowc->getError(), 500);
+			throw new Exception($comment->getError(), 500);
 		}
 
-		Event::trigger('support.onTicketUpdate', array($row, $rowc));
+		Event::trigger('support.onTicketUpdate', array($ticket, $comment));
 
 		if ($tmp = Request::getInt('tmp_dir'))
 		{
-			$attach = new Tables\Attachment($this->database);
-			$attach->updateCommentId($tmp, $rowc->get('id'));
+			$attachments = Attachment::all()
+				->whereEquals('comment_id', $tmp)
+				->rows();
+
+			foreach ($attachments as $attach)
+			{
+				$attach->set('comment_id', $comment->get('id'));
+				$attach->save();
+			}
 		}
 
 		if (!$isNew)
 		{
-			$attachment = $this->uploadTask($row->get('id'), $rowc->get('id'));
+			$attachment = $this->uploadTask($ticket->get('id'), $comment->get('id'));
 		}
 
 		// Only do the following if a comment was posted or ticket was reassigned
 		// otherwise, we're only recording a changelog
-		if ($rowc->get('comment')
-		 || $row->get('owner') != $old->get('owner')
-		 || $row->get('group_id') != $old->get('group_id')
-		 || $rowc->attachments()->total() > 0)
+		if ($comment->get('comment')
+		 || $ticket->get('owner') != $old->get('owner')
+		 || $ticket->get('group_id') != $old->get('group_id')
+		 || $comment->attachments->count() > 0)
 		{
 			// Send e-mail to ticket submitter?
 			if (Request::getInt('email_submitter', 0) == 1)
 			{
 				// Is the comment private? If so, we do NOT send e-mail to the
 				// submitter regardless of the above setting
-				if (!$rowc->isPrivate())
+				if (!$comment->isPrivate())
 				{
-					$rowc->addTo(array(
+					$comment->addTo(array(
 						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
-						'name'  => $row->submitter('name'),
-						'email' => $row->submitter('email'),
-						'id'    => $row->submitter('id')
+						'name'  => $ticket->submitter->get('name', $ticket->get('name')),
+						'email' => $ticket->submitter->get('email', $ticket->get('email')),
+						'id'    => $ticket->submitter->get('id')
 					));
 				}
 			}
@@ -691,27 +636,27 @@ class Tickets extends AdminController
 			// Send e-mail to ticket owner?
 			if (Request::getInt('email_owner', 0) == 1)
 			{
-				if ($old->get('owner') && $row->get('owner') != $old->get('owner'))
+				if ($old->get('owner') && $ticket->get('owner') != $old->get('owner'))
 				{
-					$rowc->addTo(array(
+					$comment->addTo(array(
 						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_PRIOR_OWNER'),
-						'name'  => $old->owner('name'),
-						'email' => $old->owner('email'),
-						'id'    => $old->owner('id')
+						'name'  => $old->assignee->get('name'),
+						'email' => $old->assignee->get('email'),
+						'id'    => $old->assignee->get('id')
 					));
 				}
-				if ($row->get('owner'))
+				if ($ticket->get('owner'))
 				{
-					$rowc->addTo(array(
+					$comment->addTo(array(
 						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-						'name'  => $row->owner('name'),
-						'email' => $row->owner('email'),
-						'id'    => $row->owner('id')
+						'name'  => $ticket->assignee->get('name'),
+						'email' => $ticket->assignee->get('email'),
+						'id'    => $ticket->assignee->get('id')
 					));
 				}
-				elseif ($row->get('group_id'))
+				elseif ($ticket->get('group_id'))
 				{
-					$group = \Hubzero\User\Group::getInstance($row->get('group_id'));
+					$group = \Hubzero\User\Group::getInstance($ticket->get('group_id'));
 
 					if ($group)
 					{
@@ -724,7 +669,7 @@ class Tickets extends AdminController
 								continue;
 							}
 
-							$rowc->addTo(array(
+							$comment->addTo(array(
 								'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
 								'name'  => $manager->get('name'),
 								'email' => $manager->get('email'),
@@ -736,28 +681,28 @@ class Tickets extends AdminController
 			}
 
 			// Add any CCs to the e-mail list
-			foreach ($rowc->changelog()->get('cc') as $cc)
+			foreach ($comment->changelog()->get('cc') as $cc)
 			{
-				$rowc->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
+				$comment->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 			}
 
 			// Message people watching this ticket,
 			// but ONLY if the comment was NOT marked private
 			$this->acl = ACL::getACL();
-			foreach ($row->watchers() as $watcher)
+			foreach ($ticket->watchers as $watcher)
 			{
 				$this->acl->setUser($watcher->user_id);
-				if (!$rowc->isPrivate() || ($rowc->isPrivate() && $this->acl->check('read', 'private_comments')))
+				if (!$comment->isPrivate() || ($comment->isPrivate() && $this->acl->check('read', 'private_comments')))
 				{
-					$rowc->addTo($watcher->user_id, 'watcher');
+					$comment->addTo($watcher->user_id, 'watcher');
 				}
 			}
 			$this->acl->setUser(User::get('id'));
 
-			if (count($rowc->to()))
+			if (count($comment->to()))
 			{
 				// Build e-mail components
-				$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
+				$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
 
 				$from = array(
 					'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
@@ -773,8 +718,8 @@ class Tickets extends AdminController
 				));
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
-				$eview->comment    = $rowc;
-				$eview->ticket     = $row;
+				$eview->comment    = $comment;
+				$eview->ticket     = $ticket;
 				$eview->config     = $this->config;
 				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
@@ -790,17 +735,17 @@ class Tickets extends AdminController
 				$message['attachments'] = array();
 				if (!$this->config->get('email_terse'))
 				{
-					foreach ($rowc->attachments() as $attachment)
+					foreach ($comment->attachments as $attachment)
 					{
 						if ($attachment->size() < 2097152)
 						{
-							$message['attachments'][] = $attachment->link('filepath');
+							$message['attachments'][] = $attachment->path();
 						}
 					}
 				}
 
 				// Send e-mail to admin?
-				foreach ($rowc->to('ids') as $to)
+				foreach ($comment->to('ids') as $to)
 				{
 					if ($allowEmailResponses)
 					{
@@ -820,14 +765,14 @@ class Tickets extends AdminController
 					{
 						continue;
 					}
-					$rowc->changelog()->notified(
+					$comment->changelog()->notified(
 						$to['role'],
 						$to['name'],
 						$to['email']
 					);
 				}
 
-				foreach ($rowc->to('emails') as $to)
+				foreach ($comment->to('emails') as $to)
 				{
 					if ($allowEmailResponses)
 					{
@@ -852,7 +797,7 @@ class Tickets extends AdminController
 					{
 						continue;
 					}
-					$rowc->changelog()->notified(
+					$comment->changelog()->notified(
 						$to['role'],
 						$to['name'],
 						$to['email']
@@ -862,25 +807,25 @@ class Tickets extends AdminController
 			else
 			{
 				// Force entry to private if no comment or attachment was made
-				if (!$rowc->get('comment') && $rowc->attachments()->total() <= 0)
+				if (!$comment->get('comment') && $comment->attachments->count() <= 0)
 				{
-					$rowc->set('access', 1);
+					$comment->set('access', 1);
 				}
 			}
 
 			// Were there any changes?
-			if (count($rowc->changelog()->get('notifications')) > 0 || $access != $rowc->get('access'))
+			if (count($comment->changelog()->get('notifications')) > 0 || $access != $comment->get('access'))
 			{
 				// Save the data
-				if (!$rowc->store())
+				if (!$comment->save())
 				{
-					throw new Exception($rowc->getError(), 500);
+					throw new Exception($comment->getError(), 500);
 				}
 			}
 		}
 
 		// output messsage and redirect
-		if ($redirect)
+		if ($this->getTask() != 'apply')
 		{
 			$filters = Request::getVar('filters', '');
 			$filters = str_replace('&amp;', '&', $filters);
@@ -888,12 +833,11 @@ class Tickets extends AdminController
 			// Redirect
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''), false),
-				Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $row->get('id'))
+				Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $ticket->get('id'))
 			);
 			return;
 		}
 
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
@@ -907,23 +851,27 @@ class Tickets extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$this->view->ids = Request::getVar('id', array());
-		$this->view->tmpl = Request::getVar('tmpl', '');
+		$ids  = Request::getVar('id', array());
+		$tmpl = Request::getVar('tmpl', '');
 
-		$this->view->filters = Utilities::getFilters();
-		$this->view->lists = array();
+		$filters = Utilities::getFilters();
+		$lists = array();
 
 		// Get categories
-		$sa = new Tables\Category($this->database);
-		$this->view->lists['categories'] = $sa->find('list');
+		$lists['categories'] = Category::all()->rows();
 
 		// Get severities
-		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
+		$lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-		$this->view->lists['owner'] = $this->_userSelect('owner', '', 1);
+		$lists['owner'] = $this->_userSelect('owner', '', 1);
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('ids', $ids)
+			->set('tmpl', $tmpl)
+			->set('lists', $lists)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -942,7 +890,7 @@ class Tickets extends AdminController
 		$access  = 1;
 
 		$fields['owner'] = Request::getVar('owner', '');
-		/*$comment = nl2br(Request::getVar('comment', '', 'post', 'none', 2));
+		/*$text = nl2br(Request::getVar('comment', '', 'post', 'none', 2));
 		$cc      = Request::getVar('cc', '');
 		$access  = Request::getInt('access', 0);
 		$email_submitter = Request::getInt('email_submitter', 0);
@@ -988,103 +936,95 @@ class Tickets extends AdminController
 			}
 
 			// Initiate class and bind posted items to database fields
-			$row = new Ticket($id);
-			if (!$row->exists())
-			{
-				continue;
-			}
+			$ticket = Ticket::oneOrFail($id);
 
-			$old = new Ticket($id);
+			$old = Ticket::oneOrFail($id);
 			$old->set('tags', $old->tags('string'));
 
-			if (!$row->bind($fields))
-			{
-				$this->setError($row->getError());
-				continue;
-			}
+			$ticket->set($fields);
 
 			// Store new content
-			if (!$row->store(true))
+			if (!$ticket->save())
 			{
-				$this->setError($row->getError());
+				$this->setError($ticket->getError());
 			}
 
 			// Only set the tags if any tags have been provided
 			if ($tags)
 			{
-				$row->set('tags', $tags);
-				$row->tag($row->get('tags'), User::get('id'), 1);
+				$ticket->set('tags', $tags);
+				$ticket->tag($ticket->get('tags'), User::get('id'), 1);
 			}
 			else
 			{
-				$row->set('tags', $row->tags('string'));
+				$ticket->set('tags', $ticket->tags('string'));
 			}
 
 			// Create a new support comment object and populate it
-			$rowc = new Comment();
-			$rowc->set('ticket', $id);
-			$rowc->set('comment', $comment);
-			$rowc->set('created', Date::toSql());
-			$rowc->set('created_by', User::get('id'));
-			//$rowc->set('access', $access);
+			$comment = Comment::blank();
+			$comment->set('ticket', $id);
+			$comment->set('comment', $text);
+			$comment->set('created', Date::toSql());
+			$comment->set('created_by', User::get('id'));
+			//$comment->set('access', $access);
 
 			// Compare fields to find out what has changed for this ticket and build a changelog
-			$rowc->changelog()->diff($old, $row);
-			$rowc->changelog()->cced($cc);
+			$comment->changelog()->diff($old, $ticket);
+			$comment->changelog()->cced($cc);
 
 			// Save the data
-			if (!$rowc->store())
+			if (!$comment->save())
 			{
-				$this->setError($rowc->getError());
+				$this->setError($comment->getError());
 				continue;
 			}
 
 			// Only do the following if a comment was posted or ticket was reassigned
 			// otherwise, we're only recording a changelog
-			/*if ($rowc->get('comment') || $row->get('owner') != $old->get('owner'))
+			/*if ($comment->get('comment') || $ticket->get('owner') != $old->get('owner'))
 			{
 				// Send e-mail to ticket submitter?
-				if ($email_submitter == 1 && !$rowc->isPrivate())
+				if ($email_submitter == 1 && !$comment->isPrivate())
 				{
-					$rowc->addTo(array(
+					$comment->addTo(array(
 						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
-						'name'  => $row->submitter('name'),
-						'email' => $row->submitter('email'),
-						'id'    => $row->submitter('id')
+						'name'  => $ticket->submitter->get('name', $ticket->get('name')),
+						'email' => $ticket->submitter->get('email', $ticket->get('email')),
+						'id'    => $ticket->submitter->get('id')
 					));
 				}
 
 				// Send e-mail to ticket owner?
-				if ($email_owner == 1 && $row->get('owner'))
+				if ($email_owner == 1 && $ticket->get('owner'))
 				{
-					$rowc->addTo(array(
+					$comment->addTo(array(
 						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-						'name'  => $row->owner('name'),
-						'email' => $row->owner('email'),
-						'id'    => $row->owner('id')
+						'name'  => $ticket->assignee->get('name'),
+						'email' => $ticket->assignee->get('email'),
+						'id'    => $ticket->assignee->get('id')
 					));
 				}
 
 				// Add any CCs to the e-mail list
-				foreach ($rowc->changelog()->get('cc') as $cc)
+				foreach ($comment->changelog()->get('cc') as $cc)
 				{
-					$rowc->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
+					$comment->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 				}
 
 				// Message people watching this ticket,
 				// but ONLY if the comment was NOT marked private
-				if (!$rowc->isPrivate())
+				if (!$comment->isPrivate())
 				{
-					foreach ($row->watchers() as $watcher)
+					foreach ($ticket->watchers as $watcher)
 					{
-						$rowc->addTo($watcher->user_id, 'watcher');
+						$comment->addTo($watcher->user_id, 'watcher');
 					}
 				}
 
-				if (count($rowc->to()))
+				if (count($comment->to()))
 				{
 					// Build e-mail components
-					$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
+					$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
 
 					$from = array(
 						'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
@@ -1100,8 +1040,8 @@ class Tickets extends AdminController
 					));
 					$eview->option     = $this->_option;
 					$eview->controller = $this->_controller;
-					$eview->comment    = $rowc;
-					$eview->ticket     = $row;
+					$eview->comment    = $comment;
+					$eview->ticket     = $ticket;
 					$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
 					$message['plaintext'] = $eview->loadTemplate();
@@ -1116,7 +1056,7 @@ class Tickets extends AdminController
 					// Send e-mail to admin?
 					Plugin::import('xmessage');
 
-					foreach ($rowc->to('ids') as $to)
+					foreach ($comment->to('ids') as $to)
 					{
 						if ($allowEmailResponses)
 						{
@@ -1130,14 +1070,14 @@ class Tickets extends AdminController
 						{
 							$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 						}
-						$rowc->changelog()->notified(
+						$comment->changelog()->notified(
 							$to['role'],
 							$to['name'],
 							$to['email']
 						);
 					}
 
-					foreach ($rowc->to('emails') as $to)
+					foreach ($comment->to('emails') as $to)
 					{
 						if ($allowEmailResponses)
 						{
@@ -1157,7 +1097,7 @@ class Tickets extends AdminController
 							Utilities::sendEmail($to['email'], $subject, $message, $from);
 						}
 
-						$rowc->changelog()->notified(
+						$comment->changelog()->notified(
 							$to['role'],
 							$to['name'],
 							$to['email']
@@ -1165,12 +1105,12 @@ class Tickets extends AdminController
 					}
 
 					// Were there any changes?
-					if (count($rowc->changelog()->get('notifications')) > 0)
+					if (count($comment->changelog()->get('notifications')) > 0)
 					{
 						// Save the data
-						if (!$rowc->store())
+						if (!$comment->store())
 						{
-							$this->setError($rowc->getError());
+							$this->setError($comment->getError());
 						}
 					}
 				}
@@ -1208,40 +1148,35 @@ class Tickets extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'));
+			return $this->cancelTask();
 		}
+
+		$removed = 0;
 
 		foreach ($ids as $id)
 		{
 			$id = intval($id);
 
-			// Delete tags
-			$tags = new Tags($id);
-			$tags->removeAll();
-
-			// Delete comments
-			$comment = new Tables\Comment($this->database);
-			$comment->deleteComments($id);
-
-			// Delete attachments
-			$attach = new Tables\Attachment($this->database);
-			$attach->deleteAllForTicket($id);
-
 			// Delete ticket
-			$ticket = new Tables\Ticket($this->database);
-			$ticket->delete($id);
+			$ticket = Ticket::oneOrFail($id);
+
+			if (!$ticket->destroy())
+			{
+				Notify::error($ticket->getError());
+				continue;
+			}
+
+			$removed++;
+		}
+
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_DELETED', $removed));
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_DELETED', count($ids))
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -1256,21 +1191,23 @@ class Tickets extends AdminController
 	 */
 	private function _userSelect($name, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
+		$database = App::get('db');
+
 		$query = "SELECT a.id AS value, a.name AS text"
 			. " FROM #__users AS a"
 			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='user' AND aro.foreign_key = a.id"
 			. " WHERE a.block = '0'"
 			. " ORDER BY ". $order;
 
-		$this->database->setQuery($query);
+		$database->setQuery($query);
 		if ($nouser)
 		{
 			$users[] = \Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
-			$users = array_merge($users, $this->database->loadObjectList());
+			$users = array_merge($users, $database->loadObjectList());
 		}
 		else
 		{
-			$users = $this->database->loadObjectList();
+			$users = $database->loadObjectList();
 		}
 
 		$query = "SELECT a.id AS value, a.name AS text, aro.alias"
@@ -1279,8 +1216,8 @@ class Tickets extends AdminController
 			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='group' AND aro.foreign_key = m.gidNumber"
 			. " WHERE a.block = '0'"
 			. " ORDER BY ". $order;
-		$this->database->setQuery($query);
-		if ($results = $this->database->loadObjectList())
+		$database->setQuery($query);
+		if ($results = $database->loadObjectList())
 		{
 			$groups = array();
 			foreach ($results as $result)
@@ -1405,38 +1342,14 @@ class Tickets extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// Instantiate an attachment object
-		$attach = new Tables\Attachment($this->database);
-		$attach->load($id);
-		if (!$attach->filename)
-		{
-			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_FILE_NOT_FOUND'), 404);
-			return;
-		}
-		$file = $attach->filename;
+		$attach = Attachment::oneOrFail($id);
 
-		// Ensure we have a path
-		if (empty($file))
+		if (!$attach->get('filename'))
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_FILE_NOT_FOUND'), 404);
 		}
 
-		// Get the configured upload path
-		$basePath = DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $attach->ticket;
-
-		$file = DS . ltrim($file, DS);
-		// Does the beginning of the $attachment->path match the config path?
-		if (substr($file, 0, strlen($basePath)) == $basePath)
-		{
-			// Yes - this means the full path got saved at some point
-		}
-		else
-		{
-			// No - append it
-			$file = $basePath . $file;
-		}
-
-		// Add root path
-		$filename = PATH_APP . $file;
+		$filename = $attach->path();
 
 		// Ensure the file exist
 		if (!file_exists($filename))
@@ -1455,26 +1368,23 @@ class Tickets extends AdminController
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_SUPPORT_SERVER_ERROR'), 404);
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 
 	/**
 	 * Uploads a file and generates a database entry for that item
 	 *
-	 * @param   string   $listdir  Sub-directory to upload files to
-	 * @param   integer  $comment  
+	 * @param   string   $ticket_id   Sub-directory to upload files to
+	 * @param   integer  $comment_id
 	 * @return  string   Key to use in comment bodies (parsed into links or img tags)
 	 */
-	public function uploadTask($listdir, $comment = 0)
+	public function uploadTask($ticket_id, $comment_id = 0)
 	{
 		// Incoming
 		$description = Request::getVar('description', '');
 
-		if (!$listdir)
+		if (!$ticket_id)
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_NO_ID'));
 			return '';
@@ -1488,8 +1398,10 @@ class Tickets extends AdminController
 			return '';
 		}
 
+		$attachment = Attachment::blank();
+
 		// Construct our file path
-		$file_path = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
+		$file_path = $attachment->rootPath() . DS . $ticket_id;
 
 		if (!is_dir($file_path))
 		{
@@ -1522,8 +1434,6 @@ class Tickets extends AdminController
 		else
 		{
 			// Scan for viruses
-			//$path = $file_path . DS . $file['name']; //PATH_CORE . DS . 'virustest';
-
 			if (!Filesystem::isSafe($finalfile))
 			{
 				if (Filesystem::delete($finalfile))
@@ -1537,28 +1447,19 @@ class Tickets extends AdminController
 			// Create database entry
 			$description = htmlspecialchars($description);
 
-			$row = new Tables\Attachment($this->database);
-			$row->bind(array(
+			$attachment->set(array(
 				'id'          => 0,
-				'ticket'      => $listdir,
-				'comment_id'  => $comment,
+				'ticket'      => $ticket_id,
+				'comment_id'  => $comment_id,
 				'filename'    => $filename . '.' . $ext,
 				'description' => $description
 			));
-			if (!$row->check())
+			if (!$attachment->save())
 			{
-				$this->setError($row->getError());
-			}
-			if (!$row->store())
-			{
-				$this->setError($row->getError());
-			}
-			if (!$row->id)
-			{
-				$row->getID();
+				$this->setError($attachment->getError());
 			}
 
-			return '{attachment#' . $row->id . '}';
+			return '{attachment#' . $attachment->get('id') . '}';
 		}
 	}
 }

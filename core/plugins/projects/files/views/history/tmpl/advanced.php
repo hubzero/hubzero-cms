@@ -39,7 +39,7 @@ $v = count($this->versions) + 1;
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
-$i 		 = 0;
+$i       = 0;
 $shown   = 0;
 $skipped = 0;
 $locals  = 0;
@@ -126,9 +126,9 @@ if ($this->getError()) {
 					$skipped++;
 					continue;
 				}
-				$last 		= $i == 0 ? true : false;
+				$last = $i == 0 ? true : false;
 
-				$origin		= $version['remote']
+				$origin = $version['remote']
 					? Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_REMOTE')
 					: Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_LOCAL');
 				if (!$version['remote'] && preg_match("/SFTP/", $version['message']))
@@ -225,7 +225,7 @@ if ($this->getError()) {
 						<div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], array('A', 'M')))
 						{
 							$over = strlen($version['content']) >= $charLimit ? 1 : 0;
-							$content = $over ? \Hubzero\Utility\String::truncate($version['content'], $charLimit) : $version['content'];
+							$content = $over ? \Hubzero\Utility\Str::truncate($version['content'], $charLimit) : $version['content'];
 
 							echo '<div class="short-txt" id="short-' . $i . '"><pre>' . $content . '</pre>';
 							if ($over)
@@ -260,4 +260,4 @@ if ($this->getError()) {
 </form>
 <?php if ($this->ajax) { ?>
 </div>
-<?php } ?>
+<?php }

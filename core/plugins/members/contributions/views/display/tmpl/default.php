@@ -260,7 +260,7 @@ foreach ($this->results as $category)
 				$html .= "\t".'<li>'."\n";
 				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.$this->escape(stripslashes($row->title)).'</a></p>'."\n";
 				if ($row->text) {
-					$html .= "\t\t".\Hubzero\Utility\String::truncate(stripslashes($row->text))."\n";
+					$html .= "\t\t".\Hubzero\Utility\Str::truncate(stripslashes($row->text))."\n";
 				}
 				$html .= "\t".'</li>'."\n";
 			}

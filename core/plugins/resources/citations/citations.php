@@ -41,15 +41,15 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
@@ -67,11 +67,11 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @param   string  $option    Name of the component
+	 * @param   array   $areas     Active area(s)
+	 * @param   string  $rtrn      Data to be returned
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -95,17 +95,22 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$database = App::get('db');
-
 		// Get a needed library
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-		// Get reviews for this resource
-		$c = new \Components\Citations\Tables\Citation($database);
-		$citations = $c->getCitations('resource', $model->resource->id);
+		$cc = \Components\Citations\Models\Citation::all();
+
+		$a = \Components\Citations\Models\Association::blank()->getTableName();
+		$c = $cc->getTableName();
+
+		$citations = $cc
+			->join($a, $a . '.cid', $c . '.id', 'inner')
+			->whereEquals($c . '.published', 1)
+			->whereEquals($a . '.tbl', 'resource')
+			->whereEquals($a . '.oid', $model->resource->id)
+			->order($c . '.affiliated', 'asc')
+			->order($c . '.year', 'desc')
+			->rows();
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
@@ -153,4 +158,3 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 		return $arr;
 	}
 }
-

@@ -38,20 +38,11 @@ defined('_HZEXEC_') or die();
 class plgUserProfile extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param   object  $subject  The object to observe
-	 * @param   array   $config   An array that holds the plugin configuration
-	 * @return  void
+	 * @var  boolean
 	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-
-		JFormHelper::addFieldPath(dirname(__FILE__) . '/fields');
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * @param   string   $context  The context for the data
@@ -120,6 +111,12 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 
+	/**
+	 * Check URL
+	 *
+	 * @param   mixed   $value
+	 * @return  string
+	 */
 	public static function url($value)
 	{
 		if (empty($value))
@@ -129,17 +126,24 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$value = htmlspecialchars($value);
-			if (substr ($value, 0, 4) == "http")
+
+			if (substr($value, 0, 4) == "http")
 			{
-				return '<a href="'.$value.'">'.$value.'</a>';
+				return '<a href="' . $value . '">' . $value . '</a>';
 			}
 			else
 			{
-				return '<a href="http://'.$value.'">'.$value.'</a>';
+				return '<a href="http://' . $value . '">' . $value . '</a>';
 			}
 		}
 	}
 
+	/**
+	 * Check calendar
+	 *
+	 * @param   mixed   $value
+	 * @return  string
+	 */
 	public static function calendar($value)
 	{
 		if (empty($value))
@@ -152,6 +156,12 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 		}
 	}
 
+	/**
+	 * Check TOS
+	 *
+	 * @param   mixed   $value
+	 * @return  string
+	 */
 	public static function tos($value)
 	{
 		if ($value)
@@ -165,13 +175,15 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Prepare form
+	 *
 	 * @param   object   $form  The form to be altered.
 	 * @param   array    $data  The associated data for the form.
 	 * @return  boolean
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
-		if (!($form instanceof JForm))
+		if (!($form instanceof Hubzero\Form\Form))
 		{
 			$this->_subject->setError('JERROR_NOT_A_FORM');
 			return false;
@@ -185,7 +197,9 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add the registration fields to the form.
-		JForm::addFormPath(dirname(__FILE__) . '/profiles');
+		Hubzero\Form\Form::addFieldPath(__DIR__ . '/fields');
+		Hubzero\Form\Form::addFormPath(__DIR__ . '/profiles');
+
 		$form->loadFile('profile', false);
 
 		$fields = array(
@@ -261,9 +275,20 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 
+	/**
+	 * Remove all user profile information for the given user ID
+	 *
+	 * Method is called after user data is deleted from the database
+	 *
+	 * @param   array    $data
+	 * @param   boolean  $isNew
+	 * @param   boolean  $result
+	 * @param   string   $error
+	 * @return  boolean
+	 */
 	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
-		$userId	= \Hubzero\Utility\Arr::getValue($data, 'id', 0, 'int');
+		$userId = \Hubzero\Utility\Arr::getValue($data, 'id', 0, 'int');
 
 		if ($userId && $result && isset($data['profile']) && (count($data['profile'])))
 		{
@@ -278,8 +303,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 
 				$db = App::get('db');
 				$db->setQuery(
-					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
-					" AND profile_key LIKE 'profile.%'"
+					"DELETE FROM `#__user_profiles` WHERE user_id = " . $userId . " AND profile_key LIKE 'profile.%'"
 				);
 
 				if (!$db->query())
@@ -292,16 +316,15 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 
 				foreach ($data['profile'] as $k => $v)
 				{
-					$tuples[] = '('.$userId.', '.$db->quote('profile.'.$k).', '.$db->quote(json_encode($v)).', '.$order++.')';
+					$tuples[] = '(' . $userId . ', ' . $db->quote('profile.' . $k) . ', ' . $db->quote(json_encode($v)) . ', ' . $order++ . ')';
 				}
 
-				$db->setQuery('INSERT INTO `#__user_profiles` VALUES '.implode(', ', $tuples));
+				$db->setQuery('INSERT INTO `#__user_profiles` VALUES ' . implode(', ', $tuples));
 
 				if (!$db->query())
 				{
 					throw new Exception($db->getErrorMsg());
 				}
-
 			}
 			catch (Exception $e)
 			{
@@ -338,8 +361,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 			{
 				$db = App::get('db');
 				$db->setQuery(
-					'DELETE FROM `#__user_profiles` WHERE user_id = '.$userId .
-					" AND profile_key LIKE 'profile.%'"
+					"DELETE FROM `#__user_profiles` WHERE user_id = " . $userId . " AND profile_key LIKE 'profile.%'"
 				);
 
 				if (!$db->query())

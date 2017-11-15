@@ -132,6 +132,11 @@ var HUB = {};
 					<label for="field-publish_down"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ENDDATE'); ?></label><br />
 					<?php echo Html::input('calendar', 'publish_down', $this->row->publish_down, array('id' => 'field-publish_down')); ?>
 				</div>
+
+				<div class="input-wrap">
+					<label for="time_zone"><?php echo Lang::txt('COM_EVENTS_CAL_TIME_ZONE'); ?></label>
+					<?php echo \Components\Events\Helpers\Html::buildTimeZoneSelect($this->row->time_zone, ''); ?>
+				</div>
 			</fieldset>
 
 			<?php if ($this->row->scope == 'group') : ?>
@@ -197,7 +202,6 @@ var HUB = {};
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-	<input type="hidden" name="time_zone" value="<?php echo $this->row->time_zone; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="images" value="" />
 

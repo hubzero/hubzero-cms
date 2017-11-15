@@ -22,11 +22,15 @@
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
 namespace Components\Installer\Admin\Helpers;
+
+use Submenu;
+use Route;
+use Lang;
+use User;
 
 /**
  * Installer helper.
@@ -47,9 +51,9 @@ class Installer
 			$vName == 'install'
 		);
 		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_UPDATE'),
-			Route::url('index.php?option=com_installer&controller=update'),
-			$vName == 'update'
+			Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS'),
+			Route::url('index.php?option=com_installer&controller=migrations'),
+			$vName == 'migrations'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_MANAGE'),
@@ -85,11 +89,11 @@ class Installer
 	 */
 	public static function getActions()
 	{
-		$result = new \Hubzero\Base\Object;
+		$result = new \Hubzero\Base\Obj;
 
 		$assetName = 'com_installer';
 
-		$actions = \JAccess::getActions($assetName);
+		$actions = \Hubzero\Access\Access::getActionsFromFile(dirname(dirname(__DIR__)) . '/config/access.xml');
 
 		foreach ($actions as $action)
 		{

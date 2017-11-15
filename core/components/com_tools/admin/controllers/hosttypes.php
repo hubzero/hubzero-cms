@@ -33,6 +33,7 @@
 namespace Components\Tools\Admin\Controllers;
 
 use Components\Tools\Helpers\Utils;
+use Components\Tools\Tables\Hosttype;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
@@ -41,7 +42,7 @@ use Route;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php');
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php';
 
 /**
  * Tools controller for host types
@@ -69,7 +70,7 @@ class Hosttypes extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			// Sorting
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -96,36 +97,32 @@ class Hosttypes extends AdminController
 			)
 		);
 		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
+		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
 
 		// Get the middleware database
 		$mwdb = Utils::getMWDBO();
 
-		$model = new \Components\Tools\Tables\Hosttype($mwdb);
+		$model = new Hosttype($mwdb);
 
-		$this->view->total = $model->getCount($this->view->filters);
+		$total = $model->getCount($filters);
 
-		$this->view->rows = $model->getRecords($this->view->filters);
+		$rows = $model->getRecords($filters);
 
-		// Form the query and show the table.
-		//$mwdb->setQuery("SELECT * FROM hosttype ORDER BY VALUE");
-		//$this->view->rows = $mwdb->loadObjectList();
-		if ($this->view->rows)
+		if ($rows)
 		{
-			foreach ($this->view->rows as $key => $row)
+			foreach ($rows as $key => $row)
 			{
-				$this->view->rows[$key]->refs = $this->_refs($row->value);
+				$rows[$key]->refs = $this->_refs($row->value);
 			}
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -145,31 +142,23 @@ class Hosttypes extends AdminController
 
 			$mwdb = Utils::getMWDBO();
 
-			$row = new \Components\Tools\Tables\Hosttype($mwdb);
+			$row = new Hosttype($mwdb);
 			$row->load($item);
 		}
 
-		$this->view->row = $row;
-
-		if ($this->view->row->value > 0)
+		$bit = '';
+		if ($row->value > 0)
 		{
-			$this->view->bit = log($this->view->row->value)/log(2);
-		}
-		else
-		{
-			$this->view->bit = '';
+			$bit = log($row->value)/log(2);
 		}
 
-		$this->view->refs = $this->_refs($this->view->row->value);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$refs = $this->_refs($row->value);
 
 		// Display results
 		$this->view
+			->set('row', $row)
+			->set('bit', $bit)
+			->set('refs', $refs)
 			->set('status', (isset($item) && $item != '') ? 'exists' : 'new')
 			->setLayout('edit')
 			->display();
@@ -213,12 +202,12 @@ class Hosttypes extends AdminController
 
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = new \Components\Tools\Tables\Hosttype($mwdb);
+		$row = new Hosttype($mwdb);
+
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		$insert = false;
@@ -278,9 +267,7 @@ class Hosttypes extends AdminController
 			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -296,26 +283,32 @@ class Hosttypes extends AdminController
 		// Incoming
 		$ids = Request::getVar('id', array());
 
-		$mwdb = Utils::getMWDBO();
+		$removed = 0;
 
 		if (count($ids) > 0)
 		{
-			$row = new \Components\Tools\Tables\Hosttype($mwdb);
+			$mwdb = Utils::getMWDBO();
+
+			$row = new Hosttype($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
 				if (!$row->delete($id))
 				{
-					throw new \Exception($row->getError(), 500);
+					Notify::error($row->getError());
+					continue;
 				}
+
+				$removed++;
 			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_ITEM_DELETED'),
-			'message'
-		);
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_TOOLS_ITEM_DELETED'));
+		}
+
+		$this->cancelTask();
 	}
 }

@@ -30,14 +30,17 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
+namespace Hubzero\Form\Fields;
 
-JFormHelper::loadFieldClass('radio');
+use Hubzero\Form\Fields\Radio;
+use Document;
+use Html;
+use Lang;
 
 /**
  * Provides input for TOS
  */
-class JFormFieldTos extends JFormFieldRadio
+class Tos extends Radio
 {
 	/**
 	 * The form field type.
@@ -51,7 +54,6 @@ class JFormFieldTos extends JFormFieldRadio
 	 * Method to get the field label markup.
 	 *
 	 * @return  string  The field label markup.
-	 *
 	 * @since   2.5.5
 	 */
 	protected function getLabel()
@@ -72,9 +74,9 @@ class JFormFieldTos extends JFormFieldRadio
 		$this->required = true;
 
 		// Add CSS and JS for the TOS field
-		$css = "#jform_profile_tos {width: 18em; margin: 0 !important; padding: 0 2px !important;}
-				#jform_profile_tos input {margin:0 5px 0 0 !important; width:10px !important;}
-				#jform_profile_tos label {margin:0 15px 0 0 !important; width:auto;}
+		$css = "#hzform_profile_tos {width: 18em; margin: 0 !important; padding: 0 2px !important;}
+				#hzform_profile_tos input {margin:0 5px 0 0 !important; width:10px !important;}
+				#hzform_profile_tos label {margin:0 15px 0 0 !important; width:auto;}
 				";
 		Document::addStyleDeclaration($css);
 		Html::behavior('modal');

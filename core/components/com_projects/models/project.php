@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -47,6 +46,9 @@ require_once(__DIR__ . DS . 'tags.php');
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
+use Date;
+use Lang;
+use User;
 
 /**
  * Project model
@@ -471,6 +473,13 @@ class Project extends Model
 				// Allow public view access
 				$this->params->set('access-view-project', true);
 			}
+			// If an open project
+			if ($this->get('private') < 0 && ($this->isActive() || $this->isArchived()))
+			{
+				// Allow read-only mode for everything
+				$this->params->set('access-member-project', true);
+				$this->params->set('access-readonly-project', true);
+			}
 			return;
 		}
 
@@ -550,6 +559,26 @@ class Project extends Model
 			}
 		}
 
+		// Is the user a manager of the component? (set in component permissions)
+		if (User::authorise('core.manage', 'com_projects'))
+		{
+			$this->params->set('access-view-project', true);
+			$this->params->set('access-member-project', true);
+
+			if ($this->isArchived())
+			{
+				$this->params->set('access-readonly-project', true);
+			}
+			else
+			{
+				$this->params->set('access-manager-project', true); // May edit project properties
+				$this->params->set('access-content-project', true); // May add/edit/delete all content
+				$this->params->set('access-owner-project', true);
+				$this->params->set('access-componentmanager-project', true);
+			}
+			return;
+		}
+
 		// Is user project member?
 		$member = $this->member();
 		if (empty($member) || !$member->id)
@@ -559,13 +588,20 @@ class Project extends Model
 				// Allow public view access
 				$this->params->set('access-view-project', true);
 			}
+			// If an open project
+			if ($this->get('private') < 0)
+			{
+				// Allow read-only mode for everything
+				$this->params->set('access-member-project', true);
+				$this->params->set('access-readonly-project', true);
+			}
 		}
 		else
 		{
 			$this->params->set('access-view-project', true);
 			$this->params->set('access-member-project', true); // internal project view
 
-			if ($this->isArchived())
+			if ($this->isArchived() || $this->get('private') < 0)
 			{
 				// Read-only
 				$this->params->set('access-readonly-project', true);
@@ -767,7 +803,7 @@ class Project extends Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -941,13 +977,14 @@ class Project extends Model
 	 */
 	public function newCount($refresh = false)
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
 		if (!isset($this->_newCount) || $refresh == true)
 		{
-			$this->_newCount = $this->_tblActivity->getNewActivityCount($this->get('id'), User::get('id'));
+			$this->_newCount = \Hubzero\Activity\Recipient::all()
+				->whereEquals('scope', 'project')
+				->whereEquals('scope_id', $this->get('id'))
+				->whereEquals('viewed', '0000-00-00 00:00:00')
+				->whereEquals('state', 1)
+				->total();
 		}
 
 		return $this->_newCount;
@@ -1045,10 +1082,12 @@ class Project extends Model
 		$showDeleted = $admin ? true : false;
 		$setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
 
+		$filters['uid'] = isset($filters['uid']) ? $filters['uid'] : User::get('id');
+
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				return (int) $this->_tbl->getCount($filters, $admin, User::get('id'), $showDeleted, $setupComplete);
+				return (int) $this->_tbl->getCount($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
 			break;
 
 			case 'group':
@@ -1062,7 +1101,7 @@ class Project extends Model
 			break;
 
 			default:
-			$results = $this->_tbl->getRecords($filters, $admin, User::get('id'), $showDeleted, $setupComplete);
+				$results = $this->_tbl->getRecords($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
 			break;
 		}
 
@@ -1080,30 +1119,241 @@ class Project extends Model
 	/**
 	 * Record activity
 	 *
-	 * @return  integer
+	 * @param   string   $activity
+	 * @param   integer  $refid
+	 * @param   string   $underline
+	 * @param   string   $url
+	 * @param   string   $class
+	 * @param   integer  $commentable
+	 * @param   integer  $admin
+	 * @param   integer  $managers_only
+	 * @return  mixed
 	 */
 	public function recordActivity($activity = '', $refid = '', $underline = '', $url = '', $class = 'project', $commentable = 0, $admin = 0, $managers_only = 0)
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
 		if ($activity)
 		{
 			$refid = $refid ? $refid : $this->get('id');
 
-			$aid = $this->_tblActivity->recordActivity(
-				$this->get('id'),
-				User::get('id'),
-				$activity,
-				$refid,
-				$underline,
-				$url,
-				$class,
-				$commentable,
-				$admin,
-				$managers_only
+			$recipients = array(
+				['user', User::get('id')]
 			);
+
+			if ($managers_only)
+			{
+				$recipients[] = ['project_managers', $this->get('id')];
+			}
+			else
+			{
+				$recipients[] = ['project', $this->get('id')];
+
+				if ($gid = $this->get('owned_by_group'))
+				{
+					$recipients[] = ['group', $gid];
+				}
+			}
+
+			// Legacy support
+			// Translate project activity to the global activity schema
+			$action   = 'created';
+			$scope    = 'project';
+			$scope_id = $refid;
+			switch ($activity)
+			{
+				case 'started the project':
+					break;
+
+				case 'deleted project':
+					$action = 'deleted';
+					break;
+
+				case 'joined the project':
+					$action = 'joined';
+					break;
+
+				case 'left the project':
+					$action = 'cancelled';
+					break;
+
+				case 'posted a to-do item':
+					$scope = 'project.todo';
+					break;
+
+				case 'said':
+					$scope = 'project.comment';
+					break;
+
+				case 'commented on a to-do item':
+					$scope = 'project.todo.comment';
+					break;
+
+				case 'commented on a blog post':
+				case 'commented on an activity':
+					$scope = 'project.comment';
+					break;
+
+				case 'added a new page in project notes':
+					$scope = 'project.note';
+					break;
+
+				case 'changed the project settings':
+				case 'edited project information':
+				case 'replaced project picture':
+					$action = 'updated';
+					break;
+
+				default:
+					if (substr($activity, 0, strlen('uploaded')) == 'uploaded')
+					{
+						$action = 'uploaded';
+						$scope = 'project.file';
+					}
+					if (substr($activity, 0, strlen('updated file')) == 'updated file')
+					{
+						$action = 'updated';
+						$scope = 'project.file';
+					}
+					if (substr($activity, 0, strlen('restored deleted file')) == 'restored deleted file')
+					{
+						$action = 'updated';
+						$scope = 'project.file';
+					}
+					if (substr($activity, 0, strlen('created database')) == 'created database')
+					{
+						$action = 'created';
+						$scope = 'project.database';
+					}
+					if (substr($activity, 0, strlen('removed database')) == 'removed database')
+					{
+						$action = 'deleted';
+						$scope = 'project.database';
+						$scope_id = $refid;
+					}
+					if (substr($activity, 0, strlen('updated database')) == 'updated database')
+					{
+						$action = 'updated';
+						$scope = 'project.database';
+						$scope_id = $refid;
+					}
+					// Publications
+					if (substr($activity, 0, strlen('started a new publication')) == 'started a new publication'
+					 || substr($activity, 0, strlen('started draft')) == 'started draft')
+					{
+						$action = 'created';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('started new version')) == 'started new version')
+					{
+						$action = 'created';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('published version')) == 'published version'
+					 || substr($activity, 0, strlen('re-published version')) == 're-published version')
+					{
+						$action = 'published';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('submitted draft')) == 'submitted draft'
+					 || substr($activity, 0, strlen('re-submitted draft')) == 're-submitted draft')
+					{
+						$action = 'submitted';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('deleted draft')) == 'deleted draft')
+					{
+						$action = 'deleted';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('reviewed')) == 'reviewed')
+					{
+						$action = 'reviewed';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('approved')) == 'approved')
+					{
+						$action = 'approved';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('reverted to draft')) == 'reverted to draft')
+					{
+						$action = 'reverted';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('unpublished')) == 'unpublished')
+					{
+						$action = 'unpublished';
+						$scope = 'publication';
+					}
+					// Notes
+					if (substr($activity, 0, strlen('edited page')) == 'edited page')
+					{
+						$action = 'updated';
+						$scope = 'project.note';
+					}
+					break;
+			}
+
+			/*Event::trigger('system.logActivity', [
+				'activity' => [
+					'action'      => $action,
+					'scope'       => $scope,
+					'scope_id'    => $scope_id,
+					'description' => $activity,
+					'details'     => array(
+						'title' => $this->get('title'),
+						'url'   => ($url ? $url : Route::url($this->link())),
+						'class' => $class,
+						'underline' => $underline
+					)
+				],
+				'recipients' => $recipients
+			]);*/
+			$act = \Hubzero\Activity\Log::blank()->set([
+				'action'      => $action,
+				'scope'       => $scope,
+				'scope_id'    => $scope_id,
+				'description' => $activity,
+				'details'     => array(
+					'title'       => $this->get('title'),
+					'url'         => ($url ? $url : Route::url($this->link())),
+					'class'       => $class,
+					'underline'   => $underline,
+					'commentable' => $commentable,
+					'admin'       => $admin
+				)
+			]);
+
+			if (!$act->save())
+			{
+				return false;
+			}
+
+			$aid  = $act->get('id');
+			$sent = array();
+
+			// Do we have any recipients?
+			foreach ($recipients as $receiver)
+			{
+				$key = implode('.', $receiver);
+
+				// No duplicate sendings
+				if (in_array($key, $sent))
+				{
+					continue;
+				}
+
+				// Create a recipient object that ties a user to an activity
+				$recipient = \Hubzero\Activity\Recipient::blank()->set([
+					'scope'    => $receiver[0],
+					'scope_id' => $receiver[1],
+					'log_id'   => $aid,
+					'state'    => 1
+				]);
+
+				$recipient->save();
+
+				$sent[] = $key;
+			}
 
 			// Notify subscribers
 			if ($aid && !User::isGuest() && !$this->isProvisioned())
@@ -1139,21 +1389,26 @@ class Project extends Model
 	}
 
 	/**
-	 * Record first join activity
+	 * Checks if an activity has been recorded
 	 *
-	 * @return  void
+	 * @param   string  $activity
+	 * @return  integer
 	 */
 	public function checkActivity($activity = null)
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
-		if ($activity)
-		{
-			return $this->_tblActivity->checkActivity($this->get('id'), $activity);
-		}
-		return false;
+		$log = \Hubzero\Activity\Log::all();
+
+		$l = $log->getTableName();
+		$r = \Hubzero\Activity\Recipient::blank()->getTableName();
+
+		return $log
+			->join($r, $r . '.log_id', $l . '.id', 'inner')
+			->whereEquals($r . '.scope', 'project')
+			->whereEquals($r . '.scope_id', $this->get('id'))
+			->whereEquals($l . '.description', $activity)
+			->order($l . '.created', 'desc')
+			->row()
+			->get('id');
 	}
 
 	/**
@@ -1163,11 +1418,6 @@ class Project extends Model
 	 */
 	public function recordFirstJoinActivity()
 	{
-		if (!isset($this->_tblActivity))
-		{
-			$this->_tblActivity = new Tables\Activity($this->_db);
-		}
-
 		if ($this->isMemberConfirmed() && !$this->isProvisioned() && $this->isActive())
 		{
 			if (!$this->member()->lastvisit)
@@ -1185,9 +1435,11 @@ class Project extends Model
 
 				// If newly created - remove join activity of project creator
 				$timecheck = Date::of(time() - (10 * 60)); // last second
+
 				if ($this->access('owner') && $timecheck <= $this->get('created'))
 				{
-					$this->_tblActivity->deleteActivity($aid);
+					$activity = \Hubzero\Activity\Log::oneOrFail($aid);
+					$activity->destroy();
 				}
 			}
 		}
@@ -1196,7 +1448,7 @@ class Project extends Model
 	/**
 	 * Get the project type
 	 *
-	 * @return     mixed
+	 * @return  object
 	 */
 	public function type()
 	{
@@ -1214,8 +1466,8 @@ class Project extends Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type = '')
 	{
@@ -1248,7 +1500,7 @@ class Project extends Model
 			break;
 
 			case 'thumb':
-				$link = $this->_base . '&controller=media&media=thumb';
+				$link = $this->picture();
 			break;
 
 			case 'stamp':
@@ -1262,5 +1514,79 @@ class Project extends Model
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Generate and return path to a picture for the project
+	 *
+	 * @param   string   $size      Thumbnail (thumb) or full size (master)?
+	 * @param   boolean  $realpath  Return the actual file path? When FALSE, it returns a link to /files/{hash}
+	 * @return  string
+	 */
+	public function picture($size = 'thumb', $realpath = false)
+	{
+		$src  = '';
+		$path = PATH_APP . DS . trim($this->config()->get('imagepath', '/site/projects'), DS) . DS . $this->get('alias') . DS . 'images';
+
+		if ($size == 'thumb')
+		{
+			// Does a thumb exist?
+			if (file_exists($path . DS . 'thumb.png'))
+			{
+				$src = $path . DS . 'thumb.png';
+			}
+
+			// No thumb. Try to create it...
+			if (!$src && $this->get('picture'))
+			{
+				$thumb = \Components\Projects\Helpers\Html::createThumbName($this->get('picture'));
+
+				if ($thumb && file_exists($path . DS . $thumb))
+				{
+					$src = $path . DS . $thumb;
+				}
+			}
+		}
+		else
+		{
+			// Get the picture if set
+			if ($this->get('picture') && is_file($path . DS . $this->get('picture')))
+			{
+				$src = $path . DS . $this->get('picture');
+			}
+		}
+
+		// Still no file? Let's use the default
+		if (!$src)
+		{
+			$deprecated = array(
+				'components/com_projects/site/assets/img/project.png',
+				'components/com_projects/assets/img/project.png',
+				'components/com_projects/site/assets/img/projects-large.gif',
+				'components/com_projects/assets/img/projects-large.gif'
+			);
+
+			$path = trim($this->config()->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
+
+			if (in_array($path, $deprecated))
+			{
+				$path = 'components/com_projects/site/assets/img/project.svg';
+				$rootPath = PATH_CORE;
+			}
+			else
+			{
+				$rootPath = PATH_APP;
+			}
+
+			$src = $rootPath . DS . $path;
+		}
+
+		// Gnerate a file link
+		if (!$realpath)
+		{
+			$src = with(new \Hubzero\Content\Moderator($src, 'public'))->getUrl();
+		}
+
+		return $src;
 	}
 }

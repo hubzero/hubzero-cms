@@ -33,7 +33,7 @@
 namespace Modules\ArticlesCategory;
 
 use Hubzero\Module\Module;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use ContentHelperRoute;
 use Component;
 use stdClass;
@@ -421,15 +421,15 @@ class Helper extends Module
 		$diffLength = 0;
 
 		// First get the plain text string. This is the rendered text we want to end up with.
-		$ptString = String::truncate($html, $maxLength, array('html' => true));
+		$ptString = Str::truncate($html, $maxLength, array('html' => true));
 
 		for ($maxLength; $maxLength < $baseLength;)
 		{
 			// Now get the string if we allow html.
-			$htmlString = String::truncate($html, $maxLength, array('html' => true));
+			$htmlString = Str::truncate($html, $maxLength, array('html' => true));
 
 			// Now get the plain text from the html string.
-			$htmlStringToPtString = String::truncate($htmlString, $maxLength);
+			$htmlStringToPtString = Str::truncate($htmlString, $maxLength);
 
 			// If the new plain text string matches the original plain text string we are done.
 			if ($ptString == $htmlStringToPtString)

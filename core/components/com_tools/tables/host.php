@@ -113,7 +113,8 @@ class Host extends \JTable
 					}
 					else
 					{
-						$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
+						//$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
+						$val = $this->_db->quote($v); 
 					}
 					$tmp[] = $this->_db->quoteName($ky) . '=' . $val;
 				}

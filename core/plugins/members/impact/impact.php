@@ -86,11 +86,13 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		$this->_database = App::get('db');
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
+		$path = \Component::path('com_publications');
+
+		require_once $path . DS . 'tables' . DS . 'logs.php';
+		require_once $path . DS . 'tables' . DS . 'publication.php';
+		require_once $path . DS . 'tables' . DS . 'author.php';
+		require_once $path . DS . 'tables' . DS . 'category.php';
+		require_once $path . DS . 'helpers' . DS . 'html.php';
 	}
 
 	/**
@@ -153,7 +155,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		if ($returnhtml)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
+			require_once \Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
 
 			$this->_option = $option;
 
@@ -163,7 +165,9 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			switch ($task)
 			{
 				case 'view':
-				default:        $arr['html'] = $this->_view($member->get('id'));   break;
+				default:
+					$arr['html'] = $this->_view($member->get('id'));
+				break;
 			}
 		}
 
@@ -251,7 +255,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   object   $member      Current member
 	 * @param   string   $option      Component name
-	 * @param   string   $authorized  Authorization level
 	 * @param   integer  $limit       Number of record to return
 	 * @param   integer  $limitstart  Record return start
 	 * @param   string   $sort        Field to sort records on
@@ -390,7 +393,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$html .= '</p>' . "\n";
 		if ($row->text)
 		{
-			$html .= "\t\t<p>" . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->text)), 300) . "</p>\n";
+			$html .= "\t\t<p>" . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->text)), 300) . "</p>\n";
 		}
 		$html .= "\t" . '</li>' . "\n";
 		return $html;

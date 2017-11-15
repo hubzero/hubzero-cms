@@ -67,7 +67,7 @@ HUB.ProjectTodo = {
 				$(item).on('click', function(e) {
 					e.preventDefault();
 					HUB.Projects.addConfirm($(item),
-					'Permanently delete this item?',
+					'Delete this item?',
 					'Yes, delete', 'No, do not delete');
 				});
 			});

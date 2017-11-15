@@ -48,6 +48,13 @@ class plgPublicationsGooglescholar extends \Hubzero\Plugin\Plugin
 	 */
 	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
 	{
+		if (!App::isSite()
+		 || Request::getWord('format') == 'raw'
+		 || Request::getInt('no_html'))
+		{
+			return;
+		}
+
 		$view = $this->view();
 
 		$publication->authors();

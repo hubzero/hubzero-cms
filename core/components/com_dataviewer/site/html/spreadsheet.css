@@ -148,7 +148,6 @@ ul.ui-autocomplete li a {
 	border-bottom: none;
 }
 
-
 .truncate {
 	float: left;
 	margin-right: 0px;
@@ -278,6 +277,13 @@ table#dv-spreadsheet-tbl {
 	max-width: none !important;
 }
 
+.forcetruncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow:ellipsis;
+	-ms-text-overflow:ellipsis;
+	white-space: nowrap;
+}
 
 /* Floating dataview controls */
 div#dv-spreadsheet-tbl_filter, div#dv-spreadsheet-tbl_info, #dv-spreadsheet-tbl_wrapper .dataTables_paginate {

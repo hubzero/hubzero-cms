@@ -36,6 +36,8 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'restrictions.php';
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Admin\Helpers\RestrictionsHelper;
+use Request;
+use User;
 
 /**
  * Controller class
@@ -65,39 +67,37 @@ class Restrictions extends AdminController
 		$this->view->filters = array(
 			// Get sorting variables
 			'sort' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sort',
-					'filter_order',
-					'uId'
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'uId'
 			),
 			'sort_Dir' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sortdir',
-					'filter_order_Dir',
-					'ASC'
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limit',
-					'limit',
-					Config::get('list_limit'),
-					'int'
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
 			),
 			'start' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limitstart',
-					'limitstart',
-					0,
-					'int'
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
 			)
 		);
 
-		RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
-
 		// Get record count
 		$this->view->filters['return'] = 'count';
-		$this->view->total = RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
+		$this->view->total = RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId);
 
 		// Get records
 		$this->view->filters['return'] = 'list';
-		$this->view->rows = RestrictionsHelper::getSkuUsers($this->view->filters, $sId);
+		$this->view->rows = RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId);
 
 		// Output the HTML
 		$this->view->display();
@@ -106,13 +106,13 @@ class Restrictions extends AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=display&id=' . Request::getVar('pId', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getVar('sId', 0), false)
 		);
 	}
 
@@ -124,12 +124,11 @@ class Restrictions extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', 0);
 		$sId = Request::getVar('sId');
-		//print_r($ids); die;
 
 		RestrictionsHelper::removeUsers($ids);
 
@@ -179,16 +178,25 @@ class Restrictions extends AdminController
 		foreach ($users as $user)
 		{
 			$user = trim($user);
-			$usr = new \Hubzero\User\Profile($user);
-			$uId = $usr->get('uidNumber');
+
+			$usr = User::getInstance($user);
+			$uId = $usr->get('id', 0);
 			if ($uId)
 			{
-				RestrictionsHelper::addSkuUser($uId, $sId);
+				RestrictionsHelper::addPermittedSkuUser($uId, $sId);
 				$matched++;
 			}
 			else
 			{
-				$noHubUserMatch[] = $user;
+				// Are we adding by username?
+				if ($user && is_string($user))
+				{
+					RestrictionsHelper::addPermittedSkuUser($uId, $sId, $user);
+				}
+				else
+				{
+					$noHubUserMatch[] = $user;
+				}
 			}
 		}
 
@@ -238,29 +246,34 @@ class Restrictions extends AdminController
 				{
 					if (!empty($line[0]))
 					{
-						$usr = new \Hubzero\User\Profile(trim($line[0]));
-						$uId = $usr->get('uidNumber');
+						$key = trim($line[0]);
+
+						if (!$key)
+						{
+							$ignored[] = $line[0];
+							continue;
+						}
+
+						$usr = User::getInstance($key);
+						$uId = $usr->get('id', 0);
+
 						if ($uId)
 						{
-							$res = RestrictionsHelper::addSkuUser($uId, $sId);
-							if ($res)
-							{
-								$inserted++;
-							}
-							else
-							{
-								$skipped[] = $usr;
-							}
+							$key = null;
+						}
+
+						$res = RestrictionsHelper::addSkuUser($uId, $sId, $key);
+						if ($res)
+						{
+							$inserted++;
 						}
 						else
 						{
-							$ignored[] = $line[0];
+							$skipped[] = $usr;
 						}
 					}
 				}
 				fclose($handle);
-
-
 			}
 			else
 			{

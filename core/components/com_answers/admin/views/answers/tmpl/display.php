@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="6">
+				<th colspan="7">
 					<?php if ($this->question->get('id')) { ?>
 						#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> -
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=questions&task=edit&id=' . $this->question->get('id')); ?>">
@@ -92,6 +92,7 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ANSWER', 'answer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ACCEPTED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -101,7 +102,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php
+				<td colspan="7"><?php
 				// initiate paging
 				echo $this->rows->pagination;
 				?></td>
@@ -120,6 +121,7 @@ function submitbutton(pressbutton)
 					$alt = Lang::txt('COM_ANSWERS_STATE_ACCEPTED');
 					$cls = 'published';
 				break;
+
 				case 0:
 				default:
 					$task = 'accept';
@@ -132,22 +134,37 @@ function submitbutton(pressbutton)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
-				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&qid=' . $this->question->get('id')); ?>">
-						<span><?php echo $this->truncate(strip_tags($row->get('answer')), 75); ?></span>
-					</a>
+				<td class="priority-4">
+					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&qid=' . $this->question->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SET_STATE', $task); ?>">
-						<span><?php echo $alt; ?></span>
-					</a>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&qid=' . $this->question->get('id')); ?>">
+							<span><?php echo $this->truncate(strip_tags($row->get('answer')), 75); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $this->truncate(strip_tags($row->get('answer')), 75); ?></span>
+						</span>
+					<?php } ?>
+				</td>
+				<td>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&qid=' . $this->question->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SET_STATE', $task); ?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $cls; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-4">
 					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td class="priority-3">
-					<a class="glyph user" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
-						<span><?php echo $this->escape(stripslashes($row->creator->get('name'))).' ('.$row->get('created_by').')'; ?></span>
+					<a class="glyph user" href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
+						<span><?php echo $this->escape($row->creator->get('name')) . ' (' . $row->get('created_by') . ')'; ?></span>
 					</a>
 					<?php if ($row->get('anonymous')) { ?>
 						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_ANONYMOUS'); ?>)</span>

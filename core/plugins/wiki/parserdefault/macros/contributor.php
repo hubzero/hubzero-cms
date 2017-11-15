@@ -41,7 +41,7 @@ class ContributorMacro extends WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -54,7 +54,7 @@ class ContributorMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -70,7 +70,7 @@ class ContributorMacro extends WikiMacro
 		{
 			// Yes, then get contributor by ID
 			$id = intval($et);
-			$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM `#__xprofiles` WHERE uidNumber=".$id;
+			$sql = "SELECT id, givenName, middleName, surname, name FROM `#__users` WHERE id=" . $id;
 			// Perform query
 			$this->_db->setQuery($sql);
 			$a = $this->_db->loadRow();
@@ -97,7 +97,7 @@ class ContributorMacro extends WikiMacro
 			// No, it could be username or name
 			$n = trim($et);
 			// Is there a space in it inidcating name ("First Last")?
-			if (!strpos($n,' '))
+			if (!strpos($n, ' '))
 			{
 				// No, then we must have a username
 				// Get user's name
@@ -111,9 +111,11 @@ class ContributorMacro extends WikiMacro
 				{
 					return '(contributor:' . $et . ' not found)';
 				}
-			} else {
-				$bits = explode(' ',$n);
-				$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM `#__xprofiles` WHERE givenName=" . $this->_db->quote($bits[0]) . " AND surname=" . $this->_db->quote(end($bits));
+			}
+			else
+			{
+				$bits = explode(' ', $n);
+				$sql = "SELECT id, givenName, middleName, surname, name FROM `#__users` WHERE givenName=" . $this->_db->quote($bits[0]) . " AND surname=" . $this->_db->quote(end($bits));
 				// Perform query
 				$this->_db->setQuery($sql);
 				$a = $this->_db->loadRow();
@@ -150,4 +152,3 @@ class ContributorMacro extends WikiMacro
 		}
 	}
 }
-

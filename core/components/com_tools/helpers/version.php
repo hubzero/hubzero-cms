@@ -175,12 +175,12 @@ class Version
 			if (is_numeric($toolid))
 			{
 				$query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
-					$db->Quote($toolid) . " AND v.state=1 ORDER BY v.revision DESC LIMIT 1";
+					$db->Quote($toolid) . " AND v.state IN (1, 0) ORDER BY v.state DESC, v.revision DESC LIMIT 1";
 			}
 			else
 			{
 				$query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname=" .
-					$db->Quote($toolid) . " AND v.toolid=t.id AND v.state=1 ORDER BY v.revision " .
+					$db->Quote($toolid) . " AND v.toolid=t.id AND v.state IN (1, 0) ORDER BY v.state DESC, v.revision " .
 					" DESC LIMIT 1";
 			}
 		}

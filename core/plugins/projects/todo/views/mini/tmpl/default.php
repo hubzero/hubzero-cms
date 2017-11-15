@@ -54,7 +54,7 @@ defined('_HZEXEC_') or die();
 		?>
 	<li>
 		 <a href="<?php echo Route::url($this->model->link('todo') . '&action=view&todoid=' . $row->get('id')); ?>" title="<?php echo htmlentities($row->get('content')); ?>">
-		<?php echo \Hubzero\Utility\String::truncate($row->get('content'), 35); ?></a>
+		<?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 35); ?></a>
 		 <span class="block faded mini">
 			<?php if ($row->creator('id')) { ?>
 			<span><?php echo Lang::txt('COM_PROJECTS_BY') . ' ' . \Components\Projects\Helpers\Html::shortenName($row->creator('name')); ?></span> |

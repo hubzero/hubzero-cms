@@ -223,8 +223,8 @@ class Resource extends SiteController
 			}
 
 			$hztv->fulltxt     = $objV->fulltxt     = $status['fulltxt'];
-			$hztv->description = $objV->description = \Hubzero\Utility\String::truncate(Request::getVar('description', $status['description'], 'post'), 500);
-			$hztv->title       = $objV->title       = \Hubzero\Utility\String::truncate(preg_replace('/\s+/', ' ', Request::getVar('title', $status['title'], 'post')), 500);
+			$hztv->description = $objV->description = \Hubzero\Utility\Str::truncate(Request::getVar('description', $status['description'], 'post'), 500);
+			$hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(preg_replace('/\s+/', ' ', Request::getVar('title', $status['title'], 'post')), 500);
 
 			if (!$hztv->update())
 			{
@@ -415,7 +415,7 @@ class Resource extends SiteController
 	 */
 	public function updatePage($rid, $status=array(), $published=0, $newtool=0)
 	{
-		if ($rid === NULL)
+		if ($rid === null)
 		{
 			return false;
 		}
@@ -471,12 +471,12 @@ class Resource extends SiteController
 		$params[] = 'pageclass_sfx=';
 		$params[] = 'show_title=1';
 		$params[] = 'show_authors=1';
-		$params[] = 'show_assocs=1';
-		$params[] = 'show_type=1';
-		$params[] = 'show_logicaltype=1';
-		$params[] = 'show_rating=1';
-		$params[] = 'show_date=1';
-		$params[] = 'show_parents=1';
+		$params[] = 'show_assocs=';
+		$params[] = 'show_type=';
+		$params[] = 'show_logicaltype=';
+		$params[] = 'show_rating=';
+		$params[] = 'show_date=';
+		$params[] = 'show_parents=';
 		$params[] = 'series_banner=';
 		$params[] = 'show_banner=1';
 		$params[] = 'show_footer=3';

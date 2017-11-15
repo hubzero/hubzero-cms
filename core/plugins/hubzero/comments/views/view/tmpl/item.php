@@ -177,6 +177,7 @@ defined('_HZEXEC_') or die();
 								<input type="hidden" name="comment[created]" value="" />
 								<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
 								<input type="hidden" name="comment[state]" value="1" />
+								<input type="hidden" name="comment[access]" value="1" />
 								<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 								<input type="hidden" name="action" value="commentsave" />
 

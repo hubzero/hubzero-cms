@@ -52,6 +52,9 @@ if ($sessions)
 	}
 }
 
+$qsfilters  = ($this->filters['scope'] ? '&scope=' . $this->filters['scope'] : '');
+$qsfilters .= ($this->filters['created_by'] ? '&created_by=' . $this->filters['created_by'] : '');
+
 if (!$no_html) { ?>
 <div class="activities">
 	<form action="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" method="get">
@@ -63,11 +66,11 @@ if (!$no_html) { ?>
 				</div>
 				<div class="col span6 omega">
 					<?php if ($this->filters['filter'] == 'starred') { ?>
-						<a class="icon-star tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>">
+						<a class="icon-star tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity' . $qsfilters); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>">
 							<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>
 						</a>
 					<?php } else { ?>
-						<a class="icon-star-empty tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity&filter=starred'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_STARRED'); ?>">
+						<a class="icon-star-empty tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity&filter=starred' . $qsfilters); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_STARRED'); ?>">
 							<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_STARRED'); ?>
 						</a>
 					<?php } ?>
@@ -76,6 +79,28 @@ if (!$no_html) { ?>
 							<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS'); ?>
 						</a>
 					<?php } ?>
+				</div>
+			</div>
+			<div class="grid">
+				<div class="col span12">
+					<span class="input-wrap">
+						<label for="filter-scope"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_SCOPE'); ?></label>
+						<select name="scope" id="filter-scope">
+							<option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_SCOPE_ALL'); ?></option>
+							<?php foreach ($this->categories as $category) { ?>
+								<option value="<?php echo $this->escape($category); ?>"<?php if ($this->filters['scope'] == $category) { echo ' selected="selected"'; } ?>><?php echo $this->escape($category); ?></option>
+							<?php } ?>
+						</select>
+					</span>
+
+					<span class="input-wrap">
+						<label for="filter-created_by"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY'); ?></label>
+						<select name="created_by" id="filter-created_by">
+							<option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ALL'); ?></option>
+							<option value="me"<?php if ($this->filters['created_by'] == 'me') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ME'); ?></option>
+							<option value="notme"<?php if ($this->filters['created_by'] == 'notme') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_NOTME'); ?></option>
+						</select>
+					</span>
 				</div>
 			</div>
 		</fieldset>
@@ -110,6 +135,10 @@ if (!$no_html) { ?>
 			if ($this->filters['search'])
 			{
 				$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+			}
+			if ($this->filters['created_by'])
+			{
+				$pageNav->setAdditionalUrlParam('created_by', $this->filters['created_by']);
 			}
 			echo $pageNav;
 			?>

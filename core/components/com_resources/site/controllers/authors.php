@@ -32,7 +32,7 @@
 
 namespace Components\Resources\Site\Controllers;
 
-use Components\Resources\Models\Orm\Resource;
+use Components\Resources\Models\Entry;
 use Components\Resources\Models\Author;
 use Hubzero\Component\SiteController;
 use Request;
@@ -40,7 +40,7 @@ use User;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool
@@ -222,7 +222,7 @@ class Authors extends SiteController
 				// Log activity
 				if ($authorid > 0)
 				{
-					$resource = Resource::oneOrFail($id);
+					$resource = Entry::oneOrFail($id);
 
 					Event::trigger('system.logActivity', [
 						'activity' => [
@@ -284,7 +284,7 @@ class Authors extends SiteController
 				// Log activity
 				if ($author->get('authorid') > 0)
 				{
-					$resource = Resource::oneOrFail($pid);
+					$resource = Entry::oneOrFail($pid);
 
 					Event::trigger('system.logActivity', [
 						'activity' => [
@@ -424,7 +424,7 @@ class Authors extends SiteController
 		}
 
 		// Get all contributors of this resource
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		$authors = $resource->authors()
 			->ordered()

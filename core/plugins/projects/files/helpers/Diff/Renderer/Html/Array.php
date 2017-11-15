@@ -45,7 +45,9 @@ require_once dirname(__FILE__).'/../Abstract.php';
 class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 {
 	/**
-	 * @var array Array of the default options that apply to this renderer.
+	 * Array of the default options that apply to this renderer.
+	 *
+	 * @var  array
 	 */
 	protected $defaultOptions = array(
 		'tabSize' => 4
@@ -56,7 +58,7 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	 * based differences. Generally called by subclasses that generate a
 	 * HTML based diff and return an array of the changes to show in the diff.
 	 *
-	 * @return array An array of the generated chances, suitable for presentation in HTML.
+	 * @return  array  An array of the generated chances, suitable for presentation in HTML.
 	 */
 	public function render()
 	{
@@ -86,7 +88,8 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 						$toLine = $b[$j1 + $i];
 
 						list($start, $end) = $this->getChangeExtent($fromLine, $toLine);
-						if ($start != 0 || $end != 0) {
+						if ($start != 0 || $end != 0)
+						{
 							$last = $end + strlen($fromLine);
 							$fromLine = substr_replace($fromLine, "\0", $start, 0);
 							$fromLine = substr_replace($fromLine, "\1", $last + 1, 0);
@@ -105,11 +108,11 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 						'tag' => $tag,
 						'base' => array(
 							'offset' => $i1,
-							'lines' => array()
+							'lines'  => array()
 						),
 						'changed' => array(
 							'offset' => $j1,
-							'lines' => array()
+							'lines'  => array()
 						)
 					);
 					$lastBlock = count($blocks)-1;
@@ -126,14 +129,16 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 				}
 				else
 				{
-					if ($tag == 'replace' || $tag == 'delete') {
+					if ($tag == 'replace' || $tag == 'delete')
+					{
 						$lines = array_slice($a, $i1, ($i2 - $i1));
 						$lines = $this->formatLines($lines);
 						$lines = str_replace(array("\0", "\1"), array('<del>', '</del>'), $lines);
 						$blocks[$lastBlock]['base']['lines'] += $lines;
 					}
 
-					if ($tag == 'replace' || $tag == 'insert') {
+					if ($tag == 'replace' || $tag == 'insert')
+					{
 						$lines = array_slice($b, $j1, ($j2 - $j1));
 						$lines =  $this->formatLines($lines);
 						$lines = str_replace(array("\0", "\1"), array('<ins>', '</ins>'), $lines);
@@ -150,9 +155,9 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	 * Given two strings, determine where the changes in the two strings
 	 * begin, and where the changes in the two strings end.
 	 *
-	 * @param string $fromLine The first string.
-	 * @param string $toLine The second string.
-	 * @return array Array containing the starting position (0 by default) and the ending position (-1 by default)
+	 * @param   string  $fromLine  The first string.
+	 * @param   string  $toLine    The second string.
+	 * @return  array   Array containing the starting position (0 by default) and the ending position (-1 by default)
 	 */
 	private function getChangeExtent($fromLine, $toLine)
 	{
@@ -179,8 +184,8 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	 * This involves replacing tab characters with spaces, making the HTML safe
 	 * for output, ensuring that double spaces are replaced with &nbsp; etc.
 	 *
-	 * @param array $lines Array of lines to format.
-	 * @return array Array of the formatted lines.
+	 * @param   array  $lines  Array of lines to format.
+	 * @return  array  Array of the formatted lines.
 	 */
 	private function formatLines($lines)
 	{
@@ -188,7 +193,11 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 		$lines = array_map(array($this, 'HtmlSafe'), $lines);
 		foreach ($lines as &$line)
 		{
-			$line = preg_replace('# ( +)|^ #e', "\$this->fixSpaces('\\1')", $line);
+			$line = preg_replace_callback(
+				'# ( +)|^ #',
+				array(&$this, 'fixSpaces'),
+				$line
+			);
 		}
 		return $lines;
 	}
@@ -196,11 +205,15 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	/**
 	 * Replace a string containing spaces with a HTML representation using &nbsp;.
 	 *
-	 * @param string $spaces The string of spaces.
-	 * @return string The HTML representation of the string.
+	 * @param   mixed   $spaces  The string of spaces.
+	 * @return  string  The HTML representation of the string.
 	 */
-	function fixSpaces($spaces='')
+	public function fixSpaces($spaces='')
 	{
+		if (is_array($spaces))
+		{
+			$spaces = $spaces[1];
+		}
 		$count = strlen($spaces);
 		if ($count == 0)
 		{
@@ -209,14 +222,14 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 
 		$div = floor($count / 2);
 		$mod = $count % 2;
-		return str_repeat('&nbsp; ', $div).str_repeat('&nbsp;', $mod);
+		return str_repeat('&nbsp; ', $div) . str_repeat('&nbsp;', $mod);
 	}
 
 	/**
 	 * Replace tabs in a single line with a number of spaces as defined by the tabSize option.
 	 *
-	 * @param string $line The containing tabs to convert.
-	 * @return string The line with the tabs converted to spaces.
+	 * @param   string  $line  The containing tabs to convert.
+	 * @return  string  The line with the tabs converted to spaces.
 	 */
 	private function expandTabs($line)
 	{
@@ -226,8 +239,8 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	/**
 	 * Make a string containing HTML safe for output on a page.
 	 *
-	 * @param string $string The string.
-	 * @return string The string with the HTML characters replaced by entities.
+	 * @param   string  $string  The string.
+	 * @return  string  The string with the HTML characters replaced by entities.
 	 */
 	private function htmlSafe($string)
 	{

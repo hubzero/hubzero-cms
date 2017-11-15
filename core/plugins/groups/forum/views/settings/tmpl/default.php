@@ -62,6 +62,13 @@ $this->css()
 				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
 			</label>
 
+			<fieldset>
+				<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_ALLOW_ANONYMOUS'); ?></legend>
+
+				<label for="param-allow_anonymous-no"><input type="radio" name="params[allow_anonymous]" id="param-allow_anonymous-no" value="0" <?php if (!$this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('JNO'); ?></label>
+				<label for="param-allow_anonymous-yes"><input type="radio" name="params[allow_anonymous]" id="param-allow_anonymous-yes" value="1" <?php if ($this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('JYES'); ?></label>
+			</fieldset>
+
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->get('id'); ?>" />
 			<input type="hidden" name="settings[object_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 			<input type="hidden" name="settings[folder]" value="groups" />

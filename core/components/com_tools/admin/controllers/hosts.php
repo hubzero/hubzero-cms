@@ -33,7 +33,9 @@
 namespace Components\Tools\Admin\Controllers;
 
 use Components\Tools\Helpers\Utils;
-use Components\Tools\Tables;
+use Components\Tools\Tables\Host;
+use Components\Tools\Tables\Hosttype;
+use Components\Tools\Tables\Zones;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
@@ -42,9 +44,9 @@ use Route;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zones.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'host.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php');
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zones.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'host.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php';
 
 /**
  * Tools controller class for hosts
@@ -72,7 +74,7 @@ class Hosts extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'hostname' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.hostname',
 				'hostname',
@@ -109,30 +111,29 @@ class Hosts extends AdminController
 			)
 		);
 		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['limit'] = ($this->view->filters['limit'] == 'all') ? 0 : $this->view->filters['limit'];
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
+		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
 
 		// Get the middleware database
 		$mwdb = Utils::getMWDBO();
 
-		$model = new Tables\Host($mwdb);
+		$model = new Host($mwdb);
 
-		$this->view->total = $model->getCount($this->view->filters);
+		$total = $model->getCount($filters);
 
-		$this->view->rows = $model->getRecords($this->view->filters);
+		$rows = $model->getRecords($filters);
 
-		$ht = new Tables\Hosttype($mwdb);
+		$ht = new Hosttype($mwdb);
 
-		$this->view->hosttypes = $ht->getRecords();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$hosttypes = $ht->getRecords();
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->set('hosttypes', $hosttypes)
+			->display();
 	}
 
 	/**
@@ -143,23 +144,20 @@ class Hosts extends AdminController
 	public function statusTask()
 	{
 		// Incoming
-		$this->view->hostname = Request::getVar('hostname', '', 'get');
+		$hostname = Request::getVar('hostname', '', 'get');
 
 		// $hostname is eventually used in a string passed to an exec call, we gotta
 		// clean at least some of it. See RFC 1034 for valid character set info
-		$this->view->hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $this->view->hostname);
+		$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
-		$this->view->status = $this->_middleware("check " . $this->view->hostname . " yes", $output);
-		$this->view->output = $output;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$status = $this->_middleware("check " . $hostname . " yes", $output);
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('hostname', $hostname)
+			->set('output', $output)
+			->set('status', $status)
+			->display();
 	}
 
 	/**
@@ -187,7 +185,7 @@ class Hosts extends AdminController
 		foreach ($output as $line)
 		{
 			// If it's a new session, catch the session number...
-			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/",$line,$sess))
+			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/", $line, $sess))
 			{
 				$retval = $sess[1];
 			}
@@ -230,40 +228,39 @@ class Hosts extends AdminController
 			// clean at least some of it. See RFC 1034 for valid character set info
 			$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
-			$row = new Tables\Host($mwdb);
+			$row = new Host($mwdb);
 			$row->load($hostname);
 		}
 
-		$this->view->row = $row;
+		$ht = new Hosttype($mwdb);
+		$hosttypes = $ht->getRecords();
 
-		$ht = new Tables\Hosttype($mwdb);
-		$this->view->hosttypes = $ht->getRecords();
+		$v = new Zones($mwdb);
+		$zones = $v->find('list');
 
-		$v = new Tables\Zones($mwdb);
-		$this->view->zones = $v->find('list');
-
-		//make sure we have a hostname
-		if ($this->view->row->hostname != '')
+		// make sure we have a hostname
+		$toolCounts = 0;
+		$statusCounts = 0;
+		if ($row->hostname != '')
 		{
 			//get tool instance counts
-			$sql = "SELECT appname, count(*) as count from session where exechost=" . $this->database->quote($this->view->row->hostname) . " group by appname";
-			$this->database->setQuery($sql);
-			$this->view->toolCounts = $this->database->loadObjectList();
+			$sql = "SELECT appname, count(*) as count from session where exechost=" . $mwdb->quote($row->hostname) . " group by appname";
+			$mwdb->setQuery($sql);
+			$toolCounts = $mwdb->loadObjectList();
 
 			//get status counts
-			$sql = "SELECT status, count(*) as count from display where hostname=" . $this->database->quote($this->view->row->hostname) . " group by status";
-			$this->database->setQuery($sql);
-			$this->view->statusCounts = $this->database->loadObjectList();
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$sql = "SELECT status, count(*) as count from display where hostname=" . $mwdb->quote($row->hostname) . " group by status";
+			$mwdb->setQuery($sql);
+			$statusCounts = $mwdb->loadObjectList();
 		}
 
 		// Display results
 		$this->view
+			->set('row', $row)
+			->set('hosttypes', $hosttypes)
+			->set('zones', $zones)
+			->set('toolCounts', $toolCounts)
+			->set('statusCounts', $statusCounts)
 			->setLayout('edit')
 			->display();
 	}
@@ -284,7 +281,8 @@ class Hosts extends AdminController
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = new Tables\Host($mwdb);
+		$row = new Host($mwdb);
+
 		if (!$row->bind($fields))
 		{
 			Notify::error($row->getError());
@@ -298,7 +296,7 @@ class Hosts extends AdminController
 
 		if (!$row->hostname)
 		{
-			Notify::error(Lang::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'));
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_INVALID_HOSTNAME'));
 			return $this->editTask($row);
 		}
 
@@ -312,7 +310,7 @@ class Hosts extends AdminController
 		$row->provisions = 0;
 
 		// Get the middleware database
-		$ht = new Tables\Hosttype($mwdb);
+		$ht = new Hosttype($mwdb);
 		if ($rows = $ht->getRecords())
 		{
 			for ($i=0; $i < count($rows); $i++)
@@ -345,16 +343,14 @@ class Hosts extends AdminController
 			return $this->editTask($row);
 		}
 
-		Notify::success(Lang::_('COM_TOOLS_ITEM_SAVED'));
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -389,9 +385,7 @@ class Hosts extends AdminController
 			Notify::error(Lang::txt('COM_TOOLS_ERROR_PROVISION_UPDATE_FAILED'));
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -407,27 +401,33 @@ class Hosts extends AdminController
 		// Incoming
 		$ids = Request::getVar('id', array());
 
-		$mwdb = Utils::getMWDBO();
+		$removed = 0;
 
 		if (count($ids) > 0)
 		{
-			$row = new Tables\Host($mwdb);
+			$mwdb = Utils::getMWDBO();
+			$row = new Host($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
 				$id = preg_replace("/[^A-Za-z0-9-.]/", '', $id);
+
 				if (!$row->delete($id))
 				{
-					throw new \Exception($row->getError(), 500);
+					Notify::error($row->getError());
+					continue;
 				}
+
+				$removed++;
 			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_ITEM_DELETED'),
-			'message'
-		);
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_TOOLS_ITEM_DELETED'));
+		}
+
+		$this->cancelTask();
 	}
 }

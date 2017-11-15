@@ -46,7 +46,7 @@ $last   = ($this->order == $this->total) ? 1 : 0;
 $max    = $this->manifest->params->max;
 
 // Get side text
-$aboutText = $this->manifest->about ? $this->manifest->about : NULL;
+$aboutText = $this->manifest->about ? $this->manifest->about : null;
 if ($this->pub->_project->isProvisioned() && isset($this->manifest->aboutProv))
 {
 	$aboutText = $this->manifest->aboutProv;
@@ -178,7 +178,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) {
 
 				if ($shorten)
 				{
-					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
+					$about = \Hubzero\Utility\Str::truncate($aboutText, 200, array('html' => true));
 					$about.= ' <a href="#more-' . $elName . '" class="more-content">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
 					$about.= ' <div class="hidden">';
 					$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';

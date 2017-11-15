@@ -32,106 +32,104 @@
 
 namespace Components\Wishlist\Models;
 
+use Hubzero\Database\Relational;
+use Filesystem;
+use Component;
 use Route;
-use Lang;
-
-require_once(__DIR__ . DS . 'base.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
 
 /**
  * Model class for a wish attachment
  */
-class Attachment extends Base
+class Attachment extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Wish\\Attachment';
+	protected $namespace = 'wish';
 
 	/**
-	 * Constructor
+	 * File size
 	 *
-	 * @param   mixed    $oid     ID (int), alias (string), array, or object
-	 * @param   integer  $wishid  Wish ID
-	 * @return  void
+	 * @var  string
 	 */
-	public function __construct($oid=null, $wishid=null)
+	protected $size = null;
+
+	/**
+	 * Diemnsions for file (must be an image)
+	 *
+	 * @var  array
+	 */
+	protected $dimensions = null;
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'created';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'wish'     => 'nonzero',
+		'filename' => 'notempty'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Load a record by wish and filename
+	 *
+	 * @param   integer  $wish
+	 * @param   string   $filename
+	 * @return  object
+	 */
+	public static function oneByWishAndFile($wish, $filename)
 	{
-		$this->_db = \App::get('db');
-
-		if ($this->_tbl_name)
-		{
-			$cls = $this->_tbl_name;
-			$this->_tbl = new $cls($this->_db);
-
-			if (!($this->_tbl instanceof \JTable))
-			{
-				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
-				);
-				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
-			}
-
-			if (is_numeric($oid) || is_string($oid))
-			{
-				// Make sure $oid isn't empty
-				// This saves a database call
-				if ($oid)
-				{
-					if ($wishid)
-					{
-						$this->_tbl->loadAttachment($oid, $wishid);
-					}
-					else
-					{
-						$this->_tbl->load($oid);
-					}
-				}
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
+		return self::all()
+			->whereEquals('wish', $wish)
+			->whereEquals('filename', $filename)
+			->row();
 	}
 
 	/**
-	 * Returns a reference to this model
+	 * Defines a belongs to one relationship between task and liaison
 	 *
-	 * @param   mixed    $oid     ID (int), alias (string), array, or object
-	 * @param   integer  $wishid  Wish ID
 	 * @return  object
 	 */
-	static function &getInstance($oid=0, $wishid=null)
+	public function creator()
 	{
-		static $instances;
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $wishid . '_' . $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $wishid . '_' . $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $wishid . '_' . $oid['id'];
-		}
-
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($oid, $wishid);
-		}
-
-		return $instances[$key];
+	/**
+	 * Defines a belongs to one relationship between attachment and wish
+	 *
+	 * @return  object
+	 */
+	public function wish()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Wish', 'wish');
 	}
 
 	/**
@@ -147,16 +145,25 @@ class Attachment extends Base
 		switch ($type)
 		{
 			case 'download':
-				return Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish'));
+				if (!$this->get('category') || !$this->get('referenceid'))
+				{
+					$wish = Wish::oneOrNew($this->get('wish'));
+					$wishlist = Wishlist::oneOrNew($wish->get('wishlist'));
+					$this->set('category', $wishlist->get('category'));
+					$this->set('referenceid', $wishlist->get('referenceid'));
+				}
+				return Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish') . '&file=' . $this->get('filename'));
 			break;
 
 			case 'dir':
-				return PATH_APP . DS . trim($this->config('webpath'), '/') . DS . $this->get('wish');
+				$path = Component::params('com_wishlist')->get('webpath');
+				return PATH_APP . DS . trim($path, '/') . DS . $this->get('wish');
 			break;
 
 			case 'file':
 			case 'server':
-				return PATH_APP . DS . trim($this->config('webpath'), '/') . DS . $this->get('wish') . DS . ltrim($this->get('filename'), '/');
+				$path = Component::params('com_wishlist')->get('webpath');
+				return PATH_APP . DS . trim($path, '/') . DS . $this->get('wish') . DS . ltrim($this->get('filename'), '/');
 			break;
 		}
 	}
@@ -169,14 +176,114 @@ class Attachment extends Base
 	 */
 	public function isAllowedType()
 	{
-		$ext = strtolower(\Filesystem::extension($this->get('filename')));
+		$ext = strtolower(Filesystem::extension($this->get('filename')));
 
-		if (!in_array($ext, explode(',', $this->config('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz'))))
+		$exts = explode(',', Component::params('com_media')->get('upload_extensions', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz'));
+		$exts = array_map('trim', $exts);
+
+		if (!in_array($ext, $exts))
 		{
 			return false;
 		}
 
 		return true;
 	}
-}
 
+	/**
+	 * Delete record
+	 *
+	 * @return  boolean  True if successful, False if not
+	 */
+	public function destroy()
+	{
+		$path = $this->link('file');
+
+		if (file_exists($path))
+		{
+			if (!Filesystem::delete($path))
+			{
+				$this->addError('Unable to delete file.');
+
+				return false;
+			}
+		}
+
+		return parent::destroy();
+	}
+
+	/**
+	 * Is the file an image?
+	 *
+	 * @return  boolean
+	 */
+	public function isImage()
+	{
+		return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
+	}
+
+	/**
+	 * Is the file an image?
+	 *
+	 * @return  boolean
+	 */
+	public function size()
+	{
+		if ($this->size === null)
+		{
+			$this->size = 0;
+
+			$path = $this->link('file');
+
+			if (file_exists($path))
+			{
+				$this->size = filesize($path);
+			}
+		}
+
+		return $this->size;
+	}
+
+	/**
+	 * File width and height
+	 *
+	 * @return  array
+	 */
+	public function dimensions()
+	{
+		if (!$this->dimensions)
+		{
+			$this->dimensions = array(0, 0);
+
+			if ($this->isImage() && file_exists($this->link('file')))
+			{
+				$this->dimensions = getimagesize($this->link('file'));
+			}
+		}
+
+		return $this->dimensions;
+	}
+
+	/**
+	 * File width
+	 *
+	 * @return  integer
+	 */
+	public function width()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[0];
+	}
+
+	/**
+	 * File height
+	 *
+	 * @return  integer
+	 */
+	public function height()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[1];
+	}
+}

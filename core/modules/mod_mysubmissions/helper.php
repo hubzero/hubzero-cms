@@ -32,6 +32,7 @@
 
 namespace Modules\MySubmissions;
 
+use Components\Resources\Models\Entry;
 use Hubzero\Module\Module;
 use Component;
 use User;
@@ -45,38 +46,36 @@ class Helper extends Module
 	/**
 	 * Check if the type selection step is completed
 	 *
-	 * @param   integer  $id  Resource ID
+	 * @param   object   $row  Resource
 	 * @return  boolean  True if step completed
 	 */
-	public function step_type_check($id)
+	public function step_type_check($row)
 	{
-		return ($id ? true : false);
+		return ($row->id ? true : false);
 	}
 
 	/**
 	 * Check if the compose step is completed
 	 *
-	 * @param   integer  $id  Resource ID
+	 * @param   object   $row  Resource
 	 * @return  boolean  True if step completed
 	 */
-	public function step_compose_check($id)
+	public function step_compose_check($row)
 	{
-		return ($id ? true : false);
+		return ($row->id ? true : false);
 	}
 
 	/**
 	 * Check if the attach step is completed
 	 *
-	 * @param   integer  $id  Resource ID
+	 * @param   object   $row  Resource
 	 * @return  boolean  True if step completed
 	 */
-	public function step_attach_check($id)
+	public function step_attach_check($row)
 	{
-		if ($id)
+		if ($row->id)
 		{
-			$database = App::get('db');
-			$ra = new \Components\Resources\Tables\Assoc($database);
-			$total = $ra->getCount($id);
+			$total = $row->children()->total();
 		}
 		else
 		{
@@ -88,16 +87,14 @@ class Helper extends Module
 	/**
 	 * Check if the authors step is completed
 	 *
-	 * @param   integer  $id  Resource ID
+	 * @param   object   $row  Resource
 	 * @return  boolean  True if step completed
 	 */
-	public function step_authors_check($id)
+	public function step_authors_check($row)
 	{
-		if ($id)
+		if ($row->id)
 		{
-			$database = App::get('db');
-			$rc = new \Components\Resources\Tables\Contributor($database);
-			$contributors = $rc->getCount($id, 'resources');
+			$contributors = $row->authors()->total();
 		}
 		else
 		{
@@ -110,17 +107,14 @@ class Helper extends Module
 	/**
 	 * Check if the tags step is completed
 	 *
-	 * @param   integer  $id  Resource ID
+	 * @param   object   $row  Resource
 	 * @return  boolean  True if step completed
 	 */
-	public function step_tags_check($id)
+	public function step_tags_check($row)
 	{
-		$database = App::get('db');
+		$tags = $row->tags();
 
-		$rt = new \Components\Resources\Helpers\Tags($id);
-		$tags = $rt->tags('count');
-
-		if ($tags > 0)
+		if (count($tags) > 0)
 		{
 			return true;
 		}
@@ -131,10 +125,10 @@ class Helper extends Module
 	/**
 	 * Check if the review step is completed
 	 *
-	 * @param   integer  $id  Resource ID
+	 * @param   object   $row  Resource
 	 * @return  boolean  True if step completed
 	 */
-	public function step_review_check($id)
+	public function step_review_check($row)
 	{
 		return false;
 	}
@@ -151,31 +145,24 @@ class Helper extends Module
 			return false;
 		}
 
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
+		include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
-		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
+		$this->steps = array(
+			'Type',
+			'Compose',
+			'Attach',
+			'Authors',
+			'Tags',
+			'Review'
+		);
 
-		$database = App::get('db');
-
-		$rr = new \Components\Resources\Tables\Resource($database);
-		$rt = new \Components\Resources\Tables\Type($database);
-
-		$query = "SELECT r.*, t.type AS typetitle
-			FROM " . $rr->getTableName() . " AS r
-			LEFT JOIN " . $rt->getTableName() . " AS t ON r.type=t.id
-			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=" . User::get('id');
-		$database->setQuery($query);
-		$this->rows = $database->loadObjectList();
-
-		if ($this->rows)
-		{
-			include_once(Component::path('com_resources') . DS . 'tables' . DS . 'assoc.php');
-			include_once(Component::path('com_resources') . DS . 'tables' . DS . 'contributor.php');
-			include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
-		}
+		$this->rows = Entry::all()
+			->whereEquals('standalone', 1)
+			->whereEquals('published', 2)
+			->where('type', '!=', 7)
+			->whereEquals('created_by', User::get('id'))
+			->rows();
 
 		require $this->getLayoutPath();
 	}
 }
-

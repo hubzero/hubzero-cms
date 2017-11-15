@@ -225,10 +225,26 @@ HUBzero is a registered trademark of Purdue University.
 			step="1"
 			default="1">
 		</field>
+		<field
+			name="login_log_timeframe"
+			type="list"
+			label="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_LOG_TIMEFRAME_LABEL"
+			description="COM_MEMBERS_CONFIG_FIELD_FRONTEND_LOGIN_LOG_TIMEFRAME_DESC"
+			default="">
+			<option value="">Never</option>
+			<option value="1 week">1 week</option>
+			<option value="2 weeks">2 weeks</option>
+			<option value="3 weeks">3 weeks</option>
+			<option value="1 month">1 Month</option>
+			<option value="2 months">2 Months</option>
+			<option value="3 months">3 Months</option>
+			<option value="6 months">6 Months</option>
+			<option value="1 year">1 Year</option>
+		</field>
 		<field type="spacer" hr="false" />
 		<field name="fail2ban" type="list" default="0" label="Fail2Ban" description="Trigger Fail2Ban when the threshold of blocked accounts per IP address is met.">
-			<option value="1">On</option>
-			<option value="0">Off</option>
+			<option value="1">JOn</option>
+			<option value="0">JOff</option>
 		</field>
 		<field
 			name="blocked_accounts_limit"
@@ -277,15 +293,24 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="members">Members</option>
 			<option value="sandbox">Sandbox</option>
 		</field>
-		<field name="orcid_members_token" type="text" menu="hide" default="" label="ORCID Members Token" description="Authorization token for the members ORCID service." />
+		<field name="orcid_sandbox_client_id" type="text" menu="hide" default="" label="ORCID Sandbox Client ID" description="Authorization client ID for the sandbox members ORCID service." />
+		<field name="orcid_members_client_id" type="text" menu="hide" default="" label="ORCID Members Client ID" description="Authorization client ID for the production members ORCID service." />
 		<field name="orcid_sandbox_token" type="text" menu="hide" default="" label="ORCID Sandbox Token" description="Authorization token for the sandbox ORCID service." />
+		<field name="orcid_members_token" type="text" menu="hide" default="" label="ORCID Members Token" description="Authorization token for the members ORCID service." />
+		<field name="orcid_sandbox_redirect_uri" type="text" menu="hide" default="" label="ORCID Sandbox Authentication Redirect URI" description="Authorization redirect URI for the sandbox ORCID service." />
+		<field name="orcid_members_redirect_uri" type="text" menu="hide" default="" label="ORCID Members Authentication Redirect URI" description="Authorization redirect URI for the members ORCID service." />
+		<field name="orcid_institution_field_option" type="list" default="0" label="ORCID Institution Option" description="Enable searching by institution name">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="orcid_user_institution_name" type="text" menu="hide" default="Purdue University" label="Insitution name of ORCID user" description="The field for setting the insitution name." />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="defaultpic" type="text" menu="hide" default="/core/components/com_members/site/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<field name="picture" type="list" default="" label="Picture Handler" description="Select a handler for user pictures">
-			<option value="">default</option>
-			<option value="initialcon">initialcon</option>
-			<option value="identicon">identicon</option>
-			<option value="gravatar">gravatar</option>
+			<option value="">Default</option>
+			<option value="initialcon">User's Initiials</option>
+			<option value="identicon">Identicon (visual representation of a hash of unique info)</option>
+			<option value="gravatar">Gravatar</option>
 		</field>
 		<field name="identicon_color" type="text" menu="hide" default="" label="Random Picture Color" description="Specify a color to use when generating random pictures. Otherwise, the color is auto-determined from the string (email) passed to the generator." />
 		<field name="gravatar" type="list" default="0" label="Gravatar Picture" description="Enable Gravatar user pictures">

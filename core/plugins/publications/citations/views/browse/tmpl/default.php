@@ -52,7 +52,7 @@ if ($this->citations)
 	foreach ($this->citations as $cite)
 	{
 		$showLinks = ($cite->title && $cite->author && $cite->publisher) ? true : false;
-		$formatted = $cite->formatted ? $cite->formatted : \Components\Citations\Helpers\Format::formatReference($cite, '');
+		$formatted = $cite->formatted();
 
 		if ($cite->doi && $cite->url)
 		{

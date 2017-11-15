@@ -34,10 +34,9 @@ namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Support\Models\Conditions;
+use Components\Support\Models\Query;
+use Components\Support\Models\QueryFolder;
 use Components\Support\Helpers\Utilities;
-use Components\Support\Tables\Ticket;
-use Components\Support\Tables\Query;
-use Components\Support\Tables\QueryFolder;
 use stdClass;
 use Request;
 use Config;
@@ -46,15 +45,28 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'ticket.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'queryfolder.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'queryfolder.php';
 
 /**
  * Support controller class for ticket queries
  */
 class Queries extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('addfolder', 'editfolder');
+		$this->registerTask('applyfolder', 'savefolder');
+
+		parent::execute();
+	}
+
 	/**
 	 * Displays a list of records
 	 *
@@ -89,74 +101,68 @@ class Queries extends AdminController
 			'iscore' => array(4, 2, 1)
 		);
 
-		$obj = new Query($this->database);
+		$query = Query::all();
 
-		// Record count
-		$total = $obj->find('count', $filters);
-
-		// Fetch results
-		$rows  = $obj->find('list', $filters);
+		$rows = $query
+			->whereIn('iscore', $filters['iscore'])
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
-			->set('total', $total)
 			->set('rows', $rows)
 			->display();
 	}
 
 	/**
-	 * Create a new record
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Display a form for adding/editing a record
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
-		$this->view->lists = array();
-
-		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
-
-		$id = Request::getVar('id', array(0));
-		if (is_array($id))
+		if (!is_object($row))
 		{
-			$id = (!empty($id) ? $id[0] : 0);
+			$id = Request::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? $id[0] : 0);
+			}
+
+			$row = Query::oneOrNew($id);
 		}
 
-		$this->view->row = new Query($this->database);
-		$this->view->row->load($id);
-		if (!$this->view->row->sort)
+		if (!$row->get('sort'))
 		{
-			$this->view->row->sort = 'created';
+			$row->set('sort', 'created');
 		}
-		if (!$this->view->row->sort_dir)
+		if (!$row->get('sort_dir'))
 		{
-			$this->view->row->sort_dir = 'desc';
+			$row->set('sort_dir', 'desc');
 		}
 
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'conditions.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'conditions.php';
 		$con = new Conditions();
-		$this->view->conditions = $con->getConditions();
+		$conditions = $con->getConditions();
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$severities = Utilities::getSeverities($this->config->get('severities'));
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('conditions', $conditions)
+			->set('severities', $severities)
 			->setLayout('edit')
 			->display();
 	}
@@ -171,70 +177,40 @@ class Queries extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$fields  = Request::getVar('fields', array(), 'post');
 		$no_html = Request::getInt('no_html', 0);
 		$tmpl    = Request::getVar('component', '');
 
-		$row = new Query($this->database);
-		if (!$row->bind($fields))
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editTask($row);
-			}
-			else
-			{
-				echo $row->getError();
-			}
-			return;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editTask($row);
-			}
-			else
-			{
-				echo $row->getError();
-			}
-			return;
-		}
+		$row = Query::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editTask($row);
-			}
-			else
+			if ($no_html || $tmpl == 'component')
 			{
 				echo $row->getError();
+				return;
 			}
-			return;
+
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		$row->reorder('folder_id=' . $this->database->Quote($row->folder_id));
+		if ($no_html && $tmpl == 'component')
+		{
+			return $this->listTask();
+		}
 
-		if (!$no_html && $tmpl != 'component')
-		{
-			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED')
-			);
-		}
-		else
-		{
-			$this->listTask();
-		}
+		Notify::success(Lang::txt('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED'));
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -244,51 +220,16 @@ class Queries extends AdminController
 	 */
 	public function listTask()
 	{
-		$obj = new Ticket($this->database);
-
 		// Get query list
-		$sf = new QueryFolder($this->database);
-		$this->view->folders = $sf->find('list', array(
-			'user_id'  => User::get('id'),
-			'sort'     => 'ordering',
-			'sort_Dir' => 'asc'
-		));
-
-		$sq = new Query($this->database);
-		$queries = $sq->find('list', array(
-			'user_id'  => User::get('id'),
-			'sort'     => 'ordering',
-			'sort_Dir' => 'asc'
-		));
-
-		foreach ($queries as $query)
-		{
-			$query->query = $sq->getQuery($query->conditions);
-			$query->count = $obj->getCount($query->query);
-
-			foreach ($this->view->folders as $k => $v)
-			{
-				if (!isset($this->view->folders[$k]->queries))
-				{
-					$this->view->folders[$k]->queries = array();
-				}
-				if ($query->folder_id == $v->id)
-				{
-					$this->view->folders[$k]->queries[] = $query;
-				}
-			}
-		}
-
-		$this->view->show = 0;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$folders = QueryFolder::all()
+			->whereEquals('user_id', User::get('id'))
+			->order('ordering', 'asc')
+			->rows();
 
 		// Output the HTML
 		$this->view
+			->set('show', 0)
+			->set('folders', $folders)
 			->setLayout('list')
 			->display();
 	}
@@ -303,6 +244,11 @@ class Queries extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['post', 'get']);
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -313,55 +259,59 @@ class Queries extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			if (!$no_html && $tmpl != 'component')
+			if ($no_html || $tmpl == 'component')
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
-					'error'
-				);
+				return;
 			}
-			return;
+
+			Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'));
+			return $this->cancelTask();
 		}
 
-		$row = new Query($this->database);
+		$removed = 0;
+
 		foreach ($ids as $id)
 		{
-			// Delete message
-			$row->delete(intval($id));
+			// Delete entry
+			$row = Query::oneOrFail(intval($id));
+
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$removed++;
 		}
 
-		if (!$no_html && $tmpl != 'component')
+		if ($no_html || $tmpl == 'component')
 		{
-			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_SUPPORT_QUERY_SUCCESSFULLY_DELETED', count($ids))
-			);
+			return $this->listTask();
 		}
-		else
-		{
-			$this->listTask();
-		}
-	}
 
-	/**
-	 * Create a new folder
-	 *
-	 * @return  void
-	 */
-	public function addfolderTask()
-	{
-		$this->editfolderTask();
+		// Output messsage and redirect
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_SUPPORT_QUERY_SUCCESSFULLY_DELETED', $removed));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Display a form for adding/editing a folder
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editfolderTask($row=null)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
@@ -372,20 +322,12 @@ class Queries extends AdminController
 				$id = (!empty($id) ? intval($id[0]) : 0);
 			}
 
-			$row = new QueryFolder($this->database);
-			$row->load($id);
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row = QueryFolder::oneOrNew($id);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('editfolder')
 			->display();
 	}
@@ -395,20 +337,16 @@ class Queries extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function applyfolderTask()
-	{
-		$this->savefolderTask(false);
-	}
-
-	/**
-	 * Save a folder
-	 *
-	 * @return  void
-	 */
-	public function savefolderTask($redirect=true)
+	public function savefolderTask()
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$fields  = Request::getVar('fields', array());
@@ -419,72 +357,38 @@ class Queries extends AdminController
 		$response->success = 1;
 		$response->message = '';
 
-		$row = new QueryFolder($this->database);
-		if (!$row->bind($fields))
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editfolderTask($row);
-			}
-			else
-			{
-				$response->success = 0;
-				$response->message = $row->getError();
-				echo json_encode($response);
-			}
-			return;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editfolderTask($row);
-			}
-			else
-			{
-				$response->success = 0;
-				$response->message = $row->getError();
-				echo json_encode($response);
-			}
-			return;
-		}
+		$row = QueryFolder::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				$this->setError($row->getError());
-				$this->editfolderTask($row);
-			}
-			else
+			if ($no_html || $tmpl == 'component')
 			{
 				$response->success = 0;
 				$response->message = $row->getError();
 				echo json_encode($response);
 			}
-			return;
+
+			Notify::error($row->getError());
+			return $this->editfolderTask($row);
 		}
 
-		if ($redirect)
+		if (!$no_html && $tmpl != 'component')
 		{
-			if (!$no_html && $tmpl != 'component')
-			{
-				// Output messsage and redirect
-				Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED'));
-				return $this->cancelTask();
-			}
-			else
+			Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED'));
+		}
+
+		if ($this->getTask() == 'applyfolder')
+		{
+			if ($no_html || $tmpl == 'component')
 			{
 				return $this->listTask();
 			}
+
+			return $this->editfolderTask($row);
 		}
 
-		$this->editfolderTask($row);
+		$this->cancelTask();
 	}
 
 	/**
@@ -502,24 +406,33 @@ class Queries extends AdminController
 		$ids = (is_array($ids) ?: array($ids));
 
 		$no_html = Request::getInt('no_html', 0);
+		$removed = 0;
 
 		foreach ($ids as $id)
 		{
-			$row = new Query($this->database);
-			$row->deleteByFolder(intval($id));
+			$row = QueryFolder::oneOrFail(intval($id));
 
-			$row = new QueryFolder($this->database);
-			$row->delete(intval($id));
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$removed++;
 		}
 
-		if (!$no_html)
+		if ($no_html)
 		{
-			// Output messsage and redirect
-			Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'));
-			return $this->cancelTask();
+			return $this->listTask();
 		}
 
-		$this->listTask();
+		// Output messsage and redirect
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -540,10 +453,9 @@ class Queries extends AdminController
 		{
 			foreach ($folders as $key => $folder)
 			{
-				$row = new QueryFolder($this->database);
-				$row->load(intval($folder));
-				$row->ordering = $key + 1;
-				$row->store();
+				$row = QueryFolder::oneOrFail(intval($folder));
+				$row->set('ordering', $key + 1);
+				$row->save();
 			}
 		}
 
@@ -565,11 +477,10 @@ class Queries extends AdminController
 					$i = 0;
 				}
 
-				$row = new Query($this->database);
-				$row->load($id);
-				$row->folder_id = $fd;
-				$row->ordering  = $i + 1;
-				$row->store();
+				$row = Query::oneOrFail($id);
+				$row->set('folder_id', $fd);
+				$row->set('ordering', $i + 1);
+				$row->save();
 
 				$i++;
 			}
@@ -605,24 +516,22 @@ class Queries extends AdminController
 			return $this->cancelTask();
 		}
 
-		$db = App::get('db');
+		foreach (QueryFolder::all()->rows() as $folder)
+		{
+			$folder->destroy();
+		}
 
-		$query  = new Query($db);
-		$folder = new QueryFolder($db);
-
-		$db->setQuery("DELETE FROM " . $db->quoteName($query->getTableName()));
-		$db->query();
-
-		$db->setQuery("DELETE FROM " . $db->quoteName($folder->getTableName()));
-		$db->query();
+		foreach (Query::all()->rows() as $query)
+		{
+			$query->destroy();
+		}
 
 		// Get all the default folders
-		$folders = $folder->find('list', array(
-			'user_id'  => 0,
-			'sort'     => 'ordering',
-			'sort_Dir' => 'asc',
-			'iscore'   => 1
-		));
+		$folders = QueryFolder::all()
+			->whereEquals('user_id', 0)
+			->whereEquals('iscore', 1)
+			->order('ordering', 'asc')
+			->rows();
 
 		if (count($folders) <= 0)
 		{
@@ -637,22 +546,24 @@ class Queries extends AdminController
 
 				foreach ($fldrs as $fldr)
 				{
-					$f = new QueryFolder($db);
-					$f->iscore = $iscore;
-					$f->title = $fldr;
-					$f->check();
-					$f->ordering = $i;
-					$f->user_id = 0;
-					$f->store();
+					$f = QueryFolder::blank()
+						->set(array(
+							'iscore'   => $iscore,
+							'title'    => $fldr,
+							'ordering' => $i,
+							'user_id'  => 0
+						));
 
-					switch ($f->alias)
+					$f->save();
+
+					switch ($f->get('alias'))
 					{
 						case 'common':
-							$j = ($iscore == 1 ? $query->populateDefaults('common', $f->id) : $query->populateDefaults('commonnotacl', $f->id));
+							$j = ($iscore == 1 ? Query::populateDefaults('common', $f->get('id')) : Query::populateDefaults('commonnotacl', $f->get('id')));
 						break;
 
 						case 'mine':
-							$query->populateDefaults('mine', $f->id);
+							Query::populateDefaults('mine', $f->get('id'));
 						break;
 
 						default:

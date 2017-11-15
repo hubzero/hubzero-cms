@@ -64,50 +64,45 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_SUPPORT_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_SUPPORT_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_SUPPORT_COL_TYPE', 'iscore', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_SUPPORT_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_SUPPORT_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_SUPPORT_COL_TYPE', 'iscore', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td colspan="4"><?php
 				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
+		<?php
+		$i = 0;
+		$k = 0;
+		foreach ($this->rows as $row)
+		{
+			switch ($row->iscore)
+			{
+				case 4:
+					$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL');
+				break;
 
-	switch ($row->iscore)
-	{
-		case 4:
-			$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL');
-		break;
+				case 2:
+					$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_ACL');
+				break;
 
-		case 2:
-			$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_ACL');
-		break;
+				case 1:
+					$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_MINE');
+				break;
 
-		case 1:
-			$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_MINE');
-		break;
-
-		case 0:
-		default:
-			$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_CUSTOM');
-		break;
-	}
-?>
+				case 0:
+				default:
+					$iscore = Lang::txt('COM_SUPPORT_QUERY_TYPE_CUSTOM');
+				break;
+			}
+			?>
 			<tr>
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
@@ -124,10 +119,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $iscore; ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

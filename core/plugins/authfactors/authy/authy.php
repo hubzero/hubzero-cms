@@ -47,15 +47,21 @@ class plgAuthfactorsAuthy extends \Hubzero\Plugin\Plugin
 	public function onRenderChallenge()
 	{
 		// Setup our response
-		$response = new \Hubzero\Base\Object;
+		$response = new \Hubzero\Base\Obj;
 
 		// Route based on an action
 		switch (Request::getWord('action', ''))
 		{
-			case 'register': $this->register(); break;
-			case 'verify':   $this->verify();   break;
+			case 'register':
+				$this->register();
+				break;
+			case 'verify':
+				$this->verify();
+				break;
 
-			default:         $this->display();  break;
+			default:
+				$this->display();
+				break;
 		}
 
 		$response->set('html', $this->view->loadTemplate());

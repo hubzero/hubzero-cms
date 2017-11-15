@@ -37,6 +37,7 @@ $canDo = \Components\Tags\Helpers\Permissions::getActions();
 Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_FOCUS_AREAS'), 'tags.png');
 //Toolbar::cancel();
 //Toolbar::custom('index', 'edit', ' ', 'Tag Relationships', false);
+Toolbar::apply('updatefocusareas');
 Toolbar::spacer();
 Toolbar::help('focusareas');
 
@@ -61,15 +62,15 @@ $types = $dbh->loadAssocList('id');
 window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
 	<div class="grid">
 		<div class="col span8">
 			<div id="fas">
 			<?php
-			foreach ($fas as $fa):
+			foreach ($fas as $i => $fa):
 				$type_ids = array_flip(explode(',', $fa['types']));
 			?>
-				<fieldset class="adminform" id="group-<?php echo $fa['id']; ?>">
+				<fieldset class="adminform" id="group-<?php echo $i; //echo $fa['id']; ?>">
 					<legend><span><?php echo Lang::txt('COM_TAGS_GROUP'); ?></span></legend>
 
 					<div class="input-wrap">
@@ -106,7 +107,7 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 					</fieldset>
 
 					<div class="input-wrap">
-						<button class="delete-group" id="delete-<?php echo $fa['id']; ?>" rel="group-<?php echo $fa['id']; ?>"><?php echo Lang::txt('COM_TAGS_DELETE_GROUP'); ?></button>
+						<button class="delete-group" id="delete-<?php echo $i; //$fa['id']; ?>" rel="group-<?php echo $i; //$fa['id']; ?>"><?php echo Lang::txt('COM_TAGS_DELETE_GROUP'); ?></button>
 					</div>
 				</fieldset>
 			<?php
@@ -122,7 +123,6 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 				<input type="hidden" value="<?php echo $this->option; ?>" name="option" />
 				<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
 				<input type="hidden" name="task" value="updatefocusareas" />
-				<button type="submit"><?php echo Lang::txt('COM_TAGS_SAVE'); ?></button>
 			</p>
 		</div>
 		<div class="col span4">

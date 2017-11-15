@@ -89,6 +89,10 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="init_team" type="list" default="0" label="Setup - Managers" description="This determines who is auto-added as a project manager when creating a new project. Note: This assignment happens before the project creator is given the choice of syncing group membership or having selective members.">
+			<option value="0">Only project creator</option>
+			<option value="1">Group managers (if owned by a group)</option>
+		</field>
 		<field name="privacylink" type="text" menu="hide" default="/legal/privacy" label="URL to Privacy Terms" description="URL to Privacy Terms" />
 		<field name="HIPAAlink" type="text" menu="hide" default="/legal/privacy" label="URL to HIPAA information" description="URL to to HIPAA information" />
 		<field name="FERPAlink" type="text" menu="hide" default="/legal/privacy" label="URL to FERPA information" description="URL to to FERPA information" />
@@ -112,6 +116,10 @@
 		<field name="approachingQuota" type="text" menu="hide" default="90" label="Quota warning at (%)" description="Issue disk quota warning when disk space is used at a certain percentage amount of the given quota" />
 		<field name="pubQuota" type="text" menu="hide" default="1" label="Publication quota (GB)" description="Default disk quota for published files in gigabytes" />
 		<field name="premiumPubQuota" type="text" menu="hide" default="30" label="Premium publication quota (GB)" description="Premium disk quota for published files in gigabytes" />
+		<field name="simpleSizeReporting" type="list" default="0" label="Simple Size Reporting" description="Simple size reporting ignores version history and bundle size of published content when reporting disk usage">
+			<option value="0">Off</option>
+			<option value="1">On</option>
+		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_projects" section="component" />

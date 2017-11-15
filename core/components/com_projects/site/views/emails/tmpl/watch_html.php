@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
-$sef  = Route::url($this->project->link('alias'));
+$sef  = Route::url($this->project->link());
 $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 ?>
@@ -76,7 +76,7 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 	<tbody>
 		<tr>
 			<td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center; font-size: 1.5em;" colspan="2">
-			<?php echo $this->subject; ?>
+				<?php echo $this->subject; ?>
 			</td>
 		</tr>
 	</tbody>
@@ -138,63 +138,32 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 							<?php
 							foreach ($this->activities as $a)
 							{
-								$body     = NULL;
-								$activity = $a->activity;
+								$content = $a->log->get('description');
 
-								switch ($a->class)
+								$isHtml = false;
+								if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content))
 								{
-									case 'quote':
-										// Get comment
-										$objC  = $this->project->table('Comment');
-										if ($objC->loadComment($a->referenceid))
-										{
-											$body = stripslashes($objC->comment);
-											$body = str_replace('<!-- {FORMAT:HTML} -->', '', $body);
-										}
-										break;
-
-									case 'blog':
-										$activity = 'posted a status update';
-										$objM     = $this->project->table('Blog');
-										$blog     = $objM->getEntries(
-											$a->projectid,
-											$bfilters = array('activityid' => $a->id),
-											$a->referenceid
-										);
-										$body = $blog && !empty($blog[0]) ? trim($blog[0]->blogentry) : '';
-										if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
-										{
-											$body = preg_replace("/\n/", '<br />', $body);
-										}
-										break;
-
-									case 'todo':
-										$objTD = $this->project->table('Todo');
-										$todo = $objTD->getTodos(
-											$a->projectid,
-											$tfilters = array('activityid' => $a->id),
-											$a->referenceid
-										);
-										if ($todo && !empty($todo[0]))
-										{
-											$body = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
-										}
-										break;
+									$isHtml = true;
 								}
-								// Display hyperlink
-								if ($a->highlighted && $a->url)
+
+								if (!$isHtml)
 								{
-									$activity = str_replace($a->highlighted, '<a href="' . $base . $a->url . '">' . $a->highlighted . '</a>', $activity);
+									$content = nl2br(trim($content));
 								}
+
+								$content = \Components\Projects\Helpers\Html::replaceUrls($content, 'external');
+
+								$creator = User::getInstance($a->log->get('created_by'));
+								$name = $creator->get('name');
 								?>
 								<tr>
-									<th style="text-align: right; padding: 1em 0 0 0; white-space: nowrap; color: #999999; font-weight: normal;" align="right"><?php echo Date::of($a->recorded)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?> &#64; <?php echo Date::of($a->recorded)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></th>
-									<td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?php echo $a->admin == 1 ? Lang::txt('Administrator') : $a->name; ?></span> <?php echo $activity; ?><?php if ($body) { ?>:<?php } ?></td>
+									<th style="text-align: right; padding: 1em 0 0 0; white-space: nowrap; color: #999999; font-weight: normal;" align="right"><?php echo Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?> &#64; <?php echo Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></th>
+									<td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?php echo $name; ?></span> <?php echo $a->action; ?><?php if ($content) { ?>:<?php } ?></td>
 								</tr>
-								<?php if ($body) { ?>
+								<?php if ($content) { ?>
 									<tr>
 										<th></th>
-										<td style="text-align: <?php echo count($this->activities) > 0 ? 'left' : 'center'; ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?php echo $body; ?></td>
+										<td style="text-align: <?php echo count($this->activities) > 0 ? 'left' : 'center'; ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?php echo $content; ?></td>
 									</tr>
 								<?php } ?>
 								<tr>
@@ -227,9 +196,10 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 	<tbody>
 		<tr>
 			<td align="left" valign="bottom">
-					<span>
-						This email was sent to you on behalf of <?php echo $base; ?> because you are subscribed
-						to watch this project. To unsubscribe, please go to the <a href="<?php echo $link; ?>">project feed</a> and adjust feed notification settings. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
+				<span>
+					This email was sent to you on behalf of <?php echo $base; ?> because you are subscribed
+					to watch this project. To unsubscribe, please go to the <a href="<?php echo $link; ?>">project feed</a> and adjust feed notification settings. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.
+				</span>
 			</td>
 		</tr>
 	</tbody>

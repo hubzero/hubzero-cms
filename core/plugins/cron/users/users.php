@@ -68,7 +68,7 @@ class plgCronUsers extends \Hubzero\Plugin\Plugin
 	 */
 	public function cleanAuthTempAccounts(\Components\Cron\Models\Job $job)
 	{
-		$db = \App::get('db');
+		$db = App::get('db');
 
 		$query = "SELECT `id` FROM `#__users` WHERE `username` < 0;";
 		$db->setQuery($query);
@@ -90,7 +90,7 @@ class plgCronUsers extends \Hubzero\Plugin\Plugin
 						if (substr($user->get('email'), -8) == '@invalid')
 						{
 							// Delete the user
-							$user->delete();
+							$user->destroy();
 						}
 					}
 				}

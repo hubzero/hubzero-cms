@@ -31,11 +31,11 @@
 
 namespace Components\Resources\Site\Controllers;
 
-use Components\Resources\Models\Orm\Resource;
-use Components\Resources\Models\Orm\Association;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Hubzero\Utility\Number;
 use Filesystem;
 use Component;
@@ -45,7 +45,7 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'resource.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for adding attachments to a parent resource
@@ -91,7 +91,7 @@ class Attachments extends SiteController
 		}
 
 		// Create new record
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => 'A link',
 			'introtext'    => 'A link',
 			'created'      => Date::toSql(),
@@ -138,7 +138,7 @@ class Attachments extends SiteController
 		}
 
 		// Create new record
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => 'A link',
 			'introtext'    => 'A link',
 			'created'      => Date::toSql(),
@@ -279,7 +279,7 @@ class Attachments extends SiteController
 		}*/
 
 		// Instantiate a new resource object
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => $filename . '.' . $ext,
 			'introtext'    => $filename . '.' . $ext,
 			'created'      => Date::toSql(),
@@ -303,7 +303,7 @@ class Attachments extends SiteController
 		}
 
 		// File already exists
-		$parent = Resource::oneOrFail($pid);
+		$parent = Entry::oneOrFail($pid);
 
 		if ($parent->hasChild($filename))
 		{
@@ -355,7 +355,7 @@ class Attachments extends SiteController
 			fclose($input);
 
 			// Move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -483,7 +483,7 @@ class Attachments extends SiteController
 		// Ensure we have everything we need
 		if ($id && $name)
 		{
-			$resource = Resource::oneOrFail($id);
+			$resource = Entry::oneOrFail($id);
 			$resource->set('title', (string)$name);
 			$resource->save();
 		}
@@ -533,7 +533,7 @@ class Attachments extends SiteController
 		}
 
 		// Instantiate a new resource object
-		$resource = Resource::blank()->set(array(
+		$resource = Entry::blank()->set(array(
 			'title'        => $file['name'],
 			'introtext'    => $file['name'],
 			'created'      => Date::toSql(),
@@ -548,7 +548,7 @@ class Attachments extends SiteController
 		));
 
 		// File already exists
-		$parent = Resource::oneOrFail($pid);
+		$parent = Entry::oneOrFail($pid);
 
 		if ($parent->hasChild($file['name']))
 		{
@@ -692,7 +692,7 @@ class Attachments extends SiteController
 		}
 
 		// Load resource info
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		// Check for stored file
 		if ($resource->get('path') != '')
@@ -764,7 +764,7 @@ class Attachments extends SiteController
 		}
 
 		// Load resource info
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		// Set value
 		$access = Request::getInt('access', 0);
@@ -806,7 +806,7 @@ class Attachments extends SiteController
 		}
 
 		// Initiate a resource
-		$resource = Resource::oneOrFail($id);
+		$resource = Entry::oneOrFail($id);
 
 		$children = $resource->children()->order('ordering', 'ASC')->rows();
 
@@ -868,16 +868,36 @@ class Attachments extends SiteController
 
 		switch ($ftype)
 		{
-			case 'mov': $type = 15; break;
-			case 'swf': $type = 32; break;
-			case 'ppt': $type = 35; break;
-			case 'asf': $type = 37; break;
-			case 'asx': $type = 37; break;
-			case 'wmv': $type = 37; break;
-			case 'zip': $type = 38; break;
-			case 'tar': $type = 38; break;
-			case 'pdf': $type = 33; break;
-			default:    $type = 13; break;
+			case 'mov':
+				$type = 15;
+				break;
+			case 'swf':
+				$type = 32;
+				break;
+			case 'ppt':
+				$type = 35;
+				break;
+			case 'asf':
+				$type = 37;
+				break;
+			case 'asx':
+				$type = 37;
+				break;
+			case 'wmv':
+				$type = 37;
+				break;
+			case 'zip':
+				$type = 38;
+				break;
+			case 'tar':
+				$type = 38;
+				break;
+			case 'pdf':
+				$type = 33;
+				break;
+			default:
+				$type = 13;
+				break;
 		}
 
 		return $type;
@@ -907,7 +927,7 @@ class Attachments extends SiteController
 			$dir_year  = Date::of('now')->format('Y');
 			$dir_month = Date::of('now')->format('m');
 		}
-		$dir_id = String::pad($id);
+		$dir_id = Str::pad($id);
 
 		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 

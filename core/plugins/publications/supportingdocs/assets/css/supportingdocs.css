@@ -7,39 +7,19 @@
 	.supportingdocs { 
 		margin: 0 0 1em 0;
 	}
-	.aside .supportingdocs h3 {
-		margin: 0;
-		padding: 0.4em 1em;
-		color: #fff;
-		font-size: 1em;
-		background: #d6ccc4; 
-		display: block;
-	}
-	.supportingdocs ul {
+	.supportingdocs ul.element-list {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		background: #F7F4F2;
-		border-top: 1px solid #E7DFD8;
-		border-bottom: 1px solid #E7DFD8;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
-	.supportingdocs ul li {
-		margin: 0 1px;
-		padding: 0.6em 1em;
+	.supportingdocs ul.element-list li {
+		margin: 0;
+		padding: 0.6em 0;
 		border: none;
-		border-top: 1px solid #fff;
-		background-position: 1em 0.5em;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
 		position: relative;
 		list-style: none;
-	}
-	.supportingdocs ul li a {
-		background: none;
-		color: #CC9666;
-		border: none;
-	}
-	.supportingdocs ul li a:hover {
-		color: #f60;
-		border: none;
 	}
 	.supportingdocs small,
 	.supportingdocs span {
@@ -49,21 +29,7 @@
 		display: inline;
 		font-size: 75%;
 	}
-	.supportingdocs .help {
-		background: url("images/help.gif") 0 0 no-repeat;
-		margin: 0;
-		padding: 0;
-		display: block;
-		width: 20px;
-		height: 20px;
-		overflow: hidden;
-		text-indent: -20em;
-		position: absolute; 
-		top: 0.6em; 
-		right: 0;
-		border: none;
-	}
-	.extras {
+	.supportingdocs .extras {
 		float: right;
 		color: #CCC;
 		font-size: 85%;

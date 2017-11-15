@@ -639,6 +639,9 @@ class Members extends AdminController
 		// Drop through to edit form?
 		if ($this->getTask() == 'apply')
 		{
+			// Force reload te record as it's possible other pieces
+			// of code made changes (i.e., password change)
+			$user = Member::oneOrNew($user->get('id'));
 			return $this->editTask($user);
 		}
 
@@ -1328,8 +1331,10 @@ class Members extends AdminController
 				'action_update' => (isset($element->update) ? (int) $element->update : 1),
 				'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1),
 				'action_browse' => (isset($element->browse) ? (int) $element->browse : 0),
-				'min'           => (isset($element->min) ? (int) $element->min : 0),
-				'max'           => (isset($element->max) ? (int) $element->max : 0)
+				'min'           => (isset($element->field_options->min) ? (int) $element->field_options->min : 0),
+				'max'           => (isset($element->field_options->max) ? (int) $element->field_options->max : 0),
+				'default_value' => (isset($element->field_options->value) ? (string) $element->field_options->value : ''),
+				'placeholder'   => (isset($element->field_options->placeholder) ? (string) $element->field_options->placeholder : '')
 			));
 
 			if ($field->get('type') == 'dropdown')
@@ -1439,5 +1444,87 @@ class Members extends AdminController
 
 		// Redirect
 		$this->cancelTask();
+	}
+
+	/**
+	 * Check password
+	 *
+	 * Copies from the /api controller to work around
+	 * an issue with which user ID was being used for verification
+	 *
+	 * @return  void
+	 */
+	public function checkpassTask()
+	{
+		$userid = Request::getInt('user_id', User::get('id'), 'post');
+
+		// Get the password rules
+		$password_rules = \Hubzero\Password\Rule::all()
+			->whereEquals('enabled', 1)
+			->rows();
+
+		$pw_rules = array();
+
+		// Get the password rule descriptions
+		foreach ($password_rules as $rule)
+		{
+			if (!empty($rule['description']))
+			{
+				$pw_rules[] = $rule['description'];
+			}
+		}
+
+		// Get the password
+		$pw = Request::getVar('password1', null, 'post');
+
+		// Validate the password
+		if (!empty($pw))
+		{
+			$msg = \Hubzero\Password\Rule::verify($pw, $password_rules, $userid);
+		}
+		else
+		{
+			$msg = array();
+		}
+
+		$html = '';
+
+		// Iterate through the rules and add the appropriate classes (passed/error)
+		if (count($pw_rules) > 0)
+		{
+			foreach ($pw_rules as $rule)
+			{
+				if (!empty($rule))
+				{
+					if (!empty($msg) && is_array($msg))
+					{
+						$err = in_array($rule, $msg);
+					}
+					else
+					{
+						$err = '';
+					}
+					$mclass = ($err)  ? ' class="error"' : 'class="passed"';
+					$html .= "<li $mclass>" . $rule . '</li>';
+				}
+			}
+
+			if (!empty($msg) && is_array($msg))
+			{
+				foreach ($msg as $message)
+				{
+					if (!in_array($message, $pw_rules))
+					{
+						$html .= '<li class="error">' . $message . '</li>';
+					}
+				}
+			}
+		}
+
+		// Encode sessions for return
+		$object = new \stdClass();
+		$object->html = $html;
+
+		echo json_encode($object);
 	}
 }

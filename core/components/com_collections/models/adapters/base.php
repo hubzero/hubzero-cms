@@ -32,12 +32,12 @@
 
 namespace Components\Collections\Models\Adapters;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Abstract adapter class for a blog entry link
  */
-abstract class Base extends Object
+abstract class Base extends Obj
 {
 	/**
 	 * Script name

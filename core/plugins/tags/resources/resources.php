@@ -41,34 +41,33 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An optional associative array of configuration settings.
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
+		include_once Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 	}
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 *
-	 * @param      array   $tags       Tags to match records against
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * 
+	 * @param   array    $tags        Tags to match records against
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
@@ -82,8 +81,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		);
 
 		$database = App::get('db');
-		$rt = new \Components\Resources\Tables\Type($database);
-		foreach ($rt->getMajorTypes() as $category)
+
+		foreach (\Components\Resources\Models\Type::getMajorTypes() as $category)
 		{
 			$response['children'][$category->alias] = array(
 				'name'     => $category->alias,
@@ -105,9 +104,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		{
 			$ids[] = $tag->get('id');
 		}
-
-		// Instantiate some needed objects
-		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Build query
 		$filters = array();
@@ -185,14 +181,14 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build a database query
 	 *
-	 * @param      array $filters Options for building the query
-	 * @return     string SQL
+	 * @param   array   $filters  Options for building the query
+	 * @return  string  SQL
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
 		$database = App::get('db');
 
-		$rt = new \Components\Resources\Tables\Type($database);
+		$rt = \Components\Resources\Models\Type::blank();
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
@@ -215,15 +211,15 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			}
 			$query .= ", r.params, r.rating AS rcount, r.type AS data1, rt.type AS data2, r.ranking data3 ";
 		}
-		$query .= "FROM #__resources AS r ";
+		$query .= "FROM `#__resources` AS r ";
 		$query .= "LEFT JOIN " . $rt->getTableName() . " AS rt ON r.type=rt.id ";
 		if (isset($filters['tag']))
 		{
-			$query .= ", #__tags_object AS t, #__tags AS tg ";
+			$query .= ", `#__tags_object` AS t, `#__tags` AS tg ";
 		}
 		if (isset($filters['tags']))
 		{
-			$query .= ", #__tags_object AS t ";
+			$query .= ", `#__tags_object` AS t ";
 		}
 		$query .= "WHERE r.standalone=1 ";
 		if (User::isGuest() || (isset($filters['authorized']) && !$filters['authorized']))
@@ -232,7 +228,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		}
 		if (isset($filters['tag']))
 		{
-			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $filters['tag'] . "' OR tg.alias='" . $filters['tag'] . "') ";
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag=" . $database->quote($filters['tag']) . " OR tg.alias=" . $database->quote($filters['tag']) . ") ";
 		}
 		if (isset($filters['tags']))
 		{
@@ -258,15 +254,29 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
 				{
-					case 'title':   $query .= 'title ASC, publish_up DESC';    break;
-					case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
-					case 'ranking': $query .= "ranking DESC";                  break;
-					case 'relevance': $query .= "relevance DESC";              break;
+					case 'title':
+						$query .= 'title ASC, publish_up DESC';
+						break;
+					case 'rating':
+						$query .= "rating DESC, times_rated DESC";
+						break;
+					case 'ranking':
+						$query .= "ranking DESC";
+						break;
+					case 'relevance':
+						$query .= "relevance DESC";
+						break;
 					case 'users':
-					case 'usage':   $query .= "users DESC";                    break;
-					case 'jobs':    $query .= "jobs DESC";                     break;
+					case 'usage':
+						$query .= "users DESC";
+						break;
+					case 'jobs':
+						$query .= "jobs DESC";
+						break;
 					case 'date':
-					default: $query .= 'publish_up DESC';               break;
+					default:
+						$query .= 'publish_up DESC';
+						break;
 				}
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all')
@@ -288,13 +298,12 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
-		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php');
-		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php');
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 
 		if ($row->alias)
 		{
@@ -315,8 +324,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$config = Component::params('com_resources');
 
 		$rparams = new \Hubzero\Config\Registry($row->params);
-		//$params = $config;
-		//$params->merge($rparams);
 
 		$row->rating   = $row->rcount;
 		$row->category = $row->data1;
@@ -326,10 +333,18 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		// Set the display date
 		switch ($config->get('show_date', 3))
 		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));   break;
-			case 3: $thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); break;
+			case 0:
+				$thedate = '';
+				break;
+			case 1:
+				$thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 2:
+				$thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 3:
+				$thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
 		}
 
 		if (strstr($row->href, 'index.php'))
@@ -338,20 +353,12 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Start building the HTML
-		$html  = "\t".'<li class="';
-		/*switch ($row->access)
-		{
-			case 1: $html .= 'registered '; break;
-			case 2: $html .= 'special ';    break;
-			case 3: $html .= 'protected ';  break;
-			case 4: $html .= 'private ';    break;
-			case 0:
-			default: $html .= 'public '; break;
-		}*/
-		$html .= 'resource">' . "\n";
+		$html  = "\t".'<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		if ($rparams->get('show_ranking', $config->get('show_ranking')))
 		{
+			include_once Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
+
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
 
@@ -388,18 +395,40 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		{
 			switch ($row->rating)
 			{
-				case 0.5: $class = ' half-stars';      break;
-				case 1:   $class = ' one-stars';       break;
-				case 1.5: $class = ' onehalf-stars';   break;
-				case 2:   $class = ' two-stars';       break;
-				case 2.5: $class = ' twohalf-stars';   break;
-				case 3:   $class = ' three-stars';     break;
-				case 3.5: $class = ' threehalf-stars'; break;
-				case 4:   $class = ' four-stars';      break;
-				case 4.5: $class = ' fourhalf-stars';  break;
-				case 5:   $class = ' five-stars';      break;
+				case 0.5:
+					$class = ' half-stars';
+					break;
+				case 1:
+					$class = ' one-stars';
+					break;
+				case 1.5:
+					$class = ' onehalf-stars';
+					break;
+				case 2:
+					$class = ' two-stars';
+					break;
+				case 2.5:
+					$class = ' twohalf-stars';
+					break;
+				case 3:
+					$class = ' three-stars';
+					break;
+				case 3.5:
+					$class = ' threehalf-stars';
+					break;
+				case 4:
+					$class = ' four-stars';
+					break;
+				case 4.5:
+					$class = ' fourhalf-stars';
+					break;
+				case 5:
+					$class = ' five-stars';
+					break;
 				case 0:
-				default:  $class = ' no-stars';      break;
+				default:
+					$class = ' no-stars';
+					break;
 			}
 
 			$html .= "\t\t" . '<div class="metadata">' . "\n";
@@ -414,11 +443,11 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$html .= '</p>' . "\n";
 		if ($row->itext)
 		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->itext)), 200) . '</p>' . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		}
 		else if ($row->ftext)
 		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>'."\n";

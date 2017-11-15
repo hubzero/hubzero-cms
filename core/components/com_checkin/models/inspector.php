@@ -31,14 +31,14 @@
 
 namespace Components\Checkin\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Request;
 use App;
 
 /**
  * Checkin Inspector Model
  */
-class Inspector extends Object
+class Inspector extends Obj
 {
 	/**
 	 * Database connection
@@ -92,7 +92,7 @@ class Inspector extends Object
 		}
 		else
 		{
-			$this->state = new Object;
+			$this->state = new Obj;
 		}
 
 		// Set the model dbo

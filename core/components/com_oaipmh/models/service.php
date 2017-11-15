@@ -34,7 +34,7 @@ namespace Components\Oaipmh\Models;
 
 use Components\Oaipmh\Models\Xml\Response;
 use Hubzero\Base\Traits\Escapable;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Database\Driver;
 use Exception;
 use Event;
@@ -45,7 +45,7 @@ require_once(__DIR__ . DS . 'xml' . DS . 'response.php');
 /**
  * OAIPMH Provider for building responses
  */
-class Service extends Object
+class Service extends Obj
 {
 	use Escapable;
 

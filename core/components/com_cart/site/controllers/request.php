@@ -30,37 +30,29 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use Exception;
+
 /**
- *	Cart AJAX requests
+ * Cart AJAX requests
  */
 class Request extends ComponentController
 {
 	/**
-	 * Execute a task
+	 * Add an item to a cart
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function execute()
-	{
-		// Get the task
-		$this->_task  = Request::getVar('task', '');
-
-		parent::execute();
-	}
-
 	public function addTask()
 	{
 		$response = new \stdClass();
 		$response->status = 'ok';
 
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
+		include_once \Component::path($this->option) . DS . 'models' . DS . 'cart.php';
 		$cart = new CurrentCart();
 
 		// update cart
-		$updateCartRequest = Request::getVar('updateCart', false, 'post');
-		$pIds = Request::getVar('pId', false, 'post');
-
-		//print_r($pIds); die;
+		$updateCartRequest = \Request::getVar('updateCart', false, 'post');
+		$pIds = \Request::getVar('pId', false, 'post');
 
 		// If pIds are posted, convert them to SKUs
 		if (!empty($pIds))
@@ -85,9 +77,8 @@ class Request extends ComponentController
 		}
 		else
 		{
-			$skus = Request::getVar('skus', false, 'post');
+			$skus = \Request::getVar('skus', false, 'post');
 		}
-		//print_r($skus); die;
 
 		// Initialize errors array
 		$errors = array();
@@ -102,7 +93,7 @@ class Request extends ComponentController
 				{
 					$cart->update($sId, $qty);
 				}
-				catch (\Exception $e)
+				catch (Exception $e)
 				{
 					$errors[] = $e->getMessage();
 				}
@@ -110,8 +101,8 @@ class Request extends ComponentController
 		}
 
 		// add coupon if needed
-		$addCouponRequest = Request::getVar('addCouponCode', false, 'post');
-		$couponCode = Request::getVar('couponCode', false, 'post');
+		$addCouponRequest = \Request::getVar('addCouponCode', false, 'post');
+		$couponCode = \Request::getVar('couponCode', false, 'post');
 
 		if ($addCouponRequest && $couponCode)
 		{
@@ -126,7 +117,7 @@ class Request extends ComponentController
 			{
 				$cart->addCoupon($couponCode);
 			}
-			catch (\Exception $e)
+			catch (Exception $e)
 			{
 				$errors[] = $e->getMessage();
 			}
@@ -142,4 +133,3 @@ class Request extends ComponentController
 		die();
 	}
 }
-

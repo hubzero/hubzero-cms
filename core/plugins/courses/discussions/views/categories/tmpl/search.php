@@ -111,13 +111,13 @@ $base = $this->offering->alias() . '&active=forum';
 									<td class="priority-4">
 										<span><?php echo Lang::txt('Section'); ?></span>
 										<span class="entry-details section-name">
-											<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
+											<?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
 										</span>
 									</td>
 									<td>
 										<span><?php echo Lang::txt('Category'); ?></span>
 										<span class="entry-details category-name">
-											<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
+											<?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
 										</span>
 									</td>
 								</tr>

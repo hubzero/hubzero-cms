@@ -19,6 +19,13 @@ class OAuthConsumer
 	public $key;
 	public $secret;
 
+	/**
+	 * OAConsumer constructor
+	 *
+	 * @param  unknown  $key
+	 * @param  unknown  $secret
+	 * @param  string   $callback_url
+	 */
 	function __construct($key, $secret, $callback_url=NULL)
 	{
 		$this->key = $key;
@@ -26,6 +33,11 @@ class OAuthConsumer
 		if (!empty($callback_url)) {$this->callback_url = $callback_url;}
 	}
 
+	/**
+	 * Returns string of some sort?
+	 *
+	 * @return string
+	 */
 	function __toString()
 	{
 		return "OAuthConsumer[key=$this->key,secret=$this->secret]";
@@ -34,13 +46,24 @@ class OAuthConsumer
 
 class OAuthToken
 {
-	// access tokens and request tokens
+	// Access tokens and request tokens
+	//   Key = the token
+	//   Secret = the token secret
+	
+	/**
+	 * @var unknown $key
+	 */
 	public $key;
+	/**
+	 * @var unknown $secret
+	 */
 	public $secret;
 
 	/**
-	 * key = the token
-	 * secret = the token secret
+	 * OAToken constructor
+	 * 
+	 * @param unknown $key
+	 * @param unknown $secret
 	 */
 	function __construct($key, $secret)
 	{
@@ -49,8 +72,11 @@ class OAuthToken
 	}
 
 	/**
-	 * generates the basic string serialization of a token that a server
+	 * String serialization of token
+	 *
+	 * Generates the basic string serialization of a token that a server
 	 * would respond to request_token and access_token calls with
+	 * @return string
 	 */
 	function to_string()
 	{
@@ -60,6 +86,11 @@ class OAuthToken
 					 OAuthUtil::urlencode_rfc3986($this->secret);
 	}
 
+	/**
+	 * Calls to_string()
+	 *
+	 * @return string //Returns function that will eventually return string
+	 */
 	function __toString()
 	{
 		return $this->to_string();
@@ -74,29 +105,33 @@ abstract class OAuthSignatureMethod
 {
 	/**
 	 * Needs to return the name of the Signature Method (ie HMAC-SHA1)
+	 *
 	 * @return string
 	 */
 	abstract public function get_name();
 
 	/**
 	 * Build up the signature
+	 *
 	 * NOTE: The output of this function MUST NOT be urlencoded.
 	 * the encoding is handled in OAuthRequest when the final
 	 * request is serialized
-	 * @param OAuthRequest $request
-	 * @param OAuthConsumer $consumer
-	 * @param OAuthToken $token
-	 * @return string
+	 *
+	 * @param   OAuthRequest   $request
+	 * @param   OAuthConsumer  $consumer
+	 * @param   OAuthToken     $token
+	 * @return  string
 	 */
 	abstract public function build_signature($request, $consumer, $token);
 
 	/**
 	 * Verifies that a given signature is correct
-	 * @param OAuthRequest $request
-	 * @param OAuthConsumer $consumer
-	 * @param OAuthToken $token
-	 * @param string $signature
-	 * @return bool
+	 *
+	 * @param   OAuthRequest   $request
+	 * @param   OAuthConsumer  $consumer
+	 * @param   OAuthToken     $token
+	 * @param   string         $signature
+	 * @return  bool
 	 */
 	public function check_signature($request, $consumer, $token, $signature)
 	{
@@ -114,11 +149,23 @@ abstract class OAuthSignatureMethod
  */
 class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod
 {
+	/**
+	 * Returns name of encryption
+	 *
+	 * @return string
+	 */
 	function get_name()
 	{
 		return "HMAC-SHA1";
 	}
 
+	/**
+	 * ?
+	 *
+	 * @param  $request
+	 * @param  $consumer
+	 * @param  $token
+	 */
 	public function build_signature($request, $consumer, $token)
 	{
 		$base_string = $request->get_signature_base_string();
@@ -143,19 +190,28 @@ class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod
  */
 class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod
 {
+	/**
+	 * Returns string
+	 * 
+	 * @return string
+	 */
 	public function get_name()
 	{
 		return "PLAINTEXT";
 	}
 
 	/**
+	 * Builds signature?
+	 *
 	 * oauth_signature is set to the concatenated encoded values of the Consumer Secret and
 	 * Token Secret, separated by a '&' character (ASCII code 38), even if either secret is
 	 * empty. The result MUST be encoded again.
 	 *   - Chapter 9.4.1 ("Generating Signatures")
-	 *
 	 * Please note that the second encoding MUST NOT happen in the SignatureMethod, as
 	 * OAuthRequest handles this!
+	 * @param $request
+	 * @param $consumer
+	 * @param $token
 	 */
 	public function build_signature($request, $consumer, $token)
 	{
@@ -182,6 +238,11 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod
  */
 abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod
 {
+	/**
+	 * Returns string
+	 *
+	 * @return string
+	 */
 	public function get_name()
 	{
 		return "RSA-SHA1";
@@ -193,14 +254,29 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod
 	// (3) some sort of specific discovery code based on request
 	//
 	// Either way should return a string representation of the certificate
+	
+	/**
+	 * Get public cert
+	 */
 	protected abstract function fetch_public_cert(&$request);
 
 	// Up to the SP to implement this lookup of keys. Possible ideas are:
 	// (1) do a lookup in a table of trusted certs keyed off of consumer
 	//
 	// Either way should return a string representation of the certificate
+	
+	/**
+	 * Get private cert
+	 */
 	protected abstract function fetch_private_cert(&$request);
 
+	/**
+	 * Build signature?
+	 *
+	 * @param $request
+	 * @param $consumer
+	 * @param $token
+	 */
 	public function build_signature($request, $consumer, $token)
 	{
 		$base_string = $request->get_signature_base_string();
@@ -221,6 +297,9 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod
 		return base64_encode($signature);
 	}
 
+	/**
+	 * PHPDocs need to be updated past here by someone that understands this well
+	 */
 	public function check_signature($request, $consumer, $token, $signature)
 	{
 		$decoded_sig = base64_decode($signature);

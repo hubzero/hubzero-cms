@@ -70,20 +70,38 @@ if (!$this->line->publish_up || $this->line->publish_up == '0000-00-00 00:00:00'
 // Set the display date
 switch ($params->get('show_date'))
 {
-	case 0: $thedate = ''; break;
-	case 1: $thedate = Date::of($this->line->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
-	case 2: $thedate = Date::of($this->line->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));   break;
-	case 3: $thedate = Date::of($this->line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); break;
+	case 0:
+		$thedate = '';
+		break;
+	case 1:
+		$thedate = Date::of($this->line->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		break;
+	case 2:
+		$thedate = Date::of($this->line->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		break;
+	case 3:
+		$thedate = Date::of($this->line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		break;
 }
 
 switch ($this->line->access)
 {
-	case 1: $cls = 'registered'; break;
-	case 2: $cls = 'special';    break;
-	case 3: $cls = 'protected';  break;
-	case 4: $cls = 'private';    break;
+	case 1:
+		$cls = 'registered';
+		break;
+	case 2:
+		$cls = 'special';
+		break;
+	case 3:
+		$cls = 'protected';
+		break;
+	case 4:
+		$cls = 'private';
+		break;
 	case 0:
-	default: $cls = 'public';    break;
+	default:
+		$cls = 'public';
+		break;
 }
 
 if ($this->config->get('supportedtag') && isset($this->supported))
@@ -154,18 +172,40 @@ if ($this->config->get('supportedtag') && isset($this->supported))
 	<?php
 	switch ($this->line->rating)
 	{
-		case 0.5: $class = ' half-stars';      break;
-		case 1:   $class = ' one-stars';       break;
-		case 1.5: $class = ' onehalf-stars';   break;
-		case 2:   $class = ' two-stars';       break;
-		case 2.5: $class = ' twohalf-stars';   break;
-		case 3:   $class = ' three-stars';     break;
-		case 3.5: $class = ' threehalf-stars'; break;
-		case 4:   $class = ' four-stars';      break;
-		case 4.5: $class = ' fourhalf-stars';  break;
-		case 5:   $class = ' five-stars';      break;
+		case 0.5:
+			$class = ' half-stars';
+			break;
+		case 1:
+			$class = ' one-stars';
+			break;
+		case 1.5:
+			$class = ' onehalf-stars';
+			break;
+		case 2:
+			$class = ' two-stars';
+			break;
+		case 2.5:
+			$class = ' twohalf-stars';
+			break;
+		case 3:
+			$class = ' three-stars';
+			break;
+		case 3.5:
+			$class = ' threehalf-stars';
+			break;
+		case 4:
+			$class = ' four-stars';
+			break;
+		case 4.5:
+			$class = ' fourhalf-stars';
+			break;
+		case 5:
+			$class = ' five-stars';
+			break;
 		case 0:
-		default:  $class = ' no-stars';        break;
+		default:
+			$class = ' no-stars';
+			break;
 	}
 	?>
 	<div class="metadata">
@@ -208,7 +248,7 @@ if ($this->config->get('supportedtag') && isset($this->supported))
 			$content = trim($content);
 		}
 
-		echo \Hubzero\Utility\String::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
+		echo \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
 		?>
 	</p>
 </li>

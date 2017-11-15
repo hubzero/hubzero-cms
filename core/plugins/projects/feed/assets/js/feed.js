@@ -76,11 +76,13 @@ jQuery(document).ready(function($){
 		.on('click', '.more-content', function(e) {
 			e.preventDefault();
 
-			var shortBody = $(this).parent().parent().find("div.body");
+			/*var shortBody = $(this).parent().parent().find("div.body");
 			var longBody  = $(this).parent().parent().find("div.fullbody");
 
 			$(shortBody).addClass('hidden');
-			$(longBody).removeClass('hidden');
+			$(longBody).removeClass('hidden');*/
+			$(this).closest('.activity-event-preview').addClass('hide');
+			$($(this).attr('href')).removeClass('hide');
 		})
 		// Confirm delete
 		.on('click', '.delete', function(e) {

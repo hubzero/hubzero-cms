@@ -32,8 +32,9 @@
 namespace Components\Blog\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
+use Hubzero\Form\Form;
+use Filesystem;
 use Component;
 use Lang;
 use User;
@@ -114,7 +115,7 @@ class Entry extends Relational
 	 *
 	 * @var  object
 	 */
-	public $params = NULL;
+	public $params = null;
 
 	/**
 	 * Scope adapter
@@ -154,7 +155,7 @@ class Entry extends Relational
 		if (strlen($alias) > 100)
 		{
 			$alias = substr($alias . ' ', 0, 100);
-			$alias = substr($alias, 0, strrpos($alias,' '));
+			$alias = substr($alias, 0, strrpos($alias, ' '));
 		}
 		$alias = str_replace(' ', '-', $alias);
 
@@ -175,7 +176,7 @@ class Entry extends Relational
 	}
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic publish_up field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -198,7 +199,7 @@ class Entry extends Relational
 	}
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic publish_down field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -393,10 +394,16 @@ class Entry extends Relational
 		{
 			switch ($this->get('state'))
 			{
-				case 1:  return 'published';   break;
-				case 2:  return 'trashed';     break;
+				case 1:
+					return 'published';
+					break;
+				case 2:
+					return 'trashed';
+					break;
 				case 0:
-				default: return 'unpublished'; break;
+				default:
+					return 'unpublished';
+					break;
 			}
 		}
 
@@ -489,7 +496,7 @@ class Entry extends Relational
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id')));
 				}
 
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->adapter = with(new $cls($this->get('scope_id')))
@@ -577,7 +584,7 @@ class Entry extends Relational
 				'domain'   => ''
 			);
 
-			$this->$property = Html::content('prepare', $this->get($field, ''), $params);
+			$this->$property = \Html::content('prepare', $this->get($field, ''), $params);
 		}
 
 		return $this->$property;
@@ -739,5 +746,30 @@ class Entry extends Relational
 		$data->params = $this->params->toObject();
 
 		return $data;
+	}
+
+	/**
+	 * Get a form
+	 *
+	 * @return  object
+	 */
+	public function getForm()
+	{
+		$file = __DIR__ . '/forms/' . strtolower($this->getModelName()) . '.xml';
+		$file = Filesystem::cleanPath($file);
+
+		$form = new Form('blog', array('control' => 'fields'));
+
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		$data = $this->toArray();
+		$data['params'] = $this->params->toArray();
+
+		$form->bind($data);
+
+		return $form;
 	}
 }

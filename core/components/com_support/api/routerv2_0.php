@@ -91,6 +91,10 @@ class Router extends Base
 						$vars['task'] = 'read';
 					}
 				}
+				else if ($segments[1] == 'list')
+				{
+					$vars['task'] = 'list';
+				}
 				else
 				{
 					throw new Exception(Lang::txt("COM_SUPPORT_TASK_NOT_FOUND"), 404);

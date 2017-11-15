@@ -73,17 +73,19 @@ defined('_HZEXEC_') or die();
 			<p class="note_total">
 				<?php echo Lang::txt('Displaying '); ?>
 				<?php
-				$html = '';
 				if ($filters['start'] == 0) {
-					$html .= $pageNav->total > count($seekers) ? ' top ' . count($seekers) . ' out of ' . $pageNav->total : strtolower(Lang::txt('all')) . ' ' . count($seekers);
+					echo $pageNav->total > count($seekers) ? ' top ' . count($seekers) . ' out of ' . $pageNav->total : strtolower(Lang::txt('all')) . ' ' . count($seekers);
 				} else {
-					$html .= ($filters['start'] + 1);
-					$html .= ' - ' . ($filters['start'] + count($seekers)) . ' out of ' . $pageNav->total;
+					echo ($filters['start'] + 1);
+					echo ' - ' . ($filters['start'] + count($seekers)) . ' out of ' . $pageNav->total;
 				}
-				$html .= ' ';
-				$html .= $filters['filterby'] == 'shortlisted' ? Lang::txt('shortlisted') . ' ' : '';
-				$html .= strtolower(Lang::txt('candidates'));
-				echo $html;
+				echo ' ';
+				if ($filters['filterby'] == 'shortlisted') {
+					echo Lang::txt('shortlisted') . ' ';
+				} else {
+					echo '';
+				}
+				echo strtolower(Lang::txt('candidates'));
 				?>
 			</p>
 
@@ -94,18 +96,18 @@ defined('_HZEXEC_') or die();
 				?>
 				<li>
 				<?php
-				$this->controller = '';
-				$this->task = 'resumes';
-				$view = $this->view('seeker');
-				$params = new \Hubzero\Config\Registry(Plugin::params('members', 'resume'));
+					$this->controller = '';
+					$this->task = 'resumes';
+					$view = $this->view('seeker');
+					$params = new \Hubzero\Config\Registry(Plugin::params('members', 'resume'));
 
-				$view->seeker   = $seeker;
-				$view->emp      = $emp;
-				$view->option   = 'com_members';
-				$view->admin    = $admin;
-				$view->params   = $params;
-				$view->list     = 1;
-				echo $view->loadTemplate();
+					$view->seeker   = $seeker;
+					$view->emp      = $emp;
+					$view->option   = 'com_members';
+					$view->admin    = $admin;
+					$view->params   = $params;
+					$view->list     = 1;
+					echo $view->loadTemplate();
 				?>
 				</li>
 				<?php

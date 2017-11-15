@@ -34,7 +34,7 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 
 /**
- * User profile model
+ * Project description model
  */
 class Description extends Relational
 {
@@ -66,7 +66,7 @@ class Description extends Relational
 	 */
 	protected $rules = array(
 		'description_key' => 'notempty',
-		'project_id'     => 'positive|nonzero'
+		'project_id'      => 'positive|nonzero'
 	);
 
 	/**
@@ -79,13 +79,13 @@ class Description extends Relational
 	);
 
 	/**
-	 * Get parent member
+	 * Get parent project
 	 *
 	 * @return  object
 	 */
 	public function project()
 	{
-		return $this->belongsToOne('Project', 'project_id');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Project', 'project_id');
 	}
 
 	/**
@@ -157,4 +157,3 @@ class Description extends Relational
 		return $arr;
 	}
 }
-

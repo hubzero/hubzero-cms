@@ -36,16 +36,20 @@ defined('_HZEXEC_') or die();
 	$allowed_ads = $allowed_ads < 0 ? 0 : $allowed_ads;
 
 	$class = 'no';
-	switch ( $this->subscription->status )
+	switch ($this->subscription->status)
 	{
-		case '0':    $status = Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
+		case '0':
+			$status = Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
 		break;
-		case '1':    $status = Lang::txt('COM_JOBS_JOB_STATUS_ACTIVE');
-					 $class  = 'yes';
+		case '1':
+			$status = Lang::txt('COM_JOBS_JOB_STATUS_ACTIVE');
+			$class  = 'yes';
 		break;
-		case '2':    $status = Lang::txt('COM_JOBS_JOB_STATUS_CANCELLED');
+		case '2':
+			$status = Lang::txt('COM_JOBS_JOB_STATUS_CANCELLED');
 		break;
-		default:     $status = Lang::txt('N/A');
+		default:
+			$status = Lang::txt('N/A');
 		break;
 	}
 
@@ -132,7 +136,7 @@ defined('_HZEXEC_') or die();
 								else if ($mj->status == 0) { echo '('.strtolower(Lang::txt('COM_JOBS_JOB_STATUS_PENDING')) . ')'; }
 								else if ($mj->status == 3) { echo '('.strtolower(Lang::txt('COM_JOBS_JOB_STATUS_INACTIVE')) . ')'; } ?>
 								</span>
-							<?php echo '<span class="code">' . $mj->code . '</span>: <a href="' . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code) . '">' . \Hubzero\Utility\String::truncate($mj->title, 50) . '</a>';  ?>
+							<?php echo '<span class="code">' . $mj->code . '</span>: <a href="' . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code) . '">' . \Hubzero\Utility\Str::truncate($mj->title, 50) . '</a>';  ?>
 					</p>
 				<?php }
 				} ?>

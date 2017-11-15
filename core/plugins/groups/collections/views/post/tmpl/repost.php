@@ -130,6 +130,6 @@ if ($this->groupboards)
 	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
-		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_POST'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 	</p>
 </form>

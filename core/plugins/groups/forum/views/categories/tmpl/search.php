@@ -111,13 +111,13 @@ $this->css()
 								<td class="priority-4">
 									<span><?php echo Lang::txt('PLG_GROUPS_FORUM_SECTION'); ?></span>
 									<span class="entry-details section-name">
-										<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
+										<?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
 									</span>
 								</td>
 								<td class="priority-3">
 									<span><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY'); ?></span>
 									<span class="entry-details category-name">
-										<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
+										<?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
 									</span>
 								</td>
 							</tr>

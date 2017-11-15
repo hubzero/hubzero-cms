@@ -39,19 +39,19 @@ HUB.Jobs = {
 		// Date picker
 		if ($('#startdate').length > 0) {
 			$('#startdate').datepicker({
-				dateFormat: 'yy-mm-dd'
+				dateFormat: 'yy-mm-dd 00:00:00'
 			});
 		}
 
 		if ($('#closedate').length > 0) {
 			$('#closedate').datepicker({
-				dateFormat: 'yy-mm-dd'
+				dateFormat: 'yy-mm-dd 00:00:00'
 			});
 		}
 
 		if ($('#expiredate').length > 0) {
 			$('#expiredate').datepicker({
-				dateFormat: 'yy-mm-dd'
+				dateFormat: 'yy-mm-dd 00:00:00'
 			});
 		}
 

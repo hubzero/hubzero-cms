@@ -28,10 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Hubzero\Form\Fields;
+
+use Hubzero\Form\Field;
+
 /**
  * Renders a list of support ticket messages
  */
-class JFormFieldTicketmessage extends JFormField
+class Ticketmessage extends Field
 {
 	/**
 	 * The form field type.
@@ -47,16 +51,12 @@ class JFormFieldTicketmessage extends JFormField
 	 */
 	protected function getInput()
 	{
-		$db = \App::get('db');
-
 		$html = array();
 
 		$html[] = '<select name="' . $this->name . '" id="' . $this->id . '">';
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
-		$sr = new \Components\Support\Tables\Message($db);
-
-		$messages = $sr->getMessages();
+		include_once \Component::path('com_support') . DS . 'models' . DS . 'message.php';
+		$messages = \Components\Support\Models\Message::all()->rows();
 
 		$html[] = '<option value="0"' . (!$this->value ? ' selected="selected"' : '') . '>[ none ]</option>';
 

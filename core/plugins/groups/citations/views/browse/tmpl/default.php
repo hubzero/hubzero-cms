@@ -66,7 +66,7 @@ if (isset($this->messages))
 		<section class="main section"> <!-- .main .section -->
 			<div class="subject">
 				<div class="container data-entry"> <!-- citation search box -->
-					<!-- @TODO replace with hubgraph -->
+					<!-- @TODO replace with global search -->
 					<input class="entry-search-submit" type="submit" value="Search" /> <!-- search button -->
 					<fieldset class="entry-search"> <!-- text box container -->
 						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
@@ -128,7 +128,7 @@ if (isset($this->messages))
 							<?php endif; ?>
 						</thead>
 						<tbody>
-							<?php $x = 0; ?>
+							<?php $x = (1 + Request::getInt('start', 0)); ?>
 							<?php foreach ($this->citations as $cite) : ?>
 								<?php if (!$this->isManager && $cite->published == $cite::STATE_UNPUBLISHED) { continue; } ?> 
 								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
@@ -153,13 +153,21 @@ if (isset($this->messages))
 
 												switch ($this->label)
 												{
-													case 'number':
+													case 'id':
 														echo "<span class=\"number\">{$cite->id}.</span>";
+														break;
+													case 'number':
+														echo "<span class=\"sequential\">{$x}.</span>";
 														break;
 													case 'type':
 														echo "<span class=\"type\">{$type}</span>";
 														break;
+													case 'numtype':
+														echo "<span class=\"number\">{$x}. </span>";
+														echo "<span class=\"type\">{$type}</span>";
+														break;
 													case 'both':
+													default:
 														echo "<span class=\"number\">{$cite->id}. </span>";
 														echo "<span class=\"type\">{$type}</span>";
 														break;
@@ -200,20 +208,12 @@ if (isset($this->messages))
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
 											<div class="citation-notes">
 												<?php
-													$cs = new \Components\Citations\Tables\Sponsor($this->database);
-													$sponsors = $cs->getCitationSponsor($cite->id);
-													$final = "";
-													if ($sponsors)
-													{
-														foreach ($sponsors as $s)
-														{
-															$sp = $cs->getSponsor($s);
-															if ($sp)
-															{
-																$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
-															}
-														}
-													}
+												$final = "";
+
+												foreach ($cite->sponsors as $s)
+												{
+													$final .= '<a rel="external" href="'.$sp->get('link').'">'.$sp->get('sponsor').'</a>, ';
+												}
 												?>
 												<?php if ($final != '' && $this->config->get('citation_sponsors', 'yes') == 'yes') : ?>
 													<p class="sponsor"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo substr($final, 0, -2); ?></p>
@@ -249,13 +249,14 @@ if (isset($this->messages))
 										</td>
 									<?php endif; ?>
 								</tr>
+								<?php $x++; ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 					<?php else : ?>
 						<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
-					<?php echo $this->citations->pagination->setLimits(array(10,25,50,100)); ?>
+					<?php echo $this->citations->pagination; ?>
 					<div class="clearfix"></div>
 				</div><!-- /.container -->
 			</div><!-- /.subject -->

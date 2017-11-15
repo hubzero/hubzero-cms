@@ -39,7 +39,7 @@ if ($this->getError()) { ?>
 	if ($this->row) {
 ?>
 	<div class="<?php echo $this->cls; ?>">
-	<?php if (is_file(PATH_APP . $this->thumb)) { ?>
+	<?php if ($this->thumb && is_file(PATH_APP . $this->thumb)) { ?>
 		<p class="featured-img">
 			<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id); ?>">
 				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />
@@ -51,7 +51,7 @@ if ($this->getError()) { ?>
 				<?php echo $this->escape(stripslashes($this->row->title)); ?>
 			</a>:
 		<?php if ($this->row->introtext) { ?>
-			<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->introtext)), $this->txt_length); ?>
+			<?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($this->row->introtext)), $this->txt_length); ?>
 		<?php } ?>
 		</p>
 	</div>

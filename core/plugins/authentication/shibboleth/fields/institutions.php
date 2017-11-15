@@ -31,11 +31,11 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+namespace Hubzero\Form\Fields;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
+use Hubzero\Form\Field;
 
-class JFormFieldInstitutions extends JFormField
+class Institutions extends Field
 {
 	/**
 	 * Metadata
@@ -68,7 +68,7 @@ class JFormFieldInstitutions extends JFormField
 		{
 			return str_replace('"', '&quot;', $str);
 		};
-		$val = is_array($this->value) ? $this->value : json_decode($this->value, TRUE);
+		$val = is_array($this->value) ? $this->value : json_decode($this->value, true);
 		$html[] = '<div class="shibboleth" data-iconify="'.$a(preg_replace('#^'.preg_quote(PATH_CORE).'#', '', __FILE__)).'">';
 		$html[] = '<p class="xml-source"><label>Shibboleth ID provider configuration file: <input type="text" name="xmlPath" value="'.$a($val['xmlPath']).'" /></label></p>';
 		list($val['xmlRead'], $val['idps']) = self::getIdpList($val);
@@ -86,7 +86,7 @@ class JFormFieldInstitutions extends JFormField
 	 * @param   boolean  $alwaysUpdate
 	 * @return  array
 	 */
-	private static function getIdpList($val, $alwaysUpdate = TRUE)
+	private static function getIdpList($val, $alwaysUpdate = true)
 	{
 		// list is up to date
 		if (!file_exists($val['xmlPath']))
@@ -113,9 +113,9 @@ class JFormFieldInstitutions extends JFormField
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 			$item = array(
 				'entity_id' => $entityId,
-				'label'    => NULL,
-				'host'     => NULL,
-				'logo'     => NULL
+				'label'     => null,
+				'host'      => null,
+				'logo'      => null
 			);
 			if (!($idp = curl_exec($curl)))
 			{
@@ -143,10 +143,10 @@ class JFormFieldInstitutions extends JFormField
 				}
 				if (($orgUrl = $idp->xpath('//saml:OrganizationURL')))
 				{
-					$item['host'] = preg_replace('/^.*[.]([^.]+[.][^.]+)$/', '$1', parse_url($orgUrl[0], \PHP_URL_HOST));
+					$item['host'] = preg_replace('/^.*[.]([^.]+[.][^.]+)$/', '$1', parse_url($orgUrl[0], PHP_URL_HOST));
 				}
 //				$item['logo'] = $idp->xpath('//mdui:Logo');
-//				$item['logo'] = $item['logo'] ? (string)$item['logo'][0] : NULL;
+//				$item['logo'] = $item['logo'] ? (string)$item['logo'][0] : null;
 			}
 			$rv[] = $item;
 		}
@@ -190,7 +190,7 @@ class JFormFieldInstitutions extends JFormField
 		curl_setopt($ch, CURLOPT_HTTPHEADER, []);
 
 		$xp = new \SimpleXMLElement($xml);
-		foreach ($xp->getNamespaces(TRUE) as $name => $url)
+		foreach ($xp->getNamespaces(true) as $name => $url)
 		{
 			$xp->registerXPathNamespace($name ? $name : 'base', $url);
 		}

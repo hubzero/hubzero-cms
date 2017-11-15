@@ -122,7 +122,7 @@ class Quotas extends AdminController
 
 		if ($filters['class_alias'])
 		{
-			$entries->whereEquals('class_alias', $filters['class_alias']);
+			$entries->whereEquals($cats . '.alias', $filters['class_alias']);
 		}
 
 		// Get records
@@ -541,9 +541,11 @@ class Quotas extends AdminController
 	/**
 	 * Get quota usage info for a given quota id
 	 *
-	 * @return  void
+	 * @param   string   $returnType
+	 * @param   integer  $id
+	 * @return  mixed
 	 */
-	public function getQuotaUsageTask($returnType='json', $id=NULL)
+	public function getQuotaUsageTask($returnType='json', $id=null)
 	{
 		if (is_null($id))
 		{
@@ -594,7 +596,7 @@ class Quotas extends AdminController
 				}
 				fclose($fp);
 
-				$tokens = preg_split('/,/',$msg);
+				$tokens = preg_split('/,/', $msg);
 
 				foreach ($tokens as $token)
 				{
@@ -673,7 +675,7 @@ class Quotas extends AdminController
 				continue;
 			}
 
-			if (substr($line, 0, 1) == "#")
+			if (substr($line, 0, 1) == '#')
 			{
 				continue;
 			}
@@ -691,11 +693,11 @@ class Quotas extends AdminController
 						continue;
 					}
 
-					$class->set('alias'      , $args[1]);
+					$class->set('alias', $args[1]);
 					$class->set('soft_blocks', $args[2]);
 					$class->set('hard_blocks', $args[3]);
-					$class->set('soft_files' , $args[4]);
-					$class->set('hard_files' , $args[5]);
+					$class->set('soft_files', $args[4]);
+					$class->set('hard_files', $args[5]);
 					$class->save();
 				break;
 
@@ -731,12 +733,12 @@ class Quotas extends AdminController
 						continue;
 					}
 
-					$quota->set('user_id'    , $user_id);
-					$quota->set('class_id',    $class->get('id'));
+					$quota->set('user_id', $user_id);
+					$quota->set('class_id', $class->get('id'));
 					$quota->set('soft_blocks', $class->get('soft_blocks'));
 					$quota->set('hard_blocks', $class->get('hard_blocks'));
-					$quota->set('soft_files',  $class->get('soft_files'));
-					$quota->set('hard_files',  $class->get('hard_files'));
+					$quota->set('soft_files', $class->get('soft_files'));
+					$quota->set('hard_files', $class->get('hard_files'));
 					$quota->save();
 				break;
 			}
@@ -787,12 +789,12 @@ class Quotas extends AdminController
 					continue;
 				}
 
-				$quota->set('user_id',     $r->get('id'));
-				$quota->set('class_id',    $class->get('id'));
+				$quota->set('user_id', $r->get('id'));
+				$quota->set('class_id', $class->get('id'));
 				$quota->set('soft_blocks', $class->get('soft_blocks'));
 				$quota->set('hard_blocks', $class->get('hard_blocks'));
-				$quota->set('soft_files',  $class->get('soft_files'));
-				$quota->set('hard_files',  $class->get('hard_files'));
+				$quota->set('soft_files', $class->get('soft_files'));
+				$quota->set('hard_files', $class->get('hard_files'));
 				$quota->save();
 
 				$updates++;

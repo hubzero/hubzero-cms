@@ -37,8 +37,8 @@ if (!\User::authorise('core.manage', 'com_tags'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'cloud.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'cloud.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 
 $controllerName = \Request::getCmd('controller', 'entries');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -62,8 +62,8 @@ $task = \Request::getCmd('task', '');
 	\Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
 	($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
 );
-require_once(dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
+require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_TAGS_PLUGINS'),
@@ -72,10 +72,9 @@ if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
 }
 
 // Include scripts
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Initiate controller
 $controller = new $controllerName();
 $controller->execute();
-

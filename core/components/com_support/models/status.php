@@ -32,34 +32,90 @@
 
 namespace Components\Support\Models;
 
-use Hubzero\Base\Model;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'status.php');
+use Hubzero\Database\Relational;
 
 /**
- * Support model for a ticket status
+ * Support ticket status model
  */
-class Status extends Model
+class Status extends Relational
 {
 	/**
-	 * Table name
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Support\\Tables\\Status';
+	public $namespace = 'support';
 
 	/**
-	 * Is the entry open?
+	 * Default order by for model
 	 *
-	 * @return  boolean
+	 * @var  string
 	 */
-	public function isOpen()
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'title' => 'notempty'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'alias'
+	);
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
 	{
-		if ($this->get('open') == 1)
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = strip_tags($alias);
+		$alias = trim($alias);
+		if (strlen($alias) > 250)
 		{
-			return true;
+			$alias = substr($alias . ' ', 0, 250);
+			$alias = substr($alias, 0, strrpos($alias, ' '));
 		}
-		return false;
+		$alias = str_replace(' ', '-', $alias);
+
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+	}
+
+	/**
+	 * Get open statuses
+	 *
+	 * @return  object
+	 */
+	public static function allOpen()
+	{
+		return self::all()->whereEquals('open', 1);
+	}
+
+	/**
+	 * Get closed statuses
+	 *
+	 * @return  object
+	 */
+	public static function allClosed()
+	{
+		return self::all()->whereEquals('open', 0);
 	}
 }
-

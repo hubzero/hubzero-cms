@@ -43,13 +43,13 @@ use Event;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'view.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclassgroup.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'view.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclassgroup.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
 
 /**
  * Controller class for tool sessions
@@ -57,14 +57,27 @@ require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php')
 class Sessions extends AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of hosts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'username' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.username',
 				'username',
@@ -107,31 +120,39 @@ class Sessions extends AdminController
 		);
 
 		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
+		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
 
 		// Get the middleware database
 		$mwdb = Utils::getMWDBO();
 
 		$model = new Tables\Session($mwdb);
 
-		$this->view->total = $model->getAllCount($this->view->filters);
+		$total = $model->getAllCount($filters);
 
-		$this->view->rows = $model->getAllRecords($this->view->filters);
+		$rows = $model->getAllRecords($filters);
 
-		$this->view->appnames = $model->getAppnames();
+		$appnames = $model->getAppnames();
 
-		$this->view->exechosts = $model->getExechosts();
+		$exechosts = $model->getExechosts();
 
-		$this->view->usernames = $model->getUsernames();
+		$usernames = $model->getUsernames();
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->set('appnames', $appnames)
+			->set('exechosts', $exechosts)
+			->set('usernames', $usernames)
+			->display();
 	}
 
 	/**
 	 * Delete one or more hostname records
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -142,10 +163,11 @@ class Sessions extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$mwdb = Utils::getMWDBO();
+		$stopped = 0;
 
 		if (count($ids) > 0)
 		{
+			$mwdb = Utils::getMWDBO();
 			$row = new Tables\Session($mwdb);
 
 			// Loop through each ID
@@ -163,6 +185,7 @@ class Sessions extends AdminController
 
 				// Stop the session
 				$status = $this->middleware("stop $id", $output);
+
 				if ($status)
 				{
 					$msg = 'Stopping ' . $id . '<br />';
@@ -171,26 +194,30 @@ class Sessions extends AdminController
 						$msg .= $line . "\n";
 					}
 					Notify::error($msg);
+					continue;
 				}
 
 				// Trigger any events that need to be called after session stop
 				Event::trigger('mw.onAfterSessionStop', array($row->appname));
+
+				$stopped++;
 			}
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_SESSIONS_TERMINATED'),
-			'message'
-		);
+		if ($stopped)
+		{
+			Notify::success(Lang::txt('COM_TOOLS_SESSIONS_TERMINATED'));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Invoke the Python script to do real work.
 	 *
-	 * @param      string  $comm Parameter description (if any) ...
-	 * @param      array   &$output Parameter description (if any) ...
-	 * @return     integer Session ID
+	 * @param   string   $comm
+	 * @param   array    &$output
+	 * @return  integer  Session ID
 	 */
 	public function middleware($comm, &$output)
 	{
@@ -272,7 +299,7 @@ class Sessions extends AdminController
 	public function classesTask()
 	{
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
 			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
@@ -280,40 +307,25 @@ class Sessions extends AdminController
 		$obj = new Tables\SessionClass($this->database);
 
 		// Get a record count
-		$this->view->total = $obj->find('count', $this->view->filters);
-		$this->view->rows  = $obj->find('list', $this->view->filters);
+		$total = $obj->find('count', $filters);
+		$rows  = $obj->find('list', $filters);
 
-		if (!$this->view->total)
+		if (!$total)
 		{
 			$obj->createDefault();
 
-			$this->view->total = $obj->find('count', $this->view->filters);
-			$this->view->rows  = $obj->find('list', $this->view->filters);
-		}
-
-		$this->view->config = $this->config;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$total = $obj->find('count', $filters);
+			$rows  = $obj->find('list', $filters);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('filters', $filters)
+			->set('total', $total)
+			->set('rows', $rows)
+			->set('config', $this->config)
 			->setLayout('classes')
 			->display();
-	}
-
-	/**
-	 * Create a new quota class
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		// Output the HTML
-		$this->editTask();
 	}
 
 	/**
@@ -339,30 +351,14 @@ class Sessions extends AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new Tables\SessionClass($this->database);
-		$this->view->row->load($id);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$row = new Tables\SessionClass($this->database);
+		$row->load($id);
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
-	}
-
-	/**
-	 * Apply changes to a quota class item
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		// Save without redirect
-		$this->saveTask();
 	}
 
 	/**
@@ -412,15 +408,13 @@ class Sessions extends AdminController
 		Notify::success(Lang::txt('COM_TOOLS_SESSION_CLASS_SAVE_SUCCESSFUL'));
 
 		// Redirect
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false)
-		);
+		$this->cancelclassTask();
 	}
 
 	/**
@@ -451,13 +445,8 @@ class Sessions extends AdminController
 				if ($row->alias == 'default')
 				{
 					// Output message and redirect
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
-						Lang::txt('COM_TOOLS_SESSION_CLASS_DONT_DELETE_DEFAULT'),
-						'warning'
-					);
-
-					return;
+					Notify::warning(Lang::txt('COM_TOOLS_SESSION_CLASS_DONT_DELETE_DEFAULT'));
+					return $this->cancelclassTask();
 				}
 
 				// Remove the record
@@ -470,18 +459,13 @@ class Sessions extends AdminController
 		else // no rows were selected
 		{
 			// Output message and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
-				Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_NO_ROWS'),
-				'warning'
-			);
+			Notify::warning(Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_NO_ROWS'));
+			return $this->cancelclassTask();
 		}
 
 		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
-			Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_SUCCESSFUL')
-		);
+		Notify::success(Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_SUCCESSFUL'));
+		$this->cancelclassTask();
 	}
 
 	/**

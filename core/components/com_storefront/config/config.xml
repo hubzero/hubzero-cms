@@ -42,6 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">COM_STOREFRONT_CONFIG_PRODUCT_ACCESS_LEVELS</option>
 			<option value="1">COM_STOREFRONT_CONFIG_PRODUCT_ACCESS_GROUPS</option>
 		</field>
+		<field name="quantityText" type="text" default="" label="COM_STOREFRONT_CONFIG_QUANTITY_TEXT" description="COM_STOREFRONT_CONFIG_QUANTITY_TEXT_DESC" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_storefront" section="component" />

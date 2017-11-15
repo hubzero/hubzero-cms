@@ -84,7 +84,7 @@ class UsersHelper
 	{
 		if (empty(self::$actions))
 		{
-			self::$actions = new \Hubzero\Base\Object;
+			self::$actions = new \Hubzero\Base\Obj;
 
 			$actions = JAccess::getActions('com_users');
 

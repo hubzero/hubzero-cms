@@ -32,19 +32,16 @@
 
 namespace Components\Citations\Models;
 
-use Components\Citations\Tables;
 use Hubzero\Utility\Date;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use App;
 
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'citation.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'tags.php');
+include_once __DIR__ . DS . 'citation.php';
 
 /**
  * Citation importer
  */
-class Importer extends Object
+class Importer extends Obj
 {
 	/**
 	 * Database connection
@@ -134,7 +131,7 @@ class Importer extends Object
 	/**
 	 * Defines a one to one relationship with citation
 	 *
-	 * @param   string  $path
+	 * @param   boolean  $force
 	 * @return  void
 	 */
 	public function cleanup($force = false)
@@ -242,6 +239,7 @@ class Importer extends Object
 	/**
 	 * Get a list of citations requiring attention
 	 *
+	 * @param   object  $data
 	 * @return  array
 	 */
 	public function writeRequiresAttention($data)
@@ -283,6 +281,7 @@ class Importer extends Object
 	/**
 	 * Get a list of citations requiring attention
 	 *
+	 * @param   object  $data
 	 * @return  array
 	 */
 	public function writeRequiresNoAttention($data)
@@ -337,8 +336,6 @@ class Importer extends Object
 		{
 			foreach ($cites_require_attention as $k => $cra)
 			{
-				$cc = new Tables\Citation($this->database);
-
 				// add a couple of needed keys
 				$cra['uid']     = $user;
 				$cra['created'] = $now;
@@ -364,9 +361,8 @@ class Importer extends Object
 					unset($cra['badges']);
 				}
 
-				//take care fo type
-				$ct = new Tables\Type($this->database);
-				$types = $ct->getType();
+				// Take care of type
+				$types = Type::all()->rows();
 
 				$type = '';
 				foreach ($types as $t)
@@ -413,7 +409,9 @@ class Importer extends Object
 				}
 
 				// save the citation
-				if (!$cc->save($cra))
+				$cc = Citation::blank()->set($cra);
+
+				if (!$cc->save())
 				{
 					$results['error'][] = $cra;
 				}
@@ -422,13 +420,13 @@ class Importer extends Object
 					// tags
 					if ($this->tags && isset($tags))
 					{
-						$this->tag($user, $cc->id, $tags, '');
+						$cc->updateTags($tags);
 					}
 
 					// badges
 					if ($this->badges && isset($badges))
 					{
-						$this->tag($user, $cc->id, $badges, 'badge');
+						$cc->updateTags($tags, 'badge');
 					}
 
 					// add the citattion to the saved
@@ -441,9 +439,6 @@ class Importer extends Object
 		{
 			foreach ($cites_require_no_attention as $k => $crna)
 			{
-				// new citation object
-				$cc = new Tables\Citation($this->database);
-
 				// add a couple of needed keys
 				$crna['uid'] = $user;
 				$crna['created'] = $now;
@@ -477,8 +472,7 @@ class Importer extends Object
 				}
 
 				// take care fo type
-				$ct = new Tables\Type($this->database);
-				$types = $ct->getType();
+				$types = Type::all()->rows();
 
 				$type = '';
 				foreach ($types as $t)
@@ -511,6 +505,8 @@ class Importer extends Object
 				}
 
 				// save the citation
+				$cc = Citation::blank()->set($crna);
+
 				if (!$cc->save($crna))
 				{
 					$results['error'][] = $crna;
@@ -520,13 +516,13 @@ class Importer extends Object
 					// tags
 					if ($this->tags && isset($tags))
 					{
-						$this->tag($user, $cc->id, $tags, '');
+						$cc->updateTags($tags);
 					}
 
 					// badges
 					if ($this->badges && isset($badges))
 					{
-						$this->tag($user, $cc->id, $badges, 'badge');
+						$cc->updateTags($tags, 'badge');
 					}
 
 					// add the citattion to the saved
@@ -538,23 +534,5 @@ class Importer extends Object
 		$this->cleanup();
 
 		return $results;
-	}
-
-	/**
-	 * Add tags to a citation
-	 *
-	 * @param   integer  $userid      User ID
-	 * @param   integer  $objectid    Citation ID
-	 * @param   string   $tag_string  Comma separated list of tags
-	 * @param   string   $label       Label
-	 * @return  void
-	 */
-	protected function tag($userid, $objectid, $tag_string, $label)
-	{
-		if ($tag_string)
-		{
-			$ct = new Tables\Tags($objectid);
-			$ct->setTags($tag_string, $userid, 0, 1, $label);
-		}
 	}
 }

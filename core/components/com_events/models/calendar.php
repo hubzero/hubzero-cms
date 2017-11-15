@@ -138,9 +138,9 @@ class Calendar extends Model
 	/**
 	 * Get a list of group pages
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
+	 * @param      string   $rtrn     What data to return
+	 * @param      array    $filters  Filters to apply to data retrieval
+	 * @param      boolean  $clear    Clear cached data?
 	 * @return     mixed
 	 */
 	public function events($rtrn = 'list', $filters = array(), $clear = false)
@@ -355,16 +355,11 @@ class Calendar extends Model
 				$event = new Event();
 			}
 
-			// set the timezone
-			$tz = new DateTimezone(Config::get('offset'));
-
 			// start already datetime objects
 			$start = $incomingEvent['DTSTART'];
-			$start->setTimezone($tz);
 
 			// set publish up/down
 			$publish_up   = $start->toSql();
-			$publish_down = '0000-00-00 00:00:00';
 			$allday       = (isset($incomingEvent['ALLDAY']) && $incomingEvent['ALLDAY'] == 1) ? 1 : 0;
 			$rrule        = null;
 
@@ -372,8 +367,11 @@ class Calendar extends Model
 			if (isset($incomingEvent['DTEND']))
 			{
 				$end = $incomingEvent['DTEND'];
-				$end->setTimezone($tz);
 				$publish_down = $end->toSql();
+			}
+			elseif ($allday == 1)
+			{
+				$publish_down = Date::of($start)->add('24 hours')->toSql();
 			}
 
 			// handle rrule
@@ -411,12 +409,6 @@ class Calendar extends Model
 				{
 					$rrule .= ';BYDAY=' . $incomingEvent['RRULE']['BYDAY'];
 				}
-			}
-
-			// handle all day events
-			if ($start->add(new DateInterval('P1D')) == $end)
-			{
-				$publish_down = '0000-00-00 00:00:00';
 			}
 
 			// set event details
@@ -464,6 +456,7 @@ class Calendar extends Model
 	/**
 	 * Delete Calendar
 	 *
+	 * @param  boolean  $deleteEvents
 	 * @return [type] [description]
 	 */
 	public function delete($deleteEvents = false)

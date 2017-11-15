@@ -100,7 +100,7 @@ $row = $this->row;
 	<tbody>
 		<?php foreach ($this->orderitems as $o) { ?>
 			<tr>
-				<td><?php echo $k . '. [' . $o->category . $o->itemid . '] ' . $o->title . ' (x' . $o->quantity . ')'; echo ($o->selectedsize) ? ' - size ' . $o->selectedsize : ''; ?></td>
+				<td><?php echo $k . '. [' . $o->item->category . $o->itemid . '] ' . $o->item->title . ' (x' . $o->quantity . ')'; echo ($o->selections->get('size')) ? ' - size ' . $o->selections->get('size') : ''; echo ($o->selections->get('color')) ? ' - color ' . $o->selections->get('color') : ''; ?></td>
 				<td><?php echo $o->price*$o->quantity . ' ' . Lang::txt('COM_STORE_POINTS'); ?></td>
 			</tr>
 		<?php } ?>

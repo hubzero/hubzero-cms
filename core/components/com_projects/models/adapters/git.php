@@ -32,12 +32,11 @@
 
 namespace Components\Projects\Models\Adapters;
 
-use Hubzero\Base\Object;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
 
 // Get git helper
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'githelper.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'githelper.php';
 
 /**
  * Projects Git adapter class
@@ -91,7 +90,7 @@ class Git extends Models\Adapter
 	public function count($params = array())
 	{
 		$cmd  = 'cd ' . escapeshellarg($this->_path) . ' && ';
-		$cmd .='find . \(-path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
+		$cmd .='find . \( -path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
 
 		return shell_exec($cmd);
 	}
@@ -186,6 +185,11 @@ class Git extends Models\Adapter
 				continue;
 			}
 
+			// Need to get extra metadata (slower)
+			// This method was causing quite a bit of sluggishness (if only I paid attention to the comment above). 
+			// I've instead added retrieving the date with filemtime to the defaults() method in the File model.
+			// $file->set('date', $this->_file($file, $dirPath, 'date'));
+
 			// Check for remote connections
 			$syncRecord = null;
 			if (isset($remotes[$file->get('localPath')]))
@@ -195,7 +199,13 @@ class Git extends Models\Adapter
 				$file->set('remote', $syncRecord->service);
 				$file->set('remoteid', $syncRecord->remote_id);
 				$file->set('author', $syncRecord->remote_author);
-				$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
+
+				// Added this conditional so that the local repo date takes priority.  Otherwise the date will always show the day Google Drive was connected which is not helpful.
+				if (!$file->get('date'))
+				{
+					$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
+				}
+
 				$file->set('mimeType', $syncRecord->remote_format);
 				$file->set('converted', $syncRecord->remote_editing);
 			}
@@ -811,13 +821,12 @@ class Git extends Models\Adapter
 				return 0;
 			}
 
-			exec('du -sk ' . $where, $out);
+			exec('du -sb --exclude=.git ' . $where, $out);
 
 			if ($out && isset($out[0]))
 			{
 				$dir = $git == true ? '.git' : '.';
-				$kb = str_replace($dir, '', trim($out[0]));
-				$used = $kb * 1024;
+				$used = str_replace($dir, '', trim($out[0]));
 			}
 		}
 

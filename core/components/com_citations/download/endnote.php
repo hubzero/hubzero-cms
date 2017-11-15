@@ -32,8 +32,6 @@
 
 namespace Components\Citations\Download;
 
-use Components\Citations\Tables\Type;
-
 include_once(__DIR__ . DS . 'downloadable.php');
 
 /**
@@ -66,7 +64,7 @@ class Endnote extends Downloadable
 		//get fields to not include for all citations
 		$config = \Component::params('com_citations');
 		$exclude = $config->get('citation_download_exclude', '');
-		if (strpos($exclude,",") !== false)
+		if (strpos($exclude, ",") !== false)
 		{
 			$exclude = str_replace(',', "\n", $exclude);
 		}
@@ -87,22 +85,7 @@ class Endnote extends Downloadable
 		//var to hold document conetnt
 		$doc = '';
 
-		//get all the citation types
-		$db = \App::get('db');
-		$ct = new Type($db);
-		$types = $ct->getType();
-
-		$type = '';
-		foreach ($types as $t)
-		{
-			if ($t['id'] == $row->type)
-			{
-				$type = $t['type_title'];
-			}
-		}
-
-		//set the type to generic if we dont have one
-		$type = ($type != '') ? $type : 'Generic';
+		$type = $row->relatedType()->row()->get('type_title', 'Generic');
 
 		//set the type
 		$doc .= "%0 {$type}" . "\r\n";
@@ -267,7 +250,7 @@ class Endnote extends Downloadable
 
 		$citation_endnote_tags = array();
 		$citation_badges_key = "";
-		foreach ($custom_tags  as $ct)
+		foreach ($custom_tags as $ct)
 		{
 			$citation_endnote_tags[] = explode("-", trim($ct));
 		}
@@ -290,4 +273,3 @@ class Endnote extends Downloadable
 		return $doc;
 	}
 }
-

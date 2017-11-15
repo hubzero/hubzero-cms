@@ -199,10 +199,12 @@ defined('_HZEXEC_') or die();
 								<input type="file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
 							</label>
 
-							<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-								<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
-							</label>
+							<?php if ($this->config->get('allow_anonymous')) { ?>
+								<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+									<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+									<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+								</label>
+							<?php } ?>
 
 							<p class="submit">
 								<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />

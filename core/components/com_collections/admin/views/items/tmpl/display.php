@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
-			$content = \Hubzero\Utility\String::truncate(strip_tags($row->get('description')), 75);
+			$content = \Hubzero\Utility\Str::truncate(strip_tags($row->get('description')), 75);
 			$content = $content ?: Lang::txt('COM_COLLECTIONS_NONE');
 			?>
 			<tr class="<?php echo "row$k"; ?>">

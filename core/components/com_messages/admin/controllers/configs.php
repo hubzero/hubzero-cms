@@ -33,7 +33,7 @@ namespace Components\Messages\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Messages\Models\Cfg;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Request;
 use Notify;
 use User;
@@ -56,7 +56,7 @@ class Configs extends AdminController
 			->whereEquals('user_id', (int) User::get('id'))
 			->rows();
 
-		$item = new Object;
+		$item = new Obj;
 
 		foreach ($rows as $row)
 		{

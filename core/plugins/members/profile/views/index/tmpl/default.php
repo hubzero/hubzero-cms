@@ -71,18 +71,17 @@ if (isset($this->registration_update))
 	$invalid = $this->registration_update->_invalid;
 }
 
-/*
-//incremental registration
-require_once PATH_CORE . '/components/com_members/models/incremental/awards.php';
-require_once PATH_CORE . '/components/com_members/models/incremental/groups.php';
-require_once PATH_CORE . '/components/com_members/models/incremental/options.php';
+
+// incremental registration
+require_once Component::path('com_members') . '/models/incremental/awards.php';
+require_once Component::path('com_members') . '/models/incremental/groups.php';
+require_once Component::path('com_members') . '/models/incremental/options.php';
 
 $uid = (int)$this->profile->get('id');
-$incrOpts = new ModIncrementalRegistrationOptions;
-
+$incrOpts = new Components\Members\Models\Incremental\Options;
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
-*/
 
+// Profile info
 $entries = $this->profile->profiles();
 
 $p = $entries->getTableName();
@@ -131,6 +130,12 @@ foreach ($profiles as $profile)
 	}
 }
 
+/**
+* Renders if argument is json?
+*
+* @param  string  $v
+* @return string
+*/
 function renderIfJson($v)
 {
 	if (strstr($v, '{'))
@@ -216,7 +221,6 @@ $legacy = array(
 	<?php endif; ?>
 
 	<?php
-	/*
 	if ($isUser && $isIncrementalEnabled)
 	{
 		$awards = new Components\Members\Models\Incremental\Awards($this->profile);
@@ -235,22 +239,21 @@ $legacy = array(
 			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
 		}
 
-		$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) .'</p>';
+		$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) . '</p>';
 
 		$increm .= '</div>';
-		$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']) . '</span></div>';
+		$increm .= '<div id="wallet"><span>' . ($awards['prior'] + $awards['new']) . '</span></div>';
 		$increm .= '<script type="text/javascript">
-						window.bonus_eligible_fields = '.json_encode($awards['eligible']).';
-						window.bonus_amount = '.$incrOpts->getAwardPerField().';
+						window.bonus_eligible_fields = ' . json_encode($awards['eligible']) . ';
+						window.bonus_amount = ' . $incrOpts->getAwardPerField() . ';
 					</script>';
 		echo $increm;
 
 		$this->js('incremental', 'com_members');
 	}
-	*/
 	?>
 
-	<?php if (isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
+	<?php if (isset($update_missing) && in_array("usageAgreement", array_keys($update_missing))) : ?>
 		<div id="usage-agreement-popup">
 			<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
 				<h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
@@ -423,6 +426,17 @@ $legacy = array(
 							<br class="clear" />
 							<input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
 							<?php
+								if ($this->profile->get('access') > 2)
+								{
+									$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+									$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
+									$access .= '<input type="hidden" name="access[email]" value="' . $this->params->get('access_email') . '" />';
+								}
+								else
+								{
+									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>';
+								}
+
 								$this->view('default', 'edit')
 								     ->set('registration_field', 'email')
 								     ->set('profile_field', 'email')
@@ -433,7 +447,7 @@ $legacy = array(
 								     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
 													. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
 													. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
-								     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>')
+								     ->set('access', $access)
 								     ->display();
 							?>
 						<?php endif; ?>
@@ -597,7 +611,7 @@ $legacy = array(
 					{
 						$value = $profile->get('label', $value);
 					}
-					$value = $value ?: $this->profile->get($field->get('name'));
+					$value = $value ?: $this->profile->get($field->get('name'), $field->get('default_value'));
 
 					if ($value)
 					{
@@ -609,6 +623,11 @@ $legacy = array(
 						// IF the type is a URL, link it
 						if ($field->get('type') == 'url')
 						{
+							$parsed = parse_url($value);
+							if (empty($parsed['scheme']))
+							{
+								$value = 'http://' . ltrim($value, '/');
+							}
 							$value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
 						}
 					}
@@ -658,6 +677,17 @@ $legacy = array(
 							{
 								$formfield->setValue($value);
 
+								if ($this->profile->get('access') > 2)
+								{
+									$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+									$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
+									$access .= '<input type="hidden" name="access[' . $field->get('name') . ']" value="' . $profile->get('access', $field->get('access')) . '" />';
+								}
+								else
+								{
+									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select');
+								}
+
 								$this->view('default', 'edit')
 									->set('registration_field', $field->get('name'))
 									->set('profile_field', $field->get('name'))
@@ -666,7 +696,7 @@ $legacy = array(
 									->set('profile', $this->profile)
 									->set('isUser', $isUser)
 									->set('inputs', $formfield->label . $formfield->input)
-									->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select'))
+									->set('access', $access)
 									->display();
 							}
 						}
@@ -764,6 +794,17 @@ $legacy = array(
 							$optin_html .= '</select>';
 							$optin_html .= '</label>';
 
+							if ($this->profile->get('access') > 2)
+							{
+								$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+								$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
+								$access .= '<input type="hidden" name="sendEmail" value="' . $this->params->get('access_optin') . '" />';
+							}
+							else
+							{
+								$access = '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label></div>';
+							}
+
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'sendEmail')
 							     ->set('profile_field', 'sendEmail')
@@ -772,7 +813,7 @@ $legacy = array(
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', $optin_html)
-							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label></div>')
+							     ->set('access', $access)
 							     ->display();
 						?>
 					<?php endif; ?>

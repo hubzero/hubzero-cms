@@ -50,9 +50,9 @@ $this->css();
 		</caption>
 		<tbody>
 		<?php
-		if ($this->wishlist->items)
+		if ($this->rows->count())
 		{
-			foreach ($this->wishlist->items as $item)
+			foreach ($this->rows as $item)
 			{
 				$item->subject = $this->escape(stripslashes($item->subject));
 
@@ -97,7 +97,7 @@ $this->css();
 				$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 				if (!$item->anonymous)
 				{
-					$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">' . $this->escape($item->authorname) . '</a>';
+					$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">' . $this->escape($item->proposer->get('name')) . '</a>';
 				}
 		?>
 				<tr class="<?php echo $state; ?>">
@@ -138,11 +138,11 @@ $this->css();
 					<?php
 						$view = new \Hubzero\Component\View(array(
 							'name'      =>'wishlists',
-							'base_path' => PATH_CORE . DS . 'components' . DS . $this->option . DS . 'site',
+							'base_path' => Component::path($this->option) . DS . 'site',
 							'layout'    => '_vote'
 						));
 						$view->set('option', 'com_wishlist')
-						     ->set('item',  new \Components\Wishlist\Models\Wish($item))
+						     ->set('item',  $item)
 						     ->set('listid', $this->wishlist->id)
 						     ->set('plugin', 0)
 						     ->set('admin', 0)

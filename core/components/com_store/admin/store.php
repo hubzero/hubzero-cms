@@ -39,12 +39,11 @@ if (!\User::authorise('core.manage', 'com_store'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'store.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'order.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'orderitem.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'cart.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'imghandler.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'store.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'order.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'cart.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'imghandler.php';
 
 $controllerName = \Request::getCmd('controller', 'orders');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -69,5 +68,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

@@ -129,6 +129,29 @@ class CartDownload
 			$sql .= " AND d.sId = " . $db->quote($filters['skuRequested']);
 		}
 
+		if (isset($filters['report-from']) && strtotime($filters['report-from']))
+		{
+			$showFrom = date("Y-m-d", strtotime($filters['report-from']));
+			$sql .= " AND d.`dDownloaded` >= '{$showFrom}'";
+		}
+		if (isset($filters['report-to']) && strtotime($filters['report-to']))
+		{
+			// Add one day to include all the records of the end day
+			$showTo = strtotime($filters['report-to'] . ' +1 day');
+			$showTo = date("Y-m-d 00:00:00", $showTo);
+			$sql .= " AND d.`dDownloaded` <= '{$showTo}'";
+		}
+
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$where   = array();
+			$where[] = "p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%');
+			$where[] = "p.`pDescription` LIKE " . $db->quote('%' . $filters['search'] . '%');
+			$where[] = "s.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%');
+
+			$sql .= " AND (" . implode(" OR ", $where) . ")";
+		}
+
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')
@@ -168,6 +191,7 @@ class CartDownload
 		}
 
 		$db->setQuery($sql);
+		//echo $db->toString(); die;
 		$db->execute();
 		if ($rtrn == 'count')
 		{
@@ -216,17 +240,38 @@ class CartDownload
 			unset($filters['limit']);
 		}
 
+		$db = \App::get('db');
+
 		$sql  = 'SELECT p.pId, p.pName, s.sId, s.sSku, d.sId, COUNT(d.sId) AS downloaded FROM `#__cart_downloads` d';
 		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
 		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
 		$sql .= ' WHERE 1';
-		$sql .= ' GROUP BY d.sId';
 
 		// Filter by filters
-		if (isset($filters['active']) && $filters['active'] == 1)
+		if (isset($filters['report-from']) && strtotime($filters['report-from']))
 		{
-			$sql .= " AND dActive = 1";
+			$showFrom = date("Y-m-d", strtotime($filters['report-from']));
+			$sql .= " AND d.`dDownloaded` >= '{$showFrom}'";
 		}
+		if (isset($filters['report-to']) && strtotime($filters['report-to']))
+		{
+			// Add one day to include all the records of the end day
+			$showTo = strtotime($filters['report-to'] . ' +1 day');
+			$showTo = date("Y-m-d 00:00:00", $showTo);
+			$sql .= " AND d.`dDownloaded` <= '{$showTo}'";
+		}
+
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$where   = array();
+			$where[] = "p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%');
+			$where[] = "p.`pDescription` LIKE " . $db->quote('%' . $filters['search'] . '%');
+			$where[] = "s.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%');
+
+			$sql .= " AND (" . implode(" OR ", $where) . ")";
+		}
+
+		$sql .= ' GROUP BY d.sId';
 
 		if (isset($filters['sort']))
 		{
@@ -258,7 +303,6 @@ class CartDownload
 			}
 		}
 
-		$db = \App::get('db');
 		$db->setQuery($sql);
 		$db->execute();
 		if ($rtrn == 'count')

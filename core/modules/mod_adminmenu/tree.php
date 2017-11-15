@@ -37,7 +37,7 @@ include_once __DIR__ . DS . 'node.php';
 /**
  * Extended class for rendering nested menus
  */
-class Tree extends \Hubzero\Base\Object
+class Tree extends \Hubzero\Base\Obj
 {
 	/**
 	 * CSS string to add to document head

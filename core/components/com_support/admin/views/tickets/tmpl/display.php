@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS'), 'support.png');
+Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS'), 'support');
 Toolbar::preferences('com_support', '550');
 Toolbar::spacer();
 Toolbar::addNew();
@@ -84,7 +84,6 @@ $this->css();
 									</a>
 								</span>
 								<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
-									<?php if (isset($folder->queries)) : ?>
 									<?php foreach ($folder->queries as $query) { ?>
 										<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
 											<a class="query" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
@@ -100,7 +99,6 @@ $this->css();
 											</span>
 										</li>
 									<?php } ?>
-								<?php endif; ?>
 								</ul>
 							</li>
 						<?php } ?>
@@ -184,61 +182,46 @@ $this->css();
 
 					<ul id="tktlist">
 					<?php
-					$k = 0;
-					$database = App::get('db');
-					$sc = new \Components\Support\Tables\Comment($database);
-					$st = new \Components\Support\Models\Tags();
+				$k = 0;
+				$database = App::get('db');
 
-					// Collect all the IDs
-					$ids = array();
-					if ($this->rows)
+				$st = new \Components\Support\Models\Tags();
+
+				// Collect all the IDs
+				$ids = array();
+				if ($this->rows)
+				{
+					foreach ($this->rows as $row)
 					{
-						foreach ($this->rows as $row)
-						{
-							$ids[] = $row->id;
-						}
+						$ids[] = $row->id;
 					}
+				}
 
-					// Pull out the last activity date for all the IDs
-					$lastactivities = array();
-					if (count($ids))
+				// Pull out the last activity date for all the IDs
+				$lastactivities = array();
+				if (count($ids))
+				{
+					$alltags = $st->checkTags($ids);
+				}
+
+				$tid = Request::getInt('ticket', 0);
+
+				$tsformat = $database->getDateFormat();
+
+				if (count($this->rows) > 0)
+				{
+					$i = 0;
+					foreach ($this->rows as $row)
 					{
-						$lastactivities = $sc->newestCommentsForTickets(true, $ids);
-						$alltags = $st->checkTags($ids);
-					}
-
-					$tid = Request::getInt('ticket', 0);
-
-					$tsformat = $database->getDateFormat();
-
-					if (count($this->rows) > 0)
-					{
-					for ($i=0, $n=count($this->rows); $i < $n; $i++)
-					{
-						$row = &$this->rows[$i];
-
-						if (!($row instanceof \Components\Support\Models\Ticket))
-						{
-							$row = new \Components\Support\Models\Ticket($row);
-						}
-
 						if ($tid && $row->get('id') != $tid)
 						{
 							continue;
 						}
 
-						//$comments = 0;
-
-						$lastcomment = '0000-00-00 00:00:00';
-						if (isset($lastactivities[$row->get('id')]))
-						{
-							$lastcomment = $lastactivities[$row->get('id')]['lastactivity'];
-						}
-						// Was there any activity on this item?
-						/*if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
-						{
-							$comments = 1;
-						}*/
+						$lastcomment = $row->comments()
+							->order('created', 'desc')
+							->row()
+							->get('created', '0000-00-00 00:00:00');
 
 						$tags = '';
 						if (isset($alltags[$row->get('id')]))
@@ -247,14 +230,14 @@ $this->css();
 						}
 						?>
 						<li class="<?php echo (!$row->isOpen() ? 'closed' : 'open'); ?>" data-id="<?php echo $row->get('id'); ?>" id="ticket-<?php echo $row->get('id'); ?>">
-							<div class="ticket-wrap"<?php if ($row->get('status')) { echo ($row->status('color') ? ' style="border-left-color: #' . $row->status('color') . ';"' : ''); } ?>>
+							<div class="ticket-wrap"<?php if ($row->get('status')) { echo ($row->status->get('color') ? ' style="border-left-color: #' . $row->status->get('color') . ';"' : ''); } ?>>
 								<p>
 									<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 									<span class="ticket-id">
 										# <?php echo $row->get('id'); ?>
 									</span>
-									<span class="<?php echo $row->status('class'); ?> status hasTip" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . Lang::txt('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status('text'); echo (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''); ?>">
-										<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+									<span class="<?php echo $row->status->get('alias'); ?> status hasTip" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . Lang::txt('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status->get('title'); echo (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''); ?>">
+										<?php echo $row->status->get('title'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 									</span>
 									<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 										<span class="ticket-activity">
@@ -272,7 +255,7 @@ $this->css();
 										<?php echo $row->get('name'); echo ($row->get('login')) ? ' (<a href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->escape($row->get('login'))) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
 									</span>
 									<span class="ticket-datetime">
-										@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created(); ?></time>
+										@ <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
 									</span>
 								</p>
 								<p>
@@ -300,8 +283,8 @@ $this->css();
 											</span>
 										<?php } ?>
 										<?php if ($row->isOwned()) { ?>
-											<span class="ticket-owner hasTip" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->owner()->picture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->owner()->get('username'))); ?><br /><?php echo $this->escape(stripslashes($row->owner()->get('organization', Lang::txt('COM_SUPPORT_USER_ORG_UNKNOWN')))); ?>">
-												<?php echo $this->escape(stripslashes($row->owner()->get('name'))); ?>
+											<span class="ticket-owner hasTip" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->assignee->picture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->assignee->get('username'))); ?><br /><?php echo $this->escape(stripslashes($row->assignee->get('organization', Lang::txt('COM_SUPPORT_USER_ORG_UNKNOWN')))); ?>">
+												<?php echo $this->escape(stripslashes($row->assignee->get('name'))); ?>
 											</span>
 										<?php } ?>
 									</p>
@@ -314,6 +297,7 @@ $this->css();
 							</div>
 						</li>
 						<?php
+						$i++;
 						$k = 1 - $k;
 					}
 				}

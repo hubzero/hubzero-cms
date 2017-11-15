@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die( 'Restricted access');
 
-$authors = $this->citation->authors();
+$authors = $this->citation->relatedAuthors();
 
 if (count($authors)) { ?>
 	<?php foreach ($authors as $author) { ?>

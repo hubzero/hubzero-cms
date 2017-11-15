@@ -111,7 +111,7 @@ class MediaModelList extends JModelLegacy
 			{
 				if (is_file($basePath.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html')
 				{
-					$tmp = new \Hubzero\Base\Object();
+					$tmp = new \Hubzero\Base\Obj();
 					$tmp->name = $file;
 					$tmp->title = $file;
 					$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', \Hubzero\Filesystem\Util::normalizePath($basePath . '/' . $file));
@@ -179,7 +179,7 @@ class MediaModelList extends JModelLegacy
 		{
 			foreach ($folderList as $folder)
 			{
-				$tmp = new \Hubzero\Base\Object();
+				$tmp = new \Hubzero\Base\Obj();
 				$tmp->name = basename($folder);
 				$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', \Hubzero\Filesystem\Util::normalizePath($basePath . '/' . $folder));
 				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);

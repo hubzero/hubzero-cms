@@ -171,11 +171,11 @@ $this->css()
 							<span class="group-alias"><?php echo $this->escape($group->cn); ?></span>
 							<?php if ($published) : ?>
 								<a class="group-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn='. $group->cn); ?>">
-									<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($group->description), 60)); ?>
+									<?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)); ?>
 								</a>
 							<?php else : ?>
 								<span class="group-title">
-									<?php echo $this->escape(Hubzero\Utility\String::truncate(stripslashes($group->description), 60)); ?>
+									<?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)); ?>
 								</span>
 							<?php endif; ?>
 
@@ -184,11 +184,20 @@ $this->css()
 									<?php
 									switch ($status)
 									{
-										case 'manager': echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); break;
-										case 'member':  echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER');  break;
-										case 'pending': echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_PENDING'); break;
-										case 'invitee': echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITED'); break;
-										default: break;
+										case 'manager':
+											echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER');
+											break;
+										case 'member':
+											echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER');
+											break;
+										case 'pending':
+											echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_PENDING');
+											break;
+										case 'invitee':
+											echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITED');
+											break;
+										default:
+											break;
 									}
 									?>
 								</span>

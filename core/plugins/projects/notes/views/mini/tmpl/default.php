@@ -45,7 +45,7 @@ defined('_HZEXEC_') or die();
 		<ul>
 			<?php foreach ($this->notes as $note) { ?>
 				<li>
-					<a href="<?php echo Route::url($this->model->link('notes') . '&pagename=' . ($note->path ? $note->path . '/' : '') . $note->pagename); ?>" class="notes"><?php echo $this->escape(\Hubzero\Utility\String::truncate($note->title, 35)); ?></a>
+					<a href="<?php echo Route::url($this->model->link('notes') . '&pagename=' . ($note->path ? $note->path . '/' : '') . $note->pagename); ?>" class="notes"><?php echo $this->escape(\Hubzero\Utility\Str::truncate($note->title, 35)); ?></a>
 				</li>
 			<?php } ?>
 		</ul>

@@ -28,14 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_HZEXEC_') or die;
+namespace Hubzero\Form\Fields;
 
-\JFormHelper::loadFieldClass('list');
+use Hubzero\Form\Fields\Select;
+use Components\Publications\Models\Orm\Category;
+use Html;
+use Lang;
 
 /**
  * Renders a list of support ticket statuses
  */
-class JFormFieldPublicationcategory extends \JFormFieldList
+class Publicationcategory extends Select
 {
 	/**
 	 * Element name
@@ -50,7 +53,7 @@ class JFormFieldPublicationcategory extends \JFormFieldList
 	 * which categories should be displayed.
 	 * Use the show_root attribute to specify whether to show the global category root in the list.
 	 *
-	 * @return  array    The field option objects.
+	 * @return  array  The field option objects.
 	 */
 	protected function getOptions()
 	{
@@ -58,12 +61,9 @@ class JFormFieldPublicationcategory extends \JFormFieldList
 
 		$options[] =  Html::select('option', '0', Lang::txt('All'));
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once \Component::path('com_publications') . '/models/orm/category.php';
 
-		$db = App::get('db');
-		$sr = new \Components\Publications\Tables\Category($db);
-
-		$types = $sr->getCategories();
+		$types = Category::all()->rows();
 
 		foreach ($types as $anode)
 		{

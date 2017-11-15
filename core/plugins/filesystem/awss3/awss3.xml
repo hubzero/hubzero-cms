@@ -44,6 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="user_credentials">
 				<field name="app_id" type="text" default="" label="PLG_FILESYSTEM_AWSS3_APP_ID_LABEL" description="PLG_FILESYSTEM_AWSS3_APP_ID_DESC" />
 				<field name="app_secret" type="text" default="" label="PLG_FILESYSTEM_AWSS3_APP_SECRET_LABEL" description="PLG_FILESYSTEM_AWSS3_APP_SECRET_DESC" />
+				<field name="region" type="text" default="" label="PLG_FILESYSTEM_AWSS3_REGION_LABEL" description="PLG_FILESYSTEM_AWSS3_REGION_DESC" />
 				<field name="bucket" type="text" default="" label="PLG_FILESYSTEM_AWSS3_BUCKET_LABEL" description="PLG_FILESYSTEM_AWSS3_BUCKET_DESC" />
 				<field name="directory" type="text" default="" label="PLG_FILESYSTEM_AWSS3_DIRECTORY_LABEL" description="PLG_FILESYSTEM_AWSS3_DIRECTORY_DESC" />
 			</fieldset>

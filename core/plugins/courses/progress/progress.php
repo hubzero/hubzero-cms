@@ -58,7 +58,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourse($course, $offering, $describe=false)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
@@ -113,20 +113,48 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		switch (Request::getWord('action'))
 		{
-			case 'assessmentdetails':   $this->assessmentdetails();   break;
-			case 'getprogressrows':     $this->getprogressrows();     break;
-			case 'getprogressdata':     $this->getprogressdata();     break;
-			case 'getgradebookdata':    $this->getgradebookdata();    break;
-			case 'getreportsdata':      $this->getreportsdata();      break;
-			case 'exportcsv':           $this->exportcsv();           break;
-			case 'downloadresponses':   $this->downloadresponses();   break;
-			case 'savegradebookitem':   $this->savegradebookitem();   break;
-			case 'deletegradebookitem': $this->deletegradebookitem(); break;
-			case 'savegradebookentry':  $this->savegradebookentry();  break;
-			case 'resetgradebookentry': $this->resetgradebookentry(); break;
-			case 'policysave':          $this->policysave();          break;
-			case 'restoredefaults':     $this->restoredefaults();     break;
-			default:                    $this->progress();            break;
+			case 'assessmentdetails':
+				$this->assessmentdetails();
+				break;
+			case 'getprogressrows':
+				$this->getprogressrows();
+				break;
+			case 'getprogressdata':
+				$this->getprogressdata();
+				break;
+			case 'getgradebookdata':
+				$this->getgradebookdata();
+				break;
+			case 'getreportsdata':
+				$this->getreportsdata();
+				break;
+			case 'exportcsv':
+				$this->exportcsv();
+				break;
+			case 'downloadresponses':
+				$this->downloadresponses();
+				break;
+			case 'savegradebookitem':
+				$this->savegradebookitem();
+				break;
+			case 'deletegradebookitem':
+				$this->deletegradebookitem();
+				break;
+			case 'savegradebookentry':
+				$this->savegradebookentry();
+				break;
+			case 'resetgradebookentry':
+				$this->resetgradebookentry();
+				break;
+			case 'policysave':
+				$this->policysave();
+				break;
+			case 'restoredefaults':
+				$this->restoredefaults();
+				break;
+			default:
+				$this->progress();
+				break;
 		}
 
 		$response->set('html', $this->view->loadTemplate());
@@ -810,17 +838,17 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		// Get request variables
 		if (!$member_id = Request::getInt('student_id', false))
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 		if (!$asset_id = Request::getInt('asset_id', false))
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 		if (!$grade_value = Request::getVar('grade', false))
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 
@@ -840,11 +868,11 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		if (!$grade->store())
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 
-		echo json_encode(array('success'=>true));
+		echo json_encode(array('success' => true));
 		exit();
 	}
 
@@ -858,19 +886,19 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 
 		// Get request variables
 		if (!$member_id = Request::getInt('student_id', false))
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 		if (!$asset_id = Request::getInt('asset_id', false))
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 
@@ -880,21 +908,21 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		if (!$grade->id)
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 
-		$grade->set('override', NULL);
-		$grade->set('override_recorded', NULL);
+		$grade->set('override', null);
+		$grade->set('override_recorded', null);
 
 		// Store (true to update nulls)
 		if (!$grade->store(true))
 		{
-			echo json_encode(array('success'=>false));
+			echo json_encode(array('success' => false));
 			exit();
 		}
 
-		echo json_encode(array('success'=>true, 'score'=>$grade->score));
+		echo json_encode(array('success' => true, 'score' => $grade->score));
 		exit();
 	}
 
@@ -969,11 +997,11 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			$saveSection = true;
 		}
 
-		$gp->set('exam_weight',     $exam_weight);
-		$gp->set('quiz_weight',     $quiz_weight);
+		$gp->set('exam_weight', $exam_weight);
+		$gp->set('quiz_weight', $quiz_weight);
 		$gp->set('homework_weight', $homework_weight);
-		$gp->set('threshold',       (Request::getInt('threshold') / 100));
-		$gp->set('description',     trim(Request::getVar('description')));
+		$gp->set('threshold', (Request::getInt('threshold') / 100));
+		$gp->set('description', trim(Request::getVar('description')));
 
 		if (!$gp->store())
 		{

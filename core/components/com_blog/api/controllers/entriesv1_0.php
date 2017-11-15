@@ -40,10 +40,11 @@ use Exception;
 use stdClass;
 use Request;
 use Route;
+use Event;
 use User;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 
 /**
  * API controller class for blog entries
@@ -204,7 +205,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "crated_by",
+	 * 		"name":        "created_by",
 	 * 		"description": "User ID of entry creator",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
@@ -219,7 +220,7 @@ class Entriesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "access",
-	 * 		"description": "Access level (0 = public, 1 = registered users, 4 = private)",
+	 * 		"description": "Access level (1 = public, 2 = registered users, 5 = private)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
 	 * 		"default":     0
@@ -262,17 +263,15 @@ class Entriesv1_0 extends ApiController
 			'scope'          => Request::getVar('scope', '', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
 			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'post'),
+			'alias'          => Request::getVar('alias', null, 'post'),
 			'content'        => Request::getVar('content', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
-			'created_by'     => Request::getInt('created_by', 0, 'post'),
-			'state'          => Request::getInt('state', 0, 'post'),
-			'access'         => Request::getInt('access', 0, 'post'),
+			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'created_by'     => Request::getInt('created_by', User::get('id'), 'post'),
+			'state'          => Request::getInt('state', 1, 'post'),
+			'access'         => Request::getInt('access', 1, 'post'),
 			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
-			'publish_up'     => Request::getVar('publish_up', new Date('now'), 'post'),
+			'publish_up'     => Request::getVar('publish_up', with(new Date('now'))->toSql(), 'post'),
 			'publish_down'   => Request::getVar('publish_down', null, 'post'),
-			'hits'           => Request::getInt('hits', 0, 'post'),
-			'tags'           => Request::getVar('tags', null, 'post')
 		);
 
 		$row = new Entry();
@@ -282,22 +281,34 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 500);
 		}
 
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			throw new Exception($row->getError(), 500);
+		}
 
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
 		}
 
-		if (isset($fields['tags']))
+		$tags = Request::getVar('tags', null, 'post');
+
+		if (isset($tags))
 		{
-			if (!$row->tag($fields['tags'], User::get('id')))
+			if (!$row->tag($tags, $fields['created_by']))
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
 		}
 
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+
+		$row->set('tags', $tags);
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
 		if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
@@ -433,7 +444,7 @@ class Entriesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "access",
-	 * 		"description": "Access level (0 = public, 1 = registered users, 4 = private)",
+	 * 		"description": "Access level (1 = public, 2 = registered users, 5 = private)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
 	 * 		"default":     0
@@ -479,51 +490,62 @@ class Entriesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$fields = array(
-			'id'             => Request::getInt('id', 0, 'post'),
-			'scope'          => Request::getVar('scope', '', 'post'),
-			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'post'),
-			'content'        => Request::getVar('content', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
-			'created_by'     => Request::getInt('created_by', 0, 'post'),
-			'state'          => Request::getInt('state', 0, 'post'),
-			'access'         => Request::getInt('access', 0, 'post'),
-			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
-			'publish_up'     => Request::getVar('publish_up', null, 'post'),
-			'publish_down'   => Request::getVar('publish_down', null, 'post'),
-			'hits'           => Request::getInt('hits', 0, 'post'),
-			'tags'           => Request::getVar('tags', null, 'post')
-		);
+		$id = Request::getInt('id', 0);
 
-		$row = Entry::oneOrFail($fields['id']);
+		$row = Entry::oneOrFail($id);
 
 		if ($row->isNew())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 		}
 
+		$fields = array(
+			'scope'          => Request::getVar('scope', $row->get('scope')),
+			'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
+			'title'          => Request::getVar('title', $row->get('title')),
+			'alias'          => Request::getVar('alias', $row->get('alias')),
+			'content'        => Request::getVar('content', $row->get('content')),
+			'created'        => Request::getVar('created', $row->get('created')),
+			'created_by'     => Request::getInt('created_by', $row->get('created_by')),
+			'state'          => Request::getInt('state', $row->get('state')),
+			'access'         => Request::getInt('access', $row->get('access')),
+			'allow_comments' => Request::getInt('allow_comments', $row->get('allow_comments')),
+			'publish_up'     => Request::getVar('publish_up', $row->get('publish_up')),
+			'publish_down'   => Request::getVar('publish_down', $row->get('publish_down')),
+			'hits'           => Request::getInt('hits', $row->get('hits'))
+		);
+
 		if (!$row->set($fields))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
 		}
 
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			throw new Exception($row->getError(), 500);
+		}
 
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
 		}
 
-		if (isset($fields['tags']))
+		$tags = Request::getVar('tags', null);
+
+		if (isset($tags))
 		{
-			if (!$row->tag($fields['tags'], User::get('id')))
+			if (!$row->tag($tags, $fields['created_by']))
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
 			}
 		}
+
+		// Trigger after save event
+		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
 
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		$row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
@@ -595,6 +617,9 @@ class Entriesv1_0 extends ApiController
 				throw new Exception($row->getError(), 500);
 			}
 
+			// Trigger before delete event
+			Event::trigger('onBlogAfterDelete', array($id));
+
 			// Log activity
 			$base = rtrim(Request::base(), '/');
 			$url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
@@ -611,7 +636,7 @@ class Entriesv1_0 extends ApiController
 					)
 				],
 				'recipients' => [
-					$entry->get('created_by')
+					$row->get('created_by')
 				]
 			]);
 		}

@@ -226,9 +226,9 @@ class Helper extends Module
 		$content .= ' <thead>'."\n";
 		$content .= '  <tr>'."\n";
 		// Days name rows
-		for ($i=0;$i<7;$i++)
+		for ($i=0; $i<7; $i++)
 		{
-			$content.='   <th>'.$day_name[($i+$startday)%7].'</th>'."\n";
+			$content.='   <th scope="col">'.$day_name[($i+$startday)%7].'</th>'."\n";
 		}
 		$content .= '  </tr>'."\n";
 		$content .= ' </thead>'."\n";
@@ -250,7 +250,7 @@ class Helper extends Module
 		$monthHasEvent = false;
 		$lastDayOfMonth = date("t", mktime(0, 0, 0, $cal_month, 1, $cal_year));
 		$rd = 0;
-		for ($d=1;$d<=$lastDayOfMonth;$d++)
+		for ($d=1; $d<=$lastDayOfMonth; $d++)
 		{
 			$do = ($d<10) ? "0$d" : "$d";
 			$selected_date = "$cal_year-$cal_month-$do";
@@ -301,7 +301,7 @@ class Helper extends Module
 		}
 
 		// Fill in any blank days for the rest of the row
-		for ($d=$rd;$d<=6;$d++)
+		for ($d=$rd; $d<=6; $d++)
 		{
 			$content .= '   <td>&nbsp;</td>'."\n";
 		}
@@ -322,4 +322,3 @@ class Helper extends Module
 		}
 	}
 }
-

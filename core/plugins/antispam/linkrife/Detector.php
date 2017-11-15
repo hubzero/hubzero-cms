@@ -228,6 +228,9 @@ class Detector implements DetectorInterface
 
 	/**
 	 * {@inheritDocs}
+	 *
+	 * @param   array    $data
+	 * @return  boolean
 	 */
 	public function detect($data)
 	{

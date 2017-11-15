@@ -35,12 +35,12 @@ use Google_Service_Drive_Permission;
 use Google_Service_Drive_DriveFile;
 use Google_Service_Drive_ParentReference;
 use Google_Http_MediaFileUpload;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Projects Google Drive helper class
  */
-class Google extends Object
+class Google extends Obj
 {
 	/**
 	 * Load file metadata
@@ -484,7 +484,7 @@ class Google extends Object
 	public static function deleteAllParents($apiService, $id = 0)
 	{
 		// Check for what we need
-		if (!$apiService || !$id)
+		if (!$apiService || !isset($apiService->parents) || !$id)
 		{
 			return false;
 		}

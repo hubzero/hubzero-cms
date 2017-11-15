@@ -87,7 +87,7 @@ $this->css('introduction.css', 'system')
 							$status = ($project->codeaccess == '@OPEN' ? Lang::txt('COM_TOOLS_OPEN_SOURCE') : Lang::txt('COM_TOOLS_CLOSED_SOURCE'));
 							?>
 					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
-						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($project->title), 50); ?></a></td>
+						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo \Hubzero\Utility\Str::truncate(stripslashes($project->title), 50); ?></a></td>
 						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo $this->escape($project->toolname); ?></a></td>
 						<td><span class="<?php echo $status; ?>-code"><?php echo $status; ?></span></td>
 					</tr>

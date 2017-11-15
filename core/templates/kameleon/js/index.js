@@ -9,7 +9,7 @@ Joomla.submitbutton = function(pressbutton)
 Joomla.submitform = function(pressbutton)
 {
 	return submitform(pressbutton);
-}
+};
 
 /*
 USAGE:
@@ -51,7 +51,7 @@ on the page, such as TopRight (the default) or TopLeft, perhaps even in a
 smaller area with "overflow: scroll" enabled?
 */
 
-;(function($) {
+(function($) {
 	$.growl = function(title,message,image,priority) { notify(title,message,image,priority); }
 	$.growl.version = "1.0.2";
 
@@ -79,7 +79,9 @@ smaller area with "overflow: scroll" enabled?
 	function notify(title,message,image,priority) {
 		var instance = create();
 		var html = jQuery.growl.settings.noticeTemplate;
-		if (typeof(html) == 'object') html = $(html).html();
+		if (typeof(html) == 'object') {
+			html = $(html).html();
+		}
 		html = r(html, /%message%/, (message?message:''));
 		html = r(html, /%title%/, (title?title:''));
 		html = r(html, /%image%/, (image?image:jQuery.growl.settings.defaultImage));
@@ -142,6 +144,8 @@ smaller area with "overflow: scroll" enabled?
 })(jQuery);
 
 jQuery(document).ready(function($){
+	$('html').removeClass('nojs');
+
 	var menu = $('#toolbar-box'),
 		top = menu.offset().top - parseFloat(menu.css('margin-top').replace(/auto/, 0));
 
@@ -179,9 +183,6 @@ jQuery(document).ready(function($){
 	$('.main-navigation li.node>a').on('click', function(e){
 		$(this).parent().toggleClass('active');
 	});
-
-	// Apply Uniform to make buttons, selects, etc. look consistent
-	$('select, input[type=file]').not('.noUniform').uniform();
 
 	/* // Display the hints and required badge when field is focused
 	if ($('#item-form').length) {

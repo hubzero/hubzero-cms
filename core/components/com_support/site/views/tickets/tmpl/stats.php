@@ -471,8 +471,9 @@ function getMonthName($month)
 								<td><?php echo (isset($res[0])) ? $res[0]/$total : '0'; ?></td>
 							</tr>
 						<?php
-							$sr = new \Components\Support\Tables\Status($database);
-							$resolutions = $sr->find('list', array('open' => 0));
+							$resolutions = \Components\Support\Models\Status::all()
+								->whereEquals('open', 0)
+								->rows();
 
 							$cls = 'odd';
 

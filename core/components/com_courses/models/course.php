@@ -69,56 +69,56 @@ class Course extends Base
 	 *
 	 * @var object
 	 */
-	private $_offering = NULL;
+	private $_offering = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_offerings = NULL;
+	private $_offerings = null;
 
 	/**
 	 * \Components\Courses\Models\Permissions
 	 *
 	 * @var object
 	 */
-	private $_permissions = NULL;
+	private $_permissions = null;
 
 	/**
 	 * \Components\Courses\Models\Offering
 	 *
 	 * @var object
 	 */
-	private $_manager = NULL;
+	private $_manager = null;
 
 	/**
 	 * List of managers
 	 *
 	 * @var array
 	 */
-	private $_managers = NULL;
+	private $_managers = null;
 
 	/**
 	 * List of students
 	 *
 	 * @var array
 	 */
-	private $_students = NULL;
+	private $_students = null;
 
 	/**
 	 * \Components\Courses\Models\Offering
 	 *
 	 * @var object
 	 */
-	private $_page = NULL;
+	private $_page = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_pages = NULL;
+	private $_pages = null;
 
 	/**
 	 * List of plugins available for a given event
@@ -132,14 +132,14 @@ class Course extends Base
 	 *
 	 * @var string
 	 */
-	private $_base = NULL;
+	private $_base = null;
 
 	/**
 	 * Certificate
 	 *
 	 * @var string
 	 */
-	private $_certificate = NULL;
+	private $_certificate = null;
 
 	/**
 	 * Constructor
@@ -923,7 +923,7 @@ class Course extends Base
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -1032,4 +1032,3 @@ class Course extends Base
 		return $this->_certificate;
 	}
 }
-

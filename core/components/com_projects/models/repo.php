@@ -32,20 +32,21 @@
 
 namespace Components\Projects\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'repo.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'nogithelper.php');
 require_once(__DIR__ . DS . 'file.php');
 require_once(__DIR__ . DS . 'adapter.php');
 
 /**
  * Project Repository model
  */
-class Repo extends Object
+class Repo extends Obj
 {
 	/**
 	 * Tables\Repo
@@ -55,7 +56,7 @@ class Repo extends Object
 	private $_tbl = null;
 
 	/**
-	 * \JDatabase
+	 * Database
 	 *
 	 * @var  object
 	 */
@@ -77,8 +78,8 @@ class Repo extends Object
 
 	/**
 	 * Constructor
-	 * @param    object   $project Project model
-	 *
+	 * @param   object  $project  Project model
+	 * @param   string  $name
 	 * @return  void
 	 */
 	public function __construct($project = null, $name = 'local')
@@ -124,17 +125,35 @@ class Repo extends Object
 		}
 		else
 		{
-			$helper = new Helpers\Git(Helpers\Html::getProjectRepoPath(
-				$this->get('project')->get('alias')));
-			$gitInitCheck = $helper->callGit('status');
-			if (is_array($gitInitCheck) && in_array('# Changes to be committed:', $gitInitCheck))
+			// Use regex to avoid what might be a caching thing with JTables
+			$matches = array();
+			preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
+			// Only use git adapter if project specifies it - otherwise assume we're not using git
+			if (isset($matches[1]) && $matches[1] == 1)
 			{
-				$helper->callGit('commit -am "Initial commit"');
+				$engine = 'git';
+			}
+			else
+			{
+				$engine = 'nogit';
+			}
+
+			$cls = "Helpers\\" . ucfirst($engine);
+			if ($engine == 'git')
+			{
+				$helper = new Helpers\Git(Helpers\Html::getProjectRepoPath(
+					$this->get('project')->get('alias')));
+				$helper->iniGit();
+			}
+			else
+			{
+				$helper = new Helpers\Nogit(Helpers\Html::getProjectRepoPath(
+					$this->get('project')->get('alias')));
 			}
 
 			// Local Git repo  (/files)
 			$this->set('project_id', $this->get('project')->get('id'));
-			$this->set('engine', 'git');
+			$this->set('engine', $engine);
 			$this->set('remote', 0);
 			$this->set('status', 1);
 			$this->set('path', Helpers\Html::getProjectRepoPath(
@@ -154,7 +173,23 @@ class Repo extends Object
 	{
 		if (!$this->_adapter)
 		{
-			$engine = strtolower($this->get('engine', 'git'));
+			$engine = 'nogit';
+
+			if (is_object($this->get('project')))
+			{
+				// Use regex to avoid what might be a caching thing with JTables
+				$matches = array();
+				preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
+				// Only use git adapter if project specifies it - otherwise assume we're not using git
+				if (isset($matches[1]) && $matches[1] == 1)
+				{
+					$engine = 'git';
+				}
+				else
+				{
+					$engine = 'nogit';
+				}
+			}
 
 			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($engine);
 
@@ -172,6 +207,18 @@ class Repo extends Object
 		}
 
 		return $this->_adapter;
+	}
+
+	public function getAdapterName()
+	{
+		if (!$this->_adapter)
+		{
+			$this->_adapter();
+		}
+		$class = get_class($this->_adapter);
+		$lastSlash = strrpos($class, '\\');
+		$className = substr($class, $lastSlash + 1);
+		return strtolower($className);
 	}
 
 	/**
@@ -1481,13 +1528,12 @@ class Repo extends Object
 			$base_path = DS . trim($pubconfig->get('webpath'), DS);
 
 			chdir(PATH_APP . $base_path);
-			exec('du -sk ', $out);
+			exec('du -sb ', $out);
 			$used = 0;
 
 			if ($out && isset($out[0]))
 			{
-				$kb = str_replace('.', '', trim($out[0]));
-				$used = $kb * 1024;
+				$used = str_replace('.', '', trim($out[0]));
 			}
 
 			return $used;
@@ -1516,30 +1562,48 @@ class Repo extends Object
 			}
 			else
 			{
-				$git = new Helpers\Git($path);
-				if ($get == 'commitCount')
+				$engine = 'nogit';
+				if ($this->get('project'))
 				{
-					$nf = $git->callGit('ls-files --full-name ');
-
-					if ($nf && substr($nf[0], 0, 5) != 'fatal')
+					$engine = $this->get('project')->params->get('engine', 'nogit');
+				}
+				if ($engine == 'git')
+				{
+					$git = new Helpers\Git($path);
+					if ($get == 'commitCount')
 					{
-						$out = $git->callGit('log | grep "^commit" | wc -l' );
-
-						if (is_array($out))
+						$nf = $git->callGit('ls-files --full-name ');
+						if ($nf && substr($nf[0], 0, 5) != 'fatal')
 						{
-							$c =  end($out);
-							$commits = $commits + $c;
+							$out = $git->callGit('log | grep "^commit" | wc -l' );
+							if (is_array($out))
+							{
+								$c =  end($out);
+								$commits = $commits + $c;
+							}
+						}
+					}
+					else
+					{
+						$count = count($git->getFiles());
+						$files = $files + $count;
+						if ($count > 1)
+						{
+							$usage++;
 						}
 					}
 				}
 				else
 				{
-					$count = count($git->getFiles());
-					$files = $files + $count;
-
+					$commits = 0; // There are no commits in nogit, stub for reports
+					$helper = new Helpers\Nogit($path);
+					$recursive = true;
+					$subdir = '';
+					$count = count($helper->getFiles($subdir, $recursive));
+					$files = $files + $count; // Count the files in a project and add to total for a report
 					if ($count > 1)
 					{
-						$usage++;
+						$usage++; // A project is using files, increment for reports
 					}
 				}
 			}

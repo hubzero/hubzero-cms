@@ -87,9 +87,9 @@ class JobCategory extends \JTable
 	 * @param      string  $default Default value if no record found
 	 * @return     mixed False if errors, String upon success
 	 */
-	public function getCat($id = NULL, $default = 'unspecified')
+	public function getCat($id = null, $default = 'Unspecified')
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			 return false;
 		}
@@ -110,9 +110,9 @@ class JobCategory extends \JTable
 	 * @param      integer $ordernum ORder number to make it
 	 * @return     boolean True upon success
 	 */
-	public function updateOrder($id = NULL, $ordernum = 1)
+	public function updateOrder($id = null, $ordernum = 1)
 	{
-		if ($id === NULL or !intval($ordernum))
+		if ($id == null or !intval($ordernum))
 		{
 			 return false;
 		}
@@ -127,4 +127,3 @@ class JobCategory extends \JTable
 		return true;
 	}
 }
-

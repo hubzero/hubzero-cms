@@ -152,6 +152,52 @@
 		-o-border-radius: 6px;
 		border-radius: 6px;
 	}
+	.apply button {
+		margin-bottom: 1em;
+		margin-right: .5em;
+		font-size: 1.2em;
+		padding-left: 2em;
+		padding-right: 2em;
+	}
+	.edit button {
+		margin-bottom: 1em;
+		margin-right: .5em;
+		font-size: 1.2em;
+		padding-left: 2em;
+		padding-right: 2em;
+	}
+	.unpublish button {
+		margin-bottom: 1em;
+		font-size: 1.2em;
+		float: right;
+	}
+	.applied button {
+		margin-bottom: 1em;
+		font-size: 1.2em;
+		padding-left: 2em;
+		padding-right: 2em;
+		margin-right: .5em;
+	}
+	.manageroptions button {
+		margin-bottom: 1em;
+		margin-right: .5em;
+		font-size: 1.2em;
+		float: right;
+	}
+        .review_applicants {
+                padding-top: .5em;
+                float: right;
+        }
+        .review_applicants button {
+                margin-bottom: 1em;
+                font-size: 1.2em;
+                padding-left: 2em;
+                padding-right: 2em;
+        }
+        .review_applicants a button {
+                padding-left: 2em; 
+                padding-right: 2em; 
+        }    
 	#jobinfo div.apply .applybtn:hover {
 		background-color: #666;
 		border-bottom: 2px solid #000;
@@ -229,29 +275,6 @@
 	.confirmPublish {
 		text-align: center;
 		margin-top: 2em;
-	}
-	.confirmPublish span a {
-		padding: 0.2em 1em 0.2em 1em;
-		background: #d4efd2;
-		border: 1px solid #7aa777;
-		color: #2d6d28;
-	}
-	.confirmPublish span.alertnative,
-	span.alertnative {
-		margin: 0 1.5em;
-		font-style: italic;
-		color: #666;
-	}
-	.confirmPublish span.makechanges a {
-		padding: 0.2em 1em 0.2em 1em;
-		margin: 0;
-		background: #f3f3f3;
-		border: 1px solid #ccc;
-		color: #333;
-	}
-	.manageroptions {
-		float: right;
-		font-size: 85%;
 	}
 /* Job Posting  List */
 	ul.postings {
@@ -335,7 +358,7 @@
 	}
 	div.confirmscreen {
 		position: absolute;
-		border: 5px solid #e3aeae;
+		border: 5px solid #ee5f5b;
 		background-color: #FFFFFF;
 		left: 0;
 		width: 350px;
@@ -366,7 +389,7 @@
 		background-color: #FFFFFF;
 		border: none;
 		background-position: 0 50%;
-		text-align: left !important;
+		text-align: center !important;
 		padding-left: 20px !important;
 	}
 /* Resume Stats */
@@ -427,11 +450,13 @@
 	#candidates li.applic {
 		margin-top: 1em;
 		color: #000;
+		background: transparent;
 	}
 	#candidates li.applicbot {
 		border-bottom: 2px solid #f0decb;
 		margin-bottom: 1em;
 		padding-bottom: 1em;
+		background: transparent;
 	}
 	h4 {
 		margin-bottom: 0.5em;
@@ -718,7 +743,9 @@
 	#jobinfo .spacer {
 		padding: 0.3em;
 	}
-
+	#hubForm input {
+		margin-top: 0;
+	}
 /* Form */
 	.joblist {
 		margin: 0;

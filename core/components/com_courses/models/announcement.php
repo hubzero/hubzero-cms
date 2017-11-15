@@ -33,7 +33,7 @@
 namespace Components\Courses\Models;
 
 use Hubzero\Base\Model;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Components\Courses\Tables;
 use Date;
 use Lang;
@@ -176,9 +176,8 @@ class Announcement extends Base
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$content = Str::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
 }
-

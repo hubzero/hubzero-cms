@@ -62,9 +62,9 @@ class Events extends AdminController
 		if (!in_array($table, $tables))
 		{
 			$this->database->setQuery("CREATE TABLE `#__events_respondent_race_rel` (
-			  `respondent_id` int(11) default NULL,
-			  `race` varchar(255) default NULL,
-			  `tribal_affiliation` varchar(255) default NULL
+			  `respondent_id` int(11) default null,
+			  `race` varchar(255) default null,
+			  `tribal_affiliation` varchar(255) default null
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 			if (!$this->database->query())
 			{
@@ -128,7 +128,7 @@ class Events extends AdminController
 		$this->database->setQuery("SELECT id AS value, title AS text FROM `#__categories` WHERE extension='$this->_option'");
 
 		$categories = array_merge($categories, $this->database->loadObjectList());
-		$this->view->clist = \Html::select('genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
+		$this->view->clist = \Html::select('genericlist', $categories, 'catid', 'class="inputbox"', 'value', 'text', $this->view->filters['catid'], false, false);
 
 		//get list of groups
 		$groups[] = \Html::select('option', '0', '- ' . Lang::txt('COM_EVENTS_ALL_GROUPS'), 'value', 'text');
@@ -138,7 +138,7 @@ class Events extends AdminController
 				AND e.scope_id=g.gidNumber";
 		$this->database->setQuery($sql);
 		$groups = array_merge($groups, $this->database->loadObjectList());
-		$this->view->glist = \Html::select('genericlist', $groups, 'group_id', 'class="inputbox"','value', 'text', $this->view->filters['scope_id'], false, false);
+		$this->view->glist = \Html::select('genericlist', $groups, 'group_id', 'class="inputbox"', 'value', 'text', $this->view->filters['scope_id'], false, false);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -259,6 +259,7 @@ class Events extends AdminController
 		else
 		{
 			$this->view->row->state = 0;
+			$this->view->row->time_zone = -5;
 			$start_publish = Date::format('Y-m-d');
 			$stop_publish = Date::format('Y-m-d');
 			$start_time = "08:00";
@@ -289,20 +290,50 @@ class Events extends AdminController
 		if ($this->config->getCfg('calUseStdTime') == 'YES')
 		{
 			$start_hrs = intval($start_hrs);
-			if ($start_hrs >= 12) $start_pm = true;
-			if ($start_hrs > 12) $start_hrs -= 12;
-			else if ($start_hrs == 0) $start_hrs = 12;
+			if ($start_hrs >= 12)
+			{
+				$start_pm = true;
+			}
+			if ($start_hrs > 12)
+			{
+				$start_hrs -= 12;
+			}
+			else if ($start_hrs == 0)
+			{
+				$start_hrs = 12;
+			}
 
 			$end_hrs = intval($end_hrs);
-			if ($end_hrs >= 12) $end_pm = true;
-			if ($end_hrs > 12) $end_hrs -= 12;
-			else if ($end_hrs == 0) $end_hrs = 12;
+			if ($end_hrs >= 12)
+			{
+				$end_pm = true;
+			}
+			if ($end_hrs > 12)
+			{
+				$end_hrs -= 12;
+			}
+			else if ($end_hrs == 0)
+			{
+				$end_hrs = 12;
+			}
 		}
-		if (strlen($start_mins) == 1) $start_mins = '0' . $start_mins;
-		if (strlen($start_hrs) == 1) $start_hrs = '0' . $start_hrs;
+		if (strlen($start_mins) == 1)
+		{
+			$start_mins = '0' . $start_mins;
+		}
+		if (strlen($start_hrs) == 1)
+		{
+			$start_hrs = '0' . $start_hrs;
+		}
 		$start_time = $start_hrs . ':' . $start_mins;
-		if (strlen($end_mins) == 1) $end_mins = '0' . $end_mins;
-		if (strlen($end_hrs) == 1) $end_hrs = '0' . $end_hrs;
+		if (strlen($end_mins) == 1)
+		{
+			$end_mins = '0' . $end_mins;
+		}
+		if (strlen($end_hrs) == 1)
+		{
+			$end_hrs = '0' . $end_hrs;
+		}
 		$end_time = $end_hrs . ':' . $end_mins;
 
 		$this->view->times = array();
@@ -314,7 +345,7 @@ class Events extends AdminController
 		$this->view->times['end_pm'] = $end_pm;
 
 		// only load tags if the event exists already
-		if ($this->view->row->id != NULL)
+		if ($this->view->row->id != null)
 		{
 			// Get tags on this event
 			$rt = new Tags($this->view->row->id);
@@ -440,7 +471,7 @@ class Events extends AdminController
 		$fields = array_map('trim', $fields);
 		// Wrap up the content of the field and attach it to the event content
 		$fs = $this->config->fields;
-		foreach ($fields as $param=>$value)
+		foreach ($fields as $param => $value)
 		{
 			if (trim($value) != '')
 			{
@@ -469,7 +500,7 @@ class Events extends AdminController
 		$row->extra_info = $this->_clean($row->extra_info);
 
 		// Prepend http:// to URLs without it
-		if ($row->extra_info != NULL)
+		if ($row->extra_info != null)
 		{
 			if ((substr($row->extra_info, 0, 7) != 'http://')
 			 && (substr($row->extra_info, 0, 8) != 'https://'))
@@ -766,4 +797,3 @@ class Events extends AdminController
 		);
 	}
 }
-

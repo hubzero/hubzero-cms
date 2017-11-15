@@ -100,7 +100,14 @@ function hexSequenceToUtf8($sequence)
  */
 function utf8ToHexSequence($str)
 {
-	return rtrim(preg_replace('/(.)/uSe', 'sprintf("%04x ", utf8ToCodepoint("$1"))', $str));
+	return rtrim(preg_replace(
+		'/(.)/uS',
+		function ($m)
+		{
+			return sprintf("%04x ", utf8ToCodepoint($m[1]));
+		},
+		$str
+	));
 }
 
 /**
@@ -113,7 +120,7 @@ function utf8ToHexSequence($str)
  */
 function utf8ToCodepoint($char)
 {
-	# Find the length
+	// Find the length
 	$z = ord($char{0});
 	if ($z & 0x80)
 	{
@@ -138,11 +145,11 @@ function utf8ToCodepoint($char)
 		return ord($char);
 	}
 
-	# Mask off the length-determining bits and shift back to the original location
+	// Mask off the length-determining bits and shift back to the original location
 	$z &= 0xff;
 	$z >>= $length;
 
-	# Add in the free bits from subsequent bytes
+	// Add in the free bits from subsequent bytes
 	for ($i=1; $i<$length; $i++)
 	{
 		$z <<= 6;
@@ -167,4 +174,3 @@ function escapeSingleString($string)
 			'\'' => '\\\''
 		));
 }
-

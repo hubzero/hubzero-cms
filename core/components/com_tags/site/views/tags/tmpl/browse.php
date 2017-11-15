@@ -138,7 +138,7 @@ $this->css()
 									<?php
 									$subs = $row->get('substitutes') ? $this->escape($row->substitutes) : '';
 
-									echo $subs ? \Hubzero\Utility\String::truncate($subs, 75) : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
+									echo $subs ? \Hubzero\Utility\Str::truncate($subs, 75) : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
 									?>
 								</td>
 								<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>

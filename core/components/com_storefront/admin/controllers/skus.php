@@ -270,6 +270,7 @@ class Skus extends AdminController
 			);
 			return;
 		}
+		Notify::success(Lang::txt('COM_STOREFRONT_SKU_SAVED'));
 
 		$this->editTask($sku);
 	}
@@ -492,4 +493,3 @@ class Skus extends AdminController
 		);
 	}
 }
-

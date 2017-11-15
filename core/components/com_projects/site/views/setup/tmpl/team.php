@@ -74,17 +74,21 @@ $this->view('_title')
 		<form id="hubForm" method="post" action="index.php">
 			<div class="explaination">
 				<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_ROLES'); ?></h4>
+				<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_OWNERS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+				<ul>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_ONE'); ?></li>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
+					<li><strong><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
+				</ul>
 				<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
 				<ul>
 					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_ONE'); ?></li>
 					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_TWO'); ?></li>
 					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_THREE'); ?></li>
 				</ul>
-				<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_OWNERS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+				<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_REVIEWER')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
 				<ul>
-					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_ONE'); ?></li>
-					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
-					<li><strong><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_REVIEWER_CAN_ONE'); ?></li>
 				</ul>
 				<?php if ($this->model->get('owned_by_group')) { ?>
 					<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_GROUP_PROJECT'); ?></h4>

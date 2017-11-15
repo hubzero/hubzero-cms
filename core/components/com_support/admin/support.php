@@ -38,14 +38,9 @@ if (!\User::authorise('core.manage', 'com_support'))
 }
 
 // Include scripts
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'watching.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'message.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php');
+include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
+include_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+include_once dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php';
 
 $controllerName = \Request::getCmd('controller', 'tickets');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -94,11 +89,9 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'acl'
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

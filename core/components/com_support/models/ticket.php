@@ -25,167 +25,93 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Support\Models;
 
-use Components\Members\Models\Member;
+use Hubzero\Database\Relational;
 use Components\Support\Helpers\ACL;
-use Components\Support\Tables;
-use Hubzero\Base\Model;
-use Hubzero\Base\Object;
-use Hubzero\Base\ItemList;
-use Hubzero\Utility\String;
-use Component;
-use Request;
-use Lang;
-use User;
-use Date;
+use App;
 
-require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'watching.php';
 require_once __DIR__ . DS . 'comment.php';
-require_once __DIR__ . DS . 'tags.php';
 require_once __DIR__ . DS . 'status.php';
+require_once __DIR__ . DS . 'category.php';
+require_once __DIR__ . DS . 'watching.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'message.php';
+require_once __DIR__ . DS . 'queryfolder.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php';
 
 /**
- * Support model for a ticket
+ * Support ticket model
  */
-class Ticket extends Model
+class Ticket extends Relational
 {
 	/**
-	 * Table name
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Support\\Tables\\Ticket';
+	public $namespace = 'support';
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * Default order by for model
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_data = null;
+	public $orderBy = 'id';
 
 	/**
-	 * Support ACL
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_acl = null;
+	public $orderDir = 'asc';
 
 	/**
-	 * URL for this entry
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var string
+	 * @var  array
 	 */
-	private $_base = 'index.php?option=com_support';
+	public $initiate = array(
+		'created',
+		'summary'
+	);
 
 	/**
-	 * Constructor
+	 * Tag cloud
 	 *
-	 * @param   mixed  $oid  Integer, array, or object
-	 * @return  mixed
+	 * @var  object
 	 */
-	public function __construct($oid=null)
+	protected $_tags = null;
+
+	/**
+	 * Generates automatic summary field value
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticSummary($data)
 	{
-		parent::__construct($oid);
+		$data['summary'] = (isset($data['summary']) ? $data['summary'] : $data['report']);
+		$data['summary'] = trim($data['summary']);
 
-		if (!$this->get('summary') && $this->get('report'))
+		if (!$data['summary'])
 		{
-			$this->set('summary', substr($this->get('report'), 0, 70));
-			if (strlen($this->get('summary')) >= 70)
-			{
-				$this->set('summary', $this->get('summary') . '...');
-			}
+			$data['summary'] = $data['report'];
 		}
 
-		$this->_data = new Object();
-	}
+		$data['summary'] = substr($data['summary'], 0, 70);
 
-	/**
-	 * Returns a reference to a support ticket model
-	 *
-	 * @param   mixed   $id  ID (int), array, or object
-	 * @return  object
-	 */
-	static function &getInstance($id=null)
-	{
-		static $instances;
-
-		if (!isset($instances))
+		if (strlen($data['report']) >= 70)
 		{
-			$instances = array();
+			$data['summary'] .= '...';
 		}
 
-		if (!isset($instances[$id]))
-		{
-			$instances[$id] = new self($id);
-		}
-
-		return $instances[$id];
-	}
-
-	/**
-	 * Get the submitter of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string  $property  User property to look up
-	 * @param   mixed   $default   Value to return if property not found
-	 * @return  mixed
-	 */
-	public function submitter($property=null, $default=null)
-	{
-		if (!($this->_data->get('submitter.profile') instanceof Member))
-		{
-			$user = Member::oneByUsername($this->get('login'));
-			$user->set('name', $this->get('name'));
-			$user->set('username', $this->get('login'));
-			$user->set('email', $this->get('email'));
-
-			$this->_data->set('submitter.profile', $user);
-		}
-		if ($property)
-		{
-			$property = ($property == 'uidNumber') ? 'id' : $property;
-			return $this->_data->get('submitter.profile')->get($property, $default);
-		}
-		return $this->_data->get('submitter.profile');
-	}
-
-	/**
-	 * Get the owner of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string  $property  User property to look up
-	 * @param   mixed   $default   Value to return if property not found
-	 * @return  mixed
-	 */
-	public function owner($property=null, $default=null)
-	{
-		if (!($this->_data->get('owner.profile') instanceof Member))
-		{
-			$user = Member::oneOrNew($this->get('owner'));
-
-			$this->_data->set('owner.profile', $user);
-		}
-		if ($property)
-		{
-			$property = ($property == 'uidNumber') ? 'id' : $property;
-			return $this->_data->get('owner.profile')->get($property, $default);
-		}
-		return $this->_data->get('owner.profile');
+		return $data['summary'];
 	}
 
 	/**
@@ -195,11 +121,7 @@ class Ticket extends Model
 	 */
 	public function isOpen()
 	{
-		if ($this->get('open') == 1)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('open') == 1);
 	}
 
 	/**
@@ -209,14 +131,7 @@ class Ticket extends Model
 	 */
 	public function isWaiting()
 	{
-		if ($this->isOpen())
-		{
-			if ($this->get('status') == 2)
-			{
-				return true;
-			}
-		}
-		return false;
+		return ($this->isOpen() && $this->get('status') == 2);
 	}
 
 	/**
@@ -234,36 +149,231 @@ class Ticket extends Model
 	}
 
 	/**
-	 * Is the user the owner of the ticket?
+	 * Get the owner object
 	 *
-	 * @param   integer  $id
-	 * @return  boolean
+	 * @return  object
 	 */
-	public function isOwner($id='')
+	public function assignee()
 	{
-		if ($this->isOwned())
-		{
-			$id = $id ?: User::get('id');
-
-			if ($this->get('owner') == $id)
-			{
-				return true;
-			}
-		}
-		return false;
+		return $this->oneToOne('\Hubzero\User\User', 'id', 'owner');
 	}
 
 	/**
-	 * Is the user the submitter of the ticket?
+	 * Get a list of comments
 	 *
-	 * @param   string  $username
+	 * @return  object
+	 */
+	public function submitter()
+	{
+		return $this->oneToOne('\Hubzero\User\User', 'username', 'login');
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 *
+	 * @param   string  $as  What format to return
 	 * @return  boolean
 	 */
-	public function isSubmitter($username='')
+	public function created($as='')
 	{
-		$username = $username ?: User::get('username');
+		$as = strtolower($as);
+		$dt = $this->get('created');
 
-		if ($this->get('login') == $username)
+		if ($as == 'date')
+		{
+			$dt = Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+		}
+
+		if ($as == 'time')
+		{
+			$dt = Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+		}
+
+		return $dt;
+	}
+
+	/**
+	 * Get the owner group object
+	 *
+	 * @return  object
+	 */
+	public function group()
+	{
+		return $this->oneToOne('\Hubzero\User\Group', 'id', 'group_id');
+	}
+
+	/**
+	 * Get a list of comments
+	 *
+	 * @return  object
+	 */
+	public function comments()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Comment', 'ticket');
+	}
+
+	/**
+	 * Get a list of attachments
+	 *
+	 * @return  object
+	 */
+	public function attachments()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Attachment', 'ticket')->whereEquals('comment_id', 0);
+	}
+
+	/**
+	 * Get a list of watchers
+	 *
+	 * @return  object
+	 */
+	public function watchers()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Watching', 'ticket_id');
+	}
+
+	/**
+	 * Get status
+	 *
+	 * @return  object
+	 */
+	public function transformStatus()
+	{
+		return Status::oneOrNew($this->get('status'));
+	}
+
+	/**
+	 * Get category
+	 *
+	 * @return  object
+	 */
+	public function transformCategory()
+	{
+		return Category::oneByAlias($this->get('category'));
+	}
+
+	/**
+	 * Get content
+	 *
+	 * @return  string
+	 */
+	public function transformContent()
+	{
+		$text = $this->get('report_parsed', null);
+
+		if ($text === null)
+		{
+			// Escape potentially bad characters
+			$text = htmlentities($this->get('report'), ENT_COMPAT, 'UTF-8');
+
+			// Convert line breaks to <br /> tags
+			$text = nl2br($text);
+
+			// Convert tabs to spaces to preserve indention
+			$text = str_replace("\t", ' &nbsp; &nbsp;', $text);
+
+			// Look for any attachments (old style) and remove
+			// Attachments will be loaded through their relationship
+			$text = preg_replace('/\{attachment#[0-9]*\}/sU', '', $text);
+
+			$text = trim($text);
+
+			if (!$text)
+			{
+				$text = Lang::txt('(no content found)');
+			}
+
+			$this->set('report_parsed', $text);
+		}
+
+		return $text;
+	}
+
+	/**
+	 * Get tags on the entry
+	 * Optinal first agument to determine format of tags
+	 *
+	 * @param   string   $as     Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param   integer  $admin  Include amdin tags? (defaults to no)
+	 * @return  mixed
+	 */
+	public function tags($as='cloud', $admin=null)
+	{
+		if (!$this->_tags)
+		{
+			$this->_tags = new Tags($this->get('id'));
+		}
+
+		return $this->_tags->render($as, array('admin' => $admin));
+	}
+
+	/**
+	 * Tag the entry
+	 *
+	 * @param   string   $tags
+	 * @param   integer  $useR_id
+	 * @param   integer  $admin
+	 * @return  boolean
+	 */
+	public function tag($tags=null, $user_id=0, $admin=0)
+	{
+		$cloud = new Tags($this->get('id'));
+
+		return $cloud->setTags($tags, $user_id, $admin);
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove data
+		foreach ($this->comments()->rows() as $comment)
+		{
+			if (!$comment->destroy())
+			{
+				$this->addError($comment->getError());
+				return false;
+			}
+		}
+
+		foreach ($this->attachments()->rows() as $attachment)
+		{
+			if (!$attachment->destroy())
+			{
+				$this->addError($attachment->getError());
+				return false;
+			}
+		}
+
+		foreach ($this->watchers()->rows() as $watch)
+		{
+			if (!$watch->destroy())
+			{
+				$this->addError($watch->getError());
+				return false;
+			}
+		}
+
+		$this->tag('');
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+
+	/**
+	 * Check if a user is watching this ticket
+	 *
+	 * @param   integer  $user_id  User ID
+	 * @return  boolean  True if watching, False if not
+	 */
+	public function isWatching($user_id=null)
+	{
+		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
+
+		if ($tbl->get('id'))
 		{
 			return true;
 		}
@@ -272,91 +382,60 @@ class Ticket extends Model
 	}
 
 	/**
-	 * Get the status text for a status
+	 * Mark a user as "watching" this ticket
 	 *
-	 * @param      string $as Data to return
-	 * @return     string
+	 * @param   integer  $user_id  User ID
+	 * @return  boolean
 	 */
-	public function status($as='text')
+	public function watch($user_id)
 	{
-		switch ($as)
+		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
+
+		if ($tbl->get('id'))
 		{
-			case 'text':
-				$status = ($this->get('open') ? Lang::txt('COM_SUPPORT_TICKET_STATUS_NEW') : Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED'));
-
-				if ($this->get('status'))
-				{
-					foreach ($this->statuses() as $s)
-					{
-						if ($this->get('status') == $s->get('id'))
-						{
-							$status = $s->get('title');
-							break;
-						}
-					}
-				}
-			break;
-
-			case 'open':
-				$status = ($this->get('open') ? 1 : 0);
-
-				if ($this->get('status'))
-				{
-					foreach ($this->statuses() as $s)
-					{
-						if ($this->get('status') == $s->get('id'))
-						{
-							$status = $s->get('open');
-							break;
-						}
-					}
-				}
-			break;
-
-			case 'color':
-				$status ='transparent';
-
-				if ($this->get('status'))
-				{
-					foreach ($this->statuses() as $s)
-					{
-						if ($this->get('status') == $s->get('id'))
-						{
-							$status = $s->get('color');
-							break;
-						}
-					}
-				}
-			break;
-
-			case 'class':
-				$status = ($this->get('open') ? 'new' : 'closed');
-
-				if ($this->get('status'))
-				{
-					foreach ($this->statuses() as $s)
-					{
-						if ($this->get('status') == $s->get('id'))
-						{
-							$status = $s->get('alias');
-							break;
-						}
-					}
-				}
-			break;
-
-			default:
-				$status = $this->get('status');
-			break;
+			return true;
 		}
 
-		return $status;
+		$tbl->set('ticket_id', $this->get('id'));
+		$tbl->set('user_id', $user_id);
+
+		if (!$tbl->save())
+		{
+			$this->addError($tbl->getError());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Remove a user from the watch list for this ticket
+	 *
+	 * @param   mixed   $user_id  User ID
+	 * @return  boolean
+	 */
+	public function stopWatching($user_id)
+	{
+		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
+
+		if (!$tbl->get('id'))
+		{
+			return true;
+		}
+
+		if (!$tbl->destroy())
+		{
+			$this->addError($tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
 	 * Mark a ticket as open
 	 *
-	 * @return  boolean
+	 * @return  object
 	 */
 	public function open()
 	{
@@ -371,558 +450,15 @@ class Ticket extends Model
 	 * Mark a ticket as closed
 	 *
 	 * @param   string  $resolution
-	 * @return  boolean
+	 * @return  object
 	 */
-	public function close($resolution=null)
+	public function close($resolution = '')
 	{
 		$this->set('open', 0)
 		     ->set('status', 0)
 		     ->set('resolved', $resolution);
 
 		return $this;
-	}
-
-	/**
-	 * Get a count of or list of attachments on this model
-	 *
-	 * @param   string   $rtrn     Data to return state in [count, list]
-	 * @param   array    $filters  Filters to apply to the query
-	 * @param   boolean  $clear    Clear data cache?
-	 * @return  mixed
-	 */
-	public function attachments($rtrn='list', $filters=array(), $clear=false)
-	{
-		$filters['comment_id'] = 0;
-		if (!isset($filters['ticket']))
-		{
-			$filters['ticket'] = $this->get('id');
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!is_numeric($this->_data->get('attachments.count')) || $clear)
-				{
-					$tbl = new Tables\Attachment($this->_db);
-					$this->_data->set('attachments.count', $tbl->find('count', $filters));
-				}
-				return $this->_data->get('attachments.count');
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_data->get('attachments') instanceof ItemList || $clear)
-				{
-					$tbl = new Tables\Attachment($this->_db);
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Attachment($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_data->set('attachments', new ItemList($results));
-				}
-				return $this->_data->get('attachments');
-			break;
-		}
-	}
-
-	/**
-	 * Get a count of or list of comments on this model
-	 *
-	 * @param   string   $rtrn     Data to return state in [count, list]
-	 * @param   array    $filters  Filters to apply to the query
-	 * @param   boolean  $clear    Clear data cache?
-	 * @return  mixed
-	 */
-	public function comments($rtrn='list', $filters=array(), $clear=false)
-	{
-		if (!isset($filters['ticket']))
-		{
-			$filters['ticket'] = $this->get('id');
-		}
-		if (!isset($filters['access']))
-		{
-			$filters['access'] = 1; //$this->access('read', 'private_comments');
-		}
-		if (!isset($filters['sort']))
-		{
-			$filters['sort'] = 'id';
-		}
-		if (!isset($filters['sort_Dir']))
-		{
-			$filters['sort_Dir'] = 'ASC';
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!is_numeric($this->_data->get('comments.count')) || $clear)
-				{
-					$tbl = new Tables\Comment($this->_db);
-					$this->_data->set('comments.count', $tbl->countComments($filters['access'], $filters['ticket']));
-				}
-				return $this->_data->get('comments.count');
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_data->get('comments.list') instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Comment($this->_db);
-					if ($results = $tbl->getComments($filters['access'], $filters['ticket'], $filters['sort'], $filters['sort_Dir']))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Comment($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_data->set('comments.list', new ItemList($results));
-				}
-				return $this->_data->get('comments.list');
-			break;
-		}
-	}
-
-	/**
-	 * Get a count of or list of ticket statuses
-	 *
-	 * @param      string  $rtrn    Data to return state in [count, list]
-	 * @param      array   $filters Filters to apply to the query
-	 * @param      boolean $clear   Clear data cache?
-	 * @return     mixed
-	 */
-	public function statuses($rtrn='all', $filters=array(), $clear=false)
-	{
-		static $statuses;
-
-		if (!isset($statuses) || $clear)
-		{
-			$tbl = new Tables\Status($this->_db);
-
-			if (!isset($filters['sort']))
-			{
-				$filters['sort'] = 'id';
-				$filters['sort_Dir'] = 'ASC';
-			}
-
-			$statuses = array();
-			if ($rows = $tbl->find('list', $filters))
-			{
-				foreach ($rows as $row)
-				{
-					$statuses[] = new Status($row);
-				}
-			}
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'open':
-				$results = array();
-				foreach ($statuses as $status)
-				{
-					if ($status->get('open'))
-					{
-						$results[] = $status;
-					}
-				}
-			break;
-
-			case 'closed':
-				$results = array();
-				foreach ($statuses as $status)
-				{
-					if (!$status->get('open'))
-					{
-						$results[] = $status;
-					}
-				}
-			break;
-
-			case 'all':
-			default:
-				$results = $statuses;
-			break;
-		}
-
-		return new ItemList($results);
-	}
-
-	/**
-	 * Get a user's ID
-	 *
-	 * Accepts a user ID, User object
-	 * or username
-	 *
-	 * @param   mixed   $user  Object, ID, or username
-	 * @return  integer
-	 */
-	private function _resolveUserID($user)
-	{
-		$id = 0;
-
-		if (!$user)
-		{
-			$user = User::getInstance();
-			$id = $user->get('id');
-		}
-		if (is_numeric($user))
-		{
-			$id = $user;
-		}
-		else if (is_string($user))
-		{
-			$user = User::getInstance($user);
-			$id = $user->get('id');
-		}
-
-		return $id;
-	}
-
-	/**
-	 * Mark a user as "watching" this ticket
-	 *
-	 * @param   mixed   $user  User object, username, or ID
-	 * @return  boolean
-	 */
-	public function watch($user)
-	{
-		$user_id = $this->_resolveUserID($user);
-
-		$tbl = new Tables\Watching($this->_db);
-		$tbl->load(
-			$this->get('id'),
-			$user_id
-		);
-
-		if ($tbl->get('id'))
-		{
-			return true;
-		}
-
-		$tbl->set('ticket_id', $this->get('id'));
-		$tbl->set('user_id', $user_id);
-
-		if (!$tbl->store())
-		{
-			$this->setError($tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Remove a user from the watch list for this ticket
-	 *
-	 * @param   mixed   $user  User object, username, or ID
-	 * @return  boolean
-	 */
-	public function stopWatching($user)
-	{
-		$tbl = new Tables\Watching($this->_db);
-		$tbl->load(
-			$this->get('id'),
-			$this->_resolveUserID($user)
-		);
-
-		if (!$tbl->get('id'))
-		{
-			return true;
-		}
-
-		if (!$tbl->delete())
-		{
-			$this->setError($tbl->getError());
-			return false;
-		}
-		$this->_data->set('watchers.list', null);
-
-		return true;
-	}
-
-	/**
-	 * Get a count of or list of watchers on this ticket
-	 *
-	 * @param   string   $rtrn     Data to return state in [count, list]
-	 * @param   array    $filters  Filters to apply to the query
-	 * @param   boolean  $clear    Clear data cache?
-	 * @return  mixed
-	 */
-	public function watchers($rtrn='list', $filters=array(), $clear=false)
-	{
-		if (!isset($filters['ticket_id']))
-		{
-			$filters['ticket_id'] = $this->get('id');
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!is_numeric($this->_data->get('watchers.count')) || $clear)
-				{
-					$tbl = new Tables\Watching($this->_db);
-					$this->_data->set('watchers.count', $tbl->count($filters));
-				}
-				return $this->_data->get('watchers.count');
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_data->get('watchers.list') instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Watching($this->_db);
-					if (!($results = $tbl->find($filters)))
-					{
-						$results = array();
-					}
-					$this->_data->set('watchers.list', new ItemList($results));
-				}
-				return $this->_data->get('watchers.list');
-			break;
-		}
-	}
-
-	/**
-	 * Check if a user is watching this ticket
-	 *
-	 * @param   mixed    $user  User object, username, or ID
-	 * @return  boolean  True if watching, False if not
-	 */
-	public function isWatching($user=null, $recheck=false)
-	{
-		$user_id = $this->_resolveUserID($user);
-
-		foreach ($this->watchers('list', array(), $recheck) as $watcher)
-		{
-			if ($watcher->user_id == $user_id)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Get the state of the entry as either text or numerical value
-	 *
-	 * @param   string   $as       Format to return state in [text, number]
-	 * @param   integer  $shorten  Number of characters to shorten text to
-	 * @return  string
-	 */
-	public function content($as='parsed', $shorten=0)
-	{
-		$as = strtolower($as);
-		$options = array();
-
-		switch ($as)
-		{
-			case 'parsed':
-				$content = $this->get('report_parsed', null);
-
-				if ($content === null)
-				{
-					$config = Component::params('com_support');
-					$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('id');
-
-					$webpath = str_replace('//', '/', rtrim(Request::base(), '/') . '/' . $path);
-					if (isset($_SERVER['HTTPS']))
-					{
-						$webpath = str_replace('http:', 'https:', $webpath);
-					}
-					if (!strstr($webpath, '://'))
-					{
-						$webpath = str_replace(':/', '://', $webpath);
-					}
-
-					$attach = new Tables\Attachment($this->_db);
-					$attach->webpath = $webpath;
-					$attach->uppath  = PATH_APP . DS . $path;
-					$attach->output  = 'web';
-
-					// Escape potentially bad characters
-					$this->set('report_parsed', htmlentities($this->get('report'), ENT_COMPAT, 'UTF-8'));
-					// Convert line breaks to <br /> tags
-					$this->set('report_parsed', nl2br($this->get('report_parsed')));
-					// Convert tabs to spaces to preserve indention
-					$this->set('report_parsed', str_replace("\t", ' &nbsp; &nbsp;', $this->get('report_parsed')));
-					// Look for any attachments (old style)
-					$this->set('report_parsed', $attach->parse($this->get('report_parsed')));
-
-					if (!$this->get('report_parsed'))
-					{
-						$this->set('report_parsed', Lang::txt('(no content found)'));
-					}
-
-					return $this->content('parsed');
-				}
-
-				$options = array('html' => true);
-			break;
-
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-			break;
-
-			case 'raw':
-			default:
-				$content = stripslashes($this->get('report'));
-			break;
-		}
-
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-		return $content;
-	}
-
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function delete()
-	{
-		// Can't delete what doesn't exist
-		if (!$this->exists())
-		{
-			return true;
-		}
-
-		// Remove attachments
-		foreach ($this->attachments('list') as $attachment)
-		{
-			if (!$attachment->delete())
-			{
-				$this->setError($attachment->getError());
-				return false;
-			}
-		}
-
-		// Remove watchers
-		foreach ($this->watchers('list') as $watcher)
-		{
-			if (!$this->stopWatching($watcher->user_id))
-			{
-				return false;
-			}
-		}
-
-		// Remove comments
-		foreach ($this->comments('list') as $comment)
-		{
-			if (!$comment->delete())
-			{
-				$this->setError($comment->getError());
-				return false;
-			}
-		}
-
-		return parent::delete();
-	}
-
-	/**
-	 * Get tags on the entry
-	 * Optinal first agument to determine format of tags
-	 *
-	 * @param   string   $as     Format to return state in [comma-deliminated string, HTML tag cloud, array]
-	 * @param   integer  $admin  Include amdin tags? (defaults to no)
-	 * @return  mixed
-	 */
-	public function tags($as='cloud', $admin=null)
-	{
-		if (!$this->exists())
-		{
-			switch (strtolower($as))
-			{
-				case 'array':
-					return array();
-				break;
-
-				case 'string':
-				case 'cloud':
-				case 'html':
-				default:
-					return '';
-				break;
-			}
-		}
-
-		if (!$this->_data->get('cloud'))
-		{
-			$this->_data->set('cloud', new Tags($this->get('id')));
-		}
-
-		return $this->_data->get('cloud')->render($as, array('admin' => $admin));
-	}
-
-	/**
-	 * Tag the entry
-	 *
-	 * @return  boolean
-	 */
-	public function tag($tags=null, $user_id=0, $admin=0)
-	{
-		$cloud = new Tags($this->get('id'));
-
-		return $cloud->setTags($tags, $user_id, $admin);
-	}
-
-	/**
-	 * Tag the entry
-	 *
-	 * @return  boolean
-	 */
-	public function appendTag($tag)
-	{
-		if (!$this->_data->get('cloud'))
-		{
-			$this->_data->set('cloud', new Tags($this->get('id')));
-		}
-
-		return $this->_data->get('cloud')->append($tag);
-	}
-
-	/**
-	 * Return a formatted timestamp
-	 *
-	 * @param   string  $as  What format to return
-	 * @return  string
-	 */
-	public function created($as='')
-	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			case 'local':
-				return Date::of($this->get('created'))->toLocal($this->_db->getDateFormat());
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
 	}
 
 	/**
@@ -934,7 +470,7 @@ class Ticket extends Model
 	 */
 	public function link($type='')
 	{
-		$link = $this->_base;
+		$link = 'index.php?option=com_support';
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
@@ -974,30 +510,6 @@ class Ticket extends Model
 	}
 
 	/**
-	 * Store changes to this database entry
-	 *
-	 * @param   boolean  $check  Perform data validation check?
-	 * @return  boolean  False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		$this->set('open', $this->status('open'));
-		if ($this->get('open'))
-		{
-			$this->set('resolved', '');
-		}
-
-		$result = parent::store($check);
-
-		if ($result && !$this->_tbl->id)
-		{
-			$this->_tbl->getId();
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Access check
 	 *
 	 * @param   string  $action  The action to check
@@ -1010,7 +522,8 @@ class Ticket extends Model
 		{
 			$this->_acl = ACL::getACL();
 
-			if ($this->isSubmitter() || $this->isOwner())
+			if ($this->get('login') == User::get('username')
+			 || $this->get('owner') == User::get('id'))
 			{
 				if (!$this->_acl->check('read', 'tickets'))
 				{
@@ -1048,10 +561,12 @@ class Ticket extends Model
 
 		if ($action == 'read' && $item == 'tickets' && !$this->_acl->check('read', 'tickets') && !$this->get('_cc-check-done'))
 		{
-			if (!User::get('guest') && $this->comments()->total() > 0)
+			if (!User::get('guest') && $this->comments->count() > 0)
 			{
-				$last = $this->comments('list')->last(); //, array('access' => 1), true)->last();
+				$last = $this->comments->last();
+
 				$cc = $last->changelog()->get('cc');
+
 				if (in_array(User::get('username'), $cc) || in_array(User::get('email'), $cc))
 				{
 					$this->_acl->setAccess('read', 'tickets', 1);
@@ -1063,5 +578,208 @@ class Ticket extends Model
 		}
 
 		return $this->_acl->check($action, $item);
+	}
+
+	/**
+	 * Get a record count
+	 *
+	 * @param   string   $query    Filters to build query from
+	 * @param   array    $filters
+	 * @return  integer
+	 */
+	public static function countWithQuery($query, $filters=array())
+	{
+		if (!$query)
+		{
+			return array();
+		}
+
+		if (!is_string($query))
+		{
+			$query = $query->toSql();
+		}
+
+		$db = App::get('db');
+
+		$having = '';
+		if (preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches)
+		 || preg_match('/GROUP BY f.id/i', $query, $matches))
+		{
+			$having = $matches[0];
+			$query = str_replace($matches[0], '', $query);
+
+			$sql = "SELECT f.id, COUNT(DISTINCT t.tag) AS uniques ";
+		}
+		else
+		{
+			$sql = "SELECT count(DISTINCT f.id) ";
+		}
+
+		$sql .= "FROM `" . self::blank()->getTableName() . "` AS f";
+		if (strstr($query, 't.`tag`') || (isset($filters['tag']) && $filters['tag'] != ''))
+		{
+			$sql .= " LEFT JOIN `#__tags_object` AS st on st.objectid=f.id AND st.tbl='support'
+					LEFT JOIN `#__tags` AS t ON st.tagid=t.id";
+		}
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$sql .= " LEFT JOIN `#__support_comments` AS w ON w.ticket=f.id";
+		}
+
+		$sql .= self::parseFind($filters) . " AND " . $query;
+
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$sql .= " AND ";
+			$sql .= "(
+						LOWER(f.report) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.name) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.login) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(w.comment) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%');
+			if (is_numeric($filters['search']))
+			{
+				$sql .= " OR f.id=" . $filters['search'];
+			}
+			$sql .= ") ";
+		}
+		$sql .= $having;
+
+		if ($having)
+		{
+			$db->setQuery($sql);
+			$results = $db->loadObjectList();
+			return count($results);
+		}
+
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
+	/**
+	 * Get a record count
+	 *
+	 * @param   string   $query    Filters to build query from
+	 * @param   array    $filters
+	 * @return  integer
+	 */
+	public static function allWithQuery($query, $filters=array())
+	{
+		if (!$query)
+		{
+			return array();
+		}
+
+		if (!is_string($query))
+		{
+			$query = $query->toSql();
+		}
+
+		$db = App::get('db');
+
+		$having = '';
+		if (preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches))
+		{
+			$having = $matches[0];
+			$query = str_replace($matches[0], '', $query);
+		}
+
+		$sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, f.`resolved`, f.`group_id`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email`, f.`target_date` ";
+		if ($having)
+		{
+			$sql .= ", COUNT(DISTINCT t.tag) AS uniques ";
+		}
+		$sql .= "FROM `" . self::blank()->getTableName() . "` AS f";
+		if (strstr($query, 't.`tag`') || (isset($filters['tag']) && $filters['tag'] != ''))
+		{
+			$sql .= " LEFT JOIN `#__tags_object` AS st on st.objectid=f.id AND st.tbl='support'
+					LEFT JOIN `#__tags` AS t ON st.tagid=t.id";
+		}
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$sql .= " LEFT JOIN `#__support_comments` AS w ON w.ticket=f.id";
+		}
+
+		$sql .= self::parseFind($filters) . " AND " . $query;
+
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$sql .= " AND ";
+			$sql .= "(
+						LOWER(f.report) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.name) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.login) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(w.comment) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%');
+			if (is_numeric($filters['search']))
+			{
+				$sql .= " OR f.id=" . $filters['search'];
+			}
+			$sql .= ") ";
+		}
+		$sql .= $having;
+
+		if ($filters['sort'] == 'group')
+		{
+			$filters['sort'] = 'group_id';
+		}
+
+		if ($filters['sort'] == 'severity')
+		{
+			$sql .= " ORDER BY CASE severity ";
+			$sql .= " WHEN 'critical' THEN 5";
+			$sql .= " WHEN 'major'    THEN 4";
+			$sql .= " WHEN 'normal'   THEN 3";
+			$sql .= " WHEN 'minor'    THEN 2";
+			$sql .= " WHEN 'trivial'  THEN 1";
+			$sql .= " END " . $filters['sortdir'];
+		}
+		else
+		{
+			$sql .= " ORDER BY `" . $filters['sort'] . '` ' . $filters['sortdir'];
+		}
+
+		$sql .= ($filters['limit']) ? " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']) : "";
+
+		$db->setQuery($sql);
+		$rows = $db->loadObjectList();
+
+		foreach ($rows as $i => $row)
+		{
+			$rows[$i] = self::blank()->set($row);
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * Add tag and group filters previously supported in ticket system
+	 * (ex: when clicking a tag within the ticket system)
+	 *
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
+	 */
+	public static function parseFind($filters)
+	{
+		$db = App::get('db');
+
+		$filter = " WHERE report!=''";
+
+		if (isset($filters['group']) && $filters['group'] != '')
+		{
+			if (!is_numeric($filters['group']))
+			{
+				if ($group = \Hubzero\User\Group::getInstance($filters['group']))
+				{
+					$filters['group'] = $group->get('gidNumber');
+				}
+			}
+			$filter .= " AND `group_id`=" . $db->quote($filters['group']);
+		}
+
+		if (isset($filters['tag']) && $filters['tag'] != '')
+		{
+			$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag=" . $db->quote($filters['tag']);
+		}
+
+		return $filter;
 	}
 }

@@ -456,7 +456,11 @@ class JAccess
 	{
 		JLog::add(__METHOD__ . ' is deprecated. Use JAccess::getActionsFromFile or JAcces::getActionsFromData instead.', JLog::WARNING, 'deprecated');
 		$path = JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml';
-		if (file_exists(PATH_CORE . '/components/' . $component . '/config/access.xml'))
+		if (file_exists(PATH_APP . '/components/' . $component . '/config/access.xml'))
+		{
+			$path = PATH_APP . '/components/' . $component . '/config/access.xml';
+		}
+		elseif (file_exists(PATH_CORE . '/components/' . $component . '/config/access.xml'))
 		{
 			$path = PATH_CORE . '/components/' . $component . '/config/access.xml';
 		}

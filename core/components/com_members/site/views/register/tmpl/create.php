@@ -52,7 +52,7 @@ $this->css('register.css');
 			<?php } else if ($this->xprofile->get('activation') < 0){ ?>
 				<div class="account-activation">
 					<div class="instructions">
-						<p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED_MESSAGE', $this->sitename, \Hubzero\Utility\String::obfuscate($this->xprofile->get('email'))); ?></p>
+						<p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED_MESSAGE', $this->sitename, \Hubzero\Utility\Str::obfuscate($this->xprofile->get('email'))); ?></p>
 						<ol>
 							<li><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_INSTRUCT_FIND_EMAIL'); ?></li>
 							<li><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_INSTRUCT_ACTIVATE'); ?></li>

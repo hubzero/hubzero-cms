@@ -32,12 +32,12 @@
 
 namespace Components\Resources\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Helper class for HUB Presenter
  */
-class Hubpresenter extends Object
+class Hubpresenter extends Obj
 {
 	/**
 	 * Generates JSON Manifest from XML doc uploaded
@@ -74,7 +74,7 @@ class Hubpresenter extends Object
 		$new_type = (in_array($ext, array('webm','mp4','ogv'))) ? 'Video' : 'Audio';
 
 		$new_slides = array();
-		for ($i=0;$i<count($manifest->event);$i++)
+		for ($i=0; $i<count($manifest->event); $i++)
 		{
 			$title = (string)$manifest->event[$i]->title;
 			$type  = (string)$manifest->event[$i]->type;

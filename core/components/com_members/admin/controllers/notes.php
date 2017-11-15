@@ -116,9 +116,16 @@ class Notes extends AdminController
 
 		if ($filters['search'])
 		{
-			$entries->whereLike('subject', strtolower((string)$filters['search']), 1)
-				->orWhereLike('body', strtolower((string)$filters['search']), 1)
-				->resetDepth();
+			if (substr($filters['search'], 0, strlen('uid:')) == 'uid:')
+			{
+				$entries->whereEquals('user_id', (int)substr($filters['search'], strlen('uid:')));
+			}
+			else
+			{
+				$entries->whereLike('subject', strtolower((string)$filters['search']), 1)
+					->orWhereLike('body', strtolower((string)$filters['search']), 1)
+					->resetDepth();
+			}
 		}
 
 		if ($filters['state'] >= 0)

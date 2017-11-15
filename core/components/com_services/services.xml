@@ -44,12 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 		</sql>
 	</install>
 	<administration>
-		<menu>Resources</menu>
-		<submenu>
-			<menu task="viewtypes">Types</menu>
-			<menu task="orphans">Orphans</menu>
-			<menu task="browse">Resources</menu>
-		</submenu>
+		<menu>Services</menu>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_services.ini</language>
 		</languages>

@@ -34,7 +34,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATS'), 'support.png');
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATS'), 'support');
 
 Toolbar::spacer();
 Toolbar::help('stats');
@@ -47,7 +47,7 @@ Html::behavior('chart', 'resize');
 $this->css('stats');
 
 $gidNumber = 0;
-if ($group = \Hubzero\User\Group::getInstance($this->group))
+if ($group = \Hubzero\User\Group::getInstance($this->filters['group']))
 {
 	$gidNumber = $group->get('gidNumber');
 }
@@ -56,12 +56,12 @@ $database = App::get('db');
 $sql = "SELECT status
 		FROM `#__support_tickets`
 		WHERE open=0
-		AND type='{$this->type}' ";
-		if ($this->group == '_none_')
+		AND type=" . $database->quote($this->filters['type']);
+		if (!$this->filters['group'] || $this->filters['group'] == '_none_')
 		{
 			$sql .= " AND group_id=0";
 		}
-		else if ($this->group)
+		else if ($this->filters['group'])
 		{
 			$sql .= " AND `group_id`=" . $database->quote($gidNumber);
 		}
@@ -85,12 +85,12 @@ foreach ($resolutions as $resolution)
 
 $sql = "SELECT severity
 		FROM `#__support_tickets`
-		WHERE type='{$this->type}' ";
-		if ($this->group == '_none_')
+		WHERE type=" . $database->quote($this->filters['type']);
+		if (!$this->filters['group'] || $this->filters['group'] == '_none_')
 		{
 			$sql .= " AND group_id=0";
 		}
-		else if ($this->group)
+		else if ($this->filters['group'])
 		{
 			$sql .= " AND `group_id`=" . $database->quote($gidNumber);
 		}
@@ -112,27 +112,6 @@ foreach ($severities as $severity)
 	}
 }
 
-function getMonthName($month)
-{
-	$monthname = '';
-	switch (intval($month))
-	{
-		case 1: $monthname = Lang::txt('January');   break;
-		case 2: $monthname = Lang::txt('February');  break;
-		case 3: $monthname = Lang::txt('March');     break;
-		case 4: $monthname = Lang::txt('April');     break;
-		case 5: $monthname = Lang::txt('May');       break;
-		case 6: $monthname = Lang::txt('June');      break;
-		case 7: $monthname = Lang::txt('July');      break;
-		case 8: $monthname = Lang::txt('August');    break;
-		case 9: $monthname = Lang::txt('September'); break;
-		case 0: $monthname = Lang::txt('October');   break;
-		case 11: $monthname = Lang::txt('November');  break;
-		case 12: $monthname = Lang::txt('December');  break;
-	}
-	return $monthname;
-}
-
 $base = str_replace('/administrator', '', Request::base(true));
 $base = rtrim($base, '/');
 ?>
@@ -143,15 +122,15 @@ $base = rtrim($base, '/');
 				<?php echo Lang::txt('COM_SUPPORT_STATS_FOR_GROUP'); ?>
 			</label>
 			<select name="group" id="ticket-group">
-				<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
+				<option value=""<?php if (!$this->filters['group']) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
 				<?php
 				if ($this->groups)
 				{
 					foreach ($this->groups as $group)
 					{
-				?>
-				<option value="<?php echo $group->cn; ?>"<?php if ($this->group == $group->cn) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
-				<?php
+						?>
+						<option value="<?php echo $group->cn; ?>"<?php if ($this->filters['group'] == $group->cn) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
+						<?php
 					}
 				}
 				?>
@@ -161,7 +140,7 @@ $base = rtrim($base, '/');
 
 		<fieldset class="adminform">
 			<legend>
-				<span><?php echo getMonthName(1) . ' ' . $this->first ?> - <?php echo getMonthName($this->month) . ' ' . $this->year; ?></span>
+				<span><?php echo Date::of($this->first . '-01-01')->format('M Y'); ?> - <?php echo Date::of($this->filters['year'] . '-' . $this->filters['month'] . '-01')->format('M Y'); ?></span>
 			</legend>
 
 			<div id="container" style="min-width: 400px; height: 200px; margin: 60px 20px 20px 20px;"></div>
@@ -409,8 +388,7 @@ $base = rtrim($base, '/');
 								<td><?php echo (isset($res[0])) ? $res[0]/$total : '0'; ?></td>
 							</tr>
 						<?php
-							$sr = new \Components\Support\Tables\Status($database);
-							$resolutions = $sr->find('list', array('open' => 0));
+							$resolutions = Components\Support\Models\Status::all()->whereEquals('open', 0)->rows();
 
 							$cls = 'odd';
 							$data = array(

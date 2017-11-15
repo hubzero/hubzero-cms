@@ -32,23 +32,20 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Document::addStyleDeclaration('
-	.toolbar-box .icon-32-buildprofile:before { content: "\f007"; }
-	.toolbar-box .icon-32-buildprofile:after { content: "\f0ad"; right: 0px; bottom: -2px; }
-	.authenticator, .authenticator-status { display: inline-block; text-transform: uppercase; font-size: 0.85em; color: #777; border-radius: 0.25em; padding: 0.2em 0.4em; line-height: 1; border: 1px solid #777; margin: 0 0.5em; }
-	.authenticator-status { display: inline-block; color: red; border-color: red; }
-');
-
 $canDo = Components\Members\Helpers\Admin::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS'));
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option);
-	Toolbar::spacer();
-
-	//Toolbar::custom('profile', 'buildprofile', '', 'COM_MEMBERS_PROFILE', false);
 	Toolbar::getRoot()->appendButton('Link', 'buildprofile', 'COM_MEMBERS_PROFILE', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile'));
+	Toolbar::spacer();
+	$export = 'index.php?option=' . $this->option . '&controller=exports&task=run';
+	foreach ($this->filters as $key => $value)
+	{
+		$export .= '&' . $key . '=' . $value;
+	}
+	Toolbar::getRoot()->appendButton('Link', 'download', 'COM_MEMBERS_MENU_EXPORT', Route::url($export));
 	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
@@ -72,6 +69,8 @@ if ($canDo->get('core.delete'))
 }
 Toolbar::spacer();
 Toolbar::help('users');
+
+$this->css();
 
 Html::behavior('tooltip');
 ?>
@@ -259,15 +258,15 @@ function submitbutton(pressbutton)
 				<td>
 					<div class="fltrt">
 						<?php if ($count = $row->notes->count()) : ?>
-							<a class="state filter" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&filter_search=uid:' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_USERS_FILTER_NOTES'); ?>">
-								<span><?php echo Lang::txt('COM_USERS_NOTES'); ?></span>
+							<a class="state filter" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&search=uid%3A' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_FILTER_NOTES'); ?>">
+								<span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
 							</a>
 							<a class="modal state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&tmpl=component&task=modal&id=' . (int) $row->get('id')); ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}" title="<?php echo Lang::txts('COM_MEMBERS_N_USER_NOTES', $count); ?>">
-								<span><?php echo Lang::txt('COM_USERS_NOTES'); ?></span>
+								<span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
 							</a>
 						<?php endif; ?>
-						<a class="state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&task=add&user_id=' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_USERS_ADD_NOTE'); ?>">
-							<span><?php echo Lang::txt('COM_USERS_NOTES'); ?></span>
+						<a class="state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&task=add&user_id=' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_ADD_NOTE'); ?>">
+							<span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
 						</a>
 					</div>
 					<?php if ($canEdit) : ?>

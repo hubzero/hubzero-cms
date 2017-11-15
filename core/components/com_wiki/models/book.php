@@ -31,7 +31,7 @@
 
 namespace Components\Wiki\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
 use Filesystem;
 use Exception;
@@ -44,7 +44,7 @@ require_once(__DIR__ . DS . 'page.php');
 /**
  * Wiki model for a book
  */
-class Book extends Object
+class Book extends Obj
 {
 	/**
 	 * Registry

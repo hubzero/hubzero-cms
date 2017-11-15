@@ -34,11 +34,10 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
+use Component;
 
 /**
- * Hubs database model
+ * Citation format model
  *
  * @uses \Hubzero\Database\Relational
  */
@@ -47,19 +46,22 @@ class Format extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = 'citations';
-	// table name jos_citations
 
 	/**
 	 * Default order by for model
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'name';
 
-
+	/**
+	 * Table name
+	 *
+	 * @var  string
+	 **/
 	protected $table = '#__citations_format';
 
 	/**
@@ -68,36 +70,42 @@ class Format extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'	=> 'notempty',
-		//'liaison' => 'notempty'
+		'style' => 'notempty'
 	);
-
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var array
-	 **/
-	public $always = array(
-		//'name_normalized',
-		//'asset_id'
-	);
-
 
 	/**
 	 * Defines a one to one relationship with citation
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $fallbackDefault
+	 * @return  object
 	 **/
-	public function citation()
+	public static function getDefault($fallbackDefault = 'IEEE')
 	{
-		return $this->belongsToOne('Citation', 'id', 'format');
+		$config = Component::params('com_citations');
+		$defaultFormat = !empty($config->get('default_citation_format')) ? $config->get('default_citation_format'): $fallbackDefault;
+		$format = self::blank();
+		$format->whereEquals('style', $defaultFormat)->limit(1);
+		return $format->row();
 	}
 
+	/**
+	 * Defines a one to one relationship with citation
+	 *
+	 * @return  object
+	 **/
+	public function citations()
+	{
+		return $this->belongsToMany('Citation', 'format', 'style');
+	}
 
+	/**
+	 * Defines a one to one relationship with citation
+	 *
+	 * @return  array
+	 **/
 	public function getTemplateKeys()
 	{
-	    $template_keys =  array(
+		$template_keys =  array(
 			"type" => "{TYPE}",
 			"cite" => "{CITE KEY}",
 			"ref_type" => "{REF TYPE}",

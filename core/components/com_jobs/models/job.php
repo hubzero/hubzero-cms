@@ -34,7 +34,7 @@ namespace Components\Jobs\Models;
 
 use Components\Members\Models\Member;
 use Hubzero\Base\Model;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 
 require_once(dirname(__DIR__). DS . 'tables' . DS . 'job.php');
 require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
@@ -47,23 +47,23 @@ class Job extends Model
 	/**
 	 * Table name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = '\\Components\\Jobs\\Tables\\Job';
 
 	/**
 	 * Model context
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_context = 'com_jobs.job.description';
 
 	/**
 	 * User
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	private $_creator = NULL;
+	private $_creator = null;
 
 	/**
 	 * Get the creator of this entry
@@ -72,7 +72,8 @@ class Job extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire user object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function creator($property=null)
 	{
@@ -95,8 +96,8 @@ class Job extends Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     string
+	 * @param   string  $as  What format to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -119,9 +120,9 @@ class Job extends Model
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -172,10 +173,9 @@ class Job extends Model
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$content = Str::truncate($content, $shorten, $options);
 		}
 
 		return $content;
 	}
 }
-

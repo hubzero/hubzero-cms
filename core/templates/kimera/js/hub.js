@@ -8,7 +8,7 @@
 if (typeof console === "undefined" || typeof console.log === "undefined") {
 	console = {};
 	console.log = function() {};
-}
+};
 
 /*
 USAGE:
@@ -39,14 +39,14 @@ $.growl.settings.dockCss = {
     top: '10px',
     right: '10px',
     width: '300px'
-  };
+};
   
 The dockCss will allow you to 'dock' the notifications to a specific area
 on the page, such as TopRight (the default) or TopLeft, perhaps even in a
 smaller area with "overflow: scroll" enabled?
 */
 
-;(function($) {
+(function($) {
 	$.growl = function(title,message,image,priority) { notify(title,message,image,priority); }
 	$.growl.version = "1.0.2";
 
@@ -74,7 +74,9 @@ smaller area with "overflow: scroll" enabled?
 	function notify(title,message,image,priority) {
 		var instance = create();
 		var html = jQuery.growl.settings.noticeTemplate;
-		if (typeof(html) == 'object') html = $(html).html();
+		if (typeof(html) == 'object') {
+			html = $(html).html();
+		}
 		html = r(html, /%message%/, (message ? message : ''));
 		html = r(html, /%title%/, (title ? title : ''));
 		html = r(html, /%image%/, (image ? image : jQuery.growl.settings.defaultImage));
@@ -203,6 +205,8 @@ jQuery(document).ready(function($){
 			}
 
 			window.open(trigger.attr('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w);
+
+			trigger.blur();
 		}
 
 		if (trigger.attr('rel') 

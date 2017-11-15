@@ -76,7 +76,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		$db = App::get('db');
 		$query = $db->getQuery()
 			->select('template')
-			->from('#__template_styles');
+			->from('#__template_styles')
 			->whereEquals('client_id', 0)
 			->whereEquals('home', 1);
 

@@ -158,7 +158,8 @@ class Members extends GroupMacro
 	/**
 	 * Render the events
 	 *
-	 * @param      array     Array of group events
+	 * @param      array  $group   Array of group events
+	 * @param      array  $members Array of members
 	 * @return     string
 	 */
 	private function renderMembers($group, $members)

@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Publication status model class
  */
-class Status extends Object
+class Status extends Obj
 {
 	/**
 	 * Int(1)
@@ -44,20 +46,20 @@ class Status extends Object
 	 * 2 = requirement partially satisfied (incomplete)
 	 * 3 = not available
 	 */
-	var $status = NULL;
+	public $status = null;
 
 	/**
 	 * Status message
 	 */
-	var $message = NULL;
+	public $message = null;
 
 	/**
 	 * For nested blocks
 	 */
-	var $elements = NULL;
+	public $elements = null;
 
 	/**
 	 * Time of last status update
 	 */
-	var $lastupdate = NULL;
+	public $lastupdate = null;
 }

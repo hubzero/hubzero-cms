@@ -116,7 +116,7 @@ switch ($this->level)
 			//$database = App::get('db');
 			foreach ($tools as $tool)
 			{
-				$tool->title = \Hubzero\Utility\String::truncate($tool->title, 40);
+				$tool->title = \Hubzero\Utility\Str::truncate($tool->title, 40);
 
 				$supported = null;
 				if ($this->bits['supportedtag']) {
@@ -196,7 +196,7 @@ switch ($this->level)
 			default: $html .= ' class="public"'; break;
 		}
 		$html .= '><a href="'.$sef.'">'.$this->escape(stripslashes($resource->title)).'</a></h4>';
-		$html .= '<p>'.\Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 400).' &nbsp; <a href="'.$sef.'">'.Lang::txt('COM_RESOURCES_LEARN_MORE').'</a></p>';
+		$html .= '<p>'.\Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 400).' &nbsp; <a href="'.$sef.'">'.Lang::txt('COM_RESOURCES_LEARN_MORE').'</a></p>';
 
 		if (!User::isGuest()) {
 			$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');

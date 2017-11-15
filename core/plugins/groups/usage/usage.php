@@ -49,7 +49,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   string   $extension  The extension for which a language file should be loaded
 	 * @param   string   $basePath   The basepath to use
-	 * @return  boolean  True, if the file has successfully loaded.
+	 * @return  boolean  true, if the file has successfully loaded.
 	 */
 	public function loadLanguage($extension = '', $basePath = PATH_APP)
 	{
@@ -253,19 +253,18 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
-	public static function getResourcesCount($gid=NULL, $authorized)
+	public static function getResourcesCount($gid=null, $authorized)
 	{
 		if (!$gid)
 		{
 			return 0;
 		}
-		$database = App::get('db');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		$rr = new \Components\Resources\Tables\Resource($database);
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
-		$database->setQuery("SELECT COUNT(*) FROM " . $rr->getTableName() . " AS r WHERE r.group_owner=" . $database->quote($gid));
-		return $database->loadResult();
+		return \Components\Resources\Models\Entry::all()
+			->whereEquals('group_owner', $gid)
+			->total();
 	}
 
 	/**
@@ -275,7 +274,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param   string   $authorized  Authorization level
 	 * @return  integer
 	 */
-	public static function getWikipageCount($gid=NULL, $authorized)
+	public static function getWikipageCount($gid=null, $authorized)
 	{
 		if (!$gid)
 		{
@@ -294,7 +293,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param   string   $authorized  Authorization level
 	 * @return  integer
 	 */
-	public static function getWikifileCount($gid=NULL, $authorized)
+	public static function getWikifileCount($gid=null, $authorized)
 	{
 		if (!$gid)
 		{
@@ -327,14 +326,14 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 * @param      string  $state      State of threads
 	 * @return     integer
 	 */
-	public static function getForumCount($gid=NULL, $authorized, $state='')
+	public static function getForumCount($gid=null, $authorized, $state='')
 	{
 		if (!$gid)
 		{
 			return 0;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
+		include_once \Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 		$filters = array();
 		switch ($state)
@@ -524,7 +523,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			return 0;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
 		$total = \Components\Blog\Models\Entry::all()
 			->whereEquals('scope', 'group')

@@ -35,8 +35,8 @@ namespace Components\Wishlist\Models\Adapters;
 use Pathway;
 use Lang;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+require_once __DIR__ . DS . 'base.php';
+require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Adapter class for a forum post link for course forum
@@ -64,10 +64,7 @@ class Resource extends Base
 		     ->set('category', 'resource')
 		     ->set('option', $this->_segments['option']);
 
-		$database = \App::get('db');
-		$this->_item = new \Components\Resources\Tables\Resource($database);
-		$this->_item->load($this->get('referenceid'));
-		$this->_item->typetitle = $this->_item->getTypeTitle();
+		$this->_item = \Components\Resources\Models\Entry::oneOrNew($this->get('referenceid'));
 
 		if ($this->_item->standalone != 1 || $this->_item->published != 1)
 		{
@@ -78,13 +75,72 @@ class Resource extends Base
 	}
 
 	/**
+	 * Get owners
+	 *
+	 * @return  array
+	 */
+	public function owners()
+	{
+		$owners = array();
+
+		if ($this->_item->type != 7)
+		{
+			$sql = "SELECT a.authorid
+				FROM `#__author_assoc` AS a
+				WHERE a.subtable='resources'
+				AND a.subid=" . $this->_item->id;
+
+			$db = \App::get('db');
+			$db->setQuery($sql);
+			$cons = $db->loadObjectList();
+
+			foreach ($cons as $con)
+			{
+				$owners[] = $con->authorid;
+			}
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * Get groups
+	 *
+	 * @return  array
+	 */
+	public function groups()
+	{
+		$groups = array();
+
+		if ($this->_item->type == 7)
+		{
+			$db = \App::get('db');
+			$query = "SELECT g.cn FROM `#__tool_groups` AS g
+				INNER JOIN `#__xgroups` AS xg ON g.cn=xg.cn
+				INNER JOIN `#__tool` AS t ON g.toolid=t.id
+				INNER JOIN `#__resources` as r ON r.alias = t.toolname
+				WHERE r.id = " . $db->quote($this->_item->id) . " AND g.role=1";
+
+			$db->setQuery($query);
+			$toolgroup = $db->loadResult();
+
+			if ($toolgroup)
+			{
+				$groups[] = $toolgroup;
+			}
+		}
+
+		return $groups;
+	}
+
+	/**
 	 * Generate and return the title for this wishlist
 	 *
 	 * @return  string
 	 */
 	public function title()
 	{
-		return ($this->_item->type == 7 && isset($this->_item->alias))
+		return ($this->_item->isTool() && isset($this->_item->alias))
 				? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->_item->alias
 				: Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $this->_item->id;
 	}

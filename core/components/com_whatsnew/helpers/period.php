@@ -44,7 +44,7 @@ class Period
 	 *
 	 * @var  string
 	 */
-	private $_period = NULL;
+	private $_period = null;
 
 	/**
 	 * Container for storing overloaded data
@@ -59,7 +59,7 @@ class Period
 	 * @param   string  $period  Time period (month, week, etc)
 	 * @return  void
 	 */
-	public function __construct($period=NULL)
+	public function __construct($period=null)
 	{
 		$this->setPeriod($period);
 
@@ -166,4 +166,3 @@ class Period
 		$this->dEndDate   = substr($this->endTime, 0, strlen('0000-00-00'));
 	}
 }
-

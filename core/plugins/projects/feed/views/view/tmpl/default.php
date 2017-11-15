@@ -42,24 +42,22 @@ $this->css()
 <?php
 	// New update form
 	$this->view('default', 'addupdate')
-	     ->set('option', $this->option)
-	     ->set('model', $this->model)
-	     ->display();
+		->set('option', $this->option)
+		->set('model', $this->model)
+		->display();
 ?>
 
 <div id="latest_activity" class="infofeed" data-frequency="60" data-base="<?php echo Route::url($this->model->link() . '&active=feed'); ?>">
 	<?php
 	// Display item list
 	$this->view('default', 'activity')
-	     ->set('option', $this->option)
-	     ->set('model', $this->model)
-	     ->set('activities', $this->activities)
-	     ->set('limit', $this->limit)
-	     ->set('total', $this->total)
-	     ->set('filters', $this->filters)
-	     ->set('uid', $this->uid)
-	     ->set('database', $this->database)
-	     ->display();
+		->set('option', $this->option)
+		->set('model', $this->model)
+		->set('activities', $this->activities)
+		->set('total', $this->total)
+		->set('filters', $this->filters)
+		->set('limit', $this->limit)
+		->display();
 	?>
 
 	<form id="hubForm" method="post" action="<?php echo Route::url($this->model->link()); ?>">

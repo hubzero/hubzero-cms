@@ -32,29 +32,30 @@
 
 namespace Components\Projects\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Components\Projects\Helpers;
 use stdClass;
 
 /**
  * Project File model
  */
-class File extends Object
+class File extends Obj
 {
 	/**
 	 * Container for properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_data = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param	string	$path
+	 * @param   string  $localPath
+	 * @param   string  $repoPath
 	 * @return  void
 	 */
-	public function __construct($localPath = NULL, $repoPath = NULL)
+	public function __construct($localPath = null, $repoPath = null)
 	{
 		$this->set('localPath', $localPath); // Path to item within repo
 
@@ -68,8 +69,8 @@ class File extends Object
 	/**
 	 * Check if a property is set
 	 *
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
+	 * @param   string   $property  Name of property to set
+	 * @return  boolean  True if set
 	 */
 	public function __isset($property)
 	{
@@ -79,9 +80,9 @@ class File extends Object
 	/**
 	 * Set a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @param   mixed   $value     Value to set property to
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -91,8 +92,8 @@ class File extends Object
 	/**
 	 * Unset a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @return  void
 	 */
 	public function clear($property)
 	{
@@ -105,8 +106,8 @@ class File extends Object
 	/**
 	 * Get a property
 	 *
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
+	 * @param   string  $property  Name of property to retrieve
+	 * @return  mixed
 	 */
 	public function __get($property)
 	{
@@ -119,7 +120,7 @@ class File extends Object
 	/**
 	 * Return all properties
 	 *
-	 * @return     _data
+	 * @return  array
 	 */
 	public function getData()
 	{
@@ -129,7 +130,7 @@ class File extends Object
 	/**
 	 * Check if file exists
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function exists()
 	{
@@ -139,7 +140,7 @@ class File extends Object
 	/**
 	 * Build basic metadata object
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function defaults()
 	{
@@ -160,12 +161,17 @@ class File extends Object
 			$this->set('type', 'file');
 			$this->set('ext', Helpers\Html::getFileExtension($this->get('localPath')));
 		}
+
+		if ($this->exists())
+		{
+			$this->set('date', Date::of(filemtime($this->get('fullPath'))));
+		}
 	}
 
 	/**
 	 * Get file contents
 	 *
-	 * @return     boolean
+	 * @return  mixed
 	 */
 	public function contents()
 	{
@@ -174,22 +180,27 @@ class File extends Object
 			return file_get_contents($this->get('fullPath'));
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
 	 * Get preview image
 	 *
+	 * @param   object  $model
+	 * @param   string  $hash
+	 * @param   string  $get
+	 * @param   string  $render
+	 * @param   string  $hashed
 	 * @return  mixed
 	 */
-	public function getPreview($model, $hash = '', $get = 'name', $render = '', $hashed = NULL)
+	public function getPreview($model, $hash = '', $get = 'name', $render = '', $hashed = null)
 	{
 		if (!($model instanceof Project))
 		{
 			return false;
 		}
 
-		$image = NULL;
+		$image = null;
 
 		if (!$hashed)
 		{
@@ -206,13 +217,13 @@ class File extends Object
 					break;
 
 				case 'thumb':
-					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : NULL;
+					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : null;
 					$maxWidth  = 80;
 					$maxHeight = 80;
 					break;
 
 				default:
-					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : NULL;
+					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : null;
 					$maxWidth  = 180;
 					$maxHeight = 180;
 					break;
@@ -223,7 +234,7 @@ class File extends Object
 		$target  = PATH_APP . DS . trim($model->config()->get('imagepath', '/site/projects'), DS);
 		$target .= DS . strtolower($model->get('alias')) . DS . 'preview';
 
-		$remoteThumb = NULL;
+		$remoteThumb = null;
 		if ($this->get('remoteId') && $this->get('modified'))
 		{
 			$remoteThumb = substr($this->get('remoteId'), 0, 20) . '_' . strtotime($this->get('modified')) . '.png';
@@ -283,8 +294,7 @@ class File extends Object
 		}
 		elseif ($get == 'url')
 		{
-			return Route::url('index.php?option=com_projects&alias='
-			. $model->get('alias') . '&controller=media&media=' . urlencode(basename($image)));
+			return Route::url('index.php?option=com_projects&alias=' . $model->get('alias') . '&controller=media&media=' . urlencode(basename($image)));
 		}
 
 		return basename($image);
@@ -293,6 +303,7 @@ class File extends Object
 	/**
 	 * Get file size
 	 *
+	 * @param   bool   $formatted
 	 * @return  mixed
 	 */
 	public function getSize($formatted = false)
@@ -308,9 +319,10 @@ class File extends Object
 	/**
 	 * Set file size
 	 *
-	 * @return  mixed
+	 * @param   integer  $size
+	 * @return  integer
 	 */
-	public function setSize($size = NULL)
+	public function setSize($size = null)
 	{
 		if (intval($size) > 0)
 		{
@@ -329,10 +341,7 @@ class File extends Object
 		}
 
 		// Formatted size
-		if ($this->get('size'))
-		{
-			$this->set('formattedSize', \Hubzero\Utility\Number::formatBytes($this->get('size')));
-		}
+		$this->set('formattedSize', \Hubzero\Utility\Number::formatBytes($this->get('size')));
 
 		return $this->get('size');
 	}
@@ -340,7 +349,7 @@ class File extends Object
 	/**
 	 * Get mime type
 	 *
-	 * @return  mixed
+	 * @return  string
 	 */
 	public function getMimeType()
 	{
@@ -355,7 +364,7 @@ class File extends Object
 	/**
 	 * Set mime type
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function setMimeType()
 	{
@@ -368,7 +377,7 @@ class File extends Object
 	/**
 	 * Set md5Hash
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function setMd5Hash()
 	{
@@ -381,7 +390,7 @@ class File extends Object
 	/**
 	 * Set md5Hash
 	 *
-	 * @return  mixed
+	 * @return  string
 	 */
 	public function getMd5Hash()
 	{
@@ -405,7 +414,7 @@ class File extends Object
 	/**
 	 * Is image?
 	 *
-	 * @return  mixed
+	 * @return  bool
 	 */
 	public function isImage()
 	{
@@ -416,7 +425,7 @@ class File extends Object
 	/**
 	 * Can image thumbnail be generated?
 	 *
-	 * @return  mixed
+	 * @return  bool
 	 */
 	public function isSupportedImage()
 	{
@@ -431,7 +440,7 @@ class File extends Object
 	/**
 	 * Get item parent directories
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function getParents()
 	{
@@ -448,7 +457,7 @@ class File extends Object
 	/**
 	 * Set item parents
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function setParents()
 	{
@@ -485,7 +494,7 @@ class File extends Object
 	/**
 	 * Build file metadata object for a folder
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function setFolder()
 	{
@@ -499,7 +508,7 @@ class File extends Object
 		$this->set('fullPath', $fullPath . $this->get('localPath'));
 
 		$dirname = dirname($this->get('dirname')) == '.'
-				? NULL : dirname($this->get('dirname'));
+				? null : dirname($this->get('dirname'));
 		$this->set('dirname', $dirname);
 		$this->setParents();
 
@@ -510,10 +519,10 @@ class File extends Object
 	/**
 	 * Fix up some mimetypes
 	 *
-	 * @param      string $mimeType
-	 * @return     string
+	 * @param   string  $mimeType
+	 * @return  string
 	 */
-	protected function _fixUpMimeType ($mimeType = NULL)
+	protected function _fixUpMimeType($mimeType = null)
 	{
 		if ($this->get('ext'))
 		{
@@ -543,10 +552,10 @@ class File extends Object
 	/**
 	 * Get file icon image
 	 *
-	 * @param      boolean $basename
-	 * @return     string
+	 * @param   boolean  $basename
+	 * @return  string
 	 */
-	public function getIcon ($basename = false)
+	public function getIcon($basename = false)
 	{
 		if (!$this->get('icon'))
 		{
@@ -558,12 +567,12 @@ class File extends Object
 	/**
 	 * Set file icon image
 	 *
-	 * @param      string  $ext
-	 * @param      boolean $basename
-	 * @param      string  $icon
-	 * @return     string
+	 * @param   string   $ext
+	 * @param   boolean  $basename
+	 * @param   string   $icon
+	 * @return  string
 	 */
-	public function setIcon ($ext = NULL, $basename = false, $icon = '')
+	public function setIcon($ext = null, $basename = false, $icon = '')
 	{
 		if ($this->get('icon') && $this->get('ext') == $ext)
 		{
@@ -588,8 +597,8 @@ class File extends Object
 	/**
 	 * Draw icon
 	 *
-	 * @param      string  $ext
-	 * @return     HTML string
+	 * @param   string  $ext
+	 * @return  string  HTML
 	 */
 	public static function drawIcon($ext = '')
 	{
@@ -600,12 +609,12 @@ class File extends Object
 	/**
 	 * Get file icon image
 	 *
-	 * @param      string  $ext
-	 * @param      boolean $basename
-	 * @param      string  $icon
-	 * @return     string
+	 * @param   string   $ext
+	 * @param   boolean  $basename
+	 * @param   string   $icon
+	 * @return  string
 	 */
-	public static function getIconImage ($ext, $basename = false, $icon = '')
+	public static function getIconImage($ext, $basename = false, $icon = '')
 	{
 		switch (strtolower($ext))
 		{
@@ -741,12 +750,10 @@ class File extends Object
 	/**
 	 * Get folder structure level
 	 *
-	 * @param      array	$files
-	 * @param      array	$params
-	 *
-	 * @return     integer
+	 * @param   string   $dirPath
+	 * @return  integer
 	 */
-	public function getDirLevel ($dirPath = '')
+	public function getDirLevel($dirPath = '')
 	{
 		if (!trim($dirPath))
 		{

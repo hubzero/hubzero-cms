@@ -32,7 +32,6 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use stdClass;
 use Request;
@@ -600,5 +599,34 @@ class Article extends Relational
 			return $this->get('params')->get((string) $key, $default);
 		}
 		return $this->get('params');
+	}
+
+	/**
+	 * Get a form
+	 *
+	 * @return  object
+	 */
+	public function getForm()
+	{
+		$file = __DIR__ . '/forms/article.xml';
+		$file = Filesystem::cleanPath($file);
+
+		Form::addFieldPath(__DIR__ . '/fields');
+
+		$form = new Form('article', array('control' => 'fields'));
+
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		$params = new Registry($this->get('params'));
+
+		$data = $this->toArray();
+		$data['params'] = $params->toArray();
+
+		$form->bind($data);
+
+		return $form;
 	}
 }

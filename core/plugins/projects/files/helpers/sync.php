@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 /**
  * Sync helper
  */
-class Sync extends \Hubzero\Base\Object
+class Sync extends \Hubzero\Base\Obj
 {
 	/**
 	 * Constructor
@@ -166,6 +166,7 @@ class Sync extends \Hubzero\Base\Object
 
 		// Record sync status
 		$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_STRUCTURE_REMOTE'));
+		$this->cleanUnusedRemotes();
 
 		// Get stored remote connections
 		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
@@ -886,7 +887,6 @@ class Sync extends \Hubzero\Base\Object
 		$this->lockSync($service, true);
 		// Clean up status
 		$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE'));
-		$this->cleanUnusedRemotes();
 
 		$this->set('status', 'success');
 		return true;
@@ -1048,14 +1048,18 @@ class Sync extends \Hubzero\Base\Object
 		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 		$projectId = $this->model->get('id');
 		$remotes = $objRFile->getRemoteConnections($projectId, $service);
-
 		// Get local directory repo information
-		$params = array('showAll'=> $showAll,'subdir' =>"");
-		$locals = $this->model->repo()->filelist($params);
+		$fileParams = array('showAll'=> $showAll,'subdir' =>"");
+		$localFiles = $this->model->repo()->filelist($fileParams);
+		$dirParams = $fileParams;
+		$dirParams['dirsOnly'] = true;
+		$localDirectories = $this->model->repo()->filelist($dirParams);
+		$locals = array_merge($localFiles, $localDirectories);
+		$localIds = array();
 		$localIds = array_map(function($file){
-				$path = $file->get('localPath');
+			$path = $file->get('localPath');
 			return $path;
-		}, $locals);
+		}, $localIds);
 
 		foreach ($remotes['paths'] as $remote)
 		{
@@ -1065,7 +1069,6 @@ class Sync extends \Hubzero\Base\Object
 				$errorMessage = "Forcefully removed remote entry {$remote['path']}. \n";
 				$errorMessage .= "This is a sign that the sync did not properly work, ";
 				$errorMessage .= "therefore the cleanup step was required to remove the entry.";
-				error_log($errorMessage, 0);
 			}
 		}
 	}

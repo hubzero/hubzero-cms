@@ -31,7 +31,7 @@
 
 namespace Components\Members\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Request;
 use Submenu;
 use Route;
@@ -60,7 +60,7 @@ class Admin
 	{
 		if (empty(self::$actions))
 		{
-			self::$actions = new Object;
+			self::$actions = new Obj;
 
 			$path = dirname(__DIR__) . '/config/access.xml';
 

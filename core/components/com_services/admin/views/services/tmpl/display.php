@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Services\Helpers\Permissions::getActions('service');
 
-Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES'), 'services');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_services', '550');
@@ -73,22 +73,18 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_SERVICES_COL_ID'); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_SERVICES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_SERVICES_COL_CATEGORY', 'category', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_SERVICES_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_CATEGORY', 'category', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td colspan="5"><?php
 				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>

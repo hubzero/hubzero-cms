@@ -82,6 +82,8 @@ class ResourceMapGenerator
 
 	/**
 	 * Sets the ID of this resource map. Do not supply with alias.
+	 *
+	 * @return  void
 	 */
 	public function setPaths()
 	{
@@ -97,8 +99,8 @@ class ResourceMapGenerator
 	/**
 	 * Checks if the ID exists in the database.
 	 *
-	 * @param int $id   ID to check
-	 * @return boolean  True if exists, false otherwise.
+	 * @param   integer  $id  ID to check
+	 * @return  boolean  True if exists, false otherwise.
 	 */
 	public static function idExists($id)
 	{
@@ -118,8 +120,8 @@ class ResourceMapGenerator
 	/**
 	 * Formats $date into ISO 8601 format
 	 *
-	 * @param $date Date to be formatted
-	 * @return Formatted date
+	 * @param   string  $date  Date to be formatted
+	 * @return  string  Formatted date
 	 */
 	private function formatDate($date)
 	{
@@ -135,7 +137,7 @@ class ResourceMapGenerator
 	/**
 	 * Sets the fields in this class with database data.
 	 *
-	 * @return boolean  True if succss and False otherwise
+	 * @return  boolean  True if succss and False otherwise
 	 */
 	private function populateRDFData()
 	{
@@ -182,7 +184,7 @@ class ResourceMapGenerator
 		$type_id = $pub->category;
 		$typesData = new \Components\Publications\Tables\Category($database);
 		$allTypes = $typesData->getCategories(array(
-				'state' => 'all'
+			'state' => 'all'
 		));
 
 		$this->types = array();
@@ -214,8 +216,9 @@ class ResourceMapGenerator
 	/**
 	 * Inserts data infomation for each datatype.
 	 *
-	 * @param array $aggregation    The aggregation that contains the data to be inserted
-	 * @param XMLWriter $xmlwriter  The XMLWriter object for writing to buffer
+	 * @param   array   $aggregation  The aggregation that contains the data to be inserted
+	 * @param   object  $xmlwriter    The XMLWriter object for writing to buffer
+	 * @return  void
 	 */
 	private function dataTypeDescriptor($aggregation, $xmlwriter)
 	{
@@ -239,7 +242,7 @@ class ResourceMapGenerator
 		{
 			case 'image':
 				// SVG types do not have height/width
-				if (stripos($datatype, 'svg') !== FALSE)
+				if (stripos($datatype, 'svg') !== false)
 				{
 					break;
 				}
@@ -255,7 +258,7 @@ class ResourceMapGenerator
 	/**
 	 * Builds the resource map in XML+RDFa format
 	 *
-	 * @return String containig the XML; NULL on error
+	 * @return  mixed  String containig the XML; NULL on error
 	 */
 	public function getResourceMap()
 	{
@@ -350,7 +353,7 @@ class ResourceMapGenerator
 		// Describe this rdf briefly
 		$writer->startElement('rdf:Description');
 			$writer->writeAttribute('rdf:about', $this->resourceURL . '.rdf');
-			$curtime = date("Y-m-d\TH:i:sP",$_SERVER['REQUEST_TIME']);
+			$curtime = date("Y-m-d\TH:i:sP", $_SERVER['REQUEST_TIME']);
 			$writer->startElement('dcterms:creator');
 				$writer->writeAttribute('rdf:resource', Request::base());
 			$writer->endElement();
@@ -372,6 +375,8 @@ class ResourceMapGenerator
 
 	/**
 	 * Creates a download handle to the client; exits if there were problem getting the XML
+	 *
+	 * @return  void
 	 */
 	public function pushDownload()
 	{
@@ -407,7 +412,8 @@ class ResourceMapGenerator
 	/**
 	 * Inserts the link to rdf download into the page. This is called by view task to insert link into head.
 	 *
-	 * @param resource $id  The integer id of the resource
+	 * @param   integer  $id  The integer id of the resource
+	 * @return  void
 	 */
 	public static function putRDF($id)
 	{
@@ -422,6 +428,11 @@ class ResourceMapGenerator
 			return;
 		}
 		else if (!self::idExists($id))
+		{
+			return;
+		}
+
+		if (Request::getInt('no_html') || Request::getInt('format') == 'raw')
 		{
 			return;
 		}

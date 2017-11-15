@@ -182,7 +182,7 @@ class History extends SiteController
 	 */
 	public function compareTask()
 	{
-		include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'differenceengine.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Diff.php';
 
 		// Incoming
 		$oldid = Request::getInt('oldid', 0);

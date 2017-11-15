@@ -32,11 +32,13 @@
 
 namespace Components\Citations\Site\Controllers;
 
-use Components\Citations\Tables\Citation;
-use Components\Citations\Tables\Author;
+use Components\Citations\Models\Citation;
+use Components\Citations\Models\Author;
 use Hubzero\Component\SiteController;
 use Exception;
+use Request;
 use User;
+use Lang;
 
 /**
  * Manage a citation's author entries
@@ -58,18 +60,19 @@ class Authors extends SiteController
 			$this->setError(Lang::txt('COM_CITATIONS_ERROR_MISSING_CITATION'));
 		}
 
-		$this->citation = new Citation($this->database);
-		$this->citation->id = $id;
-		if ($id > 0)
-		{
-			$this->citation->load($id);
-		}
+		$this->citation = Citation::oneOrNew($id);
 
-		if ($this->citation->id == 0)
+		if ($this->citation->isNew())
 		{
-			$this->setError(Lang::txt('COM_CITATIONS_ERROR_INVALID_CITATION'));
+			if ($id < 0)
+			{
+				$this->citation->set('id', $id);
+			}
+			else
+			{
+				$this->setError(Lang::txt('COM_CITATIONS_ERROR_INVALID_CITATION'));
+			}
 		}
-
 		parent::execute();
 	}
 
@@ -117,8 +120,10 @@ class Authors extends SiteController
 				{
 					$surname = array_pop($parts);
 					$user->set('surname', $surname);
+
 					$givenName = array_shift($parts);
 					$user->set('givenName', $givenName);
+
 					if (!empty($parts))
 					{
 						$user->get('middleName', implode(' ', $parts));
@@ -126,29 +131,24 @@ class Authors extends SiteController
 				}
 			}
 
-			$author = new Author($this->database);
-			$author->cid          = $this->citation->id;
-			$author->author       = $user->get('name');
-			$author->uidNumber    = $user->get('id', 0);
-			$author->organization = $user->get('organization');
-			$author->givenName    = $user->get('givenName');
-			$author->middleName   = $user->get('middleName');
-			$author->surname      = $user->get('surname');
-			$author->email        = $user->get('email');
+			$authorValues = array(
+				'cid'          => $this->citation->id,
+				'author'       => $user->get('name'),
+				'uidNumber'    => $user->get('id', 0),
+				'organization' => $user->get('organization', ''),
+				'givenName'    => $user->get('givenName', ''),
+				'middleName'   => $user->get('middleName', ''),
+				'surname'      => $user->get('surname'),
+				'email'        => $user->get('email', '')
+			);
+			$author = Author::blank()->set($authorValues);
 
-			if (!$author->check())
-			{
-				$this->setError($author->getError());
-				continue;
-			}
-			if (!$author->store())
+			if (!$author->save())
 			{
 				$this->setError($author->getError());
 				continue;
 			}
 		}
-
-		$this->saveAuthorsList();
 
 		// Push through to the view
 		$this->displayTask();
@@ -172,14 +172,12 @@ class Authors extends SiteController
 		$mbrs = Request::getVar('author', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
-		$users = array();
 		foreach ($mbrs as $i => $mbr)
 		{
-			$author = new Author($this->database);
-			$author->load(intval($mbr));
-			$author->ordering = ($i + 1);
+			$author = Author::one($mbr);
+			$author->set('ordering', $i + 1);
 
-			if (!$author->store())
+			if ($author === false || !$author->save())
 			{
 				$this->setError(Lang::txt('COM_CITATIONS_ERROR_UNABLE_TO_UPDATE') . ' ' . $mbr);
 			}
@@ -204,21 +202,18 @@ class Authors extends SiteController
 			return $this->displayTask();
 		}
 
-		$author = new Author($this->database);
 
 		$mbrs = Request::getVar('author', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+		$authors = Author::all()->whereIn('id', $mbrs)->rows();
 
-		$users = array();
-		foreach ($mbrs as $mbr)
+		foreach ($authors as $author)
 		{
-			if (!$author->delete(intval($mbr)))
+			if (!$author->destroy())
 			{
-				$this->setError(Lang::txt('COM_CITATIONS_ERROR_UNABLE_TO_REMOVE') . ' ' . $mbr);
+				$this->setError(Lang::txt('COM_CITATIONS_ERROR_UNABLE_TO_REMOVE') . ' ' . $author->get('id'));
 			}
 		}
-
-		$this->saveAuthorsList();
 
 		// Push through to the view
 		$this->displayTask();
@@ -231,34 +226,12 @@ class Authors extends SiteController
 	 */
 	public function displayTask()
 	{
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
-			->set('citation', $this->citation)
-			->setLayout('display')
-			->display();
-	}
-
-	/**
-	 * Update authors string on the citations entry
-	 * This is used primarily to make searching easier
-	 *
-	 * @return  void
-	 */
-	protected function saveAuthorsList()
-	{
-		// Reset the authors string
-		$authors = $this->citation->authors();
-		foreach ($authors as $author)
-		{
-			$auths[] = $author->author . ($author->uidNumber ? '{{' . $author->uidNumber . '}}' : '');
-		}
-		$this->citation->author = implode('; ', $auths);
-		$this->citation->store();
+			->set('row', $this->citation)
+			->setErrors($this->getErrors())
+			->setLayout('display');
+		echo $this->view->loadTemplate('authors');
+		exit();
 	}
 }
-

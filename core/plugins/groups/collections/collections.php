@@ -87,7 +87,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	public function onGroupDelete($group)
 	{
 		// Import needed libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
 		// Get all the IDs for collections
 		$database = App::get('db');
@@ -135,7 +135,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
 		$database = App::get('db');
 		$database->setQuery("SELECT COUNT(*) FROM `#__collections` WHERE `object_type`=" . $database->quote('group') . " AND `object_id`=" . $database->quote($group->get('gidNumber')));
@@ -1079,6 +1079,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		// Get model
 		$item = new \Components\Collections\Models\Item(intval($fields['id']));
+		$tmp = null;
+		if (substr($item->get('title'), 0, 3) == 'tmp')
+		{
+			$tmp = $item->get('title');
+		}
 
 		// Bind content
 		if (!$item->bind($fields))
@@ -1105,6 +1110,37 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError($item->getError());
 			return $this->_edit($item);
+		}
+
+		// It's possible that multiple temporary items could have been created
+		// This can happen if someone drops multiple files at once on the file
+		// uploader. So, we need to move any attachments back to the main one
+		// and remove the extra items.
+		//
+		// @TODO: Find a better way to do this
+		if ($tmp)
+		{
+			$db = App::get('db');
+			$db->setQuery("SELECT id FROM `#__collections_items` WHERE `title`=" . $db->quote($tmp) . " AND `id`!=" . $db->quote($item->get('id')));
+			$others = $db->loadColumn();
+
+			if (count($others) > 0)
+			{
+				$db->setQuery("SELECT * FROM `#__collections_assets` WHERE `item_id` in (" . implode(",", $others) . ")");
+				$assets = $db->loadObjectList();
+				foreach ($assets as $asset)
+				{
+					$asset = new \Components\Collections\Models\Asset($asset);
+					if (!$asset->move($item->get('id')))
+					{
+						$this->setError($item->getError());
+						return $this->_edit($item);
+					}
+				}
+
+				$db->setQuery("DELETE FROM `#__collections_items` WHERE `id` in (" . implode(",", $others) . ")");
+				$db->query();
+			}
 		}
 
 		// Create a post entry linking the item to the board
@@ -1630,7 +1666,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$title = $post->item()->get('title');
 		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
-		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 		$url = Route::url('index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment');
 
 		Event::trigger('system.logActivity', [
@@ -1696,7 +1732,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$title = $post->item()->get('title');
 		$title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
-		$title = \Hubzero\Utility\String::truncate(strip_tags($title), 70);
+		$title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
 
 		Event::trigger('system.logActivity', [
 			'activity' => [

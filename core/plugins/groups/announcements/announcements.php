@@ -480,7 +480,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'announcement',
 				'scope_id'    => $model->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
 				'details'     => array(
 					'url'   => Route::url($url),
 					'id'    => $this->group->get('gidNumber'),
@@ -557,7 +557,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				'action'      => 'deleted',
 				'scope'       => 'announcement',
 				'scope_id'    => $model->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . Hubzero\Utility\String::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
 				'details'     => array(
 					'url'   => Route::url($url),
 					'id'    => $this->group->get('gidNumber'),
@@ -605,6 +605,20 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		{
 			return true;
 		}
+
+		$extension = 'plg_groups_announcements';
+		$basePath  = PATH_APP;
+
+		if ($group->isSuperGroup())
+		{
+			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
+		}
+
+		$lang = App::get('language');
+		$lang->load($extension, $basePath, null, false, true)
+		|| $lang->load($extension, PATH_APP . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true)
+		|| $lang->load($extension, PATH_APP . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true)
+		|| $lang->load($extension, PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true);
 
 		// Create view object
 		$eview = new Hubzero\Mail\View(array(
@@ -709,7 +723,6 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   object   $group
 	 * @param   string   $active
-	 * @param   integer  $id
 	 * @return  object
 	 */
 	public function onGroupsApiCreate($group, $active)

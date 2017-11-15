@@ -37,6 +37,7 @@ use Request;
 use Route;
 use Lang;
 use Date;
+use User;
 
 /**
  * Handles a publication link attachment
@@ -44,10 +45,10 @@ use Date;
 class Publication extends Base
 {
 	/**
-	* Attachment type name
-	*
-	* @var  string
-	*/
+	 * Attachment type name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'publication';
 
 	/**
@@ -91,7 +92,7 @@ class Publication extends Base
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
 
 		// Get default title
-		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
 		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Fancy launcher?
@@ -133,11 +134,11 @@ class Publication extends Base
 				$description = '';
 				if ($publication->get('abstract'))
 				{
-					$description = \Hubzero\Utility\String::truncate(stripslashes($publication->get('abstract')), 300) . "\n";
+					$description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('abstract')), 300) . "\n";
 				}
 				else if ($publication->get('description'))
 				{
-					$description = \Hubzero\Utility\String::truncate(stripslashes($publication->get('description')), 300) . "\n";
+					$description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('description')), 300) . "\n";
 				}
 
 				$pop = Lang::txt('View link') . ' ' . $title;
@@ -284,12 +285,12 @@ class Publication extends Base
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
 
-		$path = NULL;
+		$path = null;
 		if ($itemId)
 		{
 			foreach ($attachments as $attach)
@@ -308,7 +309,7 @@ class Publication extends Base
 
 		if (!$path)
 		{
-			$this->setError(Lang::txt('Oups! Something went wrong. Cannot redirect to content.'));
+			$this->setError(Lang::txt('Oops! Something went wrong. Cannot redirect to content.'));
 			return false;
 		}
 
@@ -356,7 +357,7 @@ class Publication extends Base
 
 		// Get existing attachments for the elemnt
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
@@ -421,7 +422,7 @@ class Publication extends Base
 	public function addAttachment($id, $title, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
 		// Need to check against allowed types
-		$accept = isset($element->typeParams->accept) ? $element->typeParams->accept : NULL;
+		$accept = isset($element->typeParams->accept) ? $element->typeParams->accept : null;
 
 		if ($configs->check)
 		{
@@ -443,7 +444,7 @@ class Publication extends Base
 		}
 		else
 		{
-			$objPA->publication_id         = $pub->id;
+			$objPA->publication_id = $pub->id;
 			$objPA->publication_version_id = $pub->version_id;
 			$objPA->path        = $path;
 			$objPA->type        = $this->_name;
@@ -473,6 +474,11 @@ class Publication extends Base
 	/**
 	 * Remove attachment
 	 *
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
 	 * @return  boolean
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -505,6 +511,11 @@ class Publication extends Base
 	/**
 	 * Update attachment properties
 	 *
+	 * @param   object   $row
+	 * @param   object   $element
+	 * @param   integer  $elementId
+	 * @param   object   $pub
+	 * @param   array    $blockParams
 	 * @return  boolean
 	 */
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -556,7 +567,7 @@ class Publication extends Base
 		$params   = $element->typeParams;
 		$required = $element->required;
 		$counter  = count($attachments);
-		$allowed  = isset($params->accept) ? $params->accept :  NULL;
+		$allowed  = isset($params->accept) ? $params->accept :  null;
 
 		if (!$required)
 		{

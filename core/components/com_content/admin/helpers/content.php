@@ -50,13 +50,13 @@ class ContentHelper
 	 * @param	int		The category ID.
 	 * @param	int		The article ID.
 	 *
-	 * @return	Object
+	 * @return	object
 	 * @since	1.6
 	 */
 	public static function getActions($categoryId = 0, $articleId = 0)
 	{
 		// Reverted a change for version 2.5.6
-		$result	= new \Hubzero\Base\Object;
+		$result	= new \Hubzero\Base\Obj;
 
 		if (empty($articleId) && empty($categoryId))
 		{
@@ -84,10 +84,11 @@ class ContentHelper
 	}
 
 	/**
-	* Applies the content tag filters to arbitrary text as per settings for current user group
-	* @param text The string to filter
-	* @return string The filtered string
-	*/
+	 * Applies the content tag filters to arbitrary text as per settings for current user group
+	 *
+	 * @param   string  $text  The string to filter
+	 * @return  string  The filtered string
+	 */
 	public static function filterText($text)
 	{
 		// Filter settings
@@ -96,27 +97,28 @@ class ContentHelper
 
 		$filters = $config->get('filters');
 
-		$blackListTags			= array();
-		$blackListAttributes	= array();
+		$blackListTags        = array();
+		$blackListAttributes  = array();
 
-		$customListTags			= array();
-		$customListAttributes	= array();
+		$customListTags       = array();
+		$customListAttributes = array();
 
-		$whiteListTags			= array();
-		$whiteListAttributes	= array();
+		$whiteListTags        = array();
+		$whiteListAttributes  = array();
 
-		$noHtml				= false;
-		$whiteList			= false;
-		$blackList			= false;
-		$customList			= false;
-		$unfiltered			= false;
+		$noHtml     = false;
+		$whiteList  = false;
+		$blackList  = false;
+		$customList = false;
+		$unfiltered = false;
 
 		// Cycle through each of the user groups the user is in.
 		// Remember they are included in the Public group as well.
 		foreach ($userGroups as $groupId)
 		{
 			// May have added a group but not saved the filters.
-			if (!isset($filters->$groupId)) {
+			if (!isset($filters->$groupId))
+			{
 				continue;
 			}
 
@@ -124,27 +126,31 @@ class ContentHelper
 			$filterData = $filters->$groupId;
 			$filterType	= strtoupper($filterData->filter_type);
 
-			if ($filterType == 'NH') {
+			if ($filterType == 'NH')
+			{
 				// Maximum HTML filtering.
 				$noHtml = true;
 			}
-			elseif ($filterType == 'NONE') {
+			elseif ($filterType == 'NONE')
+			{
 				// No HTML filtering.
 				$unfiltered = true;
 			}
-			else {
+			else
+			{
 				// Black, white or custom list.
 				// Preprocess the tags and attributes.
-				$tags			= explode(',', $filterData->filter_tags);
-				$attributes		= explode(',', $filterData->filter_attributes);
-				$tempTags		= array();
-				$tempAttributes	= array();
+				$tags           = explode(',', $filterData->filter_tags);
+				$attributes     = explode(',', $filterData->filter_attributes);
+				$tempTags       = array();
+				$tempAttributes = array();
 
 				foreach ($tags as $tag)
 				{
 					$tag = trim($tag);
 
-					if ($tag) {
+					if ($tag)
+					{
 						$tempTags[] = $tag;
 					}
 				}
@@ -153,61 +159,72 @@ class ContentHelper
 				{
 					$attribute = trim($attribute);
 
-					if ($attribute) {
+					if ($attribute)
+					{
 						$tempAttributes[] = $attribute;
 					}
 				}
 
 				// Collect the black or white list tags and attributes.
 				// Each lists is cummulative.
-				if ($filterType == 'BL') {
-					$blackList				= true;
-					$blackListTags			= array_merge($blackListTags, $tempTags);
-					$blackListAttributes	= array_merge($blackListAttributes, $tempAttributes);
+				if ($filterType == 'BL')
+				{
+					$blackList           = true;
+					$blackListTags       = array_merge($blackListTags, $tempTags);
+					$blackListAttributes = array_merge($blackListAttributes, $tempAttributes);
 				}
-				elseif ($filterType == 'CBL') {
+				elseif ($filterType == 'CBL')
+				{
 					// Only set to true if Tags or Attributes were added
-					if ($tempTags || $tempAttributes) {
-						$customList				= true;
-						$customListTags			= array_merge($customListTags, $tempTags);
-						$customListAttributes	= array_merge($customListAttributes, $tempAttributes);
+					if ($tempTags || $tempAttributes)
+					{
+						$customList           = true;
+						$customListTags       = array_merge($customListTags, $tempTags);
+						$customListAttributes = array_merge($customListAttributes, $tempAttributes);
 					}
 				}
-				elseif ($filterType == 'WL') {
-					$whiteList				= true;
-					$whiteListTags			= array_merge($whiteListTags, $tempTags);
-					$whiteListAttributes	= array_merge($whiteListAttributes, $tempAttributes);
+				elseif ($filterType == 'WL')
+				{
+					$whiteList           = true;
+					$whiteListTags       = array_merge($whiteListTags, $tempTags);
+					$whiteListAttributes = array_merge($whiteListAttributes, $tempAttributes);
 				}
 			}
 		}
 
 		// Remove duplicates before processing (because the black list uses both sets of arrays).
-		$blackListTags			= array_unique($blackListTags);
-		$blackListAttributes	= array_unique($blackListAttributes);
-		$customListTags			= array_unique($customListTags);
-		$customListAttributes	= array_unique($customListAttributes);
-		$whiteListTags			= array_unique($whiteListTags);
-		$whiteListAttributes	= array_unique($whiteListAttributes);
+		$blackListTags        = array_unique($blackListTags);
+		$blackListAttributes  = array_unique($blackListAttributes);
+		$customListTags       = array_unique($customListTags);
+		$customListAttributes = array_unique($customListAttributes);
+		$whiteListTags        = array_unique($whiteListTags);
+		$whiteListAttributes  = array_unique($whiteListAttributes);
 
 		// Unfiltered assumes first priority.
-		if ($unfiltered) {
+		if ($unfiltered)
+		{
 			// Dont apply filtering.
 		}
-		else {
+		else
+		{
 			// Custom blacklist precedes Default blacklist
-			if ($customList) {
+			if ($customList)
+			{
 				$filter = JFilterInput::getInstance(array(), array(), 1, 1);
 
 				// Override filter's default blacklist tags and attributes
-				if ($customListTags) {
+				if ($customListTags)
+				{
 					$filter->tagBlacklist = $customListTags;
 				}
-				if ($customListAttributes) {
+				if ($customListAttributes)
+				{
 					$filter->attrBlacklist = $customListAttributes;
 				}
 			}
 			// Black lists take third precedence.
-			elseif ($blackList) {
+			elseif ($blackList)
+			{
 				// Remove the white-listed attributes from the black-list.
 				$filter = JFilterInput::getInstance(
 					array_diff($blackListTags, $whiteListTags), 			// blacklisted tags
@@ -216,21 +233,24 @@ class ContentHelper
 					1														// blacklist attributes
 				);
 				// Remove white listed tags from filter's default blacklist
-				if ($whiteListTags) {
+				if ($whiteListTags)
+				{
 					$filter->tagBlacklist = array_diff($filter->tagBlacklist, $whiteListTags);
 				}
 				// Remove white listed attributes from filter's default blacklist
-				if ($whiteListAttributes) {
+				if ($whiteListAttributes)
+				{
 					$filter->attrBlacklist = array_diff($filter->attrBlacklist);
 				}
-
 			}
 			// White lists take fourth precedence.
-			elseif ($whiteList) {
+			elseif ($whiteList)
+			{
 				$filter	= JFilterInput::getInstance($whiteListTags, $whiteListAttributes, 0, 0, 0);  // turn off xss auto clean
 			}
 			// No HTML takes last place.
-			else {
+			else
+			{
 				$filter = JFilterInput::getInstance();
 			}
 

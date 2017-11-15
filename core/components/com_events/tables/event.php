@@ -59,6 +59,12 @@ class Event extends \JTable
 		{
 			$this->setError(Lang::txt('EVENTS_MUST_HAVE_TITLE'));
 		}
+
+		if (!$this->scope_id && !$this->scope)
+		{
+			$this->scope = 'event';
+		}
+
 		if (trim($this->catid) == '' || trim($this->catid) == 0)
 		{
 			if ($this->scope == 'event')
@@ -78,6 +84,8 @@ class Event extends \JTable
 	 * Set an event to published
 	 *
 	 * @param      integer $oid Event ID
+	 * @param      integer $state
+	 * @param      integer $state
 	 * @return     void
 	 */
 	public function publish($oid = null, $state = 1, $userId = 0)

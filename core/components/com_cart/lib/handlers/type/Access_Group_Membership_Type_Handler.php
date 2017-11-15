@@ -32,14 +32,20 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 	/**
 	 * Constructor
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @param   object   $item
+	 * @param   integer  $crtId
+	 * @return  void
 	 */
 	public function __construct($item, $crtId)
 	{
 		parent::__construct($item, $crtId);
 	}
 
+	/**
+	 * Handle
+	 *
+	 * @return  bool
+	 */
 	public function handle()
 	{
 		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
@@ -66,16 +72,15 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
 			$userGId = \Components\Storefront\Models\Product::getMetaValue($this->item['info']->pId, 'userGroupId');
 
-			$add = \JUserHelper::addUserToGroup($userId, $userGId);
-			if ($add instanceof \Exception) {
+			if (!\Hubzero\Access\Map::addUserToGroup($userId, $userGId))
+			{
 				mail(Config::get('mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
 			}
 
-			$table = \JTable::getInstance('User', 'JTable', array());
-			$table->load($userId);
+			$table = User::getInstance($userId);
 
 			// Trigger the onAftereStoreUser event
-			Event::trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+			Event::trigger('onUserAfterSave', array($table->toArray(), false, true, null));
 		}
 		catch (Exception $e)
 		{

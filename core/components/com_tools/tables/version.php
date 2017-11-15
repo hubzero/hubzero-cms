@@ -42,12 +42,10 @@ use Log;
 class Version extends \JTable
 {
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  &$db  Database connection
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -55,11 +53,9 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function check()
 	{
@@ -91,21 +87,19 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'loadFromInstance'
+	 * Load a record by instance
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $tool Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $tool  Tool instance
+	 * @return  boolean
 	 */
-	public function loadFromInstance($tool=NULL)
+	public function loadFromInstance($tool=null)
 	{
-		if ($tool === NULL)
+		if ($tool === null)
 		{
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->quote($tool) . " LIMIT 1";
+		$query = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->quote($tool) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -120,19 +114,17 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'getAll'
+	 * Get all tool versions for all tools
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $includedev Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   integer  $includedev  Include dev versions?
+	 * @return  array
 	 */
 	public function getAll($includedev = 1)
 	{
-		$sql = "SELECT * FROM #__tool_version";
+		$sql = "SELECT * FROM `#__tool_version`";
 		if (!$includedev)
 		{
-			$sql.= " WHERE state!='3'";
+			$sql .= " WHERE state!='3'";
 		}
 
 		$this->_db->setQuery($sql);
@@ -140,17 +132,15 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'getVersions'
+	 * Get versions for a tool
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $alias Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $alias  Tool name
+	 * @return  mixed   False on error, array on success
 	 */
 	public function getVersions($alias)
 	{
 		// will load versions excluding dev
-		if ($alias === NULL)
+		if ($alias === null)
 		{
 			$alias = $this->toolname;
 		}
@@ -171,33 +161,31 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'getVersionIdFromResource'
+	 * Get tool version ID from the associated Resource ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $version Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $rid      Resource ID
+	 * @param   string   $version  Version (dev, current, or specific number)
+	 * @return  mixed    False on error, integer on success
 	 */
-	public function getVersionIdFromResource($rid=NULL, $version ='dev')
+	public function getVersionIdFromResource($rid=null, $version ='dev')
 	{
-		if ($rid=== NULL)
+		if ($rid === null)
 		{
 			return false;
 		}
 
-		$query = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
-		if ($version=='dev')
+		$query = "SELECT v.id FROM `#__tool_version` as v JOIN `#__resources` as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
+		if ($version == 'dev')
 		{
-			$query.= " AND v.state=3 LIMIT 1";
+			$query .= " AND v.state=3 LIMIT 1";
 		}
-		else if ($version=='current')
+		else if ($version == 'current')
 		{
-			$query.= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
+			$query .= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
 		}
 		else
 		{
-			$query.= " AND v.version=" . $this->_db->quote($version) . " LIMIT 1";
+			$query .= " AND v.version=" . $this->_db->quote($version) . " LIMIT 1";
 		}
 
 		$this->_db->setQuery($query);
@@ -205,21 +193,19 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'loadFromName'
+	 * Load a record by tool name
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $alias Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $alias  Tool name
+	 * @return  boolean
 	 */
 	public function loadFromName($alias)
 	{
-		if ($alias === NULL)
+		if ($alias === null)
 		{
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl as v WHERE v.toolname=" . $this->_db->quote($alias) . " AND state='1' ORDER BY v.revision DESC LIMIT 1";
+		$query = "SELECT * FROM $this->_tbl as v WHERE v.toolname=" . $this->_db->quote($alias) . " AND state='1' ORDER BY v.revision DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -234,26 +220,24 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'load_version'
+	 * Load a specific tool version
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      string $version Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $toolid   Tool ID
+	 * @param   string   $version  Version (dev, current, or specific number)
+	 * @return  mixed    False on error, object on success
 	 */
-	public function load_version($toolid=NULL, $version='dev')
+	public function load_version($toolid=null, $version='dev')
 	{
-		if ($toolid === NULL)
+		if ($toolid === null)
 		{
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl WHERE toolid=" . $this->_db->quote($toolid) . " AND ";
-		if (!$version or $version=='dev')
+		if (!$version or $version == 'dev')
 		{
 			$query .= "state='3'";
 		}
-		else if ($version=='current')
+		else if ($version == 'current')
 		{
 			$query .= "state='1'";
 		}
@@ -267,16 +251,14 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'setUnpublishDate'
+	 * Set the unpublished date for a tool version
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $toolid Parameter description (if any) ...
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      mixed $vid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @param   string   $toolname
+	 * @param   mixed    $vid
+	 * @return  boolean
 	 */
-	public function setUnpublishDate($toolid=NULL, $toolname='', $vid=0)
+	public function setUnpublishDate($toolid=null, $toolname='', $vid=0)
 	{
 		if (!$toolid)
 		{
@@ -284,14 +266,14 @@ class Version extends \JTable
 		}
 		if ($toolname or $vid)
 		{
-			$query = "UPDATE #__tool_version SET unpublished='".Date::toSql()."' WHERE ";
+			$query = "UPDATE `#__tool_version` SET unpublished=" . $this->_db->quote(Date::toSql()) . " WHERE ";
 			if ($toolname)
 			{
 				$query .= "toolname=" . $this->_db->quote($toolname) . " ";
 			}
 			else if ($vid)
 			{
-				$query.= "id=" . $this->_db->quote($vid) . " ";
+				$query .= "id=" . $this->_db->quote($vid) . " ";
 			}
 			$query .= "AND state='1'";
 			$this->_db->setQuery($query);
@@ -307,27 +289,25 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'unpublish'
+	 * Unpublish a tool version
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      mixed $vid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $toolid
+	 * @param   mixed    $vid
+	 * @return  boolean
 	 */
-	public function unpublish($toolid=NULL, $vid=0)
+	public function unpublish($toolid=null, $vid=0)
 	{
 		if (!$toolid)
 		{
 			return false;
 		}
 
-		$query = "UPDATE #__tool_version SET state='0', unpublished='".Date::toSql()."' WHERE ";
+		$query = "UPDATE `#__tool_version` SET state='0', unpublished=" . $this->_db->quote(Date::toSql()) . " WHERE ";
 		if (intval($vid))
 		{
-			$query.= "id=" . $this->_db->quote($vid) . " AND ";
+			$query .= "id=" . $this->_db->quote($vid) . " AND ";
 		}
-		$query.= "toolid=" . $this->_db->quote($toolid) . " AND state='1'";
+		$query .= "toolid=" . $this->_db->quote($toolid) . " AND state='1'";
 
 		$this->_db->setQuery($query);
 
@@ -344,16 +324,14 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save an entry
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $toolid Parameter description (if any) ...
-	 * @param      string $version Parameter description (if any) ...
-	 * @param      integer $create_new Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @param   string   $version
+	 * @param   integer  $create_new
+	 * @return  boolean
 	 */
-	public function save($toolid=NULL, $version='dev', $create_new = 0)
+	public function save($toolid=null, $version='dev', $create_new = 0)
 	{
 		if (!$this->toolid)
 		{
@@ -364,20 +342,20 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query = "SELECT id FROM #__tool_version WHERE toolid=" . $this->_db->quote($this->toolid);
-		if (!$version or $version=='dev')
+		$query = "SELECT id FROM `#__tool_version` WHERE toolid=" . $this->_db->quote($this->toolid);
+		if (!$version or $version == 'dev')
 		{
-			$query.= " AND state='3'";
+			$query .= " AND state='3'";
 		}
 		else if ($version=='current')
 		{
-			$query.= " AND state='1'";
+			$query .= " AND state='1'";
 		}
 		else
 		{
-			$query.= " AND version=" . $this->_db->quote($version);
+			$query .= " AND version=" . $this->_db->quote($version);
 		}
-		$query.=" ORDER BY revision DESC LIMIT 1";
+		$query .= " ORDER BY revision DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadResult();
@@ -399,17 +377,18 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'store'
+	 * Store an entry.
 	 *
-	 * Long description (if any) ...
+	 * Creates a new entry, if it doesn't already exist. Otherwise, updates.
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @param   boolean  $updateNulls
+	 * @return  boolean
 	 */
 	public function store($updateNulls = false)
 	{
 		if (empty($this->id))
 		{
-			$query = "SELECT id FROM #__tool_version WHERE toolname=" . $this->_db->quote($this->toolname) .
+			$query = "SELECT id FROM `#__tool_version` WHERE toolname=" . $this->_db->quote($this->toolname) .
 					" AND instance=" . $this->_db->quote($this->instance) . ";";
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadResult();
@@ -426,22 +405,20 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolVersions'
+	 * Get versions for a tool
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      array &$versions Parameter description (if any) ...
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      integer $exclude_dev Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   string   $toolid
+	 * @param   array    &$versions
+	 * @param   string   $toolname
+	 * @param   integer  $exclude_dev
+	 * @return  array
 	 */
 	public function getToolVersions($toolid, &$versions, $toolname='', $exclude_dev = 0)
 	{
 		$objA = new \Components\Tools\Tables\Author($this->_db);
 
 		$query  = "SELECT v.*, d.* ";
-		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
+		$query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($toolid)
 		{
 			$query .= "WHERE v.toolid = " . $this->_db->quote($toolid) . " ";
@@ -461,7 +438,7 @@ class Version extends \JTable
 
 		if ($versions)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+			require_once dirname(__DIR__) . DS . 'models' . DS . 'tool.php';
 
 			foreach ($versions as $version)
 			{
@@ -482,21 +459,19 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'getVersionInfo'
+	 * Get tool version information
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $version Parameter description (if any) ...
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      string $instance Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   integer  $id
+	 * @param   string   $version
+	 * @param   string   $toolname
+	 * @param   string   $instance
+	 * @return  object
 	 */
 	public function getVersionInfo($id, $version='', $toolname='', $instance='')
 	{
 		// data comes from mysql
 		$query  = "SELECT v.*, d.* ";
-		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
+		$query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)
 		{
 			$query .= "WHERE v.id = " . $this->_db->quote($id) . " ";
@@ -506,7 +481,8 @@ class Version extends \JTable
 			$query.= "WHERE v.toolname=" . $this->_db->quote($toolname) . " ";
 			if ($version=='current')
 			{
-				$query .= "AND v.state=1 ORDER BY v.revision DESC LIMIT 1 ";
+				// Adding state=0 to account for retired tools
+				$query .= "AND v.state IN (1, 0) ORDER BY v.state DESC, v.revision DESC LIMIT 1 ";
 			}
 			else if ($version=='dev')
 			{
@@ -535,16 +511,14 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'compileResource'
+	 * Compiles resource information for the appropriate tool revision
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $thistool Parameter description (if any) ...
-	 * @param      mixed $curtool Parameter description (if any) ...
-	 * @param      mixed $resource Parameter description (if any) ...
-	 * @param      string $revision Parameter description (if any) ...
-	 * @param      object $config Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   object   $thistool
+	 * @param   mixed    $curtool
+	 * @param   mixed    $resource
+	 * @param   string   $revision
+	 * @param   object   $config
+	 * @return  boolean
 	 */
 	public function compileResource($thistool, $curtool='', $resource, $revision, $config)
 	{
@@ -606,10 +580,8 @@ class Version extends \JTable
 		}
 		$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
 
-		// Get some needed libraries
-		//include_once(PATH_CORE.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php');
 		$resource->tarname = $resource->alias.'-r'.$resource->revision.'.tar.gz';
-		$tarball_path = $config->get('sourcecodePath','site/protected/source');
+		$tarball_path = $config->get('sourcecodePath', 'site/protected/source');
 		if ($tarball_path[0] != DS)
 		{
 			$tarball_path = rtrim(PATH_APP . DS . $tarball_path, DS);
@@ -622,16 +594,14 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'validLicense'
+	 * Check if a license is valid
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $toolname Parameter description (if any) ...
-	 * @param      array $license Parameter description (if any) ...
-	 * @param      string $code Parameter description (if any) ...
-	 * @param      unknown &$error Parameter description (if any) ...
-	 * @param      integer $result Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   string   $toolname
+	 * @param   array    $license
+	 * @param   string   $code
+	 * @param   string   &$error
+	 * @param   integer  $result
+	 * @return  integer
 	 */
 	public function validLicense($toolname, $license, $code, &$error, $result=0)
 	{
@@ -658,17 +628,15 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'validToolReg'
+	 * Validate tool registration
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array &$tool Parameter description (if any) ...
-	 * @param      array &$err Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      object $config Parameter description (if any) ...
-	 * @param      integer $checker Parameter description (if any) ...
-	 * @param      integer $result Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   array    &$tool
+	 * @param   array    &$err
+	 * @param   string   $id
+	 * @param   object   $config
+	 * @param   integer  $checker
+	 * @param   integer  $result
+	 * @return  integer
 	 */
 	public function validToolReg(&$tool, &$err, $id, $config, $checker=0, $result=1)
 	{
@@ -676,7 +644,7 @@ class Version extends \JTable
 
 		//  check if toolname exists in tool table
 		$query  = "SELECT t.id ";
-		$query .= "FROM #__tool as t ";
+		$query .= "FROM `#__tool` as t ";
 		$query .= "WHERE t.toolname LIKE " . $this->_db->quote($tool['toolname']) . " ";
 		if ($id)
 		{
@@ -697,7 +665,7 @@ class Version extends \JTable
 
 		// check if title can be used - tool table
 		$query  = "SELECT title, toolname ";
-		$query .= "FROM #__tool ";
+		$query .= "FROM `#__tool` ";
 		if ($id)
 		{
 			$query .= "WHERE id!=" . $this->_db->quote($id) . " ";
@@ -790,7 +758,8 @@ class Version extends \JTable
 		}
 
 		// format some data
-		$vnc     = isset($config->parameters['default_vnc']) ? $config->parameters['default_vnc'] : '780x600';
+		$vnc = isset($config->parameters['default_vnc']) ? $config->parameters['default_vnc'] : '780x600';
+
 		if ($tool['vncGeometryX']
 		 && $tool['vncGeometryY']
 		 && !preg_match('#[^0-9]#', $tool['vncGeometryX'])
@@ -813,16 +782,14 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'validVersion'
+	 * Check if a new version is valid
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $toolname Parameter description (if any) ...
-	 * @param      unknown $newversion Parameter description (if any) ...
-	 * @param      unknown &$error Parameter description (if any) ...
-	 * @param      integer $required Parameter description (if any) ...
-	 * @param      integer $result Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   string   $toolname
+	 * @param   string   $newversion
+	 * @param   string   &$error
+	 * @param   integer  $required
+	 * @param   integer  $result
+	 * @return  integer
 	 */
 	public function validVersion($toolname, $newversion, &$error, $required=1, $result=1)
 	{
@@ -859,17 +826,14 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolname'
+	 * Get tool name from instance
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $instance Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string  $instance
+	 * @return  string
 	 */
 	public function getToolname($instance)
 	{
-		$database = \App::get('db');
-		$query  = "SELECT toolname FROM #__tool_version WHERE instance=" . $this->_db->quote($instance) . " LIMIT 1";
+		$query  = "SELECT toolname FROM `#__tool_version` WHERE instance=" . $this->_db->quote($instance) . " LIMIT 1";
 		$this->_db->setQuery($query);
 		$toolname = $this->_db->loadResult();
 		if (!$toolname)
@@ -880,35 +844,29 @@ class Version extends \JTable
 	}
 
 	/**
-	 * Short description for 'getCurrentVersionProperty'
+	 * Get a property from the current version
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   string  $toolname
+	 * @param   string  $property
+	 * @return  string
 	 */
 	public function getCurrentVersionProperty($toolname, $property)
 	{
-		$database = \App::get('db');
-		$query  = "SELECT " . $property . " FROM #__tool_version  WHERE toolname=" . $this->_db->quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
+		$query  = "SELECT " . $property . " FROM `#__tool_version` WHERE toolname=" . $this->_db->quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getDevVersionProperty'
+	 * Get a property from the development version
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   string  $toolname
+	 * @param   string  $property
+	 * @return  string
 	 */
 	public function getDevVersionProperty($toolname, $property)
 	{
-		$database = \App::get('db');
-		$query  = "SELECT " . $property . " FROM #__tool_version WHERE toolname=" . $this->_db->quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";
+		$query  = "SELECT " . $property . " FROM `#__tool_version` WHERE toolname=" . $this->_db->quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}

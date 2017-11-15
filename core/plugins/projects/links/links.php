@@ -286,8 +286,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$new  = $cite['id'] ? false : true;
 
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php';
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 		if (!$pid || !$cite['type'] || !$cite['title'])
 		{
@@ -295,34 +294,28 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$citation = new \Components\Citations\Tables\Citation($this->_database);
-			if (!$citation->bind($cite))
-			{
-				$this->setError($citation->getError());
-			}
-			else
-			{
-				$citation->created   = $new == true ? Date::toSql() : $citation->created;
-				$citation->uid       = $new == true ? $this->_uid : $citation->uid;
-				$citation->published = 1;
+			$citation = \Components\Citations\Models\Citation::blank()->set($cite);
+			$citation->set('created', $new == true ? Date::toSql() : $citation->get('created'));
+			$citation->set('uid', $new == true ? $this->_uid : $citation->get('uid'));
+			$citation->set('published', 1);
 
-				if (!$citation->store(true))
-				{
-					// This really shouldn't happen.
-					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
-				}
-			}
-			// Create association
-			if (!$this->getError() && $new == true && $citation->id)
+			if (!$citation->save())
 			{
-				$assoc = new \Components\Citations\Tables\Association($this->_database);
-				$assoc->oid  = $pid;
-				$assoc->tbl  = 'publication';
-				$assoc->type = 'owner';
-				$assoc->cid  = $citation->id;
+				// This really shouldn't happen.
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
+			}
+
+			// Create association
+			if (!$this->getError() && $new == true && $citation->get('id'))
+			{
+				$assoc = \Components\Citations\Models\Association::blank();
+				$assoc->set('oid', $pid);
+				$assoc->set('tbl', 'publication');
+				$assoc->set('type', 'owner');
+				$assoc->set('cid', $citation->get('id'));
 
 				// Store new content
-				if (!$assoc->store())
+				if (!$assoc->save())
 				{
 					$this->setError($assoc->getError());
 				}
@@ -356,9 +349,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function unattachCitation($pid = 0, $cid = 0, $returnStatus = false)
 	{
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 		if (!$cid || !$pid)
 		{
@@ -372,18 +364,18 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = App::get('db');
-		$c        = new \Components\Citations\Tables\Citation($database);
-		$assoc    = new \Components\Citations\Tables\Association($database);
+		$c = \Components\Citations\Models\Citation::oneOrFail($cid);
 
 		// Fetch all associations
-		$aPubs = $assoc->getRecords(array('cid' => $cid));
+		$aPubs = \Components\Citations\Models\Association::all()
+			->whereEquals('cid', $cid)
+			->rows();
 
 		// Remove citation if only one association
 		if (count($aPubs) == 1)
 		{
 			// Delete the citation
-			$c->delete($cid);
+			$c->destroy();
 		}
 
 		// Remove association
@@ -391,7 +383,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		{
 			if ($aPub->oid == $pid && $aPub->tbl = 'publication')
 			{
-				$assoc->delete($aPub->id);
+				$aPub->destroy();
 			}
 		}
 
@@ -416,10 +408,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function attachCitation($pid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
 	{
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 		$out = array('error' => null, 'success' => null);
 
@@ -435,10 +425,18 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = App::get('db');
-		$c        = new \Components\Citations\Tables\Citation($database);
+		$query = \Components\Citations\Models\Citation::all();
 
-		if ($c->loadPubCitation($doi, $pid))
+		$c = $query->getTableName();
+		$a = \Components\Citations\Models\Association::blank()->getTableName();
+
+		$citation = $query
+			->join($a, $a . '.cid', $c . '.$id', 'inner')
+			->whereEquals($a . '.tbl', 'publication')
+			->whereEquals($c . '.doi', $doi)
+			->row();
+
+		if ($citation->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_CITATION_ALREADY_ATTACHED'));
 
@@ -470,17 +468,21 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 			elseif (isset($output->preview) && $output->preview)
 			{
+				$citation = \Components\Citations\Models\Citation::all()
+					->whereEquals('doi', $doi)
+					->row();
+
 				// Load citation record with the same DOI if present
-				if (!$c->loadByDoi($doi))
+				if ($citation->isNew())
 				{
-					$c->created    = Date::toSql();
-					$c->title      = $doi;
-					$c->uid        = $actor;
-					$c->affiliated = 1;
+					$citation->set('created', Date::toSql());
+					$citation->set('title', $doi);
+					$citation->set('uid', $actor);
+					$citation->set('affiliated', 1);
 				}
-				$c->formatted = $output->preview;
-				$c->format    = $format;
-				$c->doi       = $doi;
+				$citation->set('formatted', $output->preview);
+				$citation->set('format', $format);
+				$citation->set('doi', $doi);
 
 				// Try getting more metadata
 				$url = '';
@@ -489,21 +491,20 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				// Save available data
 				if ($data)
 				{
-					foreach ($c as $key => $value)
+					foreach ($citation->getProperties() as $key => $value)
 					{
 						$column = strtolower($key);
 						if (isset($data->$column))
 						{
-							$c->$column = $data->$column;
+							$citation->set($column, $data->$column);
 						}
 					}
 
 					// Some extra mapping hacks
-					$c->pages = $data->page;
+					$citation->set('pages', $data->page);
 
 					// Get type ID
-					$ct = new \Components\Citations\Tables\Type($database);
-					$types = $ct->getType();
+					$types = \Components\Citations\Models\Type::all()->rows()->toArray();
 					$dType = isset($data->type) ? $data->type : 'article';
 
 					// Hub types don't match library types
@@ -513,7 +514,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 					{
 						if ($type['type'] == $dType)
 						{
-							$c->type = $type['id'];
+							$citation->set('type', $type['id']);
 						}
 						elseif ($type['type'] == 'article')
 						{
@@ -531,16 +532,16 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 					if (isset($validTypes[$dType]))
 					{
-						$c->type = $validTypes[$dType];
+						$citation->set('type', $validTypes[$dType]);
 					}
 					elseif (!intval($c->type))
 					{
 						// Default to article
-						$c->type = $validTypes['journal-article'];
+						$citation->set('type', $validTypes['journal-article']);
 					}
 				}
 
-				if (!$c->store())
+				if (!$citation->save())
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_LINKS_CITATION_ERROR_SAVE'));
 
@@ -554,16 +555,16 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				}
 
 				// Create association
-				if ($c->id)
+				if ($citation->get('id'))
 				{
-					$assoc = new \Components\Citations\Tables\Association($database);
-					$assoc->oid  = $pid;
-					$assoc->tbl  = 'publication';
-					$assoc->type = 'owner';
-					$assoc->cid  = $c->id;
+					$assoc = \Components\Citations\Models\Association::blank();
+					$assoc->set('oid', $pid);
+					$assoc->set('tbl', 'publication');
+					$assoc->set('type', 'owner');
+					$assoc->set('cid', $citation->get('id'));
 
 					// Store new content
-					if (!$assoc->store())
+					if (!$assoc->save())
 					{
 						$this->setError($assoc->getError());
 						if ($returnStatus)
@@ -674,16 +675,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Incoming
 			$cid    = Request::getInt('cid', 0);
 
-			include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php';
-			include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
+			include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 			// Load the object
-			$view->row = new \Components\Citations\Tables\Citation($this->_database);
-			$view->row->load($cid);
+			$view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
 
 			// get the citation types
-			$ct = new \Components\Citations\Tables\Type($this->_database);
-			$view->types = $ct->getType();
+			$view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
 		}
 
 		$view->option   = $this->_option;
@@ -765,16 +763,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php';
+		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 		// Load the object
-		$view->row = new \Components\Citations\Tables\Citation($this->_database);
-		$view->row->load($cid);
+		$view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
 
 		// get the citation types
-		$ct = new \Components\Citations\Tables\Type($this->_database);
-		$view->types = $ct->getType();
+		$view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
 
 		$view->option   = $this->_option;
 		$view->database = $this->_database;
@@ -865,7 +860,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Parse input
 	 *
-	 * @return     string
+	 * @param   string   $url
+	 * @param   boolean  $citation
+	 * @param   boolean  $incPreview
+	 * @param   string   $format
+	 * @return  string
 	 */
 	public function parseUrl($url = '', $citation = true, $incPreview = true, $format = 'apa')
 	{
@@ -1050,8 +1049,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				}
 
 				$out .= $description
-						? stripslashes('<p>' . \Hubzero\Utility\String::truncate(addslashes($description), 200) . '</p>')
-						: '<p>' . \Hubzero\Utility\String::truncate(addslashes($finalUrl), 200) . '</p>';
+						? stripslashes('<p>' . \Hubzero\Utility\Str::truncate(addslashes($description), 200) . '</p>')
+						: '<p>' . \Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
 
 				if ($images)
 				{
@@ -1079,6 +1078,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get DOI Metadata
 	 *
+	 * @param   string   $doi
+	 * @param   boolean  $citation
+	 * @param   string   &$url
+	 * @param   boolean  $rawData
+	 * @param   string   $format
 	 * @return  string
 	 */
 	public function getDoiMetadata($doi, $citation = false, &$url, $rawData = false, $format = 'apa')
@@ -1165,7 +1169,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Parse DOI metadata
 	 *
-	 * @return     string
+	 * @param   array  $data
+	 * @param   array  $metadata
+	 * @return  string
 	 */
 	public function parseDoiData($data, $metadata)
 	{

@@ -38,5 +38,17 @@ HUBzero is a registered trademark of Purdue University.
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
+
+		<action name="core.view.ticket" title="Ticket :: View" description="JACTION_VIEW_COMPONENT_DESC" />
+		<action name="core.create.ticket" title="Ticket :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.delete.ticket" title="Ticket :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
+		<action name="core.edit.ticket" title="Ticket :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />
+		<action name="core.edit.state.ticket" title="Ticket :: Edit State" description="JACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.own.ticket" title="Ticket :: Edit Own" description="JACTION_EDITOWN_COMPONENT_DESC" />
+
+		<action name="core.view.comment" title="Ticket Comment :: View" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.create.comment" title="Ticket Comment :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.view.privatecomment" title="Ticket Comment :: View" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.create.privatecomment" title="Ticket Comment :: View" description="JACTION_CREATE_COMPONENT_DESC" />
 	</section>
 </access>

@@ -33,14 +33,13 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Support\Models\Orm\Category;
+use Components\Support\Models\Category;
 use Request;
 use Notify;
 use Route;
 use Lang;
 
-require_once dirname(dirname(__DIR__)) . '/models/orm/category.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
+require_once dirname(dirname(__DIR__)) . '/models/category.php';
 
 /**
  * Support controller class for categories

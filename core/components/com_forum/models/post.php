@@ -33,6 +33,7 @@ namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Database\Value\Raw;
+use Hubzero\Form\Form;
 use Lang;
 use Date;
 
@@ -147,7 +148,7 @@ class Post extends Relational
 	 */
 	public function automaticScope($data)
 	{
-		if (!isset($data['scope']))
+		if (!isset($data['scope']) || !$data['scope'])
 		{
 			$data['scope'] = 'site';
 		}
@@ -202,6 +203,7 @@ class Post extends Relational
 	/**
 	 * Generates automatic created by field value
 	 *
+	 * @param   array  $data
 	 * @return  int
 	 */
 	public function automaticModifiedBy($data)
@@ -369,7 +371,13 @@ class Post extends Relational
 			}
 		}
 
-		$cloud = new Tags($this->get('thread'));
+		$thread = $this->get('thread');
+		if (!$thread && !$this->get('parent'))
+		{
+			$thread = $this->get('id');
+		}
+
+		$cloud = new Tags($thread);
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
@@ -837,5 +845,34 @@ class Post extends Relational
 			}
 		}
 		return $children;
+	}
+
+	/**
+	 * Get a form
+	 *
+	 * @param   array   $data
+	 * @return  object
+	 */
+	public function getForm($data = array())
+	{
+		$name = strtolower($this->getModelName());
+		$file = __DIR__ . '/forms/' . $name . '.xml';
+		$file = \Filesystem::cleanPath($file);
+
+		$form = new Form('com_forum.' . $name, array('control' => 'data'));
+
+		if (!$form->loadFile($file, false, '//form'))
+		{
+			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
+		if (!$data || empty($data))
+		{
+			$data = $this->toArray();
+		}
+
+		$form->bind($data);
+
+		return $form;
 	}
 }

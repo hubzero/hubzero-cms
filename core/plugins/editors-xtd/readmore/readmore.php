@@ -51,6 +51,7 @@ class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 	/**
 	 * readmore button
 	 *
+	 * @param  string  $name  Value of name
 	 * @return  array  A two element array of (imageName, textToInsert)
 	 */
 	public function onDisplay($name)
@@ -59,7 +60,7 @@ class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 
 		// button is not active in specific content components
 		$getContent = $this->_subject->getContent($name);
-		$present = Lang::txt('PLG_READMORE_ALREADY_EXISTS', true) ;
+		$present = Lang::txt('PLG_READMORE_ALREADY_EXISTS', true);
 		$js = "
 			function insertReadmore(editor) {
 				var content = $getContent
@@ -74,7 +75,7 @@ class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 
 		Document::addScriptDeclaration($js);
 
-		$button = new \Hubzero\Base\Object;
+		$button = new \Hubzero\Base\Obj;
 		$button->set('modal', false);
 		$button->set('onclick', 'insertReadmore(\''.$name.'\');return false;');
 		$button->set('text', Lang::txt('PLG_READMORE_BUTTON_READMORE'));

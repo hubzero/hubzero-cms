@@ -67,7 +67,7 @@ class plgEditorWikiwyg extends \Hubzero\Plugin\Plugin
 	 * Display the editor area.
 	 *
 	 * @param	string	$name		The control name.
-	 * @param	string	$html		The contents of the text area.
+	 * @param	string	$content	The contents of the text area.
 	 * @param	string	$width		The width of the text area (px or %).
 	 * @param	string	$height		The height of the text area (px or %).
 	 * @param	int		$col		The number of columns for the textarea.

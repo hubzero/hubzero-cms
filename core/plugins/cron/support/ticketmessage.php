@@ -58,16 +58,12 @@ class Ticketmessage extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = \App::get('db');
-
 		$html = array();
 
 		$html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
-		$sr = new \Components\Support\Tables\Message($db);
-
-		$messages = $sr->getMessages();
+		include_once \Component::path('com_support') . DS . 'models' . DS . 'message.php';
+		$messages = \Components\Support\Models\Message::all()->rows();
 
 		$html[] = '<option value="0"' . (!$value ? ' selected="selected"' : '') . '>[ none ]</option>';
 

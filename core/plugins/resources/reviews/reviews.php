@@ -41,32 +41,29 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		$this->infolink = '/kb/points/';
-		$this->banking  = Component::params('com_members')->get('bankAccounts');
-
-		include_once(__DIR__ . DS . 'helper.php');
+		include_once __DIR__ . DS . 'helper.php';
 	}
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $model  Current model
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
@@ -83,8 +80,8 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Rate a resource
 	 *
-	 * @param      string $option Name of the component
-	 * @return     array
+	 * @param   string  $option  Name of the component
+	 * @return  array
 	 */
 	public function onResourcesRateItem($option)
 	{
@@ -96,9 +93,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$database = App::get('db');
-		$resource = new \Components\Resources\Tables\Resource($database);
-		$resource->load($id);
+		$resource = \Components\Resources\Models\Entry::oneOrNew($id);
 
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $resource;
@@ -112,11 +107,11 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object  $model   Current model
+	 * @param   string  $option  Name of the component
+	 * @param   array   $areas   Active area(s)
+	 * @param   string  $rtrn    Data to be returned
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -146,11 +141,14 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			$rtrn = '';
 		}
 
-		include_once(__DIR__ . DS . 'models' . DS . 'review.php');
+		include_once __DIR__ . DS . 'models' . DS . 'review.php';
+
+		$isAuthor = (in_array(User::get('id'), $model->contributors('id')));
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $model->resource;
+		$h->isAuthor = $isAuthor;
 		$h->option   = $option;
 		$h->_option  = $option;
 		$h->execute();
@@ -179,6 +177,9 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				);
 			}
 
+			$this->infolink = '/kb/points/';
+			$this->banking  = Component::params('com_members')->get('bankAccounts');
+
 			// Instantiate a view
 			$view = $this->view('default', 'browse')
 				->set('voting', $this->params->get('voting', 1))
@@ -189,6 +190,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				->set('infolink', $this->infolink)
 				->set('config', $this->params)
 				->set('h', $h)
+				->set('isAuthor', $isAuthor)
 				->setErrors($h->getErrors());
 
 			// Return the output
@@ -202,6 +204,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 			$view = $this->view('default', 'metadata')
 				->set('reviews', $reviews)
+				->set('isAuthor', $isAuthor)
 				->set('url', Route::url($url))
 				->set('url2', Route::url($url . '&action=addreview#reviewform'));
 
@@ -210,54 +213,4 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		return $arr;
 	}
-
-	/**
-	 * Get all replies for an item
-	 *
-	 * @param      object  $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @param      integer $level    Depth
-	 * @param      boolean $abuse    Abuse flag
-	 * @return     array
-	 */
-	/*public static function getComments($id, $item, $category, $level, $abuse=false)
-	{
-		$level++;
-
-		$comments = \Hubzero\Item\Comment::all()
-			->whereEquals('parent', ($level == 1 ? 0 : $item->id))
-			->whereEquals('item_id', $id)
-			->whereEquals('item_type', $category)
-			->ordered()
-			->rows();
-
-		if ($comments)
-		{
-			foreach ($comments as $comment)
-			{
-				//$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
-
-				if ($abuse)
-				{
-					$comment->abuse_reports = self::getAbuseReports($comment->id, 'review');
-				}
-			}
-		}
-		return $comments;
-	}*/
-
-	/**
-	 * Get abuse reports for a comment
-	 *
-	 * @param      integer $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @return     integer
-	 */
-	/*public static function getAbuseReports($item, $category)
-	{
-		$database = App::get('db');
-
-		$ra = new \Components\Support\Tables\ReportAbuse($database);
-		return $ra->getCount(array('id' => $item, 'category' => $category));
-	}*/
 }

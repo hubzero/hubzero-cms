@@ -41,7 +41,7 @@ use Route;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'question.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'question.php';
 
 /**
  * API controller class for Questions
@@ -122,25 +122,28 @@ class Questionsv1_0 extends ApiController
 		$rows = $records
 			->limit($filters['limit'])
 			->ordered('sort', 'sortDir')
-			->paginated();
+			->paginated()
+			->rows();
 
 		$response = new stdClass;
 		$response->questions = array();
-		$response->total     = $records->rows()->count();
+		$response->total     = $rows->count();
 
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
 
-			foreach ($records->rows() as $question)
+			foreach ($rows as $question)
 			{
 				$obj = new stdClass;
 				$obj->id      = $question->get('id');
 				$obj->subject = $question->get('subject');
 				$obj->quesion = $question->get('question');
 				$obj->state   = $question->get('state');
+				$obj->created = with(new Date($question->get('created')))->format('Y-m-d\TH:i:s\Z');
+				$obj->created_by = $question->get('created_by');
 				$obj->url     = str_replace('/api', '', $base . '/' . ltrim(Route::url($question->link()), '/'));
-				$obj->responses = $question->responses()->count();
+				$obj->responses = $question->responses()->total();
 
 				$response->questions[] = $obj;
 			}
@@ -230,11 +233,10 @@ class Questionsv1_0 extends ApiController
 			'anonymous'  => Request::getInt('anonymous', 0, 'post'),
 			'subject'    => Request::getVar('subject', null, 'post', 'none', 2),
 			'question'   => Request::getVar('question', null, 'post', 'none', 2),
-			'created'    => Request::getVar('created', new Date('now'), 'post'),
-			'created_by' => Request::getInt('created_by', 0, 'post'),
+			'created'    => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'created_by' => Request::getInt('created_by', User::get('id'), 'post'),
 			'state'      => Request::getInt('state', 0, 'post'),
-			'reward'     => Request::getInt('reward', 0, 'post'),
-			'tags'       => Request::getVar('tags', null, 'post')
+			'reward'     => Request::getInt('reward', 0, 'post')
 		);
 
 		$row = new Question();
@@ -252,9 +254,11 @@ class Questionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
 		}
 
-		if (isset($fields['tags']))
+		$tags = Request::getVar('tags', null, 'post');
+
+		if (isset($tags))
 		{
-			if (!$row->tag($fields['tags'], User::get('id')))
+			if (!$row->tag($tags, $fields['created_by']))
 			{
 				throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_TAGS'), 500);
 			}
@@ -288,7 +292,9 @@ class Questionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
 		}
 
-		$this->send($row);
+		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+
+		$this->send($row->toObject());
 	}
 
 	/**
@@ -372,25 +378,25 @@ class Questionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$fields = array(
-			'id'         => Request::getInt('id', 0, 'post'),
-			'email'      => Request::getInt('email', null),
-			'anonymous'  => Request::getInt('anonymous', null),
-			'subject'    => Request::getVar('subject', null, '', 'none', 2),
-			'question'   => Request::getVar('question', null, '', 'none', 2),
-			'created'    => Request::getVar('created', null),
-			'created_by' => Request::getInt('created_by', null),
-			'state'      => Request::getInt('state', null),
-			'reward'     => Request::getInt('reward', null),
-			'tags'       => Request::getVar('tags', null)
-		);
+		$id = Request::getInt('id', 0);
 
-		$row = Question::oneOrFail($fields['id']);
+		$row = Question::oneOrFail($id);
 
 		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
 		}
+
+		$fields = array(
+			'email'      => Request::getInt('email', $row->get('email')),
+			'anonymous'  => Request::getInt('anonymous', $row->get('anonymous')),
+			'subject'    => Request::getVar('subject', $row->get('subject')),
+			'question'   => Request::getVar('question', $row->get('question')),
+			'created'    => Request::getVar('created', $row->get('created')),
+			'created_by' => Request::getInt('created_by', $row->get('created_by')),
+			'state'      => Request::getInt('state', $row->get('state')),
+			'reward'     => Request::getInt('reward', $row->get('reward'))
+		);
 
 		if (!$row->set($fields))
 		{
@@ -405,9 +411,11 @@ class Questionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
 		}
 
-		if (isset($fields['tags']))
+		$tags = Request::getVar('tags', null);
+
+		if (isset($tags))
 		{
-			if (!$row->tag($fields['tags'], User::get('id')))
+			if (!$row->tag($tags, $fields['created_by']))
 			{
 				throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_TAGS'), 500);
 			}

@@ -244,7 +244,7 @@ if ($group)
 					<?php echo $owner->status == 1 ? Date::of($owner->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('PLG_PROJECTS_TEAM_INVITED') . '</span>';  ?>
 				</td>
 				<td>
-					<?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?>
+					<?php echo $owner->groupdesc ? \Hubzero\Utility\Str::truncate($owner->groupdesc, 30) : ''; ?>
 					<span class="block mini short prominent"><?php echo $owner->groupname; ?></span>
 				</td>
 			</tr>

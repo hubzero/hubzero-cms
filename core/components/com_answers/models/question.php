@@ -33,7 +33,6 @@ namespace Components\Answers\Models;
 
 use Components\Answers\Helpers\Economy;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
@@ -42,6 +41,7 @@ use Route;
 use Lang;
 use Date;
 use User;
+use App;
 
 require_once __DIR__ . DS . 'tags.php';
 require_once __DIR__ . DS . 'response.php';
@@ -504,7 +504,7 @@ class Question extends Relational
 
 		if ($this->get('reward', -1) == 1)
 		{
-			$db = \App::get('db');
+			$db = App::get('db');
 
 			$this->set('reward', Transaction::getAmount('answers', 'hold', $this->get('id')));
 
@@ -596,13 +596,13 @@ class Question extends Relational
 	 */
 	public function config($key=null, $default=null)
 	{
-		$config = Component::params('com_answers');
+		$config = \Component::params('com_answers');
 
 		if ($key)
 		{
 			if ($key == 'banking' && $config->get('banking', -1) == -1)
 			{
-				$config->set('banking', Component::params('com_members')->get('bankAccounts'));
+				$config->set('banking', \Component::params('com_members')->get('bankAccounts'));
 			}
 			return $config->get($key, $default);
 		}
@@ -640,8 +640,6 @@ class Question extends Relational
 		// If banking is enabled
 		if ($this->config('banking'))
 		{
-			$db = \App::get('db');
-
 			// Accepted answer is same person as question submitter?
 			if ($this->get('created_by') == $answer->get('created_by'))
 			{
@@ -656,6 +654,8 @@ class Question extends Relational
 			}
 			else
 			{
+				$db = App::get('db');
+
 				// Calculate and distribute earned points
 				$AE = new Economy($db);
 				$AE->distribute_points(
@@ -683,15 +683,13 @@ class Question extends Relational
 	{
 		if ($this->get('reward'))
 		{
-			$db = \App::get('db');
-
 			// Adjust credits
 			// Remove hold
 			$reward = Transaction::getAmount('answers', 'hold', $this->get('id'));
 			Transaction::deleteRecords('answers', 'hold', $this->get('id'));
 
 			// Make credit adjustment
-			if (is_object($this->creator()))
+			if (is_object($this->creator))
 			{
 				$BTL = new Teller($this->get('created_by'));
 				$credit = $BTL->credit_summary();

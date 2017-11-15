@@ -44,15 +44,32 @@ use App;
 
 class View
 {
-	private static $_tab              = null;
-	private static $_sections         = null;
+	/**
+	 * Current tab
+	 *
+	 * @var  string
+	 */
+	private static $_tab = null;
+
+	/**
+	 * List of sections
+	 *
+	 * @var  array
+	 */
+	private static $_sections = null;
+
+	/**
+	 * List of section content
+	 *
+	 * @var  array
+	 */
 	private static $_sections_content = null;
 
 	/**
 	 * Get Active Group Tab
 	 *
-	 * @param    $group    \Hubzero\User\Group Object
-	 * @return   string
+	 * @param   object  $group
+	 * @return  string
 	 */
 	public static function getTab($group)
 	{
@@ -82,7 +99,7 @@ class View
 	/**
 	 * Get group plugins
 	 *
-	 * @return   array
+	 * @return  array
 	 */
 	public static function getSections()
 	{
@@ -111,9 +128,8 @@ class View
 	/**
 	 * Get "Before" group content
 	 *
-	 * @param    $group         \Hubzero\User\Group Object
-	 * @param    $authorized    Authorization level
-	 * @return   array
+	 * @param   object  $group
+	 * @return  array
 	 */
 	public static function getBeforeSectionsContent($group)
 	{
@@ -134,7 +150,8 @@ class View
 	/**
 	 * Get group plugins sections
 	 *
-	 * @return   array
+	 * @param   object  $group
+	 * @return  array
 	 */
 	public static function getSectionsContent($group)
 	{
@@ -187,8 +204,8 @@ class View
 	/**
 	 * Display Active Tab Title, next to group name
 	 *
-	 * @param    $group    \Hubzero\User\Group Object
-	 * @return   string
+	 * @param   object  $group
+	 * @return  string
 	 */
 	public static function displayTab($group)
 	{
@@ -226,17 +243,22 @@ class View
 				return $section['title'];
 			}
 		}
+
+		return '';
 	}
 
 	/**
 	 * Display group menu
 	 *
-	 * @return    string
+	 * @param   object  $group
+	 * @param   string  $classOrId
+	 * @return  string
 	 */
 	public static function displaySections($group, $classOrId = 'id="page_menu"')
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'groups',
 			'layout' => '_menu'
 		));
@@ -267,8 +289,9 @@ class View
 	/**
 	 * Output menu
 	 * 
-	 * @param  [type] $pageArray [description]
-	 * @return [type]            [description]
+	 * @param   object  $group
+	 * @param   array   $pageArray
+	 * @return  string
 	 */
 	public static function buildRecursivePageMenu($group, $pageArray)
 	{
@@ -323,9 +346,8 @@ class View
 	/**
 	 * Display "Before" group content
 	 *
-	 * @param    $group         \Hubzero\User\Group Object
-	 * @param    $authorized    Authorization level
-	 * @return   void
+	 * @param   object  $group
+	 * @return  void
 	 */
 	public static function displayBeforeSectionsContent($group)
 	{
@@ -339,16 +361,18 @@ class View
 		}
 	}
 
-
 	/**
 	 * Display group content based on sections and active tab
 	 *
-	 * @return    string
+	 * @param   object  $group
+	 * @param   string  $overviewSection
+	 * @return  string
 	 */
 	public static function displaySectionsContent($group, $overviewSection = null)
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'groups',
 			'layout' => '_content'
 		));
@@ -421,16 +445,19 @@ class View
 		return $view->loadTemplate();
 	}
 
-
 	/**
 	 * Display group toolbar
 	 *
-	 * @return    string
+	 * @param   object   $group
+	 * @param   string   $classOrId
+	 * @param   boolean  $displayLogoutLink
+	 * @return  string
 	 */
 	public static function displayToolbar($group, $classOrId = 'id="group_options"', $displayLogoutLink = false)
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'groups',
 			'layout' => '_toolbar'
 		));
@@ -448,7 +475,8 @@ class View
 	/**
 	 * Get group page templates
 	 *
-	 * @return    array
+	 * @param   object  $group
+	 * @return  array
 	 */
 	public static function getPageTemplates($group)
 	{
@@ -499,7 +527,8 @@ class View
 	/**
 	 * Get list of stylesheets for page
 	 *
-	 * @return     array
+	 * @param   object  $group
+	 * @return  array
 	 */
 	public static function getPageCss($group)
 	{
@@ -510,7 +539,7 @@ class View
 		// if we got nothing back lets get styles from groups intro page
 		if (empty($stylesheets))
 		{
-			$url  = rtrim(str_replace('administrator', '', Request::base()), '/') . '/groups';
+			$url = rtrim(str_replace('administrator', '', Request::base()), '/') . '/groups';
 			$stylesheets = self::stylesheetsForUrl($url);
 		}
 
@@ -520,8 +549,8 @@ class View
 	/**
 	 * Get Stylesheets for URL (with cURL)
 	 * 
-	 * @param  string    $url
-	 * @return array
+	 * @param   string  $url
+	 * @return  array
 	 */
 	private static function stylesheetsForUrl($url)
 	{
@@ -552,6 +581,7 @@ class View
 
 		// load html through dom document object
 		$domDocument = new \DOMDocument();
+
 		// Since HTML 5 doctype has no DTD to check, the DOM will attempt to
 		// use HTML4 TRansitional which will throw errors on valid HTML5
 		// entities (e.g., header, footer, section). So, we temporarily
@@ -584,7 +614,9 @@ class View
 	/**
 	 * Check User Authorization
 	 *
-	 * @return    string
+	 * @param   object   $group
+	 * @param   boolean  $checkOnlyMembership
+	 * @return  mixed
 	 */
 	public static function authorize($group, $checkOnlyMembership = true)
 	{
@@ -613,7 +645,8 @@ class View
 	/**
 	 * Attach Custom Error Handler/Page if we can
 	 *
-	 * @return     array
+	 * @param   object  $group
+	 * @return  void
 	 */
 	public static function attachCustomErrorHandler($group)
 	{
@@ -631,7 +664,8 @@ class View
 	/**
 	 * Custom Error Callback, Builds custom error page for super groups
 	 *
-	 * @return     array
+	 * @param   object  $error
+	 * @return  array
 	 */
 	public static function handleCustomError(Exception $error)
 	{
@@ -683,7 +717,8 @@ class View
 	/**
 	 * Display Super Group Login
 	 *
-	 * @return     array
+	 * @param   object  $group
+	 * @return  string
 	 */
 	public static function superGroupLogin($group)
 	{
@@ -699,6 +734,7 @@ class View
 
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'pages',
 			'layout' => '_view_login'
 		));
@@ -717,7 +753,9 @@ class View
 	/**
 	 * Display Super Group Components
 	 *
-	 * @return     array
+	 * @param   object  $group
+	 * @param   string  $tab
+	 * @return  string
 	 */
 	public static function superGroupComponents($group, $tab = '')
 	{
@@ -757,6 +795,7 @@ class View
 
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'pages',
 			'layout' => '_view_component'
 		));
@@ -776,7 +815,8 @@ class View
 	/**
 	 * Display Super Group Pages
 	 *
-	 * @return     array
+	 * @param   object  $group
+	 * @return  string
 	 */
 	public static function superGroupPhpPages($group)
 	{
@@ -817,16 +857,16 @@ class View
 		$phpPageContent = ob_get_contents();
 		ob_end_clean();
 
-		//create new group document helper
+		// create new group document helper
 		$groupDocument = new Document();
 
 		// set group doc needed props
 		// parse and render content
 		$groupDocument->set('group', $group)
-			          ->set('page', null)
-			          ->set('document', $phpPageContent)
-			          ->parse()
-			          ->render();
+			->set('page', null)
+			->set('document', $phpPageContent)
+			->parse()
+			->render();
 
 		// get doc content
 		$phpPageContent = $groupDocument->output();
@@ -843,6 +883,7 @@ class View
 
 		// create view object
 		$view = new \Hubzero\Component\View(array(
+			'base_path' => dirname(__DIR__) . '/site',
 			'name'   => 'pages',
 			'layout' => '_view_php'
 		));

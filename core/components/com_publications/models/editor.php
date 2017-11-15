@@ -32,38 +32,39 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Model for a handler editor
  */
-class Editor extends Object
+class Editor extends Obj
 {
 	/**
 	 * Handler object
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $handler = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_db = null;
 
 	/**
 	 * Configs
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $_configs = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param   string $scope
+	 * @param   object  $handler
+	 * @param   object  $configs
 	 * @return  void
 	 */
 	public function __construct($handler, $configs)
@@ -94,4 +95,3 @@ class Editor extends Object
 		return $this->handler->drawEditor($this);
 	}
 }
-

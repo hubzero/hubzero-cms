@@ -49,75 +49,9 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentAvailable($table, $model)
 	{
-		$type = $this->getType($table);
-		$id = $model->getPkValue();
-
-		if ($type != false)
-		{
-			\Components\Search\Helpers\SolrHelper::enqueueDB($type, array($id), 'index');
-		}
-	}
-
-	/**
-	 * getType 
-	 * 
-	 * @param mixed $table 
-	 * @access private
-	 * @return void
-	 */
-	private function getType($table)
-	{
-		$type = false;
-		switch ($table)
-		{
-			case '#__blog_entries':
-				$type = 'blog-entry';
-			break;
-
-			case '#__resources':
-				$type = 'resource';
-			break;
-
-			case '#__courses':
-				$type = 'course';
-			break;
-
-			case '#__events':
-				$type = 'event';
-			break;
-
-			case '#__users':
-				$type = 'member';
-			break;
-
-			case '#__citations':
-				$type = 'citation';
-			break;
-
-			case '#__projects':
-				$type = 'project';
-			break;
-
-			case '#__answer_questions':
-				$type = 'question';
-			break;
-
-			case '#__kb_articles':
-				$type = 'kb-article';
-			break;
-
-			case '#__publications':
-				$type = 'publication';
-			break;
-
-			case '#__wiki_pages':
-				$type = 'wiki';
-			break;
-
-			case '#__xgroups':
-				$type = 'group';
-			break;
-		}
-		return $type;
+		/**
+		 * @TODO: Implement mechanism to send to Solr index
+		 * This Event is called in the Relational save() method.
+		 **/
 	}
 }

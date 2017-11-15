@@ -38,8 +38,8 @@ if (!\User::authorise('core.manage', 'com_courses'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
 
 $controllerName = \Request::getCmd('controller', 'courses');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -68,8 +68,8 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'roles'
 );
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-$canDo = \Components\Plugins\Admin\Helpers\Plugins::getActions();
+require_once PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+$canDo = \Components\Plugins\Helpers\Plugins::getActions();
 if ($canDo->get('core.manage'))
 {
 	\Submenu::addEntry(
@@ -78,10 +78,9 @@ if ($canDo->get('core.manage'))
 	);
 }
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

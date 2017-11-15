@@ -170,7 +170,7 @@ else
 								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description'))); ?>" />
 							</label>
 						</div>
-						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($attachment->get('id'))); ?>" />
+						<input type="hidden" name="attachment" value="<?php echo $this->escape($attachment->get('id')); ?>" />
 					</div>
 					<?php if ($attachment->get('id')) { ?>
 						<p class="warning">
@@ -179,13 +179,15 @@ else
 					<?php } ?>
 				</fieldset>
 
-				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
-					<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
-				</label>
+				<?php if ($this->config->get('allow_anonymous')) { ?>
+					<label for="field-anonymous" id="comment-anonymous-label">
+						<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
+					</label>
+				<?php } ?>
 
 				<p class="submit">
-					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_FORUM_SUBMIT'); ?>" />
+					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 				</p>
 
 				<div class="sidenote">

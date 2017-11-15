@@ -91,7 +91,7 @@ $params = &$this->params;
 
 <?php if ($params->get('show_intro')) :?>
 	<div class="intro">
-		<?php echo \Hubzero\Utility\String::truncate($item->introtext, $params->get('introtext_limit')); ?>
+		<?php echo \Hubzero\Utility\Str::truncate($item->introtext, $params->get('introtext_limit')); ?>
 	</div>
 <?php endif; ?>
 	</li>

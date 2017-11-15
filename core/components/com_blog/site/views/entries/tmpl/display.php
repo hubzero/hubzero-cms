@@ -160,14 +160,6 @@ $rows = $this->archive->entries($this->filters)
 									<a href="<?php echo Route::url($row->link()); ?>">
 										<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 									</a>
-									<?php if (User::get('id') == $row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
-										<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('COM_BLOG_EDIT'); ?>">
-											<?php echo Lang::txt('COM_BLOG_EDIT'); ?>
-										</a>
-										<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
-											<?php echo Lang::txt('COM_BLOG_DELETE'); ?>
-										</a>
-									<?php } ?>
 								</h4>
 								<dl class="entry-meta">
 									<dt>
@@ -214,14 +206,24 @@ $rows = $this->archive->entries($this->filters)
 											<?php echo $row->visibility('text'); ?>
 										</dd>
 									<?php } ?>
+									<?php if (User::get('id') == $row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
+										<dd class="entry-options">
+											<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+												<?php echo Lang::txt('JACTION_EDIT'); ?>
+											</a>
+											<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+												<?php echo Lang::txt('JACTION_DELETE'); ?>
+											</a>
+										</dd>
+									<?php } ?>
 								</dl>
 								<div class="entry-content">
 									<?php if ($this->config->get('cleanintro', 1)) { ?>
 										<p>
-											<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
+											<?php echo \Hubzero\Utility\Str::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
 										</p>
 									<?php } else { ?>
-										<?php echo \Hubzero\Utility\String::truncate($row->content, $this->config->get('introlength', 300), array('html' => true)); ?>
+										<?php echo \Hubzero\Utility\Str::truncate($row->content, $this->config->get('introlength', 300), array('html' => true)); ?>
 									<?php } ?>
 								</div>
 							</article>

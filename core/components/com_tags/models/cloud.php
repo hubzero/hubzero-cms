@@ -36,12 +36,12 @@ use Hubzero\Component\View;
 use User;
 use Date;
 
-require_once(__DIR__ . DS . 'tag.php');
+require_once __DIR__ . DS . 'tag.php';
 
 /**
  * Cloud model for Tags
  */
-class Cloud extends \Hubzero\Base\Object
+class Cloud extends \Hubzero\Base\Obj
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -62,7 +62,7 @@ class Cloud extends \Hubzero\Base\Object
 	 *
 	 * @var object
 	 */
-	protected $_db = NULL;
+	protected $_db = null;
 
 	/**
 	 * Container for properties
@@ -130,7 +130,7 @@ class Cloud extends \Hubzero\Base\Object
 	 * @param   string  $property  The name of the property
 	 * @param   mixed   $default   The default value
 	 * @return  mixed   The value of the property
- 	 */
+	 */
 	public function get($property, $default=null)
 	{
 		if ($property == 'scope')
@@ -209,9 +209,9 @@ class Cloud extends \Hubzero\Base\Object
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
-		$tbl = Object::blank()->getTableName();
+		$tbl = Objct::blank()->getTableName();
 
-		$results = Tag::all();
+		$results = Tag::all()->purgeCache();
 
 		if (isset($filters['sort']) && $filters['sort'] == 'taggedon')
 		{
@@ -432,7 +432,7 @@ class Cloud extends \Hubzero\Base\Object
 			return false;
 		}
 
-		$to = Object::all()
+		$to = Objct::all()
 			->whereEquals('tbl', $this->_scope)
 			->whereEquals('objectid', $this->_scope_id);
 

@@ -33,20 +33,23 @@
 namespace Components\Publications\Helpers;
 
 use Components\Tags\Models\Cloud;
+use Route;
+use Date;
+use Lang;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Publication Tagging class
  */
-class Tags extends \Hubzero\Base\Object
+class Tags extends \Hubzero\Base\Obj
 {
 	/**
 	 * Database
 	 *
 	 * @var unknown
 	 */
-	public $_db  = NULL;
+	public $_db  = null;
 
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -60,7 +63,7 @@ class Tags extends \Hubzero\Base\Object
 	 *
 	 * @var unknown
 	 */
-	public $_oid = NULL;  //
+	public $_oid = null;
 
 	/**
 	 * The primary tag table
@@ -89,7 +92,7 @@ class Tags extends \Hubzero\Base\Object
 		$this->_tbl = 'publications';
 	}
 
-		/**
+	/**
 	 * Get all the tags on an object
 	 *
 	 * @param      integer $object_id Object ID
@@ -100,7 +103,7 @@ class Tags extends \Hubzero\Base\Object
 	 * @param      integer $admin     Has admin access?
 	 * @return     array
 	 */
-	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0, $label='')
+	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=null, $strength=0, $admin=0, $label='')
 	{
 		$cloud = new Cloud($object_id, $this->_tbl);
 		return $cloud->tags('list', [
@@ -370,7 +373,7 @@ class Tags extends \Hubzero\Base\Object
 	 * @param      integer $objectid  Object ID
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
+	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=null)
 	{
 		$cloud = new Cloud($objectid, $this->_tbl);
 		return $cloud->render();
@@ -387,7 +390,7 @@ class Tags extends \Hubzero\Base\Object
 	 * @param      integer $admin     Admin tags?
 	 * @return     string
 	 */
-	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0, $label='')
+	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=null, $strength=0, $admin=0, $label='')
 	{
 		$cloud = new Cloud($oid, $this->_tbl);
 		return $cloud->render('string');
@@ -739,7 +742,7 @@ class Tags extends \Hubzero\Base\Object
 		return $this->_db->loadObjectList();
 	}
 
-/**
+	/**
 	 * Get a tag cloud of top publication tags
 	 *
 	 * @param      integer $limit
@@ -760,7 +763,7 @@ class Tags extends \Hubzero\Base\Object
 	 */
 	public function getTopTags($limit)
 	{
-		$tj = \Components\Tags\Models\Object::blank();
+		$tj = \Components\Tags\Models\Objct::blank();
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM #__tags AS t  ";
@@ -918,4 +921,3 @@ class Tags extends \Hubzero\Base\Object
 		return $html;
 	}
 }
-

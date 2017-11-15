@@ -516,7 +516,7 @@ class Pipeline extends SiteController
 		}
 
 		// get default license text
-		$this->database->setQuery("SELECT text, name, title FROM #__tool_licenses ORDER BY ordering ASC");
+		$this->database->setQuery("SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC");
 		$this->view->licenses = $this->database->loadObjectList();
 
 		// Set the page title
@@ -620,7 +620,7 @@ class Pipeline extends SiteController
 				}
 
 				// code for saving license
-				$hztv->license = NULL;
+				$hztv->license = null;
 
 				// save version info
 				$hztv->update(); //@FIXME: look
@@ -675,9 +675,12 @@ class Pipeline extends SiteController
 	/**
 	 * Write sync status to file
 	 *
-	 * @return   void
+	 * @param   string   $content
+	 * @param   string   $file
+	 * @param   boolean  $append
+	 * @return  void
 	 */
-	protected function _writeToFile($content = '', $file = '', $append = false )
+	protected function _writeToFile($content = '', $file = '', $append = false)
 	{
 		$place   = $append == true ? 'a' : 'w';
 		$content = $append ? $content . "\n" : $content;
@@ -694,7 +697,7 @@ class Pipeline extends SiteController
 	 */
 	public function createTask()
 	{
-		$this->view->setLayout( 'edit' );
+		$this->view->setLayout('edit');
 
 		// set defaults
 		list($vncGeometryX, $vncGeometryY) = preg_split('/[x]/', $this->config->get('default_vnc'));
@@ -714,7 +717,7 @@ class Pipeline extends SiteController
 			'vncGeometryY' => $vncGeometryY,
 			'team'         => User::get('username'),
 			'hostreq'      => $this->config->get('default_hostreq', 'sessions'),
-			'github'	   => '',
+			'github'       => '',
 			'publishType'  => 'standard'
 		);
 
@@ -753,7 +756,8 @@ class Pipeline extends SiteController
 	/**
 	 * Show an edit form
 	 *
-	 * @return     void
+	 * @param   object  $tool
+	 * @return  void
 	 */
 	public function editTask($tool = null)
 	{
@@ -1027,7 +1031,11 @@ class Pipeline extends SiteController
 		{
 			$txt = new \Hubzero\Config\Registry('');
 		}
-		$txt->set('github', $tool['github']);
+
+		if ($this->config->get('github', 1) && isset($tool['github']))
+		{
+			$txt->set('github', $tool['github']);
+		}
 
 		$ptype = (empty($tool['publishType']) || $tool['publishType'] == 'standard') ? 'standard': 'weber=';
 		$txt->set('publishType', $ptype);
@@ -1068,7 +1076,7 @@ class Pipeline extends SiteController
 			$hztv->instance      = $tool['toolname'] . $dev_suffix;
 			$hztv->mw            = $this->config->get('default_mw', 'narwhal');
 			$hztv->hostreq       = $tool['hostreq'];
-			$hztv->params		 = $params;
+			$hztv->params        = $params;
 
 			$hzt->add('version', $hztv->instance);
 		}
@@ -1174,7 +1182,7 @@ class Pipeline extends SiteController
 		}
 
 		// create resource page
-		$rid = \Components\Tools\Models\Tool::getResourceId($hzt->toolname,$hzt->id);
+		$rid = \Components\Tools\Models\Tool::getResourceId($hzt->toolname, $hzt->id);
 
 		if (empty($rid))
 		{
@@ -1216,7 +1224,7 @@ class Pipeline extends SiteController
 		// update history ticket
 		if ($id && $oldstatus != $status && $editversion !='current')
 		{
-			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0 , 1);
+			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0, 1);
 		}
 
 		App::redirect(
@@ -1249,7 +1257,7 @@ class Pipeline extends SiteController
 		if (!empty($toolinfo))
 		{
 			$ldap_params = Component::params('com_system');
-			$pw = $ldap_params->get('ldap_searchpw','');
+			$pw = $ldap_params->get('ldap_searchpw', '');
 
 			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title ' . escapeshellarg($toolinfo['title']) . ' -description ' . escapeshellarg($toolinfo['description']) . ' -password "' . $pw . '"' . " -hubdir " . PATH_ROOT;
 
@@ -1573,7 +1581,7 @@ class Pipeline extends SiteController
 
 				Log::debug(__FUNCTION__ . "() state changing away from  published");
 				// Get version ids
-				$rid = \Components\Tools\Models\Tool::getResourceId($hzt->toolname,$hzt->id);
+				$rid = \Components\Tools\Models\Tool::getResourceId($hzt->toolname, $hzt->id);
 
 				$to   = $objV->getVersionIdFromResource($rid, 'dev');
 				$from = $objV->getVersionIdFromResource($rid, 'current');
@@ -1804,7 +1812,7 @@ class Pipeline extends SiteController
 			'name'  => $from
 		);
 
-		$live_site = rtrim(Request::base(),'/');
+		$live_site = rtrim(Request::base(), '/');
 
 		// Compose Message
 		$message  = strtoupper(Lang::txt('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
@@ -1851,14 +1859,14 @@ class Pipeline extends SiteController
 		$summary = '';
 
 		// Make sure ticket is tied to the tool group
-		$row = new \Components\Support\Models\Ticket($ticketid);
-		if ($row->exists() && isset($newstuff['toolname']))
+		$row = \Components\Support\Models\Ticket::oneOrNew($ticketid);
+		if ($row->get('id') && isset($newstuff['toolname']))
 		{
 			$row->set('group', $this->config->get('group_prefix', 'app-') . $newstuff['toolname']);
-			$row->store();
+			$row->save();
 		}
 
-		$rowc = new \Components\Support\Models\Comment();
+		$rowc = \Components\Support\Models\Comment::blank();
 		$rowc->set('ticket', $ticketid);
 
 		// see what changed
@@ -2013,7 +2021,7 @@ class Pipeline extends SiteController
 			$rowc->set('access', $access);
 
 			Log::debug(__FUNCTION__ . '() storing ticket');
-			if (!$rowc->store())
+			if (!$rowc->save())
 			{
 				$this->_error = $rowc->getError();
 				return false;
@@ -2048,7 +2056,7 @@ class Pipeline extends SiteController
 
 		$summary = '';
 
-		$rowc = new \Components\Support\Models\Comment();
+		$rowc = \Components\Support\Models\Comment::blank();
 		$rowc->set('ticket', $obj->getTicketId($toolid));
 
 		// see what changed
@@ -2198,7 +2206,7 @@ class Pipeline extends SiteController
 		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);
 
-		if (!$rowc->store())
+		if (!$rowc->save())
 		{
 			$this->setError($rowc->getError());
 			return false;
@@ -2223,7 +2231,7 @@ class Pipeline extends SiteController
 	 */
 	private function _createTicket($toolid, $tool)
 	{
-		$row = new \Components\Support\Models\Ticket();
+		$row = \Components\Support\Models\Ticket::blank();
 		$row->set('open', 1);
 		$row->set('status', 0);
 		$row->set('created', Date::toSql());
@@ -2235,11 +2243,15 @@ class Pipeline extends SiteController
 		$row->set('type', 3);
 
 		// Attach tool group to a ticket for access
-		$row->set('group', $this->config->get('group_prefix', 'app-') . $tool['toolname']);
+		$group = \Hubzero\User\Group::getInstance($this->config->get('group_prefix', 'app-') . $tool['toolname']);
+		if ($group)
+		{
+			$row->set('group_id', $group->get('gidNumber'));
+		}
 		$row->set('email', User::get('email'));
 		$row->set('name', User::get('name'));
 
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return false;
@@ -2321,7 +2333,7 @@ class Pipeline extends SiteController
 		$resource->updatePage($status['resourceid'], $status, '4');
 
 		// change tool status to 'abandoned' and priority to 'lowest'
-		$obj->updateTool($this->_toolid, \Components\Tools\Helpers\Html::getStatusNum('Abandoned') , 5);
+		$obj->updateTool($this->_toolid, \Components\Tools\Helpers\Html::getStatusNum('Abandoned'), 5);
 
 		// add comment to ticket
 		$this->_updateTicket($this->_toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);

@@ -96,7 +96,7 @@ class NewsfeedsTableNewsfeed extends JTable
 		if (!empty($this->metadesc)) {
 			// only process if not empty
 			$bad_characters = array("\"", "<", ">");
-			$this->metadesc = JString::str_ireplace($bad_characters, "", $this->metadesc);
+			$this->metadesc = str_ireplace($bad_characters, '', $this->metadesc);
 		}
 
 		return true;
@@ -140,5 +140,4 @@ class NewsfeedsTableNewsfeed extends JTable
 		}
 		return parent::store($updateNulls);
 	}
-
 }

@@ -79,7 +79,7 @@ $this->css()
 								<option value=""><?php echo Lang::txt('(select from list)'); ?></option>
 								<?php 
 								$countries = \Hubzero\Geocode\Geocode::countries();
-								$mycountry = (isset($this->posted['country'])) ? $this->posted['country'] : \Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'));
+								$mycountry = (isset($this->posted['country'])) ? $this->posted['country'] : \Hubzero\Geocode\Geocode::getcountry(User::get('countryresident'));
 								foreach ($countries as $country)
 								{
 									?>
@@ -125,15 +125,15 @@ $this->css()
 					<h4><span class="coin">&nbsp;</span><?php echo Lang::txt('COM_STORE_ORDER_SUMMARY'); ?></h4>
 					<?php foreach ($this->items as $item) { ?>
 						<p>
-							<?php echo \Hubzero\Utility\String::truncate($item->title, 60); ?>
-					<?php if ($item->selectedsize) { ?>
+							<?php echo \Hubzero\Utility\Str::truncate($item->item->get('title'), 60); ?>
+					<?php if ($item->selections->get('size')) { ?>
 						</p>
 						<p>
-							<?php echo Lang::txt('COM_STORE_SIZE') . ' ' . $item->selectedsize . '&nbsp;(x ' . $item->quantity . ')'; ?>
-					<?php } else if ($item->category != 'service') { ?>
+							<?php echo Lang::txt('COM_STORE_SIZE') . ' ' . $item->selections->get('size') . '&nbsp;(x ' . $item->quantity . ')'; ?>
+					<?php } else if ($item->item->get('category') != 'service') { ?>
 							&nbsp;(x <?php echo $item->quantity; ?>)
 					<?php } ?>
-							<span><?php echo ($item->price*$item->quantity); ?></span>
+							<span><?php echo ($item->item->price * $item->quantity); ?></span>
 						</p>
 					<?php } ?>
 					<p><?php echo Lang::txt('COM_STORE_SHIPPING'); ?>: <span>0</span></p>

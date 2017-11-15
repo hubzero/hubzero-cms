@@ -32,7 +32,7 @@
 
 namespace Components\Resources\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 use User;
 use Lang;
@@ -43,14 +43,14 @@ include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
  * Resources Economy class:
  * Stores economy funtions for resources
  */
-class Economy extends Object
+class Economy extends Obj
 {
 	/**
 	 * Database
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Constructor

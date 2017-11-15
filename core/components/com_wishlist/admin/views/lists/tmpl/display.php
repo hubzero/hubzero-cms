@@ -32,9 +32,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Wishlist\Helpers\Permissions::getActions('component');
+$canDo = \Components\Wishlist\Helpers\Permissions::getActions('wishlist');
 
-Toolbar::title(Lang::txt('COM_WISHLIST'), 'wishlist.png');
+Toolbar::title(Lang::txt('COM_WISHLIST'), 'wishlist');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -61,17 +61,6 @@ if ($canDo->get('core.delete'))
 Toolbar::spacer();
 Toolbar::help('lists');
 ?>
-<script type="text/javascript">
-/*function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}*/
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -103,27 +92,24 @@ Toolbar::help('lists');
 				<th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_WISHLIST_ACCESS', 'public', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4" colspan="2"><?php echo Html::grid('sort', 'COM_WISHLIST_CATEGORY', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_WISHLIST_WISHES', 'wishes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_WISHLIST_WISHES', 'wishes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_WISHLIST_WISHES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td colspan="7"><?php
 				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$row =& $this->rows[$i];
 			switch ($row->state)
 			{
 				case 1:
@@ -204,19 +190,14 @@ Toolbar::help('lists');
 					</span>
 				</td>
 				<td class="priority-2">
-					<?php if ($row->wishes > 0) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=wishes&wishlist=' . $row->id); ?>">
-							<span><?php echo $row->wishes . ' ' . Lang::txt('COM_WISHLIST_LIST_WISHES'); ?></span>
-						</a>
-					<?php } else { ?>
-						<span>
-							<span><?php echo $row->wishes; ?></span>
-						</span>
-					<?php } ?>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=wishes&wishlist=' . $row->id); ?>">
+						<span><?php echo $row->wishes()->total() . ' ' . Lang::txt('COM_WISHLIST_LIST_WISHES'); ?></span>
+					</a>
 				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;
+			$i++;
 		}
 		?>
 		</tbody>

@@ -84,11 +84,11 @@ class Csv implements \Iterator
 			{
 				$parts = explode(':', $header);
 
-				if (!isset($object->$parts[0]))
+				if (!isset($object->{$parts[0]}))
 				{
-					$object->$parts[0] = new \stdClass;
+					$object->{$parts[0]} = new \stdClass;
 				}
-				$object->$parts[0]->$parts[1] = $row[$k];
+				$object->{$parts[0]}->{$parts[1]} = $row[$k];
 			}
 			else
 			{
@@ -137,8 +137,8 @@ class Csv implements \Iterator
 		if (!$this->next())
 		{
 			fclose($this->file);
-			return FALSE;
+			return false;
 		}
-		return TRUE;
+		return true;
 	}
 }

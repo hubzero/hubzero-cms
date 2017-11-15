@@ -31,7 +31,7 @@
  */
 
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
-$sef  = Route::url($this->project->link('alias'));
+$sef  = Route::url($this->project->link());
 $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 $message  = $this->subject . "\n";
@@ -48,54 +48,20 @@ else
 {
 	foreach ($this->activities as $a)
 	{
-		$body     = NULL;
-		$activity = $a->activity;
+		$body = $a->log->get('description');
 
-		switch ($a->class)
+		$isHtml = false;
+		if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
 		{
-			case 'quote':
-				// Get comment
-				$objC  = $this->project->table('Comment');
-				if ($objC->loadComment($a->referenceid))
-				{
-					$body = stripslashes($objC->comment);
-					$body = str_replace('<!-- {FORMAT:HTML} -->', '', $body);
-				}
-
-				break;
-
-			case 'blog':
-				$activity = 'posted a status update';
-				$objM     = $this->project->table('Blog');
-				$blog     = $objM->getEntries(
-					$a->projectid,
-					$bfilters = array('activityid' => $a->id),
-					$a->referenceid
-				);
-				$body = $blog && !empty($blog[0]) ? trim($blog[0]->blogentry) : '';
-				if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
-				{
-					$body = preg_replace("/\n/", '<br />', $body);
-				}
-				break;
-
-			case 'todo':
-				$objTD = $this->project->table('Todo');
-				$todo = $objTD->getTodos(
-					$a->projectid,
-					$tfilters = array('activityid' => $a->id),
-					$a->referenceid
-				);
-				if ($todo && !empty($todo[0]))
-				{
-					$body = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
-				}
-				break;
+			$body = preg_replace('/<br\s?\/?>/ius', "\n", trim($body));
 		}
-		$message .= Date::of($a->recorded)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
-					. ' &#64 ' .  Date::of($a->recorded)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . "\n";
-		$message .= $a->admin == 1 ? Lang::txt('Administrator') : $a->name;
-		$message .= ' ' . $activity;
+
+		$creator = User::getInstance($a->log->get('created_by'));
+		$name = $creator->get('name');
+
+		$message .= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ' &#64 ' .  Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . "\n";
+		$message .= $name;
+		$message .= ' ' . $a->action;
 		$message .= $body ? ':' : '';
 		$message .= "\n";
 		if ($body)

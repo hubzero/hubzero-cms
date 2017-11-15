@@ -39,8 +39,8 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') .': ' . $text, 'wiki');
 if ($canDo->get('core.edit'))
 {
-	Toolbar::save();
 	Toolbar::apply();
+	Toolbar::save();
 	Toolbar::spacer();
 }
 Toolbar::cancel();

@@ -87,7 +87,7 @@ class Polls extends AdminController
 			'order'  => Request::getState(
 				$this->_option . '.' . $this->_controller . '.filter_order',
 				'filter_order',
-				'm.id',
+				'id',
 				'cmd'
 			),
 			'order_Dir' => Request::getState(
@@ -324,10 +324,10 @@ class Polls extends AdminController
 	}
 
 	/**
-	* Publishes or Unpublishes one or more records
-	*
-	* @return  void
-	*/
+	 * Publishes or Unpublishes one or more records
+	 *
+	 * @return  void
+	 */
 	public function publishTask()
 	{
 		// Check for request forgeries
@@ -339,13 +339,13 @@ class Polls extends AdminController
 		}
 
 		$ids = Request::getVar('id', array());
-		Arr::toInteger($ids);
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$state = (Request::getVar('task') == 'publish' ? 1 : 0);
 
-		if (count($ids) < 1)
+		if (empty($ids))
 		{
-			$action = $publish ? 'COM_POLL_PUBLISH' : 'COM_POLL_UNPUBLISH';
+			$action = $state ? 'COM_POLL_PUBLISH' : 'COM_POLL_UNPUBLISH';
 
 			Notify::warning(Lang::txt('COM_POLL_SELECT_ITEM_TO', Lang::txt($action), true));
 
@@ -373,10 +373,10 @@ class Polls extends AdminController
 	}
 
 	/**
-	* Mark a poll as open or closed
-	*
-	* @return  void
-	*/
+	 * Mark a poll as open or closed
+	 *
+	 * @return  void
+	 */
 	public function openTask()
 	{
 		// Check for request forgeries
@@ -388,11 +388,11 @@ class Polls extends AdminController
 		}
 
 		$ids = Request::getVar('id', array());
-		Arr::toInteger($ids);
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$publish = (Request::getVar('task') == 'open' ? 1 : 0);
 
-		if (count($ids) < 1)
+		if (empty($ids))
 		{
 			$action = $publish ? 'COM_POLL_OPEN' : 'COM_POLL_CLOSE';
 
@@ -428,9 +428,6 @@ class Polls extends AdminController
 	 */
 	public function cancelTask()
 	{
-		// Check for request forgeries
-		Request::checkToken();
-
 		if ($id = Request::getVar('id', 0, '', 'int'))
 		{
 			if (is_int($id))

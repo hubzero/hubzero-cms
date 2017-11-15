@@ -42,11 +42,19 @@ if ($this->resource->get('id'))
 {
 	switch ($this->resource->get('published'))
 	{
-		case 1: $state = 'published';  break;  // published
-		case 2: $state = 'draft';      break;  // draft
-		case 3: $state = 'pending';    break;  // pending
+		case 1:
+			$state = 'published';
+			break;  // published
+		case 2:
+			$state = 'draft';
+			break;  // draft
+		case 3:
+			$state = 'pending';
+			break;  // pending
 		case 0:
-		default: $state = 'unpublished';  break;  // unpublished
+		default:
+			$state = 'unpublished';
+			break;  // unpublished
 	}
 
 	$attachments = $this->resource->children()->total();
@@ -73,7 +81,7 @@ if ($this->resource->get('id'))
 					<?php echo $this->resource->type()->get('type', Lang::txt('COM_CONTRIBUTE_NONE')); ?>
 				</td>
 				<td>
-					<?php echo ($this->resource->get('title') ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->get('title')), 150)) : Lang::txt('COM_CONTRIBUTE_NONE')); ?>
+					<?php echo ($this->resource->get('title') ? $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->resource->get('title')), 150)) : Lang::txt('COM_CONTRIBUTE_NONE')); ?>
 				</td>
 				<td>
 					<?php echo Lang::txt('%s attachment(s)', $attachments); ?>

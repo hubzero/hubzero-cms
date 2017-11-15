@@ -240,13 +240,25 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 					elseif ($this->profile->get('activation') == 3)
 					{
 						$confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_DOMAIN_SUPPLIED') . '<input type="hidden" name="activation" id="activation" value="3" />';
+
+						if ($lnks = Hubzero\Auth\Link::find_by_user_id($this->profile->get('id')))
+						{
+							$confirmed .= '<fieldset class="radio authenticators">';
+							$confirmed .= '<ul>';
+							foreach ($lnks as $lnk)
+							{
+								$confirmed .= '<li>' . Lang::txt('COM_MEMBERS_AUTHENTICATOR') . ': <span class="authenticator">' . $lnk['auth_domain_name'] . '</span></li>';
+							}
+							$confirmed .= '</ul>';
+							$confirmed .= '</fieldset>';
+						}
 					}
 					elseif ($this->profile->get('activation') < 0)
 					{
 						if ($this->profile->get('email'))
 						{
-							$confirmed  = Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION');
-							$confirmed .= '[code: ' . -$this->profile->get('activation') . '] <label for="activation"><input type="checkbox" name="activation" id="activation" value="1" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+							$confirmed  = '<span class="unconfirmed">' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION') . '<br />[code: ' . -$this->profile->get('activation') . ']</span>';
+							$confirmed .= '<label for="activation"><input type="checkbox" name="activation" id="activation" value="1" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
 						}
 						else
 						{

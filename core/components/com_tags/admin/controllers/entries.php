@@ -97,15 +97,16 @@ class Entries extends AdminController
 		$t = $model->getTableName();
 		$s = Substitute::blank()->getTableName();
 
-		$model
-			->select('DISTINCT ' . $t . '.*')
-			->join($s, $s . '.tag_id', $t . '.id', 'left');
+		//$model
+		//	->select('DISTINCT ' . $t . '.*');
 
 		if ($filters['search'])
 		{
 			$filters['search'] = strtolower((string)$filters['search']);
 
-			$model->whereLike($t . '.raw_tag', $filters['search'], 1)
+			$model
+				->join($s, $s . '.tag_id', $t . '.id', 'left')
+				->whereLike($t . '.raw_tag', $filters['search'], 1)
 				->orWhereLike($t . '.tag', $filters['search'], 1)
 				->orWhereLike($s . '.raw_tag', $filters['search'], 1)
 				->orWhereLike($s . '.tag', $filters['search'], 1)
@@ -121,10 +122,31 @@ class Entries extends AdminController
 			$model->whereEquals($t . '.admin', 0);
 		}
 
+		// The query used for getting a total record count in
+		// the paginated() method has a flaw in that it will return
+		// the number of JOINS from substitutions, rather than the
+		// actual number of tags.
+		//
+		// So, shenanigans happen here:
+		$modelc = $model->copy();
+
+		$modelc
+			->select('COUNT(DISTINCT ' . $t . '.id)', 'count');
+
+		$first = $modelc->rows(false)->first();
+		$total = $first ? (int)$first->count : 0;
+
+		$model
+			->select('DISTINCT ' . $t . '.*');
+
+		$model->pagination = \Hubzero\Database\Pagination::init($model->getModelName(), $total, 'limitstart', 'limit');
+		$model->start($model->pagination->start);
+		$model->limit($model->pagination->limit);
+
 		// Get records
 		$rows = $model
 			->order($t . '.' . $filters['sort'], $filters['sort_Dir'])
-			->paginated('limitstart', 'limit')
+			//->paginated('limitstart', 'limit')
 			->rows();
 
 		// Output the HTML
@@ -140,7 +162,7 @@ class Entries extends AdminController
 	 * @param   object  $tag  Tag being edited
 	 * @return  void
 	 */
-	public function editTask($tag=NULL)
+	public function editTask($tag=null)
 	{
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
@@ -180,12 +202,14 @@ class Entries extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		// Permissions check
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 
 		$subs = '';
@@ -195,6 +219,7 @@ class Entries extends AdminController
 			unset($fields['substitutions']);
 		}
 
+		// Bend the data
 		$row = Tag::oneOrNew(intval($fields['id']))->set($fields);
 
 		$row->set('admin', 0);
@@ -203,7 +228,17 @@ class Entries extends AdminController
 			$row->set('admin', 1);
 		}
 
-		// Store new content
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('tags.onTagBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Save content
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
@@ -216,9 +251,13 @@ class Entries extends AdminController
 			return $this->editTask($row);
 		}
 
+		// Trigger after save event
+		Event::trigger('tags.onTagAfterSave', array(&$row, $isNew));
+
+		// Notify of success
 		Notify::success(Lang::txt('COM_TAGS_TAG_SAVED'));
 
-		// Redirect to main listing
+		// Redirect to main listing or go back to edit form
 		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
@@ -230,13 +269,14 @@ class Entries extends AdminController
 	/**
 	 * Remove one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
+		// Permissions check
 		if (!User::authorise('core.delete', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -257,7 +297,7 @@ class Entries extends AdminController
 		{
 			$id = intval($id);
 
-			// Remove references to the tag
+			// Trigger before delete event
 			Event::trigger('tags.onTagDelete', array($id));
 
 			// Remove the tag
@@ -297,6 +337,7 @@ class Entries extends AdminController
 	 */
 	public function mergeTask()
 	{
+		// Permissions check
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))
 		{
@@ -430,6 +471,7 @@ class Entries extends AdminController
 	 */
 	public function pierceTask()
 	{
+		// Permissions check
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))
 		{
@@ -497,7 +539,7 @@ class Entries extends AdminController
 				if ($tag_new)
 				{
 					// Yes, we are
-					$newtag = Tag::oneByAlias($tag_new);
+					$newtag = Tag::oneByTag($tag_new);
 					if (!$newtag->get('id'))
 					{
 						$newtag->set('raw_tag', $tag_new);
@@ -534,11 +576,62 @@ class Entries extends AdminController
 				}
 				else
 				{
-					Lang::txt('COM_TAGS_TAGS_COPIED');
+					Notify::success(Lang::txt('COM_TAGS_TAGS_COPIED'));
 				}
 
 				$this->cancelTask();
 			break;
 		}
+	}
+
+	/**
+	 * Re-calculate associated content for one or more tags
+	 *
+	 * @return  void
+	 */
+	public function calculateTask()
+	{
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Make sure we have an ID
+		if (empty($ids))
+		{
+			Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
+
+			return $this->cancelTask();
+		}
+
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			$id = intval($id);
+
+			// Recalculate associated content
+			$tag = Tag::oneOrFail($id);
+			if ($tag->hasAttribute('objects'))
+			{
+				$tag->set('objects', $tag->objects()->total());
+			}
+			if ($tag->hasAttribute('substitutes'))
+			{
+				$tag->set('substitutes', $tag->substitutes()->total());
+			}
+
+			if (!$tag->save())
+			{
+				Notify::error($tag->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_TAGS_TAGS_UPDATED', $success));
+		}
+
+		$this->cancelTask();
 	}
 }

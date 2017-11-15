@@ -64,7 +64,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 
 		$this->initialize();
 
-		$service = rtrim(Request::base(),'/');
+		$service = rtrim(Request::base(), '/');
 
 		if (empty($service))
 		{
@@ -257,11 +257,30 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			}
 			else
 			{
-				$response->username = '-' . $hzal->id; // The Open Group Base Specifications Issue 6, Section 3.426
-				$response->email    = $response->username . '@invalid'; // RFC2606, section 2
+				// Check if an account with the same username and email address
+				// already exists. If so, the user probably registered manually
+				// rather than using the CAS plugin.
+				$user = \Hubzero\User\User::all()
+					->whereEquals('username', $username)
+					->whereEquals('email', $username . '@purdue.edu')
+					->row();
 
-				// Also set a suggested username for their hub account
-				App::get('session')->set('auth_link.tmp_username', $username);
+				if ($user->get('id'))
+				{
+					$response->username = $user->get('username');
+					$response->email    = $user->get('email');
+					$response->fullname = $user->get('name');
+
+					$hzal->user_id = $user->get('id');
+				}
+				else
+				{
+					$response->username = '-' . $hzal->id; // The Open Group Base Specifications Issue 6, Section 3.426
+					$response->email    = $response->username . '@invalid'; // RFC2606, section 2
+
+					// Also set a suggested username for their hub account
+					App::get('session')->set('auth_link.tmp_username', $username);
+				}
 			}
 
 			$hzal->update();

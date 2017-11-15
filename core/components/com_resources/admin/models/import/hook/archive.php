@@ -33,7 +33,7 @@
 namespace Components\Resources\Models\Import\Hook;
 
 use Components\Resources\Tables;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Base\Model\ItemList;
 
 // include models
@@ -42,21 +42,21 @@ require_once dirname(__DIR__) . DS . 'hook.php';
 /**
  * Import archive model
  */
-class Archive extends Object
+class Archive extends Obj
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_db = null;
 
 	/**
 	 * Import list
 	 *
 	 * @var  object
 	 */
-	private $_hooks = NULL;
+	private $_hooks = null;
 
 	/**
 	 * Constructor
@@ -96,7 +96,7 @@ class Archive extends Object
 	 *
 	 * @param   string   $rtrn     What data to return
 	 * @param   array    $filters  Filters to apply to data retrieval
-	 * @param   boolean  $boolean  Clear cached data?
+	 * @param   boolean  $clear  Clear cached data?
 	 * @return  mixed
 	 */
 	public function hooks($rtrn = 'list', $filters = array(), $clear = false )

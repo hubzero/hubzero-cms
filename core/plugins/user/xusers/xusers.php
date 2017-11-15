@@ -53,24 +53,24 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* This method is an alias for onLoginUser
-	*
-	* @param   array    $user     holds the user data
-	* @param   array    $options  array holding options (remember, autoregister, group)
-	* @return  boolean  True on success
-	*/
+	 * This method is an alias for onLoginUser
+	 *
+	 * @param   array    $user     holds the user data
+	 * @param   array    $options  array holding options (remember, autoregister, group)
+	 * @return  boolean  True on success
+	 */
 	public function onUserLogin($user, $options = array())
 	{
 		return $this->onLoginUser($user, $options);
 	}
 
 	/**
-	* This method should handle any login logic and report back to the subject
-	*
-	* @param   array    $user     holds the user data
-	* @param   array    $options  array holding options (remember, autoregister, group)
-	* @return  boolean  True on success
-	*/
+	 * This method should handle any login logic and report back to the subject
+	 *
+	 * @param   array    $user     holds the user data
+	 * @param   array    $options  array holding options (remember, autoregister, group)
+	 * @return  boolean  True on success
+	 */
 	public function onLoginUser($user, $options = array())
 	{
 		$xuser = User::getInstance(); // get user from session (might be tmp_user, can't fetch from db)
@@ -159,11 +159,11 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if (isset($options['silent']) && $options['silent'])
 		{
-			$session->set('session.source','cookie');
+			$session->set('session.source', 'cookie');
 		}
 		else
 		{
-			$session->set('session.source','user');
+			$session->set('session.source', 'user');
 		}
 
 		// update tracking data with changes related to login
@@ -219,11 +219,11 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 			if ($username[0] == '-')
 			{
-				$username = trim($username,'-');
+				$username = trim($username, '-');
 
 				if ($hzal)
 				{
-					$xuser->set('username','guest;' . $username);
+					$xuser->set('username', 'guest;' . $username);
 					$xuser->set('email', $hzal->email);
 				}
 			}
@@ -244,7 +244,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($hzal)
 		{
-			$xuser->set('auth_link_id',$hzal->id);
+			$xuser->set('auth_link_id', $hzal->id);
 			$session->set('linkaccount', true);
 		}
 
@@ -267,12 +267,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 				if ($class->get('id'))
 				{
-					$quota->set('user_id'    , $xuser->get('id'));
-					$quota->set('class_id'   , $class->get('id'));
+					$quota->set('user_id', $xuser->get('id'));
+					$quota->set('class_id', $class->get('id'));
 					$quota->set('soft_blocks', $class->get('soft_blocks'));
 					$quota->set('hard_blocks', $class->get('hard_blocks'));
-					$quota->set('soft_files' , $class->get('soft_files'));
-					$quota->set('hard_files' , $class->get('hard_files'));
+					$quota->set('soft_files', $class->get('soft_files'));
+					$quota->set('hard_files', $class->get('hard_files'));
 					$quota->save();
 				}
 			}
@@ -283,15 +283,15 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 				if ($quota->get('soft_blocks') != $class->get('soft_blocks')
 				 || $quota->get('hard_blocks') != $class->get('hard_blocks')
-				 || $quota->get('soft_files')  != $class->get('soft_files')
-				 || $quota->get('hard_files')  != $class->get('hard_files'))
+				 || $quota->get('soft_files') != $class->get('soft_files')
+				 || $quota->get('hard_files') != $class->get('hard_files'))
 				{
-					$quota->set('user_id'    , $xuser->get('id'));
-					$quota->set('class_id'   , $class->get('id'));
+					$quota->set('user_id', $xuser->get('id'));
+					$quota->set('class_id', $class->get('id'));
 					$quota->set('soft_blocks', $class->get('soft_blocks'));
 					$quota->set('hard_blocks', $class->get('hard_blocks'));
-					$quota->set('soft_files' , $class->get('soft_files'));
-					$quota->set('hard_files' , $class->get('hard_files'));
+					$quota->set('soft_files', $class->get('soft_files'));
+					$quota->set('hard_files', $class->get('hard_files'));
 					$quota->save();
 				}
 			}
@@ -331,14 +331,14 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		{
 			$params = Component::params('com_members');
 
-			$hubHomeDir = rtrim($params->get('homedir'),'/');
+			$hubHomeDir = rtrim($params->get('homedir'), '/');
 
 			if (empty($hubHomeDir))
 			{
 				// try to deduce a viable home directory based on sitename or live_site
 				$sitename = strtolower(Config::get('sitename'));
-				$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-				$sitename = trim($sitename,'/ ');
+				$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+				$sitename = trim($sitename, '/ ');
 				$sitename_e = explode('.', $sitename, 2);
 				if (isset($sitename_e[1]))
 				{
@@ -351,8 +351,8 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				if (empty($sitename))
 				{
 					$sitename = strtolower(Request::base());
-					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
-					$sitename = trim($sitename,'/ ');
+					$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+					$sitename = trim($sitename, '/ ');
 					$sitename_e = explode('.', $sitename, 2);
 					if (isset($sitename_e[1]))
 					{
@@ -378,7 +378,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 					$component = new JTableExtension($this->database);
 					$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
 					$params = new \Hubzero\Config\Registry($component->params);
-					$params->set('homedir',$hubHomeDir);
+					$params->set('homedir', $hubHomeDir);
 					$component->params = $params->toString();
 					$component->store();
 				}
@@ -500,6 +500,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$update = true;
 			}
 
+			if ($xprofile->get('emailConfirmed') != $user['activation'])
+			{
+				$xprofile->set('emailConfirmed', $user['activation']);
+				$update = true;
+			}
+
 			if ($xprofile->get('gid') == '')
 			{
 				$xprofile->set('gid', $params->get('gid', 'users'));
@@ -551,12 +557,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 				if ($class->get('id'))
 				{
-					$quota->set('user_id'    , $user['id']);
-					$quota->set('class_id'   , $class->get('id'));
+					$quota->set('user_id', $user['id']);
+					$quota->set('class_id', $class->get('id'));
 					$quota->set('soft_blocks', $class->get('soft_blocks'));
 					$quota->set('hard_blocks', $class->get('hard_blocks'));
-					$quota->set('soft_files' , $class->get('soft_files'));
-					$quota->set('hard_files' , $class->get('hard_files'));
+					$quota->set('soft_files', $class->get('soft_files'));
+					$quota->set('hard_files', $class->get('hard_files'));
 					$quota->save();
 				}
 			}

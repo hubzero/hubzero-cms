@@ -202,15 +202,13 @@ if (!$tmpl && !$no_html) {
 				<label for="field-sort"><?php echo Lang::txt('In folder'); ?></label>
 				<select name="fields[folder_id]" id="field-folder_id">
 					<?php
-					$database = App::get('db');
-					include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
+					include_once Component::path('com_support') . DS . 'models' . DS . 'queryfolder.php';
 
-					$sr = new \Components\Support\Tables\QueryFolder($database);
-					$folders = $sr->find('list', array(
-						'user_id'  => User::get('id'),
-						'sort'     => 'ordering',
-						'sort_Dir' => 'ASC'
-					));
+					$folders = \Components\Support\Models\QueryFolder::all()
+						->whereEquals('user_id', User::get('id'))
+						->order('ordering', 'ASC')
+						->rows();
+
 					if ($folders)
 					{
 						foreach ($folders as $folder)

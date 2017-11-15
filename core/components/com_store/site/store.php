@@ -32,21 +32,19 @@
 
 namespace Components\Store\Site;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'store.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'order.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'orderitem.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'cart.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'store.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'order.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'cart.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'shop'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'shop';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

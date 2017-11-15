@@ -115,12 +115,12 @@ $group = Request::getVar('group', '');
 
 			<label for="reporter_login">
 				<?php echo Lang::txt('COM_SUPPORT_USERNAME'); ?>
-				<input type="text" name="reporter[login]" value="<?php echo $this->row->get('login', $this->row->submitter('username')); ?>" id="reporter_login" />
+				<input type="text" name="reporter[login]" value="<?php echo $this->row->get('login', $this->row->submitter->get('username')); ?>" id="reporter_login" />
 			</label>
 
 			<label for="reporter_name"<?php echo ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo Lang::txt('COM_SUPPORT_NAME'); ?> <span class="required"><?php echo Lang::txt('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[name]" value="<?php echo $this->row->get('name', $this->row->submitter('name')); ?>" id="reporter_name" />
+				<input type="text" name="reporter[name]" value="<?php echo $this->row->get('name', $this->row->submitter->get('name')); ?>" id="reporter_name" />
 			</label>
 			<?php if ($this->getError() && !$this->row->get('name')) { ?>
 				<p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_NAME'); ?></p>
@@ -128,7 +128,7 @@ $group = Request::getVar('group', '');
 
 			<label for="reporter_email"<?php echo ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo Lang::txt('COM_SUPPORT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[email]" value="<?php echo $this->row->get('email', $this->row->submitter('email')); ?>" id="reporter_email" />
+				<input type="text" name="reporter[email]" value="<?php echo $this->row->get('email', $this->row->submitter->get('email')); ?>" id="reporter_email" />
 			</label>
 			<?php if ($this->getError() && !$this->row->get('email')) { ?>
 				<p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
@@ -138,7 +138,7 @@ $group = Request::getVar('group', '');
 				<?php echo Lang::txt('COM_SUPPORT_ORGANIZATION'); ?>
 				<input type="text" name="reporter[org]" value="<?php echo (isset($this->reporter['org'])) ? $this->escape($this->reporter['org']) : ''; ?>" id="reporter_org" />
 			</label>*/ ?>
-			<input type="hidden" name="reporter[org]" value="<?php echo $this->row->get('organization', $this->row->submitter('organization')); ?>" id="reporter_org" />
+			<input type="hidden" name="reporter[org]" value="<?php echo $this->row->get('organization', $this->row->submitter->get('organization')); ?>" id="reporter_org" />
 
 			<div class="grid">
 				<div class="col span6">
@@ -226,11 +226,11 @@ $group = Request::getVar('group', '');
 						<label>
 							<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
 							<?php
-							$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', $group, '', 'ticketowner')));
+							$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner')));
 							if (count($gc) > 0) {
 								echo $gc[0];
 							} else { ?>
-								<input type="text" name="group" value="" id="acgroup" value="" autocomplete="off" />
+								<input type="text" name="group_id" value="" id="acgroup" value="" autocomplete="off" />
 							<?php } ?>
 						</label>
 					</div>
@@ -260,13 +260,13 @@ $group = Request::getVar('group', '');
 							<select name="problem[status]" id="ticket-field-status">
 								<optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
 									<option value="0" selected="selected"><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_NEW'); ?></option>
-									<?php foreach ($this->row->statuses('open') as $status) { ?>
+									<?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
 										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
 									<?php } ?>
 								</optgroup>
 								<optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
 									<option value="0"><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
-									<?php foreach ($this->row->statuses('closed') as $status) { ?>
+									<?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
 										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
 									<?php } ?>
 								</optgroup>
@@ -309,7 +309,7 @@ $group = Request::getVar('group', '');
 			</fieldset>
 		<?php } else { ?>
 			<?php if ($group) { ?>
-				<input type="hidden" name="group" value="<?php echo $group; ?>" />
+				<input type="hidden" name="group_id" value="<?php echo $this->escape($group); ?>" />
 			<?php } ?>
 		<?php } ?>
 

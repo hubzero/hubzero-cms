@@ -35,13 +35,10 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Publications\Helpers\Permissions::getActions('license');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_LICENSE') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_LICENSE') . ': ' . $text, 'publications');
 if ($canDo->get('core.edit'))
 {
-	if ($this->row->id)
-	{
-		Toolbar::apply();
-	}
+	Toolbar::apply();
 	Toolbar::save();
 }
 Toolbar::cancel();
@@ -128,10 +125,10 @@ function submitbutton(pressbutton)
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?>">
 						<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?></span>
 
-						<input class="option" name="active" id="field-active1" type="radio" value="1" <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?> />
+						<input class="option" name="fields[active]" id="field-active1" type="radio" value="1" <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?> />
 						<label for="field-active1"><?php echo Lang::txt('JYES'); ?></label>
 						<br />
-						<input class="option" name="active" id="field-active0" type="radio" value="0" <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?> />
+						<input class="option" name="fields[active]" id="field-active0" type="radio" value="0" <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?> />
 						<label for="field-active0"><?php echo Lang::txt('JNO'); ?></label>
 					</div>
 				</fieldset>
@@ -142,11 +139,11 @@ function submitbutton(pressbutton)
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CUSTOMIZABLE_HINT'); ?>">
 						<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CUSTOMIZABLE_HINT'); ?></span>
 
-						<input class="option" name="customizable" id="field-customizable1" type="radio" value="1" <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?> />
-						<label for="field-customizable1"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
+						<input class="option" name="fields[customizable]" id="field-customizable1" type="radio" value="1" <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?> />
+						<label for="field-customizable1"><?php echo Lang::txt('JYES'); ?></label>
 						<br />
-						<input class="option" name="customizable" id="field-customizable0" type="radio" value="0" <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?> />
-						<label for="field-customizable0"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
+						<input class="option" name="fields[customizable]" id="field-customizable0" type="radio" value="0" <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?> />
+						<label for="field-customizable0"><?php echo Lang::txt('JNO'); ?></label>
 					</div>
 				</fieldset>
 
@@ -156,11 +153,25 @@ function submitbutton(pressbutton)
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('Do we require publication authors to agree to license terms?'); ?>">
 						<span class="hint"><?php echo Lang::txt('Do we require publication authors to agree to license terms?'); ?></span>
 
-						<input class="option" name="agreement" id="field-agreement1" type="radio" value="1" <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?> />
-						<label for="field-agreement1"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
+						<input class="option" name="fields[agreement]" id="field-agreement1" type="radio" value="1" <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?> />
+						<label for="field-agreement1"><?php echo Lang::txt('JYES'); ?></label>
 						<br />
-						<input class="option" name="agreement" id="field-agreement0" type="radio" value="0" <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?> />
-						<label for="field-agreement0"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
+						<input class="option" name="fields[agreement]" id="field-agreement0" type="radio" value="0" <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?> />
+						<label for="field-agreement0"><?php echo Lang::txt('JNO'); ?></label>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend><?php echo Lang::txt('Allow Derivatives'); ?></legend>
+
+					<div class="input-wrap" data-hint="<?php echo Lang::txt('Are derivatives allowed under the terms of this license?'); ?>">
+						<span class="hint"><?php echo Lang::txt('Are derivatives allowed under the terms of this license?'); ?></span>
+
+						<input class="option" name="fields[derivatives]" id="field-derivatives1" type="radio" value="1" <?php echo $this->row->derivatives == 1 ? 'checked="checked"' : ''; ?> />
+						<label for="field-derivatives1"><?php echo Lang::txt('JYES'); ?></label>
+						<br />
+						<input class="option" name="fields[derivatives]" id="field-derivatives0" type="radio" value="0" <?php echo $this->row->derivatives == 0 ? 'checked="checked"' : ''; ?> />
+						<label for="field-derivatives0"><?php echo Lang::txt('JNO'); ?></label>
 					</div>
 				</fieldset>
 			</fieldset>

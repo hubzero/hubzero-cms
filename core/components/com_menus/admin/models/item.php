@@ -62,7 +62,7 @@ class MenusModelItem extends JModelAdmin
 		{
 			if ($record->published != -2)
 			{
-				return ;
+				return;
 			}
 
 			return User::authorise('core.delete', 'com_menus.item.'.(int) $record->id);
@@ -687,7 +687,7 @@ class MenusModelItem extends JModelAdmin
 
 		// Convert to the Object before adding the params.
 		$properties = $table->getProperties(1);
-		$result = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
+		$result = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Obj');
 
 		// Convert the params field to an array.
 		$registry = new \Hubzero\Config\Registry($table->params);
@@ -1124,7 +1124,7 @@ class MenusModelItem extends JModelAdmin
 			$isNew = false;
 		}
 		if (!$isNew && $table->menutype == $data['menutype']) {
-			if ($table->parent_id == $data['parent_id'] ) {
+			if ($table->parent_id == $data['parent_id']) {
 
 				// If first is chosen make the item the first child of the selected parent.
 				if ($data['menuordering'] == -1) {
@@ -1141,9 +1141,9 @@ class MenusModelItem extends JModelAdmin
 					$table->setLocation($data['menuordering'], 'after');
 				}
 				// Just leave it where it is if no change is made.
-				elseif ( $data['menuordering'] && $table->id ==  $data['menuordering'])
+				elseif ($data['menuordering'] && $table->id == $data['menuordering'])
 				{
-					unset( $data['menuordering']);
+					unset($data['menuordering']);
 				}
 			}
 			// Set the new parent id if parent id not matched and put in last position
@@ -1202,7 +1202,7 @@ class MenusModelItem extends JModelAdmin
 		if (JFactory::getApplication()->get('menu_associations', 0)) {
 			// Adding self to the association
 			$associations = $data['associations'];
-			foreach ($associations as $tag=>$id) {
+			foreach ($associations as $tag => $id) {
 				if (empty($id)) {
 					unset($associations[$tag]);
 				}
@@ -1234,7 +1234,7 @@ class MenusModelItem extends JModelAdmin
 				$key = md5(json_encode($associations));
 				$query->clear();
 				$query->insert('#__associations');
-				foreach ($associations as $tag=>$id) {
+				foreach ($associations as $tag => $id) {
 					$query->values($id.','.$db->quote('com_menus.item').','.$db->quote($key));
 				}
 				$db->setQuery($query);

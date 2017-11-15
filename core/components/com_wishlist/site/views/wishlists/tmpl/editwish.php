@@ -38,14 +38,14 @@ $this->css()
 
 $tags = $this->wish->tags('string') ? $this->wish->tags('string') : Request::getVar('tag', '');
 
-if ($this->wishlist->exists())
+if ($this->wishlist->get('id'))
 {
 	$login = Lang::txt('COM_WISHLIST_UNKNOWN');
 
 	// what is submitter name?
 	if ($this->task == 'editwish')
 	{
-		$login = $this->wish->proposer('username');
+		$login = $this->wish->proposer->get('username');
 	}
 
 	$this->wish->set('about', preg_replace('/<br\\s*?\/??>/i', '', $this->wish->get('about')));
@@ -90,35 +90,36 @@ if ($this->wishlist->exists())
 			<?php } ?>
 
 				<label for="field-anonymous">
-					<input class="option" type="checkbox" name="anonymous" id="field-anonymous" value="1" <?php echo ($this->wish->get('anonymous')) ? 'checked="checked"' : ''; ?>/>
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo ($this->wish->get('anonymous')) ? 'checked="checked"' : ''; ?>/>
 					<?php echo Lang::txt('COM_WISHLIST_WISH_POST_ANONYMOUSLY'); ?>
 				</label>
 
 			<?php if ($this->wishlist->access('manage') && $this->wishlist->isPublic()) { // list owner ?>
 					<label for="field-private">
-					<input class="option" type="checkbox" name="private" id="field-private" value="1" <?php echo ($this->wish->get('private')) ? 'checked="checked"' : ''; ?>/>
+					<input class="option" type="checkbox" name="fields[private]" id="field-private" value="1" <?php echo ($this->wish->get('private')) ? 'checked="checked"' : ''; ?>/>
 					<?php echo Lang::txt('COM_WISHLIST_WISH_MAKE_PRIVATE'); ?>
 				</label>
 			<?php } ?>
 
-				<input type="hidden" name="proposed_by" value="<?php echo $this->escape($this->wish->get('proposed_by')); ?>" />
+				<input type="hidden" name="fields[proposed_by]" value="<?php echo $this->escape($this->wish->get('proposed_by')); ?>" />
 				<input type="hidden" name="task" value="savewish" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
-				<input type="hidden" name="status" value="<?php echo $this->escape($this->wish->get('status')); ?>" />
-				<input type="hidden" name="id" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
+				<input type="hidden" name="fields[wishlist]" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
+				<input type="hidden" name="fields[status]" value="<?php echo $this->escape($this->wish->get('status')); ?>" />
+				<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
 
 				<?php echo Html::input('token'); ?>
 
 				<label for="subject">
 					<?php echo Lang::txt('COM_WISHLIST_SUMMARY_OF_WISH'); ?> <span class="required"><?php echo Lang::txt('COM_WISHLIST_REQUIRED'); ?></span>
-					<input name="subject" maxlength="200" id="subject" type="text" value="<?php echo $this->escape(stripslashes($this->wish->get('subject'))); ?>" />
+					<input name="fields[subject]" maxlength="200" id="subject" type="text" value="<?php echo $this->escape(stripslashes($this->wish->get('subject'))); ?>" />
 				</label>
 
 				<label for="field_about">
 					<?php echo Lang::txt('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>:
 					<?php
-						echo $this->editor('about', $this->escape($this->wish->content('raw')), 35, 10, 'field_about', array('class' => 'minimal no-footer'));
+						echo $this->editor('fields[about]', $this->escape($this->wish->get('about')), 35, 10, 'field_about', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
@@ -140,7 +141,7 @@ if ($this->wishlist->exists())
 					<input type="text" name="reward" id="field-reward" value="" size="5"<?php if ($this->funds <= 0 ) { echo ' disabled="disabled"'; } ?> />
 					<span class="subtext"><?php echo Lang::txt('COM_WISHLIST_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_WISHLIST_POINTS_TO_SPEND'); ?>.</span>
 				</label>
-				<input type="hidden"  name="funds" value="<?php echo $this->escape($this->funds); ?>" />
+				<input type="hidden" name="funds" value="<?php echo $this->escape($this->funds); ?>" />
 			<?php } ?>
 			</fieldset>
 			<div class="clear"></div>

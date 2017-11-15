@@ -51,6 +51,7 @@ class plgButtonArticle extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display the button
 	 *
+	 * @param  string  $name  Editor name?
 	 * @return array A four element array of (article_id, article_title, category_id, object)
 	 */
 	public function onDisplay($name)
@@ -78,7 +79,7 @@ class plgButtonArticle extends \Hubzero\Plugin\Plugin
 		// Currently uses blank class.
 		$link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
 
-		$button = new \Hubzero\Base\Object();
+		$button = new \Hubzero\Base\Obj();
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', Lang::txt('PLG_ARTICLE_BUTTON_ARTICLE'));

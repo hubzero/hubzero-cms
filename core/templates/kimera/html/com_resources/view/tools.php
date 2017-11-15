@@ -42,12 +42,24 @@ if ($mode != 'preview')
 {
 	switch ($this->model->resource->published)
 	{
-		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 1:
+			$txt .= '';
+			break; // published
+		case 2:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> ';
+			break;  // external draft
+		case 3:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';
+			break;  // pending
+		case 4:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';
+			break;  // deleted
+		case 5:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> ';
+			break;  // internal draft
+		case 0:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';
+			break;  // unpublished
 	}
 }
 
@@ -86,7 +98,7 @@ $revision = $this->revision;
 						{
 							$this->model->resource->introtext = $this->model->resource->fulltxt;
 						}
-						echo \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->introtext), 255);
+						echo \Hubzero\Utility\Str::truncate(stripslashes($this->model->resource->introtext), 255);
 						?>
 					</p>
 					<?php if ($this->model->params->get('access-edit-resource')) { ?>
@@ -297,4 +309,4 @@ $revision = $this->revision;
 			?>
 		</aside><!-- / .aside extracontent -->
 	</section><!-- / .main section -->
-<?php } ?>
+<?php }

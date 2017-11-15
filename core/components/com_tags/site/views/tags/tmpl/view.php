@@ -151,7 +151,7 @@ foreach ($cats as $cat)
 				<input type="hidden" name="task" value="view" />
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<label for="tag"><?php echo Lang::txt('COM_TAGS_SEARCH_LABEL'); ?></label>
+					<label for="actags"><?php echo Lang::txt('COM_TAGS_SEARCH_LABEL'); ?></label>
 					<?php echo $this->autocompleter('tags', 'tag', $this->escape($this->search), 'actags'); ?>
 				</fieldset>
 			</div><!-- / .container -->
@@ -220,7 +220,7 @@ foreach ($cats as $cat)
 									$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . \Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>' . "\n";
 									if ($row->ftext)
 									{
-										$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags($row->ftext), 200) . "</p>\n";
+										$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags($row->ftext), 200) . "</p>\n";
 									}
 									$html .= "\t\t" . '<p class="href">' . $base . $row->href . '</p>' . "\n";
 									$html .= "\t" . '</li>' . "\n";

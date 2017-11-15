@@ -228,7 +228,7 @@ $this->css('browse.css');
 									</dd>
 								</dl>
 								<p class="entry-content">
-									<?php echo \Hubzero\Utility\String::truncate($course->get('blurb'), 200); ?>
+									<?php echo \Hubzero\Utility\Str::truncate($course->get('blurb'), 200); ?>
 								</p>
 							</article>
 						</li>

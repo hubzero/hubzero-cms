@@ -36,26 +36,25 @@ $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
 $required = $this->pub->curation('blocks', $this->master->blockId, 'elements', $this->elementId)->params->required;
 
-$elName   		= 'description-element' . $this->elementId;
-$aliasmap 		= $this->manifest->params->aliasmap;
-$field 			= $this->manifest->params->field;
-$value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
+$elName   = 'description-element' . $this->elementId;
+$aliasmap = $this->manifest->params->aliasmap;
+$field    = $this->manifest->params->field;
+$value    = $this->pub && isset($this->pub->$field) ? $this->pub->$field : null;
 
-$editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
-$aboutTxt 		= $this->manifest->adminTips
-				? $this->manifest->adminTips
-				: $this->manifest->about;
+$editor = $this->manifest->params->input == 'editor' ? 1 : 0;
+$aboutTxt = $this->manifest->adminTips
+		? $this->manifest->adminTips
+		: $this->manifest->about;
 
 $shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
 
 if ($shorten)
 {
-	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
-	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-				. Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
-	$about.= ' <div class="hidden">';
-	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
-	$about.= ' </div>';
+	$about  = \Hubzero\Utility\Str::truncate($aboutTxt, 200);
+	$about .= ' <a href="#more-' . $elName . '" class="more-content">' . Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
+	$about .= ' <div class="hidden">';
+	$about .= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
+	$about .= ' </div>';
 }
 else
 {
@@ -89,7 +88,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 		<div class="block-subject">
 		<?php } ?>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
-			    <?php if ($this->name == 'curator') { $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); } ?>
+			<?php if ($this->name == 'curator') { $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); } ?>
 			<?php if ($value) {
 				// Parse editor text
 				if ($editor)

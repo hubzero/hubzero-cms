@@ -37,7 +37,7 @@ use Components\Tools\Models\Middleware\Zone;
 use Components\Tools\Helpers\Utils;
 use Hubzero\Geocode\Geocode;
 use Hubzero\Base\ItemList;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php');
 require_once(__DIR__ . DS . 'middleware' . DS . 'zone.php');
@@ -46,7 +46,7 @@ require_once(__DIR__ . DS . 'middleware' . DS . 'session.php');
 /**
  * Tools middleware model
  */
-class Middleware extends Object
+class Middleware extends Obj
 {
 	/**
 	 * \Hubzero\ItemList
@@ -272,4 +272,3 @@ class Middleware extends Object
 		return $this->_config;
 	}
 }
-

@@ -67,4 +67,4 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 </p>
 <?php } else { ?>
 	<p class="editing mini pale"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . $this->sizelimit; ?></p>
-<?php } ?>
+<?php }

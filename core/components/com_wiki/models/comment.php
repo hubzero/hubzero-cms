@@ -33,7 +33,7 @@ namespace Components\Wiki\Models;
 
 use Components\Wiki\Helpers\Parser;
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Request;
 use Lang;
 use Date;
@@ -116,7 +116,6 @@ class Comment extends Relational
 	 * Return a formatted timestamp
 	 *
 	 * @param   string  $as
-	 * @param   string  $format
 	 * @return  string
 	 */
 	public function created($as='')
@@ -241,7 +240,7 @@ class Comment extends Relational
 
 				if ($shorten)
 				{
-					$content = String::truncate($this->get('chtml'), $shorten, array('html' => true));
+					$content = Str::truncate($this->get('chtml'), $shorten, array('html' => true));
 					return $content;
 				}
 
@@ -260,7 +259,7 @@ class Comment extends Relational
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$content = Str::truncate($content, $shorten, $options);
 		}
 
 		return $content;
@@ -270,7 +269,7 @@ class Comment extends Relational
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string  $type  The type of link to return
+	 * @param   string   $type  The type of link to return
 	 * @return  boolean
 	 */
 	public function link($type='')

@@ -42,11 +42,19 @@ if ($this->resource->get('id'))
 {
 	switch ($this->resource->get('published'))
 	{
-		case 1: $state = 'published';  break;  // published
-		case 2: $state = 'draft';      break;  // draft
-		case 3: $state = 'pending';    break;  // pending
+		case 1:
+			$state = 'published';
+			break;  // published
+		case 2:
+			$state = 'draft';
+			break;  // draft
+		case 3:
+			$state = 'pending';
+			break;  // pending
 		case 0:
-		default: $state = 'unpublished';  break;  // unpublished
+		default:
+			$state = 'unpublished';
+			break;  // unpublished
 	}
 
 	$type = $this->resource->type()->get('type', Lang::txt('COM_CONTRIBUTE_NONE'));
@@ -96,7 +104,7 @@ $this->css('create.css');
 					<tr>
 						<th scope="row"><?php echo Lang::txt('Title'); ?></th>
 						<td>
-							<?php echo ($this->resource->title) ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->title), 150)) : Lang::txt('(none)'); ?>
+							<?php echo ($this->resource->title) ? $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->resource->title), 150)) : Lang::txt('(none)'); ?>
 						</td>
 					</tr>
 					<tr>

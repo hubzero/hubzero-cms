@@ -30,17 +30,18 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Config\Controllers;
+namespace Components\Config\Admin\Controllers;
 
 use Components\Config\Models;
 use Hubzero\Component\AdminController;
 use Exception;
 use Request;
 use Notify;
+use Lang;
 use User;
 use App;
 
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'component.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'component.php';
 
 /**
  * Controller class for a component's config
@@ -48,17 +49,16 @@ include_once(dirname(__DIR__) . DS . 'models' . DS . 'component.php');
 class Component extends AdminController
 {
 	/**
-	 * Class Constructor
+	 * Execute a task
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
 	 * @return  void
 	 */
-	public function __construct($config = array())
+	public function execute()
 	{
-		parent::__construct($config);
-
 		// Map the apply task to the save method.
 		$this->registerTask('apply', 'save');
+
+		parent::execute();
 	}
 
 	/**
@@ -71,9 +71,9 @@ class Component extends AdminController
 		$model = new Models\Component();
 
 		// Access check.
-		if (!User::authorise('core.admin', $model->getState('component.option')))
+		if (!User::authorise('core.admin', $model->get('component.option')))
 		{
-			App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$form = $model->getForm();
@@ -112,23 +112,22 @@ class Component extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		\Session::checkToken();
+		Request::checkToken();
 
 		// Set FTP credentials, if given.
-		\JClientHelper::setCredentialsFromRequest('ftp');
+		//\JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Initialise variables.
 		$model  = new Models\Component();
 		$form   = $model->getForm();
-		$data   = Request::getVar('jform', array(), 'post', 'array');
+		$data   = Request::getVar('hzform', array(), 'post', 'array');
 		$id     = Request::getInt('id');
 		$option = Request::getCmd('component');
 
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin', $option))
 		{
-			App::redirect('index.php', \Lang::txt('JERROR_ALERTNOAUTHOR'));
-			return;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// Validate the posted data.
@@ -138,7 +137,7 @@ class Component extends AdminController
 		if ($return === false)
 		{
 			// Get the validation messages.
-			$errors	= $model->getErrors();
+			$errors = $model->getErrors();
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
@@ -158,7 +157,7 @@ class Component extends AdminController
 
 			// Redirect back to the edit screen.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->getState('component.path'), false)
+				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false)
 			);
 			return false;
 		}
@@ -178,28 +177,31 @@ class Component extends AdminController
 			User::setState($this->_option . '.config.global.data', $data);
 
 			// Save failed, go back to the screen and display a notice.
+			Notify::error(Lang::txt('JERROR_SAVE_FAILED', $model->getError()));
+
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->getState('component.path'), false),
-				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
-				'error'
+				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false)
 			);
 			return false;
 		}
+
+		User::setState($this->_option . '.config.global.data', null);
 
 		// Set the redirect based on the task.
 		switch (Request::getCmd('task'))
 		{
 			case 'apply':
+				Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
+
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->getState('component.path') . '&refresh=1', false),
-					Lang::txt('COM_CONFIG_SAVE_SUCCESS')
+					Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path') . '&refresh=1', false)
 				);
 				break;
 
 			case 'save':
 			default:
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&view=close&tmpl=component&path=' . $model->getState('component.path'), false)
+					Route::url('index.php?option=' . $this->_option . '&view=close&tmpl=component&path=' . $model->get('component.path'), false)
 				);
 				break;
 		}

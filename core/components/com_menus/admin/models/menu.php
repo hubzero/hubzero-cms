@@ -64,7 +64,7 @@ class MenusModelMenu extends JModelForm
 	 * @param	string	A prefix for the table class name. Optional.
 	 * @param	array	Configuration array for model. Optional.
 	 * @return	JTable	A database object
-	*/
+	 */
 	public function getTable($type = 'MenuType', $prefix = 'JTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -117,7 +117,7 @@ class MenusModelMenu extends JModelForm
 		}
 
 		$properties = $table->getProperties(1);
-		$value = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
+		$value = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Obj');
 		return $value;
 	}
 

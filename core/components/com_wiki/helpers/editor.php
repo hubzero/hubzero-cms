@@ -32,7 +32,7 @@
 
 namespace Components\Wiki\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
 use Plugin;
 use Lang;
@@ -40,7 +40,7 @@ use Lang;
 /**
  * Hubzero helper class for retrieving the current wiki editor
  */
-class Editor extends Object
+class Editor extends Obj
 {
 	/**
 	 * Editor Plugin object

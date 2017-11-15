@@ -41,7 +41,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -75,7 +75,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function &onGroupAreas()
 	{
@@ -93,15 +93,15 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $group       Current group
+	 * @param   string   $option      Name of the component
+	 * @param   string   $authorized  User's authorization level
+	 * @param   integer  $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   string   $action      Action to perform
+	 * @param   array    $access      What can be accessed
+	 * @param   array    $areas       Active area(s)
+	 * @return  array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
@@ -177,14 +177,14 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$this->action = $action;
 
 		//include com_wishlist files
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
+		require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
+		require_once Component::path('com_wishlist') . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php';
 
 		// Get the component parameters
 		$this->config = Component::params('com_wishlist');
 
 		Lang::load('com_wishlist') ||
-		Lang::load('com_wishlist', PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site');
+		Lang::load('com_wishlist', Component::path('com_wishlist') . DS . 'site');
 
 		//set some more vars
 		$gid = $this->group->get('gidNumber');
@@ -200,36 +200,33 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$filters['limit'] = $this->params->get('limit');
 
 		// Load some objects
-		$obj = new \Components\Wishlist\Tables\Wishlist($this->database);
-		$objWish = new \Components\Wishlist\Tables\Wish($this->database);
-		$objOwner = new \Components\Wishlist\Tables\Owner($this->database);
+		$wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($gid, $category);
 
 		// Get wishlist id
-		$id = $obj->get_wishlistID($gid, $category);
+		$id = $wishlist->get('id');
 
 		// Create a new list if necessary
 		if (!$id)
 		{
 			// create private list for group
-			if (\Hubzero\User\Group::exists($gid))
-			{
-				$group = \Hubzero\User\Group::getInstance($gid);
-				$id = $obj->createlist($category, $gid, 0, $cn . ' ' . Lang::txt('PLG_GROUPS_WISHLIST_NAME_GROUP'));
-			}
+			$wishlist->set('category', $category);
+			$wishlist->set('referenceid', $gid);
+			$wishlist->set('public', 0);
+			$wishlist->set('title', $cn . ' ' . Lang::txt('PLG_GROUPS_WISHLIST_NAME_GROUP'));
+			$wishlist->stage();
+
+			$id = $wishlist->get('id');
 		}
 
-		// get wishlist data
-		$wishlist = $obj->get_wishlist($id, $gid, $category);
-
 		//if we dont have a wishlist display error
-		if (!$wishlist)
+		if (!$wishlist->get('id'))
 		{
 			$arr['html'] = '<p class="error">' . Lang::txt('PLG_GROUPS_WISHLIST_ERROR_WISHLIST_NOT_FOUND') . '</p>';
 			return $arr;
 		}
 
 		// Get list owners
-		$owners = $objOwner->get_owners($id, $this->config->get('group'), $wishlist);
+		$owners = $wishlist->getOwners();
 
 		//if user is guest and wishlist isnt public
 		//if (!$wishlist->public && User::isGuest())
@@ -254,34 +251,195 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			$admin = 3;
 		}
 
-		//get item count
-		$items = $objWish->get_count($id, $filters, $admin);
+		$entries = \Components\Wishlist\Models\Wish::all()
+			->whereEquals('wishlist', $wishlist->get('id'));
+
+		$w = $entries->getTableName();
+
+		if ($filters['search'])
+		{
+			$entries
+				->whereLike('subject', strtolower((string)$filters['search']), 1)
+				->orWhereLike('about', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
+
+		if ($filters['filterby'])
+		{
+			// list  filtering
+			switch ($filters['filterby'])
+			{
+				case 'granted':
+					$entries->whereEquals('status', 1);
+					break;
+				case 'open':
+					$entries->whereEquals('status', 0);
+					break;
+				case 'accepted':
+					$entries
+						->whereIn('status', array(0, 6))
+						->whereEquals('accepted', 1);
+					break;
+				case 'pending':
+					$entries
+						->whereEquals('accepted', 0)
+						->whereEquals('status', 0);
+					break;
+				case 'rejected':
+					$entries->whereEquals('status', 3);
+					break;
+				case 'withdrawn':
+					$entries->whereEquals('status', 4);
+					break;
+				case 'deleted':
+					$entries->whereEquals('status', 2);
+					break;
+				case 'useraccepted':
+					$entries
+						->whereEquals('accepted', 3)
+						->where('status', '!=', 2);
+					break;
+				case 'private':
+					$entries
+						->whereEquals('private', 1)
+						->where('status', '!=', 2);
+					break;
+				case 'public':
+					$entries
+						->whereEquals('private', 0)
+						->where('status', '!=', 2);
+					break;
+				case 'assigned':
+					$entries
+						->where('status', '!=', 2)
+						->whereRaw('assigned NOT NULL');
+					break;
+				case 'mine':
+					$entries
+						->where('status', '!=', 2)
+						->whereEquals('assigned', User::get('id'));
+				break;
+				case 'submitter':
+					$entries
+						->where('status', '!=', 2)
+						->whereEquals('proposed_by', User::get('id'));
+					break;
+				case 'all':
+				default:
+					$entries->where('status', '!=', 2);
+					break;
+			}
+		}
+
+		if (!$admin)
+		{
+			$entries->whereEquals('private', 0);
+		}
+
+		// If filtering by tags...
+		if (isset($filters['tag']) && $filters['tag'])
+		{
+			$tags = $filters['tag'];
+			if (is_string($tags))
+			{
+				$tags = trim($tags);
+				$tags = preg_split("/(,|;)/", $tags);
+			}
+
+			foreach ($tags as $k => $tag)
+			{
+				$tags[$k] = strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
+			}
+
+			$to = '#__tags_object';
+			$t  = '#__tags';
+			$entries
+				->join($to, $to . '.objectid', $w . '.id', 'left')
+				->join($t, $to . '.tagid', $t . '.id', 'left')
+				->whereEquals($to . '.tbl', 'wishlist')
+				->whereIn($t . '.tag', $tags, 1)
+				->group($w . '.id');
+		}
+
+		// Get a total
+		$items = $entries->copy()->total();
 
 		$arr['metadata']['count'] = $items;
 
 		if ($return == 'html')
 		{
-			// Get wishes
-			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getInstance());
+			// Select vote totals
+			$vote = \Components\Wishlist\Models\Vote::blank();
+
+			$entries
+				->select($entries->getTableName() . '.*')
+				->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'positive')
+				->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'negative');
+
+			// list sorting
+			if ($filters['sortby'])
+			{
+				switch ($filters['sortby'])
+				{
+					case 'date':
+						$entries
+							->order('status', 'asc')
+							->order('proposed', 'desc');
+						break;
+					case 'submitter':
+						$u = User::getTableName(); //'#__users';
+						$entries
+							->select($u . '.name', 'authorname')
+							->join($u, $u . '.id', $entries->getTableName() . '.proposed_by', 'left')
+							->order($u . '.name', 'asc');
+						break;
+					case 'feedback':
+						$entries
+							->order('positive', 'desc')
+							->order('status', 'asc');
+						break;
+					case 'ranking':
+						$entries
+							->order('status', 'asc')
+							->order('ranking', 'desc')
+							->order('positive', 'desc')
+							->order('proposed', 'desc');
+						break;
+					case 'bonus':
+						$entries
+							->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)", 'bonus')
+							->order('status', 'asc')
+							->order('bonus', 'desc')
+							->order('positive', 'desc')
+							->order('proposed', 'desc');
+						break;
+					case 'all':
+					default:
+						$entries
+							->order('accepted', 'desc')
+							->order('status', 'asc')
+							->order('proposed', 'desc');
+						break;
+				}
+			}
+
+			$rows = $entries
+				->limit($filters['limit'])
+				->start($filters['start'])
+				->rows();
 
 			// HTML output
 			// Instantiate a view
-			$view = $this->view('default', 'browse');
-
-			// Pass the view some info
-			$view->option = $option;
-			//$view->owners = $owners;
-			$view->group = $this->group;
-			$view->wishlist = $wishlist;
-			$view->items = $items;
-			$view->filters = $filters;
-			$view->admin = $admin;
-			$view->config = $this->config;
-
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view = $this->view('default', 'browse')
+				->set('option', $option)
+				->set('group', $this->group)
+				->set('wishlist', $wishlist)
+				->set('items', $items)
+				->set('rows', $rows)
+				->set('filters', $filters)
+				->set('admin', $admin)
+				->set('config', $this->config)
+				->setErrors($this->getErrors());
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
@@ -292,21 +450,19 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return count of items that will be deleted when group is deleted
 	 * 
-	 * @param      object $group Group being deleted
-	 * @return     string
+	 * @param   object  $group  Group being deleted
+	 * @return  string
 	 */
 	public function onGroupDeleteCount($group)
 	{
 		// include com_wishlist files
-		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
+		require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
-		$database = App::get('db');
-		$wishlist = new \Components\Wishlist\Tables\Wishlist($database);
-		$wish     = new \Components\Wishlist\Tables\Wish($database);
+		$wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($group->get('gidNumber'), 'group');
 
 		// Get wishlist id
-		$id = $wishlist->get_wishlistID($group->get('gidNumber'), 'group');
+		$id = $wishlist->get('id');
 
 		// no id means no list
 		if (!$id)
@@ -315,9 +471,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		}
 
 		// get wishes count
-		$wishes = $wish->get_count($id, array(
-			'filterby' => 'all'
-		), 1);
+		$wishes = $wishlist->wishes()->total();
 
 		// return message
 		return Lang::txt('PLG_GROUPS_WISHLIST_LOG', $wishes);
@@ -326,21 +480,19 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete any associated wishes & lists when group is deleted
 	 * 
-	 * @param      object $group Group being deleted
-	 * @return     string Log of items removed
+	 * @param   object  $group  Group being deleted
+	 * @return  string  Log of items removed
 	 */
 	public function onGroupDelete($group)
 	{
 		// include com_wishlist files
-		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
+		require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
-		$database = App::get('db');
-		$wishlist = new \Components\Wishlist\Tables\Wishlist($database);
-		$wish     = new \Components\Wishlist\Tables\Wish($database);
+		$wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($group->get('gidNumber'), 'group');
 
 		// Get wishlist id
-		$id = $wishlist->get_wishlistID($group->get('gidNumber'), 'group');
+		$id = $wishlist->get('id');
 
 		// no id means no list
 		if (!$id)
@@ -349,24 +501,12 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get wishes
-		$wishes = $wish->get_wishes($id, array(
-			'filterby' => 'all',
-			'sortby'   => ''
-		), 1);
-
-		// delete each wish
-		foreach ($wishes as $item)
-		{
-			$wish->load($item->id);
-			$wish->delete();
-		}
+		$wishes = $wishlist->wishes()->total();
 
 		// delete wishlist
-		$wishlist->load($id);
-		$wishlist->delete();
+		$wishlist->destroy();
 
 		// return message
-		return Lang::txt('PLG_GROUPS_WISHLIST_LOG', count($wishes));
+		return Lang::txt('PLG_GROUPS_WISHLIST_LOG', $wishes);
 	}
 }
-

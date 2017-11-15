@@ -141,7 +141,7 @@ class RecentPageMacro extends WikiMacro
 					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_CREATED_ON', Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
 				}
 				$html .= '</p>' . "\n";
-				$html .= '<p>' . \Hubzero\Utility\String::truncate($txt, 300) . '</p>' . "\n";
+				$html .= '<p>' . \Hubzero\Utility\Str::truncate($txt, 300) . '</p>' . "\n";
 				$html .= "\t" . '<p><a href="' . Route::url($row->link()) . '">' . Lang::txt('PLG_WIKI_PARSERDEFAULT_READ_MORE') . '</a></p>' . "\n";
 				$html .= '</div>' . "\n";
 			}

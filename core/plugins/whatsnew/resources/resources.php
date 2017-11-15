@@ -41,50 +41,49 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Resource types and "all" category
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_areas = null;
 
 	/**
 	 * Resource types
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_cats  = null;
 
 	/**
 	 * Results total
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 	}
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onWhatsnewAreas()
 	{
@@ -94,20 +93,18 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		}
 
 		$categories = $this->_cats;
-		if (!is_array($categories))
+		if (!$categories)
 		{
 			// Get categories
-			$database = App::get('db');
-			$rt = new \Components\Resources\Tables\Type($database);
-			$this->_cats = $rt->getMajorTypes();
+			$this->_cats = \Components\Resources\Models\Type::getMajorTypes();
 		}
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		for ($i = 0; $i < count($this->_cats); $i++)
+		foreach ($this->_cats as $cat)
 		{
-			$cats[$this->_cats[$i]->alias] = $this->_cats[$i]->type;
+			$cats[$cat->alias] = $cat->type;
 		}
 
 		$this->_areas = array(
@@ -120,12 +117,12 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
 	 *
-	 * @param      object  $period     Time period to pull results for
-	 * @param      mixed   $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      array   $areas      Active area(s)
-	 * @param      array   $tagids     Array of tag IDs
-	 * @return     array
+	 * @param   object   $period      Time period to pull results for
+	 * @param   mixed    $limit       Number of records to pull
+	 * @param   integer  $limitstart  Start of records to pull
+	 * @param   array    $areas       Active area(s)
+	 * @param   array    $tagids      Array of tag IDs
+	 * @return  array
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
@@ -146,11 +143,6 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = App::get('db');
-
-		// Instantiate some needed objects
-		$rr = new \Components\Resources\Tables\Resource($database);
-
 		// Build query
 		$filters = array(
 			'startdate' => $period->cStartDate,
@@ -162,23 +154,40 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$filters['tags'] = $tagids;
 		}
 
-		$filters['usergroups'] = \Hubzero\User\Helper::getGroups((int)User::get('id', 0), 'all');
+		$groups = \Hubzero\User\Helper::getGroups((int)User::get('id', 0), 'all');
+		$filters['usergroups'] = array();
+
+		if (!empty($groups))
+		{
+			foreach ($groups as $group)
+			{
+				if ($group->regconfirmed)
+				{
+					$filters['usergroups'][] = $group->cn;
+				}
+			}
+		}
 
 		// Get categories
 		$categories = $this->_cats;
-		if (!is_array($categories))
+		if (!$categories)
 		{
-			$rt = new \Components\Resources\Tables\Type($database);
-			$categories = $rt->getMajorTypes();
+			$categories = \Components\Resources\Models\Type::getMajorTypes();
 		}
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
+		foreach ($categories as $category)
 		{
-			$cats[$categories[$i]->alias] = array();
-			$cats[$categories[$i]->alias]['id'] = $categories[$i]->id;
+			$cats[$category->alias] = array();
+			$cats[$category->alias]['id'] = $category->id;
+		}
+
+		$access = array(0, 3);
+		if (!\User::isGuest())
+		{
+			$access[] = 1;
 		}
 
 		$filters['authorized'] = false;
@@ -211,40 +220,40 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get results
-			$database->setQuery($rr->buildPluginQuery($filters));
-			$rows = $database->loadObjectList();
+			$query = \Components\Resources\Models\Entry::all()
+				->whereEquals('standalone', 1)
+				->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED);
 
-			// Did we get any results?
-			if ($rows)
+			if (isset($filters['type']))
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-
-				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row)
-				{
-					$resourceEx = new \Components\Resources\Helpers\Helper($row->id, $database);
-					$resourceEx->getContributors();
-
-					$rows[$key]->authors = $resourceEx->contributors;
-
-					if ($row->alias)
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
-					}
-					else
-					{
-						$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
-					}
-					if ($row->itext)
-					{
-						$rows[$key]->text = $rows[$key]->itext;
-					}
-					else if ($row->ftext)
-					{
-						$rows[$key]->text = $rows[$key]->ftext;
-					}
-				}
+				$query->whereEquals('type', $filters['type']);
 			}
+
+			if (!empty($filters['usergroups']))
+			{
+				$query->whereIn('access', $access, 1)
+					->orWhereIn('group_owner', $filters['usergroups'], 1)
+					->resetDepth();
+			}
+			else
+			{
+				$query->whereIn('access', $access);
+			}
+
+			if ($filters['startdate'])
+			{
+				$query->where('publish_up', '>', $filters['startdate']);
+			}
+			if ($filters['enddate'])
+			{
+				$query->where('publish_up', '<', $filters['enddate']);
+			}
+
+			$rows = $query
+				->limit($filters['limit'])
+				->start($filters['limitstart'])
+				->order('created', 'desc')
+				->rows();
 
 			return $rows;
 		}
@@ -259,12 +268,40 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			{
 				if (is_array($val))
 				{
-					foreach ($val as $a=>$t)
+					foreach ($val as $a => $t)
 					{
 						$filters['type'] = $cats[$a]['id'];
 
-						$database->setQuery($rr->buildPluginQuery($filters));
-						$counts[] = $database->loadResult();
+						$query = \Components\Resources\Models\Entry::all()
+							->whereEquals('standalone', 1)
+							->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED);
+
+						if ($filters['type'])
+						{
+							$query->whereEquals('type', $filters['type']);
+						}
+
+						if (!empty($filters['usergroups']))
+						{
+							$query->whereIn('access', $access, 1)
+								->orWhereIn('group_owner', $filters['usergroups'], 1)
+								->resetDepth();
+						}
+						else
+						{
+							$query->whereIn('access', $access);
+						}
+
+						if ($filters['startdate'])
+						{
+							$query->where('publish_up', '>', $filters['startdate']);
+						}
+						if ($filters['enddate'])
+						{
+							$query->where('publish_up', '<', $filters['enddate']);
+						}
+
+						$counts[] = $query->total();
 					}
 				}
 			}
@@ -277,132 +314,41 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Push styles and scripts to the document
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public static function documents()
 	{
 		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
 		\Hubzero\Document\Assets::addComponentScript('com_resources');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
+		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
+		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
 	}
 
 	/**
 	 * Special formatting for results
 	 *
-	 * @param      object $row    Database row
-	 * @param      string $period Time period
-	 * @return     string
+	 * @param   object  $row     Database row
+	 * @param   string  $period  Time period
+	 * @return  string
 	 */
 	public static function out($row, $period)
 	{
-		$database = App::get('db');
-
-		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
-
-		// Instantiate a helper object
-		if (!isset($row->authors))
-		{
-			$helper->getContributors();
-
-			$row->authors = $helper->contributors;
-		}
+		$row->set('typetitle', $row->type->get('type'));
 
 		// Get the component params and merge with resource params
 		$config = Component::params('com_resources');
 
-		$rparams = new \Hubzero\Config\Registry($row->params);
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => Component::path('com_resources') . '/site',
+			'name'      => 'browse',
+			'layout'    => 'item'
+		));
+		$view->set('line', $row)
+			->set('option', 'com_resources')
+			->set('config', $config)
+			->set('supported', array());
 
-		// Set the display date
-		switch ($rparams->get('show_date', $config->get('show_date')))
-		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));   break;
-			case 3: $thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); break;
-		}
-
-		// Start building HTML
-		$html  = "\t" . '<li class="resource">' . "\n";
-		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		if ($rparams->get('show_ranking', $config->get('show_ranking')))
-		{
-			$helper->getCitationsCount();
-			$helper->getLastCitationDate();
-
-			if ($row->area == 'Tools')
-			{
-				$stats = new \Components\Resources\Helpers\Usage\Stats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			}
-			else
-			{
-				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			}
-			$statshtml = $stats->display();
-
-			$row->ranking = round($row->ranking, 1);
-
-			$html .= "\t\t" . '<div class="metadata">' . "\n";
-
-			$r = (10*$row->ranking);
-			if (intval($r) < 10)
-			{
-				$r = '0' . $r;
-			}
-
-			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('PLG_WHATSNEW_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . Lang::txt('PLG_WHATSNEW_RESOURCES_RANKING') . '</dt>' . "\n";
-			$html .= "\t\t\t\t" . '<dd>' . "\n";
-			$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('PLG_WHATSNEW_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
-			$html .= "\t\t\t\t\t" . '<div>' . "\n";
-			$html .= $statshtml;
-			$html .= "\t\t\t\t\t" . '</div>' . "\n";
-			$html .= "\t\t\t\t" . '</dd>' . "\n";
-			$html .= "\t\t\t" . '</dl>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-		}
-		elseif ($rparams->get('show_rating', $config->get('show_rating')))
-		{
-			switch ($row->rating)
-			{
-				case 0.5: $class = ' half-stars';      break;
-				case 1:   $class = ' one-stars';       break;
-				case 1.5: $class = ' onehalf-stars';   break;
-				case 2:   $class = ' two-stars';       break;
-				case 2.5: $class = ' twohalf-stars';   break;
-				case 3:   $class = ' three-stars';     break;
-				case 3.5: $class = ' threehalf-stars'; break;
-				case 4:   $class = ' four-stars';      break;
-				case 4.5: $class = ' fourhalf-stars';  break;
-				case 5:   $class = ' five-stars';      break;
-				case 0:
-				default:  $class = ' no-stars';      break;
-			}
-
-			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . Lang::txt('PLG_WHATSNEW_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-		}
-		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
-		if ($row->authors)
-		{
-			$html .= ' <span>|</span> ' . Lang::txt('PLG_WHATSNEW_RESOURCES_CONTRIBUTORS') . ' ' . $row->authors;
-		}
-		$html .= '</p>' . "\n";
-		if ($row->itext)
-		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->itext)), 200) . '</p>' . "\n";
-		}
-		else if ($row->ftext)
-		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
-		}
-		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
-		$html .= "\t" . '</li>' . "\n";
-
-		// Return output
-		return $html;
+		return $view->loadTemplate();
 	}
 }
-

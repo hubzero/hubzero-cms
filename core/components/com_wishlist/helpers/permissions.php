@@ -25,14 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Wishlist\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 
 /**
@@ -52,7 +51,7 @@ class Permissions
 	 *
 	 * @param   string   $extension  The extension.
 	 * @param   integer  $assetId    The asset ID.
-	 * @return  object   Object
+	 * @return  object   Obj
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{
@@ -63,7 +62,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = array(
 			'core.admin',
@@ -82,4 +81,3 @@ class Permissions
 		return $result;
 	}
 }
-

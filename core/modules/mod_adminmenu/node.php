@@ -91,7 +91,7 @@ class Node extends \JNode
 		{
 			$link = Route::url($link);
 		}
-		$this->link   = \Hubzero\Utility\String::ampReplace($link);
+		$this->link   = \Hubzero\Utility\Str::ampReplace($link);
 		$this->class  = $class;
 		$this->active = $active;
 

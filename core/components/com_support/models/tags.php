@@ -37,7 +37,7 @@ use Components\Tags\Models\Tag;
 use Hubzero\Base\ItemList;
 use Route;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Support Tagging class
@@ -54,10 +54,10 @@ class Tags extends Cloud
 	/**
 	 * Render a tag cloud
 	 *
-	 * @param      string  $rtrn    Format to render
-	 * @param      array   $filters Filters to apply
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     string
+	 * @param   string   $rtrn     Format to render
+	 * @param   array    $filters  Filters to apply
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  string
 	 */
 	public function render($rtrn='html', $filters=array(), $clear=false)
 	{
@@ -84,6 +84,8 @@ class Tags extends Cloud
 	 */
 	public function checkTags($id, $tagger_id=0, $strength=0, $admin=0)
 	{
+		$db = App::get('db');
+
 		$sql = "SELECT t.tag, t.raw_tag, t.description, t.admin, rt.id, rt.objectid FROM `#__tags_object` AS rt JOIN `#__tags` AS t ON t.id=rt.tagid WHERE ";
 
 		if (is_array($id))
@@ -94,21 +96,21 @@ class Tags extends Cloud
 
 		$where = array();
 		$where[] = "rt.objectid IN ($id)";
-		$where[] = "rt.tbl=" . $this->_db->quote($this->_scope);
+		$where[] = "rt.tbl=" . $db->quote($this->_scope);
 
 		if ($tagger_id != 0)
 		{
-			$where[] = "rt.taggerid=" . $this->_db->quote($tagger_id);
+			$where[] = "rt.taggerid=" . $db->quote($tagger_id);
 		}
 		if ($strength)
 		{
-			$where[] = "rt.strength=" . $this->_db->quote($strength);
+			$where[] = "rt.strength=" . $db->quote($strength);
 		}
 
 		$sql .= implode(" AND ", $where) . " GROUP BY rt.objectid";
 
-		$this->_db->setQuery($sql);
-		return $this->_db->loadAssocList('objectid');
+		$db->setQuery($sql);
+		return $db->loadAssocList('objectid');
 	}
 
 	/**
@@ -140,4 +142,3 @@ class Tags extends Cloud
 		$this->_cache['tags']->add($tag);
 	}
 }
-

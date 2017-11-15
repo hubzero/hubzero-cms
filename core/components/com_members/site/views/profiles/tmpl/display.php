@@ -93,9 +93,7 @@ $this->css('introduction.css', 'system')
 						<fieldset>
 							<p>
 								<label for="gsearch"><?php echo Lang::txt('COM_MEMBERS_FIND_MEMBERS_SEARCH_LABEL'); ?></label>
-								<input type="hidden" name="q[0][field]" value="name" />
-								<input type="hidden" name="q[0][operator]" value="like" />
-								<input type="text" name="q[0][value]" id="gsearch" value="" />
+								<input type="text" name="search" id="gsearch" value="" />
 								<input type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 							</p>
 							<p>
@@ -170,7 +168,7 @@ $this->css('introduction.css', 'system')
 									</div>
 									<p class="course-instructor-bio">
 										<?php if ($bio = $contributor->get('bio')) { ?>
-											<?php echo Hubzero\Utility\String::truncate(strip_tags($bio), 200); ?>
+											<?php echo Hubzero\Utility\Str::truncate(strip_tags($bio), 200); ?>
 										<?php } else { ?>
 											<em><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_NO_BIO'); ?></em>
 										<?php } ?>

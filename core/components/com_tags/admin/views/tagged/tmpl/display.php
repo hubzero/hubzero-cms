@@ -94,8 +94,6 @@ Toolbar::help('tagged');
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
-			//$row = \Components\Tags\Models\Object::blank()->set($row);
-			//$row->set('id', $row->get('taggedid'));
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

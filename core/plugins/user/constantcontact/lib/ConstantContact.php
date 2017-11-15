@@ -25,13 +25,17 @@ class ConstantContact
 		// Set username to the instance so we can use it if neccessary
 		$this->username = $username;
 
-		try {
+		try
+		{
 			$this->authType = strtolower($authType);
-			if ($this->authType != 'basic' && $this->authType != 'oauth' && $this->authType != 'oauth2') {
+			if ($this->authType != 'basic' && $this->authType != 'oauth' && $this->authType != 'oauth2')
+			{
 				throw new CTCTException('Authentication Error: type '.$this->authType.' is not valid');
-			};
+			}
 			$this->CTCTRequest = new CTCTRequest($this->authType, $apiKey, $username, $param);
-		} catch (CTCTException $e) {
+		}
+		catch (CTCTException $e)
+		{
 			$e->generateError();
 		}
 	}
@@ -57,7 +61,10 @@ class ConstantContact
 	public function getListMembers(ContactList $List, $page=null)
 	{
 		$ListsCollection = new ListsCollection($this->CTCTRequest);
-		if ($page) {$url = $this->CTCTRequest->baseUri;}
+		if ($page)
+		{
+			$url = $this->CTCTRequest->baseUri;
+		}
 		return $ListsCollection->getListMembers($List, $page);
 	}
 

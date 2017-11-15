@@ -31,7 +31,7 @@
 
 namespace Components\Newsletter\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use User;
 
 /**
@@ -62,7 +62,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$result = new Object;
+		$result = new Obj;
 
 		$actions = array(
 			'core.admin',

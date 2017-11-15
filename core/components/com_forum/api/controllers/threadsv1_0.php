@@ -693,7 +693,7 @@ class Threadsv1_0 extends ApiController
 			'category_id'    => Request::getInt('category_id', 0, 'post'),
 			'title'          => Request::getVar('title', null, 'post', 'none', 2),
 			'comment'        => Request::getVar('comment', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', new Date('now'), 'post'),
+			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', 0, 'post'),
 			'state'          => Request::getInt('state', Post::STATE_PUBLISHED, 'post'),
 			'sticky'         => Request::getInt('sticky', 0, 'post'),

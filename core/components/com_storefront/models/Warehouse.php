@@ -51,12 +51,10 @@ require_once(__DIR__ . DS . 'Collection.php');
  * Products inventory and structure (only product lookup and inventory management)
  *
  */
-class Warehouse extends \Hubzero\Base\Object
+class Warehouse extends \Hubzero\Base\Obj
 {
-	/**
-	 * array Product categories to look at (to define scope)
-	 */
-	var $lookupCollections = NULL;
+	// Product categories to look at (to define scope)
+	var $lookupCollections = null;
 
 	// Access levels scope (what is allowed to display)
 	var $accessLevelsScope = false;
@@ -67,8 +65,14 @@ class Warehouse extends \Hubzero\Base\Object
 	// User scope (what user is trying to get the info)
 	var $userScope = false;
 
+	// User whitelisted SKUS for a product
+	var $userWhitelistedSkus = false;
+
+	// Flag if the current product is not permitted to access by the uses by default
+	var $userCannotAccessProduct = false;
+
 	// Database instance
-	var $db = NULL;
+	var $db = null;
 
 	/**
 	 * Constructor method
@@ -106,7 +110,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	public function resetLookupCollections()
 	{
-		$this->lookupCollections[] = NULL;
+		$this->lookupCollections[] = null;
 	}
 
 	/**
@@ -419,6 +423,14 @@ class Warehouse extends \Hubzero\Base\Object
 			return $response;
 		}
 
+		// Get the SKUs whitelist for a user
+		if ($this->userScope)
+		{
+			$allProductSkus = $this->getProductSkus($pInfo->pId);
+			require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
+			$this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
+		}
+
 		// Check if the product can be viewed (if access level scope is set)
 		if (\Component::params('com_storefront')->get('productAccess'))
 		{
@@ -435,10 +447,14 @@ class Warehouse extends \Hubzero\Base\Object
 				// No common groups
 				if (empty($groups))
 				{
-					$response->status = 0;
-					$response->errorCode = 403;
-					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
-					return $response;
+					$this->userCannotAccessProduct = true;
+					if (!$this->userWhitelistedSkus)
+					{
+						$response->status = 0;
+						$response->errorCode = 403;
+						$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+						return $response;
+					}
 				}
 
 				$accessgroups = $product->getAccessGroups('exclude');
@@ -449,10 +465,14 @@ class Warehouse extends \Hubzero\Base\Object
 				// User in disallowed groups
 				if (!empty($groups))
 				{
-					$response->status = 0;
-					$response->errorCode = 403;
-					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
-					return $response;
+					$this->userCannotAccessProduct = true;
+					if (!$this->userWhitelistedSkus)
+					{
+						$response->status = 0;
+						$response->errorCode = 403;
+						$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+						return $response;
+					}
 				}
 			}
 		}
@@ -462,10 +482,14 @@ class Warehouse extends \Hubzero\Base\Object
 			{
 				if (!in_array($pInfo->access, $this->accessLevelsScope))
 				{
-					$response->status = 0;
-					$response->errorCode = 403;
-					$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
-					return $response;
+					$this->userCannotAccessProduct = true;
+					if (!$this->userWhitelistedSkus)
+					{
+						$response->status = 0;
+						$response->errorCode = 403;
+						$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+						return $response;
+					}
 				}
 			}
 		}
@@ -569,7 +593,19 @@ class Warehouse extends \Hubzero\Base\Object
 		}
 
 		// Filter by filters
-		//print_r($filters);
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$where   = array();
+			$where[] = "p.`pName` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+			$where[] = "p.`pDescription` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+
+			$sql .= " AND (" . implode(" OR ", $where) . ")";
+		}
+
+		if (isset($filters['type']) && $filters['type'] >= 0)
+		{
+			$sql .= " AND p.`ptId`=" . $this->_db->quote((int)$filters['type']);
+		}
 
 		if (isset($filters['sort']))
 		{
@@ -680,8 +716,20 @@ class Warehouse extends \Hubzero\Base\Object
 	{
 		// Get all SKUs' options and option groups
 		$sql  = "	SELECT
-					s.`sId` AS skuId, so.`oId` AS skusOptionId, s.`sPrice`, s.`sAllowMultiple`, s.`sInventory`,
-					s.`sTrackInventory`, og.`ogId`, `oName`, `ogName`";
+					s.`sId` AS skuId,
+					so.`oId` AS skusOptionId,
+					s.`sPrice`,
+					s.`sAllowMultiple`,
+					s.`sInventory`,
+					s.`sTrackInventory`,
+					s.`sRestricted`,
+					og.`ogId`,
+					`oName`,
+					`ogName`";
+		if ($this->userScope)
+		{
+			$sql .= " 	, pr.`uId`";
+		}
 		$sql .= "	FROM `#__storefront_skus` s
 					LEFT JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
 					LEFT JOIN `#__storefront_options` o ON so.`oId` = o.`oId`
@@ -690,32 +738,83 @@ class Warehouse extends \Hubzero\Base\Object
 		// check user scope if needed
 		if ($this->userScope)
 		{
-			$sql .= " LEFT JOIN #__storefront_permissions pr ON pr.`scope_id` = s.sId";
+			$sql .= " LEFT JOIN #__storefront_permissions pr ON (pr.`scope_id` = s.sId AND pr.scope = 'sku' AND pr.uId = '{$this->userScope}')";
 		}
 
 		$sql .= "	WHERE s.`pId` = {$pId} AND s.`sActive` = 1";
 		$sql .= " 	AND (s.`publish_up` IS NULL OR s.`publish_up` <= NOW())";
 		$sql .= " 	AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
-		$sql .= "   AND (s.`sInventory` > 0 OR s.`sTrackInventory` = 0)";
-		if ($this->userScope)
-		{
-			$sql .= " AND (s.`sRestricted` = 0 OR (pr.scope = 'sku' AND pr.uId = '{$this->userScope}'))";
-		}
-		else
-		{
-			$sql .= " AND s.`sRestricted` = 0";
-		}
 		$sql .= "	ORDER BY og.`ogId`, o.`oId`";
 
 		$this->_db->setQuery($sql);
 		//print_r($this->_db->toString()); die;
 		$this->_db->query();
+
+		// check some values to figure out what to return
+		$returnObject = new \stdClass();
+		$returnObject->status = 'ok';
+
 		if (!$this->_db->getNumRows())
 		{
-			return false;
+			$returnObject->status = 'error';
+			$returnObject->msg = 'not found';
+			return $returnObject;
 		}
+		else
+		{
+			$results = $this->_db->loadObjectList();
+			$res = $results;
 
-		$res = $this->_db->loadObjectList();
+			// Go through each SKU and do the checks to determine what needs to be returned
+			// default value
+			$permissionsRestricted = false;
+
+			require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
+
+			foreach ($res as $k => $line)
+			{
+				// see if the user is whitelisted for this SKU
+				$skuWhitelisted = false;
+				if ($this->userWhitelistedSkus && in_array($line->skuId, $this->userWhitelistedSkus))
+				{
+					$skuWhitelisted = true;
+				}
+
+				if (!$skuWhitelisted && $line->sRestricted && (!$this->userScope || $line->uId != $this->userScope))
+				{
+					// Sku is restricted and not available
+					$permissionsRestricted = true;
+					// remove it
+					unset($res[$k]);
+
+				}
+				elseif ($this->userCannotAccessProduct && !$skuWhitelisted)
+				{
+					// Sku is restricted and not available
+					$permissionsRestricted = true;
+					// remove it
+					unset($res[$k]);
+				}
+
+				if ($line->sTrackInventory && $line->sInventory < 1)
+				{
+					// remove it
+					unset($res[$k]);
+				}
+			}
+
+			if (sizeof($res) < 1)
+			{
+				$returnObject->status = 'error';
+				$returnObject->msg = 'out of stock';
+				// If at least one SKU is restricted, we cannot return 'out of stock'
+				if ($permissionsRestricted)
+				{
+					$returnObject->msg = 'restricted';
+				}
+				return $returnObject;
+			}
+		}
 
 		// Initialize array for option groups
 		$options = array();
@@ -724,7 +823,8 @@ class Warehouse extends \Hubzero\Base\Object
 
 		// Parse result and populate $options with option groups and corresponding options
 		$currentOgId = false;
-		foreach ($res as $line) {
+		foreach ($res as $line)
+		{
 			// Populate options
 			if ($line->ogId) {
 				// Keep track of option groups and do not do anything if no options
@@ -765,7 +865,8 @@ class Warehouse extends \Hubzero\Base\Object
 		$ret->skus = $skus;
 		//print_r($ret); die;
 
-		return $ret;
+		$returnObject->options = $ret;
+		return $returnObject;
 	}
 
 	// Get all option groups (for admin)

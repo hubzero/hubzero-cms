@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Include note model
-include_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'note.php';
+include_once \Component::path('com_projects') . DS . 'models' . DS . 'note.php';
 
 /**
  * Projects Notes (wiki) plugin
@@ -185,6 +185,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		{
 			// Load wiki language file
 			Lang::load('com_wiki') || Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
+
+			if ($model->access('readonly'))
+			{
+				Component::params('com_wiki')->set('access-page-view', true);
+				Component::params('com_wiki')->set('access-check-done', true);
+			}
 
 			// Set vars
 			$this->_database = App::get('db');
@@ -561,7 +567,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				Route::url('index.php?option=com_groups')
 			);
 			Pathway::append(
-				\Hubzero\Utility\String::truncate($this->model->groupOwner('description'), 50),
+				\Hubzero\Utility\Str::truncate($this->model->groupOwner('description'), 50),
 				Route::url('index.php?option=com_groups&cn=' . $this->model->groupOwner('cn'))
 			);
 			Pathway::append(
@@ -593,7 +599,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			);
 
 			Pathway::append(
-				\Hubzero\Utility\String::truncate($this->_tool->title, 50),
+				\Hubzero\Utility\Str::truncate($this->_tool->title, 50),
 				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id)
 			);
 
@@ -817,7 +823,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php';
+		require_once \Component::path('com_projects') . DS . 'tables' . DS . 'publicstamp.php';
 
 		$database = App::get('db');
 		$objSt    = new \Components\Projects\Tables\Stamp($database);

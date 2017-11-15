@@ -33,7 +33,7 @@ namespace Components\Feedback\Site\Controllers;
 
 use Components\Feedback\Models\Quote;
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Filesystem;
 use Request;
 use Route;
@@ -201,7 +201,7 @@ class Media extends SiteController
 		{
 			$id = Request::getInt('id', 0);
 		}
-		$dir = String::pad($id);
+		$dir = Str::pad($id);
 
 		// Do we have a file or do we need to get one?
 		$file = $file ?: Request::getVar('file', '');

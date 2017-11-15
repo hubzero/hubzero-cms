@@ -60,7 +60,7 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
 		// Don't run this plugin when the content is being indexed
-		if ($context == 'com_finder.indexer' || $article instanceof \Hubzero\Base\Object)
+		if ($context == 'com_finder.indexer' || $article instanceof \Hubzero\Base\Obj)
 		{
 			return true;
 		}
@@ -185,7 +185,7 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 	 */
 	protected function byName($module, $title, $style = 'none')
 	{
-		$moduleinstance = $module . Hubzero\Utility\String::camel($title);
+		$moduleinstance = $module . Hubzero\Utility\Str::camel($title);
 
 		if (!isset(self::$mods[$moduleinstance]))
 		{

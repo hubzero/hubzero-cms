@@ -53,23 +53,25 @@ if (count($this->activities) > 0)
 			// Loop through activities
 			foreach ($this->activities as $activity)
 			{
-				$a = $activity['activity'];
-				if (!isset($projects[$a->projectid]))
+				//$a = $activity['activity'];
+
+				if (!isset($projects[$activity->get('scope_id')]))
 				{
-					$projects[$a->projectid] = \Components\Projects\Models\Project::getInstance($a->projectid);
+					$projects[$activity->get('scope_id')] = \Components\Projects\Models\Project::getInstance($activity->get('scope_id'));
 				}
 
 				// Show activity
 				$this->view('_activity')
-					->set('model', $projects[$a->projectid])
+					->set('model', $projects[$activity->get('scope_id')])
 					->set('activity', $activity)
 					->set('uid', $this->uid)
 					->set('edit', false)
 					->set('showProject', true)
 					->set('online', $online)
+					->set('option', 'com_projects')
 					->display();
 
-				$li = 'li_' . $a->id;
+				$li = 'li_' . $activity->log->get('id');
 				$i++;
 			} // end foreach
 			?>
@@ -83,10 +85,10 @@ if (count($this->activities) > 0)
 	<?php
 	if ($this->total > $this->filters['limit'])
 	{
-		$limit = $this->filters['limit'] + $this->limit;
+		//$limit = $this->filters['limit'] + $this->filters['start'];
 		$option = Request::getCmd('option', 'com_members');
 		?>
-		<p><a href="<?php echo Route::url('index.php?option=' . $option . '&' . ($option == 'com_groups' ? 'cn=' . Request::getCmd('cn') : 'id=' . $this->uid) . '&active=projects') . '?action=updates&amp;limit=' . $limit . '&amp;prev=' . $this->filters['limit'] . '#' . $li;  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
+		<p><a href="<?php echo Route::url('index.php?option=' . $option . '&' . ($option == 'com_groups' ? 'cn=' . Request::getCmd('cn') : 'id=' . $this->uid) . '&active=projects&action=updates&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start'] . '#' . $li);  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
 	<?php } else if ($this->filters['limit'] != $this->limit) { ?>
 		<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 		<?php

@@ -36,7 +36,18 @@ use Hubzero\Component\SiteController;
 use Components\Publications\Tables;
 use Components\Publications\Models;
 use Components\Publications\Helpers;
+use Component;
 use Exception;
+use Document;
+use Pathway;
+use Request;
+use Plugin;
+use Notify;
+use Route;
+use Event;
+use Lang;
+use User;
+use App;
 
 /**
  * Primary component controller
@@ -491,10 +502,10 @@ class Publications extends SiteController
 	}
 
 	/**
-     * Retrieves the data from database and compose the RDF file for download.
-     *
-     * @return  void
-     */
+	 * Retrieves the data from database and compose the RDF file for download.
+	 *
+	 * @return  void
+	 */
 	protected function _resourceMap()
 	{
 		$resourceMap = new \ResourceMapGenerator();
@@ -867,7 +878,7 @@ class Publications extends SiteController
 		);
 
 		// No content served
-		if ($content === NULL || $content == false)
+		if ($content === null || $content == false)
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 		}
@@ -975,9 +986,9 @@ class Publications extends SiteController
 					{
 						$name = $author->name ? $author->name : $author->p_name;
 						$auth = preg_replace('/{{(.*?)}}/s', '', $name);
-						if (!strstr($auth,','))
+						if (!strstr($auth, ','))
 						{
-							$bits = explode(' ',$auth);
+							$bits = explode(' ', $auth);
 							$n    = array_pop($bits) . ', ';
 							$bits = array_map('trim', $bits);
 							$auth = $n . trim(implode(' ', $bits));
@@ -1018,7 +1029,7 @@ class Publications extends SiteController
 					{
 						$name = $author->name ? $author->name : $author->p_name;
 						$author_arr = explode(',', $name);
-						$author_arr = array_map('trim',$author_arr);
+						$author_arr = array_map('trim', $author_arr);
 
 						$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
 						$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
@@ -1096,7 +1107,10 @@ class Publications extends SiteController
 					: $HTTP_USER_AGENT;
 
 		// Clean all output buffers (needs PHP > 4.2.0)
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+		}
+
 		$file = $p . DS . $f;
 
 		$fsize = filesize($file);
@@ -1345,6 +1359,786 @@ class Publications extends SiteController
 			$this->pageTask();
 			return;
 		}
+	}
+
+	/**
+	 * Fork a publication
+	 *
+	 * @return  void
+	 */
+	public function forkTask()
+	{
+		// Incoming
+		$pid = Request::getInt('project', 0);
+		$vid = Request::getInt('version', 0);
+
+		$this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');
+
+		// Redirect if publishing is turned off
+		if (!$this->_contributable || !$vid)
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option));
+			return;
+		}
+
+		// Redirect if forks aren't allowed
+		if (!$this->config->get('forks'))
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option));
+			return;
+		}
+
+		// Load language file
+		Lang::load('com_projects') ||
+		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+
+		// Set page title
+		$this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');
+		$this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		if (User::isGuest())
+		{
+			$this->_msg = Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START');
+			$this->_login();
+			return;
+		}
+
+		// Get project model
+		$project = new \Components\Projects\Models\Project($pid);
+
+		// Get project information
+		if ($pid)
+		{
+			//$project->loadProvisioned($pid);
+
+			if (!$project->exists())
+			{
+				App::redirect(Route::url('index.php?option=' . $this->_option . '&task=submit'));
+				return;
+			}
+
+			// Block unauthorized access
+			if (!$project->access('owner') && !$project->access('content'))
+			{
+				$this->_blockAccess();
+				return;
+			}
+
+			// Redirect to project if not provisioned
+			/*if (!$project->isProvisioned())
+			{
+				App::redirect(
+					Route::url($project->link('publications'))
+				);
+				return;
+			}*/
+		}
+		else
+		{
+			include_once Component::path('com_projects') . '/helpers/html.php';
+
+			// Need to provision a project
+			$alias = 'pub-' . strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
+
+			$project->set('provisioned', 1);
+			$project->set('alias', $alias);
+			$project->set('title', $alias);
+			$project->set('type', 2); // publication
+			$project->set('state', 1);
+			$project->set('setup_stage', 3);
+			$project->set('created', Date::toSql());
+			$project->set('created_by_user', User::get('id'));
+			$project->set('owned_by_user', User::get('id'));
+
+			$project->set('params', $project->type()->params);
+		}
+
+		// Is project registration restricted?
+		if (!$pid && !$project->access('create'))
+		{
+			$this->_buildPathway(null);
+
+			$this->view
+				->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'))
+				->set('title', $this->title)
+				->set('option', $this->_option)
+				->setName('error')
+				->setLayout('restricted')
+				->display();
+			return;
+		}
+
+		// Move creation of the project to _after_ the access check
+		// for project creation
+		if (!$project->get('id'))
+		{
+			// Save changes
+			if (!$project->store())
+			{
+				App::abort(500, $project->getError());
+			}
+
+			// Save the user as member and owner of the project
+			$objO = $project->table('Owner');
+
+			if (!$objO->saveOwners($project->get('id'), User::get('id'), User::get('id'), 0, 1, 1, 1, '', 0))
+			{
+				App::abort(500, $objO->getError());
+			}
+
+			// Create and initialize local repo
+			/*if (!$project->repo()->iniLocal())
+			{
+				App::abort(500, Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
+			}*/
+		}
+
+		//
+		// Let's start copying...
+		//
+
+		include_once dirname(dirname(__DIR__)) . '/models/orm/publication.php';
+
+		// Load the version
+		$version = Models\Orm\Version::oneOrFail($vid);
+
+		// Make sure the license applied allows for derivations
+		if (!$version->license->get('derivatives'))
+		{
+			Notify::warning(Lang::txt('The license applied to this publication does not allow for derivatives.'));
+
+			App::redirect(
+				Route::url('index.php?option=com_publications&id=' . $version->get('publication_id') . '&v=' . $version->get('id'), false)
+			);
+		}
+
+		// Set some paths
+		$repoPath = Component::params('com_projects')->get('webpath') . '/' . $project->get('alias') . '/files';
+
+		$pubfilespace = $version->filespace();
+		$prjfilespace = $repoPath . ($pid ? '/publication_' . $vid : '');
+
+		// We're going to need the original ID later
+		$pub_id = $version->get('publication_id');
+		$vnum   = $version->get('version_number');
+
+		// Copy the publication's database entry
+		$publication = $version->publication;
+		$publication->set('id', 0);
+		$publication->set('checked_out', 0);
+		$publication->set('checked_out_time', '0000-00-00 00:00:00');
+		$publication->set('created', Date::of('now')->toSql());
+		$publication->set('created_by', User::get('id'));
+		$publication->set('rating', 0.0);
+		$publication->set('times_rated', 0);
+		$publication->set('group_owner', 0);
+		$publication->set('master_doi', '');
+		$publication->set('project_id', $project->get('id'));
+
+		if (!$publication->save())
+		{
+			// Abort! If we don't have the plublication record
+			// at this point, there's nothing else we can do.
+			App::abort(500, $publication->getError());
+		}
+
+		$authors = $version->authors;
+		$attachments = $version->attachments;
+
+		// Copy the version info and set it as the first version
+		$version->set('id', 0);
+		$version->set('publication_id', $publication->get('id'));
+		$version->set('doi', '');
+		$version->set('rating', 0.0);
+		$version->set('times_rated', 0);
+		$version->set('main', 1);
+		$version->set('state', 3);
+		$version->set('created', Date::of('now')->toSql());
+		$version->set('created_by', User::get('id'));
+		$version->set('published_up', '0000-00-00 00:00:00');
+		$version->set('published_down', '0000-00-00 00:00:00');
+		$version->set('modified', '0000-00-00 00:00:00');
+		$version->set('modified_by', 0);
+		$version->set('accepted', '0000-00-00 00:00:00');
+		$version->set('archived', '0000-00-00 00:00:00');
+		$version->set('submitted', '0000-00-00 00:00:00');
+		$version->set('version_label', '1.0.0');
+		$version->set('version_number', 1);
+		$version->set('curation', '');
+		$version->set('reviewed', '0000-00-00 00:00:00');
+		$version->set('reviewed_by', 0);
+		$version->set('curator', 0);
+		$version->set('curation_version_id', 0);
+
+		// Make sure we know where the info came from
+		$version->set('forked_from', $vid);
+
+		if (!$version->save())
+		{
+			App::abort(500, $version->getError());
+		}
+
+		$prjfilespace .= ($pid ? '_' . $version->get('id') : '');
+		$newpubfilespace = $version->filespace();
+
+		// Copy tags
+		include_once dirname(dirname(__DIR__))  . DS . 'helpers' . DS . 'tags.php';
+
+		$rt = new Helpers\Tags($this->database);
+		if ($tags = $rt->get_tag_string($pub_id))
+		{
+			$rt->tag_object(User::get('id'), $version->get('publication_id'), $tags, 1);
+		}
+
+		// Copy citations
+		include_once Component::path('com_citations')  . '/models/association.php';
+
+		$citations = \Components\Citations\Models\Association::all()
+			->whereEquals('tbl', 'publication')
+			->whereEquals('oid', $pub_id)
+			->rows();
+		foreach ($citations as $citation)
+		{
+			$ca = \Components\Citations\Models\Association::blank();
+			$ca->set('cid', $citation->cid);
+			$ca->set('tbl', $citation->tbl);
+			$ca->set('oid', $pub_id);
+
+			if (!$ca->save())
+			{
+				App::abort(500, $ca->getError());
+			}
+		}
+
+		// Copy authors
+		if (!isset($objO))
+		{
+			$objO = $project->table('Owner');
+		}
+		$ownrs = $objO->getOwners($project->get('id'));
+		$owners = array();
+		foreach ($ownrs as $owner)
+		{
+			$owners[$owner->userid] = $owner->id;
+		}
+		/* Actually, don't copy authors...
+		foreach ($authors as $author)
+		{
+			$owner_id = $author->get('project_owner_id');
+
+			if (!isset($owners[$author->get('user_id')]))
+			{
+				$objO->load($owner_id);
+				$objO->projectid  = $project->get('id');
+				$objO->id         = null;
+				$objO->added      = Date::of('now')->toSql();
+				$objO->num_visits = 0;
+				$objO->lastvisit  = null;
+				$objO->status     = 2;
+				$objO->role       = 0;
+				if ($objO->groupid != $project->get('owned_by_group'))
+				{
+					$objO->groupid = 0;
+				}
+				$objO->store();
+
+				$owners[$author->get('user_id')] = $objO->id;
+			}
+
+			$author->set('id', 0);
+			$author->set('publication_version_id', $version->get('id'));
+			$author->set('project_owner_id', $owners[$author->get('user_id')]);
+			$author->set('created', Date::of('now')->toSql());
+			$author->set('created_by', User::get('id'));
+			$author->set('modified', '0000-00-00 00:00:00');
+			$author->set('modified_by', 0);
+
+			if (!$author->save())
+			{
+				App::abort(500, $author->getError());
+			}
+		}
+		*/
+
+		// Add the user as the author of the publication
+		$author = Models\Orm\Author::blank();
+		$author->set('user_id', User::get('id'));
+		$author->set('name', User::get('name'));
+		$author->set('firstName', User::get('givenName'));
+		$author->set('lastName', User::get('surname'));
+		$author->set('organization', User::get('organization'));
+		$author->set('status', 1);
+		$author->set('publication_version_id', $version->get('id'));
+		$author->set('project_owner_id', $owners[$author->get('user_id')]);
+		$author->set('created', Date::of('now')->toSql());
+		$author->set('created_by', User::get('id'));
+		$author->set('modified', '0000-00-00 00:00:00');
+		$author->set('modified_by', 0);
+
+		if (!$author->save())
+		{
+			App::abort(500, $author->getError());
+		}
+
+		// Copy attachments
+		// Get manifest from either version record (published) or master type
+		$manifest = $version->get('curation', $publication->type->get('curation'));
+		$curation = json_decode($manifest, true);
+		$fileParams = array(
+			'directory'    => '',
+			'dirHierarchy' => 1
+		);
+		$galleryParams = array(
+			'directory'    => 'gallery',
+			'dirHierarchy' => 0
+		);
+		if (isset($curation['blocks']))
+		{
+			foreach ($curation['blocks'] as $block)
+			{
+				if (!isset($block['name']))
+				{
+					continue;
+				}
+				if ($block['name'] == 'content' && isset($block['elements']))
+				{
+					foreach ($block['elements'] as $element)
+					{
+						if (!isset($element['type']))
+						{
+							continue;
+						}
+						if ($element['type'] == 'attachment')
+						{
+							if ($element['params']['type'] == 'file')
+							{
+								$fileParams = $element['params']['typeParams'];
+							}
+						}
+					}
+				}
+				if ($block['name'] == 'extras' && isset($block['elements']))
+				{
+					foreach ($block['elements'] as $element)
+					{
+						if (!isset($element['type']))
+						{
+							continue;
+						}
+						if ($element['type'] == 'attachment')
+						{
+							$params = $element['params']['typeParams'];
+							if ($params['handler'] == 'imageviewer')
+							{
+								$galleryParams = $params;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!is_dir($prjfilespace))
+		{
+			if (!Filesystem::makeDirectory($prjfilespace, 0755, true, true))
+			{
+				App::abort(500, Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH'));
+			}
+		}
+		foreach ($attachments as $attachment)
+		{
+			$oldid = $attachment->get('id');
+
+			$attachment->set('id', 0);
+			$attachment->set('publication_id', $version->get('publication_id'));
+			$attachment->set('publication_version_id', $version->get('id'));
+			$attachment->set('created', Date::of('now')->toSql());
+			$attachment->set('created_by', User::get('id'));
+			$attachment->set('modified', '0000-00-00 00:00:00');
+			$attachment->set('modified_by', 0);
+
+			if (!$attachment->save())
+			{
+				App::abort(500, $attachment->getError());
+			}
+
+			$sub = 'publication_' . $vid . '_' . $version->get('id');
+
+			if ($attachment->get('type') == 'file')
+			{
+				$dirHierarchy = $fileParams['dirHierarchy'];
+
+				// Copy the files into the project
+				$path = explode('/', $attachment->get('path'));
+				$orig = array_pop($path);
+				// If copying to a project, files are placed in a sub-directory
+				// So, update the path info on the attachment record to reflect
+				if ($pid)
+				{
+					//array_unshift($path, 'publication_' . $vid);
+					$attachment->set('path', $sub . '/' . $attachment->get('path'));
+					$attachment->save();
+				}
+				$path = implode('/', $path);
+				$file = $orig;
+				$filenew = $orig;
+
+				$file2 = Filesystem::name($file) . '-' . $oldid . '.' . Filesystem::extension($file);
+				$file2new = Filesystem::name($file) . '-' . $attachment->get('id') . '.' . Filesystem::extension($file);
+
+				$from   = $pubfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
+				$toProj = $prjfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
+				$toPub  = $newpubfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
+
+				// Check the default location
+				if (!file_exists($from . $file))
+				{
+					// OK, maybe it's in the gallery
+					$from  = dirname($pubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+					$toPub = dirname($newpubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+
+					if (!file_exists($from . $file))
+					{
+						// Let's try an alternate file name
+						if (!file_exists($from . $file2))
+						{
+							Notify::error('File does not exist: ' . $from . $file2);
+							continue;
+						}
+						// Found it
+						else
+						{
+							$dirHierarchy = $galleryParams['dirHierarchy'];
+
+							$file = $file2;
+							$filenew = $file2new;
+						}
+					}
+					// Found it
+					else
+					{
+						$dirHierarchy = $galleryParams['dirHierarchy'];
+					}
+				}
+
+				$source = array();
+				$source['main'] = $file;
+				$source['hash'] = $file . '.hash';
+				$source['thmb'] = \Components\Projects\Helpers\Html::createThumbName($file, '_tn', 'png');
+
+				$dest = array();
+				$dest['main'] = $filenew;
+				$dest['hash'] = $filenew . '.hash';
+				$dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png'); // thumbnails aren't in sub?
+
+				if (!is_dir($toProj))
+				{
+					Filesystem::makeDirectory($toProj, 0755, true, true);
+
+					if ($pid)
+					{
+						// Commit to GIT
+						$fileObj = new \Components\Projects\Models\File(
+							substr($toProj, (strlen($repoPath) + 1)),
+							$repoPath
+						);
+						$fileObj->set('type', 'folder');
+						$fileObj->clear('ext');
+
+						$committed = $project->repo()->call('makeDirectory', array(
+							'file'    => $fileObj,
+							'replace' => false
+						));
+						if (!$committed)
+						{
+							App::abort(500, Lang::txt('Error committing directory: %s', $project->repo()->getError()));
+						}
+					}
+				}
+
+				foreach ($source as $type => $filename)
+				{
+					if (!file_exists($from . $filename))
+					{
+						if ($type == 'main')
+						{
+							Notify::warning('File does not exist: ' . $from . $filename);
+						}
+						continue;
+					}
+
+					// We only copy the file itself to the project
+					// The hash and thumbnail go only to the publication space
+					if ($type == 'main')
+					{
+						// Copy to the project space but to its original name
+						// Note: gallery items' filenames will have a suffix with attachment record ID but the database entry
+						// will point to the un-suffixed filename. DB: foo.jpg (in project space) = foo-123.jpg (in publication space)
+						if (!Filesystem::copy($from . $filename, $toProj . $orig)) //$filename
+						{
+							App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $toProj . $orig . '"'));
+						}
+
+						if ($pid)
+						{
+							// Commit to GIT
+							$fileObj = new \Components\Projects\Models\File(
+								substr($toProj . $orig, (strlen($repoPath) + 1)),
+								$repoPath
+							);
+
+							$committed = $project->repo()->call('checkin', array(
+								'file'    => $fileObj,
+								'replace' => false,
+								'message' => Lang::txt('Files forked from publication #%s', $pub_id),
+								'author'  => null,
+								'date'    => null
+							));
+							if (!$committed)
+							{
+								App::abort(500, Lang::txt('Error committing file: %s', $project->repo()->getError()));
+							}
+						}
+					}
+
+					// Make sure directory exist in publication space
+					$to = $toPub;
+
+					// Preserve hierarchhy?
+					if ($dirHierarchy == 1)
+					{
+						$to .= ($pid ? $sub . '/' : '');
+					}
+
+					if (!is_dir($to))
+					{
+						Filesystem::makeDirectory($to, 0755, true, true);
+					}
+
+					$to .= $dest[$type];
+
+					// Copy to the publication space
+					if (!Filesystem::copy($from . $filename, $to))
+					{
+						App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $to . '"'));
+					}
+				}
+			}
+		}
+
+		// Copy publication thumbnail
+		$files = array('master.png', 'thumb.gif');
+		$from  = dirname($pubfilespace);
+		$to    = dirname($newpubfilespace);
+
+		foreach ($files as $filename)
+		{
+			if (!file_exists($from . $filename))
+			{
+				continue;
+			}
+
+			// Copy to the publication space
+			if (!Filesystem::copy($from . $filename, $to . $filename))
+			{
+				App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $to . $filename . '"'));
+			}
+		}
+
+		// Log activity
+		$recipients = array(
+			['publication', $pub_id],
+			['user', User::get('id')]
+		);
+		foreach ($authors as $author)
+		{
+			$recipients[] = ['user', $author->get('user_id')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => 'forked',
+				'scope'       => 'publication',
+				'scope_id'    => $pub_id,
+				'description' => Lang::txt('COM_PUBLICATIONS_ACTIVITY_ENTRY_FORKED', '<a href="' . Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum) . '">' . $version->get('title') . '</a>'),
+				'details'     => array(
+					'title' => $version->get('title'),
+					'url'   => Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum),
+					'version_id' => $vid
+				)
+			],
+			'recipients' => $recipients
+		]);
+
+		// Notify of success
+		Notify::success(Lang::txt('COM_PUBLICATIONS_PUBLICATION_FORKED'));
+
+		// Redirect to the project
+		if ($pid)
+		{
+			App::redirect(
+				Route::url($project->link('publications') . '&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'))
+			);
+		}
+
+		// Redirect to the publication submission page
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&task=submit&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'))
+		);
+	}
+
+	/**
+	 * Show differences between two publications
+	 *
+	 * @return  void
+	 */
+	public function compareTask()
+	{
+		$lft = Request::getInt('left', 0);
+		$rgt = Request::getInt('right', 0);
+
+		// Make sure we have values for both sides
+		if (!$lft || !$rgt)
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_ERROR_MISSING_VERSION'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		// Can't compare against itself
+		if ($lft == $rgt)
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_ERROR_SAME_VERSIONS'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		// Get our model and load publication data
+		include_once dirname(dirname(__DIR__)) . '/models/orm/publication.php';
+
+		// Load the lft version and make sure the user has access
+		$lversion = Models\Orm\Version::oneOrFail($lft);
+		$lpublica = $lversion->publication;
+
+		if (!$lversion->get('id') || $lversion->isDeleted()
+		 || !$lpublica->get('id'))
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		// Load the rgt version and make sure the user has access
+		$rversion = Models\Orm\Version::oneOrFail($rgt);
+
+		if (!$rversion->get('id') || $rversion->isDeleted())
+		{
+			Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
+		$rpublica = new Models\Publication(null, 'default', $rversion->get('id'));
+
+		if (!$rpublica->access('view'))
+		{
+			return $this->_blockAccess();
+		}
+
+		$rpublica->setCuration();
+		$customFields = json_decode($rpublica->_curationModel->getMetaSchema(), true);
+
+		// Diff the two versions
+		require_once dirname(dirname(__DIR__)) . '/helpers/Diff.php';
+		require_once dirname(dirname(__DIR__)) . '/helpers/Diff/Renderer/Html/SideBySide.php';
+
+		$diffs = array();
+
+		$l = explode("\n", $lversion->get('title'));
+		$r = explode("\n", $rversion->get('title'));
+
+		$diff = new \Diff($l, $r);
+		$diffs['title'] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+
+		$l = array();
+		foreach ($lversion->authors as $author)
+		{
+			$l[] = $author->get('name') . ' (' . $author->get('organization') . ')';
+		}
+		$r = array();
+		foreach ($rversion->authors as $author)
+		{
+			$r[] = $author->get('name') . ' (' . $author->get('organization') . ')';
+		}
+
+		$diff = new \Diff($l, $r);
+		$diffs['authors'] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+
+		$l = explode("\n", $lversion->get('description'));
+		$r = explode("\n", $rversion->get('description'));
+
+		$diff = new \Diff($l, $r);
+		$diffs['description'] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+
+		$diffs['metadata'] = array();
+
+		$lmetadata = $lversion->metadata;
+		$rmetadata = $rversion->metadata;
+		foreach ($lmetadata as $key => $l)
+		{
+			$r = (isset($rmetadata[$key]) ? $rmetadata[$key] : '');
+			$l = explode("\n", $l);
+			$r = explode("\n", $r);
+
+			$diff = new \Diff($l, $r);
+			$diffs['metadata'][$key] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+		}
+
+		foreach ($rmetadata as $key => $r)
+		{
+			if (isset($diffs['metadata'][$key]))
+			{
+				continue;
+			}
+			$l = (isset($lmetadata[$key]) ? $lmetadata[$key] : '');
+			$l = explode("\n", $l);
+			$r = explode("\n", $r);
+
+			$diff = new \Diff($l, $r);
+			$diffs['metadata'][$key] = $diff->render(new \Diff_Renderer_Html_SideBySide);
+		}
+
+		// Set the pathway
+		if (Pathway::count() <= 0)
+		{
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+		Pathway::append(
+			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+			'index.php?option=' . $this->_option . '&task=' . $this->_task . '&lft=' . $lft . '&rgt=' . $rgt
+		);
+
+		// Display the view
+		$this->view
+			->set('lft', $lversion)
+			->set('rgt', $rversion)
+			->set('diffs', $diffs)
+			->set('customFields', $customFields)
+			->display();
 	}
 
 	/**

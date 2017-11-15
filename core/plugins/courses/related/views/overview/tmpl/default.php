@@ -83,7 +83,7 @@ $this->css()
 					</h4>
 					<?php if ($course->get('blurb')) { ?>
 						<p class="course-description">
-							<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($course->get('blurb'))), 130); ?>
+							<?php echo \Hubzero\Utility\Str::truncate($this->escape(stripslashes($course->get('blurb'))), 130); ?>
 						</p>
 					<?php } ?>
 				</div>

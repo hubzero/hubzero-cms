@@ -40,6 +40,16 @@ use Hubzero\Item\Comment as ItemComment;
 class Comment extends ItemComment
 {
 	/**
+	 * Get the attachments on the wish
+	 *
+	 * @return  object
+	 */
+	public function attachments()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Attachment', 'comment_id');
+	}
+
+	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
@@ -104,18 +114,35 @@ class Comment extends ItemComment
 
 				if ($field == 'content')
 				{
-					$config = \Component::params('com_wishlist');
-					$db = \App::get('db');
-
 					require_once __DIR__ . '/attachment.php';
-					$attach = new \Components\Wishlist\Tables\Wish\Attachment($db);
-					$attach->output = 'web';
-					$attach->uppath = PATH_APP . '/' . trim($config->get('webpath'), '/') . '/' . $this->get('item_id');
-					$attach->webpath = $config->get('webpath');
 
-					$this->$property = $attach->parse($this->$property);
+					if (preg_match('/{attachment#([0-9]*)}/sU', $this->$property, $matches))
+					{
+						foreach ($matches as $i => $match)
+						{
+							if ($i == 0)
+							{
+								continue;
+							}
 
-					$this->set('attachment', $attach->description);
+							$this->$property = str_replace('{attachment#' . $match . '}', '', $this->$property);
+
+							$id = intval($match);
+
+							$model = Attachment::oneOrNew($id);
+
+							if (!$model->get('id'))
+							{
+								continue;
+							}
+
+							if (!$model->get('comment_id'))
+							{
+								$model->set('comment_id', $this->get('id'));
+								$model->save();
+							}
+						}
+					}
 				}
 
 				return $this->$property;
@@ -128,5 +155,34 @@ class Comment extends ItemComment
 			break;
 		}
 	}
-}
 
+	/**
+	 * Validates the set data attributes against the model rules
+	 *
+	 * @return  bool
+	 **/
+	public function validate()
+	{
+		$valid = parent::validate();
+
+		if ($valid)
+		{
+			$results = \Event::trigger('content.onContentBeforeSave', array(
+				'com_wishlist.comment.content',
+				&$this,
+				$this->isNew()
+			));
+
+			foreach ($results as $result)
+			{
+				if ($result === false)
+				{
+					$this->addError(Lang::txt('Content failed validation.'));
+					$valid = false;
+				}
+			}
+		}
+
+		return $valid;
+	}
+}

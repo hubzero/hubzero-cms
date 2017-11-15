@@ -32,24 +32,23 @@
 
 namespace Components\Support\Models;
 
-use Components\Support\Tables\Category;
 use Components\Support\Helpers\Utilities;
 use Hubzero\Base\Traits\Escapable;
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use InvalidArgumentException;
 use stdClass;
 use Component;
 use User;
 use Lang;
 
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'status.php');
-include_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
+include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
+include_once __DIR__ . DS . 'status.php';
+include_once __DIR__ . DS . 'category.php';
 
 /*
  * Support model class for query conditions
  */
-class Conditions extends Object
+class Conditions extends Obj
 {
 	use Escapable;
 
@@ -208,11 +207,13 @@ class Conditions extends Object
 			)
 		);
 
-		$sr = new \Components\Support\Tables\Status($this->database);
-		$status = $sr->find('list', array('sort' => 'open', 'sort_Dir' => 'DESC'));
+		$status = Status::all()
+			->order('open', 'desc')
+			->rows();
+
 		$items = array();
 		$items[] = $this->_value(0, $this->escape('open: New'), true);
-		if (isset($status) && is_array($status))
+		if (count($status) > 0)
 		{
 			$switched = false;
 			foreach ($status as $anode)
@@ -290,10 +291,9 @@ class Conditions extends Object
 			$items
 		);
 
-		$sc = new Category($this->database);
-		$categories = $sc->find('list');
+		$categories = Category::all()->rows();
 		$items = 'text';
-		if (isset($categories) && is_array($categories))
+		if (count($categories) > 0)
 		{
 			$items = array();
 			foreach ($categories as $anode)

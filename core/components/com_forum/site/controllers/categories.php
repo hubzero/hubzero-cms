@@ -32,7 +32,7 @@
 namespace Components\Forum\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
@@ -81,14 +81,14 @@ class Categories extends SiteController
 		if ($section)
 		{
 			Pathway::append(
-				String::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
+				Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
 			);
 		}
 		if ($category)
 		{
 			Pathway::append(
-				String::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
+				Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
 			);
 		}
@@ -106,11 +106,11 @@ class Categories extends SiteController
 		$this->_title = Lang::txt(strtoupper($this->_option));
 		if ($section)
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
 		}
 		if ($category)
 		{
-			$this->_title .= ': ' . String::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
 		}
 
 		App::get('document')->setTitle($this->_title);
@@ -240,6 +240,8 @@ class Categories extends SiteController
 		$filters = array(
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
+			'orderBy'   => Request::getVar('orderBy', 'created'),
+			'orderDir'   => Request::getVar('orderDir', 'DESC'),
 			'state'      => Category::STATE_PUBLISHED,
 			'access'     => User::getAuthorisedViewLevels()
 		);

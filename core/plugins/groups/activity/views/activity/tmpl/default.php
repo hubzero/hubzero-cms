@@ -96,6 +96,18 @@ if (!$no_html) {
 					</label>
 				</div>
 
+				<?php if (in_array(User::get('id'), $this->group->get('managers'))) { ?>
+					<div class="input-wrap">
+						<label for="activity-recipients">
+							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS'); ?></span>
+							<select name="activity_recipients" id="activity-recipients">
+								<option value="all"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL'); ?></option>
+								<option value="managers"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS'); ?></option>
+							</select>
+						</label>
+					</div>
+				<?php } ?>
+
 				<div class="input-wrap">
 					<label class="upload-label" for="activity-file">
 						<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_FILE'); ?></span>

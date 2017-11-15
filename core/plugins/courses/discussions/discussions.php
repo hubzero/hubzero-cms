@@ -38,7 +38,7 @@ use Components\Forum\Models\Attachment;
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
+require_once \Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 /**
  * Courses Plugin class for forum entries
@@ -92,7 +92,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update any category associated with the assetgroup
 	 *
-	 * @param   object  $model  \Components\Courses\Models\Assetgroup
+	 * @param   object  $assetgroup  \Components\Courses\Models\Assetgroup
 	 * @return  mixed
 	 */
 	public function onAssetgroupSave($assetgroup)
@@ -107,7 +107,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+		require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
 
 		// Load the parent unit
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
@@ -186,7 +186,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting an assetgroup
 	 *
-	 * @param   object  $model  \Components\Courses\Models\Assetgroup
+	 * @param   object  $assetgroup  \Components\Courses\Models\Assetgroup
 	 * @return  void
 	 */
 	public function onAssetgroupDelete($assetgroup)
@@ -196,7 +196,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+		require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
 
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 
@@ -230,7 +230,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update any section associated with the unit
 	 *
-	 * @param   object  $model  \Components\Courses\Models\Unit
+	 * @param   object  $unit  \Components\Courses\Models\Unit
 	 * @return  mixed
 	 */
 	public function onUnitSave($unit)
@@ -262,7 +262,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting a unit
 	 *
-	 * @param   object  $model  \Components\Courses\Models\Unit
+	 * @param   object  $unit  \Components\Courses\Models\Unit
 	 * @return  void
 	 */
 	public function onUnitDelete($unit)
@@ -299,7 +299,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourse($course, $offering, $describe=false)
 	{
-		$response = with(new \Hubzero\Base\Object)
+		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
 			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
@@ -506,8 +506,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set redirect and message
 	 *
-	 * @param   object  $url  URL to redirect to
-	 * @param   object  $msg  Message to send
+	 * @param   object  $course
+	 * @param   object  $unit
+	 * @param   object  $lecture
 	 * @return  void
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
@@ -700,7 +701,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'both':
-				default:
 					$filters['start_at'] = Request::getVar('start_at', '');
 
 					$data->thread = $this->_thread($post, $filters);
@@ -1100,13 +1100,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Recursive function to build tree
 	 *
-	 * @param   integer  $id        Parent ID
-	 * @param   string   $indent    Indent text
-	 * @param   array    $list      List of records
 	 * @param   array    $children  Container for parent/children mapping
+	 * @param   array    $list      List of records
 	 * @param   integer  $maxlevel  Maximum levels to descend
 	 * @param   integer  $level     Indention level
-	 * @param   integer  $type      Indention type
 	 * @return  void
 	 */
 	public function treeRecurse($children, $list, $maxlevel=9999, $level=0)
@@ -1298,7 +1295,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'both':
-				default:
 					$filters['start_at'] = Request::getVar('start_at', '');
 
 					$data->thread = $this->_thread($post, $filters);

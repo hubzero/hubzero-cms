@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 if ($this->results) {
-	include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+	include_once \Component::path('com_resources') . DS . 'tables' . DS . 'review.php';
 
 	plgGroupsResources::documents();
 
@@ -47,18 +47,40 @@ if ($this->results) {
 			{
 				switch ($line->rating)
 				{
-					case 0.5: $class = ' half-stars';      break;
-					case 1:   $class = ' one-stars';       break;
-					case 1.5: $class = ' onehalf-stars';   break;
-					case 2:   $class = ' two-stars';       break;
-					case 2.5: $class = ' twohalf-stars';   break;
-					case 3:   $class = ' three-stars';     break;
-					case 3.5: $class = ' threehalf-stars'; break;
-					case 4:   $class = ' four-stars';      break;
-					case 4.5: $class = ' fourhalf-stars';  break;
-					case 5:   $class = ' five-stars';      break;
+					case 0.5:
+						$class = ' half-stars';
+						break;
+					case 1:
+						$class = ' one-stars';
+						break;
+					case 1.5:
+						$class = ' onehalf-stars';
+						break;
+					case 2:
+						$class = ' two-stars';
+						break;
+					case 2.5:
+						$class = ' twohalf-stars';
+						break;
+					case 3:
+						$class = ' three-stars';
+						break;
+					case 3.5:
+						$class = ' threehalf-stars';
+						break;
+					case 4:
+						$class = ' four-stars';
+						break;
+					case 4.5:
+						$class = ' fourhalf-stars';
+						break;
+					case 5:
+						$class = ' five-stars';
+						break;
 					case 0:
-					default:  $class = ' no-stars';      break;
+					default:
+						$class = ' no-stars';
+						break;
 				}
 
 				$helper = new \Components\Resources\Helpers\Helper($line->id, $database);
@@ -76,27 +98,52 @@ if ($this->results) {
 				}
 				switch ($myrating)
 				{
-					case 0.5: $myclass = ' half-stars';      break;
-					case 1:   $myclass = ' one-stars';       break;
-					case 1.5: $myclass = ' onehalf-stars';   break;
-					case 2:   $myclass = ' two-stars';       break;
-					case 2.5: $myclass = ' twohalf-stars';   break;
-					case 3:   $myclass = ' three-stars';     break;
-					case 3.5: $myclass = ' threehalf-stars'; break;
-					case 4:   $myclass = ' four-stars';      break;
-					case 4.5: $myclass = ' fourhalf-stars';  break;
-					case 5:   $myclass = ' five-stars';      break;
+					case 0.5:
+						$class = ' half-stars';
+						break;
+					case 1:
+						$class = ' one-stars';
+						break;
+					case 1.5:
+						$class = ' onehalf-stars';
+						break;
+					case 2:
+						$class = ' two-stars';
+						break;
+					case 2.5:
+						$class = ' twohalf-stars';
+						break;
+					case 3:
+						$class = ' three-stars';
+						break;
+					case 3.5:
+						$class = ' threehalf-stars';
+						break;
+					case 4:
+						$class = ' four-stars';
+						break;
+					case 4.5:
+						$class = ' fourhalf-stars';
+						break;
+					case 5:
+						$class = ' five-stars';
+						break;
 					case 0:
-					default:  $myclass = ' no-stars';      break;
+					default:
+						$class = ' no-stars';
+						break;
 				}
 
 				// Encode some potentially troublesome characters
 				$line->title = $this->escape($line->title);
 
 				// Make sure we have an SEF, otherwise it's a querystring
-				if (strstr($line->href,'option=')) {
+				if (strstr($line->href,'option='))
+				{
 					$d = '&amp;';
-				} else {
+				}
+				else
+				{
 					$d = '?';
 				}
 
@@ -154,7 +201,7 @@ if ($this->results) {
 								</tbody>
 							</table>
 						</div>
-						<?php echo \Hubzero\Utility\String::truncate($line->itext, 300); ?>
+						<?php echo \Hubzero\Utility\Str::truncate($line->itext, 300); ?>
 					</div>
 				</td>
 				<td class="type"><?php echo $line->area; ?></td>
