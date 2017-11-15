@@ -64,7 +64,7 @@ Pathway::append(
 					if ($record->get('state')) { // Display only if published ?>
 				    <div class="card [ is-collapsed ]">
       					<div class="card__inner [ js-expander ]">
-      						<img src="<?php echo 'app/site/media/images/partners/' . $record->get('logo_img') ?>" alt="<?php echo $record->get('name'); ?>" class="logo">
+      						<img src="<?php echo 'app/site/media/images/partners/' . $record->get('logo_img') ?>" alt="<?php echo $record->get('name'); ?>" class="card-logo">
       					</div>
       					<div class="card__expander">
         					<i class="fa fa-close [ js-collapser ]" aria-hidden="true"></i>
