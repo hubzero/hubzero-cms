@@ -32,6 +32,7 @@
 
 namespace Components\Wishlist\Models\Adapters;
 
+use Components\Resources\Models\Entry;
 use Pathway;
 use Lang;
 
@@ -41,7 +42,7 @@ require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php
 /**
  * Adapter class for a forum post link for course forum
  */
-class Resource extends Base
+class Resources extends Base
 {
 	/**
 	 * URL segments
@@ -51,6 +52,13 @@ class Resource extends Base
 	protected $_segments = array(
 		'option' => 'com_wishlist',
 	);
+
+	/**
+	 * Scope name
+	 *
+	 * @var  string
+	 */
+	protected $_scope = 'resource';
 
 	/**
 	 * Constructor
@@ -64,9 +72,9 @@ class Resource extends Base
 		     ->set('category', 'resource')
 		     ->set('option', $this->_segments['option']);
 
-		$this->_item = \Components\Resources\Models\Entry::oneOrNew($this->get('referenceid'));
+		$this->_item = Entry::oneOrNew($this->get('referenceid'));
 
-		if ($this->_item->standalone != 1 || $this->_item->published != 1)
+		if ($this->_item->standalone != 1 || $this->_item->published != Entry::STATE_PUBLISHED)
 		{
 			$this->_item->id = 0;
 		}
@@ -83,7 +91,7 @@ class Resource extends Base
 	{
 		$owners = array();
 
-		if ($this->_item->type != 7)
+		if (!$this->_item->isTool())
 		{
 			$sql = "SELECT a.authorid
 				FROM `#__author_assoc` AS a
@@ -112,7 +120,7 @@ class Resource extends Base
 	{
 		$groups = array();
 
-		if ($this->_item->type == 7)
+		if ($this->_item->isTool())
 		{
 			$db = \App::get('db');
 			$query = "SELECT g.cn FROM `#__tool_groups` AS g

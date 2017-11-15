@@ -35,7 +35,7 @@ namespace Components\Wishlist\Models\Adapters;
 use Pathway;
 use Lang;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for a forum post link for group forum
@@ -50,6 +50,13 @@ class Group extends Base
 	protected $_segments = array(
 		'option' => 'com_wishlist',
 	);
+
+	/**
+	 * Scope name
+	 *
+	 * @var  string
+	 */
+	protected $_scope = 'group';
 
 	/**
 	 * Constructor
