@@ -58,7 +58,7 @@ body {
 
 .card__expander {
   transition: all 0.2s ease-in-out;
-  background-color: #333a45;
+  background-color: #2e2d4d;
   width: 100%;
   position: relative;
   display: flex;
@@ -128,7 +128,7 @@ body {
   left: calc(50% - 15px);
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
-  border-bottom: 15px solid #333a45;
+  border-bottom: 15px solid #2e2d4d;
 }
 
 .card.is-expanded .card__expander {
