@@ -16,13 +16,13 @@ body {
 
 .card {
   margin: 15px;
-  width: calc((100% / 3) - 30px);
+  width: 225px;
   transition: all 0.2s ease-in-out;
 }
 
 @media screen and (max-width: 991px) {
   .card {
-    width: calc((100% / 2) - 30px);
+    width: 200px;
   }
 }
 
@@ -38,10 +38,10 @@ body {
 
 .card__inner {
   width: 100%;
+  height: 160px;
   padding: 30px;
   position: relative;
   cursor: pointer;
-  background-color: #fff;
   font-size: 1.5em;
   text-align: center;
   transition: all 0.2s ease-in-out;
@@ -58,14 +58,14 @@ body {
 
 .card__expander {
   transition: all 0.2s ease-in-out;
-  background-color: #342E37;
+  background-color: #333a45;
   width: 100%;
   position: relative;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: flex-start;
-  color: #eceef1;
+  color: #fff;
   font-size: 1em;
   padding: 15px;
 }
@@ -82,12 +82,21 @@ body {
   opacity: 0.9;
 }
 
+.card-logo {
+  max-height: 100px;
+}
 .card .card-link {
   margin-right: 20px;
 }
 
 .card .social {
   text-align: center;
+}
+
+.social {
+  float: none;
+  margin-top: 10px;
+  margin-left: 0;
 }
 
 .card .social .fa-twitter {
@@ -146,6 +155,7 @@ body {
 
 .inner-expander {
   width: calc((100% / 2) - 10px);
+  padding: 0 10px;
 }
 
 .inner-expander p {
