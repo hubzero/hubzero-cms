@@ -2,18 +2,18 @@
 // this is a very basic cards display for the partners, needs to be edited before it is pushed to the real world
 // Push CSS to the document
 //
-// The css() method provides a quick and convenient way to attach stylesheets. 
-// 
-// 1. The name of the stylesheet to be pushed to the document (file extension is optional). 
-//    If no name is provided, the name of the component or plugin will be used. For instance, 
+// The css() method provides a quick and convenient way to attach stylesheets.
+//
+// 1. The name of the stylesheet to be pushed to the document (file extension is optional).
+//    If no name is provided, the name of the component or plugin will be used. For instance,
 //    if called within a view of the component com_tags, the system will look for a stylesheet named tags.css.
-// 
-// 2. The name of the extension to look for the stylesheet. For components, this will be 
-//    the component name (e.g., com_tags). For plugins, this is the name of the plugin folder 
+//
+// 2. The name of the extension to look for the stylesheet. For components, this will be
+//    the component name (e.g., com_tags). For plugins, this is the name of the plugin folder
 //    and requires the third argument be passed to the method.
 //
 // Method chaining is also allowed.
-// $this->css()  
+// $this->css()
 //      ->css('another');
 
 $this->css('cards');
@@ -22,6 +22,7 @@ $this->css('cards');
 // The arguments accepted are the same as the css() method described above.
 //
 $this->js('cards');
+$this->js('https://use.fontawesome.com/88cd5351e6.js');
 
 // Set the document title
 //
@@ -68,7 +69,7 @@ Pathway::append(
       					<div class="card__expander">
         					<i class="fa fa-close [ js-collapser ]" aria-hidden="true"></i>
         					<div class="inner-expander">
-        						<?php echo 'About: ' . $record->get('about'); ?>
+        						<?php echo 'About: ' . '<p>' . $record->get('about') . '</p>'; ?>
         						<div class="liason">
         							Partner Liaison:
         							<p><?php echo $record->get('partner_liason_primary'); ?></p>
@@ -79,9 +80,9 @@ Pathway::append(
         						</div>
         					</div>
         					<div class="inner-expander">
-        						<?php echo 'Activities: ' . $record->get('activities'); ?>
+        						<?php echo 'Activities: ' . '<p>' . $record->get('activities') . '</p>'; ?>
         						<div class="social">
-        							<a class="card-link" href="<?php echo Route::url('groups' . DS . $record->get('groups_cn')); ?>">Learn more</a>
+        							<a class="card-link" href="<?php echo Route::url('groups' . DS . $record->get('groups_cn')); ?>"><?php echo $record->get('name') . ' ' . 'on QUBES'; ?></a><br>
         							<i class="fa fa-twitter" aria-hidden="true"></i>
         						</div>
         					</div>
