@@ -2,11 +2,7 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #eceef1;
-  font-family: 'Slabo 27px', serif;
-  color: #342E37;
-}
+
 
 .cards {
   padding: 15px;
@@ -102,6 +98,10 @@ body {
 .card .social .fa-twitter {
   font-size: 1.75em;
   margin-top: 10px;
+}
+
+a.social-icon {
+  color: #fff;
 }
 
 .card.is-collapsed .card__inner:after {

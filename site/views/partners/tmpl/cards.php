@@ -83,7 +83,7 @@ Pathway::append(
         						<?php echo 'Activities: ' . '<p>' . $record->get('activities') . '</p>'; ?>
         						<div class="social">
         							<a class="card-link" href="<?php echo Route::url('groups' . DS . $record->get('groups_cn')); ?>"><?php echo $record->get('name') . ' ' . 'on QUBES'; ?></a><br>
-        							<i class="fa fa-twitter" aria-hidden="true"></i>
+        							<a class="social-icon" href="https://twitter.com/<?php echo $record->get('twitter_handle'); ?>" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
         						</div>
         					</div>
         				</div>
