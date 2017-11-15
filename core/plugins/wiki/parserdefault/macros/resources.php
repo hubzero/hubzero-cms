@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 /**
  * Wiki macro class that will insert a linked title to a resource
  */
-class ResourceMacro extends WikiMacro
+class ResourcesMacro extends WikiMacro
 {
 	/**
 	 * Allow macro in partial parsing?
@@ -53,8 +53,8 @@ class ResourceMacro extends WikiMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = 'This macro will insert a linked title to a resource. It can be passed wither an ID or alias.';
-		$txt['html'] = '<p>This macro will insert a linked title to a resource. It can be passed wither an ID or alias.</p>';
+		$txt['wiki'] = 'This macro will insert a linked title to a resource. It can be passed either an ID or alias.';
+		$txt['html'] = '<p>This macro will insert a linked title to a resource. It can be passed either an ID or alias.</p>';
 		return $txt['html'];
 	}
 

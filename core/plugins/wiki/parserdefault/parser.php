@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
 
 /**
  * Wiki parser class
@@ -1540,7 +1540,19 @@ class WikiParser
 				}
 				else
 				{
-					return '';
+					$lngth = count($macroPieces);
+					$macroPieces[$lngth - 1] = \Hubzero\Utility\Inflector::pluralize($macroPieces[$lngth - 1]);
+					$macroname = ucfirst($macroPieces[$lngth - 1]) . 'Macro';
+					$macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
+
+					if (is_file($macropath))
+					{
+						include_once($macropath);
+					}
+					else
+					{
+						return '';
+					}
 				}
 
 				if (!class_exists($macroname))
