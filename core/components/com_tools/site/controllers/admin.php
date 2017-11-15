@@ -695,9 +695,9 @@ class Admin extends SiteController
 					}
 				}
 
-				include_once(__DIR__ . DS . 'resource.php');
+				include_once(__DIR__ . DS . 'resources.php');
 
-				$resource = new Resource();
+				$resource = new Resources();
 				// update and publish resource page
 				$resource->updatePage($status['resourceid'], $status, '1', $new);
 			}

@@ -59,7 +59,7 @@ require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php'
 /**
  * Controller class for contributing a tool
  */
-class Resource extends SiteController
+class Resources extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -105,7 +105,6 @@ class Resource extends SiteController
 		if (!$this->_checkAccess($this->_toolid))
 		{
 			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-			return;
 		}
 
 		$nextstep = $step + 1;
@@ -223,7 +222,7 @@ class Resource extends SiteController
 
 			if (!$hztv->update())
 			{
-				throw new Exception(Lang::txt('COM_TOOLS_ERROR_UPDATING_TOOL'), 500);
+				App::abort(500, Lang::txt('COM_TOOLS_ERROR_UPDATING_TOOL'));
 			}
 			else
 			{
@@ -389,14 +388,10 @@ class Resource extends SiteController
 		$this->view->fats    = $fats;
 		$this->view->authors = $authors;
 
-		// Pass error messages to the view
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -523,7 +518,6 @@ class Resource extends SiteController
 		if (!$this->_checkAccess($this->_toolid))
 		{
 			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-			return;
 		}
 
 		// Get tool version (dev or current) information
@@ -549,7 +543,7 @@ class Resource extends SiteController
 		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
 		// Load the resource object
-		$resource = \Components\Resources\Models\Entry::oneByAlias($alias);
+		$resource = Entry::oneByAlias($alias);
 
 		if (!User::isGuest())
 		{
@@ -610,14 +604,10 @@ class Resource extends SiteController
 		$this->view->usersgroups = $usersgroups;
 		$this->view->status      = $status;
 
-		// Pass error messages to the view
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**

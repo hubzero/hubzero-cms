@@ -1179,9 +1179,9 @@ class Pipeline extends SiteController
 
 		if (empty($rid))
 		{
-			include_once(__DIR__ . DS . 'resource.php');
+			include_once(__DIR__ . DS . 'resources.php');
 
-			$resource = new Resource();
+			$resource = new Resources();
 
 			$rid = $resource->createPage($this->_toolid, $tool);
 			// save authors by default
@@ -1595,7 +1595,7 @@ class Pipeline extends SiteController
 			// If the tool was cancelled ...
 			if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned'))
 			{
-				include_once(__DIR__ . DS . 'resource.php');
+				include_once(__DIR__ . DS . 'resources.php');
 
 				$r = \Components\Resources\Models\Entry::oneByAlias($hzt->toolname);
 
@@ -1607,7 +1607,7 @@ class Pipeline extends SiteController
 						$rstatus = 1;
 					}
 
-					$resource = new Resource();
+					$resource = new Resources();
 					$resource->updatePage($r->id, $oldstatus, $rstatus);
 				}
 			}
@@ -2319,9 +2319,9 @@ class Pipeline extends SiteController
 		}
 
 		// unpublish resource page
-		include_once(__DIR__ . DS . 'resource.php');
+		include_once(__DIR__ . DS . 'resources.php');
 
-		$resource = new Resource();
+		$resource = new Resources();
 		$resource->updatePage($status['resourceid'], $status, '4');
 
 		// change tool status to 'abandoned' and priority to 'lowest'

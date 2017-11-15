@@ -220,8 +220,9 @@ class Router extends Base
 				// Resource controller
 				case 'preview':
 				case 'resource':
+				case 'resources':
 					$vars['option'] = 'com_tools';
-					$vars['controller'] = 'resource';
+					$vars['controller'] = 'resources';
 					$vars['app'] = $segments[0];
 					if ($segments[1] == 'preview')
 					{
