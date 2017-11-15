@@ -63,3 +63,10 @@ only installs sample content.
 From the command-line, starting in your hub's root directory, you can run all migrations with:
 
     php muse migration -f
+
+Views
+============
+
+There are currently two views: display (table form; *default*) and cards (card form).  Use the following URL to get the cards view:
+
+    https://192.168.33.10/partners/partners?task=cards
