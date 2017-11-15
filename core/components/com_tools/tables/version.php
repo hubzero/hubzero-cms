@@ -149,11 +149,9 @@ class Version extends \JTable
 			return false;
 		}
 
-		$rd = new \Components\Resources\Tables\Doi($this->_db);
-
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM $this->_tbl as v ";
-		$query .= "LEFT JOIN $rd->_tbl as d ON d.alias=v.toolname  AND d.local_revision=v.revision ";
+		$query .= "LEFT JOIN `#__doi_mapping` as d ON d.alias=v.toolname  AND d.local_revision=v.revision ";
 		$query .= "WHERE v.toolname = " . $this->_db->quote($alias) . " AND v.state!=3 ORDER BY v.revision DESC";
 
 		$this->_db->setQuery($query);

@@ -34,8 +34,6 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$database = App::get('db');
-
 $sortbys = array();
 if ($this->config->get('show_ranking'))
 {
@@ -87,7 +85,7 @@ $this->css()
 						{
 							?>
 							<li>
-								<a href="<?php echo Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
+								<a class="tag" href="<?php echo Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
 									<?php echo $this->escape(stripslashes($tag)); ?>
 									<span class="remove" title="<?php echo Lang::txt('COM_RESOURCES_REMOVE_TAG'); ?>">x</a>
 								</a>
@@ -140,9 +138,9 @@ $this->css()
 							<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
 						</li>
 						<?php if ($this->config->get('show_ranking')) { ?>
-						<li>
-							<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
-						</li>
+							<li>
+								<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
+							</li>
 						<?php } ?>
 					</ul>
 
@@ -157,7 +155,7 @@ $this->css()
 										{
 											continue;
 										}
-										if ($item->id == 7 && !Component::isEnabled('com_tools', true))
+										if ($item->isForTools() && !Component::isEnabled('com_tools', true))
 										{
 											continue;
 										}
@@ -171,7 +169,7 @@ $this->css()
 				</nav>
 
 				<div class="container-block">
-					<?php if ($this->results) { ?>
+					<?php if ($this->results->count()) { ?>
 						<?php
 						$config = Component::params('com_resources');
 
@@ -179,7 +177,6 @@ $this->css()
 
 						if ($tag = $config->get('supportedtag'))
 						{
-							include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
 							$rt = new \Components\Resources\Helpers\Tags(0);
 							$supported = $rt->getTagUsage($tag, 'id');
 						}
@@ -197,11 +194,7 @@ $this->css()
 				</div>
 				<?php
 				// Initiate paging
-				$pageNav = $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				$pageNav = $this->results->pagination;
 				$pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
 				$pageNav->setAdditionalUrlParam('type', $this->filters['type']);
 				$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);

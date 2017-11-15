@@ -138,7 +138,7 @@ class Router extends Base
 		}
 		else
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'type.php');
+			include_once dirname(__DIR__) . DS . 'models' . DS . 'type.php';
 
 			$types = Type::getMajorTypes();
 
@@ -179,13 +179,16 @@ class Router extends Base
 						$vars['file'] = $segments[2];
 					}
 				break;
-				case 'play':     $vars['task'] = 'play';     break;
-				case 'watch':    $vars['task'] = 'watch';    break;
-				case 'video':    $vars['task'] = 'video';    break;
-				//case 'license':  $vars['task'] = 'license';  break;
-				case 'citation': $vars['task'] = 'citation'; break;
-				case 'feed.rss': $vars['task'] = 'feed';     break;
-				case 'feed':     $vars['task'] = 'feed';     break;
+				case 'play':
+				case 'watch':
+				case 'video':
+				case 'citation':
+				case 'feed':
+					$vars['task'] = $segments[1];
+					break;
+				case 'feed.rss':
+					$vars['task'] = 'feed';
+					break;
 
 				case 'license':
 				case 'sourcecode':

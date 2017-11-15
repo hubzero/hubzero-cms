@@ -129,9 +129,7 @@ $this->css()
 		<?php
 		if ($this->supportedtag)
 		{
-			$database = App::get('db');
-
-			include_once(Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
+			include_once Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 			$tag = \Components\Tags\Models\Tag::oneByTag($this->supportedtag);
 
@@ -160,7 +158,8 @@ $this->css()
 
 			if ($this->supportedtag)
 			{
-				include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
+				include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+
 				$rt = new \Components\Resources\Helpers\Tags(0);
 				$supported = $rt->getTagUsage($this->supportedtag, 'id');
 			}

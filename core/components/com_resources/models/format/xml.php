@@ -42,8 +42,8 @@ class XML extends Base
 {
 	/**
 	 * Converts an object into an XML formatted string.
-	 *	-	If more than two levels of nested groups are necessary, since INI is not
-	 *		useful, XML or another format should be used.
+	 * - If more than two levels of nested groups are necessary, since INI is not
+	 *   useful, XML or another format should be used.
 	 *
 	 * @param   object  $object   Data source object.
 	 * @param   array   $options  Options used by the formatter.

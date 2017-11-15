@@ -59,15 +59,10 @@ class plgResourcesDublincore extends \Hubzero\Plugin\Plugin
 		$view = $this->view();
 
 		// Add metadata
-		Document::setMetaData('dc.title', $view->escape($model->resource->title));
+		Document::setMetaData('dc.title', $view->escape($model->title));
 
-		switch ($model->params->get('show_date'))
-		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = $model->resource->created;    break;
-			case 2: $thedate = $model->resource->modified;   break;
-			case 3: $thedate = $model->resource->publish_up; break;
-		}
+		$thedate = $model->date;
+
 		if ($thedate)
 		{
 			Document::setMetaData('dc.date', Date::of($thedate)->toLocal('Y-m-d'));
@@ -77,19 +72,19 @@ class plgResourcesDublincore extends \Hubzero\Plugin\Plugin
 		{
 			$tconfig = Component::params('com_tools');
 
-			if ($model->resource->doi && $tconfig->get('doi_shoulder'))
+			if ($model->doi && $tconfig->get('doi_shoulder'))
 			{
-				$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($model->resource->doi);
+				$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($model->doi);
 			}
 			else
 			{
-				$doi = '10254/' . $tconfig->get('doi_prefix') . $model->resource->id . '.' . $model->resource->doi_label;
+				$doi = '10254/' . $tconfig->get('doi_prefix') . $model->id . '.' . $model->doi_label;
 			}
 
 			Document::setMetaData('dc.identifier', $view->escape($doi));
 		}
 
-		Document::setMetaData('dcterms.description', $view->escape($model->resource->introtext));
+		Document::setMetaData('dcterms.description', $view->escape($model->introtext));
 
 		if ($license = $model->params->get('license', ''))
 		{
@@ -113,24 +108,6 @@ class plgResourcesDublincore extends \Hubzero\Plugin\Plugin
 
 			Document::setMetaData('dcterms.creator', $view->escape($name . ($contributor->org ? ', ' . $contributor->org : '')));
 		}
-
-		/*foreach ($model->contributors('submitter') as $contributor)
-		{
-			if (strtolower($contributor->role) == 'submitter')
-			{
-				continue;
-			}
-
-			$name = $this->name($contributor);
-
-			if (!$contributor->org)
-			{
-				$contributor->org = $contributor->xorg;
-			}
-			$contributor->org = stripslashes(trim($contributor->org));
-
-			Document::setMetaData('dcterms.creator', $view->escape($name . ($contributor->org ? ', ' . $contributor->org : '')));
-		}*/
 	}
 
 	/**
@@ -150,7 +127,7 @@ class plgResourcesDublincore extends \Hubzero\Plugin\Plugin
 		else if ($contributor->surname || $contributor->givenName)
 		{
 			$name = stripslashes($contributor->givenName) . ' ';
-			if ($contributor->middleName != NULL)
+			if ($contributor->middleName != null)
 			{
 				$name .= stripslashes($contributor->middleName) . ' ';
 			}

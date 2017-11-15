@@ -39,15 +39,15 @@ if ($canonical = $this->model->attribs->get('canonical', ''))
 
 	if (preg_match('/^(\/?resources\/(.+))/i', $canonical, $matches))
 	{
-		$model = \Components\Resources\Models\Resource::getInstance($matches[2]);
-		$title = $model->resource->title;
-		$url   = Route::url('index.php?option=' . $this->option . ($model->resource->alias ? '&alias=' . $model->resource->alias : '&id=' . $model->resource->id));
+		$model = \Components\Resources\Models\Entry::getInstance($matches[2]);
+		$title = $model->title;
+		$url   = Route::url($model->link());
 	}
 	else if (is_numeric($canonical))
 	{
-		$model = \Components\Resources\Models\Resource::getInstance(intval($canonical));
-		$title = $model->resource->title;
-		$url   = Route::url('index.php?option=' . $this->option . ($model->resource->alias ? '&alias=' . $model->resource->alias : '&id=' . $model->resource->id));
+		$model = \Components\Resources\Models\Entry::getInstance(intval($canonical));
+		$title = $model->title;
+		$url   = Route::url($model->link());
 	}
 
 	if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $url))

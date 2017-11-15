@@ -47,7 +47,7 @@ Html::behavior('framework', true);
 
 $this->css();
 
-$params = new \Hubzero\Config\Registry($this->row->params);
+$params = new \Hubzero\Config\Registry($this->row->get('params'));
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -204,7 +204,7 @@ function submitbutton(pressbutton)
 			</tfoot>
 			<tbody id="field-items">
 			<?php
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			include_once Component::path($this->option) . DS . 'models' . DS . 'elements.php';
 			$elements = new \Components\Resources\Models\Elements('', $this->row->customFields);
 			$schema = $elements->getSchema();
 

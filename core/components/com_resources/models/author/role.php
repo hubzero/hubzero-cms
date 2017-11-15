@@ -133,14 +133,12 @@ class Role extends Relational
 	 */
 	public function created($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}

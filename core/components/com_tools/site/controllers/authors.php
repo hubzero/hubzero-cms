@@ -33,6 +33,8 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Author;
 use Component;
 use Request;
 use Route;
@@ -42,11 +44,7 @@ use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php' );
+require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool
@@ -102,48 +100,62 @@ class Authors extends SiteController
 		}
 
 		// Incoming authors
-		$authid = Request::getInt('authid', 0, 'post');
 		$authorsNewstr = trim(Request::getVar('new_authors', '', 'post'));
-		$role = Request::getVar('role', '', 'post');
+		$authid   = Request::getInt('authid', 0, 'post');
+		$username = Request::getVar('author', '', 'post');
+		$role     = Request::getVar('role', '', 'post');
 
 		// Turn the string into an array of usernames
 		$authorsNew = empty($authorsNew) ? explode(',', $authorsNewstr) : $authorsNew;
 
 		// Instantiate a resource/contributor association object
-		$rc = new \Components\Resources\Tables\Contributor($this->database);
-		$rc->subtable = 'resources';
-		$rc->subid = $id;
+		$author = Author::blank();
+		$author->set('subtable', 'resources');
+		$author->set('subid', $id);
 
 		// Get the last child in the ordering
-		$order = $rc->getLastOrder($id, 'resources');
-		$order = $order + 1; // new items are always last
+		//$order = $rc->getLastOrder($id, 'resources');
+		//$order = $order + 1; // new items are always last
+
+		if (!$authid && $username)
+		{
+			$profile = User::getInstance($username);
+
+			if (!$profile)
+			{
+				$this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
+				if ($show)
+				{
+					$this->displayTask($id);
+				}
+				return;
+			}
+
+			$authid = $profile->get('id');
+		}
 
 		// Was there an ID? (this will come from the author <select>)
 		if ($authid)
 		{
 			// Check if they're already linked to this resource
-			$rc->loadAssociation($authid, $id, 'resources');
-			if ($rc->authorid)
+			$existing = Author::oneByRelationship($id, $authid);
+
+			if ($existing->get('id'))
 			{
 				$this->setError(Lang::txt('USER_IS_ALREADY_AUTHOR', $authid));
 			}
 			else
 			{
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$xprofile = User::getInstance($authid);
-				if ($xprofile)
+				$profile = User::getInstance($authid);
+
+				if ($profile)
 				{
-					$this->_authorCheck($authid);
-
-					// New record
-					$rc->authorid = $authid;
-					$rc->ordering = $order;
-					$rc->name = addslashes($xprofile->get('name'));
-					$rc->role = addslashes($role);
-					$rc->organization = addslashes($xprofile->get('organization'));
-					$rc->createAssociation();
-
-					$order++;
+					$author->set('authorid', $authid);
+					$author->set('name', (string)$profile->get('name'));
+					$author->set('role', (string)$role);
+					$author->set('organization', (string)$profile->get('organization'));
+					$author->save();
 				}
 			}
 		}
@@ -165,6 +177,7 @@ class Authors extends SiteController
 					$cid = strtolower($cid);
 					// Find the user's account info
 					$uid = User::oneByUsername($cid)->get('id');
+
 					if (!$uid)
 					{
 						$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
@@ -172,46 +185,58 @@ class Authors extends SiteController
 					}
 				}
 
-				$user = User::getInstance($uid);
-				if (!is_object($user))
+				$profile = User::getInstance($uid);
+
+				// Find the user's account info
+				if (!$profile->get('id'))
 				{
-					$this->setError( Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
-					continue;
+					// No account
+					// This should mean we have an author that is not a site member
+
+					$cid = trim($cid);
+
+					// No name. Can't save record, so pass over it.
+					if (!$cid)
+					{
+						continue;
+					}
+
+					// Check to see if they're already an author
+					$author = Author::oneByName($id, $cid);
+
+					if ($author->get('id'))
+					{
+						$this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
+						continue;
+					}
+
+					$authorid     = $author->getUserId($cid);
+					$name         = $cid;
+					$organization = '';
+				}
+				else
+				{
+					// Check to see if they're already an author
+					$author = Author::oneByRelationship($id, $profile->get('id'));
+
+					if ($author->get('id'))
+					{
+						$this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $author->get('name')));
+						continue;
+					}
+
+					$authorid     = $profile->get('id');
+					$name         = $profile->get('name');
+					$organization = $profile->get('organization');
 				}
 
-				$uid = $user->get('id');
-
-				if (!$uid)
-				{
-					$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
-					continue;
-				}
-
-				// Check if they're already linked to this resource
-				$rcc = new \Components\Resources\Tables\Contributor($this->database);
-				$rcc->loadAssociation($uid, $id, 'resources');
-				if ($rcc->authorid)
-				{
-					$this->setError(Lang::txt('USER_IS_ALREADY_AUTHOR', $cid));
-					continue;
-				}
-
-				$this->_authorCheck($uid);
-
-				$xprofile = User::getInstance($user->get('id'));
-				$rcc->subtable     = 'resources';
-				$rcc->subid        = $id;
-				$rcc->authorid     = $uid;
-				$rcc->ordering     = $order;
-				$rcc->name         = $xprofile->get('name');
-				$rcc->role         = $role;
-				$rcc->organization = $xprofile->get('organization');
-				if (!$rcc->createAssociation())
-				{
-					$this->setError($rcc->getError());
-				}
-
-				$order++;
+				$author->set('subtable', 'resources');
+				$author->set('subid', $id);
+				$author->set('authorid', $authorid);
+				$author->set('name', (string)$name);
+				$author->set('organization', (string)$organization);
+				$author->set('role', (string)$role);
+				$author->save();
 			}
 		}
 
@@ -219,32 +244,6 @@ class Authors extends SiteController
 		{
 			// Push through to the authors view
 			$this->displayTask($id);
-		}
-	}
-
-	/**
-	 * Split a user's name into its parts if not already done
-	 *
-	 * @param   integer  $id  User ID
-	 * @return  void
-	 */
-	private function _authorCheck($id)
-	{
-		$xprofile = User::getInstance($id);
-		if ($xprofile->get('givenName') == ''
-		 && $xprofile->get('middleName') == ''
-		 && $xprofile->get('surname') == '')
-		{
-			$bits = explode(' ', $xprofile->get('name'));
-			$xprofile->set('surname', array_pop($bits));
-			if (count($bits) >= 1)
-			{
-				$xprofile->set('givenName', array_shift($bits));
-			}
-			if (count($bits) >= 1)
-			{
-				$xprofile->set('middleName', implode(' ', $bits));
-			}
 		}
 	}
 
@@ -269,10 +268,11 @@ class Authors extends SiteController
 		// Ensure we have the contributor's ID ($id)
 		if ($id)
 		{
-			$rc = new \Components\Resources\Tables\Contributor($this->database);
-			if (!$rc->deleteAssociation($id, $pid, 'resources'))
+			$author = Author::oneByRelationship($pid, $id);
+
+			if (!$author->destroy())
 			{
-				$this->setError($rc->getError());
+				$this->setError($author->getError());
 			}
 		}
 
@@ -303,11 +303,19 @@ class Authors extends SiteController
 		{
 			foreach ($ids as $id => $data)
 			{
-				$rc = new \Components\Resources\Tables\Contributor($this->database);
-				$rc->loadAssociation($id, $pid, 'resources');
-				$rc->organization = $data['organization'];
-				$rc->role = $data['role'];
-				$rc->updateAssociation();
+				$author = Author::oneByRelationship($pid, $id);
+
+				if (!$author->get('id'))
+				{
+					continue;
+				}
+
+				$author->set('organization', $data['organization']);
+				$author->set('role', $data['role']);
+				if (!$author->save())
+				{
+					$this->setError($author->getError());
+				}
 			}
 		}
 
@@ -325,7 +333,7 @@ class Authors extends SiteController
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
-		$move = 'order' . Request::getVar('move', 'down');
+		$move = Request::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -341,38 +349,24 @@ class Authors extends SiteController
 			return $this->displayTask($pid);
 		}
 
-		// Get the element moving down - item 1
-		$author1 = new \Components\Resources\Tables\Contributor($this->database);
-		$author1->loadAssociation($id, $pid, 'resources');
-
-		// Get the element directly after it in ordering - item 2
-		$author2 = clone($author1);
-		$author2->getNeighbor($move);
-
 		switch ($move)
 		{
-			case 'orderup':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $author2->ordering;
-				$orderdn = $author1->ordering;
-
-				$author1->ordering = $orderup;
-				$author2->ordering = $orderdn;
+			case 'up':
+				$move = -1;
 			break;
 
-			case 'orderdown':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $author1->ordering;
-				$orderdn = $author2->ordering;
-
-				$author1->ordering = $orderdn;
-				$author2->ordering = $orderup;
+			case 'down':
+				$move = 1;
 			break;
 		}
 
+		$author = Author::oneByRelationship($pid, $id);
+
 		// Save changes
-		$author1->updateAssociation();
-		$author2->updateAssociation();
+		if (!$author->move($move))
+		{
+			$this->setError($author->getError());
+		}
 
 		// Push through to the attachments view
 		$this->displayTask($pid);
@@ -398,13 +392,16 @@ class Authors extends SiteController
 			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
 		}
 
-		$this->view->version = Request::getVar('version', 'dev');
+		$version = Request::getVar('version', 'dev');
 
 		// Get all contributors of this resource
-		$helper = new \Components\Resources\Helpers\Helper($id, $this->database);
-		if ($this->view->version == 'dev')
+		$resource = Entry::oneOrFail($id);
+
+		if ($version == 'dev')
 		{
-			$helper->getCons();
+			$authors = $resource->authors()
+				->ordered()
+				->rows();
 		}
 		else
 		{
@@ -414,25 +411,19 @@ class Authors extends SiteController
 			$objV = new \Components\Tools\Tables\Version($this->database);
 			$revision = $objV->getCurrentVersionProperty($toolname, 'revision');
 
-			$helper->getToolAuthors($toolname, $revision);
+			$resource->set('revision', $revision);
+			$authors = $resource->contributors('tool');
 		}
 
-		// Get a list of all existing contributors
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
-
-		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$resource->load($id);
-
-		$rt = new \Components\Resources\Tables\Contributor\RoleType($this->database);
-
-		// Output HTML
-		$this->view->config = $this->config;
-		$this->view->contributors = $helper->_contributors;
-		$this->view->id = $id;
-
-		$this->view->roles = $rt->getRolesForType($resource->type);
+		// Get all roles for this resoruce type
+		$roles = $resource->type->roles()->rows();
 
 		$this->view
+			->set('version', $version)
+			->set('config', $this->config)
+			->set('id', $id)
+			->set('contributors', $authors)
+			->set('roles', $roles)
 			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();

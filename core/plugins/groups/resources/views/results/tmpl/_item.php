@@ -33,43 +33,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 include_once Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
 
-$database = App::get('db');
-
-// Instantiate a helper object
-$RE = new \Components\Resources\Helpers\Helper($this->row->id, $database);
-$RE->getContributors();
-
-// Get the component params and merge with resource params
-$config = Component::params('com_resources');
-
-$rparams = new \Hubzero\Config\Registry($this->row->params);
-$params = $config;
-$params->merge($rparams);
-
-// Set the display date
-switch ($params->get('show_date'))
-{
-	case 0:
-		$thedate = '';
-		break;
-	case 1:
-		$thedate = Date::of($this->row->created)->toLocal('d M Y');
-		break;
-	case 2:
-		$thedate = Date::of($this->row->modified)->toLocal('d M Y');
-		break;
-	case 3:
-		$thedate = Date::of($this->row->publish_up)->toLocal('d M Y');
-		break;
-}
-
-if (strstr($this->row->href, 'index.php'))
-{
-	$this->row->href = Route::url($this->row->href);
-}
+$params = $this->row->params;
 
 switch ($this->row->access)
 {
@@ -112,16 +78,15 @@ switch ($this->row->access)
 					<p><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING_EXPLANATION'); ?></p>
 					<div>
 						<?php
-						$RE->getCitationsCount();
-						$RE->getLastCitationDate();
+						$database = App::get('db');
 
-						if ($this->row->category == 7)
+						if ($this->row->isTool())
 						{
-							$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
+							$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->row->id, $this->row->category, $this->row->rating);
 						}
 						else
 						{
-							$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
+							$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->row->id, $this->row->category, $this->row->rating);
 						}
 						echo $stats->display();
 						?>
@@ -175,9 +140,9 @@ switch ($this->row->access)
 	<?php } ?>
 
 	<p class="details">
-		<?php echo $thedate; ?> <span>|</span> <?php echo stripslashes($this->row->area); ?>
-		<?php if ($RE->contributors) { ?>
-			<span>|</span> <?php echo Lang::txt('PLG_GROUPS_RESOURCES_CONTRIBUTORS') . ': ' . $RE->contributors; ?>
+		<?php echo $this->row->date; ?> <span>|</span> <?php echo stripslashes($this->row->type->get('type')); ?>
+		<?php if ($authors = $this->row->authorsList()) { ?>
+			<span>|</span> <?php echo Lang::txt('PLG_GROUPS_RESOURCES_CONTRIBUTORS') . ': ' . $authors; ?>
 		<?php } ?>
 	</p>
 

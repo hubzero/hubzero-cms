@@ -41,8 +41,6 @@ use Lang;
 use User;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'license.php');
-
 /**
  * Manage resource types
  */
@@ -254,7 +252,7 @@ class Licenses extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$dir = $this->_task == 'orderup' ? -1 : 1;
+		$dir = $this->getTask() == 'orderup' ? -1 : 1;
 
 		// Incoming
 		$id = Request::getVar('id', array(0), '', 'array');

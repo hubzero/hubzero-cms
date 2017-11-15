@@ -40,14 +40,26 @@ $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {
-	switch ($this->model->resource->published)
+	switch ($this->model->published)
 	{
-		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 1:
+			$txt .= '';
+			break; // published
+		case 2:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> ';
+			break;  // external draft
+		case 3:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';
+			break;  // pending
+		case 4:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';
+			break;  // deleted
+		case 5:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> ';
+			break;  // internal draft
+		case 0:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';
+			break;  // unpublished
 	}
 }
 ?>
@@ -58,9 +70,9 @@ if ($mode != 'preview')
 				<div class="col span8">
 					<header>
 						<h2>
-							<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
+							<?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
 						</h2>
-						<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
+						<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
 					</header>
 
 					<?php if ($this->model->params->get('show_authors', 1)) { ?>
@@ -74,8 +86,9 @@ if ($mode != 'preview')
 							?>
 						</div><!-- / #authorslist -->
 					<?php } ?>
+
 					<?php if ($this->model->params->get('access-edit-resource')) { ?>
-						<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>">
+						<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>">
 							<?php echo Lang::txt('COM_RESOURCES_EDIT'); ?>
 						</a>
 					<?php } ?>
@@ -87,7 +100,7 @@ if ($mode != 'preview')
 					if (!$this->model->access('view-all'))
 					{
 						$ghtml = array();
-						foreach ($this->model->resource->getGroups() as $allowedgroup)
+						foreach ($this->model->groups as $allowedgroup)
 						{
 							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 						}
@@ -103,23 +116,31 @@ if ($mode != 'preview')
 					}
 					else
 					{
-						// get launch button
-						$firstchild = $this->model->children(0);
-
-						$html  = $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
-
 						// Display some supporting documents
-						$children = $this->model->children();
+						$children = $this->model->children()
+							->whereEquals('standalone', 0)
+							->ordered()
+							->rows();
+
+						// get launch button
+						$firstchild = $children->first();
+
+						$html = $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model, $firstchild, '') : '';
 
 						// Sort out supporting docs
 						$html .= $children && count($children) > 1
-							   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model->resource, $this->option, $children)
-							   : '';
-
-						//$html .= $feeds ? $feeds : '';
-						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+								? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
+								: '';
 
 						echo $html;
+
+						if ($this->tab != 'play')
+						{
+							// Display canonical
+							$this->view('_license')
+								->set('license', $this->model->license())
+								->display();
+						}
 					} // --- end else (if group check passed)
 					?>
 				</div><!-- / .aside launcharea -->
@@ -156,14 +177,14 @@ if ($mode != 'preview')
 			$this->view('_tabs')
 				->set('option', $this->option)
 				->set('cats', $this->cats)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 
 			$this->view('_sections')
 				->set('option', $this->option)
 				->set('sections', $this->sections)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 			?>
@@ -171,7 +192,7 @@ if ($mode != 'preview')
 		<aside class="aside extracontent">
 			<?php
 			// Show related content
-			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)

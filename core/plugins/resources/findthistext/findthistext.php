@@ -94,12 +94,11 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			// Instantiate a view
-			$view = $this->view('default', 'index');
-			$view->option   = $option;
-			$view->model    = $model;
-			$view->database = App::get('db');
-			$view->plugin   = $this->params;
-			$view->openurl  = $this->getOpenUrl();
+			$view = $this->view('default', 'index')
+				->set('option', $option)
+				->set('model', $model)
+				->set('plugin', $this->params)
+				->set('openurl', $this->getOpenUrl());
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();

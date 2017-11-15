@@ -119,4 +119,22 @@ class Hook extends Relational
 	{
 		return $this->belongsToOne('Hubzero\User\User', 'created_by');
 	}
+
+	/**
+	 * Return imports filespace path
+	 *
+	 * @return  string
+	 */
+	public function fileSpacePath()
+	{
+		// get com resources params
+		$params = \Component::params('com_resources');
+
+		// build upload path
+		$uploadPath = $params->get('import_hooks_uploadpath', '/site/resources/import/hooks');
+		$uploadPath = PATH_APP . DS . trim($uploadPath, DS) . DS . $this->get('id');
+
+		// return path
+		return $uploadPath;
+	}
 }

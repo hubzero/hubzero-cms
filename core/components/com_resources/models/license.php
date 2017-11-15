@@ -231,4 +231,19 @@ class License extends Relational
 
 		return true;
 	}
+
+	/**
+	 * Load a record by name
+	 *
+	 * @param   string  $name
+	 * @return  object
+	 */
+	public static function oneByName($name)
+	{
+		return self::all()
+			->whereEquals('name', $name)
+			->limit(1)
+			->start(0)
+			->row();
+	}
 }

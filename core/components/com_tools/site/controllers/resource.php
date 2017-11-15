@@ -33,6 +33,7 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Resources\Models\Entry;
 use Document;
 use Pathway;
 use Component;
@@ -53,12 +54,7 @@ include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
 /**
  * Resource classes
  */
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool
@@ -68,7 +64,7 @@ class Resource extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -84,7 +80,7 @@ class Resource extends SiteController
 	/**
 	 * Display forms for editing/creating a reosurce
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -118,9 +114,9 @@ class Resource extends SiteController
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 		// get resource information
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->loadAlias($alias);
-		$row->alias = ($row->alias) ? $row->alias : $alias;
+		$row = \Components\Resources\Models\Entry::getInstance($alias);
+		$row->set('alias', ($row->alias ? $row->alias : $alias));
+
 		if (!$status['fulltxt'])
 		{
 			$status['fulltxt'] = $row->fulltxt;
@@ -158,10 +154,9 @@ class Resource extends SiteController
 			}
 
 			// Get custom areas, add wrapper tags, and compile into fulltxt
-			$type = new \Components\Resources\Tables\Type($this->database);
-			$type->load($row->type);
+			$type = $row->type;
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
 			$elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
 			$schema = $elements->getSchema();
 
@@ -407,11 +402,11 @@ class Resource extends SiteController
 	/**
 	 * Update the associated resource page for this tool
 	 *
-	 * @param      integer $rid       Resource ID
-	 * @param      array   $status    Fields to update
-	 * @param      integer $published Published state
-	 * @param      integer $newtool   Updating for a new tool?
-	 * @return     boolean True if no errors
+	 * @param   integer  $rid        Resource ID
+	 * @param   array    $status     Fields to update
+	 * @param   integer  $published  Published state
+	 * @param   integer  $newtool    Updating for a new tool?
+	 * @return  boolean  True if no errors
 	 */
 	public function updatePage($rid, $status=array(), $published=0, $newtool=0)
 	{
@@ -420,26 +415,25 @@ class Resource extends SiteController
 			return false;
 		}
 
-		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$resource->load($rid);
+		$resource = \Components\Resources\Models\Entry::oneOrNew($rid);
 		if (count($status) > 0)
 		{
-			$resource->fulltxt    = addslashes($status['fulltxt']);
-			$resource->introtext   = $status['description'];
-			$resource->title       = preg_replace('/\s+/', ' ', $status['title']);
-			$resource->modified    = Date::toSql();
-			$resource->modified_by = User::get('id');
+			$resource->set('fulltxt', addslashes($status['fulltxt']));
+			$resource->set('introtext', $status['description']);
+			$resource->set('title', preg_replace('/\s+/', ' ', $status['title']));
+			$resource->set('modified', Date::toSql());
+			$resource->set('modified_by', User::get('id'));
 		}
 		if ($published)
 		{
-			$resource->published = $published;
+			$resource->set('published', $published);
 		}
-		if ($newtool && $published == 1)
+		if ($newtool && $published == \Components\Resources\Models\Entry::STATE_PUBLISHED)
 		{
-			$resource->publish_up = Date::toSql();
+			$resource->set('publish_up', Date::toSql());
 		}
 
-		if (!$resource->store())
+		if (!$resource->save())
 		{
 			$this->setError($row->getError());
 			return false;
@@ -459,47 +453,39 @@ class Resource extends SiteController
 	/**
 	 * Generate a resource page from tool data
 	 *
-	 * @param      integer $toolid Tool ID
-	 * @param      array   $tool   Tool info to generate resource from
-	 * @return     mixed False if error, integer if success
+	 * @param   integer  $toolid  Tool ID
+	 * @param   array    $tool    Tool info to generate resource from
+	 * @return  mixed    False if error, integer if success
 	 */
 	public function createPage($toolid, $tool)
 	{
 		$tool['title'] = preg_replace('/\s+/', ' ', $tool['title']);
 
-		$params = array();
-		$params[] = 'pageclass_sfx=';
-		$params[] = 'show_title=1';
-		$params[] = 'show_authors=1';
-		$params[] = 'show_assocs=';
-		$params[] = 'show_type=';
-		$params[] = 'show_logicaltype=';
-		$params[] = 'show_rating=';
-		$params[] = 'show_date=';
-		$params[] = 'show_parents=';
-		$params[] = 'series_banner=';
-		$params[] = 'show_banner=1';
-		$params[] = 'show_footer=3';
-		$params[] = 'show_stats=0';
-		$params[] = 'st_appname=' . strtolower($tool['toolname']);
-		$params[] = 'st_appcaption=' . $tool['title'] . $tool['version'];
-		$params[] = 'st_method=com_narwhal';
+		$params = new \Hubzero\Config\Registry();
+		$params->set('show_title', 1);
+		$params->set('show_authors', 1);
+		$params->set('st_appname', strtolower($tool['toolname']));
+		$params->set('st_appcaption', $tool['title'] . $tool['version']);
+		$params->set('st_method', 'com_narwhal');
+
+		$attribs = new \Hubzero\Config\Registry();
+		$attribs->set('marknew', 0);
 
 		// Initiate extended database class
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->created_by = User::get('id');
-		$row->created    = Date::toSql();
-		$row->published  = 2;  // draft state
-		$row->params     = implode("\n", $params);
-		$row->attribs    = 'marknew=0';
-		$row->standalone = 1;
-		$row->type       = 7;
-		$row->title      = $tool['title'];
-		$row->introtext  = $tool['description'];
-		$row->alias      = $tool['toolname'];
-		$row->access     = 0;
+		$row = \Components\Resources\Models\Entry::blank();
+		$row->set('created_by', User::get('id'));
+		$row->set('created', Date::toSql());
+		$row->set('published', \Components\Resources\Models\Entry::STATE_DRAFT);  // draft state
+		$row->set('params', $params->toString());
+		$row->set('attribs',$attribs->toString());
+		$row->set('standalone', 1);
+		$row->set('type', 7);
+		$row->set('title', $tool['title']);
+		$row->set('introtext', $tool['description']);
+		$row->set('alias', $tool['toolname']);
+		$row->set('access', 0);
 
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return false;
@@ -511,7 +497,7 @@ class Resource extends SiteController
 	/**
 	 * Preview the resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function previewTask()
 	{
@@ -560,11 +546,10 @@ class Resource extends SiteController
 		$tagcloud->setTags($newtags, User::get('id'));
 
 		// Get some needed libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
 		// Load the resource object
-		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$resource->loadAlias($alias);
+		$resource = \Components\Resources\Models\Entry::oneByAlias($alias);
 
 		if (!User::isGuest())
 		{
@@ -638,8 +623,8 @@ class Resource extends SiteController
 	/**
 	 * Strip some unwanted and potentially harmful items out of text
 	 *
-	 * @param      string &$text Text to clean
-	 * @return     string
+	 * @param   string  &$text  Text to clean
+	 * @return  string
 	 */
 	public function txtClean(&$text)
 	{
@@ -654,8 +639,8 @@ class Resource extends SiteController
 	/**
 	 * Push a user's groups' alias to an array for easier searching
 	 *
-	 * @param      array $groups User's groups
-	 * @return     array
+	 * @param   array  $groups  User's groups
+	 * @return  array
 	 */
 	private function _getUsersGroups($groups)
 	{
@@ -676,10 +661,10 @@ class Resource extends SiteController
 	/**
 	 * Check if the current user has access to this tool
 	 *
-	 * @param      unknown $toolid       Tool ID
-	 * @param      integer $allowAdmins  Allow admins access?
-	 * @param      boolean $allowAuthors Allow authors access?
-	 * @return     boolean True if they have access
+	 * @param   integer  $toolid        Tool ID
+	 * @param   integer  $allowAdmins   Allow admins access?
+	 * @param   boolean  $allowAuthors  Allow authors access?
+	 * @return  boolean  True if they have access
 	 */
 	private function _checkAccess($toolid, $allowAdmins=1, $allowAuthors=false)
 	{
@@ -716,9 +701,9 @@ class Resource extends SiteController
 	/**
 	 * Authorization checks
 	 *
-	 * @param      string $assetType Asset type
-	 * @param      string $assetId   Asset id to check against
-	 * @return     void
+	 * @param   string  $assetType  Asset type
+	 * @param   string  $assetId    Asset id to check against
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{

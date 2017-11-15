@@ -82,6 +82,16 @@ class Rating extends Relational
 	);
 
 	/**
+	 * Defines a belongs to one relationship between resource and audience
+	 *
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 */
+	public function resource()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Entry', 'resource_id');
+	}
+
+	/**
 	 * Load a record by resource and user IDs
 	 *
 	 * @param   integer  $resource_id  Resource ID

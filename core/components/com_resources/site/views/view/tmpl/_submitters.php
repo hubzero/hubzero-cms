@@ -71,7 +71,7 @@ if ($this->contributors)
 		else if ($contributor->surname || $contributor->givenName)
 		{
 			$name = stripslashes($contributor->givenName) . ' ';
-			if ($contributor->middleName != NULL)
+			if ($contributor->middleName != null)
 			{
 				$name .= stripslashes($contributor->middleName) . ' ';
 			}

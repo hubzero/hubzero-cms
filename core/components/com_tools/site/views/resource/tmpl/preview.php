@@ -33,19 +33,15 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$database = App::get('db');
 $html = '';
 
 // Get parameters
-$rparams = new \Hubzero\Config\Registry($this->resource->params);
+$rparams = $this->resource->params;
 $params = $this->config;
 $params->merge($rparams);
 
 // Get attributes
-$attribs = new \Hubzero\Config\Registry($this->resource->attribs);
-
-// Get the resource's children
-$helper = new \Components\Resources\Helpers\Helper($this->resource->id, $database);
+$attribs = $this->resource->attribs;
 
 $this->css('resource.css')
      ->css('resources', 'com_resources')

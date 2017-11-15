@@ -32,18 +32,17 @@
 
 namespace Components\Resources\Site\Controllers;
 
-use Components\Resources\Tables\Resource;
-use Components\Resources\Tables\Type;
-use Components\Resources\Tables\Doi;
-use Components\Resources\Tables\License;
-use Components\Resources\Tables\AudienceLevel;
-use Components\Resources\Tables\MediaTracking;
-use Components\Resources\Tables\MediaTrackingDetailed;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Type;
+use Components\Resources\Models\Doi;
+use Components\Resources\Models\License;
+use Components\Resources\Models\Audience\Level;
+use Components\Resources\Models\MediaTracking;
+use Components\Resources\Models\MediaTracking\Detailed;
 use Components\Resources\Helpers\Html;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Hubpresenter;
 use Components\Resources\Helpers\Helper;
-use Components\Resources\Models;
 use Hubzero\Component\SiteController;
 use stdClass;
 use Document;
@@ -63,8 +62,8 @@ class Resources extends SiteController
 	/**
 	 * Constructor
 	 *
-	 * @param      array $config Optional configurations
-	 * @return     void
+	 * @param   array  $config  Optional configurations
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
@@ -92,11 +91,11 @@ class Resources extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$task  = Request::getVar('task', '');
+		$task = Request::getVar('task', '');
 		$this->_id    = Request::getInt('id', 0);
 		$this->_alias = Request::getVar('alias', '');
 		$this->_resid = Request::getInt('resid', 0);
@@ -193,7 +192,7 @@ class Resources extends SiteController
 	/**
 	 * Component front page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -204,20 +203,14 @@ class Resources extends SiteController
 		$this->_buildPathway();
 
 		// Get major types
-		$t = new Type($this->database);
-		$this->view->categories = $t->getMajorTypes();
+		$categories = Type::getMajorTypes();
 
-		$this->view->title = $this->_title;
-
-		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->setName('intro')
-					->setLayout('default')
-					->display();
+		$this->view
+			->set('categories', $categories)
+			->set('title', $this->_title)
+			->setName('intro')
+			->setLayout('default')
+			->display();
 	}
 
 	/**
@@ -229,13 +222,14 @@ class Resources extends SiteController
 	{
 		// Set the default sort
 		$default_sort = 'date';
+
 		if ($this->config->get('show_ranking'))
 		{
 			$default_sort = 'ranking';
 		}
 
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'type'   => Request::getVar('type', ''),
 			'sortby' => Request::getCmd('sortby', $default_sort),
 			'limit'  => Request::getInt('limit', Config::get('list_limit')),
@@ -244,17 +238,17 @@ class Resources extends SiteController
 			'tag'    => trim(Request::getVar('tag', '', 'request', 'none', 2)),
 			'tag_ignored' => array()
 		);
-		if (!in_array($this->view->filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
+		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
 		{
-			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $this->view->filters['sortby']));
+			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
 		}
 
-		if (isset($this->view->filters['tag']) && $this->view->filters['tag'] != '')
+		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
-			include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
 
 			$tagging = new Tags(0);
-			$tags = $tagging->parseTags($this->view->filters['tag']);
+			$tags = $tagging->parseTags($filters['tag']);
 			if (count($tags) > 5)
 			{
 				$keep = array();
@@ -266,56 +260,120 @@ class Resources extends SiteController
 					}
 					else
 					{
-						$this->view->filters['tag_ignored'][] = $tag;
+						$filters['tag_ignored'][] = $tag;
 					}
 				}
-				$this->view->filters['tag'] = implode(',', $keep);
+				$filters['tag'] = implode(',', $keep);
 			}
 		}
 
 		// Determine if user can edit
-		$this->view->authorized = $this->_authorize();
+		$authorized = $this->_authorize();
 
 		// Get major types
-		$t = new Type($this->database);
-		$this->view->types = $t->getMajorTypes();
+		$types = Type::getMajorTypes();
 
-		if (!is_numeric($this->view->filters['type']))
+		// Get type if not given
+		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+
+		if (!is_numeric($filters['type']))
 		{
 			// Normalize the title
 			// This is so we can determine the type of resource to display from the URL
-			// For example, /resources/learningmodules => Learning Modules
-			for ($i = 0; $i < count($this->view->types); $i++)
+			// For example, /resources/onlinepresentation => Oneline Presentation
+			foreach ($types as $type)
 			{
-				$normalized = ($this->view->types[$i]->alias ? $this->view->types[$i]->alias : $t->normalize($this->view->types[$i]->type));
-
-				if (trim($this->view->filters['type']) == $normalized)
+				if (trim($filters['type']) == $type->get('type'))
 				{
-					$this->view->filters['type'] = $this->view->types[$i]->id;
+					$filters['type'] = $type->get('id');
+
+					$this->_title .= $type->get('type');
+					$this->_task_title = $type->get('type');
 					break;
 				}
 			}
 		}
 
-		// Instantiate a resource object
-		$rr = new Resource($this->database);
+		$query = Entry::all();
+			/*->including(['type', function ($type){
+				$type->select('*');
+			}]);*/
 
-		// Execute count query
-		$results = $rr->getCount($this->view->filters);
-		$this->view->total = ($results && is_array($results)) ? count($results) : 0;
+		$r = $query->getTableName();
+		//$t = Type::blank()->getTableName();
 
-		// Run query with limit
-		$this->view->results = $rr->getRecords($this->view->filters);
+		$query->whereEquals($r . '.standalone', 1);
 
-		// Get type if not given
-		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
-		if ($this->view->filters['type'] != '')
+		if ($filters['tag'] != '')
 		{
-			$t->load($t->normalize($this->view->filters['type']));
-			$this->_title .= $t->type;
-			$this->_task_title = $t->type;
+			$to = \Components\Tags\Models\Objct::blank()->getTableName();
+			$tg = \Components\Tags\Models\Tag::blank()->getTableName();
+
+			$cloud = new Tags();
+			$tags = $cloud->parse($filters['tag']);
+
+			$query->join($to, $to . '.objectid', $r . '.id');
+			$query->join($tg, $tg . '.id', $to . '.tagid', 'inner');
+			$query->whereEquals($to . '.tbl', 'resources');
+			$query->whereIn($tg . '.tag', $tags);
 		}
-		else
+
+		if ($filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
+
+			$query->whereLike($r . '.title', $filters['search'], 1)
+					->orWhereLike($r . '.fulltxt', $filters['search'], 1)
+					->resetDepth();
+		}
+
+		if ($filters['type'])
+		{
+			$query->whereEquals($r . '.type', $filters['type']);
+		}
+
+		$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
+			->resetDepth();
+
+		$query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
+			->resetDepth();
+
+		$query->whereEquals($r . '.published', Entry::STATE_PUBLISHED);
+
+		switch ($filters['sortby'])
+		{
+			case 'date_created':
+				$query->order($r . '.created', 'desc');
+				break;
+			case 'date_modified':
+				$query->order($r . '.modified', 'desc');
+				break;
+			case 'title':
+				$query->order($r . '.title', 'asc');
+				$query->order($r . '.publish_up', 'asc');
+				break;
+			case 'rating':
+				$query->order($r . '.rating', 'desc');
+				$query->order($r . '.times_rated', 'desc');
+				break;
+			case 'ranking':
+				$query->order($r . '.ranking', 'desc');
+				break;
+			case 'date':
+			case 'date_published':
+			default:
+				$query->order($r . '.publish_up', 'desc');
+				$query->order($r . '.created', 'desc');
+				break;
+		}
+
+		$results = $query
+			->paginated()
+			->rows();
+
+		if (!$filters['type'])
 		{
 			$this->_title .= Lang::txt('COM_RESOURCES_ALL');
 			$this->_task_title = Lang::txt('COM_RESOURCES_ALL');
@@ -328,10 +386,13 @@ class Resources extends SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		$this->view->title = $this->_title;
-		$this->view->config = $this->config;
-
 		$this->view
+			->set('types', $types)
+			->set('filters', $filters)
+			->set('authorized', $authorized)
+			->set('title', $this->_title)
+			->set('config', $this->config)
+			->set('results', $results)
 			->setName('browse')
 			->setLayout('default')
 			->setErrors($this->getErrors())
@@ -341,7 +402,7 @@ class Resources extends SiteController
 	/**
 	 * Browse resources by tags
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function browsetagsTask()
 	{
@@ -352,36 +413,33 @@ class Resources extends SiteController
 		}
 
 		// Incoming
-		$this->view->tag  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('tag', '')));
-		$this->view->tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('with', '')));
-		$this->view->type = strtolower(Request::getVar('type', 'tools'));
+		$tag  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('tag', '')));
+		$tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('with', '')));
+		$type = strtolower(Request::getVar('type', 'tools'));
 
 		// default tag in tag browser is config var
-		$this->view->supportedtag = $this->config->get('supportedtag');
-		$this->view->supportedtag_default = $this->config->get('browsetags_defaulttag', '');
-		if (!$this->view->tag && $this->view->supportedtag_default != '' && $this->view->type == 'tools')
+		$supportedtag = $this->config->get('supportedtag');
+		$supportedtag_default = $this->config->get('browsetags_defaulttag', '');
+		if (!$tag && $supportedtag_default != '' && $type == 'tools')
 		{
-			$this->view->tag = $this->view->supportedtag_default;
+			$tag = $supportedtag_default;
 		}
 
 		// Get major types
-		$t = new Type($this->database);
-		$this->view->types = $t->getMajorTypes();
+		$types = Type::getMajorTypes();
 
 		// Normalize the title
 		// This is so we can determine the type of resource to display from the URL
-		// For example, /resources/learningmodules => Learning Modules
-		$activetype = 0;
+		$activetype  = 0;
 		$activetitle = '';
-		for ($i = 0; $i < count($this->view->types); $i++)
+		foreach ($types as $typ)
 		{
-			if (trim($this->view->type) == $this->view->types[$i]->alias)
+			if ($type == $typ->get('alias'))
 			{
-				$activetype  = $this->view->types[$i]->id;
-				$activetitle = $this->view->types[$i]->type;
+				$activetype  = $typ->get('id');
+				$activetitle = $typ->get('type');
 			}
 		}
-		asort($this->view->types);
 
 		// Ensure we have a type to display
 		if (!$activetype)
@@ -389,11 +447,8 @@ class Resources extends SiteController
 			App::redirect(Route::url('index.php?option=' . $this->_option));
 		}
 
-		// Instantiate a resource object
-		$rr = new Resource($this->database);
-
 		// Determine if user can edit
-		$this->view->authorized = $this->_authorize();
+		$authorized = $this->_authorize();
 
 		// Set the default sort
 		$default_sort = 'rating';
@@ -403,18 +458,49 @@ class Resources extends SiteController
 		}
 
 		// Set some filters
-		$this->view->filters = array(
-			'tag'    => ($this->view->tag2 ? $this->view->tag2 : ''),
+		$filters = array(
+			'tag'    => ($tag2 ? $tag2 : ''),
 			'type'   => $activetype,
 			'sortby' => $default_sort,
+			'standalone' => 1,
+			'published' => 1,
+			'now'    => Date::toSql(),
 			'limit'  => 10,
 			'start'  => 0
 		);
 
-		// Run query with limit
-		$this->view->results = $rr->getRecords($this->view->filters);
+		$query = Entry::allWithFilters($filters);
 
-		$this->type = $this->view->type;
+		/*$r = $query->getTableName();
+
+		$query->whereEquals($r . '.standalone', 1);
+
+		if ($filters['type'])
+		{
+			$query->whereEquals($r . '.type', $activetype);
+		}
+
+		if ($filters['tag'] != '')
+		{
+			$to = \Components\Tags\Models\Objct::blank()->getTableName();
+			$tg = \Components\Tags\Models\Tag::blank()->getTableName();
+
+			$cloud = new Tags();
+			$tags = $cloud->parse($filters['tag']);
+
+			$query->join($to, $to . '.objectid', $r . '.id');
+			$query->join($tg, $tg . '.id', $to . '.tagid', 'inner');
+			$query->whereEquals($to . '.tbl', 'resources');
+			$query->whereIn($tg . '.tag', $tags);
+		}*/
+
+		// Run query with limit
+		$results = $query
+			->order($filters['sortby'], 'desc')
+			->limit($filters['limit'])
+			->rows();
+
+		$this->type = $type;
 		if ($activetitle)
 		{
 			$this->_task_title = $activetitle;
@@ -431,10 +517,17 @@ class Resources extends SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		$this->view->title = $this->_title;
-		$this->view->config = $this->config;
-
 		$this->view
+			->set('filters', $filters)
+			->set('types', $types)
+			->set('type', $type)
+			->set('title', $this->_title)
+			->set('config', $this->config)
+			->set('results', $results)
+			->set('authorized', $authorized)
+			->set('tag', $tag)
+			->set('tag2', $tag2)
+			->set('supportedtag', $supportedtag)
 			->setName('browse')
 			->setLayout('tags')
 			->setErrors($this->getErrors())
@@ -445,7 +538,7 @@ class Resources extends SiteController
 	 * Display a level of the tag browser
 	 * NOTE: This view should only be called through AJAX
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function browserTask()
 	{
@@ -470,6 +563,8 @@ class Resources extends SiteController
 
 				// Get tags that have been assigned
 				$bits['tags'] = $rt->get_tags_with_objects($bits['id'], $bits['type'], $bits['tg2']);
+
+				$bits['type'] = Type::oneOrNew($bits['type']);
 			break;
 
 			case 2:
@@ -494,10 +589,9 @@ class Resources extends SiteController
 				$bits['filters'] = array();
 				if ($this->config->get('show_audience') && $bits['type'] == 7)
 				{
-					include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'audience.php');
-					include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'audiencelevel.php');
-					$rL = new AudienceLevel($this->database);
-					$bits['filters'] = $rL->getLevels();
+					include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'audience.php';
+
+					$bits['filters'] = Audience\Level::all();
 				}
 
 				$rt = new Tags($bits['id']);
@@ -513,16 +607,7 @@ class Resources extends SiteController
 					$bits['filter']
 				);
 
-				// Set the typetitle
-				$bits['typetitle'] = Lang::txt('COM_RESOURCES');
-
-				// See if we can load the type so we can set the typetitle
-				if (isset($bits['type']) && $bits['type'] != 0)
-				{
-					$t = new Type($this->database);
-					$t->load($bits['type']);
-					$bits['typetitle'] = stripslashes($t->type);
-				}
+				$bits['type'] = Type::oneOrNew($bits['type']);
 
 				$bits['supportedtagusage'] = $rt->getTagUsage($bits['supportedtag'], 'id');
 			break;
@@ -531,8 +616,12 @@ class Resources extends SiteController
 				// Incoming (should be a resource ID)
 				$id = Request::getInt('input', 0);
 
-				include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'resource.php');
-				$model = Models\Resource::getInstance($id);
+				$model = Entry::getInstance($id);
+
+				if (!$model->get('id'))
+				{
+					App::abort(404);
+				}
 
 				$rt = new Tags($id);
 				$bits['rt'] = $rt;
@@ -540,51 +629,41 @@ class Resources extends SiteController
 				$bits['params'] = $model->params;
 
 				// Get resource
-				$model->resource->ranking = round($model->resource->ranking, 1);
+				$model->set('ranking', round($model->get('ranking'), 1));
 
 				// Generate the SEF
-				if ($model->resource->alias)
-				{
-					$sef = Route::url('index.php?option=' . $this->_option . '&alias=' . $model->resource->alias);
-				}
-				else
-				{
-					$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $model->resource->id);
-				}
+				$sef = Route::url($model->link());
 
-				// Get resource helper
-				$helper = new Helper($model->resource->id, $this->database);
-				//$helper->getFirstChild();
-
-				//$helper->getContributorIDs();
 				$bits['authorized'] = $model->access('edit'); //$this->_authorize($helper->contributorIDs, $resource);
 
-				$firstChild = $model->children(0);
+				$firstChild = $model->children()
+					->whereEquals('standalone', 0)
+					->whereEquals('published', Entry::STATE_PUBLISHED)
+					->ordered()
+					->rows()
+					->first();
 
 				// Get the first child
 				if ($firstChild || $model->isTool())
 				{
 					$xact = 'data-pop-out="true"';
-					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, $xact);
+					$bits['primary_child'] = Html::primary_child($this->_option, $model, $firstChild, $xact);
 				}
 
 				// Get the sections
 				$bits['sections'] = Event::trigger('resources.onResources', array($model, $this->_option, array('about'), 'metadata'));
 
 				// Fill our container
-				$bits['resource'] = $model->resource;
-				$bits['helper'] = $helper;
+				$bits['resource'] = $model;
 				$bits['sef'] = $sef;
 			break;
 		}
 
-		// Instantiate a new view
-		$this->view->config = $this->config;
-		$this->view->level  = $level;
-		$this->view->bits   = $bits;
-
 		// Output HTML
 		$this->view
+			->set('config', $this->config)
+			->set('level', $level)
+			->set('bits', $bits)
 			->setName('browse')
 			->setLayout('tags_list')
 			->setErrors($this->getErrors())
@@ -595,7 +674,7 @@ class Resources extends SiteController
 	 * 'play' a resource
 	 * This displays a Breeze presentation, iframe, Google doc viewer, etc.
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function playTask()
 	{
@@ -603,45 +682,32 @@ class Resources extends SiteController
 		$this->resid = Request::getInt('resid', 0);
 		$id = Request::getInt('id', 0);
 
-		$helper = new Helper($id, $this->database);
+		$resource = Entry::getInstance($id);
+
+		if (!$resource->get('id'))
+		{
+			App::abort(404);
+		}
 
 		// Do we have a child ID?
 		if (!$this->resid)
 		{
 			// No ID, default to the first child
-			$helper->getFirstChild();
+			//$helper->getFirstChild();
+			$activechild = $resource->children()
+				->whereEquals('published', Entry::STATE_PUBLISHED)
+				->order('ordering', 'asc')
+				->limit(1)
+				->start(0)
+				->row();
 
-			$this->resid = $helper->firstChild->id;
+			$this->resid = $activechild->get('id');
 		}
 
 		// We have an ID, load it
-		$activechild = new Resource($this->database);
-		$activechild->load($this->resid);
-
-		// Do some work on the child's path to make sure it's kosher
-		if ($activechild->path)
+		if (!isset($activechild))
 		{
-			$activechild->path = stripslashes($activechild->path);
-
-			if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $activechild->path))
-			{
-				// Do nothing
-			}
-			else
-			{
-				if (substr($activechild->path, 0, 1) != DS)
-				{
-					$activechild->path = DS . $activechild->path;
-					if (substr($activechild->path, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath'))
-					{
-						// Do nothing
-					}
-					else
-					{
-						$activechild->path = $this->config->get('uploadpath') . $activechild->path;
-					}
-				}
-			}
+			$activechild = Entry::oneOrFail($this->resid);
 		}
 
 		// Store the object in our registry
@@ -649,30 +715,25 @@ class Resources extends SiteController
 
 		// Viewing via AJAX?
 		$no_html = Request::getInt('no_html', 0);
+
 		if ($no_html)
 		{
-			$resource = new Resource($this->database);
-			$resource->load($id);
-
+			//$resource = Entry::oneOrFail($id);
 			// Instantiate a new view
-			$this->view->setLayout('play')->setName('view');
-			$this->view->option = $this->_option;
-			$this->view->config = $this->config;
-			$this->view->database = $this->database;
-			$this->view->resource = $resource;
-			$this->view->helper = $helper;
-			$this->view->resid = $this->resid;
-			$this->view->activechild = $activechild;
-			$this->view->no_html = $no_html;
-			$this->view->fsize = 0;
+			//$this->view->resid = $this->resid;
+			//$this->view->fsize = 0;
 
 			// Output HTML
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-
-			$this->view->display();
+			$this->view
+				->set('option', $this->_option)
+				->set('config', $this->config)
+				->set('resource', $resource)
+				->set('activechild', $activechild)
+				->set('no_html', $no_tml)
+				->setErrors($this->getErrors())
+				->setLayout('play')
+				->setName('view')
+				->display();
 			return;
 		}
 
@@ -689,9 +750,15 @@ class Resources extends SiteController
 	{
 		$presentation = Request::getVar('presentation', 0);
 
-		$helper = new Helper($presentation, $this->database);
-		$helper->getFirstChild();
-		$resid = $helper->firstChild->id;
+		$firstchild = Entry::oneOrFail($presentation)
+			->whereEquals('published', Entry::STATE_PUBLISHED)
+			->children()
+			->order('ordering', 'asc')
+			->limit(1)
+			->start(0)
+			->row();
+
+		$resid = $firstChild->id;
 
 		App::redirect(
 			Route::url('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
@@ -709,7 +776,7 @@ class Resources extends SiteController
 		$errors = array();
 
 		//inlude the HUBpresenter library
-		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'hubpresenter.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'hubpresenter.php';
 
 		//get the presentation id
 		//$id = Request::getVar('id', '');
@@ -720,25 +787,20 @@ class Resources extends SiteController
 		}
 
 		//load resource
-		$activechild = new Resource($this->database);
-		$activechild->load($resid);
+		$activechild = Entry::oneOrFail($resid);
 
 		$path = '';
-		if ($activechild->path)
+		// match YYYY/MM/#/something
+		if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $activechild->path, $matches))
 		{
-			$activechild->path = trim($activechild->path, '/');
-			// match YYYY/MM/#/something
-			if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $activechild->path, $matches))
-			{
-				$path = '/' . rtrim($matches[1], '/');
-			}
+			$path = '/' . rtrim($matches[1], '/');
 		}
 
 		//base url for the resource
 		$base = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 		//build the rest of the resource path and combine with base
-		$path = $path ? $path : Html::build_path($activechild->created, $activechild->id, '');
+		$path = $path ? $path : $activechild->relativepath(); //Html::build_path($activechild->created, $activechild->id, '');
 		$path = $base . $path;
 
 		// we must have a folder
@@ -859,16 +921,11 @@ class Resources extends SiteController
 		$parent = $this->_id;
 		$child = Request::getVar('resid', '');
 
-		//document object
-		$document = Document::getRoot();
-		$database = \App::get('db');
-
 		//media tracking object
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mediatracking.php');
-		$mediaTracking = new MediaTracking($database);
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
 		//get tracking for this user for this resource
-		$tracking = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $child);
+		$tracking = MediaTracking::oneByUserAndResource(User::get('id'), $child);
 
 		//check to see if we already have a time query param
 		$hasTime = (Request::getVar('time', '') != '') ? true : false;
@@ -926,7 +983,7 @@ class Resources extends SiteController
 				$this->view->option         = $this->_option;
 				$this->view->config         = $this->config;
 				$this->view->database       = $this->database;
-				$this->view->doc            = $document;
+				$this->view->doc            = Document::getRoot();
 				$this->view->manifest       = $manifest;
 				$this->view->content_folder = $content_folder;
 				$this->view->pid            = $parent;
@@ -963,25 +1020,24 @@ class Resources extends SiteController
 		}
 
 		// Load the resource
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'resource.php');
-		$this->model = Models\Resource::getInstance($parent);
+		$model = Entry::oneOrFail($parent);
 
 		// Make sure we got a result from the database
-		if (!$this->model->exists() || $this->model->deleted())
+		if ($model->isDeleted())
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
 		// Make sure the resource is published and standalone
-		if (!$this->model->resource->standalone) // || !$this->model->published())
+		if (!$model->get('standalone')) // || !$this->model->isPublished())
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
 
 		// Is the visitor authorized to view this resource?
-		if (User::isGuest() && ($this->model->resource->access == 1 || $this->model->resource->access == 4))
+		if (User::isGuest() && ($model->access == 1 || $model->access == 4))
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . ($this->model->resource->alias ? '&alias=' . $this->model->resource->alias : '&id=' . $this->model->resource->id), false, true), 'server'));
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url($model->link(), false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -989,27 +1045,26 @@ class Resources extends SiteController
 			);
 		}
 
-		if ($this->model->resource->group_owner && !$this->model->access('view-all'))
+		if ($model->get('group_owner') && !$model->access('view-all'))
 		{
-			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $model->get('group_owner'), Route::url('index.php?option=com_groups&cn=' . $model->get('group_owner'))));
 		}
 
-		if (!$this->model->access('view'))
+		if (!$model->access('view'))
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
 
-		//load resource
-		$activechild = new Resource($this->database);
-		$activechild->load($child);
+		// Load resource
+		$activechild = Entry::oneOrFail($child);
 
-		// check to see if we have a manifest
+		// Check to see if we have a manifest
 		if (!$this->videoManifestExistsForResource($activechild))
 		{
 			$this->createVideoManifestForResource($activechild);
 		}
 
-		//get manifest
+		// Get manifest
 		$manifest = $this->getVideoManifestForResource($activechild);
 
 		if (!file_exists(PATH_APP . $manifest))
@@ -1019,17 +1074,16 @@ class Resources extends SiteController
 
 		$manifest = json_decode(file_get_contents(PATH_APP . $manifest));
 
-		//media tracking object
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mediatracking.php');
-		$mediaTracking = new MediaTracking($this->database);
+		// Media tracking object
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
-		//get tracking for this user for this resource
-		$tracking = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $activechild->id);
+		// Get tracking for this user for this resource
+		$tracking = MediaTracking::oneForUserAndResource(User::get('id'), $activechild->id);
 
-		//check to see if we already have a time query param
+		// Check to see if we already have a time query param
 		$hasTime = (Request::getVar('time', '') != '') ? true : false;
 
-		//do we want to redirect user with time added to url
+		// Do we want to redirect user with time added to url
 		if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 		{
 			$redirect = 'index.php?option=com_resources&task=video&id=' . $parent . '&resid=' . $child;
@@ -1038,10 +1092,10 @@ class Resources extends SiteController
 				$redirect .= '&tmpl=component';
 			}
 
-			//append current position to redirect
+			// Append current position to redirect
 			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
-			//redirect
+			// Redirect
 			App::redirect(Route::url($redirect, false), '', '', false);
 		}
 
@@ -1077,19 +1131,14 @@ class Resources extends SiteController
 		$base = DS . trim($this->config->get('uploadpath'), DS);
 
 		$path = '';
-		if ($resource->path)
+		// Match YYYY/MM/#/something
+		if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $resource->path, $matches))
 		{
-			$resource->path = trim($resource->path, '/');
-
-			// Match YYYY/MM/#/something
-			if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $resource->path, $matches))
-			{
-				$path = '/' . rtrim($matches[1], '/');
-			}
+			$path = '/' . rtrim($matches[1], '/');
 		}
 
 		// Build the rest of the resource path and combine with base
-		$path = $path ? $path : Html::build_path($resource->created, $resource->id, '');
+		$path = $path ? $path : $resource->relativepath();
 
 		// Get manifests
 		$manifests = \Filesystem::files(PATH_APP . DS . $base . $path, '.json');
@@ -1122,13 +1171,13 @@ class Resources extends SiteController
 	private function createVideoManifestForResource($resource)
 	{
 		//base url for the resource
-		$base = DS . trim($this->config->get('uploadpath'), DS);
+		//$base = DS . trim($this->config->get('uploadpath'), DS);
 
 		//build the rest of the resource path and combine with base
-		$path = Html::build_path($resource->created, $resource->id, '');
+		$path = $resource->filespace();
 
 		//instantiate params object then parse resource attributes
-		$attributes = new \Hubzero\Config\Registry($resource->attribs);
+		$attributes = $resource->attribs;
 
 		//var to hold manifest data
 		$manifest = new stdClass;
@@ -1142,7 +1191,7 @@ class Resources extends SiteController
 		$manifest->presentation->subtitles = array();
 
 		//get the videos
-		$videos = \Filesystem::files(PATH_APP . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+		$videos = \Filesystem::files($path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
 
 		//add each video to manifest
 		foreach ($videos as $k => $video)
@@ -1160,7 +1209,7 @@ class Resources extends SiteController
 		}
 
 		//get the subs
-		$subtitles = \Filesystem::files(PATH_APP . DS . $base . $path, '.srt|.SRT');
+		$subtitles = \Filesystem::files($path, '.srt|.SRT');
 
 		//add each subtitle to manifest
 		foreach ($subtitles as $k => $subtitle)
@@ -1189,7 +1238,7 @@ class Resources extends SiteController
 		$manifest = json_encode($manifest, JSON_PRETTY_PRINT);
 
 		// attempt to create manifest file
-		if (!\Filesystem::write(PATH_APP . DS . $base . $path . DS . 'presentation.json', $manifest))
+		if (!\Filesystem::write($path . DS . 'presentation.json', $manifest))
 		{
 			return false;
 		}
@@ -1224,25 +1273,24 @@ class Resources extends SiteController
 		}
 
 		// Load the resource
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'resource.php');
-		$this->model = Models\Resource::getInstance(($alias ? $alias : $id), $revision);
+		$this->model = Entry::getInstance(($alias ? $alias : $id), $revision);
 
 		// Make sure we got a result from the database
-		if (!$this->model->exists() || $this->model->deleted())
+		if (!$this->model->get('id') || $this->model->isDeleted())
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
 		// Make sure the resource is published and standalone
-		if (!$this->model->resource->standalone) // || !$this->model->published())
+		if (!$this->model->get('standalone')) // || !$this->model->isPublished())
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
 
 		// Is the visitor authorized to view this resource?
-		if (User::isGuest() && ($this->model->resource->access == 1 || $this->model->resource->access == 4))
+		if (User::isGuest() && ($this->model->get('access') == 1 || $this->model->get('access') == 4))
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . ($this->model->resource->alias ? '&alias=' . $this->model->resource->alias : '&id=' . $this->model->resource->id), false, true), 'server'));
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url($this->model->link(), false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -1250,9 +1298,9 @@ class Resources extends SiteController
 			);
 		}
 
-		if ($this->model->resource->group_owner && !$this->model->access('view'))
+		if ($this->model->get('group_owner') && !$this->model->access('view'))
 		{
-			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->get('group_owner'), Route::url('index.php?option=com_groups&cn=' . $this->model->get('group_owner'))));
 		}
 
 		if (!$this->model->access('view'))
@@ -1261,20 +1309,17 @@ class Resources extends SiteController
 		}
 
 		// // Make sure they have access to view this resource
-		//if ($this->checkGroupAccess($this->model->resource))
+		//if ($this->checkGroupAccess($this->model))
 		//{
-		//	App::abort(403, \Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
+		//	App::abort(403, \Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->get('group_owner'), Route::url('index.php?option=com_groups&cn=' . $this->model->get('group_owner'))));
 		//	return;
 		//}
-
-		// Initiate a resource helper class
-		$helper = new Helper($this->model->resource->id, $this->database);
 
 		// Build the pathway
 		if ($this->model->inGroup())
 		{
 			// Alter the pathway to reflect a group owned resource
-			$group = \Hubzero\User\Group::getInstance($this->model->resource->group_owner);
+			$group = $this->model->group;
 
 			if ($group)
 			{
@@ -1286,30 +1331,30 @@ class Resources extends SiteController
 				);
 				Pathway::append(
 					stripslashes($group->get('description')),
-					Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)
+					Route::url('index.php?option=com_groups&cn=' . $group->get('cn'))
 				);
 				Pathway::append(
 					'Resources',
-					Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources')
+					Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=resources')
 				);
 				Pathway::append(
-					stripslashes($this->model->type->type),
-					Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
+					stripslashes($this->model->type->get('type')),
+					Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=resources&area=' . $this->model->type->get('alias'))
 				);
 			}
 			else
 			{
 				Pathway::append(
-					stripslashes($this->model->type->type),
-					Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
+					stripslashes($this->model->type->get('type')),
+					Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias'))
 				);
 			}
 		}
 		else
 		{
 			Pathway::append(
-				stripslashes($this->model->type->type),
-				Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
+				stripslashes($this->model->type->get('type')),
+				Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias'))
 			);
 		}
 
@@ -1325,12 +1370,10 @@ class Resources extends SiteController
 			// if (development revision
 			//   or (specific revision that is NOT published))
 			if (($revision == 'dev')
-			 or (!$revision && $this->model->resource->published != 1))
+			 or (!$revision && $this->model->get('published') != 1))
 			{
 				// Check if the user has access to the tool
-				$objT = new \Components\Tools\Tables\Tool($this->database);
-				$toolid = $objT->getToolId($this->model->resource->alias);
-				if (!$this->_checkToolaccess($toolid))
+				if (!$this->model->access('view-all'))
 				{
 					// Denied, punk! How do you like them apples?!
 					App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
@@ -1344,24 +1387,15 @@ class Resources extends SiteController
 		// Get contribtool params
 		$tconfig = \Component::params('com_tools');
 
-		$sections = array();
-		$cats = array();
+		// Trigger the functions that return the areas we'll be using
+		$cats = Event::trigger('resources.onResourcesAreas', array(
+				$this->model
+			)
+		);
 
 		// We need to do this here because we need some stats info to pass to the body
-		if (!isset($this->model->thistool) || !$this->model->thistool)
+		/*if (isset($this->model->revision) && $this->model->revision)
 		{
-			// Trigger the functions that return the areas we'll be using
-			$cats = Event::trigger('resources.onResourcesAreas', array(
-					$this->model
-				)
-			);
-		}
-		elseif (isset($this->model->revision) && $this->model->revision)
-		{
-			$cats = Event::trigger('resources.onResourcesAreas', array(
-					$this->model
-				)
-			);
 			$cts = array();
 			foreach ($cats as $cat)
 			{
@@ -1380,7 +1414,7 @@ class Resources extends SiteController
 			}
 
 			$cats = $cts;
-		}
+		}*/
 
 		// Get the sections
 		$sections = Event::trigger('resources.onResources', array(
@@ -1407,9 +1441,10 @@ class Resources extends SiteController
 		}
 
 		// Display different main text if "playing" a resource
-		if ($this->_task == 'play')
+		if ($this->getTask() == 'play')
 		{
 			$activechild = null;
+
 			if (is_object($this->activechild))
 			{
 				$activechild = $this->activechild;
@@ -1423,20 +1458,14 @@ class Resources extends SiteController
 			$view->option      = $this->_option;
 			$view->config      = $this->config;
 			$view->tconfig     = $tconfig;
-			$view->database    = $this->database;
-			$view->resource    = $this->model->resource;
+			$view->resource    = $this->model;
 			$view->helper      = $helper;
 			$view->resid       = $this->resid;
 			$view->activechild = $activechild;
 			$view->no_html     = 0;
 			$view->fsize       = 0;
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
-			}
+			$view->setErrors($this->getErrors());
+
 			$body = $view->loadTemplate();
 
 			$cats[] = array(
@@ -1471,7 +1500,7 @@ class Resources extends SiteController
 					'name'   => 'view',
 					'layout' => 'watch_error'
 				));
-				$this->view->errors = $errors;
+				$this->view->setErrors($errors);
 				$body = $this->view->loadTemplate();
 			}
 			else
@@ -1482,14 +1511,14 @@ class Resources extends SiteController
 					'name'      => 'view',
 					'layout'    => 'watch'
 				));
-				$view->config         = $this->config;
-				$view->tconfig        = $tconfig;
-				$view->database       = $this->database;
-				$view->manifest       = $manifest;
-				$view->content_folder = $content_folder;
-				$view->pid            = $id;
-				$view->resid          = Request::getVar('resid', '');
-				$view->doc            = Document::getRoot();
+				$view->set('config', $this->config);
+				//$view->tconfig        = $tconfig;
+				//$view->database       = $this->database;
+				$view->set('manifest', $manifest);
+				$view->set('content_folder', $content_folder);
+				$view->set('pid', $id);
+				$view->set('resid', Request::getVar('resid', ''));
+				$view->set('doc', Document::getRoot());
 
 				// Output HTML
 				if ($this->getError())
@@ -1508,13 +1537,13 @@ class Resources extends SiteController
 			$sections[] = array(
 				'html'     => $body,
 				'metadata' => '',
-				'area' => 'watch'
+				'area'     => 'watch'
 			);
 			$tab = 'watch';
 		}
 
 		// Write title
-		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->title));
 
 		if ($canonical = $this->model->attribs->get('canonical', ''))
 		{
@@ -1526,14 +1555,11 @@ class Resources extends SiteController
 		}
 
 		Pathway::append(
-			stripslashes($this->model->resource->title),
-			Route::url('index.php?option=' . $this->_option . '&id=' . $this->model->resource->id)
+			stripslashes($this->model->title),
+			Route::url($this->model->link())
 		);
 
-		// Normalize the title
-		// This is so we can determine the type of resource template to display
-		// For example, Learning Modules => learningmodules
-		$type_alias = $this->model->type->alias ? $this->model->type->alias : $this->model->type->normalize($this->model->type->type);
+		$type_alias = $this->model->type->get('alias');
 
 		// Determine the layout we're using
 		$layout = 'default';
@@ -1549,32 +1575,28 @@ class Resources extends SiteController
 
 		if ($this->model->isTool())
 		{
-			$this->view->thistool = $this->model->thistool;
-			$this->view->curtool  = $this->model->curtool;
-			$this->view->alltools = $this->model->alltools;
-			$this->view->revision = $this->model->revision;
+			$this->view->set('thistool', $this->model->thistool);
+			$this->view->set('curtool', $this->model->curtool);
+			$this->view->set('alltools', $this->model->alltools);
+			$this->view->set('revision', $this->model->revision);
 		}
-		$this->view->model    = $this->model;
-		$this->view->tconfig  = $tconfig;
-		$this->view->option   = $this->_option;
-		$this->view->fsize    = $fsize;
-		$this->view->cats     = $cats;
-		$this->view->tab      = $tab;
-		$this->view->sections = $sections;
-		$this->view->database = $this->database;
-		$this->view->helper   = $helper;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$this->view->set('model', $this->model);
+		$this->view->set('tconfig', $tconfig);
+		$this->view->set('option', $this->_option);
+		$this->view->set('cats', $cats);
+		$this->view->set('tab', $tab);
+		$this->view->set('sections', $sections);
+		$this->view->setErrors($this->getErrors());
 
 		// Output HTML
 		if (Request::get('noview', null))
 		{
 			return $this->view->setName('view');
 		}
-		$this->view->setName('view')->display();
+
+		$this->view
+			->setName('view')
+			->display();
 	}
 
 	/**
@@ -1599,30 +1621,28 @@ class Resources extends SiteController
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
-			return;
 		}
 
 		// Load the resource
-		$resource = new Resource($this->database);
 		if ($alias)
 		{
-			$resource->load($alias);
-			$id = $resource->id;
+			$resource = Entry::getInstance($alias);
+			$id = $resource->get('id');
 		}
 		else
 		{
-			$resource->load($id);
-			$alias = $resource->alias;
+			$resource = Entry::getInstance($id);
+			$alias = $resource->get('alias');
 		}
 
 		// Make sure we got a result from the database
-		if (!$resource)
+		if (!$resource->get('id'))
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
 		// Make sure the resource is published and standalone
-		if ($resource->published == 0 || $resource->standalone != 1)
+		if ($resource->get('published') == 0 || $resource->get('standalone') != 1)
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
@@ -1635,7 +1655,7 @@ class Resources extends SiteController
 
 		// Incoming
 		$filters = array();
-		if ($resource->type == 2)
+		if ($resource->get('type') == 2)
 		{
 			$filters['sortby'] = Request::getVar('sortby', 'ordering');
 		}
@@ -1646,14 +1666,17 @@ class Resources extends SiteController
 		$filters['limit'] = Request::getInt('limit', 100);
 		$filters['start'] = Request::getInt('limitstart', 0);
 		$filters['year']  = Request::getInt('year', 0);
-		$filters['id']    = $resource->id;
+		$filters['id']    = $resource->get('id');
 
 		$feedtype = Request::getVar('content', 'audio');
 
-		// Initiate a resource helper class
-		$helper = new Helper($resource->id, $this->database);
-
-		$rows = $helper->getStandaloneChildren($filters);
+		$rows = $resource->children()
+			->whereEquals('published', Entry::STATE_PUBLISHED)
+			->whereEquals('standalone', 1)
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->order($filters['sortby'], 'asc')
+			->rows();
 
 		$base = rtrim(Request::base(), '/');
 
@@ -1703,15 +1726,12 @@ class Resources extends SiteController
 		$tags = trim(\Hubzero\Utility\Str::truncate($tags, 250));
 		$tags = rtrim($tags, ',');
 
-		$helper->getUnlinkedContributors();
-		$cons = $helper->ul_contributors;
-		$cons = explode(';', $cons);
 		$author = '';
-		foreach ($cons as $con)
+		foreach ($resources->authors()->ordered()->rows() as $con)
 		{
-			if ($con)
+			if ($con->get('role') != 'submitter')
 			{
-				$author = trim($con);
+				$author = trim($con->get('name'));
 				break;
 			}
 		}
@@ -1737,7 +1757,7 @@ class Resources extends SiteController
 			$dimage = new \Hubzero\Document\Type\Feed\Image();
 			$dimage->url = $dimg;
 			$dimage->title = trim(\Hubzero\Utility\Str::truncate(html_entity_decode($dtitle . ' ' . Lang::txt('COM_RESOURCES_RSS_ARTWORK')), 250));
-			$dimage->link = $base.$doc->link;
+			$dimage->link = $base . $doc->link;
 			$doc->itunes_image = $dimage;
 		}
 
@@ -1750,8 +1770,9 @@ class Resources extends SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
-			$type_model            = new Type($this->database);
-			$all_logical_types     = $type_model->getTypes(28);    // 28 means 'logical' types.
+			$all_logical_types = Type::all()
+				->whereEquals('category', 28) // 28 means 'logical' types.
+				->rows();
 
 			foreach ($rows as $row)
 			{
@@ -1771,9 +1792,6 @@ class Resources extends SiteController
 
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
-
-				// Instantiate a resource helper
-				$rhelper = new Helper($row->id, $this->database);
 
 				// Get any podcast/vodcast files
 				$podcast = '';
@@ -1813,16 +1831,18 @@ class Resources extends SiteController
 					}
 				}
 
-				$rhelper->getChildren();
+				$grandchildren = $row->children()
+					->whereEquals('published', Entry::STATE_PUBLISHED)
+					->ordered()
+					->rows();
 
 				$podcasts = array();
 				$children = array();
-				if ($rhelper->children && count($rhelper->children) > 0)
+				if ($grandchildren && count($grandchildren) > 0)
 				{
-					$grandchildren = $rhelper->children;
 					foreach ($grandchildren as $grandchild)
 					{
-						if (isset($relevant_logical_types_by_id[(int)$grandchild->logicaltype]))
+						if (isset($relevant_logical_types_by_id[(int)$grandchild->get('logicaltype')]))
 						{
 							if (stripslashes($grandchild->introtext) != '')
 							{
@@ -1839,8 +1859,7 @@ class Resources extends SiteController
 				}
 
 				// Get the contributors of this resource
-				$rhelper->getContributors();
-				$author = strip_tags($rhelper->contributors);
+				$author = strip_tags($row->authorList());
 
 				$rtt = new Tags($row->id);
 				$rtags = $rtt->render('string');
@@ -1851,10 +1870,9 @@ class Resources extends SiteController
 				}
 
 				// Get attributes
-				//$attribs = new \Hubzero\Config\Registry($row->attribs);
 				if ($children)
 				{
-					$attribs = new \Hubzero\Config\Registry($children[0]->attribs);
+					$attribs = $children[0]->attribs;
 				}
 
 				foreach ($podcasts as $podcast)
@@ -1865,16 +1883,16 @@ class Resources extends SiteController
 					$item->link        = $link;
 					$item->description = $description;
 					$item->date        = $date;
-					$item->category    = ($row->typetitle) ? $row->typetitle : '';
+					$item->category    = $row->type->get('type');
 					$item->author      = $author;
 
 					$img = $this->_checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
 					if ($img)
 					{
 						$image = new \Hubzero\Document\Type\Feed\Image();
-						$image->url = $img;
-						$image->title = $title.' '.Lang::txt('COM_RESOURCES_RSS_ARTWORK');
-						$image->link = $base.$link;
+						$image->url   = $img;
+						$image->title = $title . ' ' . Lang::txt('COM_RESOURCES_RSS_ARTWORK');
+						$image->link  = $base . $link;
 
 						$item->itunes_image = $image;
 					}
@@ -1909,7 +1927,7 @@ class Resources extends SiteController
 
 							$enclosure = new \Hubzero\Document\Type\Feed\Enclosure;
 							$enclosure->url = $podcast;
-							switch (Html::getFileExtension($podcast))
+							switch (\Filesystem::extension($podcast))
 							{
 								case 'm4v':
 									$enclosure->type = 'video/x-m4v';
@@ -2117,29 +2135,36 @@ class Resources extends SiteController
 		}
 
 		// Load the resource
-		$resource = new Resource($this->database);
-		if ($alias && !$resource->loadAlias($alias))
+		if ($alias)
 		{
-			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			$resource = Entry::oneByAlias($alias);
+
+			if (!$resource->get('id'))
+			{
+				App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			}
 		}
 		// allow for temp resource uploads
 		elseif (substr($id, 0, 4) == '9999')
 		{
-			$resource->id         = $id;
-			$resource->standalone = 1;
-			$resource->path       = null;
-			$resource->created    = Date::of('now')->format('Y-m-d 00:00:00');
+			$resource = Entry::blank();
+			$resource->set('id', $id);
+			$resource->set('standalone', 1);
+			$resource->set('created', Date::of('now')->format('Y-m-d 00:00:00'));
 		}
-		elseif (!$resource->load($id))
+		else
 		{
-			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			$resource = Entry::oneOrNew($id);
+
+			if (!$resource->get('id'))
+			{
+				App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			}
 		}
 
 		// Check if direct access is restricted. If so, look for a token
-		$activeParams = new \Hubzero\Config\Registry($resource->params);
-		$type = new Type($this->database);
-		$type->load($resource->type);
-		$typeParams = new \Hubzero\Config\Registry($type->params);
+		$activeParams = $resource->params;
+		$typeParams = $resource->type->params;
 		$restrictDirectDownload = $activeParams->get('restrict_direct_access') ? $activeParams->get('restrict_direct_access') : $typeParams->get('restrict_direct_access');
 		if ($restrictDirectDownload == 2)
 		{
@@ -2173,13 +2198,11 @@ class Resources extends SiteController
 		// Get parent Access level and use it if it is more restrictive
 		if ($resource->standalone != 1)
 		{
-			$helper = new Helper($resource->id, $this->database);
-			$helper->getParents();
-			$parents = $helper->parents;
+			$parents = $resource->parents;
+
 			if (count($parents) == 1)
 			{
-				$parent = new Resource($this->database);
-				$parent->load($parents[0]->id);
+				$parent = $parents->first();
 			}
 		}
 		$accessLevel = (isset($parent) && ($parent->access > $resource->access)) ? $parent->access : $resource->access;
@@ -2196,7 +2219,7 @@ class Resources extends SiteController
 
 		// Check if the resource is "private" and the user is allowed to view it
 		if ($accessLevel == 4  // private
-		 || ($accessLevel == 3 && $resource->path))  // protected -- We need to allow images in the sbtract to come through
+		 || ($accessLevel == 3 && $resource->get('path')))  // protected -- We need to allow images in the sbtract to come through
 		{
 			if ($user->isGuest())
 			{
@@ -2213,53 +2236,39 @@ class Resources extends SiteController
 			}
 		}
 
-		if ($resource->standalone && !$resource->path)
+		if ($resource->get('standalone') && !$resource->get('path'))
 		{
-			$resource->path = DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($resource->created, $resource->id, '') . DS . 'media' . DS . Request::getVar('file');
+			$resource->set('path', $resource->filespace() . DS . 'media' . DS . Request::getVar('file'));
 		}
 
-		$resource->path = trim($resource->path);
+		$path = trim($resource->get('path'));
+		$path = DS . trim($path, DS);
 
 		// Ensure we have a path
 		// Ensure resource is published - stemedhub #472
-		if (empty($resource->path) && $resource->published != 1)
+		if (!$path && $resource->published != 1)
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
 		}
 
 		// Get the configured upload path
-		$base_path = $this->config->get('uploadpath', '/site/resources');
-		if ($base_path)
-		{
-			$base_path = DS . trim($base_path, DS);
-		}
+		$base_path = $resource->basepath();
 
-		// Does the path start with a slash?
-		if (substr($resource->path, 0, 1) != DS)
+		// Does the beginning of the $resource->path match the config path?
+		if (substr($path, 0, strlen($base_path)) != $base_path)
 		{
-			$resource->path = DS . $resource->path;
-			// Does the beginning of the $resource->path match the config path?
-			if (substr($resource->path, 0, strlen($base_path)) == $base_path)
-			{
-				// Yes - this means the full path got saved at some point
-			}
-			else
-			{
-				// No - append it
-				$resource->path = $base_path . $resource->path;
-			}
+			// No - append it
+			$path = $base_path . $path;
 		}
-
-		// Add root path
-		$filename = PATH_APP . $resource->path;
 
 		// Ensure the file exist
-		if (!file_exists($filename))
+		if (!file_exists($path))
 		{
-			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $filename);
+			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
 		}
 
-		$ext = strtolower(\Filesystem::extension($filename));
+		$ext = strtolower(\Filesystem::extension($path));
+
 		if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml')))
 		{
 			$d = 'attachment';
@@ -2267,7 +2276,7 @@ class Resources extends SiteController
 
 		// Initiate a new content server and serve up the file
 		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename($filename);
+		$xserver->filename($path);
 		$xserver->disposition($d);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
@@ -2276,10 +2285,8 @@ class Resources extends SiteController
 			// Should only get here on error
 			App::abort(500, Lang::txt('COM_RESOURCES_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 
 	/**
@@ -2339,14 +2346,13 @@ class Resources extends SiteController
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas($tarname);
+
 		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false))
-		{ // @TODO fix byte range support
+		{
 			App::abort(500, Lang::txt('COM_RESOURCES_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 
 	/**
@@ -2375,46 +2381,35 @@ class Resources extends SiteController
 		}
 		else
 		{
-			$row = new Resource($this->database);
-			$row->load($resource);
+			$row = Entry::oneOrFail($resource);
 
-			include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'license.php');
+			$rt = License::oneByName('custom' . $resource);
 
-			$rt = new License($this->database);
-			$rt->load('custom' . $resource);
-
-			$row->license = stripslashes($rt->text);
+			$row->set('license', stripslashes($rt->text));
 		}
 
 		// Output HTML
 		if (!$row)
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
-			return;
 		}
 
-
-			// Set the page title
-		$this->view->title = stripslashes($row->title) . ': ' . Lang::txt('COM_RESOURCES_LICENSE');
+		// Set the page title
+		$title = stripslashes($row->title) . ': ' . Lang::txt('COM_RESOURCES_LICENSE');
 
 		// Write title
-		Document::setTitle($this->view->title);
-
-		// Instantiate a new view
-		$this->view->config  = $this->config;
-		$this->view->row     = $row;
-		$this->view->tool    = $tool;
-		$this->view->no_html = Request::getVar('no_html', 0);
+		Document::setTitle($title);
 
 		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->setName('license')
-					->setLayout('default')
-					->display();
+		$this->view
+			->set('title', $title)
+			->set('row', $row)
+			->set('tool', $tool)
+			->set('config', $this->config)
+			->set('no_html', Request::getVar('no_html', 0))
+			->setName('license')
+			->setLayout('default')
+			->display();
 	}
 
 	/**
@@ -2432,17 +2427,16 @@ class Resources extends SiteController
 
 		// Incoming
 		$id = Request::getInt('id', 0);
-		$format = Request::getVar('format', 'bibtex');
+		$format = Request::getVar('citationFormat', 'bibtex');
 
 		// Append DOI handle
 		$revision = Request::getVar('rev', 0);
 		$handle = '';
 		if ($revision)
 		{
-			$rdoi = new Doi($this->database);
-			$rdoi->loadDoi($id, $revision);
+			$rdoi = Doi::oneByResource($id, $revision);
 
-			if (isset($rdoi->doi) && $rdoi->doi && $tconfig->get('doi_shoulder'))
+			if ($rdoi->get('doi') && $tconfig->get('doi_shoulder'))
 			{
 				$handle = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($rdoi->doi);
 			}
@@ -2453,33 +2447,22 @@ class Resources extends SiteController
 		}
 
 		// Load the resource
-		$row = new Resource($this->database);
-		$row->load($id);
+		$row = Entry::oneOrNew($id);
 
-		if (!$row->id)
+		if (!$row->get('id'))
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
-		$thedate = ($row->publish_up != '0000-00-00 00:00:00')
-				 ? $row->publish_up
-				 : $row->created;
-
-		$helper = new Helper($row->id, $this->database);
-		$helper->getUnlinkedContributors();
-		$row->author = $helper->ul_contributors;
+		if (!$row->get('publish_up') || $row->get('publish_up') == '0000-00-00 00:00:00')
+		{
+			$row->set('publish_up', $row->get('created'));
+		}
+		$thedate = $row->get('publish_up');
 
 		// Build the download path
-		$path = PATH_APP . $this->config->get('cachepath', '/cache/resources');
-		$date = $row->created;
-		$dir_resid = \Hubzero\Utility\Str::pad($row->id);
-		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs))
-		{
-			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
-		}
-		$dir_year  = date('Y', $date);
-		$dir_month = date('m', $date);
-		$path .= DS . $dir_year . DS . $dir_month . DS . $dir_resid . DS;
+		$path  = PATH_APP . DS . trim($this->config->get('cachepath', '/cache/resources'), DS);
+		$path .= $row->relativePath();
 
 		if (!is_dir($path))
 		{
@@ -2490,7 +2473,7 @@ class Resources extends SiteController
 		}
 
 		// Build the URL for this resource
-		$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $row->id);
+		$sef = Route::url($row->link());
 
 		$url = Request::base() . ltrim($sef, '/');
 
@@ -2499,7 +2482,7 @@ class Resources extends SiteController
 		{
 			case 'endnote':
 				$doc = '';
-				switch ($row->type)
+				switch ($row->type->get('type'))
 				{
 					case 'misc':
 					default:
@@ -2509,10 +2492,9 @@ class Resources extends SiteController
 				$doc .= "%D " . Date::of($thedate)->toLocal($yearFormat) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
-				$author_array = explode(';', $row->author);
-				foreach ($author_array as $auth)
+				foreach ($row->contributors('!submitter') as $auth)
 				{
-					$auth = preg_replace('/{{(.*?)}}/s', '', $auth);
+					$auth = preg_replace('/{{(.*?)}}/s', '', $auth->name);
 					if (!strstr($auth, ','))
 					{
 						$bits = explode(' ', $auth);
@@ -2540,18 +2522,20 @@ class Resources extends SiteController
 
 			case 'bibtex':
 			default:
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
+				include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
 
 				$bibtex = new \Structures_BibTex();
 				$addarray = array();
 				$addarray['type']  = 'misc';
 				$addarray['cite']  = $this->_config['sitename'] . $row->id;
 				$addarray['title'] = stripslashes($row->title);
-				$auths = explode(';', $row->author);
-				for ($i=0, $n=count($auths); $i < $n; $i++)
+
+				//$auths = explode(';', $row->author);
+				//for ($i=0, $n=count($auths); $i < $n; $i++)
+				foreach ($row->contributors('!submitter') as $auth)
 				{
-					$author = trim($auths[$i]);
-					$author = preg_replace('/\{\{(.+)\}\}/i', '', $author);
+					//$author = trim($auths[$i]);
+					$author = preg_replace('/\{\{(.+)\}\}/i', '', $auth->name);
 					if (strstr($author, ','))
 					{
 						$author_arr = explode(',', $author);
@@ -2731,6 +2715,9 @@ class Resources extends SiteController
 		{
 			$user = User::getInstance();
 		}
+
+		$usersgroups = array();
+
 		if (!$user->isGuest())
 		{
 			// Check if they're a site admin
@@ -2742,26 +2729,34 @@ class Resources extends SiteController
 			}
 
 			$xgroups = \Hubzero\User\Helper::getGroups($user->get('id'), 'all');
+
 			// Get the groups the user has access to
-			$usersgroups = self::getUsersGroups($xgroups);
-		}
-		else
-		{
-			$usersgroups = array();
+			if (!empty($xgroups))
+			{
+				foreach ($xgroups as $group)
+				{
+					if ($group->regconfirmed)
+					{
+						$usersgroups[] = $group->cn;
+					}
+				}
+			}
 		}
 
 		// Get the list of groups that can access this resource
-		$allowedgroups = $resource->getGroups();
+		$allowedgroups = $resource->groups;
 		if ($resource->standalone != 1)
 		{
-			$helper = new Helper($resource->id, $this->database);
-			$helper->getParents();
-			$parents = $helper->parents;
+			//$helper = new Helper($resource->id, $this->database);
+			//$helper->getParents();
+			$parents = $resource->parents()
+				->whereEquals('published', Entry::STATE_PUBLISHED)
+				->rows();
+
 			if (count($parents) == 1)
 			{
-				$p = new Resource($this->database);
-				$p->load($parents[0]->id);
-				$allowedgroups = $p->getGroups();
+				$p = Entry::oneOrFail($parents->first()->id);
+				$allowedgroups = $p->groups;
 			}
 		}
 		$this->allowedgroups = $allowedgroups;
@@ -2796,8 +2791,7 @@ class Resources extends SiteController
 		{
 			if (!isset($p) && isset($parents) && count($parents) == 1)
 			{
-				$p = new Resource($this->database);
-				$p->load($parents[0]->id);
+				$p = Entry::oneOrFail($parents->first()->id);
 			}
 			if (isset($p) && ($p->access == 4 || $p->access == 3) && count($common) < 1)
 			{
@@ -2805,30 +2799,6 @@ class Resources extends SiteController
 			}
 		}
 		return $restricted;
-	}
-
-	/**
-	 * Push group aliases into an array for easier searching
-	 *
-	 * @param   array  $groups  Users' groups
-	 * @return  array
-	 */
-	public static function getUsersGroups($groups)
-	{
-		$arr = array();
-
-		if (!empty($groups))
-		{
-			foreach ($groups as $group)
-			{
-				if ($group->regconfirmed)
-				{
-					$arr[] = $group->cn;
-				}
-			}
-		}
-
-		return $arr;
 	}
 
 	/**
@@ -2875,7 +2845,7 @@ class Resources extends SiteController
 	 * @param   integer  $toolid  Tool ID
 	 * @return  boolean  True if user has access, false if not
 	 */
-	private function _checkToolaccess($toolid)
+	/*private function _checkToolaccess($toolid)
 	{
 		// Check if they're a site admin
 		if (User::authorize($this->_option, 'manage'))
@@ -2899,5 +2869,5 @@ class Resources extends SiteController
 		}
 
 		return false;
-	}
+	}*/
 }

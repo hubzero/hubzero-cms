@@ -104,7 +104,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 		$option = 'com_wishlist';
 		$cat    = 'resource';
-		$refid  = $model->resource->id;
+		$refid  = $model->id;
 		$items  = 0;
 		$admin  = 0;
 		$html   = '';
@@ -129,11 +129,11 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		// Create a new list if necessary
 		if (!$id)
 		{
-			if ($model->resource->title
-			 && $model->resource->standalone == 1
-			 && $model->resource->published == 1)
+			if ($model->title
+			 && $model->standalone == 1
+			 && $model->published == 1)
 			{
-				$rtitle = ($model->istool()) ? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->resource->alias : Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->resource->id;
+				$rtitle = ($model->istool()) ? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->alias : Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->id;
 
 				$wishlist->set('category', $cat);
 				$wishlist->set('referenceid', $refid);
@@ -367,7 +367,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 				// Instantiate a view
 				$view = $this->view('default', 'browse')
 					->set('option', $option)
-					->set('resource', $model->resource)
+					->set('resource', $model)
 					->set('title', $title)
 					->set('wishlist', $wishlist)
 					->set('filters', $filters)
@@ -389,7 +389,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = $this->view('default', 'metadata')
-				->set('resource', $model->resource)
+				->set('resource', $model)
 				->set('items', $items)
 				->set('wishlistid', $id);
 

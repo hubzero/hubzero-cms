@@ -32,11 +32,14 @@
 namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
+use Components\Resources\Models\Import\Run;
+use Exception;
 use Date;
 use Lang;
+use User;
 
-include_once __DIR__ . DS . 'hook.php';
-include_once __DIR__ . DS . 'run.php';
+include_once __DIR__ . DS . 'import' . DS . 'hook.php';
+include_once __DIR__ . DS . 'import' . DS . 'run.php';
 
 /**
  * Resource import model
@@ -105,14 +108,12 @@ class Import extends Relational
 	 */
 	public function created($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			$as = Lang::txt('DATE_FORMAT_HZ1');
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			$as = Lang::txt('TIME_FORMAT_HZ1');
 		}
@@ -143,5 +144,84 @@ class Import extends Relational
 	public function runs()
 	{
 		return $this->oneToMany(__NAMESPACE__ . '\\Import\\Run', 'import_id');
+	}
+
+	/**
+	 * Return raw import data
+	 *
+	 * @return  string
+	 */
+	public function getData()
+	{
+		return file_get_contents($this->getDataPath());
+	}
+
+	/**
+	 * Return path to imports data file
+	 *
+	 * @return  string
+	 * @throws  Exception
+	 */
+	public function getDataPath()
+	{
+		// make sure we have file
+		if (!$file = $this->get('file'))
+		{
+			throw new Exception(Lang::txt('COM_RESOURCES_IMPORT_MODEL_REQUIRED_FILE'));
+		}
+
+		// build path to file
+		$filePath = $this->fileSpacePath() . DS . $file;
+
+		// make sure file exists
+		if (!file_exists($filePath))
+		{
+			throw new Exception(Lang::txt('COM_RESOURCES_IMPORT_MODEL_FILE_MISSING', $filePath));
+		}
+
+		// make sure we can read the file
+		if (!is_readable($filePath))
+		{
+			throw new Exception(Lang::txt('COM_RESOURCES_IMPORT_MODEL_FILE_NOTREADABLE'));
+		}
+
+		return $filePath;
+	}
+
+	/**
+	 * Return imports filespace path
+	 *
+	 * @return  string
+	 */
+	public function fileSpacePath()
+	{
+		// get com resources params
+		$params = \Component::params('com_resources');
+
+		// build upload path
+		$uploadPath = $params->get('import_uploadpath', '/site/resources/import');
+		$uploadPath = PATH_APP . DS . trim($uploadPath, DS) . DS . $this->get('id');
+
+		// return path
+		return $uploadPath;
+	}
+
+	/**
+	 * Mark Import Run
+	 *
+	 * @param   integer  $dryRun  Dry run mode
+	 * @return  void
+	 */
+	public function markRun($dryRun = 1)
+	{
+		$importRun = Run::blank()
+			->set(array(
+				'import_id' => $this->get('id'),
+				'count'     => $this->get('count'),
+				'ran_by'    => User::get('id'),
+				'ran_at'    => Date::toSql(),
+				'dry_run'   => $dryRun
+			));
+		$importRun->save();
 	}
 }

@@ -107,7 +107,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			->join($a, $a . '.cid', $c . '.id', 'inner')
 			->whereEquals($c . '.published', 1)
 			->whereEquals($a . '.tbl', 'resource')
-			->whereEquals($a . '.oid', $model->resource->id)
+			->whereEquals($a . '.oid', $model->id)
 			->order($c . '.affiliated', 'asc')
 			->order($c . '.year', 'desc')
 			->rows();
@@ -126,9 +126,9 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 
 			// Pass the view some info
 			$view->option    = $option;
-			$view->resource  = $model->resource;
+			$view->resource  = $model;
 			$view->citations = $citations;
-			$view->citationFormat    = $this->params->get('format', 'APA');
+			$view->citationFormat = $this->params->get('format', 'APA');
 			if ($this->getError())
 			{
 				$view->setError($this->getError());
@@ -148,7 +148,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->url = Route::url('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=citations');
+			$view->url = Route::url($model->link() . '&active=citations');
 			$view->citations = $citations;
 
 			$arr['metadata'] = $view->loadTemplate();

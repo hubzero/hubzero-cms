@@ -120,7 +120,7 @@ if ($this->categories) {
 					continue;
 				}
 
-				if ($category->id == 7 && !Component::isEnabled('com_tools', true))
+				if ($category->isForTools() && !Component::isEnabled('com_tools', true))
 				{
 					continue;
 				}

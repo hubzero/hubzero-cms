@@ -113,14 +113,12 @@ class Run extends Relational
 	 */
 	public function ranAt($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			$as = Lang::txt('DATE_FORMAT_HZ1');
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			$as = Lang::txt('TIME_FORMAT_HZ1');
 		}
@@ -151,5 +149,17 @@ class Run extends Relational
 	public function import()
 	{
 		return $this->belongsToOne('Components\Resources\Models\Import', 'import_id');
+	}
+
+	/**
+	 * Add to the processed number on this run
+	 *
+	 * @param   integer  $number  Number to increpemnt by
+	 * @return  void
+	 */
+	public function processed($number = 1)
+	{
+		$this->set('processed', $this->get('processed') + $number);
+		$this->save();
 	}
 }

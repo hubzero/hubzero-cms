@@ -49,8 +49,6 @@ use User;
 use Date;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
-
 /**
  * Resources controller for creating a resource
  */
@@ -473,8 +471,8 @@ class Create extends SiteController
 	/**
 	 * Recursive method for loading hierarchical focus areas (tags)
 	 *
-	 * @param   unknown  $type
-	 * @param   unknown  $labels
+	 * @param   string   $type
+	 * @param   array    $labels
 	 * @param   integer  $parent_id     Tag ID
 	 * @param   string   $parent_label  Tag
 	 * @return  void
@@ -485,9 +483,9 @@ class Create extends SiteController
 		{
 			$this->database->setQuery(
 				'SELECT DISTINCT tag
-				FROM #__focus_area_resource_type_rel fr
-				INNER JOIN #__focus_areas f ON f.id = fr.focus_area_id
-				INNER JOIN #__tags t ON t.id = f.tag_id
+				FROM `#__focus_area_resource_type_rel` fr
+				INNER JOIN `#__focus_areas` f ON f.id = fr.focus_area_id
+				INNER JOIN `#__tags` t ON t.id = f.tag_id
 				WHERE fr.resource_type_id = ' . $type
 			);
 			if (!($labels = $this->database->loadColumn()))
@@ -501,23 +499,23 @@ class Create extends SiteController
 			$parent_id
 				// get tags labeled focus area and parented by the tag identified by $parent_id
 				? 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag, t2.description
-					FROM #__tags t
-					INNER JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.tagid = t.id AND to1.label = \'label\'
-					INNER JOIN #__tags_object to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = to1.objectid
+					FROM `#__tags` t
+					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.tagid = t.id AND to1.label = \'label\'
+					INNER JOIN `#__tags_object` to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = to1.objectid
 						AND to2.tagid = ' . $parent_id . '
-					INNER JOIN #__tags t2 ON t2.id = to1.objectid
+					INNER JOIN `#__tags` t2 ON t2.id = to1.objectid
 					WHERE t.raw_tag = ' . $this->database->quote($parent_label) . '
 					ORDER BY CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
 				// get tags that are labeled focus areas that are not also a parent of another tag labeled as a focus area
 				: 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag, t2.description
-					FROM #__tags t
-					LEFT JOIN #__tags_object to1 ON to1.tagid = t.id AND to1.label = \'label\' AND to1.tbl = \'tags\'
-					INNER JOIN #__tags t2 ON t2.id = to1.objectid
+					FROM `#__tags` t
+					LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id AND to1.label = \'label\' AND to1.tbl = \'tags\'
+					INNER JOIN `#__tags` t2 ON t2.id = to1.objectid
 					WHERE t.tag IN (' . $labels . ') AND (
 						SELECT COUNT(*)
-						FROM #__tags_object to2
-						INNER JOIN #__tags_object to3 ON to3.tbl = \'tags\' AND to3.label = \'label\' AND to3.objectid = to2.tagid
-						INNER JOIN #__tags t3 ON t3.id = to3.tagid AND t3.tag IN (' . $labels . ')
+						FROM `#__tags_object` to2
+						INNER JOIN `#__tags_object` to3 ON to3.tbl = \'tags\' AND to3.label = \'label\' AND to3.objectid = to2.tagid
+						INNER JOIN `#__tags` t3 ON t3.id = to3.tagid AND t3.tag IN (' . $labels . ')
 						WHERE to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = t2.id
 						LIMIT 1
 					) = 0
@@ -714,13 +712,10 @@ class Create extends SiteController
 
 		$isNew = $row->get('id') < 1 || substr($row->get('id'), 0, 4) == '9999';
 
-		//$row->created    = ($row->created)    ? $row->created    : Date::toSql();
-		//$row->created_by = ($row->created_by) ? $row->created_by : User::get('id');
-
 		// Set status to "composing"
 		if ($isNew)
 		{
-			$row->set('published', 2);
+			$row->set('published', Entry::STATE_DRAFT);
 		}
 
 		$row->set('published', (int)$row->get('published', 2));
@@ -736,7 +731,7 @@ class Create extends SiteController
 		// Get custom areas, add wrapper tags, and compile into fulltxt
 		$type = Type::oneOrFail($row->get('type'));
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 		$elements = new Elements(array(), $type->customFields);
 		$schema = $elements->getSchema();
 
@@ -871,7 +866,7 @@ class Create extends SiteController
 			Request::setVar('id', $row->get('id'));
 			Request::setVar('authid', User::get('id'));
 
-			include_once(__DIR__ . DS . 'authors.php');
+			include_once __DIR__ . DS . 'authors.php';
 			$authors = new Authors();
 			$authors->saveTask(0);
 		}
@@ -1025,13 +1020,13 @@ class Create extends SiteController
 		$id = Request::getInt('id', 0);
 
 		$this->database->setQuery(
-			'SELECT 1 FROM #__author_assoc WHERE authorid = ' . User::get('id') . ' AND subtable = \'resources\' AND subid = ' . $id . '
+			'SELECT 1 FROM `#__author_assoc` WHERE authorid = ' . User::get('id') . ' AND subtable = \'resources\' AND subid = ' . $id . '
 			UNION
-			SELECT 1 FROM #__resources WHERE id = ' . $id . ' AND (created_by = ' . User::get('id') . ' OR modified_by = ' . User::get('id') . ')
+			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . User::get('id') . ' OR modified_by = ' . User::get('id') . ')
 			UNION
-			SELECT 1 FROM #__users u
-			INNER JOIN #__user_usergroup_map cagam ON cagam.user_id = u.id
-			INNER JOIN #__usergroups caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
+			SELECT 1 FROM `#__users` u
+			INNER JOIN `#__user_usergroup_map` cagam ON cagam.user_id = u.id
+			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
 			WHERE u.id = ' . User::get('id')
 		);
 
@@ -1047,11 +1042,11 @@ class Create extends SiteController
 
 		$this->database->setQuery(
 			'SELECT fa.tag_id, t.raw_tag, fa.mandatory_depth AS minimum_depth, 0 AS actual_depth
-			FROM #__focus_areas fa
-			INNER JOIN #__tags t ON t.id = fa.tag_id
-			INNER JOIN #__focus_area_resource_type_rel rtr ON rtr.focus_area_id = fa.id
-			INNER JOIN #__resource_types rt ON rt.id = rtr.resource_type_id
-			INNER JOIN #__resources r ON r.type = rt.id AND r.id = ' . $id . '
+			FROM `#__focus_areas` fa
+			INNER JOIN `#__tags` t ON t.id = fa.tag_id
+			INNER JOIN `#__focus_area_resource_type_rel` rtr ON rtr.focus_area_id = fa.id
+			INNER JOIN `#__resource_types` rt ON rt.id = rtr.resource_type_id
+			INNER JOIN `#__resources` r ON r.type = rt.id AND r.id = ' . $id . '
 			WHERE fa.mandatory_depth IS NOT NULL AND fa.mandatory_depth > 0'
 		);
 		$fas = $this->database->loadAssocList('raw_tag');
@@ -1074,10 +1069,10 @@ class Create extends SiteController
 				}
 				$this->database->setQuery(
 					'SELECT t2.raw_tag AS fa, t2.id AS label_id, t.id
-					FROM #__tags t
-					INNER JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
-					INNER JOIN #__tags t2 ON t2.id = to1.tagid
-					INNER JOIN #__focus_areas fa ON fa.tag_id = to1.tagid
+					FROM `#__tags` t
+					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
+					INNER JOIN `#__tags` t2 ON t2.id = to1.tagid
+					INNER JOIN `#__focus_areas` fa ON fa.tag_id = to1.tagid
 					WHERE t.tag = ' . $this->database->quote($norm_tag)
 				);
 				if (($row = $this->database->loadAssoc()))
@@ -1094,9 +1089,9 @@ class Create extends SiteController
 		{
 			$this->database->setQuery(
 				'SELECT t.tag, t.id
-				FROM #__tags_object to1
-				INNER JOIN #__tags t ON t.id = to1.tagid
-				INNER JOIN #__tags_object to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+				FROM `#__tags_object` to1
+				INNER JOIN `#__tags` t ON t.id = to1.tagid
+				INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
 				WHERE to1.objectid = ' . $tag[3] . ' AND to1.tbl = \'tags\' AND to1.label = \'parent\''
 			);
 			$any_match = false;
@@ -1125,9 +1120,9 @@ class Create extends SiteController
 					{
 						$this->database->setQuery(
 							'SELECT t.id
-							FROM #__tags_object to1
-							INNER JOIN #__tags t ON t.id = to1.tagid
-							INNER JOIN #__tags_object to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+							FROM `#__tags_object` to1
+							INNER JOIN `#__tags` t ON t.id = to1.tagid
+							INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
 							WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
 						);
 						$parent_id = $this->database->loadColumn();
@@ -1215,7 +1210,7 @@ class Create extends SiteController
 
 		// Set a flag for if the resource was already published or not
 		$published = 0;
-		if ($resource->get('published') != 2)
+		if ($resource->get('published') != Entry::STATE_DRAFT)
 		{
 			$published = 1;
 		}
@@ -1262,7 +1257,7 @@ class Create extends SiteController
 				}
 
 				// Set status to published
-				$resource->set('published', 1);
+				$resource->set('published', Entry::STATE_PUBLISHED);
 				$resource->set('publish_up', Date::toSql());
 
 				$activity = 'published';
@@ -1276,13 +1271,13 @@ class Create extends SiteController
 				if (in_array(User::get('username'), $apu))
 				{
 					// Set status to published
-					$resource->set('published', 1);
+					$resource->set('published', Entry::STATE_PUBLISHED);
 					$resource->set('publish_up', Date::toSql());
 				}
 				else
 				{
 					// Set status to pending review (submitted)
-					$resource->set('published', 3);
+					$resource->set('published', Entry::STATE_PENDING);
 				}
 			}
 
@@ -1406,10 +1401,9 @@ class Create extends SiteController
 			}
 
 			// set license
-			$params = new \Hubzero\Config\Registry($resource->get('params'));
-			$params->set('license', $license);
+			$resource->params->set('license', $license);
 
-			$resource->set('params', $params->toString());
+			$resource->set('params', $resource->params->toString());
 		}
 
 		// Save the resource
@@ -1513,10 +1507,10 @@ class Create extends SiteController
 				}
 
 				// Check if the resource was "published"
-				if ($resource->get('published') == 1)
+				if ($resource->get('published') == Entry::STATE_PUBLISHED)
 				{
 					// It was, so we can only mark it as "deleted"
-					$resource->set('published', 4);
+					$resource->set('published', Entry::STATE_TRASHED);
 
 					if (!$resource->save())
 					{
@@ -1581,10 +1575,10 @@ class Create extends SiteController
 			$resource = Entry::oneOrFail($id);
 
 			// Check if it's in pending status
-			if ($resource->get('published') == 3)
+			if ($resource->get('published') == Entry::STATE_PENDING)
 			{
 				// Set it back to "draft" status
-				$resource->set('published', 2);
+				$resource->set('published', Entry::STATE_DRAFT);
 
 				// Save changes
 				$resource->save();
@@ -1668,7 +1662,7 @@ class Create extends SiteController
 		if ($id)
 		{
 			$rt = new Tags($id);
-			$tags = $rt->tags()->count();
+			$tags = $rt->tags('count');
 
 			if ($tags > 0)
 			{

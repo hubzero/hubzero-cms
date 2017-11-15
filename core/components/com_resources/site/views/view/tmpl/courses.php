@@ -40,7 +40,7 @@ $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {
-	switch ($this->model->resource->published)
+	switch ($this->model->published)
 	{
 		case 1:
 			$txt .= '';
@@ -69,17 +69,18 @@ if ($mode != 'preview')
 			<div class="col span8">
 				<header id="content-header">
 					<h2>
-						<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
+						<?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
 						<?php if ($this->model->params->get('access-edit-resource')) { ?>
-							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
+							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
 						<?php } ?>
 					</h2>
-					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
+					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
 				</header>
 
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
 					<div id="authorslist">
 						<?php
+						// Display authors
 						$this->view('_contributors')
 							->set('option', $this->option)
 							->set('contributors', $this->model->contributors('!submitter'))
@@ -95,46 +96,70 @@ if ($mode != 'preview')
 				if (!$this->model->access('view-all'))
 				{
 					$ghtml = array();
-					foreach ($this->model->resource->getGroups() as $allowedgroup)
+					foreach ($this->model->groups as $allowedgroup)
 					{
 						$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 					}
 					?>
 					<p class="warning">
-						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						<?php if (User::isGuest()): ?>
+							<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+						<?php else: ?>
+							<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						<?php endif; ?>
 					</p>
 					<?php
 				}
 				else
 				{
-					$ccount = count($this->model->children('standalone'));
+					$schildren = $this->model->children()
+						->whereEquals('standalone', 1)
+						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+						->ordered()
+						->rows();
+
+					$ccount = count($schildren);
 
 					if ($ccount > 0)
 					{
-						echo \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, '', '');
+						$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $model->type->get('type');
+
+						$this->view('_primary')
+							->set('option', $this->option)
+							->set('class', 'download')
+							->set('href', Route::url($this->model->link()) . '#series')
+							->set('title', $mesg)
+							->set('xtra', '')
+							->set('pop', '')
+							->set('action', '')
+							->set('msg', $mesg)
+							->display();
 					}
 
 					$html = '';
 
-					$thumb = '/site/stats/resource_impact/resource_impact_' . $this->model->resource->id . '_th.gif';
-					$full  = '/site/stats/resource_impact/resource_impact_' . $this->model->resource->id . '.gif';
+					$thumb = '/site/stats/resource_impact/resource_impact_' . $this->model->id . '_th.gif';
+					$full  = '/site/stats/resource_impact/resource_impact_' . $this->model->id . '.gif';
 					if (file_exists(PATH_APP . $thumb))
 					{
 						$html .= '<br />';
-						$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="' . Request::base(true) . $full . '" rel="lightbox">';
-						$html .= '<img src="' . Request::base(true) . $thumb . '" alt="'.$resource->id.' Impact Graph"/>';
+						$html .= '<a id="member-stats-graph" title="'.$this->model->id.' Impact Graph" href="' . Request::base(true) . $full . '" rel="lightbox">';
+						$html .= '<img src="' . Request::base(true) . $thumb . '" alt="'.$this->model->id.' Impact Graph"/>';
 						$html .= '</a>';
 					}
 
-					// get launch button
-					$firstChild = $this->model->children(0);
-
 					// Display some supporting documents
-					$children = $this->model->children('!standalone');
+					$children = $this->model->children()
+						->whereEquals('standalone', 0)
+						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+						->ordered()
+						->rows();
+
+					$firstChild = $children->first();
 
 					// Sort out supporting docs
 					$html .= $children && count($children) > 1
-						   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model->resource, $this->option, $children)
+						   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
 						   : '';
 
 					echo $html;
@@ -142,12 +167,17 @@ if ($mode != 'preview')
 					$live_site = rtrim(Request::base(),'/');
 					?>
 					<p>
-						<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
-						<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?content=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
-						<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?content=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
+						<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->id.'/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
+						<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->id.'/feed.rss?content=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
+						<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->id.'/feed.rss?content=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
 					</p>
 					<?php
-					echo $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+					if ($this->tab != 'play')
+					{
+						$this->view('_license')
+							->set('license', $this->model->license())
+							->display();
+					}
 				} // --- end else (if group check passed)
 				?>
 			</div><!-- / .aside launcharea -->
@@ -183,14 +213,14 @@ if ($mode != 'preview')
 			$this->view('_tabs')
 				->set('option', $this->option)
 				->set('cats', $this->cats)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 
 			$this->view('_sections')
 				->set('option', $this->option)
 				->set('sections', $this->sections)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 			?>
@@ -198,7 +228,7 @@ if ($mode != 'preview')
 		<div class="aside extracontent">
 			<?php
 			// Show related content
-			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
@@ -224,9 +254,7 @@ if ($mode != 'preview')
 	if ($this->tab == 'about')
 	{
 		// Course children
-		$schildren = $this->model->children('standalone');
-
-		if ($schildren)
+		if ($schildren->count())
 		{
 			$o = 'even';
 			?>
@@ -253,11 +281,7 @@ if ($mode != 'preview')
 						$html = '';
 						foreach ($schildren as $child)
 						{
-							// Retrieve the grandchildren
-							$this->helper = new \Components\Resources\Helpers\Helper($child->id, $this->database);
-							$this->helper->getChildren();
-
-							$child_params = new \Hubzero\Config\Registry($child->params);
+							$child_params = $child->params;
 							$link_action = $child_params->get( 'link_action', '' );
 
 							$child->title = $this->escape($child->title);
@@ -266,20 +290,29 @@ if ($mode != 'preview')
 
 							$html .= "\t\t".'<tr class="'.$o.'">'."\n";
 							$html .= "\t\t\t".'<td>';
-							if ($child->standalone == 1) {
+							if ($child->standalone == 1)
+							{
 								$html .= '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$child->id).'"';
-								if ($link_action == 1) {
+								if ($link_action == 1)
+								{
 									$html .= ' target="_blank"';
-								} elseif ($link_action == 2) {
+								}
+								elseif ($link_action == 2)
+								{
 									$html .= ' onclick="popupWindow(\''.$url.'\', \''.$child->title.'\', 400, 400, \'auto\');"';
 								}
 								$html .= '>'.$child->title.'</a>';
-								if ($child->type != 31) {
-									//$html .= ($child->introtext) ? '<br />'.\Hubzero\Utility\Str::truncate(stripslashes($child->introtext),200) : '';
-								}
 							}
 							$html .= '</td>'."\n";
-							if ($this->helper->children && count($this->helper->children) > 0)
+
+							// Retrieve the grandchildren
+							$grandchildren = $child->children()
+								->whereEquals('standalone', 0)
+								->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+								->ordered()
+								->rows();
+
+							if (count($grandchildren) > 0)
 							{
 								$videoi       = '';
 								$breeze       = '';
@@ -288,39 +321,42 @@ if ($mode != 'preview')
 								$video        = '';
 								$exercises    = '';
 								$supp         = '';
-								$grandchildren = $this->helper->children;
+
 								foreach ($grandchildren as $grandchild)
 								{
-									$grandchild->title = $this->escape($grandchild->title);
-									$grandchild->path = \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id);
+									$grandchild->set('title', $this->escape($grandchild->title));
+									$grandchild->set('path', \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id));
 
-									$grandchild_rt = new \Components\Resources\Tables\Type($this->database);
-									$grandchild_rt->load($grandchild->type);
-									$alias = $grandchild_rt->alias;
+									$alias = $grandchild->type->alias;
 
 									switch ($alias)
 									{
-										case "player":
-										case "quicktime":
+										case 'player':
+										case 'quicktime':
 											$videoi .= (!$videoi) ? '<a href="'.$grandchild->path.'">'.Lang::txt('View').'</a>' : '';
 											break;
-										case "breeze":
+										case 'breeze':
 											$breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="'.$grandchild->path.'&amp;no_html=1" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View Flash').'</a>' : '';
 											break;
-										case "hubpresenter":
+										case 'hubpresenter':
 											$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View HTML').'</a>' : '';
 											break;
-										case "pdf":
+										case 'pdf':
 										default:
-											if ($grandchild->logicaltype == 14) {
+											if ($grandchild->get('logicaltype') == 14)
+											{
 												$ext = Filesystem::extension($grandchild->path);
 												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
 												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a>'."\n";
-											} elseif ($grandchild->logicaltype == 51) {
+											}
+											elseif ($grandchild->get('logicaltype') == 51)
+											{
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
-											} else {
-												$grandchildParams  = new \Hubzero\Config\Registry($grandchild->params);
-												$grandchildAttribs = new \Hubzero\Config\Registry($grandchild->attribs);
+											}
+											else
+											{
+												$grandchildParams  = $grandchild->params;
+												$grandchildAttribs = $grandchild->attribs;
 												$linkAction = $grandchildParams->get('link_action', 0);
 												$width      = $grandchildAttribs->get('width', 640) + 20;
 												$height     = $grandchildAttribs->get('height', 360) + 60;
@@ -343,25 +379,31 @@ if ($mode != 'preview')
 									}
 								}
 
-								if ($hubpresenter) {
+								if ($hubpresenter)
+								{
 									$html .= "\t\t\t".'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
-								} else {
+								}
+								else
+								{
 									$html .= "\t\t\t".'<td>'.$breeze.'</td>'."\n";
 								}
 								$html .= "\t\t\t".'<td>'.$videoi.'</td>'."\n";
 								$html .= "\t\t\t".'<td>'.$pdf.'</td>'."\n";
 								$html .= "\t\t\t".'<td>'.$supp.'</td>'."\n";
 								$html .= "\t\t\t".'<td>'.$exercises.'</td>'."\n";
-							} else {
-								//$html .= "\t\t\t".'<td colspan="5">'.Lang::txt('Currently unavilable').'</td>'."\n";
+							}
+							else
+							{
 								$html .= "\t\t\t".'<td colspan="5"> </td>'."\n";
 							}
 							$html .= "\t\t".'</tr>'."\n";
-							if ($child->standalone == 1) {
-								if ($child->type != 31 && $child->introtext) {
+							if ($child->standalone == 1)
+							{
+								if ($child->get('type') != 31 && $child->introtext)
+								{
 									$html .= "\t\t".'<tr class="'.$o.'">'."\n";
 									$html .= "\t\t\t".'<td colspan="6">';
-									$html .= \Hubzero\Utility\Str::truncate(stripslashes($child->introtext),200) . '<br /><br />';
+									$html .= \Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200) . '<br /><br />';
 									$html .= "\t\t\t".'</td>'."\n";
 									$html .= "\t\t".'</tr>'."\n";
 								}

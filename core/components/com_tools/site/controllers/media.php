@@ -33,6 +33,7 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Resources\Models\Entry;
 use Filesystem;
 use Component;
 use Request;
@@ -41,12 +42,9 @@ use Lang;
 use User;
 use App;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'utilities.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+require_once Component::path('com_resources') . DS . 'helpers' . DS . 'utilities.php';
+require_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
 /**
  * Methods for listing and managing files and folders
@@ -56,7 +54,7 @@ class Media extends SiteController
 	/**
 	 * Upload a file or create a new folder
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -68,18 +66,20 @@ class Media extends SiteController
 		if (!$resource)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming sub-directory
 		$subdir = Request::getVar('dirPath', '', 'post');
 
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->load($resource);
+		$row = Entry::oneOrFail($resource);
 
-		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($resource);
-		$path = \Components\Resources\Helpers\Utilities::buildUploadPath($path, $subdir) . DS . 'media';
+		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')
+		{
+			$row->set('created', Date::format('Y-m-d 00:00:00'));
+		}
+
+		$path = $row->filespace() . DS . 'media';
 
 		// Make sure the upload path exist
 		if (!is_dir($path))
@@ -87,8 +87,7 @@ class Media extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 		}
 
@@ -97,12 +96,12 @@ class Media extends SiteController
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Make the filename safe
 		$file['name'] = Filesystem::clean($file['name']);
+
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
@@ -112,21 +111,20 @@ class Media extends SiteController
 			$file['name'] .= '.' . $ext;
 		}
 
+		$path .= DS . $file['name'];
+
 		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_UPLOADING'));
 		}
 
-		$fpath = $path . DS . $file['name'];
-
-		if (!Filesystem::isSafe($fpath))
+		if (!Filesystem::isSafe($path))
 		{
-			Filesystem::delete($fpath);
+			Filesystem::delete($path);
 
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_FAILED_VIRUS_SCAN'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Push through to the media view
@@ -136,7 +134,7 @@ class Media extends SiteController
 	/**
 	 * Deletes a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -148,39 +146,35 @@ class Media extends SiteController
 		if (!$resource)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming sub-directory
-		//$subdir = Request::getVar('dirPath', '', 'post');
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->load($resource);
+		$row = Entry::oneOrFail($resource);
 
-		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($resource);
-
-		// Make sure the listdir follows YYYY/MM/#
-		$parts = explode('/', $path);
-		if (count($parts) < 3)
+		// Allow for temp resource uploads
+		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')
 		{
-			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
-			$this->displayTask();
-			return;
+			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
-		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$path = $row->filespace() . DS . 'media';
 
-		// Build the path
-		$path = \Components\Resources\Helpers\Utilities::buildUploadPath($path, $subdir) . DS . 'media';
+		// Make sure the listdir follows YYYY/MM/##/media
+		$parts = explode(DS, $path);
+		if (count($parts) < 4)
+		{
+			$this->setError(Lang::txt('DIRECTORY_NOT_FOUND'));
+			return $this->displayTask();
+		}
 
 		// Incoming file to delete
 		$file = Request::getVar('file', '');
+
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Check if the file even exists
@@ -204,138 +198,31 @@ class Media extends SiteController
 	/**
 	 * Display an upload form and file listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$this->view->resource = Request::getInt('resource', 0);
-		if (!$this->view->resource)
+		$resource = Request::getInt('resource', 0);
+
+		if (!$resource)
 		{
-			echo '<p class="error">' . Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID') . '</p>';
+			echo '<p class="error">' . Lang::txt('No resource ID provided.') . '</p>';
 			return;
 		}
+
+		$row = Entry::oneOrFail($resource);
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
+		$subdir = Request::getVar('subdir', '');
 
-		// Build the path
-		//$this->view->path = \Components\Resources\Helpers\Utilities::buildUploadPath($this->view->listdir, $this->view->subdir);
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->load($this->view->resource);
-
-		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($this->view->resource);
-		$this->view->path =\Components\Resources\Helpers\Utilities::buildUploadPath($path, $this->view->subdir) . DS . 'media';
-
-		// Get list of directories
-		/*$dirs = $this->_recursiveListDir($this->view->path);
-
-		$folders   = array();
-		$folders[] = Html::select('option', '/');
-		if ($dirs)
+		// Allow for temp resource uploads
+		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')
 		{
-			foreach ($dirs as $dir)
-			{
-				$folders[] = Html::select('option', substr($dir, strlen($this->view->path)));
-			}
-		}
-		sort($folders);
-
-		// Create folder <select> list
-		$this->view->dirPath = Html::select(
-			'genericlist',
-			$folders,
-			'dirPath',
-			'onchange="goUpDir()" ',
-			'value',
-			'text',
-			$this->view->subdir
-		);*/
-		$folders = array();
-		$docs    = array();
-
-		if (is_dir($this->view->path))
-		{
-			// Loop through all files and separate them into arrays of images, folders, and other
-			$dirIterator = new \DirectoryIterator($this->view->path);
-			foreach ($dirIterator as $file)
-			{
-				if ($file->isDot())
-				{
-					continue;
-				}
-
-				if ($file->isDir())
-				{
-					$name = $file->getFilename();
-					$folders[$path . DS . $name] = $name;
-					continue;
-				}
-
-				if ($file->isFile())
-				{
-					$name = $file->getFilename();
-					if (('cvs' == strtolower($name))
-					 || ('.svn' == strtolower($name)))
-					{
-						continue;
-					}
-
-					$docs[$path . DS . $name] = $name;
-				}
-			}
-
-			ksort($folders);
-			ksort($docs);
+			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
-		$this->view->row = $row;
-		$this->view->docs = $docs;
-		$this->view->folders = $folders;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Lists all files and folders for a given directory
-	 *
-	 * @return     void
-	 */
-	public function listTask()
-	{
-		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$this->view->resource = Request::getInt('resource', 0);
-		if (!$this->view->resource)
-		{
-			echo '<p class="error">' . Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID') . '</p>';
-			return;
-		}
-
-		/*$this->view->version = Request::getInt('version', 0);
-		if (!$this->view->version)
-		{
-			echo '<p class="error">' . Lang::txt('No tool version ID provided.') . '</p>';
-			return;
-		}*/
-
-		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
-
-		// Build the path
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->load($this->view->resource);
-
-		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($this->view->resource);
-		$path = \Components\Resources\Helpers\Utilities::buildUploadPath($path, $this->view->subdir) . DS . 'media';
+		$path = $row->filespace() . DS . 'media';
 
 		$folders = array();
 		$docs    = array();
@@ -344,6 +231,7 @@ class Media extends SiteController
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
 			$dirIterator = new \DirectoryIterator($path);
+
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())
@@ -351,16 +239,16 @@ class Media extends SiteController
 					continue;
 				}
 
+				$name = $file->getFilename();
+
 				if ($file->isDir())
 				{
-					$name = $file->getFilename();
 					$folders[$path . DS . $name] = $name;
 					continue;
 				}
 
 				if ($file->isFile())
 				{
-					$name = $file->getFilename();
 					if (('cvs' == strtolower($name))
 					 || ('.svn' == strtolower($name)))
 					{
@@ -375,16 +263,16 @@ class Media extends SiteController
 			ksort($docs);
 		}
 
-		$this->view->docs = $docs;
-		$this->view->folders = $folders;
-		$this->view->config = $this->config;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('resource', $resource)
+			->set('row', $row)
+			->set('subdir', $subdir)
+			->set('path', $path)
+			->set('docs', $docs)
+			->set('folders', $folders)
+			->setErrors($this->getErrors())
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -415,4 +303,3 @@ class Media extends SiteController
 		return $dirlist;
 	}
 }
-

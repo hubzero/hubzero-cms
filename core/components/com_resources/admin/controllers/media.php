@@ -143,10 +143,15 @@ class Media extends AdminController
 					//determine command to uncompress
 					switch ($ext)
 					{
-						case 'gz':     $cmd = "tar zxvf {$escaped_file} -C {$path}";    break;
-						case 'tar':    $cmd = "tar xvf {$escaped_file} -C {$path}";     break;
+						case 'gz':
+							$cmd = "tar zxvf {$escaped_file} -C {$path}";
+							break;
+						case 'tar':
+							$cmd = "tar xvf {$escaped_file} -C {$path}";
+							break;
 						case 'zip':
-						default:       $cmd = "unzip -o {$escaped_file} -d {$path}";
+						default:
+							$cmd = "unzip -o {$escaped_file} -d {$path}";
 					}
 
 					//unzip file

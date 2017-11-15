@@ -36,20 +36,13 @@ defined('_HZEXEC_') or die();
 ?>
 <ol class="resources results">
 	<?php
-	if (is_array($this->lines))
+	foreach ($this->lines as $line)
 	{
-		$config = Component::params('com_resources');
-
-		foreach ($this->lines as $line)
-		{
-			// Instantiate a new view
-			$this->view('item', 'browse')
-			     ->set('option', 'com_resources')
-			     ->set('config', $config)
-			     ->set('line', $line)
-			     ->set('supported', isset($this->supported) ? $this->supported : array())
-			     ->display();
-		}
+		// Instantiate a new view
+		$this->view('item', 'browse')
+			->set('line', $line)
+			->set('supported', isset($this->supported) ? $this->supported : array())
+			->display();
 	}
 	?>
 </ol>

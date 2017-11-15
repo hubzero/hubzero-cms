@@ -51,25 +51,16 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 		<?php
 		if ($this->model->params->get('show_ranking', 0))
 		{
-			$citations = $this->model->citations();
-
-			$lastCitation = end($citations);
-			if (!is_object($lastCitation))
-			{
-				$lastCitation = new stdClass;
-				$lastCitation->created = null;
-			}
-
 			if ($this->model->isTool())
 			{
-				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
+				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->model->id, $this->model->type, $this->model->rating);
 			}
 			else
 			{
-				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
+				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->model->id, $this->model->type, $this->model->rating);
 			}
 
-			$rank = round($this->model->resource->ranking, 1);
+			$rank = round($this->model->ranking, 1);
 
 			$r = (10*$rank);
 			?>
@@ -79,7 +70,7 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 				</dt>
 				<dd>
 					<p>
-						Ranking is calculated from a formula comprised of <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=reviews'); ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
+						Ranking is calculated from a formula comprised of <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->id . '&active=reviews'); ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
 					</p>
 					<div>
 						<?php echo $stats->display(); ?>
@@ -91,10 +82,12 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 
 		if ($this->model->params->get('show_audience'))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audience.php');
-			include_once(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audiencelevel.php');
-			$ra = new \Components\Resources\Tables\Audience($database);
-			$audience = $ra->getAudience($this->model->resource->id, $versionid = 0 , $getlabels = 1, $numlevels = 4);
+			include_once Component::path($this->option) . DS . 'models' . DS . 'audience.php';
+			include_once Component::path($this->option) . DS . 'models' . DS . 'audience' . DS . 'level.php';
+
+			$audience = \Components\Resources\Models\Audience::all()
+				->whereEquals('rid', $this->model->id)
+				->row();
 
 			$this->view('_audience', 'view')
 			     ->set('audience', $audience)
@@ -106,10 +99,10 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 
 		if ($this->model->params->get('supportedtag'))
 		{
-			$rt = new \Components\Resources\Helpers\Tags($this->model->resource->id);
-			if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->resource->id))
+			$rt = new \Components\Resources\Helpers\Tags($this->model->id);
+			if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->id))
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+				include_once Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 				$tag = \Components\Tags\Models\Tag::oneByTag($this->model->params->get('supportedtag'));
 			?>

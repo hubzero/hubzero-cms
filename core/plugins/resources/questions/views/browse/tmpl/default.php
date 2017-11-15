@@ -40,7 +40,7 @@ $this->css();
 </h3>
 <div class="container">
 	<p class="section-options">
-		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
+		<a class="icon-add add btn" href="<?php echo Route::url($this->resource->link() . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
 	</p>
 	<table class="questions entries">
 		<caption>

@@ -99,4 +99,24 @@ class Level extends Relational
 
 		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 	}
+
+	/**
+	 * Get field by label
+	 *
+	 * @param   string  $label
+	 * @return  object
+	 */
+	public static function oneByLabel($label)
+	{
+		$result = self::all()
+			->whereEquals('label', $label)
+			->row();
+
+		if (!$result)
+		{
+			$result = self::blank();
+		}
+
+		return $result;
+	}
 }

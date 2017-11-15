@@ -34,21 +34,17 @@
 defined('_HZEXEC_') or die();
 ?>
 <p class="answer">
-	<?php if ($this->resource->alias) : ?>
-		<a href="<?php echo Route::url('index.php?option=com_resources&alias=' . $this->resource->alias . '&active=questions'); ?>">
-	<?php else : ?>
-		<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->resource->id . '&active=questions'); ?>">
-	<?php endif; ?>
-		<?php
-			if ($this->count == 1)
-			{
-				echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_QUESTION', $this->count);
-			}
-			else
-			{
-				echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_QUESTIONS', $this->count);
-			}
-		?>
-		</a>
-	(<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->resource->id . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
+	<a href="<?php echo Route::url($this->resource->link() . '&active=questions'); ?>">
+	<?php
+		if ($this->count == 1)
+		{
+			echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_QUESTION', $this->count);
+		}
+		else
+		{
+			echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_QUESTIONS', $this->count);
+		}
+	?>
+	</a>
+	(<a href="<?php echo Route::url($this->resource->link() . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 </p>

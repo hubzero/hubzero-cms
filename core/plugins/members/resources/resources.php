@@ -344,7 +344,6 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		// Push some CSS and JS to the tmeplate that may be needed
 		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
 
-		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
 	}
 }

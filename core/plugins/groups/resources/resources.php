@@ -33,8 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Groups Plugin class for resources
@@ -44,7 +43,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
@@ -328,11 +327,10 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 					// Load neccesities for com_resources controller
 					$lang = App::get('language');
 					$lang->load('com_resources', Component::path('com_resources') . DS . 'site');
-					require_once Component::path('com_resources') . DS .'models' . DS . 'resource.php';
+
+					require_once Component::path('com_resources') . DS .'models' . DS . 'entry.php';
 					require_once Component::path('com_resources') . DS .'site' . DS . 'controllers' . DS . 'resources.php';
-					require_once Component::path('com_resources') . DS .'helpers' . DS . 'helper.php';
 					require_once Component::path('com_resources') . DS .'helpers' . DS . 'html.php';
-					require_once Component::path('com_resources') . DS .'helpers' . DS . 'tags.php';
 					require_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
 					require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
 					require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
@@ -415,11 +413,10 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			foreach ($ids as $id)
 			{
 				// Disassociate the resource from the group and unpublish it
-				$rr = new \Components\Resources\Tables\Resource($database);
-				$rr->load($id->id);
-				$rr->group_owner = '';
-				$rr->published = 0;
-				$rr->store();
+				$rr = Components\Resources\Models\Entry::oneOrFail($id->id);
+				$rr->set('group_owner', '');
+				$rr->set('published', Components\Resources\Models\Entry::STATE_UNPUBLISHED);
+				$rr->save();
 
 				// Add the page ID to the log
 				$log .= $id->id . ' ' . "\n";
@@ -459,7 +456,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 		$database = App::get('db');
 
-		$rr = new \Components\Resources\Tables\Resource($database);
+		$rr = \Components\Resources\Models\Entry::blank();
 
 		$database->setQuery("SELECT id FROM ".$rr->getTableName()." AS r WHERE r.group_owner=".$database->quote($gid));
 		return $database->loadObjectList();
@@ -468,7 +465,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a list of resource categories (types)
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getResourcesAreas()
 	{
@@ -478,26 +475,22 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			return $areas;
 		}
 
-		$categories = $this->_cats;
-		if (!is_array($categories))
+		if (!is_array($this->_cats))
 		{
 			// Get categories
-			$database = App::get('db');
-			$rt = new \Components\Resources\Tables\Type($database);
-			$categories = $rt->getMajorTypes();
-			$this->_cats = $categories;
+			$this->_cats = Components\Resources\Models\Type::getMajorTypes();
 		}
+		$categories = $this->_cats;
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
+		foreach ($categories as $category)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $categories[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $category->type);
 			$normalized = strtolower($normalized);
 
-			//$categories[$i]->title = $normalized;
-			$cats[$normalized] = $categories[$i]->type;
+			$cats[$normalized] = $category->type;
 		}
 
 		$areas = array(
@@ -510,14 +503,14 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieve records for items associated with this group
 	 *
-	 * @param      object  $group      Group that owns the records
-	 * @param      [type]  $authorized Authorization level
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      string  $access     Access level
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * @param   object   $group       Group that owns the records
+	 * @param   bool     $authorized  Authorization level
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   string   $access      Access level
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function getResources($group, $authorized, $limit=0, $limitstart=0, $sort='date', $access='all', $areas=null)
 	{
@@ -539,38 +532,32 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = App::get('db');
-
-		// Instantiate some needed objects
-		$rr = new \Components\Resources\Tables\Resource($database);
-
 		// Build query
 		$filters = array();
-		$filters['now'] = \Date::toSql();
-		$filters['sortby'] = $sort;
+		$filters['now'] = Date::toSql();
+		$filters['sortby'] = ($sort == 'date' ? 'created' : $sort);
 		$filters['group'] = $group->get('cn');
 		$filters['access'] = $access;
 		$filters['authorized'] = $authorized;
-		$filters['state'] = array(1);
+		$filters['published'] = array(1);
 
 		// Get categories
 		$categories = $this->_cats;
 		if (!is_array($categories))
 		{
-			$rt = new \Components\Resources\Tables\Type($database);
-			$categories = $rt->getMajorTypes();
+			$categories = Components\Resources\Models\Type::getMajorTypes();
 		}
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
+		foreach ($categories as $category)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $categories[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $category->type);
 			$normalized = strtolower($normalized);
 
 			$cats[$normalized] = array();
-			$cats[$normalized]['id'] = $categories[$i]->id;
+			$cats[$normalized]['id'] = $category->id;
 		}
 
 		if ($limit)
@@ -601,10 +588,15 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get results
-			$database->setQuery($rr->buildPluginQuery($filters));
-			$rows = $database->loadObjectList();
+			$rows = Components\Resources\Models\Entry::allWithFilters($filters)
+				->order($filters['sortby'], 'asc')
+				->limit($limit)
+				->start($limitstart)
+				->rows();
 
 			// Did we get any results?
+			$results = array();
+
 			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
@@ -614,24 +606,21 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 					{
 						if ($row->alias)
 						{
-							$rows[$key]->href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&alias=' . $row->alias);
+							$href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&alias=' . $row->alias);
 						}
 						else
 						{
-							$rows[$key]->href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&id=' . $row->id);
+							$href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&id=' . $row->id);
 						}
 					}
 					else
 					{
-						if ($row->alias)
-						{
-							$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
-						}
-						else
-						{
-							$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
-						}
+						$href = Route::url($row->link());
 					}
+
+					$row->set('href', $href);
+
+					$results[] = $row;
 				}
 			}
 
@@ -650,14 +639,13 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				if (is_array($val))
 				{
 					$i = 0;
-					foreach ($val as $a=>$t)
+					foreach ($val as $a => $t)
 					{
 						if ($limitstart == -1)
 						{
 							if ($i == 0)
 							{
-								$database->setQuery($rr->buildPluginQuery($filters));
-								$counts[] = $database->loadResult();
+								$counts[] = Components\Resources\Models\Entry::allWithFilters($filters)->total();
 							}
 							else
 							{
@@ -669,8 +657,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 							$filters['type'] = $cats[$a]['id'];
 
 							// Execute a count query for each area/category
-							$database->setQuery($rr->buildPluginQuery($filters));
-							$counts[] = $database->loadResult();
+							$counts[] = Components\Resources\Models\Entry::allWithFilters($filters)->total();
 						}
 						$i++;
 					}

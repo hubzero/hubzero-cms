@@ -44,23 +44,25 @@ $this->css()
      ->js('flot/jquery.flot.crosshair.min.js', 'system');
 
 // Set the base URL
-$url = 'index.php?option=' . $this->option . '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id) . '&active=usage';
+$url = $this->resource->link() . '&active=usage';
 
 $img1 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->resource->id . '-Users.gif';
 $img2 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->resource->id . '-Jobs.gif';
 
 $cls = 'even';
 
-$database = App::get('db');
-
-$topvals = new \Components\Resources\Tables\Stats\Tools\Topvals($database);
-
 switch ($this->params->get('defaultDataset', 'cumulative'))
 {
-	case 'yearly':  $prd = 12; break;
-	case 'monthly': $prd = 1;  break;
+	case 'yearly':
+		$prd = 12;
+		break;
+	case 'monthly':
+		$prd = 1;
+		break;
 	case 'cumulative':
-	default: $prd = 14; break;
+	default:
+		$prd = 14;
+		break;
 }
 
 if (intval($this->params->get('cache', 1)))
@@ -447,7 +449,7 @@ if ($results)
 								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
 								<td class="textual-data"><?php
 								if (isset($codes[$row->name])) { ?>
-									<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" />
+									<img src="<?php echo $base; ?>/components/com_members/site/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" />
 								<?php }
 								echo $row->name; ?></td>
 								<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>%)</span></span></td>
@@ -742,7 +744,7 @@ if ($results)
 					{
 						tbl.append(
 							'<tr>' +
-								'<td class="textual-data">' + (data[i]['code'] ? '<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' +
+								'<td class="textual-data">' + (data[i]['code'] ? '<img src="<?php echo $base; ?>/components/com_members/site/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' +
 								'<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100),2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100),2) + '%)</span></span></td>' +
 								//'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' +
 							'</tr>'

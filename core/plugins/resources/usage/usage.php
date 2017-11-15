@@ -106,7 +106,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		$tables = $database->getTableList();
 		$table  = $database->getPrefix() . 'resource_stats_tools';
 
-		$url = Route::url('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name);
+		$url = Route::url($model->link() . '&active=' . $this->_name);
 
 		if (!in_array($table, $tables))
 		{
@@ -119,19 +119,22 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
-		include_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
+		include_once Component::path($option) . DS . 'models' . DS . 'stat.php';
 		if ($model->isTool())
 		{
-			$stats = new \Components\Resources\Tables\Stats\Tools($database);
+			$query = \Components\Resources\Models\Stat\Tool::all();
 		}
 		else
 		{
-			$stats = new \Components\Resources\Tables\Stats($database);
+			$query = \Components\Resources\Models\Stat::all();
 		}
-		$stats->loadStats($model->resource->id, $period); //, $dthis);
+		$stats = $query->whereEquals('resid', $model->id)
+			->whereEquals('period', $period)
+			->row();
 
-		$clusters = new \Components\Resources\Tables\Stats\Clusters($database);
-		$clusters->loadStats($model->resource->id);
+		$clusters = \Components\Resources\Models\Stat\Cluster::all()
+			->whereEquals('resid', $model->id)
+			->row();
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
@@ -144,16 +147,16 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 				{
 					$dtm = '0000-00-00 00:00:00';
 				}
-				$this->getTopValues($model->resource->id, $dtm);
+				$this->getTopValues($model->id, $dtm);
 				return;
 			}
 			if ($action == 'overview')
 			{
-				$this->getValues($model->resource->id, Request::getInt('period', 13));
+				$this->getValues($model->id, Request::getInt('period', 13));
 				return;
 			}
 
-			include_once(\Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php');
+			include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 			$types = array();
 
@@ -163,7 +166,9 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 			if ($field->get('id'))
 			{
-				$options = $field->options()->ordered()->rows();
+				$options = $field->options()
+					->ordered()
+					->rows();
 
 				foreach ($options as $opt)
 				{
@@ -181,7 +186,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 			// Pass the view some info
 			$view->option     = $option;
-			$view->resource   = $model->resource;
+			$view->resource   = $model;
 			$view->stats      = $stats;
 			$view->chart_path = $this->params->get('chart_path','');
 			$view->map_path   = $this->params->get('map_path','');

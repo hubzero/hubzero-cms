@@ -33,12 +33,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$database = App::get('db');
-
 $this->status['fulltxt'] = stripslashes($this->status['fulltxt']);
 
-$type = new \Components\Resources\Tables\Type($database);
-$type->load(7);
+$type = \Components\Resources\Models\Type::one(7);
 
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->status['fulltxt'], $matches, PREG_SET_ORDER);
@@ -53,7 +50,7 @@ if (count($matches) > 0)
 $this->status['fulltxt'] = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->status['fulltxt']);
 $this->status['fulltxt'] = trim($this->status['fulltxt']);
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
 
 $elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 $fields = $elements->render();

@@ -34,7 +34,7 @@ namespace Components\Resources\Helpers;
 
 use Components\Tags\Models\Cloud;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Resources Tagging class
@@ -47,6 +47,18 @@ class Tags extends Cloud
 	 * @var  string
 	 */
 	protected $_scope = 'resources';
+
+	/**
+	 * Turn a comma-separated string of tags into an array of normalized tags
+	 *
+	 * @param   mixed    $tags  Array or Comma-separated string of tags
+	 * @param   integer  $keep  Use normalized tag as array key
+	 * @return  array
+	 */
+	public function parse($tags, $keep=0)
+	{
+		return $this->_parse($tags, $keep);
+	}
 
 	/**
 	 * Get all tags with a resource association

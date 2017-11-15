@@ -243,20 +243,27 @@ class Admin extends SiteController
 		// Github connection?
 		if ($status['github'])
 		{
-			$command = '/usr/bin/sudo -u apps '
-				. PATH_CORE . '/components/com_tools/scripts/git2svn.sh -g ' . $status['github']
-				. ' -s ' . $status['toolname']
-				. ' -c ' . PATH_CORE . '/..';
-
-			if (!$this->_invokeScript($command, Lang::txt('Github repository connection successful')))
+			if (!file_exists('/usr/bin/git2svn.sh'))
 			{
-				$this->setError(Lang::txt('Github connection error'));
+				$this->setError(Lang::txt('COM_TOOLS_GITHUB_REPO_GIT2SVN_MISSING'));
+			}
+			else
+			{
+				$command = '/usr/bin/sudo -u apps '
+						. '/usr/bin/git2svn.sh -g ' . $status['github']
+						. ' -s ' . $status['toolname']
+						. ' -c ' . PATH_CORE . '/..';
+
+				if (!$this->_invokeScript($command, Lang::txt('Github repository connection successful')))
+				{
+					$this->setError(Lang::txt('Github connection error'));
+				}
 			}
 		}
 
 		// Build the exec command
 		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . PATH_CORE . '/../ ' . $status['toolname'];
-		error_log($command);
+
 		// Invoke the script
 		if (!$this->getError() && $this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED')))
 		{
@@ -491,14 +498,24 @@ class Admin extends SiteController
 		// Register DOI handle
 		if ($result && $this->config->get('new_doi', 0))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
+			include_once \Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
 			// Collect metadata
 			$url = Request::base() . ltrim(Route::url('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
 
 			// Check if DOI exists for this revision
-			$objDOI = new \Components\Resources\Tables\Doi($this->database);
-			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision'], '', 1);
+			$objDOI = \Components\Resources\Tables\Doi::all()
+				->whereEquals('rid', $status['resourceid']);
+			if ($status['revision'])
+			{
+				$objDOI->whereEquals('local_revision', $status['revision']);
+			}
+			else
+			{
+				$objDOI->whereEquals('versionid', 0);
+			}
+
+			$bingo = $objDOI->row()->get('doi');
 
 			// DOI already exists for this revision
 			if ($bingo)

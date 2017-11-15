@@ -55,7 +55,6 @@ class RecommendedTags
 			'count'   => 20
 		), $opts);
 
-		require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'Inflect.php';
 		$dbh = App::get('db');
 
 		$dbh->setQuery(
@@ -109,8 +108,8 @@ class RecommendedTags
 		$tags = array();
 		foreach ($dbh->loadAssocList() as $row)
 		{
-			$tags[Inflect::singularize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
-			$tags[Inflect::pluralize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
+			$tags[Hubzero\Utility\Inflector::singularize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
+			$tags[Hubzero\Utility\Inflector::pluralize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
 		}
 
 		$dbh->setQuery(
@@ -144,7 +143,7 @@ class RecommendedTags
 			{
 				$stems[] = array(
 					$stems[0][0].' '.stem($words[$idx + 1]).' '.stem($words[$idx + 2]),
-					Inflect::singularize(strtolower($word)).' '.strtolower($words[$idx + 1]).' '.strtolower($words[$idx + 2])
+					Hubzero\Utility\Inflector::singularize(strtolower($word)).' '.strtolower($words[$idx + 1]).' '.strtolower($words[$idx + 2])
 				);
 			}
 			foreach ($stems as $set_idx=>$set)

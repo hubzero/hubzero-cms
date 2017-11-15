@@ -76,7 +76,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get some needed libraries
-		include_once(__DIR__ . DS . 'models' . DS . 'recommendation.php');
+		include_once __DIR__ . DS . 'models' . DS . 'recommendation.php';
 
 		// Get recommendations
 		$r = Plugins\Resources\Recommendations\Models\Recommendation::find(

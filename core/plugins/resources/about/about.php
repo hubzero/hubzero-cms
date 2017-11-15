@@ -48,7 +48,7 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $model Current model
+	 * @param      object  $model  Current model
 	 * @return     array
 	 */
 	public function &onResourcesAreas($model)

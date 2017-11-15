@@ -50,18 +50,11 @@ include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
+include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
+require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+include_once Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
 /**
  * Controller class for contributing a tool
@@ -1604,8 +1597,7 @@ class Pipeline extends SiteController
 			{
 				include_once(__DIR__ . DS . 'resource.php');
 
-				$r = new \Components\Resources\Tables\Resource($this->database);
-				$r->loadAlias($hzt->toolname);
+				$r = \Components\Resources\Models\Entry::oneByAlias($hzt->toolname);
 
 				if ($r && $r->id)
 				{

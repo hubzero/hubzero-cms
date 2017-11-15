@@ -33,6 +33,7 @@
 namespace Components\Resources\Helpers;
 
 use Hubzero\Base\Obj;
+use Filesystem;
 
 /**
  * Helper class for HUB Presenter
@@ -42,9 +43,9 @@ class Hubpresenter extends Obj
 	/**
 	 * Generates JSON Manifest from XML doc uploaded
 	 *
-	 * @param 	string 	Path to resources files
-	 * @param 	string 	Path to XML doc
-	 * @return 	string	Check to make sure manifest is created successfully
+	 * @param   string  $resource_path  Path to resources files
+	 * @param   string  $xml_path       Path to XML doc
+	 * @return  string  Check to make sure manifest is created successfully
 	 */
 	public function createJsonManifest($resource_path, $xml_path)
 	{
@@ -89,9 +90,9 @@ class Hubpresenter extends Obj
 				$media = array();
 
 				$media[0]['source'] = $orig_media;
-				$media[0]['type']   = self::getExt($orig_media);
+				$media[0]['type']   = Filesystem::extension($orig_media);
 
-				$name = self::getName($orig_media);
+				$name = Filesystem::name($orig_media);
 
 				if (file_exists(PATH_APP . DS . $resource_path . DS . 'content' . DS . $name . '.webm'))
 				{
@@ -134,29 +135,5 @@ class Hubpresenter extends Obj
 		$new_file    = PATH_APP . DS . $resource_path . DS . 'presentation.json';
 		$file_handle = fopen($new_file, 'w') or die("An Error Occured While Trying to Create the Presentation Manifest.");
 		fwrite($file_handle, $json);
-	}
-
-	/**
-	 * Gets the file extension from filename
-	 *
-	 * @param 	string	Name of file
-	 * @return 	string	File Extension
-	 */
-	protected function getExt($filename)
-	{
-		$parts = explode('.', $filename);
-		return array_pop($parts);
-	}
-
-	/**
-	 * Gets just the name of file from filename
-	 *
-	 * @param 	string	Name of file
-	 * @return 	string	File name
-	 */
-	protected function getName($filename)
-	{
-		$parts = explode('.', $filename);
-		return $parts[0];
 	}
 }

@@ -32,7 +32,7 @@
 
 namespace Components\Resources\Admin\Controllers;
 
-use Components\Resources\Tables\Resource;
+use Components\Resources\Models\Entry;
 use Components\Resources\Helpers\Tags as TagCloud;
 use Hubzero\Component\AdminController;
 use stdClass;
@@ -58,13 +58,11 @@ class Tags extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// Get resource title
-		$row = new Resource($this->database);
-		$row->load($id);
+		$row = Entry::oneOrFail($id);
 
 		if (!$row->get('id'))
 		{
 			Notify::error(Lang::txt('COM_RESOURCES_NOTFOUND'));
-
 			return $this->cancelTask();
 		}
 
