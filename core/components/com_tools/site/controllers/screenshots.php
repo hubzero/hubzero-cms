@@ -353,8 +353,8 @@ class Screenshots extends SiteController
 		}
 
 		$version = Request::getVar('version', 'dev');
-		$title = preg_replace('/\s+/', ' ',Request::getVar('title', ''));
-		$allowed = array('.gif','.jpg','.png','.bmp');
+		$title = preg_replace('/\s+/', ' ', Request::getVar('title', ''));
+		$allowed = array('.gif', '.jpg', '.png', '.bmp');
 		$changing_version = Request::getInt('changing_version', 0);
 		if ($changing_version)
 		{
@@ -507,7 +507,7 @@ class Screenshots extends SiteController
 		$im = imagecreatetruecolor($av, $ah);
 		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif ($im, $save_dir . $save_name))
+			if (imagegif($im, $save_dir . $save_name))
 			{
 				return true;
 			}
@@ -535,11 +535,21 @@ class Screenshots extends SiteController
 
 		switch ($gis[2])
 		{
-			case '1': $imorig = imagecreatefromgif ($tmpname);  break;
-			case '2': $imorig = imagecreatefromjpeg($tmpname); break;
-			case '3': $imorig = imagecreatefrompng($tmpname);  break;
-			case '4': $imorig = imagecreatefromwbmp($tmpname); break;
-			default:  $imorig = imagecreatefromjpeg($tmpname); break;
+			case '1':
+				$imorig = imagecreatefromgif($tmpname);
+				break;
+			case '2':
+				$imorig = imagecreatefromjpeg($tmpname);
+				break;
+			case '3':
+				$imorig = imagecreatefrompng($tmpname);
+				break;
+			case '4':
+				$imorig = imagecreatefromwbmp($tmpname);
+				break;
+			default:
+				$imorig = imagecreatefromjpeg($tmpname);
+				break;
 		}
 
 		$x = imageSX($imorig);
@@ -562,7 +572,7 @@ class Screenshots extends SiteController
 		$im = imagecreatetruecolor($av, $ah);
 		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif ($im, $save_dir . $save_name))
+			if (imagegif($im, $save_dir . $save_name))
 			{
 				return true;
 			}
@@ -599,7 +609,6 @@ class Screenshots extends SiteController
 		if ($from == 0 or $to == 0 or $rid == 0)
 		{
 			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			return;
 		}
 
 		if ($toolid && $this->_checkAccess($toolid))
@@ -632,7 +641,6 @@ class Screenshots extends SiteController
 			if ($from == 0 or $to == 0 or $rid == 0)
 			{
 				App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-				return;
 			}
 
 			if ($this->transfer($from, $to, $rid))

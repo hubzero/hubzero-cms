@@ -265,7 +265,7 @@ class Router extends Base
 
 				// Tools controller
 				case 'report':
-					\App::redirect(\Route::url('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),'','message',true);
+					\App::redirect(\Route::url('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]));
 					exit();
 				break;
 

@@ -188,8 +188,8 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			$view->option     = $option;
 			$view->resource   = $model;
 			$view->stats      = $stats;
-			$view->chart_path = $this->params->get('chart_path','');
-			$view->map_path   = $this->params->get('map_path','');
+			$view->chart_path = $this->params->get('chart_path', '');
+			$view->map_path   = $this->params->get('map_path', '');
 			$view->dthis      = $dthis;
 			$view->period     = $period;
 			$view->params     = $this->params;

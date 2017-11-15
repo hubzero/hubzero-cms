@@ -188,7 +188,7 @@ if ($mode != 'preview')
 							}
 						}
 
-						$live_site = rtrim(Request::base(),'/');
+						$live_site = rtrim(Request::base(), '/');
 
 						if ($notes || $audio || $video)
 						{
@@ -367,4 +367,5 @@ if ($mode != 'preview')
 			</section><!-- / .main section -->
 		</form>
 	<?php } // if ($this->tab == 'about' && $ccount > 0) ?>
-<?php } ?>
+<?php
+}

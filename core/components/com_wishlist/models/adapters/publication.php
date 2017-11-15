@@ -320,4 +320,3 @@ class Publication extends Base
 		return $this;
 	}
 }
-

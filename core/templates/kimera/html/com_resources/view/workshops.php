@@ -359,4 +359,5 @@ if ($mode != 'preview')
 			</section>
 		</form>
 	<?php } ?>
-<?php } ?>
+<?php
+}

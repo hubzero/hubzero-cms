@@ -145,7 +145,7 @@ class Html
 	 */
 	public static function selectAccess($as, $value, $name = 'access')
 	{
-		$as = explode(',',$as);
+		$as = explode(',', $as);
 		$html  = '<select name="' . $name . '" id="field-' . str_replace(array('[',']'), '', $name) . '">' . "\n";
 		for ($i=0, $n=count($as); $i < $n; $i++)
 		{

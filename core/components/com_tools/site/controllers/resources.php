@@ -472,7 +472,7 @@ class Resources extends SiteController
 		$row->set('created', Date::toSql());
 		$row->set('published', \Components\Resources\Models\Entry::STATE_DRAFT);  // draft state
 		$row->set('params', $params->toString());
-		$row->set('attribs',$attribs->toString());
+		$row->set('attribs', $attribs->toString());
 		$row->set('standalone', 1);
 		$row->set('type', 7);
 		$row->set('title', $tool['title']);

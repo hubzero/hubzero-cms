@@ -351,4 +351,3 @@ class Group extends Base
 		return $this;
 	}
 }
-

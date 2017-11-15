@@ -88,7 +88,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 
 		$data = '';
 		$sponsors = array();
-		foreach ($records As $record)
+		foreach ($records as $record)
 		{
 			$sponsors[$record->alias] = $record;
 		}

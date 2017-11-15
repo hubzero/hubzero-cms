@@ -244,7 +244,7 @@ class Pipeline extends AdminController
 		$objV     = new \Components\Tools\Tables\Version($this->database);
 		$objA     = new \Components\Tools\Tables\Author($this->database);
 
-		$live_site = rtrim(Request::base(),'/');
+		$live_site = rtrim(Request::base(), '/');
 		$sitename = Config::get('sitename');
 
 		// Get config
