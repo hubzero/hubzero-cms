@@ -32,12 +32,12 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
 /**
  * Publication handler model class
  */
-class Handler extends Object
+class Handler extends Obj
 {
 	/**
 	 * Handler name
