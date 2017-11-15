@@ -8,6 +8,10 @@ body {
   color: #342E37;
 }
 
+.logo {
+  height: 165px;
+}
+
 .cards {
   padding: 15px;
   display: flex;
