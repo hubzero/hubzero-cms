@@ -8,6 +8,10 @@ body {
   color: #342E37;
 }
 
+.logo {
+  height: 165px;
+}
+
 .cards {
   padding: 15px;
   display: flex;
@@ -38,6 +42,7 @@ body {
 
 .card__inner {
   width: 100%;
+  min-height: 227px;
   padding: 30px;
   position: relative;
   cursor: pointer;
