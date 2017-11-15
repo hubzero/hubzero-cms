@@ -1,5 +1,5 @@
 <?php
-// this is a very basic table display for the partners, needs to be edited before it is pushed to the real world
+// this is a very basic cards display for the partners, needs to be edited before it is pushed to the real world
 // Push CSS to the document
 //
 // The css() method provides a quick and convenient way to attach stylesheets.
@@ -60,11 +60,11 @@ Pathway::append(
 	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
 		<div class="subject">
 			<div class="cards">
-				<?php foreach ($this->records as $record) { ?>
+				<?php foreach ($this->records as $record) {
+					if ($record->get('state')) { // Display only if published ?>
 				    <div class="card [ is-collapsed ]">
       					<div class="card__inner [ js-expander ]">
-      						<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim('app/site/media/images/partners/' . $record->get('logo_img'), DS)); ?>
-      						<img class="card-logo" src="<?php echo $image->inline(); ?>" alt="<?php echo $record->get('name'); ?>" class="logo">
+      						<img src="<?php echo 'app/site/media/images/partners/' . $record->get('logo_img') ?>" alt="<?php echo $record->get('name'); ?>" class="logo">
       					</div>
       					<div class="card__expander">
         					<i class="fa fa-close [ js-collapser ]" aria-hidden="true"></i>
@@ -88,7 +88,7 @@ Pathway::append(
         					</div>
         				</div>
       				</div>
-				<?php } ?>
+				<?php } } ?>
 			</div>
 		</div>
 		<aside class="aside">
