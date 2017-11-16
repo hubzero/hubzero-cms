@@ -187,19 +187,21 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 							<strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PATH'); ?>: </strong> <span><?php echo $downloadPath; ?></span>
 						</li>
 						<li>
-							<?php if (isset($ckeditor) && $ckeditor != '') : ?>
+							<?php if ($this->authorized && isset($ckeditor) && $ckeditor != '') : ?>
 								<a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return ckeditorInsertFile('<?php echo $downloadPath; ?>');"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
 							<?php endif; ?>
 							<a href="<?php echo $downloadPath; ?>" class="btn btn-secondary icon-download action-download"><?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
-							<?php if ($this->group->published == 1) : ?>
-								<a href="<?php echo $renamePath; ?>" class="btn btn-secondary icon-edit action-rename"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></a>
-								<a href="<?php echo $movePath; ?>" class="btn btn-secondary icon-move action-move"><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?></a>
-							<?php endif; ?>
-							<?php if ($isArchive) : ?>
-								<a href="<?php echo $extractPath; ?>" class="btn btn-secondary icon-extract action-extract"><?php echo Lang::txt('COM_GROUPS_MEDIA_EXTRACT'); ?></a>
-							<?php endif; ?>
-							<?php if ($this->group->published == 1) : ?>
-								<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
+							<?php if ($this->authorized) : ?>
+								<?php if ($this->group->published == 1) : ?>
+									<a href="<?php echo $renamePath; ?>" class="btn btn-secondary icon-edit action-rename"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></a>
+									<a href="<?php echo $movePath; ?>" class="btn btn-secondary icon-move action-move"><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?></a>
+								<?php endif; ?>
+								<?php if ($isArchive) : ?>
+									<a href="<?php echo $extractPath; ?>" class="btn btn-secondary icon-extract action-extract"><?php echo Lang::txt('COM_GROUPS_MEDIA_EXTRACT'); ?></a>
+								<?php endif; ?>
+								<?php if ($this->group->published == 1) : ?>
+									<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
+								<?php endif; ?>
 							<?php endif; ?>
 						</li>
 					</ul>
