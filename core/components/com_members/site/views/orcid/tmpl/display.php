@@ -96,15 +96,18 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
 				<div class="grid nobreak">
 					<div class="col span4">
 						<label for="first-name">
-							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIRST_NAME'); ?>
+							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIRST_NAME'); ?><span class="required" style="color:red"><?php echo Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED'); ?></span>
 							<input type="text" id="first-name" name="first-name" value="<?php echo $this->escape($fname); ?>" />
 						</label>
 					</div>
 					<div class="col span4">
 						<label for="last-name">
-							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_LAST_NAME'); ?>
+							<?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_LAST_NAME'); ?><span class="required" style="color:red"><?php echo Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED'); ?></span>
 							<input type="text" id="last-name" name="last-name" value="<?php echo $this->escape($lname); ?>" />
 						</label>
+					</div>
+					<div id="alert-message" class="col span8" style="display:none">
+							<p style="color:red"><?php echo Lang::txt('COM_MEMBERS_SEARCH_ORCID_ALERT_NAME'); ?></p>
 					</div>
 				</div>
 
@@ -116,7 +119,6 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
 				<div class="grid nobreak">
 					<div class="col span8">
 						<p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_FILL_AND_SEARCH'); ?></p>
-						<p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_NOTE_ABOUT_PRIVATE_ORCID'); ?></p>
 					</div>
 					<div class="col span4 omega">
 						<p>
