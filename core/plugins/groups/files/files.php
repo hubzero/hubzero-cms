@@ -81,7 +81,7 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name' => 'files',
 			'title' => Lang::txt('PLG_GROUPS_FILES'),
-			'default_access' => $this->params->get('plugin_access','members'),
+			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => 'f0c5'
 		);
