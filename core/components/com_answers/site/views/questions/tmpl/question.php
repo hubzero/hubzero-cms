@@ -133,8 +133,8 @@ $this->css()
 								<?php echo htmlspecialchars_decode($this->question->question); ?>
 							</div><!-- / .question-long -->
 						<?php } ?>
-
 						<div class="entry-tags">
+
 							<?php echo $this->question->tags('cloud', 0); ?>
 						</div><!-- / .question-tags -->
 					<?php } ?>

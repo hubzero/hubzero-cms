@@ -44,7 +44,7 @@ if ($this->tags->count() > 0)
 	{
 		if (!in_array($tag->get('raw_tag'), $exclude))
 		{
-			$tl[$tag->get('tag')] = "\t" . '<li><a class="tag" href="' . Route::url('index.php?option=com_tags&tag=' . $this->escape($tag->get('tag'))) . '">' . $this->escape($tag->get('raw_tag')) . '</a></li>';
+			$tl[$tag->get('tag')] = "\t" . '<li><a class="tag" href="' . Route::url('index.php?option=com_tags&task=view&tag=' . $this->escape($tag->get('tag'))) . '">' . $this->escape($tag->get('raw_tag')) . '</a></li>';
 		}
 	}
 	if ($this->params->get('sortby') == 'alphabeta')

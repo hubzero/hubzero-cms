@@ -141,7 +141,7 @@ $this->css()
 			}
 			else
 			{
-				$link = Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'));
+				$link = Route::url('index.php?option=com_tags&task=view&tag=' . $tag->get('tag'));
 			}
 			?>
 			<p class="supported">

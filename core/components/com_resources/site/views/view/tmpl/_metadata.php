@@ -114,7 +114,7 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 				$tag = \Components\Tags\Models\Tag::oneByTag($this->model->params->get('supportedtag'));
 			?>
 			<p class="supported">
-				<a href="<?php echo $this->model->params->get('supportedlink', Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'))); ?>"><?php echo $this->escape(stripslashes($tag->get('raw_tag'))); ?></a>
+				<a href="<?php echo $this->model->params->get('supportedlink', Route::url('index.php?option=com_tags&task=view&tag=' . $tag->get('tag'))); ?>"><?php echo $this->escape(stripslashes($tag->get('raw_tag'))); ?></a>
 			</p>
 			<?php
 			}

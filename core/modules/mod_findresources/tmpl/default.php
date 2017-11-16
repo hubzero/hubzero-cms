@@ -48,7 +48,7 @@ defined('_HZEXEC_') or die();
 	<ol class="tags">
 		<li><?php echo Lang::txt('MOD_FINDRESOURCES_POPULAR_TAGS'); ?></li>
 	<?php foreach ($this->tags as $tag) { ?>
-		<li><a href="<?php echo Route::url('index.php?option=com_tags&tag=' . $tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
+		<li><a href="<?php echo Route::url('index.php?option=com_tags&task=view&tag=' . $tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
 	<?php } ?>
 		<li><a href="<?php echo Route::url('index.php?option=com_tags'); ?>" class="showmore"><?php echo Lang::txt('MOD_FINDRESOURCES_MORE_TAGS'); ?></a></li>
 	</ol>
