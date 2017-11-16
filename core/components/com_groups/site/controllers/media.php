@@ -68,6 +68,7 @@ class Media extends Base
 
 		// Load the group page
 		$this->group = Group::getInstance($this->cn);
+		$this->authorized = false;
 
 		// Load plugin access groups
 		$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
@@ -79,22 +80,32 @@ class Media extends Base
 		}
 
 		// Kick user out if not logged in and should be
-		if (User::isGuest() && $pluginAccess['files'] == 'registered')
+		/*if (User::isGuest() && $pluginAccess['files'] == 'registered')
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
-		}
+		}*/
 
 		// Check if they're logged in and not everyone can view files
-		if (User::isGuest() && $pluginAccess['files'] != 'anyone')
+		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
-			return;
+			// If not everyone can view files, kick them to the login page
+			if ($pluginAccess['files'] != 'anyone')
+			{
+				return $this->loginTask(Lang::txt('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
+			}
 		}
 
 		// Check authorization
-		if (!in_array(User::get('id'), $this->group->get('members')) && $pluginAccess['files'] == 'members')
+		if (!in_array(User::get('id'), $this->group->get('members')))
 		{
-			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+			if ($pluginAccess['files'] == 'members')
+			{
+				$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+			}
+		}
+		else
+		{
+			$this->authorized = true;
 		}
 
 		//build path to the group folder
@@ -166,7 +177,9 @@ class Media extends Base
 		$this->view->group         = $this->group;
 
 		//display view
-		$this->view->display();
+		$this->view
+			->set('authorized', $this->authorized)
+			->display();
 	}
 
 	/**
@@ -381,7 +394,9 @@ class Media extends Base
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		//display view
-		$this->view->display();
+		$this->view
+			->set('authorized', $this->authorized)
+			->display();
 	}
 
 	/**
@@ -808,7 +823,9 @@ class Media extends Base
 		$this->view->file       = $file;
 
 		//render layout
-		$this->view->display();
+		$this->view
+			->set('authorized', $this->authorized)
+			->display();
 	}
 
 	/**
@@ -860,9 +877,6 @@ class Media extends Base
 	 */
 	public function renameFileTask()
 	{
-		// set the neeced layout
-		$this->view->setLayout('renamefile');
-
 		// get request vars
 		$file = Request::getVar('file', '');
 
@@ -871,7 +885,10 @@ class Media extends Base
 		$this->view->file  = $file;
 
 		//render layout
-		$this->view->display();
+		$this->view
+			->set('authorized', $this->authorized)
+			->setLayout('renamefile')
+			->display();
 	}
 
 	/**
@@ -1033,6 +1050,7 @@ class Media extends Base
 
 		//render layout
 		$this->view
+			->set('authorized', $this->authorized)
 			->setLayout('newfolder')
 			->display();
 	}
@@ -1099,6 +1117,7 @@ class Media extends Base
 
 		//render layout
 		$this->view
+			->set('authorized', $this->authorized)
 			->setLayout('renamefolder')
 			->display();
 	}
@@ -1198,6 +1217,7 @@ class Media extends Base
 
 		//render layout
 		$this->view
+			->set('authorized', $this->authorized)
 			->setLayout('movefolder')
 			->display();
 	}

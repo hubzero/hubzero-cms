@@ -57,7 +57,7 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 		<div class="upload-browser-col left">
 			<div class="toolbar cf">
 				<div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_GROUP_FILES'); ?></div>
-				<?php if ($this->group->published == 1) { ?>
+				<?php if ($this->authorized && $this->group->published == 1) { ?>
 					<div class="buttons">
 						<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=addfolder&tmpl=component&protected=true'); ?>" class="icon-add action-addfolder"><?php echo Lang::txt('Add folder'); ?></a>
 					</div>
@@ -69,7 +69,7 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 			<div class="foldertree-list">
 				<?php echo $this->folderList; ?>
 			</div>
-			<?php if ($this->group->published == 1) { ?>
+			<?php if ($this->authorized && $this->group->published == 1) { ?>
 				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
 					<fieldset>
 						<div id="ajax-uploader" data-instructions="<?php echo Lang::txt('Click or drop file'); ?>" data-action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1'); ?>">

@@ -62,9 +62,11 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 	<div class="upload-browser-col left">
 		<div class="toolbar cf">
 			<div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_GROUP_FILES'); ?></div>
-			<div class="buttons">
-				<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=addfolder&tmpl=component'); ?>" class="icon-add action-addfolder"></a>
-			</div>
+			<?php if ($this->authorized) : ?>
+				<div class="buttons">
+					<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=addfolder&tmpl=component'); ?>" class="icon-add action-addfolder"></a>
+				</div>
+			<?php endif; ?>
 		</div>
 		<div class="foldertree" data-activefolder="<?php echo $this->activeFolder; ?>">
 			<?php echo $this->folderTree; ?>
