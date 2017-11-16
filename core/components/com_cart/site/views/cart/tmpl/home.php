@@ -140,7 +140,7 @@ if (!empty($errors))
 
 						echo '<td>';
 						if ($info->sAllowMultiple) {
-							echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" class="numericOnly" name="skus[' . $info->sId . ']" value="';;
+							echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" min="0" class="numericOnly" name="skus[' . $info->sId . ']" value="';;
 							echo $item['cartInfo']->qty;
 							echo '">';
 						}
