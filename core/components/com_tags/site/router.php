@@ -96,7 +96,10 @@ class Router extends Base
 				$vars['task'] = $segments[0];
 				if ($segments[0] == 'view')
 				{
-					$vars['tag']  = $segments[1];
+					if (isset($segments[1]))
+					{
+						$vars['tag']  = $segments[1];
+					}
 				}
 			}
 			else
