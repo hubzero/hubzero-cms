@@ -161,6 +161,12 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
+			// Plugin was made public - Disallow uploading or editing
+			if (User::isGuest() && $group_plugin_acl == 'anyone')
+			{
+				$this->authorized = false;
+			}
+
 			//check to see if user is member and plugin access requires members
 			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
@@ -248,8 +254,8 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Create group folder id doesnt exist
 	 *
-	 * @param  [type] $path [description]
-	 * @return [type]       [description]
+	 * @param   string  $path
+	 * @return  void
 	 */
 	private function _createGroupFolder($path)
 	{
@@ -269,9 +275,9 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build Folder tree based on path
 	 *
-	 * @param  [type]  $folders   [description]
-	 * @param  integer $parent_id [description]
-	 * @return [type]             [description]
+	 * @param   array    $folders
+	 * @param   integer  $parent_id
+	 * @return  array
 	 */
 	private function _buildFolderTree($folders, $parent_id = 0)
 	{
@@ -294,8 +300,8 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build Folder tree in html ul list form
 	 *
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
+	 * @param   array  $tree
+	 * @return  string
 	 */
 	private function _buildFolderTreeHtml($tree)
 	{
@@ -327,8 +333,8 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build Folder tree in select list form
 	 *
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
+	 * @param   array  $tree
+	 * @return  string
 	 */
 	private function _buildFolderTreeSelect($tree)
 	{
@@ -346,8 +352,8 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Recursive function to create options for select list
 	 *
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
+	 * @param   array  $tree
+	 * @return  string
 	 */
 	private function _buildFolderTreeSelectOptionList($tree)
 	{
@@ -371,4 +377,3 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 		return $options;
 	}
 }
-

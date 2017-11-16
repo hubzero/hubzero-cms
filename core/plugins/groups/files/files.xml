@@ -29,12 +29,12 @@ THE SOFTWARE.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension version="1.7" type="plugin" group="groups">
+<extension version="2.0" type="plugin" group="groups">
 	<name>Groups - Files</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Display a group's files</description>
+	<description>PLG_GROUPS_FILES_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="files">files.php</filename>
 	</files>
@@ -44,15 +44,15 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the blog plugin.">
-					<option value="anyone">Any HUB Visitor</option>
-					<option value="registered">Only Registered HUB Users</option>
-					<option value="members">Only Group Members</option>
-					<option value="nobody">Disabled/Off</option>
+				<field name="plugin_access" type="list" default="members" label="PLG_GROUPS_FILES_PARAM_PLUGIN_ACCESS_LABEL" description="PLG_GROUPS_FILES_PARAM_PLUGIN_ACCESS_DESC">
+					<option value="anyone">PLG_GROUPS_FILES_PARAM_PLUGIN_ACCESS_ANYONE</option>
+					<option value="registered">PLG_GROUPS_FILES_PARAM_PLUGIN_ACCESS_REGISTERED</option>
+					<option value="members">PLG_GROUPS_FILES_PARAM_PLUGIN_ACCESS_MEMBERS</option>
+					<option value="nobody">PLG_GROUPS_FILES_PARAM_PLUGIN_ACCESS_NOBODY</option>
 				</field>
-				<field name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Members' in group menu.">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="display_tab" type="list" default="1" label="PLG_GROUPS_FILES_PARAM_DISPLAY_TAB_LABEL" description="PLG_GROUPS_FILES_PARAM_DISPLAY_TAB_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>
