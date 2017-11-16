@@ -20,9 +20,16 @@ HUB.Orcid = {
 		var firstName = $('#first-name').val();
 		var lastName = $('#last-name').val();
 
-		if (!firstName && !lastName) {
-			alert('Please fill at least one of the fields.');
+		if ((!firstName) || (!lastName) || (!firstName && !lastName)) {
+			$('#alert-message').show();
 			return;
+		}
+		else
+		{
+			if($('#alert-message').show())
+			{
+				$('#alert-message').hide();
+			}
 		}
 
 		// return param: 1 means return ORCID to use to finish registration, assumes registration page
