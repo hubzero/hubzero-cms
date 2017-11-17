@@ -60,9 +60,9 @@ Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 </script>
 
 <form action="<?php echo Route::url('index.php?option=com_config');?>" id="application-form" method="post" name="adminForm" class="form-validate">
-	<?php if ($this->ftp) : ?>
+	<?php /*if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftplogin'); ?>
-	<?php endif; ?>
+	<?php endif;*/ ?>
 	<div id="config-document" class="clearfix">
 		<div id="page-site" class="tab">
 			<div class="grid noshow">
