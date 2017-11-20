@@ -156,7 +156,7 @@ $router->rules('parse')->append('prep', function ($uri)
 	$path = str_replace('index.php', '', $path);
 
 	// Set the route
-	$uri->setPath(trim($path , '/'));
+	$uri->setPath(trim($path, '/'));
 });
 
 /*
