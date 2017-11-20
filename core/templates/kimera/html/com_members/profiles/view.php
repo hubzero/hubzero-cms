@@ -215,12 +215,12 @@ if (!$no_html)
 			</ul><!-- /#page_menu -->
 
 			<?php
-				$thumb = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '_th.gif';
-				$full = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '.gif';
+			$thumb = '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '_th.gif';
+			$full  = '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '.gif';
 			?>
-			<?php if (file_exists(PATH_ROOT . $thumb)) : ?>
-				<a id="member-stats-graph" rel="lightbox" title="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
-					<img src="<?php echo $thumb; ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" />
+			<?php if (file_exists(PATH_APP . $thumb)) : ?>
+				<a id="member-stats-graph" rel="lightbox" title="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo with(new \Hubzero\Content\Moderator(PATH_APP . $full, 'public'))->getUrl(); ?>">
+					<img src="<?php echo with(new \Hubzero\Content\Moderator(PATH_APP . $thumb, 'public'))->getUrl(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" />
 				</a>
 			<?php endif; ?>
 

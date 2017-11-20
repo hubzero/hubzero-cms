@@ -122,8 +122,11 @@ if ($results)
 </h3>
 <form method="get" action="<?php echo Route::url($url); ?>">
 	<?php
-	$tool_map = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/resource_maps/' . $this->resource->id;
-	if (file_exists(PATH_ROOT . $tool_map . '.gif')) { ?>
+	$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
+	if (file_exists(PATH_APP . $tool_map . '.gif')) {
+		$png = with(new \Hubzero\Content\Moderator(PATH_APP . $tool_map . '.gif', 'public'))->getUrl();
+		$gif = with(new \Hubzero\Content\Moderator(PATH_APP . $tool_map . '.png', 'public'))->getUrl();
+		?>
 		<div id="geo-overview-wrap" class="usage-wrap">
 			<div class="grid">
 				<div class="col span3">
@@ -132,8 +135,8 @@ if ($results)
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
 					<p>
-						<a href="<?php echo $tool_map; ?>.png" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
-							<img style="width:100%;max-width:510px;" src="<?php echo $base . $tool_map; ?>.gif" alt="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP'); ?>" />
+						<a href="<?php echo $png; ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
+							<img style="width:100%;max-width:510px;" src="<?php echo $gif; ?>" alt="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP'); ?>" />
 						</a>
 					</p>
 				</div><!-- / .col span9 omega -->
