@@ -82,7 +82,7 @@ class TranslationServiceProvider extends ServiceProvider
 		// Detect user specified language
 		if (!$language && $this->app->has('user'))
 		{
-			$lang = \User::getParam('api_language');
+			$lang = $this->app['user']->getParam('api_language');
 
 			if ($lang && $translator->exists($lang))
 			{

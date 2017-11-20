@@ -62,14 +62,14 @@ class SessionServiceProvider extends ServiceProvider
 			);
 
 			// If profiling or debugging is turned on...
-			/*if ($app['config']->get('profile') || $app['config']->get('debug'))
+			if ($app['config']->get('profile') || $app['config']->get('debug'))
 			{
-				// If we have a profiler and the client is Admin or Site...
-				if ($app->has('profiler') && in_array($app['client']->id, array(0, 1)))
+				// If we have a profiler...
+				if ($app->has('profiler'))
 				{
 					$options['profiler'] = $app['profiler'];
 				}
-			}*/
+			}
 
 			// Skip session writes on the API and command line calls
 			if ($app['client']->id == 4 || php_sapi_name() == 'cli')

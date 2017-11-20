@@ -40,53 +40,6 @@
 */
 
 /*
-| Remove the base URI path. This will strip everything up to the base
-*/
-$router->rules('build')->append('content', function ($uri)
-{
-	// Set URI defaults
-	$menu = \App::get('menu.manager')->menu('site');
-
-	// Get the itemid form the URI
-	$itemid = $uri->getVar('Itemid');
-
-	if (is_null($itemid))
-	{
-		if ($option = $uri->getVar('option'))
-		{
-			$item  = $menu->getItem(\App::get('request')->getVar('Itemid'));
-			if (isset($item) && $item->component == $option)
-			{
-				$uri->setVar('Itemid', $item->id);
-			}
-		}
-		else
-		{
-			if ($option = \App::get('request')->getVar('option'))
-			{
-				$uri->setVar('option', $option);
-			}
-
-			if ($itemid = \App::get('request')->getVar('Itemid'))
-			{
-				$uri->setVar('Itemid', $itemid);
-			}
-		}
-	}
-	else
-	{
-		if (!$uri->getVar('option'))
-		{
-			if ($item = $menu->getItem($itemid))
-			{
-				$uri->setVar('option', $item->component);
-			}
-		}
-	}
-	return $uri;
-});
-
-/*
 | Build the route by component name
 */
 $router->rules('build')->append('component', function ($uri)
@@ -95,7 +48,7 @@ $router->rules('build')->append('component', function ($uri)
 	$query = $uri->getQuery(true);
 	$tmp   = '';
 
-	if (!isset($query['option']) && !isset($query['Itemid']))
+	if (!isset($query['option']))
 	{
 		return $uri;
 	}
@@ -110,14 +63,15 @@ $router->rules('build')->append('component', function ($uri)
 		$tmp   = implode('/', $parts);
 	}
 
-	$tmp = isset($query['option']) ? substr($query['option'], 4) . '/' . $tmp : $tmp;
+	if (isset($query['option']))
+	{
+		$tmp = substr($query['option'], 0, 4) == 'com_'
+			? substr($query['option'], 4) . '/' . $tmp
+			: $query['option'] . '/' . $tmp;
+	}
 
 	$route .= $tmp ? '/' . $tmp : '';
 
-	if (isset($item) && $query['option'] == $item->component)
-	{
-		unset($query['Itemid']);
-	}
 	unset($query['option']);
 
 	//Set query again in the URI
@@ -157,14 +111,9 @@ $router->rules('build')->append('rewrite', function ($uri)
 		}
 	}
 
-	// Add basepath to the uri
-	//$uri->setScheme(\App::get('request')->getScheme());
-	//$uri->setHost(\App::get('request')->getHost());
-	//$uri->setPort(\App::get('request')->getPort());
-	//$uri->setUser(\App::get('request')->getUser());
-	//$uri->setPass(\App::get('request')->getPassword());
-	//$uri->setPath(str_replace('/api', '', \App::get('request')->base(true)) . '/' . $route);
-	$uri->setPath($route);
+	$base = \App::get('request')->base(true);
+
+	$uri->setPath($base . '/' . $route);
 
 	return $uri;
 });
@@ -280,7 +229,9 @@ $router->rules('parse')->append('crud', function ($uri)
 	switch (strtolower(\App::get('request')->method()))
 	{
 		case 'get':
-			//$uri->setVar('task', 'read');
+			// Task could be 'list' or 'read' or
+			// something else entirely so we let
+			// the component handle it
 		break;
 
 		case 'post':
@@ -325,12 +276,13 @@ $router->rules('parse')->append('component', function ($uri)
 
 	if ($uri->getVar('version', null))
 	{
-		$router = \App::get('component')->router($component, 'api', str_replace(".", "_", $uri->getVar('version')));
+		$router = \App::get('component')->router($component, 'api', str_replace('.', '_', $uri->getVar('version')));
 	}
 	else
 	{
 		$router = \App::get('component')->router($component, 'api');
 	}
+
 	if ($router)
 	{
 		if ($vars = $router->parse($segments))
