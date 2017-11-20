@@ -140,7 +140,7 @@ if (!empty($errors))
 
 						echo '<td>';
 						if ($info->sAllowMultiple) {
-							echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" class="numericOnly" name="skus[' . $info->sId . ']" value="';;
+							echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" min=0 class="numericOnly" name="skus[' . $info->sId . ']" value="';;
 							echo $item['cartInfo']->qty;
 							echo '">';
 						}
@@ -271,6 +271,8 @@ if (!empty($errors))
 						<label for="couponCode">
 						<input type="text" name="couponCode" id="couponCode"></label>
 						<input type="submit" name="addCouponCode" id="addCouponCode" class="btn" value="Apply">
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 					</form>
 				</div>
 
