@@ -35,7 +35,7 @@
 | SEF Build
 |--------------------------------------------------------------------------
 |
-| Remove the base URI path. This will strip everything up to the bas
+| Set some basic information based on Menu ItemId
 |
 */
 $router->rules('build')->append('content', function ($uri)
