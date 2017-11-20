@@ -59,6 +59,7 @@ $pubParams = $this->publication->params;
 		?>
 		<li class="type-license allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
 			<span class="item-info"></span>
+			<span class="item-toggle"></span>
 			<span class="item-wrap">
 			<?php if ($item->icon) { echo '<img src="' . $icon . '" alt="' . htmlentities($item->title) . '" />'; } ?><?php echo $item->title; ?>
 			</span>

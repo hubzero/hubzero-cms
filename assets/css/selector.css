@@ -69,9 +69,9 @@
 		cursor: default;
 	}
 	.item-info {
-		float: right;
+		float: left;
 		color: #CCC;
-		margin-right: 0.5em;
+		margin-left: 0.5em;
 	}
 	.requirement {
 		padding: 0 1em;
@@ -168,20 +168,31 @@
 		background: #ddf4fd;
 		cursor: pointer;
 	}
-	.pub-selector .item-info:after,
-	.pub-selector .selectedfilter .item-info:after, 
-	.pub-selector .selectedfilter:hover .item-info:after {
+	.pub-selector .item-info:before,
+	.pub-selector .selectedfilter .item-info:before, 
+	.pub-selector .selectedfilter:hover .item-info:before {
 		width: 16px;
 		height: 16px;
 		font-size: 16px;
 		font-family: 'Fontcons';
 		content: "\f058";
 		color: green;
-		float: right;
-		margin-left: 1em;
+		float: left;
 		position: relative;
 	}
-	.pub-selector .item-info:after {
+	.pub-selector .item-toggle:after,
+	.pub-selector .selectedfilter .item-toggle:after,
+	.pub-selector .selectedfilter:hover .item-toggle:after {
+		width: 18px;
+		height: 18px;
+		font-size: 18px;
+		font-family: 'Fontcons';
+		content: "\2304";
+		float: right;
+		margin-right: 2px;
+		position: relative;
+	}
+	.pub-selector .item-info:before {
 		content: "";
 	}
 	.pub-selector .notallowed {
@@ -210,7 +221,7 @@
 	#pub-selector .item-fullinfo {
 		display: none;
 	}
-	#pub-selector .selectedfilter .item-fullinfo {
+	#pub-selector .toggled .item-fullinfo {
 		display: block;
 	}
 

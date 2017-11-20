@@ -119,6 +119,10 @@ HUB.ProjectPublicationsSelector = {
 						});
 					}, 1000);
 				});
+
+			$('.item-toggle').click(function() {
+				console.log('Hello, world!');
+			});
 		}
 
 		// Enable selection
