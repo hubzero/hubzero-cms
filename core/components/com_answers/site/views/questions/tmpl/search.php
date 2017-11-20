@@ -178,7 +178,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						if (!$row->get('anonymous'))
 						{
 							$name = $this->escape(stripslashes($row->creator->get('name', $name)));
-							if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
+							if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels()) && !$row->creator->get('block') && $row->creator->get('approved'))
 							{
 								$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 							}
