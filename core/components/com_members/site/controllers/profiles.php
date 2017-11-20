@@ -450,13 +450,15 @@ class Profiles extends SiteController
 
 		$a = $entries->getTableName();
 		$b = Profile::blank()->getTableName();
+		$access = User::getAuthorisedViewLevels();
+		$access[] = 0;
 
 		$entries
 			->select($a . '.*')
-			->including(['profiles', function ($profile){
+			->including(['profiles', function ($profile) use ($access) {
 				$profile
 					->select('*')
-					->whereIn('access', User::getAuthorisedViewLevels());
+					->whereIn('access', $access);
 			}])
 			->whereEquals($a . '.block', 0)
 			->where($a . '.activation', '>', 0)
@@ -582,7 +584,7 @@ class Profiles extends SiteController
 					$sortFound = true;
 				}
 
-				$entries->whereIn('t' . $i . '.access', User::getAuthorisedViewLevels());
+				$entries->whereIn('t' . $i . '.access', $access);
 				$i++;
 			}
 		}
@@ -595,7 +597,7 @@ class Profiles extends SiteController
 			$filters['sqlsort'] = 't' . $i . '.profile_value';
 		}
 
-		$entries->whereIn($a . '.access', User::getAuthorisedViewLevels());
+		$entries->whereIn($a . '.access', $access);
 
 		$rows = $entries
 			->order($filters['sqlsort'], $filters['sort_Dir'])
