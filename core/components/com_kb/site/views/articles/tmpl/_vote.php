@@ -35,8 +35,8 @@ defined('_HZEXEC_') or die();
 $dcls = '';
 $lcls = '';
 
-$like_link    = Route::url($this->item->link('vote') . '&vote=like');
-$dislike_link = Route::url($this->item->link('vote') . '&vote=dislike');
+$like_link    = Route::url($this->item->link('vote') . '&vote=like&' . Session::getFormToken() . '=1');
+$dislike_link = Route::url($this->item->link('vote') . '&vote=dislike&' . Session::getFormToken() . '=1');
 
 if (isset($this->vote))
 {
