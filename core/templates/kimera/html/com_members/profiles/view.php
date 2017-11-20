@@ -118,7 +118,7 @@ if (!$no_html)
 				<?php echo $title; ?>
 			</a>
 		<?php else: ?>
-			<span id="profile-privacy"<?php echo ($cls ? ' class="' . $cls . '"' : ''); ?>>
+			<span id="profile-privacy"<?php if ($cls) { echo ' class="' . $cls . '"'; } ?>>
 				<?php echo $span_title; ?>
 			</span>
 		<?php endif; ?>
@@ -200,7 +200,10 @@ if (!$no_html)
 								$attribs = array();
 								foreach ($option as $key => $val)
 								{
-									if ($key == 'text') continue;
+									if ($key == 'text')
+									{
+										continue;
+									}
 
 									$attribs[] = $key . '="' . $this->escape($val) . '"';
 								}
@@ -230,14 +233,14 @@ if (!$no_html)
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('id') == User::get('id')) { echo 'my'; } else { echo $this->profile->get('name') . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->link() . '&task=edit'); ?>">
+						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>" href="<?php echo Route::url($this->profile->link() . '&task=edit'); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
 						</a>
 					</li>
 				<?php endif; ?>
 				<?php if ($password) : ?>
 					<li>
-						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: <?php echo Lang::txt('Change your password'); ?>" href="<?php echo Route::url($this->profile->link('changepassword')); ?>">
+						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>" href="<?php echo Route::url($this->profile->link('changepassword')); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>
 						</a>
 					</li>
@@ -278,4 +281,5 @@ if (!$no_html)
 		</div><!-- /#page_main -->
 	</div> <!-- //#page_container -->
 </div><!-- /.innerwrap -->
-<?php } ?>
+<?php
+}
