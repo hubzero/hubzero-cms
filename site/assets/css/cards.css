@@ -2,16 +2,12 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #eceef1;
-  font-family: 'Slabo 27px', serif;
-  color: #342E37;
-}
-
 .cards {
   padding: 15px;
   display: flex;
+  max-width: 990px;
   flex-flow: row wrap;
+  justify-content: center;
 }
 
 .card {
@@ -93,15 +89,23 @@ body {
   text-align: center;
 }
 
-.social {
+/*.social {
   float: none;
   margin-top: 10px;
   margin-left: 0;
-}
+}*/
 
 .card .social .fa-twitter {
   font-size: 1.75em;
   margin-top: 10px;
+}
+
+a.social-icon {
+  color: #fff;
+}
+
+a.card-link {
+  color: #84bf41;
 }
 
 .card.is-collapsed .card__inner:after {

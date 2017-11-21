@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
   var $cell = $('.card');
 
   //open and close card when clicked on card
