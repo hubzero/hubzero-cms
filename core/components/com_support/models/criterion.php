@@ -42,7 +42,7 @@ class Criterion extends Relational
 	public function getViolations()
 	{
 		$db = \App::get('db');
-		$violations = null;
+		$violations = array();
 
 		if ($query = $this->get('query'))
 		{
