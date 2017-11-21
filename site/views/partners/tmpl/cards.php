@@ -23,7 +23,6 @@ $this->css('cards');
 //
 $this->js('cards');
 $this->js('https://use.fontawesome.com/88cd5351e6.js');
-$this->js('https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/3.3.6/scrollreveal.js');
 
 // Set the document title
 //
