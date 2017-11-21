@@ -62,19 +62,20 @@ class OutstandingTicketsv2_0 extends ApiController
 	public function listTask()
 	{
 		$criteria = Criterion::all();
-		$outstandingTickets = array();
+		$outstandingTicketData = array(
+			'tickets' => array(),
+			'criteria' => array()
+		);
 
 		foreach ($criteria as $criterion)
 		{
+			$criterionId = $criterion->get('id');
 			$outstanding = $criterion->getViolations();
-
-			if ($outstanding)
-			{
-				$outstandingTickets[$criterion->get('id')] = $outstanding;
-			}
+			$outstandingTicketData['criteria'][$criterionId] = $criterion->toArray();
+			$outstandingTicketData['tickets'][$criterionId] = $outstanding;
 		}
 
-		$response = json_encode($outstandingTickets);
+		$response = json_encode($outstandingTicketData);
 
 		echo $response;
 		exit();
