@@ -192,6 +192,12 @@
 		margin-right: 2px;
 		position: relative;
 	}
+	.pub-selector .item-toggle:hover {
+		cursor: copy;
+	}
+	.pub-selector .item-toggle.toggled:after {
+		content: "\2303" !important;
+	}
 	.pub-selector .item-info:before {
 		content: "";
 	}
@@ -221,7 +227,7 @@
 	#pub-selector .item-fullinfo {
 		display: none;
 	}
-	#pub-selector .toggled .item-fullinfo {
+	#pub-selector .item-fullinfo.toggled {
 		display: block;
 	}
 
