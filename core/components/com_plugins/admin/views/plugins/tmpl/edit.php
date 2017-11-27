@@ -48,8 +48,6 @@ Toolbar::cancel('cancel', 'JTOOLBAR_CLOSE');
 Toolbar::divider();
 Toolbar::help('plugin');
 
-
-//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 ?>

@@ -34,11 +34,9 @@
 defined('_HZEXEC_') or die();
 
 // Include the component HTML helpers.
-//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-//$state = $this->get('State');
 $canDo = \Components\Plugins\Helpers\Plugins::getActions();
 
 Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGINS'), 'plugin');

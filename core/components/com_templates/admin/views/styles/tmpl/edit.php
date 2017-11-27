@@ -58,7 +58,6 @@ Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('style');
 
-//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
