@@ -109,8 +109,8 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->contribution = $this->first_last_contribution($member->get('id'));
 			$view->rank = $this->get_rank($member->get('id'));
 
-			$view->total_tool_users    = $this->get_total_stats($member->get('id'), 'tool_users',14);
-			$view->total_andmore_users = $this->get_total_stats($member->get('id'), 'andmore_users',14);
+			$view->total_tool_users    = $this->get_total_stats($member->get('id'), 'tool_users', 14);
+			$view->total_andmore_users = $this->get_total_stats($member->get('id'), 'andmore_users', 14);
 			$view->citation_count      = self::get_citationcount(null, $member->get('id'));
 
 			$cluster = self::get_classroom_usage($member->get('id'));
