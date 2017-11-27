@@ -45,6 +45,7 @@ use Request;
 use Notify;
 use Config;
 use Route;
+use Event;
 use User;
 use Date;
 use Lang;
@@ -345,12 +346,15 @@ class Members extends AdminController
 			}
 		}
 
+		$tabs = Event::trigger('members.onUserEdit', array($user));
+
 		// Output the HTML
 		$this->view
 			->set('profile', $user)
 			->set('password', $password)
 			->set('password_rules', $password_rules)
 			->set('validated', (isset($this->validated) ? $this->validated : false))
+			->set('tabs', $tabs)
 			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->display();
@@ -706,6 +710,8 @@ class Members extends AdminController
 					Notify::error($user->getError());
 					continue;
 				}
+
+				Event::trigger('user.onUserAfterDelete', array($id));
 
 				$i++;
 			}
