@@ -1099,6 +1099,28 @@ class Resources extends SiteController
 			App::redirect(Route::url($redirect, false), '', '', false);
 		}
 
+		if (!Request::getInt('no_html'))
+		{
+			// Set breadcrumbs
+			Pathway::append(
+				stripslashes($model->type->type),
+				Route::url('index.php?option=' . $this->_option . '&type=' . $model->type->alias)
+			);
+
+			Pathway::append(
+				stripslashes($model->title),
+				Route::url($model->link())
+			);
+
+			Pathway::append(
+				Lang::txt('COM_RESOURCES_VIEW_PRESENTATION'),
+				Route::url($model->link() . '&task=view&resid=' . $child)
+			);
+
+			// Write title
+			Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($model->title));
+		}
+
 		// Instantiate a new view
 		$this->view = new \Hubzero\Component\View(array(
 			'name'   => 'view',
