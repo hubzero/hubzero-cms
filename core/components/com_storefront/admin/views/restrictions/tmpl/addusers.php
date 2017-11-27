@@ -31,11 +31,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
 Html::behavior('framework');
 ?>
-<script type="text/javascript">
-
-</script>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
@@ -55,7 +53,7 @@ Html::behavior('framework');
 			echo '<p><strong>' . $this->matched . '</strong> user(s) added.</p>';
 			if (sizeof($this->noUserMatch))
 			{
-				echo '<p><strong>' . sizeof($this->noUserMatch) . '</strong> user(s) could not be added (no matching users):<br>';
+				echo '<p><strong>' . sizeof($this->noUserMatch) . '</strong> user(s) could not be added:<br>';
 			}
 
 			$i = 0;
