@@ -24,7 +24,7 @@ function controller()
 	$dv_conf['settings']['db_id'] = $db_id;
 
 	/* Include database mode specific functionality */
-	require_once(JPATH_COMPONENT . DS . 'modes' . DS . 'mode_' . $db_id['mode'] . '.php');
+	require_once(__DIR__ . DS . 'modes' . DS . 'mode_' . $db_id['mode'] . '.php');
 
 	/* Update config with DB specific values */
 	get_conf($db_id);
@@ -44,7 +44,7 @@ function controller()
 function task_file($db_id)
 {
 	$view = 'file';
-	$file = (JPATH_COMPONENT.DS."view".DS."$view.php");
+	$file = (__DIR__.DS."view".DS."$view.php");
 
 	if (file_exists($file)) {
 		require_once ($file);
@@ -78,14 +78,14 @@ function task_view($db_id)
 	}
 
 	$filter = strtolower(Request::getVar( 'format', 'json' ));
-	$file = (JPATH_COMPONENT.DS."filter/$filter.php");
+	$file = (__DIR__.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);
 	}
 
 	pathway($dd);
 
-	$file = (JPATH_COMPONENT.DS."view".DS."$view.php");
+	$file = (__DIR__.DS."view".DS."$view.php");
 	if (file_exists($file)) {
 		require_once ($file);
 		view($dd);
@@ -104,7 +104,7 @@ function task_data($db_id)
 	}
 
 	$filter = strtolower(Request::getVar('type', 'json'));
-	$file = (JPATH_COMPONENT.DS."filter/$filter.php");
+	$file = (__DIR__.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);
 	}

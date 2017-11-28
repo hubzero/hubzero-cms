@@ -32,24 +32,24 @@ function view($hash)
 	$image_list = array();
 	$image_viewer = array();
 
-	if (!is_dir(JPATH_BASE . $real_path)) {
+	if (!is_dir(PATH_ROOT . $real_path)) {
 		print "<h2>Error: Missing images.</h2>";
-		print "DEBUG: " . JPATH_BASE . $real_path;
+		print "DEBUG: " . PATH_ROOT . $real_path;
 		return;
 	}
 
-//	$file_list = scandir(JPATH_BASE . $real_path);
-	$cmd = 'find ' . JPATH_BASE . $real_path . ' -type f|grep -v small|grep -v medium';
+//	$file_list = scandir(PATH_ROOT . $real_path);
+	$cmd = 'find ' . PATH_ROOT . $real_path . ' -type f|grep -v small|grep -v medium';
 	$file_list = explode("\n", (`$cmd`));
 	array_pop($file_list);
 
 	foreach ($file_list as $file) {
 
 		$pi = pathinfo($file);
-		$dir_name = str_replace(JPATH_BASE, '', $pi['dirname']);
+		$dir_name = str_replace(PATH_ROOT, '', $pi['dirname']);
 		$ext = strtolower($pi['extension']);
 
-		$desc_file = str_replace($pi['extension'], 'txt', JPATH_BASE . $real_path . '/' . $file);
+		$desc_file = str_replace($pi['extension'], 'txt', PATH_ROOT . $real_path . '/' . $file);
 		$desc = '';
 		if (file_exists($desc_file)) {
 			$desc = htmlentities(file_get_contents($desc_file), ENT_QUOTES, 'UTF-8');

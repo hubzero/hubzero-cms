@@ -32,11 +32,11 @@ function controller_exec()
 	// Get the task
 	$task = Request::getVar('task', 'list');
 
-	$task_file = JPATH_COMPONENT . DS . 'tasks' . DS . $task . '.php';
+	$task_file = __DIR__ . DS . 'tasks' . DS . $task . '.php';
 	if (require_once($task_file)) {
 		$task_func = 'dv_' . $task;
 		if (function_exists($task_func)) {
-			if (file_exists(JPATH_COMPONENT . DS . 'tasks' . DS . 'html' . DS . $task . '.js')) {
+			if (file_exists(__DIR__ . DS . 'tasks' . DS . 'html' . DS . $task . '.js')) {
 				$document = App::get('document');
 				$document->addScript(DB_PATH . DS . 'tasks' . DS . 'html' . DS . $task . '.js?v=2');
 			}

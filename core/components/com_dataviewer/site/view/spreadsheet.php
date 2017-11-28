@@ -159,7 +159,7 @@ function view($dd = false)
 
 		if (isset($dv_conf['help_file_base_path'])) {
 			$help_file = $dv_conf['help_file_base_path'] . $name . '/' . $name . '-help.html';
-			if (!file_exists(JPATH_BASE . $help_file)) {
+			if (!file_exists(PATH_ROOT . $help_file)) {
 				$help_file = false;
 			}
 		}
