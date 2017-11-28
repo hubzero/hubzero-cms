@@ -132,7 +132,7 @@ class Jobs extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$live_site = rtrim(Request::base(),'/');
+		$live_site = rtrim(Request::base(), '/');
 
 		// Push some styles to the template
 		$this->css();
@@ -238,7 +238,7 @@ class Jobs extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$data       = array_map('trim',$_POST);
+		$data       = array_map('trim', $_POST);
 		$action     = Request::getVar('action', '');
 		$message    = Request::getVar('message', '');
 		$id         = Request::getInt('id', 0);
