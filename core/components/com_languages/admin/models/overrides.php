@@ -57,7 +57,6 @@ class LanguagesModelOverrides extends JModelList
 		}
 
 		// Parse the override.ini file in oder to get the keys and strings
-		//$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
 		$filename = PATH_APP . DS . 'bootstrap' . DS . $this->getState('filter.client') .DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
 		$strings = LanguagesHelper::parseFile($filename);
 
@@ -201,8 +200,8 @@ class LanguagesModelOverrides extends JModelList
 		// Get all languages of frontend and backend
 		$languages = array();
 
-		$site_languages  = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'site');
-		$admin_languages = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'administrator');
+		$site_languages  = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'Site');
+		$admin_languages = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'Administrator');
 		foreach ($site_languages as $tag => $language)
 		{
 			$languages[$tag.'0'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JSITE'));
@@ -254,7 +253,7 @@ class LanguagesModelOverrides extends JModelList
 			return false;
 		}
 
-		require_once JPATH_COMPONENT.'/helpers/languages.php';
+		require_once PATH_COMPONENT.'/helpers/languages.php';
 
 		// Parse the override.ini file in oder to get the keys and strings
 		//$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';

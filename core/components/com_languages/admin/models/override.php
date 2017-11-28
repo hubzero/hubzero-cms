@@ -86,7 +86,7 @@ class LanguagesModelOverride extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		require_once JPATH_COMPONENT.'/helpers/languages.php';
+		require_once PATH_COMPONENT.'/helpers/languages.php';
 
 		$pk	= (!empty($pk)) ? $pk : Request::getCmd('id');
 		$filename = PATH_APP . '/bootstrap/' . $this->getState('filter.client') . '/language/overrides/' . $this->getState('filter.language', 'en-GB').'.override.ini';
@@ -116,7 +116,7 @@ class LanguagesModelOverride extends JModelAdmin
 	 */
 	public function save($data, $opposite_client = false)
 	{
-		require_once JPATH_COMPONENT.'/helpers/languages.php';
+		require_once PATH_COMPONENT.'/helpers/languages.php';
 
 		$client   = User::getState('com_languages.overrides.filter.client', 0);
 		$language = User::getState('com_languages.overrides.filter.language', 'en-GB');
