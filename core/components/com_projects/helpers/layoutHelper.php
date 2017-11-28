@@ -30,11 +30,20 @@
 
 namespace Components\Projects\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
-class LayoutHelper extends Object
+/**
+ * Projects Layout helper class
+ */
+class LayoutHelper extends Obj
 {
-
+	/**
+	 * Make a call
+	 *
+	 * @param   string  $subdirectory
+	 * @param   string  $layout
+	 * @return  string
+	 */
 	public static function accessPublic($subdirectory, $layout)
 	{
 		if (!User::isGuest() && $subdirectory === 'public')
@@ -44,5 +53,4 @@ class LayoutHelper extends Object
 
 		return $layout;
 	}
-
 }
