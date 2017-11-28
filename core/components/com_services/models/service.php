@@ -118,4 +118,75 @@ class Service extends Relational
 	{
 		return (isset($data['changed']) && $data['changed'] ? $data['changed'] : Date::toSql());
 	}
+
+	/**
+	 * Get a list of services
+	 *
+	 * @param   string   $category      Category
+	 * @param   integer  $active        Active?
+	 * @param   string   $specialgroup  Special group name
+	 * @return  object
+	 */
+	public static function getServices($category = 'jobs', $active = 1, $specialgroup='')
+	{
+		$query = self::all();
+
+		$ser = $query->getTableName();
+		$grp = '#__xgroups';
+		$grm = '#__xgroups_members';
+
+		$query
+			->whereEquals($ser . '.status', $active)
+			->whereEquals($ser . '.category', $category)
+			->order($ser . '.ordering', 'asc');
+
+		if ($specialgroup)
+		{
+			$query->join($grp, $grp . '.cn', $specialgroup, 'inner')
+				->join($grm, $grm . '.gidNumber', $grp . '.gidNumber')
+				->whereEquals($grm . '.uidNumber', \User::get('id'));
+
+			$query->whereEquals($ser . '.restricted', 0, 1)
+				->orWhereEquals($ser . '.restricted', 1, 2)
+				->whereRaw($grm . '.gidNumber', 'IS NULL', 2)
+				->resetDepth();
+		}
+		else
+		{
+			$query->whereEquals($ser . '.restricted', 0);
+		}
+
+		return $query->rows();
+	}
+
+	/**
+	 * Load a service for a user
+	 *
+	 * @param   integer  $uid       User ID
+	 * @param   string   $field     Field name
+	 * @param   string   $category  Category
+	 * @return  mixed
+	 */
+	public static function getUserService($uid, $field = 'alias', $category = 'jobs')
+	{
+		$query = self::all();
+
+		$ser = $query->getTableName();
+		$sub = Subscription::blank()->getTableName();
+
+		$row = $query
+			->join($sub, $sub . '.id', $ser . '.serviceid', 'inner')
+			->whereEquals($ser . '.category', $category)
+			->whereEquals($sub . '.uid', $uid)
+			->order($sub . '.id', 'desc')
+			->limit(1)
+			->row();
+
+		if (!$row)
+		{
+			$row = self::blank();
+		}
+
+		return $row->get($field);
+	}
 }

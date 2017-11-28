@@ -43,8 +43,8 @@ use Components\Jobs\Tables\JobSeeker;
 use Components\Jobs\Tables\Shortlist;
 use Components\Jobs\Tables\JobStats;
 use Components\Jobs\Tables\JobType;
-use Components\Services\Tables\Subscription;
-use Components\Services\Tables\Service;
+use Components\Services\Models\Subscription;
+use Components\Services\Models\Service;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use Exception;
@@ -505,8 +505,11 @@ class Jobs extends SiteController
 			if ($employer->loadEmployer(User::get('id')))
 			{
 				//do we have a pending subscription?
-				$subscription = new Subscription($this->database);
-				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status = array(0)))
+				$subscription = Subscription::all()
+					->whereEquals('id', $employer->subscriptionid)
+					->whereIn('status', array(0))
+					->row();
+				if ($subscription->get('id'))
 				{
 					App::redirect(
 						Route::url('index.php?option=com_jobs&task=dashboard'),
@@ -583,16 +586,19 @@ class Jobs extends SiteController
 		}
 
 		// do we have an active subscription already?
-		$subscription = new Subscription($this->database);
-		if (!$subscription->loadSubscription ($employer->subscriptionid, '', '', $status = array(0, 1)))
+		$subscription = Subscription::all()
+			->whereEquals('id', $employer->subscriptionid)
+			->whereIn('status', array(0, 1))
+			->row();
+
+		if (!$subscription || !$subscription->get('id'))
 		{
-			$subscription = new Subscription($this->database);
-			$subscription->uid = $uid;
-			$subscription->serviceid = 0;
+			$subscription = Subscription::blank();
+			$subscription->set('uid', $uid);
+			$subscription->set('serviceid', 0);
 		}
 
 		// get subscription options
-		$objS = new Service($this->database);
 		$specialgroup = $this->config->get('specialgroup', '');
 		if ($specialgroup)
 		{
@@ -603,9 +609,9 @@ class Jobs extends SiteController
 			}
 		}
 
-		$services = $objS->getServices('jobs', 1, 1, 'ordering', 'ASC', $specialgroup);
+		$services = Service::getServices('jobs', 1, $specialgroup);
 
-		if (!$services)
+		if (count($services) <= 0)
 		{
 			// setup with default info
 			$this->_setupServices();
@@ -700,29 +706,25 @@ class Jobs extends SiteController
 		}
 
 		// do we have a subscription already?
-		$subscription = new Subscription($this->database);
-		if (!$subscription->load($subid))
-		{
-			$subscription = new Subscription($this->database);
-		}
+		$subscription = Subscription::oneOrNew($subid);
 
 		$serviceid = Request::getInt('serviceid', 0);
 
 		// get service
-		$service = new Service($this->database);
+		$service = Service::oneOrNew($serviceid);
 
-		if (!$serviceid or !$service->loadService('', $serviceid))
+		if (!$serviceid or !$service->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_JOBS_ERROR_SUBSCRIPTION_CHOOSE_SERVICE'), 500);
 		}
 
-		$units 		= Request::getInt('units_' . $serviceid, 0);
-		$contact 	= Request::getVar('contact', '');
-		$total 		= $service->unitprice * $units;
-		$now 		= Date::toSql();
-		$new 		= 0;
-		$credit 	= 0;
-		$months 	= $units * $service->unitsize;
+		$units      = Request::getInt('units_' . $serviceid, 0);
+		$contact    = Request::getVar('contact', '');
+		$total      = $service->unitprice * $units;
+		$now        = Date::toSql();
+		$new        = 0;
+		$credit     = 0;
+		$months     = $units * $service->unitsize;
 		$newexprire = Date::of(strtotime('+' . $months . ' month'))->toSql();
 
 		// we got an order
@@ -739,18 +741,19 @@ class Jobs extends SiteController
 			if ($subid)
 			{
 				// get cost per unit (to compute required refund)
-				$prevunitcost = $serviceid != $subscription->serviceid ? $service->getServiceCost($subscription->serviceid) : $newunitcost;
-				$unitsleft 	  = 0;
-				$refund		  = 0;
+				$prevunitcost = $serviceid != $subscription->serviceid ? Service::oneOrNew($subscription->serviceid)->get('unitprice', 0) : $newunitcost;
+				$unitsleft    = 0;
+				$refund       = 0;
 
 				// we are upgrading / downgrading - or replacing cancelled subscription
 				if ($serviceid != $subscription->serviceid or $subscription->status==2)
 				{
 					if ($prevunitcost > 0 && $subscription->status != 2)
 					{
-						$unitsleft = $subscription->getRemaining('unit', $subscription, $service->maxunits, $service->unitsize);
+						$unitsleft = $subscription->getRemaining('unit', $service->maxunits, $service->unitsize);
 						$refund = ($subscription->totalpaid > 0 && ($subscription->totalpaid - $unitsleft * $prevunitcost) < 0)
-								? $unitsleft * $prevunitcost : 0;
+								? $unitsleft * $prevunitcost
+								: 0;
 
 						// calculate available credit - if upgrading
 						if ($newunitcost > $prevunitcost)
@@ -762,11 +765,11 @@ class Jobs extends SiteController
 					// cancel previous subscription & issue a refund if applicable
 					if ($subscription->status != 2)
 					{
-						$subscription->cancelSubscription($subid, $refund, $unitsleft);
+						$subscription->cancel($refund, $unitsleft);
 					}
 
 					// enroll in new service
-					$subscription = new Subscription($this->database);
+					$subscription = Subscription::blank();
 					$new = 1;
 				}
 				else if ($subscription->expires > $now)
@@ -820,17 +823,9 @@ class Jobs extends SiteController
 				// get unique code
 				$subscription->code = $subscription->generateCode();
 			}
-			if (!$subscription->check())
+			if (!$subscription->save())
 			{
 				throw new Exception($subscription->getError(), 500);
-			}
-			if (!$subscription->store())
-			{
-				throw new Exception($subscription->getError(), 500);
-			}
-			if (!$subscription->id)
-			{
-				$subscription->checkin();
 			}
 		}
 
@@ -859,7 +854,7 @@ class Jobs extends SiteController
 	/**
 	 * Subscription cancellation
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -889,27 +884,27 @@ class Jobs extends SiteController
 		}
 
 		// load subscription to cancel
-		$subscription = new Subscription($this->database);
-		if (!$subscription->load($employer->subscriptionid))
+		$subscription = Subscription::oneOrNew($employer->subscriptionid);
+		if (!$subscription->get('id'))
 		{
 			App::abort(404, Lang::txt('COM_JOBS_ERROR_SUBSCRIPTION_NOT_FOUND'));
 		}
 
 		// get service
-		$service = new Service($this->database);
-		if (!$service->loadService('', $subscription->serviceid))
+		$service = Service::oneOrNew($subscription->serviceid);
+		if (!$service->get('id'))
 		{
 			App::abort(404, Lang::txt('COM_JOBS_ERROR_SERVICE_NOT_FOUND'));
 		}
 
 		$refund    = 0;
-		$unitsleft = $subscription->getRemaining('unit', $subscription, $service->maxunits, $service->unitsize);
+		$unitsleft = $subscription->getRemaining('unit', $service->maxunits, $service->unitsize);
 
 		// get cost per unit (to compute required refund)
 		$refund = ($subscription->totalpaid > 0 && $unitsleft > 0 && ($subscription->totalpaid - $unitsleft * $unitcost) > 0) ? $unitsleft * $prevunitcost : 0;
 
 		// cancel previous subscription & issue a refund if applicable
-		if ($subscription->cancelSubscription($employer->subscriptionid, $refund, $unitsleft))
+		if ($subscription->cancel($refund, $unitsleft))
 		{
 			\Notify::success(Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_CANCELLED'));
 		}
@@ -976,8 +971,8 @@ class Jobs extends SiteController
 		}
 
 		// do we have a subscription already?
-		$subscription = new Subscription($this->database);
-		if (!$subscription->load($employer->subscriptionid) && !$this->_admin)
+		$subscription = Subscription::oneOrNew($employer->subscriptionid);
+		if (!$subscription->get('id') && !$this->_admin)
 		{
 			// send to subscription page
 			App::redirect(
@@ -986,9 +981,9 @@ class Jobs extends SiteController
 			return;
 		}
 
-		$service = new Service($this->database);
+		$service = Service::oneOrNew($subscription->serviceid);
 
-		if (!$service->loadService('', $subscription->serviceid) && !$this->_admin)
+		if (!$service->get('id') && !$this->_admin)
 		{
 			App::abort(404, Lang::txt('COM_JOBS_ERROR_SERVICE_NOT_FOUND'));
 		}
@@ -1125,7 +1120,7 @@ class Jobs extends SiteController
 		$ja = new JobApplication($this->database);
 
 		// if application already exists, load it to edit
-		if ($ja->loadApplication (User::get('id'), 0, $code) && $ja->status != 2)
+		if ($ja->loadApplication(User::get('id'), 0, $code) && $ja->status != 2)
 		{
 			$this->_task = 'editapp';
 		}
@@ -1270,7 +1265,7 @@ class Jobs extends SiteController
 		$code = !$code && $this->_jobCode ? $this->_jobCode : $code;
 
 		$obj = new Job($this->database);
-		$job = $obj->get_opening (0, User::get('id'), $this->_masterAdmin, $code);
+		$job = $obj->get_opening(0, User::get('id'), $this->_masterAdmin, $code);
 
 		// Push some styles to the template
 		$this->css();
@@ -1498,12 +1493,12 @@ class Jobs extends SiteController
 		if (!$min)
 		{
 			$job->bind($_POST);
-			$job->description   	= rtrim(stripslashes($_POST['description']));
-			$job->title   			= rtrim(stripslashes($_POST['title']));
-			$job->companyName   	= rtrim(stripslashes($_POST['companyName']));
-			$job->companyLocation   = rtrim(stripslashes($_POST['companyLocation']));
-			$job->applyInternal		= Request::getInt('applyInternal', 0);
-			$job->applyExternalUrl	= Request::getVar('applyExternalUrl', '');
+			$job->description      = rtrim(stripslashes($_POST['description']));
+			$job->title            = rtrim(stripslashes($_POST['title']));
+			$job->companyName      = rtrim(stripslashes($_POST['companyName']));
+			$job->companyLocation  = rtrim(stripslashes($_POST['companyLocation']));
+			$job->applyInternal    = Request::getInt('applyInternal', 0);
+			$job->applyExternalUrl = Request::getVar('applyExternalUrl', '');
 
 		}
 		else if ($job->status==4 && $this->_task == 'confirmjob')
@@ -1518,9 +1513,9 @@ class Jobs extends SiteController
 			else
 			{
 				// confirm
-				$job->status       = !$autoapprove && !$this->_masterAdmin ? 0 : 1;
-				$job->opendate     = !$autoapprove && !$this->_masterAdmin ? '' : Date::toSql(); // set open date as of now, if confirming new ad publication
-				$this->_msg        = !$autoapprove && !$this->_masterAdmin ? Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL') : Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
+				$job->status   = !$autoapprove && !$this->_masterAdmin ? 0 : 1;
+				$job->opendate = !$autoapprove && !$this->_masterAdmin ? '' : Date::toSql(); // set open date as of now, if confirming new ad publication
+				$this->_msg    = !$autoapprove && !$this->_masterAdmin ? Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL') : Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
 				\Notify::success($this->_msg);
 			}
 		}
@@ -1562,7 +1557,7 @@ class Jobs extends SiteController
 		// get unique number code for this new job posting
 		if (!$code)
 		{
-			$subscription = new Subscription($this->database);
+			$subscription = Subscription::blank();
 			$code         = $subscription->generateCode(8, 8, 0, 1, 0);
 			$job->code    = $code;
 		}
@@ -1628,8 +1623,11 @@ class Jobs extends SiteController
 			if ($employer->loadEmployer($empid))
 			{
 				//do we have a pending subscription?
-				$subscription = new Subscription($this->database);
-				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status = array(0)))
+				$subscription = Subscription::all()
+					->whereEquals('id', $employer->subscriptionid)
+					->whereIn('status', array(0))
+					->row();
+				if ($subscription && $subscription->get('id'))
 				{
 					App::redirect(
 						Route::url('index.php?option=com_jobs&task=dashboard'),
@@ -1765,7 +1763,7 @@ class Jobs extends SiteController
 			if (!$adminemp)
 			{
 				// will require setup only once
-				$subscription = new Subscription($this->database);
+				$subscription = Subscription::blank();
 				$subscription->status    = 1;
 				$subscription->uid       = 1;
 				$subscription->units     = 72;
@@ -1773,14 +1771,9 @@ class Jobs extends SiteController
 				$subscription->expires   = Date::of(strtotime("+ 72 months"))->toSql();
 				$subscription->added     = Date::toSql();
 
-				if (!$subscription->store())
+				if (!$subscription->save())
 				{
 					throw new Exception($subscription->getError(), 500);
-				}
-
-				if (!$subscription->id)
-				{
-					$subscription->checkin();
 				}
 
 				// make sure we have dummy admin employer account
@@ -2143,15 +2136,17 @@ class Jobs extends SiteController
 	/**
 	 * Check job ad quota depending on subscription
 	 *
-	 * @param      object $job      Job
-	 * @return     integer
+	 * @param   object   $job Job
+	 * @return  integer
 	 */
 	protected function _checkQuota($job)
 	{
 		// make sure we aren't over quota
-		$service = new Service($this->database);
-		$servicename = $service->getUserService(User::get('id'));
-		if (!$service->loadService($servicename))
+		$servicename = Service::getUserService(User::get('id'));
+
+		$service = Service::oneByAlias($servicename);
+
+		if (!$service->get('id'))
 		{
 			return 0;
 		}
@@ -2168,11 +2163,11 @@ class Jobs extends SiteController
 	/**
 	 * Initial setup of default services
 	 *
-	 * @return     boolean False if errors, true otherwise
+	 * @return  boolean  False if errors, true otherwise
 	 */
 	protected function _setupServices()
 	{
-		$objS = new Service($this->database);
+		$objS = Service::blank();
 		$now = Date::toSql();
 
 		$default1 = array(
@@ -2210,7 +2205,9 @@ class Jobs extends SiteController
 			'params'      => "promo=\npromomaxunits=\nmaxads=3"
 		);
 
-		if (!$objS->bind($default1))
+		$objS->set($default1);
+
+		if (!$objS->save())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_jobs'),
@@ -2218,23 +2215,9 @@ class Jobs extends SiteController
 			);
 		}
 
-		if (!$objS->store())
-		{
-			App::redirect(
-				Route::url('index.php?option=com_jobs'),
-				$objS->getError(), 'error'
-			);
-		}
+		$objS->bind($default2);
 
-		if (!$objS->bind($default2))
-		{
-			App::redirect(
-				Route::url('index.php?option=com_jobs'),
-				$objS->getError(), 'error'
-			);
-		}
-
-		if (!$objS->store())
+		if (!$objS->save())
 		{
 			App::redirect(
 				Route::url('index.php?option=com_jobs'),
@@ -2248,8 +2231,8 @@ class Jobs extends SiteController
 	/**
 	 * Get service params
 	 *
-	 * @param      object &$service Service
-	 * @return     void
+	 * @param   object  &$service  Service
+	 * @return  void
 	 */
 	protected function _getServiceParams(&$service)
 	{

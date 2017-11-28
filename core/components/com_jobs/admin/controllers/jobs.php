@@ -196,10 +196,9 @@ class Jobs extends AdminController
 		}
 
 		// Get subscription info
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
+		include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
 
-		$this->view->subscription = new \Components\Services\Tables\Subscription($this->database);
-		$this->view->subscription->loadSubscription($this->view->employer->subscriptionid, '', '', $status=array(0, 1));
+		$this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($this->view->employer->subscriptionid);
 
 		// Get job types and categories
 		$jt = new JobType($this->database);
@@ -264,8 +263,8 @@ class Jobs extends AdminController
 		}
 		else
 		{ // saving new job
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
-			$subscription = new \Components\Services\Tables\Subscription($this->database);
+			include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
+			$subscription = \Components\Services\Models\Subscription::blank();
 			$code = $subscription->generateCode(8, 8, 0, 1, 0);
 			$job->code = $code;
 
@@ -386,10 +385,10 @@ class Jobs extends AdminController
 	private function _checkQuota($job, $uid, $database)
 	{
 		// make sure we aren't over quota
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'service.php');
-		$objS = new \Components\Services\Tables\Service($database);
+		include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
+
 		$maxads = isset($this->config->parameters['maxads']) && intval($this->config->parameters['maxads']) > 0  ? $this->config->parameters['maxads'] : 3;
-		$service = $objS->getUserService($uid);
+		$service = \Components\Services\Models\Service::getUserService($uid);
 		$activejobs = $job->countMyActiveOpenings($uid, 1);
 
 		return ($service == 'employer_basic' ? 1 - $activejobs : $maxads - $activejobs);
