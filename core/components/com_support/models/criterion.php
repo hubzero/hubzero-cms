@@ -34,24 +34,36 @@ namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
 
+/**
+ * Support ticket criteria
+ */
 class Criterion extends Relational
 {
+	/**
+	 * Table name
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__support_criteria';
 
-	protected $table = 'jos_support_criteria';
-
+	/**
+	 * Execute a condition and return results
+	 *
+	 * @return  array
+	 */
 	public function getViolations()
 	{
-		$db = \App::get('db');
 		$violations = array();
 
 		if ($query = $this->get('query'))
 		{
-			$violations = $db->setQuery($query)->execute()->loadRowList();
+			$db = \App::get('db');
+
+			$violations = $db->setQuery($query)
+				->execute()
+				->loadRowList();
 		}
 
 		return $violations;
 	}
-
-
 }
-
