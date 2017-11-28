@@ -35,19 +35,23 @@ namespace Components\Support\Api\Controllers;
 use Components\Support\Models\Criterion;
 use Hubzero\Component\ApiController;
 
-require_once Component::path('com_support') . '/models/criterion.php';
-require_once Component::path('com_support') . '/helpers/acl.php';
+require_once dirname(dirname(__DIR__)) . '/models/criterion.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/acl.php';
 
+/**
+ * API controller class for outstanding support tickets
+ */
 class OutstandingTicketsv2_0 extends ApiController
 {
-
+	/**
+	 * Execute a request
+	 *
+	 * @return  void
+	 */
 	public function execute()
 	{
-		$this->config   = Component::params('com_support');
-		$this->database = \App::get('db');
-
 		$this->acl = \Components\Support\Helpers\ACL::getACL();
-		$this->acl->setUser(User::get('id'));
+		$this->acl->setUser(\User::get('id'));
 
 		parent::execute();
 	}
@@ -63,7 +67,7 @@ class OutstandingTicketsv2_0 extends ApiController
 	{
 		$criteria = Criterion::all();
 		$outstandingTicketData = array(
-			'tickets' => array(),
+			'tickets'  => array(),
 			'criteria' => array()
 		);
 
@@ -71,14 +75,11 @@ class OutstandingTicketsv2_0 extends ApiController
 		{
 			$criterionId = $criterion->get('id');
 			$outstanding = $criterion->getViolations();
+
 			$outstandingTicketData['criteria'][$criterionId] = $criterion->toArray();
 			$outstandingTicketData['tickets'][$criterionId] = $outstanding;
 		}
 
-		$response = json_encode($outstandingTicketData);
-
-		echo $response;
-		exit();
+		$this->send($outstandingTicketData);
 	}
-
 }
