@@ -430,6 +430,15 @@ class JText
 	 */
 	public static function script($string = null, $jsSafe = false, $interpretBackSlashes = true)
 	{
+		// [!] HUBzero
+		if (class_exists('\\App'))
+		{
+			if ($lang = \App::get('language'))
+			{
+				return $lang->script($string, $jsSafe, $interpretBackSlashes);
+			}
+		}
+
 		if (is_array($jsSafe))
 		{
 			if (array_key_exists('interpretBackSlashes', $jsSafe))
