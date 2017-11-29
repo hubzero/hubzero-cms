@@ -1707,6 +1707,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		return $userIDsToEmail;
 	}
 
+	/**
+	 * Load required model
+	 *
+	 * @return  bool
+	 */
 	protected function _loadMemberOptions()
 	{
 		$memberoptions = false;
@@ -1720,20 +1725,41 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		return $memberoptions;
 	}
 
+	/**
+	 * Get a list of User objects from group membership
+	 *
+	 * Note: filters out blocked and unapproved accounts
+	 *
+	 * @param   array  $userIds
+	 * @return  array
+	 */
 	protected function _loadExistingUsers($userIds)
 	{
-		$users = array_map(function($userId) {
+		$users = array_map(function($userId)
+		{
 			return User::getInstance($userId);
 		}, $userIds);
 
-		$existingUsers = array_filter($users, function($user) {
-			return !!$user->get('id');
+		$existingUsers = array_filter($users, function($user)
+		{
+			return ($user->get('id') && !$user->get('block') && $user->get('approved') > 0);
 		});
 
 		return $existingUsers;
 	}
 
-	protected function _shouldUserReceiveEmail($userId, $memberoptions,	$categorySubscriptionsEnabled, $category)
+	/**
+	 * Get a list of User objects from group membership
+	 *
+	 * Note: filters out blocked and unapproved accounts
+	 *
+	 * @param   integer  $userId
+	 * @param   object   $memberoptions
+	 * @param   bool     $categorySubscriptionsEnabled
+	 * @param   object   $category
+	 * @return  array
+	 */
+	protected function _shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category)
 	{
 		$categoryId = $category->get('id');
 
