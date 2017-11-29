@@ -32,7 +32,7 @@
 
 namespace Components\Login\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use Hubzero\Utility\Uri;
 use Request;
 use App;
@@ -40,7 +40,7 @@ use App;
 /**
  * Login Model
  */
-class Login extends Object
+class Login extends Obj
 {
 	/**
 	 * Indicates if the internal state has been set
@@ -69,7 +69,7 @@ class Login extends Object
 		// Set the model state
 		if (!array_key_exists('state', $config))
 		{
-			$config['state'] = new Object;
+			$config['state'] = new Obj;
 		}
 
 		$this->state = $config['state'];
@@ -132,11 +132,19 @@ class Login extends Object
 		// Check for return URL from the request first
 		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
-			$return = base64_decode($return);
-
-			if (!Uri::isInternal($return))
+			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{
+				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
 				$return = '';
+			}
+			else
+			{
+				$return = base64_decode($return);
+
+				if (!Uri::isInternal($return))
+				{
+					$return = '';
+				}
 			}
 		}
 

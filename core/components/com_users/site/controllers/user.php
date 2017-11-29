@@ -29,7 +29,15 @@ class UsersControllerUser extends UsersController
 		// Populate the data array:
 		$data             = array();
 		$options          = array();
-		$data['return']   = base64_decode(Request::getVar('return', '', 'POST', 'BASE64'));
+		$data['return']   = Request::getVar('return', '', 'POST', 'BASE64');
+		if (preg_match('/[^A-Za-z0-9\+\/\=]/', $data['return']))
+		{
+			$data['return'] = '';
+		}
+		else
+		{
+			$data['return'] = base64_decode($data['return']);
+		}
 		$data['username'] = Request::getVar('username', '', 'method', 'username');
 		$data['password'] = Request::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
@@ -81,19 +89,33 @@ class UsersControllerUser extends UsersController
 
 			if ($return = Request::getVar('return', '', 'method', 'base64'))
 			{
-				$return = base64_decode($return);
-				if (!JURI::isInternal($return))
+				if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 				{
 					$return = '';
+				}
+				else
+				{
+					$return = base64_decode($return);
+					if (!JURI::isInternal($return))
+					{
+						$return = '';
+					}
 				}
 			}
 
 			if ($freturn = Request::getVar('freturn', '', 'method', 'base64'))
 			{
-				$freturn = base64_decode($freturn);
-				if (!JURI::isInternal($freturn))
+				if (preg_match('/[^A-Za-z0-9\+\/\=]/', $freturn))
 				{
 					$freturn = '';
+				}
+				else
+				{
+					$freturn = base64_decode($freturn);
+					if (!JURI::isInternal($freturn))
+					{
+						$freturn = '';
+					}
 				}
 			}
 
