@@ -132,11 +132,19 @@ class Login extends Obj
 		// Check for return URL from the request first
 		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
-			$return = base64_decode($return);
-
-			if (!Uri::isInternal($return))
+			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{
+				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
 				$return = '';
+			}
+			else
+			{
+				$return = base64_decode($return);
+
+				if (!Uri::isInternal($return))
+				{
+					$return = '';
+				}
 			}
 		}
 
