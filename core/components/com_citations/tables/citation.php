@@ -479,7 +479,7 @@ class Citation extends \JTable
 		{
 			$query .= " AND r.scope_id=" . $this->_db->quote($filter['scope_id']);
 		}
-		if (!isset($filter['scope']) && !isset($filter['scope_id']) && $filter['scope'] != 'all')
+		if (isset($filter['scope']) && isset($filter['scope_id']) && $filter['scope'] == 'all')
 		{
 			$query .= ' AND r.scope = "" AND r.scope_id = ""';
 		}

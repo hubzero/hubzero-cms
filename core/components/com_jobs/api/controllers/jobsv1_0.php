@@ -139,10 +139,10 @@ class Jobsv1_0 extends ApiController
 
 		$obj = new \Components\Jobs\Tables\Job($database);
 		$filters = array();
-		$job = $obj->get_opening($jid = null, $uid = null, $admin = null, $jobcode = $jobCode);
+		$job = $obj->get_opening($filters, $jobCode, $admin = null, $subscription = null);
 
 		// Create object with records property
-		$response          = new stdClass();
+		$response = new stdClass();
 		$response->job = $job;
 
 		// Return object
