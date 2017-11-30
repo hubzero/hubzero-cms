@@ -41,13 +41,13 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::unpublishList();
 }
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
+include_once Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<select name="state" class="inputbox" onchange="this.form.submit()">
 			<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-			<?php echo Html::select('options', \Components\Plugins\Admin\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
+			<?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
 		</select>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
@@ -97,9 +97,6 @@ include_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' .
 		</tfoot>
 		<tbody>
 <?php
-$db = App::get('db');
-$tbl = new JTableExtension($db);
-
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -145,7 +142,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php
-						if ($tbl->isCheckedOut(User::get('id'), $row->checked_out)) {
+						if ($row->checked_out && $row->checked_out != User::get('id')) {
 							echo $this->escape($row->name);
 						} else {
 					?>
@@ -155,7 +152,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 				<td class="priority-4">
-					<?php if ($tbl->isCheckedOut(User::get('id'), $row->checked_out)) { ?>
+					<?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
 						<span class="state <?php echo $cls; ?>">
 							<span class="text"><?php echo $alt; ?></span>
 						</span>
