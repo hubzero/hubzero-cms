@@ -509,11 +509,23 @@ class Relationships extends AdminController
 			);
 			$this->database->execute();
 			$id = $this->database->insertid();
-			if (isset($_POST['types-new-' . $idx]))
+
+			// New focus area/resource relationship
+			if (isset($_POST['rtypes-new-' . $idx]))
 			{
-				foreach ($_POST['types-new-' . $idx] as $type_id)
+				foreach ($_POST['rtypes-new-' . $idx] as $type_id)
 				{
 					$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+					$this->database->execute();
+				}
+			}
+
+			// New focus area/publication relationship
+			if (isset($_POST['ptypes-new-' . $idx]))
+			{
+				foreach ($_POST['ptypes-new-' . $idx] as $type_id)
+				{
+					$this->database->setQuery('INSERT INTO `#__focus_area_publication_master_type_rel` (focus_area_id, master_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
 					$this->database->execute();
 				}
 			}
