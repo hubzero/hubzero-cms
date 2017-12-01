@@ -32,7 +32,7 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use stdClass;
 use Component;
 use Request;
@@ -45,7 +45,7 @@ include_once __DIR__ . DS . 'publication.php';
 /**
  * Publication doi model class
  */
-class Doi extends Object
+class Doi extends Obj
 {
 	/**
 	 * DOI Configs

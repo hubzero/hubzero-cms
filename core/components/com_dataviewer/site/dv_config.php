@@ -13,18 +13,18 @@ defined('_HZEXEC_') or die();
 
 global $html_path, $com_name, $dv_conf;
 
-$html_path = str_replace(JPATH_BASE, '', JPATH_COMPONENT) . '/html';
-$com_name = str_replace(PATH_CORE.'/components/', '', dirname(__DIR__));
+$html_path = str_replace(PATH_ROOT, '', __DIR__) . '/html';
+$com_name = basename(dirname(__DIR__));
 $com_name = str_replace('com_', '' , $com_name);
 $com_name = trim($com_name, DS);
-$com_path = str_replace(JPATH_BASE, '', JPATH_COMPONENT);
+$com_path = str_replace(PATH_ROOT, '', __DIR__);
 
 $dv_conf['settings']['com_name'] = $com_name;
 
 define('DV_COM', $com_name);
 define('DV_COM_PATH', $com_path);
 define('DV_COM_HTML', DV_COM_PATH . DS . 'html');
-define('DV_PATH_HTML', JPATH_COMPONENT . DS . 'html');
+define('DV_PATH_HTML', __DIR__ . DS . 'html');
 
 $params = Component::params('com_dataviewer');
 

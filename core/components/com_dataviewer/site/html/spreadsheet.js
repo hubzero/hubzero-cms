@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
 			}
 
 			/* Lazy loading dataviewer images */
-			$('#dv-spreadsheet tbody .lazy-load').lazyload();
+			$('#dv-spreadsheet tbody .lazy-load').lazyload({failure_limit:1000});
 
 		},
 		"fnInitComplete": function() {
@@ -325,7 +325,7 @@ jQuery(document).ready(function($) {
 				width: 'auto',
 				title: res.title,
 				modal: true
-			}).find('.dv_image').lazyload();
+			}).find('.dv_image').lazyload({failure_limit:1000});
 			
 		}
 	}

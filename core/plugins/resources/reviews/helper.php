@@ -344,21 +344,15 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		}
 
 		// Calculate the new average rating for the parent resource
-		$rating = \Components\Resources\Reviews\Models\Review::averageByResource($this->resource->id);
+		$this->resource->calculateRating();
+		$this->resource->updateRating();
 
-		$this->resource->set('rating', $rating[0]);
-		$this->resource->set('times_rated', $rating[1]);
-		$this->resource->save();
+		// Instantiate a helper object and get all the contributor IDs
+		$database = App::get('db');
 
-		// Get all the contributor IDs
-		$users = array();
-		foreach ($this->resource->authors as $author)
-		{
-			if ($author->get('authorid') > 0)
-			{
-				$users[] = $author->get('authorid');
-			}
-		}
+		$helper = new \Components\Resources\Helpers\Helper($this->resource->id, $database);
+		$helper->getContributorIDs();
+		$users = $helper->contributorIDs;
 
 		// Build the subject
 		$subject = Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
@@ -433,11 +427,8 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		$review->save();
 
 		// Recalculate the average rating for the parent resource
-		$rating = \Components\Resources\Reviews\Models\Review::averageByResource($this->resource->id);
-
-		$this->resource->set('rating', $rating[0]);
-		$this->resource->set('times_rated', $rating[1]);
-		$this->resource->save();
+		$this->resource->calculateRating();
+		$this->resource->updateRating();
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&id=' . $this->resource->id . '&active=reviews', false)

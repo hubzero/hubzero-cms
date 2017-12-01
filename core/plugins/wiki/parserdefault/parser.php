@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
 
 /**
  * Wiki parser class
@@ -1264,10 +1264,13 @@ class WikiParser
 			'<' => '&#60;',
 			'>' => '&#62;',
 		);
-		if ($quotes) $a = $a + array(
-			"'" => '&#39;',
-			'"' => '&#34;',
-		);
+		if ($quotes)
+		{
+			$a = $a + array(
+				"'" => '&#39;',
+				'"' => '&#34;',
+			);
+		}
 
 		return strtr($str, $a);
 	}
@@ -1293,8 +1296,8 @@ class WikiParser
 		);
 
 		// Fix &entitiy\n;
-		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;",$string);
-		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$string);
+		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u', "$1;", $string);
+		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu', "$1$2;", $string);
 		$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
 
 		// Remove any attribute starting with "on" or xmlns
@@ -1311,13 +1314,15 @@ class WikiParser
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu', "$1>", $string);
 
 		// Remove namespaced elements (we do not need them...)
-		$string = preg_replace('#</*\w+:\w[^>]*>#i',"",$string);
+		$string = preg_replace('#</*\w+:\w[^>]*>#i', "", $string);
 
 		// Remove really unwanted tags
-		do {
+		do
+		{
 			$oldstring = $string;
 			$string = preg_replace('#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
-		} while ($oldstring != $string);
+		}
+		while ($oldstring != $string);
 
 		return $string;
 	}
@@ -1540,7 +1545,19 @@ class WikiParser
 				}
 				else
 				{
-					return '';
+					$lngth = count($macroPieces);
+					$macroPieces[$lngth - 1] = \Hubzero\Utility\Inflector::pluralize($macroPieces[$lngth - 1]);
+					$macroname = ucfirst($macroPieces[$lngth - 1]) . 'Macro';
+					$macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
+
+					if (is_file($macropath))
+					{
+						include_once($macropath);
+					}
+					else
+					{
+						return '';
+					}
 				}
 
 				if (!class_exists($macroname))
@@ -2010,9 +2027,19 @@ class WikiParser
 					}
 					// Count the number of occurrences of bold and italics mark-ups.
 					// We are not counting sequences of five apostrophes.
-					if (strlen($arr[$i]) == 2)      { $numitalics++;             }
-					else if (strlen($arr[$i]) == 3) { $numbold++;                }
-					else if (strlen($arr[$i]) == 5) { $numitalics++; $numbold++; }
+					if (strlen($arr[$i]) == 2)
+					{
+						$numitalics++;
+					}
+					else if (strlen($arr[$i]) == 3)
+					{
+						$numbold++;
+					}
+					else if (strlen($arr[$i]) == 5)
+					{
+						$numitalics++;
+						$numbold++;
+					}
 				}
 				$i++;
 			}
@@ -2035,15 +2062,24 @@ class WikiParser
 						$x2 = substr ($arr[$i-1], -2, 1);
 						if ($x1 == ' ')
 						{
-							if ($firstspace == -1) $firstspace = $i;
+							if ($firstspace == -1)
+							{
+								$firstspace = $i;
+							}
 						}
 						else if ($x2 == ' ')
 						{
-							if ($firstsingleletterword == -1) $firstsingleletterword = $i;
+							if ($firstsingleletterword == -1)
+							{
+								$firstsingleletterword = $i;
+							}
 						}
 						else
 						{
-							if ($firstmultiletterword == -1) $firstmultiletterword = $i;
+							if ($firstmultiletterword == -1)
+							{
+								$firstmultiletterword = $i;
+							}
 						}
 					}
 					$i++;
@@ -2052,22 +2088,22 @@ class WikiParser
 				// If there is a single-letter word, use it!
 				if ($firstsingleletterword > -1)
 				{
-					$arr[ $firstsingleletterword ] = "''";
-					$arr[ $firstsingleletterword-1 ] .= "'";
+					$arr[$firstsingleletterword] = "''";
+					$arr[$firstsingleletterword-1] .= "'";
 				}
 				// If not, but there's a multi-letter word, use that one.
 				else if ($firstmultiletterword > -1)
 				{
-					$arr[ $firstmultiletterword ] = "''";
-					$arr[ $firstmultiletterword-1 ] .= "'";
+					$arr[$firstmultiletterword] = "''";
+					$arr[$firstmultiletterword-1] .= "'";
 				}
 				// ... otherwise use the first one that has neither.
 				// (notice that it is possible for all three to be -1 if, for example,
 				// there is only one pentuple-apostrophe in the line)
 				else if ($firstspace > -1)
 				{
-					$arr[ $firstspace ] = "''";
-					$arr[ $firstspace-1 ] .= "'";
+					$arr[$firstspace] = "''";
+					$arr[$firstspace-1] .= "'";
 				}
 			}
 

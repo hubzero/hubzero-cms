@@ -35,7 +35,7 @@
 | SEF Build
 |--------------------------------------------------------------------------
 |
-| Remove the base URI path. This will strip everything up to the bas
+| Set some basic information based on Menu ItemId
 |
 */
 $router->rules('build')->append('content', function ($uri)
@@ -325,7 +325,7 @@ $router->rules('parse')->append('prep', function ($uri)
 	$path = str_replace('index.php', '', $path);
 
 	// Set the route
-	$uri->setPath(trim($path , '/'));
+	$uri->setPath(trim($path, '/'));
 });
 
 /*
@@ -735,4 +735,3 @@ $router->rules('parse')->append('post', function ($uri)
 		return true;
 	}
 });
-

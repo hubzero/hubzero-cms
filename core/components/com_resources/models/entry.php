@@ -41,22 +41,31 @@ use Component;
 use Date;
 use Lang;
 use User;
+use App;
 
 require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'type.php';
 require_once __DIR__ . DS . 'author.php';
 require_once __DIR__ . DS . 'license.php';
+require_once __DIR__ . DS . 'screenshot.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 /**
- * Resource model
- *
- * NOTE: This isn't named 'Resource' because it's
- * a reserved word in PHP 7+
+ * Resource entry model
  *
  * @uses \Hubzero\Database\Relational
  */
 class Entry extends Relational
 {
+	/**
+	 * State constants
+	 **/
+	const STATE_ARCHIVED = -1;
+	const STATE_DRAFT    = 2;
+	const STATE_PENDING  = 3;
+	const STATE_TRASHED  = 4;
+	const STATE_DRAFT_INTERNAL = 5;
+
 	/**
 	 * The table namespace
 	 *
@@ -105,7 +114,9 @@ class Entry extends Relational
 	public $always = array(
 		'alias',
 		'modified',
-		'modified_by'
+		'modified_by',
+		'fulltxt',
+		'introtext'
 	);
 
 	/**
@@ -128,6 +139,34 @@ class Entry extends Relational
 	 * @var  object
 	 */
 	protected $attribsRegistry = null;
+
+	/**
+	 * Authorization checks flag
+	 *
+	 * @var  bool
+	 */
+	protected $_authorized = false;
+
+	/**
+	 * Tool
+	 *
+	 * @var  object
+	 */
+	public $thistool = null;
+
+	/**
+	 * Tool
+	 *
+	 * @var  object
+	 */
+	public $curtool = null;
+
+	/**
+	 * Tool revision
+	 *
+	 * @var  string
+	 */
+	public $revision = null;
 
 	/**
 	 * Generates automatic alias field value
@@ -163,6 +202,38 @@ class Entry extends Relational
 	public function automaticModifiedBy()
 	{
 		return User::get('id');
+	}
+
+	/**
+	 * Generates automatic fulltxt field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticFulltxt($data)
+	{
+		if (!isset($data['fulltxt']))
+		{
+			$data['fulltxt'] = '';
+		}
+		return str_replace('<br>', '<br />', $data['fulltxt']);
+	}
+
+	/**
+	 * Generates automatic introtext field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticIntrotext($data)
+	{
+		if (!isset($data['introtext']))
+		{
+			$data['introtext'] = $data['fulltxt'];
+		}
+		$data['introtext'] = \Hubzero\Utility\Str::truncate(strip_tags($data['introtext']), 300);
+
+		return str_replace('<br>', '<br />', $data['introtext']);
 	}
 
 	/**
@@ -203,10 +274,17 @@ class Entry extends Relational
 	 *
 	 * @return  object
 	 */
-	public function transformGroup()
+	public function transformGroupOwner()
 	{
 		//return $this->belongsToOne('Hubzero\User\Group', 'group_owner');
-		return \Hubzero\User\Group::getInstance($this->get('group_owner'));
+		$group = \Hubzero\User\Group::getInstance($this->get('group_owner'));
+
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group();
+		}
+
+		return $group;
 	}
 
 	/**
@@ -236,6 +314,16 @@ class Entry extends Relational
 	}
 
 	/**
+	 * Generates a list of screenshots
+	 *
+	 * @return  object
+	 */
+	public function screenshots()
+	{
+		return $this->oneToMany(__NAMESPACE__ . '\\Screenshot', 'resourceid');
+	}
+
+	/**
 	 * Generates a list of authors
 	 *
 	 * @return  object
@@ -254,7 +342,7 @@ class Entry extends Relational
 	{
 		$names = array();
 
-		foreach ($this->authors()->ordered()->rows() as $contributor)
+		foreach ($this->authors as $contributor)
 		{
 			if (strtolower($contributor->get('role')) == 'submitter')
 			{
@@ -276,6 +364,92 @@ class Entry extends Relational
 		}
 
 		return implode(', ', $names);
+	}
+
+	/**
+	 * Get a list of contributors on this resource by role
+	 *
+	 * @param   mixed  $idx  Index value
+	 * @return  array
+	 */
+	public function contributors($idx=null)
+	{
+		$contributors = array();
+
+		if ($idx == 'tool')
+		{
+			// UUUGGGGHHHHHHHHHH
+			// @TODO: Rewrite this
+			if ($this->isTool())
+			{
+				$db = App::get('db');
+				$sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization AS org, t.*, a.role"
+					 . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS v ON v.id=t.version_id"
+					 . " LEFT JOIN `#__author_assoc` AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid=" . $db->quote($this->get('id'))
+					 . " WHERE t.toolname=" . $db->quote($this->get('alias')) . " AND v.state<>3"
+					 . " AND t.revision=" . $db->quote($this->get('revision'))
+					 . " ORDER BY t.ordering";
+				$db->setQuery($sql);
+				if ($cons = $db->loadObjectList())
+				{
+					foreach ($cons as $k => $c)
+					{
+						if (!$cons[$k]->name)
+						{
+							$cons[$k]->name = $cons[$k]->xname;
+						}
+						if (trim($cons[$k]->org) == '')
+						{
+							$cons[$k]->org = $cons[$k]->xorg;
+						}
+					}
+					$contributors = $cons;
+				}
+			}
+		}
+		else
+		{
+			$contributors = $this->authors()
+				->ordered()
+				->rows();
+
+			if (!$idx)
+			{
+				return $contributors;
+			}
+
+			// Roles
+			$op = 'is';
+			if (substr($idx, 0, 1) == '!')
+			{
+				$op = 'not';
+				$idx = ltrim($idx, '!');
+			}
+
+			$res = array();
+			foreach ($contributors as $contributor)
+			{
+				if ($op == 'is')
+				{
+					if ($contributor->get('role') == $idx)
+					{
+						$res[] = $contributor;
+					}
+				}
+
+				if ($op == 'not')
+				{
+					if ($contributor->get('role') != $idx)
+					{
+						$res[] = $contributor;
+					}
+				}
+			}
+
+			$contributors = $res;
+		}
+
+		return $contributors;
 	}
 
 	/**
@@ -326,7 +500,7 @@ class Entry extends Relational
 	 */
 	public function makeChildOf($id)
 	{
-		if ($id instanceof Resource)
+		if ($id instanceof Entry)
 		{
 			$id = $id->get('id');
 		}
@@ -358,7 +532,7 @@ class Entry extends Relational
 	 */
 	public function makeParentOf($id)
 	{
-		if ($id instanceof Resource)
+		if ($id instanceof Entry)
 		{
 			$id = $id->get('id');
 		}
@@ -469,6 +643,28 @@ class Entry extends Relational
 	}
 
 	/**
+	 * Do some work on the path to make sure it's kosher
+	 *
+	 * @return  string
+	 */
+	public function transformPath()
+	{
+		$path = stripslashes($this->get('path'));
+
+		if (!preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
+		{
+			$path = DS . ltrim($path, DS);
+
+			if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
+			{
+				$path = DS . trim($this->params->get('uploadpath'), DS) . $path;
+			}
+		}
+
+		return $path;
+	}
+
+	/**
 	 * Transform attribs
 	 *
 	 * @return  object
@@ -539,6 +735,94 @@ class Entry extends Relational
 		}
 
 		return $thedate;
+	}
+
+	/**
+	 * Transform rating float into text
+	 *
+	 * @return  string
+	 */
+	public function transformRating()
+	{
+		switch ($this->get('rating'))
+		{
+			case 0.5:
+				$cls = 'half-stars';
+				break;
+			case 1:
+				$cls = 'one-stars';
+				break;
+			case 1.5:
+				$cls = 'onehalf-stars';
+				break;
+			case 2:
+				$cls = 'two-stars';
+				break;
+			case 2.5:
+				$cls = 'twohalf-stars';
+				break;
+			case 3:
+				$cls = 'three-stars';
+				break;
+			case 3.5:
+				$cls = 'threehalf-stars';
+				break;
+			case 4:
+				$cls = 'four-stars';
+				break;
+			case 4.5:
+				$cls = 'fourhalf-stars';
+				break;
+			case 5:
+				$cls = 'five-stars';
+				break;
+			case 0:
+			default:
+				$cls = 'no-stars';
+				break;
+		}
+
+		return $cls;
+	}
+
+	/**
+	 * Transform description
+	 *
+	 * @return  string
+	 */
+	public function transformDescription()
+	{
+		$content = stripslashes($this->get('fulltxt'));
+		$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+		$content = str_replace(array('="/site/', '="site/'), '="' . str_replace(PATH_ROOT, '', PATH_APP) . '/site/', $content);
+
+		$content = \Html::content('prepare', $content);
+
+		$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+
+		return $content;
+	}
+
+	/**
+	 * Transform description
+	 *
+	 * @return  string
+	 */
+	public function fields()
+	{
+		$data = array();
+
+		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('fulltxt'), $matches, PREG_SET_ORDER);
+
+		if (count($matches) > 0)
+		{
+			foreach ($matches as $match)
+			{
+				$data[$match[1]] = stripslashes($match[2]);
+			}
+		}
+
+		return $data;
 	}
 
 	/**
@@ -642,7 +926,7 @@ class Entry extends Relational
 			$dir_month = Date::of('now')->format('m');
 		}
 
-		return $dir_year . DS . $dir_month . DS . Str::pad($this->get('id'));
+		return DS . $dir_year . DS . $dir_month . DS . Str::pad($this->get('id'));
 	}
 
 	/**
@@ -654,7 +938,7 @@ class Entry extends Relational
 	{
 		if (!$this->filespace)
 		{
-			$this->filespace = $this->basepath() . DS . $this->relativepath();
+			$this->filespace = $this->basepath() . $this->relativepath();
 		}
 
 		return $this->filespace;
@@ -678,8 +962,6 @@ class Entry extends Relational
 	 */
 	public function tags($as = 'list')
 	{
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
-
 		$cloud = new Tags($this->get('id'));
 
 		if ($as == 'list')
@@ -697,6 +979,375 @@ class Entry extends Relational
 	}
 
 	/**
+	 * Check a user's authorization
+	 *
+	 * @param   string   $action  Action to check
+	 * @return  boolean  True if authorized, false if not
+	 */
+	public function access($action='view')
+	{
+		if (!$this->_authorized)
+		{
+			$this->_authorize();
+		}
+		return $this->params->get('access-' . strtolower($action) . '-resource');
+	}
+
+	/**
+	 * Authorize current user
+	 *
+	 * @return  void
+	 */
+	private function _authorize()
+	{
+		// NOT logged in
+		if (User::isGuest())
+		{
+			// If the resource is published and public
+			if ($this->isPublished() && ($this->get('access') == 0 || $this->get('access') == 3))
+			{
+				// Allow view access
+				$this->params->set('access-view-resource', true);
+				if ($this->get('access') == 0)
+				{
+					$this->params->set('access-view-all-resource', true);
+				}
+			}
+			$this->_authorized = true;
+			return;
+		}
+
+		if ($this->isTool())
+		{
+			$tconfig = Component::params('com_tools');
+
+			if ($admingroup = trim($tconfig->get('admingroup', '')))
+			{
+				// Check if they're a member of admin group
+				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
+				if ($ugs && count($ugs) > 0)
+				{
+					$admingroup = strtolower($admingroup);
+					foreach ($ugs as $ug)
+					{
+						if (strtolower($ug->cn) == $admingroup)
+						{
+							$this->params->set('access-view-resource', true);
+							$this->params->set('access-view-all-resource', true);
+
+							$this->params->set('access-admin-resource', true);
+							$this->params->set('access-manage-resource', true);
+
+							$this->params->set('access-create-resource', true);
+							$this->params->set('access-delete-resource', true);
+							$this->params->set('access-edit-resource', true);
+							$this->params->set('access-edit-state-resource', true);
+							$this->params->set('access-edit-own-resource', true);
+							break;
+						}
+					}
+				}
+			}
+
+			if (!$this->params->get('access-admin-resource')
+			 && !$this->params->get('access-manage-resource'))
+			{
+				// If logged in and resource is published and public or registered
+				if ($this->isPublished() && ($this->get('access') == 0 || $this->get('access') == 1))
+				{
+					// Allow view access
+					$this->params->set('access-view-resource', true);
+					$this->params->set('access-view-all-resource', true);
+				}
+
+				if ($this->get('group_owner'))
+				{
+					// For protected resources, make sure users can see abstract
+					if ($this->get('access') < 3)
+					{
+						$this->params->set('access-view-resource', true);
+						$this->params->set('access-view-all-resource', true);
+					}
+					else if ($this->get('access') == 3)
+					{
+						$this->params->set('access-view-resource', true);
+					}
+
+					// Get the groups the user has access to
+					$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+					$usersgroups = array();
+					if (!empty($xgroups))
+					{
+						foreach ($xgroups as $group)
+						{
+							if ($group->regconfirmed)
+							{
+								$usersgroups[] = $group->cn;
+							}
+						}
+					}
+
+					// Get the groups that can access this resource
+					$allowedgroups = $this->groups;
+
+					// Find what groups the user has in common with the resource, if any
+					$common = array_intersect($usersgroups, $allowedgroups);
+
+					// Check if the user is apart of the group that owns the resource
+					// or if they have any groups in common
+					if (in_array($this->get('group_owner'), $usersgroups) || count($common) > 0)
+					{
+						$this->params->set('access-view-resource', true);
+						$this->params->set('access-view-all-resource', true);
+					}
+				}
+
+				require_once Component::path('com_tools') . '/tables/tool.php';
+
+				$obj = new \Components\Tools\Tables\Tool(App::get('db'));
+				$obj->loadFromName($this->get('alias'));
+
+				// check if user in tool dev team
+				if ($developers = $obj->getToolDevelopers($obj->id))
+				{
+					foreach ($developers as $dv)
+					{
+						if ($dv->uidNumber == User::get('id'))
+						{
+							$this->params->set('access-view-resource', true);
+							$this->params->set('access-view-all-resource', true);
+							$this->params->set('access-create-resource', true);
+							$this->params->set('access-delete-resource', true);
+							$this->params->set('access-edit-resource', true);
+							$this->params->set('access-edit-state-resource', true);
+							$this->params->set('access-edit-own-resource', true);
+						}
+					}
+				}
+			}
+
+			$this->_authorized = true;
+			return;
+		}
+		else
+		{
+			// Check if they're a site admin (from Joomla)
+			$this->params->set('access-admin-resource', User::authorise('core.admin', null));
+			$this->params->set('access-manage-resource', User::authorise('core.manage', null));
+			if ($this->params->get('access-admin-resource')
+			 || $this->params->get('access-manage-resource'))
+			{
+				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
+
+				$this->params->set('access-create-resource', true);
+				$this->params->set('access-delete-resource', true);
+				$this->params->set('access-edit-resource', true);
+				$this->params->set('access-edit-state-resource', true);
+				$this->params->set('access-edit-own-resource', true);
+
+				$this->_authorized = true;
+				return;
+			}
+
+			$author_ids = array();
+			foreach ($this->authors as $author)
+			{
+				$author_ids[] = $author->get('authorid');
+			}
+
+			// If they're not an admin
+
+			// If logged in and resource is published and public or registered
+			if ($this->isPublished() && ($this->get('access') == 0 || $this->get('access') == 1))
+			{
+				// Allow view access
+				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
+			}
+
+			// Check if they're the resource creator
+			if ($this->get('created_by') == User::get('id'))
+			{
+				// Give full access
+				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
+
+				$this->params->set('access-create-resource', true);
+				$this->params->set('access-delete-resource', true);
+				$this->params->set('access-edit-resource', true);
+				$this->params->set('access-edit-state-resource', true);
+				$this->params->set('access-edit-own-resource', true);
+			}
+			// Listed as a contributor
+			else if (in_array(User::get('id'), $author_ids))
+			{
+				// Give full access
+				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
+
+				$this->params->set('access-create-resource', true);
+				$this->params->set('access-delete-resource', true);
+				$this->params->set('access-edit-resource', true);
+				$this->params->set('access-edit-state-resource', true);
+				$this->params->set('access-edit-own-resource', true);
+			}
+			// Check group access
+			else if ($this->get('group_owner')) // && ($this->get('access') == 3 || $this->get('access') == 4))
+			{
+				// For protected resources, make sure users can see abstract
+				if ($this->get('access') < 3)
+				{
+					$this->params->set('access-view-resource', true);
+					$this->params->set('access-view-all-resource', true);
+				}
+				else if ($this->get('access') == 3)
+				{
+					$this->params->set('access-view-resource', true);
+				}
+
+				// Get the groups the user has access to
+				$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+
+				$usersgroups = array();
+				if (!empty($xgroups))
+				{
+					foreach ($xgroups as $group)
+					{
+						if ($group->regconfirmed)
+						{
+							$usersgroups[] = $group->cn;
+						}
+					}
+				}
+
+				// Get the groups that can access this resource
+				$allowedgroups = $this->groups;
+
+				// Find what groups the user has in common with the resource, if any
+				$common = array_intersect($usersgroups, $allowedgroups);
+
+				// Check if the user is apart of the group that owns the resource
+				// or if they have any groups in common
+				if (in_array($this->get('group_owner'), $usersgroups) || count($common) > 0)
+				{
+					$this->params->set('access-view-resource', true);
+					$this->params->set('access-view-all-resource', true);
+				}
+			}
+			else
+			{
+				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
+			}
+		}
+
+		$this->_authorized = true;
+	}
+
+	/**
+	 * Compile tool information
+	 *
+	 * @param   string  $revision
+	 * @return  void
+	 */
+	private function compileToolInfo($revision=null)
+	{
+		if (!Component::isEnabled('com_tools'))
+		{
+			return;
+		}
+
+		if ($this->isTool())
+		{
+			require_once Component::path('com_tools') . '/tables/version.php';
+
+			$this->thistool = null;
+			$this->curtool  = null;
+			$this->revision = null;
+
+			$db = App::get('db');
+
+			$revisions = array();
+			$tv = new \Components\Tools\Tables\Version($db);
+			$tv->getToolVersions('', $revisions, $this->get('alias'));
+
+			if ($revisions)
+			{
+				foreach ($revisions as $tool)
+				{
+					// Archive version, if requested
+					if (($revision && $tool->revision == $revision && $revision != 'dev')
+					 or ($revision == 'dev' and $tool->state==3))
+					{
+						$this->thistool = $tool;
+					}
+					// Current version
+					if ($tool->state == 1 && (count($revisions) == 1 || (count($revisions) > 1 && $revisions[1]->version == $tool->version)))
+					{
+						$this->curtool = $tool;
+						$revision = $revision ? $revision : $tool->revision;
+					}
+					// Dev version
+					if (!$revision && count($revisions) == 1 && $tool->state == 3)
+					{
+						$this->thistool = $tool;
+						$revision = 'dev';
+					}
+				}
+
+				if (!$this->thistool && !$this->curtool && count($revisions) > 1)
+				{
+					// Tool is retired, display latest unpublished version
+					$this->thistool = $revisions[1];
+					$revision = $this->thistool->revision;
+				}
+
+				// If the revision is the same as the current version
+				if ($this->curtool && $this->thistool && $this->thistool == $this->curtool)
+				{
+					// Display default resource page for current version
+					$this->thistool = null;
+				}
+			}
+
+			$tconfig = Component::params('com_tools');
+
+			// Replace resource info with requested version
+			$resource = $this->toObject();
+			$tv->compileResource($this->thistool, $this->curtool, $resource, $revision, $tconfig);
+			$this->set($resource);
+
+			$this->revision = $revision;
+		}
+	}
+
+	/**
+	 * Applies a where clause for published items
+	 *
+	 * @return  $this
+	 **/
+	public function wherePublished()
+	{
+		$r = $this->getTableName();
+
+		// Set state
+		$this->whereEquals('published', self::STATE_PUBLISHED);
+
+		// Honor publishing window
+		$now = Date::toSql();
+
+		$this->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_up', '<=', $now, 1)
+			->resetDepth()
+			->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_down', '>=', $now, 1)
+			->resetDepth();
+
+		return $this;
+	}
+
+	/**
 	 * Generates a list the most recent entries
 	 *
 	 * @param   integer  $limit
@@ -706,12 +1357,41 @@ class Entry extends Relational
 	 */
 	public static function getLatest($limit = 10, $dateField = 'created', $sort = 'DESC')
 	{
-		$rows = self::all()
+		return self::all()
 			->whereEquals('standalone', 1)
 			->order($dateField, $sort)
 			->limit($limit);
+	}
 
-		return $rows;
+	/**
+	 * Get a record by alias or ID
+	 *
+	 * @param   mixed   $id
+	 * @param   string  $revision
+	 * @return  object
+	 */
+	public static function getInstance($id, $revision=null)
+	{
+		if (is_integer($id))
+		{
+			$result = self::oneOrNew($id);
+		}
+		else
+		{
+			$result = self::oneByAlias($id);
+
+			if (!$result)
+			{
+				$result = self::blank();
+			}
+		}
+
+		if ($result->isTool())
+		{
+			$result->compileToolInfo($revision);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -728,9 +1408,7 @@ class Entry extends Relational
 		$a = Author::blank()->getTableName();
 
 		$query
-			->select($r . '.*')
-			->join($a, $a . '.subid', $r . '.id', 'left')
-			->whereEquals($a . '.subtable', 'resources');
+			->select($r . '.*');
 
 		if (isset($filters['standalone']))
 		{
@@ -742,6 +1420,11 @@ class Entry extends Relational
 			$query->whereIn($r . '.published', (array) $filters['published']);
 		}
 
+		if (isset($filters['group']))
+		{
+			$query->whereEquals($r . '.group_owner', (string) $filters['group']);
+		}
+
 		if (isset($filters['type']))
 		{
 			if (!is_numeric($filters['type']))
@@ -749,6 +1432,20 @@ class Entry extends Relational
 				$filters['type'] = Type::oneByAlias($filters['type'])->get('id');
 			}
 			$query->whereEquals($r . '.type', $filters['type']);
+		}
+
+		if (isset($filters['tag']) && $filters['tag'])
+		{
+			$to = \Components\Tags\Models\Objct::blank()->getTableName();
+			$tg = \Components\Tags\Models\Tag::blank()->getTableName();
+
+			$cloud = new \Components\Resources\Helpers\Tags();
+			$tags = $cloud->parse($filters['tag']);
+
+			$query->join($to, $to . '.objectid', $r . '.id');
+			$query->join($tg, $tg . '.id', $to . '.tagid', 'inner');
+			$query->whereEquals($to . '.tbl', 'resources');
+			$query->whereIn($tg . '.tag', $tags);
 		}
 
 		if (isset($filters['search']))
@@ -765,7 +1462,10 @@ class Entry extends Relational
 
 		if (isset($filters['author']))
 		{
-			$query->whereEquals($a . '.authorid', $filters['author']);
+			$query
+				->join($a, $a . '.subid', $r . '.id', 'left')
+				->whereEquals($a . '.subtable', 'resources')
+				->whereEquals($a . '.authorid', $filters['author']);
 
 			if (isset($filters['notauthorrole']))
 			{
@@ -829,6 +1529,8 @@ class Entry extends Relational
 		{
 			$query->where($r . '.publish_up', '<', $filters['enddate']);
 		}
+
+		$query->group($r . '.id');
 
 		return $query;
 	}

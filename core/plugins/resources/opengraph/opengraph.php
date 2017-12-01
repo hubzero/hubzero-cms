@@ -58,13 +58,13 @@ class plgResourcesOpengraph extends \Hubzero\Plugin\Plugin
 
 		$view = $this->view();
 
-		Document::addCustomTag('<meta property="og:title" content="' . $view->escape($model->resource->title) . '" />');
+		Document::addCustomTag('<meta property="og:title" content="' . $view->escape($model->title) . '" />');
 
-		Document::addCustomTag('<meta property="og:description" content="' . $view->escape($model->resource->introtext) . '" />');
+		Document::addCustomTag('<meta property="og:description" content="' . $view->escape($model->introtext) . '" />');
 
 		Document::addCustomTag('<meta property="og:type" content="article" />');
 
-		$url = Route::url('index.php?option=com_resources&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id));
+		$url = Route::url($model->link());
 		$url = rtrim(Request::root(), '/') . '/' . trim($url, '/');
 
 		Document::addCustomTag('<meta property="og:url" content="' . $url . '" />');

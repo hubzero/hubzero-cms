@@ -37,22 +37,21 @@ $labels   = array();
 $selected = array();
 $txtlabel = '';
 
-if ($this->audience && count($this->audience) > 0) { ?>
+if ($this->audience) { ?>
 	<div class="usagescale">
 		<div class="showscale">
 			<ul class="audiencelevel">
 				<?php
-				$this->audience = $this->audience[0];
-
 				for ($i = 0, $n = $this->numlevels; $i <= $n; $i++)
 				{
-					$lb = 'label' . $i;
+					//$lb = 'label' . $i;
 					$lv = 'level' . $i;
-					$ds = 'desc' . $i;
-					$levels[$lv] = $this->audience->$lv;
-					$labels[$lv]['title'] = $this->audience->$lb;
-					$labels[$lv]['desc']  = $this->audience->$ds;
-					if ($this->audience->$lv)
+					//$ds = 'desc' . $i;
+					$level = $this->audience->{'level' . $i}();
+					$levels[$lv] = $this->audience->get('level' . $i);
+					$labels[$lv]['title'] = $level->title;
+					$labels[$lv]['desc']  = $level->description;
+					if ($this->audience->get($lv))
 					{
 						$selected[] = $lv;
 					}
@@ -75,10 +74,10 @@ if ($this->audience && count($this->audience) > 0) { ?>
 				}
 				else if (count($selected) > 1)
 				{
-					$first 	    = array_shift($selected);
-					$first		= $labels[$first]['title'];
-					$firstbits  = explode("-", $first);
-					$first 	    = array_shift($firstbits);
+					$first     = array_shift($selected);
+					$first     = $labels[$first]['title'];
+					$firstbits = explode("-", $first);
+					$first     = array_shift($firstbits);
 
 					$last     = end($selected);
 					$last     = $labels[$last]['title'];

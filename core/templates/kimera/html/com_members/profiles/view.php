@@ -118,7 +118,7 @@ if (!$no_html)
 				<?php echo $title; ?>
 			</a>
 		<?php else: ?>
-			<span id="profile-privacy"<?php echo ($cls ? ' class="' . $cls . '"' : ''); ?>>
+			<span id="profile-privacy"<?php if ($cls) { echo ' class="' . $cls . '"'; } ?>>
 				<?php echo $span_title; ?>
 			</span>
 		<?php endif; ?>
@@ -200,7 +200,10 @@ if (!$no_html)
 								$attribs = array();
 								foreach ($option as $key => $val)
 								{
-									if ($key == 'text') continue;
+									if ($key == 'text')
+									{
+										continue;
+									}
 
 									$attribs[] = $key . '="' . $this->escape($val) . '"';
 								}
@@ -215,12 +218,12 @@ if (!$no_html)
 			</ul><!-- /#page_menu -->
 
 			<?php
-				$thumb = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '_th.gif';
-				$full = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '.gif';
+			$thumb = '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '_th.gif';
+			$full  = '/site/stats/contributor_impact/impact_' . $this->profile->get('id') . '.gif';
 			?>
-			<?php if (file_exists(PATH_ROOT . $thumb)) : ?>
-				<a id="member-stats-graph" rel="lightbox" title="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
-					<img src="<?php echo $thumb; ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" />
+			<?php if (file_exists(PATH_APP . $thumb)) : ?>
+				<a id="member-stats-graph" rel="lightbox" title="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo with(new \Hubzero\Content\Moderator(PATH_APP . $full, 'public'))->getUrl(); ?>">
+					<img src="<?php echo with(new \Hubzero\Content\Moderator(PATH_APP . $thumb, 'public'))->getUrl(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" />
 				</a>
 			<?php endif; ?>
 
@@ -230,14 +233,14 @@ if (!$no_html)
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('id') == User::get('id')) { echo 'my'; } else { echo $this->profile->get('name') . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->link() . '&task=edit'); ?>">
+						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>" href="<?php echo Route::url($this->profile->link() . '&task=edit'); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
 						</a>
 					</li>
 				<?php endif; ?>
 				<?php if ($password) : ?>
 					<li>
-						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: <?php echo Lang::txt('Change your password'); ?>" href="<?php echo Route::url($this->profile->link('changepassword')); ?>">
+						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>" href="<?php echo Route::url($this->profile->link('changepassword')); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>
 						</a>
 					</li>
@@ -278,4 +281,5 @@ if (!$no_html)
 		</div><!-- /#page_main -->
 	</div> <!-- //#page_container -->
 </div><!-- /.innerwrap -->
-<?php } ?>
+<?php
+}

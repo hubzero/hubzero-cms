@@ -75,7 +75,8 @@ class Profile extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
-		'ordering'
+		'ordering',
+		'access'
 	);
 
 	/**
@@ -108,6 +109,22 @@ class Profile extends Relational
 		}
 
 		return $data['ordering'];
+	}
+
+	/**
+	 * Generates automatic access field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAccess($data)
+	{
+		if (!isset($data['access']) || !$data['access'])
+		{
+			$data['access'] = 1;
+		}
+
+		return $data['access'];
 	}
 
 	/**

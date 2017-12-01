@@ -60,7 +60,7 @@ if ($this->contributors)
 		else if ($contributor->surname || $contributor->givenName)
 		{
 			$name = $this->escape(stripslashes($contributor->givenName)) . ' ';
-			if ($contributor->middleName != NULL)
+			if ($contributor->middleName != null)
 			{
 				$name .= $this->escape(stripslashes($contributor->middleName)) . ' ';
 			}
@@ -69,6 +69,10 @@ if ($this->contributors)
 		else
 		{
 			$name = $this->escape(stripslashes($contributor->xname));
+		}
+		if (!trim($name))
+		{
+			$name = Lang::txt('(unknown)');
 		}
 
 		if (!$contributor->org)

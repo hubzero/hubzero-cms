@@ -42,8 +42,6 @@ use Route;
 use Lang;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
-
 /**
  * Manage resource types
  */
@@ -198,7 +196,7 @@ class Types extends AdminController
 					$element->default  = (isset($val['default'])) ? $val['default'] : '';
 					$element->name     = (isset($val['name']) && trim($val['name']) != '') ? $val['name'] : $this->_normalize(trim($val['title']));
 					$element->label    = $val['title'];
-					$element->type     = (isset($val['type']) && trim($val['type']) != '')     ? $val['type']     : 'text';
+					$element->type     = (isset($val['type']) && trim($val['type']) != '') ? $val['type'] : 'text';
 					$element->required = (isset($val['required'])) ? $val['required'] : '0';
 					foreach ($val as $key => $v)
 					{
@@ -298,19 +296,19 @@ class Types extends AdminController
 			return $this->cancelTask();
 		}
 
-		$i = 0;
+		$removed = 0;
 
 		foreach ($ids as $id)
 		{
+			// Check if the type is being used
+			$type = Type::oneOrFail(intval($id));
+
 			// Uuuuugggghhhhhhhh
-			if ($id == 7)
+			if ($type->isForTools())
 			{
 				Notify::warning(Lang::txt('Core resource (ID #%s) type cannot be removed', $id));
 				continue;
 			}
-
-			// Check if the type is being used
-			$rt = Type::oneOrFail($id);
 
 			$usage = Entry::all()
 				->whereEquals('type', $id)
@@ -323,18 +321,18 @@ class Types extends AdminController
 			}
 
 			// Delete the type
-			if (!$rt->destroy())
+			if (!$type->destroy())
 			{
-				Notify::error($rt->getError());
+				Notify::error($type->getError());
 				continue;
 			}
 
-			$i++;
+			$removed++;
 		}
 
-		if ($i)
+		if ($removed)
 		{
-			Notify::success(Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $i));
+			Notify::success(Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $removed));
 		}
 
 		// Redirect
@@ -432,7 +430,7 @@ class Types extends AdminController
 			$option
 		);
 
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 
 		$elements = new \Components\Resources\Models\Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);

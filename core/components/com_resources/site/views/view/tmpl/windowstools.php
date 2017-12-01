@@ -40,14 +40,26 @@ $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {
-	switch ($this->model->resource->published)
+	switch ($this->model->published)
 	{
-		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 1:
+			$txt .= '';
+			break; // published
+		case 2:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> ';
+			break;  // external draft
+		case 3:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';
+			break;  // pending
+		case 4:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';
+			break;  // deleted
+		case 5:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> ';
+			break;  // internal draft
+		case 0:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';
+			break;  // unpublished
 	}
 }
 ?>
@@ -57,14 +69,14 @@ if ($mode != 'preview')
 			<div class="col span8">
 				<header id="content-header">
 					<h2>
-						<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
+						<?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
 						<?php if ($this->model->params->get('access-edit-resource')) { ?>
-							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>">
+							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>">
 								<?php echo Lang::txt('COM_RESOURCES_EDIT'); ?>
 							</a>
 						<?php } ?>
 					</h2>
-					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
+					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
 				</header>
 
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
@@ -86,7 +98,7 @@ if ($mode != 'preview')
 				if (!$this->model->access('view-all'))
 				{
 					$ghtml = array();
-					foreach ($this->model->resource->getGroups() as $allowedgroup)
+					foreach ($this->model->groups as $allowedgroup)
 					{
 						$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 					}
@@ -113,10 +125,10 @@ if ($mode != 'preview')
 
 					if (floatval($totalhours) < floatval($maxhours))
 					{
-						$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->resource->path);
+						$lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->path);
 						$html = Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
 						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
-						$html .= '<p class="info">Read the <a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=windowstools') . '">setup/instructions</a>.</p>';
+						$html .= '<p class="info">Read the <a href="' . Route::url($this->model->link() . '&active=windowstools') . '">setup/instructions</a>.</p>';
 
 						$this->js('
 							jQuery(document).ready(function($){
@@ -194,14 +206,14 @@ if ($mode != 'preview')
 			$this->view('_tabs')
 				->set('option', $this->option)
 				->set('cats', $this->cats)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 
 			$this->view('_sections')
 				->set('option', $this->option)
 				->set('sections', $this->sections)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 			?>
@@ -209,7 +221,7 @@ if ($mode != 'preview')
 		<aside class="aside extracontent">
 			<?php
 			// Show related content
-			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)

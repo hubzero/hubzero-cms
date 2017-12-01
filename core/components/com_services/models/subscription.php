@@ -205,4 +205,23 @@ class Subscription extends Relational
 
 		return 0;
 	}
+
+	/**
+	 * Cancel a subscription
+	 *
+	 * @param   integer  $refund     Refund amount
+	 * @param   integer  $unitsleft  Units left
+	 * @return  boolean  True on success, False on error
+	 */
+	public function cancel($refund=0, $unitsleft=0)
+	{
+		// status quo if now money back is expected
+		$unitsleft = $refund ? $unitsleft : 0;
+
+		$this->set('status', 1);
+		$this->set('pendingpayment', $refund);
+		$this->set('pendingunits', $unitsleft);
+
+		return $this->save();
+	}
 }

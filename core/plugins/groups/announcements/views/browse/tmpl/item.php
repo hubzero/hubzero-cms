@@ -72,7 +72,15 @@ if ($closed == 'closed' && $this->showClose == true)
 		<span class="unpublished-message"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_NOT_ACTIVE'); ?></span>
 	<?php endif; ?>
 	<div class="announcement">
-		<?php echo $this->announcement->content; ?>
+		<?php
+		$content = $this->announcement->content;
+		if (strlen(strip_tags($this->announcement->content)) > 500 && $this->showClose)
+		{
+			$content  = Hubzero\Utility\Str::truncate($this->announcement->content, 500, array('html' => true));
+			$content .= '<p><a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements') . '" title="' . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE_TITLE') . '">' . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE') . '</a></p>';
+		}
+		echo $content;
+		?>
 		<dl class="entry-meta">
 			<dt class="entry-id">
 				<?php echo $this->announcement->get('id'); ?>

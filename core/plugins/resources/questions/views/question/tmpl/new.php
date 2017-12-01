@@ -42,7 +42,7 @@ $this->css();
 	<?php foreach ($this->getErrors() as $error) { ?>
 		<p class="error"><?php echo $error; ?></p>
 	<?php } ?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=questions'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($this->resource->link() . '&active=questions'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
 
@@ -88,15 +88,16 @@ $this->css();
 			</label>
 
 			</label>
-		<?php if ($this->banking) { ?>
-			<label for="field-reward">
-				<?php echo Lang::txt('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-				<input type="text" name="question[reward]" id="field-reward" value="" size="5" <?php if ((int) $this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
-				<?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
-			</label>
-		<?php } else { ?>
-			<input type="hidden" name="question[reward]" value="0" />
-		<?php } ?>
+
+			<?php if ($this->banking) { ?>
+				<label for="field-reward">
+					<?php echo Lang::txt('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
+					<input type="text" name="question[reward]" id="field-reward" value="" size="5" <?php if ((int) $this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
+					<?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
+				</label>
+			<?php } else { ?>
+				<input type="hidden" name="question[reward]" value="0" />
+			<?php } ?>
 		</fieldset>
 
 		<p class="submit">

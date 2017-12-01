@@ -50,18 +50,11 @@ include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
+include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
+require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+include_once Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
 /**
  * Controller class for contributing a tool
@@ -1186,9 +1179,9 @@ class Pipeline extends SiteController
 
 		if (empty($rid))
 		{
-			include_once(__DIR__ . DS . 'resource.php');
+			include_once(__DIR__ . DS . 'resources.php');
 
-			$resource = new Resource();
+			$resource = new Resources();
 
 			$rid = $resource->createPage($this->_toolid, $tool);
 			// save authors by default
@@ -1602,10 +1595,9 @@ class Pipeline extends SiteController
 			// If the tool was cancelled ...
 			if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned'))
 			{
-				include_once(__DIR__ . DS . 'resource.php');
+				include_once(__DIR__ . DS . 'resources.php');
 
-				$r = new \Components\Resources\Tables\Resource($this->database);
-				$r->loadAlias($hzt->toolname);
+				$r = \Components\Resources\Models\Entry::oneByAlias($hzt->toolname);
 
 				if ($r && $r->id)
 				{
@@ -1615,7 +1607,7 @@ class Pipeline extends SiteController
 						$rstatus = 1;
 					}
 
-					$resource = new Resource();
+					$resource = new Resources();
 					$resource->updatePage($r->id, $oldstatus, $rstatus);
 				}
 			}
@@ -2327,9 +2319,9 @@ class Pipeline extends SiteController
 		}
 
 		// unpublish resource page
-		include_once(__DIR__ . DS . 'resource.php');
+		include_once(__DIR__ . DS . 'resources.php');
 
-		$resource = new Resource();
+		$resource = new Resources();
 		$resource->updatePage($status['resourceid'], $status, '4');
 
 		// change tool status to 'abandoned' and priority to 'lowest'

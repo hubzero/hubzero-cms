@@ -58,38 +58,34 @@ if (!is_object($presentation))
 }
 
 //get this resource
-$rr = new \Components\Resources\Tables\Resource($this->database);
-$rr->load($this->resid);
+$rr = \Components\Resources\Models\Entry::oneOrFail($this->resid);
 
 //get the parent resource
-$rh = new \Components\Resources\Helpers\Helper($this->resid, $this->database);
-$rh->getParents();
-
-$parent = $rh->parents[0];
+$parent = $rr->parents()
+	->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
+	->rows()
+	->first();
 
 //check to see if parent type is series
-$rt = new \Components\Resources\Tables\Type($this->database);
-$rt->load($parent->type);
-
-//if we have a series get children
-if ($rt->type == "Series" || $rt->type == "Courses")
+if ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses')
 {
-	$rh->getChildren($parent->id, 0, 'yes');
-	$children = $rh->children;
+	//if we have a series get children
+	$children = $parent->children()
+		->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
+		->rows();
 
 	//remove any children without a HUBpresenter
 	foreach ($children as $k => $c)
 	{
-		$rh = new \Components\Resources\Helpers\Helper($c->id, $this->database);
-		$rh->getChildren();
-		$sub_child = $rh->children;
+		$sub_child = $c->children()
+			->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
+			->rows();
+
 		$hasHUBpresenter = false;
 
 		foreach ($sub_child as $sc)
 		{
-			$rt = new \Components\Resources\Tables\Type($this->database);
-			$rt->load($sc->type);
-			if (strtolower($rt->type) == "hubpresenter")
+			if (strtolower($sc->type->get('title')) == "hubpresenter")
 			{
 				$hasHUBpresenter = true;
 			}
@@ -103,11 +99,11 @@ if ($rt->type == "Series" || $rt->type == "Courses")
 }
 else
 {
-	$children = NULL;
+	$children = null;
 }
 
 //get the contributors for the resource
-$sql = "SELECT authorid, role, name FROM #__author_assoc "
+$sql = "SELECT authorid, role, name FROM `#__author_assoc` "
 	 . "WHERE subtable='resources' "
 	 . "AND subid=" . $parent->id . " "
 	 . "ORDER BY ordering";
@@ -131,7 +127,7 @@ if (!empty($lectureAuthors))
 		$author = User::getInstance($la->authorid);
 		if (is_object($author) && $author->id)
 		{
-			$a[] = '<a href="/members/' . $author->id . '">' . $author->name . '</a>';
+			$a[] = '<a href="' . $author->link() . '">' . $author->name . '</a>';
 		}
 		else
 		{
@@ -170,11 +166,11 @@ foreach ($localSubtitles as $k => $subtitle)
 	$source   = $content_folder . DS . $subtitle;
 
 	// add each subtitle
-	$subtitle                  = new stdClass;
-	$subtitle->type            = 'SRT';
-	$subtitle->name            = ucfirst($name);
-	$subtitle->source          = $source;
-	$subtitle->autoplay        = $autoplay;
+	$subtitle = new stdClass;
+	$subtitle->type     = 'SRT';
+	$subtitle->name     = ucfirst($name);
+	$subtitle->source   = $source;
+	$subtitle->autoplay = $autoplay;
 
 	// make sure we dont already have this file.
 	if (!in_array($subtitle->source, $subFiles))
@@ -396,15 +392,21 @@ $presentation->subtitles = array_values($presentation->subtitles);
 				<?php if (strtolower($presentation->type) == 'video') : ?>
 					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">
 						<?php foreach ($presentation->media as $media): ?>
-						   	<?php
+							<?php
 								switch ($media->type)
 								{
 									case 'ogg':
-									case 'ogv':     $type = "video/ogg;";    break;
-									case 'webm':    $type = "video/webm;";   break;
+									case 'ogv':
+										$type = "video/ogg;";
+										break;
+									case 'webm':
+										$type = "video/webm;";
+										break;
 									case 'mp4':
 									case 'm4v':
-									default:        $type = "video/mp4;";    break;
+									default:
+										$type = "video/mp4;";
+										break;
 								}
 
 								//get the source
@@ -426,9 +428,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 									}
 								}
 							?>
-						   	<source src="<?php echo $source; ?>" type="<?php echo $type; ?>">
+							<source src="<?php echo $source; ?>" type="<?php echo $type; ?>">
 						<?php endforeach; ?>
-						
+
 						<a href="<?php echo $mp4; ?>" 
 							id="flowplayer" 
 							data-mediaid="<?php echo $rr->id; ?>"></a>
@@ -472,7 +474,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 						<?php endforeach; ?>
 						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
 					</audio>
-					
+
 					<?php if ($presentation->placeholder) : ?>
 						<img src="<?php echo $content_folder.DS.$presentation->placeholder; ?>" title="" id="placeholder" />
 					<?php endif; ?>
@@ -503,7 +505,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 										echo substr($slide->title, 0, $max);
 
 										if (strlen($slide->title) > $max)
+										{
 											echo $elipsis;
+										}
 									?>
 								</span>
 								<span class="time"><?php echo $slide->time; ?></span>
@@ -520,7 +524,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 			</div>
 		</div><!-- /#right -->
 	</div><!-- /#content -->
-	
+
 	<div id="transcript-container">
 		<div id="transcript-toolbar">
 			<div id="transcript-select"></div>

@@ -33,6 +33,9 @@ namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
 
+require_once __DIR__ . DS . 'author' . DS . 'role.php';
+require_once __DIR__ . DS . 'author' . DS . 'role' . DS . 'type.php';
+
 /**
  * Resource license model
  *
@@ -157,13 +160,57 @@ class Author extends Relational
 
 		if (!$profile->get('name'))
 		{
-			$profile->set('name', $profile->get('givenName') . ' ' . $profile->get('surname'));
+			$name = array();
+			if ($profile->get('givenName'))
+			{
+				$name[] = $profile->get('givenName');
+			}
+			if ($profile->get('middleName'))
+			{
+				$name[] = $profile->get('middleName');
+			}
+			if ($profile->get('surname'))
+			{
+				$name[] = $profile->get('surname');
+			}
+
+			$profile->set('name', implode(' ', $name));
 		}
 
 		$this->set('name', $profile->get('name'));
 		$this->set('organization', $profile->get('organization'));
 
 		return true;
+	}
+
+	/**
+	 * Get name
+	 *
+	 * @return  string
+	 */
+	public function transformName()
+	{
+		if (!$this->get('name'))
+		{
+			$this->populateFromProfile();
+		}
+
+		return $this->get('name');
+	}
+
+	/**
+	 * Get organization
+	 *
+	 * @return  string
+	 */
+	public function transformOrganization()
+	{
+		if (!$this->get('organization'))
+		{
+			$this->populateFromProfile();
+		}
+
+		return $this->get('organization');
 	}
 
 	/**
@@ -267,12 +314,10 @@ class Author extends Relational
 		// If not account if found, use a negative timestamp
 		if ($uid == null)
 		{
-			return -(time());
+			$uid = -(time());
 		}
-		else
-		{
-			return $uid;
-		}
+
+		return $uid;
 	}
 
 	/**

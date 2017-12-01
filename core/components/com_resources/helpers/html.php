@@ -38,7 +38,7 @@ use Lang;
 use User;
 use Date;
 
-include_once(__DIR__ . DS . 'tags.php');
+include_once __DIR__ . DS . 'tags.php';
 
 /**
  * Resources helper class for misc. HTML and display
@@ -136,65 +136,16 @@ class Html
 	}
 
 	/**
-	 * Turn a rating into a string representation
-	 *
-	 * @param   float  $rating
-	 * @return  string
-	 */
-	public static function writeRating($rating)
-	{
-		switch ($rating)
-		{
-			case 0.5:
-				$class = ' half';
-				break;
-			case 1:
-				$class = ' one';
-				break;
-			case 1.5:
-				$class = ' onehalf';
-				break;
-			case 2:
-				$class = ' two';
-				break;
-			case 2.5:
-				$class = ' twohalf';
-				break;
-			case 3:
-				$class = ' three';
-				break;
-			case 3.5:
-				$class = ' threehalf';
-				break;
-			case 4:
-				$class = ' four';
-				break;
-			case 4.5:
-				$class = ' fourhalf';
-				break;
-			case 5:
-				$class = ' five';
-				break;
-			case 0:
-			default:
-				$class = ' none';
-				break;
-		}
-
-		return '<p class="avgrating'.$class.'"><span>Rating: '.$rating.' out of 5 stars</span></p>';
-	}
-
-	/**
 	 * Generate a select access list
 	 *
-	 * @param      array  $as    Access levels
-	 * @param      string $value Value to select
-	 * @param      string $name
-	 * @return     string HTML
+	 * @param   array   $as     Access levels
+	 * @param   string  $value  Value to select
+	 * @param   string  $name
+	 * @return  string  HTML
 	 */
 	public static function selectAccess($as, $value, $name = 'access')
 	{
-		$as = explode(',',$as);
+		$as = explode(',', $as);
 		$html  = '<select name="' . $name . '" id="field-' . str_replace(array('[',']'), '', $name) . '">' . "\n";
 		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
@@ -212,15 +163,15 @@ class Html
 	/**
 	 * Generate a select list for groups
 	 *
-	 * @param      array  $groups Groups to populate list
-	 * @param      string $value  Value to select
-	 * @param      string $name
-	 * @param      string $class
-	 * @return     string HTML
+	 * @param   array   $groups  Groups to populate list
+	 * @param   string  $value   Value to select
+	 * @param   string  $name
+	 * @param   string  $class
+	 * @return  string  HTML
 	 */
 	public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
 	{
-		$html  = '<select class="'.$class.'" name="'.$name.'" id="field-' . str_replace(array('[',']'), '', $name) . '"';
+		$html  = '<select class="'.$class.'" name="fields['.$name.']" id="field-' . str_replace(array('[',']'), '', $name) . '"';
 		if (!$groups)
 		{
 			$html .= ' disabled="disabled"';
@@ -244,34 +195,6 @@ class Html
 	}
 
 	/**
-	 * Generate a section select list
-	 *
-	 * @param      string  $name  Name of the field
-	 * @param      array   $array Values to populate list
-	 * @param      integer $value Value to select
-	 * @param      string  $class Class name of field
-	 * @param      string  $id    ID of field
-	 * @return     string HTML
-	 */
-	public static function selectSection($name, $array, $value, $class='', $id)
-	{
-		$html  = '<select name="' . $name . '" id="' . $name . '" onchange="return listItemTask(\'cb' . $id . '\',\'regroup\')"';
-		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
-		$html .= ' <option value="0"';
-		$html .= ($id == $value || $value == 0) ? ' selected="selected"' : '';
-		$html .= '>' . Lang::txt('[ none ]') . '</option>' . "\n";
-		foreach ($array as $anode)
-		{
-			$selected = ($anode->id == $value || $anode->type == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$html .= ' <option value="' . $anode->id . '"' . $selected . '>' . $anode->type . '</option>' . "\n";
-		}
-		$html .= '</select>' . "\n";
-		return $html;
-	}
-
-	/**
 	 * Generate a type select list
 	 *
 	 * @param      array  $arr      Values to populate list
@@ -285,7 +208,7 @@ class Html
 	 */
 	public static function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
 	{
-		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
+		$html  = '<select name="fields[' . $name . ']" id="' . $name . '"' . $js;
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		if ($shownone != '')
 		{
@@ -318,11 +241,11 @@ class Html
 	/**
 	 * Generate a select form
 	 *
-	 * @param      string $name  Field name
-	 * @param      array  $array Data to populate select with
-	 * @param      mixed  $value Value to select
-	 * @param      string $class Class to add
-	 * @return     string HTML
+	 * @param   string  $name   Field name
+	 * @param   array   $array  Data to populate select with
+	 * @param   mixed   $value  Value to select
+	 * @param   string  $class  Class to add
+	 * @return  string  HTML
 	 */
 	public static function formSelect($name, $array, $value, $class='')
 	{
@@ -354,8 +277,8 @@ class Html
 	/**
 	 * Convert a date to a path
 	 *
-	 * @param      string $date Date to convert (0000-00-00 00:00:00)
-	 * @return     string
+	 * @param   string  $date  Date to convert (0000-00-00 00:00:00)
+	 * @return  string
 	 */
 	public static function dateToPath($date)
 	{
@@ -363,18 +286,18 @@ class Html
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		$dir_year  = date('Y', $date);
-		$dir_month = date('m', $date);
+		$dir_year  = Date::of($date)->format('Y');
+		$dir_month = Date::of($date)->format('m');
 		return $dir_year . DS . $dir_month;
 	}
 
 	/**
 	 * Build the path to resources files from the creating date
 	 *
-	 * @param      string  $date Timestamp (0000-00-00 00:00:00)
-	 * @param      integer $id   Resource ID
-	 * @param      string  $base Base path to prepend
-	 * @return     string
+	 * @param   string   $date  Timestamp (0000-00-00 00:00:00)
+	 * @param   integer  $id    Resource ID
+	 * @param   string   $base  Base path to prepend
+	 * @return  string
 	 */
 	public static function build_path($date='', $id, $base)
 	{
@@ -384,6 +307,7 @@ class Html
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
+
 		if ($date)
 		{
 			$dir_year  = Date::of($date)->format('Y');
@@ -407,20 +331,20 @@ class Html
 	/**
 	 * Display certain supporting docs and/or link to more
 	 *
-	 * @param      object  $publication   	Publication object
-	 * @param      string  $option 			Component name
-	 * @param      object  $children 		Publication attachments
+	 * @param      object  $publication  Publication object
+	 * @param      string  $option       Component name
+	 * @param      object  $children     Publication attachments
 	 * @return     string HTML
 	 */
-	public static function sortSupportingDocs( $publication, $option, $children )
+	public static function sortSupportingDocs($publication, $option, $children)
 	{
 		// Set counts
-		$docs 	= 0;
+		$docs  = 0;
 
-		$html 	= '';
-		$supln  = '<ul class="supdocln">'."\n";
-		$supli  = array();
-		$shown 	= array();
+		$html  = '';
+		$supln = '<ul class="supdocln">'."\n";
+		$supli = array();
+		$shown = array();
 
 		if ($children)
 		{
@@ -428,10 +352,10 @@ class Html
 			{
 				$docs++;
 				$child->title = $child->title ? stripslashes($child->title) : '';
-				$child->title = str_replace( '"', '&quot;', $child->title );
-				$child->title = str_replace( '&amp;', '&', $child->title );
-				$child->title = str_replace( '&', '&amp;', $child->title );
-				$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
+				$child->title = str_replace('"', '&quot;', $child->title);
+				$child->title = str_replace('&amp;', '&', $child->title);
+				$child->title = str_replace('&', '&amp;', $child->title);
+				$child->title = str_replace('&amp;quot;', '&quot;', $child->title);
 
 				$title = ($child->logicaltitle)
 						? stripslashes($child->logicaltitle)
@@ -439,7 +363,7 @@ class Html
 
 				$params = new \Hubzero\Config\Registry($child->params);
 
-				$ftype 	  = self::getFileExtension($child->path);
+				$ftype    = \Filesystem::extension($child->path);
 				//$class    = $params->get('class', $ftype);
 				$doctitle = $params->get('title', $title);
 
@@ -461,8 +385,8 @@ class Html
 						$width      = $childAttribs->get('width', 640);
 						$height     = $childAttribs->get('height', 360);
 
-						$url = str_replace( '&amp;', '&', $url);
-						$url = str_replace( '&', '&amp;', $url);
+						$url = str_replace('&amp;', '&', $url);
+						$url = str_replace('&', '&amp;', $url);
 
 						if ($linkAction == 1)
 						{
@@ -485,10 +409,10 @@ class Html
 			}
 		}
 
-		$sdocs = count( $supli ) > 2 ? 2 : count( $supli );
+		$sdocs = count($supli) > 2 ? 2 : count($supli);
 		$otherdocs = $docs - $sdocs;
 
-		for ($i=0; $i < count( $supli ); $i++)
+		for ($i=0; $i < count($supli); $i++)
 		{
 			$supln .=  $i < 2 ? $supli[$i] : '';
 			$supln .=  $i == 2 && !$otherdocs ? $supli[$i] : '';
@@ -534,14 +458,12 @@ class Html
 	 */
 	public static function license($license)
 	{
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
+		include_once dirname(__DIR__) . DS . 'models' . DS . 'license.php';
 
 		$license = str_replace(' ', '-', strtolower($license));
 		$license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
 
-		$database = \App::get('db');
-		$rl = new \Components\Resources\Tables\License($database);
-		$rl->load($license);
+		$rl = \Components\Resources\Models\License::oneByName($license);
 
 		$html = '';
 		if ($rl->id)
@@ -570,12 +492,12 @@ class Html
 	/**
 	 * Display resource sub view content
 	 *
-	 * @param      array  $sections Active plugins' content
-	 * @param      array  $cats     Active plugins' names
-	 * @param      string $active   Current plugin name
-	 * @param      string $h        Hide class
-	 * @param      string $c        Extra classes
-	 * @return     string HTML
+	 * @param   array   $sections  Active plugins' content
+	 * @param   array   $cats      Active plugins' names
+	 * @param   string  $active    Current plugin name
+	 * @param   string  $h         Hide class
+	 * @param   string  $c         Extra classes
+	 * @return  string  HTML
 	 */
 	public static function sections($sections, $cats, $active='about', $h, $c)
 	{
@@ -615,12 +537,12 @@ class Html
 	/**
 	 * Output tab controls for resource plugins (sub views)
 	 *
-	 * @param      string $option Component name
-	 * @param      string $id     Resource ID
-	 * @param      array  $cats   Active plugins' names
-	 * @param      string $active Current plugin name
-	 * @param      string $alias  Resource alias
-	 * @return     string HTML
+	 * @param   string  $option  Component name
+	 * @param   string  $id      Resource ID
+	 * @param   array   $cats    Active plugins' names
+	 * @param   string  $active  Current plugin name
+	 * @param   string  $alias   Resource alias
+	 * @return  string  HTML
 	 */
 	public static function tabs($option, $id, $cats, $active='about', $alias='')
 	{
@@ -662,11 +584,10 @@ class Html
 	/**
 	 * Generate COins microformat
 	 *
-	 * @param      object $cite     Resource citation data
-	 * @param      object $model
-	 * @return     string HTML
+	 * @param   object  $cite   Resource citation data
+	 * @param   object  $model
+	 * @return  string  HTML
 	 */
-	//public static function citationCOins($cite, $resource, $config, $helper)
 	public static function citationCOins($cite, $model)
 	{
 		if (!$cite)
@@ -680,57 +601,45 @@ class Html
 		$tconfig = Component::params('com_tools');
 		$doi = '';
 
-		/*
-		if (isset($resource->doi) && $resource->doi  && $tconfig->get('doi_shoulder'))
-		{
-			$doi = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($resource->doi);
-		}
-		else if (isset($resource->doi_label) && $resource->doi_label)
-		{
-			$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $resource->id . '.' . $resource->doi_label;
-		}*/
-
-		$html .= isset($model->resource->doi)
-				? '&amp;rft_id=info%3Adoi%2F'.urlencode($model->resource->doi)
-				: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
+		$html .= $model->get('doi')
+			? '&amp;rft_id=info%3Adoi%2F' . urlencode($model->get('doi'))
+			: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
 		$html .= '&amp;rft.genre=article';
 		$html .= '&amp;rft.atitle=' . urlencode($cite->title);
 		$html .= '&amp;rft.date=' . urlencode($cite->year);
 
-		if (isset($model->resource->revision) && $model->resource->revision!='dev')
+		if (isset($model->revision) && $model->revision != 'dev')
 		{
-			//$helper->getToolAuthors($model->resource->alias, $model->resource->revision);
 			$author_array = $model->contributors('tool');
 		}
 		else
 		{
-			//$helper->getCons();
 			$author_array = $model->contributors();
 		}
-		//$author_array = $helper->_contributors;
 
 		if ($author_array)
 		{
-			for ($i = 0; $i < count($author_array); $i++)
+			$i = 0;
+			foreach ($author_array as $author)
 			{
-				if ($author_array[$i]->surname || $author_array[$i]->givenName)
+				if ($author->surname || $author->givenName)
 				{
-					$name = stripslashes($author_array[$i]->givenName) . ' ';
-					if ($author_array[$i]->middleName != null)
+					$name = stripslashes($author->givenName) . ' ';
+					if ($author->middleName != null)
 					{
-						$name .= stripslashes($author_array[$i]->middleName) . ' ';
+						$name .= stripslashes($author->middleName) . ' ';
 					}
-					$name .= stripslashes($author_array[$i]->surname);
+					$name .= stripslashes($author->surname);
 				}
 				else
 				{
-					$name = $author_array[$i]->name;
+					$name = $author->name;
 				}
 
-				if ($i==0)
+				if ($i == 0)
 				{
-					$lastname  = $author_array[$i]->surname  ? $author_array[$i]->surname  : $author_array[$i]->name;
-					$firstname = $author_array[$i]->givenName ? $author_array[$i]->givenName : $author_array[$i]->name;
+					$lastname  = $author->surname ? $author->surname : $author->name;
+					$firstname = $author->givenName ? $author->givenName : $author->name;
 					$html .= '&amp;rft.aulast=' . urlencode($lastname) . '&amp;rft.aufirst=' . urlencode($firstname);
 				}
 			}
@@ -744,13 +653,13 @@ class Html
 	/**
 	 * Generate a citation for a resource
 	 *
-	 * @param      string  $option    Component name
-	 * @param      object  $cite      Citation data
-	 * @param      string  $id        Resource ID
-	 * @param      string  $citations Citations to prepend
-	 * @param      integer $type      Resource type
-	 * @param      string  $rev       Tool revision
-	 * @return     string HTML
+	 * @param   string   $option     Component name
+	 * @param   object   $cite       Citation data
+	 * @param   string   $id         Resource ID
+	 * @param   string   $citations  Citations to prepend
+	 * @param   integer  $type       Resource type
+	 * @param   string   $rev        Tool revision
+	 * @return  string   HTML
 	 */
 	public static function citation($option, $cite, $id, $citations, $type, $rev='')
 	{
@@ -782,102 +691,28 @@ class Html
 
 		}
 
-		/*if ($type == 7)
-		{
-			$html .= '<p>'.Lang::txt('In addition, we would appreciate it if you would add the following acknowledgment to your publication:').'</p>' . "\n";
-			$html .= '<ul class="citations results">' . "\n";
-			$html .= "\t".'<li>' . "\n";
-			$html .= "\t\t".'<p>'.Lang::txt('Simulation services for results presented here were provided by the Network for Computational Nanotechnology (NCN) at nanoHUB.org').'</p>' . "\n";
-			$html .= "\t".'</li>' . "\n";
-			$html .= '</ul>' . "\n";
-		}*/
 		return $html;
-	}
-
-	/**
-	 * Get the classname for a rating value
-	 *
-	 * @param   integer  $rating  Rating (out of 5 total)
-	 * @return  string
-	 */
-	public static function getRatingClass($rating=0)
-	{
-		switch ($rating)
-		{
-			case 0.5:
-				$class = ' half-stars';
-				break;
-			case 1:
-				$class = ' one-stars';
-				break;
-			case 1.5:
-				$class = ' onehalf-stars';
-				break;
-			case 2:
-				$class = ' two-stars';
-				break;
-			case 2.5:
-				$class = ' twohalf-stars';
-				break;
-			case 3:
-				$class = ' three-stars';
-				break;
-			case 3.5:
-				$class = ' threehalf-stars';
-				break;
-			case 4:
-				$class = ' four-stars';
-				break;
-			case 4.5:
-				$class = ' fourhalf-stars';
-				break;
-			case 5:
-				$class = ' five-stars';
-				break;
-			case 0:
-			default:
-				$class = ' no-stars';
-				break;
-		}
-
-		return $class;
-	}
-
-	/**
-	 * Get the extension of a file
-	 *
-	 * @param      string $url File path/name
-	 * @return     string
-	 */
-	public static function getFileExtension($url)
-	{
-		return \Filesystem::extension($url);
 	}
 
 	/**
 	 * Determine the final URL for the primary resource child
 	 *
-	 * @param      string  $option Component name
-	 * @param      object  $item   Child resource
-	 * @param      integer $pid    Parent resource ID
-	 * @param      integer $action Action
-	 * @return     string
+	 * @param   string   $option  Component name
+	 * @param   object   $item    Child resource
+	 * @param   integer  $pid     Parent resource ID
+	 * @param   integer  $action  Action
+	 * @return  string
 	 */
 	public static function processPath($option, $item, $pid=0, $action=0)
 	{
-		$database = \App::get('db');
-
-		//$rt = new \Components\Resources\Tables\Type($database);
-		//$rt->load($item->type);
-		$rt = \Components\Resources\Tables\Type::getRecordInstance($item->type);
-		$type = $rt->alias;
-
 		if ($item->standalone == 1)
 		{
 			$url = Route::url('index.php?option=' . $option . '&id=' .  $item->id);
 		}
 		else
 		{
+			$type = $item->type->alias;
+
 			switch ($type)
 			{
 				case 'ilink':
@@ -932,11 +767,11 @@ class Html
 	 * For most resources, this will be the first child of a standalone resource
 	 * Tools are the only exception in which case the button launches a tool session
 	 *
-	 * @param      string $option     Component name
-	 * @param      object $resource   Resource
-	 * @param      object $firstChild First resource child
-	 * @param      string $xact       Extra parameters to add
-	 * @return     string
+	 * @param   string  $option      Component name
+	 * @param   object  $resource    Resource
+	 * @param   object  $firstChild  First resource child
+	 * @param   string  $xact        Extra parameters to add
+	 * @return  string
 	 */
 	public static function primary_child($option, $resource, $firstChild, $xact='')
 	{
@@ -944,7 +779,7 @@ class Html
 
 		$html = '';
 
-		switch ($resource->type)
+		switch ($resource->get('type'))
 		{
 			case 7:
 				$authorized = User::authorise('core.manage', 'com_tools.' . $resource->id);
@@ -1064,7 +899,7 @@ class Html
 
 			case 4:
 				// write primary button and downloads for a Learning Module
-				$html .= self::primaryButton('', Route::url('index.php?option=com_resources&id=' . $resource->id . '&task=play'), 'Start learning module');
+				$html .= self::primaryButton('', Route::url($resource->link() . '&task=play'), 'Start learning module');
 			break;
 
 			case 6:
@@ -1073,10 +908,10 @@ class Html
 			case 2:
 				// do nothing
 				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' ';
-				$mesg .= $resource->type == 6 ? 'Course Lectures' : '';
-				$mesg .= $resource->type == 2 ? 'Workshop ' : '';
-				$mesg .= $resource->type == 6 ? '' : 'Series';
-				$html .= self::primaryButton('download', Route::url('index.php?option=com_resources&id=' . $resource->id) . '#series', $mesg, '', $mesg, '');
+				$mesg .= $resource->get('type') == 6 ? 'Course Lectures' : '';
+				$mesg .= $resource->get('type') == 2 ? 'Workshop ' : '';
+				$mesg .= $resource->get('type') == 6 ? '' : 'Series';
+				$html .= self::primaryButton('download', Route::url($resource->link()) . '#series', $mesg, '', $mesg, '');
 			break;
 
 			default:
@@ -1089,15 +924,10 @@ class Html
 				$action = '';
 				$xtra   = '';
 
-				//$lt = new \Components\Resources\Tables\Type($database);
-				//$lt->load($firstChild->logicaltype);
-				$lt = \Components\Resources\Tables\Type::getRecordInstance($firstChild->logicaltype);
-				$ltparams = new \Hubzero\Config\Registry($lt->params);
+				$lt = $firstChild->logicaltype;
+				$ltparams = $lt->params;
 
-				//$rt = new \Components\Resources\Tables\Type($database);
-				//$rt->load($firstChild->type);
-				$rt = \Components\Resources\Tables\Type::getRecordInstance($firstChild->type);
-				$tparams = new \Hubzero\Config\Registry($rt->params);
+				$tparams = $firstChild->type->params;
 
 				if ($firstChild->logicaltype)
 				{
@@ -1144,11 +974,11 @@ class Html
 							$mesg  = Lang::txt('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						}
-						elseif (in_array($rt->alias, $mediatypes))
+						elseif (in_array($firstChild->type->alias, $mediatypes))
 						{
 							$mesg  = Lang::txt('COM_RESOURCES_VIEW_PRESENTATION');
 							$mediatypes = array('flash_paper','breeze','32','26');
-							if (in_array($firstChild->type, $mediatypes))
+							if (in_array($firstChild->get('type'), $mediatypes))
 							{
 								$class = 'play';
 							}
@@ -1207,7 +1037,7 @@ class Html
 						}
 
 						// Get the groups that can access this resource
-						$allowedgroups = $resource->getGroups();
+						$allowedgroups = $resource->groups;
 
 						// Find what groups the user has in common with the resource, if any
 						$common = array_intersect($usersgroups, $allowedgroups);
@@ -1236,7 +1066,7 @@ class Html
 						}
 					}
 
-					$childParams = new \Hubzero\Config\Registry($firstChild->params);
+					$childParams = $firstChild->params;
 					$linkAction = intval($childParams->get('link_action', $linkAction));
 
 					$url = self::processPath($option, $firstChild, $resource->id, $linkAction);
@@ -1265,7 +1095,7 @@ class Html
 						break;
 					}
 
-					$attribs = new \Hubzero\Config\Registry($firstChild->attribs);
+					$attribs = $firstChild->attribs;
 					$width  = intval($attribs->get('width', 640));
 					$height = intval($attribs->get('height', 360));
 					if ($width > 0 && $height > 0)
@@ -1283,7 +1113,7 @@ class Html
 					//$rt->load($firstChild->type);
 
 					//if we are a hubpresenter resource type, do not show file type in button
-					if ($rt->alias == 'hubpresenter')
+					if ($firstChild->type->alias == 'hubpresenter')
 					{
 						//$xtra = "";
 						//$class = "play 1000x600";
@@ -1294,13 +1124,12 @@ class Html
 						$mesg .= ' ' . self::getFileAttribs($firstChild->path);
 					}
 
-					if ($rt->alias == 'video')
+					if ($firstChild->type->alias == 'video')
 					{
 						$class = 'video';
 					}
 
-					$pt = \Components\Resources\Tables\Type::getRecordInstance($resource->type);
-					if ($pt->alias == 'databases')
+					if ($resource->type->alias == 'databases')
 					{
 						$mesg = "View Data";
 					}
@@ -1321,15 +1150,15 @@ class Html
 	/**
 	 * Generate the primary resources button
 	 *
-	 * @param      string  $class    Class to add
-	 * @param      string  $href     Link url
-	 * @param      string  $msg      Link text
-	 * @param      string  $xtra     Extra parameters to add (deprecated)
-	 * @param      string  $title    Link title
-	 * @param      string  $action   Link action
-	 * @param      boolean $disabled Is the button disable?
-	 * @param      string  $pop      Pop-up content
-	 * @return     string
+	 * @param   string   $class     Class to add
+	 * @param   string   $href      Link url
+	 * @param   string   $msg       Link text
+	 * @param   string   $xtra      Extra parameters to add (deprecated)
+	 * @param   string   $title     Link title
+	 * @param   string   $action    Link action
+	 * @param   boolean  $disabled  Is the button disable?
+	 * @param   string   $pop       Pop-up content
+	 * @return  string
 	 */
 	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
@@ -1354,10 +1183,10 @@ class Html
 	/**
 	 * Display the file type and size for a file
 	 *
-	 * @param      string  $path      File path
-	 * @param      string  $base_path Path to prepend
-	 * @param      integer $fsize     Format the filesize?
-	 * @return     string
+	 * @param   string   $path       File path
+	 * @param   string   $base_path  Path to prepend
+	 * @param   integer  $fsize      Format the filesize?
+	 * @return  string
 	 */
 	public static function getFileAttribs($path, $base_path='', $fsize=0)
 	{
@@ -1438,16 +1267,5 @@ class Html
 		$html .= ')</span>';
 
 		return $html;
-	}
-
-	/**
-	 * Format a filesize to more understandable Gb/Mb/Kb/b
-	 *
-	 * @param      integer $file_size File size to format
-	 * @return     string
-	 */
-	public static function formatsize($file_size)
-	{
-		return \Hubzero\Utility\Number::formatBytes($file_size, 2);
 	}
 }

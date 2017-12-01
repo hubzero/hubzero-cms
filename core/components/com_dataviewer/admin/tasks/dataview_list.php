@@ -97,7 +97,7 @@ function dv_dataview_list()
 
 				// Create JSON data definition if unavailable
 				if (!file_exists($json_file)) {
-					$cmd = "cd " . JPATH_COMPONENT . "; php ./ddconvert.php -i$php_file -o$json_file";
+					$cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$php_file -o$json_file";
 					system($cmd);
 
 					$author = User::get('name') . ' <' . User::get('email') . '>';

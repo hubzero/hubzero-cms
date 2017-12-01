@@ -40,8 +40,8 @@ use Notify;
 use Route;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php';
 
 /**
  * Manage resource authors

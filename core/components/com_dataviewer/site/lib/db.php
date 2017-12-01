@@ -250,7 +250,7 @@ function query_gen(&$dd)
 		$col = $cols[$col_id];
 		$searchable = Request::getString('bSearchable_' . $i, 'false');
 		$fieldtype = Request::getString('fieldtype_' . $i, 'string');
-		$search_str = Request::getVar('sSearch_' . $i, '', 'default', null, JREQUEST_ALLOWRAW);
+		$search_str = Request::getVar('sSearch_' . $i, '', 'default', null, 2);
 
 		if ($searchable === 'true' && $search_str !== '') {
 			if ($col['aggr']) {
@@ -264,7 +264,7 @@ function query_gen(&$dd)
 	}
 
 	// Filtered views
-	$filters = Request::getVar('filter', false, 'default', null, JREQUEST_ALLOWRAW);
+	$filters = Request::getVar('filter', false, 'default', null, 2);
 	if ($filters !== false) {
 		$filters = explode('||', $filters);
 		foreach ($filters as $filter) {
@@ -496,7 +496,7 @@ function query_gen(&$dd)
 	$where_search = array();
 	$having_search = array();
 
-	$search_str = Request::getVar('sSearch', '', 'default', null, JREQUEST_ALLOWRAW);
+	$search_str = Request::getVar('sSearch', '', 'default', null, 2);
 	if ($search_str != '') {
 		for ($i = 0; $i < count($cols_vis); $i++) {
 			$col_id = $cols_vis[$i];

@@ -32,8 +32,8 @@
 
 namespace Components\Jobs\Site;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'service.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
+include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
+include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'job.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'admin.php');
@@ -60,5 +60,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
-

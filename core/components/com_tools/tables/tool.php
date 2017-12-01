@@ -77,7 +77,7 @@ class Tool extends \JTable
 	 */
 	public function loadFromName($toolname)
 	{
-		if ($toolname === NULL)
+		if ($toolname === null)
 		{
 			return false;
 		}
@@ -112,10 +112,18 @@ class Tool extends \JTable
 
 		switch ($filters['filterby'])
 		{
-			case 'mine':      $filter .= " AND f.registered_by=" . $this->_db->quote(User::get('username')) . " "; break;
-			case 'published': $filter .= " AND f.published='1' AND f.state!='9' ";                  break;
-			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
-			case 'all':       $filter .= " ";                                                       break;
+			case 'mine':
+				$filter .= " AND f.registered_by=" . $this->_db->quote(User::get('username')) . " ";
+			break;
+			case 'published':
+				$filter .= " AND f.published='1' AND f.state!='9' ";
+			break;
+			case 'dev':
+				$filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' ";
+			break;
+			case 'all':
+				$filter .= " ";
+			break;
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -142,7 +150,7 @@ class Tool extends \JTable
 		$query = "#__tool as f "
 				. "JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 "
 				. "JOIN #__tool_groups AS g ON f.id=g.toolid AND g.cn=CONCAT('app-',f.toolname) AND g.role=1 "
-				. "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
+				. "LEFT JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		if (!$admin)
 		{
 			$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
@@ -236,9 +244,9 @@ class Tool extends \JTable
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getTicketId($toolid=NULL)
+	public function getTicketId($toolid=null)
 	{
-		if ($toolid=== NULL)
+		if ($toolid=== null)
 		{
 			return false;
 		}
@@ -254,9 +262,9 @@ class Tool extends \JTable
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getResourceId($toolid=NULL)
+	public function getResourceId($toolid=null)
 	{
-		if ($toolid=== NULL)
+		if ($toolid=== null)
 		{
 			return false;
 		}
@@ -273,9 +281,9 @@ class Tool extends \JTable
 	 * @param      string $version Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getToolInstanceFromResource($rid=NULL, $version ='dev')
+	public function getToolInstanceFromResource($rid=null, $version ='dev')
 	{
-		if ($rid=== NULL)
+		if ($rid=== null)
 		{
 			return false;
 		}
@@ -306,9 +314,9 @@ class Tool extends \JTable
 	 * @param      string $rid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getToolIdFromResource($rid=NULL)
+	public function getToolIdFromResource($rid=null)
 	{
-		if ($rid=== NULL)
+		if ($rid=== null)
 		{
 			return false;
 		}
@@ -324,9 +332,9 @@ class Tool extends \JTable
 	 * @param      string $rid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getToolnameFromResource($rid=NULL)
+	public function getToolnameFromResource($rid=null)
 	{
-		if ($rid=== NULL)
+		if ($rid=== null)
 		{
 			return false;
 		}
@@ -342,9 +350,9 @@ class Tool extends \JTable
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getToolId($toolname=NULL)
+	public function getToolId($toolname=null)
 	{
-		if ($toolname=== NULL)
+		if ($toolname=== null)
 		{
 			return false;
 		}
@@ -361,9 +369,9 @@ class Tool extends \JTable
 	 * @param      string $ticketid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function saveTicketId($toolid=NULL, $ticketid=NULL)
+	public function saveTicketId($toolid=null, $ticketid=null)
 	{
-		if ($toolid=== NULL or $ticketid=== NULL)
+		if ($toolid=== null or $ticketid=== null)
 		{
 			return false;
 		}
@@ -389,9 +397,9 @@ class Tool extends \JTable
 	 * @param      string $priority Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function updateTool($toolid=NULL, $newstate=NULL, $priority=NULL)
+	public function updateTool($toolid=null, $newstate=null, $priority=null)
 	{
-		if ($toolid=== NULL)
+		if ($toolid=== null)
 		{
 			return false;
 		}
@@ -442,7 +450,7 @@ class Tool extends \JTable
 		$query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=1) AS ntoolspublished ";
 		$query .= "FROM #__tool as t LEFT JOIN #__resources as r ON r.alias = t.toolname ";
 		$query .= "JOIN #__tool_groups AS g ON t.id=g.toolid AND g.role=1 ";
-		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
+		$query .= "LEFT JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		if ($toolid)
 		{
 			$query .= "WHERE t.id = " . $this->_db->quote($toolid);

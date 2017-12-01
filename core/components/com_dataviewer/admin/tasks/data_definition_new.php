@@ -87,7 +87,7 @@ function dv_data_definition_new()
 
 
 	$dd_file_json = "$base/$db_id/applications/$com_name/datadefinitions/$dd_name.json";
-	$cmd = "cd " . JPATH_COMPONENT . "; php ./ddconvert.php -i$dd_file_php -o$dd_file_json";
+	$cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$dd_file_php -o$dd_file_json";
 	system($cmd);
 
 	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions/; git add $dd_name.json; git commit $dd_name.json --author=\"$author\" -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";

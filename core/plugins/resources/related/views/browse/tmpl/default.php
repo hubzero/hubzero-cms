@@ -33,7 +33,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = App::get('db');
 ?>
 <h3><?php echo Lang::txt('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
 
@@ -43,18 +42,17 @@ $database = App::get('db');
 		<?php
 		foreach ($this->related as $line)
 		{
-			$contributors = null;
-
 			if ($line->section != 'Topic')
 			{
-				$resource = Components\Resources\Models\Entry::oneOrNew($line->id);
-
-				$class = $resource->rating;
-
 				// Get the SEF for the resource
-				$sef = Route::url($resource->link());
-
-				$contributors = $resource->authorList();
+				if ($line->alias)
+				{
+					$sef = Route::url('index.php?option=' . $this->option . '&alias='. $line->alias);
+				}
+				else
+				{
+					$sef = Route::url('index.php?option=' . $this->option . '&id='. $line->id);
+				}
 			}
 			else
 			{
@@ -94,31 +92,9 @@ $database = App::get('db');
 										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_TYPE'); ?></th>
 										<td><?php echo $line->section; ?></td>
 									</tr>
-								<?php if ($contributors) { ?>
-									<tr>
-										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_CONTRIBUTORS'); ?></th>
-										<td><?php echo $contributors; ?></td>
-									</tr>
-								<?php } ?>
 									<tr>
 										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_DATE'); ?></th>
 										<td><?php echo Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
-									</tr>
-									<tr>
-										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_AVG_RATING'); ?></th>
-										<td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
-									</tr>
-									<tr>
-										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATE_THIS'); ?></th>
-										<td>
-											<ul class="starsz<?php echo $myclass; ?>">
-												<li class="str1"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=1#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_POOR'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_1_STAR'); ?></a></li>
-												<li class="str2"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=2#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_FAIR'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_2_STARS'); ?></a></li>
-												<li class="str3"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=3#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_GOOD'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_3_STARS'); ?></a></li>
-												<li class="str4"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=4#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_VERY_GOOD'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_4_STARS'); ?></a></li>
-												<li class="str5"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=5#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_EXCELLENT'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_5_STARS'); ?></a></li>
-											</ul>
-										</td>
 									</tr>
 								</tbody>
 							</table>

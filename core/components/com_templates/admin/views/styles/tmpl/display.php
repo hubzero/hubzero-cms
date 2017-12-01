@@ -61,8 +61,6 @@ if ($canDo->get('core.admin'))
 }
 Toolbar::help('styles');
 
-// Include the component HTML helpers.
-//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 ?>
@@ -123,8 +121,8 @@ Html::behavior('multiselect');
 		</tfoot>
 		<tbody>
 			<?php foreach ($this->rows as $i => $item) :
-				$canCreate = User::authorise('core.create',     $this->option);
-				$canEdit   = User::authorise('core.edit',       $this->option);
+				$canCreate = User::authorise('core.create', $this->option);
+				$canEdit   = User::authorise('core.edit', $this->option);
 				$canChange = User::authorise('core.edit.state', $this->option);
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -162,10 +160,10 @@ Html::behavior('multiselect');
 						<?php echo Html::grid('isdefault', $item->home!='0', $i, 'styles.', $canChange && $item->home!='1');?>
 					<?php elseif ($canChange):?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unsetDefault&id=' . $item->id . '&' . Session::getFormToken() . '=1');?>">
-							<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>Lang::txt('COM_TEMPLATES_GRID_UNSET_LANGUAGE', $item->language_title)), true);?>
+							<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title' => Lang::txt('COM_TEMPLATES_GRID_UNSET_LANGUAGE', $item->language_title)), true);?>
 						</a>
 					<?php else:?>
-						<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>$item->language_title), true);?>
+						<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title' => $item->language_title), true);?>
 					<?php endif;?>
 				</td>
 				<td class="center priority-4">

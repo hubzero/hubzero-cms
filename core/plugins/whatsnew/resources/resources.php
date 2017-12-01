@@ -321,7 +321,6 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
 		\Hubzero\Document\Assets::addComponentScript('com_resources');
 
-		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
 	}
 

@@ -34,6 +34,7 @@
 namespace Components\Tools\Admin\Controllers;
 
 use Components\Tools\Models\Tool;
+use Components\Resources\Models\Entry;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
@@ -236,12 +237,14 @@ class Pipeline extends AdminController
 		$failed = array();
 
 		// Initiate extended database classes
-		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$objDOI   = new \Components\Resources\Tables\Doi($this->database);
+		require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+		require_once \Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
+
+		$objDOI   = \Components\Resources\Models\Doi::blank();
 		$objV     = new \Components\Tools\Tables\Version($this->database);
 		$objA     = new \Components\Tools\Tables\Author($this->database);
 
-		$live_site = rtrim(Request::base(),'/');
+		$live_site = rtrim(Request::base(), '/');
 		$sitename = Config::get('sitename');
 
 		// Get config
@@ -271,13 +274,14 @@ class Pipeline extends AdminController
 				}
 
 				// Skip entries with no resource information loaded / non-tool resources
-				if (!$resource->load($row->rid) || !$row->alias)
+				$resource = Entry::oneOrNew($row->rid);
+				if (!$resource->get('id') || !$row->alias)
 				{
 					continue;
 				}
 
 				// Get version info
-				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname='" . $row->alias . "' AND revision='" . $row->local_revision . "' AND state!=3 LIMIT 1");
+				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname=" . $this->database->quote($row->alias) . " AND revision=" . $this->database->quote($row->local_revision) . " AND state!=3 LIMIT 1");
 				$results = $this->database->loadObjectList();
 
 				if ($results)
@@ -302,7 +306,7 @@ class Pipeline extends AdminController
 				$authors = $objA->getAuthorsDOI($row->rid);
 
 				// Register DOI
-				$doiSuccess = $objDOI->registerDOI($authors, $config, $metadata, $doierr);
+				$doiSuccess = $objDOI->register($authors, $config, $metadata);
 				if ($doiSuccess)
 				{
 					$this->database->setQuery("UPDATE `#__doi_mapping` SET doi='$doiSuccess' WHERE rid=$row->rid AND local_revision=$row->local_revision");
@@ -317,7 +321,7 @@ class Pipeline extends AdminController
 				}
 				else
 				{
-					print_r($doierr);
+					print_r($objDOI->getError());
 					echo '<br />';
 					print_r($metadata);
 					echo '<br />';

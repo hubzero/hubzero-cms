@@ -101,7 +101,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			$database = App::get('db');
 
 			$tv = new \Components\Tools\Tables\Version($database);
-			$rows = $tv->getVersions($model->resource->alias);
+			$rows = $tv->getVersions($model->alias);
 
 			// Get contribtool params
 			$tconfig = Component::params('com_tools');
@@ -110,7 +110,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'browse')
 				->set('tconfig', $tconfig)
 				->set('option', $option)
-				->set('resource', $model->resource)
+				->set('resource', $model)
 				->set('rows', $rows);
 
 			// Return the output

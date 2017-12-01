@@ -32,7 +32,7 @@
 
 namespace Components\Resources\Admin\Controllers;
 
-use Components\Resources\Models;
+use Components\Resources\Models\Import\Hook;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
 use Request;
@@ -41,6 +41,8 @@ use User;
 use Date;
 use Lang;
 use App;
+
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'import' . DS . 'hook.php';
 
 /**
  * Resource importer hooks
@@ -67,12 +69,25 @@ class ImportHooks extends AdminController
 	 */
 	public function displayTask()
 	{
-		// get all imports from archive
-		$archive = Models\Import\Hook\Archive::getInstance();
+		// Incoming
+		$filters = array(
+			'sort' => Request::getState(
+				$this->_option . '.hooks.sort',
+				'filter_order',
+				'type'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.hooks.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
 
-		$hooks = $archive->hooks('list', array(
-			'state' => array(1)
-		));
+		// get all imports from archive
+		$hooks = Hook::all()
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
@@ -84,9 +99,10 @@ class ImportHooks extends AdminController
 	/**
 	 * Edit an Import
 	 *
+	 * @param   object  $hook
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($hook = null)
 	{
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
@@ -96,15 +112,18 @@ class ImportHooks extends AdminController
 
 		Request::setVar('hidemainmenu', 1);
 
-		// get request vars
-		$id = Request::getVar('id', array(0));
-		if (is_array($id))
+		if (!($hook instanceof Hook))
 		{
-			$id = (!empty($id)) ? $id[0] : 0;
-		}
+			// get request vars
+			$id = Request::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id)) ? $id[0] : 0;
+			}
 
-		// get the import object
-		$hook = new Models\Import\Hook($id);
+			// get the import object
+			$hook = Hook::oneOrNew($id);
+		}
 
 		// Output the HTML
 		$this->view
@@ -134,14 +153,7 @@ class ImportHooks extends AdminController
 		$file = Request::getVar('file', array(), 'FILES');
 
 		// create hook model object
-		$hook = new Models\Import\Hook();
-
-		// bind input to model
-		if (!$hook->bind($data))
-		{
-			Notify::error($hook->getError());
-			return $this->editTask();
-		}
+		$hook = Hook::oneOrNew($data['id'])->set($data);
 
 		// is this a new import
 		$isNew = false;
@@ -155,17 +167,23 @@ class ImportHooks extends AdminController
 		}
 
 		// attempt to save
-		if (!$hook->store(true))
+		if (!$hook->save())
 		{
 			Notify::error($hook->getError());
-			return $this->editTask();
+			return $this->editTask($hook);
 		}
 
 		// is this a new import
 		if ($isNew)
 		{
 			// create folder for files
-			$this->_createImportFilespace($hook);
+			$uploadPath = $hook->fileSpacePath();
+
+			// if we dont have a filespace, create it
+			if (!is_dir($uploadPath))
+			{
+				\Filesystem::makeDirectory($uploadPath, 0775);
+			}
 		}
 
 		// if we have a file
@@ -174,7 +192,7 @@ class ImportHooks extends AdminController
 			move_uploaded_file($file['tmp_name'], $hook->fileSpacePath() . DS . $file['name']);
 
 			$hook->set('file', $file['name']);
-			$hook->store();
+			$hook->save();
 		}
 
 		// Inform user & redirect
@@ -198,7 +216,7 @@ class ImportHooks extends AdminController
 		}
 
 		// create hook model object
-		$hook = new Models\Import\Hook($id);
+		$hook = Hook::oneOrFail($id);
 
 		// get path to file
 		$file = $hook->fileSpacePath() . DS . $hook->get('file');
@@ -238,54 +256,27 @@ class ImportHooks extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
-		$success = 0;
+		$removed = 0;
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
-			if (!$hook = new Models\Import\Hook($id))
-			{
-				continue;
-			}
+			$hook = Hook::oneOrFail($id);
 
-			// attempt to delete hook
-			$hook->set('state', 2);
-
-			if (!$hook->store(true))
+			if (!$hook->destroy())
 			{
 				Notify::error($hook->getError());
 				continue;
 			}
 
-			$success++;
+			$removed++;
 		}
 
-		if ($success)
+		if ($removed)
 		{
 			Notify::success(Lang::txt('COM_RESOURCES_IMPORTHOOK_REMOVED'));
 		}
 
 		// inform user & redirect
 		$this->cancelTask();
-	}
-
-	/**
-	 * Method to create import filespace if needed
-	 *
-	 * @param   object   $hook  Models\Import\Hook
-	 * @return  boolean
-	 */
-	private function _createImportFilespace(Models\Import\Hook $hook)
-	{
-		// upload path
-		$uploadPath = $hook->fileSpacePath();
-
-		// if we dont have a filespace, create it
-		if (!is_dir($uploadPath))
-		{
-			\Filesystem::makeDirectory($uploadPath, 0775);
-		}
-
-		// all set
-		return true;
 	}
 }

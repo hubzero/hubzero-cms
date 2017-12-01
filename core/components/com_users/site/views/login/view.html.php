@@ -60,7 +60,20 @@ class UsersViewLogin extends JViewLegacy
 
 		$this->prepareDocument();
 
-		$furl = base64_encode(Request::current(true));
+		$defaultReturn = $active->params->get('login_redirect_url', Route::url('index.php?option=com_members&task=myaccount'));
+		$defaultReturn = base64_encode($defaultReturn);
+
+		$uri = \Hubzero\Utility\Uri::getInstance();
+		if ($rtrn = $uri->getVar('return'))
+		{
+			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $rtrn))
+			{
+				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
+				$uri->setVar('return', $defaultReturn);
+			}
+		}
+		$furl = base64_encode($uri->toString());
+		//$furl = base64_encode(Request::current(true));
 		$this->freturn = $furl;
 
 		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
@@ -68,8 +81,7 @@ class UsersViewLogin extends JViewLegacy
 		$auth = '';
 		if ($return = Request::getVar('return', null, 'GET', 'BASE64'))
 		{
-			if (strpos($return, '<') !== false
-			 || strpos($return, '>') !== false)
+			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{
 				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
 				$return = null;
@@ -99,8 +111,7 @@ class UsersViewLogin extends JViewLegacy
 		// Set return if is isn't already
 		if (is_null($return) && is_object($active))
 		{
-			$return = $active->params->get('login_redirect_url', Route::url('index.php?option=com_members&task=myaccount'));
-			$return = base64_encode($return);
+			$return = $defaultReturn;
 		}
 
 		// Figure out whether or not any of our third party auth plugins are turned on

@@ -68,7 +68,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'roles'
 );
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+require_once \Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
 $canDo = \Components\Plugins\Helpers\Plugins::getActions();
 if ($canDo->get('core.manage'))
 {

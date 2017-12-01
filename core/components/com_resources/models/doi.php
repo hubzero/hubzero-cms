@@ -34,7 +34,7 @@ namespace Components\Resources\Models;
 use Hubzero\Database\Relational;
 
 /**
- * Resource license model
+ * Resource DOI model
  *
  * @uses  \Hubzero\Database\Relational
  */
@@ -109,8 +109,8 @@ class Doi extends Relational
 	/**
 	 * Get a record by resource
 	 *
-	 * @param   unknown  $rid
-	 * @param   unknown  $revision
+	 * @param   integer  $rid
+	 * @param   string   $revision
 	 * @param   integer  $versionid
 	 * @return  object
 	 */
@@ -136,7 +136,7 @@ class Doi extends Relational
 	 * Register a DOI
 	 *
 	 * @param   array   $authors   Authors of a resource
-	 * @param   object  $config    Parameter
+	 * @param   object  $config    Registry
 	 * @param   array   $metadata  Metadata
 	 * @return  mixed   False if error, string on success
 	 */
@@ -297,8 +297,9 @@ class Doi extends Relational
 	private function buildXml($authors, $metadata, $doi = 0)
 	{
 		$datePublished = isset($metadata['datePublished'])
-					? $metadata['datePublished'] : date('Y-m-d');
-		$dateAccepted  = date('Y-m-d');
+					? $metadata['datePublished']
+					: gmdate('Y-m-d');
+		$dateAccepted  = gmdate('Y-m-d');
 
 		$xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns="http://datacite.org/schema/kernel-2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-2.1 http://schema.datacite.org/meta/kernel-2.1/metadata.xsd">';
 		$xmlfile .= '<identifier identifierType="DOI">' . $doi . '</identifier>';

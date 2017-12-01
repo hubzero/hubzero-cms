@@ -39,7 +39,7 @@ $this->css('hubpresenter.css');
 
 <div id="hubpresenter-error">
 	<div id="title">Oops, We Encountered an Error.</div>
-	<p>Use the error messages below to try and resolve the issue. If you are still unable to fix the problem report your problem to the system administrator by entering a <a href="/feedback/report_problems">support ticket.</a></p>
+	<p>Use the error messages below to try and resolve the issue. If you are still unable to fix the problem report your problem to the system administrator by entering a <a href="/support/ticket/new">support ticket.</a></p>
 	<ol>
 		<?php foreach ($this->errors as $error) : ?>
 			<li><?php echo $error; ?></li>

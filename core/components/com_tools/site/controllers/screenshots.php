@@ -33,6 +33,8 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Screenshot;
 use Document;
 use Pathway;
 use Component;
@@ -45,8 +47,7 @@ use App;
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
+include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool
@@ -72,7 +73,7 @@ class Screenshots extends SiteController
 	/**
 	 * Reorder screenshots
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reorderTask()
 	{
@@ -83,8 +84,7 @@ class Screenshots extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// get tool object
@@ -95,51 +95,49 @@ class Screenshots extends SiteController
 		if (!$this->check_access($this->_toolid))
 		{
 			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-			return;
 		}
 
 		// Get version id
 		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL)
+		if ($vid == null)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Incoming
-		$file_toleft = Request::getVar('fl', '');
-		$order_toleft = Request::getInt('ol', 1);
-		$file_toright = Request::getVar('fr', '');
+		$file_toleft   = Request::getVar('fl', '');
+		$order_toleft  = Request::getInt('ol', 1);
+		$file_toright  = Request::getVar('fr', '');
 		$order_toright = Request::getInt('or', 0);
 
-		$neworder_toleft = ($order_toleft != 0) ? $order_toleft - 1 : 0;
+		$neworder_toleft  = ($order_toleft != 0) ? $order_toleft - 1 : 0;
 		$neworder_toright = $order_toright + 1;
 
 		// Instantiate a new screenshot object
-		$ss = new \Components\Resources\Tables\Screenshot($this->database);
-		$shot1 = $ss->getScreenshot($file_toright, $pid, $vid);
-		$shot2 = $ss->getScreenshot($file_toleft, $pid, $vid);
+		$shot1 = Screenshot::oneByFilename($file_toright, $pid, $vid);
+		$shot2 = Screenshot::oneByFilename($file_toleft, $pid, $vid);
 
 		// Do we have information stored?
-		if ($shot1)
+		if (!$shot1 || !$shot1->get('id'))
 		{
-			$ss->saveScreenshot($file_toright, $pid, $vid, $neworder_toright);
+			$shot1->set('filename', $file_toright);
+			$shot1->set('resourceid', $pid);
+			$shot1->set('versionid', $vid);
 		}
-		else
+		$shot1->set('ordering', $neworder_toright);
+		$shot1->save();
+
+		if (!$shot2 || !$shot2->get('id'))
 		{
-			$ss->saveScreenshot($file_toright, $pid, $vid, $neworder_toright, true);
+			$shot2->set('filename', $file_toleft);
+			$shot2->set('resourceid', $pid);
+			$shot2->set('versionid', $vid);
 		}
-		if ($shot1)
-		{
-			$ss->saveScreenshot($file_toleft, $pid, $vid, $neworder_toleft);
-		}
-		else
-		{
-			$ss->saveScreenshot($file_toleft, $pid, $vid, $neworder_toleft, true);
-		}
+		$shot2->set('ordering', $neworder_toleft);
+		$shot2->save();
 
 		$this->_rid = $pid;
 
@@ -150,7 +148,7 @@ class Screenshots extends SiteController
 	/**
 	 * Edit a screenshot
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -160,8 +158,7 @@ class Screenshots extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Incoming child ID
@@ -169,30 +166,26 @@ class Screenshots extends SiteController
 		if (!$this->view->file)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Load resource info
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->load($pid);
+		$row = Entry::oneOrFail($pid);
 
 		// Get version id
 		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL)
+		if ($vid == null)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Build the path
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir  = \Components\Resources\Helpers\Html::build_path($row->created, $pid, '') . DS . $vid;
+		$listdir  = $row->relativepath() . DS . $vid;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir;
-		$this->view->upath = $this->_buildUploadPath($listdir, '');
+		$this->view->upath = $row->filespace();
 
 		// Make sure wpath is preceded by app
 		if (substr($this->view->wpath, 0, 4) != DS . 'app')
@@ -201,30 +194,26 @@ class Screenshots extends SiteController
 		}
 
 		// Instantiate a new screenshot object
-		$ss = new \Components\Resources\Tables\Screenshot($this->database);
-		$this->view->shot = $ss->getScreenshot($this->view->file, $pid, $vid);
+		$shot = Screenshot::oneByFilename($this->view->file, $pid, $vid);
 
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
 		Document::setTitle($this->view->title);
 
-		$this->view->pid = $pid;
-		$this->view->version = $version;
-		$this->view->vid = $vid;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->set('shot', $shot)
+			->set('pid', $pid)
+			->set('version', $version)
+			->set('vid', $vid)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
 	 * Save changes to a screenshot
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -235,8 +224,7 @@ class Screenshots extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Incoming
@@ -244,29 +232,21 @@ class Screenshots extends SiteController
 		$title = preg_replace('/\s+/', ' ', Request::getVar('title', ''));
 
 		// Instantiate a new screenshot object
-		$ss = new \Components\Resources\Tables\Screenshot($this->database);
-		$shot  = $ss->getScreenshot($file, $pid, $vid);
-		$files = $ss->getFiles($pid, $vid);
+		$shot = Screenshot::oneByFilename($file, $pid, $vid);
 
-		if ($shot)
-		{
-			// update entry
-			$ss->loadFromFilename($file, $pid, $vid);
-		}
-		else
+		if (!$shot)
 		{
 			// make new entry
-			$ss->versionid = $vid;
-			$ordering = $ss->getLastOrdering($pid, $vid);
-			$ss->ordering = ($ordering) ? $ordering + 1 : count($files) + 1; // put in the end
-			$ss->filename = $file;
-			$ss->resourceid = $pid;
+			$shot->set('versionid', $vid);
+			$shot->set('filename', $file);
+			$shot->set('resourceid', $pid);
 		}
-		$ss->title = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $title);
 
-		if (!$ss->store())
+		$shot->set('title', preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $title));
+
+		if (!$shot->save())
 		{
-			$this->setError($ss->getError());
+			$this->setError($shot->getError());
 		}
 
 		// Push through to the screenshot view
@@ -300,24 +280,20 @@ class Screenshots extends SiteController
 		}
 
 		// Load resource info
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->load($pid);
+		$row = Entry::oneOrFail($pid);
 
 		// Get version id
 		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL)
+		if ($vid == null)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-
 		// Build the path
-		$listdir  = \Components\Resources\Helpers\Html::build_path($row->created, $pid, '');
+		$listdir  = $row->relativepath();
 		$listdir .= DS.$vid;
 		$path = $this->_buildUploadPath($listdir, '');
 
@@ -325,32 +301,33 @@ class Screenshots extends SiteController
 		if (!is_dir($path) or !$path)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 		else
 		{
 			if (!Filesystem::exists($path . DS . $file))
 			{
-				$this->displayTask($pid, $version);
-				return;
+				return $this->displayTask($pid, $version);
 			}
 
 			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
-				$this->displayTask($pid, $version);
-				return;
+				return $this->displayTask($pid, $version);
 			}
 			else
 			{
 				// Delete thumbnail
-				$tn = \Components\Resources\Helpers\Html::thumbnail($file);
+				$tn = preg_replace('#\.[^.]*$#', '', $file) . '-tn.gif';
 				Filesystem::delete($path . DS . $tn);
 
 				// Instantiate a new screenshot object
-				$ss = new \Components\Resources\Tables\Screenshot($this->database);
-				$ss->deleteScreenshot($file, $pid, $vid);
+				$ss = Screenshot::all()
+					->whereEquals('filename', $file)
+					->whereEquals('resourceid', $pid)
+					->whereEquals('versionid', $vid)
+					->row();
+				$ss->destroy();
 			}
 		}
 
@@ -372,32 +349,28 @@ class Screenshots extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		$version = Request::getVar('version', 'dev');
-		$title = preg_replace('/\s+/', ' ',Request::getVar('title', ''));
-		$allowed = array('.gif','.jpg','.png','.bmp');
+		$title = preg_replace('/\s+/', ' ', Request::getVar('title', ''));
+		$allowed = array('.gif', '.jpg', '.png', '.bmp');
 		$changing_version = Request::getInt('changing_version', 0);
 		if ($changing_version)
 		{
 			// reload screen
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Get resource information
-		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$resource->load($pid);
+		$resource = Entry::oneOrFail($pid);
 
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Make the filename safe
@@ -411,29 +384,30 @@ class Screenshots extends SiteController
 		if (!in_array(strtolower($file_ext), $allowed))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_WRONG_FILE_FORMAT'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Get version id
 		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL)
+		if ($vid == null)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		// Instantiate a new screenshot object
-		$row = new \Components\Resources\Tables\Screenshot($this->database);
+		$row = Screenshot::blank();
 
 		// Check if file with the same name already exists
-		$files = $row->getFiles($pid, $vid);
+		$files = $resource->screenshots()
+			->whereEquals('versionid', $vid)
+			->ordered()
+			->rows()
+			->fieldsByKey('filename');
 		if (count($files) > 0)
 		{
-			$files = \Components\Tools\Helpers\Utils::transform($files, 'filename');
 			foreach ($files as $f)
 			{
 				if ($f == $file['name'])
@@ -445,24 +419,13 @@ class Screenshots extends SiteController
 			}
 		}
 
-		$row->title = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $title);
-		$row->versionid = $vid;
-		$ordering = $row->getLastOrdering($pid, $vid);
-		$row->ordering = ($ordering) ? $ordering + 1 : count($files) + 1; // put in the end
-		$row->filename = $file['name'];
-		$row->resourceid = $pid;
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->displayTask($pid, $version);
-			return;
-		}
+		$row->set('title', preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $title));
+		$row->set('versionid', $vid);
+		$row->set('filename', $file['name']);
+		$row->set('resourceid', $pid);
 
 		// Build the path
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir  = \Components\Resources\Helpers\Html::build_path($resource->created, $pid, '');
+		$listdir  = $resource->relativepath();
 		$listdir .= DS . $vid;
 		$path = $this->_buildUploadPath($listdir, '');
 
@@ -472,36 +435,29 @@ class Screenshots extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH') . $path);
-				$this->displayTask($pid, $version);
-				return;
+				return $this->displayTask($pid, $version);
 			}
 		}
 
 		// Perform the upload
-		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_UPLOADING'));
 		}
 		else
 		{
 			// Store new content
-			if (!$row->store())
+			if (!$row->save())
 			{
 				$this->setError($row->getError());
-				$this->displayTask($pid, $version);
-				return;
-			}
-
-			if (!$row->id)
-			{
-				$row->id = $row->insertid();
+				return $this->displayTask($pid, $version);
 			}
 
 			// Create thumbnail
 			$ss_height = (intval($this->config->get('screenshot_maxheight', 58)) > 30) ? intval($this->config->get('screenshot_maxheight', 58)) : 58;
 			$ss_width  = (intval($this->config->get('screenshot_maxwidth', 91)) > 80)  ? intval($this->config->get('screenshot_maxwidth', 91))  : 91;
 
-			$tn = \Components\Resources\Helpers\Html::thumbnail($file['name']);
+			$tn = preg_replace('#\.[^.]*$#', '', $file['name']) . '-tn.gif';
 			if ($file_ext != '.swf')
 			{
 				$this->_createThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
@@ -513,11 +469,10 @@ class Screenshots extends SiteController
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
-			$this->displayTask($pid, $version);
-			return;
+			return $this->displayTask($pid, $version);
 		}
 
 		$this->_rid = $pid;
@@ -552,7 +507,7 @@ class Screenshots extends SiteController
 		$im = imagecreatetruecolor($av, $ah);
 		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif ($im, $save_dir . $save_name))
+			if (imagegif($im, $save_dir . $save_name))
 			{
 				return true;
 			}
@@ -580,11 +535,21 @@ class Screenshots extends SiteController
 
 		switch ($gis[2])
 		{
-			case '1': $imorig = imagecreatefromgif ($tmpname);  break;
-			case '2': $imorig = imagecreatefromjpeg($tmpname); break;
-			case '3': $imorig = imagecreatefrompng($tmpname);  break;
-			case '4': $imorig = imagecreatefromwbmp($tmpname); break;
-			default:  $imorig = imagecreatefromjpeg($tmpname); break;
+			case '1':
+				$imorig = imagecreatefromgif($tmpname);
+				break;
+			case '2':
+				$imorig = imagecreatefromjpeg($tmpname);
+				break;
+			case '3':
+				$imorig = imagecreatefrompng($tmpname);
+				break;
+			case '4':
+				$imorig = imagecreatefromwbmp($tmpname);
+				break;
+			default:
+				$imorig = imagecreatefromjpeg($tmpname);
+				break;
 		}
 
 		$x = imageSX($imorig);
@@ -607,7 +572,7 @@ class Screenshots extends SiteController
 		$im = imagecreatetruecolor($av, $ah);
 		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif ($im, $save_dir . $save_name))
+			if (imagegif($im, $save_dir . $save_name))
 			{
 				return true;
 			}
@@ -644,7 +609,6 @@ class Screenshots extends SiteController
 		if ($from == 0 or $to == 0 or $rid == 0)
 		{
 			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			return;
 		}
 
 		if ($toolid && $this->_checkAccess($toolid))
@@ -660,7 +624,7 @@ class Screenshots extends SiteController
 	/**
 	 * Move files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function moveTask()
 	{
@@ -677,7 +641,6 @@ class Screenshots extends SiteController
 			if ($from == 0 or $to == 0 or $rid == 0)
 			{
 				App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-				return;
 			}
 
 			if ($this->transfer($from, $to, $rid))
@@ -709,27 +672,20 @@ class Screenshots extends SiteController
 	/**
 	 * Transfer files from one version to another
 	 *
-	 * @param      string  $sourceid Source version ID
-	 * @param      string  $destid   Destination version ID
-	 * @param      integer $rid      Resource ID
-	 * @return     boolean False if errors, True on success
+	 * @param   string   $sourceid  Source version ID
+	 * @param   string   $destid    Destination version ID
+	 * @param   integer  $rid       Resource ID
+	 * @return  boolean  False if errors, True on success
 	 */
 	public function transfer($sourceid, $destid, $rid)
 	{
 		Log::debug(__FUNCTION__ . '()');
 
 		// Get resource information
-		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$resource->load($rid);
-
-		// Get screenshot information
-		$ss = new \Components\Resources\Tables\Screenshot($this->database);
-		$shots = $ss->getFiles($rid, $sourceid);
+		$resource = Entry::oneOrFail($rid);
 
 		// Build the path
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-
-		$listdir = \Components\Resources\Helpers\Html::build_path($resource->created, $rid, '');
+		$listdir = $resource->relativepath();
 		$srcdir  = $listdir . DS . $sourceid;
 		$destdir = $listdir . DS . $destid;
 		$src     = $this->_buildUploadPath($srcdir, '');
@@ -748,11 +704,14 @@ class Screenshots extends SiteController
 
 		// do we have files to transfer?
 		$files = Filesystem::files($src, '.', false, true, array());
+
 		Log::debug(__FUNCTION__ . "() " . implode(',', $files));
+
 		if (!empty($files))
 		{
 			// Copy directory
 			Log::debug(__FUNCTION__ . "() copying $src to $dest");
+
 			if (!Filesystem::copyDirectory($src, $dest, '', true))
 			{
 				return false;
@@ -760,7 +719,17 @@ class Screenshots extends SiteController
 			else
 			{
 				// Update screenshot information for this resource
-				$ss->updateFiles($rid, $sourceid, $destid, $copy=1);
+				$shots = $resource->screenshots()
+					->whereEquals('versionid', $sourceid)
+					->ordered()
+					->rows();
+
+				foreach ($shots as $shot)
+				{
+					$shot->set('id', null);
+					$shot->set('versionid', $destid);
+					$shot->save();
+				}
 
 				Log::debug(__FUNCTION__ . '() updated files');
 				return true;
@@ -779,7 +748,7 @@ class Screenshots extends SiteController
 	 * @param      string  $version Tool version
 	 * @return     void
 	 */
-	public function displayTask($rid=NULL, $version=NULL)
+	public function displayTask($rid=null, $version=null)
 	{
 		$this->view->setLayout('display');
 
@@ -800,8 +769,7 @@ class Screenshots extends SiteController
 			return;
 		}
 		// Get resource information
-		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$resource->load($rid);
+		$resource = Entry::oneOrFail($rid);
 
 		// Get version id
 		$objV = new \Components\Tools\Tables\Version($this->database);
@@ -811,13 +779,13 @@ class Screenshots extends SiteController
 		$this->view->published = $objV->getCurrentVersionProperty($resource->alias, 'id');
 
 		// Get screenshot information for this resource
-		$ss = new \Components\Resources\Tables\Screenshot($this->database);
-		$this->view->shots = $ss->getScreenshots($rid, $vid);
+		$this->view->shots = $resource->screenshots()
+			->whereEquals('versionid', $vid)
+			->ordered()
+			->rows();
 
 		// Build paths
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-
-		$path = \Components\Resources\Helpers\Html::build_path($resource->created, $rid, '');
+		$path = $resource->relativepath();
 		$this->view->upath = PATH_APP . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		if ($vid)
@@ -886,33 +854,6 @@ class Screenshots extends SiteController
 
 		// Build the path
 		return PATH_APP . $listdir . $subdir;
-	}
-
-	/**
-	 * Get the resource child type from the file extension
-	 *
-	 * @param      string $filename File to check
-	 * @return     integer Numerical file type
-	 */
-	private function _getChildType($filename)
-	{
-		$ftype = strtolower(Filesystem::extension($filename));
-
-		switch ($ftype)
-		{
-			case 'mov': $type = 15; break;
-			case 'swf': $type = 32; break;
-			case 'ppt': $type = 35; break;
-			case 'asf': $type = 37; break;
-			case 'asx': $type = 37; break;
-			case 'wmv': $type = 37; break;
-			case 'zip': $type = 38; break;
-			case 'tar': $type = 38; break;
-			case 'pdf': $type = 33; break;
-			default:    $type = 13; break;
-		}
-
-		return $type;
 	}
 
 	/**

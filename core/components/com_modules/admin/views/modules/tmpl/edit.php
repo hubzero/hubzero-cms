@@ -57,8 +57,6 @@ if (!$isNew && $canDo->get('core.create'))
 Toolbar::cancel();
 Toolbar::help('module');
 
-
-//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('combobox');

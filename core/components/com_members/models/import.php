@@ -397,6 +397,10 @@ class Import extends Base
 			{
 				$val = trim($val);
 				$val = Sanitize::cleanMsChar($val);
+				if (function_exists('mb_convert_encoding'))
+				{
+					$val = mb_convert_encoding($val, 'UTF-8');
+				}
 
 				if (!$field = $this->fields($key))
 				{
@@ -413,6 +417,10 @@ class Import extends Base
 			{
 				$val = trim($val);
 				$val = Sanitize::cleanMsChar($val);
+				if (function_exists('mb_convert_encoding'))
+				{
+					$val = mb_convert_encoding($val, 'UTF-8');
+				}
 
 				if (!$field = $this->fields($key))
 				{

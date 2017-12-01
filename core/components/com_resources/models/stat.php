@@ -110,6 +110,6 @@ class Stat extends Relational
 	 */
 	public function resource()
 	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Orm\\Resource', 'resid');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Entry', 'resid');
 	}
 }

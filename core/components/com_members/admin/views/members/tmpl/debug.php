@@ -32,9 +32,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// Include the component HTML helpers.
-//Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 
@@ -57,9 +54,12 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 			<div class="filter-select col span7">
 				<select name="filter_component" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_COMPONENT');?></option>
-					<?php if (!empty($this->components)) {
+					<?php
+					if (!empty($this->components))
+					{
 						echo Html::select('options', $this->components, 'value', 'text', $this->filters['component']);
-					}?>
+					}
+					?>
 				</select>
 
 				<select name="filter_level_start" class="inputbox" onchange="this.form.submit()">

@@ -153,7 +153,7 @@ $browser = new \Hubzero\Browser\Detector();
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), date("Y")); ?>
+					<?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), Date::of('now')->format("Y")); ?>
 				</p>
 				<p class="promotion">
 					<?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', HVERSION); ?>

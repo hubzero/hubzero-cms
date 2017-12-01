@@ -35,8 +35,8 @@ namespace Components\Wishlist\Models\Adapters;
 use Pathway;
 use Lang;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+require_once __DIR__ . DS . 'base.php';
+require_once \Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
 
 /**
  * Adapter class for a forum post link for group forum
@@ -51,6 +51,13 @@ class Publication extends Base
 	protected $_segments = array(
 		'option' => 'com_wishlist',
 	);
+
+	/**
+	 * Scope name
+	 *
+	 * @var  string
+	 */
+	protected $_scope = 'publication';
 
 	/**
 	 * Constructor
@@ -313,4 +320,3 @@ class Publication extends Base
 		return $this;
 	}
 }
-

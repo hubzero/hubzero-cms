@@ -33,14 +33,11 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$db = \App::get('db');
-
 $creator = User::getInstance($this->resource->created_by);
 
-$type = new \Components\Resources\Tables\Type($db);
-$type->load($this->resource->type);
+$type = $this->resource->type;
 
-$link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_resources&id=' . $this->resource->id), '/');
+$link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->resource->link()), '/');
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">

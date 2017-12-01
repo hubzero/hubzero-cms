@@ -93,7 +93,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$resource = \Components\Resources\Models\Entry::oneOrNew($id);
+		$resource = \Components\Resources\Models\Entry::oneOrFail($id);
 
 		$h = new PlgResourcesReviewsHelper();
 		$h->resource = $resource;
@@ -143,11 +143,16 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		include_once __DIR__ . DS . 'models' . DS . 'review.php';
 
-		$isAuthor = (in_array(User::get('id'), $model->contributors('id')));
+		$authors = array();
+		foreach ($model->contributors() as $con)
+		{
+			$authors[] = $con->authorid;
+		}
+		$isAuthor = (in_array(User::get('id'), $authors));
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
-		$h->resource = $model->resource;
+		$h->resource = $model;
 		$h->isAuthor = $isAuthor;
 		$h->option   = $option;
 		$h->_option  = $option;
@@ -155,7 +160,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		// Get reviews for this resource
 		$reviews = \Components\Resources\Reviews\Models\Review::all()
-			->whereEquals('resource_id', $model->resource->id)
+			->whereEquals('resource_id', $model->get('id'))
 			->whereIn('state', array(
 				\Components\Resources\Reviews\Models\Review::STATE_PUBLISHED,
 				\Components\Resources\Reviews\Models\Review::STATE_FLAGGED
@@ -171,7 +176,8 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			if (!$h->loggedin)
 			{
 				// Instantiate a view
-				$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=' . $this->_name, false, true), 'server');
+				$rtrn = Request::getVar('REQUEST_URI', Route::url($model->link(), false, true), 'server');
+
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
@@ -184,7 +190,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'browse')
 				->set('voting', $this->params->get('voting', 1))
 				->set('option', $option)
-				->set('resource', $model->resource)
+				->set('resource', $model)
 				->set('reviews', $reviews)
 				->set('banking', $this->banking)
 				->set('infolink', $this->infolink)
@@ -200,7 +206,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$url  = 'index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name;
+			$url  = $model->link() . '&active=' . $this->_name;
 
 			$view = $this->view('default', 'metadata')
 				->set('reviews', $reviews)

@@ -56,7 +56,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once Component::path('com_resources') . DS . 'models' . DS . 'type.php';
+		include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 	}
 
 	/**
@@ -209,7 +209,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
-			$query .= ", r.params, r.rating AS rcount, r.type AS data1, rt.type AS data2, r.ranking data3 ";
+			$query .= ", r.params, r.rating AS rcount, r.type AS data1, r.access AS data2, r.ranking data3 ";
 		}
 		$query .= "FROM `#__resources` AS r ";
 		$query .= "LEFT JOIN " . $rt->getTableName() . " AS rt ON r.type=rt.id ";
@@ -303,7 +303,11 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
+		$row->published = $row->state;
+		$row->introtext = $row->itext;
+		$row->fulltxt   = $row->ftext;
+		$row->access    = $row->data2;
+		/*include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
 
 		if ($row->alias)
 		{
@@ -453,6 +457,24 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$html .= "\t" . '</li>'."\n";
 
 		// Return output
-		return $html;
+		return $html;*/
+
+		$row = Components\Resources\Models\Entry::blank()->set($row);
+		$row->set('typetitle', $row->type->get('type'));
+
+		// Get the component params and merge with resource params
+		$config = Component::params('com_resources');
+
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => Component::path('com_resources') . '/site',
+			'name'      => 'browse',
+			'layout'    => 'item'
+		));
+		$view->set('line', $row)
+			->set('option', 'com_resources')
+			->set('config', $config)
+			->set('supported', array());
+
+		return $view->loadTemplate();
 	}
 }

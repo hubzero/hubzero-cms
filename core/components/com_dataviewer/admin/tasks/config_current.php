@@ -16,7 +16,7 @@ function dv_config_current()
 	$base = $conf['dir_base'];
 	$db_id = Request::getString('db', false);
 
-	require_once(JPATH_COMPONENT_SITE . DS . 'dv_config.php');
+	require_once(PATH_COMPONENT_SITE . DS . 'dv_config.php');
 
 	$dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
 

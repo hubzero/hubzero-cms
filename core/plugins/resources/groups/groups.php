@@ -75,12 +75,12 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		if (!$resource->group_owner || substr($resource->group_owner, 0, strlen('app-')) == 'app-')
+		if (!$resource->get('group_owner') || substr($resource->get('group_owner'), 0, strlen('app-')) == 'app-')
 		{
 			return $arr;
 		}
 
-		$group = \Hubzero\User\Group::getInstance($resource->group_owner);
+		$group = \Hubzero\User\Group::getInstance($resource->get('group_owner'));
 
 		if (!$group || !$group->get('gidNumber'))
 		{

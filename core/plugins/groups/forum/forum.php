@@ -549,6 +549,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->ordered()
 			->rows();
 
+		$categories = $this->forum->categories()->rows();
+
 		//get authorization
 		$this->_authorize('section');
 		$this->_authorize('category');
@@ -609,6 +611,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->set('config', $this->params)
 			->set('forum', $this->forum)
 			->set('sections', $sections)
+			->set('categories', $categories)
 			->set('edit', $edit)
 			->loadTemplate();
 	}
@@ -1541,37 +1544,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$post->set('category', $category->get('alias'));
 
 			// Figure out who should be notified about this comment (all group members for now)
-			$userIDsToEmail = array();
-
-			$memberoptions = false;
-			if (file_exists(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php'))
-			{
-				include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
-				$memberoptions = true;
-			}
-
-			foreach ($this->members as $mbr)
-			{
-				//Look up user info
-				$user = User::getInstance($mbr);
-
-				if ($user->get('id') && $memberoptions)
-				{
-					// Find the user's group settings, do they want to get email (0 or 1)?
-					$groupMemberOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
-						$this->group->get('gidNumber'),
-						$user->get('id'),
-						'receive-forum-email'
-					);
-
-					$sendEmail = $groupMemberOption->get('optionvalue', 0);
-
-					if ($sendEmail == 1)
-					{
-						$userIDsToEmail[] = $user->get('id');
-					}
-				}
-			}
+			$userIDsToEmail = $this->_getEmailRecipientIds($category);
 
 			$allowEmailResponses = true;
 
@@ -1710,6 +1683,108 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$message,
 			'passed'
 		);
+	}
+
+	protected function _getEmailRecipientIds($category)
+	{
+		$userIDsToEmail = array();
+		$memberoptions = $this->_loadMemberOptions();
+		$categorySubscriptionsEnabled = Component::params('com_groups')->get('enable_forum_email_categories', 0);
+		$users = $this->_loadExistingUsers($this->members);
+
+		foreach ($users as $user)
+		{
+			$userId = $user->get('id');
+
+			$sendEmail = $this->_shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category);
+
+			if ($sendEmail == 1)
+			{
+				$userIDsToEmail[] = $userId;
+			}
+		}
+
+		return $userIDsToEmail;
+	}
+
+	/**
+	 * Load required model
+	 *
+	 * @return  bool
+	 */
+	protected function _loadMemberOptions()
+	{
+		$memberoptions = false;
+
+		if (file_exists(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php'))
+		{
+			include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
+			$memberoptions = true;
+		}
+
+		return $memberoptions;
+	}
+
+	/**
+	 * Get a list of User objects from group membership
+	 *
+	 * Note: filters out blocked and unapproved accounts
+	 *
+	 * @param   array  $userIds
+	 * @return  array
+	 */
+	protected function _loadExistingUsers($userIds)
+	{
+		$users = array_map(function($userId)
+		{
+			return User::getInstance($userId);
+		}, $userIds);
+
+		$existingUsers = array_filter($users, function($user)
+		{
+			return ($user->get('id') && !$user->get('block') && $user->get('approved') > 0);
+		});
+
+		return $existingUsers;
+	}
+
+	/**
+	 * Get a list of User objects from group membership
+	 *
+	 * Note: filters out blocked and unapproved accounts
+	 *
+	 * @param   integer  $userId
+	 * @param   object   $memberoptions
+	 * @param   bool     $categorySubscriptionsEnabled
+	 * @param   object   $category
+	 * @return  array
+	 */
+	protected function _shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category)
+	{
+		$categoryId = $category->get('id');
+
+		if ($categorySubscriptionsEnabled)
+		{
+			$usersCategory = $category->usersCategories()
+				->whereEquals('category_id', $categoryId)
+				->whereEquals('user_id', $userId)
+				->row();
+
+			$sendEmail = $usersCategory->isNew() ? 0 : 1;
+		}
+		else if ($memberoptions)
+		{
+			$groupId = $this->group->get('gidNumber');
+			$usersGroupSettings = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+				$groupId,
+				$userId,
+				'receive-forum-email'
+			);
+
+			$sendEmail = $usersGroupSettings->get('optionvalue', 0);
+		}
+
+		return $sendEmail;
 	}
 
 	/**

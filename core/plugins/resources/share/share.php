@@ -85,9 +85,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$resource = $model->resource;
-
-		$sef = Route::url('index.php?option=com_resources&' . ($resource->alias ? 'alias=' . $resource->alias : 'id=' . $resource->id));
+		$sef = Route::url($model->link());
 		$url = Request::base() . ltrim($sef, '/');
 
 		// Incoming action
@@ -102,17 +100,17 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 					'activity' => [
 						'action'      => 'shared',
 						'scope'       => 'resource',
-						'scope_id'    => $resource->id,
-						'description' => Lang::txt('PLG_RESOURCES_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $resource->title . '</a>', $sharewith),
+						'scope_id'    => $model->id,
+						'description' => Lang::txt('PLG_RESOURCES_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . $model->title . '</a>', $sharewith),
 						'details'     => array(
 							'with'  => $sharewith,
-							'title' => $resource->title,
+							'title' => $model->title,
 							'url'   => $sef
 						)
 					],
 					'recipients' => [
-						['resource', $resource->id], // The resource itself
-						['user', $resource->created_by], // The creator
+						['resource', $model->id], // The resource itself
+						['user', $model->created_by], // The creator
 						['user', User::get('id')] // The sharer
 					]
 				]);
@@ -124,7 +122,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 				// Instantiate a view
 				$view = $this->view('email', 'options')
 					->set('option', $option)
-					->set('resource', $resource)
+					->set('resource', $model)
 					->set('_params', $this->params)
 					->set('url', $url)
 					->setErrors($this->getErrors());
@@ -134,7 +132,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 				exit();
 			}
 
-			return $this->share($sharewith, $url, $resource);
+			return $this->share($sharewith, $url, $model);
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
@@ -143,7 +141,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			// Instantiate a view
 			$view = $this->view('default', 'options')
 				->set('option', $option)
-				->set('resource', $resource)
+				->set('resource', $model)
 				->set('_params', $this->params)
 				->set('url', $url)
 				->setErrors($this->getErrors());

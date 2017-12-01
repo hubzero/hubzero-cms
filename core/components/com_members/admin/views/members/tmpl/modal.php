@@ -31,7 +31,7 @@
 
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(PATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 
 $field     = Request::getCmd('field');

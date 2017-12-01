@@ -257,9 +257,6 @@ class Application extends Obj
 		// Purge the database session table if we are changing to the database handler.
 		if ($prev['session']['session_handler'] != 'database' && $data['session']['session_handler'] == 'database')
 		{
-			//$table = JTable::getInstance('session');
-			//$table->purge(-1);
-
 			$db = App::get('db');
 
 			$past = time() + 1;

@@ -105,4 +105,3 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 		return $arr;
 	}
 }
-

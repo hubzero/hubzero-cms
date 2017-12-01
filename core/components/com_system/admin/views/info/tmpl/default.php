@@ -33,11 +33,11 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo.png');
+Toolbar::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo');
 Toolbar::help('sysinfo');
 
 // Add specific helper files for html generation
-Html::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
+Html::addIncludePath(dirname(PATH_COMPONENT) . '/helpers/html');
 
 // Load switcher behavior
 Html::behavior('switcher', 'submenu');

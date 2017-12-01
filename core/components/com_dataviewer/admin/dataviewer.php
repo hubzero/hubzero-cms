@@ -19,12 +19,12 @@ if (\Config::get('debug')) {
 	ini_set('display_errors', '0');
 }
 
-require_once(JPATH_COMPONENT . DS . 'config.php');
+require_once(__DIR__ . DS . 'config.php');
 
 // Libs
-require_once(JPATH_COMPONENT . DS . 'libs' . DS . 'lib_messages.php');
-require_once(JPATH_COMPONENT . DS . 'libs' . DS . 'lib_security.php');
-require_once(JPATH_COMPONENT . DS . 'libs' . DS . 'lib_json.php');
+require_once(__DIR__ . DS . 'libs' . DS . 'lib_messages.php');
+require_once(__DIR__ . DS . 'libs' . DS . 'lib_security.php');
+require_once(__DIR__ . DS . 'libs' . DS . 'lib_json.php');
 
 
 $document = App::get('document');
@@ -39,7 +39,7 @@ $document->addScript(DB_PATH . '/html/' . 'main.js');
 
 $document->setTitle($conf['app_title']);
 
-require_once(JPATH_COMPONENT . DS . 'controller.php');
+require_once(__DIR__ . DS . 'controller.php');
 controller_exec();
 
 // Restore umask

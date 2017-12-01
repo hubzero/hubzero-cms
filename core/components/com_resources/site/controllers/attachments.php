@@ -45,8 +45,6 @@ use Lang;
 use User;
 use App;
 
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
-
 /**
  * Controller class for adding attachments to a parent resource
  */
@@ -652,16 +650,17 @@ class Attachments extends SiteController
 
 			if (!empty($hash))
 			{
-				$this->database->setQuery("SELECT id FROM `#__document_text_data` WHERE hash = " . $this->database->quote($hash));
-				$doc_id = $this->database->loadResult();
+				$database = App::get('db');
+				$database->setQuery("SELECT id FROM `#__document_text_data` WHERE hash = " . $database->quote($hash));
+				$doc_id = $database->loadResult();
 
 				if (!$doc_id)
 				{
-					$this->database->execute("INSERT INTO `#__document_text_data` (hash) VALUES (" . $this->database->quote($hash) . ")");
-					$doc_id = $this->database->insertId();
+					$database->execute("INSERT INTO `#__document_text_data` (hash) VALUES (" . $database->quote($hash) . ")");
+					$doc_id = $database->insertId();
 				}
 
-				$this->database->execute("INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (" . (int)$doc_id . ", " . (int)$id . ")");
+				$database->execute("INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (" . (int)$doc_id . ", " . (int)$id . ")");
 
 				system('/usr/bin/textifier ' . escapeshellarg($path) . ' >/dev/null');
 			}

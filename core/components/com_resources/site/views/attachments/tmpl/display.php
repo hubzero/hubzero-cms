@@ -90,7 +90,7 @@ $hideform = Request::getInt('hideform', 0);
 				$k++;
 
 				// figure ou the URL to the file
-				switch ($child->type)
+				switch ($child->get('type'))
 				{
 					case 12:
 						if ($child->path)
@@ -111,13 +111,13 @@ $hideform = Request::getInt('hideform', 0);
 
 				// figure out the file type so we can give it the appropriate CSS class
 				$type = Filesystem::extension($url);
-				if (!$child->type != 12 && $child->type != 11)
+				if (!$child->get('type') != 12 && $child->get('type') != 11)
 				{
 					$type = ($type) ? $type : 'html';
 				}
 
 				$isFile = true;
-				if (($child->type == 12 || $child->type == 11)
+				if (($child->get('type') == 12 || $child->get('type') == 11)
 				 || in_array($type, array('html', 'htm', 'php', 'asp', 'shtml'))
 				 || strstr($url, '?'))
 				{

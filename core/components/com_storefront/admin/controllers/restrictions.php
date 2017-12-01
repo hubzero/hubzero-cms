@@ -192,6 +192,7 @@ class Restrictions extends AdminController
 				if ($user && is_string($user))
 				{
 					RestrictionsHelper::addPermittedSkuUser($uId, $sId, $user);
+					$matched++;
 				}
 				else
 				{

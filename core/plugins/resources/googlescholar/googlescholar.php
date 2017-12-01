@@ -59,15 +59,10 @@ class plgResourcesGooglescholar extends \Hubzero\Plugin\Plugin
 		$view = $this->view();
 
 		// Add metadata
-		Document::setMetaData('citation_title', $view->escape($model->resource->title));
+		Document::setMetaData('citation_title', $view->escape($model->title));
 
-		switch ($model->params->get('show_date'))
-		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = $model->resource->created;    break;
-			case 2: $thedate = $model->resource->modified;   break;
-			case 3: $thedate = $model->resource->publish_up; break;
-		}
+		$thedate = $model->date;
+
 		if ($thedate)
 		{
 			Document::setMetaData('citation_date', Date::of($thedate)->toLocal('M d, Y'));
@@ -77,13 +72,13 @@ class plgResourcesGooglescholar extends \Hubzero\Plugin\Plugin
 		{
 			$tconfig = Component::params('com_tools');
 
-			if ($model->resource->doi && $tconfig->get('doi_shoulder'))
+			if ($model->doi && $tconfig->get('doi_shoulder'))
 			{
-				$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($model->resource->doi);
+				$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($model->doi);
 			}
 			else
 			{
-				$doi = '10254/' . $tconfig->get('doi_prefix') . $model->resource->id . '.' . $model->resource->doi_label;
+				$doi = '10254/' . $tconfig->get('doi_prefix') . $model->id . '.' . $model->doi_label;
 			}
 
 			Document::setMetaData('citation_doi', $view->escape($doi));
@@ -103,7 +98,7 @@ class plgResourcesGooglescholar extends \Hubzero\Plugin\Plugin
 			else if ($contributor->surname || $contributor->givenName)
 			{
 				$name = stripslashes($contributor->givenName) . ' ';
-				if ($contributor->middleName != NULL)
+				if ($contributor->middleName != null)
 				{
 					$name .= stripslashes($contributor->middleName) . ' ';
 				}

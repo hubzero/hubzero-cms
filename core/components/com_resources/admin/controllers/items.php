@@ -32,16 +32,17 @@
 
 namespace Components\Resources\Admin\Controllers;
 
-use Components\Resources\Tables\Resource;
-use Components\Resources\Tables\Type;
-use Components\Resources\Tables\Review;
-use Components\Resources\Tables\Assoc;
-use Components\Resources\Tables\Contributor;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Type;
+use Components\Resources\Models\Association;
+use Components\Resources\Models\Rating;
+use Components\Resources\Models\Author;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Html;
 use Components\Resources\Helpers\Helper;
 use Hubzero\Component\AdminController;
+use Hubzero\Utility\Str;
 use Request;
 use Config;
 use Route;
@@ -57,7 +58,7 @@ class Items extends AdminController
 	/**
 	 * Executes a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -67,8 +68,8 @@ class Items extends AdminController
 		$this->registerTask('accessprotected', 'access');
 		$this->registerTask('accessprivate', 'access');
 
-		//$this->registerTask('publish', 'state');
-		//$this->registerTask('unpublish', 'state');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
 
 		$this->registerTask('add', 'edit');
 
@@ -86,7 +87,7 @@ class Items extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.resources.limit',
 				'limit',
@@ -126,26 +127,49 @@ class Items extends AdminController
 			)
 		);
 
-		$model = new Resource($this->database);
+		$query = Entry::all()
+			->whereEquals('standalone', 1);
 
-		// Get record count
-		$this->view->total = $model->getItemCount($this->view->filters);
-
-		// Get resources
-		$this->view->rows = $model->getItems($this->view->filters);
-
-		// Get <select> of types
-		$rt = new Type($this->database);
-		$this->view->types = $rt->getMajorTypes();
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		if ($filters['search'])
 		{
-			$this->view->setError($error);
+			if (is_numeric($filters['search']))
+			{
+				$query->whereEquals('id', (int)$filters['search']);
+			}
+			else
+			{
+				$filters['search'] = strtolower((string)$filters['search']);
+
+				$query->whereLike('title', $filters['search'], 1)
+						->orWhereLike('fulltxt', $filters['search'], 1)
+						->resetDepth();
+			}
 		}
 
+		if ($filters['type'])
+		{
+			$query->whereEquals('type', (int)$filters['type']);
+		}
+
+		if ($filters['status'] != 'all')
+		{
+			$query->whereEquals('published', (int)$filters['status']);
+		}
+
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		// Get major types
+		$types = Type::getMajorTypes();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->set('types', $types)
+			->display();
 	}
 
 	/**
@@ -156,8 +180,7 @@ class Items extends AdminController
 	public function childrenTask()
 	{
 		// Resource's parent ID
-		//$this->view->pid = Request::getInt('pid', 0);
-		$this->view->pid = Request::getState(
+		$pid = Request::getState(
 			$this->_option . '.children.pid',
 			'pid',
 			0,
@@ -165,8 +188,8 @@ class Items extends AdminController
 		);
 
 		// Incoming
-		$this->view->filters = array(
-			'parent_id' => $this->view->pid,
+		$filters = array(
+			'parent_id' => $pid,
 			'limit' => Request::getState(
 				$this->_option . '.children.limit',
 				'limit',
@@ -202,23 +225,43 @@ class Items extends AdminController
 		);
 
 		// Get parent info
-		$this->view->parent = new Resource($this->database);
-		$this->view->parent->load($this->view->filters['parent_id']);
+		$parent = Entry::oneOrFail((int)$filters['parent_id']);
 
-		// Record count
-		$this->view->total = $this->view->parent->getItemChildrenCount($this->view->filters);
+		$query = $parent->children();
 
-		// Get only children of this parent
-		$this->view->rows = $this->view->parent->getItemChildren($this->view->filters);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		if ($filters['search'])
 		{
-			$this->view->setError($error);
+			if (is_numeric($filters['search']))
+			{
+				$query->whereEquals('id', (int)$filters['search']);
+			}
+			else
+			{
+				$filters['search'] = strtolower((string)$filters['search']);
+
+				$query->whereLike('title', $filters['search'], 1)
+						->orWhereLike('fulltxt', $filters['search'], 1)
+						->resetDepth();
+			}
 		}
 
+		if ($filters['status'] != 'all')
+		{
+			$query->whereEquals('published', (int)$filters['status']);
+		}
+
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('pid', $pid)
+			->set('parent', $parent)
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->display();
 	}
 
 	/**
@@ -228,23 +271,9 @@ class Items extends AdminController
 	 */
 	public function orphansTask()
 	{
-		$this->view->pid = '-1';
-
 		// Incoming
-		$this->view->filters = array(
-			'parent_id' => $this->view->pid,
-			'limit' => Request::getState(
-				$this->_option . '.orphans.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.orphans.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
+			'parent_id' => -1,
 			'search' => urldecode(Request::getState(
 				$this->_option . '.orphans.search',
 				'search',
@@ -253,12 +282,12 @@ class Items extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.orphans.sort',
 				'filter_order',
-				'created'
+				'id'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.orphans.sortdir',
 				'filter_order_Dir',
-				'DESC'
+				'ASC'
 			),
 			'status' => Request::getState(
 				$this->_option . '.orphans.status',
@@ -267,27 +296,45 @@ class Items extends AdminController
 			)
 		);
 
-		$model = new Resource($this->database);
+		$associations = Association::all()
+			->select('child_id')
+			->group('child_id');
 
-		// Record count
-		$this->view->total = $model->getItemChildrenCount($this->view->filters);
+		// Get parent info
+		$query = Entry::all()
+			->whereEquals('standalone', 0)
+			->whereRaw('id NOT IN (' . $associations->toString() . ')');
 
-		// Get only children of this parent
-		$this->view->rows = $model->getItemChildren($this->view->filters);
-
-		// Get sections for learning modules
-		// TODO: Phase out all learning modules code
-		$rt = new Type($this->database);
-		$this->view->sections = $rt->getTypes(29);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		if ($filters['search'])
 		{
-			$this->view->setError($error);
+			if (is_numeric($filters['search']))
+			{
+				$query->whereEquals('id', (int)$filters['search']);
+			}
+			else
+			{
+				$filters['search'] = strtolower((string)$filters['search']);
+
+				$query->whereLike('title', $filters['search'], 1)
+						->orWhereLike('fulltxt', $filters['search'], 1)
+						->resetDepth();
+			}
 		}
+
+		if ($filters['status'] != 'all')
+		{
+			$query->whereEquals('published', (int)$filters['status']);
+		}
+
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
 		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
 			->setLayout('children')
 			->display();
 	}
@@ -299,8 +346,11 @@ class Items extends AdminController
 	 */
 	public function ratingsTask()
 	{
+		require_once dirname(dirname(__DIR__)) . '/models/rating.php';
+
 		// Incoming
 		$id = Request::getInt('id', 0);
+		$rows = array();
 
 		// Do we have an ID to work with?
 		if (!$id)
@@ -309,19 +359,17 @@ class Items extends AdminController
 		}
 		else
 		{
-			$rr = new Review($this->database);
-			$this->view->rows = $rr->getRatings($id);
-			$this->view->id = $id;
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$rows = Rating::all()
+				->whereEquals('resource_id', $id)
+				->rows();
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('id', $id)
+			->set('rows', $rows)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -345,35 +393,27 @@ class Items extends AdminController
 		// Make sure we have a prent ID
 		if (!$pid)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
+			return $this->cancelTask();
 		}
+
+		// Get the available types
+		$types = Type::all()
+			->whereEquals('category', 30)
+			->rows();
 
 		switch ($step)
 		{
 			case 1:
-				$this->view->pid = $pid;
-
-				// Get the available types
-				$rt = new Type($this->database);
-				$this->view->types = $rt->getTypes(30);
-
 				// Load the parent resource
-				$this->view->parent = new Resource($this->database);
-				$this->view->parent->load($this->view->pid);
-
-				// Set any errors
-				if ($this->getError())
-				{
-					$this->view->setError($this->getError());
-				}
+				$parent = Entry::oneOrFail($pid);
 
 				// Output the HTML
-				$this->view->display();
+				$this->view
+					->set('pid', $pid)
+					->set('parent', $parent)
+					->set('types', $types)
+					->display();
 			break;
 
 			case 2:
@@ -383,7 +423,6 @@ class Items extends AdminController
 				if ($method == 'create')
 				{
 					// We're starting from scratch
-					$this->view->setLayout('edit');
 					$this->editTask(1);
 				}
 				elseif ($method == 'existing')
@@ -391,10 +430,10 @@ class Items extends AdminController
 					// We're just linking up an existing resource
 					// Get the child ID we're linking
 					$cid = Request::getInt('childid', 0);
+
 					if ($cid)
 					{
-						$child = new Resource($this->database);
-						$child->load($cid);
+						$child = Entry::oneOrFail($cid);
 
 						if ($child && $child->title != '')
 						{
@@ -403,52 +442,35 @@ class Items extends AdminController
 						}
 						else
 						{
-							$this->view->pid = $pid;
-
 							// No child ID! Throw an error and present the form from the previous step
 							$this->setError(Lang::txt('COM_RESOURCES_ERROR_RESOURCE_NOT_FOUND'));
 
-							// Get the available types
-							$rt = new Type($this->database);
-							$this->view->types = $rt->getTypes(30);
-
 							// Load the parent resource
-							$this->view->parent = new Resource($this->database);
-							$this->view->parent->load($pid);
+							$parent = Entry::oneOrFail($pid);
 
-							// Set any errors
-							if ($this->getError())
-							{
-								$this->view->setError($this->getError());
-							}
-
-							// Output the HTML
-							$this->view->display();
+							$this->view
+								->set('pid', $pid)
+								->set('types', $types)
+								->set('parent', $parent)
+								->setErrors($this->getErrors())
+								->display();
 						}
 					}
 					else
 					{
-						$this->view->pid = $pid;
-
 						// No child ID! Throw an error and present the form from the previous step
 						$this->setError(Lang::txt('COM_RESOURCES_ERROR_MISSING_ID'));
 
-						// Get the available types
-						$rt = new Type($this->database);
-						$this->view->types = $rt->getTypes(30);
-
 						// Load the parent resource
-						$this->view->parent = new Resource($this->database);
-						$this->view->parent->load($pid);
-
-						// Set any errors
-						if ($this->getError())
-						{
-							$this->view->setError($this->getError());
-						}
+						$parent = Entry::oneOrFail($pid);
 
 						// Output the HTML
-						$this->view->display();
+						$this->view
+							->set('pid', $pid)
+							->set('types', $types)
+							->set('parent', $parent)
+							->setErrors($this->getErrors())
+							->display();
 					}
 				}
 			break;
@@ -468,67 +490,40 @@ class Items extends AdminController
 		// Make sure we have both parent and child IDs
 		if (!$pid)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
+			return $this->cancelTask();
 		}
 
 		if (!$id)
 		{
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
+
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
-				Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'),
-				'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false)
 			);
-			return;
 		}
 
 		// Instantiate a Resources Assoc object
-		$assoc = new Assoc($this->database);
+		$assoc = Association::blank()
+			->set(array(
+				'parent_id' => $pid,
+				'child_id'  => $id,
+				'grouping'  => 0
+			));
 
-		// Get the last child in the ordering
-		$order = $assoc->getLastOrder($pid);
-		$order = ($order) ? $order : 0;
-
-		// Increase the ordering - new items are always last
-		$order = $order + 1;
-
-		// Create new parent/child association
-		$assoc->parent_id = $pid;
-		$assoc->child_id  = $id;
-		$assoc->ordering  = $order;
-		$assoc->grouping  = 0;
-		if (!$assoc->check())
+		if (!$assoc->save())
 		{
-			$this->setError($assoc->getError());
-		}
-		else
-		{
-			if (!$assoc->store(true))
-			{
-				$this->setError($assoc->getError());
-			}
-		}
-
-		if ($this->getError())
-		{
-			// Redirect
-			$this->setMessage($this->getError(), 'error');
+			Notify::error($this->getError());
 		}
 		else
 		{
 			// Redirect
-			$this->setMessage(Lang::txt('COM_RESOURCES_ITEM_SAVED'));
+			Notify::success(Lang::txt('COM_RESOURCES_ITEM_SAVED'));
 		}
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
-			$this->getError(),
-			'error'
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false)
 		);
 	}
 
@@ -558,26 +553,36 @@ class Items extends AdminController
 		// Make sure we have children IDs
 		if (!$ids || count($ids) < 1)
 		{
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
+
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
-				Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'),
-				'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true)
 			);
-			return;
 		}
 
-		$assoc = new Assoc($this->database);
-
 		// Multiple IDs - loop through and delete them
+		$removed = 0;
 		foreach ($ids as $id)
 		{
-			$assoc->delete($pid, $id);
+			$assoc = Association::oneByRelationship($pid, $id);
+
+			if (!$assoc->destroy())
+			{
+				Notify::error($assoc->getError());
+				continue;
+			}
+
+			$removed++;
+		}
+
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $removed));
 		}
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
-			Lang::txt('COM_RESOURCES_ITEMS_REMOVED', count($ids))
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true)
 		);
 	}
 
@@ -601,11 +606,6 @@ class Items extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$this->view->isnew = $isnew;
-
-		// Get the resource component config
-		$this->view->rconfig = $this->config;
-
 		// Push some needed styles to the tmeplate
 		$this->css('resources.css');
 
@@ -617,112 +617,91 @@ class Items extends AdminController
 		}
 
 		// Incoming parent ID - this determines if the resource is standalone or not
-		$this->view->pid = Request::getInt('pid', 0);
+		$pid = Request::getInt('pid', 0);
 
 		// Grab some filters for returning to place after editing
-		$this->view->return = array();
-		$this->view->return['type']   = Request::getVar('type', '');
-		$this->view->return['sort']   = Request::getVar('sort', '');
-		$this->view->return['status'] = Request::getVar('status', '');
+		$return = array();
+		$return['type']   = Request::getVar('type', '');
+		$return['sort']   = Request::getVar('sort', '');
+		$return['status'] = Request::getVar('status', '');
 
 		// Instantiate our resource object
-		$this->view->row = new Resource($this->database);
-		$this->view->row->load($id);
+		$row = Entry::oneOrNew($id);
 
 		// Fail if checked out not by 'me'
-		if ($this->view->row->checked_out
-		 && $this->view->row->checked_out <> User::get('id'))
+		if ($row->isCheckedOut())
 		{
+			Notify::warning(Lang::txt('COM_RESOURCES_WARNING_CHECKED_OUT'));
+
 			$task = '';
-			if ($this->view->pid)
+			if ($pid)
 			{
-				$task = '&task=children&pid=' . $this->view->pid;
+				$task = '&task=children&pid=' . $pid;
 			}
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task, false),
-				Lang::txt('COM_RESOURCES_WARNING_CHECKED_OUT'),
-				'notice'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task, false)
 			);
 			return;
 		}
 
 		// Is this a new resource?
-		if (!$id)
+		if ($row->isNew())
 		{
-			$this->view->row->created      = Date::toSql();
-			$this->view->row->created_by   = User::get('id');
-			$this->view->row->modified     = $this->database->getNullDate();
-			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = Date::toSql();
-			$this->view->row->publish_down = Lang::txt('COM_RESOURCES_NEVER');
-			if ($this->view->pid)
+			$row->set('created', Date::toSql());
+			$row->set('created_by', User::get('id'));
+			$row->set('publish_up', Date::toSql());
+
+			// Was a prent ID found?
+			// If yes, then set this up as a child resource.
+			if ($pid)
 			{
-				$this->view->row->published  = 1;
-				$this->view->row->standalone = 0;
+				$row->set('published', Entry::STATE_PUBLISHED);
+				$row->set('standalone', 0);
 			}
 			else
 			{
-				$this->view->row->published  = 3; // default to "new" status
-				$this->view->row->standalone = 1;
+				$row->set('published', Entry::STATE_PENDING); // default to "new" status
+				$row->set('standalone', 1);
 			}
-			$this->view->row->access = 0;
-		}
-
-		// Editing existing
-		$this->view->row->checkout(User::get('id'));
-
-		if (trim($this->view->row->publish_down) == '0000-00-00 00:00:00')
-		{
-			$this->view->row->publish_down = Lang::txt('COM_RESOURCES_NEVER');
-		}
-
-		// Get name of resource creator
-		$creator = User::getInstance($this->view->row->created_by);
-
-		$this->view->row->created_by_name = $creator->get('name');
-		$this->view->row->created_by_name = ($this->view->row->created_by_name) ? $this->view->row->created_by_name : Lang::txt('Unknown');
-
-		// Get name of last person to modify resource
-		if ($this->view->row->modified_by)
-		{
-			$modifier = User::getInstance($this->view->row->modified_by);
-
-			$this->view->row->modified_by_name = $modifier->get('name');
-			$this->view->row->modified_by_name = ($this->view->row->modified_by_name) ? $this->view->row->modified_by_name : Lang::txt('Unknown');
+			$row->set('access', 0);
 		}
 		else
 		{
-			$this->view->row->modified_by_name = '';
+			// Editing existing
+			$row->checkout(User::get('id'));
+		}
+
+		if ($row->get('publish_down') == '0000-00-00 00:00:00')
+		{
+			$row->set('publish_down', Lang::txt('COM_RESOURCES_NEVER'));
 		}
 
 		// Get params definitions
-		$this->view->params  = new \Hubzero\Html\Parameter($this->view->row->params, dirname(dirname(__DIR__)) . DS . 'resources.xml');
-		$this->view->attribs = new \Hubzero\Config\Registry($this->view->row->attribs);
+		$params = new \Hubzero\Html\Parameter($row->get('params'), dirname(dirname(__DIR__)) . DS . 'config' . DS . 'entry.xml');
 
 		// Build selects of various types
-		$rt = new Type($this->database);
-		if ($this->view->row->standalone != 1)
+		if ($row->standalone != 1)
 		{
-			$this->view->lists['type']         = Html::selectType($rt->getTypes(30), 'type', $this->view->row->type, '', '', '', '');
-			$this->view->lists['logical_type'] = Html::selectType($rt->getTypes(28), 'logical_type', $this->view->row->logical_type, '[ none ]', '', '', '');
-			$this->view->lists['sub_type']     = Html::selectType($rt->getTypes(30), 'logical_type', $this->view->row->logical_type, '[ none ]', '', '', '');
+			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 30)->rows(), 'type', $row->get('type'), '', '', '', '');
+			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 28)->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
+			$lists['sub_type']     = Html::selectType(Type::all()->whereEquals('category', 30)->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
 		}
 		else
 		{
-			$this->view->lists['type']         = Html::selectType($rt->getTypes(27), 'type', $this->view->row->type, '', '', '', '');
-			$this->view->lists['logical_type'] = Html::selectType($rt->getTypes(21), 'logical_type', $this->view->row->logical_type, '[ none ]', '', '', '');
+			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 27)->rows(), 'type', $row->get('type'), '', '', '', '');
+			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 21)->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
 		}
 
 		// Build the <select> of admin users
-		$this->view->lists['created_by'] = $this->userSelect('created_by', 0, 1);
+		$lists['created_by'] = $this->userSelect('created_by', 0, 1);
 
 		// Build the <select> for the group access
-		$this->view->lists['access'] = Html::selectAccess($this->view->rconfig->get('accesses'), $this->view->row->access);
+		$lists['access'] = Html::selectAccess($this->config->get('accesses'), $row->access);
 
 		// Is this a standalone resource?
-		if ($this->view->row->standalone == 1)
+		if ($row->standalone == 1)
 		{
-			$this->view->lists['tags'] = '';
+			$lists['tags'] = '';
 
 			// Get groups
 			$filters = array(
@@ -734,24 +713,28 @@ class Items extends AdminController
 			$groups = \Hubzero\User\Group::find($filters);
 
 			// Build <select> of groups
-			$this->view->lists['groups'] = Html::selectGroup($groups, $this->view->row->group_owner);
+			$lists['groups'] = Html::selectGroup($groups, $row->group_owner);
 
 			// Get all contributors linked to this resource
 			$authnames = array();
-			if ($this->view->row->id)
+
+			if ($row->id)
 			{
-				$sql = "SELECT n.id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization
+				/*$sql = "SELECT n.id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization
 						FROM `#__author_assoc` AS a
 						LEFT JOIN `#__users` AS n ON n.id=a.authorid
 						WHERE a.subtable='resources'
-						AND a.subid=" . $this->view->row->id . "
+						AND a.subid=" . $row->id . "
 						ORDER BY a.ordering";
 				$this->database->setQuery($sql);
-				$authnames = $this->database->loadObjectList();
+				$authnames = $this->database->loadObjectList();*/
+				$authnames = $row->authors()
+					->ordered()
+					->rows();
 
 				// Get the tags on this item
-				$tagger = new Tags($this->view->row->id);
-				$this->view->lists['tags'] = $tagger->render('string');
+				$tagger = new Tags($row->id);
+				$lists['tags'] = $tagger->render('string');
 			}
 
 			// Build <select> of contributors
@@ -760,22 +743,24 @@ class Items extends AdminController
 				'layout' => 'authors'
 			));
 			$authorslist->authnames = $authnames;
-			$authorslist->attribs   = $this->view->attribs;
+			$authorslist->attribs   = $row->attribs;
 			$authorslist->option    = $this->_option;
-			$authorslist->roles     = $rt->getRolesForType($this->view->row->type);
+			$authorslist->roles     = $row->type->roles();
 
-			$this->view->lists['authors'] = $authorslist->loadTemplate();
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$lists['authors'] = $authorslist->loadTemplate();
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('lists', $lists)
+			->set('pid', $pid)
+			->set('isnew', $isnew)
+			->set('rconfig', $this->config)
+			->set('params', $params)
+			->set('return', $return)
 			->setLayout('edit')
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -790,59 +775,51 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		$fields = Request::getVar('fields', array(), 'post');
+
 		// Initiate extended database class
-		$row = new Resource($this->database);
-		if (!$row->bind($_POST))
-		{
-			App::abort(500, $row->getError());
-		}
+		$row = Entry::oneOrNew(Request::getInt('id', 0, 'post'));
+
+		$old = clone $row;
+
+		$row->set($fields);
 
 		$isNew = 0;
-		if ($row->id < 1)
+		if ($row->get('id') <= 1)
 		{
 			$isNew = 1;
 		}
 
-		$old = new Resource($this->database);
+		$old = Entry::blank();
 
 		if ($isNew)
 		{
 			// New entry
-			$row->created    = $row->created    ? $row->created    : Date::toSql();
-			$row->created_by = $row->created_by ? $row->created_by : User::get('id');
-			$row->access     = 0;
+			$row->set('access', 0);
 		}
 		else
 		{
-			$old->load($row->id);
-
 			$created_by_id = Request::getInt('created_by_id', 0);
 
 			// Updating entry
-			$row->modified    = Date::toSql();
-			$row->modified_by = User::get('id');
-
 			if ($created_by_id)
 			{
-				$row->created_by = $row->created_by ? $row->created_by : $created_by_id;
-			}
-			else
-			{
-				$row->created_by = $row->created_by ? $row->created_by : User::get('id');
+				$row->set('created_by', $row->created_by ? $row->created_by : $created_by_id);
 			}
 		}
 
 		// publish up
-		$row->publish_up = Date::of($row->publish_up, Config::get('offset'))->toSql();
+		$row->set('publish_up', Date::of($row->get('publish_up'), Config::get('offset'))->toSql());
 
 		// publish down
-		if (!$row->publish_down || trim($row->publish_down) == '0000-00-00 00:00:00' || trim($row->publish_down) == 'Never')
+		if ($row->get('publish_down') == '0000-00-00 00:00:00'
+		 || $row->get('publish_down') == Lang::txt('COM_RESOURCES_NEVER'))
 		{
-			$row->publish_down = '0000-00-00 00:00:00';
+			$row->set('publish_down', null);
 		}
 		else
 		{
-			$row->publish_down = Date::of($row->publish_down, Config::get('offset'))->toSql();
+			$row->set('publish_down', Date::of($row->get('publish_down'), Config::get('offset'))->toSql());
 		}
 
 		// Get parameters
@@ -854,7 +831,7 @@ class Items extends AdminController
 			{
 				$txt->set($k, $v);
 			}
-			$row->params = $txt->toString();
+			$row->set('params', $txt->toString());
 		}
 
 		// Get attributes
@@ -868,25 +845,25 @@ class Items extends AdminController
 				{
 					if (strtotime(trim($v)) === false)
 					{
-						$v = NULL;
+						$v = null;
 					}
 
 					$v = trim($v)
 						? Date::of($v, Config::get('offset'))->toSql()
-						: NULL;
+						: null;
 				}
 				$txta->set($k, $v);
 			}
-			$row->attribs = $txta->toString();
+			$row->set('attribs', $txta->toString());
 		}
 
 		// Get custom areas, add wrappers, and compile into fulltxt
-		if (isset($_POST['nbtag']))
+		$nbtag = Request::getVar('nbtag', array(), 'post');
+		if (!empty($nbtag))
 		{
-			$type = new Type($this->database);
-			$type->load($row->type);
+			$type = $row->type;
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 			$elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
 			$schema = $elements->getSchema();
 
@@ -896,13 +873,14 @@ class Items extends AdminController
 				$fields[$field->name] = $field;
 			}
 
-			$nbtag = $_POST['nbtag'];
+			//$nbtag = $_POST['nbtag'];
 			$found = array();
+			$fulltxt = $row->get('fulltxt');
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
 				$f = '';
 
-				$row->fulltxt .= "\n" . '<nb:' . $tagname . '>';
+				$fulltxt .= "\n" . '<nb:' . $tagname . '>';
 				if (is_array($tagcontent))
 				{
 					$c = count($tagcontent);
@@ -913,7 +891,7 @@ class Items extends AdminController
 						{
 							$num++;
 						}
-						$row->fulltxt .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
+						$fulltxt .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
 					}
 					if ($c == $num)
 					{
@@ -925,10 +903,12 @@ class Items extends AdminController
 					$f = trim($tagcontent);
 					if ($f)
 					{
-						$row->fulltxt .= trim($tagcontent);
+						$fulltxt .= $f;
 					}
 				}
-				$row->fulltxt .= '</nb:' . $tagname . '>' . "\n";
+				$fulltxt .= '</nb:' . $tagname . '>' . "\n";
+
+				$row->set('fulltxt', $fulltxt);
 
 				if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required)
 				{
@@ -948,21 +928,8 @@ class Items extends AdminController
 			}
 		}
 
-		// Code cleaner for xhtml transitional compliance
-		if ($row->type != 7)
-		{
-			$row->introtext = str_replace('<br>', '<br />', $row->introtext);
-			$row->fulltxt   = str_replace('<br>', '<br />', $row->fulltxt);
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			App::abort(500, $row->getError());
-		}
-
 		// Store content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			App::abort(500, $row->getError());
 		}
@@ -972,11 +939,12 @@ class Items extends AdminController
 
 		// Rename the temporary upload directory if it exist
 		$tmpid = Request::getInt('tmpid', 0, 'post');
-		if ($tmpid != Html::niceidformat($row->id))
+
+		if ($tmpid != Str::pad($row->get('id')))
 		{
 			// Build the full paths
 			$path    = Html::dateToPath($row->created);
-			$dir_id  = Html::niceidformat($row->id);
+			$dir_id  = Str::pad($row->get('id'));
 
 			$tmppath = Utilities::buildUploadPath($path . DS . $tmpid);
 			$newpath = Utilities::buildUploadPath($path . DS . $dir_id);
@@ -991,19 +959,19 @@ class Items extends AdminController
 				}
 			}
 
-			$row->path = str_replace($tmpid, Html::niceidformat($row->id), $row->path);
-			$row->store();
+			$row->set('path', str_replace($tmpid, Str::pad($row->get('id')), $row->get('path')));
+			$row->save();
 		}
 
 		// Incoming tags
 		$tags = Request::getVar('tags', '', 'post');
 
 		// Save the tags
-		$rt = new Tags($row->id);
+		$rt = new Tags($row->get('id'));
 		$rt->setTags($tags, User::get('id'), 1, 1);
 
 		// Incoming authors
-		if ($row->type != 7)
+		if (!$row->isTool())
 		{
 			$authorsOldstr = Request::getVar('old_authors', '', 'post');
 			$authorsNewstr = Request::getVar('new_authors', '', 'post');
@@ -1011,8 +979,6 @@ class Items extends AdminController
 			{
 				$authorsNewstr = $authorsOldstr;
 			}
-
-			include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor.php');
 
 			$authorsNew = explode(',', $authorsNewstr);
 			$authorsOld = explode(',', $authorsOldstr);
@@ -1022,48 +988,58 @@ class Items extends AdminController
 			{
 				for ($i=0, $n=count($authorsNew); $i < $n; $i++)
 				{
-					$rc = new Contributor($this->database);
-					$rc->subtable     = 'resources';
-					$rc->subid        = $row->id;
 					if (is_numeric($authorsNew[$i]))
 					{
-						$rc->authorid     = $authorsNew[$i];
+						$authorid = $authorsNew[$i];
 					}
 					else
 					{
-						$rc->authorid = $rc->getUserId($authorsNew[$i]);
-					}
-					$rc->ordering     = $i;
-					$rc->role         = trim(Request::getVar($authorsNew[$i] . '_role', ''));
-					$rc->name         = trim(Request::getVar($authorsNew[$i] . '_name', ''));
-					$rc->organization = trim(Request::getVar($authorsNew[$i] . '_organization', ''));
+						$authorid = Author::all()
+							->whereEquals('name', $authorsNew[$i])
+							->where('authorid', '<', 0)
+							->limit(1)
+							->row()
+							->get('authorid');
 
-					$authorsNew[$i] = $rc->authorid;
+						if (!$authorid || $authorid > 0)
+						{
+							$authorid = Author::all()
+								->order('authorid', 'asc')
+								->limit(1)
+								->row()
+								->get('authorid');
 
-					if (in_array($authorsNew[$i], $authorsOld))
-					{
-						//echo 'update: ' . $rc->authorid . ', ' . $rc->role . ', ' . $rc->name . ', ' . $rc->organization . '<br />';
-						// Updating record
-						$rc->updateAssociation();
+							if ($authorid > 0)
+							{
+								$authorid = 0;
+							}
+							$authorid--;
+						}
 					}
-					else
-					{
-						//echo 'create: ' . $rc->authorid . ', ' . $rc->role . ', ' . $rc->name . ', ' . $rc->organization . '<br />';
-						// New record
-						$rc->createAssociation();
-					}
+
+					$rc = Author::oneByRelationship($row->get('id'), $authorid);
+					$rc->set('subtable', 'resources');
+					$rc->set('subid', $row->get('id'));
+					$rc->set('authorid', $authorid);
+					$rc->set('ordering', $i);
+					$rc->set('role', trim(Request::getVar($authorsNew[$i] . '_role', '')));
+					$rc->set('name', trim(Request::getVar($authorsNew[$i] . '_name', '')));
+					$rc->set('organization', trim(Request::getVar($authorsNew[$i] . '_organization', '')));
+					$rc->save();
+
+					$authorsNew[$i] = $rc->get('authorid');
 				}
 			}
+
 			// Run through previous author list and check to see if any IDs had been dropped
 			if ($authorsOldstr)
 			{
-				$rc = new Contributor($this->database);
-
 				for ($i=0, $n=count($authorsOld); $i < $n; $i++)
 				{
 					if (!in_array($authorsOld[$i], $authorsNew))
 					{
-						$rc->deleteAssociation($authorsOld[$i], $row->id, 'resources');
+						$rc = Author::oneByRelationship($row->get('id'), $authorsOld[$i]);
+						$rc->destroy();
 					}
 				}
 			}
@@ -1071,18 +1047,19 @@ class Items extends AdminController
 
 		// If this is a child, add parent/child association
 		$pid = Request::getInt('pid', 0, 'post');
+
 		if ($isNew && $pid)
 		{
-			$this->_attachChild($row->id, $pid);
+			$this->_attachChild($row->get('id'), $pid);
 		}
 
 		// Is this a standalone resource and we need to email approved submissions?
 		if ($row->standalone == 1 && $this->config->get('email_when_approved'))
 		{
 			// If the state went from pending to published
-			if ($row->published == 1 && $old->published == 3)
+			if ($row->published == 1 && $old->published == Entry::STATE_DRAFT)
 			{
-				$this->_emailContributors($row, $this->database);
+				$this->_emailContributors($row);
 
 				// Log activity
 				$recipients = array(
@@ -1090,19 +1067,9 @@ class Items extends AdminController
 					['user', $row->get('created_by')]
 				);
 
-				$helper = new Helper($row->id, $this->database);
-				$helper->getContributorIDs();
-
-				$contributors = $helper->contributorIDs;
-
-				//foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
-				foreach ($contributors as $author)
+				foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
 				{
-					//$recipients[] = ['user', $author->get('authorid')];
-					if ($author > 0)
-					{
-						$recipients[] = ['user', $author];
-					}
+					$recipients[] = ['user', $author->get('authorid')];
 				}
 
 				Event::trigger('system.logActivity', [
@@ -1110,10 +1077,13 @@ class Items extends AdminController
 						'action'      => 'published',
 						'scope'       => 'resource',
 						'scope_id'    => $row->title,
-						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED', '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->id) . '">' . $row->title . '</a>'),
+						'description' => Lang::txt(
+							'COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED',
+							'<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>'
+						),
 						'details'     => array(
 							'title' => $row->title,
-							'url'   => Route::url('index.php?option=com_resources&id=' . $row->id)
+							'url'   => Route::url($row->link())
 						)
 					],
 					'recipients' => $recipients
@@ -1131,20 +1101,19 @@ class Items extends AdminController
 	/**
 	 * Sends a message to all contributors on a resource
 	 *
-	 * @param      object $row      Resource
-	 * @param      object $database Database
-	 * @return     void
+	 * @param   object  $row  Resource
+	 * @return  bool
 	 */
-	private function _emailContributors($row, $database)
+	private function _emailContributors($row)
 	{
-		include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
+		$contributors = array();
 
-		$helper = new Helper($row->id, $database);
-		$helper->getContributorIDs();
+		foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author)
+		{
+			$contributors[] = $author->get('authorid');
+		}
 
-		$contributors = $helper->contributorIDs;
-
-		if ($contributors && count($contributors) > 0)
+		if (count($contributors) > 0)
 		{
 			// E-mail "from" info
 			$from = array();
@@ -1164,26 +1133,34 @@ class Items extends AdminController
 
 			// Build message
 			$message  = Lang::txt('COM_RESOURCES_EMAIL_MESSAGE', Config::get('sitename')) . "\r\n";
-			$message .= $base . DS . 'resources' . DS . $row->id;
+			$message .= $base . '/resources/' . $row->id;
 
 			// Send message
 			if (!Event::trigger('xmessage.onSendMessage', array('resources_submission_approved', $subject, $message, $from, $contributors, $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_FAILED_TO_MESSAGE_USERS'));
+				return false;
 			}
 		}
+
+		return true;
 	}
 
 	/**
 	 * Removes a resource
 	 * Redirects to main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
@@ -1191,62 +1168,25 @@ class Items extends AdminController
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1)
 		{
-			$this->setMessage(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
+			Notify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
 			return $this->cancelTask();
 		}
+
+		$removed = 0;
 
 		foreach ($ids as $id)
 		{
 			// Load resource info
-			$row = new Resource($this->database);
-			$row->load($id);
-
-			// Get path and delete directories
-			if ($row->path != '')
-			{
-				$listdir = $row->path;
-			}
-			else
-			{
-				// No stored path, derive from created date
-				$listdir = Html::build_path($row->created, $id, '');
-			}
-
-			// Build the path
-			$path = Utilities::buildUploadPath($listdir, '');
-
-			$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-			$baseY = $base . '/'. Date::of($row->created)->format("Y");
-			$baseM = $baseY . '/' . Date::of($row->created)->format("m");
-
-			// Check if the folder even exists
-			if (!is_dir($path) or !$path)
-			{
-				$this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
-			}
-			else
-			{
-				if ($path == $base
-				 || $path == $baseY
-				 || $path == $baseM)
-				{
-					$this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
-				}
-				else
-				{
-					// Attempt to delete the folder
-					if (!\Filesystem::deleteDirectory($path))
-					{
-						$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
-					}
-				}
-			}
-
-			// Delete associations to the resource
-			$row->deleteExistence();
+			$row = Entry::oneOrFail($id);
 
 			// Delete the resource
-			$row->delete();
+			if (!$row->destroy())
+			{
+				Notify::error($row->getError());
+				continue;
+			}
+
+			$removed++;
 		}
 
 		$pid = Request::getInt('pid', 0);
@@ -1261,12 +1201,17 @@ class Items extends AdminController
 	 * Sets the access level of a resource
 	 * Redirects to main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessTask()
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$id  = Request::getInt('id', 0);
@@ -1275,36 +1220,41 @@ class Items extends AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setMessage(Lang::txt('COM_RESOURCES_ERROR_MISSING_ID'));
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_ID'));
 			return $this->cancelTask();
 		}
 
 		// Choose access level
-		switch ($this->_task)
+		switch ($this->getTask())
 		{
-			case 'accesspublic':     $access = 0; break;
-			case 'accessregistered': $access = 1; break;
-			case 'accessspecial':    $access = 2; break;
-			case 'accessprotected':  $access = 3; break;
-			case 'accessprivate':    $access = 4; break;
-			default: $access = 0; break;
+			case 'accesspublic':
+				$access = 0;
+				break;
+			case 'accessregistered':
+				$access = 1;
+				break;
+			case 'accessspecial':
+				$access = 2;
+				break;
+			case 'accessprotected':
+				$access = 3;
+				break;
+			case 'accessprivate':
+				$access = 4;
+				break;
+			default:
+				$access = 0;
+				break;
 		}
 
 		// Load resource info
-		$row = new Resource($this->database);
-		$row->load($id);
-		$row->access = $access;
+		$row = Entry::oneOrFail($id);
+		$row->set('access', $access);
 
 		// Check and store changes
-		if (!$row->check())
+		if (!$row->save())
 		{
-			$this->setMessage($row->getError());
-			return $this->cancelTask();
-		}
-		if (!$row->store())
-		{
-			$this->setMessage($row->getError());
-			return $this->cancelTask();
+			Notify::error($row->getError());
 		}
 
 		// Redirect
@@ -1314,49 +1264,20 @@ class Items extends AdminController
 	}
 
 	/**
-	 * Sets the state of a resource to published
-	 * Redirects to main listing
-	 *
-	 * @return     void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Sets the state of a resource to unpublished
-	 * Redirects to main listing
-	 *
-	 * @return     void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
-	 * Sets the state of a resource to archived
-	 * Redirects to main listing
-	 *
-	 * @return     void
-	 */
-	public function archiveTask()
-	{
-		$this->stateTask(-1);
-	}
-
-	/**
 	 * Sets the state of a resource
 	 * Redirects to main listing
 	 *
-	 * @param      integer  $publish
-	 * @return     void
+	 * @return  void
 	 */
-	public function stateTask($publish=1)
+	public function stateTask()
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$pid = Request::getInt('pid', 0);
@@ -1366,44 +1287,57 @@ class Items extends AdminController
 		// Check for a resource
 		if (count($ids) < 1)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_RESOURCES_ERROR_SELECT_TO', $this->_task),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_SELECT_TO', $this->_task));
+			return $this->cancelTask();
 		}
 
-		$i = 0;
+		switch ($this->getTask())
+		{
+			case 'archive':
+				$msg = 'COM_RESOURCES_ITEMS_ARCHIVED';
+				$publish = Entry::STATE_ARCHIVED;
+			break;
+			case 'unpublish':
+				$msg = 'COM_RESOURCES_ITEMS_UNPUBLISHED';
+				$publish = Entry::STATE_UNPUBLISHED;
+			break;
+			case 'publish':
+			default:
+				$msg = 'COM_RESOURCES_ITEMS_PUBLISHED';
+				$publish = Entry::STATE_PUBLISHED;
+			break;
+		}
+
+		$success = 0;
 
 		// Loop through all the IDs
 		foreach ($ids as $id)
 		{
 			// Load the resource
-			$resource = new Resource($this->database);
-			$resource->load($id);
+			$resource = Entry::oneOrFail($id);
 
 			// Only allow changes if the resource isn't checked out or
 			// is checked out by the user requesting changes
-			if (!$resource->checked_out || $resource->checked_out == Config::get('id'))
+			if (!$resource->get('checked_out') || $resource->get('checked_out') == User::get('id'))
 			{
-				$old = $resource->published;
+				$old = $resource->get('published');
 
-				$resource->published = $publish;
+				$resource->set('published', $publish);
 
 				// If we're publishing, set the UP date
 				if ($publish)
 				{
-					$resource->publish_up = Date::toSql();
+					$resource->set('publish_up', Date::toSql());
 				}
 
 				// Is this a standalone resource and we need to email approved submissions?
-				if ($resource->standalone == 1 && $this->config->get('email_when_approved'))
+				if ($resource->get('standalone') == 1 && $this->config->get('email_when_approved'))
 				{
 					// If the state went from pending to published
-					if ($resource->published == 1 && $old == 3)
+					if ($resource->get('published') == Entry::STATE_PUBLISHED
+					 && $old == Entry::STATE_PENDING)
 					{
-						$this->_emailContributors($resource, $this->database);
+						$this->_emailContributors($resource);
 
 						// Log activity
 						$recipients = array(
@@ -1411,17 +1345,9 @@ class Items extends AdminController
 							['user', $resource->created_by]
 						);
 
-						$helper = new Helper($resource->id, $this->database);
-						$helper->getContributorIDs();
-
-						$contributors = $helper->contributorIDs;
-
-						foreach ($contributors as $author)
+						foreach ($resource->authors()->where('authorid', '>', 0)->rows() as $author)
 						{
-							if ($author > 0)
-							{
-								$recipients[] = ['user', $author];
-							}
+							$recipients[] = ['user', $author->get('authorid')];
 						}
 
 						Event::trigger('system.logActivity', [
@@ -1429,10 +1355,13 @@ class Items extends AdminController
 								'action'      => 'published',
 								'scope'       => 'resource',
 								'scope_id'    => $resource->title,
-								'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED', '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->id) . '">' . $resource->title . '</a>'),
+								'description' => Lang::txt(
+									'COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED',
+									'<a href="' . Route::url($resource->link()) . '">' . $resource->title . '</a>'
+								),
 								'details'     => array(
 									'title' => $resource->title,
-									'url'   => Route::url('index.php?option=com_resources&id=' . $resource->id)
+									'url'   => Route::url($resource->link())
 								)
 							],
 							'recipients' => $recipients
@@ -1441,27 +1370,16 @@ class Items extends AdminController
 				}
 
 				// Store and checkin the resource
-				$resource->store();
+				$resource->save();
 				$resource->checkin();
 
-				$i++;
+				$success++;
 			}
 		}
 
-		if ($i)
+		if ($success)
 		{
-			if ($publish == -1)
-			{
-				$this->setMessage(Lang::txt('COM_RESOURCES_ITEMS_ARCHIVED', $i));
-			}
-			elseif ($publish == 1)
-			{
-				$this->setMessage(Lang::txt('COM_RESOURCES_ITEMS_PUBLISHED', $i));
-			}
-			elseif ($publish == 0)
-			{
-				$this->setMessage(Lang::txt('COM_RESOURCES_ITEMS_UNPUBLISHED', $i));
-			}
+			Notify::success(Lang::txt($msg, $success));
 		}
 
 		// Redirect
@@ -1485,9 +1403,11 @@ class Items extends AdminController
 		$pid = Request::getInt('pid', 0);
 
 		// Checkin the resource
-		$row = new Resource($this->database);
-		$row->bind($_POST);
-		$row->checkin();
+		if ($id)
+		{
+			$row = Entry::oneOrNew($id);
+			$row->checkin();
+		}
 
 		// Redirect
 		App::redirect(
@@ -1506,19 +1426,28 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 
 		if ($id)
 		{
 			// Load the object, reset the hits, save, checkin
-			$row = new Resource($this->database);
-			$row->load($id);
-			$row->hits = '0';
-			$row->store();
-			$row->checkin();
+			$row = Entry::oneOrFail($id);
+			$row->set('hits', 0);
 
-			$this->setMessage(Lang::txt('COM_RESOURCES_HITS_RESET'));
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+			}
+			else
+			{
+				Notify::success(Lang::txt('COM_RESOURCES_HITS_RESET'));
+			}
 		}
 
 		// Redirect
@@ -1538,20 +1467,29 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 
 		if ($id)
 		{
-			// Load the object, reset the ratings, save, checkin
-			$row = new Resource($this->database);
-			$row->load($id);
-			$row->rating = '0.0';
-			$row->times_rated = '0';
-			$row->store();
-			$row->checkin();
+			// Load the object, reset the ratings, save
+			$row = Entry::oneOrFail($id);
+			$row->set('rating', 0.0);
+			$row->set('times_rated', 0);
 
-			$this->setMessage(Lang::txt('COM_RESOURCES_RATING_RESET'));
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+			}
+			else
+			{
+				Notify::success(Lang::txt('COM_RESOURCES_RATING_RESET'));
+			}
 		}
 
 		// Redirect
@@ -1571,19 +1509,28 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 
 		if ($id)
 		{
 			// Load the object, reset the ratings, save, checkin
-			$row = new Resource($this->database);
-			$row->load($id);
-			$row->ranking = '0';
-			$row->store();
-			$row->checkin();
+			$row = Entry::oneOrFail($id);
+			$row->set('ranking', 0);
 
-			$this->setMessage(Lang::txt('COM_RESOURCES_RANKING_RESET'));
+			if (!$row->save())
+			{
+				Notify::error($row->getError());
+			}
+			else
+			{
+				Notify::success(Lang::txt('COM_RESOURCES_RANKING_RESET'));
+			}
 		}
 
 		// Redirect
@@ -1606,23 +1553,20 @@ class Items extends AdminController
 		// Incoming
 		$ids = Request::getVar('id', array(0));
 
-		// Make sure we have at least one ID
-		if (count($ids))
+		// Loop through the IDs
+		foreach ($ids as $id)
 		{
-			// Loop through the IDs
-			foreach ($ids as $id)
+			// Load the resource and check it in
+			$row = Entry::oneOrFail($id);
+
+			if (!$row->checkin())
 			{
-				// Load the resource and check it in
-				$row = new Resource($this->database);
-				$row->load($id);
-				$row->checkin();
+				Notify::error($row->getError());
 			}
 		}
 
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -1637,60 +1581,38 @@ class Items extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$id = Request::getVar('id', array());
-		$id = $id[0];
+		$id  = Request::getVar('id', array());
+		$id  = $id[0];
 		$pid = Request::getInt('pid', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setMessage(Lang::txt('COM_RESOURCES_ERROR_MISSING_ID'));
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_ID'));
 			return $this->cancelTask();
 		}
 
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
-			$this->setMessage(Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
 			return $this->cancelTask();
 		}
 
-		// Get the element moving down - item 1
-		$resource1 = new Assoc($this->database);
-		$resource1->loadAssoc($pid, $id);
+		// Get the element moving
+		$resource = Association::oneByRelationship($pid, $id);
 
-		// Get the element directly after it in ordering - item 2
-		$resource2 = clone($resource1);
-		$resource2->getNeighbor($this->_task);
+		// Move the item
+		$delta = ($this->getTask() == 'orderup' ? -1 : 1);
 
-		switch ($this->_task)
+		if (!$resource->move($delta))
 		{
-			case 'orderup':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $resource2->ordering;
-				$orderdn = $resource1->ordering;
-
-				$resource1->ordering = $orderup;
-				$resource2->ordering = $orderdn;
-			break;
-
-			case 'orderdown':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $resource1->ordering;
-				$orderdn = $resource2->ordering;
-
-				$resource1->ordering = $orderdn;
-				$resource2->ordering = $orderup;
-			break;
+			Notify::error($resource->getError());
 		}
-
-		// Save changes
-		$resource1->store();
-		$resource2->store();
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false)
+			Route::url($this->buildRedirectURL($pid), false)
 		);
 	}
 
@@ -1722,26 +1644,26 @@ class Items extends AdminController
 	/**
 	 * Builds a select list of users
 	 *
-	 * @param      string  $name       Name of the select element
-	 * @param      string  $active     Selected value
-	 * @param      integer $nouser     Display an empty start option
-	 * @param      string  $javascript Any JS to attach to the select element
-	 * @param      string  $order      Field to order the users by
-	 * @return     string
+	 * @param   string   $name        Name of the select element
+	 * @param   string   $active      Selected value
+	 * @param   integer  $nouser      Display an empty start option
+	 * @param   string   $javascript  Any JS to attach to the select element
+	 * @param   string   $order       Field to order the users by
+	 * @return  string
 	 */
-	private function userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	private function userSelect($name, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
 		$database = \App::get('db');
 
 		$group_id = 'g.id';
 		$aro_id = 'aro.id';
 
-		$query = "SELECT a.id AS value, a.name AS text, g.title AS groupname"
-			. "\n FROM #__users AS a"
-			. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
-			. "\n INNER JOIN #__usergroups AS g ON g.id = gm.group_id"
-			. "\n WHERE a.block = '0' AND g.title='Super Users'"
-			. "\n ORDER BY ". $order;
+		$query = "SELECT a.id AS value, a.name AS text, g.title AS groupname
+			FROM `#__users` AS a
+			INNER JOIN `#__user_usergroup_map` AS gm ON gm.user_id = a.id
+			INNER JOIN `#__usergroups` AS g ON g.id = gm.group_id
+			WHERE a.block = '0' AND g.title='Super Users'
+			ORDER BY ". $order;
 
 		$database->setQuery($query);
 		$result = $database->loadObjectList();
@@ -1771,84 +1693,75 @@ class Items extends AdminController
 	 */
 	public function authorTask()
 	{
-		$this->view->id   = Request::getVar('u', '');
-		$this->view->role = Request::getVar('role', '');
-		$rid = Request::getInt('rid', 0);
+		$id   = Request::getVar('u', '');
+		$role = Request::getVar('role', '');
+		$rid  = Request::getInt('rid', 0);
 
 		// Get the member's info
-		$profile = User::getInstance($this->view->id);
+		$profile = User::getInstance($id);
 
 		if (!is_object($profile) || !$profile->get('id'))
 		{
 			$profile = User::all()
-				->whereEquals('name', $this->view->id)
+				->whereEquals('name', $id)
 				->row();
 		}
 
 		if (is_object($profile) && $profile->get('id'))
 		{
-			if (!$profile->get('name'))
-			{
-				$this->view->name  = $profile->get('givenName') . ' ';
-				$this->view->name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
-				$this->view->name .= $profile->get('surname');
-			}
-			else
-			{
-				$this->view->name  = $profile->get('name');
-			}
-			$this->view->org = $profile->get('organization');
-			$this->view->id  = $profile->get('id');
+			$name = $profile->name;
+			$org  = $profile->get('organization');
+			$id   = $profile->get('id');
 		}
 		else
 		{
-			$this->view->name = null;
+			$name = null;
 
-			include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor.php');
-
-			$rcc = new Contributor($this->database);
-
-			if (is_numeric($this->view->id))
+			if (is_numeric($id))
 			{
-				$this->database->setQuery("SELECT name, organization FROM `#__author_assoc` WHERE authorid=" . $this->database->Quote($this->view->id) . " LIMIT 1");
-				$author = $this->database->loadObject();
+				$author = Author::all()
+					->whereEquals('authorid', $id)
+					->limit(1)
+					->row();
 
 				if (is_object($author) && $author->name)
 				{
-					$this->view->name = $author->name;
-					$this->view->org  = $author->organization;
+					$name = $author->name;
+					$org  = $author->organization;
 				}
 			}
 
 			if (!$this->view->name)
 			{
-				$this->view->org  = '';
-				$this->view->name = str_replace('_', ' ', $this->view->id);
-				$this->view->id   = $rcc->getUserId($this->view->name);
+				$org  = '';
+				$name = str_replace('_', ' ', $id);
+				$id   = Author::blank()->getUserId($name);
 			}
 		}
 
-		$row = new Resource($this->database);
-		$row->load($rid);
+		$row = Entry::oneOrFail($rid);
 
-		$rt = new Type($this->database);
+		$roles = Type::oneOrFail($row->get('type'))->roles;
 
-		$this->view->roles = $rt->getRolesForType($row->type);
-
-		$this->view->display();
+		$this->view
+			->set('name', $name)
+			->set('org', $org)
+			->set('id', $id)
+			->set('roles', $roles)
+			->display();
 	}
 
 	/**
 	 * Check resource paths
+	 *
+	 * @return  void
 	 */
 	public function checkTask()
 	{
-		include_once(dirname(dirname(__DIR__)) . '/helpers/tests/links.php');
-		//include_once(dirname(dirname(__DIR__)) . '/helpers/tests/abstracts.php');
+		include_once dirname(dirname(__DIR__)) . '/helpers/tests/links.php';
 
 		$auditor = new \Hubzero\Content\Auditor('resource');
 		$auditor->registerTest(new \Components\Resources\Helpers\Tests\Links);
-		//$auditor->registerTest(new \Components\Resources\Helpers\Tests\Abstracts);
 
 		$test   = Request::getVar('test');
 		$status = Request::getVar('status', 'failed');
@@ -1877,4 +1790,3 @@ class Items extends AdminController
 			->display();
 	}
 }
-

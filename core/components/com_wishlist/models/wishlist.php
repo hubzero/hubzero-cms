@@ -221,20 +221,38 @@ class Wishlist extends Relational
 		{
 			$scope = strtolower($this->get('category'));
 
-			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
+			$files = glob(__DIR__ . '/adapters/*.php');
 
-			if (!class_exists($cls))
+			// Loop through the types and find the ones that are available
+			foreach ($files as $file)
 			{
-				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
-				if (!is_file($path))
+				// Get just the file name
+				$file = basename($file);
+
+				if ($file == 'base.php')
 				{
-					throw new \RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
+					continue;
 				}
-				include_once $path;
+
+				include_once __DIR__ . '/adapters/' . $file;
+
+				// Derive the class name from the type
+				$cls = __NAMESPACE__ . '\\Adapters\\' . str_ireplace('.php', '', ucfirst(trim($file)));
+
+				$adapter = new $cls($this->get('referenceid'));
+
+				if ($adapter->handles($scope))
+				{
+					$this->_adapter = $adapter;
+					$this->_adapter->set('wishlist', $this->get('id'));
+					break;
+				}
 			}
 
-			$this->_adapter = new $cls($this->get('referenceid'));
-			$this->_adapter->set('wishlist', $this->get('id'));
+			if (!$this->_adapter)
+			{
+				throw new RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
+			}
 		}
 		return $this->_adapter;
 	}

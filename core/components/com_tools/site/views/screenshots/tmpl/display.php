@@ -88,7 +88,7 @@ if ($images)
 {
 	foreach ($images as $key => $value)
 	{
-		$tn = \Components\Resources\Helpers\Html::thumbnail($value);
+		$tn = preg_replace('#\.[^.]*$#', '', $value) . '-tn.gif';
 		if (!is_file($this->upath . DS . $tn))
 		{
 			unset($images[$key]);
@@ -108,7 +108,7 @@ if ($images)
 		$new['type'] = explode('.', $new['img']);
 
 		// get title and ordering info from the database, if available
-		if (count($this->shots > 0))
+		if (count($this->shots) > 0)
 		{
 			foreach ($this->shots as $si)
 			{
@@ -123,12 +123,12 @@ if ($images)
 
 		$ordering[] = isset($new['ordering']) ? $new['ordering'] : $b;
 		$b++;
-		$all[]=$new;
+		$all[] = $new;
 	}
 }
 
 // Order images
-if (count($this->shots > 0))
+if (count($this->shots) > 0)
 {
 	// sort by ordering
 	array_multisort($ordering, $all);
@@ -146,7 +146,7 @@ $k = 0;
 $g = 0;
 for ($i=0, $n=count($images); $i < $n; $i++)
 {
-	$tn = \Components\Resources\Helpers\Html::thumbnail($images[$i]['img']);
+	$tn = preg_replace('#\.[^.]*$#', '', $images[$i]['img']) . '-tn.gif';
 
 	if (is_file($this->upath . DS . $tn))
 	{

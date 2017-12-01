@@ -63,6 +63,13 @@ abstract class Base extends Obj
 	protected $_segments = array();
 
 	/**
+	 * Scope name
+	 *
+	 * @var  string
+	 */
+	protected $_scope = '';
+
+	/**
 	 * Constructor
 	 *
 	 * @param   integer  $referenceid  Scope ID (group, course, etc.)
@@ -71,6 +78,16 @@ abstract class Base extends Obj
 	public function __construct($referenceid=0)
 	{
 		$this->set('referenceid', $referenceid);
+	}
+
+	/**
+	 * Can this adapter handle the provided scope?
+	 *
+	 * @return  bool
+	 */
+	public function handles($scope)
+	{
+		return ($this->_scope && $this->_scope == $scope);
 	}
 
 	/**

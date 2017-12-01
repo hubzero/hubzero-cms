@@ -38,6 +38,8 @@ $authIDs = array();
 ?>
 <label for="authid"><?php echo Lang::txt('COM_RESOURCES_AUTHID'); ?></label>
 <input type="text" name="authid" id="authid" value="" />
+<div class="grid">
+	<div class="col span9">
 <select name="authrole" id="authrole">
 	<option value=""><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
 	<?php
@@ -52,11 +54,15 @@ $authIDs = array();
 	}
 	?>
 </select>
+	</div>
+	<div class="col span3">
 <input type="button" name="addel" id="addel" onclick="HUB.Resources.addAuthor();" value="<?php echo Lang::txt('Add'); ?>" />
+	</div>
+</div>
 
 <ul id="author-list">
 	<?php
-	if ($this->authnames != NULL)
+	if ($this->authnames != null)
 	{
 		foreach ($this->authnames as $authname)
 		{

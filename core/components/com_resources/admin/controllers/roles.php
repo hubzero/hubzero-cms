@@ -43,9 +43,6 @@ use User;
 use Date;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php');
-
 /**
  * Manage resource author roles
  */

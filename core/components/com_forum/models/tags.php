@@ -33,7 +33,7 @@ namespace Components\Forum\Models;
 
 use Components\Tags\Models\Cloud;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Forum Tagging class

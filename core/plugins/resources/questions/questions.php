@@ -55,11 +55,11 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if (isset($model->resource->toolpublished) || isset($model->resource->revision))
+		if (isset($model->toolpublished) || isset($model->revision))
 		{
-			if (isset($model->resource->thistool)
-			 && $model->resource->thistool
-			 && ($model->resource->revision=='dev' or !$model->resource->toolpublished))
+			if (isset($model->thistool)
+			 && $model->thistool
+			 && ($model->revision=='dev' or !$model->toolpublished))
 			{
 				$model->type->params->set('plg_questions', 0);
 			}
@@ -109,13 +109,13 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$this->option   = $option;
 
 		// Get a needed library
-		require_once PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php';
+		require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
 		// Get all the questions for this tool
 		$this->filters = array(
 			'limit'    => Request::getInt('limit', 0),
 			'start'    => Request::getInt('limitstart', 0),
-			'tag'      => ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id),
+			'tag'      => ($this->model->isTool() ? 'tool:' . $this->model->alias : 'resource:' . $this->model->id),
 			'search'   => Request::getVar('q', ''),
 			'filterby' => Request::getVar('filterby', ''),
 			'sortby'   => Request::getVar('sortby', 'withinplugin'),
@@ -126,7 +126,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		// Load component language file
 		Lang::load('com_answers') ||
-		Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
+		Lang::load('com_answers', Component::path('com_answers') . DS . 'site');
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
@@ -152,7 +152,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = $this->view('default', 'metadata');
-			$view->resource = $this->model->resource;
+			$view->resource = $this->model;
 			$view->count    = $this->count;
 
 			$arr['metadata'] = $view->loadTemplate();
@@ -247,7 +247,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'browse')
 			->setError($this->getErrors())
 			->set('option', $this->option)
-			->set('resource', $this->model->resource)
+			->set('resource', $this->model)
 			->set('banking', Component::params('com_members')->get('bankAccounts'))
 			->set('infolink', Component::params('com_answers')->get('infolink', '/kb/points/'))
 			->set('rows', $results)
@@ -267,7 +267,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Login required
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name, false, true), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url($this->model->link() . '&active=' . $this->_name, false, true), 'server');
 
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -296,7 +296,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		$view = $this->view('new', 'question')
 			->set('option', $this->option)
-			->set('resource', $this->model->resource)
+			->set('resource', $this->model)
 			->set('row', $row)
 			->set('tag', $this->filters['tag'])
 			->set('banking', $banking)
@@ -372,7 +372,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$row->tag($tags);
 
 		// Add the tag to link to the resource
-		$tag = ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id);
+		$tag = ($this->model->isTool() ? 'tool:' . $this->model->alias : 'resource:' . $this->model->id);
 		$row->addTag($tag, User::get('id'), ($this->model->isTool() ? 0 : 1));
 
 		// Build list of recipients
@@ -387,7 +387,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$TA = new \Components\Tools\Tables\Author($this->database);
 			$objV = new \Components\Tools\Tables\Version($this->database);
 
-			$toolname = $this->model->resource->alias;
+			$toolname = $this->model->alias;
 
 			$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
 			$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
@@ -479,7 +479,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		// Redirect to the question
 		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name)
+			Route::url($this->model->link() . '&active=' . $this->_name)
 		);
 	}
 }

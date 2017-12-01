@@ -40,14 +40,26 @@ $mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {
-	switch ($this->model->resource->published)
+	switch ($this->model->published)
 	{
-		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 1:
+			$txt .= '';
+			break; // published
+		case 2:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> ';
+			break;  // external draft
+		case 3:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';
+			break;  // pending
+		case 4:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';
+			break;  // deleted
+		case 5:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> ';
+			break;  // internal draft
+		case 0:
+			$txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';
+			break;  // unpublished
 	}
 }
 ?>
@@ -57,12 +69,12 @@ if ($mode != 'preview')
 			<div class="col span8">
 				<header id="content-header">
 					<h2>
-						<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
+						<?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
 						<?php if ($this->model->params->get('access-edit-resource')) { ?>
-							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
+							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
 						<?php } ?>
 					</h2>
-					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
+					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
 				</header>
 
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
@@ -83,7 +95,7 @@ if ($mode != 'preview')
 				if (!$this->model->access('view-all'))
 				{
 					$ghtml = array();
-					foreach ($this->model->resource->getGroups() as $allowedgroup)
+					foreach ($this->model->groups as $allowedgroup)
 					{
 						$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 					}
@@ -95,66 +107,81 @@ if ($mode != 'preview')
 				}
 				else
 				{
-					$ccount = count($this->model->children('standalone'));
+					$children = $this->model->children()
+						->whereEquals('standalone', 1)
+						->whereEquals('published', 1)
+						->ordered()
+						->rows();
+
+					$ccount = count($children);
 
 					if ($ccount > 0)
 					{
-						echo \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, '', '');
+						$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $this->model->type->get('type');
+
+						$this->view('_primary')
+							->set('option', $this->option)
+							->set('class', 'download')
+							->set('href', Route::url($this->model->link()) . '#series')
+							->set('title', $mesg)
+							->set('xtra', '')
+							->set('pop', '')
+							->set('action', '')
+							->set('msg', $mesg)
+							->set('disabled', false)
+							->display();
 					}
 
 					$video = 0;
 					$audio = 0;
 					$notes = 0;
 
-					$children = $this->model->children('standalone');
-
-					if (!empty($children))
+					foreach ($children as $child)
 					{
-						foreach ($children as $child)
+						$grandchildren = $child->children()
+							->whereEquals('standalone', 0)
+							->whereEquals('published', 1)
+							->ordered()
+							->rows();
+
+						if (count($grandchildren) > 0)
 						{
-							$rhelper = new \Components\Resources\Helpers\Helper($child->id, $this->database);
-
-							$rhelper->getChildren();
-
-							if ($rhelper->children && count($rhelper->children) > 0)
+							foreach ($grandchildren as $grandchild)
 							{
-								foreach ($rhelper->children as $grandchild)
+								switch (Filesystem::extension($grandchild->path))
 								{
-									switch (\Components\Resources\Helpers\Html::getFileExtension($grandchild->path))
-									{
-										case 'm4v':
-										case 'mp4':
-										case 'wmv':
-										case 'mov':
-										case 'qt':
-										case 'mpg':
-										case 'mpeg':
-										case 'mpe':
-										case 'mp2':
-										case 'mpv2':
-											$video++;
-										break;
+									case 'm4v':
+									case 'mp4':
+									case 'wmv':
+									case 'mov':
+									case 'qt':
+									case 'mpg':
+									case 'mpeg':
+									case 'mpe':
+									case 'mp2':
+									case 'mpv2':
+										$video++;
+									break;
 
-										case 'mp3':
-										case 'm4a':
-										case 'aiff':
-										case 'aif':
-										case 'wav':
-										case 'ra':
-										case 'ram':
-											$audio++;
-										break;
+									case 'mp3':
+									case 'm4a':
+									case 'aiff':
+									case 'aif':
+									case 'wav':
+									case 'ra':
+									case 'ram':
+										$audio++;
+									break;
 
-										case 'ppt':
-										case 'pps':
-										case 'pdf':
-										case 'doc':
-										case 'txt':
-										case 'html':
-										case 'htm':
-											$notes++;
-										break;
-									}
+									case 'ppt':
+									case 'pps':
+									case 'pdf':
+									case 'doc':
+									case 'txt':
+									case 'html':
+									case 'htm':
+										$notes++;
+									break;
 								}
 							}
 						}
@@ -167,20 +194,23 @@ if ($mode != 'preview')
 						?>
 						<p>
 						<?php if ($audio) { ?>
-							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/' . $this->model->resource->id . '/feed.rss?content=audio'; ?>"><?php echo Lang::txt('COM_RESOURCES_AUDIO_PODCAST'); ?></a><br />
+							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/' . $this->model->id . '/feed.rss?content=audio'; ?>"><?php echo Lang::txt('COM_RESOURCES_AUDIO_PODCAST'); ?></a><br />
 						<?php } ?>
 						<?php if ($video) { ?>
-							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/' . $this->model->resource->id . '/feed.rss?content=video'; ?>"><?php echo Lang::txt('COM_RESOURCES_VIDEO_PODCAST'); ?></a><br />
+							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/' . $this->model->id . '/feed.rss?content=video'; ?>"><?php echo Lang::txt('COM_RESOURCES_VIDEO_PODCAST'); ?></a><br />
 						<?php } ?>
 						<?php if ($notes) { ?>
-							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/' . $this->model->resource->id . '/feed.rss?content=slides'; ?>"><?php echo Lang::txt('COM_RESOURCES_SLIDES_PODCAST'); ?></a>
+							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=slides'; ?>"><?php echo Lang::txt('COM_RESOURCES_SLIDES_PODCAST'); ?></a>
 						<?php } ?>
 						</p>
 						<?php
 					}
+
 					if ($this->tab != 'play')
 					{
-						echo \Components\Resources\Helpers\Html::license($this->model->params->get('license', ''));
+						$this->view('_license')
+							->set('license', $this->model->license())
+							->display();
 					}
 				} // --- end else (if group check passed)
 				?>
@@ -217,14 +247,14 @@ if ($mode != 'preview')
 			$this->view('_tabs')
 				->set('option', $this->option)
 				->set('cats', $this->cats)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 
 			$this->view('_sections')
 				->set('option', $this->option)
 				->set('sections', $this->sections)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 			?>
@@ -232,7 +262,7 @@ if ($mode != 'preview')
 		<aside class="aside extracontent">
 			<?php
 			// Show related content
-			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
@@ -275,7 +305,7 @@ if ($mode != 'preview')
 			'sortby' => Request::getWord('sortby', $defaultsort),
 			'limit'  => Request::getInt('limit', 0),
 			'start'  => Request::getInt('limitstart', 0),
-			'id'     => $this->model->resource->id
+			'id'     => $this->model->id
 		);
 
 		if (!isset($sortbys[$filters['sortby']]))
@@ -284,9 +314,15 @@ if ($mode != 'preview')
 		}
 
 		// Get children
-		$children = $this->model->children('standalone', $filters['limit'], $filters['start'], $filters['sortby']);
+		$children = $this->model->children()
+			->whereEquals('standalone', 1)
+			->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+			->order(($filters['sortby'] == 'date' ? 'created' : $filters['sortby']), 'asc')
+			->limit($filters['limit'])
+			->start($filters['start'])
+			->rows();
 		?>
-		<form method="get" id="series" action="<?php echo Route::url('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
+		<form method="get" id="series" action="<?php echo Route::url($this->model->link()); ?>">
 			<section class="section">
 				<div class="subject">
 					<h3>
@@ -309,7 +345,7 @@ if ($mode != 'preview')
 						$filters['start'],
 						$filters['limit']
 					);
-					$pageNav->setAdditionalUrlParam('id', $this->model->resource->id);
+					$pageNav->setAdditionalUrlParam('id', $this->model->id);
 					$pageNav->setAdditionalUrlParam('sortby', $filters['sortby']);
 
 					echo $pageNav->render();

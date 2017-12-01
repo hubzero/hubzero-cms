@@ -561,8 +561,6 @@ class Tags extends SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
-			include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
-
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -576,12 +574,7 @@ class Tags extends SiteController
 
 				if (isset($row->data3) || isset($row->rcount))
 				{
-					$resourceEx = new \Components\Resources\Helpers\Helper($row->id, $this->database);
-					$resourceEx->getCitationsCount();
-					$resourceEx->getLastCitationDate();
-					$resourceEx->getContributors();
-
-					$author = strip_tags($resourceEx->contributors);
+					$author = strip_tags($row->data3);
 				}
 
 				// Load individual item creator class

@@ -32,6 +32,7 @@
 namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
+use Components\Resources\Models\Audience\Level;
 use Date;
 use User;
 
@@ -127,14 +128,12 @@ class Audience extends Relational
 	 */
 	public function created($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
@@ -174,7 +173,7 @@ class Audience extends Relational
 	 */
 	public function level0()
 	{
-		return $this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level0');
+		return Level::oneByLabel('level0'); //$this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level0');
 	}
 
 	/**
@@ -184,7 +183,7 @@ class Audience extends Relational
 	 */
 	public function level1()
 	{
-		return $this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level1');
+		return Level::oneByLabel('level1'); //$this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level1');
 	}
 
 	/**
@@ -194,7 +193,7 @@ class Audience extends Relational
 	 */
 	public function level2()
 	{
-		return $this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level2');
+		return Level::oneByLabel('level2'); //$this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level2');
 	}
 
 	/**
@@ -204,7 +203,7 @@ class Audience extends Relational
 	 */
 	public function level3()
 	{
-		return $this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level3');
+		return Level::oneByLabel('level3'); //$this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level3');
 	}
 
 	/**
@@ -214,7 +213,7 @@ class Audience extends Relational
 	 */
 	public function level4()
 	{
-		return $this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level4');
+		return Level::oneByLabel('level4'); //$this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level4');
 	}
 
 	/**
@@ -224,6 +223,6 @@ class Audience extends Relational
 	 */
 	public function level5()
 	{
-		return $this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level5');
+		return Level::oneByLabel('level5'); //$this->oneToOne(__NAMESPACE__ . '\\Audience\\Level', 'id', 'level5');
 	}
 }

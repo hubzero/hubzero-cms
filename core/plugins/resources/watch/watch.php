@@ -83,7 +83,7 @@ class plgResourcesWatch extends \Hubzero\Plugin\Plugin
 
 		$this->resource = $resource;
 		$this->action   = strtolower(Request::getWord('action', ''));
-		$this->link     = 'index.php?option=com_resources&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id);
+		$this->link     = $resource->link();
 
 		switch ($this->action)
 		{
@@ -175,7 +175,7 @@ class plgResourcesWatch extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$url = Route::url('index.php?option=com_resources&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id));
+		$url = Route::url($this->resource->link());
 
 		// Log the activity
 		Event::trigger('system.logActivity', [

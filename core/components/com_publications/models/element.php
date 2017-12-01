@@ -32,14 +32,14 @@
 
 namespace Components\Publications\Models;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 use stdClass;
 use Lang;
 
 /**
  * Publication element base class
  */
-class Element extends Object
+class Element extends Obj
 {
 	/**
 	 * Element name
@@ -89,9 +89,9 @@ class Element extends Object
 	 */
 	public function render(&$element, $value, $control_name = 'fields')
 	{
-		$name	= $element->name;
-		$label	= isset($element->label) ? $element->label : $element->name;
-		$descr	= isset($element->description) ? $element->description : '';
+		$name  = $element->name;
+		$label = isset($element->label) ? $element->label : $element->name;
+		$descr = isset($element->description) ? $element->description : '';
 
 		// Make sure we have a valid label
 		$label = $label ? $label : $name;

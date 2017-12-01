@@ -37,11 +37,16 @@ $this->css();
 
 if ($this->model->isTool())
 {
-	$children = $this->model->children();
+	$children = $this->model->children()
+		->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+		->rows();
 }
 else
 {
-	$children = $this->model->children('!standalone');
+	$children = $this->model->children()
+		->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+		->whereEquals('standalone', 0)
+		->rows();
 }
 ?>
 <h3 class="section-header">
@@ -68,11 +73,11 @@ else
 					}
 				}
 			}
-			$allowedgroups = $this->model->resource->getGroups();
+			$allowedgroups = $this->model->groups;
 
 			foreach ($children as $child)
 			{
-				if ($child->access == 0 || ($child->access == 1 && !User::isGuest()) || ($child->access == 3 && in_array($this->model->resource->group_owner, $usersgroups)))
+				if ($child->access == 0 || ($child->access == 1 && !User::isGuest()) || ($child->access == 3 && in_array($this->model->group_owner, $usersgroups)))
 				{
 					$i++;
 
@@ -91,11 +96,11 @@ else
 					}
 					else
 					{
-						$rt = \Components\Resources\Tables\Type::getRecordInstance($child->type);
-						$tparams = new \Hubzero\Config\Registry($rt->params);
+						$rt = $child->type;
+						$tparams = $rt->params;
 
-						$lt = \Components\Resources\Tables\Type::getRecordInstance($child->logicaltype);
-						$ltparams = new \Hubzero\Config\Registry($lt->params);
+						$lt = $child->logicaltype;
+						$ltparams = $lt->params;
 
 						// Check the link action by child's type
 						if ($child->logicaltype)
@@ -138,7 +143,7 @@ else
 								elseif (in_array($rt->alias, $mediatypes))
 								{
 									$mediatypes = array('flash_paper','breeze','32','26');
-									if (in_array($child->type, $mediatypes))
+									if (in_array($child->get('type'), $mediatypes))
 									{
 										$class = 'play';
 									}
@@ -151,7 +156,7 @@ else
 						}
 
 						// Check for any link action overrides on the child itself
-						$childParams = new \Hubzero\Config\Registry($child->params);
+						$childParams = $child->params;
 						$linkAction = intval($childParams->get('link_action', $linkAction));
 						switch ($linkAction)
 						{
@@ -198,7 +203,7 @@ else
 						$title = ($child->logicaltitle) ? $child->logicaltitle : stripslashes($child->title);
 					}
 
-					$url = \Components\Resources\Helpers\Html::processPath($this->option, $child, $this->model->resource->id, $linkAction);
+					$url = \Components\Resources\Helpers\Html::processPath($this->option, $child, $this->model->id, $linkAction);
 
 					//$child->title = str_replace('"', '&quot;', $child->title);
 					//$child->title = str_replace('&amp;', '&', $child->title);
@@ -251,7 +256,7 @@ else
 					}
 					else
 					{
-						$attribs = new \Hubzero\Config\Registry($child->attribs);
+						$attribs = $child->attribs;
 						$width  = intval($attribs->get('width', 640));
 						$height = intval($attribs->get('height', 360));
 						if ($width > 0 && $height > 0)

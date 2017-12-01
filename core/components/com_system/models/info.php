@@ -219,9 +219,10 @@ class Info extends Obj
 
 			$cparams = \Component::params('com_media');
 
-			$app = substr(PATH_APP, strlen(PATH_ROOT)) . '/';
+			$app = '/' . basename(PATH_APP) . '/';
 
 			$this->_addDirectory($app . 'components', PATH_APP . '/components');
+			$this->_addDirectory($app . 'config', PATH_APP . '/config');
 
 			$this->_addDirectory($app . $cparams->get('image_path'), PATH_APP . '/' . $cparams->get('image_path'));
 
@@ -232,12 +233,12 @@ class Info extends Obj
 				$this->_addDirectory($app . $cparams->get('image_path') . $folder, PATH_APP . '/' . $cparams->get('image_path') . '/' . $folder);
 			}
 
-			$this->_addDirectory($app . 'language', JPATH_SITE . '/language');
+			$this->_addDirectory($app . 'language', PATH_APP . '/language');
 			// List all site languages
 			$site_langs = Filesystem::directories(PATH_APP . '/language');
 			foreach ($site_langs as $slang)
 			{
-				$this->_addDirectory($app . 'language/' . $slang, JPATH_SITE . '/language/' . $slang);
+				$this->_addDirectory($app . 'language/' . $slang, PATH_APP . '/language/' . $slang);
 			}
 
 			$this->_addDirectory($app . 'libraries', PATH_APP . '/libraries');
@@ -246,14 +247,13 @@ class Info extends Obj
 			$this->_addDirectory($app . 'modules', PATH_APP . '/modules');
 			$this->_addDirectory($app . 'plugins', PATH_APP . '/plugins');
 
-			$plugin_groups = Filesystem::directories(JPATH_PLUGINS);
+			$plugin_groups = Filesystem::directories(PATH_APP . '/plugins');
 			foreach ($plugin_groups as $folder)
 			{
 				$this->_addDirectory($app . 'plugins' . $folder, PATH_APP . '/plugins' . $folder);
 			}
 
 			$this->_addDirectory($app . 'templates', PATH_APP . '/templates');
-			$this->_addDirectory('configuration.php', PATH_ROOT . '/configuration.php');
 			$this->_addDirectory($app . 'cache/site', PATH_APP . '/app/cache/site', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 			$this->_addDirectory($app . 'cache/admin', PATH_APP . '/app/cache/admin', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 

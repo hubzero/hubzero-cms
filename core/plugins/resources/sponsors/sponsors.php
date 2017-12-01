@@ -75,7 +75,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		require_once(__DIR__ . DS . 'models' . DS . 'sponsor.php');
+		require_once __DIR__ . DS . 'models' . DS . 'sponsor.php';
 
 		$records = \Plugins\Resources\Sponsors\Models\Sponsor::all()
 			->whereEquals('state', 1)
@@ -88,7 +88,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 
 		$data = '';
 		$sponsors = array();
-		foreach ($records As $record)
+		foreach ($records as $record)
 		{
 			$sponsors[$record->alias] = $record;
 		}
@@ -154,7 +154,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 
 		$task = ($task) ?  $task : 'default';
 
-		require_once(__DIR__ . DS . 'models' . DS . 'sponsor.php');
+		require_once __DIR__ . DS . 'models' . DS . 'sponsor.php';
 
 		$this->_option     = $option;
 		$this->_controller = $controller;
@@ -281,7 +281,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			return $this->editTask($row);
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+		require_once Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 		$t = \Components\Tags\Models\Tag::oneByTag($row->get('alias'));
 		if ($t->isNew())

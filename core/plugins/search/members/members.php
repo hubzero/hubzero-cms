@@ -385,11 +385,13 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 	 * @param   object  $res  \Components\Search\Models\Basic\Result
 	 * @return  string
 	 */
-	public static function onBeforeSearchRenderMembers($res)
+	public function onBeforeSearchRenderMembers($res)
 	{
-		if (!($href = $res->get('img_href')) || !is_file(PATH_APP . $href))
+		$href = $res->get('img_href');
+
+		if (!$href || !is_file(PATH_APP . $href))
 		{
-			$href = rtrim(Request::base(true), '/') . '/components/com_members/assets/img/profile_thumb.gif';
+			$href = User::getInstance($res->get('id'))->picture();
 		}
 
 		return '<img src="' . $href . '" alt="' . htmlentities($res->get_title()) . '" title="' . htmlentities($res->get_title()) . '" />';

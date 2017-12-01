@@ -220,8 +220,9 @@ class Router extends Base
 				// Resource controller
 				case 'preview':
 				case 'resource':
+				case 'resources':
 					$vars['option'] = 'com_tools';
-					$vars['controller'] = 'resource';
+					$vars['controller'] = 'resources';
 					$vars['app'] = $segments[0];
 					if ($segments[1] == 'preview')
 					{
@@ -264,7 +265,7 @@ class Router extends Base
 
 				// Tools controller
 				case 'report':
-					\App::redirect(\Route::url('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),'','message',true);
+					\App::redirect(\Route::url('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]));
 					exit();
 				break;
 

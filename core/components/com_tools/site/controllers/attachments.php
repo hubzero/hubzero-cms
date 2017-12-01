@@ -33,6 +33,8 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Association;
 use Filesystem;
 use Component;
 use Request;
@@ -45,9 +47,7 @@ use App;
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool
@@ -57,7 +57,7 @@ class Attachments extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -73,63 +73,47 @@ class Attachments extends SiteController
 	/**
 	 * Reorder an attachment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reorderTask()
 	{
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
-		$move = 'order' . Request::getVar('move', 'down');
+		$move = Request::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
-
-		// Get the element moving down - item 1
-		$resource1 = new \Components\Resources\Tables\Assoc($this->database);
-		$resource1->loadAssoc($pid, $id);
-
-		// Get the element directly after it in ordering - item 2
-		$resource2 = clone($resource1);
-		$resource2->getNeighbor($move);
 
 		switch ($move)
 		{
-			case 'orderup':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $resource2->ordering;
-				$orderdn = $resource1->ordering;
-
-				$resource1->ordering = $orderup;
-				$resource2->ordering = $orderdn;
+			case 'up':
+				$move = -1;
 			break;
 
-			case 'orderdown':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $resource1->ordering;
-				$orderdn = $resource2->ordering;
-
-				$resource1->ordering = $orderdn;
-				$resource2->ordering = $orderup;
+			case 'down':
+				$move = 1;
 			break;
 		}
 
-		// Save changes
-		$resource1->store();
-		$resource2->store();
+		// Move the record
+		$association = Association::oneByRelationship($pid, $id);
+
+		if (!$association->move($move))
+		{
+			$this->setError($association->getError());
+		}
 
 		// Push through to the attachments view
 		$this->displayTask($pid);
@@ -138,21 +122,20 @@ class Attachments extends SiteController
 	/**
 	 * Rename an attachment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function renameTask()
 	{
 		// Incoming
-		$id = Request::getInt('id', 0);
+		$id   = Request::getInt('id', 0);
 		$name = Request::getVar('name', '');
 
 		// Ensure we have everything we need
-		if ($id && $name != '')
+		if ($id && $name)
 		{
-			$r = new \Components\Resources\Tables\Resource($this->database);
-			$r->load($id);
-			$r->title = $name;
-			$r->store();
+			$resource = Entry::oneOrFail($id);
+			$resource->set('title', (string)$name);
+			$resource->save();
 		}
 
 		// Echo the name
@@ -162,7 +145,7 @@ class Attachments extends SiteController
 	/**
 	 * Save an attachment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -171,8 +154,7 @@ class Attachments extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// get tool object
@@ -191,12 +173,12 @@ class Attachments extends SiteController
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// Make the filename safe
 		$file['name'] = Filesystem::clean($file['name']);
+
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
@@ -207,48 +189,29 @@ class Attachments extends SiteController
 		}
 
 		// Instantiate a new resource object
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		if (!$row->bind($_POST))
-		{
-			$this->setError($row->getError());
-			$this->displayTask($pid);
-			return;
-		}
-		$row->title = ($row->title) ? $row->title : $file['name'];
-		$row->introtext = $row->title;
-		$row->created = Date::toSql();
-		$row->created_by = User::get('id');
-		$row->published = 1;
-		$row->publish_up = Date::toSql();
-		$row->publish_down = '0000-00-00 00:00:00';
-		$row->standalone = 0;
-		$row->access = 0;
-		$row->path = ''; // make sure no path is specified just yet
+		$row = Entry::blank()->set(array(
+			'title'        => $file['name'],
+			'introtext'    => $file['name'],
+			'created'      => Date::toSql(),
+			'created_by'   => User::get('id'),
+			'published'    => Entry::STATE_PUBLISHED,
+			'publish_up'   => Date::toSql(),
+			'publish_down' => '0000-00-00 00:00:00',
+			'standalone'   => 0,
+			'access'       => 0,
+			'path'         => '', // make sure no path is specified just yet
+			'type'         => $this->_getChildType($file['name'])
+		));
 
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->displayTask($pid);
-			return;
-		}
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
-			$this->displayTask($pid);
-			return;
-		}
-
-		if (!$row->id)
-		{
-			$row->id = $row->insertid();
+			return $this->displayTask($pid);
 		}
 
 		// Build the path
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir = \Components\Resources\Helpers\Html::build_path($row->created, $row->id, '');
-		$path = $this->_buildUploadPath($listdir, '');
+		$path = $row->filespace();
 
 		// Make sure the upload path exist
 		if (!is_dir($path))
@@ -256,8 +219,7 @@ class Attachments extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask($pid);
-				return;
+				return $this->displayTask($pid);
 			}
 		}
 
@@ -270,49 +232,29 @@ class Attachments extends SiteController
 		{
 			// File was uploaded
 			// Check the file type
-			$row->type = $this->_getChildType($file['name']);
+			$row->set('type', $this->_getChildType($file['name']));
 		}
 
-		if (!$row->path)
+		if (!$row->get('path'))
 		{
-			$row->path = $listdir . DS . $file['name'];
+			$row->set('path', $row->relativepath() . DS . $file['name']);
 		}
-		if (substr($row->path, 0, 1) == DS)
-		{
-			$row->path = substr($row->path, 1, strlen($row->path));
-		}
+		$row->set('path', ltrim($row->get('path'), DS));
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
-
-		// Instantiate a Resources Assoc object
-		$assoc = new \Components\Resources\Tables\Assoc($this->database);
-
-		// Get the last child in the ordering
-		$order = $assoc->getLastOrder($pid);
-		$order = ($order) ? $order : 0;
-
-		// Increase the ordering - new items are always last
-		$order = $order + 1;
 
 		// Create new parent/child association
-		$assoc->parent_id = $pid;
-		$assoc->child_id = $row->id;
-		$assoc->ordering = $order;
-		$assoc->grouping = 0;
-		if (!$assoc->check())
+		if (!$row->makeChildOf($pid))
 		{
-			$this->setError($assoc->getError());
+			$this->setError($row->getError());
+			return $this->displayTask($pid);
 		}
-		if (!$assoc->store(true))
-		{
-			$this->setError($assoc->getError());
-		}
+
 		$this->_rid = $pid;
 
 		// Push through to the attachments view
@@ -322,7 +264,7 @@ class Attachments extends SiteController
 	/**
 	 * Delete a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -331,8 +273,7 @@ class Attachments extends SiteController
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// get tool object
@@ -343,7 +284,6 @@ class Attachments extends SiteController
 		if (!$this->_checkAccess($this->_toolid))
 		{
 			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-			return;
 		}
 
 		// Incoming child ID
@@ -351,47 +291,52 @@ class Attachments extends SiteController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-			$this->displayTask($pid);
-			return;
+			return $this->displayTask($pid);
 		}
 
 		// Load resource info
-		$row = new \Components\Resources\Tables\Resource($this->database);
-		$row->load($id);
+		$resource = Entry::oneOrFail($id);
 
 		// Check for stored file
-		if ($row->path == '')
+		if ($resource->get('path') != '')
 		{
-			$this->setError(Lang::txt('COM_TOOLS_ERROR_MISSING_FILE_PATH'));
-			$this->displayTask($pid);
-			return;
-		}
-
-		// Get resource path
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir = \Components\Resources\Helpers\Html::build_path($row->created, $id, '');
-
-		// Build the path
-		$path = $this->_buildUploadPath($listdir, '');
-
-		// Check if the folder even exists
-		if (!is_dir($path) or !$path)
-		{
-			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
+			$listdir = $resource->get('path');
 		}
 		else
 		{
-			// Attempt to delete the file
-			if (!Filesystem::deleteDirectory($path))
+			// No stored path, derive from created date
+			$listdir = $resource->relativepath();
+		}
+
+		// Build the path
+		$path = $resource->basepath() . DS . $listdir;
+
+		// Check if the path is a URL or exists
+		if (!file_exists($path) or !$path or substr($resource->get('path'), 0, strlen('http')) == 'http')
+		{
+			//$this->setError(Lang::txt('COM_CONTRIBUTE_FILE_NOT_FOUND'));
+		}
+		else
+		{
+			if ($path == $resource->basepath()
+			 || $path == $resource->relativepath())
 			{
-				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
+				$this->setError(Lang::txt('Invalid file path.'));
 			}
+			else
+			{
+				// Attempt to delete the file
+				if (!Filesystem::delete($path))
+				{
+					$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
+				}
+			}
+		}
 
-			// Delete associations to the resource
-			$row->deleteExistence();
-
+		if (!$this->getError())
+		{
 			// Delete resource
-			$row->delete();
+			$resource->destroy();
 		}
 
 		// Push through to the attachments view
@@ -401,13 +346,11 @@ class Attachments extends SiteController
 	/**
 	 * Display a list of attachments
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     void
+	 * @param   integer  $id  Resource ID
+	 * @return  void
 	 */
 	public function displayTask($id=null)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
 		if (!$id)
 		{
@@ -417,33 +360,31 @@ class Attachments extends SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-			return;
+			App::abort(404, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
 		}
 
-		$this->view->id = $id;
-		$this->view->allowupload = Request::getInt('allowupload', 1);
+		$allowupload = Request::getInt('allowupload', 1);
 
-		$this->view->resource = new \Components\Resources\Tables\Resource($this->database);
-		$this->view->resource->load($id);
-
-		// Initiate a resource helper class
-		$helper = new \Components\Resources\Helpers\Helper($id, $this->database);
-		$helper->getChildren();
+		$resource = Entry::oneOrNew($id);
 
 		// get config
-		$this->view->cparams = Component::params('com_resources');
-		$this->view->path = '';
-		$this->view->children = $helper->children;
-
-		// Set errors to view
-		foreach ($this->getErrors() as $error)
-		{
-			$this->setError($error);
-		}
+		$cparams = Component::params('com_resources');
+		$path = '';
+		$children = $resource->children()
+			->ordered()
+			->rows();
 
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->set('id', $id)
+			->set('resource', $resource)
+			->set('children', $children)
+			->set('cparams', $cparams)
+			->set('path', $path)
+			->set('allowupload', $allowupload)
+			->setErrors($this->getErrors())
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -484,8 +425,8 @@ class Attachments extends SiteController
 	/**
 	 * Get the child's type ID based on file extension
 	 *
-	 * @param      string $filename File name
-	 * @return     integer
+	 * @param   string   $filename  File name
+	 * @return  integer
 	 */
 	private function _getChildType($filename)
 	{
@@ -493,16 +434,36 @@ class Attachments extends SiteController
 
 		switch ($ftype)
 		{
-			case 'mov': $type = 15; break;
-			case 'swf': $type = 32; break;
-			case 'ppt': $type = 35; break;
-			case 'asf': $type = 37; break;
-			case 'asx': $type = 37; break;
-			case 'wmv': $type = 37; break;
-			case 'zip': $type = 38; break;
-			case 'tar': $type = 38; break;
-			case 'pdf': $type = 33; break;
-			default:    $type = 13; break;
+			case 'mov':
+				$type = 15;
+				break;
+			case 'swf':
+				$type = 32;
+				break;
+			case 'ppt':
+				$type = 35;
+				break;
+			case 'asf':
+				$type = 37;
+				break;
+			case 'asx':
+				$type = 37;
+				break;
+			case 'wmv':
+				$type = 37;
+				break;
+			case 'zip':
+				$type = 38;
+				break;
+			case 'tar':
+				$type = 38;
+				break;
+			case 'pdf':
+				$type = 33;
+				break;
+			default:
+				$type = 13;
+				break;
 		}
 
 		return $type;
@@ -511,20 +472,20 @@ class Attachments extends SiteController
 	/**
 	 * Check if user has access
 	 *
-	 * @param      integer $toolid       Tool ID
-	 * @param      boolean $allowAuthors Allow tool authors?
-	 * @return     boolean True if user has access, False if not
+	 * @param   integer  $toolid        Tool ID
+	 * @param   boolean  $allowAuthors  Allow tool authors?
+	 * @return  boolean  True if user has access, False if not
 	 */
 	private function _checkAccess($toolid, $allowAuthors=false)
 	{
-		// Create a Tool object
-		$obj = new \Components\Tools\Tables\Tool($this->database);
-
 		// allow to view if admin
 		if ($this->config->get('access-manage-component'))
 		{
 			return true;
 		}
+
+		// Create a Tool object
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// check if user in tool dev team
 		if ($developers = $obj->getToolDevelopers($toolid))
@@ -550,9 +511,9 @@ class Attachments extends SiteController
 	/**
 	 * Authorization checks
 	 *
-	 * @param      string $assetType Asset type
-	 * @param      string $assetId   Asset id to check against
-	 * @return     void
+	 * @param   string   $assetType  Asset type
+	 * @param   integer  $assetId    Asset id to check against
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{

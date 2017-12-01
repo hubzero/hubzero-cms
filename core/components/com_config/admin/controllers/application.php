@@ -98,14 +98,10 @@ class Application extends AdminController
 		// Get the params for com_media.
 		$mediaParams = Component::params('com_media');
 
-		// Load settings for the FTP layer.
-		$ftp = null; //\JClientHelper::setCredentialsFromRequest('ftp');
-
 		$this->view
 			->set('model', $model)
 			->set('form', $form)
 			->set('data', $data)
-			->set('ftp', $ftp)
 			->set('usersParams', $usersParams)
 			->set('mediaParams', $mediaParams)
 			->setLayout('default')
@@ -131,9 +127,6 @@ class Application extends AdminController
 			);
 			return;
 		}
-
-		// Set FTP credentials, if given.
-		//\JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Initialise variables.
 		$model = new Models\Application();
@@ -243,9 +236,6 @@ class Application extends AdminController
 			return;
 		}
 
-		// Set FTP credentials, if given
-		//\JClientHelper::setCredentialsFromRequest('ftp');
-
 		// Clean the session data.
 		User::setState('com_config.config.global.data', null);
 
@@ -259,9 +249,6 @@ class Application extends AdminController
 	 */
 	public function refreshHelp()
 	{
-		// Set FTP credentials, if given
-		//\JClientHelper::setCredentialsFromRequest('ftp');
-
 		if (($data = file_get_contents('http://help.hubzero.org/helpsites.xml')) === false)
 		{
 			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');

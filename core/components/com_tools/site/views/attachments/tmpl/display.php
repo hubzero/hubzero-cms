@@ -90,7 +90,7 @@ if ($this->children)
 		$k++;
 
 		// figure ou the URL to the file
-		switch ($child->type)
+		switch ($child->get('type'))
 		{
 			case 12:
 				if ($child->path)
@@ -116,7 +116,7 @@ if ($this->children)
 
 		$type = Filesystem::extension($url);
 		$type = (strlen($type) > 3) ? substr($type, 0, 3) : $type;
-		if ($child->type == 12)
+		if ($child->get('type') == 12)
 		{
 			$liclass = ' class="ftitle html';
 		}

@@ -40,8 +40,6 @@ use User;
 use Lang;
 use App;
 
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'entry.php';
-
 /**
  * Controller class for contributing a tool
  */
@@ -130,7 +128,7 @@ class Authors extends SiteController
 
 			if ($existing->get('id'))
 			{
-				$this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rc->name));
+				$this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $existing->name));
 			}
 			else
 			{
@@ -431,7 +429,7 @@ class Authors extends SiteController
 			->rows();
 
 		// Get all roles for this resoruce type
-		$roles = $resource->type()->roles()->rows();
+		$roles = $resource->type->roles()->rows();
 
 		// Output view
 		$this->view

@@ -34,7 +34,7 @@ namespace Components\Courses\Models;
 
 use Components\Tags\Models\Cloud;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Helper class for handling course tags
@@ -52,6 +52,7 @@ class Tags extends Cloud
 	 * Turn a string of tags to an array
 	 *
 	 * @param   string $tag Tag string
+	 * @param   string $remove
 	 * @return  mixed
 	 */
 	public function parseTags($tag, $remove='')
@@ -120,7 +121,7 @@ class Tags extends Cloud
 				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
 					$view = new \Hubzero\Component\View(array(
-						'base_path' => PATH_CORE . '/components/com_courses/site',
+						'base_path' => dirname(__DIR__) . '/site',
 						'name'      => 'courses',
 						'layout'    => '_tags'
 					));
@@ -139,4 +140,3 @@ class Tags extends Cloud
 		}
 	}
 }
-
