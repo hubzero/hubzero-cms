@@ -385,7 +385,8 @@ class Checkout extends ComponentController
 			}
 		}
 
-		$transaction = $cart->liftTransaction();
+		$update = Request::getWord('update', false, 'get');
+		$transaction = $cart->liftTransaction($update);
 
 		if (!$transaction)
 		{
@@ -522,16 +523,14 @@ class Checkout extends ComponentController
 		$this->view->display();
 	}
 
-	/**
-	 * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers, requires a form submission to the payment gateway
-	 *
-	 * @return  void
-	 */
-	public function confirmTask()
+
+	public function paymentTask()
 	{
 		$cart = new CurrentCart();
 
-		$transaction = $cart->liftTransaction();
+		$update = Request::getWord('update', false, 'get');
+		$transaction = $cart->liftTransaction($update);
+
 		if (!$transaction)
 		{
 			$cart->redirect('home');
@@ -548,10 +547,102 @@ class Checkout extends ComponentController
 			$cart->redirect($nextStep);
 		}
 
+		$this->view
+			->set('transaction', $transaction)
+			->display();
+	}
+
+	/**
+	 * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers, requires a form submission to the payment gateway
+	 *
+	 * @return  void
+	 */
+	public function confirmTask()
+	{
+		$cart = new CurrentCart();
+
+		$transaction = $cart->liftTransaction();
+
+		if (!$transaction)
+		{
+			$cart->redirect('home');
+		}
+
+		// Get security token
+		$transaction->token = $cart->getToken();
+
+		// Check if there are any steps missing. Redirect if needed
+		$nextStep = $cart->getNextCheckoutStep()->step;
+
+		if ($nextStep != 'summary')
+		{
+			$cart->redirect($nextStep);
+		}
+
+		// Payment selected
+		$selected = Request::getVar('paymentSelect', 0, 'post');
+		$submitted = Request::getVar('paymentSubmit', 0, 'post');
+		$provider = Request::getVar('paymentProvider', 0, 'post');
+
+		if ($selected && $provider)
+		{
+			// Do whatever needed to do on the server side
+			$payments = Event::trigger('cart.onSelectedPayment', array($transaction, User::getRoot()));
+
+			//print_r($payments); die;
+
+			$paymentResponse = false;
+			foreach ($payments as $options)
+			{
+				if ($options['response'])
+				{
+					$paymentResponse = $options['response'];
+					$paymentStatus = $options['status'];
+					$paymentInfo = $options['paymentInfo'];
+					break;
+				}
+			}
+
+			$this->view
+				->set('paymentResponse', $paymentResponse)
+				->set('paymentStatus', $paymentStatus)
+				->set('paymentInfo', $paymentInfo)
+				->set('transaction', $transaction)
+				->set('transactionItems', $transaction->items)
+				->set('transactionInfo', $transaction->info)
+				->display();
+
+		}
+		elseif ($submitted && $provider)
+		{
+			// Do whatever needed to do on the server side
+			$payments = Event::trigger('cart.onProcessPayment', array($transaction, User::getRoot()));
+
+			$paymentResponse = false;
+			foreach ($payments as $options)
+			{
+				if ($options['response'])
+				{
+					$paymentResponse = $options['response'];
+					break;
+				}
+			}
+
+			$this->view
+				->set('response', $paymentResponse)
+				->set('transaction', $transaction)
+				->display();
+
+		}
+		else {
+			$cart->redirect($nextStep);
+		}
+
 		// Final step here before payment
-		Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
+		//Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
 
 		// Generate payment code
+		/*
 		$params = Component::params(Request::getVar('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 
@@ -577,7 +668,8 @@ class Checkout extends ComponentController
 			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		//print_r($this->view); die;
+		*/
 	}
 
 	/**

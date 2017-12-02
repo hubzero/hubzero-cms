@@ -455,10 +455,16 @@ class CurrentCart extends Cart
 	 * @param void
 	 * @return array of items in the transaction or false on failed attempt
 	 */
-	public function liftTransaction()
+	public function liftTransaction($resetStatus = false)
 	{
 		// Get transaction info
 		$tInfo = $this->getTransactionData();
+
+		if ($tInfo && $resetStatus)
+		{
+			parent::updateTransactionStatus('pending', $tInfo->tId);
+			$tInfo = $this->getTransactionData();
+		}
 
 		// Only pending and released transactions can be lifted
 		if (!$tInfo || ($tInfo->tStatus != 'pending' && $tInfo->tStatus != 'released'))
@@ -853,8 +859,7 @@ class CurrentCart extends Cart
 		{
 			throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
 		}
-
-		return md5(parent::$securitySalt . $this->tInfo->tId);
+		return parent::generateSecurityToken($this->tInfo->tId);
 	}
 
 	/**

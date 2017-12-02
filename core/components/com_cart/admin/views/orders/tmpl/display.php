@@ -122,6 +122,7 @@ $this->view('_submenu')
 				<th scope="col">Items ordered</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Payment method', 'tiPayment', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -164,6 +165,9 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<span><?php echo $this->escape(stripslashes($row->name)); ?></span>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->tiPayment)); ?></span>
 				</td>
 			</tr>
 <?php

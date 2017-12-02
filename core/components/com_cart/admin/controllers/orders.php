@@ -105,6 +105,8 @@ class Orders extends AdminController
 		$this->view->filters['userInfo'] = true;
 		$this->view->rows = Cart::getAllTransactions($this->view->filters);
 
+		//print_r($this->view->rows); die;
+
 		if (!$this->view->rows)
 		{
 			$this->view->rows = array();
