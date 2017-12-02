@@ -31,33 +31,59 @@
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/*$this->css()
+     ->js('spin.min.js')
+     ->js('autosubmit.js');*/
+
+$this->css('jquery.ui.css', 'system');
 ?>
 
-<div class="section">
+<header id="content-header">
+	<h2>Payment</h2>
+</header>
 
-	<h2>Shipping info</h2>
-
+<section class="section">
 	<?php
-	if (!empty($this->transactionInfo))
-	{
-		echo '<p>';
-		echo $this->transactionInfo->tiShippingToFirst;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingToLast;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingAddress;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingCity;
-		echo ', ';
-		echo $this->transactionInfo->tiShippingState;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingZip;
-		echo '</p>';
-	}
+	/*$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'messages'));
+	$errors = $this->getError();
+	$view->setError($this->getError());
+	$view->display();
 
-	echo '<a href="';
-	echo Route::url('index.php?option=com_cart') . 'checkout/shipping?update=true';
-	echo '">Change</a>';
+	if (empty($errors))
+	{*/
+		?>
+		<?php
+		//print_r($this->paymentCode);
+
+		// load the plugin
+		// fire plugin
+		$payment_options = Event::trigger('cart.onRenderPaymentOptions', array($this->transaction, User::getRoot()));
+
+		//print_r($payment_options); die;
+
+		if (count($payment_options) > 1)
+		{
+			echo '<p>Please choose your method of payment.</p>';
+		}
+
+		if (count($payment_options))
+		{
+			$pane = '1';
+
+			echo Html::sliders('start', "pane_$pane");
+
+			foreach ($payment_options as $method)
+			{
+				echo Html::sliders('panel', $method['title'], $method['title']);
+				echo $method['options'];
+			}
+
+			echo Html::sliders('end');
+		}
+		else
+		{
+			echo Lang::txt('NO_PAYMENT_OPTIONS_AVAILABLE');
+		}
+	//}
 	?>
-
-</div>
+</section>

@@ -134,6 +134,28 @@ function submitbutton(pressbutton)
 		<?php
 		}
 		?>
+
+		<?php
+		if (!empty($this->tInfo->tiPayment))
+		{
+			?>
+			<fieldset class="adminform">
+				<legend><span>Payment info</span></legend>
+
+				<p>Payment method: <?php echo $this->tInfo->tiPayment; ?></p>
+
+				<?php
+				if (!empty($this->tInfo->tiPaymentDetails))
+				{
+					echo '<p>' . $this->tInfo->tiPaymentDetails . '</p>';
+				}
+
+				?>
+
+			</fieldset>
+			<?php
+		}
+		?>
 	</div>
 	<div class="col width-60 fltrt">
 		<fieldset class="adminform">

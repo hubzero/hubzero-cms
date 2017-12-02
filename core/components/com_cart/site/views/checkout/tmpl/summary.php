@@ -191,7 +191,7 @@ if (!empty($this->notifications))
 		if ($orderTotal > 0)
 		{
 			$buttonLabel = 'Proceed to payment';
-			$buttonLink = Route::url('index.php?option=com_cart&controller=checkout/confirm');
+			$buttonLink = Route::url('index.php?option=com_cart&controller=checkout/payment');
 		}
 		else
 		{
