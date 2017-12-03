@@ -59,9 +59,15 @@ class Cart extends ComponentController
 		parent::execute();
 	}
 
+	/**
+	 * Dump post
+	 *
+	 * @return     void
+	 */
 	public function huiTask()
 	{
-		print_r($_POST); die;
+		print_r($_POST);
+		die;
 	}
 
 	/**
@@ -253,4 +259,3 @@ class Cart extends ComponentController
 		$this->view->display();
 	}
 }
-
