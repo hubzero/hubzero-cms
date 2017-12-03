@@ -40,6 +40,5 @@ class Migration20171201000001ComCart extends Base
 				$this->db->query();
 			}
 		}
-
 	}
 }
