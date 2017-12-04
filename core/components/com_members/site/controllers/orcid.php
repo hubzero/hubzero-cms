@@ -172,8 +172,8 @@ class Orcid extends SiteController
 				if ($child->getName() == 'name')
 				{
 					$name = array('given-names' => (string)$child->{'given-names'}, 'family-name' => (string)$child->{'family-name'});
+					break;
 				}
-				break;
 			}
 		}
 		return $name;
