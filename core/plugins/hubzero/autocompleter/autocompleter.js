@@ -1036,7 +1036,7 @@ HUB.Plugins.Autocomplete = {
 					var id = null,
 						name = null;
 
-					if (v.match(/(.+?) \((.+?)\)/ig)) {
+					if (option != 'tags' && v.match(/(.+?) \((.+?)\)/ig)) {
 						id   = v.replace(/(.+?) \((.+?)\)/ig, '$2');
 						name = v.replace(/(.+?) \((.+?)\)/ig, '$1');
 					}
