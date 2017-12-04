@@ -65,6 +65,11 @@ class Installer
 			Route::url('index.php?option=com_installer&controller=discover'),
 			$vName == 'discover'
 		);
+		Submenu::addEntry(
+			Lang::txt('COM_INSTALLER_SUBMENU_PACKAGES'),
+			Route::url('index.php?option=com_installer&controller=packages'),
+			$vName == 'repositories'
+		);
 		/*Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_DATABASE'),
 			Route::url('index.php?option=com_installer&controller=database'),
