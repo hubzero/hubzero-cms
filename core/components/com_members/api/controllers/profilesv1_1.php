@@ -236,7 +236,7 @@ class Profilesv1_1 extends ApiController
 	 * Create a user profile
 	 *
 	 * @apiMethod POST
-	 * @apiUri    /members
+	 * @apiUri    /members/create
 	 * @return    void
 	 */
 	public function createTask()

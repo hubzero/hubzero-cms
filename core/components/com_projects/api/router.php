@@ -135,6 +135,10 @@ class Router extends Base
 				$vars['id']         = $segments[0];
 				$vars['task']       = isset($segments[2]) ? $segments[2] : 'list';
 			}
+			elseif ($segments[0] == 'index')
+			{
+				$vars['task'] = 'index';
+			}
 			elseif ($segments[0] != 'list')
 			{
 				$vars['id']   = $segments[0];
