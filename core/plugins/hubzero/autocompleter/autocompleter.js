@@ -480,10 +480,10 @@ $.TokenList = function (input, url_or_data, settings) {
 	}
 
 	function is_printable_character(keycode) {
-		return ((keycode >= 48 && keycode <= 90) ||     // 0-1a-z
-				(keycode >= 96 && keycode <= 111) ||    // numpad 0-9 + - / * .
-				(keycode >= 186 && keycode <= 192) ||   // ; = , - . / ^
-				(keycode >= 219 && keycode <= 222));    // ( \ ) '
+		return ((keycode >= 48 && keycode <= 90)         // 0-1a-z
+				|| (keycode >= 96 && keycode <= 111)     // numpad 0-9 + - / * .
+				|| (keycode >= 186 && keycode <= 192)    // ; = , - . / ^
+				|| (keycode >= 219 && keycode <= 222));  // ( \ ) '
 	}
 
 	// Inner function to a token to the list
@@ -625,7 +625,9 @@ $.TokenList = function (input, url_or_data, settings) {
 		var callback = settings.onDelete;
 
 		var index = token.prevAll().length;
-		if (index > selected_token_index) index--;
+		if (index > selected_token_index) {
+			index--;
+		}
 
 		// Delete the token
 		token.remove();
@@ -636,7 +638,9 @@ $.TokenList = function (input, url_or_data, settings) {
 
 		// Remove this token from the saved list
 		saved_tokens = saved_tokens.slice(0,index).concat(saved_tokens.slice(index+1));
-		if (index < selected_token_index) selected_token_index--;
+		if (index < selected_token_index) {
+			selected_token_index--;
+		}
 
 		// Update the hidden input
 		update_hidden_input(saved_tokens, hidden_input);
