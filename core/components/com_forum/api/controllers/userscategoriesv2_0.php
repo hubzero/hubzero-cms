@@ -58,7 +58,7 @@ class UsersCategoriesv2_0 extends ApiController
 	 * 		"type":          "integer",
 	 * 		"required":      true
 	 * }
-	 * @return    TODO
+	 * @return    User categories that were created
 	 */
 	function createTask()
 	{
@@ -84,8 +84,9 @@ class UsersCategoriesv2_0 extends ApiController
 
 		$result['status'] = empty($errors) ? 'success' : 'error';
 
-		echo json_encode($result);
-		exit();
+		$result = json_encode($result);
+
+		$this->send($result);
 	}
 
 	protected function _instantiateUsersCategories($categoriesIds, $currentUserId)
@@ -135,7 +136,7 @@ class UsersCategoriesv2_0 extends ApiController
 	 * 		"type":          "integer",
 	 * 		"required":      true
 	 * }
-	 * @return    TODO
+	 * @return    User categories that were deleted
 	 */
 	public function destroyTask()
 	{
@@ -161,8 +162,9 @@ class UsersCategoriesv2_0 extends ApiController
 
 		$result['status'] = empty($errors) ? 'success' : 'error';
 
-		echo json_encode($result);
-		exit();
+		$result = json_encode($result);
+
+		$this->send($result);
 	}
 
 	protected function _destroyUsersCategories($usersCategories)
@@ -189,8 +191,10 @@ class UsersCategoriesv2_0 extends ApiController
 				'status' => 'error',
 				'error' => 'User ID mismatch, unable to proceed.'
 			);
-			echo json_encode($error);
-			exit();
+
+			$error = json_encode($error);
+
+			$this->send($error);
 		}
 	}
 
