@@ -407,7 +407,7 @@ $legacy = array(
 						$select  = '<select name="access[email]" class="input-select">' . "\n";
 						foreach ($legacy as $k => $v)
 						{
-							$selected = ($k == $this->params->get('access_email'))
+							$selected = ($k == $this->params->get('access_email', 2))
 									  ? ' selected="selected"'
 									  : '';
 							$select .= ' <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
