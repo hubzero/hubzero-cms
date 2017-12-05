@@ -60,7 +60,11 @@ class UsersViewLogin extends JViewLegacy
 
 		$this->prepareDocument();
 
-		$defaultReturn = $active->params->get('login_redirect_url', Route::url('index.php?option=com_members&task=myaccount'));
+		$defaultReturn = Route::url('index.php?option=com_members&task=myaccount');
+		if (isset($active->params) && is_object($active->params))
+		{
+			$defaultReturn = $active->params->get('login_redirect_url', $defaultReturn);
+		}
 		$defaultReturn = base64_encode($defaultReturn);
 
 		$uri = \Hubzero\Utility\Uri::getInstance();
