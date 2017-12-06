@@ -50,7 +50,7 @@ $status = '';
 				<div class="input-wrap">
 					<label for="packageName"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_PACKAGES'); ?>:</label>
 					<select name="packageName">
-						<?php foreach($this->availablePackages as $package): ?>
+						<?php foreach ($this->availablePackages as $package): ?>
 						<option name="<?php echo $package->getName(); ?>"value="<?php echo $package->getName(); ?>"><?php echo $package->getPrettyName(); ?></option>
 						<?php endforeach; ?>
 					</select> 
