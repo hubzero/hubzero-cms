@@ -111,6 +111,42 @@ class Author extends \JTable
 	}
 
 	/**
+	 * Get array of author Ids ordered by ordering
+	 *
+	 * @param      array $uids Ids of authors for publication
+	 * @param      integer $vid Pub version ID
+	 * @return     mixed False if error, Object on success
+	 */
+	public function getAuthorOrder($uids = null, $vid = null)
+	{
+		if (!$uids)
+		{
+			return false;
+		}
+		if (!$vid)
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid)
+		{
+			return false;
+		}
+		$uids = "'" . implode($uids, "','") . "'";
+		$query  = "SELECT id FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND id IN (" . $uids . ")";
+		$query .= " AND (role != 'submitter')";
+		$query .= " ORDER BY ordering";
+		$this->_db->setQuery( $query );
+		if ($result = $this->_db->loadAssocList())
+		{
+			return $result;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
 	 * Load record by owner ID
 	 *
 	 * @param      integer $owner_id	Project owner ID
