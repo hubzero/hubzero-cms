@@ -299,29 +299,37 @@ class Authors extends Base
 
 		// Incoming
 		$list = Request::getVar( 'list', '' );
-		$authors = explode("-", $list);
-
-		$o = 1;
-		foreach ($authors as $id)
+		$authors = array_filter(explode("-", $list));
+		$authorObj = new \Components\Publications\Tables\Author($this->_parent->_db);
+		$currentAuthors = $authorObj->getAuthorOrder($authors, $pub->version_number);
+		$currentAuthorIds = array_map(function($author){
+			return is_object($author) ? $author->id : $author['id'];
+		}, $currentAuthors);
+		if ($currentAuthorIds !== $authors)
 		{
-			if (!trim($id))
+			$o = 1;
+			foreach ($authors as $id)
 			{
-				continue;
-			}
+				if (!trim($id))
+				{
+					continue;
+				}
 
-			$pAuthor = new \Components\Publications\Tables\Author( $this->_parent->_db );
-			if ($pAuthor->load($id))
-			{
-				$pAuthor->ordering = $o;
-				$o++;
+				$pAuthor = new \Components\Publications\Tables\Author( $this->_parent->_db );
+				if ($pAuthor->load($id))
+				{
+					$pAuthor->ordering = $o;
+					$o++;
 
-				$pAuthor->store();
+					$pAuthor->store();
+				}
 			}
+			$this->set('_message', Lang::txt('New author order saved') );
+			$this->_parent->set('_update', 1);
+			return true;
 		}
-
-		$this->set('_message', Lang::txt('New author order saved') );
-
-		return true;
+		$this->setError('Order is unchanged');
+		return false;
 	}
 
 	/**
