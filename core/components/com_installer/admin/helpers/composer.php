@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @authorZach Weidner <zweidner@purdue.edu>
+ * @author    Zach Weidner <zweidner@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -141,7 +141,7 @@ class ComposerHelper
 		{
 			self::$remoteRepositories = self::_getRepositoryManager()->getRepositories();
 		}
-		return self::$remoteRepositories();
+		return self::$remoteRepositories;
 	}
 
 	private static function _getInstaller()
@@ -214,6 +214,12 @@ class ComposerHelper
 		return $installer->run();
 	}
 
+	private static function _getConfig()
+	{
+		self::_init();
+		return self::$composer->getConfig();
+	}
+
 	public static function updatePackages()
 	{
 		// Send empty array to update all packages
@@ -251,6 +257,56 @@ class ComposerHelper
 		return $remotePackages;
 	}
 
+	public static function getAvailablePackages()
+	{
+		$availablePackages = self::getRemotePackages();
+		$localPackages = self::getLocalPackages();
+		foreach ($localPackages as $installedPackage)
+		{
+			unset($availablePackages[$installedPackage->getName()]);
+		}
+		return $availablePackages;
+	}
+
+	public static function getRepositories()
+	{
+		$remoteRepos = self::_getRemoteRepositories();
+		return $remoteRepos;
+	}
+
+	public static function getRepositoryByUrl($url)
+	{
+		$remoteRepos = self::_getRemoteRepositories();
+		
+		foreach ($remoteRepos as $repo)
+		{
+			$config = $repo->getRepoConfig();
+			if ($config['url'] == $url)
+			{
+				return $repo;
+			}
+		}
+		return null;
+	}
+
+	public static function getRepositoryConfigByAlias($alias)
+	{
+		$config = self::_getConfig();
+		$repos = self::getRepositoryConfigs();
+		if (isset($repos[$alias]))
+		{
+			return $repos[$alias];
+		}
+		return null;
+	}
+
+	public static function getRepositoryConfigs()
+	{
+		$config = self::_getConfig();
+		$repos = $config->getRepositories();
+		return $repos;
+	}
+
 	public static function findRemotePackages($packageName, $versionConstraint)
 	{
 		$repoManager = self::_getRepositoryManager();
@@ -267,5 +323,20 @@ class ComposerHelper
 	{
 		$localRepo = self::_getLocalRepository();
 		return $localRepo->findPackage($packageName, '*');
+	}
+
+	public static function addRepository($alias, $json)
+	{
+		$config = self::_getConfig();
+		$configSource = $config->getConfigSource();
+		$value = JsonFile::parseJson($json);
+		$configSource->addRepository($alias, $value);		
+	}
+
+	public static function removeRepository($alias)
+	{
+		$config = self::_getConfig();
+		$configSource = $config->getConfigSource();
+		$configSource->removeRepository($alias);
 	}
 }
