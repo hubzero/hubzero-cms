@@ -104,7 +104,6 @@ class Repositories extends AdminController
 		{
 			$isNew = true;
 		}
-		
 		$config = ComposerHelper::getRepositoryConfigByAlias($alias);
 
 		$this->view
