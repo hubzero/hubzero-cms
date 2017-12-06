@@ -48,6 +48,15 @@ class JoomlaServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
+		if (!defined('JDEBUG'))
+		{
+			define('JDEBUG', $this->app['config']->get('debug'));
+		}
+		if (!defined('JPROFILE'))
+		{
+			define('JPROFILE', $this->app['config']->get('debug') || $this->app['config']->get('profile'));
+		}
+
 		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
 		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
 
