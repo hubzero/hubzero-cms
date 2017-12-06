@@ -277,7 +277,6 @@ class ComposerHelper
 	public static function getRepositoryByUrl($url)
 	{
 		$remoteRepos = self::_getRemoteRepositories();
-		
 		foreach ($remoteRepos as $repo)
 		{
 			$config = $repo->getRepoConfig();
@@ -330,7 +329,7 @@ class ComposerHelper
 		$config = self::_getConfig();
 		$configSource = $config->getConfigSource();
 		$value = JsonFile::parseJson($json);
-		$configSource->addRepository($alias, $value);		
+		$configSource->addRepository($alias, $value);
 	}
 
 	public static function removeRepository($alias)
