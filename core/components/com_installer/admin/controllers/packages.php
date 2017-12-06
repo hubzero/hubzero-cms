@@ -54,11 +54,6 @@ class Packages extends AdminController
 		// Paging
 		//************************************************/
 		$filters = array(
-			'folder' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.folder',
-				'folder',
-				''
-			)),
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
@@ -72,16 +67,6 @@ class Packages extends AdminController
 				'int'
 			)
 		);
-
-		if ($filters['folder'])
-		{
-			// If the path does not start with a slash,
-			// assume relative to the ROOT path
-			if (substr($filters['folder'], 0, 1) != '/')
-			{
-				$filters['folder'] = PATH_ROOT . DS . $filters['folder'];
-			}
-		}
 		//************************************************/
 
 		$packages = ComposerHelper::getLocalPackages();
@@ -94,7 +79,7 @@ class Packages extends AdminController
 	}
 
 	/**
-	 * Edit or create a new repository
+	 * Edit or create a new package
 	 * 
 	 * @return void
 	 */
@@ -130,14 +115,25 @@ class Packages extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$packageName     = Request::getVar('packageName', null);
-		$packageVersion  = Request::getVar('packageVersion', null);
+		$packageName    = Request::getVar('packageName', null);
+		$packageVersion = Request::getVar('packageVersion', null);
 
 		ComposerHelper::installPackage($packageName, $packageVersion);
 
-		Notify::success(Lang::txt('Migration complete!'));
-
 		// Set the redirect
 		$this->cancelTask();
+	}
+
+	/**
+	 * Add a package to track
+	 * 
+	 * @return void
+	 */
+	public function addTask()
+	{
+		$availablePackages = ComposerHelper::getAvailablePackages();
+		$this->view
+			->set('availablePackages', $availablePackages)
+			->display();
 	}
 }
