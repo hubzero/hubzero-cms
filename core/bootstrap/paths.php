@@ -84,14 +84,14 @@ if (!defined('JPATH_BASE'))
 {
 	define('JPATH_BASE', PATH_ROOT);
 }
-define('JPATH_ROOT',            PATH_ROOT);
-define('JPATH_SITE',            PATH_ROOT);
-define('JPATH_CONFIGURATION',   PATH_APP  . DIRECTORY_SEPARATOR . 'config');
-define('JPATH_ADMINISTRATOR',   PATH_ROOT . DIRECTORY_SEPARATOR . 'administrator');
-define('JPATH_LIBRARIES',       PATH_CORE . DIRECTORY_SEPARATOR . 'libraries');
-define('JPATH_PLUGINS',         PATH_CORE . DIRECTORY_SEPARATOR . 'plugins');
-define('JPATH_INSTALLATION',    PATH_ROOT . DIRECTORY_SEPARATOR . 'installation');
-define('JPATH_THEMES',          PATH_APP  . DIRECTORY_SEPARATOR . 'templates');
-define('JPATH_CACHE',           PATH_APP  . DIRECTORY_SEPARATOR . 'cache');
-define('JPATH_MANIFESTS',       PATH_CORE . DIRECTORY_SEPARATOR . 'manifests');
-define('JPATH_API',             PATH_ROOT . DIRECTORY_SEPARATOR . 'api');
+define('JPATH_ROOT', PATH_ROOT);
+define('JPATH_SITE', PATH_ROOT);
+define('JPATH_CONFIGURATION', PATH_APP  . DIRECTORY_SEPARATOR . 'config');
+define('JPATH_ADMINISTRATOR', PATH_ROOT . DIRECTORY_SEPARATOR . 'administrator');
+define('JPATH_LIBRARIES', PATH_CORE . DIRECTORY_SEPARATOR . 'libraries');
+define('JPATH_PLUGINS', PATH_CORE . DIRECTORY_SEPARATOR . 'plugins');
+define('JPATH_INSTALLATION', PATH_ROOT . DIRECTORY_SEPARATOR . 'installation');
+define('JPATH_THEMES', PATH_APP  . DIRECTORY_SEPARATOR . 'templates');
+define('JPATH_CACHE', PATH_APP  . DIRECTORY_SEPARATOR . 'cache');
+define('JPATH_MANIFESTS', PATH_CORE . DIRECTORY_SEPARATOR . 'manifests');
+define('JPATH_API', PATH_ROOT . DIRECTORY_SEPARATOR . 'api');
