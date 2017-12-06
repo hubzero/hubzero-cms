@@ -333,8 +333,8 @@ class Citations extends Base
 				return false;
 			}
 		}
-
-		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE'));
+		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE') );
+		$this->_parent->set('_update', 1);
 		return true;
 	}
 
@@ -401,6 +401,7 @@ class Citations extends Base
 			return false;
 		}
 
+		$this->_parent->set('_update', 1);
 		return true;
 
 	}
