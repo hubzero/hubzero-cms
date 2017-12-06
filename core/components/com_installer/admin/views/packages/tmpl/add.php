@@ -32,19 +32,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . $this->packageName, 'packages');
+Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . 'TEST', 'packages');
 
 Toolbar::cancel();
 
-$authors = array();
-$packageAuthors = $this->installedPackage->getAuthors();
-if ($packageAuthors)
-{
-	foreach ($packageAuthors as $author)
-	{
-		$authors[] = $author['name'] . ' &lt' . $author['email'] . '&gt';
-	}
-}
 // Determine status & options
 $status = '';
 
@@ -57,43 +48,21 @@ $status = '';
 				<legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="version"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_VERSIONS'); ?>:</label>
-					<select name='packageVersion'>
-						<?php foreach ($this->versions as $version): ?>
-						<option value="<?php echo $version->getVersion(); ?>" <?php echo ($this->installedPackage->getVersion() == $version->getVersion()) ? 'selected="true"' : '';?> > <?php echo $version->getFullPrettyVersion(); ?></option>
+					<label for="packageName"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_PACKAGES'); ?>:</label>
+					<select name="packageName">
+						<?php foreach($this->availablePackages as $package): ?>
+						<option name="<?php echo $package->getName(); ?>"value="<?php echo $package->getName(); ?>"><?php echo $package->getPrettyName(); ?></option>
 						<?php endforeach; ?>
-					</select>
+					</select> 
 
 				</div>
 				<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_VERSION'); ?>">
 
 			</fieldset>
 		</div>
-		<div class="col span5">
-			<table class="meta">
-				<tbody>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALLED_VERSION'); ?>:</th>
-						<td><?php echo $this->installedPackage->getFullPrettyVersion(); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_RELEASE_DATE'); ?>:</th>
-						<td><?php echo $this->installedPackage->getReleaseDate()->format("Y-m-d H:i:s"); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_TYPE'); ?>:</th>
-						<td><?php echo $this->installedPackage->getType(); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AUTHORS'); ?>:</th>
-						<td><?php echo implode(', ', $authors); ?></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 	</div>
 
-	<input type="hidden" name="packageName" value="<?php echo $this->packageName; ?>" />
+	<input type="hidden" name="packageVersion" value="dev-master" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="install" />
 
