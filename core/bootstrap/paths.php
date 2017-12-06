@@ -49,8 +49,10 @@ if (!defined('PATH_APP'))
 | Proceed with caution.
 |
 */
-
-define('PATH_CORE', PATH_ROOT . DIRECTORY_SEPARATOR . 'core');
+if (!defined('PATH_CORE'))
+{
+	define('PATH_CORE', PATH_ROOT . DIRECTORY_SEPARATOR . 'core');
+}
 
 /*
 |--------------------------------------------------------------------------
