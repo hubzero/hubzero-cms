@@ -1210,7 +1210,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$collectionLink = '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>';
 
-		$groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">' 
+		$groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">'
 			. $this->group->get('description') . '</a>';
 
 		Event::trigger('system.logActivity', [
@@ -1368,7 +1368,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$collectionLink = '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>';
 
-		$groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">' 
+		$groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">'
 			. $this->group->get('description') . '</a>';
 
 		Event::trigger('system.logActivity', [
