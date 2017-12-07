@@ -205,7 +205,8 @@ class plgCartPuaccount extends \Hubzero\Plugin\Plugin
 		return $response;
 	}
 
-	private function checkNumber($parts) {
+	private function checkNumber($parts)
+	{
 		$response = array();
 		$response['status'] = 'ok';
 
