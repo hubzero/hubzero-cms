@@ -613,6 +613,11 @@ class Warehouse extends \Hubzero\Base\Object
 			$whiteListSql .= $addToSql;
 		}
 
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'title';
+		}
+
 		if (isset($filters['sort']))
 		{
 
@@ -626,10 +631,12 @@ class Warehouse extends \Hubzero\Base\Object
 			}
 
 			$sql .= " ORDER BY " . $filters['sort'];
+			$whiteListSql .= " ORDER BY " . $filters['sort'];
 
 			if (isset($filters['sort_Dir']))
 			{
 				$sql .= ' ' . $filters['sort_Dir'];
+				$whiteListSql .= ' ' . $filters['sort_Dir'];
 			}
 		}
 
