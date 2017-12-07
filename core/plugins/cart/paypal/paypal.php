@@ -29,47 +29,46 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Bootstrap\Administrator\Providers;
-
-use Hubzero\Base\ServiceProvider;
-
 /**
- * Joomla handler service provider
- * 
- * This loads in the core Joomla framework and instantiates
- * the base application class.
+ * Cart plugin for Payment: Paypal
  */
-class JoomlaServiceProvider extends ServiceProvider
+class plgCartPaypal extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Register the exception handler.
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @return  void
+	 * @var  boolean
 	 */
-	public function boot()
+	protected $_autoloadLanguage = true;
+
+	/**
+	 * Render payment options
+	 *
+	 * @param   object  $cart
+	 * @param   object  $user
+	 * @return  array
+	 */
+	public function onRenderPaymentOptions($cart, $user)
 	{
-		if (!defined('JDEBUG'))
-		{
-			define('JDEBUG', $this->app['config']->get('debug'));
-		}
-		if (!defined('JPROFILE'))
-		{
-			define('JPROFILE', $this->app['config']->get('debug') || $this->app['config']->get('profile'));
-		}
+		$view = $this->view('default', 'payment')
+			->set('user', $user)
+			->set('cart', $cart);
 
-		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
-		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
+		$payment = array();
+		$payment['options'] = $view->loadTemplate();
+		$payment['title'] = $this->params->get('title', 'PayPal');
+		$payment['description'] = $this->params->get('description', 'Checkout with PayPal');
 
-		jimport('joomla.application.menu');
-		jimport('joomla.environment.uri');
-		jimport('joomla.utilities.utility');
-		jimport('joomla.event.dispatcher');
-		jimport('joomla.utilities.arrayhelper');
-		jimport('joomla.html.parameter');
+		return $payment;
+	}
 
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'helper.php';
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'toolbar.php';
-
-		$app = \JFactory::getApplication('administrator');
+	/**
+	 * Return a list of filters that can be applied
+	 *
+	 * @return  array
+	 */
+	public function onProcessPayment($transaction, $user)
+	{
+		return true;
 	}
 }

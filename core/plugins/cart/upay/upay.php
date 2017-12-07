@@ -29,47 +29,76 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Bootstrap\Administrator\Providers;
-
-use Hubzero\Base\ServiceProvider;
-
 /**
- * Joomla handler service provider
- * 
- * This loads in the core Joomla framework and instantiates
- * the base application class.
+ * Cart plugin for Payment: UPay
  */
-class JoomlaServiceProvider extends ServiceProvider
+class plgCartUpay extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Register the exception handler.
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @return  void
+	 * @var  boolean
 	 */
-	public function boot()
+	protected $_autoloadLanguage = true;
+
+	/**
+	 * Render payment options
+	 *
+	 * @param   object  $cart
+	 * @param   object  $user
+	 * @return  array
+	 */
+	public function onRenderPaymentOptions($cart, $user)
 	{
-		if (!defined('JDEBUG'))
+		$view = $this->view('default', 'payment')
+			->set('user', $user)
+			->set('cart', $cart);
+
+		$payment = array();
+		$payment['options'] = $view->loadTemplate();
+		$payment['title'] = $this->params->get('title', 'Offline');
+
+		return $payment;
+	}
+
+	/**
+	 * Return a list of filters that can be applied
+	 *
+	 * @return  array
+	 */
+	public function onProcessPayment($transaction, $user)
+	{
+		return true;
+	}
+
+	/**
+	 * Get the Posting URL
+	 *
+	 * @return  string
+	 */
+	private function getPostURL()
+	{
+		if ($this->params->get('env') == 'LIVE')
 		{
-			define('JDEBUG', $this->app['config']->get('debug'));
+			$url = 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
 		}
-		if (!defined('JPROFILE'))
+		else
 		{
-			define('JPROFILE', $this->app['config']->get('debug') || $this->app['config']->get('profile'));
+			$url = 'https://secure.touchnet.com:8443/C21261test_upay/web/index.jsp';
 		}
 
-		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
-		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
+		return $url;
+	}
 
-		jimport('joomla.application.menu');
-		jimport('joomla.environment.uri');
-		jimport('joomla.utilities.utility');
-		jimport('joomla.event.dispatcher');
-		jimport('joomla.utilities.arrayhelper');
-		jimport('joomla.html.parameter');
-
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'helper.php';
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'toolbar.php';
-
-		$app = \JFactory::getApplication('administrator');
+	/**
+	 * Generate the validation key
+	 *
+	 * @param   array   $transaction
+	 * @return  string
+	 */
+	private function generateValidationKey($transaction)
+	{
+		$base = $this->params->get('validationKey') . $transaction['EXT_TRANS_ID'] . $transaction['AMT'];
+		return base64_encode(md5($base, true));
 	}
 }

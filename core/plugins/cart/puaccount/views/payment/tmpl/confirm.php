@@ -29,47 +29,20 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Bootstrap\Administrator\Providers;
+// No direct access
+defined('_HZEXEC_') or die();
+?>
+<form action="<?php echo $this->get('url'); ?>" method="post">
 
-use Hubzero\Base\ServiceProvider;
+	<?php
 
-/**
- * Joomla handler service provider
- * 
- * This loads in the core Joomla framework and instantiates
- * the base application class.
- */
-class JoomlaServiceProvider extends ServiceProvider
-{
-	/**
-	 * Register the exception handler.
-	 *
-	 * @return  void
-	 */
-	public function boot()
-	{
-		if (!defined('JDEBUG'))
-		{
-			define('JDEBUG', $this->app['config']->get('debug'));
-		}
-		if (!defined('JPROFILE'))
-		{
-			define('JPROFILE', $this->app['config']->get('debug') || $this->app['config']->get('profile'));
-		}
+	//print_r($this->parts); die;
 
-		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
-		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
+	?>
 
-		jimport('joomla.application.menu');
-		jimport('joomla.environment.uri');
-		jimport('joomla.utilities.utility');
-		jimport('joomla.event.dispatcher');
-		jimport('joomla.utilities.arrayhelper');
-		jimport('joomla.html.parameter');
-
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'helper.php';
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'toolbar.php';
-
-		$app = \JFactory::getApplication('administrator');
-	}
-}
+	<input type="hidden" name="paymentProvider" value="puaccount">
+	<input type="hidden" name="account_part_1" value="<?php echo $this->parts[0]; ?>" />
+	<input type="hidden" name="account_part_2" value="<?php echo $this->parts[1]; ?>" />
+	<input type="hidden" name="account_part_3" value="<?php echo $this->parts[2]; ?>" />
+	<input type="submit" class="btn" name="paymentSubmit" value="Complete the order" />
+</form>

@@ -29,47 +29,28 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Bootstrap\Administrator\Providers;
+// No direct access
+defined('_HZEXEC_') or die();
 
-use Hubzero\Base\ServiceProvider;
+?>
 
-/**
- * Joomla handler service provider
- * 
- * This loads in the core Joomla framework and instantiates
- * the base application class.
- */
-class JoomlaServiceProvider extends ServiceProvider
+<?php
+
+if (!empty($this->error))
 {
-	/**
-	 * Register the exception handler.
-	 *
-	 * @return  void
-	 */
-	public function boot()
-	{
-		if (!defined('JDEBUG'))
-		{
-			define('JDEBUG', $this->app['config']->get('debug'));
-		}
-		if (!defined('JPROFILE'))
-		{
-			define('JPROFILE', $this->app['config']->get('debug') || $this->app['config']->get('profile'));
-		}
-
-		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
-		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
-
-		jimport('joomla.application.menu');
-		jimport('joomla.environment.uri');
-		jimport('joomla.utilities.utility');
-		jimport('joomla.event.dispatcher');
-		jimport('joomla.utilities.arrayhelper');
-		jimport('joomla.html.parameter');
-
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'helper.php';
-		require_once PATH_CORE . DS . 'joomla' . DS . 'administrator' . DS . 'toolbar.php';
-
-		$app = \JFactory::getApplication('administrator');
-	}
+	echo '<p class="error">' . $this->error . '</p>';
 }
+?>
+
+<form action="<?php echo $this->get('url'); ?>" method="post">
+	<fieldset class="filters">
+		<legend>Account Number</legend>
+
+		<input type="text" name="account_part_1" id="payment-account1" value="<?php if(!empty($this->parts[0])) { echo $this->parts[0]; } ?>" placeholder="Fund" /> -
+		<input type="text" name="account_part_2" id="payment-account2" value="<?php if(!empty($this->parts[1])) { echo $this->parts[1]; } ?>" placeholder="Cost Center" /> -
+		<input type="text" name="account_part_3" id="payment-account3" value="<?php if(!empty($this->parts[2])) { echo $this->parts[2]; } ?>" placeholder="S10" />
+	</fieldset>
+
+	<input type="hidden" name="paymentProvider" value="puaccount">
+	<p><input type="submit" class="btn" name="paymentSelect" value="Pay with PU Account" /></p>
+</form>
