@@ -676,7 +676,8 @@ class Warehouse extends \Hubzero\Base\Object
 			require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
 			foreach ($allProducts as $pId => $product)
 			{
-				if (!array_key_exists($pId, $products)) {
+				if (!array_key_exists($pId, $products))
+				{
 					// Get all SKUs for this product and check if the user is whitelisted
 					// Get the SKUs whitelist for a user
 					$allProductSkus = $this->getProductSkus($product->pId);
