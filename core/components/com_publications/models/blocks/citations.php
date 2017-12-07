@@ -146,8 +146,8 @@ class Citations extends Base
 
 		// Get selector styles
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','selector');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
 		if (!isset($pub->_citations))
 		{
@@ -413,7 +413,7 @@ class Citations extends Base
 				'params'       => array('required' => 0, 'published_editing' => 1)
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;
