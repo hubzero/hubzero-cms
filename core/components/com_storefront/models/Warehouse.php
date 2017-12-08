@@ -682,7 +682,7 @@ class Warehouse extends \Hubzero\Base\Obj
 					// Get the SKUs whitelist for a user
 					$allProductSkus = $this->getProductSkus($product->pId);
 					$whitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
-					if(empty($whitelistedSkus))
+					if (empty($whitelistedSkus))
 					{
 						$notAuthorizedProducts[] = $product;
 					}
