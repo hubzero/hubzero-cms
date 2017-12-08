@@ -230,7 +230,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 * @param   object  $uri
 	 * @return  void
 	 */
-	public function buildRule($uri) //&$router, 
+	public function buildRule($uri)
 	{
 		$sef = $uri->getVar('lang');
 		if (empty($sef))
@@ -259,7 +259,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 					// test if the url contains same vars as in menu link
 					$test = true;
-					foreach ($uri->getQuery(true) as $key=>$value)
+					foreach ($uri->getQuery(true) as $key => $value)
 					{
 						if (!in_array($key, array('format', 'Itemid', 'lang')) && !(isset($vars[$key]) && $vars[$key] == $value))
 						{
@@ -286,12 +286,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		if (self::$mode_sef)
 		{
 			$uri->delVar('lang');
-			if (
-				$this->params->get('remove_default_prefix', 0) == 0 ||
-				$sef != self::$default_sef ||
-				$sef != self::$lang_codes[self::$tag]->sef ||
-				$this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie
-			)
+			if ($this->params->get('remove_default_prefix', 0) == 0
+			 || $sef != self::$default_sef
+			 || $sef != self::$lang_codes[self::$tag]->sef
+			 || $this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie)
 			{
 				$uri->setPath($uri->getPath() . '/' . $sef . '/');
 			}
@@ -315,10 +313,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 * @param   object  $uri
 	 * @return  void
 	 */
-	public function parseRule($uri) //&$router, 
+	public function parseRule($uri)
 	{
 		$array = array();
-		$lang_code = Request::getString(App::hash('language'), null , 'cookie');
+		$lang_code = Request::getString(App::hash('language'), null, 'cookie');
 
 		// No cookie - let's try to detect browser language or use site default
 		if (!$lang_code)
@@ -389,7 +387,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					)
 					{
 						array_shift($parts);
-						$uri->setPath(implode('/' , $parts));
+						$uri->setPath(implode('/', $parts));
 
 						if (Config::get('sef_rewrite'))
 						{
