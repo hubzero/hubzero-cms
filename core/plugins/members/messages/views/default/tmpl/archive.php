@@ -48,7 +48,7 @@ $this->css()
 				if ($this->components) {
 					foreach ($this->components as $component)
 					{
-						$component = substr($component->component, 4);
+						$component = ucfirst(substr($component->component, 4));
 						$sbjt  = "\t\t\t".'<option value="'.$component.'"';
 						$sbjt .= ($component == $this->filters['filter']) ? ' selected="selected"' : '';
 						$sbjt .= '>'.$component.'</option>'."\n";

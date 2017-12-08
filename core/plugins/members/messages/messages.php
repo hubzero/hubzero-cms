@@ -839,6 +839,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
+		$filters = array(
+			'limit' => Request::getState(
+				$option . '.plugin.messages.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			)
+		);
+
 		// Incoming
 		//$override = Request::getInt('override',0);
 		$settings = Request::getVar('settings',array());
@@ -930,7 +939,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Push through to the settings view
 		$this->addPluginMessage(Lang::txt('You have successfully saved your message settings.'), 'passed');
 
-		return App::redirect(Route::url($member->link() . '&active=messages&action=settings'));
+		return App::redirect(htmlspecialchars_decode(Route::url($member->link() . '&active=messages&task=inbox&limit=' . $filters['limit'] . '&limitstart=0')));
 	}
 
 	/**

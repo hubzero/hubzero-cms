@@ -48,10 +48,10 @@ $this->css()
 				{
 					foreach ($this->components as $component)
 					{
-						$component = substr($component->component, 4);
-						$sbjt  = '<option value="'.$component.'"';
+						$component = ucfirst(substr($component->component, 4));
+						$sbjt  = '<option value="' . $component . '"';
 						$sbjt .= ($component == $this->filters['filter']) ? ' selected="selected"' : '';
-						$sbjt .= '>'.$component.'</option>'."\n";
+						$sbjt .= '>' . $component . '</option>' . "\n";
 						echo $sbjt;
 					}
 				}
