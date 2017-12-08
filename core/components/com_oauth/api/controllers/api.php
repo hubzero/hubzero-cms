@@ -33,8 +33,6 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-JLoader::import('Hubzero.Api.Controller');
-
 /**
  * Short description for 'OauthApiController'
  *
@@ -42,7 +40,6 @@ JLoader::import('Hubzero.Api.Controller');
  */
 class OauthControllerApi extends \Hubzero\Component\ApiController
 {
-
 	/**
 	 * Short description for 'execute'
 	 *
@@ -50,7 +47,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 *
 	 * @return     void
 	 */
-	function execute()
+	public function execute()
 	{
 		switch ($this->segments[0])
 		{
@@ -185,8 +182,6 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function authorize()
 	{
-		jimport('joomla.environment.request');
-
 		$oauth_token = Request::getVar('oauth_token');
 
 		if (empty($oauth_token))
@@ -214,12 +209,11 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
-			jimport('joomla.application.component.view');
-
 			$this->view = new \Hubzero\Component\View(array(
-					'base_path' => PATH_CORE . DS . 'components' . DS . 'com_oauth',
-					'name' => 'authorize',
-					'layout' => 'authorize'));
+				'base_path' => dirname(dirname(__DIR__)) . '/site',
+				'name'      => 'authorize',
+				'layout'    => 'authorize'
+			));
 
 
 			$this->view->oauth_token = $oauth_token;
@@ -239,8 +233,6 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				// so record: user_id consumer_key accesstoken #acl
 
 				// $db->setQuery("SELECT access_token FROM #__user_accesstokens WHERE user_id=" . $db->Quote($useraccount->getUserId()) . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
-
-
 
 				if (!empty($result->callback_url))
 				{

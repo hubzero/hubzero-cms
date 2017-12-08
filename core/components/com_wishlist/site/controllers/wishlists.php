@@ -2499,7 +2499,7 @@ class Wishlists extends SiteController
 		else
 		{
 			// Scan for viruses
-			$path = $path . DS . $file['name']; //PATH_CORE . DS . 'virustest';
+			$path = $path . DS . $file['name'];
 
 			if (!Filesystem::isSafe($path))
 			{
@@ -2551,7 +2551,6 @@ class Wishlists extends SiteController
 			App::abort(404, Lang::txt('Unknown file type.'));
 		}
 
-		// Add PATH_CORE
 		$filename = $attachment->link('file');
 
 		// Ensure the file exist

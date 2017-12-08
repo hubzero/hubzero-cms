@@ -102,7 +102,7 @@ class Courses extends GenericItem
 
 		$id = ($id ?: Request::getInt('id', 0));
 
-		include_once(Component::path('com_courses') . DS . 'models' . DS . 'courses.php');
+		include_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 		$course = null;
 
 		if (!$id)

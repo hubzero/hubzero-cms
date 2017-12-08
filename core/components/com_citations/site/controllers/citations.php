@@ -405,7 +405,7 @@ class Citations extends SiteController
 
 		// Build paths to type specific overrides
 		$componentTypeOverride = Component::path('com_citations') . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
-		$tempalteTypeOverride  = PATH_CORE . DS . 'templates' . DS . App::get('template')->template . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
+		$tempalteTypeOverride  = App::get('template')->path . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
 
 		//if we found an override use it
 		if (file_exists($tempalteTypeOverride) || file_exists($componentTypeOverride))

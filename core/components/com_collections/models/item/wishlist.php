@@ -109,7 +109,7 @@ class Wishlist extends GenericItem
 			return true;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		include_once \Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
 		$wish = new Wish($id);
 
