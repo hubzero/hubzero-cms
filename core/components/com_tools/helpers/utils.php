@@ -415,7 +415,7 @@ class Utils
 		}
 
 		//get access settings
-		$exportAllowed = \Components\Tools\Helpers\Utils::getToolExportAccess($toolVersion->exportControl);
+		$exportAllowed = self::getToolExportAccess($toolVersion->exportControl);
 		$isToolPublished = ($toolVersion->state == 1);
 		$isToolDev = ($toolVersion->state == 3);
 		$isGroupControlled = ($toolVersion->toolaccess == '@GROUP');

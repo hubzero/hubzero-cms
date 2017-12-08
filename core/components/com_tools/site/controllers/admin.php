@@ -167,7 +167,7 @@ class Admin extends SiteController
 		}
 
 		$ldap_params = Component::params('com_system');
-		$pw = $ldap_params->get('ldap_searchpw','');
+		$pw = $ldap_params->get('ldap_searchpw', '');
 
 		$command  = '/usr/bin';
 		$command .= DS . 'addrepo ' . $status['toolname'];
@@ -742,10 +742,10 @@ class Admin extends SiteController
 		}
 
 		// We need to make sure we don't prepend with PATH_APP if we already have a root-relative path
-		$tarball_path = $this->config->get('sourcecodePath','site/protected/source');
+		$tarball_path = $this->config->get('sourcecodePath', 'site/protected/source');
 		if (substr($tarball_path, 0, 1) != DS)
 		{
-			$tarball_path = PATH_APP . DS . trim($this->config->get('sourcecodePath','site/protected/source'), DS);
+			$tarball_path = PATH_APP . DS . trim($this->config->get('sourcecodePath', 'site/protected/source'), DS);
 		}
 
 		Log::debug("finalizeTool(): checkpoint 2");
