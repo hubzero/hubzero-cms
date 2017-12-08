@@ -161,8 +161,7 @@ class UsersCategoriesv2_0 extends ApiController
 
 		$result['status'] = empty($errors) ? 'success' : 'error';
 
-		echo json_encode($result);
-		exit();
+		$this->send($result);
 	}
 
 	protected function _destroyUsersCategories($usersCategories)
@@ -189,8 +188,8 @@ class UsersCategoriesv2_0 extends ApiController
 				'status' => 'error',
 				'error' => 'User ID mismatch, unable to proceed.'
 			);
-			echo json_encode($error);
-			exit();
+
+			$this->send($result);
 		}
 	}
 
