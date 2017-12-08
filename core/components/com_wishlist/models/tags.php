@@ -34,7 +34,7 @@ namespace Components\Wishlist\Models;
 
 use Components\Tags\Models\Cloud;
 
-require_once Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
+require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Wishlist Tagging class
@@ -120,7 +120,7 @@ class Tags extends Cloud
 				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
 					$view = new \Hubzero\Component\View(array(
-						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site',
+						'base_path' => dirname(__DIR__) . DS . 'site',
 						'name'      => 'wishlists',
 						'layout'    => '_tags'
 					));

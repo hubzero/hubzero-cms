@@ -103,58 +103,62 @@ class Systemv1_0 extends ApiController
 			'environment' => Config::get('application_env', 'production')
 		);
 
-		require_once PATH_CORE . DS . 'components' . DS . 'com_update' . DS . 'helpers' . DS . 'cli.php';
-
-		$source = Component::params('com_update')->get('git_repository_source', null);
-
-		//$response->system['repositoryVersion']   = json_decode(Cli::version());
-		//$response->system['repositoryVersion']   = $response->system['repositoryVersion'][0];
-		//$response->system['repositoryMechanism'] = json_decode(Cli::mechanism());
-		//$response->system['repositoryMechanism'] = $response->system['repositoryMechanism'][0];
-		//$response->system['status']    = json_decode(Cli::status());
-		$response->system['status']    = (count(json_decode(Cli::status())) > 0 ? 'dirty' : 'clean');
-		$response->system['upcoming']  = json_decode(Cli::update(true, false, $source));
-		$response->system['migration'] = json_decode(Cli::migration());
-
-		// Get the last update
-		$rows = json_decode(
-			Cli::log(
-				1,
-				0,
-				'',
-				false,
-				true,
-				false,
-				null
-			)
-		);
-		if ($rows)
+		if (file_exists(\Component::path('com_update') . DS . 'helpers' . DS . 'cli.php'))
 		{
-			$props = get_object_vars($rows);
-			foreach ($props as $key => $item)
+			require_once \Component::path('com_update') . DS . 'helpers' . DS . 'cli.php';
+
+			$source = Component::params('com_update')->get('git_repository_source', null);
+
+			//$response->system['repositoryVersion']   = json_decode(Cli::version());
+			//$response->system['repositoryVersion']   = $response->system['repositoryVersion'][0];
+			//$response->system['repositoryMechanism'] = json_decode(Cli::mechanism());
+			//$response->system['repositoryMechanism'] = $response->system['repositoryMechanism'][0];
+			//$response->system['status']    = json_decode(Cli::status());
+			$response->system['status']    = (count(json_decode(Cli::status())) > 0 ? 'dirty' : 'clean');
+			$response->system['upcoming']  = json_decode(Cli::update(true, false, $source));
+			$response->system['migration'] = json_decode(Cli::migration());
+
+			// Get the last update
+			$rows = json_decode(
+				Cli::log(
+					1,
+					0,
+					'',
+					false,
+					true,
+					false,
+					null
+				)
+			);
+			if ($rows)
 			{
-				$response->system['last_update'] = $item;
+				$props = get_object_vars($rows);
+				foreach ($props as $key => $item)
+				{
+					$response->system['last_update'] = $item;
+				}
 			}
-		}
 
-		// Get last core update
-		$rows = json_decode(
-			Cli::log(
-				1,
-				0,
-				'Merge remote-tracking',
-				false,
-				true,
-				false,
-				null
-			)
-		);
-		if ($rows)
-		{
-			$props = get_object_vars($rows);
-			foreach ($props as $key => $item)
+			// Get last core update
+			$rows = json_decode(
+				Cli::log(
+					1,
+					0,
+					'Merge remote-tracking',
+					false,
+					true,
+					false,
+					null
+				)
+			);
+
+			if ($rows)
 			{
-				$response->system['last_update_core'] = $item;
+				$props = get_object_vars($rows);
+				foreach ($props as $key => $item)
+				{
+					$response->system['last_update_core'] = $item;
+				}
 			}
 		}
 

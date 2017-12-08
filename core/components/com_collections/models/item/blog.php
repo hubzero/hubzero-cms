@@ -102,7 +102,7 @@ class Blog extends GenericItem
 
 		$id = ($id ?: Request::getInt('id', 0));
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 		$post = null;
 
 		if (!$id)

@@ -493,7 +493,7 @@ class Screenshots extends SiteController
 	 */
 	private function _createAnimThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
 	{
-		$imorig = imagecreatefromjpeg(PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
+		$imorig = imagecreatefromjpeg(dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
 		$x = imageSX($imorig);
 		$y = imageSY($imorig);
 

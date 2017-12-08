@@ -174,7 +174,7 @@ class Admin extends SiteController
 		$command .= ' -title ' . escapeshellarg($status['title']);
 		$command .= ' -description ' . escapeshellarg($status['description']);
 		$command .= ' -password "' . $pw . '"';
-		$command .= ' -hubdir ' . PATH_CORE . "/../";
+		$command .= ' -hubdir ' . PATH_ROOT;
 
 		$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
 
@@ -252,7 +252,7 @@ class Admin extends SiteController
 				$command = '/usr/bin/sudo -u apps '
 						. '/usr/bin/git2svn.sh -g ' . $status['github']
 						. ' -s ' . $status['toolname']
-						. ' -c ' . PATH_CORE . '/..';
+						. ' -c ' . PATH_ROOT;
 
 				if (!$this->_invokeScript($command, Lang::txt('Github repository connection successful')))
 				{
@@ -262,7 +262,7 @@ class Admin extends SiteController
 		}
 
 		// Build the exec command
-		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . PATH_CORE . '/../ ' . $status['toolname'];
+		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . PATH_ROOT . '/ ' . $status['toolname'];
 
 		// Invoke the script
 		if (!$this->getError() && $this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED')))
@@ -773,7 +773,7 @@ class Admin extends SiteController
 			fclose($handle);
 			chmod($fname, 0664);
 
-			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . PATH_CORE . '/../ -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
+			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . PATH_ROOT . '/ -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
 
 			Log::debug("finalizeTool(): checkpoint 3: $command");
 

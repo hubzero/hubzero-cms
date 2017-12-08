@@ -32,7 +32,7 @@
 namespace Components\Developer\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+require_once \Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 
 /**
  * Handles hub callbacks from external applications

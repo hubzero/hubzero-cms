@@ -102,7 +102,7 @@ class Kb extends GenericItem
 
 		$id = ($id ?: Request::getInt('id', 0));
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'article.php');
+		include_once \Component::path('com_kb') . DS . 'models' . DS . 'article.php';
 		$article = null;
 
 		if (!$id)

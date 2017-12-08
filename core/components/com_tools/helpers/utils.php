@@ -300,7 +300,7 @@ class Utils
 	public static function getResourcePath($createdDate, $resourceId, $versionId)
 	{
 		//include the resources html helper file
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
 		//get resource upload path
 		$resourceParams = Component::params('com_resources');

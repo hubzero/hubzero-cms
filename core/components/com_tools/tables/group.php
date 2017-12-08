@@ -43,8 +43,8 @@ class Group extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -54,7 +54,7 @@ class Group extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -74,14 +74,12 @@ class Group extends \JTable
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $cn Parameter description (if any) ...
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      string $role Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $cn
+	 * @param   string  $toolid
+	 * @param   string  $role
+	 * @return  void
 	 */
 	public function save($cn, $toolid = '', $role = '')
 	{
@@ -93,13 +91,13 @@ class Group extends \JTable
 	/**
 	 * Save a group
 	 *
-	 * @param      string  $toolid   Tool ID
-	 * @param      string  $devgroup Group name
-	 * @param      array   $members  List of members
-	 * @param      boolean $exist    Group exists?
-	 * @return     boolean True if no errors
+	 * @param   string   $toolid    Tool ID
+	 * @param   string   $devgroup  Group name
+	 * @param   array    $members   List of members
+	 * @param   boolean  $exist     Group exists?
+	 * @return  boolean  True if no errors
 	 */
-	public function saveGroup($toolid=NULL, $devgroup, $members, $exist)
+	public function saveGroup($toolid=null, $devgroup, $members, $exist)
 	{
 		if (!$toolid or !$devgroup)
 		{
@@ -139,24 +137,22 @@ class Group extends \JTable
 	}
 
 	/**
-	 * Short description for 'saveMemberGroups'
+	 * Save member groups
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      array $newgroups Parameter description (if any) ...
-	 * @param      string $editversion Parameter description (if any) ...
-	 * @param      array $membergroups Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $toolid
+	 * @param   array   $newgroups
+	 * @param   string  $editversion
+	 * @param   array   $membergroups
+	 * @return  boolean
 	 */
-	public function saveMemberGroups($toolid=NULL, $newgroups, $editversion='dev', $membergroups=array())
+	public function saveMemberGroups($toolid=null, $newgroups, $editversion='dev', $membergroups=array())
 	{
 		if (!$toolid)
 		{
 			return false;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+		require_once dirname(__DIR__) . DS . 'models' . DS . 'tool.php';
 
 		$membergroups = \Components\Tools\Models\Tool::getToolGroups($toolid);
 		$membergroups = \Components\Tools\Helpers\Utils::transform($membergroups, 'cn');
@@ -191,11 +187,11 @@ class Group extends \JTable
 	/**
 	 * Write the list of group members
 	 *
-	 * @param      array   $new      New members
-	 * @param      unknown $id       Parameter description (if any) ...
-	 * @param      object  $database JDatabase
-	 * @param      string  &$err     Error message
-	 * @return     array
+	 * @param   array    $new       New members
+	 * @param   integer  $id
+	 * @param   object   $database  Database
+	 * @param   string   &$err      Error message
+	 * @return  array
 	 */
 	public function writeMemberGroups($new, $id, $database, &$err='')
 	{
@@ -240,11 +236,11 @@ class Group extends \JTable
 	/**
 	 * Get a list of team members
 	 *
-	 * @param      array   $new      Parameter description (if any) ...
-	 * @param      unknown $id       Parameter description (if any) ...
-	 * @param      object  $database JDatabase
-	 * @param      string  &$err     Error message
-	 * @return     array
+	 * @param   array    $new
+	 * @param   integer  $id
+	 * @param   object   $database  Database
+	 * @param   string   &$err      Error message
+	 * @return  array
 	 */
 	public function writeTeam($new, $id, $database, &$err='')
 	{
