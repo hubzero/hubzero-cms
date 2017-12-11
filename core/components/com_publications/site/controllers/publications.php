@@ -1624,7 +1624,7 @@ class Publications extends SiteController
 		{
 			$owners[$owner->userid] = $owner->id;
 		}
-		/* Actually, don't copy authors...
+
 		foreach ($authors as $author)
 		{
 			$owner_id = $author->get('project_owner_id');
@@ -1661,7 +1661,6 @@ class Publications extends SiteController
 				App::abort(500, $author->getError());
 			}
 		}
-		*/
 
 		// Add the user as the author of the publication
 		$author = Models\Orm\Author::blank();
