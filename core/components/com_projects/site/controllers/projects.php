@@ -315,6 +315,7 @@ class Projects extends Base
 		$action       = Request::getVar('action', '');
 		$confirmcode  = Request::getVar('confirm', '');
 		$email        = Request::getVar('email', '');
+		$subdir       = Request::getVar('subdir');
 		$sync         = false;
 
 		// Stop ajax action if user got logged out
@@ -513,7 +514,7 @@ class Projects extends Base
 		}
 
 		// Private project
-		if (!$this->model->isPublic() && $layout != 'invited')
+		if (!$this->model->isPublic() && $layout != 'invited' && $subdir != 'public')
 		{
 			// Login required
 			if (User::isGuest())
