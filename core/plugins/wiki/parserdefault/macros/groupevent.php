@@ -123,12 +123,12 @@ class GroupEventMacro extends WikiMacro
 	}
 
 	/**
-	* Query for group events
-	*
-	* @param       array  $group    Array of group events
-	* @param       array  $filters  Array of filters
-	* @return      array
-	*/
+	 * Query for group events
+	 *
+	 * @param       array  $group    Array of group events
+	 * @param       array  $filters  Array of filters
+	 * @return      array
+	 */
 	private function getGroupEvents( $group, $filters = array() )
 	{
 		//instantiate database
@@ -168,7 +168,7 @@ class GroupEventMacro extends WikiMacro
 	 * @param      array   $events Array of events
 	 * @return     string
 	 */
-	private function renderEvents( $group, $events )
+	private function renderEvents($group, $events)
 	{
 		$content = '';
 		if (count($events) > 0)

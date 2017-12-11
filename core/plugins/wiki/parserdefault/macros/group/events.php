@@ -196,4 +196,3 @@ class Events extends GroupMacro
 		return $content;
 	}
 }
-
