@@ -46,15 +46,54 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * Get endpoint configurations
+	 *
+	 * @return  array
+	 */
+	protected function getEndpoints()
+	{
+		$endpoints = array();
+
+		foreach (array(1, 2, 3) as $point)
+		{
+			$sfx = ($point > 1 ? $point : '');
+
+			$endpoints[] = array(
+				// Default endpoint info
+				'endpoint' => $this->params->get('endpoint' . $sfx),
+				'username' => $this->params->get('username' . $sfx),
+				'channel'  => $this->params->get('channel' . $sfx),
+				// Ticket created
+				'notify_created'  => $this->params->get('notify_created' . $sfx),
+				'group_created'   => $this->params->get('group_created' . $sfx),
+				'channel_created' => ($this->params->get('channel_created' . $sfx) ? $this->params->get('channel_created' . $sfx) : $this->params->get('channel' . $sfx)),
+				// Ticket updated
+				'notify_updated'  => $this->params->get('notify_updated' . $sfx),
+				'notify_private'  => $this->params->get('notify_private' . $sfx),
+				'group_updated'   => $this->params->get('group_updated' . $sfx),
+				'channel_updated' => ($this->params->get('channel_updated' . $sfx) ? $this->params->get('channel_updated' . $sfx) : $this->params->get('channel' . $sfx))
+			);
+		}
+
+		return $endpoints;
+	}
+
+	/**
 	 * Check if the plugin was properly configured
 	 *
+	 * @param   array  $options
 	 * @return  bool
 	 */
-	protected function isReady()
+	protected function isReady($options)
 	{
-		$endpoint = $this->params->get('endpoint');
-		$username = $this->params->get('username');
-		$channel  = $this->params->get('channel');
+		if (empty($options))
+		{
+			return false;
+		}
+
+		$endpoint = $options['endpoint'];
+		$username = $options['username'];
+		$channel  = $options['channel'];
 
 		if (!$endpoint || !$username || !$channel)
 		{
@@ -67,12 +106,13 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send notification
 	 *
-	 * @param   array  $data
+	 * @param   string  $channel
+	 * @param   array   $data
 	 * @return  bool
 	 */
-	protected function send($channel, $data)
+	protected function send($endpoint, $username, $channel, $data)
 	{
-		if (!$channel || empty($data))
+		if (!$endpoint || !$username || !$channel || empty($data))
 		{
 			return false;
 		}
@@ -85,9 +125,9 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 
 		// Set up the client
 		$client = new Maknz\Slack\Client(
-			$this->params->get('endpoint'),
+			$endpoint,
 			array(
-				'username'       => $this->params->get('username'),
+				'username'       => $username,
 				'channel'        => '#' . trim($channel, '#'),
 				'link_names'     => ($this->params->get('link_names', 1) ? true : false),
 				'allow_markdown' => ($this->params->get('allow_markdown', 1) ? true : false)
@@ -115,59 +155,68 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTicketSubmission($ticket)
 	{
-		if (!$this->isReady() || !$this->params->get('notify_created'))
-		{
-			return;
-		}
+		$endpoints = $this->getEndpoints();
 
-		if ($group = $this->params->get('group_created'))
+		foreach ($endpoints as $endpoint)
 		{
-			if ($group != $ticket->get('group'))
+			if (!$this->isReady($endpoint) || !$endpoint['notify_created'])
 			{
 				return;
 			}
-		}
 
-		$channel = $this->params->get('channel');
-		$url     = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($ticket->link()), '/');
-		if (App::isAdmin())
-		{
-			$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
-		}
-		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
-		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
+			if ($group = $endpoint['group_created'])
+			{
+				if ($group != $ticket->get('group'))
+				{
+					return;
+				}
+			}
 
-		if (Component::params('com_support')->get('email_terse'))
-		{
-			$text = Lang::txt('PLG_SUPPORT_SLACK_TICKET_NEW');
-		}
+			$url     = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($ticket->link()), '/');
+			if (App::isAdmin())
+			{
+				$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
+			}
+			$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
+			$text    = Hubzero\Utility\Str::truncate(Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
 
-		// Get the color
-		$color = '#999999';
-		if ($ticket->get('severity') == 'major')
-		{
-			$color = 'warning';
-		}
-		if ($ticket->get('severity') == 'critical')
-		{
-			$color = 'danger';
-		}
-		if ($ticket->get('severity') == 'minor')
-		{
-			$color = '#5fd2db';
-		}
+			if (Component::params('com_support')->get('email_terse'))
+			{
+				$text = Lang::txt('PLG_SUPPORT_SLACK_TICKET_NEW');
+			}
 
-		$data = array(
-			'fallback'   => $pretext . ': ' . $url . ' - ' . $text, // Fallback text for plaintext clients, like IRC
-			'pretext'    => $pretext, // Optional text to appear above the attachment and below the actual message
-			'title'      => Lang::txt('PLG_SUPPORT_SLACK_TICKET_NUMBER', $ticket->get('id')),
-			'title_link' => $url,
-			'text'       => $text, // The text for inside the attachment
-			'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
-			'author_name' => $ticket->get('name', $ticket->get('email')),
-		);
+			// Get the color
+			$color = '#999999';
+			if ($ticket->get('severity') == 'major')
+			{
+				$color = 'warning';
+			}
+			if ($ticket->get('severity') == 'critical')
+			{
+				$color = 'danger';
+			}
+			if ($ticket->get('severity') == 'minor')
+			{
+				$color = '#5fd2db';
+			}
 
-		$this->send($channel, $data);
+			$data = array(
+				'fallback'   => $pretext . ': ' . $url . ' - ' . $text, // Fallback text for plaintext clients, like IRC
+				'pretext'    => $pretext, // Optional text to appear above the attachment and below the actual message
+				'title'      => Lang::txt('PLG_SUPPORT_SLACK_TICKET_NUMBER', $ticket->get('id')),
+				'title_link' => $url,
+				'text'       => $text, // The text for inside the attachment
+				'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
+				'author_name' => $ticket->get('name', $ticket->get('email')),
+			);
+
+			$this->send(
+				$endpoint['endpoint'],
+				$endpoint['username'],
+				$endpoint['channel_created'],
+				$data
+			);
+		}
 	}
 
 	/**
@@ -179,92 +228,101 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTicketUpdate($ticket, $comment)
 	{
-		if (!$this->isReady() || !$this->params->get('notify_updated'))
-		{
-			return;
-		}
+		$endpoints = $this->getEndpoints();
 
-		if (!$this->params->get('notify_private') && $comment->isPrivate())
+		foreach ($endpoints as $endpoint)
 		{
-			return;
-		}
-
-		if ($group = $this->params->get('group_updated'))
-		{
-			if ($group != $ticket->get('group'))
+			if (!$this->isReady($endpoint) || !$endpoint['notify_updated'])
 			{
 				return;
 			}
-		}
 
-		$channel = $this->params->get('channel_updated', $this->params->get('channel'));
-		$url     = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($ticket->link()), '/');
-		if (App::isAdmin())
-		{
-			$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
-		}
-		$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename')); //, $comment->creator()->get('name'));
-		$text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
-		$text    = Hubzero\Utility\String::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
-
-		$color = 'good';
-		if ($comment->isPrivate())
-		{
-			$color = '#ecada2';
-			$pretext .= ' ' . Lang::txt('PLG_SUPPORT_SLACK_PRIVATE');
-		}
-
-		$title = Lang::txt('PLG_SUPPORT_SLACK_TICKET_NUMBER', $ticket->get('id'));
-
-		if (Component::params('com_support')->get('email_terse'))
-		{
-			$text = Lang::txt('PLG_SUPPORT_SLACK_COMMENT_NEW');
-		}
-		else
-		{
-			$title .= ': ' . $ticket->get('summary');
-		}
-
-		$data = array(
-			'fallback'   => $pretext . ': ' . $url . ' - ' . $text, // Fallback text for plaintext clients, like IRC
-			'pretext'    => $pretext, // Optional text to appear above the attachment and below the actual message
-			'title'      => $title,
-			'title_link' => $url,
-			'text'       => $text, // The text for inside the attachment
-			'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
-			'author_name' => $comment->creator()->get('name'),
-		);
-		if (!Component::params('com_support')->get('email_terse'))
-		{
-			$fields = array();
-			foreach ($comment->changelog()->lists() as $type => $log)
+			if (!$endpoint['notify_private'] && $comment->isPrivate())
 			{
-				if (is_array($log) && count($log) > 0)
-				{
-					if ($type != 'changes')
-					{
-						continue;
-					}
+				return;
+			}
 
-					foreach ($log as $items)
+			if ($group = $endpoint['group_updated'])
+			{
+				if ($group != $ticket->get('group'))
+				{
+					return;
+				}
+			}
+
+			$url     = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($ticket->link()), '/');
+			if (App::isAdmin())
+			{
+				$url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
+			}
+			$pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename')); //, $comment->creator()->get('name'));
+			$text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
+			$text    = Hubzero\Utility\Str::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
+
+			$color = 'good';
+			if ($comment->isPrivate())
+			{
+				$color = '#ecada2';
+				$pretext .= ' *' . Lang::txt('PLG_SUPPORT_SLACK_PRIVATE') . '*';
+			}
+
+			$title = Lang::txt('PLG_SUPPORT_SLACK_TICKET_NUMBER', $ticket->get('id'));
+
+			if (Component::params('com_support')->get('email_terse'))
+			{
+				$text = Lang::txt('PLG_SUPPORT_SLACK_COMMENT_NEW');
+			}
+			else
+			{
+				$title .= ': ' . $ticket->get('summary');
+			}
+
+			$data = array(
+				'fallback'   => $pretext . ': ' . $url . ' - ' . $text, // Fallback text for plaintext clients, like IRC
+				'pretext'    => $pretext, // Optional text to appear above the attachment and below the actual message
+				'title'      => $title,
+				'title_link' => $url,
+				'text'       => $text, // The text for inside the attachment
+				'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
+				'author_name' => $comment->creator()->get('name'),
+			);
+			if (!Component::params('com_support')->get('email_terse'))
+			{
+				$fields = array();
+				foreach ($comment->changelog()->lists() as $type => $log)
+				{
+					if (is_array($log) && count($log) > 0)
 					{
-						if ($items->before != $items->after)
+						if ($type != 'changes')
 						{
-							$fields[] = array(
-								'title' => ucfirst($items->field),
-								'value' => $items->after,
-								'short' => true
-							);
+							continue;
+						}
+
+						foreach ($log as $items)
+						{
+							if ($items->before != $items->after)
+							{
+								$fields[] = array(
+									'title' => ucfirst($items->field),
+									'value' => $items->after,
+									'short' => true
+								);
+							}
 						}
 					}
 				}
+				if (!empty($fields))
+				{
+					$data['fields'] = $fields;
+				}
 			}
-			if (!empty($fields))
-			{
-				$data['fields'] = $fields;
-			}
-		}
 
-		$this->send($channel, $data);
+			$this->send(
+				$endpoint['endpoint'],
+				$endpoint['username'],
+				$endpoint['channel_updated'],
+				$data
+			);
+		}
 	}
 }

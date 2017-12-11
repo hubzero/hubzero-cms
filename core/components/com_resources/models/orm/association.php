@@ -191,7 +191,7 @@ class Association extends Relational
 		}
 
 		// Select the first row with the criteria.
-		$row = $query->ordered()->row();
+		$row = $query->row();
 
 		// If a row is found, move the item.
 		if ($row->get('id'))
@@ -213,6 +213,7 @@ class Association extends Relational
 			// Check for a database error.
 			if (!$row->save())
 			{
+				$this->addError($row->getError());
 				return false;
 			}
 		}
@@ -226,6 +227,41 @@ class Association extends Relational
 			{
 				return false;
 			}
+		}
+
+		return $this->reorder();
+	}
+
+	/**
+	 * Recalculates ordering values to try and keep
+	 * them clean, in sequence, and no duplicates
+	 *
+	 * @return  bool  True on success.
+	 */
+	public function reorder()
+	{
+		// Select the primary key and ordering values from the table.
+		$rows = self::all()
+			->whereEquals('parent_id', $this->get('parent_id'))
+			->order('ordering', 'asc')
+			->order('id', 'asc')
+			->rows();
+
+		$i = 1;
+		foreach ($rows as $row)
+		{
+			if ($row->get('ordering') != $i)
+			{
+				$row->set('ordering', $i);
+
+				if (!$row->save())
+				{
+					$this->addError($row->getError());
+					return false;
+				}
+			}
+
+			$i++;
 		}
 
 		return true;

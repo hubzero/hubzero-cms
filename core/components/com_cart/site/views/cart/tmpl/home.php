@@ -46,17 +46,13 @@ $this->css()
 </header>
 
 <?php
-
 if (!empty($this->notifications))
 {
-	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
+	$view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
 	$view->notifications = $this->notifications;
 	$view->display();
 }
 
-?>
-
-<?php
 /*
 $errors = $this->getError();
 if (!empty($errors))
@@ -75,205 +71,199 @@ if (!empty($errors))
 
 <section class="main section">
 	<div class="section-inner">
-
 		<div class="grid break3">
-
 			<div id="cartItems" class="col span8">
-
 				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="shoppingCart" id="shoppingCart" method="post">
-				<?php
-
-				if (!empty($this->couponPerks['items']))
-				{
-					$itemsPerks = $this->couponPerks['items'];
-				}
-
-				if (!empty($this->cartInfo->items))
-				{
-					echo '<table id="cartContents" cellpadding="0" cellpadding="0">';
-
-					foreach ($this->cartInfo->items as $sId => $item)
+					<?php
+					if (!empty($this->couponPerks['items']))
 					{
-						$info = $item['info'];
+						$itemsPerks = $this->couponPerks['items'];
+					}
 
-						if (!$item['cartInfo']->qty) {
-							continue;
-						}
+					if (!empty($this->cartInfo->items))
+					{
+						echo '<table id="cartContents" cellpadding="0" cellpadding="0">';
 
-						echo '<tr>';
-
-						echo '<td>';
-						echo '<a href="';
-						echo Route::url('index.php?option=com_storefront'). '/product/' . $info->pId;
-						echo '" class="cartItem">';
-						echo $info->pName;
-
-						if (!empty($item['options']) && count($item['options']))
+						foreach ($this->cartInfo->items as $sId => $item)
 						{
-							foreach ($item['options'] as $oName)
-							{
-								echo ', ' . $oName;
-							}
-						}
+							$info = $item['info'];
 
-						echo '</a>';
-
-						// Check is there is any membership info for this item
-						if (!empty($this->membershipInfo[$sId]))
-						{
-							$str = '';
-							if (!empty($this->membershipInfo[$sId]->existingExpires))
+							if (!$item['cartInfo']->qty)
 							{
-								$str .= 'This will extend your current subscription (ending ' . date('M j, Y', $this->membershipInfo[$sId]->existingExpires) . ') ';
-							}
-							else
-							{
-								$str .= 'This item will be valid ';
+								continue;
 							}
 
-							//print_r($this->membershipInfo[$sId]);
-							$str .= 'until ' . date('M j, Y', $this->membershipInfo[$sId]->newExpires);
-							echo '<p class="status">' . $str . '</p>';
-						}
-
-						echo '</td>';
-
-						echo '<td>';
-						if ($info->sAllowMultiple) {
-							echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" class="numericOnly" name="skus[' . $info->sId . ']" value="';;
-							echo $item['cartInfo']->qty;
-							echo '">';
-						}
-						else {
-							echo '&nbsp;';
-						}
-						echo '</td>';
-
-						echo '<td class="rightJustify price">';
-						echo '<p>' . '$' . number_format($info->sPrice * $item['cartInfo']->qty, 2);
-
-						if ($item['cartInfo']->qty > 1)
-						{
-							echo '<br><span>' . '$' . number_format($info->sPrice, 2) . ' each</span>';
-						}
-
-						echo '</p>';
-						echo '<input type="submit" class="deleteItem link" name="delete_' . $info->sId . '" value="delete">';
-						echo '</td>';
-
-						echo '</tr>';
-
-						// Check if there is a discount for this item
-						if (!empty($itemsPerks[$sId]))
-						{
-							echo '<tr class="cartItemDiscount">';
-
-							echo '<td class="cartDiscountName"><!--span>Discount:</span--> ';
-							echo $itemsPerks[$sId]->name;
-							echo '</td>';
+							echo '<tr>';
 
 							echo '<td>';
-							echo '&nbsp;';
-							echo '</td>';
+							echo '<a href="';
+							echo Route::url('index.php?option=com_storefront'). '/product/' . $info->pId;
+							echo '" class="cartItem">';
+							echo $info->pName;
 
-							echo '<td class="cartDiscountDiscount rightJustify price">';
-							echo '-$' . number_format($itemsPerks[$sId]->discount, 2);
-							echo '</td>';
-
-							echo '</tr>';
-						}
-
-					}
-					echo '</table>';
-
-					echo '<div class="options cf">';
-					echo '<a href="' . Route::url('index.php?option=com_storefront') . '" class="btn">Continue shopping</a>';
-					echo '<input type="submit" class="btn" name="updateCart" id="updateCart" value="Update cart">';
-					echo '</div>';
-				}
-				else
-				{
-					echo '<p>' . Lang::txt('COM_CART_EMPTY') . '</p>';
-				}
-				?>
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				</form>
-
-			</div> <!-- // cartItems -->
-
-			<div id="cartInfo" class="col span4 omega">
-
-			<?php
-				if (!empty($this->cartInfo) && $this->cartInfo->totalItems > 0)
-				{
-					echo '<div id="cartSummary" class="cartSection">';
-						echo '<h3>Cart summary:</h3>';
-
-						echo '<p>Items: <span>' . $this->cartInfo->totalItems . '</span></p>';
-						echo '<p>Items subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart, 2) . '</span></p>';
-
-						$discountsTotal = 0;
-						if (!empty($this->couponPerks['info']->itemsDiscountsTotal))
-						{
-							echo '<p>Items discounts: <span>' .  '-$' . number_format($this->couponPerks['info']->itemsDiscountsTotal, 2) . '</span></p>';
-							$discountsTotal += $this->couponPerks['info']->itemsDiscountsTotal;
-						}
-
-
-						if (!empty($this->couponPerks['generic']))
-						{
-							$genericPerks = $this->couponPerks['generic'];
-
-							foreach ($genericPerks as $perk)
+							if (!empty($item['options']) && count($item['options']))
 							{
-								echo '<p class="cartDiscountName"><span>Discount</span>: ' . $perk->name . ': ';
-								if ($perk->discount > 0)
+								foreach ($item['options'] as $oName)
 								{
-									echo '-$' . number_format($perk->discount, 2);
+									echo ', ' . $oName;
+								}
+							}
+
+							echo '</a>';
+
+							// Check is there is any membership info for this item
+							if (!empty($this->membershipInfo[$sId]))
+							{
+								$str = '';
+								if (!empty($this->membershipInfo[$sId]->existingExpires))
+								{
+									$str .= 'This will extend your current subscription (ending ' . date('M j, Y', $this->membershipInfo[$sId]->existingExpires) . ') ';
 								}
 								else
 								{
-									echo 'may be applied during checkout process';
+									$str .= 'This item will be valid ';
 								}
-								echo '</p>';
-								$discountsTotal +=  $perk->discount;
+								$str .= 'until ' . date('M j, Y', $this->membershipInfo[$sId]->newExpires);
+
+								echo '<p class="status">' . $str . '</p>';
+							}
+
+							echo '</td>';
+
+							echo '<td>';
+							if ($info->sAllowMultiple)
+							{
+								echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" min="0" class="numericOnly" name="skus[' . $info->sId . ']" value="';
+								echo $item['cartInfo']->qty;
+								echo '">';
+							}
+							else
+							{
+								echo '&nbsp;';
+							}
+							echo '</td>';
+
+							echo '<td class="rightJustify price">';
+							echo '<p>' . '$' . number_format($info->sPrice * $item['cartInfo']->qty, 2);
+
+							if ($item['cartInfo']->qty > 1)
+							{
+								echo '<br><span>' . '$' . number_format($info->sPrice, 2) . ' each</span>';
+							}
+
+							echo '</p>';
+							echo '<input type="submit" class="deleteItem link" name="delete_' . $info->sId . '" value="delete">';
+							echo '</td>';
+
+							echo '</tr>';
+
+							// Check if there is a discount for this item
+							if (!empty($itemsPerks[$sId]))
+							{
+								echo '<tr class="cartItemDiscount">';
+
+								echo '<td class="cartDiscountName"><!--span>Discount:</span--> ';
+								echo $itemsPerks[$sId]->name;
+								echo '</td>';
+
+								echo '<td>';
+								echo '&nbsp;';
+								echo '</td>';
+
+								echo '<td class="cartDiscountDiscount rightJustify price">';
+								echo '-$' . number_format($itemsPerks[$sId]->discount, 2);
+								echo '</td>';
+
+								echo '</tr>';
 							}
 						}
+						echo '</table>';
 
-						if (!empty($this->couponPerks['shipping']))
+						echo '<div class="options cf">';
+						echo '<a href="' . Route::url('index.php?option=com_storefront') . '" class="btn">Continue shopping</a>';
+						echo '<input type="submit" class="btn" name="updateCart" id="updateCart" value="Update cart">';
+						echo '</div>';
+					}
+					else
+					{
+						echo '<p>' . Lang::txt('COM_CART_EMPTY') . '</p>';
+					}
+					?>
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				</form>
+			</div><!-- // cartItems -->
+			<div id="cartInfo" class="col span4 omega">
+				<?php
+				if (!empty($this->cartInfo) && $this->cartInfo->totalItems > 0)
+				{
+					echo '<div id="cartSummary" class="cartSection">';
+					echo '<h3>Cart summary:</h3>';
+
+					echo '<p>Items: <span>' . $this->cartInfo->totalItems . '</span></p>';
+					echo '<p>Items subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart, 2) . '</span></p>';
+
+					$discountsTotal = 0;
+					if (!empty($this->couponPerks['info']->itemsDiscountsTotal))
+					{
+						echo '<p>Items discounts: <span>' .  '-$' . number_format($this->couponPerks['info']->itemsDiscountsTotal, 2) . '</span></p>';
+						$discountsTotal += $this->couponPerks['info']->itemsDiscountsTotal;
+					}
+
+					if (!empty($this->couponPerks['generic']))
+					{
+						$genericPerks = $this->couponPerks['generic'];
+
+						foreach ($genericPerks as $perk)
 						{
-							$shippingPerk = $this->couponPerks['shipping'];
-
-							echo '<p class="cartDiscountName"><span>Coupon discount</span>: ' . $shippingPerk->name . ': ';
-							echo 'may be applied during checkout process';
+							echo '<p class="cartDiscountName"><span>Discount</span>: ' . $perk->name . ': ';
+							if ($perk->discount > 0)
+							{
+								echo '-$' . number_format($perk->discount, 2);
+							}
+							else
+							{
+								echo 'may be applied during checkout process';
+							}
 							echo '</p>';
+							$discountsTotal +=  $perk->discount;
 						}
+					}
 
-						if ($discountsTotal)
-						{
-							echo '<p class="totalValue">Cart subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart - $discountsTotal, 2) . '</span></p>';
-						}
+					if (!empty($this->couponPerks['shipping']))
+					{
+						$shippingPerk = $this->couponPerks['shipping'];
 
-						if ($this->cartInfo->totalItems)
-						{
-							echo '<p><a href="' . Route::url('index.php?option=' . $this->option . '&controller=checkout') . '" class="btn">Checkout</a></p>';
-						}
+						echo '<p class="cartDiscountName"><span>Coupon discount</span>: ' . $shippingPerk->name . ': ';
+						echo 'may be applied during checkout process';
+						echo '</p>';
+					}
+
+					if ($discountsTotal)
+					{
+						echo '<p class="totalValue">Cart subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart - $discountsTotal, 2) . '</span></p>';
+					}
+
+					if ($this->cartInfo->totalItems)
+					{
+						echo '<p><a href="' . Route::url('index.php?option=' . $this->option . '&controller=checkout') . '" class="btn">Checkout</a></p>';
+					}
 
 					echo '</div>';
 				}
-			?>
-
+				?>
 				<div class="cartSection">
 					<h4>Do you have a promo or coupon code?</h4>
 
 					<form name="couponCodes" id="couponCodes" method="post">
 						<label for="couponCode">
 						<input type="text" name="couponCode" id="couponCode"></label>
-						<input type="submit" name="addCouponCode" id="addCouponCode" class="btn" value="Apply">
+						<input type="submit" name="addCouponCode" id="addCouponCode" class="btn" value="Apply" />
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 					</form>
 				</div>
-
-			</div> <!-- // cart info -->
-	</div>
+			</div><!-- / cart info -->
+		</div><!-- / grid -->
+	</div><!-- / section-inner -->
 </section>

@@ -187,16 +187,13 @@ abstract class Cart
 		{
 			$sql .= " ti.`tiNotes`, ";
 		}
-		$sql .= "t.`tId`, `tLastUpdated`, `tStatus` FROM `#__cart_transactions` t";
+		$sql .= "t.`tId`, `tLastUpdated`, `tStatus`, ti.`tiPayment` FROM `#__cart_transactions` t";
 		if (!empty($filters['userInfo']) && $filters['userInfo'])
 		{
 			$sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
 			$sql .= ' LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.`id`)';
 		}
-		if (!empty($filters['report-notes']) && $filters['report-notes'])
-		{
-			$sql .= " LEFT JOIN `#__cart_transaction_info` ti ON (ti.`tId` = t.`tId`)";
-		}
+		$sql .= " LEFT JOIN `#__cart_transaction_info` ti ON (ti.`tId` = t.`tId`)";
 
 		$sql .= " WHERE 1";
 		if (!empty($filters['crtId']) && $filters['crtId'])
@@ -585,6 +582,21 @@ abstract class Cart
 	/********************************* Static functions *********************************/
 
 	/**
+	 * Generate security token
+	 *
+	 * @param   int     $tId    Transaction ID
+	 * @return  string
+	 */
+	public static function generateSecurityToken($tId)
+	{
+		if (!CartHelper::isNonNegativeInt($tId, false))
+		{
+			throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
+		}
+		return md5(self::$securitySalt . $tId);
+	}
+
+	/**
 	 * Verify security token
 	 *
 	 * @param   string  $token  string token
@@ -793,7 +805,7 @@ abstract class Cart
 	 * @param   object  $tInfo  Transaction info
 	 * @return  void
 	 */
-	public static function completeTransaction($tInfo)
+	public static function completeTransaction($tInfo, $paymentInfo = false)
 	{
 		$tId = $tInfo->info->tId;
 		$crtId = $tInfo->info->crtId;
@@ -818,6 +830,12 @@ abstract class Cart
 
 		// remove coupons from cart
 		self::removeTransactionCouponsFromCart($tInfo);
+
+		// Save payment info
+		if (!empty($paymentInfo) && is_array($paymentInfo))
+		{
+			self::saveTransactionPaymentInfo($paymentInfo, $tId);
+		}
 
 		/* Clean up cart */
 		$db = \App::get('db');
@@ -891,6 +909,30 @@ abstract class Cart
 		$db = \App::get('db');
 
 		$sql = "UPDATE `#__cart_transactions` SET `tStatus` = '{$status}' WHERE `tId` = {$tId}";
+		$db->setQuery($sql);
+		$db->query();
+
+		$affectedRows = $db->getAffectedRows();
+
+		if (!$affectedRows)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Save transaction payment info
+	 *
+	 * @param   array  $paymentInfo
+	 * @param   int     $tId     Transaction ID
+	 * @return  bool    Success or failure
+	 */
+	public static function saveTransactionPaymentInfo($paymentInfo, $tId)
+	{
+		$db = \App::get('db');
+
+		$sql = "UPDATE `#__cart_transaction_info` SET `tiPayment` = '{$paymentInfo[0]}', `tiPaymentDetails` = '{$paymentInfo[1]}' WHERE `tId` = {$tId}";
 		$db->setQuery($sql);
 		$db->query();
 

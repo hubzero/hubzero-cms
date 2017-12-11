@@ -539,8 +539,8 @@ class Warehouse extends \Hubzero\Base\Object
 				LEFT JOIN `#__storefront_images` i ON (p.`pId` = i.`imgObjectId` AND i.`imgObject` = 'product' AND i.`imgPrimary` = 1)";
 		/*if ($useAccessGroups)
 		{
-			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag1 ON p.`pId` = ag1.`pId` AND ag1.`exclude`=0";
-			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag2 ON p.`pId` = ag2.`pId` AND ag2.`exclude`=1";
+			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag1 ON p.`pId` = ag1.`pId` AND ag1.`exclude`= 0";
+			$sql .= " LEFT JOIN `#__storefront_product_access_groups` ag2 ON p.`pId` = ag2.`pId` AND ag2.`exclude`= 1";
 		}*/
 
 		$sql .= " WHERE 1";
@@ -563,6 +563,8 @@ class Warehouse extends \Hubzero\Base\Object
 			}
 		}
 		// Filter by authorized view levels (if current user scope is set)
+		// Branch the query not to use the access levels (for the whitelisted SKUS)
+		$whiteListSql = $sql;
 		if ($useAccessGroups)
 		{
 			if ($this->accessGroupsScope)
@@ -599,12 +601,21 @@ class Warehouse extends \Hubzero\Base\Object
 			$where[] = "p.`pName` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 			$where[] = "p.`pDescription` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 
-			$sql .= " AND (" . implode(" OR ", $where) . ")";
+			$addToSql = " AND (" . implode(" OR ", $where) . ")";
+			$sql .= $addToSql;
+			$whiteListSql .= $addToSql;
 		}
 
 		if (isset($filters['type']) && $filters['type'] >= 0)
 		{
-			$sql .= " AND p.`ptId`=" . $this->_db->quote((int)$filters['type']);
+			$addToSql = " AND p.`ptId`=" . $this->_db->quote((int)$filters['type']);
+			$sql .= $addToSql;
+			$whiteListSql .= $addToSql;
+		}
+
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'title';
 		}
 
 		if (isset($filters['sort']))
@@ -620,33 +631,86 @@ class Warehouse extends \Hubzero\Base\Object
 			}
 
 			$sql .= " ORDER BY " . $filters['sort'];
+			$whiteListSql .= " ORDER BY " . $filters['sort'];
 
 			if (isset($filters['sort_Dir']))
 			{
 				$sql .= ' ' . $filters['sort_Dir'];
+				$whiteListSql .= ' ' . $filters['sort_Dir'];
 			}
 		}
 
 		if (isset($filters['limit']) && is_numeric($filters['limit']))
 		{
-			$sql .= ' LIMIT ' . $filters['limit'];
+			$addToSql =  ' LIMIT ' . $filters['limit'];
+			$sql .= $addToSql;
+			$whiteListSql .= $addToSql;
 
 			if (isset($filters['start']) && is_numeric($filters['start']))
 			{
-				$sql .= ' OFFSET ' . $filters['start'];
+				$addToSql = ' OFFSET ' . $filters['start'];
+				$sql .= $addToSql;
+				$whiteListSql .= $addToSql;
 			}
 		}
 
 		$this->_db->setQuery($sql);
 		//print_r($this->_db->toString()); die;
 		$this->_db->execute();
-		if ($return == 'count')
-		{
-			return($this->_db->getNumRows());
-		}
-		$products = $this->_db->loadObjectList();
 
-		return $products;
+		// WhiteList logic: run the expensive query twice, find the whitlisted SKUs for each product, white list the corresponding product,
+		// keep the white listed products, kill the non-authorized products (not very efficient)
+		if ($this->userScope && ($useAccessGroups || $this->accessLevelsScope))
+		{
+			$products = $this->_db->loadObjectList('pId');
+			//print_r($this->userScope); die;
+			// get all products
+			$this->_db->setQuery($whiteListSql);
+			//print_r($this->_db->toString()); die;
+			$this->_db->execute();
+			$allProducts = $this->_db->loadObjectList('pId');
+			//print_r($allProducts);
+
+			// compare the two results and find those that didn't make the permissions test
+			$notAuthorizedProducts = [];
+			require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
+			foreach ($allProducts as $pId => $product)
+			{
+				if (!array_key_exists($pId, $products))
+				{
+					// Get all SKUs for this product and check if the user is whitelisted
+					// Get the SKUs whitelist for a user
+					$allProductSkus = $this->getProductSkus($product->pId);
+					$whitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
+					if (empty($whitelistedSkus))
+					{
+						$notAuthorizedProducts[] = $product;
+					}
+				}
+			}
+			// now delete all not authorized from all
+			foreach ($notAuthorizedProducts as $nap)
+			{
+				unset($allProducts[$nap->pId]);
+			}
+
+			if ($return == 'count')
+			{
+				return(sizeOf($allProducts));
+			}
+
+			return $allProducts;
+		}
+		else {
+			$products = $this->_db->loadObjectList();
+
+			if ($return == 'count')
+			{
+				return($this->_db->getNumRows());
+			}
+
+			return $products;
+		}
 	}
 
 	/**

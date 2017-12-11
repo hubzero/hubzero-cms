@@ -86,7 +86,7 @@ class Nogit extends Models\Adapter
 	public function count($params = array())
 	{
 		$cmd  = 'cd ' . escapeshellarg($this->_path) . ' && ';
-		$cmd .='find . -prune -o -type f -print | wc -l';
+		$cmd .='find . \( -path "./.git" -or -name ".gitignore" \) -prune -o -type f -print | wc -l';
 		return shell_exec($cmd);
 	}
 

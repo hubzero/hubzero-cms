@@ -226,6 +226,8 @@ class Articles extends SiteController
 			return;
 		}
 
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$type = strtolower(Request::getVar('type', ''));
 		$vote = strtolower(Request::getVar('vote', ''));

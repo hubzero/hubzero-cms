@@ -76,13 +76,27 @@ function submitbutton(pressbutton)
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu" class="member-nav">
-						<li><a href="#" onclick="return false;" id="account" class="active"><?php echo Lang::txt('COM_MEMBERS_SECTION_ACCOUNT'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="profile"><?php echo Lang::txt('COM_MEMBERS_SECTION_PROFILE'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
+						<li><a href="#page-account" onclick="return false;" id="account" class="active"><?php echo Lang::txt('COM_MEMBERS_SECTION_ACCOUNT'); ?></a></li>
+						<li><a href="#page-profile" onclick="return false;" id="profile"><?php echo Lang::txt('COM_MEMBERS_SECTION_PROFILE'); ?></a></li>
+						<li><a href="#page-password" onclick="return false;" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
 						<?php if (!$this->profile->isNew()): ?>
-							<li><a href="#" onclick="return false;" id="groups"><?php echo Lang::txt('COM_MEMBERS_SECTION_GROUPS'); ?></a></li>
-							<li><a href="#" onclick="return false;" id="hosts"><?php echo Lang::txt('COM_MEMBERS_SECTION_HOSTS'); ?></a></li>
-							<li><a href="#" onclick="return false;" id="messaging"><?php echo Lang::txt('COM_MEMBERS_SECTION_MESSAGING'); ?></a></li>
+							<li><a href="#page-groups" onclick="return false;" id="groups"><?php echo Lang::txt('COM_MEMBERS_SECTION_GROUPS'); ?></a></li>
+							<li><a href="#page-hosts" onclick="return false;" id="hosts"><?php echo Lang::txt('COM_MEMBERS_SECTION_HOSTS'); ?></a></li>
+							<li><a href="#page-messaging" onclick="return false;" id="messaging"><?php echo Lang::txt('COM_MEMBERS_SECTION_MESSAGING'); ?></a></li>
+							<?php
+							foreach ($this->tabs as $tab):
+								if (!$tab):
+									continue;
+								endif;
+								?>
+								<li>
+									<a href="#page-<?php echo $tab['name']; ?>" onclick="return false;" id="<?php echo $this->escape($tab['name']); ?>">
+										<?php echo $this->escape($tab['label']); ?>
+									</a>
+								</li>
+								<?php
+							endforeach;
+							?>
 						<?php endif; ?>
 					</ul>
 					<div class="clr"></div>
@@ -117,6 +131,18 @@ function submitbutton(pressbutton)
 			<div id="page-messaging" class="tab">
 				<?php echo $this->loadTemplate('messaging'); ?>
 			</div>
+			<?php
+			foreach ($this->tabs as $tab):
+				if (!$tab):
+					continue;
+				endif;
+				?>
+				<div id="page-<?php echo $this->escape($tab['name']); ?>" class="tab">
+					<?php echo $tab['content']; ?>
+				</div>
+				<?php
+			endforeach;
+			?>
 		<?php endif; ?>
 	</div>
 

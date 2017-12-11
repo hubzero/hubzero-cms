@@ -33,8 +33,8 @@
 // no direct access
 defined('_HZEXEC_') or die;
 
-require_once PATH_CORE . '/components/com_menus/admin/helpers/menus.php';
-require_once PATH_CORE . '/components/com_languages/admin/helpers/multilangstatus.php';
+require_once Component::path('com_menus') . '/admin/helpers/menus.php';
+require_once Component::path('com_languages') . '/admin/helpers/multilangstatus.php';
 
 /**
  * Language Filter Plugin
@@ -116,7 +116,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		// Ensure that constructor is called one time
-		self::$cookie = SID == '';
+		self::$cookie = (SID == '');
 
 		if (!self::$default_lang)
 		{
@@ -148,7 +148,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				if (self::$mode_sef)
 				{
 					// Get the route path from the request.
-					$path = substr($uri->toString(), strlen($uri->base()));
+					$path = substr($uri->toString(), strlen($uri->root()));
 
 					// Apache mod_rewrite is Off
 					$path = Config::get('sef_rewrite') ? $path : substr($path, 10);
@@ -205,11 +205,14 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			self::$tag = Lang::getTag();
 
 			$router = App::get('router');
+
 			// attach build rules for language SEF
-			$router->attachBuildRule(array($this, 'buildRule'));
+			//$router->attachBuildRule(array($this, 'buildRule'));
+			$router->rules('build')->append('languagefilter', array($this, 'buildRule'));
 
 			// attach parse rules for language SEF
-			$router->attachParseRule(array($this, 'parseRule'));
+			//$router->attachParseRule(array($this, 'parseRule'));
+			$router->rules('parse')->insertAfter('prep', 'languagefilter', array($this, 'parseRule'));
 
 			// Adding custom site name
 			$languages = Lang::available('lang_code');
@@ -227,7 +230,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 * @param   object  $uri
 	 * @return  void
 	 */
-	public function buildRule(&$router, &$uri)
+	public function buildRule($uri)
 	{
 		$sef = $uri->getVar('lang');
 		if (empty($sef))
@@ -256,7 +259,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 					// test if the url contains same vars as in menu link
 					$test = true;
-					foreach ($uri->getQuery(true) as $key=>$value)
+					foreach ($uri->getQuery(true) as $key => $value)
 					{
 						if (!in_array($key, array('format', 'Itemid', 'lang')) && !(isset($vars[$key]) && $vars[$key] == $value))
 						{
@@ -266,7 +269,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					}
 					if ($test)
 					{
-						foreach ($vars as $key=>$value)
+						foreach ($vars as $key => $value)
 						{
 							$uri->delVar($key);
 						}
@@ -283,12 +286,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		if (self::$mode_sef)
 		{
 			$uri->delVar('lang');
-			if (
-				$this->params->get('remove_default_prefix', 0) == 0 ||
-				$sef != self::$default_sef ||
-				$sef != self::$lang_codes[self::$tag]->sef ||
-				$this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie
-			)
+			if ($this->params->get('remove_default_prefix', 0) == 0
+			 || $sef != self::$default_sef
+			 || $sef != self::$lang_codes[self::$tag]->sef
+			 || $this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie)
 			{
 				$uri->setPath($uri->getPath() . '/' . $sef . '/');
 			}
@@ -301,6 +302,8 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		{
 			$uri->setVar('lang', $sef);
 		}
+
+		return $uri;
 	}
 
 	/**
@@ -310,10 +313,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 * @param   object  $uri
 	 * @return  void
 	 */
-	public function parseRule(&$router, &$uri)
+	public function parseRule($uri)
 	{
 		$array = array();
-		$lang_code = Request::getString(App::hash('language'), null , 'cookie');
+		$lang_code = Request::getString(App::hash('language'), null, 'cookie');
 
 		// No cookie - let's try to detect browser language or use site default
 		if (!$lang_code)
@@ -327,6 +330,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				$lang_code = self::$default_lang;
 			}
 		}
+
 		if (self::$mode_sef)
 		{
 			$path = $uri->getPath();
@@ -349,12 +353,12 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 						if (Config::get('sef_rewrite'))
 						{
-							App::redirect($uri->base() . $uri->toString(array('path', 'query', 'fragment')));
+							App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
 						}
 						else
 						{
 							$path = $uri->toString(array('path', 'query', 'fragment'));
-							App::redirect($uri->base() . 'index.php' . ($path ? ('/' . $path) : ''));
+							App::redirect($uri->root() . 'index.php' . ($path ? ('/' . $path) : ''));
 						}
 					}
 				}
@@ -368,12 +372,12 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 						if (Config::get('sef_rewrite'))
 						{
-							App::redirect($uri->base() . $uri->toString(array('path', 'query', 'fragment')));
+							App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
 						}
 						else
 						{
 							$path = $uri->toString(array('path', 'query', 'fragment'));
-							App::redirect($uri->base() . 'index.php' . ($path ? ('/' . $path) : ''));
+							App::redirect($uri->root() . 'index.php' . ($path ? ('/' . $path) : ''));
 						}
 					}
 					// redirect if sef is the default one
@@ -383,16 +387,16 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					)
 					{
 						array_shift($parts);
-						$uri->setPath(implode('/' , $parts));
+						$uri->setPath(implode('/', $parts));
 
 						if (Config::get('sef_rewrite'))
 						{
-							App::redirect($uri->base() . $uri->toString(array('path', 'query', 'fragment')));
+							App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
 						}
 						else
 						{
 							$path = $uri->toString(array('path', 'query', 'fragment'));
-							App::redirect($uri->base() . 'index.php' . ($path ? ('/' . $path) : ''));
+							App::redirect($uri->root() . 'index.php' . ($path ? ('/' . $path) : ''));
 						}
 					}
 				}
@@ -420,8 +424,8 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$array = array('lang' => $sef);
-		return $array;
+		//$array = array('lang' => $sef);
+		//return $array;
 	}
 
 	/**
@@ -593,7 +597,6 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			if ($active_link == $current_link)
 			{
 				// Get menu item associations
-				require_once PATH_CORE . '/components/com_menus/admin/helpers/menus.php';
 				$associations = MenusHelper::getAssociations($active->id);
 
 				// Remove current menu item

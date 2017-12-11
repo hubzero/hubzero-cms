@@ -109,8 +109,8 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->contribution = $this->first_last_contribution($member->get('id'));
 			$view->rank = $this->get_rank($member->get('id'));
 
-			$view->total_tool_users    = $this->get_total_stats($member->get('id'), 'tool_users',14);
-			$view->total_andmore_users = $this->get_total_stats($member->get('id'), 'andmore_users',14);
+			$view->total_tool_users    = $this->get_total_stats($member->get('id'), 'tool_users', 14);
+			$view->total_andmore_users = $this->get_total_stats($member->get('id'), 'andmore_users', 14);
 			$view->citation_count      = self::get_citationcount(null, $member->get('id'));
 
 			$cluster = self::get_classroom_usage($member->get('id'));
@@ -118,7 +118,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->cluster_users   = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
 
-			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
+			$sql = 'SELECT DISTINCT r.id, r.type AS type_id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
@@ -130,7 +130,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->tool_total_12 = $this->get_total_stats($member->get('id'), 'tool_users', 12);
 			$view->tool_total_14 = $this->get_total_stats($member->get('id'), 'tool_users', 14);
 
-			$sql = "SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, '%d %b %Y') AS publish_up, rt.type
+			$sql = "SELECT DISTINCT r.id, r.type AS type_id, r.title, DATE_FORMAT(r.publish_up, '%d %b %Y') AS publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable='resources'
@@ -305,7 +305,6 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$cluster['schools'] = $result;
 		}
 		return $cluster;
-
 	}
 
 	/**
@@ -354,9 +353,9 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 		$rank = 0;
 		$i = 1;
-		$sql = 'SELECT a.uidNumber AS aid, COUNT(DISTINCT aa.subid) AS contribs
-				FROM `#__xprofiles` a, `#__resources` res, `#__author_assoc` aa
-				WHERE a.uidNumber = aa.authorid AND res.id = aa.subid AND res.published=1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources"
+		$sql = 'SELECT a.id AS aid, COUNT(DISTINCT aa.subid) AS contribs
+				FROM `#__users` a, `#__resources` res, `#__author_assoc` aa
+				WHERE a.id = aa.authorid AND res.id = aa.subid AND res.published=1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources"
 				AND res.standalone=1 GROUP BY aid ORDER BY contribs DESC';
 
 		$database->setQuery($sql);
@@ -376,9 +375,9 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 		if ($rank)
 		{
-			$sql = 'SELECT COUNT(DISTINCT a.uidNumber) as authors
-				FROM `#__xprofiles` a, `#__author_assoc` aa, `#__resources` res
-				WHERE a.uidNumber=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND res.published=1 AND (res.access=0 OR res.access=3)
+			$sql = 'SELECT COUNT(DISTINCT a.id) as authors
+				FROM `#__users` a, `#__author_assoc` aa, `#__resources` res
+				WHERE a.id=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND res.published=1 AND (res.access=0 OR res.access=3)
 				AND res.standalone=1';
 
 			$database->setQuery($sql);
@@ -410,5 +409,36 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		return $database->loadResult();
 	}
-}
 
+	/**
+	 * Get the resource types that are just a
+	 * list of other standalone resources
+	 *
+	 * @return  array
+	 */
+	public function getSerialResourceTypes()
+	{
+		$database = App::get('db');
+
+		$sql = "SELECT id FROM `#__resource_types` WHERE `alias` IN ('series', 'workshop', 'workshops', 'course', 'courses')";
+
+		$database->setQuery($sql);
+		return $database->loadColumn();
+	}
+
+	/**
+	 * Get the IDs of standalone child resources to this resource
+	 *
+	 * @param   integer  $parent_id
+	 * @return  array
+	 */
+	public function getSerialResourceChildren($parent_id)
+	{
+		$database = App::get('db');
+
+		$sql = "SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $database->quote($parent_id);
+
+		$database->setQuery($sql);
+		return $database->loadColumn();
+	}
+}

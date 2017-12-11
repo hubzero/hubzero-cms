@@ -156,7 +156,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 						<?php endif; ?>
 						<div class="label-input-pair">
 							<label for="password"><?php echo Lang::txt('COM_USERS_LOGIN_PASSWORD'); ?>:</label>
-							<input tabindex="2" type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')); ?>" />
+							<input tabindex="2" type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')); ?>" autocomplete="off" />
 							<div class="spinner">
 								<div class="bounce1"></div>
 								<div class="bounce2"></div>

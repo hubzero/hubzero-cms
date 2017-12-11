@@ -112,19 +112,19 @@ $this->css('usage', 'com_usage');
 			$cls = 'even';
 			$sum_usercount_12 = 0;
 			$sum_usercount_14 = 0;
-			$sum_simcount_12 = 0;
-			$sum_simcount_14 = 0;
+			$sum_simcount_12  = 0;
+			$sum_simcount_14  = 0;
 			foreach ($this->tool_stats as $row)
 			{
 				$user_count_12 = plgMembersUsage::get_usercount($row->id, 12, 7);
 				$user_count_14 = plgMembersUsage::get_usercount($row->id, 14, 7);
-				$sim_count_12 = plgMembersUsage::get_simcount($row->id, 12);
-				$sim_count_14 = plgMembersUsage::get_simcount($row->id, 14);
+				$sim_count_12  = plgMembersUsage::get_simcount($row->id, 12);
+				$sim_count_14  = plgMembersUsage::get_simcount($row->id, 14);
 
 				$sum_usercount_12 += $user_count_12;
 				$sum_usercount_14 += $user_count_14;
-				$sum_simcount_12 += $sim_count_12;
-				$sum_simcount_14 += $sim_count_14;
+				$sum_simcount_12  += $sim_count_12;
+				$sum_simcount_14  += $sim_count_14;
 				?>
 				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 					<td><?php echo ($count + 1); ?></td>
@@ -143,14 +143,14 @@ $this->css('usage', 'com_usage');
 			{
 				?>
 				<tr class="summary">
-					<td></td>
-					<td class="textual-data"><?php echo Lang::txt('TOTAL'); ?></td>
-					<td><?php echo number_format($sum_usercount_12); //$this->tool_total_12); ?></td>
-					<td><?php echo number_format($sum_simcount_12); ?></td>
-					<td><?php echo number_format($sum_usercount_14); //$this->tool_total_14); ?></td>
-					<td><?php echo number_format($sum_simcount_14); ?></td>
-					<td></td>
-					<td></td>
+					<td class="group"></td>
+					<td class="group textual-data"><?php echo Lang::txt('TOTAL'); ?></td>
+					<td class="group"><?php echo number_format($sum_usercount_12); ?></td>
+					<td class="group"><?php echo number_format($sum_simcount_12); ?></td>
+					<td class="group"><?php echo number_format($sum_usercount_14); ?></td>
+					<td class="group"><?php echo number_format($sum_simcount_14); ?></td>
+					<td class="group"></td>
+					<td class="group"></td>
 				</tr>
 				<?php
 			}
@@ -185,7 +185,51 @@ $this->css('usage', 'com_usage');
 				'usercount14' => 0,
 				'citations'   => 0
 			);
+
+			$serials = (array)plgMembersUsage::getSerialResourceTypes();
+
+			// First pass
+			// See if any of the resource types are lists of other resources
+			$children = array();
 			foreach ($this->andmore_stats as $row)
+			{
+				if (in_array($row->type_id, $serials))
+				{
+					$children[$row->id] = (array)plgMembersUsage::getSerialResourceChildren($row->id);
+				}
+				else
+				{
+					$children[$row->id] = array();
+				}
+			}
+
+			// Second pass
+			$andmore = array(
+				0 => array()
+			);
+			foreach ($this->andmore_stats as $row)
+			{
+				$hasParent = false;
+				foreach ($children as $parent => $childs)
+				{
+					if (in_array($row->id, $childs))
+					{
+						if (!isset($andmore[$parent]))
+						{
+							$andmore[$parent] = array();
+						}
+						$andmore[$parent][] = $row;
+						$hasParent = true;
+						break;
+					}
+				}
+				if (!$hasParent)
+				{
+					$andmore[0][] = $row;
+				}
+			}
+
+			foreach ($andmore[0] as $row)
 			{
 				$result = plgMembersUsage::get_usercount($row->id, 12);
 				$usercount12 = (is_numeric($result)) ? number_format($result) : $result;
@@ -195,8 +239,11 @@ $this->css('usage', 'com_usage');
 
 				$cites = plgMembersUsage::get_citationcount($row->id, 0);
 
-				$total['usercount12'] += (int)str_replace(',', '', $usercount12);
-				$total['usercount14'] += (int)str_replace(',', '', $usercount14);
+				if (!in_array($row->type_id, $serials))
+				{
+					$total['usercount12'] += (int)str_replace(',', '', $usercount12);
+					$total['usercount14'] += (int)str_replace(',', '', $usercount14);
+				}
 				$total['citations']   += (int)$cites;
 				?>
 				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
@@ -209,18 +256,47 @@ $this->css('usage', 'com_usage');
 				</tr>
 				<?php
 				$count++;
+
+				if (isset($andmore[$row->id]))
+				{
+					foreach ($andmore[$row->id] as $rw)
+					{
+						$result = plgMembersUsage::get_usercount($rw->id, 12);
+						$usercount12 = (is_numeric($result)) ? number_format($result) : $result;
+
+						$result = plgMembersUsage::get_usercount($rw->id, 14);
+						$usercount14 = (is_numeric($result)) ? number_format($result) : $result;
+
+						$cites = plgMembersUsage::get_citationcount($rw->id, 0);
+
+						$total['usercount12'] += (int)str_replace(',', '', $usercount12);
+						$total['usercount14'] += (int)str_replace(',', '', $usercount14);
+						$total['citations']   += (int)$cites;
+						?>
+						<tr class="child <?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+							<td class="highlight"><?php echo ($count + 1); ?></td>
+							<td class="highlight textual-data"><span class="child-connector" style="color:#ccc;">|-</span> <a href="<?php echo Route::url('index.php?option=com_resources&id='.$rw->id); ?>"><?php echo $rw->title; ?></a> <span class="small"><?php echo $rw->type; ?></span></td>
+							<td class="highlight"><?php echo $usercount12; ?></td>
+							<td class="highlight"><?php echo $usercount14; ?></td>
+							<td class="highlight"><?php echo $cites ?></td>
+							<td class="highlight"><?php echo $rw->publish_up; ?></td>
+						</tr>
+						<?php
+						$count++;
+					}
+				}
 			}
-			//if ($this->andmore_total_14 && $this->andmore_total_12) {
+
 			if ($count)
 			{
 				?>
 				<tr class="summary">
-					<td></td>
-					<td><?php echo Lang::txt('TOTAL'); ?></td>
-					<td><?php echo number_format($total['usercount12']); //number_format($this->andmore_total_12); ?></td>
-					<td><?php echo number_format($total['usercount14']); //number_format($this->andmore_total_14); ?></td>
-					<td><?php echo number_format($total['citations']); ?></td>
-					<td></td>
+					<td class="group"></td>
+					<td class="group"><?php echo Lang::txt('TOTAL'); ?></td>
+					<td class="group"><?php echo number_format($total['usercount12']); ?></td>
+					<td class="group"><?php echo number_format($total['usercount14']); ?></td>
+					<td class="group"><?php echo number_format($total['citations']); ?></td>
+					<td class="group"></td>
 				</tr>
 				<?php
 			}
