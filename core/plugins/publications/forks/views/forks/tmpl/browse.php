@@ -54,8 +54,8 @@ $this->css();
 				<div class="publication-details">
 					<div class="publication-title">
 						<?php if ($publication->version->get('state') == 1 &&
-							($publication->version->get('published_up') == '0000-00-00 00:00:00' || ($publication->version->get('published_up') != '0000-00-00 00:00:00' && $publication->version->get('published_up') <= Date::toSql())) &&
-							($publication->version->get('published_down') == '0000-00-00 00:00:00' || ($publication->version->get('published_down') != '0000-00-00 00:00:00' && $publication->version->get('published_down') > Date::toSql()))) { ?>
+							(!$publication->version->get('published_up') || $publication->version->get('published_up') == '0000-00-00 00:00:00' || ($publication->version->get('published_up') != '0000-00-00 00:00:00' && $publication->version->get('published_up') <= Date::toSql())) &&
+							(!$publication->version->get('published_down') || $publication->version->get('published_down') == '0000-00-00 00:00:00' || ($publication->version->get('published_down') != '0000-00-00 00:00:00' && $publication->version->get('published_down') > Date::toSql()))) { ?>
 							<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $publication->get('id') . '&v=' . $publication->version->get('version_number')); ?>">
 								<?php echo $this->escape($publication->version->get('title')); ?>
 							</a>
@@ -88,8 +88,8 @@ $this->css();
 			<?php foreach ($this->forks as $publication) { ?>
 				<?php
 				$isPublished = $publication->version->get('state') == 1
-						&& ($publication->version->get('published_up') == '0000-00-00 00:00:00' || ($publication->version->get('published_up') != '0000-00-00 00:00:00' && $publication->version->get('published_up') <= Date::toSql()))
-						&& ($publication->version->get('published_down') == '0000-00-00 00:00:00' || ($publication->version->get('published_down') != '0000-00-00 00:00:00' && $publication->version->get('published_down') > Date::toSql()));
+						&& (!$publication->version->get('published_up') || $publication->version->get('published_up') == '0000-00-00 00:00:00' || ($publication->version->get('published_up') != '0000-00-00 00:00:00' && $publication->version->get('published_up') <= Date::toSql()))
+						&& (!$publication->version->get('published_down') || $publication->version->get('published_down') == '0000-00-00 00:00:00' || ($publication->version->get('published_down') != '0000-00-00 00:00:00' && $publication->version->get('published_down') > Date::toSql()));
 				?>
 				<div class="publication-fork icon-fork <?php echo ($isPublished ? 'published' : 'unpublished'); ?>">
 					<div class="publication-datetime">
