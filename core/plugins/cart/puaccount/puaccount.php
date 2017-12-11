@@ -32,7 +32,7 @@
 use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 
-require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php';
+require_once Component::path('com_cart') . DS . 'models' . DS . 'Cart.php';
 
 /**
  * Cart plugin for Payment: Purdue University Account Number
@@ -116,14 +116,20 @@ class plgCartPuaccount extends \Hubzero\Plugin\Plugin
 
 		$response['paymentInfo'] = 'PU Account# ' . $parts[0] . '-' . $parts[1] . '-' . $parts[2];
 
-		//print_r($response); die;
-
 		return $response;
 	}
 
+	/**
+	 * Process a payment
+	 *
+	 * @param   object  $transaction
+	 * @param   object  $user
+	 * @return  mixed
+	 */
 	public function onProcessPayment($transaction, $user)
 	{
 		$provider = Request::getWord('paymentProvider', false, 'post');
+
 		if ($provider != 'puaccount')
 		{
 			return false;
@@ -146,8 +152,9 @@ class plgCartPuaccount extends \Hubzero\Plugin\Plugin
 		if ($verify['status'] == 'ok')
 		{
 			$tInfo = Cart::getTransactionFacts($transaction->info->tId);
-			/// complete transaction
-			require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php';
+
+			// complete transaction
+			require_once Component::path('com_cart') . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php';
 
 			// Initialize logger
 			$logger = new \CartMessenger('Payment complete');
@@ -188,11 +195,15 @@ class plgCartPuaccount extends \Hubzero\Plugin\Plugin
 			$response['response'] = $view->loadTemplate();
 		}
 
-		//print_r($response); die;
-
 		return $response;
 	}
 
+	/**
+	 * On complete
+	 *
+	 * @param   string  $provider
+	 * @return  mixed
+	 */
 	public function onComplete($provider)
 	{
 		if ($provider != 'puaccount')
@@ -205,6 +216,12 @@ class plgCartPuaccount extends \Hubzero\Plugin\Plugin
 		return $response;
 	}
 
+	/**
+	 * Validate account numbers
+	 *
+	 * @param   array  $parts
+	 * @return  array
+	 */
 	private function checkNumber($parts)
 	{
 		$response = array();
@@ -212,12 +229,14 @@ class plgCartPuaccount extends \Hubzero\Plugin\Plugin
 
 		foreach ($parts as $part)
 		{
+			// Must be all numbers
 			if (!is_numeric($part))
 			{
 				$response['status'] = 'error';
 				$response['error'] = 'The number must be numeric';
 			}
 
+			// Must be 8 characters long
 			if (strlen($part) < 8)
 			{
 				$response['status'] = 'error';
