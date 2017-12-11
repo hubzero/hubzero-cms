@@ -256,7 +256,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 					// test if the url contains same vars as in menu link
 					$test = true;
-					foreach ($uri->getQuery(true) as $key=>$value)
+					foreach ($uri->getQuery(true) as $key => $value)
 					{
 						if (!in_array($key, array('format', 'Itemid', 'lang')) && !(isset($vars[$key]) && $vars[$key] == $value))
 						{
@@ -279,7 +279,6 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				$uri->delVar('Itemid');
 			}
 		}
-
 		if (self::$mode_sef)
 		{
 			$uri->delVar('lang');
@@ -313,7 +312,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	public function parseRule(&$router, &$uri)
 	{
 		$array = array();
-		$lang_code = Request::getString(App::hash('language'), null , 'cookie');
+		$lang_code = Request::getString(App::hash('language'), null, 'cookie');
 
 		// No cookie - let's try to detect browser language or use site default
 		if (!$lang_code)
@@ -383,7 +382,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					)
 					{
 						array_shift($parts);
-						$uri->setPath(implode('/' , $parts));
+						$uri->setPath(implode('/', $parts));
 
 						if (Config::get('sef_rewrite'))
 						{
