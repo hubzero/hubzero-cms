@@ -81,8 +81,6 @@ foreach ($cats as $cat)
 
 		$name  = $cat['title'];
 		$total = $cat['total'];
-
-		Pathway::append($cat['title'], $here . '&area=' . stripslashes($blob));
 	}
 
 	// Build the HTML

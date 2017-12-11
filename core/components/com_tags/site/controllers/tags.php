@@ -918,7 +918,7 @@ class Tags extends SiteController
 
 			Pathway::append(
 				implode(' + ', $t),
-				'index.php?option=' . $this->_option . '&tag=' . implode('+', $l)
+				'index.php?option=' . $this->_option . '&task=view&tag=' . implode('+', $l)
 			);
 		}
 	}
