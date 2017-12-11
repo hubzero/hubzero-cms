@@ -282,7 +282,6 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				$uri->delVar('Itemid');
 			}
 		}
-
 		if (self::$mode_sef)
 		{
 			$uri->delVar('lang');

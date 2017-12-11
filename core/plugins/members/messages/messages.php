@@ -101,13 +101,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			$task = Request::getVar('action','');
+			$task = Request::getVar('action', '');
 			if (!$task)
 			{
-				$task = Request::getVar('inaction','');
+				$task = Request::getVar('inaction', '');
 			}
 
-			$mid = Request::getInt('msg',0);
+			$mid = Request::getInt('msg', 0);
 			if ($mid)
 			{
 				$task = 'view';
@@ -120,25 +120,55 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 			switch ($task)
 			{
-				case 'sendtoarchive': $body = $this->sendtoarchive($database, $option, $member); break;
-				case 'sendtotrash':   $body = $this->sendtotrash($database, $option, $member);   break;
-				case 'sendtoinbox':   $body = $this->sendtoinbox($database, $option, $member);   break;
-				case 'markasread':    $body = $this->markasread($database, $option, $member);    break;
-				case 'markasunread':  $body = $this->markasunread($database, $option, $member);  break;
-				case 'savesettings':  $body = $this->savesettings($database, $option, $member);  break;
-				case 'emptytrash':    $body = $this->emptytrash($database, $option, $member);    break;
-				case 'delete':        $body = $this->delete($database, $option, $member);        break;
-
-				case 'send':          $body = $this->send($database, $option, $member);          break;
-				case 'new':           $body = $this->create($database, $option, $member);        break;
-
-				case 'view':          $body = $this->message($database, $option, $member, $mid); break;
-				case 'sent':          $body = $this->sent($database, $option, $member);          break;
-				case 'settings':      $body = $this->settings($database, $option, $member);      break;
-				case 'archive':       $body = $this->archive($database, $option, $member);       break;
-				case 'trash':         $body = $this->trash($database, $option, $member);         break;
+				case 'sendtoarchive':
+					$body = $this->sendtoarchive($database, $option, $member);
+					break;
+				case 'sendtotrash':
+					$body = $this->sendtotrash($database, $option, $member);
+					break;
+				case 'sendtoinbox':
+					$body = $this->sendtoinbox($database, $option, $member);
+					break;
+				case 'markasread':
+					$body = $this->markasread($database, $option, $member);
+					break;
+				case 'markasunread':
+					$body = $this->markasunread($database, $option, $member);
+					break;
+				case 'savesettings':
+					$body = $this->savesettings($database, $option, $member);
+					break;
+				case 'emptytrash':
+					$body = $this->emptytrash($database, $option, $member);
+					break;
+				case 'delete':
+					$body = $this->delete($database, $option, $member);
+					break;
+				case 'send':
+					$body = $this->send($database, $option, $member);
+					break;
+				case 'new':
+					$body = $this->create($database, $option, $member);
+					break;
+				case 'view':
+					$body = $this->message($database, $option, $member, $mid);
+					break;
+				case 'sent':
+					$body = $this->sent($database, $option, $member);
+					break;
+				case 'settings':
+					$body = $this->settings($database, $option, $member);
+					break;
+				case 'archive':
+					$body = $this->archive($database, $option, $member);break;
+				case 'trash':
+					$body = $this->trash($database, $option, $member);
+					break;
 				case 'inbox':
-				default:              $body = $this->inbox($database, $option, $member);         break;
+					break;
+				default:
+					$body = $this->inbox($database, $option, $member);
+					break;
 			}
 
 			$filters = array(
@@ -447,7 +477,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Fill in any settings that weren't set.
-		foreach ($settings as $key=>$val)
+		foreach ($settings as $key => $val)
 		{
 			if (count($val) <= 0)
 			{
@@ -519,7 +549,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
 
-		if (substr($xmessage->get('component'),0,4) == 'com_')
+		if (substr($xmessage->get('component'), 0, 4) == 'com_')
 		{
 			$xmessage->set('component', substr($xmessage->get('component'), 4));
 		}
@@ -850,8 +880,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		//$override = Request::getInt('override',0);
-		$settings = Request::getVar('settings',array());
-		$ids = Request::getVar('ids',array());
+		$settings = Request::getVar('settings', array());
+		$ids = Request::getVar('ids', array());
 
 		// Ensure we have data to work with
 		if ($settings && count($settings) > 0)
