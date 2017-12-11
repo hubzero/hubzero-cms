@@ -38,7 +38,7 @@ use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 
 // include needed jtables
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.category.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'page.category.php';
 
 /**
  * Group page category model class
@@ -76,8 +76,8 @@ class Category extends Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed $oid Integer, array, or object
-	 * @return     void
+	 * @param   mixed  $oid  Integer, array, or object
+	 * @return  void
 	 */
 	public function __construct($oid = null)
 	{
@@ -101,9 +101,9 @@ class Category extends Model
 	/**
 	 * Get pages in this category
 	 *
-	 * @param     string  $rtrn    What do we want back
-	 * @param     boolean $clear   Fetch an updated list
-	 * @return    object  \Hubzero\Base\ItemList
+	 * @param   string   $rtrn   What do we want back
+	 * @param   boolean  $clear  Fetch an updated list
+	 * @return  object   \Hubzero\Base\ItemList
 	 */
 	public function getPages($rtrn = 'list', $clear = false)
 	{

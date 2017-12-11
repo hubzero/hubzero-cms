@@ -125,7 +125,7 @@ class Groups extends Base
 		if (!User::isGuest())
 		{
 			// Get users tags
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			include_once \Component::path('com_members') . DS . 'models' . DS . 'tags.php';
 			$mt = new \Components\Members\Models\Tags(User::get('id'));
 			$mytags = $mt->render('string');
 
