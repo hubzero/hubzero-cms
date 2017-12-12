@@ -143,7 +143,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		$i = 0;
 		$total = 0;
 		$cats = array();
-		foreach ($areas as $c=>$t)
+		foreach ($areas as $c => $t)
 		{
 			$cats[$i]['category'] = $c;
 
@@ -156,7 +156,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 				$cats[$i]['_sub']  = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st)
+				foreach ($t as $s => $st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z]))

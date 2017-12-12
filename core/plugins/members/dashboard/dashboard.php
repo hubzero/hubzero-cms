@@ -339,8 +339,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// make sure we have modules
 		if ($modules == '')
 		{
-			App::abort(500,'Unable to save the users modules.');
-			exit();
+			App::abort(500, 'Unable to save the users modules.');
 		}
 
 		// if we have no modules set to an empty string
@@ -717,7 +716,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$preferences = $model->get('preferences');
 
 		// no user preferences, use default
-		if ($preferences === NULL)
+		if ($preferences === null)
 		{
 			// get defaults & check if string
 			$preferences = $this->params->get('defaults', '[]');
