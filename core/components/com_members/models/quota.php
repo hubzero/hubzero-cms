@@ -200,10 +200,12 @@ class Quota extends Relational
 
 		if ($users && count($users) > 0)
 		{
+			$model = self::blank();
+
 			// Update their class id, and their actual quota will be
 			// updated the next time they log in.
-			$result = self::blank()->getQuery()
-				->update($this->getTableName())
+			$result = $model->getQuery()
+				->update($model->getTableName())
 				->set(array('class_id' => (int)$deflt->get('id')))
 				->whereIn('id', $users)
 				->execute();
