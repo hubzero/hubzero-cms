@@ -433,7 +433,7 @@ class Ticketsv1_0 extends ApiController
 		$ticket = new \Components\Support\Models\Ticket();
 
 		// Set the created date
-		$ticket->set('created', Date::toSql());
+		$ticket->set('created', Date::of()->toSql());
 
 		// Incoming
 		$ticket->set('report', Request::getVar('report', '', 'post', 'none', 2));
