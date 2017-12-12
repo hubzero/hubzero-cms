@@ -34,11 +34,16 @@ use Hubzero\Component\AdminController;
 use Components\Cart\Helpers\CartOrders;
 use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
-use Hubzero\User\Profile;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Controller class for knowledge base categories
@@ -54,29 +59,40 @@ class Orders extends AdminController
 	{
 		// Get filters
 		$this->view->filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'uidNumber' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.uidNumber',
+				'uidNumber',
+				0,
+				'int'
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sort',
-					'filter_order',
-					'tLastUpdated'
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'tLastUpdated'
 			),
 			'sort_Dir' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sortdir',
-					'filter_order_Dir',
-					'DESC'
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limit',
-					'limit',
-					Config::get('list_limit'),
-					'int'
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
 			),
 			'start' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limitstart',
-					'limitstart',
-					0,
-					'int'
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
 			),
 			'report-notes' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.report-notes',
@@ -87,25 +103,23 @@ class Orders extends AdminController
 			'report-from' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.report-from',
 				'report-from',
-				date('m/d/Y', strtotime('-1 month'))
+				gmdate('m/d/Y', strtotime('-1 month'))
 			),
 			'report-to' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.report-to',
 				'report-to',
-				date('m/d/Y')
+				gmdate('m/d/Y')
 			)
 		);
 
 		// Get record count
 		$this->view->filters['count'] = true;
+		$this->view->filters['userInfo'] = true;
 		$this->view->total = Cart::getAllTransactions($this->view->filters);
 
 		// Get records
 		$this->view->filters['count'] = false;
-		$this->view->filters['userInfo'] = true;
 		$this->view->rows = Cart::getAllTransactions($this->view->filters);
-
-		//print_r($this->view->rows); die;
 
 		if (!$this->view->rows)
 		{
@@ -162,7 +176,7 @@ class Orders extends AdminController
 
 		// Get user info
 		$userId = Cart::getCartUser($tInfo->crtId);
-		$user = Profile::getInstance($userId);
+		$user = User::getInstance($userId);
 
 		$this->view->user = $user;
 		$this->view->tInfo = $tInfo;
@@ -183,41 +197,58 @@ class Orders extends AdminController
 	{
 		// Get filters
 		$this->view->filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . $this->_task . '.search',
+				'search',
+				''
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
+				$this->_option . '.' . $this->_controller . $this->_task . '.sort',
 				'filter_order',
 				'tLastUpdated'
 			),
 			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
+				$this->_option . '.' . $this->_controller . $this->_task . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
+				$this->_option . '.' . $this->_controller . $this->_task . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
 			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
+				$this->_option . '.' . $this->_controller . $this->_task . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			'report-from' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.report-from',
+				$this->_option . '.' . $this->_controller . $this->_task . '.report-from',
 				'report-from',
-				date('m/d/Y', strtotime('-1 month'))
+				gmdate('m/d/Y', strtotime('-1 month'))
 			),
 			'report-to' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.report-to',
+				$this->_option . '.' . $this->_controller . $this->_task . '.report-to',
 				'report-to',
-				date('m/d/Y')
+				gmdate('m/d/Y')
+			),
+			'order' => Request::getState(
+				$this->_option . '.' . $this->_controller . $this->_task . '.order',
+				'order',
+				0,
+				'int'
 			)
 		);
+
+		if ($this->view->filters['order'])
+		{
+			$this->view->filters['report-from'] = '';
+			$this->view->filters['report-to'] = '';
+		}
 
 		// Get orders count
 		$this->view->total = CartOrders::getItemsOrdered('count', $this->view->filters);
@@ -246,6 +277,11 @@ class Orders extends AdminController
 	{
 		// Get filters
 		$filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -266,12 +302,18 @@ class Orders extends AdminController
 			'report-from' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.report-from',
 				'report-from',
-				date('m/d/Y', strtotime('-1 month'))
+				gmdate('m/d/Y', strtotime('-1 month'))
 			),
 			'report-to' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.report-to',
 				'report-to',
-				date('m/d/Y')
+				gmdate('m/d/Y')
+			),
+			'uidNumber' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.uidNumber',
+				'uidNumber',
+				0,
+				'int'
 			)
 		);
 
@@ -341,9 +383,9 @@ class Orders extends AdminController
 			$rows[] = array($row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber'], $notesValue);
 		}
 
-		$dateFrom = date('dMY', strtotime($filters['report-from']));
-		$dateTo = date('dMY', strtotime($filters['report-to']));
-		$date = date('d-m-Y');
+		$dateFrom = gmdate('dMY', strtotime($filters['report-from']));
+		$dateTo = gmdate('dMY', strtotime($filters['report-to']));
+		$date = gmdate('d-m-Y');
 
 		header("Content-Type: text/csv");
 		header("Content-Disposition: attachment; filename=cart-orders-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
@@ -371,26 +413,37 @@ class Orders extends AdminController
 	{
 		// Get filters
 		$filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . 'items.search',
+				'search',
+				''
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
+				$this->_option . '.' . $this->_controller . 'items.sort',
 				'filter_order',
 				'dDownloaded'
 			),
 			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
+				$this->_option . '.' . $this->_controller . 'items.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			'report-from' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.report-from',
+				$this->_option . '.' . $this->_controller . 'items.report-from',
 				'report-from',
-				date('m/d/Y', strtotime('-1 month'))
+				gmdate('m/d/Y', strtotime('-1 month'))
 			),
 			'report-to' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.report-to',
+				$this->_option . '.' . $this->_controller . 'items.report-to',
 				'report-to',
-				date('m/d/Y')
+				gmdate('m/d/Y')
+			),
+			'order' => Request::getState(
+				$this->_option . '.' . $this->_controller . 'items.order',
+				'order',
+				0,
+				'int'
 			)
 		);
 
@@ -412,9 +465,9 @@ class Orders extends AdminController
 			$rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber);
 		}
 
-		$dateFrom = date('dMY', strtotime($filters['report-from']));
-		$dateTo = date('dMY', strtotime($filters['report-to']));
-		$date = date('d-m-Y');
+		$dateFrom = gmdate('dMY', strtotime($filters['report-from']));
+		$dateTo = gmdate('dMY', strtotime($filters['report-to']));
+		$date = gmdate('d-m-Y');
 
 		header("Content-Type: text/csv");
 		header("Content-Disposition: attachment; filename=cart-items-ordered-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");

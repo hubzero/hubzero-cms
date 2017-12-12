@@ -50,18 +50,17 @@ Toolbar::spacer();
 Toolbar::help('downloads');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
+	function submitbutton(pressbutton)
+	{
+		var form = document.adminForm;
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
+		// do field validation
 		submitform(pressbutton);
-		return;
 	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
-<script>
+
 	$( function() {
 		var dateFormat = "mm/dd/yy",
 			from = $( "#filter-report-from" )
@@ -106,9 +105,6 @@ $this->view('_submenu')
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
 				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
-
-				<input type="submit" value="<?php echo Lang::txt('COM_CART_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-report-from').val('<?php echo date('m/d/Y', strtotime('-1 month')); ?>');$('#filter-report-to').val('<?php echo date('m/d/Y'); ?>');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7 align-right">
 				<?php
@@ -194,16 +190,16 @@ $this->view('_submenu')
 					}
 					if (!stripslashes($row->sSku))
 					{
-						$product .= ', <span class="missing">SKU n/a</span>';
+						$product .= '<br />SKU: <span class="missing">n/a</span>';
 					}
 					else {
-						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
 					}
 					?>
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>
-					<span><?php echo $this->escape(stripslashes($row->dName)) . ' / ' . $this->escape(stripslashes($row->username)); ?></span>
+					<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
 				</td>
 				<td>
 					<?php
@@ -241,7 +237,8 @@ $this->view('_submenu')
 							}
 						}
 					}
-					else {
+					else
+					{
 						echo '&nbsp;';
 					}
 					?>

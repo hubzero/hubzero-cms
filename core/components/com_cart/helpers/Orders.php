@@ -50,7 +50,7 @@ class CartOrders
 		}
 		if (!isset($filters['sort_Dir']))
 		{
-			$filters['sort_Dir']  = 'DESC';
+			$filters['sort_Dir'] = 'DESC';
 		}
 		if (strtolower($rtrn) == 'count')
 		{
@@ -60,12 +60,11 @@ class CartOrders
 
 		$db = \App::get('db');
 
-		$sql  = 'SELECT ti.sId, ti.tiQty, ti.tiPrice, t.tId, t.crtId, t.`tLastUpdated`, x.id AS uidNumber, x.name ';
-		$sql .= 'FROM #__cart_transaction_items ti ';
-		$sql .= 'LEFT JOIN  #__cart_transactions t ON (t.tId = ti.tId) ';
-		$sql .= 'LEFT JOIN  #__cart_carts crt on (crt.crtId = t.crtId) ';
-		$sql .= 'LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.id) ';
-		$sql .= "WHERE t.tStatus = 'completed'";
+		$sql = "SELECT ti.sId, ti.tiQty, ti.tiPrice, t.tId, t.crtId, t.`tLastUpdated`, crt.`uidNumber`, x.name
+				FROM `#__cart_transaction_items` ti
+				LEFT JOIN `#__cart_transactions` t ON (t.tId = ti.tId)
+				LEFT JOIN `#__cart_carts` crt on (crt.crtId = t.crtId)
+				LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.id)";
 
 		// Filter by filters
 		if ($filters['sort'] == 'title')
@@ -77,17 +76,42 @@ class CartOrders
 			$filters['sort'] = 'pName';
 		}
 
+		$where = array("t.tStatus = 'completed'");
+
+		if (isset($filters['order']) && $filters['order'])
+		{
+			$where[] = "ti.`tId` = " . $db->quote($filters['order']);
+		}
+
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$sql .= " LEFT JOIN `#__storefront_skus` sku on (sku.sId = ti.sId)";
+			$sql .= " LEFT JOIN `#__storefront_products` p on (sku.pId = p.pId)";
+
+			$where[] = "(
+				x.`name` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR x.`username` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR sku.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+			)";
+		}
+
 		if (isset($filters['report-from']) && strtotime($filters['report-from']))
 		{
 			$showFrom = date("Y-m-d", strtotime($filters['report-from']));
-			$sql .= " AND t.`tLastUpdated` >= '{$showFrom}'";
+			$where[] = "t.`tLastUpdated` >= " . $db->quote($showFrom);
 		}
 		if (isset($filters['report-to']) && strtotime($filters['report-to']))
 		{
 			// Add one day to include all the records of the end day
 			$showTo = strtotime($filters['report-to'] . ' +1 day');
 			$showTo = date("Y-m-d 00:00:00", $showTo);
-			$sql .= " AND t.`tLastUpdated` <= '{$showTo}'";
+			$where[] = "t.`tLastUpdated` <= " . $db->quote($showTo);
+		}
+
+		if (count($where))
+		{
+			$sql .= " WHERE " . implode(" AND ", $where) . " ";
 		}
 
 		$sql .= " ORDER BY " . $filters['sort'];
@@ -105,15 +129,14 @@ class CartOrders
 		}
 
 		$db->setQuery($sql);
-		//echo $db->toString(); die;
 		$db->execute();
 		if ($rtrn == 'count')
 		{
-			return($db->getNumRows());
+			return $db->getNumRows();
 		}
 		elseif ($rtrn == 'array')
 		{
-			return($db->loadAssocList());
+			return $db->loadAssocList();
 		}
 
 		$res = $db->loadObjectList();

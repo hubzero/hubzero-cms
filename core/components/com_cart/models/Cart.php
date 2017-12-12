@@ -177,9 +177,11 @@ abstract class Cart
 	 */
 	public static function getAllTransactions($filters = array(), $completedOnly = true)
 	{
+		$db = \App::get('db');
+
 		// Get info
 		$sql = "SELECT ";
-		if (!empty($filters['userInfo']) && $filters['userInfo'])
+		if ((!empty($filters['userInfo']) && $filters['userInfo']) || (isset($filters['search']) && $filters['search']))
 		{
 			$sql .= " x.`id` AS uidNumber, x.`name`, crt.`crtId`, ";
 		}
@@ -188,37 +190,66 @@ abstract class Cart
 			$sql .= " ti.`tiNotes`, ";
 		}
 		$sql .= "t.`tId`, `tLastUpdated`, `tStatus`, ti.`tiPayment` FROM `#__cart_transactions` t";
-		if (!empty($filters['userInfo']) && $filters['userInfo'])
+		if ((!empty($filters['userInfo']) && $filters['userInfo']) || (isset($filters['search']) && $filters['search']))
 		{
 			$sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
 			$sql .= ' LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.`id`)';
 		}
 		$sql .= " LEFT JOIN `#__cart_transaction_info` ti ON (ti.`tId` = t.`tId`)";
 
-		$sql .= " WHERE 1";
+		$where = array();
+
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$sql .= " LEFT JOIN `#__cart_transaction_items` tis ON (t.tId = tis.tId)";
+			$sql .= " LEFT JOIN `#__storefront_skus` sku on (sku.sId = tis.sId)";
+			$sql .= " LEFT JOIN `#__storefront_products` p on (sku.pId = p.pId)";
+
+			$where[] = "(
+				x.`name` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR x.`username` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR sku.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+			)";
+		}
+
+		if (!empty($filters['uidNumber']) && $filters['uidNumber'])
+		{
+			$where[] = "crt.`uidNumber` = " . intval($filters['uidNumber']);
+		}
+
 		if (!empty($filters['crtId']) && $filters['crtId'])
 		{
-			$sql .= " AND `crtId` = {$filters['crtId']}";
+			$where[] = "t.`crtId` = {$filters['crtId']}";
 		}
+
 		if (!empty($filters['report-notes']) && $filters['report-notes'])
 		{
-			$sql .= " AND (ti.`tiNotes` IS NOT NULL AND ti.`tiNotes` != '')";
+			$where[] = "(ti.`tiNotes` IS NOT NULL AND ti.`tiNotes` != '')";
 		}
+
 		if ($completedOnly)
 		{
-			$sql .= " AND `tStatus` = 'completed'";
+			$where[] = "t.`tStatus` = 'completed'";
 		}
+
 		if (isset($filters['report-from']) && strtotime($filters['report-from']))
 		{
 			$showFrom = date("Y-m-d", strtotime($filters['report-from']));
-			$sql .= " AND t.`tLastUpdated` >= '{$showFrom}'";
+			$where[] = "t.`tLastUpdated` >= " . $db->quote($showFrom);
 		}
+
 		if (isset($filters['report-to']) && strtotime($filters['report-to']))
 		{
 			// Add one day to include all the records of the end day
 			$showTo = strtotime($filters['report-to'] . ' +1 day');
 			$showTo = date("Y-m-d 00:00:00", $showTo);
-			$sql .= " AND t.`tLastUpdated` <= '{$showTo}'";
+			$where[] = "t.`tLastUpdated` <= " . $db->quote($showTo);
+		}
+
+		if (count($where))
+		{
+			$sql .= " WHERE " . implode(" AND ", $where) . " ";
 		}
 
 		if (isset($filters['sort']) && (empty($filters['count']) || !$filters['count']))
@@ -239,9 +270,7 @@ abstract class Cart
 			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
 
-		$db = \App::get('db');
 		$db->setQuery($sql);
-		//echo $db->toString(); die;
 		$db->query();
 
 		$totalRows = $db->getNumRows();
