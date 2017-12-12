@@ -119,7 +119,7 @@ class Quota extends Relational
 		{
 			$command = "update_quota '" . $this->get('user_id') . "' '" . $this->get('soft_blocks') . "' '" . $this->get('hard_blocks') . "'";
 
-			$cmd = "/bin/sh " . PATH_CORE . "/components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
+			$cmd = "/bin/sh " . \Component::path('com_tools') . "/scripts/mw {$command} 2>&1 </dev/null";
 
 			exec($cmd, $results, $status);
 

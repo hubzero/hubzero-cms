@@ -84,8 +84,8 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 		$badgesProvider->setCredentials($creds);
 
-		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php';
+		require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
+		require_once Component::path('com_courses') . DS . 'models' . DS . 'memberBadge.php';
 		$coursesObj = new \Components\Courses\Models\Courses();
 		$courses    = $coursesObj->courses();
 
@@ -169,7 +169,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 		$cconfig  = Component::params('com_courses');
 
 		Lang::load('com_courses') ||
-		Lang::load('com_courses', PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site');
+		Lang::load('com_courses', Component::path('com_courses') . DS . 'site');
 
 		$from = array(
 			'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),
@@ -178,7 +178,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 		$subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
 
-		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
+		require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 
 		$course_id = 0;
 
@@ -228,7 +228,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 						if (isset($managers) && count($managers) > 0)
 						{
-							require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php';
+							require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 							foreach ($managers as $manager)
 							{
@@ -281,7 +281,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 								}
 
 								$eview = new \Hubzero\Component\View(array(
-									'base_path' => PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site',
+									'base_path' => Component::path('com_courses') . DS . 'site',
 									'name'      => 'emails',
 									'layout'    => 'digest_plain'
 								));

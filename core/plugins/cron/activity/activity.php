@@ -125,7 +125,11 @@ class plgCronActivity extends \Hubzero\Plugin\Plugin
 			$previous = Date::of('now')->subtract('1 ' . $interval)->toSql();
 
 			// Set up the query
-			$query = "SELECT DISTINCT(scope_id) FROM `#__activity_digests` WHERE `scope`=" . $db->quote('user') . " AND `frequency`=" . $db->quote($val) . " AND (`sent` = '0000-00-00 00:00:00' OR `sent` <= " . $db->quote($previous) . ")";
+			$query = "SELECT DISTINCT(scope_id)
+					FROM `#__activity_digests`
+					WHERE `scope`=" . $db->quote('user') . "
+					AND `frequency`=" . $db->quote($val) . "
+					AND (`sent` IS NULL OR `sent` = '0000-00-00 00:00:00' OR `sent` <= " . $db->quote($previous) . ")";
 			$db->setQuery($query);
 			$users = $db->loadColumn();
 

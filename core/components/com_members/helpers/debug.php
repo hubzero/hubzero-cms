@@ -31,6 +31,7 @@
 
 namespace Components\Members\Helpers;
 
+use Component;
 use Html;
 use Lang;
 use App;
@@ -66,7 +67,7 @@ class Debug
 			{
 				// Load language
 				$extension = $item->value;
-				$source    = PATH_CORE . '/components/' . $extension . '/admin';
+				$source    = Component::path($extension) . '/admin';
 				$lang->load("$extension.sys", PATH_APP, null, false, true) ||
 				$lang->load("$extension.sys", $source, null, false, true);
 
@@ -94,11 +95,7 @@ class Debug
 		// Try to get actions for the component
 		if (!empty($component))
 		{
-			$path = PATH_APP . '/components/' . $component . '/config/access.xml';
-			if (!file_exists($path))
-			{
-				$path = PATH_CORE . '/components/' . $component . '/config/access.xml';
-			}
+			$path = Component::path($component) . '/config/access.xml';
 
 			$component_actions = \Hubzero\Access\Access::getActionsFromFile($path);
 			$component_actions ?: array();
@@ -115,7 +112,7 @@ class Debug
 		// Use default actions from configuration if no component selected or component doesn't have actions
 		if (empty($actions))
 		{
-			$filename = PATH_CORE . '/components/com_config/admin/models/forms/application.xml';
+			$filename = Component::path('com_config') . '/admin/models/forms/application.xml';
 
 			if (is_file($filename))
 			{
@@ -147,7 +144,7 @@ class Debug
 				// Load language
 				$lang      = Lang::getRoot();
 				$extension = 'com_config';
-				$source    = PATH_CORE . '/components/' . $extension . '/admin';
+				$source    = Component::path($extension) . '/admin';
 
 				$lang->load("$extension.sys", PATH_APP, null, false, true) ||
 				$lang->load("$extension.sys", $source, null, false, true);
