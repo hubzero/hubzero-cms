@@ -62,6 +62,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		{
 			$areas['messages'] = Lang::txt('PLG_MEMBERS_MESSAGES');
 			$areas['icon'] = '2709';
+			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 
 		return $areas;

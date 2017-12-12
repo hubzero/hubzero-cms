@@ -56,7 +56,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array(
 			'collections' => Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name)),
-			'icon' => 'f005'
+			'icon'        => 'f005',
+			'menu'        => $this->params->get('display_tab', 1)
 		);
 		return $areas;
 	}

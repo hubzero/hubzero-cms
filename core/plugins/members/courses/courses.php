@@ -60,6 +60,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		{
 			$areas['courses'] = Lang::txt('PLG_MEMBERS_COURSES');
 			$areas['icon'] = 'f09c';
+			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 		return $areas;
 	}

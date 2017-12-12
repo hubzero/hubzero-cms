@@ -62,6 +62,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		{
 			$areas['points'] = Lang::txt('PLG_MEMBERS_POINTS');
 			$areas['icon'] = 'f006';
+			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 
 		return $areas;

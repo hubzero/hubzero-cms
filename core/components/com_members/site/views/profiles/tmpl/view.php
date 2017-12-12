@@ -109,6 +109,10 @@ if (!$no_html)
 						{
 							continue;
 						}
+						if (isset($c['menu']) && !$c['menu'])
+						{
+							continue;
+						}
 						$name = $c[$key];
 						$url = Route::url($this->profile->link() . '&active=' . $key);
 						$cls = ($this->active == $key) ? 'active' : '';

@@ -44,6 +44,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="display_tab" type="list" default="1" label="PLG_MEMBERS_PROFILE_PARAM_DISPLAY_TAB_LABEL" description="PLG_MEMBERS_PROFILE_PARAM_DISPLAY_TAB_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 				<field name="access_email" type="list" default="2" label="Email" description="Show/Hide the user email">
 					<option value="0">Public</option>
 					<option value="1">Registered users</option>

@@ -94,6 +94,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		{
 			$areas['dashboard'] = Lang::txt('PLG_MEMBERS_DASHBOARD');
 			$areas['icon'] = 'f009';
+			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 
 		return $areas;

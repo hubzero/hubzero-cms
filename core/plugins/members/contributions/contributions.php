@@ -41,22 +41,23 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Perform actions when viewing a member profile
 	 *
-	 * @param      object $user   Current user
-	 * @param      object $member Current member page
-	 * @return     array
+	 * @param   object  $user    Current user
+	 * @param   object  $member  Current member page
+	 * @return  array
 	 */
 	public function &onMembersAreas($user, $member)
 	{
 		$areas = array(
 			'contributions' => Lang::txt('PLG_MEMBERS_CONTRIBUTIONS'),
-			'icon' => 'f02d'
+			'icon' => 'f02d',
+			'menu' => $this->params->get('display_tab', 1)
 		);
 		return $areas;
 	}
@@ -64,11 +65,11 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  MembersProfile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{

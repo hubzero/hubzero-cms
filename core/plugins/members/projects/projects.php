@@ -78,6 +78,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		{
 			$areas['projects'] = Lang::txt('PLG_MEMBERS_PROJECTS');
 			$areas['icon'] = 'f03f';
+			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 		return $areas;
 	}
