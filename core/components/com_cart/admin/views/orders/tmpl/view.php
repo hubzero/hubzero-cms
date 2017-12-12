@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<th>Ordered by:</th>
-					<td><span><?php echo $this->user->get('name'); ?> (<?php echo $this->user->get('username'); ?>)</span></td>
+					<td><span><?php echo ($this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN')); ?></span></td>
 				</tr>
 				<tr>
 					<th>Order subtotal:</th>
