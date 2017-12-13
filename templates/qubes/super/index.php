@@ -43,6 +43,12 @@ Document::addScript($base . '/assets/js/ElementQueries.js');
 </style>
 <!-- end: modify css for banner image -->
 
+<!-- begin: change favicon -->
+<script>
+$("[rel='shortcut icon']")[0].setAttribute('href', <?php echo "'" . $base . DS . "favicon.ico'" ?>);
+</script>
+<!-- end: change favicon -->
+
 <?php if (!$no_html) : ?>
 <group:include type="content" scope="before" />
 
