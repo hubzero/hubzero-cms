@@ -705,13 +705,15 @@ class Members extends AdminController
 					continue;
 				}
 
+				$data = $user->toArray();
+
 				if (!$user->destroy())
 				{
 					Notify::error($user->getError());
 					continue;
 				}
 
-				Event::trigger('user.onUserAfterDelete', array($id));
+				Event::trigger('user.onUserAfterDelete', array($data, true, $this->getError()));
 
 				$i++;
 			}
