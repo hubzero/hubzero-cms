@@ -166,7 +166,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$body = $this->trash($database, $option, $member);
 					break;
 				case 'inbox':
-					break;
 				default:
 					$body = $this->inbox($database, $option, $member);
 					break;
@@ -970,7 +969,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Push through to the settings view
 		$this->addPluginMessage(Lang::txt('You have successfully saved your message settings.'), 'passed');
 
-		return App::redirect(htmlspecialchars_decode(Route::url($member->link() . '&active=messages&task=inbox&limit=' . $filters['limit'] . '&limitstart=0')));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=inbox&limit=' . $filters['limit'] . '&limitstart=0', false));
 	}
 
 	/**
