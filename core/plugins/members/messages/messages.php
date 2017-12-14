@@ -160,7 +160,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$body = $this->settings($database, $option, $member);
 					break;
 				case 'archive':
-					$body = $this->archive($database, $option, $member);break;
+					$body = $this->archive($database, $option, $member);
+					break;
 				case 'trash':
 					$body = $this->trash($database, $option, $member);
 					break;
