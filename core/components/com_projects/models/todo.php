@@ -32,10 +32,10 @@
 
 namespace Components\Projects\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'todo.php';
 
-require_once(__DIR__ . DS . 'todoentry.php');
-require_once(__DIR__ . DS . 'comment.php');
+require_once __DIR__ . DS . 'todoentry.php';
+require_once __DIR__ . DS . 'comment.php';
 
 use Hubzero\Base\Model;
 
@@ -70,12 +70,12 @@ class Todo extends Model
 	 *
 	 * @var object
 	 */
-	public $config = NULL;
+	public $config = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -89,8 +89,8 @@ class Todo extends Model
 	/**
 	 * Returns a reference to a todo model
 	 *
-	 * @param      mixed $oid TODO ID
-	 * @return     object Todo
+	 * @param   mixed   $oid  TODO ID
+	 * @return  object  Todo
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -125,10 +125,11 @@ class Todo extends Model
 	/**
 	 * Get list name
 	 *
-	 * @param      mixed $filters array
-	 * @return     array
+	 * @param   integer  $projectid
+	 * @param   mixed    $filters
+	 * @return  array
 	 */
-	public function getListName($projectid = NULL, $filters=array())
+	public function getListName($projectid = null, $filters=array())
 	{
 		$color = is_array($filters) ? $filters['todolist'] : $filters;
 		return $this->_tbl->getListName($projectid, $color);
@@ -137,10 +138,10 @@ class Todo extends Model
 	/**
 	 * Get lists
 	 *
-	 * @param      mixed $filters array
-	 * @return     array
+	 * @param   integer  $projectid
+	 * @return  array
 	 */
-	public function getLists($projectid = NULL)
+	public function getLists($projectid = null)
 	{
 		return $this->_tbl->getTodoLists($projectid);
 	}
@@ -148,7 +149,8 @@ class Todo extends Model
 	/**
 	 * Set and get a specific offering
 	 *
-	 * @return     void
+	 * @param   integer  $id
+	 * @return  object
 	 */
 	public function entry($id=null)
 	{
@@ -166,8 +168,9 @@ class Todo extends Model
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   string  $rtrn
+	 * @param   array   $filters
+	 * @return  array
 	 */
 	public function entries($rtrn='list', $filters=array())
 	{
@@ -177,13 +180,13 @@ class Todo extends Model
 		{
 			case 'count':
 				$filters['count'] = 1;
-				return (int) $this->_tbl->getTodos(NULL, $filters);
+				return (int) $this->_tbl->getTodos(null, $filters);
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if ($results = $this->_tbl->getTodos(NULL, $filters))
+				if ($results = $this->_tbl->getTodos(null, $filters))
 				{
 					foreach ($results as $key => $result)
 					{
@@ -203,12 +206,12 @@ class Todo extends Model
 	/**
 	 * Store changes to this database entry
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean  $check  Perform data validation check?
+	 * @return  boolean  False if error, True on success
 	 */
 	public function store($check=true)
 	{
 		// Do nothing here yet.
+		return true;
 	}
 }
-
