@@ -170,7 +170,7 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid) //connection specific listing
 		{
-			$dir   = Entity::fromPath(Request::getVar('subdir','','post'), $this->ormconn->adapter());
+			$dir = Entity::fromPath(Request::getVar('subdir', '', 'post'), $this->ormconn->adapter());
 			try
 			{
 				$files = $dir->listContents();
@@ -976,7 +976,7 @@ class Filesv1_0 extends ApiController
 						}
 						else
 						{
-							$response->metadata[$file] = $this->_filter($metadata[0],$fields);
+							$response->metadata[$file] = $this->_filter($metadata[0], $fields);
 						}
 						$response->success = 1;
 					}
@@ -1159,7 +1159,7 @@ class Filesv1_0 extends ApiController
 		$result = array();
 		foreach ($source as $key => $value)
 		{
-			if (in_array($key,$filter))
+			if (in_array($key, $filter))
 			{
 				$result[$key] = $value;
 			}
@@ -1186,7 +1186,7 @@ class Filesv1_0 extends ApiController
 		{
 			foreach ($entities as $entity)
 			{
-				$path = trim(Request::getVar('subdir',''), '/') . '/' . urldecode($entity);
+				$path = trim(Request::getVar('subdir', ''), '/') . '/' . urldecode($entity);
 				$collection->add(Entity::fromPath($path, $this->ormconn->adapter()));
 			}
 		}
