@@ -101,6 +101,11 @@ Joomla.submitbutton = function(pressbutton)
 	{
 		echo '<p class="error">' . $this->getError() . '</p>';
 	}
+
+	if (!$this->dependency)
+	{
+		$this->view('dependency')->display();
+	}
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
