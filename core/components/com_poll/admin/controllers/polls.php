@@ -390,7 +390,7 @@ class Polls extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$publish = (Request::getVar('task') == 'open' ? 1 : 0);
+		$publish = ($this->getTask() == 'open' ? Poll::STATE_PUBLISHED : Poll::STATE_UNPUBLISHED);
 
 		if (empty($ids))
 		{
