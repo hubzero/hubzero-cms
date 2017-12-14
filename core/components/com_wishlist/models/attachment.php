@@ -145,7 +145,7 @@ class Attachment extends Relational
 		switch ($type)
 		{
 			case 'download':
-				if (!$this->get('category') || !$this->get('referenceid'))
+				/*if (!$this->get('category') || !$this->get('referenceid'))
 				{
 					$wish = Wish::oneOrNew($this->get('wish'));
 					$wishlist = Wishlist::oneOrNew($wish->get('wishlist'));
@@ -153,6 +153,8 @@ class Attachment extends Relational
 					$this->set('referenceid', $wishlist->get('referenceid'));
 				}
 				return Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish') . '&file=' . $this->get('filename'));
+				*/
+				return with(new \Hubzero\Content\Moderator($this->link('file')))->getUrl();
 			break;
 
 			case 'dir':

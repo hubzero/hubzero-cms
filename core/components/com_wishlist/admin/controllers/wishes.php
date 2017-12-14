@@ -150,53 +150,56 @@ class Wishes extends AdminController
 			switch ($filters['status'])
 			{
 				case 'granted':
-					$model->whereEquals('status', 1);
+					$model->whereEquals('status', Wish::WISH_STATE_GRANTED);
 					break;
 				case 'open':
-					$model->whereEquals('status', 0);
+					$model->whereEquals('status', Wish::WISH_STATE_OPEN);
 					break;
 				case 'accepted':
 					$model
-						->whereIn('status', array(0, 6))
+						->whereIn('status', array(
+							Wish::WISH_STATE_OPEN,
+							Wish::WISH_STATE_ACCEPTED
+						))
 						->whereEquals('accepted', 1);
 					break;
 				case 'pending':
 					$model
 						->whereEquals('accepted', 0)
-						->whereEquals('status', 0);
+						->whereEquals('status', Wish::WISH_STATE_OPEN);
 					break;
 				case 'rejected':
-					$model->whereEquals('status', 3);
+					$model->whereEquals('status', Wish::WISH_STATE_REJECTED);
 					break;
 				case 'withdrawn':
-					$model->whereEquals('status', 4);
+					$model->whereEquals('status', Wish::WISH_STATE_WITHDRAWN);
 					break;
 				case 'deleted':
-					$model->whereEquals('status', 2);
+					$model->whereEquals('status', Wish::WISH_STATE_DELETED);
 					break;
 				case 'useraccepted':
 					$model
 						->whereEquals('accepted', 3)
-						->where('status', '!=', 2);
+						->where('status', '!=', Wish::WISH_STATE_DELETED);
 					break;
 				case 'private':
 					$model
 						->whereEquals('private', 1)
-						->where('status', '!=', 2);
+						->where('status', '!=', Wish::WISH_STATE_DELETED);
 					break;
 				case 'public':
 					$model
 						->whereEquals('private', 0)
-						->where('status', '!=', 2);
+						->where('status', '!=', Wish::WISH_STATE_DELETED);
 					break;
 				case 'assigned':
 					$model
-						->where('status', '!=', 2)
+						->where('status', '!=', Wish::WISH_STATE_DELETED)
 						->whereRaw('assigned NOT NULL');
 					break;
 				case 'all':
 				default:
-					$model->where('status', '!=', 2);
+					$model->where('status', '!=', Wish::WISH_STATE_DELETED);
 					break;
 			}
 		}
@@ -252,10 +255,6 @@ class Wishes extends AdminController
 			$row->set('wishlist', $wishlist);
 		}
 
-		/*
-		$m = new Models\AdminWish();
-		$this->view->form = $m->getForm();
-		*/
 
 		$lists = Wishlist::all()
 			->order('title', 'asc')
@@ -411,7 +410,7 @@ class Wishes extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
-		$i = 0;
+		$removed = 0;
 		if (count($ids) > 0)
 		{
 			// Loop through each ID
@@ -425,13 +424,13 @@ class Wishes extends AdminController
 					continue;
 				}
 
-				$i++;
+				$removed++;
 			}
 		}
 
-		if ($i)
+		if ($removed)
 		{
-			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $i));
+			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $removed));
 		}
 
 		// Redirect
@@ -505,7 +504,7 @@ class Wishes extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$state = $this->getTask() == 'grant' ? 1 : 0;
+		$state = $this->getTask() == 'grant' ? Wish::WISH_STATE_GRANTED : Wish::WISH_STATE_OPEN;
 
 		// Incoming
 		$cid = Request::getInt('cid', 0);
@@ -515,12 +514,12 @@ class Wishes extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			Notify::warning($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+			Notify::warning($state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
 			return $this->cancelTask();
 		}
 
 		// Update record(s)
-		$i = 0;
+		$success = 0;
 		foreach ($ids as $id)
 		{
 			$row = Wish::oneOrFail($id);
@@ -532,22 +531,22 @@ class Wishes extends AdminController
 				continue;
 			}
 
-			$i++;
+			$success++;
 		}
 
-		if ($i)
+		if ($success)
 		{
 			// Set message
-			switch ($state)
+			switch ($this->getTask())
 			{
-				case '-1':
-					$message = Lang::txt('COM_WISHLIST_TRASHED', $i);
+				case 'trash':
+					$message = Lang::txt('COM_WISHLIST_TRASHED', $success);
 					break;
-				case '1':
-					$message = Lang::txt('COM_WISHLIST_ITEMS_GRANTED', $i);
+				case 'grant':
+					$message = Lang::txt('COM_WISHLIST_ITEMS_GRANTED', $success);
 					break;
-				case '0':
-					$message = Lang::txt('COM_WISHLIST_ITEMS_PENDING', $i);
+				case 'pending':
+					$message = Lang::txt('COM_WISHLIST_ITEMS_PENDING', $success);
 					break;
 			}
 

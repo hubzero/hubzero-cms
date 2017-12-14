@@ -313,63 +313,66 @@ class Wishlists extends SiteController
 			switch ($filters['filterby'])
 			{
 				case 'granted':
-					$entries->whereEquals('status', 1);
+					$entries->whereEquals('status', Wish::WISH_STATE_GRANTED);
 					break;
 				case 'open':
-					$entries->whereEquals('status', 0);
+					$entries->whereEquals('status', Wish::WISH_STATE_OPEN);
 					break;
 				case 'accepted':
 					$entries
-						->whereIn('status', array(0, 6))
+						->whereIn('status', array(
+							Wish::WISH_STATE_OPEN,
+							Wish::WISH_STATE_ACCEPTED
+						))
 						->whereEquals('accepted', 1);
 					break;
 				case 'pending':
 					$entries
 						->whereEquals('accepted', 0)
-						->whereEquals('status', 0);
+						->whereEquals('status', Wish::WISH_STATE_OPEN);
 					break;
 				case 'rejected':
-					$entries->whereEquals('status', 3);
+					$entries->whereEquals('status', Wish::WISH_STATE_REJECTED);
 					break;
 				case 'withdrawn':
-					$entries->whereEquals('status', 4);
+					$entries->whereEquals('status', Wish::WISH_STATE_WITHDRAWN);
 					break;
 				case 'deleted':
-					$entries->whereEquals('status', 2);
+					$entries->whereEquals('status', Wish::WISH_STATE_DELETED);
 					break;
 				case 'useraccepted':
 					$entries
 						->whereEquals('accepted', 3)
-						->where('status', '!=', 2);
+						->where('status', '!=', Wish::WISH_STATE_DELETED);
 					break;
 				case 'private':
 					$entries
 						->whereEquals('private', 1)
-						->where('status', '!=', 2);
+						->where('status', '!=', Wish::WISH_STATE_DELETED);
 					break;
 				case 'public':
 					$entries
 						->whereEquals('private', 0)
-						->where('status', '!=', 2);
+						->where('status', '!=', Wish::WISH_STATE_DELETED);
 					break;
 				case 'assigned':
 					$entries
-						->where('status', '!=', 2)
+						->where('status', '!=', Wish::WISH_STATE_DELETED)
 						->whereRaw('assigned NOT NULL');
 					break;
 				case 'mine':
 					$entries
-						->where('status', '!=', 2)
+						->where('status', '!=', Wish::WISH_STATE_DELETED)
 						->whereEquals('assigned', User::get('id'));
 				break;
 				case 'submitter':
 					$entries
-						->where('status', '!=', 2)
+						->where('status', '!=', Wish::WISH_STATE_DELETED)
 						->whereEquals('proposed_by', User::get('id'));
 					break;
 				case 'all':
 				default:
-					$entries->where('status', '!=', 2);
+					$entries->where('status', '!=', wish::WISH_STATE_DELETED);
 					break;
 			}
 		}
@@ -2167,7 +2170,7 @@ class Wishlists extends SiteController
 		}
 
 		// Delete the comment
-		$row->set('state', $row::STATE_DELETED);
+		$row->set('state', Comment::STATE_DELETED);
 
 		if (!$row->save())
 		{
@@ -2267,6 +2270,8 @@ class Wishlists extends SiteController
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_RATE');
 			return $this->loginTask();
 		}
+
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$page = Request::getCmd('page', 'wishlist');

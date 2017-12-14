@@ -178,11 +178,6 @@ class Lists extends AdminController
 			$row->set('created_by', User::get('id'));
 		}
 
-		/*
-		$m = new Model\Adminlist();
-		$this->view->form = $m->getForm();
-		*/
-
 		// Output the HTML
 		$this->view
 			->set('row', $row)
@@ -212,7 +207,7 @@ class Lists extends AdminController
 
 		// Initiate extended database class
 		$row = Wishlist::oneOrNew($fields['id'])->set($fields);
-		$row->set('state', (isset($fields['state']))  ? 1 : 0);
+		$row->set('state', (isset($fields['state'])) ? Wishlist::STATE_PUBLISHED : Wishlist::STATE_UNPUBLISHED);
 		$row->set('public', (isset($fields['public'])) ? 1 : 0);
 
 		// Store new content
@@ -259,7 +254,7 @@ class Lists extends AdminController
 			return $this->cancelTask();
 		}
 
-		$i = 0;
+		$removed = 0;
 		foreach ($ids as $id)
 		{
 			$row = Wishlist::oneOrFail($id);
@@ -271,12 +266,12 @@ class Lists extends AdminController
 				continue;
 			}
 
-			$i++;
+			$removed++;
 		}
 
-		if ($i)
+		if ($removed)
 		{
-			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $i));
+			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $removed));
 		}
 
 		// Set the redirect
@@ -347,7 +342,7 @@ class Lists extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$state = $this->getTask() == 'publish' ? 1 : 0;
+		$state = $this->getTask() == 'publish' ? Wishlist::STATE_PUBLISHED : Wishlist::STATE_UNPUBLISHED;
 
 		// Incoming
 		$cid = Request::getInt('cid', 0);
@@ -357,12 +352,12 @@ class Lists extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			Notify::error($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+			Notify::error($state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
 			return $this->cancelTask();
 		}
 
 		// Update record(s)
-		$i = 0;
+		$success = 0;
 		foreach ($ids as $id)
 		{
 			// Updating a category
@@ -375,22 +370,22 @@ class Lists extends AdminController
 				continue;
 			}
 
-			$i++;
+			$success++;
 		}
 
 		// Set message
-		if ($i)
+		if ($success)
 		{
-			switch ($state)
+			switch ($this->getTask())
 			{
-				case '-1':
-					Notify::success(Lang::txt('COM_WISHLIST_ARCHIVED', $i));
+				case 'archive':
+					Notify::success(Lang::txt('COM_WISHLIST_ARCHIVED', $success));
 				break;
-				case '1':
-					Notify::success(Lang::txt('COM_WISHLIST_PUBLISHED', $i));
+				case 'publish':
+					Notify::success(Lang::txt('COM_WISHLIST_PUBLISHED', $success));
 				break;
-				case '0':
-					Notify::success(Lang::txt('COM_WISHLIST_UNPUBLISHED', $i));
+				case 'unpublish':
+					Notify::success(Lang::txt('COM_WISHLIST_UNPUBLISHED', $success));
 				break;
 			}
 		}

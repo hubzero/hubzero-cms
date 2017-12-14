@@ -877,11 +877,10 @@ class Wish extends Relational
 		if (!$this->config()->get('access-check-list-done', false)
 		 || !$this->config()->get('access-check-wish-done', false))
 		{
-
 			// Has the list access check been performed?
 			if (!$this->config()->get('access-check-list-done', false))
 			{
-				$wishlist = Wishlist::getInstance($this->get('wishlist'));
+				$wishlist = Wishlist::oneOrNew($this->get('wishlist'));
 				$wishlist->access($action, 'list');
 			}
 

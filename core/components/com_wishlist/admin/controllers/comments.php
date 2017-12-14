@@ -299,7 +299,7 @@ class Comments extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Loop through each ID
-		$i = 0;
+		$removed = 0;
 		foreach ($ids as $id)
 		{
 			$comment = Comment::oneOrFail(intval($id));
@@ -310,12 +310,12 @@ class Comments extends AdminController
 				continue;
 			}
 
-			$i++;
+			$removed++;
 		}
 
-		if ($i)
+		if ($removed)
 		{
-			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $i));
+			Notify::success(Lang::txt('COM_WISHLIST_ITEMS_REMOVED', $removed));
 		}
 
 		// Redirect
@@ -337,7 +337,7 @@ class Comments extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$state = $this->getTask() == 'publish' ? 1 : 0;
+		$state = $this->getTask() == 'publish' ? Comment::STATE_PUBLISHED : Comment::STATE_UNPUBLISHED;
 
 		// Incoming
 		$wish = Request::getInt('wish', 0);
@@ -347,39 +347,39 @@ class Comments extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			Notify::error($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+			Notify::error($state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
 			return $this->cancelTask();
 		}
 
 		// Update record(s)
-		$i = 0;
+		$success = 0;
 		foreach ($ids as $id)
 		{
-			// Updating a category
 			$row = Comment::oneOrFail($id);
 			$row->set('state', $state);
+
 			if (!$row->save())
 			{
 				Notify::error($row->getError());
 				continue;
 			}
 
-			$i++;
+			$success++;
 		}
 
 		// Set message
-		if ($i)
+		if ($success)
 		{
-			switch ($state)
+			switch ($this->getTask())
 			{
-				case '-1':
-					Notify::success(Lang::txt('COM_WISHLIST_ARCHIVED', $i));
+				case 'archive':
+					Notify::success(Lang::txt('COM_WISHLIST_ARCHIVED', $success));
 				break;
-				case '1':
-					Notify::success(Lang::txt('COM_WISHLIST_PUBLISHED', $i));
+				case 'publish':
+					Notify::success(Lang::txt('COM_WISHLIST_PUBLISHED', $success));
 				break;
-				case '0':
-					Notify::success(Lang::txt('COM_WISHLIST_UNPUBLISHED', $i));
+				case 'unpublish':
+					Notify::success(Lang::txt('COM_WISHLIST_UNPUBLISHED', $success));
 				break;
 			}
 		}
@@ -419,9 +419,9 @@ class Comments extends AdminController
 		// Update record(s)
 		foreach ($ids as $id)
 		{
-			// Updating a category
 			$row = Comment::oneOrFail($id);
 			$row->set('anonymous', $state);
+
 			if (!$row->save())
 			{
 				Notify::error($row->getError());
