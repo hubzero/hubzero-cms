@@ -454,58 +454,11 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			$config->bodyClass = $this->params->get('contentBodyClass');
 		}
 
-		// Add stylesheets to ckeditor content
+		// add stylesheets to ckeditor content
+		// Otherwise, do not style
 		if (is_array($this->params->get('contentCss')) && count($this->params->get('contentCss')))
 		{
 			$config->contentsCss = $this->params->get('contentCss');
-		}
-		else
-		{
-			// Always get front end template
-			if (!$template)
-			{
-				$db = App::get('db');
-				$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`='0' AND `home`='1'");
-				$template = $db->loadResult();
-			}
-
-			$app = substr(PATH_APP, strlen(PATH_ROOT));
-
-			// Vars to hold css
-			$css          = array();
-			$siteCss      = $app . '/cache/site/site.css';
-			$templateCssA = $app . '/templates/' . $template . '/css/main.css';
-			$templateCssC = '/core/templates/' . $template . '/css/main.css';
-
-			// Do we have a site.css
-			if (file_exists(PATH_APP . $siteCss))
-			{
-				array_push($css, $siteCss);
-			}
-
-			// Do we have a template main.css
-			if (file_exists(PATH_ROOT . $templateCssA))
-			{
-				array_push($css, $templateCssA);
-			}
-			else if (file_exists(PATH_ROOT . $templateCssC))
-			{
-				array_push($css, $templateCssC);
-			}
-
-			if (Document::getType() == 'html')
-			{
-				$head = Document::getHeadData();
-
-				// Add already added stylesheets
-				foreach ($head['styleSheets'] as $sheet => $attribs)
-				{
-					array_push($css, $sheet);
-				}
-			}
-
-			// Set the content css
-			$config->contentsCss = $css;
 		}
 
 		// File browsing
