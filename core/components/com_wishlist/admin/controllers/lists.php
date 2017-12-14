@@ -37,6 +37,7 @@ use Request;
 use Config;
 use Notify;
 use Route;
+use Event;
 use Lang;
 use User;
 use App;
@@ -210,12 +211,25 @@ class Lists extends AdminController
 		$row->set('state', (isset($fields['state'])) ? Wishlist::STATE_PUBLISHED : Wishlist::STATE_UNPUBLISHED);
 		$row->set('public', (isset($fields['public'])) ? 1 : 0);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('wishlist.onWishlistBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
+
+		// Trigger after save event
+		Event::trigger('wishlist.onWishlistAfterSave', array(&$row, $isNew));
 
 		Notify::success(Lang::txt('COM_WISHLIST_LIST_SAVED'));
 
@@ -265,6 +279,9 @@ class Lists extends AdminController
 				Notify::error($row->getError());
 				continue;
 			}
+
+			// Trigger after delete event
+			Event::trigger('wishlist.onWishlistAfterDelete', array($id));
 
 			$removed++;
 		}

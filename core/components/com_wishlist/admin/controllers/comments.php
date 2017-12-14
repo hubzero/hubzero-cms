@@ -40,6 +40,7 @@ use Request;
 use Config;
 use Notify;
 use Route;
+use Event;
 use Lang;
 use User;
 use Date;
@@ -258,12 +259,25 @@ class Comments extends AdminController
 
 		$row->set('anonymous', (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('wishlist.onWishlistBeforeSaveComment', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
+
+		// Trigger after save event
+		Event::trigger('wishlist.onWishlistAfterSaveComment', array(&$row, $isNew));
 
 		Notify::success(Lang::txt('COM_WISHLIST_COMMENT_SAVED'));
 
@@ -309,6 +323,9 @@ class Comments extends AdminController
 				Notify::error($comment->getError());
 				continue;
 			}
+
+			// Trigger after delete event
+			Event::trigger('wishlist.onWishlistAfterDeleteComment', array($id));
 
 			$removed++;
 		}

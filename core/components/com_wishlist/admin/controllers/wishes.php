@@ -43,6 +43,7 @@ use stdClass;
 use Request;
 use Notify;
 use Config;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -344,6 +345,16 @@ class Wishes extends AdminController
 		$row->set('private', (isset($fields['private']) && $fields['private']) ? 1 : 0);
 		$row->set('accepted', (isset($fields['accepted']) && $fields['accepted']) ? 1 : 0);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('wishlist.onWishlistBeforeSaveWish', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->save())
 		{
@@ -378,6 +389,9 @@ class Wishes extends AdminController
 			Notify::error($page->getError());
 			return $this->editTask($row);
 		}
+
+		// Trigger after save event
+		Event::trigger('wishlist.onWishlistAfterSaveWish', array(&$row, $isNew));
 
 		Notify::success(Lang::txt('COM_WISHLIST_WISH_SAVED'));
 
@@ -423,6 +437,9 @@ class Wishes extends AdminController
 					Notify::error($row->getError());
 					continue;
 				}
+
+				// Trigger after delete event
+				Event::trigger('wishlist.onWishlistAfterDeleteWish', array($id));
 
 				$removed++;
 			}
