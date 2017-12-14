@@ -34,6 +34,12 @@ namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
+use Filesystem;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Projects media controller class
@@ -265,7 +271,7 @@ class Media extends Base
 		}
 
 		echo json_encode(array(
-			'success'   => true
+			'success' => true
 		));
 		return;
 	}
@@ -393,7 +399,7 @@ class Media extends Base
 		elseif ($ajax)
 		{
 			echo json_encode(array(
-				'success'   => true
+				'success' => true
 			));
 			return;
 		}

@@ -36,6 +36,15 @@ use Hubzero\Component\SiteController;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
+use Pathway;
+use Request;
+use Config;
+use Route;
+use Event;
+use User;
+use Date;
+use Lang;
+use App;
 
 /**
  * Base projects controller (extends \Hubzero\Component\SiteController)
@@ -97,12 +106,12 @@ class Base extends SiteController
 		// Include publications model
 		if ($this->_publishing)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+			require_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 		}
 
 		// Logging and stats
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'log.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'stats.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'log.php';
 	}
 
 	/**
@@ -124,8 +133,8 @@ class Base extends SiteController
 	/**
 	 * Get notifications
 	 *
-	 * @param   string     $type
-	 * @return  $messages  if they exist
+	 * @param   string  $type
+	 * @return  mixed   message if they exist
 	 */
 	protected function _getNotifications($type = 'success')
 	{
@@ -146,10 +155,8 @@ class Base extends SiteController
 				}
 			}
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
@@ -166,8 +173,7 @@ class Base extends SiteController
 			? $this->_msg
 			: Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option='
-			. $this->_option . '&controller=' . $this->_controller . $task), 'server');
+		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -226,7 +232,7 @@ class Base extends SiteController
 		switch ($this->_task)
 		{
 			case 'browse':
-				$reviewer 	 = Request::getVar('reviewer', '');
+				$reviewer = Request::getVar('reviewer', '');
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$this->title = $reviewer == 'sponsored'
@@ -236,7 +242,8 @@ class Base extends SiteController
 				else
 				{
 					$this->title .= ($this->_task)
-						? ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)) : '';
+						? ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task))
+						: '';
 				}
 				break;
 
@@ -312,8 +319,7 @@ class Base extends SiteController
 			{
 				Pathway::append(
 					stripslashes(Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT')),
-					Route::url('index.php?option=' . $this->_option . '&alias='
-					. $alias . '&action=activate')
+					Route::url('index.php?option=' . $this->_option . '&alias=' . $alias . '&action=activate')
 				);
 			}
 			else
@@ -443,17 +449,17 @@ class Base extends SiteController
 		}
 
 		// Log activity
-		$objLog  				= new Tables\Log($this->database);
-		$objLog->projectid 		= $pid;
-		$objLog->userid 		= User::get('id');
-		$objLog->owner 			= intval($owner);
-		$objLog->ip 			= Request::ip();
-		$objLog->section 		= $section;
-		$objLog->layout 		= $layout ? $layout : $this->_task;
-		$objLog->action 		= $action ? $action : 'view';
-		$objLog->time 			= Date::toSql();
-		$objLog->request_uri 	= Request::getVar('REQUEST_URI', Request::base(), 'server');
-		$objLog->ajax 			= $ajax;
+		$objLog = new Tables\Log($this->database);
+		$objLog->projectid   = $pid;
+		$objLog->userid      = User::get('id');
+		$objLog->owner       = intval($owner);
+		$objLog->ip          = Request::ip();
+		$objLog->section     = $section;
+		$objLog->layout      = $layout ? $layout : $this->_task;
+		$objLog->action      = $action ? $action : 'view';
+		$objLog->time        = Date::toSql();
+		$objLog->request_uri = Request::getVar('REQUEST_URI', Request::base(), 'server');
+		$objLog->ajax        = $ajax;
 		$objLog->store();
 	}
 

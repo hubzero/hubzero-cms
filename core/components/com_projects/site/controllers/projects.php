@@ -41,9 +41,9 @@ use Components\Projects\Models\Orm\Description\Field;
 use Exception;
 use stdClass;
 
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
-require_once Component::path('com_projects') . '/helpers/layoutHelper.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/layoutHelper.php';
 
 /**
  * Primary component controller

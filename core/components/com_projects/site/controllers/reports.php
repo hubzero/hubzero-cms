@@ -34,8 +34,14 @@ namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 use Exception;
+use Request;
+use Route;
+use Lang;
+use User;
+use Date;
+use App;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'stats.php';
 
 /**
  * Projects Reports controller class
@@ -59,7 +65,7 @@ class Reports extends Base
 		$this->_tblStats = new Tables\Stats($this->database);
 
 		$monthly = $this->_tblStats->monthlyStats(2, true);
-		$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
+		$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : null;
 
 		// Output HTML
 		$this->view->task       = $this->_task;
@@ -127,7 +133,7 @@ class Reports extends Base
 		// Get stats
 		if (!$this->getError())
 		{
-			require_once(PATH_CORE . DS . 'components'.DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
+			require_once \Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
 
 			$objLog = new \Components\Publications\Tables\Log($this->database);
 

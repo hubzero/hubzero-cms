@@ -47,17 +47,17 @@ class Get extends SiteController
 	 */
 	public function displayTask()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'publicstamp.php';
 
 		// Incoming
-		$stamp = Request::getVar( 's', '' );
+		$stamp = Request::getVar('s', '');
 
 		// Clean up stamp value (only numbers and letters)
 		$regex  = array('/[^a-zA-Z0-9]/');
 		$stamp  = preg_replace($regex, '', $stamp);
 
 		// Load item reference
-		$objSt = new Tables\Stamp( $this->database );
+		$objSt = new Tables\Stamp($this->database);
 		if (!$stamp || !$objSt->loadItem($stamp))
 		{
 			App::redirect(
