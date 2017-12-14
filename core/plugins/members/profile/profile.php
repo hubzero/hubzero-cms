@@ -299,7 +299,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		// return percentage
-		return number_format(($num_filled_fields/$num_fields) * 100, 0);
+		return ($num_fields ? number_format(($num_filled_fields/$num_fields) * 100, 0) : 100);
 	}
 
 	/**
