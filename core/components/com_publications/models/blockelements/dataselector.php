@@ -38,24 +38,24 @@ use Components\Publications\Models\BlockElement as Base;
 class Dataselector extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'dataselector';
 
 	/**
-	* Git helper
-	*
-	* @var  string
-	*/
+	 * Git helper
+	 *
+	 * @var  string
+	 */
 	protected $_git = null;
 
 	/**
-	* Project repo path
-	*
-	* @var  string
-	*/
+	 * Project repo path
+	 *
+	 * @var  string
+	 */
 	protected $path = null;
 
 	/**
