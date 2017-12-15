@@ -162,7 +162,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		{
 			$plugin = Plugin::byType('authentication', 'shibboleth');
 			$inst = json_decode(json_decode($plugin->params)->institutions, TRUE);
-			$inst = $inst['activeIdps'];
+			$inst = isset($inst['activeIdps']) ? $inst['activeIdps'] : [];
 		}
 		return $inst;
 	}
