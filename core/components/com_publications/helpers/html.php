@@ -130,7 +130,7 @@ class Html
 	public static function showContributors($contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false, $format = false)
 	{
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => dirname(__DIR__) . DS . 'site',
 			'name'      => 'view',
 			'layout'    => '_contributors'
 		));
@@ -155,7 +155,7 @@ class Html
 			return false;
 		}
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => dirname(__DIR__) . DS . 'site',
 			'name'      => 'view',
 			'layout'    => '_supportingdocs',
 		));
@@ -877,7 +877,7 @@ class Html
 	public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '')
 	{
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => dirname(__DIR__) . DS . 'site',
 			'name'      => 'view',
 			'layout'    => '_primary'
 		));
@@ -1204,7 +1204,7 @@ class Html
 
 		// Get message body
 		$eview = new \Hubzero\Mail\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => dirname(__DIR__) . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => '_plain'
 		));

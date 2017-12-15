@@ -75,7 +75,7 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		JLoader::register('MenusHelper', PATH_CORE . '/components/com_menus/helpers/menus.php');
+		JLoader::register('MenusHelper', \Component::path('com_menus') . '/helpers/menus.php');
 
 		$lang = Lang::getRoot();
 		$menu = \App::get('menu');

@@ -33,6 +33,7 @@
 namespace Modules\ArticlesCategories;
 
 use Hubzero\Module\Module;
+use Component;
 use JCategories;
 
 /**
@@ -69,7 +70,7 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once PATH_CORE . '/components/com_content/helpers/route.php';
+		require_once Component::path('com_content') . '/helpers/route.php';
 		jimport('joomla.application.categories');
 
 		$categories = JCategories::getInstance('Content');

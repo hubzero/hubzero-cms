@@ -1014,7 +1014,7 @@ class Publications extends SiteController
 
 			case 'bibtex':
 			default:
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
+				include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
 
 				$bibtex = new \Structures_BibTex();
 				$addarray = array();
@@ -1195,7 +1195,7 @@ class Publications extends SiteController
 
 		// Load language file
 		Lang::load('com_projects') ||
-		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
 		// Instantiate a new view
 		$this->view  = new \Hubzero\Component\View(array(
@@ -1390,7 +1390,7 @@ class Publications extends SiteController
 
 		// Load language file
 		Lang::load('com_projects') ||
-		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
 		// Set page title
 		$this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');

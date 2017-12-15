@@ -32,6 +32,11 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Request;
+use Event;
+use Lang;
+use User;
+use Date;
 
 /**
  * Authors block
@@ -69,7 +74,11 @@ class Authors extends Base
 	/**
 	 * Display block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   string   $viewname
+	 * @param   integer  $blockId
+	 * @return  string   HTML
 	 */
 	public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
@@ -125,7 +134,12 @@ class Authors extends Base
 	/**
 	 * Save block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  string   HTML
 	 */
 	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
@@ -146,8 +160,8 @@ class Authors extends Base
 		$added = 0;
 
 		// Load classes
-		$pAuthor  = new \Components\Publications\Tables\Author($this->_parent->_db);
-		$objO 	  = new \Components\Projects\Tables\Owner($this->_parent->_db);
+		$pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
+		$objO    = new \Components\Projects\Tables\Owner($this->_parent->_db);
 
 		$order = $pAuthor->getLastOrder($pub->version_id) + 1;
 
@@ -225,6 +239,7 @@ class Authors extends Base
 	/**
 	 * Save group owner
 	 *
+	 * @param   object  $pub
 	 * @return  void
 	 */
 	public function saveGroupOwner($pub)
@@ -244,6 +259,10 @@ class Authors extends Base
 	/**
 	 * Transfer data from one version to another
 	 *
+	 * @param   object   $manifest
+	 * @param   object   $pub
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
 	 * @return  boolean
 	 */
 	public function transferData($manifest, $pub, $oldVersion, $newVersion)
@@ -287,7 +306,12 @@ class Authors extends Base
 	/**
 	 * Save block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  string   HTML
 	 */
 	public function reorder($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
@@ -298,13 +322,17 @@ class Authors extends Base
 		}
 
 		// Incoming
-		$list = Request::getVar( 'list', '' );
-		$authors = array_filter(explode("-", $list));
+		$list = Request::getVar( 'list', '');
+		$authors = array_filter(explode('-', $list));
 		$authorObj = new \Components\Publications\Tables\Author($this->_parent->_db);
 		$currentAuthors = $authorObj->getAuthorOrder($authors, $pub->version_number);
-		$currentAuthorIds = array_map(function($author){
-			return is_object($author) ? $author->id : $author['id'];
-		}, $currentAuthors);
+		$currentAuthorIds = array_map(
+			function($author)
+			{
+				return is_object($author) ? $author->id : $author['id'];
+			},
+			$currentAuthors
+		);
 		if ($currentAuthorIds !== $authors)
 		{
 			$o = 1;
@@ -315,7 +343,7 @@ class Authors extends Base
 					continue;
 				}
 
-				$pAuthor = new \Components\Publications\Tables\Author( $this->_parent->_db );
+				$pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
 				if ($pAuthor->load($id))
 				{
 					$pAuthor->ordering = $o;
@@ -324,7 +352,7 @@ class Authors extends Base
 					$pAuthor->store();
 				}
 			}
-			$this->set('_message', Lang::txt('New author order saved') );
+			$this->set('_message', Lang::txt('New author order saved'));
 			$this->_parent->set('_update', 1);
 			return true;
 		}
@@ -335,6 +363,11 @@ class Authors extends Base
 	/**
 	 * Add new author
 	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
 	 * @return  void
 	 */
 	public function addItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0)
@@ -479,7 +512,7 @@ class Authors extends Base
 			$project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 
 			// Load component language file
-			Lang::load('com_projects') || Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+			Lang::load('com_projects') || Lang::load('com_projects', \Component::path('com_projects') . DS . 'site');
 
 			// Plugin params
 			$plugin_params = array(
@@ -507,6 +540,12 @@ class Authors extends Base
 	/**
 	 * Update attachment record
 	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $aid
 	 * @return  void
 	 */
 	public function saveItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
@@ -655,7 +694,13 @@ class Authors extends Base
 	/**
 	 * Delete author record
 	 *
-	 * @return  void
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $aid
+	 * @return  boolean
 	 */
 	public function deleteItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
@@ -686,6 +731,8 @@ class Authors extends Base
 	/**
 	 * Build panel content
 	 *
+	 * @param   object  $pub
+	 * @param   string  $viewname
 	 * @return  string  HTML
 	 */
 	public function buildContent($pub = null, $viewname = 'edit')
@@ -734,6 +781,9 @@ class Authors extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   integer  $elementId
 	 * @return  object
 	 */
 	public function getStatus($pub = null, $manifest = null, $elementId = null)
@@ -770,6 +820,7 @@ class Authors extends Base
 	/**
 	 * Get default manifest for the block
 	 *
+	 * @param   boolean  $new
 	 * @return  void
 	 */
 	public function getManifest($new = false)
@@ -782,15 +833,15 @@ class Authors extends Base
 		if (!$manifest)
 		{
 			$manifest = array(
-				'name' 			=> 'authors',
-				'label' 		=> 'Authors',
-				'title' 		=> 'Publication Authors',
-				'draftHeading' 	=> 'Who are the authors?',
-				'draftTagline'	=> 'Build the author list',
-				'about'			=> '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
-				'adminTips'		=> '',
-				'elements' 		=> array(),
-				'params'		=> array(
+				'name'         => 'authors',
+				'label'        => 'Authors',
+				'title'        => 'Publication Authors',
+				'draftHeading' => 'Who are the authors?',
+				'draftTagline' => 'Build the author list',
+				'about'        => '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
+				'adminTips'    => '',
+				'elements'     => array(),
+				'params'       => array(
 					'required'          => 1,
 					'published_editing' => 0,
 					'submitter'         => 1,

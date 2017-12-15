@@ -925,7 +925,7 @@ class File extends Base
 		}
 
 		// Git helper
-		include_once PATH_CORE . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php';
+		include_once \Component::path('com_projects') . DS . 'helpers' . DS . 'githelper.php';
 		$this->_git = new \Components\Projects\Helpers\Git($configs->path);
 
 		// Counter
@@ -947,7 +947,7 @@ class File extends Base
 			{
 				if (isset($matches[1]))
 				{
-					require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+					require_once \Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 
 					// Grab the connection id
 					$connection = $matches[1];

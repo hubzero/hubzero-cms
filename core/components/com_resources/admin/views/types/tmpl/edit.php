@@ -47,7 +47,7 @@ Html::behavior('framework', true);
 
 $this->css();
 
-$params = new \Hubzero\Config\Registry($this->row->get('params'));
+$params = new \Hubzero\Config\Registry($this->row->params);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -158,6 +158,8 @@ function submitbutton(pressbutton)
 						{
 							continue;
 						}
+						$path = Plugin::path($plugin->folder, $plugin->element);
+						echo $path . '<br />';
 						$found[] = 'plg_' . $plugin->element;
 						if (strstr($plugin->name, '_'))
 						{
@@ -204,7 +206,7 @@ function submitbutton(pressbutton)
 			</tfoot>
 			<tbody id="field-items">
 			<?php
-			include_once Component::path($this->option) . DS . 'models' . DS . 'elements.php';
+			include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
 			$elements = new \Components\Resources\Models\Elements('', $this->row->customFields);
 			$schema = $elements->getSchema();
 
