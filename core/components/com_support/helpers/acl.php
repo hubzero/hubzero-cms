@@ -296,7 +296,7 @@ class ACL extends Obj
 		{
 			foreach ($this->_user_groups as $ug)
 			{
-				if ($ug->cn == $group)
+				if ($ug->gidNumber == $group)
 				{
 					return true;
 				}
