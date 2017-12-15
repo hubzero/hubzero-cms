@@ -12,6 +12,9 @@ class Migration20171115112800ComSupportCriteria extends Base
 {
 	static $tableName = '#__support_criteria';
 
+	/**
+	 * Creates jos_support_criteria
+	 */
 	public function up()
 	{
 		$tableName = self::$tableName;
@@ -33,7 +36,7 @@ class Migration20171115112800ComSupportCriteria extends Base
 	}
 
 	/**
-	 * Down
+	 * Drops jos_support_criteria
 	 **/
 	public function down()
 	{
