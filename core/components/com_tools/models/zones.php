@@ -33,18 +33,17 @@
 namespace Components\Tools\Models;
 
 use Components\Tools\Helpers\Utils;
-
-jimport('joomla.application.component.model');
+use Hubzero\Base\Obj;
 
 /**
  * Zones Model for Tools Component
  */
-class Zones extends \JModel
+class Zones extends Obj
 {
 	/**
 	 * Get execution zones list
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getExecutionZones()
 	{

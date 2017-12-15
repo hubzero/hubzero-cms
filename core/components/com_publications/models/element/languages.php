@@ -31,6 +31,7 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
+use Lang;
 
 /**
  * Renders a languages element
@@ -40,14 +41,14 @@ class Languages extends Base
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
 	protected $_name = 'Language List';
 
 	/**
 	* Language list
 	*
-	* @var		array
+	* @var  array
 	*/
 	protected $_codes = array(
 		"aa" => "Afar",
@@ -249,8 +250,7 @@ class Languages extends Base
 	{
 		if (!$value)
 		{
-			jimport('joomla.language.helper');
-			$language = \JLanguageHelper::detectLanguage();
+			$language = Lang::detect();
 			$language = explode('-', $language);
 			$value = $language[0];
 		}

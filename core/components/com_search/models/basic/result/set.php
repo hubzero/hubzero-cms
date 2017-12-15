@@ -34,16 +34,15 @@ namespace Components\Search\Models\Basic\Result;
 
 use Components\Search\Models\Basic\Authorization;
 use Components\Search\Models\Basic\Request;
+use Hubzero\Base\Obj;
 use ReflectionClass;
 use Iterator;
 use Plugin;
 
-jimport('joomla.application.component.model');
-
 /**
  * Search result set
  */
-class Set extends \JModel implements Iterator
+class Set extends Obj implements Iterator
 {
 	/**
 	 * Description for 'plugin_weights'
@@ -57,7 +56,152 @@ class Set extends \JModel implements Iterator
 	 *
 	 * @var array
 	 */
-	private $tags = array(), $total_list_count, $limit, $widgets, $custom_title = NULL, $custom_mode = false, $offset, $pos = 0, $results = array(), $custom = array(), $processed_results = array(), $highlighter, $current_plugin, $total_count, $tag_mode = false, $result_counts = array(), $shown_results = array(), $sorters = array();
+	private $tags = array();
+
+	/**
+	 * Total list count
+	 *
+	 * @var integer
+	 */
+	private $total_list_count;
+
+	/**
+	 * Limit
+	 *
+	 * @var integer
+	 */
+	private $limit;
+
+	/**
+	 * Widgets
+	 *
+	 * @var array
+	 */
+	private $widgets;
+
+	/**
+	 * Custom title
+	 *
+	 * @var string
+	 */
+	private $custom_title = null;
+
+	/**
+	 * Custom mode
+	 *
+	 * @var bool
+	 */
+	private $custom_mode = false;
+
+	/**
+	 * Offset
+	 *
+	 * @var integer
+	 */
+	private $offset;
+
+	/**
+	 * Position
+	 *
+	 * @var integer
+	 */
+	private $pos = 0;
+
+	/**
+	 * Results
+	 *
+	 * @var array
+	 */
+	private $results = array();
+
+	/**
+	 * Custom
+	 *
+	 * @var array
+	 */
+	private $custom = array();
+
+	/**
+	 * Processed results
+	 *
+	 * @var array
+	 */
+	private $processed_results = array();
+
+	/**
+	 * Highlight string
+	 *
+	 * @var string
+	 */
+	private $highlighter;
+
+	/**
+	 * Current plugin
+	 *
+	 * @var string
+	 */
+	private $current_plugin;
+
+	/**
+	 * Total
+	 *
+	 * @var integer
+	 */
+	private $total_count;
+
+	/**
+	 * Tag mode
+	 *
+	 * @var bool
+	 */
+	private $tag_mode = false;
+
+	/**
+	 * Results counts
+	 *
+	 * @var array
+	 */
+	private $result_counts = array();
+
+	/**
+	 * Shown results
+	 *
+	 * @var array
+	 */
+	private $shown_results = array();
+
+	/**
+	 * Sorters
+	 *
+	 * @var array
+	 */
+	private $sorters = array();
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object  $terms
+	 * @return  void
+	 */
+	public function __construct($terms)
+	{
+		parent::__construct();
+
+		$this->_db = App::get('db');
+
+		if (is_null(self::$plugin_weights) && $terms->any())
+		{
+			self::$plugin_weights = array();
+			$this->_db->setQuery('SELECT plugin, weight FROM `#__ysearch_plugin_weights`');
+			foreach ($this->_db->loadAssocList() as $weight)
+			{
+				self::$plugin_weights[$weight['plugin']] = $weight['weight'];
+			}
+		}
+
+		$this->terms = $terms;
+		$this->widgets = array();
+	}
 
 	/**
 	 * Short description for 'get_tags'
@@ -227,7 +371,7 @@ class Set extends \JModel implements Iterator
 					if ($refl->hasMethod('onSearchCustom'))
 					{
 						$this->current_plugin = $plugin->name;
-						if ($this->custom_title = $refl->getMethod('onSearchCustom')->invokeArgs(NULL, array($req, &$this, $authz)))
+						if ($this->custom_title = $refl->getMethod('onSearchCustom')->invokeArgs(null, array($req, &$this, $authz)))
 						{
 							break;
 						}
@@ -252,13 +396,13 @@ class Set extends \JModel implements Iterator
 			// generic resource plugin
 			if ($refl->hasMethod('onSearch'))
 			{
-				$refl->getMethod('onSearch')->invokeArgs(NULL, array($req, &$this, $authz));
+				$refl->getMethod('onSearch')->invokeArgs(null, array($req, &$this, $authz));
 			}
 
 			$this->result_counts[$plugin->name] = array(
 				'friendly_name' =>
 					$refl->hasMethod('getName')
-						? $refl->getMethod('getName')->invoke(NULL)
+						? $refl->getMethod('getName')->invoke(null)
 						: ucwords($plugin->name),
 				'plugin_name' => $plugin->name,
 				'count' => 0
@@ -267,7 +411,7 @@ class Set extends \JModel implements Iterator
 			// custom results like Google does when you enter a stock symbol. tags used to be implemented this way, but they got moved into the core so other plugins could use them to find tagged results
 			if ($refl->hasMethod('onSearchWidget'))
 			{
-				$refl->getMethod('onSearchWidget')->invokeArgs(NULL, array($req, &$this->widgets, $authz));
+				$refl->getMethod('onSearchWidget')->invokeArgs(null, array($req, &$this->widgets, $authz));
 			}
 
 			if ($refl->hasMethod('onSearchSort'))
@@ -300,7 +444,7 @@ class Set extends \JModel implements Iterator
 				}
 			}
 		}
-		$this->current_plugin = NULL;
+		$this->current_plugin = null;
 
 		$this->highlighter = $this->terms->get_word_regex();
 		foreach ($this->results as $res)
@@ -341,7 +485,7 @@ class Set extends \JModel implements Iterator
 					if (!array_key_exists($name, $used))
 					{
 						$used[$name] = true;
-						$adj = 2 * $mtd->invokeArgs(NULL, array($this->terms, &$res));
+						$adj = 2 * $mtd->invokeArgs(null, array($this->terms, &$res));
 						if (array_key_exists($name, self::$plugin_weights))
 						{
 							// adj is 0..1
@@ -525,7 +669,7 @@ class Set extends \JModel implements Iterator
 
 		foreach ($this->sorters as $plugin=>$sorter)
 		{
-			if (!($res = $sorter->invoke(NULL, $a, $b)))
+			if (!($res = $sorter->invoke(null, $a, $b)))
 			{
 				continue;
 			}
@@ -535,32 +679,6 @@ class Set extends \JModel implements Iterator
 
 		$diff = $weight['a'] - $weight['b'];
 		return $diff == 0 ? 0 : $diff > 0 ? -1 : 1;
-	}
-
-	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $terms Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($terms)
-	{
-		parent::__construct();
-
-		if (is_null(self::$plugin_weights) && $terms->any())
-		{
-			self::$plugin_weights = array();
-			$this->_db->setQuery('SELECT plugin, weight FROM `#__ysearch_plugin_weights`');
-			foreach ($this->_db->loadAssocList() as $weight)
-			{
-				self::$plugin_weights[$weight['plugin']] = $weight['weight'];
-			}
-		}
-
-		$this->terms = $terms;
-		$this->widgets = array();
 	}
 
 	/**
@@ -758,4 +876,3 @@ class Set extends \JModel implements Iterator
 		return isset($this->shown_results[$this->pos]);
 	}
 }
-

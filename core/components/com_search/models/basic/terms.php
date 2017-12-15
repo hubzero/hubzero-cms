@@ -32,20 +32,61 @@
 
 namespace Components\Search\Models\Basic;
 
-jimport('joomla.application.component.model');
+use Hubzero\Base\Obj;
 
 /**
  * Search terms
  */
-class Terms extends \JModel
+class Terms extends Obj
 {
+	/**
+	 * Raw search term
+	 *
+	 * @var  string
+	 */
+	private $raw;
 
 	/**
-	 * Description for 'raw'
+	 * Positive chunks
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
-	private $raw, $positive_chunks, $optional_chunks = array(), $forbidden_chunks = array(), $mandatory_chunks = array(), $section = NULL, $quoted = array();
+	private $positive_chunks;
+
+	/**
+	 * Optional chunks
+	 *
+	 * @var  string
+	 */
+	private $optional_chunks = array();
+
+	/**
+	 * Forbidden chunks
+	 *
+	 * @var  array
+	 */
+	private $forbidden_chunks = array();
+
+	/**
+	 * Mandatory chunks
+	 *
+	 * @var  array
+	 */
+	private $mandatory_chunks = array();
+
+	/**
+	 * Search section
+	 *
+	 * @var  string
+	 */
+	private $section = null;
+
+	/**
+	 * Quoted terms
+	 *
+	 * @var  array
+	 */
+	private $quoted = array();
 
 	/**
 	 * Constructor
@@ -63,12 +104,10 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'is_quoted'
+	 * Is the term quoted?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $idx Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $idx
+	 * @return  mixed
 	 */
 	public function is_quoted($idx)
 	{
@@ -76,11 +115,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_raw'
+	 * Get the raw search term
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  string
 	 */
 	public function get_raw()
 	{
@@ -88,25 +125,24 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_raw_without_section'
+	 * Get the raw search term without a section.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public function get_raw_without_section()
 	{
-		if (!$this->section) return $this->raw;
+		if (!$this->section)
+		{
+			return $this->raw;
+		}
 
 		return preg_replace('/^'.implode(':', $this->section).':/', '', $this->raw);
 	}
 
 	/**
-	 * Short description for 'get_section'
+	 * Get a section
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  string
 	 */
 	public function get_section()
 	{
@@ -114,11 +150,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_optional_chunks'
+	 * Get optional chunks
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_optional_chunks()
 	{
@@ -126,11 +160,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_forbidden_chunks'
+	 * Get forbidden chunks
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_forbidden_chunks()
 	{
@@ -138,11 +170,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_mandatory_chunks'
+	 * Get mandatory chunks
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_mandatory_chunks()
 	{
@@ -150,11 +180,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_positive_chunks'
+	 * Get positive chunks
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_positive_chunks()
 	{
@@ -166,11 +194,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_stemmed_chunks'
+	 * Get stemmed chunks
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_stemmed_chunks()
 	{
@@ -190,11 +216,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'is_set'
+	 * Is the raw search term set?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function is_set()
 	{
@@ -202,11 +226,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'any'
+	 * Any chunks?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function any()
 	{
@@ -214,11 +236,9 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'parse_searchable_chunks'
+	 * Parse searchable chunks
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function parse_searchable_chunks()
 	{
@@ -229,7 +249,7 @@ class Terms extends \JModel
 		if (preg_match('/^([_.\-,a-z:]+):/', $raw, $match))
 		{
 			$this->section = explode(':', $match[1]);
-			$raw = preg_replace('/^'.preg_quote($match[1]).':/', '', $raw);
+			$raw = preg_replace('/^' . preg_quote($match[1]) . ':/', '', $raw);
 		}
 		else if (array_key_exists('section', $_GET))
 		{
@@ -281,14 +301,12 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'add_chunk'
+	 * Add chunk
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string &$partial Parameter description (if any) ...
-	 * @param      string &$sign Parameter description (if any) ...
-	 * @param      boolean $quoted Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string   &$partial
+	 * @param   string   &$sign
+	 * @param   boolean  $quoted
+	 * @return  void
 	 */
 	private function add_chunk(&$partial, &$sign = '', $quoted = false)
 	{
@@ -320,29 +338,24 @@ class Terms extends \JModel
 	}
 
 	/**
-	 * Short description for 'get_word_regex'
+	 * Get word regex
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public function get_word_regex()
 	{
 		$chunks = $this->get_stemmed_chunks();
 		usort($chunks, create_function('$a, $b', '$al = strlen($a); $bl = strlen($b); if ($al == $bl) return 0; return $al > $bl ? -1 : 1;'));
-		return '('.join('|', array_map('preg_quote', $chunks)).'[[:alpha:]]*)';
+		return '(' . join('|', array_map('preg_quote', $chunks)) . '[[:alpha:]]*)';
 	}
 
 	/**
-	 * Short description for '__toString'
+	 * To string
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  string
 	 */
 	public function __toString()
 	{
 		return $this->raw;
 	}
 }
-

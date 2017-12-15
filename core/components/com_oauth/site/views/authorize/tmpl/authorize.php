@@ -32,8 +32,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-jimport('joomla.environment.request');
 ?>
 
 <form action="<?php echo $this->form_action;?>" id="oauth_form" method="post">

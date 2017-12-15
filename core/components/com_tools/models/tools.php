@@ -32,17 +32,17 @@
 
 namespace Components\Tools\Models;
 
-jimport('joomla.application.component.model');
+use Hubzero\Base\Obj;
 
 /**
  * Tools Model
  */
-class Tools extends \JModel
+class Tools extends Obj
 {
 	/**
 	 * Get application tools
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getApplicationTools()
 	{
@@ -68,13 +68,16 @@ class Tools extends \JModel
 
 			if (count($result) > 0)
 			{
-				$aliases = implode("','", $result);
-
 				$database = \App::get('db');
 
+				foreach ($result as $key => $val)
+				{
+					$result[$key] = $database->quote($val);
+				}
+
 				$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state
-							FROM #__tool as t, #__tool_version as v
-							WHERE v.toolname IN ('" . $aliases . "') AND t.id=v.toolid
+							FROM `#__tool` as t, `#__tool_version` as v
+							WHERE v.toolname IN (" . implode(',', $result) . ") AND t.id=v.toolid
 							AND (v.state='1' OR v.state='3')
 							GROUP BY toolname
 							ORDER BY v.toolname ASC";
