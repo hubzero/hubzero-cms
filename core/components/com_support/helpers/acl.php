@@ -307,4 +307,3 @@ class ACL extends Object
 		return false;
 	}
 }
-
