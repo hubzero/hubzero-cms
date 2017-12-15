@@ -88,4 +88,3 @@ class DefaultHomePage extends GroupMacro
 		return $html;
 	}
 }
-

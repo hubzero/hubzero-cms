@@ -108,8 +108,8 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 						$val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks ? $val['soft_blocks'] : $cls->soft_blocks);
 					}
 
-					$row->set('hard_files',  $val['hard_files']);
-					$row->set('soft_files',  $val['soft_files']);
+					$row->set('hard_files', $val['hard_files']);
+					$row->set('soft_files', $val['soft_files']);
 					$row->set('hard_blocks', $val['hard_blocks']);
 					$row->set('soft_blocks', $val['soft_blocks']);
 
