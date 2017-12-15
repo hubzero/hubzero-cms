@@ -198,7 +198,7 @@ class Helper extends Module
 						$database->setQuery(
 							"SELECT id, summary, category, status, severity, owner, created, login, name,
 							(SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-							FROM `#__support_tickets` as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group_id='$group'
+							FROM `#__support_tickets` as st WHERE st.open=1 AND type=0 AND st.group_id='$group'
 							ORDER BY created DESC
 							LIMIT $limit"
 						);
