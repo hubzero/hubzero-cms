@@ -77,7 +77,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 						break;
 
 						case 'coursescomment':
-							require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
+							require_once Component::path('com_courses') . DS . 'models' . DS . 'course.php';
 							$course = \Components\Courses\Models\Course::getInstance($parent);
 							$rows[$key]->href = Route::url($course->link() . '&active=reviews');
 						break;
@@ -197,7 +197,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 		{
 			$comment->set('content', '[[Span(' . $msg . ', class="warning")]]');
 		}
-		$comment->set('state', $comment::STATE_PUBLISHED);
+		$comment->set('state', \Hubzero\Item\Comment::STATE_PUBLISHED);
 		$comment->save();
 
 		return '';

@@ -68,7 +68,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+		require_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
 		$query  = "SELECT rc.id, rc.page_id AS entry_id, rc.chtml as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
 					FROM `#__wiki_comments` AS rc
@@ -110,7 +110,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once Component::path('com_wiki') . DS . 'models' . DS . 'comment.php';
 
 		$comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
 		$comment->set('state', \Components\Wiki\Models\Comment::STATE_FLAGGED);
@@ -134,7 +134,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once Component::path('com_wiki') . DS . 'models' . DS . 'comment.php';
 
 		$comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
 		$comment->set('state', \Components\Wiki\Models\Comment::STATE_PUBLISHED);
@@ -159,7 +159,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once Component::path('com_wiki') . DS . 'models' . DS . 'comment.php';
 
 		$comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
 		$comment->set('state', \Components\Wiki\Models\Comment::STATE_DELETED);
