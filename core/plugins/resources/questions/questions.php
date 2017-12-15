@@ -437,7 +437,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 			// Build the message
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site',
+				'base_path' => Component::path('com_answers') . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'question_plaintext'
 			));

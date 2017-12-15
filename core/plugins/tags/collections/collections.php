@@ -115,10 +115,16 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'i.title ASC';  break;
-			case 'id':    $order_by .= "p.id DESC"; break;
+			case 'title':
+				$order_by .= 'i.title ASC';
+				break;
+			case 'id':
+				$order_by .= "p.id DESC";
+				break;
 			case 'date':
-			default:      $order_by .= 'p.created'; break;
+			default:
+				$order_by .= 'p.created';
+				break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -146,7 +152,7 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
+		include_once \Component::path('com_collections') . DS . 'models' . DS . 'post.php';
 
 		$row->object_type     = $row->params;
 		$row->object_id     = $row->rcount;
@@ -165,4 +171,3 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 }
-

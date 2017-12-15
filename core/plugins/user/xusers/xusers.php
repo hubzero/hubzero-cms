@@ -255,7 +255,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
+			require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
 			$quota = Components\Members\Models\Quota::all()
 				->whereEquals('user_id', $xuser->get('id'))
@@ -545,7 +545,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
+			require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
 			$quota = Components\Members\Models\Quota::all()
 				->whereEquals('user_id', $user['id'])
@@ -650,7 +650,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		\Hubzero\Auth\Link::delete_by_user_id($user['id']);
 
 		// Check if quota exists for the user
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
+		require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
 		$quota = Components\Members\Models\Quota::all()
 			->whereEquals('user_id', $user['id'])

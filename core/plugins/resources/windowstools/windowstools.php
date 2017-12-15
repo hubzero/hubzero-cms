@@ -30,8 +30,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'session.php');
+require_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+require_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
 
 /**
  * Resources Plugin class for Windows tools

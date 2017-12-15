@@ -98,7 +98,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		$this->database = App::get('db');
 		$this->member = $member;
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+		require_once \Component::path('com_courses') . DS . 'models' . DS . 'offering.php';
 		$model = \Components\Courses\Models\Offering::getInstance();
 		$roles = $model->roles();
 
@@ -453,7 +453,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+		include_once \Component::path('com_courses') . DS . 'tables' . DS . 'course.php';
 
 		// Instantiate some needed objects
 		$tbl = new \Components\Courses\Tables\Course($database);

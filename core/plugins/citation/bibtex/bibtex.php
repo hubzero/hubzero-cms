@@ -32,6 +32,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
 use Components\Citations\Models\Citation;
 
 /**
@@ -79,7 +80,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		}
 
 		// Include bibtex file
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
+		include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
 
 		// Create bibtex object
 		$bibtex = new Structures_BibTex();
@@ -100,20 +101,20 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 			$auths   = isset($citations[$i]['author']) ? $citations[$i]['author'] : '';
 			if ($auths != '')
 			{
-			 foreach ($auths as $a)
-			 {
-				 if (isset($a['jr']) && $a['jr'] != '')
-				 {
-					 $authors[] = $a['last'] . ' ' . $a['jr'] . ', ' . $a['first'];
-				 }
-				 else
-				 {
-					 $authors[] = $a['last'] . ', ' . $a['first'];
-				 }
-			 }
-			 $citations[$i]['author'] = implode('; ', $authors);
+				foreach ($auths as $a)
+				{
+					if (isset($a['jr']) && $a['jr'] != '')
+					{
+						$authors[] = $a['last'] . ' ' . $a['jr'] . ', ' . $a['first'];
+					}
+					else
+					{
+						$authors[] = $a['last'] . ', ' . $a['first'];
+					}
+				}
+				$citations[$i]['author'] = implode('; ', $authors);
 			} // End if 
-		 }
+		}
 
 		// Array to hold final citataions
 		$final = array();
@@ -223,27 +224,27 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 				// Matching within a scope domain
 				if ($cScope == $scope && $cScope_id == $scope_id)
 				{
-						// Direct matches on doi
-						if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '')
-					 {
-						 $match = $id;
-						 break;
-					 }
+					// Direct matches on doi
+					if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '')
+					{
+						$match = $id;
+						break;
+					}
 
-					 // Direct matches on isbn
-					 if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '')
-					 {
-						 $match = $id;
-						 break;
-					 }
+					// Direct matches on isbn
+					if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '')
+					{
+						$match = $id;
+						break;
+					}
 
-					 // Match titles based on percect param
-					 similar_text($title, $citation['title'], $similar);
-					 if ($similar >= $title_match)
-					 {
-						 $match = $id;
-						 break;
-					 }
+					// Match titles based on percect param
+					similar_text($title, $citation['title'], $similar);
+					if ($similar >= $title_match)
+					{
+						$match = $id;
+						break;
+					}
 				}
 			}
 		} // End foreach result as r

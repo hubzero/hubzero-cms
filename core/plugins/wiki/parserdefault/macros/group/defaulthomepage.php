@@ -79,7 +79,7 @@ class DefaultHomePage extends GroupMacro
 		}
 
 		// add required helper lib
-		require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'helpers' . DS . 'pages.php';
+		require_once \Component::path('com_groups') . DS . 'helpers' . DS . 'pages.php';
 
 		// get default home page 
 		$html = \GroupsHelperPages::getDefaultHomePage($this->group);
