@@ -39,17 +39,17 @@ use Lang;
 class Languages extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Language List';
 
 	/**
-	* Language list
-	*
-	* @var  array
-	*/
+	 * Language list
+	 *
+	 * @var  array
+	 */
 	protected $_codes = array(
 		"aa" => "Afar",
 		"ab" => "Abkhazian",
@@ -263,7 +263,7 @@ class Languages extends Base
 
 		array_unshift($languages, \Html::select('option', '', '- '.Lang::txt('Select Language').' -'));
 
-		return '<span class="field-wrap">' . \Html::select('genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
+		return '<span class="field-wrap">' . \Html::select('genericlist', $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**

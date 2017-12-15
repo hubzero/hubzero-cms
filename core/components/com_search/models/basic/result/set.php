@@ -539,7 +539,7 @@ class Set extends Obj implements Iterator
 		}
 
 		$this->total_count = count($this->processed_results);
-		foreach ($this->shown_results as $idx=>$res)
+		foreach ($this->shown_results as $idx => $res)
 		{
 			if (array_key_exists(spl_object_hash($res), $dont_show_because_nested_elsewhere))
 			{
@@ -550,7 +550,7 @@ class Set extends Obj implements Iterator
 
 		if ($this->custom)
 		{
-			# remove dupes
+			// remove dupes
 			$custom_links = array();
 			foreach ($this->custom as $custom)
 			{
@@ -560,7 +560,7 @@ class Set extends Obj implements Iterator
 				$custom_links[$custom->get_link()] = $custom->get_link();
 			}
 
-			foreach ($this->shown_results as $idx=>$res)
+			foreach ($this->shown_results as $idx => $res)
 			{
 				if (array_key_exists($res->get_link(), $custom_links))
 				{
@@ -570,7 +570,7 @@ class Set extends Obj implements Iterator
 				}
 			}
 
-			# prepend custom results
+			// prepend custom results
 			$this->shown_results = array_merge($this->custom, $this->shown_results);
 			$this->total_count += count($this->custom);
 		}
@@ -602,7 +602,7 @@ class Set extends Obj implements Iterator
 				$this->result_counts[$plugin]['sections'] = array();
 			}
 
-			foreach (array_merge(array($parent), $parent->get_children()) as $idx=>$res)
+			foreach (array_merge(array($parent), $parent->get_children()) as $idx => $res)
 			{
 				if ($idx > 0)
 				{
@@ -667,7 +667,7 @@ class Set extends Obj implements Iterator
 			$weight[$date_diff > 0 ? 'a' : 'b'] += self::$plugin_weights['sortnewer'];
 		}
 
-		foreach ($this->sorters as $plugin=>$sorter)
+		foreach ($this->sorters as $plugin => $sorter)
 		{
 			if (!($res = $sorter->invoke(null, $a, $b)))
 			{

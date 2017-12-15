@@ -310,7 +310,10 @@ class Terms extends Obj
 	 */
 	private function add_chunk(&$partial, &$sign = '', $quoted = false)
 	{
-		if (!$partial) return;
+		if (!$partial)
+		{
+			return;
+		}
 
 		if (DocumentMetadata::is_stop_word($partial))
 		{
