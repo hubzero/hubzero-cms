@@ -71,6 +71,7 @@ class Helper extends Module
 			'tag'        => trim($this->params->get('tag')),
 			'access'     => 0,
 			'published'  => 1,
+			'standalone' => 1,
 			// Only published tools
 			'toolState'  => 7
 		);
