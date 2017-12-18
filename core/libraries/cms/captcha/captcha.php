@@ -120,8 +120,8 @@ class JCaptcha extends JObject
 	 */
 	public function initialise($id)
 	{
-		$args['id']		= $id ;
-		$args['event']	= 'onInit';
+		$args['id']    = $id;
+		$args['event'] = 'onInit';
 
 		try
 		{
@@ -238,7 +238,7 @@ class JCaptcha extends JObject
 		$this->_captcha = new $name($this, (array)$plugin, $options);
 	}
 
-		/**
+	/**
 	 * Get the state of the JEditor object
 	 *
 	 * @return  mixed    The state of the object.
