@@ -83,7 +83,7 @@ class Helper extends Module
 
 		$id = array_rand($rows);
 
-		$row = Entry::oneOrNew($rows[$id]);
+		$row = Entry::oneOrNew((isset($rows[$id]) ? $rows[$id] : 0));
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 		$this->txt_length = trim($this->params->get('txt_length'));
