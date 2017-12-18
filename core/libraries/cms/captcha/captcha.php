@@ -125,6 +125,10 @@ class JCaptcha extends JObject
 
 		try
 		{
+			if ($this->_captcha instanceof \Hubzero\Plugin\Plugin)
+			{
+				return $this->_captcha->onInit($args['id']);
+			}
 			$this->_captcha->update($args);
 		}
 		catch (Exception $e)
@@ -162,6 +166,11 @@ class JCaptcha extends JObject
 		$args['class']		= $class ? 'class="'.$class.'"' : '';
 		$args['event']		= 'onDisplay';
 
+		if ($this->_captcha instanceof \Hubzero\Plugin\Plugin)
+		{
+			return $this->_captcha->onDisplay($args['name'], $args['id'], $args['class']);
+		}
+
 		return $this->_captcha->update($args);
 	}
 
@@ -182,6 +191,11 @@ class JCaptcha extends JObject
 
 		$args['code'] = $code;
 		$args['event'] = 'onCheckAnswer';
+
+		if ($this->_captcha instanceof \Hubzero\Plugin\Plugin)
+		{
+			return $this->_captcha->onCheckAnswer($args['code']);
+		}
 
 		return $this->_captcha->update($args);
 	}
