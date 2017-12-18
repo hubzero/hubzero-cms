@@ -14,15 +14,18 @@
 */
 
 /* Search results */
-	table.latest_events_tbl {
-		border: none;
-	}
-	table.latest_events_tbl tr.odd,
-	table.latest_events_tbl tr.even {
-		background: transparent;
-	}
-	table.latest_events_tbl td {
+	.latest_events_tbl>div {
+		padding: 0.5em 0;
 		border-top: 1px solid #eee;
+	}
+	.latest_events_tbl>div:before,
+	.latest_events_tbl>div:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.latest_events_tbl>div:after {
+		clear: left;
 	}
 	.event-date {
 		text-align: center;
