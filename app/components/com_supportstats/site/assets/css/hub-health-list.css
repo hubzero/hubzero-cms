@@ -1,0 +1,11 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_support/assets/css/hub-health-list.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+#hub-health-list {
+	list-style: none;
+}
+
