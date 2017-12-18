@@ -1,0 +1,3 @@
+[submodule "app/templates/qubes/super"]
+	path = app/templates/qubes/super
+	url = https://github.com/qubeshub/supertemplates
