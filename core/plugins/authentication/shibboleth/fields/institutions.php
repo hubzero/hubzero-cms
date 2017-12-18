@@ -31,15 +31,11 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// using a Hubzero field causes the XML representation of the underlying institutions data to be rendered rather than the custom input
-//namespace Hubzero\Form\Fields;
-//use Hubzero\Form\Field;
-//class Institutions extends Field
+namespace Hubzero\Form\Fields;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
+use Hubzero\Form\Field;
 
-class JFormFieldInstitutions extends JFormField
+class Institutions extends Field
 {
 	/**
 	 * Get field input
@@ -59,6 +55,7 @@ class JFormFieldInstitutions extends JFormField
 			return str_replace('"', '&quot;', $str);
 		};
 		$val = is_array($this->value) ? $this->value : json_decode($this->value, true);
+
 		$html[] = '<div class="shibboleth" data-iconify="'.$a(preg_replace('#^'.preg_quote(PATH_CORE).'#', '', __FILE__)).'">';
 		$html[] = '<p class="xml-source"><label>Shibboleth ID provider configuration file: <input type="text" name="xmlPath" value="'.$a($val['xmlPath']).'" /></label></p>';
 		list($val['xmlRead'], $val['idps']) = self::getIdpList($val);
@@ -98,15 +95,18 @@ class JFormFieldInstitutions extends JFormField
 		foreach ($xml->xpath('//shib:SSO') as $item)
 		{
 			$entityId = (string)$item->attributes()->entityID;
-			curl_setopt($curl, \CURLOPT_URL, $entityId);
-			curl_setopt($curl, \CURLOPT_HEADER, 0);
-			curl_setopt($curl, \CURLOPT_RETURNTRANSFER, 1);
+
+			curl_setopt($curl, CURLOPT_URL, $entityId);
+			curl_setopt($curl, CURLOPT_HEADER, 0);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
 			$item = array(
 				'entity_id' => $entityId,
 				'label'     => null,
 				'host'      => null,
 				'logo'      => null
 			);
+
 			if (!($idp = curl_exec($curl)))
 			{
 				$item['error'] = 'Failed to fetch metadata';
@@ -135,8 +135,8 @@ class JFormFieldInstitutions extends JFormField
 				{
 					$item['host'] = preg_replace('/^.*[.]([^.]+[.][^.]+)$/', '$1', parse_url($orgUrl[0], \PHP_URL_HOST));
 				}
-//				$item['logo'] = $idp->xpath('//mdui:Logo');
-//				$item['logo'] = $item['logo'] ? (string)$item['logo'][0] : null;
+				//$item['logo'] = $idp->xpath('//mdui:Logo');
+				//$item['logo'] = $item['logo'] ? (string)$item['logo'][0] : null;
 			}
 			$rv[] = $item;
 		}
@@ -154,7 +154,7 @@ class JFormFieldInstitutions extends JFormField
 	private static function getResearchAndScholarshipIdps($ch)
 	{
 		$rv = [];
-		exec('php '.__DIR__.'/get-rs-entities.php', $out);
+		exec('php ' . __DIR__ . '/get-rs-entities.php', $out);
 		return json_decode(join('', $out));
 	}
 }
