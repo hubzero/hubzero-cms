@@ -69,7 +69,7 @@ class Helper extends Module
 			'sortby'     => 'random',
 			'minranking' => trim($this->params->get('minranking')),
 			'tag'        => trim($this->params->get('tag')),
-			'access'     => 0,
+			'access'     => 'public',
 			'published'  => 1,
 			'standalone' => 1,
 			// Only published tools
