@@ -35,8 +35,8 @@ namespace Components\Support\Api\Controllers;
 use Components\Support\Models\Criterion;
 use Hubzero\Component\ApiController;
 
-require_once dirname(dirname(__DIR__)) . '/models/criterion.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/acl.php';
+require_once Component::path('com_support') . '/models/criterion.php';
+require_once Component::path('com_support') . '/helpers/acl.php';
 
 /**
  * API controller class for outstanding support tickets
@@ -65,6 +65,8 @@ class OutstandingTicketsv2_0 extends ApiController
 	 */
 	public function listTask()
 	{
+		$this->requiresAuthentication();
+
 		$criteria = Criterion::all();
 		$outstandingTicketData = array(
 			'tickets'  => array(),
