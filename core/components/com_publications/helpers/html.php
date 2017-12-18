@@ -1116,6 +1116,11 @@ class Html
 				// This does not count the bundle or previous versions of each publication	
 				if ($simple)
 				{
+					if (!($row instanceof \Components\Publications\Models\Publication))
+					{
+						require_once Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+						$row = new \Components\Publications\Models\Publication($row);
+					}
 					$pub_size = self::computeDiskUsage($row->path('content'), PATH_APP, false);
 					$pub_size = $pub_size + self::computeDiskUsage($row->path('data'), PATH_APP, false);
 					$used += $pub_size;
