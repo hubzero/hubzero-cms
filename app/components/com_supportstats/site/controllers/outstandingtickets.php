@@ -41,9 +41,17 @@ require_once Component::path('com_supportstats') . '/models/hub.php';
 require_once Component::path('com_supportstats') . '/helpers/authHelper.php';
 require_once Component::path('com_support') . '/helpers/acl.php';
 
+/**
+ * Connects outstanding tickets data and views
+ */
 class OutstandingTickets extends SiteController
 {
 
+	/**
+	 * Sets acl and calls parents execute
+	 *
+	 * @return  null
+	 */
 	public function execute()
 	{
 		$this->acl = ACL::getACL();
@@ -51,6 +59,11 @@ class OutstandingTickets extends SiteController
 		parent::execute();
 	}
 
+	/**
+	 * Displays outstanding ticket info by hub & criterion
+	 *
+	 * @return  null
+	 */
 	public function listTask()
 	{
 		AuthHelper::redirectUnlessAuthenticated('outstandingtickets', 'list');

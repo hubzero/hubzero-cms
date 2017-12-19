@@ -1,26 +1,73 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Anthony Fuentes <fuentesa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
 
 namespace Components\Supportstats\Models;
 
-require_once Component::path('com_supportstats') . '/helpers/clientApiConfigHelper.php';
 require_once Component::path('com_supportstats') . '/helpers/hubConfigHelper.php';
 require_once Component::path('com_supportstats') . '/helpers/arrayHelper.php';
 require_once Component::path('com_supportstats') . '/helpers/apiHelper.php';
 require_once Component::path('com_supportstats') . '/helpers/urlHelper.php';
 
-use Components\Supportstats\Helpers\ClientApiConfigHelper;
 use Components\Supportstats\Helpers\HubConfigHelper;
 use Components\Supportstats\Helpers\ArrayHelper;
 use Components\Supportstats\Helpers\ApiHelper;
 use Components\Supportstats\Helpers\UrlHelper;
 use Hubzero\Database\Relational;
 
+/**
+ * Serves as Hub entity
+ */
 class Hub extends Relational
 {
+	/**
+	 * Table holding hub records
+	 *
+	 * @var string
+	 */
 	protected $table = 'jos_supportstats_hubs';
+	/**
+	 * Virtual attributes stored on model instances
+	 *
+	 * @var array
+	 */
 	protected $_virtualAttributes = array();
-	public $_apiClientId, $_apiClientSecret;
 
+	/**
+	 * Universal getter method
+	 *
+	 * @param   string	$key			Variable name
+	 * @param   mixed		$default	Value to return in case attribute is not set
+	 * @return  mixed
+	 */
 	public function get($key, $default = null)
 	{
 		if (array_key_exists($key, $this->_virtualAttributes))
@@ -33,6 +80,11 @@ class Hub extends Relational
 		}
 	}
 
+	/**
+	 * Gets hub's outstanding tickets
+	 *
+	 * @return  array
+	 */
 	public function fetchOutstandingTickets()
 	{
 		$tickets = array();
@@ -44,6 +96,12 @@ class Hub extends Relational
 		return $tickets;
 	}
 
+	/**
+	 * Sets outstanding tickets virtual attribute
+	 *
+	 * @param   array		$outstandingTicketsData	Outstanding tickets data
+	 * @return  null
+	 */
 	protected function _setOutstandingTicketData($outstandingTicketData)
 	{
 		$ticketsByCriterion = $outstandingTicketData['tickets'];
@@ -54,11 +112,25 @@ class Hub extends Relational
 		$this->_setVirtualAttribute('outstanding_tickets', $ticketsByDescription);
 	}
 
+	/**
+	 * Sets virtual attribute on hub instance
+	 *
+	 * @param   string	$name		Attribute name
+	 * @param   string	$data		Attribute data
+	 * @return  null
+	 */
 	protected function _setVirtualAttribute($name, $data)
 	{
 		$this->_virtualAttributes[$name] = $data;
 	}
 
+	/**
+	 * Maps outstanding tickets to description of violated criterion
+	 *
+	 * @param   array	$ticketsByCriterion		Outstanding tickets mapped by criterion ID
+	 * @param   array	$criteria							Criteria data
+	 * @return  array
+	 */
 	public function _mapTicketsToCriterionDescription($ticketsByCriterion, $criteria)
 	{
 		$ticketsByDescription = array();
@@ -72,24 +144,13 @@ class Hub extends Relational
 		return $ticketsByDescription;
 	}
 
-	public function fetchTickets($params = array(
-		'limit' => 25, 'limitstart' => 0, 'sort' => 'created', 'sort_Dir' => 'desc'
-	))
-	{
-		$tickets = array();
-
-		$endpoint = '/support/list';
-		$response = $this->_fetchFromApi($endpoint, $params);
-		$tickets = $response['tickets'];
-
-		foreach ($tickets as &$ticket)
-		{
-			$ticket['hub'] = $this;
-		}
-
-		return $tickets;
-	}
-
+	/**
+	 * Retrieves data from the hub's given API endpoint
+	 *
+	 * @param   string	$endpoint		API endpoint to send request to
+	 * @param   array		$params			Query params to append to URL
+	 * @return  array
+	 */
 	protected function _fetchFromApi($endpoint, $params = array())
 	{
 		$baseUrl = $this->get('api_url') . $endpoint;
@@ -100,6 +161,11 @@ class Hub extends Relational
 		return $response;
 	}
 
+	/**
+	 * Gets API access data
+	 *
+	 * @return  array
+	 */
 	protected function _getApiAccessParams()
 	{
 		$apiAccessParams = array(
@@ -109,6 +175,11 @@ class Hub extends Relational
 		return $apiAccessParams;
 	}
 
+	/**
+	 * Gets API access token
+	 *
+	 * @return string
+	 */
 	protected function _getAccessToken()
 	{
 		if (!isset($this->accessToken))
@@ -119,24 +190,14 @@ class Hub extends Relational
 		return $this->accessToken;
 	}
 
-	public function getAuthUrl()
-	{
-		$authUrl = $this->get('base_url') . '/developer/oauth/authorize';
-		$authUrlParams = $this->_getAuthUrlParams();
-
-		return UrlHelper::appendToUrl($authUrl, $authUrlParams);
-	}
-
-	protected function _getAuthUrlParams()
-	{
-		return array(
-			'client_id' => $this->_getClientId(),
-			'redirect_uri' => ClientApiConfigHelper::getRedirectUri(),
-			'state' => $this->_getApiRequestState(),
-			'response_type' => 'code'
-		);
-	}
-
+	/**
+	 * Sends API request
+	 *
+	 * @param  string	$method		Request method to use
+	 * @param  string	$url			URL to send request to
+	 * @param  string	$params		Data to send with request
+	 * @return array
+	 */
 	protected function _sendApiRequest($method, $url, $params = array())
 	{
 		$response = ApiHelper::$method($url, $params);
@@ -144,14 +205,12 @@ class Hub extends Relational
 		return $response;
 	}
 
-	protected function _getAccessTokenParams($params)
-	{
-		return array_merge(array(
-			'client_id' => $this->_getClientId(),
-			'redirect_uri' => ClientApiConfigHelper::getRedirectUri(),
-		), $params);
-	}
-
+	/**
+	 * Builds URL for given user's home page
+	 *
+	 * @param  integer	$memberId		User's ID
+	 * @return string
+	 */
 	public function getMemberUrl($memberId)
 	{
 		$memberUrl = $this->get('base_url') . "/members/$memberId";
