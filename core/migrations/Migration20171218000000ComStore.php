@@ -6,15 +6,88 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for installing store tables
+ * Migration script for removing component entry for com_store
  **/
-class Migration20170901000000ComStore extends Base
+class Migration20171218000000ComStore extends Base
 {
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
+		$this->deleteComponentEntry('store');
+
+		if ($this->db->tableExists('#__store'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__store`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		if ($this->db->tableExists('#__orders'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__orders`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		if ($this->db->tableExists('#__order_items'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__order_items`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		if ($this->db->tableExists('#__cart'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__cart`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		$path = PATH_APP . '/site/store';
+
+		if (is_dir($path))
+		{
+			$this->rrmdir($path);
+		}
+	}
+
+	/**
+	 * Recursively remove a directory
+	 *
+	 * @param   string  $src
+	 * @return  void
+	 **/
+	private function rrmdir($src)
+	{
+		$dir = opendir($src);
+		while (false !== ($file = readdir($dir)))
+		{
+			if ($file != '.' && $file != '..')
+			{
+				$full = $src . '/' . $file;
+				if (is_dir($full))
+				{
+					$this->rrmdir($full);
+				}
+				else
+				{
+					@unlink($full);
+				}
+			}
+		}
+		closedir($dir);
+		@rmdir($src);
+	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		$this->addComponentEntry('store');
+
 		if (!$this->db->tableExists('#__store'))
 		{
 			$query = "CREATE TABLE `#__store` (
@@ -87,40 +160,6 @@ class Migration20170901000000ComStore extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
-
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__store'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__store`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__orders'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__orders`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__order_items'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__order_items`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-
-		if ($this->db->tableExists('#__cart'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__cart`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
