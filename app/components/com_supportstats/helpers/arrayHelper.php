@@ -9,7 +9,7 @@ class ArrayHelper
 	{
 		foreach ($original as $element)
 		{
-			if(is_array($element))
+			if (is_array($element))
 			{
 				$return = self::flatten($element, $return);
 			}
