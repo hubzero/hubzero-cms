@@ -48,8 +48,15 @@ You have <?php echo $posts; ?> new post<?php if ($posts > 1) echo 's'; ?> across
 <?php foreach ($posts as $post) : ?>
 <?php $inst = $post; ?>
 
+<?php
+$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+if (!$post->anonymous)
+{
+	$name = User::getInstance($post->created_by)->get('name');
+}
+?>
 
-<?php echo User::getInstance($post->created_by)->get('name'); ?> | <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>
+<?php echo $name; ?> | <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>
 
 <?php echo Hubzero\Utility\Sanitize::stripAll($inst->get('comment')); ?>
 <?php $base = rtrim(Request::root(), '/'); ?>
