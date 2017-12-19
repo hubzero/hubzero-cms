@@ -38,7 +38,6 @@ use Hubzero\Component\SiteController;
 use Components\Support\Helpers\ACL;
 
 require_once Component::path('com_supportstats') . '/models/hub.php';
-require_once Component::path('com_supportstats') . '/models/hubAuthorization.php';
 require_once Component::path('com_supportstats') . '/helpers/authHelper.php';
 require_once Component::path('com_support') . '/helpers/acl.php';
 
@@ -57,8 +56,7 @@ class OutstandingTickets extends SiteController
 		AuthHelper::redirectUnlessAuthenticated('outstandingtickets', 'list');
 
 		$this->view->acl = $this->acl;
-		$this->view->hubs = Hub::allWithAuthorization();
-		$this->view->title = 'Support Stats: Outstanding Tickets';
+		$this->view->hubs = Hub::all()->order('name', 'ASC')->rows();
 
 		foreach ($this->view->hubs as $hub)
 		{
