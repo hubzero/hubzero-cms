@@ -95,11 +95,11 @@ if ($params->get('supportedtag') && isset($this->supported))
 						// Get statistics info
 						if ($this->line->isTool())
 						{
-							$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->line->id, $this->line->type, $this->line->rating);
+							$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->line->id, $this->line->get('type'), $this->line->rating);
 						}
 						else
 						{
-							$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->line->id, $this->line->type, $this->line->rating);
+							$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->line->id, $this->line->get('type'), $this->line->rating);
 						}
 						echo $stats->display();
 						?>
