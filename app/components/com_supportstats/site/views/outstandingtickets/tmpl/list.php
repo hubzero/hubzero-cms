@@ -39,23 +39,13 @@ $this->css('overrides');
 
 <?php
 	$this->view('_header')
-		->set('title', $this->title)
+		->set('title', 'Support Stats: Outstanding Tickets')
 		->set('acl', $this->acl)
 		->display();
 ?>
 
 <section class="panel tickets">
-
 	<div class="panel-row">
-		<div class="pane pane-queries" id="queries" data-update="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=saveordering&' . Session::getFormToken() . '=1'); ?>">
-			<div class="pane-inner">
-				<?php
-					$this->view('_hublist')
-						->set('hubs', $this->hubs)
-						->display();
-				?>
-			</div>
-		</div>
 
 		<div class="pane pane-list">
 			<?php

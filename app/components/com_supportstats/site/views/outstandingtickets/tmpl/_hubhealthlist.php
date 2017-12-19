@@ -40,13 +40,14 @@ $this->css('hub-health-list.css');
 	<tbody>
 	<?php
 		foreach ($this->hubs as $hub):
-			if ($hub->get('outstanding_tickets')):
 
-			$this->view('_hubhealthpanel')
-				->set('hub', $hub)
-				->display();
+			if ($hub->get('outstanding_tickets'))
+			{
+				$this->view('_hubhealthpanel')
+					->set('hub', $hub)
+					->display();
+			}
 
-			endif;
 		endforeach;
 	?>
 	</tbody>

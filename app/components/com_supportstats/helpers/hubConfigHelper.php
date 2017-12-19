@@ -9,40 +9,43 @@ use Dotenv\Dotenv;
 class HubConfigHelper
 {
 
-	public static function setApiCredentials($hub)
+	public static function getAccessToken($hubName)
 	{
-		self::_loadApiCredentials($hub);
-		$credentialList = self::_getApiCredentialList($hub);
+		self::_loadApiCredentials($hubName);
+		$envVarName = self::_getEnvVarName($hubName, 'ACCESS_TOKEN');
+		$accessToken = getenv($envVarName);
 
-		foreach($credentialList as $instanceVarName => $envVarName)
-		{
-			$hub->$instanceVarName = getenv($envVarName);
-		}
+		return $accessToken;
 	}
 
-	protected static function _loadApiCredentials($hub)
+	protected static function _loadApiCredentials($hubName)
 	{
 		$directory = __DIR__ . '/../';
-		$formattedName = self::_getFormattedName($hub);
-		$envFileName = '.env-' . strtolower($formattedName);
+		$envFileName = self::_getEnvFileName($hubName);
 		$dotenv = new Dotenv($directory, $envFileName);
 
 		$dotenv->load();
 	}
 
-	protected static function _getApiCredentialList($hub)
+	protected static function _getEnvFileName($hubName)
 	{
-		$formattedHubName = strtoupper(self::_getFormattedName($hub));
+		$formattedName = self::_getFormattedName($hubName);
+		$envFileName = '.env-' . strtolower($formattedName);
 
-		return array(
-			'_apiClientId' => $formattedHubName . '_CLIENT_ID',
-			'_apiClientSecret' => $formattedHubName . '_CLIENT_SECRET'
-		);
+		return $envFileName;
 	}
 
-	protected static function _getFormattedName($hub)
+	protected static function _getEnvVarName($hubName, $envVar)
 	{
-		return preg_replace("/ /", '', $hub->get('name'));
+		$formattedName = self::_getFormattedName($hubName);
+		$envVarName = strtoupper($hubName) . "_$envVar";
+
+		return $envVarName;
+	}
+
+	protected static function _getFormattedName($hubName)
+	{
+		return preg_replace("/ /", '', $hubName);
 	}
 
 }
