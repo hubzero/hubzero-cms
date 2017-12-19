@@ -240,7 +240,15 @@ array_walk($this->posts, function($val, $idx) use (&$posts)
 																				transform:rotate(45deg); -ms-transform:rotate(45deg); -webkit-transform:rotate(45deg);"></div>
 																			<div style="background: #FFFFFF; width: 11px; height: 23px; position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
 																			<div style="color: #AAAAAA; font-size: 11px;">
-																				<?php echo User::getInstance($post->created_by)->get('name'); ?> | <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>
+																				<?php
+																				$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+																				if (!$post->anonymous)
+																				{
+																					$name = User::getInstance($post->created_by)->get('name');
+																				}
+																				?>
+
+																				<?php echo $name; ?> | <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>
 																			</div>
 																			<div>
 																				<?php echo $post->comment; ?>
