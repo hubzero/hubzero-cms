@@ -13,7 +13,7 @@ class UrlHelper
 	{
 		$index = 0;
 
-		foreach($parameters as $key => $value)
+		foreach ($parameters as $key => $value)
 		{
 			$separator = $index === 0 ? '?' : '&';
 			$url .= "{$separator}{$key}=" . urlencode($value);

@@ -3,7 +3,7 @@
 namespace Components\Supportstats\Helpers;
 
 use User;
-Use App;
+use App;
 
 class AuthHelper
 {
@@ -52,4 +52,3 @@ class AuthHelper
 	}
 
 }
-
