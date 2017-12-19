@@ -39,11 +39,12 @@ use Hubzero\Component\Router\Base;
  */
 class Router extends Base
 {
+
 	/**
-	 * Build the route for the component.
+	 * Build the route for the component
 	 *
 	 * @param   array  &$query  An array of URL arguments
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 * @return  array  The URL arguments to use to assemble the subsequent URL
 	 */
 	public function build(&$query)
 	{
@@ -63,10 +64,10 @@ class Router extends Base
 	}
 
 	/**
-	 * Parse the segments of a URL.
+	 * Parse the segments of a URL
 	 *
-	 * @param   array  &$segments  The segments of the URL to parse.
-	 * @return  array  The URL attributes to be used by the application.
+	 * @param   array  &$segments  The segments of the URL to parse
+	 * @return  array  The URL attributes to be used by the application
 	 */
 	public function parse(&$segments)
 	{

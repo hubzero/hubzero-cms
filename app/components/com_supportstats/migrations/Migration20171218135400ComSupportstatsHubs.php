@@ -12,6 +12,9 @@ class Migration20171218135400ComSupportstatsHubs extends Base
 {
 	static $table = '#__supportstats_hubs';
 
+	/**
+	 * Creates jos_supportstats_hubs
+	 **/
 	public function up()
 	{
 		$table = self::$table;
@@ -33,6 +36,9 @@ class Migration20171218135400ComSupportstatsHubs extends Base
 		}
 	}
 
+	/**
+	 * Drops jos_supportstats_hubs
+	 **/
 	public function down()
 	{
 		$table = self::$table;
