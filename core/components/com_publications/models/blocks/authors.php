@@ -44,31 +44,31 @@ use Date;
 class Authors extends Base
 {
 	/**
-	* Block name
-	*
-	* @var		string
-	*/
+	 * Block name
+	 *
+	 * @var		string
+	 */
 	protected $_name 			= 'authors';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
+	 * Parent block name
+	 *
+	 * @var		string
+	 */
 	protected $_parentname 		= 'authors';
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected $_manifest 		= NULL;
+	 * Default manifest
+	 *
+	 * @var		string
+	 */
+	protected $_manifest 		= null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
+	 * Numeric block ID
+	 *
+	 * @var		integer
+	 */
 	protected $_blockId 		= 0;
 
 	/**
@@ -80,10 +80,10 @@ class Authors extends Base
 	 * @param   integer  $blockId
 	 * @return  string   HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
+	public function display( $pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -141,10 +141,10 @@ class Authors extends Base
 	 * @param   integer  $elementId
 	 * @return  string   HTML
 	 */
-	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save( $manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -313,10 +313,10 @@ class Authors extends Base
 	 * @param   integer  $elementId
 	 * @return  string   HTML
 	 */
-	public function reorder( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function reorder( $manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -406,7 +406,7 @@ class Authors extends Base
 		}
 
 		// Do we have an owner with this email/uid?
-		$owner = NULL;
+		$owner = null;
 		if ($uid)
 		{
 			$owner = $objO->getOwnerId( $pub->_project->get('id'), $uid );
@@ -731,7 +731,7 @@ class Authors extends Base
 	 * @param   string  $viewname
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent( $pub = null, $viewname = 'edit' )
 	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
@@ -782,10 +782,10 @@ class Authors extends Base
 	 * @param   integer  $elementId
 	 * @return  object
 	 */
-	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
+	public function getStatus( $pub = null, $manifest = null, $elementId = null )
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -845,7 +845,7 @@ class Authors extends Base
 				)
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;
