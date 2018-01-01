@@ -32,11 +32,13 @@
 
 namespace Components\Projects\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'comment.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'todo.php';
+require_once __DIR__ . DS . 'comment.php';
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
+use Date;
+use Lang;
 
 /**
  * Model class for a todo entry
@@ -83,7 +85,7 @@ class Entry extends Model
 	 *
 	 * @var object
 	 */
-	private $_creator = NULL;
+	private $_creator = null;
 
 	/**
 	 * Hubzero\User\User
@@ -102,7 +104,7 @@ class Entry extends Model
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed    $oid       ID (int) or alias (string)
+	 * @param   mixed  $oid  ID (int) or alias (string)
 	 * @return  void
 	 */
 	public function __construct($oid)
@@ -127,7 +129,7 @@ class Entry extends Model
 	/**
 	 * Returns a reference to a todo entry model
 	 *
-	 * @param   mixed    $oid       ID (int) or alias (string)
+	 * @param   mixed    $oid   ID (int) or alias (string)
 	 * @return  object   Entry
 	 */
 	static function &getInstance($oid=null)
@@ -163,9 +165,9 @@ class Entry extends Model
 	/**
 	 * Get the home project of this entry
 	 *
-	 * @return  object Models\Project
+	 * @return  object  Models\Project
 	 */
-	public function project($get = NULL)
+	public function project($get = null)
 	{
 		if (empty($this->_project))
 		{
@@ -179,8 +181,8 @@ class Entry extends Model
 	/**
 	 * Return a formatted created timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -190,8 +192,8 @@ class Entry extends Model
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function due($as='')
 	{
@@ -201,8 +203,8 @@ class Entry extends Model
 	/**
 	 * Return a formatted modified timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function closed($as='')
 	{
@@ -243,15 +245,15 @@ class Entry extends Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $key Field to return
-	 * @param      string $as  What data to return
-	 * @return     string
+	 * @param   string  $key  Field to return
+	 * @param   string  $as   What data to return
+	 * @return  string
 	 */
 	protected function _date($key, $as='')
 	{
 		if ($this->get($key) == $this->_db->getNullDate())
 		{
-			return NULL;
+			return null;
 		}
 		switch (strtolower($as))
 		{

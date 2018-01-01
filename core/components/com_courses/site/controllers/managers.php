@@ -81,8 +81,6 @@ class Managers extends SiteController
 
 		$mbrs = explode(',', $m);
 
-		jimport('joomla.user.helper');
-
 		$users = array();
 		foreach ($mbrs as $mbr)
 		{
@@ -260,4 +258,3 @@ class Managers extends SiteController
 			->display();
 	}
 }
-

@@ -41,9 +41,9 @@ use Components\Projects\Models\Orm\Description\Field;
 use Exception;
 use stdClass;
 
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
-require_once Component::path('com_projects') . '/helpers/layoutHelper.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/layoutHelper.php';
 
 /**
  * Primary component controller
@@ -315,6 +315,7 @@ class Projects extends Base
 		$action       = Request::getVar('action', '');
 		$confirmcode  = Request::getVar('confirm', '');
 		$email        = Request::getVar('email', '');
+		$subdir       = Request::getVar('subdir');
 		$sync         = false;
 
 		// Stop ajax action if user got logged out
@@ -513,7 +514,7 @@ class Projects extends Base
 		}
 
 		// Private project
-		if (!$this->model->isPublic() && $layout != 'invited')
+		if (!$this->model->isPublic() && $layout != 'invited' && $subdir != 'public')
 		{
 			// Login required
 			if (User::isGuest())

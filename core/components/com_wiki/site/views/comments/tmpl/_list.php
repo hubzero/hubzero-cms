@@ -49,7 +49,6 @@ defined('_HZEXEC_') or die();
 			$comment->set('page_id', $this->page->get('id'));
 
 			$this->view('_comment', 'comments')
-				//->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
 				->set('option', $this->option)
 				->set('comment', $comment)
 				->set('config', $this->config)

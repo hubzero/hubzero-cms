@@ -93,7 +93,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
+		require_once Component::path('com_kb') . DS . 'models' . DS . 'comment.php';
 
 		$comment = \Components\Kb\Models\Comment::oneOrFail($refid);
 		$comment->set('state', 3);
@@ -117,7 +117,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
+		require_once Component::path('com_kb') . DS . 'models' . DS . 'comment.php';
 
 		$comment = \Components\Kb\Models\Comment::oneOrFail($refid);
 		$comment->set('state', 1);
@@ -142,7 +142,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
+		require_once Component::path('com_kb') . DS . 'models' . DS . 'comment.php';
 
 		$comment = \Components\Kb\Models\Comment::oneOrFail($refid);
 		$comment->set('state', 2);

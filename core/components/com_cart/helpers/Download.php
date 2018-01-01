@@ -111,7 +111,7 @@ class CartDownload
 
 		$db = \App::get('db');
 
-		$sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
+		$sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.id AS uidNumber, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
 		$sql .= ' LEFT JOIN `#__users` x ON (d.uId = x.id)';
 		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
 		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
@@ -146,8 +146,9 @@ class CartDownload
 		{
 			$where   = array();
 			$where[] = "p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%');
-			$where[] = "p.`pDescription` LIKE " . $db->quote('%' . $filters['search'] . '%');
 			$where[] = "s.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%');
+			$where[] = "x.`name` LIKE " . $db->quote('%' . $filters['search'] . '%');
+			$where[] = "x.`username` LIKE " . $db->quote('%' . $filters['search'] . '%');
 
 			$sql .= " AND (" . implode(" OR ", $where) . ")";
 		}

@@ -496,7 +496,7 @@ class Tickets extends AdminController
 
 				// Plain text email
 				$eview = new \Hubzero\Mail\View(array(
-					'base_path' => PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'site',
+					'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
 					'name'      => 'emails',
 					'layout'    => 'ticket_plain'
 				));
@@ -712,7 +712,7 @@ class Tickets extends AdminController
 
 				// Plain text email
 				$eview = new \Hubzero\Mail\View(array(
-					'base_path' => PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'site',
+					'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
 					'name'      => 'emails',
 					'layout'    => 'comment_plain'
 				));
@@ -1034,7 +1034,7 @@ class Tickets extends AdminController
 
 					// Plain text email
 					$eview = new \Hubzero\Component\View(array(
-						'base_path' => PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'site',
+						'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
 						'name'      => 'emails',
 						'layout'    => 'comment_plain'
 					));

@@ -39,11 +39,12 @@ if (!isset($this->error))
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" class="<?php echo $this->direction; ?>">
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" class="no-js <?php echo $this->direction; ?>">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title><?php echo $this->error->getCode(); ?> - <?php echo htmlspecialchars($this->error->getMessage(), ENT_QUOTES, 'UTF-8'); ?></title>
-		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/system/css/error.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/system/css/error.css?v=<?php echo filemtime(__DIR__ . '/css/error.css'); ?>" />
 	</head>
 	<body id="error-body">
 		<div class="container">

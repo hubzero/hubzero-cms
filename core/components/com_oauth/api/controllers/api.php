@@ -33,8 +33,6 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-JLoader::import('Hubzero.Api.Controller');
-
 /**
  * Short description for 'OauthApiController'
  *
@@ -42,7 +40,6 @@ JLoader::import('Hubzero.Api.Controller');
  */
 class OauthControllerApi extends \Hubzero\Component\ApiController
 {
-
 	/**
 	 * Short description for 'execute'
 	 *
@@ -50,7 +47,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 *
 	 * @return     void
 	 */
-	function execute()
+	public function execute()
 	{
 		switch ($this->segments[0])
 		{
@@ -103,7 +100,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function token_info()
 	{
-		$this->_response->setMessage($this->_provider->getTokenData(),200,'OK');
+		$this->_response->setMessage($this->_provider->getTokenData(), 200, 'OK');
 	}
 
 	/**
@@ -115,7 +112,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function not_found()
 	{
-		$this->_response->setErrorMessage(404,'Not Found');
+		$this->_response->setErrorMessage(404, 'Not Found');
 	}
 
 	/**
@@ -135,11 +132,11 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		$callback_url = Request::getVar('oauth_callback','');
+		$callback_url = Request::getVar('oauth_callback', '');
 
-		$token = sha1(OAuthProvider::generateToken(20,false));
-		$token_secret = sha1(OAuthProvider::generateToken(20,false));
-		$verifier = sha1(OAuthProvider::generateToken(20,false));
+		$token = sha1(OAuthProvider::generateToken(20, false));
+		$token_secret = sha1(OAuthProvider::generateToken(20, false));
+		$verifier = sha1(OAuthProvider::generateToken(20, false));
 
 		$db = App::get('db');
 
@@ -147,7 +144,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		if (empty($consumer_data))
 		{
-			$this->_response->setErrorMessage(500,'Internal Server Error');
+			$this->_response->setErrorMessage(500, 'Internal Server Error');
 			return;
 		}
 
@@ -156,7 +153,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			$callback_url = $consumer_data->callback_url;
 		}
 
-		$db->setQuery("INSERT INTO #__oauthp_tokens (consumer_id,user_id,state,token,token_secret,callback_url,verifier,created) VALUES (" .
+		$db->setQuery("INSERT INTO `#__oauthp_tokens` (consumer_id,user_id,state,token,token_secret,callback_url,verifier,created) VALUES (" .
 			$db->Quote($consumer_data->id) .
 			", '0', '1', " .
 			$db->Quote($token) . "," .
@@ -167,12 +164,12 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		if (!$db->query())
 		{
-			$this->_response->setErrorMessage(500,'Internal Server Error');
+			$this->_response->setErrorMessage(500, 'Internal Server Error');
 		}
 		else
 		{
 			$this->setMessageType('application/x-www-form-urlencoded,text/plain;q=0.9');
-			$this->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret."&oauth_callback_confirmed=true",200,'OK');
+			$this->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret."&oauth_callback_confirmed=true", 200, 'OK');
 		}
 	}
 
@@ -185,8 +182,6 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function authorize()
 	{
-		jimport('joomla.environment.request');
-
 		$oauth_token = Request::getVar('oauth_token');
 
 		if (empty($oauth_token))
@@ -196,9 +191,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		$db = App::get('db');
 
-		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	.
-				$db->Quote($oauth_token) .
-				" AND user_id=0 LIMIT 1;");
+		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->Quote($oauth_token) . " AND user_id=0 LIMIT 1;");
 
 		$result = $db->loadObject();
 
@@ -214,12 +207,11 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
-			jimport('joomla.application.component.view');
-
 			$this->view = new \Hubzero\Component\View(array(
-					'base_path' => PATH_CORE . DS . 'components' . DS . 'com_oauth',
-					'name' => 'authorize',
-					'layout' => 'authorize'));
+				'base_path' => dirname(dirname(__DIR__)) . '/site',
+				'name'      => 'authorize',
+				'layout'    => 'authorize'
+			));
 
 
 			$this->view->oauth_token = $oauth_token;
@@ -238,14 +230,12 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				// user grants application 'consumer_key' permission to act on their behalf
 				// so record: user_id consumer_key accesstoken #acl
 
-				// $db->setQuery("SELECT access_token FROM #__user_accesstokens WHERE user_id=" . $db->Quote($useraccount->getUserId()) . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
-
-
+				// $db->setQuery("SELECT access_token FROM `#__user_accesstokens` WHERE user_id=" . $db->Quote($useraccount->getUserId()) . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
 
 				if (!empty($result->callback_url))
 				{
-					$this->_response->setErrorMessage(302,"Redirect"."");
-					$this->_response->addHeader('Location: '. $result->callback_url . "?oauth_token=" . $_REQUEST['oauth_token'] . "&oauth_verifier=" . $result->verifier,true);
+					$this->_response->setErrorMessage(302, "Redirect"."");
+					$this->_response->addHeader('Location: '. $result->callback_url . "?oauth_token=" . $_REQUEST['oauth_token'] . "&oauth_verifier=" . $result->verifier, true);
 				}
 
 				return true;
@@ -270,11 +260,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 		if (empty($this->_provider))
 		{
 			$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-			$this->_response->setErrorMessage('oauth_problem=bad oauth provider',501,'Internal Server Error');
+			$this->_response->setErrorMessage('oauth_problem=bad oauth provider', 501, 'Internal Server Error');
 			return;
 		}
-
-		JLoader::import('Hubzero.User.Password');
 
 		$xauth_request = false;
 
@@ -310,13 +298,13 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			if ($this->_provider->getConsumerData()->xauth== '0')
 			{
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-				$this->_response->setErrorMessage('oauth_problem=permission_denied',401,'Unauthorized0');
+				$this->_response->setErrorMessage('oauth_problem=permission_denied', 401, 'Unauthorized0');
 				return;
 			}
 
 			if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
 			{
-				$this->_response->setErrorMessage('SSL Required',403,'Forbidden');
+				$this->_response->setErrorMessage('SSL Required', 403, 'Forbidden');
 				return;
 			}
 
@@ -368,7 +356,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			if ($x_auth_mode != 'client_auth')
 			{
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-				$this->_response->setErrorMessage('oauth_problem=permission_denied',400,'Bad Request');
+				$this->_response->setErrorMessage('oauth_problem=permission_denied', 400, 'Bad Request');
 				return;
 			}
 
@@ -377,7 +365,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			if (!$match)
 			{
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-				$this->_response->setErrorMessage('oauth_problem=permission_denied',401,'Unauthorized');
+				$this->_response->setErrorMessage('oauth_problem=permission_denied', 401, 'Unauthorized');
 				return;
 			}
 
@@ -385,7 +373,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 			$db = App::get('db');
 
-			$db->setQuery("SELECT token,token_secret FROM #__oauthp_tokens WHERE consumer_id="
+			$db->setQuery("SELECT token,token_secret FROM `#__oauthp_tokens` WHERE consumer_id="
 				. $db->Quote($this->_provider->getConsumerData()->id) . " AND user_id ="
 				. $db->Quote($useraccount->get('id')) . " LIMIT 1;");
 
@@ -405,8 +393,8 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 					return;
 				}
 
-				$token = sha1(OAuthProvider::generateToken(20,false));
-				$token_secret = sha1(OAuthProvider::generateToken(20,false));
+				$token = sha1(OAuthProvider::generateToken(20, false));
+				$token_secret = sha1(OAuthProvider::generateToken(20, false));
 
 				$db = App::get('db');
 
@@ -432,12 +420,12 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				}
 
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-				$this->_response->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret,200,"OK");
+				$this->_response->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret, 200, "OK");
 			}
 			else
 			{
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-				$this->_response->setMessage("oauth_token=".$result->token."&oauth_token_secret=".$result->token_secret,200,"OK");
+				$this->_response->setMessage("oauth_token=".$result->token."&oauth_token_secret=".$result->token_secret, 200, "OK");
 			}
 
 			return;
@@ -452,7 +440,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			// check verifier
 			// check used flag
 			$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-			$this->_response->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret,200,"OK");
+			$this->_response->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret, 200, "OK");
 			return;
 		}
 	}

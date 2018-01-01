@@ -32,7 +32,7 @@
 
 namespace Plugins\Content\Formathtml\Macros\Group;
 
-require_once PATH_CORE.'/plugins/content/formathtml/macros/group.php';
+require_once dirname(__DIR__) . '/group.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 
@@ -79,7 +79,7 @@ class DefaultHomePage extends GroupMacro
 		}
 
 		// add required helper lib
-		require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'helpers' . DS . 'pages.php';
+		require_once \Component::path('com_groups') . DS . 'helpers' . DS . 'pages.php';
 
 		// get default home page 
 		$html = \Components\Groups\Helpers\Pages::getDefaultHomePage($this->group);
@@ -88,4 +88,3 @@ class DefaultHomePage extends GroupMacro
 		return $html;
 	}
 }
-

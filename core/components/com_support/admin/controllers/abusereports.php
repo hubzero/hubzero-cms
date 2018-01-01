@@ -346,7 +346,7 @@ class Abusereports extends AdminController
 
 			// Plain text
 			$eview = new View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
+				'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'abuse_plain'
 			));

@@ -221,7 +221,7 @@ class Categories extends AdminController
 			false
 		);
 
-		$imgFiles = $this->readDirectory(PATH_CORE . DS . 'site' . DS . 'media' . DS . 'images');
+		$imgFiles = $this->readDirectory(PATH_APP . DS . 'site' . DS . 'media' . DS . 'images');
 		$images = array(\Html::select('option', '', Lang::txt('Select Image'), 'value', 'text'));
 		foreach ($imgFiles as $file)
 		{
@@ -564,4 +564,3 @@ class Categories extends AdminController
 		);
 	}
 }
-

@@ -40,6 +40,11 @@ use Hubzero\Item\Comment as ItemComment;
 class Comment extends ItemComment
 {
 	/**
+	 * Database state constants
+	 */
+	const STATE_FLAGGED = 3;
+
+	/**
 	 * Get the attachments on the wish
 	 *
 	 * @return  object

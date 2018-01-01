@@ -1205,12 +1205,20 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$recipients[] = ['user', $recipient];
 		}
 
+		$itemObj = new \Components\Collections\Models\Item($post->get('item_id'));
+		$itemTitle = $itemObj->get('title', '');
+
+		$collectionLink = '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>';
+
+		$groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">'
+			. $this->group->get('description') . '</a>';
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($p['id'] ? 'updated' : 'created'),
 				'scope'       => 'collections.item',
 				'scope_id'    => $item->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . $collection->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'), $itemTitle, $collectionLink, $groupTitle),
 				'details'     => array(
 					'collection_id' => $collection->get('id'),
 					'post_id'       => $post->get('id'),
@@ -1355,13 +1363,20 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			$collection = new \Components\Collections\Models\Collection($collection_id);
 		}
+		$itemObj = new \Components\Collections\Models\Item($item_id);
+		$itemTitle = $itemObj->get('title', '');
+
+		$collectionLink = '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>';
+
+		$groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">'
+			. $this->group->get('description') . '</a>';
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => 'created',
 				'scope'       => 'collections.post',
 				'scope_id'    => $post->id,
-				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_CREATED', '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_CREATED', $itemTitle, $collectionLink, $groupTitle),
 				'details'     => array(
 					'collection_id' => $post->collection_id,
 					'item_id'       => $post->item_id,

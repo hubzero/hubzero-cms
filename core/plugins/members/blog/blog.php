@@ -56,7 +56,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array(
 			'blog' => Lang::txt('PLG_MEMBERS_BLOG'),
-			'icon' => 'f075'
+			'icon' => 'f075',
+			'menu' => $this->params->get('display_tab', 1)
 		);
 		return $areas;
 	}
@@ -89,7 +90,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
 		// Get our model
 		$this->model = new \Components\Blog\Models\Archive('member', $member->get('id'));
@@ -705,7 +706,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Delete the entry itself
-		$entry->set('state', $entry::STATE_DELETED);
+		$entry->set('state', \Components\Blog\Models\Entry::STATE_DELETED);
 
 		if (!$entry->save())
 		{
@@ -819,7 +820,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$comment = \Components\Blog\Models\Comment::oneOrFail($id);
 
 		// Delete all comments on an entry
-		$comment->set('state', $comment::STATE_DELETED);
+		$comment->set('state', \Components\Blog\Models\Comment::STATE_DELETED);
 
 		// Delete the entry itself
 		if (!$comment->save())
@@ -982,7 +983,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			try
 			{
 				// Mark all content as trashed
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+				include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
 				$entries = \Components\Blog\Models\Entry::all()
 					->whereEquals('created_by', $user['id'])
@@ -1028,7 +1029,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		{
 			try
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+				include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
 				$entries = \Components\Blog\Models\Entry::all()
 					->whereEquals('created_by', $user['id'])

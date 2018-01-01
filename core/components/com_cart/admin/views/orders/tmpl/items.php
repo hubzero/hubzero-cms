@@ -44,19 +44,18 @@ Toolbar::spacer();
 Toolbar::help('downloads');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
+	function submitbutton(pressbutton)
+	{
+		var form = document.adminForm;
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
+		// do field validation
 		submitform(pressbutton);
-		return;
 	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
-<script>
-	$( function() {
+
+	$(function() {
 		var dateFormat = "mm/dd/yy",
 			from = $( "#filter-report-from" )
 				.datepicker({
@@ -86,7 +85,7 @@ function submitbutton(pressbutton)
 
 			return date;
 		}
-	} );
+	});
 </script>
 
 <?php
@@ -94,10 +93,19 @@ $this->view('_submenu')
 	->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
-			<div class="col span12 align-right">
+			<div class="col span5">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+
+				<!-- <label for="filter_order"><?php echo Lang::txt('COM_CART_ORDER_ID'); ?>:</label>
+				<input type="text" name="order" id="filter_order" value="<?php echo ($this->filters['order'] ? $this->escape($this->filters['order']) : ''); ?>" placeholder="<?php echo Lang::txt('COM_CART_ORDER_ID'); ?>" size="7" />
+
+				<button type="button" onclick="$('#filter_search').val('');$('#filter_order').val('');$('#filter-report-from').val('<?php echo gmdate('m/d/Y', strtotime('-1 month')); ?>');$('#filter-report-to').val('<?php echo gmdate('m/d/Y'); ?>');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button> -->
+			</div>
+			<div class="col span7 align-right">
 				<label for="filter-report-from">From:</label>
 				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
 				&mdash;
@@ -109,87 +117,101 @@ $this->view('_submenu')
 	</fieldset>
 	<table class="adminlist">
 		<thead>
+			<?php if ($this->filters['order']) { ?>
+				<tr>
+					<th colspan="6"><?php echo Lang::txt('COM_CART_ORDER'); ?>: #<?php echo $this->filters['order']; ?>
+						<button type="button" onclick="$('#filter_ordernum').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+					</th>
+				</tr>
+			<?php } ?>
 			<tr>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_SKU_ID', 'sId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col">Product</th>
-				<th scope="col">QTY</th>
-				<th scope="col">Price</th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_PRODUCT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_QUANTITY'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_PRICE'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PLACED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
-		<tr>
-			<td colspan="7"><?php
-				// Initiate paging
-				echo $this->pagination(
+			<tr>
+				<td colspan="7"><?php
+					// Initiate paging
+					echo $this->pagination(
 						$this->total,
 						$this->filters['start'],
 						$this->filters['limit']
-				);
-				?></td>
-		</tr>
+					);
+					?></td>
+			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
-$i = 0;
-
-foreach ($this->rows as $row)
-{
-	$itemInfo = $row->itemInfo['info'];
-	//print_r($row); die;
-?>
-	<tr class="<?php echo "row$k"; ?>">
-		<td>
 			<?php
-			$sId = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '"">' . $this->escape(stripslashes($row->sId)) . '</a>';
-			?>
-			<span><?php echo $sId; ?></span>
-		</td>
-		<td>
-			<?php
-			$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
-			if (!stripslashes($itemInfo->pName))
+			$k = 0;
+			$i = 0;
+			foreach ($this->rows as $row)
 			{
-				$product = '<span class="missing">Product n/a</span>';
-			}
-			if (!stripslashes($itemInfo->sSku))
-			{
-				$product .= ', <span class="missing">SKU n/a</span>';
-			}
-			else {
-				$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+				$itemInfo = $row->itemInfo['info'];
+				?>
+				<tr class="<?php echo "row$k"; ?>">
+					<td>
+						<span>
+							<a href="<?php echo Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId); ?>">
+								<?php echo $this->escape(stripslashes($row->sId)); ?>
+							</a>
+						</span>
+					</td>
+					<td>
+						<?php
+						$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
+						if (!stripslashes($itemInfo->pName))
+						{
+							$product = '<span class="missing">Product n/a</span>';
+						}
+						if (!stripslashes($itemInfo->sSku))
+						{
+							$product .= '<br />SKU: <span class="missing">SKU n/a</span>';
+						}
+						else {
+							$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+						}
+						?>
+						<span><?php echo $product; ?></span>
+					</td>
+					<td>
+						<span><?php echo $this->escape(stripslashes($row->tiQty)); ?></span>
+					</td>
+					<td>
+						<span><?php echo $this->escape(stripslashes($row->tiPrice)); ?></span>
+					</td>
+					<td>
+						<span>
+							<a href="<?php echo Route::url('index.php?option=com_cart&controller=orders&task=view&id=' . $row->tId); ?>">
+								<?php echo $this->escape(stripslashes($row->tId)); ?>
+							</a>
+						</span>
+					</td>
+					<td>
+						<span><?php echo $this->escape(stripslashes($row->tLastUpdated)); ?></span>
+					</td>
+					<td>
+						<span>
+							<?php if ($row->uidNumber) { ?>
+							<a href="<?php echo Route::url('index.php?option=com_members&task=edit&id=' . $row->uidNumber); ?>">
+							<?php } ?>
+								<?php echo ($row->name ? $this->escape(stripslashes($row->name)) : Lang::txt('COM_CART_UNKNOWN')); ?>
+							<?php if ($row->uidNumber) { ?>
+							</a>
+							<?php } ?>
+						</span>
+					</td>
+				</tr>
+				<?php
+				$i++;
+				$k = 1 - $k;
 			}
 			?>
-			<span><?php echo $product; ?></span>
-		</td>
-		<td>
-			<span><?php echo $this->escape(stripslashes($row->tiQty)); ?></span>
-		</td>
-		<td>
-			<span><?php echo $this->escape(stripslashes($row->tiPrice)); ?></span>
-		</td>
-		<td>
-			<?php
-			$tId = '<a href="' . Route::url('index.php?option=com_cart&controller=orders&task=view&id=' . $row->tId) . '"">' . $this->escape(stripslashes($row->tId)) . '</a>';
-			?>
-			<span><?php echo $tId; ?></span>
-		</td>
-		<td>
-			<span><?php echo $this->escape(stripslashes($row->tLastUpdated)); ?></span>
-		</td>
-		<td>
-			<span><?php echo $this->escape(stripslashes($row->name)); ?></span>
-		</td>
-	</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
 		</tbody>
 	</table>
 
@@ -198,6 +220,7 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="order" id="filter_ordernum" value="<?php echo $this->filters['order']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

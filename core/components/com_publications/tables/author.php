@@ -31,6 +31,10 @@
 
 namespace Components\Publications\Tables;
 
+use Lang;
+use Date;
+use User;
+
 /**
  * Table class for publication author
  */
@@ -39,18 +43,18 @@ class Author extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_authors', 'id', $db );
+		parent::__construct('#__publication_authors', 'id', $db);
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -72,11 +76,11 @@ class Author extends \JTable
 	/**
 	 * Load record
 	 *
-	 * @param      integer $uid User ID
-	 * @param      integer $vid Pub version ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $uid  User ID
+	 * @param   integer  $vid  Pub version ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function loadAssociation( $uid = null, $vid = null )
+	public function loadAssociation($uid = null, $vid = null)
 	{
 		if (!$uid)
 		{
@@ -98,14 +102,50 @@ class Author extends \JTable
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id="
 				. $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
 		$query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
+	 * Get array of author Ids ordered by ordering
+	 *
+	 * @param   array    $uids  Ids of authors for publication
+	 * @param   integer  $vid   Pub version ID
+	 * @return  mixed    False if error, Object on success
+	 */
+	public function getAuthorOrder($uids = null, $vid = null)
+	{
+		if (!$uids)
+		{
+			return false;
+		}
+		if (!$vid)
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid)
+		{
+			return false;
+		}
+		$uids = "'" . implode($uids, "','") . "'";
+		$query  = "SELECT id FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND id IN (" . $uids . ")";
+		$query .= " AND (role != 'submitter')";
+		$query .= " ORDER BY ordering";
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssocList())
+		{
+			return $result;
+		}
+		else
+		{
 			return false;
 		}
 	}
@@ -113,11 +153,11 @@ class Author extends \JTable
 	/**
 	 * Load record by owner ID
 	 *
-	 * @param      integer $owner_id	Project owner ID
-	 * @param      integer $vid 		Pub version ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $owner_id  Project owner ID
+	 * @param   integer  $vid       Pub version ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function loadAssociationByOwner( $owner_id = null, $vid = null )
+	public function loadAssociationByOwner($owner_id = null, $vid = null)
 	{
 		if (!$owner_id)
 		{
@@ -139,14 +179,14 @@ class Author extends \JTable
 		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id="
 				. $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
 		$query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -154,15 +194,14 @@ class Author extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      integer $vid 				Pub version ID
-	 * @param      integer $get_uids 			Get user IDs
-	 * @param      integer $active 				Get only active records
-	 * @param      boolean $return_uid_array 	Return array
-	 * @return     mixed, Object or array
+	 * @param   integer  $vid               Pub version ID
+	 * @param   integer  $get_uids          Get user IDs
+	 * @param   integer  $active            Get only active records
+	 * @param   boolean  $return_uid_array  Return array
+	 * @param   boolean  $incSubmitter
+	 * @return  mixed    Object or array
 	 */
-	public function getAuthors( $vid = null, $get_uids = 0, $active = 1,
-		$return_uid_array = false, $incSubmitter = false
-	)
+	public function getAuthors($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
 	{
 		if (!$vid)
 		{
@@ -199,7 +238,7 @@ class Author extends \JTable
 		}
 
 		$query .= " ORDER BY A.ordering ASC ";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();
 
 		if ($return_uid_array)
@@ -230,11 +269,11 @@ class Author extends \JTable
 	/**
 	 * Get publication submitter
 	 *
-	 * @param      integer $vid 				Pub version ID
-	 * @param      integer $by					Publication creator
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $vid  Pub version ID
+	 * @param   integer  $by   Publication creator
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getSubmitter ( $vid = null, $by = 0 )
+	public function getSubmitter($vid = null, $by = 0)
 	{
 		if (!$vid)
 		{
@@ -246,7 +285,7 @@ class Author extends \JTable
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->quote($vid) . " LIMIT 1";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 
 		$result = $this->_db->loadObjectList();
 		if ($result)
@@ -255,15 +294,15 @@ class Author extends \JTable
 		}
 
 		$query  = "SELECT A.id as owner_id, x.uidNumber as user_id, ";
-		$query .= " COALESCE( A.name , x.name ) as name, x.username, x.orcid, COALESCE( A.organization , x.organization ) as organization ";
+		$query .= " COALESCE(A.name , x.name) as name, x.username, x.orcid, COALESCE(A.organization , x.organization) as organization ";
 		$query .= " FROM #__xprofiles as x  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id 
 		            AND A.publication_version_id=" . $this->_db->quote($vid);
 		$query .= " AND A.status=1 AND A.role = 'submitter' ";
-		$query .= " WHERE ( x.uidNumber=" . $this->_db->quote($by) . ")";
+		$query .= " WHERE (x.uidNumber=" . $this->_db->quote($by) . ")";
 		$query .= " LIMIT 1 ";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -271,11 +310,12 @@ class Author extends \JTable
 	/**
 	 * Save publication submitter
 	 *
-	 * @param      integer $vid 				Pub version ID
-	 * @param      integer $by					Publication creator
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $vid        Pub version ID
+	 * @param   integer  $by         Publication creator
+	 * @param   integer  $projectid
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function saveSubmitter ( $vid = null, $by = 0, $projectid = 0 )
+	public function saveSubmitter($vid = null, $by = 0, $projectid = 0)
 	{
 		if (!$vid)
 		{
@@ -287,58 +327,57 @@ class Author extends \JTable
 		}
 
 		// Get name/org
-		$author = $this->getAuthorByUid( $vid, $by );
+		$author = $this->getAuthorByUid($vid, $by);
 
 		if (!$author)
 		{
 			return false;
 		}
 
-		require_once( PATH_CORE . DS . 'components' . DS
-			. 'com_projects' . DS . 'tables' . DS . 'owner.php' );
+		require_once \Component::path('com_projects') . DS . 'tables' . DS . 'owner.php';
 
 		// Get project owner info
-		$objO = new \Components\Projects\Tables\Owner( $this->_db );
-		$owner_id = $objO->getOwnerId( $projectid, $by);
+		$objO = new \Components\Projects\Tables\Owner($this->_db);
+		$owner_id = $objO->getOwnerId($projectid, $by);
 
 		// Load submitter record if exists
 		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->quote($vid);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			$this->bind( $result );
-			$this->modified 	= Date::toSql();
-			$this->modified_by 	= User::get('id');
+			$this->bind($result);
+			$this->modified    = Date::toSql();
+			$this->modified_by = User::get('id');
 		}
 		else
 		{
-			$this->publication_version_id 	= $vid;
-			$this->role 					= 'submitter';
-			$this->created 					= Date::toSql();
-			$this->created_by 				= User::get('id');
-			$this->ordering 				= 1;
+			$this->publication_version_id = $vid;
+			$this->role                   = 'submitter';
+			$this->created                = Date::toSql();
+			$this->created_by             = User::get('id');
+			$this->ordering               = 1;
 		}
 
 		$this->project_owner_id = $owner_id;
-		$this->user_id 			= $by;
-		$this->status			= 1;
-		$this->name				= $author->name ? $author->name : $author->p_name;
-		$this->organization		= $author->organization ? $author->organization : $author->p_organization;
-		$this->firstName		= $author->firstName ? $author->firstName : null;
-		$this->lastName			= $author->lastName ? $author->lastName : null;
-		$this->credit			= 'Submitter';
+		$this->user_id          = $by;
+		$this->status           = 1;
+		$this->name             = $author->name ? $author->name : $author->p_name;
+		$this->organization     = $author->organization ? $author->organization : $author->p_organization;
+		$this->firstName        = $author->firstName ? $author->firstName : null;
+		$this->lastName         = $author->lastName ? $author->lastName : null;
+		$this->credit           = 'Submitter';
 		$this->store();
 	}
 
 	/**
 	 * Get record by user ID
 	 *
-	 * @param      integer $vid 				Pub version ID
-	 * @param      integer $uid					User ID
-	 * @param      integer $active 				Get only active records
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $vid     Pub version ID
+	 * @param   integer  $uid     User ID
+	 * @param   integer  $active  Get only active records
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getAuthorByUid ( $vid = null, $uid = 0, $active = 0 )
+	public function getAuthorByUid ($vid = null, $uid = 0, $active = 0)
 	{
 		if (!$vid)
 		{
@@ -356,10 +395,10 @@ class Author extends \JTable
 		$query  = "SELECT A.*, x.username, x.organization as p_organization, ";
 		$query .= " x.name as p_name, x.givenName, x.surname, x.username, x.orcid,
 					x.picture, NULL as invited_email, NULL as invited_name, ";
-		$query .= " COALESCE( A.name , x.name ) as name,
-					COALESCE( A.organization , x.organization ) as organization, ";
-		$query .= " COALESCE( A.firstName, x.givenName) firstName, ";
-		$query .= " COALESCE( A.lastName, x.surname ) lastName ";
+		$query .= " COALESCE(A.name , x.name) as name,
+					COALESCE(A.organization , x.organization) as organization, ";
+		$query .= " COALESCE(A.firstName, x.givenName) firstName, ";
+		$query .= " COALESCE(A.lastName, x.surname) lastName ";
 		$query .= " FROM #__xprofiles as x  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id
 		            AND A.publication_version_id=" . $this->_db->quote($vid);
@@ -368,7 +407,7 @@ class Author extends \JTable
 		$query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
 		$query .= " LIMIT 1 ";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -376,11 +415,11 @@ class Author extends \JTable
 	/**
 	 * Get record by owner ID
 	 *
-	 * @param      integer $vid 				Pub version ID
-	 * @param      integer $owner_id			Owner ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $vid       Pub version ID
+	 * @param   integer  $owner_id  Owner ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getAuthorByOwnerId ( $vid = null, $owner_id = 0 )
+	public function getAuthorByOwnerId ($vid = null, $owner_id = 0)
 	{
 		if (!$vid)
 		{
@@ -398,10 +437,10 @@ class Author extends \JTable
 		$query  = "SELECT  A.*, po.invited_email as invited_email, po.invited_name as invited_name,  ";
 		$query .= "x.name as p_name, x.username, x.organization as p_organization,
 				   x.picture, x.surname, x.givenName, x.orcid, ";
-		$query .= " COALESCE( A.name , x.name ) as name, x.username,
-					COALESCE( A.organization , x.organization ) as organization, ";
-		$query .= " COALESCE( A.firstName, x.givenName) firstName, ";
-		$query .= " COALESCE( A.lastName, x.surname ) lastName ";
+		$query .= " COALESCE(A.name , x.name) as name, x.username,
+					COALESCE(A.organization , x.organization) as organization, ";
+		$query .= " COALESCE(A.firstName, x.givenName) firstName, ";
+		$query .= " COALESCE(A.lastName, x.surname) lastName ";
 		$query .= " FROM #__project_owners as po  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON po.id=A.project_owner_id
 		            AND A.publication_version_id=" . $this->_db->quote($vid);
@@ -411,7 +450,7 @@ class Author extends \JTable
 		$query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
 		$query .= " LIMIT 1 ";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -419,10 +458,10 @@ class Author extends \JTable
 	/**
 	 * Delete records
 	 *
-	 * @param      integer $vid    Pub version ID
-	 * @return     boolean
+	 * @param   integer  $vid  Pub version ID
+	 * @return  boolean
 	 */
-	public function deleteAssociations( $vid = null )
+	public function deleteAssociations($vid = null)
 	{
 		if (!$vid)
 		{
@@ -430,10 +469,10 @@ class Author extends \JTable
 		}
 
 		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -442,12 +481,12 @@ class Author extends \JTable
 	/**
 	 * Delete record
 	 *
-	 * @param      integer $uid					User ID
-	 * @param      integer $vid 				Pub version ID
-	 * @param      integer $delete 				Permanent delete?
-	 * @return     boolean
+	 * @param   integer  $uid     User ID
+	 * @param   integer  $vid     Pub version ID
+	 * @param   integer  $delete  Permanent delete?
+	 * @return  boolean
 	 */
-	public function deleteAssociation( $uid = null, $vid = null, $delete = 0 )
+	public function deleteAssociation($uid = null, $vid = null, $delete = 0)
 	{
 		if (!$uid)
 		{
@@ -467,19 +506,19 @@ class Author extends \JTable
 		}
 		if ($delete == 1)
 		{
-			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
-			$query.= " AND (role IS NULL OR role != 'submitter')  ";
+			$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
+			$query .= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 		else
 		{
-			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
-			$query.= " AND (role IS NULL OR role != 'submitter')  ";
+			$query  = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
+			$query .= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -488,12 +527,12 @@ class Author extends \JTable
 	/**
 	 * Delete record by owner ID
 	 *
-	 * @param      integer $owner_id			Owner ID
-	 * @param      integer $vid 				Pub version ID
-	 * @param      integer $delete 				Permanent delete?
-	 * @return     boolean
+	 * @param   integer  $owner_id  Owner ID
+	 * @param   integer  $vid       Pub version ID
+	 * @param   integer  $delete    Permanent delete?
+	 * @return  boolean
 	 */
-	public function deleteAssociationByOwner( $owner_id = null, $vid = null, $delete = 0 )
+	public function deleteAssociationByOwner($owner_id = null, $vid = null, $delete = 0)
 	{
 		if (!$owner_id)
 		{
@@ -513,19 +552,19 @@ class Author extends \JTable
 		}
 		if ($delete == 1)
 		{
-			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
-			$query.= " AND (role IS NULL OR role != 'submitter')  ";
+			$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
+			$query .= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 		else
 		{
-			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
-			$query.= " AND (role IS NULL OR role != 'submitter')  ";
+			$query  = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
+			$query .= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -534,7 +573,7 @@ class Author extends \JTable
 	/**
 	 * Create record
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function createAssociation()
 	{
@@ -554,10 +593,10 @@ class Author extends \JTable
 				. $this->_db->quote($this->status) . ", "
 				. $this->_db->quote($this->project_owner_id) . ")";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -566,7 +605,7 @@ class Author extends \JTable
 	/**
 	 * Update record by owner id
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function updateAssociationByOwner()
 	{
@@ -586,10 +625,10 @@ class Author extends \JTable
 					. " AND project_owner_id=" . $this->_db->quote($this->project_owner_id)
 					. " AND (role IS NULL OR role != 'submitter')";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -598,22 +637,22 @@ class Author extends \JTable
 	/**
 	 * Get profile info by owner ID
 	 *
-	 * @param      integer $owner_id			Owner ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $owner_id  Owner ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getProfileInfoByOwner( $owner_id )
+	public function getProfileInfoByOwner($owner_id)
 	{
 		if (!$owner_id) {
 			return false;
 		}
 
-		$query	 = " SELECT PO.invited_email, PO.invited_name,
+		$query  = " SELECT PO.invited_email, PO.invited_name,
 					x.name, x.organization, x.uidNumber, x.givenName, x.surname, x.orcid ";
-		$query  .= " FROM #__project_owners as PO  ";
-		$query  .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=PO.userid ";
-		$query  .= " WHERE PO.id=" . $this->_db->quote($owner_id) . " LIMIT 1";
+		$query .= " FROM #__project_owners as PO  ";
+		$query .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=PO.userid ";
+		$query .= " WHERE PO.id=" . $this->_db->quote($owner_id) . " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 
@@ -622,10 +661,10 @@ class Author extends \JTable
 	/**
 	 * Get record count
 	 *
-	 * @param      integer $vid 	Pub version ID
-	 * @return     integer or NULL
+	 * @param   integer  $vid    Pub version ID
+	 * @return  mixed    integer or NULL
 	 */
-	public function getCount( $vid = null )
+	public function getCount($vid = null)
 	{
 		if (!$vid)
 		{
@@ -635,17 +674,17 @@ class Author extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND status=1 " );
+		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND status=1 ");
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Get last order
 	 *
-	 * @param      integer $vid 	Pub version ID
-	 * @return     integer or NULL
+	 * @param   integer  $vid  Pub version ID
+	 * @return  mixed    integer or NULL
 	 */
-	public function getLastOrder( $vid = null )
+	public function getLastOrder($vid = null)
 	{
 		if (!$vid)
 		{
@@ -655,19 +694,19 @@ class Author extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl
+		$this->_db->setQuery("SELECT ordering FROM $this->_tbl
 			WHERE publication_version_id=" . $this->_db->quote($vid) . "
-			ORDER BY ordering DESC LIMIT 1" );
+			ORDER BY ordering DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Get neighbor
 	 *
-	 * @param      string $move 	Direction
-	 * @return     mixed False if error, Object on success
+	 * @param   string  $move  Direction
+	 * @return  mixed   False if error, Object on success
 	 */
-	public function getNeighbor( $move )
+	public function getNeighbor($move)
 	{
 		switch ($move)
 		{
@@ -679,14 +718,14 @@ class Author extends \JTable
 				$sql = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering > " . $this->_db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
 			break;
 		}
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}

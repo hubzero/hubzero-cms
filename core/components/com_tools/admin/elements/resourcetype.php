@@ -56,12 +56,9 @@ class Resourcetype extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = \App::get('db');
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-		$model = new \Components\Resources\Tables\Type($db);
-
-		$types = $model->getMajorTypes();
+		$types = \Components\Resources\Models\Type::getMajorTypes();
 
 		$html = array();
 		$html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';

@@ -44,4 +44,14 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.plg_members_citations.ini</language>
 	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="display_tab" type="list" default="1" label="PLG_MEMBERS_CITATIONS_PARAM_DISPLAY_TAB_LABEL" description="PLG_MEMBERS_CITATIONS_PARAM_DISPLAY_TAB_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </extension>

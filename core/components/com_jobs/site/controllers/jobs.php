@@ -56,6 +56,7 @@ use Lang;
 use Date;
 use User;
 use ZipArchive;
+use App;
 
 /**
  * Jobs controller class for postings
@@ -397,11 +398,10 @@ class Jobs extends SiteController
 		{
 			// Jobs list
 			$view = new View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'site',
+				'base_path' => dirname(__DIR__),
 				'name'      => 'jobs',
 				'layout'    => 'default'
-				)
-			);
+			));
 			$view->title            = $this->_title;
 			$view->config           = $this->config;
 			$view->option           = $this->_option;

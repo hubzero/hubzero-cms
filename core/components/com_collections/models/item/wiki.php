@@ -101,7 +101,7 @@ class Wiki extends GenericItem
 			return true;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+		include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
 		$page = null;
 
 		if (!$id)

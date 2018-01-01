@@ -227,6 +227,11 @@ if ($this->wishlist->get('id'))
 
 								$state = $item->status('alias');
 
+								if ($item->isPrivate())
+								{
+									$state .= ' private';
+								}
+
 								$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 								if (!$item->get('anonymous'))
 								{

@@ -71,8 +71,8 @@ defined('_HZEXEC_') or die();
 			<?php
 			$k = 0;
 
-			$path = $zone->logo('path');
-			$file = $zone->get('picture');
+			$path = $this->zone->logo('path');
+			$file = $this->zone->get('picture');
 
 			if ($file && file_exists($path . DS . $file))
 			{
@@ -81,7 +81,7 @@ defined('_HZEXEC_') or die();
 				?>
 				<tr>
 					<td rowspan="6">
-						<img src="<?php echo '../' . substr($path, strlen(PATH_CORE . '/')) . DS . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
+						<img src="<?php echo substr($path, strlen(PATH_ROOT)) . '/' . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
 					</td>
 					<th><?php echo Lang::txt('COM_TOOLS_IMAGE_FILE'); ?>:</th>
 					<td><?php echo $file; ?></td>

@@ -523,7 +523,7 @@ class Cloud extends \Hubzero\Base\Obj
 				if (!isset($this->_cache['tags.cloud']) || $clear)
 				{
 					$view = new View(array(
-						'base_path' => PATH_CORE . '/components/com_tags/site',
+						'base_path' => dirname(__DIR__) . '/site',
 						'name'      => 'tags',
 						'layout'    => '_cloud'
 					));

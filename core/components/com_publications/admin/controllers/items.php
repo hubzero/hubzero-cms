@@ -1271,7 +1271,7 @@ class Items extends AdminController
 
 		$version = count($ids) == 1 ? Request::getVar('version', 'all') : 'all';
 
-		require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
+		require_once \Component::path('com_projects') . DS . 'tables' . DS . 'activity.php';
 
 		foreach ($ids as $id)
 		{

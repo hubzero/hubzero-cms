@@ -140,10 +140,10 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once PATH_CORE . '/components/com_content/site/router.php';
-		require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
+		require_once Component::path('com_content') . '/site/router.php';
+		require_once Component::path('com_content') . '/site/helpers/route.php';
 
-		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/site/models', 'ContentModel');
+		JModelLegacy::addIncludePath(Component::path('com_content') . '/site/models', 'ContentModel');
 
 		// Get an instance of the generic articles model
 		$articles = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));

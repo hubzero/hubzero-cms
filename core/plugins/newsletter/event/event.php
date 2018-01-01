@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 use Components\Events\Models\Orm\Event as CalEvent;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'orm' . DS . 'event.php');
+require_once \Component::path('com_events') . DS . 'models' . DS . 'orm' . DS . 'event.php';
 
 /**
  * Plugin class for Newsletter event

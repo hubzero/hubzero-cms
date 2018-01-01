@@ -42,7 +42,7 @@ $this->css()
 
 // has home override
 $hasHomeOverride = false;
-if (file_exists(PATH_CORE . DS . $this->group->getBasePath() . DS . 'pages' . DS . 'overview.php'))
+if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS . 'overview.php'))
 {
 	$hasHomeOverride = true;
 }

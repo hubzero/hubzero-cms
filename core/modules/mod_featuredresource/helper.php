@@ -69,8 +69,9 @@ class Helper extends Module
 			'sortby'     => 'random',
 			'minranking' => trim($this->params->get('minranking')),
 			'tag'        => trim($this->params->get('tag')),
-			'access'     => 0,
+			'access'     => 'public',
 			'published'  => 1,
+			'standalone' => 1,
 			// Only published tools
 			'toolState'  => 7
 		);
@@ -82,7 +83,7 @@ class Helper extends Module
 
 		$id = array_rand($rows);
 
-		$row = Entry::oneOrNew($id);
+		$row = Entry::oneOrNew((isset($rows[$id]) ? $rows[$id] : 0));
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 		$this->txt_length = trim($this->params->get('txt_length'));

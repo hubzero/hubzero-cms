@@ -1305,7 +1305,7 @@ class Html extends Obj
 
 		// Message body
 		$eview = new \Hubzero\Mail\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
+			'base_path' => dirname(__DIR__) . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => $layout . '_plain'
 		));

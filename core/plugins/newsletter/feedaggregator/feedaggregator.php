@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 use Components\Feedaggregator\Models\Orm\Post;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'orm' . DS . 'post.php');
+require_once Component::path('com_feedaggregator') . DS . 'models' . DS . 'orm' . DS . 'post.php';
 
 /**
  * Plugin class for Newsletter feedaggregator

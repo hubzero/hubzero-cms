@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // import filters
-$filterln = '';
+$filterln = '&' . Session::getFormToken() . '=1';
 foreach ($this->filters as $key => $val)
 {
 	if ($val)

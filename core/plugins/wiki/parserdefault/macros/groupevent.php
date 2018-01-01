@@ -123,19 +123,19 @@ class GroupEventMacro extends WikiMacro
 	}
 
 	/**
-	* Query for group events
-	*
-	* @param       array  $group    Array of group events
-	* @param       array  $filters  Array of filters
-	* @return      array
-	*/
+	 * Query for group events
+	 *
+	 * @param       array  $group    Array of group events
+	 * @param       array  $filters  Array of filters
+	 * @return      array
+	 */
 	private function getGroupEvents( $group, $filters = array() )
 	{
 		//instantiate database
 		$database = App::get('db');
 
 		//build query
-		$sql = "SELECT * FROM #__events
+		$sql = "SELECT * FROM `#__events`
 				WHERE publish_up >= UTC_TIMESTAMP()
 				AND scope=" . $database->quote('group') . "
 				AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
@@ -168,7 +168,7 @@ class GroupEventMacro extends WikiMacro
 	 * @param      array   $events Array of events
 	 * @return     string
 	 */
-	private function renderEvents( $group, $events )
+	private function renderEvents($group, $events)
 	{
 		$content = '';
 		if (count($events) > 0)
@@ -187,7 +187,7 @@ class GroupEventMacro extends WikiMacro
 					$date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
 					$date .= ' &mdash; ' . Date::of($publishDown)->format('g:i a');
 				}
-				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
+				else if (isset($event->publish_down) && $event->publish_down && $event->publish_down != '0000-00-00 00:00:00')
 				{
 					$date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
 					$date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . Date::of($publishDown)->format('m/d/Y @ g:i a');

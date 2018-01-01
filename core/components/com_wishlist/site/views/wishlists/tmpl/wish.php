@@ -104,13 +104,13 @@ $this->css()
 	</header><!-- / #content-header -->
 
 	<?php if (!$this->getError()) { ?>
-		<?php if ($this->wish->get('saved')==3) { ?>
+		<?php if ($this->wish->get('saved') == 3) { ?>
 			<p class="passed">
 				<?php echo Lang::txt('COM_WISHLIST_NOTICE_WISH_CREATED'); ?>
 			</p>
 		<?php } ?>
 
-		<?php if ($this->wish->get('saved')==2 && $this->wishlist->access('manage')) { ?>
+		<?php if ($this->wish->get('saved') == 2 && $this->wishlist->access('manage')) { ?>
 			<p class="passed">
 				<?php echo Lang::txt('COM_WISHLIST_NOTICE_WISH_CHANGES_SAVED'); ?>
 			</p>
@@ -172,14 +172,12 @@ $this->css()
 						</div><!-- / .wish-details -->
 					<?php } ?>
 
-					<div class="entry-tags">
-						<p>Tags:</p>
-						<?php if ($tags = $this->wish->tags('string')) { ?>
+					<?php if ($tags = $this->wish->tags('string')) { ?>
+						<div class="entry-tags">
+							<p>Tags:</p>
 							<?php echo $tags; ?>
-						<?php } else { ?>
-							<?php echo Lang::txt('COM_WISHLIST_NONE'); ?>
-						<?php } ?>
-					</div><!-- / .wish-tags -->
+						</div><!-- / .wish-tags -->
+					<?php } ?>
 				</div><!-- / .wish-content -->
 
 				<?php
@@ -632,7 +630,14 @@ $this->css()
 	</section><!-- / .main section -->
 
 <?php if (!$this->wish->isDeleted() && !$this->wish->isWithdrawn()) { ?>
-	<?php $comments = $this->wish->comments()->whereIn('state', array(1, 3))->rows(); ?>
+	<?php
+	$comments = $this->wish->comments()
+		->whereIn('state', array(
+			Components\Wishlist\Models\Comment::STATE_PUBLISHED,
+			Components\Wishlist\Models\Comment::STATE_FLAGGED
+		))
+		->rows();
+	?>
 	<section class="below section" id="section-comments">
 		<div class="subject">
 			<h3>

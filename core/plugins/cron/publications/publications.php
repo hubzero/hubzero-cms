@@ -92,8 +92,8 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$limit = $pconfig->get('limitStats', 5);
 		$image = $pconfig->get('email_image', '');
 
-		Lang::load('com_publications', PATH_CORE) ||
-		Lang::load('com_publications', PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site');
+		Lang::load('com_publications', PATH_APP) ||
+		Lang::load('com_publications', Component::path('com_publications') . DS . 'site');
 
 		// Is logging enabled?
 		if (is_file(Component::path('com_publications') . DS . 'tables' . DS . 'logs.php'))

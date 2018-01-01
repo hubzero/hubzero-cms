@@ -60,6 +60,17 @@ class Cart extends ComponentController
 	}
 
 	/**
+	 * Dump post
+	 *
+	 * @return     void
+	 */
+	public function huiTask()
+	{
+		print_r($_POST);
+		die;
+	}
+
+	/**
 	 * Display default page
 	 *
 	 * @return     void
@@ -248,4 +259,3 @@ class Cart extends ComponentController
 		$this->view->display();
 	}
 }
-

@@ -88,9 +88,9 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			return $renderer->render($error);
 		}
 
-		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'models' . DS . 'link.php'))
+		if (file_exists(Component::path('com_redirect') . DS . 'models' . DS . 'link.php'))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'models' . DS . 'link.php');
+			include_once Component::path('com_redirect') . DS . 'models' . DS . 'link.php';
 
 			$current = rtrim($current);
 

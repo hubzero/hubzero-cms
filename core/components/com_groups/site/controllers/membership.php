@@ -269,7 +269,7 @@ class Membership extends Base
 			}
 			else
 			{
-				require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+				require_once \Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
 
 				// If not a userid check if proper email
 				if (\Components\Members\Helpers\Utility::validemail($l))

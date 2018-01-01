@@ -42,13 +42,25 @@ use Request;
 class Authorize extends SiteController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('__default', 'authorize');
+
+		parent::execute();
+	}
+
+	/**
 	 * Authorize
 	 *
 	 * @return  void
 	 */
 	public function authorizeTask()
 	{
-		$oauth_token = \Request::getVar('oauth_token');
+		$oauth_token = Request::getVar('oauth_token');
 
 		if (empty($oauth_token))
 		{
@@ -56,7 +68,7 @@ class Authorize extends SiteController
 		}
 
 		$db = \App::get('db');
-		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->Quote($oauth_token) . " AND user_id=0 LIMIT 1;");
+		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($oauth_token) . " AND user_id=0 LIMIT 1;");
 
 		$result = $db->loadObject();
 
@@ -72,14 +84,14 @@ class Authorize extends SiteController
 
 		if (Request::method() == 'GET')
 		{
-			$this->view->oauth_token = $oauth_token;
+			$this->view->set('oauth_token', $oauth_token);
 			$this->view->display();
 			return;
 		}
 
 		if (Request::method() == 'POST')
 		{
-			$token = Request::get('token',''.'post');
+			$token = Request::getVar('token', '', 'post');
 
 			if ($token != sha1($this->verifier))
 			{

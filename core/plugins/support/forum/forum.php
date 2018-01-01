@@ -64,7 +64,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 		$rows = $database->loadObjectList();
 		if ($rows)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
+			require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 			foreach ($rows as $key => $row)
 			{
@@ -81,7 +81,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 				switch ($row->scope)
 				{
 					case 'course':
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+						require_once Component::path('com_courses') . DS . 'models' . DS . 'course.php';
 
 						$offering = \Components\Courses\Models\Offering::getInstance($row->scope_id);
 						$course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
@@ -132,7 +132,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
+		require_once Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
 		$comment = \Components\Forum\Models\Post::oneOrFail($refid);
 		$comment->set('state', 3);
@@ -156,10 +156,10 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
+		require_once Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
 		$comment = \Components\Forum\Models\Post::oneOrFail($refid);
-		$comment->set('state', $comment::STATE_PUBLISHED);
+		$comment->set('state', \Components\Forum\Models\Post::STATE_PUBLISHED);
 		$comment->save();
 
 		return '';
@@ -181,10 +181,10 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
+		require_once Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
 		$comment = \Components\Forum\Models\Post::oneOrFail($refid);
-		$comment->set('state', $comment::STATE_DELETED);
+		$comment->set('state', \Components\Forum\Models\Post::STATE_DELETED);
 		$comment->save();
 
 		return '';

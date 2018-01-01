@@ -33,11 +33,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$webpath 	= $this->config->get('webpath');
+$webpath = $this->config->get('webpath');
 
 $authorized = $this->publication->access('view-all');
 
-$abstract	= $this->publication->abstract;
+$abstract = $this->publication->abstract;
 $description = $this->publication->describe('parsed');
 
 $this->publication->authors();
@@ -57,10 +57,10 @@ if (count($matches) > 0)
 $category = $this->publication->_category;
 $customFields = $this->publication->_curationModel->getMetaSchema();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+include_once Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
 
-$metaElements 	= new \Components\Publications\Models\Elements($data, $customFields);
-$schema 	= $metaElements->getSchema();
+$metaElements = new \Components\Publications\Models\Elements($data, $customFields);
+$schema = $metaElements->getSchema();
 
 ?>
 <div class="pubabout">
@@ -102,16 +102,16 @@ $schema 	= $metaElements->getSchema();
 
 		if ($elements)
 		{
-			$append = NULL;
+			$append = null;
 			// Get file path
-			$path 	= \Components\Publications\Helpers\Html::buildPubPath(
+			$path = \Components\Publications\Helpers\Html::buildPubPath(
 				$this->publication->id,
 				$this->publication->version_id,
 				$webpath,
 				'',
 				1
 			);
-			$licFile 	= $path . DS . 'LICENSE.txt';
+			$licFile = $path . DS . 'LICENSE.txt';
 			if (file_exists($licFile))
 			{
 				$licenseUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=license' . '&v=' . $this->publication->version_id);
@@ -157,9 +157,8 @@ $schema 	= $metaElements->getSchema();
 		<?php
 		}
 	}
-?>
-<?php
-	$citations = NULL;
+
+	$citations = null;
 	if ($this->publication->params->get('show_metadata'))
 	{
 		if (!isset($schema->fields) || !is_array($schema->fields))
@@ -177,12 +176,12 @@ $schema 	= $metaElements->getSchema();
 				}
 				elseif ($value = $metaElements->display($field->type, $data[$field->name]))
 				{
-				?>
-				<h4><?php echo $field->label; ?></h4>
-				<div class="pub-content">
-					<?php echo $value; ?>
-				</div>
-				<?php
+					?>
+					<h4><?php echo $field->label; ?></h4>
+					<div class="pub-content">
+						<?php echo $value; ?>
+					</div>
+					<?php
 				}
 			}
 		}
@@ -203,14 +202,14 @@ $schema 	= $metaElements->getSchema();
 		$cite->date      = '';
 
 		$cite->doi       = $this->publication->doi ? $this->publication->doi : '';
-		$cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : NULL;
+		$cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : null;
 		$cite->type      = '';
 		$cite->pages     = '';
 		$cite->author    = $this->publication->getUnlinkedContributors();
-		$cite->publisher = $this->config->get('doi_publisher', '' );
+		$cite->publisher = $this->config->get('doi_publisher', '');
 		if ($this->publication->version_label > 1)
 		{
-			$cite->version   = $this->publication->version_label;
+			$cite->version = $this->publication->version_label;
 		}
 
 		if ($this->publication->params->get('show_citation') == 2)
@@ -265,6 +264,7 @@ if (($this->publication->params->get('show_notes')) && $this->publication->get('
 			echo $notes;
 		?>
 	</div>
-<?php
-} ?>
+	<?php
+}
+?>
 </div><!-- / .pubabout -->

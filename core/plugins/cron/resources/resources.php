@@ -248,7 +248,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				FROM `#__resources` AS r
 				WHERE r.standalone=1
 				AND r.state=1
-				AND (r.ranked = '0000-00-00 00:00:00' OR r.ranked < " . $database->quote($timestamp) . ")
+				AND (r.ranked IS NULL OR r.ranked = '0000-00-00 00:00:00' OR r.ranked < " . $database->quote($timestamp) . ")
 				ORDER BY r.ranked ASC
 				LIMIT {$limit}";
 

@@ -94,9 +94,6 @@ $app['app'] = $app;
 
 $app['config'] = new \Hubzero\Config\Repository($client);
 
-if (!defined('JDEBUG'))   define('JDEBUG',   $app['config']->get('debug'));
-if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $app['config']->get('profile'));
-
 /*
 |--------------------------------------------------------------------------
 | Register The Core Service Providers

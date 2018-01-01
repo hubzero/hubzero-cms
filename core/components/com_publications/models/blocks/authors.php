@@ -32,6 +32,11 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Request;
+use Event;
+use Lang;
+use User;
+use Date;
 
 /**
  * Authors block
@@ -39,42 +44,46 @@ use stdClass;
 class Authors extends Base
 {
 	/**
-	* Block name
-	*
-	* @var		string
-	*/
+	 * Block name
+	 *
+	 * @var		string
+	 */
 	protected $_name 			= 'authors';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
+	 * Parent block name
+	 *
+	 * @var		string
+	 */
 	protected $_parentname 		= 'authors';
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected $_manifest 		= NULL;
+	 * Default manifest
+	 *
+	 * @var		string
+	 */
+	protected $_manifest 		= null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
+	 * Numeric block ID
+	 *
+	 * @var		integer
+	 */
 	protected $_blockId 		= 0;
 
 	/**
 	 * Display block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   string   $viewname
+	 * @param   integer  $blockId
+	 * @return  string   HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
+	public function display( $pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -125,12 +134,17 @@ class Authors extends Base
 	/**
 	 * Save block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  string   HTML
 	 */
-	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save( $manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -146,8 +160,8 @@ class Authors extends Base
 		$added = 0;
 
 		// Load classes
-		$pAuthor  = new \Components\Publications\Tables\Author( $this->_parent->_db );
-		$objO 	  = new \Components\Projects\Tables\Owner( $this->_parent->_db );
+		$pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
+		$objO    = new \Components\Projects\Tables\Owner($this->_parent->_db);
 
 		$order = $pAuthor->getLastOrder($pub->version_id) + 1;
 
@@ -225,6 +239,7 @@ class Authors extends Base
 	/**
 	 * Save group owner
 	 *
+	 * @param   object  $pub
 	 * @return  void
 	 */
 	public function saveGroupOwner( $pub )
@@ -244,6 +259,10 @@ class Authors extends Base
 	/**
 	 * Transfer data from one version to another
 	 *
+	 * @param   object   $manifest
+	 * @param   object   $pub
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
 	 * @return  boolean
 	 */
 	public function transferData( $manifest, $pub, $oldVersion, $newVersion )
@@ -287,12 +306,17 @@ class Authors extends Base
 	/**
 	 * Save block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  string   HTML
 	 */
-	public function reorder( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function reorder( $manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -327,10 +351,18 @@ class Authors extends Base
 	/**
 	 * Add new author
 	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
 	 * @return  void
 	 */
 	public function addItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0)
 	{
+		$config = Component::params('com_publications');
+
+		$emailConfig = $config->get('email');
 		$email 		= Request::getVar( 'email', '', 'post' );
 		$firstName 	= trim(Request::getVar( 'firstName', '', 'post' ));
 		$lastName 	= trim(Request::getVar( 'lastName', '', 'post' ));
@@ -374,7 +406,7 @@ class Authors extends Base
 		}
 
 		// Do we have an owner with this email/uid?
-		$owner = NULL;
+		$owner = null;
 		if ($uid)
 		{
 			$owner = $objO->getOwnerId( $pub->_project->get('id'), $uid );
@@ -466,7 +498,7 @@ class Authors extends Base
 		$this->_parent->set('_update', 1);
 
 		// (Re)send email invitation
-		if ($sendInvite && ($email || $uid))
+		if ($sendInvite && ($email || $uid) && $emailConfig)
 		{
 			// Get project model
 			$project = new \Components\Projects\Models\Project($pub->_project->get('id'));
@@ -500,6 +532,12 @@ class Authors extends Base
 	/**
 	 * Update attachment record
 	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $aid
 	 * @return  void
 	 */
 	public function saveItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
@@ -525,6 +563,9 @@ class Authors extends Base
 		// Get current owners
 		$owners = $objO->getIds($pub->_project->get('id'), 'all', 1);
 
+		$config = Component::params('com_publications');
+
+		$emailConfig = $config->get('email');
 		$email 		= Request::getVar( 'email', '', 'post' );
 		$firstName 	= Request::getVar( 'firstName', '', 'post' );
 		$lastName 	= Request::getVar( 'lastName', '', 'post' );
@@ -623,7 +664,7 @@ class Authors extends Base
 		}
 
 		// (Re)send email invitation
-		if ($sendInvite && $email)
+		if ($sendInvite && $email && $emailConfig)
 		{
 			// Get project model
 			$project = new \Components\Projects\Models\Project($pub->_project->get('id'));
@@ -649,7 +690,13 @@ class Authors extends Base
 	/**
 	 * Delete author record
 	 *
-	 * @return  void
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $aid
+	 * @return  boolean
 	 */
 	public function deleteItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
@@ -680,9 +727,11 @@ class Authors extends Base
 	/**
 	 * Build panel content
 	 *
+	 * @param   object  $pub
+	 * @param   string  $viewname
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent( $pub = null, $viewname = 'edit' )
 	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
@@ -728,12 +777,15 @@ class Authors extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   integer  $elementId
 	 * @return  object
 	 */
-	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
+	public function getStatus( $pub = null, $manifest = null, $elementId = null )
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -764,6 +816,7 @@ class Authors extends Base
 	/**
 	 * Get default manifest for the block
 	 *
+	 * @param   boolean  $new
 	 * @return  void
 	 */
 	public function getManifest($new = false)
@@ -776,15 +829,15 @@ class Authors extends Base
 		if (!$manifest)
 		{
 			$manifest = array(
-				'name' 			=> 'authors',
-				'label' 		=> 'Authors',
-				'title' 		=> 'Publication Authors',
-				'draftHeading' 	=> 'Who are the authors?',
-				'draftTagline'	=> 'Build the author list',
-				'about'			=> '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
-				'adminTips'		=> '',
-				'elements' 		=> array(),
-				'params'		=> array(
+				'name'         => 'authors',
+				'label'        => 'Authors',
+				'title'        => 'Publication Authors',
+				'draftHeading' => 'Who are the authors?',
+				'draftTagline' => 'Build the author list',
+				'about'        => '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
+				'adminTips'    => '',
+				'elements'     => array(),
+				'params'       => array(
 					'required'          => 1,
 					'published_editing' => 0,
 					'submitter'         => 1,
@@ -792,7 +845,7 @@ class Authors extends Base
 				)
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;

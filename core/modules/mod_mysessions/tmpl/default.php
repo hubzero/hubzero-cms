@@ -107,7 +107,7 @@ $base = rtrim(Request::base(true), '/');
 									<span><?php echo Lang::txt('MOD_MYSESSIONS_SESSION_OWNER'); ?></span>
 									<?php
 										$name = $session->username;
-										$user = Components\Members\Models\Member::oneByUsername($session->username);
+										$user = User::getInstance($session->username);
 										if ($user->get('id'))
 										{
 											$name = $user->get('name');

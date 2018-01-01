@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<th>Ordered by:</th>
-					<td><span><?php echo $this->user->get('name'); ?> (<?php echo $this->user->get('username'); ?>)</span></td>
+					<td><span><?php echo ($this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN')); ?></span></td>
 				</tr>
 				<tr>
 					<th>Order subtotal:</th>
@@ -132,6 +132,28 @@ function submitbutton(pressbutton)
 
 			</fieldset>
 		<?php
+		}
+		?>
+
+		<?php
+		if (!empty($this->tInfo->tiPayment))
+		{
+			?>
+			<fieldset class="adminform">
+				<legend><span>Payment info</span></legend>
+
+				<p>Payment method: <?php echo $this->tInfo->tiPayment; ?></p>
+
+				<?php
+				if (!empty($this->tInfo->tiPaymentDetails))
+				{
+					echo '<p>' . $this->tInfo->tiPaymentDetails . '</p>';
+				}
+
+				?>
+
+			</fieldset>
+			<?php
 		}
 		?>
 	</div>

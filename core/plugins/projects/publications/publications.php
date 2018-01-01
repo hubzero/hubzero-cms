@@ -899,7 +899,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Go back to panel after changes to individual attachment
-		if ($this->_task == 'saveitem' || $this->_task == 'deleteitem')
+		if ($this->_task == 'saveitem')
 		{
 			App::redirect($back);
 			return;

@@ -2251,7 +2251,7 @@ class Tickets extends SiteController
 				return;
 			}
 
-			$status = $oldticket->status('text');
+			$status = $oldticket->status->get('title');
 			$count  = $oldticket->get('instances');
 		}
 		else

@@ -278,12 +278,17 @@ class Editor extends Obj
 		$name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
 		$name = ltrim($name, '.');
 
-		$path = PATH_CORE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
+		$path = PATH_APP . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
 		if (!is_file($path))
 		{
-			throw new Exception(Lang::txt('Cannot load the editor'), 500);
-			return false;
+			$path = PATH_CORE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
+
+			if (!is_file($path))
+			{
+				throw new Exception(Lang::txt('Cannot load the editor'), 500);
+				return false;
+			}
 		}
 
 		// Require plugin file

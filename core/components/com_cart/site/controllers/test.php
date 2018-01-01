@@ -77,7 +77,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// CREATE COUPON
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
 			try
 			{
 				// Constructor take the coupon code
@@ -125,7 +125,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// CREATE NEW COURSE
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
 			$course = new Course();
 			$course->setName('Name of the course');
@@ -175,7 +175,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// UPDATE COURSE by recreating it
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
 			$course = new Course();
 			$course->setName('Operations Management 104');
 			$course->setDescription('Operations Management 104 is some kind of test course for now...');
@@ -263,7 +263,7 @@ class Test extends ComponentController
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 		$curl_result = @curl_exec($ch);
@@ -274,8 +274,7 @@ class Test extends ComponentController
 		//print_r($curl_result);
 		die('+');
 
-		$doc =& JFactory::getDocument();
-		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		\Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
@@ -307,7 +306,7 @@ class Test extends ComponentController
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 		$curl_result = @curl_exec($ch);
@@ -391,25 +390,34 @@ class Test extends ComponentController
 				}
 			}
 
-			//echo  Request::root() . 'cart/order/postback'; die;
+			//echo Request::root() . 'cart/order/postback'; die;
+
+			//print_r($req); die;
+
+			// OMG!!! Ok, there was no way I could cURL post to the hub, so I post to the external server that in turn posts back to the hub. I KNOW!!!!!
 
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, Request::root() . 'cart/order/postback');
+			//curl_setopt($ch, CURLOPT_URL, 'https://shunko.aws.hubzero.org/cart/order/postback');
+			//curl_setopt($ch, CURLOPT_URL, 'https://shunko.aws.hubzero.org/cart/cart/hui');
+			curl_setopt($ch, CURLOPT_URL, 'http://shunko.com/test/post.php');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_VERBOSE, 0);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 			$curl_result = @curl_exec($ch);
 			$curl_err = curl_error($ch);
 			curl_close($ch);
 
-			//print_r($req); echo '<br>'; print_r($curl_err); die;
+			//echo Route::url('index.php?option=' . 'com_cart') . 'order/complete?' . $req; die;
+
+			//print_r($curl_err);
+			//print_r($curl_result); die;
 
 			// Redirect to confirmation page
 			App::redirect(
@@ -431,4 +439,3 @@ class Test extends ComponentController
 		$this->view->display();
 	}
 }
-

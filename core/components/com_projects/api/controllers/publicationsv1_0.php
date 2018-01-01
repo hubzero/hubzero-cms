@@ -43,8 +43,7 @@ use Route;
 use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-	. DS . 'models' . DS . 'publication.php');
+include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 /**
  * API controller for the project publications
@@ -62,7 +61,7 @@ class Publicationsv1_0 extends ApiController
 		$this->_task = Request::getWord('task', 'list');
 
 		// Load language files
-		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');
 		Lang::load('plg_projects_publications', PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'publications');
 
 		// Incoming
@@ -146,11 +145,11 @@ class Publicationsv1_0 extends ApiController
 
 		// Filters for returning results
 		$filters = array(
-			'project'	    => $this->model->get('id'),
-			'limit'	        => Request::getInt('limit', 25),
-			'limitstart'	=> Request::getInt('limitstart', 0),
-			'sortby'	    => Request::getWord('sortby', 'title', 'post'),
-			'sortdir'	    => strtoupper(Request::getWord('sortdir', 'ASC')),
+			'project'       => $this->model->get('id'),
+			'limit'         => Request::getInt('limit', 25),
+			'limitstart'    => Request::getInt('limitstart', 0),
+			'sortby'        => Request::getWord('sortby', 'title', 'post'),
+			'sortdir'       => strtoupper(Request::getWord('sortdir', 'ASC')),
 			'ignore_access' => 1
 		);
 		$published = Request::getInt('published', '0', 'post');
@@ -185,8 +184,7 @@ class Publicationsv1_0 extends ApiController
 				$obj->status        = $entry->get('state');
 				$obj->statusName    = $entry->getStatusName();
 
-				$obj->thumbUrl      = str_replace('/api', '', $base . '/'
-									. ltrim(Route::url($entry->link('thumb')), '/'));
+				$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 				$obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('version')), '/'));
 
 				$response->publications[] = $obj;

@@ -70,7 +70,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 	public function emailGroupForumDigest(\Components\Cron\Models\Job $job)
 	{
 		// Require posts file
-		require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php';
+		require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 		// Load language files
 		Lang::load('plg_groups_forum') ||
@@ -202,7 +202,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 	private function sendEmail($user, $posts, $interval='daily')
 	{
 		$eview = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'site',
+			'base_path' => Component::path('com_forum') . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => 'digest_plain'
 		));

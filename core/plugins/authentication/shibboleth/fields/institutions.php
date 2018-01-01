@@ -38,20 +38,6 @@ use Hubzero\Form\Field;
 class Institutions extends Field
 {
 	/**
-	 * Metadata
-	 *
-	 * @var  string
-	 */
-	private static $mdSource = 'https://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml';
-
-	/**
-	 * Fallback metadata
-	 *
-	 * @var  string
-	 */
-	private static $mdDest = '/www/tmp/InCommon-metadata-fallback.xml';
-
-	/**
 	 * Get field input
 	 *
 	 * @return  string
@@ -69,6 +55,7 @@ class Institutions extends Field
 			return str_replace('"', '&quot;', $str);
 		};
 		$val = is_array($this->value) ? $this->value : json_decode($this->value, true);
+
 		$html[] = '<div class="shibboleth" data-iconify="'.$a(preg_replace('#^'.preg_quote(PATH_CORE).'#', '', __FILE__)).'">';
 		$html[] = '<p class="xml-source"><label>Shibboleth ID provider configuration file: <input type="text" name="xmlPath" value="'.$a($val['xmlPath']).'" /></label></p>';
 		list($val['xmlRead'], $val['idps']) = self::getIdpList($val);
@@ -108,15 +95,18 @@ class Institutions extends Field
 		foreach ($xml->xpath('//shib:SSO') as $item)
 		{
 			$entityId = (string)$item->attributes()->entityID;
+
 			curl_setopt($curl, CURLOPT_URL, $entityId);
 			curl_setopt($curl, CURLOPT_HEADER, 0);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
 			$item = array(
 				'entity_id' => $entityId,
 				'label'     => null,
 				'host'      => null,
 				'logo'      => null
 			);
+
 			if (!($idp = curl_exec($curl)))
 			{
 				$item['error'] = 'Failed to fetch metadata';
@@ -143,10 +133,10 @@ class Institutions extends Field
 				}
 				if (($orgUrl = $idp->xpath('//saml:OrganizationURL')))
 				{
-					$item['host'] = preg_replace('/^.*[.]([^.]+[.][^.]+)$/', '$1', parse_url($orgUrl[0], PHP_URL_HOST));
+					$item['host'] = preg_replace('/^.*[.]([^.]+[.][^.]+)$/', '$1', parse_url($orgUrl[0], \PHP_URL_HOST));
 				}
-//				$item['logo'] = $idp->xpath('//mdui:Logo');
-//				$item['logo'] = $item['logo'] ? (string)$item['logo'][0] : null;
+				//$item['logo'] = $idp->xpath('//mdui:Logo');
+				//$item['logo'] = $item['logo'] ? (string)$item['logo'][0] : null;
 			}
 			$rv[] = $item;
 		}
@@ -163,68 +153,8 @@ class Institutions extends Field
 	 */
 	private static function getResearchAndScholarshipIdps($ch)
 	{
-		// fetch the latest InCommon metadata, if needed
-		curl_setopt($ch, CURLOPT_URL, self::$mdSource);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-		if (file_exists(self::$mdDest))
-		{
-			curl_setopt($ch, CURLOPT_HTTPHEADER, ['If-Modified-Since: '.gmdate('D, d M Y H:i:s \G\M\T', filemtime(self::$mdDest))]);
-			$xml = curl_exec($ch);
-			if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 304)
-			{
-				$xml = file_get_contents(self::$mdDest);
-			}
-			else
-			{
-				file_put_contents(self::$mdDest, $xml);
-			}
-		}
-		else
-		{
-			$xml = curl_exec($ch);
-			file_put_contents(self::$mdDest, curl_exec($ch));
-		}
-		curl_setopt($ch, CURLOPT_HTTPHEADER, []);
-
-		$xp = new \SimpleXMLElement($xml);
-		foreach ($xp->getNamespaces(true) as $name => $url)
-		{
-			$xp->registerXPathNamespace($name ? $name : 'base', $url);
-		}
 		$rv = [];
-		// select entities having the saml attribute indicating that they are research & scholarship category members
-		// being members ourselves, we can get attributes about users released fromt these entities
-		foreach ($xp->xpath('//base:EntityDescriptor[
-			base:Extensions/
-				mdattr:EntityAttributes/
-					saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/
-						saml:AttributeValue[text()="http://id.incommon.org/category/research-and-scholarship" or text()="http://refeds.org/category/research-and-scholarship"]
-			]') as $entity)
-		{
-			// easier to work with as an array, the SimpleXMLElement class is bizarre
-			$entity = (array)$entity;
-			$id = $entity['@attributes']['entityID'];
-			$title = $xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:DisplayName');
-			if (isset($title[0])) {
-				$title = (string)$title[0];
-			}
-			else {
-				continue;
-			}
-			preg_match('/([^.:]+[.][^.]+?)(?:[\/]|$)/', $id, $ma);
-			$host = $ma[1];
-//			$logo = $xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:Logo');
-//			$logo = isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico';
-			$rv[] = [
-				'entity_id' => $id,
-				'label'     => $title,
-				'host'      => $host
-//				'logo'      => $logo
-			];
-		}
-		return $rv;
+		exec('php ' . __DIR__ . '/get-rs-entities.php', $out);
+		return json_decode(join('', $out));
 	}
 }

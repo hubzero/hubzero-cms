@@ -177,9 +177,11 @@ abstract class Cart
 	 */
 	public static function getAllTransactions($filters = array(), $completedOnly = true)
 	{
+		$db = \App::get('db');
+
 		// Get info
 		$sql = "SELECT ";
-		if (!empty($filters['userInfo']) && $filters['userInfo'])
+		if ((!empty($filters['userInfo']) && $filters['userInfo']) || (isset($filters['search']) && $filters['search']))
 		{
 			$sql .= " x.`id` AS uidNumber, x.`name`, crt.`crtId`, ";
 		}
@@ -187,30 +189,69 @@ abstract class Cart
 		{
 			$sql .= " ti.`tiNotes`, ";
 		}
-		$sql .= "t.`tId`, `tLastUpdated`, `tStatus` FROM `#__cart_transactions` t";
-		if (!empty($filters['userInfo']) && $filters['userInfo'])
+		$sql .= "t.`tId`, `tLastUpdated`, `tStatus`, ti.`tiPayment` FROM `#__cart_transactions` t";
+		if ((!empty($filters['userInfo']) && $filters['userInfo']) || (isset($filters['search']) && $filters['search']))
 		{
 			$sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
 			$sql .= ' LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.`id`)';
 		}
-		if (!empty($filters['report-notes']) && $filters['report-notes'])
+		$sql .= " LEFT JOIN `#__cart_transaction_info` ti ON (ti.`tId` = t.`tId`)";
+
+		$where = array();
+
+		if (isset($filters['search']) && $filters['search'])
 		{
-			$sql .= " LEFT JOIN `#__cart_transaction_info` ti ON (ti.`tId` = t.`tId`)";
+			$sql .= " LEFT JOIN `#__cart_transaction_items` tis ON (t.tId = tis.tId)";
+			$sql .= " LEFT JOIN `#__storefront_skus` sku on (sku.sId = tis.sId)";
+			$sql .= " LEFT JOIN `#__storefront_products` p on (sku.pId = p.pId)";
+
+			$where[] = "(
+				x.`name` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR x.`username` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR sku.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+			)";
 		}
 
-		$sql .= " WHERE 1";
+		if (!empty($filters['uidNumber']) && $filters['uidNumber'])
+		{
+			$where[] = "crt.`uidNumber` = " . intval($filters['uidNumber']);
+		}
+
 		if (!empty($filters['crtId']) && $filters['crtId'])
 		{
-			$sql .= " AND `crtId` = {$filters['crtId']}";
+			$where[] = "t.`crtId` = {$filters['crtId']}";
 		}
+
 		if (!empty($filters['report-notes']) && $filters['report-notes'])
 		{
-			$sql .= " AND (ti.`tiNotes` IS NOT NULL AND ti.`tiNotes` != '')";
+			$where[] = "(ti.`tiNotes` IS NOT NULL AND ti.`tiNotes` != '')";
 		}
+
 		if ($completedOnly)
 		{
-			$sql .= " AND `tStatus` = 'completed'";
+			$where[] = "t.`tStatus` = 'completed'";
 		}
+
+		if (isset($filters['report-from']) && strtotime($filters['report-from']))
+		{
+			$showFrom = date("Y-m-d", strtotime($filters['report-from']));
+			$where[] = "t.`tLastUpdated` >= " . $db->quote($showFrom);
+		}
+
+		if (isset($filters['report-to']) && strtotime($filters['report-to']))
+		{
+			// Add one day to include all the records of the end day
+			$showTo = strtotime($filters['report-to'] . ' +1 day');
+			$showTo = date("Y-m-d 00:00:00", $showTo);
+			$where[] = "t.`tLastUpdated` <= " . $db->quote($showTo);
+		}
+
+		if (count($where))
+		{
+			$sql .= " WHERE " . implode(" AND ", $where) . " ";
+		}
+
 		if (isset($filters['sort']) && (empty($filters['count']) || !$filters['count']))
 		{
 			$sql .= " ORDER BY " . $filters['sort'];
@@ -229,9 +270,7 @@ abstract class Cart
 			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
 		}
 
-		$db = \App::get('db');
 		$db->setQuery($sql);
-		//echo $db->toString(); die;
 		$db->query();
 
 		$totalRows = $db->getNumRows();
@@ -572,6 +611,21 @@ abstract class Cart
 	/********************************* Static functions *********************************/
 
 	/**
+	 * Generate security token
+	 *
+	 * @param   int     $tId    Transaction ID
+	 * @return  string
+	 */
+	public static function generateSecurityToken($tId)
+	{
+		if (!CartHelper::isNonNegativeInt($tId, false))
+		{
+			throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
+		}
+		return md5(self::$securitySalt . $tId);
+	}
+
+	/**
 	 * Verify security token
 	 *
 	 * @param   string  $token  string token
@@ -780,7 +834,7 @@ abstract class Cart
 	 * @param   object  $tInfo  Transaction info
 	 * @return  void
 	 */
-	public static function completeTransaction($tInfo)
+	public static function completeTransaction($tInfo, $paymentInfo = false)
 	{
 		$tId = $tInfo->info->tId;
 		$crtId = $tInfo->info->crtId;
@@ -805,6 +859,12 @@ abstract class Cart
 
 		// remove coupons from cart
 		self::removeTransactionCouponsFromCart($tInfo);
+
+		// Save payment info
+		if (!empty($paymentInfo) && is_array($paymentInfo))
+		{
+			self::saveTransactionPaymentInfo($paymentInfo, $tId);
+		}
 
 		/* Clean up cart */
 		$db = \App::get('db');
@@ -878,6 +938,30 @@ abstract class Cart
 		$db = \App::get('db');
 
 		$sql = "UPDATE `#__cart_transactions` SET `tStatus` = '{$status}' WHERE `tId` = {$tId}";
+		$db->setQuery($sql);
+		$db->query();
+
+		$affectedRows = $db->getAffectedRows();
+
+		if (!$affectedRows)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Save transaction payment info
+	 *
+	 * @param   array  $paymentInfo
+	 * @param   int     $tId     Transaction ID
+	 * @return  bool    Success or failure
+	 */
+	public static function saveTransactionPaymentInfo($paymentInfo, $tId)
+	{
+		$db = \App::get('db');
+
+		$sql = "UPDATE `#__cart_transaction_info` SET `tiPayment` = '{$paymentInfo[0]}', `tiPaymentDetails` = '{$paymentInfo[1]}' WHERE `tId` = {$tId}";
 		$db->setQuery($sql);
 		$db->query();
 

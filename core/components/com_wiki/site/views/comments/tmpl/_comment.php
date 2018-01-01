@@ -207,7 +207,6 @@ $this->comment->set('category', 'answercomment');
 				->rows();
 
 			$this->view('_list', 'comments')
-				//->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
 				->set('parent', $this->comment->get('id'))
 				->set('page', $this->page)
 				->set('option', $this->option)

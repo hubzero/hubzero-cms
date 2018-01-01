@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           components/com_newsletter/newsletter.xml
-@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
+@copyright      Copyright 2005-2018 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
-Copyright 2005-2015 HUBzero Foundation, LLC.
+Copyright 2005-2018 HUBzero Foundation, LLC.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,79 +32,13 @@ HUBzero is a registered trademark of Purdue University.
 <extension type="component" version="1.5">
 	<name>Newsletters</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<copyright>Copyright 2005-2018 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Manage Newsletters</description>
-	<files>
-		<filename>assets/css/newsletter.css</filename>
-		<filename>assets/css/newsletter.jquery.js</filename>
-		<filename>assets/css/newsletter.js</filename>
-		<filename>controllers/api.php</filename>
-		<filename>controllers/newsletter.php</filename>
-		<filename>index.html</filename>
-		<filename>newsletter.php</filename>
-		<filename>router.php</filename>
-		<filename>views/index.html</filename>
-		<filename>views/newsletter/tmpl/index.html</filename>
-		<filename>views/newsletter/tmpl/subscribe.php</filename>
-		<filename>views/newsletter/tmpl/subscribe.xml</filename>
-		<filename>views/newsletter/tmpl/unsubscribe.php</filename>
-		<filename>views/newsletter/tmpl/unsubscribe.xml</filename>
-		<filename>views/newsletter/tmpl/view.php</filename>
-		<filename>views/newsletter/tmpl/view.xml</filename>
-	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_newsletter.ini</language>
 	</languages>
 	<administration>
 		<menu>Newsletters</menu>
-		<files>
-			<filename>config.xml</filename>
-			<filename>controllers/bounce.php</filename>
-			<filename>controllers/campaign.php</filename>
-			<filename>controllers/mailinglist.php</filename>
-			<filename>controllers/story.php</filename>
-			<filename>controllers/template.php</filename>
-			<filename>index.html</filename>
-			<filename>newsletter.php</filename>
-			<filename>newsletter.xml</filename>
-			<filename>tables/campaign.php</filename>
-			<filename>tables/mailing.php</filename>
-			<filename>tables/mailinglist.email.php</filename>
-			<filename>tables/mailinglist.php</filename>
-			<filename>tables/primary.php</filename>
-			<filename>tables/secondary.php</filename>
-			<filename>tables/template.php</filename>
-			<filename>views/bounce/tmpl/display.php</filename>
-			<filename>views/bounce/tmpl/display.xml</filename>
-			<filename>views/bounce/tmpl/index.html</filename>
-			<filename>views/campaign/tmpl/display.php</filename>
-			<filename>views/campaign/tmpl/display.xml</filename>
-			<filename>views/campaign/tmpl/distribute.php</filename>
-			<filename>views/campaign/tmpl/distribute.xml</filename>
-			<filename>views/campaign/tmpl/edit.php</filename>
-			<filename>views/campaign/tmpl/edit.xml</filename>
-			<filename>views/campaign/tmpl/index.html</filename>
-			<filename>views/index.html</filename>
-			<filename>views/mailinglist/tmpl/addemail.php</filename>
-			<filename>views/mailinglist/tmpl/addemail.xml</filename>
-			<filename>views/mailinglist/tmpl/display.php</filename>
-			<filename>views/mailinglist/tmpl/display.xml</filename>
-			<filename>views/mailinglist/tmpl/edit.php</filename>
-			<filename>views/mailinglist/tmpl/edit.xml</filename>
-			<filename>views/mailinglist/tmpl/editemail.php</filename>
-			<filename>views/mailinglist/tmpl/editemail.xml</filename>
-			<filename>views/mailinglist/tmpl/index.html</filename>
-			<filename>views/mailinglist/tmpl/manage.php</filename>
-			<filename>views/mailinglist/tmpl/manage.xml</filename>
-			<filename>views/story/tmpl/edit.php</filename>
-			<filename>views/story/tmpl/edit.xml</filename>
-			<filename>views/story/tmpl/index.html</filename>
-			<filename>views/template/tmpl/display.php</filename>
-			<filename>views/template/tmpl/display.xml</filename>
-			<filename>views/template/tmpl/edit.php</filename>
-			<filename>views/template/tmpl/edit.xml</filename>
-			<filename>views/template/tmpl/index.html</filename>
-		</files>
 	</administration>
 </extension>
