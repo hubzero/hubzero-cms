@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 HUBzero Foundation, LLC.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<config>
+	<fieldset name="basic">
+		<field name="enabled" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_COMPONENT_ON" description="COM_PUBLICATIONS_CONFIG_COMPONENT_ON_DESC">
+			<option value="0">JOFF</option>
+			<option value="1">JON</option>
+		</field>
+		<field name="contribute" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_ALLOW_CONTRIB" description="COM_PUBLICATIONS_CONFIG_ALLOW_CONTRIB_DESC">
+			<option value="0">COM_PUBLICATIONS_NOT_ALLOW</option>
+			<option value="1">COM_PUBLICATIONS_ALLOW</option>
+		</field>
+		<field name="forks" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_ALLOW_FORKS" description="COM_PUBLICATIONS_CONFIG_ALLOW_FORKS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="email" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_MESSAGING" description="COM_PUBLICATIONS_CONFIG_MESSAGING_DESC">
+			<option value="0">JOFF</option>
+			<option value="1">JON</option>
+		</field>
+		<field name="default_category" type="text" menu="hide" default="dataset" label="COM_PUBLICATIONS_CONFIG_DEFAULT_CAT" description="COM_PUBLICATIONS_CONFIG_DEFAULT_CAT_DESC" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/site/assets/img/resource_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE_DESC" />
+		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/site/assets/img/video_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB_DESC" />
+		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/site/assets/img/gallery_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB_DESC" />
+		<field name="masterimage" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE_DESC" />
+		<field name="webpath" type="text" menu="hide" default="/site/publications" label="COM_PUBLICATIONS_CONFIG_FILE_PATH" description="COM_PUBLICATIONS_CONFIG_FILE_PATH_DESC" />
+		<field name="documentation" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH" description="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH_DESC" />
+		<field name="deposit_terms" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_TERMS_URL" description="COM_PUBLICATIONS_CONFIG_TERMS_URL_DESC" />
+	</fieldset>
+	<fieldset name="CURATION">
+		<field name="curatorreplyto" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO" description="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO_DESC" />
+		<field name="curatorgroup" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_CURATOR_GROUP" description="COM_PUBLICATIONS_CONFIG_CURATOR_GROUP_DESC" />
+		<field name="graceperiod" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_GRACE_PERIOD" description="COM_PUBLICATIONS_CONFIG_GRACE_PERIOD_DESC">
+			<option value="0">JNONE</option>
+			<option value="1">COM_PUBLICATIONS_CONFIG_ONE_MONTH</option>
+		</field>
+		<field name="autoapprove" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_AUTO_APPROVE" description="COM_PUBLICATIONS_CONFIG_AUTO_APPROVE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="autoapproved_users" label="COM_PUBLICATIONS_CONFIG_AUTO_APPROVED_USERS" type="textarea" rows="8" cols="40" default="" description="COM_PUBLICATIONS_CONFIG_AUTO_APPROVED_USERS_DESC" />
+	</fieldset>
+	<fieldset name="DOI">
+		<field name="aboutdoi" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_ABOUT_DOI" description="COM_PUBLICATIONS_CONFIG_ABOUT_DOI_DESC" />
+		<field name="doi_shoulder" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START" description="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START_DESC" />
+		<field name="doi_prefix" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_END" description="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_END_DESC" />
+		<field name="doi_service" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_SERVICE" description="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_DESC" />
+		<field name="doi_userpw" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_USERPASS" description="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_USERPASS_DESC" />
+		<field name="doi_xmlschema" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA" description="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA_DESC" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER" description="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER_DESC" />
+		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE" description="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE_DESC" />
+		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="COM_PUBLICATIONS_CONFIG_DOI_VERIFY" description="COM_PUBLICATIONS_CONFIG_DOI_VERIFY_DESC" />
+		<field name="master_doi" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_ISSUE_MASTER_DOI" description="COM_PUBLICATIONS_CONFIG_ISSUE_MASTER_DOI_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+	<fieldset name="SECTIONS">
+		<field name="show_authors" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_SECTION_CONTRIBUTORS" description="COM_PUBLICATIONS_CONFIG_SECTION_CONTRIBUTORS_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="format_authors" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT" description="COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT_DESC">
+			<option value="0">COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT_UNFORMATTED</option>
+			<option value="1">COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT_APA</option>
+		</field>
+		<field name="show_ranking" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_RANKING" description="COM_PUBLICATIONS_CONFIG_RANKING_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_rating" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_RATING" description="COM_PUBLICATIONS_CONFIG_RATING_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_date" type="list" default="3" label="COM_PUBLICATIONS_CONFIG_DATE" description="COM_PUBLICATIONS_CONFIG_DATE_DESC">
+			<option value="0">JHIDE</option>
+			<option value="3">COM_PUBLICATIONS_CONFIG_PUBLISHED</option>
+		</field>
+		<field name="show_notes" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_NOTES" description="COM_PUBLICATIONS_CONFIG_NOTES_DESC">
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+		</field>
+		<field name="show_tags" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_TAGS" description="COM_PUBLICATIONS_CONFIG_TAGS_DESC">
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+		</field>
+		<field name="show_linked_data" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_LINKED_DATA" description="COM_PUBLICATIONS_CONFIG_LINKED_DATA_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_citation" type="list" default="1" label="COM_PUBLICATIONS_SHOW_CITATION_LABEL" description="COM_PUBLICATIONS_SHOW_CITATION_DESC">
+			<option value="0">COM_PUBLICATIONS_SHOW_CITATION_HIDE</option>
+			<option value="1">COM_PUBLICATIONS_SHOW_CITATION_MANUAL_AUTO</option>
+			<option value="2">COM_PUBLICATIONS_SHOW_CITATION_AUTO</option>
+			<option value="3">COM_PUBLICATIONS_SHOW_CITATION_MANUAL</option>
+		</field>
+		<field name="suggest_licence" type="list" default="0" label="COM_PUBLICATIONS_SUGGEST_LICENSE" description="COM_PUBLICATIONS_SUGGEST_LICENSE_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field name="citation_format" type="list" default="apa" label="COM_PUBLICATIONS_CITATION_FORMAT" description="COM_PUBLICATIONS_CITATION_FORMAT_DESC">
+			<option value="apa">APA</option>
+			<option value="ieee">IEEE</option>
+		</field>
+		<field name="supportedtag" type="text" menu="hide" default="" label="COM_PUBLICATIONS_SUPPORTEDTAG_LABEL" description="COM_PUBLICATIONS_SUPPORTEDTAG_DESC" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="COM_PUBLICATIONS_SUPPORTEDLINK_LABEL" description="COM_PUBLICATIONS_SUPPORTEDLINK_DESC" />
+		<field name="audiencelink" type="text" menu="hide" default="" label="COM_PUBLICATIONS_AUDIENCE_LINK_LABEL" description="COM_PUBLICATIONS_AUDIENCE_LINK_DESC" />
+	</fieldset>
+	<fieldset name="AIP">
+		<field name="repository" type="list" default="0" label="COM_PUBLICATIONS_TRUSTED" description="COM_PUBLICATIONS_TRUSTED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="aip_path" type="text" menu="hide" default="/srv/AIP" label="COM_PUBLICATIONS_AIP_PATH" description="COM_PUBLICATIONS_AIP_PATH_DESC" />
+		<field name="aip_group" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_AIP_GROUP" description="COM_PUBLICATIONS_CONFIG_AIP_GROUP_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_publications" section="component" />
+	</fieldset>
+</config>
