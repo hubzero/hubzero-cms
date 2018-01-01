@@ -207,6 +207,11 @@ $schema = $metaElements->getSchema();
 		$cite->pages     = '';
 		$cite->author    = $this->publication->getUnlinkedContributors();
 		$cite->publisher = $this->config->get('doi_publisher', '');
+		if ($this->publication->groupOwner())
+		{
+			$cite->organization = $this->publication->groupOwner('description');
+			$cite->org_url = '/groups/' . $this->publication->groupOwner('cn');
+		}
 		if ($this->publication->version_label > 1)
 		{
 			$cite->version = $this->publication->version_label;
