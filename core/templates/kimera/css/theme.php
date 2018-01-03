@@ -45,15 +45,15 @@ function hex2rgb($hex)
 
 	if (strlen($hex) == 3)
 	{
-		$r = hexdec(substr($hex,0,1).substr($hex,0,1));
-		$g = hexdec(substr($hex,1,1).substr($hex,1,1));
-		$b = hexdec(substr($hex,2,1).substr($hex,2,1));
+		$r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+		$g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+		$b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
 	}
 	else
 	{
-		$r = hexdec(substr($hex,0,2));
-		$g = hexdec(substr($hex,2,2));
-		$b = hexdec(substr($hex,4,2));
+		$r = hexdec(substr($hex, 0, 2));
+		$g = hexdec(substr($hex, 2, 2));
+		$b = hexdec(substr($hex, 4, 2));
 	}
 	$rgb = array($r, $g, $b);
 
@@ -338,7 +338,7 @@ switch ($bground)
 
 	default:
 		$opacity = request('o1', '1');
-		if ($bground)
+		if ($bground && $bground != 'none')
 		{
 			$opacity = request('o1', '0');
 			$styles .= '
