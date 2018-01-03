@@ -128,7 +128,7 @@ class Tags extends AdminController
 		}
 		$tags = implode(',', $selected);
 
-		$tagging->setTags($tags, User::get('id'), 1);
+		$tagging->setTags($tags, User::get('id'), 0);
 
 		Notify::success(Lang::txt('COM_RESOURCES_TAGS_UPDATED', $id));
 
