@@ -1,0 +1,42 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_publications/assets/css/wiki.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Wiki page content CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.wiki-wrap {
+		padding: 0.5em 2em 2em 2em;
+		border: 10px solid #FFFFFF;
+		background: #f4effa;
+		background: #f6f6f6;
+	}	
+	.wiki-content {
+		padding: 0 3em 1em 3em;
+		background: #FFFFFF;
+	}
+	.wiki-back {
+		margin: 0;
+		padding: 0 1em;
+		font-size: 90%;
+		background: #f4effa;
+		background: #f6f6f6;
+	}
+	.wiki-wrap h1.page-title {
+		font-size: 1.6em;
+		border-bottom: 4px solid #f6f6f6;
+		padding: 0.5em 1em;
+		margin: 0 -1.9em 2em -1.9em;
+		color: #666;
+		background: -webkit-gradient(linear, 100% 0%, 0% 0%, from(#f6f6f6), to(#ffffff));
+		background: -webkit-linear-gradient(100% 0%, 0% 0%, from(#f6f6f6), to(#ffffff));
+		background: -moz-linear-gradient(center bottom, #f6f6f6, #ffffff);
+	}
