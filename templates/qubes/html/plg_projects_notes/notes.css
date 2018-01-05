@@ -1,7 +1,0 @@
-@import url("/core/plugins/projects/notes/assets/css/notes.css");
-
-#notes-wrap .sidebox .note:before,
-#notes-wrap .sidebox .wikitemplate:before {
-	margin-left: 0;
-	margin-right: 0.2em;
-}

@@ -1,7 +1,0 @@
-@import url("/core/components/com_events/site/assets/css/events.css");
-
-.com_events ul.events dl.event-details,
-.com_events ul.events .title,
-.com_events ul.events dl.event-details dt {
-	font-size: inherit;
-}
