@@ -1,0 +1,35 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/projects/publications/css/curation.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.filelist {
+	margin: 2em;
+	list-style: none;
+}
+.filelist img {
+	margin-right: 0.5em;
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	margin-top: 0.2em;
+}
+.filelist span.item-details {
+	display: block;
+	margin-left: 0;
+	color: #999;
+	font-size: 0.8em;
+	padding-right: 3em;
+	padding-left: 2.5em;
+}
+.filelist li {
+	vertical-align: top;
+	line-height: 1.2em;
+	border-bottom: 1px solid #EfEfEf;
+	min-height: 32px;
+}
+.filelist li.level2 {
+	padding-left: 2.5em;
+}
