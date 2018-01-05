@@ -372,6 +372,10 @@ class Html
 				$formatted = str_replace('doi:', '', $formatted);
 			}
 
+			if ($cite->organization && $cite->org_url) {
+				$formatted = str_replace($cite->organization, '<a href="' . $cite->org_url . '" rel="internal">' . $cite->organization . '</a>', $formatted);
+			}
+
 			$html .= $formatted;
 			if (!$pub->isDev())
 			{
