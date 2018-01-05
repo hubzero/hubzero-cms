@@ -49,14 +49,14 @@ class Job extends Relational
 	 *
 	 * @var  object
 	 */
-	protected $expression = NULL;
+	protected $expression = null
 
 	/**
 	 * Profiler
 	 *
 	 * @var  object
 	 */
-	protected $profiler = NULL;
+	protected $profiler = null;
 
 	/**
 	 * The table namespace
