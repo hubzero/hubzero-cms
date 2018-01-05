@@ -454,6 +454,8 @@ class Relationships extends AdminController
 		// rebuilding from the form data is easier than finding and resolving differences
 		$this->database->setQuery('TRUNCATE TABLE #__focus_area_resource_type_rel');
 		$this->database->execute();
+		$this->database->setQuery('TRUNCATE TABLE #__focus_area_publication_master_type_rel');
+		$this->database->execute();
 		error_log(var_export($_POST, 1));
 		foreach ($existing as $id => $fa)
 		{
@@ -472,11 +474,21 @@ class Relationships extends AdminController
 				WHERE id = ' . $id
 			);
 			$this->database->execute();
-			if (isset($_POST['types-'.$id]))
+			// Store focus area/resource relationship
+			if (isset($_POST['rtypes-'.$id]))
 			{
-				foreach ($_POST['types-'.$id] as $type_id)
+				foreach ($_POST['rtypes-'.$id] as $type_id)
 				{
 					$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+					$this->database->execute();
+				}
+			}
+			// Store focus area/publication relationship
+			if (isset($_POST['ptypes-'.$id]))
+			{
+				foreach ($_POST['ptypes-'.$id] as $type_id)
+				{
+					$this->database->setQuery('INSERT INTO `#__focus_area_publication_master_type_rel` (focus_area_id, master_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
 					$this->database->execute();
 				}
 			}
@@ -497,11 +509,23 @@ class Relationships extends AdminController
 			);
 			$this->database->execute();
 			$id = $this->database->insertid();
-			if (isset($_POST['types-new-' . $idx]))
+
+			// New focus area/resource relationship
+			if (isset($_POST['rtypes-new-' . $idx]))
 			{
-				foreach ($_POST['types-new-' . $idx] as $type_id)
+				foreach ($_POST['rtypes-new-' . $idx] as $type_id)
 				{
 					$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+					$this->database->execute();
+				}
+			}
+
+			// New focus area/publication relationship
+			if (isset($_POST['ptypes-new-' . $idx]))
+			{
+				foreach ($_POST['ptypes-new-' . $idx] as $type_id)
+				{
+					$this->database->setQuery('INSERT INTO `#__focus_area_publication_master_type_rel` (focus_area_id, master_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
 					$this->database->execute();
 				}
 			}
