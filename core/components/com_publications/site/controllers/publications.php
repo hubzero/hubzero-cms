@@ -1752,6 +1752,13 @@ class Publications extends SiteController
 		{
 			$oldid = $attachment->get('id');
 
+			if ($pth = $attachment->get('path'))
+			{
+				// @TODO: Maybe find a better, more reliable way to do this?
+				$pth = str_replace('./', '', $pth);
+				$attachment->set('path', $pth);
+			}
+
 			$attachment->set('id', 0);
 			$attachment->set('publication_id', $version->get('publication_id'));
 			$attachment->set('publication_version_id', $version->get('id'));
@@ -1796,31 +1803,40 @@ class Publications extends SiteController
 				// Check the default location
 				if (!file_exists($from . $file))
 				{
-					// OK, maybe it's in the gallery
-					$from  = dirname($pubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
-					$toPub = dirname($newpubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
-
-					if (!file_exists($from . $file))
+					// Check for alternate file name without the /galery sub-directory
+					if (file_exists($from . $file2))
 					{
-						// Let's try an alternate file name
-						if (!file_exists($from . $file2))
+						$file = $file2;
+						$filenew = $file2new;
+					}
+					else
+					{
+						// OK, maybe it's in the gallery
+						$from  = dirname($pubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+						$toPub = dirname($newpubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+
+						if (!file_exists($from . $file))
 						{
-							Notify::error('File does not exist: ' . $from . $file2);
-							continue;
+							// Let's try an alternate file name
+							if (!file_exists($from . $file2))
+							{
+								Notify::error('File does not exist: ' . $from . $file2);
+								continue;
+							}
+							// Found it
+							else
+							{
+								$dirHierarchy = $galleryParams['dirHierarchy'];
+
+								$file = $file2;
+								$filenew = $file2new;
+							}
 						}
 						// Found it
 						else
 						{
 							$dirHierarchy = $galleryParams['dirHierarchy'];
-
-							$file = $file2;
-							$filenew = $file2new;
 						}
-					}
-					// Found it
-					else
-					{
-						$dirHierarchy = $galleryParams['dirHierarchy'];
 					}
 				}
 
