@@ -244,8 +244,12 @@ class Component extends Obj
 			}
 
 			// We don't need this anymore
-			unset($data['option']);
 			unset($data['params']['rules']);
+		}
+
+		if (isset($data['option']))
+		{
+			unset($data['option']);
 		}
 
 		$table = Extension::oneOrFail($data['id']);
