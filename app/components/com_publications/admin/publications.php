@@ -73,7 +73,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	\Route::url('index.php?option=com_publications&controller=batchcreate'),
 	$controllerName == 'batchcreate'
 );
-require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+require_once \Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
 if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
