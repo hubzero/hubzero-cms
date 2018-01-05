@@ -361,7 +361,7 @@ class Job extends Relational
 	 */
 	public function lastRun($format = 'Y-m-d H:i:s')
 	{
-		return $this->expression()->getPreviousRunDate()->format($format);
+		return Date::of($this->expression()->getPreviousRunDate()->format($format))->toLocal($format);
 	}
 
 	/**
@@ -371,7 +371,7 @@ class Job extends Relational
 	 */
 	public function nextRun($format = 'Y-m-d H:i:s')
 	{
-		return $this->expression()->getNextRunDate()->format($format);
+		return Date::of($this->expression()->getNextRunDate()->format($format))->toLocal($format);
 	}
 
 	/**
