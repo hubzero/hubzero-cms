@@ -119,6 +119,18 @@ HUB.ProjectPublicationsSelector = {
 						});
 					}, 1000);
 				});
+
+			$('.item-toggle').on('mouseenter', function(e){
+				$(this).parents('li').removeClass('allowed');
+			});
+			$('.item-toggle').on('mouseleave', function(e){
+				$(this).parents('li').addClass('allowed'); // This should really only be added if the license is allowed.  Change later...
+			});
+
+			$('.item-toggle').click(function(e) {
+				$(this).toggleClass('toggled');
+				$(this).siblings('.item-fullinfo').toggleClass('toggled');
+			});
 		}
 
 		// Enable selection
@@ -256,40 +268,44 @@ HUB.ProjectPublicationsSelector = {
 		}
 
 		$('#pub-selector').selectable({
-			filter: ".allowed",
+			items: ".allowed",
 			cancel: 'a',
 			selected: function (event, ui)
 			{
-				// Prevent going over maximum
-				numSelected = $('.selectedfilter').length;
-				if (max == numSelected
-					&& !$(ui.selected).hasClass('selectedfilter'))
-				{
-					// Remove filter from previously selected item(s)
-					var popItem = $('.selectedfilter')[0];
-					$(popItem).removeClass('selectedfilter');
+				if ($(ui.selected).hasClass('allowed')) { // This shouldn't be necessary as items is set to allowed
+					// Prevent going over maximum
+					numSelected = $('.selectedfilter').length;
+					if (max == numSelected
+						&& !$(ui.selected).hasClass('selectedfilter'))
+					{
+						// Remove filter from previously selected item(s)
+						var popItem = $('.selectedfilter')[0];
+						$(popItem).removeClass('selectedfilter');
 
-					$(ui.selected).addClass('selectedfilter');
+						$(ui.selected).addClass('selectedfilter');
 
-					// Nothing happens
-					//$(ui.selected).removeClass('selectedfilter');
-				}
-				else if ($(ui.selected).hasClass('selectedfilter'))
-				{
-					$(ui.selected).removeClass('selectedfilter');
-					// do unselected stuff
-				}
-				else
-				{
-					$(ui.selected).addClass('selectedfilter');
-				}
+						// Nothing happens
+						//$(ui.selected).removeClass('selectedfilter');
+					}
+					else if ($(ui.selected).hasClass('selectedfilter'))
+					{
+						$(ui.selected).removeClass('selectedfilter');
+						// do unselected stuff
+					}
+					else
+					{
+						$(ui.selected).addClass('selectedfilter');
+					}
 
-				HUB.ProjectPublicationsSelector.enableButton();
+					HUB.ProjectPublicationsSelector.enableButton();
+				}
 			},
 			unselected: function (event, ui)
 			{
-				$(ui.selected).removeClass('selectedfilter');
-				HUB.ProjectPublicationsSelector.enableButton();
+				if ($(ui.selected).hasClass('allowed')) { // This shouldn't be necessary as items is set to allowed
+					$(ui.selected).removeClass('selectedfilter');
+					HUB.ProjectPublicationsSelector.enableButton();
+				}
 			}
 		});
 
