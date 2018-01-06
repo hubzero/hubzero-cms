@@ -37,13 +37,8 @@ $pubParams = $this->publication->params;
 <ul class="pub-selector" id="pub-selector">
 	<?php foreach ($this->selections as $item)
 	{
-		$selected = $this->publication->get('license_type') && $this->publication->get('license_type') == $item->id ? true : false;
-
-		// Automatically seleçt default license
-		if ($item->main)
-		{
-			$selected = true;
-		}
+		// Select license if (1) license type matches item id, or (2) there is no license type yet and this item is the default license
+		$selected = ($this->publication->get('license_type') && $this->publication->get('license_type') == $item->id) || (!$this->publication->get('license_type') && ($item->main)) ? true : false;
 
 		$liId = 'choice-' . $item->id;
 
@@ -59,6 +54,7 @@ $pubParams = $this->publication->params;
 		?>
 		<li class="type-license allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
 			<span class="item-info"></span>
+			<span class="item-toggle"></span>
 			<span class="item-wrap">
 			<?php if ($item->icon) { echo '<img src="' . $icon . '" alt="' . htmlentities($item->title) . '" />'; } ?><?php echo $item->title; ?>
 			</span>
