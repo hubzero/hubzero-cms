@@ -130,8 +130,8 @@ function submitbutton(pressbutton)
 				</div>
 
 				<div class="input-wrap">
-					<label for="newsletter-template"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
-					<select name="newsletter[template]" id="newsletter-template">
+					<label for="newsletter-template_id"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
+					<select name="newsletter[template_id]" id="newsletter-template_id">
 						<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?></option>
 						<option value="-1" <?php if ($this->newsletter->template_id == '-1') : ?>selected="selected"<?php endif; ?>>
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
