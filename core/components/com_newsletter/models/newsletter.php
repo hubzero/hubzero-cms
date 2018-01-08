@@ -315,7 +315,7 @@ class Newsletter extends Relational
 			return false;
 		}
 
-		foreach ($this->primaries as $primary)
+		foreach ($this->primary()->rows() as $primary)
 		{
 			$primary->set('nid', $newsletter->get('id'));
 
@@ -326,7 +326,7 @@ class Newsletter extends Relational
 			}
 		}
 
-		foreach ($this->secondaries as $secondary)
+		foreach ($this->secondary()->rows() as $secondary)
 		{
 			$secondary->set('nid', $newsletter->get('id'));
 
