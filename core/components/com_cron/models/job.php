@@ -49,7 +49,7 @@ class Job extends Relational
 	 *
 	 * @var  object
 	 */
-	protected $expression = null
+	protected $expression = null;
 
 	/**
 	 * Profiler
