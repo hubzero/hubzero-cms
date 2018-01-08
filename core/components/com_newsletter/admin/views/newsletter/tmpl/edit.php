@@ -43,11 +43,12 @@ $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('C
 Toolbar::title(Lang::txt('COM_NEWSLETTER') . ': ' . $text, 'newsletter.png');
 
 //add buttons to toolbar
-Toolbar::apply();
 if ($this->newsletter->id)
 {
-	Toolbar::save();
+	Toolbar::apply();
 }
+Toolbar::save();
+Toolbar::spacer();
 Toolbar::cancel();
 
 //primary and secondary stories
@@ -69,7 +70,7 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" data-formwatcher-message="<?php echo Lang::txt('You are now leaving this page to add stories and your current changes have not been saved. Click &quot;Stay on Page&quot; and then save the newsletter first before proceeding to add stories.'); ?>">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" data-formwatcher-message="<?php echo Lang::txt('You are now leaving this page to add stories and your current changes have not been saved. Click &quot;Stay on Page&quot; and then save the newsletter first before proceeding to add stories.'); ?>">
 	<div class="grid">
 		<div class="col span6">
 			<fieldset class="adminform">
@@ -111,12 +112,14 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="newsletter-template"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
 					<select name="newsletter[template]" id="newsletter-template">
-						<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?></option>
+						<option value="">
+							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?>
+						</option>
 						<option value="-1" <?php if ($this->newsletter->template == '-1') : ?>selected="selected"<?php endif; ?>>
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
 						</option>
 						<?php foreach ($this->templates as $t) : ?>
-							<?php echo $sel = ($t->id == $this->newsletter->template) ? 'selected="selected"' : '' ; ?>
+							<?php echo $sel = ($t->id == $this->newsletter->template) ? 'selected="selected"' : ''; ?>
 							<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
 								<?php echo $t->name; ?>
 							</option>

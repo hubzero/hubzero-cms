@@ -37,13 +37,13 @@ defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES'), 'template.png');
 
 //add toolbar buttons
+Toolbar::preferences($this->option, '550');
+Toolbar::spacer();
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
 Toolbar::spacer();
 Toolbar::deleteList('COM_NEWSLETTER_TEMPLATE_DELETE_CHECK', 'delete');
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
 ?>
 <?php
 	if ($this->getError())

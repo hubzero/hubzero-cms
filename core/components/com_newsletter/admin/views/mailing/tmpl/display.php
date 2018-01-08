@@ -34,11 +34,10 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_MAILINGS' ), 'mailing.png');
+Toolbar::preferences($this->option, '550');
 Toolbar::spacer();
 Toolbar::custom('tracking', 'stats', '', 'COM_NEWSLETTER_TOOLBAR_STATS');
 Toolbar::custom('stop', 'trash', '', 'COM_NEWSLETTER_TOOLBAR_STOP');
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
 ?>
 
 <script type="text/javascript">

@@ -34,14 +34,14 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list.png');
+Toolbar::preferences($this->option, '550');
+Toolbar::spacer();
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
 Toolbar::spacer();
 Toolbar::custom('manage', 'user', '', 'COM_NEWSLETTER_TOOLBAR_MANAGE');
 Toolbar::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT');
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

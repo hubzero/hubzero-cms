@@ -40,6 +40,8 @@ Html::behavior('modal');
 Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
 
 //add buttons to toolbar
+Toolbar::preferences($this->option, '550');
+Toolbar::spacer();
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
@@ -51,8 +53,6 @@ Toolbar::spacer();
 Toolbar::custom('preview', 'preview', '', 'COM_NEWSLETTER_TOOLBAR_PREVIEW');
 Toolbar::custom('sendtest', 'sendtest', '', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST');
 Toolbar::custom('sendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND');
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
 
 // add js
 $this->js();
