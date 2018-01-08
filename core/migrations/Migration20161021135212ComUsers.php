@@ -72,7 +72,7 @@ class Migration20161021135212ComUsers extends Base
 			$this->db->query();
 		}
 	}
-	
+
 	/**
 	 * Down
 	 **/
