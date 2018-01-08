@@ -34,8 +34,8 @@ use Components\Publications\Models\Block as Base;
 use stdClass;
 
 include_once \Component::path('com_citations') . DS . 'tables' . DS . 'citation.php';
-include_once \Component::path('components') . DS . 'com_citations' . DS . 'tables' . DS . 'association.php';
-include_once \Component::path('components') . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
+include_once \Component::path('com_citations') . DS . 'tables' . DS . 'association.php';
+include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 /**
  * Citations block
