@@ -118,7 +118,7 @@ class Packages extends AdminController
 		$packageName    = Request::getVar('packageName', null);
 		$packageVersion = Request::getVar('packageVersion', null);
 
-		ComposerHelper::installPackage($packageName, $packageVersion);
+		Cli::installPackage($packageName, $packageVersion);
 
 		// Set the redirect
 		$this->cancelTask();

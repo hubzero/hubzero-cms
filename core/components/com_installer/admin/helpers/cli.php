@@ -215,6 +215,30 @@ class Cli
 		return self::call('run', 'migration', $args);
 	}
 
+	public static function installPackage($packageName, $packageVersion)
+	{
+		$args = array();
+		if (!empty($packageName))
+		{
+			$args[] = 'package=' . $packageName;
+		}
+		if (!empty($packageVersion))
+		{
+			$args[] = 'version=' . $packageVersion;
+		}
+		return self::call('install', 'app:package', $args);
+	}
+
+	public static function removePackage($packageName)
+	{
+		$args = array();
+		if (!empty($packageName))
+		{
+			$args[] = 'package=' . $packageName;
+		}
+		return self::call('remove', 'app:package', $args);
+	}
+
 	/**
 	 * Make actual muse calls
 	 *
