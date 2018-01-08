@@ -74,7 +74,7 @@ class Helper extends Module
 					// display tag
 					$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
 					$normalized = strtolower($normalized);
-					$out .= "\t" . '<a href="' . Route::url('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
+					$out .= "\t" . '<a href="' . Route::url('index.php?option=com_tags&task=view&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num)

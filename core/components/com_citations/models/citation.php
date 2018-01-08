@@ -629,7 +629,7 @@ class Citation extends Relational
 					//display tag if not admin tag or if admin tag and user is adminstrator
 					if (!$tag->tag->admin || ($tag->tag->admin && $isAdmin))
 					{
-						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag->tag) . '">' . stripslashes($tag->tag->raw_tag) . '</a></li>';
+						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&task=view&tag=' . $tag->tag->tag) . '">' . stripslashes($tag->tag->raw_tag) . '</a></li>';
 					}
 				}
 			}
