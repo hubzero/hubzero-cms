@@ -9,7 +9,7 @@ defined('_HZEXEC_') or die();
  * Migration script to change database engine for some user tables
  **/
 class Migration2016090710530000ComUsers extends Base
-{	
+{
 	private function changeEngine($table,$engine)
 	{
 		if ($this->db->tableExists($table) && strtolower($this->db->getEngine($table)) != $engine)
@@ -22,8 +22,8 @@ class Migration2016090710530000ComUsers extends Base
 
 	public function up()
 	{
-		$this->changeEngine('#__users_tool_preferences','MyISAM');
-		$this->changeEngine('#__users_quotas_classes_groups','MyISAM');
+		$this->changeEngine('#__users_tool_preferences', 'MyISAM');
+		$this->changeEngine('#__users_quotas_classes_groups', 'MyISAM');
 	}
 
 	public function down()

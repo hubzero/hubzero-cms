@@ -276,7 +276,7 @@ class Migration20130924000009ComMenus extends Base
 
 			if ($result)
 			{
-				$result->id = NULL;
+				$result->id = null;
 				$this->db->insertObject('#__menu', $result);
 				$id = $this->db->insertid();
 
