@@ -44,6 +44,11 @@ Toolbar::spacer();
 Toolbar::help('product');
 
 $this->css();
+
+if (empty($this->meta->qtyTxt))
+{
+	$this->meta->qtyTxt = '';
+}
 ?>
 <script type="text/javascript">
 	function submitbutton(pressbutton)
@@ -135,8 +140,8 @@ $this->css();
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_OPTIONS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_TYPE'); ?>:</label>
-				<select name="fields[ptId]" id="field-state">
+				<label for="field-type"><?php echo Lang::txt('COM_STOREFRONT_TYPE'); ?>:</label>
+				<select name="fields[ptId]" id="field-type">
 					<?php
 
 					foreach ($this->types as $type)
@@ -160,11 +165,16 @@ $this->css();
 			?>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
-				<select name="fields[pAllowMultiple]" id="field-state">
+				<label for="field-multi"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
+				<select name="fields[pAllowMultiple]" id="field-multi">
 					<option value="0"<?php if ($this->row->getAllowMultiple() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
 					<option value="1"<?php if ($this->row->getAllowMultiple() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
 				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-qtytxt"><?php echo Lang::txt('COM_STOREFRONT_QTY_TXT'); ?>:</label>
+				<input type="text" name="fields[pQtyTxt]" id="field-qtytxt" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->meta->qtyTxt)); ?>" />
 			</div>
 		</fieldset>
 

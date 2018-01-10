@@ -128,7 +128,23 @@ if (!empty($this->notifications))
 						</div>
 					<?php } ?>
 
-					<div id="qtyWrap" data-label="<?php echo $this->escape($this->config->get('quantityText') ? $this->config->get('quantityText') : Lang::txt('Quantity')); ?>">
+					<?php
+						// Quantity text
+						if (!empty($this->meta->qtyTxt))
+						{
+							$qtyTxt = $this->meta->qtyTxt;
+						}
+						elseif ($this->config->get('quantityText'))
+						{
+							$qtyTxt = $this->config->get('quantityText');
+						}
+						else {
+							$qtyTxt = Lang::txt('Quantity');
+						}
+
+					?>
+
+					<div id="qtyWrap" data-label="<?php echo $qtyTxt; ?>">
 						<?php
 						$addToCartEnabled = false;
 						if ($this->qtyDropDown)
@@ -137,7 +153,7 @@ if (!empty($this->notifications))
 							if ($this->qtyDropDown > 1)
 							{
 								echo '<div class="inner">';
-								echo '<label for="qty">' . ($this->config->get('quantityText') ? $this->config->get('quantityText') : Lang::txt('Quantity')) . '</label> ';
+								echo '<label for="qty">' . $qtyTxt . '</label> ';
 								echo '<select name="qty" id="qty">';
 								for ($i = 1; $i <= $this->qtyDropDown; $i++)
 								{
