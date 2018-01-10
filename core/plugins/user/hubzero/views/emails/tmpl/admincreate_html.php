@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2018 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2018 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
@@ -84,7 +83,7 @@ $base = rtrim($base, '/');
 				<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
 			</td>
 			<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
-				<?php echo Lang::txt('PLG_USER_JOOMLA_EMAIL_ACCOUNTS'); ?>
+				<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNTS'); ?>
 			</td>
 		</tr>
 	</tbody>
@@ -104,7 +103,7 @@ $base = rtrim($base, '/');
 	<tbody>
 		<tr>
 			<td style="font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
-				<?php echo Lang::txt('PLG_USER_JOOMLA_EMAIL_ACCOUNT_CREATION_NOTIFICATION'); ?>
+				<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNT_CREATION_NOTIFICATION'); ?>
 			</td>
 		</tr>
 	</tbody>
@@ -124,11 +123,11 @@ $base = rtrim($base, '/');
 		<tr>
 			<td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
 				<p>
-					<?php echo Lang::txt('PLG_USER_JOOMLA_EMAIL_ADMIN_ACCOUNT_REQUESTED', $this->user['name'] . ' (' . $this->user['email'] . ')', $this->user['username'], $this->sitename); ?>
+					<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_ACCOUNT_REQUESTED', $this->user['name'] . ' (' . $this->user['email'] . ')', $this->user['username'], $this->sitename); ?>
 				</p>
 
 				<p>
-					<?php echo Lang::txt('PLG_USER_JOOMLA_EMAIL_ADMIN_REVIEW_LINK'); ?>
+					<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_REVIEW_LINK'); ?>
 					<?php echo $base . Route::url('index.php?option=com_members&id=' . $this->user['id']); ?>
 				</p>
 			</td>
