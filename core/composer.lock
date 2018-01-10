@@ -941,12 +941,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "5e54d46e3eae8f19a15e12876b1a2507f3d0482e"
+                "reference": "9507b0e3f51085ca8cf4f0e02b8fd16f0c65364c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/5e54d46e3eae8f19a15e12876b1a2507f3d0482e",
-                "reference": "5e54d46e3eae8f19a15e12876b1a2507f3d0482e",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/9507b0e3f51085ca8cf4f0e02b8fd16f0c65364c",
+                "reference": "9507b0e3f51085ca8cf4f0e02b8fd16f0c65364c",
                 "shasum": ""
             },
             "require": {
@@ -955,6 +955,7 @@
                 "symfony/yaml": "2.5.*"
             },
             "require-dev": {
+                "composer/composer": "^1.5",
                 "hubzero/standards": "dev-master",
                 "jakub-onderka/php-parallel-lint": "0.9.*",
                 "mockery/mockery": "0.9.*",
@@ -979,7 +980,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2018-01-03 13:39:39"
+            "time": "2018-01-10 19:29:08"
         },
         {
             "name": "hubzero/orcid-php",

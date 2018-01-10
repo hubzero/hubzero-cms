@@ -48,20 +48,35 @@ class LogServiceProvider extends ServiceProvider
 	{
 		$this->app['log'] = function($app)
 		{
-			$manager = new Manager($app);
+			$path = $app['config']->get('log_path');
+			if (is_dir('/var/log/hubzero'))
+			{
+				$path = '/var/log/hubzero';
+			}
+
+			$dispatcher = null;
+			if ($app->has('dispatcher'))
+			{
+				$dispatcher = $app['dispatcher'];
+			}
+
+			$manager = new Manager($path);
 
 			$manager->register('debug', array(
-				'file' => 'cmsdebug.log',
+				'file'       => 'cmsdebug.log',
+				'dispatcher' => $dispatcher
 			));
 
 			$manager->register('auth', array(
-				'file'   => 'cmsauth.log',
-				'level'  => 'info',
-				'format' => "%datetime% %message%\n",
+				'file'       => 'cmsauth.log',
+				'level'      => 'info',
+				'format'     => "%datetime% %message%\n",
+				'dispatcher' => $dispatcher
 			));
 
 			$manager->register('spam', array(
-				'file' => 'cmsspam.log'
+				'file'       => 'cmsspam.log',
+				'dispatcher' => $dispatcher
 			));
 
 			return $manager;
