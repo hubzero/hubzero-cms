@@ -51,8 +51,8 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 		$userEmailPreferenceOption = $user->get('sendEmail');
 
 		//get values from plugin params
-		$_ccUsername   = $this->params->get('ccUsername','');
-		$_ccPassword   = $this->params->get('ccPassword','');
+		$_ccUsername   = $this->params->get('ccUsername', '');
+		$_ccPassword   = $this->params->get('ccPassword', '');
 		$_ccApiKey     = $this->params->get('ccApiKey', '');
 		$_ccManagePref = $this->params->get('ccManageEmailPreference', 0);
 
@@ -147,8 +147,8 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 		require_once __DIR__ . DS . 'lib' . DS . 'ConstantContact.php';
 
 		//get values from plugin params
-		$_ccUsername = $this->params->get('ccUsername','');
-		$_ccPassword = $this->params->get('ccPassword','');
+		$_ccUsername = $this->params->get('ccUsername', '');
+		$_ccPassword = $this->params->get('ccPassword', '');
 		$_ccApiKey   = $this->params->get('ccApiKey', '');
 
 		//build constant contact object
