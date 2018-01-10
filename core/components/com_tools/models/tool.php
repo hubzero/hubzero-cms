@@ -174,7 +174,7 @@ class Tool
 
 		$this->_updatedkeys = array();
 
-		foreach ($cvars as $key=>$value)
+		foreach ($cvars as $key => $value)
 		{
 			if ($key{0} != '_')
 			{
@@ -230,7 +230,7 @@ class Tool
 
 		if (true)
 		{
-			foreach (self::$_propertyattrmap as $key=>$value)
+			foreach (self::$_propertyattrmap as $key => $value)
 			{
 				$current = $this->__get($key);
 
@@ -407,7 +407,7 @@ class Tool
 
 		$this->clear();
 
-		foreach ($result as $key=>$value)
+		foreach ($result as $key => $value)
 		{
 			$this->__set($key, $value);
 		}
@@ -487,7 +487,7 @@ class Tool
 
 		$first = true;
 
-		foreach ($classvars as $property=>$value)
+		foreach ($classvars as $property => $value)
 		{
 			if (($property{0} == '_') || in_array($property, $this->_list_keys))
 			{
@@ -606,7 +606,7 @@ class Tool
 			}
 			else
 			{
-				foreach ($list as $key=>$value)
+				foreach ($list as $key => $value)
 				{
 					$list[$key] = $db->Quote($value);
 				}
@@ -1389,9 +1389,9 @@ class Tool
 			JOIN `#__xgroups` AS xg ON g.cn=xg.cn
 			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->query($uid);
 
-		$this->_db->setQuery($sql);
+		$db->setQuery($sql);
 
-		return $this->_db->loadColumn();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -1488,7 +1488,7 @@ class Tool
 		}
 
 		// Check if repository exists under /apps - added to allow for auto-AddRepo
-		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) OR is_dir('/apps/'.$tool['toolname'])))
+		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) || is_dir('/apps/'.$tool['toolname'])))
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
