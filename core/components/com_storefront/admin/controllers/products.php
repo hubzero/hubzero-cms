@@ -236,6 +236,10 @@ class Products extends AdminController
 			$this->view->downloaded = $downloaded;
 		}
 
+		// Get meta
+		$meta = $this->view->row->getMeta();
+		$this->view->meta = $meta;
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -321,6 +325,11 @@ class Products extends AdminController
 			if (isset($fields['pAllowMultiple']))
 			{
 				$product->setAllowMultiple($fields['pAllowMultiple']);
+			}
+
+			if (isset($fields['pQtyTxt']))
+			{
+				$product->setMeta(array('qtyTxt' => $fields['pQtyTxt']));
 			}
 
 			if (!isset($fields['collections'])) {
