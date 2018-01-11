@@ -372,7 +372,8 @@ class Html
 				$formatted = str_replace('doi:', '', $formatted);
 			}
 
-			if ($cite->organization && $cite->org_url) {
+			if (array_key_exists('organization', $cite) && 
+				array_key_exists('org_url', $cite)) {
 				$formatted = str_replace($cite->organization, '<a href="' . $cite->org_url . '" rel="internal">' . $cite->organization . '</a>', $formatted);
 			}
 
