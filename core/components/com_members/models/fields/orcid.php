@@ -91,8 +91,6 @@ class Orcid extends Text
 		$html[] = '		<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />';
 		$html[] = '	</div>';
 		$html[] = '	<div class="col span3 omega">';
-		//$html[] = '		<a class="btn button icon-search orcid-fetch" data-base="' . rtrim(Request::base(true), '/') . '" data-id="' . $this->id . '" href="' . rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&controller=orcid'), '/') . '">' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIND') . '</a>';
-		
 		// Build the ORCID Create or Connect hyperlink
 		$config = Component::params('com_members');
 		$srv = $config->get('orcid_service', 'members');
@@ -106,7 +104,6 @@ class Orcid extends Text
 	    $html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/authenticate' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($redirectURI)
 		. '" target="_blank">' . '<img src="' . Request::root() . '/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
 		. Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
-		
 		$html[] = '	</div>';
 		$html[] = '</div>';
 		$html[] = '<p><img src="' . Request::root()  . '/core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="ORCID" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
