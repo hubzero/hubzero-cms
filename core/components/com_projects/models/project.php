@@ -623,16 +623,16 @@ class Project extends Model
 					}
 				break;
 
+				case 5:
+					// Read-only
+					$this->params->set('access-readonly-project', true);
+				break;
+
 				case 2:
 				case 3:
 				default:
 					// Collaborator/author
 					$this->params->set('access-content-project', true);
-				break;
-
-				case 5:
-					// Read-only
-					$this->params->set('access-readonly-project', true);
 				break;
 			}
 		}
