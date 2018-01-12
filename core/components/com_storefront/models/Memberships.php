@@ -110,7 +110,7 @@ class Memberships
 		else
 		{
 			require_once($lookupPath . DS . 'BaseSubscription.php');
-			return new BaseSubscription($pId, $uId);
+			return new \BaseSubscription($pId, $uId);
 		}
 	}
 

@@ -274,9 +274,9 @@ class CartMessenger
 
 		foreach ($items as $k => $item)
 		{
-			$itemInfo = $item['info'];
-			$cartInfo = $item['cartInfo'];
-			$itemMeta = $item['meta'];
+			$itemInfo = (isset($item['info']) ? $item['info'] : array());
+			$cartInfo = (isset($item['cartInfo']) ? $item['cartInfo'] : array());
+			$itemMeta = (isset($item['meta']) ? $item['meta'] : array());
 
 			$productType = $warehouse->getProductTypeInfo($itemInfo->ptId)['ptName'];
 
