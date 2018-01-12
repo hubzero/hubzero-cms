@@ -153,6 +153,11 @@ class CartDownload
 			$sql .= " AND (" . implode(" OR ", $where) . ")";
 		}
 
+		if (!empty($filters['uidNumber']) && $filters['uidNumber'])
+		{
+			$sql .= " AND d.`uId` = " . intval($filters['uidNumber']);
+		}
+
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')
