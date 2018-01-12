@@ -71,7 +71,7 @@ class Jobs extends SiteController
 		{
 			$ip = Request::ip();
 
-			$ips = explode(',', $this->config->get('whitelist',''));
+			$ips = explode(',', $this->config->get('whitelist', ''));
 			$ips = array_map('trim', $ips);
 
 			if (!in_array($ip, $ips))
