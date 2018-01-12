@@ -99,6 +99,12 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.report-to',
 				'report-to',
 				date('m/d/Y')
+			),
+			'uidNumber' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.uidNumber',
+				'uidNumber',
+				0,
+				'int'
 			)
 		);
 

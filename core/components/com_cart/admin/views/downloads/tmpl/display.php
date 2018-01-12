@@ -131,6 +131,17 @@ $this->view('_submenu')
 
 	<table class="adminlist">
 		<thead>
+		<?php if ($this->filters['uidNumber']) { ?>
+			<tr>
+				<th colspan="6"><?php echo Lang::txt('COM_CART_ORDERS_FOR'); ?>: <?php
+					$user = User::getInstance($this->filters['uidNumber']);
+
+					echo ($user->get('id') ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber']);
+					?>
+					<button type="button" onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				</th>
+			</tr>
+		<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -199,7 +210,13 @@ $this->view('_submenu')
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>
-					<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
+					<?php if ($row->uidNumber) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber); ?>">
+							<?php } ?>
+							<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
+							<?php if ($row->uidNumber) { ?>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
 					<?php
@@ -275,6 +292,7 @@ $this->view('_submenu')
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="uidNumber" id="filter_uidNumber" value="<?php echo $this->filters['uidNumber']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
