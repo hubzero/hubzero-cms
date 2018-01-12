@@ -239,23 +239,23 @@ class Job extends Relational
 		switch (strtolower($as))
 		{
 			case 'date':
-				return Date::of($this->get('date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return Date::of($this->get('date'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			case 'relative':
-				return Date::of($this->get('date'))->relative();
+				return Date::of($this->get('created'))->relative();
 			break;
 
 			default:
 				if ($as)
 				{
-					return Date::of($this->get('date'))->toLocal($as);
+					return Date::of($this->get('created'))->toLocal($as);
 				}
-				return $this->get('date');
+				return $this->get('created');
 			break;
 		}
 	}
@@ -318,7 +318,7 @@ class Job extends Relational
 			return false;
 		}
 
-		$now = Date::of('now')->toLocal('Y-m-d H:i:s');
+		$now = Date::of('now')->toSql();
 
 		if ($this->get('publish_up')
 		 && $this->get('publish_up') != '0000-00-00 00:00:00'
@@ -342,7 +342,7 @@ class Job extends Relational
 			return true;
 		}
 
-		$now = Date::of('now')->toLocal('Y-m-d H:i:s');
+		$now = Date::of('now')->toSql();
 
 		if ($this->get('publish_down')
 		 && $this->get('publish_down') != '0000-00-00 00:00:00'
@@ -361,7 +361,7 @@ class Job extends Relational
 	 */
 	public function lastRun($format = 'Y-m-d H:i:s')
 	{
-		return Date::of($this->expression()->getPreviousRunDate()->format($format))->toLocal($format);
+		return $this->expression()->getPreviousRunDate()->format($format);
 	}
 
 	/**
@@ -371,7 +371,7 @@ class Job extends Relational
 	 */
 	public function nextRun($format = 'Y-m-d H:i:s')
 	{
-		return Date::of($this->expression()->getNextRunDate()->format($format))->toLocal($format);
+		return $this->expression()->getNextRunDate()->format($format);
 	}
 
 	/**
