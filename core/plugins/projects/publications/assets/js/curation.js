@@ -966,7 +966,6 @@ HUB.ProjectPublicationsDraft = {
 		var agree 	= $('#agreement');
 		var element = $('#licensePick');
 		var custom  = $('.customfield');
-
 		if (!element.length)
 		{
 			return false;
@@ -1022,16 +1021,18 @@ HUB.ProjectPublicationsDraft = {
 		var license = $('#license').val() ? 1 : 0;
 		var ltext 		= $('#license-text');
 		var agree 		= $('#agreement');
+
+		// Checks if agreement is a required step. If so, ensures it has been checked
+		var agreementValidated = agree.length ? agree.attr('checked') == 'checked' : true;
 		var element 	= $('#licensePick');
 		var required 	= $(element).hasClass('el-required') ? 1 : 0;
 		var custom 		= $('.customfield');
-
-		if (required && license && agree.attr('checked') == 'checked')
+		if (required && license && agreementValidated)
 		{
 			// If required, but license is selected and "I agree".
 			complete = 1;
 		}
-		else if (!required && license && agree.attr('checked') == 'checked')
+		else if (!required && license && agreementValidated)
 		{
 			// If not required, but license is selected and "I agree".
 			complete = 1;
