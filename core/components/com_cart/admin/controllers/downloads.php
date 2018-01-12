@@ -483,3 +483,4 @@ class Downloads extends AdminController
 		die;
 	}
 }
+

@@ -180,7 +180,7 @@ abstract class Cart
 		$db = \App::get('db');
 
 		// Get info
-		$sql = "SELECT ";
+		$sql = "SELECT DISTINCT ";
 		if ((!empty($filters['userInfo']) && $filters['userInfo']) || (isset($filters['search']) && $filters['search']))
 		{
 			$sql .= " x.`id` AS uidNumber, x.`name`, crt.`crtId`, ";
@@ -271,6 +271,7 @@ abstract class Cart
 		}
 
 		$db->setQuery($sql);
+		//print_r($db->toString()); die;
 		$db->query();
 
 		$totalRows = $db->getNumRows();

@@ -158,6 +158,7 @@ class CartDownload
 			$sql .= " AND d.`uId` = " . intval($filters['uidNumber']);
 		}
 
+<<<<<<< HEAD
 		if (!empty($filters['pId']) && $filters['pId'])
 		{
 			$sql .= " AND p.`pId` = " . intval($filters['pId']);
@@ -168,6 +169,8 @@ class CartDownload
 			$sql .= " AND s.`sId` = " . intval($filters['sId']);
 		}
 
+=======
+>>>>>>> 020899d... [COM_CART] Add downloaded by history lookup
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')
