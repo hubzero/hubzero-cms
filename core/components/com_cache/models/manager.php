@@ -271,7 +271,7 @@ class Manager extends Object
 	{
 		if (empty($this->total))
 		{
-			$this->total = count($this->getData());
+			$this->total = count($this->data());
 		}
 
 		return $this->total;

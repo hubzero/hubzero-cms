@@ -51,7 +51,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<div class="filter-select">
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
 				<?php foreach (\Components\Cache\Helpers\Helper::getClientOptions() as $option) : ?>
-					<option value="<?php echo $option->value; ?>"<?php if ($option->value == $this->state->get('clientId')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($option->text); ?></option>
+					<option value="<?php echo $option->value; ?>"<?php if ($option->value == $this->state->get('clientId')) { echo ' selected="selected"'; } ?>><?php echo ucfirst($this->escape($option->text)); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
