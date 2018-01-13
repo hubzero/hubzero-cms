@@ -342,7 +342,7 @@ jQuery(function(jq)
 			'<fieldset>' + 
 				'<legend>Selection type:</legend>' + 
 				'<div class="input-wrap">' + 
-					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-optional" value="optional" /> multiple-select (checkbox)</label><br />' + 
+					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-multiple" value="multiple" /> multiple-select (checkbox)</label><br />' + 
 					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-single" value="single" /> single-select (radio) </label><br />' + 
 					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-depth" value="depth" /> single-select</label> <label for="multiple-depth-new-' + new_idx + '">until depth: </label><br />' + 
 					'<input type="text" name="multiple-depth-new-' + new_idx + '" id="multiple-depth-new-' + new_idx + '" />' + 
