@@ -158,6 +158,16 @@ class CartDownload
 			$sql .= " AND d.`uId` = " . intval($filters['uidNumber']);
 		}
 
+		if (!empty($filters['pId']) && $filters['pId'])
+		{
+			$sql .= " AND p.`pId` = " . intval($filters['pId']);
+		}
+
+		if (!empty($filters['sId']) && $filters['sId'])
+		{
+			$sql .= " AND s.`sId` = " . intval($filters['sId']);
+		}
+
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')

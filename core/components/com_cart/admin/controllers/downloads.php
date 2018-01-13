@@ -54,6 +54,17 @@ class Downloads extends AdminController
 	 */
 	public function displayTask()
 	{
+		// Do some filter cleaning
+		$setPId = Request::getInt('pId', 0);
+		$setSId = Request::getInt('sId', 0);
+
+		if ($setPId) {
+			Request::setVar('sId', 0);
+		}
+		elseif($setSId) {
+			Request::setVar('pId', 0);
+		}
+
 		// Get filters
 		$this->view->filters = array(
 			'search' => Request::getState(
@@ -103,6 +114,18 @@ class Downloads extends AdminController
 			'uidNumber' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.uidNumber',
 				'uidNumber',
+				0,
+				'int'
+			),
+			'pId' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.pId',
+				'pId',
+				0,
+				'int'
+			),
+			'sId' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sId',
+				'sId',
 				0,
 				'int'
 			)

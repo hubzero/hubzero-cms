@@ -28,6 +28,8 @@
  */
 
 defined('_HZEXEC_') or die();
+use Components\Storefront\Models\Product;
+use Components\Storefront\Models\Sku;
 
 $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('download');
 
@@ -131,14 +133,44 @@ $this->view('_submenu')
 
 	<table class="adminlist">
 		<thead>
-		<?php if ($this->filters['uidNumber']) { ?>
+		<?php if ($this->filters['uidNumber'] || $this->filters['pId'] || $this->filters['sId']) { ?>
 			<tr>
-				<th colspan="6"><?php echo Lang::txt('COM_CART_ORDERS_FOR'); ?>: <?php
-					$user = User::getInstance($this->filters['uidNumber']);
+				<th colspan="8"><?php
+					if ($this->filters['uidNumber'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
+						$user = User::getInstance($this->filters['uidNumber']);
 
-					echo ($user->get('id') ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber']);
+						echo($user->get('id') ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber']);
+						?>
+						<button type="button"
+								onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
+					if ($this->filters['pId'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+						$product = Product::getInstance($this->filters['pId']);
+
+						echo($product->getName());
+						?>
+						<button type="button"
+								onclick="$('#filter_pId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
+					if ($this->filters['sId'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+						$sku = Sku::getInstance($this->filters['sId']);
+
+						echo($sku->getName());
+						?>
+						<button type="button"
+								onclick="$('#filter_sId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
 					?>
-					<button type="button" onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+
 				</th>
 			</tr>
 		<?php } ?>
@@ -207,6 +239,22 @@ $this->view('_submenu')
 						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
 					}
 					?>
+
+					<?php
+					$product = '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&pId=' . $row->pId) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
+					if (!stripslashes($row->pName))
+					{
+						$product = '<span class="missing">Product n/a</span>';
+					}
+					if (!stripslashes($row->sSku))
+					{
+						$product .= '<br />SKU: <span class="missing">n/a</span>';
+					}
+					else {
+						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&sId=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+					}
+					?>
+
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>
@@ -293,6 +341,8 @@ $this->view('_submenu')
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<input type="hidden" name="uidNumber" id="filter_uidNumber" value="<?php echo $this->filters['uidNumber']; ?>" />
+	<input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->filters['pId']; ?>" />
+	<input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->filters['sId']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
