@@ -1,0 +1,399 @@
+.data-entry {
+	margin-bottom: 1rem;
+}
+
+label {
+	cursor: auto;
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+textarea {
+	font-family: @bodyFont;
+	font-size: 1em;
+	line-height: 1.61803399em;
+	max-width: 100%;
+	padding: 0.4045084975em;
+	outline: none;
+	border: 1px solid #D9D9D9;
+	background: #F0F0F0;
+	.rounded();
+	.transition(all 0.1s ease-out);
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus {
+	background-color: #fff;
+}
+
+.placeholder-support {
+	color: #c53432;
+}
+
+/* HUB Forms */
+#hubForm {
+	position: relative;
+}
+
+/* Side fade */
+#hubForm small.hubform-before,
+#hubForm:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	height: auto;
+	border: 0;
+	_display: none;
+	width: 1px;
+	background-color: #ddd;
+	right: 239px;
+}
+
+#hubForm.login .explaination small.explaination-after,
+#hubForm.login .explaination:first-child:after {
+	display: none;
+}
+
+#hubForm fieldset {
+	color: #777;
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	padding: 0 0px 1.75em 0px;
+	margin: 0.7em 270px 1.7em 0;
+}
+
+#hubForm .explaination + fieldset {
+	//margin-right: 0px;
+}
+
+#hubForm legend {
+	display: block;
+	float: right;
+	width: 100%;
+	border-bottom: 1px solid #e5e5e5;
+	margin: 0 0 1em 0;
+	padding: 0.8em 2em;
+	*padding: 0.8em 0;
+	*text-indent: 2em;
+	font-weight: bold;
+	background: #666;
+	text-shadow: 0 -1px 1px #000;
+	color: #ececec;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#hubForm legend:before,
+#hubForm legend:after {
+	content: "";
+	display: table;
+	line-height: 0;
+}
+
+#hubForm legend:after {
+	clear: both;
+}
+
+#hubForm label {
+	display: block;
+	padding: 1.5em 2em 0 2em;
+}
+
+#hubForm input,
+#hubForm select,
+#hubForm textarea {
+	margin-top: 0.25em;
+	width: 100%;
+}
+
+#hubForm .btn {
+	margin-top: 0.25em;
+}
+
+#hubForm.full fieldset {
+	margin: 0.7em 0 1.7em 0;
+}
+
+#hubForm.full:before,
+#hubForm.full:after {
+	display: none;
+}
+
+#hubForm.full fieldset fieldset,
+#hubForm fieldset fieldset {
+	margin: 1.5em 2em;
+	padding: 0 0 1.5em 0;
+	border: 1px solid #e5e5e5;
+	float: none;
+	width: auto;
+}
+
+#hubForm fieldset fieldset label {
+	padding-top: 0.7em;
+}
+
+#hubForm fieldset fieldset legend {
+	float: none;
+	background: #fff;
+	color: #747474;
+	border: none;
+	width: auto;
+	padding: 0 1em;
+	margin: 0 0 0 1em;
+	text-indent: 0;
+	text-shadow: none;
+	font-size: 1em;
+}
+
+#hubForm.full fieldset fieldset fieldset,
+#hubForm fieldset fieldset fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+	float: none;
+	width: auto;
+}
+
+#hubForm fieldset fieldset fieldset label {
+	margin-left: 1.75em;
+}
+
+#hubForm fieldset fieldset fieldset legend label {
+	margin-left: 0;
+}
+
+#hubForm .options label,
+#hubForm .options input,
+#hubForm .option {
+	display: inline;
+	margin: 0 0.25em 0 0 !important;
+	margin: 0;
+	width: auto;
+}
+
+#hubForm .indent {
+	margin-left: 1.75em;
+}
+
+#hubForm .field-wrap,
+#hubForm p {
+	display: block;
+	margin: 1.5em 2em 0 2em;
+}
+
+#hubForm span.field-wrap,
+#hubForm label + .field-wrap {
+	margin: 0 2em 0 2em;
+}
+
+#hubForm label + input {
+	margin-left: 2em;
+	margin-right: 2em;
+	width: 92.5%;
+}
+
+#hubForm .grid .options label {
+	display: inline;
+	float: none;
+	width: auto;
+}
+
+#hubForm .grid {
+	margin: 0 2em;
+}
+
+#hubForm .grid label {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#hubForm label em {
+	display: block;
+	margin: -1.5em 0 0 10em;
+	text-align: right;
+	font: inherit;
+	color: #aa9;
+}
+
+#hubForm .submit {
+	padding: 1em 0 0 0;
+	text-align: center;
+	margin-right: 30%;
+}
+
+#hubForm.full .submit {
+	margin-right: 0;
+}
+
+#hubForm .submit input {
+	display: inline;
+	width: auto;
+}
+
+#hubForm .inactive {
+	color: #aa9;
+}
+
+#hubForm .explaination {
+	float: right;
+	min-height: 10px;
+	width: 210px;
+	padding: 10px 0 0 30px;
+	margin: 0 0 0 30px;
+	border-top: 1px solid #ddd;
+	position: relative;
+	padding: 10px 0 0 22px;
+}
+
+#hubForm .explaination a:hover {
+	color: #222;
+}
+
+#hubForm .explaination p {
+	margin: 1em 0;
+}
+
+#hubForm .explaination h2 {
+	position: relative;
+	margin: 1.5em 0 0.5em;
+	padding: 0;
+	border: none;
+	width: 100%;
+}
+
+#hubForm .explaination ul {
+	position: relative;
+	list-style: none;
+	color: #57b;
+}
+
+#hubForm span.optional,
+#hubForm span.required {
+	text-transform: uppercase;
+	font-size: xx-small;
+}
+
+#hubForm span.required {
+	color: red;
+}
+
+#hubForm span.optional {
+	color: #999;
+}
+
+#hubForm .hint {
+	color: #999;
+	font-size: 90%;
+}
+
+#hubForm span.hint {
+	line-height: 2em;
+}
+
+#hubForm .warning,
+#hubForm .error {
+	margin-top: 0;
+}
+
+#hubForm fieldset .error,
+#hubForm fieldset .warning,
+#hubForm fieldset .information,
+#hubForm fieldset .help {
+	margin: 1em 2em;
+}
+
+#hubForm ul {
+	margin: 1em 2em;
+}
+
+#hubForm ul li {
+	margin-left: 2em;
+}
+
+#hubForm ul li.error {
+	margin-left: 0;
+}
+
+#hubForm span.warning,
+#hubForm span.information,
+#hubForm span.help,
+#hubForm span.error {
+	margin: 0.5em 0 0 0;
+	display: inline-block;
+}
+
+#hubForm .error p,
+#hubForm .warning p,
+#hubForm .information p,
+#hubForm .help p {
+	margin: 1em 0;
+}
+
+#hubForm table {
+	margin: 1em 0;
+	border-top: 2px solid #DEE4CD;
+	border-color: #DEE4CD;
+}
+
+#hubForm table td,
+#hubForm table th {
+	border-color: #DEE4CD;
+}
+
+#hubForm table input,
+#hubForm table select {
+	width: auto;
+}
+
+#hubForm fieldset fieldset.fieldsWithErrors,
+#hubForm .fieldsWithErrors {
+	border: 1px solid #c00;
+}
+
+#hubForm fieldset fieldset.fieldsWithErrors legend,
+#hubForm .fieldWithErrors {
+	color: #c00;
+	font-weight: bold;
+}
+
+#hubForm .fieldWithErrors input,
+#hubForm .fieldWithErrors select,
+#hubForm .fieldWithErrors textarea {
+	background-color: #F8E5E5;
+}
+
+#hubForm .fieldWithErrors span.required,
+#hubForm .fieldWithErrors span.optional {
+	font-weight: normal;
+}
+
+#hubForm table input,
+#hubForm table select {
+	width: auto;
+}
+
+.com_content .subject #hubForm fieldset {
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+}
+
+.com_content .edit-form #hubForm {
+	border-color: #fff;
+}
+
+.subject #hubForm fieldset fieldset {
+	padding: 0 1em 1em 1em;
+	margin-top: 1em;
+}
+
+.subject #hubForm .submit {
+	margin-right: 0;
+}

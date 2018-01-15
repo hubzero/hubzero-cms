@@ -1,0 +1,21 @@
+.ckeditor-body,
+.cke_panel_container body {
+  padding: 10px;
+  min-width: inherit;
+  background: #FFF !important;
+}
+.ckeditor-body table {
+  border: none;
+}
+.ckeditor-body table th,
+.ckeditor-body table td {
+  border: 1px solid #dadada;
+}
+.article-info,
+.actions {
+  display: none;
+}
+/* [!] J2.5 Hide edit buttons etc. on com_content pages */
+.com_content ul.actions {
+  display: none;
+}

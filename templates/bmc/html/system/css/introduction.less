@@ -1,0 +1,11 @@
+@import "../../../less/_mixins/mixins";
+@import "../../../less/_vars/vars";
+
+#introduction {
+	.box-shadow(0px 1px 30px rgba(0,0,0,0.04));
+
+	// Remove the icon that is being added by some components
+	&:after {
+		content: '' !important;
+	}
+}

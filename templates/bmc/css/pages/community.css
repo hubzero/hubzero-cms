@@ -1,0 +1,127 @@
+/*
+@fontSizeLarge:         @baseFontSize * 1.25; // ~18px
+@fontSizeSmall:         @baseFontSize * 0.85; // ~12px
+@fontSizeMini:          @baseFontSize * 0.75; // ~11px
+
+@paddingLarge:          11px 19px; // 44px
+@paddingSmall:          2px 10px;  // 26px
+@paddingMini:           0 6px;   // 22px
+
+@baseBorderRadius:      0.25em;
+@borderRadiusLarge:     0.5em;
+@borderRadiusSmall:     0.125em;
+*/
+.com_content .contentpaneopen {
+  padding: 0;
+}
+.com_content .tagline {
+  margin: 0;
+  font-size: 2em;
+  padding: 0 10px;
+}
+@media (min-width: 500px) {
+  .com_content .tagline {
+    padding: 0 20px;
+  }
+}
+@media (min-width: 900px) {
+  .com_content .tagline {
+    padding: 0 25px;
+  }
+}
+@media (min-width: 1200px) {
+  .com_content .tagline {
+    padding: 0 40px;
+  }
+}
+.com_content .about {
+  border: none;
+  position: relative;
+  margin: 0;
+  padding: 30px 10px;
+}
+.com_content .about.odd {
+  background: #fff;
+}
+.com_content .about.even {
+  background: #fafafa;
+}
+.com_content .about h3 a {
+  color: #484848;
+  border: none;
+}
+@media (min-width: 40em) {
+  .com_content .tagline {
+    line-height: 1.5;
+  }
+  .com_content .about {
+    line-height: 1.8em;
+  }
+  .com_content .about.odd {
+    padding: 30px 10px 30px 50%;
+  }
+  .com_content .about.even {
+    padding: 30px 50% 30px 10px;
+  }
+  .com_content .about h3:after {
+    display: block;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 40px;
+    z-index: 100;
+    font-family: 'Fontcons';
+    font-size: 125px;
+    line-height: 1;
+    left: 17.5%;
+    color: #ccc;
+    content: "";
+  }
+  .com_content .about.even h3:after {
+    left: auto;
+    right: 17.5%;
+  }
+  .com_content .about.members h3:after {
+    content: "\f007";
+  }
+  .com_content .about.groups h3:after {
+    content: "\f042";
+    font-size: 150px;
+  }
+  .com_content .about.answers h3:after {
+    content: "\f0e6";
+  }
+  .com_content .about.forum h3:after {
+    content: "\f075";
+  }
+}
+@media (min-width: 40em) and (min-width: 500px) {
+  .com_content .about.odd {
+    padding: 30px 20px 30px 50%;
+  }
+}
+@media (min-width: 40em) and (min-width: 900px) {
+  .com_content .about.odd {
+    padding: 30px 25px 30px 50%;
+  }
+}
+@media (min-width: 40em) and (min-width: 1200px) {
+  .com_content .about.odd {
+    padding: 30px 40px 30px 50%;
+  }
+}
+@media (min-width: 40em) and (min-width: 500px) {
+  .com_content .about.even {
+    padding: 30px 50% 30px 20px;
+  }
+}
+@media (min-width: 40em) and (min-width: 900px) {
+  .com_content .about.even {
+    padding: 30px 50% 30px 25px;
+  }
+}
+@media (min-width: 40em) and (min-width: 1200px) {
+  .com_content .about.even {
+    padding: 30px 50% 30px 40px;
+  }
+}

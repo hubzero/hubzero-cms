@@ -1,0 +1,24 @@
+table {
+  clear: left;
+  width: 100%;
+  text-align: left;
+  font-size: 1em;
+  border-collapse: collapse;
+  border-bottom: 1px dashed #dadada;
+}
+table caption {
+  line-height: 1.6em;
+  padding: 0.4045084975em 0.61803399em;
+  text-align: left;
+}
+table th,
+table td {
+  vertical-align: top;
+  line-height: 1.6em;
+  padding: 0.4045084975em 0.61803399em;
+  border-bottom: 1px solid #dadada;
+}
+table th {
+  font-weight: bold;
+  white-space: nowrap;
+}

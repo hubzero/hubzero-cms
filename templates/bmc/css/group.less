@@ -1,0 +1,410 @@
+/**
+ * @package    hubzero-cms
+ * @file       templates/system/css/group.css
+ * @copyright  Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+	Super Group Template Css
+
+	This template is responsible for displaying a super group:
+
+	-It should include a bar at the top branded for the HUB
+*/
+
+@import "template_mixins.less";
+@import "group_core.less";
+// import template vars
+@import "../less/template_vars.less";
+
+@panelsDelay: 0.1s; // transition delay for sliding panels
+@sizeXS: 400px;
+@sizeS: 500px;
+@sizeM: 900px;
+@sizeL: 1200px;
+@sizeXL: 1600px;
+@sizeXXL: 2000px;
+
+@poweredBySize: 3rem;
+
+p {
+	margin: 1em 0;
+}
+
+ul li {
+	margin: 0.5em 0;
+}
+
+// Overlay
+
+.hub-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #292929;
+	z-index: 899;
+	.opacity(85);
+	.transition();
+	.translate(-100%);
+}
+
+// prevent scrolling when any of the panels is open
+body.panel-open {
+	overflow: hidden;
+
+	.hub-overlay {
+		.translate(0);
+	}
+}
+
+/* Group Bar */
+.super-group-bar {
+	background: #f8f8f8;
+	z-index: 999;
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: 400;
+
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	a {
+		text-decoration: none;
+	}
+
+	.content {
+		padding: 0.6rem 20px;
+		text-align: left;
+
+		.branding {
+
+			.poweredby {
+				display: block;
+				font-size: 0.8rem;
+				color: #3e3e3e;
+				line-height: 1.2em;
+				margin-bottom: 0.6rem;
+				border: none;
+
+				span {
+					font-weight: 500;
+					display: block;
+				}
+
+				&:hover {
+					span {
+						-webkit-animation-name: colorWheel;
+						-ms-animation-name: colorWheel;
+						animation-name: colorWheel;
+
+						-webkit-animation-duration: 10s;
+						-ms-animation-duration: 10s;
+						animation-duration: 10s;
+
+						-webkit-animation-iteration-count: infinite;
+						-ms-animation-iteration-count: infinite;
+						animation-iteration-count: infinite;
+					}
+				}
+			}
+		}
+
+		@media (min-width: 300px) {
+			.branding {
+				.poweredby {
+					span {
+						display: inline;
+					}
+				}
+			}
+		}
+
+		@media (min-width: 520px) {
+			padding: 0;
+			text-align: right;
+
+			.branding {
+				float: left;
+
+				.poweredby {
+					font-size: 1rem;
+					margin: 0 0 0 20px;
+					line-height: @poweredBySize;
+					letter-spacing: -1px;
+
+					span {
+						display: inline;
+					}
+				}
+			}
+		}
+
+		.subnav {
+			display: inline-block;
+			margin: 0 20px 0 0;
+			list-style: none;
+			font-weight: 500;
+
+			// Subnav icons
+			@iconSize: 1rem;
+			//@poweredBySize
+
+			&>li {
+				margin: 0 1rem 0 0;
+				display: inline-block;
+
+				@media (min-width: 520px) {
+					margin: 0 0 0 1rem;
+				}
+
+				& > a {
+					position: relative;
+					font-size: 0.8rem;
+					line-height: 2rem;
+					border: 0;
+					color: #616161;
+
+					&.icon {
+						padding-left: @iconSize + 0.5rem;
+
+						&.user-account-link:before {
+							.ab();
+							left: 0;
+							top: 0;
+							text-transform: none;
+							font-family: 'tornado';
+							font-size: @iconSize;
+							line-height: 2rem;
+							content: 'a';
+							.transition(all linear .2s);
+						}
+
+						&:hover {
+							color: #0b0b0b;
+
+							&:before {
+								.translate(0.1rem);
+								color: #616161;
+							}
+						}
+					}
+
+					@media (min-width: 520px) {
+						line-height: @poweredBySize;
+
+						&.icon {
+							&.user-account-link:before {
+								line-height: @poweredBySize;
+							}
+						}
+					}
+				}
+			}
+
+			a {
+				display: inline-block;
+				text-transform: uppercase;
+
+				&:hover {
+					//color: @colorBlue;
+				}
+			}
+
+			li {
+				list-style: none;
+			}
+
+			// Account panel
+			.user-account {
+				.account-details {
+					font-family: 'Roboto', sans-serif;
+					font-weight: 400;
+					text-align: left;
+					color: #fff;
+					position: absolute;
+					z-index: 900;
+					top: 0;
+					right: 0;
+					left: 0;
+					bottom: 0;
+					background: @colorAuxMenu;
+					border: none;
+					padding: @padContain;
+					overflow: auto;
+					max-width: 400px;
+					.transition();
+					.translate(-100%);
+					.transition-delay(@panelsDelay);
+
+					&.open {
+						.translate(0);
+					}
+
+					&:after {
+						display: none;
+					}
+
+					a {
+						color: #fff;
+						border: none;
+
+						&:hover {
+							color: @colorBlueOnDark;
+						}
+					}
+
+					ul {
+						margin: 10px 0 0 0;
+					}
+
+					.user-info {
+						p {
+							text-transform: none;
+
+							.account-email {
+								font-family: 'Roboto';
+								font-weight: 300;
+							}
+						}
+					}
+
+					// close button
+					button {
+						.closeButton(40px);
+						top: @padContain;
+						right: @padContain;
+					}
+				}
+			}
+
+			// Group dash
+			.subnav-membership {
+				.group-dash {
+					font-family: 'Roboto', sans-serif;
+					font-weight: 400;
+					text-align: left;
+					color: #fff;
+					position: absolute;
+					z-index: 900;
+					top: 0;
+					right: 0;
+					left: 0;
+					bottom: 0;
+					background: @colorAuxMenu;
+					border: none;
+					padding: @padContain;
+					overflow: auto;
+					max-width: 400px;
+					.transition();
+					.translate(-100%);
+					.transition-delay(@panelsDelay);
+
+					&.open {
+						.translate(0);
+					}
+
+					&:after {
+						display: none;
+					}
+
+					a {
+						color: #fff;
+						line-height: 1.4em;
+
+						&:hover {
+							color: @colorBlueOnDark;
+						}
+
+						span {
+							text-transform: none;
+							font-weight: 300;
+							display: block;
+							color: #b3b3b3;
+						}
+					}
+
+					.links-header {
+						font-size: 1.6rem;
+						padding-right: 60px;
+						padding-top: 0.5rem;
+						padding-bottom: 2rem;
+						line-height: 1.6em;
+
+						span {
+							display: block;
+							font-size: 0.9rem;
+							font-weight: 300;
+							line-height: 1.3em;
+							color: #b3b3b3;
+						}
+					}
+
+					ul {
+						margin: 10px 0 0 0;
+
+						li {
+							margin: 1em 0;
+						}
+					}
+
+					.user-info {
+						p {
+							text-transform: none;
+
+							.account-email {
+								font-family: 'Roboto';
+								font-weight: 300;
+							}
+						}
+					}
+
+					// close button
+					button {
+						.closeButton(40px);
+						top: @padContain;
+						right: @padContain;
+					}
+				}
+			}
+		}
+	}
+}
+
+// Powered by color wheel animation
+@keyframes colorWheel {
+	0% {
+		color: #00a1e4;
+	}
+	20% {
+		color: #92278f;;
+	}
+	40% {
+		color: #ed0281;;
+	}
+	60% {
+		color: #fdb613;;
+	}
+	80% {
+		color: #2622ac;;
+	}
+	100% {
+		color: #00a1e4;;
+	}
+}
+
+@pathTemplate: "/app/templates/NaN";
+
+@font-face {
+	font-family: 'tornado';
+	src: url('@{pathTemplate}/fonts/tornado/tornado.eot');
+	src: url('@{pathTemplate}/fonts/tornado/tornado.eot?#iefix') format('embedded-opentype'),
+	url('@{pathTemplate}/fonts/tornado/tornado.woff') format('woff'),
+	url('@{pathTemplate}/fonts/tornado/tornado.ttf') format('truetype'),
+	url('@{pathTemplate}/fonts/tornado/tornado.svg#tornado') format('svg');
+	font-weight: normal;
+	font-style: normal;
+
+}

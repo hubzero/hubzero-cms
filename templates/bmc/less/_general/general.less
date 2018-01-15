@@ -1,0 +1,185 @@
+/*
+  General overall non-element-specific styles
+*/
+
+@import "_typography";
+
+// WTF
+@import "_wtf";
+
+html {
+	font-family: sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	.box-sizing(border-box);
+}
+
+*, *:before, *:after {
+	.box-sizing(inherit);
+}
+
+body {
+	color: @colorTextBody;
+	font-family: @fontSimple;
+	font-size: 0.94rem;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-moz-font-feature-settings: "liga", "kern";
+	text-rendering: optimizelegibility;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+/* Elements */
+/* Prevents sub and sup affecting line-height in all browsers */
+sub,
+sup {
+	position: relative;
+	font-size: 75%;
+	line-height: 0;
+	vertical-align: baseline;
+}
+
+sup {
+	top: -0.5em;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+/* Lists */
+ul {
+	list-style: disc;
+	margin: 0 0 0 2em;
+
+	li {
+		margin: 0.5em 0;
+	}
+}
+
+ol {
+	list-style: decimal;
+	margin: 0 0 0 2em;
+
+	li {
+		margin: 0.5em 0;
+	}
+}
+
+iframe {
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+p {
+	margin: 1em 0;
+}
+
+a {
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+hr {
+	clear: both;
+	height: 1px;
+	background: #ddd;
+	margin: 2em 0;
+	border: none;
+}
+
+dfn {
+	font-style: italic;
+}
+
+dl {
+	dt {
+		font-weight: bold;
+	}
+
+	dd {
+		margin-left: 2em;
+	}
+}
+
+img {
+	border: 0;
+	max-width: 100%;
+}
+
+blockquote {
+	margin-left: 2em;
+	color: #888;
+	position: relative;
+	background-color: #fff;
+
+	&:before {
+		content: "\275D";
+		font-family: 'Fontcons';
+		position: absolute;
+		top: 0;
+		left: -2em;
+		color: #ccc;
+	}
+}
+
+/* Pre, Code, TrueType. */
+pre {
+	font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+	color: #555;
+	margin: 1em 0 1em 0;
+	padding: 0.5em 1em;
+	font-size: 0.85em;
+	line-height: 1.95em;
+	word-wrap: break-word;
+	white-space: pre;
+	white-space: -moz-pre-wrap;
+	white-space: -o-pre-wrap;
+	white-space: pre-wrap;
+	border: 1px solid #d7d7d7;
+	background-color: #fff;
+	background-image: -webkit-linear-gradient(#eee 1px, transparent 1px),
+	-webkit-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+	background-image: -moz-linear-gradient(#eee 1px, transparent 1px),
+	-moz-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+	background-image: -ms-linear-gradient(#eee 1px, transparent 1px),
+	-ms-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+	background-image: -o-linear-gradient(#eee 1px, transparent 1px),
+	-o-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+	background-image: linear-gradient(#eee 1px, transparent 1px),
+	linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+	background-size: 100% 1.95em;
+	background-position: 0 -1px;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-ms-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+
+body .wikipage pre,
+body .wikipage .pre,
+.pre {
+	background-color: #fff;
+}
+
+code,
+tt {
+	border: 1px solid #d7d7d7;
+	background-color: #fff;
+	font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+	font-size: 0.91em;
+	padding: 0.2em 0.4em;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-ms-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+

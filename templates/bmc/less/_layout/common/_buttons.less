@@ -1,0 +1,478 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_buttons.less
+// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+// @license     http://opensource.org/licenses/MIT MIT
+//
+
+//
+// Buttons
+// --------------------------------------------------
+
+
+// Base styles
+.btn() {
+	display: inline-block;
+	background: @colorLink;
+	color: #fff;
+	padding: 0.4rem 1rem;
+	border: none;
+	outline: none;
+	.rounded(2px);
+
+	margin-bottom: 0; // For input.btn
+	font-size: 0.9rem;
+	line-height: 1;
+	outline: 0;
+	text-align: center;
+	white-space: nowrap;
+	word-wrap: normal;
+	vertical-align: middle;
+	cursor: pointer;
+	position: relative;
+	.background-clip(padding-box);
+
+	// Hover/focus state
+	&:hover,
+	&:focus,
+	&:visited:hover {
+		color: #fff;
+		background: @colorTextDark;
+		text-decoration: none;
+		.transition(all .1s linear);
+	}
+
+	// Focus state for keyboard and accessibility
+	&:focus {
+		.tab-focus();
+	}
+
+	// Active state
+	&.active,
+	&:active {
+		outline: 0;
+	}
+
+	// Disabled state
+	&.disabled,
+	&[disabled] {
+		cursor: not-allowed;
+		pointer-events: none;
+		background-image: none;
+		.opacity(65);
+		.box-shadow(none);
+		background: #efefef;
+		border: 1px solid #979797;
+		color: #979797;
+	}
+
+	&[class^="icon-"],
+	&[class*=" icon-"] {
+		padding: 0.7em 0.91em 0.7em 1.91em;
+	}
+	&[class^="icon-"]:before,
+	&[class*=" icon-"]:before {
+		margin-right: 0.2em;
+		font-family: "Fontcons";
+		line-height: 2.4;
+		padding: 0 0.3em 0 0.7em;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 1em;
+		text-align: center;
+		font-weight: normal;
+	}
+
+	&.opposite[class^="icon-"],
+	&.opposite[class*=" icon-"] {
+		padding: 0.7em 1.91em 0.7em 0.91em;
+	}
+	&.opposite[class^="icon-"]:before,
+	&.opposite[class*=" icon-"]:before {
+		left: auto;
+		right: 0;
+		margin: 0 0 0 .2em;
+		padding: 0 0.7em 0 0.3em;
+	}
+
+	&.js-inner {
+		padding: 0;
+	}
+
+	& > .btn-inner {
+		padding: 0.4rem 1rem 0.5rem;
+	}
+}
+
+.btn,
+a.btn {
+	.btn();
+}
+
+
+// Form buttons
+.page-body > .content {
+
+	input[type="submit"] {
+		.btn();
+	}
+
+	// Search and other text fields forms
+	form.search,
+	.entry-search,
+	.data-entry,
+	.input-group {
+
+		input[type="submit"] {
+			.btn();
+
+			font-size: 1em;
+			padding: 5px 10px;
+			line-height: 1.61803399em;
+			outline: none;
+			border-top: 1px solid transparent;
+			border-bottom: 1px solid transparent;
+		}
+	}
+}
+
+// Button Sizes
+// --------------------------------------------------
+
+// Small
+.btn-secondary {
+	font-size: 0.85em;
+	padding: 0.55em 0.66em 0.55em 0.66em;
+
+	[class^="icon-"],
+	[class*=" icon-"] {
+		padding: 0.55em 0.66em 0.55em 2.91em;
+		margin-top: -1px;
+	}
+}
+
+// Alternate buttons
+// --------------------------------------------------
+
+// Provide *some* extra contrast for those who can get it
+.btn-primary.active,
+.btn-warning.active,
+.btn-error.active,
+.btn-danger.active,
+.btn-success.active,
+.btn-info.active {
+	//color: rgba(255,255,255,.75);
+}
+
+// Set the backgrounds
+// -------------------------
+.btn-primary {
+	//color: @btnPrimaryColor;
+	//border-color: @btnPrimaryBorder;
+	//background: @btnPrimaryBackground;
+}
+// Warning appears are orange
+.btn-warning {
+	color: @btnWarningColor !important;
+	border-color: @btnWarningBorder;
+	background: @btnWarningBackground;
+}
+// Danger and error appear as red
+.btn-error,
+.btn-danger {
+	color: @btnDangerColor !important;
+	border-color: @btnDangerBorder;
+	background: @btnDangerBackground;
+}
+// Success appears as green
+.btn-success {
+	color: @btnSuccessColor !important;
+	border-color: @btnSuccessBorder;
+	background: @btnSuccessBackground;
+}
+// Info appears as a neutral blue
+.btn-info {
+	color: @btnInfoColor !important;
+	border-color: @btnInfoBorder;
+	background: @btnInfoBackground;
+}
+
+
+// Cross-browser Jank
+// --------------------------------------------------
+
+button.btn,
+input[type="submit"].btn {
+	// Firefox 3.6 only I believe
+	&::-moz-focus-inner {
+		padding: 0;
+		border: 0;
+	}
+}
+
+// Button group
+.btn-group {
+	position: relative;
+	display: inline-block;
+	.ie7-inline-block();
+	font-size: 0; // remove as part 1 of font-size inline-block hack
+	vertical-align: middle; // match .btn alignment given font-size hack above
+	white-space: nowrap; // prevent buttons from wrapping when in tight spaces (e.g., the table on the tests page)
+	.ie7-restore-left-whitespace();
+}
+.btn-group + .btn-group {
+	margin-left: 0.2em;
+}
+.btn-group > .btn {
+	position: relative;
+	//.border-radius(0);
+}
+.btn-group > .btn + .btn {
+	margin-left: -2px;
+	border-left-color: transparent;
+}
+.btn-group > .btn + .btn:hover {
+	border-left-color: #222;
+}
+.btn-group > .btn,
+.btn-group > .dropdown-menu,
+.btn-group > .popover {
+	font-size: 13px; // redeclare as part 2 of font-size inline-block hack
+}
+
+.btn-group.btn-secondary > .btn,
+.btn-group.btn-secondary > .dropdown-menu,
+.btn-group.btn-secondary > .popover {
+	font-size: 13px * 0.85;
+}
+.btn-group.btn-secondary > .btn {
+	padding: 0.55em 0.66em 0.55em 0.66em;
+}
+
+.btn-group > .btn:first-child {
+	margin-left: 0;
+	//.border-radius(@baseBorderRadius 0 0 @baseBorderRadius);
+}
+/*.btn-group > .btn:last-child,
+.btn-group > .dropdown-toggle {
+	border-left-color: transparent;
+	//.border-radius(0 @baseBorderRadius @baseBorderRadius 0);
+}*/
+
+.btn-group > .btn:hover,
+.btn-group > .btn:focus,
+.btn-group > .btn:active,
+.btn-group > .btn.active {
+	z-index: 2;
+}
+
+.btn-group .dropdown-toggle:active,
+.btn-group.open .dropdown-toggle {
+	outline: 0;
+}
+
+.btn-group > .btn + .dropdown-toggle {
+	padding-left: 0.75em;
+	padding-right: 0.75em;
+	//.box-shadow(~"inset 1px 0 0 rgba(255,255,255,.125), inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+}
+
+/*.btn-group:hover .dropdown-toggle,
+.btn-group.open .dropdown-toggle {
+	//.box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+	//background-color: #fff;
+	border-left-color: #222;
+}*/
+
+/*.btn-group span.dropdown-toggle {
+	height: 2.5em;
+	height: 2.55em\9;
+}
+@-moz-document url-prefix() {
+	.btn-group span.dropdown-toggle {
+		height: 2.6em;
+	}
+}
+.btn-group.btn-secondary span.dropdown-toggle {
+	height: 2.25em;
+	height: 2.275em\9;
+}*/
+
+.btn-group span.dropdown-toggle:before,
+.btn .caret {
+	margin-top: 0.4em;
+	margin-left: 0;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	vertical-align: top;
+	border-top: 4px solid #000000;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	content: "";
+}
+.btn-group.dropup span.dropdown-toggle:before {
+	border-bottom: 4px solid #000000;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	border-top: none;
+}
+.btn-group:hover.btn .caret,
+.btn-group span.dropdown-toggle:hover:before,
+.btn-group span.dropdown-toggle:hover:before {
+	border-top-color: #fff;
+}
+/*.btn-group .dropdown-toggle:hover {
+	border-left-color: #222;
+}*/
+.btn-group.dropup span.dropdown-toggle:hover:before,
+.btn-group.dropup span.dropdown-toggle:hover:before {
+	border-bottom-color: #fff;
+}
+
+.btn-group .dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: @zindexDropdown;
+	display: none;
+	float: left;
+	text-align: left;
+	min-width: 160px;
+	padding: 0; //5px 0;
+	margin: 0 !important;
+	list-style: none;
+	background-color: @dropdownBackground;
+	//background-color: rgba(0, 0, 0, 0.8);
+	//border: 1px solid #ccc; // Fallback for IE7-8
+	//border: 1px solid @dropdownBorder;
+	//.border-radius(6px);
+	.box-shadow(0 2px 4px rgba(0,0,0,.2));
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
+}
+.dropup .dropdown-menu {
+	top: auto;
+	bottom: 100%;
+}
+
+.btn-group .dropdown-toggle:hover + .dropdown-menu,
+.btn-group:hover .dropdown-menu,
+.open > .dropdown-menu {
+	display: block;
+}
+.btn-group > .btn:first-child:hover .dropdown-menu,
+.btn-group:hover > .btn:first-child:hover + .dropdown-toggle + .dropdown-menu {
+	display: none;
+}
+.btn-group:hover > .btn:first-child:hover + .dropdown-toggle {
+	//box-shadow: inset 1px 0 0 rgba(255,255,255,.125), inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+	background: @dropdownBackground;
+}
+.dropdown-menu .divider {
+	height: 1px;
+	margin: 9px 1px;
+	overflow: hidden;
+	background-color: #e5e5e5;
+	border-bottom: 1px solid #ffffff;
+}
+.dropdown-menu > li > a {
+	display: block;
+	padding: 0.2em 1em;
+	clear: both;
+	font-weight: normal;
+	line-height: 1.5em;
+	border: none;
+}
+
+.btn-more {
+	display: inline-block;
+	margin-top: 1rem;
+}
+
+button.chromeless {
+	border-radius: 0;
+	box-shadow: none;
+	height: auto;
+	line-height: inherit;
+	border-width: 0;
+	padding: 0;
+	vertical-align: baseline;
+	background: none;
+	white-space: normal;
+	text-align: left;
+	cursor: pointer;
+}
+
+.playful {
+	outline: none;
+	display: inline-block;
+
+	& > button,
+	& > span {
+		display: inline-block;
+		outline: none;
+		text-transform: uppercase;
+		font-family: @fontSimpleSemiBold;
+		font-size: 0.8rem;
+		letter-spacing: -0.5px;
+		position: relative;
+		transition: all 0.3s ease-in-out;
+		line-height: 2em;
+		color: #000;
+
+		&:before {
+			.ab();
+			height: 1px;
+			width: 1rem;
+			top: 50%;
+			transform: translate(-1px, 0);
+			left: -2.2rem;
+			background: @colorLink;
+			opacity: 0;
+			transition: all 0.4s ease-in-out;
+		}
+	}
+
+	&:hover {
+
+		& > button,
+		& > span {
+			transform: translate(1rem, 0);
+
+			&:before {
+				opacity: 1;
+				left: -1.2rem;
+			}
+		}
+	}
+
+	&.border {
+		padding: 0.6rem 2rem;
+		border: 1px solid #000;
+	}
+
+	&.border-slim {
+		padding: 0.3rem 1.6rem;
+		border: 1px solid #000;
+	}
+
+
+	&.on-dark {
+
+		button {
+			color: #fff;
+
+			&:before {
+				background: #fff;
+			}
+		}
+
+		&.border {
+			border-color: #fff;
+		}
+	}
+}

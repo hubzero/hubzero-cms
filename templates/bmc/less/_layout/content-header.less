@@ -1,0 +1,178 @@
+/* Content header */
+
+.content-header,
+#content-header {
+	margin-bottom: 0;
+	//.contain();
+	.padContain();
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+	//margin-bottom: 2rem;
+
+	// JS-added class for those headers followed by the #introduction block
+	&.with-intro {
+		//padding-bottom: 0;
+		//border-bottom: 0;
+		margin-bottom: 0;
+	}
+
+	strong {
+		display: inline-block;
+	}
+
+	h2 {
+		position: relative;
+		font-size: 2.2rem;
+		margin-top: 0;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		line-height: 1.3em;
+		margin-bottom: 0;
+		display: inline-block;
+		position: relative;
+
+		@media (min-width: @sizeS) {
+			font-size: 2.8rem;
+		}
+
+		@media (min-width: @sizeXXL) {
+			font-size: 3rem;
+		}
+
+		.btn {
+			font-size: 1rem;
+		}
+	}
+
+	// Extra options
+	#content-header-extra,
+	.content-header-extra {
+		padding-bottom: 2rem;
+
+		a {
+			font-size: 0.9rem;
+			display: inline-block;
+			margin: 0;
+			//padding: 0.5rem 2rem;
+			margin-right: 1rem;
+			border: 1px solid @colorGreyFaint;
+			.transition();
+
+			&:hover {
+				color: @colorLink;
+			}
+
+			&:last-of-type {
+				margin-right: 0;
+			}
+		}
+
+		// WTF? What is it for?
+		.dropdown-menu {
+			left: auto;
+			right: 0;
+			box-shadow: 0;
+			.border-radius(0);
+			border: 2px solid #fff;
+			background: rgba(0, 0, 0, 0.5);
+			.box-shadow(none);
+			min-width: 3em;
+
+			li {
+				margin: 0;
+				display: block;
+			}
+			a {
+				color: rgba(255, 255, 255, 0.8);
+
+				&:hover {
+					color: #fff;
+					background: rgba(0, 0, 0, 0.4);
+				}
+			}
+		}
+		.btn-group > .btn:first-child,
+		.btn-group > .btn:last-child,
+		.btn-group > .dropdown-toggle {
+			.box-shadow(none);
+			.border-radius(0);
+		}
+		.btn-group > .btn:first-child {
+			border-right: none;
+		}
+		.btn-group > .btn:last-child,
+		.btn-group > .dropdown-toggle {
+			border-left: 1px solid rgba(255, 255, 255, 0.2);
+			height: 2.7em;
+			height: 2.75em\9;
+		}
+		.btn-group span.dropdown-toggle:before,
+		.btn .caret {
+			border-top: 4px solid  #fff;
+			border-right: 4px solid transparent;
+			border-left: 4px solid transparent;
+		}
+		.btn-group.dropup span.dropdown-toggle:before {
+			border-bottom: 4px solid  #fff;
+			border-right: 4px solid transparent;
+			border-left: 4px solid transparent;
+			border-top: none;
+		}
+
+		ul,
+		li,
+		p {
+			margin: 0;
+			padding: 0;
+		}
+
+		// WTF? What is it for?
+		.search:before {
+			content: "\f002";
+			font-family: "Fontcons";
+		}
+	}
+}
+
+section.section .aside + .subject .content-header {
+	border-bottom: none;
+	margin-bottom: 1rem;
+
+	h2 {
+		position: static;
+		padding-top: 0;
+
+		&:before {
+			display: none;
+		}
+
+		@media (min-width: @sizeS) {
+			font-size: 3rem;
+		}
+
+		@media (min-width: @sizeM) {
+			margin-top: 0;
+		}
+
+		@media (min-width: @sizeL) {
+			font-size: 3rem;
+		}
+	}
+}
+
+#content-header-extra ul li {
+	display: inline-block;
+	margin-left: 1em;
+	list-style: none;
+}
+
+.com_content .withleft .content-header {
+	position: absolute;
+	top: 0px;
+	left: 0;
+	width: 100%;
+}
+
+.subject .content-header {
+	background: none;
+	padding: 0;
+}
