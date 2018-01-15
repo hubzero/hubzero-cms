@@ -1,0 +1,88 @@
+/* Item listing */
+.results {
+	list-style: none;
+	margin: 1em 0 1em 0;
+	padding: 0;
+	position: relative;
+	border-top: 1px dashed #bAbAbA;
+	border-bottom: none;
+}
+
+.entries li,
+.results li {
+	border-bottom: 1px solid #dadada;
+	padding: 1em 0 1em 1em;
+	margin: 0;
+	list-style: none;
+}
+
+.results p,
+.results .details {
+	margin: 0.5em 0;
+	padding: 0;
+}
+
+.entries .details,
+.results .details {
+	font-size: 90%;
+	color: #999;
+}
+
+.entries .details span,
+.results .details span {
+	color: #fff;
+	margin: 0 0.5em;
+}
+
+.results .details span.highlight {
+	color: #333;
+	margin: 0;
+}
+
+.results .details a span.highlight {
+	color: #6699cc;
+}
+
+.entries .title,
+.results .title {
+	margin-left: -1em;
+	font-weight: bold;
+}
+
+.entries .metadata,
+.results .metadata {
+	margin: -1.2em 0 0 0;
+	float: right;
+	width: 190px;
+	background: none;
+	border: none;
+	padding: 0;
+}
+
+.entries .metadata p,
+.results .metadata p {
+	color: #999;
+	font-size: 90%;
+	margin: 0 0 0.5em 0;
+	padding: 0;
+}
+
+.entries .href,
+.results .href {
+	font-size: 85%;
+	color: green;
+}
+
+.results .protected .title:before {
+	font-family: 'Fontcons';
+	content: '\f048';
+	margin-right: 0.2em;
+	color: #555;
+}
+
+.results .private .title:before {
+	font-family: 'Fontcons';
+	content: '\f023';
+	margin-right: 0.2em;
+	color: #555;
+}

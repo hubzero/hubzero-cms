@@ -1,0 +1,45 @@
+/* 5 star ratings */
+.avgrating {
+  padding-left: 0;
+}
+.avgrating span {
+  padding-left: 1em;
+}
+.avgrating:before {
+  font-family: 'Fontcons';
+  font-size: 12px;
+  line-height: 12px;
+}
+.no-stars:before {
+  content: "\2606\2606\2606\2606\2606";
+}
+.half-stars:before {
+  content: "\f089\2606\2606\2606\2606";
+}
+.one-stars:before {
+  content: "\2605\2606\2606\2606\2606";
+}
+.onehalf-stars:before {
+  content: "\2605\f089\2606\2606\2606";
+}
+.two-stars:before {
+  content: "\2605\2605\2606\2606\2606";
+}
+.twohalf-stars:before {
+  content: "\2605\2605\f089\2606\2606";
+}
+.three-stars:before {
+  content: "\2605\2605\2605\2606\2606";
+}
+.threehalf-stars:before {
+  content: "\2605\2605\2605\f089\2606";
+}
+.four-stars:before {
+  content: "\2605\2605\2605\2605\2606";
+}
+.fourhalf-stars:before {
+  content: "\2605\2605\2605\2605\f089";
+}
+.five-stars:before {
+  content: "\2605\2605\2605\2605\2605";
+}

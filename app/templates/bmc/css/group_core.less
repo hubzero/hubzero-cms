@@ -1,0 +1,27 @@
+// Core mixins
+@import "../../../../core/assets/less/variables.less";
+@import "../../../../core/assets/less/mixins.less";
+@import "../../../../core/assets/less/utilities.less";
+
+// Core Reset
+@import "../../../../core/assets/less/reset.less";
+
+//@import "../../../../core/assets/less/test.less";
+
+html {
+	font-family: sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	.box-sizing(border-box);
+}
+
+*, *:before, *:after {
+	.box-sizing(inherit);
+}
+
+a,
+a:active,
+a:visited {
+	text-decoration: none;
+	color: @colorLink;
+}

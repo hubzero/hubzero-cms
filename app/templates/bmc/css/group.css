@@ -1,0 +1,817 @@
+/**
+ * @package    hubzero-cms
+ * @file       templates/system/css/group.css
+ * @copyright  Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+/*
+	Super Group Template Css
+
+	This template is responsible for displaying a super group:
+
+	-It should include a bar at the top branded for the HUB
+*/
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#grid .grid {
+  max-width: 100%;
+  *zoom: 1;
+}
+#grid .grid:before,
+#grid .grid:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+#grid .grid:after {
+  clear: left;
+}
+#grid .col {
+  float: left;
+  margin-right: 3.22580645%;
+  *margin-right: 3.17204301%;
+}
+.basicColumn {
+  float: none !important;
+  width: 100% !important;
+  margin-right: 0;
+  margin-bottom: 2em;
+}
+.basicColumn:nth-last-child(1) {
+  margin-bottom: 0;
+}
+.article_separator {
+  display: none;
+}
+.cf:before,
+.cf:after,
+.cf-left:before,
+.cf-left:after,
+.cf-right:before,
+.cf-right:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.cf:after {
+  clear: both;
+}
+.cf-left:after {
+  clear: left;
+}
+.cf-right:after {
+  clear: right;
+}
+.clearfix {
+  border: 1px solid transparent;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  line-height: 0em;
+  clear: left;
+  visibility: hidden;
+}
+.clear {
+  clear: both;
+}
+.align-right {
+  text-align: right;
+}
+.align-left {
+  text-align: left;
+}
+.align-center {
+  text-align: center;
+}
+img.align-right {
+  float: right;
+  margin: 0 0 1em 1em;
+}
+img.align-left {
+  float: left;
+  margin: 0 1em 1em 0;
+}
+.off,
+.hide {
+  display: none;
+}
+.on,
+.show {
+  display: block;
+}
+.invisible {
+  visibility: hidden;
+}
+.visible {
+  visibility: visible;
+}
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+main {
+  display: block;
+}
+audio,
+canvas,
+video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+audio:not([controls]) {
+  display: none;
+}
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+a:hover,
+a:active {
+  outline: 0;
+}
+sub,
+sup {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  /* Responsive images (ensure images don't scale beyond their parents) */
+  max-width: 100%;
+  /* Part 1: Set a maxium relative to the parent */
+  /* The following two lines seem to have unintended bad affects in IE 8, 9 */
+  /* width: auto\9; IE7-8 need help adjusting responsive images */
+  /* height: auto; Part 2: Scale the height according to the width, otherwise you get stretching */
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+b,
+strong {
+  font-weight: bold;
+}
+i,
+em {
+  font-style: italic;
+}
+table {
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font-size: 100%;
+  vertical-align: middle;
+}
+button,
+input {
+  *overflow: visible;
+  line-height: normal;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+label,
+select,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+input[type="radio"],
+input[type="checkbox"] {
+  cursor: pointer;
+}
+input[type="search"] {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  -webkit-appearance: textfield;
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+a,
+a:active,
+a:visited {
+  text-decoration: none;
+  color: #7c6a85;
+}
+/*
+@fontHeadingsMedium:	"titillium_websemibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHeadingsRegular:	"titillium_websemibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontHeadingSubLight:	"titillium_weblight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontTextRegular:		"open_sansregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontTextLight:			"Arial", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontHomeHero:			"titillium_webthin", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+*/
+p {
+  margin: 1em 0;
+}
+ul li {
+  margin: 0.5em 0;
+}
+.hub-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #292929;
+  z-index: 899;
+  -moz-opacity: 0.85;
+  opacity: 0.85;
+  filter: alpha(opacity=85);
+  -moz-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  -webkit-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+  -webkit-transform: translate(-100%, 0);
+  -moz-transform: translate(-100%, 0);
+  -ms-transform: translate(-100%, 0);
+  -o-transform: translate(-100%, 0);
+}
+body.panel-open {
+  overflow: hidden;
+}
+body.panel-open .hub-overlay {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+}
+/* Group Bar */
+.super-group-bar {
+  background: #f8f8f8;
+  z-index: 999;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.super-group-bar a {
+  text-decoration: none;
+}
+.super-group-bar .content {
+  padding: 0.6rem 20px;
+  text-align: left;
+}
+.super-group-bar .content .branding .poweredby {
+  display: block;
+  font-size: 0.8rem;
+  color: #3e3e3e;
+  line-height: 1.2em;
+  margin-bottom: 0.6rem;
+  border: none;
+}
+.super-group-bar .content .branding .poweredby span {
+  font-weight: 500;
+  display: block;
+}
+.super-group-bar .content .branding .poweredby:hover span {
+  -webkit-animation-name: colorWheel;
+  -ms-animation-name: colorWheel;
+  animation-name: colorWheel;
+  -webkit-animation-duration: 10s;
+  -ms-animation-duration: 10s;
+  animation-duration: 10s;
+  -webkit-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+@media (min-width: 300px) {
+  .super-group-bar .content .branding .poweredby span {
+    display: inline;
+  }
+}
+@media (min-width: 520px) {
+  .super-group-bar .content {
+    padding: 0;
+    text-align: right;
+  }
+  .super-group-bar .content .branding {
+    float: left;
+  }
+  .super-group-bar .content .branding .poweredby {
+    font-size: 1rem;
+    margin: 0 0 0 20px;
+    line-height: 3rem;
+    letter-spacing: -1px;
+  }
+  .super-group-bar .content .branding .poweredby span {
+    display: inline;
+  }
+}
+.super-group-bar .content .subnav {
+  display: inline-block;
+  margin: 0 20px 0 0;
+  list-style: none;
+  font-weight: 500;
+}
+.super-group-bar .content .subnav > li {
+  margin: 0 1rem 0 0;
+  display: inline-block;
+}
+@media (min-width: 520px) {
+  .super-group-bar .content .subnav > li {
+    margin: 0 0 0 1rem;
+  }
+}
+.super-group-bar .content .subnav > li > a {
+  position: relative;
+  font-size: 0.8rem;
+  line-height: 2rem;
+  border: 0;
+  color: #616161;
+}
+.super-group-bar .content .subnav > li > a.icon {
+  padding-left: 1.5rem;
+}
+.super-group-bar .content .subnav > li > a.icon.user-account-link:before {
+  display: block;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-transform: none;
+  font-family: 'tornado';
+  font-size: 1rem;
+  line-height: 2rem;
+  content: 'a';
+  -webkit-transition: all linear 0.2s;
+  -moz-transition: all linear 0.2s;
+  -o-transition: all linear 0.2s;
+  transition: all linear 0.2s;
+}
+.super-group-bar .content .subnav > li > a.icon:hover {
+  color: #0b0b0b;
+}
+.super-group-bar .content .subnav > li > a.icon:hover:before {
+  -webkit-transform: translate(0.1rem, 0);
+  -moz-transform: translate(0.1rem, 0);
+  -ms-transform: translate(0.1rem, 0);
+  -o-transform: translate(0.1rem, 0);
+  color: #616161;
+}
+@media (min-width: 520px) {
+  .super-group-bar .content .subnav > li > a {
+    line-height: 3rem;
+  }
+  .super-group-bar .content .subnav > li > a.icon.user-account-link:before {
+    line-height: 3rem;
+  }
+}
+.super-group-bar .content .subnav a {
+  display: inline-block;
+  text-transform: uppercase;
+}
+.super-group-bar .content .subnav li {
+  list-style: none;
+}
+.super-group-bar .content .subnav .user-account .account-details {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  text-align: left;
+  color: #fff;
+  position: absolute;
+  z-index: 900;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #292929;
+  border: none;
+  padding: 25px;
+  overflow: auto;
+  max-width: 400px;
+  -moz-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  -webkit-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+  -webkit-transform: translate(-100%, 0);
+  -moz-transform: translate(-100%, 0);
+  -ms-transform: translate(-100%, 0);
+  -o-transform: translate(-100%, 0);
+  -ms-transition-delay: 0.1s;
+  -webkit-transition-delay: 0.1s;
+  -moz-transition-delay: 0.1s;
+  -o-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+}
+.super-group-bar .content .subnav .user-account .account-details.open {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+}
+.super-group-bar .content .subnav .user-account .account-details:after {
+  display: none;
+}
+.super-group-bar .content .subnav .user-account .account-details a {
+  color: #fff;
+  border: none;
+}
+.super-group-bar .content .subnav .user-account .account-details a:hover {
+  color: #4390b5;
+}
+.super-group-bar .content .subnav .user-account .account-details ul {
+  margin: 10px 0 0 0;
+}
+.super-group-bar .content .subnav .user-account .account-details .user-info p {
+  text-transform: none;
+}
+.super-group-bar .content .subnav .user-account .account-details .user-info p .account-email {
+  font-family: 'Roboto';
+  font-weight: 300;
+}
+.super-group-bar .content .subnav .user-account .account-details button {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  font-size: 0;
+  text-indent: -9999px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  outline: none;
+  top: 25px;
+  right: 25px;
+}
+.super-group-bar .content .subnav .user-account .account-details button :focus {
+  outline: none;
+}
+.super-group-bar .content .subnav .user-account .account-details button:before,
+.super-group-bar .content .subnav .user-account .account-details button:after {
+  position: absolute;
+  display: block;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #ffffff;
+  content: "";
+  -webkit-transition: all linear 0.1s;
+  -moz-transition: all linear 0.1s;
+  -o-transition: all linear 0.1s;
+  transition: all linear 0.1s;
+}
+.super-group-bar .content .subnav .user-account .account-details button:before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.super-group-bar .content .subnav .user-account .account-details button:after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.super-group-bar .content .subnav .user-account .account-details button:hover:before {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+.super-group-bar .content .subnav .user-account .account-details button:hover:after {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  text-align: left;
+  color: #fff;
+  position: absolute;
+  z-index: 900;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #292929;
+  border: none;
+  padding: 25px;
+  overflow: auto;
+  max-width: 400px;
+  -moz-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  -webkit-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+  -webkit-transform: translate(-100%, 0);
+  -moz-transform: translate(-100%, 0);
+  -ms-transform: translate(-100%, 0);
+  -o-transform: translate(-100%, 0);
+  -ms-transition-delay: 0.1s;
+  -webkit-transition-delay: 0.1s;
+  -moz-transition-delay: 0.1s;
+  -o-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash.open {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash:after {
+  display: none;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash a {
+  color: #fff;
+  line-height: 1.4em;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash a:hover {
+  color: #4390b5;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash a span {
+  text-transform: none;
+  font-weight: 300;
+  display: block;
+  color: #b3b3b3;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash .links-header {
+  font-size: 1.6rem;
+  padding-right: 60px;
+  padding-top: 0.5rem;
+  padding-bottom: 2rem;
+  line-height: 1.6em;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash .links-header span {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.3em;
+  color: #b3b3b3;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash ul {
+  margin: 10px 0 0 0;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash ul li {
+  margin: 1em 0;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash .user-info p {
+  text-transform: none;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash .user-info p .account-email {
+  font-family: 'Roboto';
+  font-weight: 300;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash button {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  font-size: 0;
+  text-indent: -9999px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  outline: none;
+  top: 25px;
+  right: 25px;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash button :focus {
+  outline: none;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash button:before,
+.super-group-bar .content .subnav .subnav-membership .group-dash button:after {
+  position: absolute;
+  display: block;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #ffffff;
+  content: "";
+  -webkit-transition: all linear 0.1s;
+  -moz-transition: all linear 0.1s;
+  -o-transition: all linear 0.1s;
+  transition: all linear 0.1s;
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash button:before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash button:after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash button:hover:before {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+.super-group-bar .content .subnav .subnav-membership .group-dash button:hover:after {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+@keyframes colorWheel {
+  0% {
+    color: #00a1e4;
+  }
+  20% {
+    color: #92278f;
+  }
+  40% {
+    color: #ed0281;
+  }
+  60% {
+    color: #fdb613;
+  }
+  80% {
+    color: #2622ac;
+  }
+  100% {
+    color: #00a1e4;
+  }
+}
+@font-face {
+  font-family: 'tornado';
+  src: url('/app/templates/NaN/fonts/tornado/tornado.eot');
+  src: url('/app/templates/NaN/fonts/tornado/tornado.eot?#iefix') format('embedded-opentype'), url('/app/templates/NaN/fonts/tornado/tornado.woff') format('woff'), url('/app/templates/NaN/fonts/tornado/tornado.ttf') format('truetype'), url('/app/templates/NaN/fonts/tornado/tornado.svg#tornado') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
