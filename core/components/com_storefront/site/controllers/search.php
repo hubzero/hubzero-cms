@@ -40,7 +40,7 @@ use App;
 /**
  * Product browsing controller class
  */
-class Browse extends \Hubzero\Component\SiteController
+class Search extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
@@ -64,31 +64,11 @@ class Browse extends \Hubzero\Component\SiteController
 
 		if (empty($this->_task))
 		{
-			$this->_task = 'home';
+			$this->_task = 'search';
 			$this->registerTask('__default', $this->_task);
 		}
 
-		$executed = false;
-		if (!method_exists($this, $this->_task . 'Task'))
-		{
-			// Try to find a corresponding collection
-			$cId = $this->warehouse->collectionExists($this->_task);
-			if ($cId)
-			{
-				// if match is found -- browse collection
-				$executed = true;
-				$this->browseCollection($cId);
-			}
-			else
-			{
-				App::abort(404, Lang::txt('Collection Not Found'));
-			}
-		}
-
-		if (!$executed)
-		{
-			parent::execute();
-		}
+		parent::execute();
 	}
 
 	/**
@@ -96,43 +76,21 @@ class Browse extends \Hubzero\Component\SiteController
 	 *
 	 * @return  void
 	 */
-	public function homeTask()
+	public function searchTask()
 	{
-		// get categories
-		$categories = $this->warehouse->getRootCategories();
-		$this->view->categories = $categories;
+		// Incoming
+		$search = Request::getVar('q', '');
+		$cId = Request::getVar('cId', '');
 
-		$this->view->display();
-	}
+		if ($cId)
+		{
+			$this->warehouse->addLookupCollection($cId);
+		}
 
-	/**
-	 * Display collection
-	 *
-	 * @param   integer  $cId
-	 * @return  void
-	 */
-	private function browseCollection($cId)
-	{
-		$view = new \Hubzero\Component\View(array('name'=>'browse', 'layout' => 'collection'));
-
-		// Get collection name
-		$collection = $this->warehouse->getCollectionInfo($cId);
-		$collectionName = $collection->cName;
-
-		// Get the collection products
-		$this->warehouse->addLookupCollection($cId);
-		$products = $this->warehouse->getProducts('rows', true, array('sort' => 'title'));
-
-		$view->cId = $cId;
-		$view->collectionName = $collectionName;
-		$view->products = $products;
-
-		$view->config = $this->config;
-
-		$this->css('storefront.css', 'com_storefront');
-
-		// Breadcrumbs
-		//$this->pathway->addItem('Browsing collection', Route::url('index.php?id=' . '5'));
+		$products = $this->warehouse->getProducts('rows', true, array('sort' => 'title', 'search' => $search));
+		$this->view->products = $products;
+		$this->view->config = $this->config;
+		$this->view->search = $search;
 
 		if (Pathway::count() <= 0)
 		{
@@ -143,9 +101,9 @@ class Browse extends \Hubzero\Component\SiteController
 		}
 
 		Pathway::append(
-			Lang::txt($collectionName)
+			Lang::txt('Search')
 		);
 
-		$view->display();
+		$this->view->display();
 	}
 }
