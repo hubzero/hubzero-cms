@@ -133,21 +133,7 @@ $this->view('_submenu')
 
 	<table class="adminlist">
 		<thead>
-<<<<<<< HEAD
 		<?php if ($this->filters['uidNumber'] || $this->filters['pId'] || $this->filters['sId']) { ?>
-=======
-		<?php if ($this->filters['uidNumber']) { ?>
-			<tr>
-				<th colspan="6"><?php echo Lang::txt('COM_CART_ORDERS_FOR'); ?>: <?php
-					$user = User::getInstance($this->filters['uidNumber']);
-
-					echo ($user->get('id') ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber']);
-					?>
-					<button type="button" onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-				</th>
-			</tr>
-		<?php } ?>
->>>>>>> 020899d... [COM_CART] Add downloaded by history lookup
 			<tr>
 				<th colspan="8"><?php
 					if ($this->filters['uidNumber'])
@@ -273,21 +259,12 @@ $this->view('_submenu')
 				</td>
 				<td>
 					<?php if ($row->uidNumber) { ?>
-<<<<<<< HEAD
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber); ?>">
 						<?php } ?>
 						<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
 						<?php if ($row->uidNumber) { ?>
 					</a>
 				<?php } ?>
-=======
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber); ?>">
-							<?php } ?>
-							<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
-							<?php if ($row->uidNumber) { ?>
-						</a>
-					<?php } ?>
->>>>>>> 020899d... [COM_CART] Add downloaded by history lookup
 				</td>
 				<td>
 					<?php
@@ -364,11 +341,8 @@ $this->view('_submenu')
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<input type="hidden" name="uidNumber" id="filter_uidNumber" value="<?php echo $this->filters['uidNumber']; ?>" />
-<<<<<<< HEAD
 	<input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->filters['pId']; ?>" />
 	<input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->filters['sId']; ?>" />
-=======
->>>>>>> 020899d... [COM_CART] Add downloaded by history lookup
 
 	<?php echo Html::input('token'); ?>
 </form>
