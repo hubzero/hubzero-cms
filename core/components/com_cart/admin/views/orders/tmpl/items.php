@@ -117,101 +117,101 @@ $this->view('_submenu')
 	</fieldset>
 	<table class="adminlist">
 		<thead>
-			<?php if ($this->filters['order']) { ?>
-				<tr>
-					<th colspan="6"><?php echo Lang::txt('COM_CART_ORDER'); ?>: #<?php echo $this->filters['order']; ?>
-						<button type="button" onclick="$('#filter_ordernum').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-					</th>
-				</tr>
-			<?php } ?>
+		<?php if ($this->filters['order']) { ?>
 			<tr>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_SKU_ID', 'sId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_CART_PRODUCT'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_CART_QUANTITY'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_CART_PRICE'); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PLACED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th colspan="6"><?php echo Lang::txt('COM_CART_ORDER'); ?>: #<?php echo $this->filters['order']; ?>
+					<button type="button" onclick="$('#filter_ordernum').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				</th>
 			</tr>
+		<?php } ?>
+		<tr>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_SKU_ID', 'sId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_CART_PRODUCT'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_CART_QUANTITY'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_CART_PRICE'); ?></th>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PLACED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+		</tr>
 		</thead>
 		<tfoot>
-			<tr>
-				<td colspan="7"><?php
-					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					?></td>
-			</tr>
+		<tr>
+			<td colspan="7"><?php
+				// Initiate paging
+				echo $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				?></td>
+		</tr>
 		</tfoot>
 		<tbody>
-			<?php
-			$k = 0;
-			$i = 0;
-			foreach ($this->rows as $row)
-			{
-				$itemInfo = $row->itemInfo['info'];
-				?>
-				<tr class="<?php echo "row$k"; ?>">
-					<td>
+		<?php
+		$k = 0;
+		$i = 0;
+		foreach ($this->rows as $row)
+		{
+			$itemInfo = $row->itemInfo['info'];
+			?>
+			<tr class="<?php echo "row$k"; ?>">
+				<td>
 						<span>
 							<a href="<?php echo Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId); ?>">
 								<?php echo $this->escape(stripslashes($row->sId)); ?>
 							</a>
 						</span>
-					</td>
-					<td>
-						<?php
-						$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
-						if (!stripslashes($itemInfo->pName))
-						{
-							$product = '<span class="missing">Product n/a</span>';
-						}
-						if (!stripslashes($itemInfo->sSku))
-						{
-							$product .= '<br />SKU: <span class="missing">SKU n/a</span>';
-						}
-						else {
-							$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
-						}
-						?>
-						<span><?php echo $product; ?></span>
-					</td>
-					<td>
-						<span><?php echo $this->escape(stripslashes($row->tiQty)); ?></span>
-					</td>
-					<td>
-						<span><?php echo $this->escape(stripslashes($row->tiPrice)); ?></span>
-					</td>
-					<td>
+				</td>
+				<td>
+					<?php
+					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
+					if (!stripslashes($itemInfo->pName))
+					{
+						$product = '<span class="missing">Product n/a</span>';
+					}
+					if (!stripslashes($itemInfo->sSku))
+					{
+						$product .= '<br />SKU: <span class="missing">SKU n/a</span>';
+					}
+					else {
+						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+					}
+					?>
+					<span><?php echo $product; ?></span>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->tiQty)); ?></span>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->tiPrice)); ?></span>
+				</td>
+				<td>
 						<span>
 							<a href="<?php echo Route::url('index.php?option=com_cart&controller=orders&task=view&id=' . $row->tId); ?>">
 								<?php echo $this->escape(stripslashes($row->tId)); ?>
 							</a>
 						</span>
-					</td>
-					<td>
-						<span><?php echo $this->escape(stripslashes($row->tLastUpdated)); ?></span>
-					</td>
-					<td>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->tLastUpdated)); ?></span>
+				</td>
+				<td>
 						<span>
 							<?php if ($row->uidNumber) { ?>
 							<a href="<?php echo Route::url('index.php?option=com_members&task=edit&id=' . $row->uidNumber); ?>">
-							<?php } ?>
+								<?php } ?>
 								<?php echo ($row->name ? $this->escape(stripslashes($row->name)) : Lang::txt('COM_CART_UNKNOWN')); ?>
-							<?php if ($row->uidNumber) { ?>
+								<?php if ($row->uidNumber) { ?>
 							</a>
-							<?php } ?>
+						<?php } ?>
 						</span>
-					</td>
-				</tr>
-				<?php
-				$i++;
-				$k = 1 - $k;
-			}
-			?>
+				</td>
+			</tr>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 
