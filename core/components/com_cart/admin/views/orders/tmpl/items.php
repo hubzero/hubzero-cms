@@ -28,6 +28,8 @@
  */
 
 defined('_HZEXEC_') or die();
+use Components\Storefront\Models\Product;
+use Components\Storefront\Models\Sku;
 
 $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('orders');
 
@@ -119,8 +121,38 @@ $this->view('_submenu')
 		<thead>
 		<?php if ($this->filters['order']) { ?>
 			<tr>
-				<th colspan="6"><?php echo Lang::txt('COM_CART_ORDER'); ?>: #<?php echo $this->filters['order']; ?>
+				<th colspan="7"><?php echo Lang::txt('COM_CART_ORDER'); ?>: #<?php echo $this->filters['order']; ?>
 					<button type="button" onclick="$('#filter_ordernum').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				</th>
+			</tr>
+		<?php } ?>
+		<?php if ($this->filters['pId'] || $this->filters['sId']) { ?>
+			<tr>
+				<th colspan="7"><?php
+					if ($this->filters['pId'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+						$product = Product::getInstance($this->filters['pId']);
+
+						echo($product->getName());
+						?>
+						<button type="button"
+								onclick="$('#filter_pId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
+					if ($this->filters['sId'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+						$sku = Sku::getInstance($this->filters['sId']);
+
+						echo($sku->getName());
+						?>
+						<button type="button"
+								onclick="$('#filter_sId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
+					?>
+
 				</th>
 			</tr>
 		<?php } ?>
@@ -164,7 +196,7 @@ $this->view('_submenu')
 				</td>
 				<td>
 					<?php
-					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
+					$product = '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task . '&pId=' . $itemInfo->pId) . '">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
 					if (!stripslashes($itemInfo->pName))
 					{
 						$product = '<span class="missing">Product n/a</span>';
@@ -174,7 +206,7 @@ $this->view('_submenu')
 						$product .= '<br />SKU: <span class="missing">SKU n/a</span>';
 					}
 					else {
-						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task . '&sId=' . $row->sId) . '">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
 					}
 					?>
 					<span><?php echo $product; ?></span>
@@ -221,6 +253,8 @@ $this->view('_submenu')
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<input type="hidden" name="order" id="filter_ordernum" value="<?php echo $this->filters['order']; ?>" />
+	<input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->filters['pId']; ?>" />
+	<input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->filters['sId']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
