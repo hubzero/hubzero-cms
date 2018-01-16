@@ -61,7 +61,8 @@ class Downloads extends AdminController
 		if ($setPId) {
 			Request::setVar('sId', 0);
 		}
-		elseif($setSId) {
+		elseif($setSId)
+		{
 			Request::setVar('pId', 0);
 		}
 
