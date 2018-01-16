@@ -68,7 +68,7 @@ class CartOrders
 
 		$sql .= " LEFT JOIN `#__storefront_skus` sku on (sku.sId = ti.sId)";
 		$sql .= " LEFT JOIN `#__storefront_products` p on (sku.pId = p.pId)";
-		
+
 		// Filter by filters
 		if ($filters['sort'] == 'title')
 		{
