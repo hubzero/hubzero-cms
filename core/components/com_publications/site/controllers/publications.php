@@ -140,6 +140,10 @@ class Publications extends SiteController
 		$pointer       = $this->_id ? '&id=' . $this->_id : '&alias=' . $this->_alias;
 		$this->_route  = 'index.php?option=' . $this->_option;
 		$this->_route .= $this->_identifier ? $pointer : '';
+		if ($active = Request::getWord('active'))
+		{
+			$this->_route .= '&active=' . $active;
+		}
 	}
 
 	/**
