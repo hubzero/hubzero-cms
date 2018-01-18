@@ -428,6 +428,11 @@ class File extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
+				if ($attach->type != $this->_name)
+				{
+					continue;
+				}
+
 				// Get file path
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 
