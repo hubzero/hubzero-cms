@@ -37,6 +37,7 @@ use Route;
 use Event;
 use Lang;
 use Date;
+use User;
 
 /**
  * Handles a Datastore Lite attachment
@@ -44,17 +45,17 @@ use Date;
 class Data extends Base
 {
 	/**
-	* Attachment type name
-	*
-	* @var  string
-	*/
+	 * Attachment type name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'data';
 
 	/**
-	* Image Helper
-	*
-	* @var  object
-	*/
+	 * Image Helper
+	 *
+	 * @var  object
+	 */
 	protected $_imgHelper = null;
 
 	/**
@@ -302,7 +303,7 @@ class Data extends Base
 			}
 
 			$pAttach->modified_by = null;
-			$pAttach->modified 	= null;
+			$pAttach->modified = null;
 			$pAttach->object_revision = $dbVersion;
 			$pAttach->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $pAttach->object_name . DS . '?v=' . $dbVersion;
 			$pAttach->store();
@@ -559,7 +560,7 @@ class Data extends Base
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
-		$uid   = User::get('id');
+		$uid = User::get('id');
 
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
@@ -781,7 +782,7 @@ class Data extends Base
 					$where = $bundleDir . DS . $title . '-' . $db_version . '.csv';
 					if ($zip->addFile($tmpFile, $where))
 					{
-						$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+						$readme .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
 					}
 				}
 			}
