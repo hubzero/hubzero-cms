@@ -211,7 +211,6 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ID'); ?>:</th>
 							<td>
 								<?php echo $this->newsletter->id; ?>
-								<input type="hidden" name="newsletter[id]" value="<?php echo $this->newsletter->id; ?>" />
 							</td>
 						</tr>
 
@@ -455,6 +454,8 @@ function submitbutton(pressbutton)
 		<?php endif; ?>
 	</div>
 
+	<input type="hidden" name="newsletter[id]" value="<?php echo $this->newsletter->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->newsletter->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
