@@ -124,6 +124,11 @@ class Publication extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
+				if ($attach->type != $this->_name)
+				{
+					continue;
+				}
+
 				$itemUrl = Route::url('index.php?option=com_publications&id=' . $attach->object_id);
 
 				$publication = new \Components\Publications\Models\Publication($attach->object_id, 'default');

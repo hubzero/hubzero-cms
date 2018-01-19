@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$html  = '<select name="' . $this->name . '" id="' . $this->name . '">' . "\n";
+$html  = '<select name="' . $this->name . '" id="' . $this->name . '"' . (isset($this->attributes) && $this->attributes ? ' ' . $this->attributes : '') . '>' . "\n";
 
 if ($this->showNone != '')
 {
