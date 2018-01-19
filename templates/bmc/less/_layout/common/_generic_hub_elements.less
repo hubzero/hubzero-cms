@@ -236,17 +236,22 @@ table.entries {
 	border-collapse: collapse;
 }
 .entries {
-	border: 2px solid #e9e9e9;
 	border-top: none;
 	background-color: #fff;
 	margin: 0;
 	padding: 0;
 
+	.entry-title {
+		font-size: 1.1rem;
+	}
+
 	// caption
 	caption {
 		text-align: left;
-		font-size: 115%;
-		border: 2px solid #e9e9e9;
+		text-transform: uppercase;
+		font-size: 0.9rem;
+		padding-top: 2rem;
+		font-family: @fontSimpleSemiBold;
 		border-bottom: 1px solid #e9e9e9;
 		-ms-word-break:   break-all;
 		word-wrap: break-word;
@@ -285,10 +290,25 @@ table.entries {
 		}
 	}
 	// tbody
-	tbody td {
-		text-align: left;
-		border-bottom: 1px solid #eee;
-		padding: 10px;
+	tbody {
+
+		tr {
+
+			td {
+				text-align: left;
+				border-bottom: 1px solid #eee;
+				padding: 10px;
+			}
+
+			&:last-child {
+
+				td,
+				th {
+					border: none;
+				}
+			}
+		}
+
 	}
 	tbody th {
 		width: 5px;
@@ -474,7 +494,8 @@ table.entries {
 }
 
 #content-header + form > .section:first-child {
-	padding-top: 0;
+	// WTF /wishlist was giving a hard time with this
+	//padding-top: 0;
 }
 
 .withmenu {
@@ -580,7 +601,8 @@ body #page_header {
 }
 
 .aside > p {
-	padding: 0 @padContain;
+	// WTF seems like aside is already padded
+	//padding: 0 @padContain;
 }
 
 .aside h4 {
@@ -628,8 +650,8 @@ body #page_header {
 }
 
 .aside fieldset fieldset {
-	margin: 1em;
-	padding: 0;
+	//margin: 1em;
+	padding: 1rem;
 	border: 1px solid #DEE4CD;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -787,6 +809,11 @@ section.section {
 	display: table;
 	table-layout: fixed;
 	width: 100%;
+
+	@media (min-width: @sizeM) {
+		padding-top: 60px;
+		padding-bottom: 60px;
+	}
 }
 
 section.section > .section-inner {
@@ -850,7 +877,7 @@ section.section .aside {
 		display: table-cell;
 		vertical-align: top;
 		width: 210px;
-		.padInnerContainerLeft();
+		.padInnerContainerRight();
 		padding-top: 0;
 		padding-right: 0;
 		padding-bottom: 0;
@@ -867,9 +894,16 @@ section.section .aside {
 	}
 }
 
-section.section .subject + .aside:before {
-	right: auto;
-	left: 0;
+section.section .subject + .aside {
+
+	@media (min-width: @sizeM) {
+		.padInnerContainerLeft();
+	}
+
+	&:before {
+		right: auto;
+		left: 0;
+	}
 }
 
 #page_content section.section {

@@ -10,9 +10,13 @@
 .entries li,
 .results li {
   border-bottom: 1px solid #dadada;
-  padding: 1em 0 1em 1em;
+  padding: 2em 0;
   margin: 0;
   list-style: none;
+}
+.entries li:last-child,
+.results li:last-child {
+  border-bottom: 0;
 }
 .results p,
 .results .details {
