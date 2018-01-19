@@ -164,7 +164,7 @@ class Router extends Base
 			'edit', 'browse', 'intro',
 			'features', 'auth', 'delete',
 			'fixownership', 'suspend', 'reinstate',
-			'process', 'activate'
+			'process', 'activate', 'requestaccess'
 		);
 
 		// Media tasks

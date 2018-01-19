@@ -32,6 +32,7 @@
 
 namespace Components\Projects\Site\Controllers;
 
+
 use Components\Projects\Tables;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
@@ -44,6 +45,7 @@ use stdClass;
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
 require_once dirname(dirname(__DIR__)) . '/helpers/layoutHelper.php';
+require_once Component::path('com_projects') . '/models/orm/owner.php';
 
 /**
  * Primary component controller
@@ -114,6 +116,64 @@ class Projects extends Base
 		}
 
 		echo json_encode($json);
+	}
+
+	/**
+	 * Allow user to request membership to a public project.
+	 *
+	 * @return void
+	 */
+	public function requestAccessTask()
+	{
+		Request::checkToken('get');
+		if (!$this->model->allowMembershipRequest())
+		{
+			App::abort(404, 'Invalid request'); 
+		}
+
+		$project = Request::getVar('alias');
+		$task = $this->_task;
+		$return = Route::url('index.php?option=com_projects&alias=' . $project . '&task=' . $task, false);
+		if (User::isGuest())
+		{
+			$redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);
+			App::redirect($redirectUrl);
+		}
+
+		if (!$this->model->member())
+		{
+			if ($this->model->exists())
+			{
+				$member = \Components\Projects\Models\Orm\Owner::blank();
+				$member->set('projectid', $this->model->get('id'));
+				$member->set('userid', 1002);
+				$member->set('status', 3);
+				$currentTime = Date::of()->toSql();
+				$member->set('added', $currentTime);
+				if ($member->save())
+				{
+					$managers = \Components\Projects\Models\Orm\Owner::getProjectManagers($this->model->get('id'));
+					$emails = array();
+					foreach ($managers as $manager)
+					{
+						$emails[] = $manager->user->email;
+					}
+					$subject = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_SUBJECT');
+					$message = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_MESSAGE', $member->user->name, $member->user->email);
+					\Components\Projects\Helpers\Html::sendHUBMessage(
+						$this->_option,
+						$this->model,
+						$emails,
+						$subject,
+						'projects_project_membershiprequest',
+						'memberrequest',
+						$message
+					);
+					Notify::success('You have sucessfully requested membership');
+				}
+			}
+		}
+		App::redirect(Route::url('index.php?option=com_projects&alias=' . $project, false));
 	}
 
 	/**

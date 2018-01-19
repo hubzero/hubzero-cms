@@ -1314,6 +1314,7 @@ class Html extends Obj
 		$eview->project  = $project;
 		$eview->message  = $message;
 		$eview->reviewer = $reviewer;
+		$eview->subject  = $subject;
 
 		$body = array();
 		$body['plaintext'] = $eview->loadTemplate(false);
