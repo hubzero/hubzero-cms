@@ -162,7 +162,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 												<div class="icon">
 													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 438.5 438.5"><path d="M414.4 60.7c-16.1-16.1-35.4-24.1-58.1-24.1H265c-2.5 0-4.4.6-5.9 1.9-1.4 1.2-2.4 3.1-2.9 5.6-.5 2.5-.8 4.7-.9 6.7-.1 2-.1 4.5.1 7.6.2 3 .3 4.9.3 5.7.6 1.5.8 2.8.6 3.9-.2 1 .5 1.9 2 2.6 1.5.7 2.3 1.2 2.3 1.6s1.1.7 3.3.9l3.3.3h89c12.6 0 23.3 4.5 32.3 13.4 9 8.9 13.4 19.7 13.4 32.3v201c0 12.6-4.5 23.3-13.4 32.3-8.9 8.9-19.7 13.4-32.3 13.4H265c-2.5 0-4.4.6-5.9 1.9-1.4 1.2-2.4 3.1-2.9 5.6-.5 2.5-.8 4.7-.9 6.7-.1 2-.1 4.5.1 7.6.2 3 .3 4.9.3 5.7 0 2.5.9 4.6 2.7 6.4 1.8 1.8 3.9 2.7 6.4 2.7h91.4c22.6 0 42-8 58.1-24.1s24.1-35.4 24.1-58.1v-201c.1-23.1-7.9-42.4-24-58.5z"/><path d="M338 219.3c0-4.9-1.8-9.2-5.4-12.9L177.3 51.1c-3.6-3.6-7.9-5.4-12.8-5.4s-9.2 1.8-12.9 5.4c-3.6 3.6-5.4 7.9-5.4 12.9v82.2H18.3c-5 0-9.2 1.8-12.9 5.4-3.6 3.6-5.4 7.9-5.4 12.9v109.6c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4h127.9v82.2c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4L332.6 232c3.6-3.5 5.4-7.8 5.4-12.7z"/></svg>
 												</div>
-												&nbsp;
+												<span>Login</span>
 											</a>
 										</div>
 									<?php endif; ?>
@@ -208,6 +208,13 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 					<div class="content">
 
+						<?php if ($this->getBuffer('message') && $this->getBuffer('message') != '<div id="system-message-container">
+</div>') : ?>
+						<section class="section">
+							<jdoc:include type="message" />
+						</section>
+						<?php endif; ?>
+
 						<?php if ($this->countModules('left or right')) : ?>
 						<div class="inner withmenu">
 							<section class="main section">
@@ -248,66 +255,10 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 				<footer class="global">
 					<main>
 						<nav>
-							<ul>
-								<li>
-									<a href="#">Resources</a>
-									<ul>
-										<li><a href="#">Resources</a></li>
-										<li><a href="#">Collections</a></li>
-										<li><a href="#">Run Software</a></li>
-									</ul>
-								</li>
-								<li>
-									<a href="#">Community</a>
-									<ul>
-										<li><a href="#">Community</a></li>
-										<li><a href="#">Groups and Projects</a></li>
-										<li><a href="#">Run Software</a></li>
-									</ul>
-								</li>
-								<li>
-									<a href="#">Services</a>
-									<ul>
-										<li><a href="#">Community</a></li>
-										<li><a href="#">Groups and Projects</a></li>
-										<li><a href="#">Run Software</a></li>
-										<li><a href="#">Run Software</a></li>
-										<li><a href="#">Run Software</a></li>
-									</ul>
-								</li>
-								<li>
-									<a href="#">News &amp; Activities</a>
-									<ul>
-										<li><a href="#">Blog</a></li>
-										<li><a href="#">Groups and Projects</a></li>
-										<li><a href="#">Run Software</a></li>
-									</ul>
-								</li>
-								<li>
-									<a href="#">About</a>
-									<ul>
-										<li><a href="#">Community</a></li>
-										<li><a href="#">Groups and Projects</a></li>
-										<li><a href="#">Run Software</a></li>
-										<li><a href="#">Run Software</a></li>
-										<li><a href="#">Run Software</a></li>
-									</ul>
-								</li>
-								<li>
-									<a href="#">Help</a>
-									<ul>
-										<li><a href="#">Blog</a></li>
-										<li><a href="#">Groups and Projects</a></li>
-										<li><a href="#">Run Software</a></li>
-									</ul>
-								</li>
-							</ul>
+							<jdoc:include type="modules" name="footer" />
 						</nav>
 						<div class="form">
-							<form>
-								<h4>Subscribe to our newsletter</h4>
-								<input type="text">
-							</form>
+							<jdoc:include type="modules" name="news" />
 							<ul class="social">
 								<li><a href="#"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455.7 455.7"><style>.st0{fill:#FFFFFF;}</style><path class="st0" d="M0 0v455.7h242.7v-176h-59.3v-71.9h59.3v-60.4c0-43.9 35.6-79.5 79.5-79.5h62v64.6h-44.4c-13.9 0-25.3 11.3-25.3 25.3v50H383l-9.5 71.9h-59.1v176h141.2V0H0z"/></svg></div><span>Facebook</span></a></li>
 								<li><a href="#"><div class="icon"><svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455.7 455.7"><style>.st0{fill:#FFFFFF;}</style><path class="st0" d="M0 0v455.7h455.7V0H0zm361.3 163.9c.1 2.7.2 5.4.2 8.1 0 108.3-87.8 196.2-196.2 196.2-38.6 0-74.5-11.1-104.9-30.4 59.3 8.9 101.1-28.9 101.1-28.9-52.8-4.1-63.3-48.1-63.3-48.1 18.7 3.2 30.4-1.3 30.4-1.3-59.5-13.9-54.4-68.3-54.4-68.3 13.8 8.2 29.7 8.9 29.7 8.9C51.4 153.9 84.3 109 84.3 109c55.1 66.7 136 71.2 141.3 71.4-1.2-5-1.8-10.2-1.8-15.6 0-38 30.8-68.8 68.8-68.8 19.8 0 37.7 8.4 50.2 21.8 3.5-1 6.9-2 10.1-3.1 19.5-6.5 33.4-13.9 33.4-13.9-3.4 20.1-28.2 37-30 38.2-.1 0-.1.1-.1.1h.1c19.3-1.9 38.9-10.1 38.9-10.1-5.8 12.4-30 31.9-33.9 34.9z"/></svg></div><span>Twitter</span></a></li>
