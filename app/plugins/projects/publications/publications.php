@@ -2624,7 +2624,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$activities = Hubzero\Activity\Log::all()
 							->whereEquals('scope', 'publication')
 							->whereEquals('scope_id', $pid)
-							->whereEquals('state', 1)
 							->rows()
 							->toArray();
 
