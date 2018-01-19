@@ -35,6 +35,8 @@ defined('_HZEXEC_') or die();
 // Initiasile related data.
 require_once PATH_CORE.'/components/com_menus/admin/helpers/menus.php';
 $menuTypes = MenusHelper::getMenuLinks();
+
+$assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 ?>
 		<script type="text/javascript">
 			jQuery(document).ready(function($){
@@ -74,8 +76,8 @@ $menuTypes = MenusHelper::getMenuLinks();
 			<div class="input-wrap">
 				<label id="jform_menus-lbl" for="jform_assignment"><?php echo Lang::txt('COM_MODULES_MODULE_ASSIGN'); ?></label>
 			<!-- <fieldset id="jform_menus" class="radio"> -->
-				<select name="jform[assignment]" id="jform_assignment">
-					<?php echo Html::select('options', Components\Modules\Helpers\Modules::getAssignmentOptions($this->item->client_id), 'value', 'text', $this->item->assignment, true);?>
+				<select name="menu[assignment]" id="jform_assignment">
+					<?php echo Html::select('options', Components\Modules\Helpers\Modules::getAssignmentOptions($this->item->client_id), 'value', 'text', $assignment, true);?>
 				</select>
 			<!-- </fieldset> -->
 			</div>
@@ -129,18 +131,18 @@ $menuTypes = MenusHelper::getMenuLinks();
 				<ul class="menu-links">
 					<?php
 					foreach ($type->links as $link) :
-						if (trim($this->item->assignment) == '-'):
+						if (trim($assignment) == '-'):
 							$checked = '';
-						elseif ($this->item->assignment == 0):
+						elseif ($assignment == 0):
 							$checked = ' checked="checked"';
-						elseif ($this->item->assignment < 0):
-							$checked = in_array(-$link->value, $this->item->assigned) ? ' checked="checked"' : '';
-						elseif ($this->item->assignment > 0) :
-							$checked = in_array($link->value, $this->item->assigned) ? ' checked="checked"' : '';
+						elseif ($assignment < 0):
+							$checked = in_array(-$link->value, $this->item->menuAssigned()) ? ' checked="checked"' : '';
+						elseif ($assignment > 0) :
+							$checked = in_array($link->value, $this->item->menuAssigned()) ? ' checked="checked"' : '';
 						endif;
 					?>
 					<li class="menu-link">
-						<input type="checkbox" class="chkbox <?php echo $chkbox_class; ?>" name="jform[assigned][]" value="<?php echo (int) $link->value;?>" id="link<?php echo (int) $link->value;?>"<?php echo $checked;?>/>
+						<input type="checkbox" class="chkbox <?php echo $chkbox_class; ?>" name="menu[assigned][]" value="<?php echo (int) $link->value;?>" id="link<?php echo (int) $link->value;?>"<?php echo $checked;?>/>
 						<label for="link<?php echo (int) $link->value;?>">
 							<?php echo $link->text; ?>
 						</label>

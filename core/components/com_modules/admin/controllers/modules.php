@@ -445,6 +445,17 @@ class Modules extends AdminController
 			return $this->editTask($model);
 		}
 
+		// Update menu assignments
+		$menu = Request::getVar('menu', array(), 'post');
+		$assignment = (isset($menu['assignment']) ? $menu['assignment'] : 0);
+		$assigned   = (isset($menu['assigned']) ? $menu['assigned'] : array());
+
+		if (!$model->saveAssignment($assignment, $assigned))
+		{
+			Notify::error($model->getError());
+			return $this->editTask($model);
+		}
+
 		// Trigger after save event
 		Event::trigger('extension.onExtensionAfterSave', array($this->_option . '.module', &$model, $model->isNew()));
 
