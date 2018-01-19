@@ -356,4 +356,31 @@ jQuery(document).ready(function($){
 			}
 		}
 	});
+
+	$('.modal').on('click', function(e){
+		e.preventDefault();
+		var href = $(this).attr('href');
+		if (href.search('&no_html=1') == -1) {
+			href = href + '&no_html=1';
+		}
+		if (href.search('&ajax=1') == -1) {
+			href = href + '&ajax=1';
+		}
+		$(this).attr('href', href);
+		$.fancybox(this,{
+			type: 'ajax',
+			width: 600,
+			height: 'auto',
+			autoSize: false,
+			fitToView: false,
+			wrapCSS: 'sbp-window',
+			afterShow: function() {
+				if ($('#cancel-action')) {
+					$('#cancel-action').on('click', function(e) {
+						$.fancybox.close();
+					});
+				}
+			}
+		});
+	});
 });

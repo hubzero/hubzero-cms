@@ -197,6 +197,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				case 'newauthor':
 					$arr['html'] = $this->select();
 					break;
+				case 'approvemembership':
+					$arr['html'] = $this->_approveMembership();
+					break;
+				case 'denymembership':
+					$arr['html'] = $this->_denyMembership();
+					break;
 			}
 		}
 
@@ -323,8 +329,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Get count of project groups
 		$groups = $this->model->table('Owner')->getProjectGroups($this->model->get('id'));
-		$view->count_groups = $groups ? count($groups) : 0;
 
+		$userId = User::getInstance()->get('id');
+		$projectId = $this->model->get('id');
+		$view->currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId); 
+		$view->count_groups = $groups ? count($groups) : 0;
 		$view->params   = $this->model->params;
 		$view->option   = $this->_option;
 		$view->database = $this->_database;
@@ -904,6 +913,117 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 			App::redirect(Route::url($url));
 		}
+	}
+
+	/**
+	 * Approve membership request
+	 *
+	 * @return mixed
+	 */
+	protected function _approveMembership()
+	{
+		Request::checkToken('get');
+		$projectId = $this->model->get('id');
+		$userId = User::getInstance()->get('id');
+		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
+		$ownerId = Request::getVar('owner', 0);
+		if ($currentUser->isManager() && $ownerId != 0)
+		{
+			$owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);	
+			$owner->set('status', 1);
+			$owner->set('added', Date::of()->toSql());
+			if ($owner->save())
+			{
+				$ownerEmail = array();
+				$ownerEmail[] = $owner->user->get('email');
+				$subject = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_ACCEPTED');
+				$message = '';
+
+				$this->_sendMemberRequestEmail($ownerEmail, $subject, $message);
+				$url = Route::url('index.php?option=' . $this->_option .
+					'&task=team' . '&alias=' . $this->model->get('alias'), false);
+				Notify::success(Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_APPROVED'));
+				App::redirect($url);
+			}
+		}
+		else
+		{
+			App::abort(403, Lang::txt('PLG_PROJECTS_TEAM_NOT_PERMITTED'));
+		}
+	}
+
+	/**
+	 *  Deny membership request
+	 *
+	 * @return mixed
+	 */
+	protected function _denyMembership()
+	{
+		Request::checkToken('get');
+		$projectId = $this->model->get('id');
+		$userId = User::getInstance()->get('id');
+		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
+		$ownerId = Request::getVar('owner', 0);
+		$confirm = Request::getInt('confirm', 0);
+		if ($currentUser->isManager() && $ownerId != 0)
+		{
+			$owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);	
+			if ($confirm != 1)
+			{
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'projects',
+						'element' => 'team',
+						'name'    => 'memberrequest'
+					)
+				);
+
+				$view->option   = $this->_option;
+				$view->model    = $this->model;
+				$view->owner	= $owner;
+				$view->setErrors($this->getErrors());
+
+				return $view->loadTemplate();
+			}
+			$owner->set('status', 4);
+			$message = Request::getVar('message');
+			$params = $owner->params;
+			if ($message)
+			{
+				$params->set('denyMessage', $message);
+			}
+			$owner->set('params', $params->toString());
+			if ($owner->save())
+			{
+				$ownerEmail = array();
+				$ownerEmail[] = $owner->user->get('email');
+				$subject = Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_DENIED');
+				$message = $owner->params->get('denyMessage');
+
+				$this->_sendMemberRequestEmail($ownerEmail, $subject, $message);
+				Notify::success('Membership request has been denied');
+				$url = Route::url('index.php?option=' . $this->_option .
+					'&task=team' . '&alias=' . $this->model->get('alias'), false);
+				App::redirect($url);
+			}
+		}
+		else
+		{
+			App::abort(403, Lang::txt('PLG_PROJECTS_TEAM_NOT_PERMITTED'));
+		}
+	}
+
+	private function _sendMemberRequestEmail($email, $subject, $message)
+	{
+		\Components\Projects\Helpers\Html::sendHUBMessage(
+			$this->_option,
+			$this->model,
+			$email,
+			$subject,
+			'projects_project_membershiprequest',
+			'memberrequest',
+			$message
+		);
 	}
 
 	/**

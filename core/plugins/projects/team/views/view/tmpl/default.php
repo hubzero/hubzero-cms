@@ -32,6 +32,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css();
+$this->js('team');
 
 $sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $sortAppend = '&sortdir=' . urlencode($sortbyDir);
@@ -76,6 +77,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?>
 						</a>
 					</th>
+					<th></th>
 					<?php if ($this->count_groups) { ?>
 						<th class="priority-2">
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP'); ?>
@@ -135,7 +137,31 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 						<?php echo $creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : ''; echo $role; ?>
 					</td>
 					<td class="priority-5">
-						<?php echo $owner->status == 1 ? '<time datetime="' . Date::of($owner->added)->format('Y-m-d\TH:i:s\Z') . '">' . Date::of($owner->added)->toLocal('M d, Y') . '</time>' : '<span class="invited">' . Lang::txt('PLG_PROJECTS_TEAM_INVITED').'</span>';  ?>
+						<?php if ($owner->status == 1): ?>
+							<time datetime="<?php echo Date::of($owner->added)->format('Y-m-d\TH:i:s\Z');?>">
+								<?php echo Date::of($owner->added)->toLocal('M d, Y'); ?>
+							</time>
+						<?php elseif ($owner->status == 3): ?>
+							<span class="invited"><?php echo Lang::txt('PLG_PROJECTS_TEAM_REQUESTED'); ?></span>
+						<?php else: ?>
+							<span class="invited"><?php echo Lang::txt('PLG_PROJECTS_TEAM_INVITED'); ?></span>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($owner->status == 3 && $this->currentUser->isManager()): ?>
+							<a id="<?php echo 'form-' . $owner->id;?>" 
+								href="<?php echo Route::url('index.php?option=com_projects&alias=' . 
+									$this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>" 
+								class="btn btn-success">
+								<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
+							</a>
+							<a id="<?php echo 'form-' . $owner->id;?>" 
+								href="<?php echo Route::url('index.php?option=com_projects&alias=' . 
+									$this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>" 
+								class="btn btn-danger modal">
+								<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
+							</a>
+						<?php endif; ?>
 					</td>
 					<?php if ($this->count_groups) { ?>
 						<td class="priority-2">
