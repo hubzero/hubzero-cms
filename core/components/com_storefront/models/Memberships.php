@@ -30,21 +30,25 @@
 
 namespace Components\Storefront\Models;
 
+use Date;
+use Lang;
+
 /**
- *
  * Memberships lookup and management
- *
  */
 class Memberships
 {
-	// Database instance
-	var $_db = NULL;
+	/**
+	 * Database instance
+	 *
+	 * @var  object
+	 */
+	protected $_db = null;
 
 	/**
 	 * Contructor
 	 *
-	 * @param  void
-	 * @return void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -57,8 +61,7 @@ class Memberships
 	/**
 	 * Get all product type IDs with membership model
 	 *
-	 * @param  void
-	 * @return array		membership type IDs
+	 * @return  array  membership type IDs
 	 */
 	public function getMembershipTypes()
 	{
@@ -72,28 +75,29 @@ class Memberships
 	/**
 	 * Lookup membership info
 	 *
-	 * @param  int			cart ID
-	 * @param  int			membership product ID
-	 * @return array		membership info
+	 * @param   int    $crtId  cart ID
+	 * @param   int    $pId    membership product ID
+	 * @return  array  membership info
 	 */
 	public function getMembershipInfo($crtId, $pId)
 	{
-		$now = Date::getRoot()->toSql();
+		$now = Date::toSql();
+
 		$sql = "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql;
-		$membershipInfo = $this->_db->loadAssoc();
 
-		return $membershipInfo;
+		return $this->_db->loadAssoc();
 	}
 
 	/* ****************************** Static Functions *********************************/
 
 	/**
 	 * Find the proper Product Type Subscription Object and return it
-	 * @param	String 	Product type
-	 * @param 	Object  Product ID
-	 * @return 	Subscription Object	If not found returns a generic subscription object
+	 *
+	 * @param   string  $type  Product type
+	 * @param   int     $pId   Product ID
+	 * @param   int     $uId   User ID
+	 * @return  object  Subscription Object. If not found returns a generic subscription object
 	 */
 	public static function getSubscriptionObject($type, $pId, $uId)
 	{
@@ -101,25 +105,23 @@ class Memberships
 		$lookupPath = dirname(dirname(__DIR__)) . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS .'Subscriptions';
 
 		$objectClass = str_replace(' ', '_', ucwords(strtolower($type))) . '_Subscription';
-		if (file_exists($lookupPath . DS . $objectClass . '.php'))
+
+		if (!file_exists($lookupPath . DS . $objectClass . '.php'))
 		{
-			// Include the class file
-			require_once($lookupPath . DS . $objectClass . '.php');
-			return new $objectClass($pId, $uId);
+			$objectClass = 'BaseSubscription';
 		}
-		else
-		{
-			require_once($lookupPath . DS . 'BaseSubscription.php');
-			return new BaseSubscription($pId, $uId);
-		}
+
+		require_once $lookupPath . DS . $objectClass . '.php';
+
+		return new $objectClass($pId, $uId);
 	}
 
 	/**
 	 * Calculate and return new expiration date for a SKU
 	 *
-	 * @param  	string	Current subscription expiration (MySQL format)
-	 * @param	Array	SKU/Cart info
-	 * @return 	string	Calculated new expiration (MySQL format)
+	 * @param  	string  $currentExpiration  Current subscription expiration (MySQL format)
+	 * @param   array   $item               SKU/Cart info
+	 * @return  string  Calculated new expiration (MySQL format)
 	 */
 	public static function calculateNewExpiration($currentExpiration, $item)
 	{
@@ -137,7 +139,7 @@ class Memberships
 		else
 		{
 			// Get current time
-			$date = Date::getRoot();
+			$date = Date::of('now');
 			// Add TTL to the current time
 			$date->modify('+ ' . $ttl);
 		}
@@ -148,13 +150,14 @@ class Memberships
 	/**
 	 * Calculate TTL with respect to the quantity
 	 *
-	 * @param  string		single item TTL
-	 * @param  int			number of items
-	 * @return string		combined TTL
+	 * @param   string  $ttl  single item TTL
+	 * @param   int     $qty  number of items
+	 * @return  string  combined TTL
 	 */
 	private static function getTtl($ttl, $qty)
 	{
 		self::checkTtl($ttl);
+
 		// Split ttl into parts
 		$ttlParts = explode(' ', $ttl);
 		$ttlParts[0] = $qty * $ttlParts[0];
@@ -166,8 +169,9 @@ class Memberships
 	/**
 	 * Check TTL format
 	 *
-	 * @param  string	TTL
-	 * @return void
+	 * @param   string  $ttl  Time To Live
+	 * @return  void
+	 * @throws  Exception
 	 */
 	public static function checkTtl($ttl)
 	{
@@ -180,15 +184,15 @@ class Memberships
 	/**
 	 * Lookup membership info by user (almost identical as above)
 	 *
-	 * @param  int			user ID
-	 * @param  int			membership product ID
-	 * @return array		membership info
+	 * @param   int    $uId  user ID
+	 * @param   int    $pId  membership product ID
+	 * @return  array  membership info
 	 */
 	public static function getMembershipInfoByUser($uId, $pId)
 	{
 		$db = \App::get('db');
 
-		$now = Date::of(time())->toSql();
+		$now = Date::of('now')->toSql();
 		$sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
 		$sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
 		$sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);
@@ -197,5 +201,4 @@ class Memberships
 
 		return $membershipInfo;
 	}
-
 }

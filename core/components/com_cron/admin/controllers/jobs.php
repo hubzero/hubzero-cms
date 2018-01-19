@@ -321,7 +321,7 @@ class Jobs extends AdminController
 			}
 
 			$job->mark('end_run');
-			$job->set('last_run', Date::toLocal('Y-m-d H:i:s'));
+			$job->set('last_run', Date::toSql());
 			$job->set('next_run', $job->nextRun());
 			$job->save();
 

@@ -47,6 +47,17 @@ defined('_HZEXEC_') or die();
 <section class="section">
 	<div class="section-inner">
 
+		<form action="/storefront/search/" method="get">
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="Search">
+				<fieldset class="entry-search">
+					<label for="entry-search-field">Search</label>
+					<input type="hidden" name="cId" value="<?php echo $this->cId; ?>">
+					<input type="text" name="q" id="entry-search-field" value="" placeholder="Search">
+				</fieldset>
+			</div>
+		</form>
+
 	<?php
 
 		if (!empty($this->products))

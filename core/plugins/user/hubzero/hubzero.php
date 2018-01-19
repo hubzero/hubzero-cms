@@ -1,16 +1,41 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2009 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2018 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2018 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die;
 
 /**
- * Joomla User plugin
+ * Hubzero User plugin
  */
-class plgUserJoomla extends \Hubzero\Plugin\Plugin
+class plgUserHubzero extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Remove all sessions for the user name
@@ -95,19 +120,19 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 				$mail
 					->addFrom(
 						$emailAddress,
-						Lang::txt('PLG_USER_JOOMLA_EMAIL_ADMIN', $config->get('sitename'))
+						Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN', $config->get('sitename'))
 					)
 					->addTo($emailAddress)
 					->addHeader('X-Component', Request::getCmd('option', 'com_members'))
 					->addHeader('X-Component-Object', 'user_creation_admin_notification')
-					->setSubject(Lang::txt('PLG_USER_JOOMLA_EMAIL_ACCOUNT_CREATION', $config->get('sitename')))
+					->setSubject(Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNT_CREATION', $config->get('sitename')))
 					->addPart($plain, 'text/plain')
 					->addPart($html, 'text/html');
 
 				if (!$mail->send())
 				{
 					// TODO: Probably should raise a plugin error but this event is not error checked.
-					Log::error(Lang::txt('PLG_USER_JOOMLA_EMAIL_ERROR', $emailAddress));
+					Log::error(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR', $emailAddress));
 				}
 			}
 		}
@@ -137,14 +162,14 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 
 				// Compute the mail subject.
 				$emailSubject = Lang::txt(
-					'PLG_USER_JOOMLA_NEW_USER_EMAIL_SUBJECT',
+					'PLG_USER_HUBZERO_NEW_USER_EMAIL_SUBJECT',
 					$user['name'],
 					$config->get('sitename')
 				);
 
 				// Compute the mail body.
 				$emailBody = Lang::txt(
-					'PLG_USER_JOOMLA_NEW_USER_EMAIL_BODY',
+					'PLG_USER_HUBZERO_NEW_USER_EMAIL_BODY',
 					$user['name'],
 					$config->get('sitename'),
 					Request::root(),
@@ -172,7 +197,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 				if (!$mail->send())
 				{
 					// TODO: Probably should raise a plugin error but this event is not error checked.
-					throw new Exception(Lang::txt('PLG_USER_JOOMLA_EMAIL_ERROR'), 500);
+					throw new Exception(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR'), 500);
 				}
 			}
 		}

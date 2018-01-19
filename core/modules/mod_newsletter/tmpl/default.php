@@ -64,7 +64,7 @@ if (is_object($this->mailinglist)) : ?>
 
 			<input type="hidden" name="list_<?php echo $token; ?>" value="<?php echo $this->mailinglist->id; ?>" />
 			<input type="hidden" name="option" value="com_newsletter" />
-			<input type="hidden" name="controller" value="mailinglist" />
+			<input type="hidden" name="controller" value="mailinglists" />
 			<input type="hidden" name="subscriptionid" value="<?php echo $this->subscriptionId; ?>" />
 			<input type="hidden" name="task" value="dosinglesubscribe" />
 			<input type="hidden" name="return" value="<?php echo base64_encode($_SERVER['REQUEST_URI']); ?>">

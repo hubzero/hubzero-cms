@@ -48,6 +48,16 @@ $this->css()
 
 <section class="section">
 	<div class="section-inner">
+		<form action="/storefront/search/" method="get">
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="Search">
+				<fieldset class="entry-search">
+					<label for="entry-search-field">Search</label>
+					<input type="text" name="q" id="entry-search-field" value="" placeholder="Search">
+				</fieldset>
+			</div>
+		</form>
+
 		<?php
 
 		if (sizeof($this->categories))

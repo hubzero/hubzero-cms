@@ -710,19 +710,31 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$r = $recipient->getTableName();
 		$l = Hubzero\Activity\Log::blank()->getTableName();
 
-		$scopes = array('project');
-		$managers = $model->table('Owner')->getIds($model->get('id')); //team(array('role' => 1));
-		if (in_array(User::get('id'), $managers))
-		{
-			$scopes[] = 'project_managers';
-		}
-
 		$recipient
 			->select($r . '.*')
 			->including('log')
-			->join($l, $l . '.id', $r . '.log_id')
-			->whereIn($r . '.scope', $scopes)
-			->whereIn($r . '.scope_id', $projects)
+			->join($l, $l . '.id', $r . '.log_id');
+
+		// Only pull activity the user has explicit access to
+		foreach ($projects as $project_id)
+		{
+			$scopes = array('project');
+			$managers = $model->table('Owner')->getIds($project_id);
+			if (!$managers)
+			{
+				$managers = array();
+			}
+			if (in_array(User::get('id'), $managers))
+			{
+				$scopes[] = 'project_managers';
+			}
+
+			$recipient->orWhereEquals($r . '.scope_id', $project_id, 1)
+					->whereIn($r . '.scope', $scopes, 1)
+					->resetDepth();
+		}
+
+		$recipient
 			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
 			->whereEquals($l . '.parent', 0);
 

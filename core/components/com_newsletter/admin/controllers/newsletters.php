@@ -38,6 +38,7 @@ use Components\Newsletter\Models\MailingList;
 use Components\Newsletter\Models\Mailing;
 use Components\Newsletter\Models\Primary;
 use Components\Newsletter\Models\Secondary;
+use Components\Newsletter\Models\Mailing\Recipient;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
 use stdClass;
@@ -921,16 +922,16 @@ class Newsletters extends AdminController
 			));
 
 		// Save mailing object
-		if (!$newsletterMailing->save())
+		if (!$mailing->save())
 		{
 			Notify::error(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_FAIL'));
 			return $this->sendNewsletterTask();
 		}
 
 		// create recipients
-		$this->_sendTo($newsletterMailing, $newsletterContacts);
+		$this->_sendTo($mailing, $newsletterContacts);
 
-		return $newsletterMailing;
+		return $mailing;
 	}
 
 	/**

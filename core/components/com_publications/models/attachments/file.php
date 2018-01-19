@@ -428,6 +428,11 @@ class File extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
+				if ($attach->type != $this->_name)
+				{
+					continue;
+				}
+
 				// Get file path
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 
@@ -865,24 +870,36 @@ class File extends Base
 			return $bundle;
 		}
 
+		$files = array();
+		foreach ($attachments as $attach)
+		{
+			$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
+			$fname = trim(str_replace($configs->pubPath . DS, '', $fpath), DS);
+			// Window's built-in archive utility can't seem to handle paths with "./" in them
+			// So, we strip out "./", It has no effect on the resulting path.
+			// @TODO: Maybe find a better, more reliable way to do this?
+			$fname = str_replace('./', '', $fname);
+
+			if (is_file($fpath))
+			{
+				$files[$fpath] = $fname;
+			}
+		}
+
+		if (!count($files))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_FILES_FOUND'));
+			return false;
+		}
+
 		$zip = new ZipArchive;
 		if ($zip->open($bundle, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true)
 		{
 			$i = 0;
-			foreach ($attachments as $attach)
+			foreach ($files as $fpath => $fname)
 			{
-				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
-				$fname = trim(str_replace($configs->pubPath . DS, '', $fpath), DS);
-				// Window's built-in archive utility can't seem to handle paths with "./" in them
-				// So, we strip out "./", It has no effect on the resulting path.
-				// @TODO: Maybe find a better, more reliable way to do this?
-				$fname = str_replace('./', '', $fname);
-
-				if (is_file($fpath))
-				{
-					$zip->addFile($fpath, $fname);
-					$i++;
-				}
+				$zip->addFile($fpath, $fname);
+				$i++;
 			}
 			$zip->close();
 		}

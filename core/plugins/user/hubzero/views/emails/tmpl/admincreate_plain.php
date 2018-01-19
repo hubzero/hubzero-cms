@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2018 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2018 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
@@ -36,7 +35,7 @@ defined('_HZEXEC_') or die();
 $base = str_replace('/administrator', '', Request::base());
 ?>
 
-<?php echo strip_tags(Lang::txt('PLG_USER_JOOMLA_EMAIL_ADMIN_ACCOUNT_REQUESTED', $this->user['name'] . ' (' . $this->user['email'] . ')', $this->user['username'], $this->sitename)); ?>
+<?php echo strip_tags(Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_ACCOUNT_REQUESTED', $this->user['name'] . ' (' . $this->user['email'] . ')', $this->user['username'], $this->sitename)); ?>
 
-<?php echo Lang::txt('PLG_USER_JOOMLA_EMAIL_ADMIN_REVIEW_LINK'); ?>
+<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_REVIEW_LINK'); ?>
 <?php echo rtrim($base, '/') . Route::url('index.php?option=com_members&id=' . $this->user['id']); ?>

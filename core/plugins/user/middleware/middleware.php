@@ -181,7 +181,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				$this->_subject->setError($e->getMessage());
+				Log::error($e->getMessage());
 				return false;
 			}
 		}
@@ -229,7 +229,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				$this->_subject->setError($e->getMessage());
+				Log::error($e->getMessage());
 				return false;
 			}
 		}

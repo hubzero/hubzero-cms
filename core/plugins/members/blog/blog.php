@@ -665,7 +665,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (User::get('id') != $this->member->get('id'))
+		if (User::get('id') != $this->member->get('id') && !User::authorize('core.admin', 'com_blog'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();

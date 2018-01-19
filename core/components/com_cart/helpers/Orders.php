@@ -66,6 +66,9 @@ class CartOrders
 				LEFT JOIN `#__cart_carts` crt on (crt.crtId = t.crtId)
 				LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.id)";
 
+		$sql .= " LEFT JOIN `#__storefront_skus` sku on (sku.sId = ti.sId)";
+		$sql .= " LEFT JOIN `#__storefront_products` p on (sku.pId = p.pId)";
+
 		// Filter by filters
 		if ($filters['sort'] == 'title')
 		{
@@ -85,9 +88,6 @@ class CartOrders
 
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$sql .= " LEFT JOIN `#__storefront_skus` sku on (sku.sId = ti.sId)";
-			$sql .= " LEFT JOIN `#__storefront_products` p on (sku.pId = p.pId)";
-
 			$where[] = "(
 				x.`name` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
 				OR x.`username` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
@@ -107,6 +107,16 @@ class CartOrders
 			$showTo = strtotime($filters['report-to'] . ' +1 day');
 			$showTo = date("Y-m-d 00:00:00", $showTo);
 			$where[] = "t.`tLastUpdated` <= " . $db->quote($showTo);
+		}
+
+		if (!empty($filters['pId']) && $filters['pId'])
+		{
+			$where[] = " p.`pId` = " . intval($filters['pId']);
+		}
+
+		if (!empty($filters['sId']) && $filters['sId'])
+		{
+			$where[] = "sku.`sId` = " . intval($filters['sId']);
 		}
 
 		if (count($where))
