@@ -23,7 +23,7 @@ class Migration20170119032700ComResources extends Base
 			$rows = $this->db->loadObjectList();
 			foreach ($rows as $row)
 			{
-				$license = NULL;
+				$license = null;
 				if ($row->params)
 				{
 					$json = json_decode($row->params);
