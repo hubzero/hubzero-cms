@@ -800,6 +800,10 @@ class Resource extends \JTable
 		{
 			$sql .= " AND r.type=" . $this->_db->quote($filters['type']);
 		}
+		if (isset($filters['license']) && $filters['license'] != 'all')
+		{
+			$sql .= " AND r.license=" . $this->_db->quote($filters['license']);
+		}
 		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
@@ -842,6 +846,10 @@ class Resource extends \JTable
 		if (isset($filters['type']) && $filters['type'])
 		{
 			$sql .= " AND r.type=" . $this->_db->quote($filters['type']);
+		}
+		if (isset($filters['license']) && $filters['license'] != 'all')
+		{
+			$sql .= " AND r.license=" .$this->_db->quote($filters['license']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{

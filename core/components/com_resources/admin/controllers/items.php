@@ -37,6 +37,7 @@ use Components\Resources\Tables\Type;
 use Components\Resources\Tables\Review;
 use Components\Resources\Tables\Assoc;
 use Components\Resources\Tables\Contributor;
+use Components\Resources\Tables\License;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Html;
@@ -123,6 +124,11 @@ class Items extends AdminController
 				$this->_option . '.resources.type',
 				'type',
 				''
+			),
+			'license' => Request::getState(
+				$this->_option . '.resources.license',
+				'license',
+				''
 			)
 		);
 
@@ -138,12 +144,14 @@ class Items extends AdminController
 		$rt = new Type($this->database);
 		$this->view->types = $rt->getMajorTypes();
 
+		$license = new License($this->database);
+		$this->view->licenses = $license->getRecords();
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
 		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -853,10 +861,13 @@ class Items extends AdminController
 			foreach ($params as $k => $v)
 			{
 				$txt->set($k, $v);
+				if ($k == "license")
+				{
+					$row->license = $v;
+				}
 			}
 			$row->params = $txt->toString();
 		}
-
 		// Get attributes
 		$attribs = Request::getVar('attrib', array(), 'post');
 		if (is_array($attribs))
