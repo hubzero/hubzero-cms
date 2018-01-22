@@ -42,7 +42,7 @@ $menu->addChild(new Node(Lang::txt('JSITE'), null, 'disabled'));
 //
 // Users Submenu
 //
-if ($user->authorise('core.manage', 'com_users'))
+if ($user->authorise('core.manage', 'com_members'))
 {
 	$menu->addChild(new Node(Lang::txt('MOD_MENU_COM_USERS'), null, 'disabled'));
 }
