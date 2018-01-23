@@ -34,6 +34,8 @@ namespace Modules\Partners;
 use Hubzero\Module\Module;
 use Components\Partners\Models\Partner;
 
+include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
+
 /**
  * Module class for displaying a list of partners
  */
@@ -65,8 +67,6 @@ class Helper extends Module
 
 		// Get the partners
 		$this->partners = $this->_getPartners();
-
-		// include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
 
 		require $this->getLayoutPath();
 	}
