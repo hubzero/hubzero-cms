@@ -29,15 +29,13 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyGroups;
+namespace Modules\Partners;
 
 use Hubzero\Module\Module;
-use Components\Groups\Models\Recent;
-use Hubzero\User\Group;
-use User;
+use Components\Partners\Models\Partner;
 
 /**
- * Module class for displaying a list of groups for a user
+ * Module class for displaying a list of partners
  */
 class Helper extends Module
 {
@@ -48,105 +46,9 @@ class Helper extends Module
 	 * @param   string   $type  Membership type to return groups for
 	 * @return  array
 	 */
-	private function _getGroups($uid, $type='all', $groups=array())
+	private function _getPartners()
 	{
-		$db = \App::get('db');
-
-		$where = '';
-		if (!$this->params->get('include_archived', 1))
-		{
-			$where = " AND g.published != 2";
-		}
-
-		// Get all groups the user is a member of
-		$query1 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager
-				   FROM `#__xgroups` AS g, `#__xgroups_applicants` AS m
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
-
-		$query2 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager
-				   FROM `#__xgroups` AS g, `#__xgroups_members` AS m
-				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN
-						(SELECT uidNumber
-						 FROM `#__xgroups_managers` AS manager
-						 WHERE manager.gidNumber = m.gidNumber)
-				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
-
-		$query3 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager
-				   FROM `#__xgroups` AS g, `#__xgroups_managers` AS m
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
-
-		$query4 = "SELECT g.gidNumber, g.published, g.approved, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager
-				   FROM `#__xgroups` AS g, `#__xgroups_invitees` AS m
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid . $where;
-
-		switch ($type)
-		{
-			case 'all':
-				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY description ASC";
-			break;
-			case 'applicants':
-				$query = $query1;
-			break;
-			case 'members':
-				$query = $query2;
-			break;
-			case 'managers':
-				$query = $query3;
-			break;
-			case 'invitees':
-				$query = $query4;
-			break;
-		}
-
-		if (!empty($groups))
-		{
-			$query .= " WHERE g.cn IN (" . implode(',', $groups) . ")";
-		}
-
-		$db->setQuery($query);
-		$db->query();
-
-		return $db->loadObjectList();
-	}
-
-	/**
-	 * Get the user's status in the gorup
-	 *
-	 * @param   object  $group  Group to check status in
-	 * @return  string
-	 */
-	public function getStatus($group)
-	{
-		if ($group->manager)
-		{
-			$status = 'manager';
-		}
-		else
-		{
-			if ($group->registered)
-			{
-				if ($group->regconfirmed)
-				{
-					$status = 'member';
-				}
-				else
-				{
-					$status = 'pending';
-				}
-			}
-			else
-			{
-				if ($group->regconfirmed)
-				{
-					$status = 'invitee';
-				}
-				else
-				{
-					$status = '';
-				}
-			}
-		}
-		return $status;
+		return Partner::all()->paginated()->ordered();
 	}
 
 	/**
@@ -159,34 +61,12 @@ class Helper extends Module
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 100));
-		$this->recentgroups = array();
+		$this->featured = $this->params->get('featured');
 
-		// Get the user's groups
-		$this->allgroups = $this->_getGroups(User::get('id'), 'all');
+		// Get the partners
+		$this->partners = $this->_getPartners();
 
-		include_once \Component::path('com_groups') . DS . 'models' . DS . 'recent.php';
-
-		$recents = Recent::all()
-			->whereEquals('user_id', User::get('id'))
-			->order('created', 'desc')
-			->limit(5)
-			->rows();
-
-		foreach ($this->allgroups as $group)
-		{
-			foreach ($recents as $recent)
-			{
-				if ($recent->get('group_id') == $group->gidNumber)
-				{
-					$this->recentgroups[] = $group;
-				}
-			}
-		}
-
-		if (!User::authorise('core.create', 'com_groups'))
-		{
-			$this->params->set('button_show_add', 0);
-		}
+		// include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
 
 		require $this->getLayoutPath();
 	}

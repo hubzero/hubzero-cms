@@ -33,7 +33,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>QUBES Partners</name>
 	<author>QUBES</author>
 	<creationDate>January 2018</creationDate>
-	<version>1.0</version>
+	<version>1.1</version>
 	<copyright>Copyright 2005-2018 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>MOD_PARTNERS_XML_DESCRIPTION</description>
@@ -43,6 +43,7 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
+		<filename>tmpl/_item.php</filename>
 		<filename>assets/css/mod_partners.css</filename>
 	</files>
 	<config>
