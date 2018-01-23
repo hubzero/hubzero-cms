@@ -37,6 +37,8 @@ use Hubzero\Form\Form;
 use Filesystem;
 use Lang;
 
+include_once __DIR__ . '/menu.php';
+
 /**
  * Module extension model
  */
@@ -496,22 +498,37 @@ class Module extends Relational
 	}
 
 	/**
-	 * Duplicate a record and menu assignments
+	 * Get menu assignments
+	 *
+	 * @return  array
+	 */
+	public function menuAssigned()
+	{
+		/*$db = App::get('db');
+		$db->setQuery(
+			'SELECT menuid' .
+			' FROM #__modules_menu' .
+			' WHERE moduleid = '.$this->get('id')
+		);
+		return $db->loadColumn();*/
+
+		return Menu::all()
+			->whereEquals('moduleid', (int)$this->get('id'))
+			->rows()
+			->fieldsByKey('menuid');
+	}
+
+	/**
+	 * Determine how the assignment
 	 *
 	 * @return  array
 	 */
 	public function menuAssignment()
 	{
 		// Determine the page assignment mode.
-		$db = App::get('db');
-		$db->setQuery(
-			'SELECT menuid' .
-			' FROM #__modules_menu' .
-			' WHERE moduleid = '.$this->get('id')
-		);
-		$assigned = $db->loadColumn();
+		$assigned = $this->menuAssigned();
 
-		if (empty($pk))
+		if ($this->isNew())
 		{
 			// If this is a new module, assign to all pages.
 			$assignment = 0;
@@ -537,6 +554,78 @@ class Module extends Relational
 			}
 		}
 
-		return $assigned;
+		return $assignment;
+	}
+
+	/**
+	 * Save menu assignments for a module
+	 *
+	 * @param   integer  $assignment
+	 * @param   array    $assigned
+	 * @return  bool
+	 */
+	public function saveAssignment($assignment, $assigned)
+	{
+		$assignment = $assignment ? $assignment : 0;
+
+		// Delete old module to menu item associations
+		if (!Menu::destroyForModule($this->get('id')))
+		{
+			$this->addError('Failed to remove previous menu assignments.');
+			return false;
+		}
+
+		// If the assignment is numeric, then something is selected (otherwise it's none).
+		if (is_numeric($assignment))
+		{
+			// Variable is numeric, but could be a string.
+			$assignment = (int) $assignment;
+
+			// Logic check: if no module excluded then convert to display on all.
+			if ($assignment == -1 && empty($assigned))
+			{
+				$assignment = 0;
+			}
+
+			// Check needed to stop a module being assigned to `All`
+			// and other menu items resulting in a module being displayed twice.
+			if ($assignment === 0)
+			{
+				// assign new module to `all` menu item associations
+				$menu = Menu::blank()->set(array(
+					'moduleid' => $this->get('id'),
+					'menuid'   => 0
+				));
+
+				if (!$menu->save())
+				{
+					$this->addError('Failed saving: ' . $menu->getError());
+					return false;
+				}
+			}
+			elseif (!empty($assigned))
+			{
+				// Get the sign of the number.
+				$sign = $assignment < 0 ? -1 : +1;
+
+				// Preprocess the assigned array.
+				$tuples = array();
+				foreach ($assigned as &$pk)
+				{
+					$menu = Menu::blank()->set(array(
+						'moduleid' => $this->get('id'),
+						'menuid'   => ((int) $pk * $sign)
+					));
+
+					if (!$menu->save())
+					{
+						$this->addError('More failed: ' . $menu->getError());
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
 	}
 }
