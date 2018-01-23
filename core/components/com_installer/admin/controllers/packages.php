@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2018 HUBzero Foundation, LLC.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @author    Zach Weidner <zweidner@purdue.edu>
+ * @copyright Copyright 2005-2018 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
@@ -40,7 +40,7 @@ include_once dirname(__DIR__) . '/helpers/composer.php';
 
 
 /**
- * Migrations Controller
+ * Packages Controller
  */
 class Packages extends AdminController
 {
@@ -52,7 +52,6 @@ class Packages extends AdminController
 	public function displayTask()
 	{
 		// Paging
-		//************************************************/
 		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
@@ -67,7 +66,6 @@ class Packages extends AdminController
 				'int'
 			)
 		);
-		//************************************************/
 
 		$packages = ComposerHelper::getLocalPackages();
 		// Output the HTML
