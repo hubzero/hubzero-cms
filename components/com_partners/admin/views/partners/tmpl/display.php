@@ -24,6 +24,12 @@ if ($canDo->get('core.edit.state'))
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
+if ($canDo->get('core.edit.featured'))
+{
+	JToolBarHelper::custom('feature', 'default', '', "Feature");
+	JToolBarHelper::custom('unfeature', 'unpublish', '', "Unfeature");
+	JToolBarHelper::spacer();
+}
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -60,6 +66,7 @@ Html::behavior('framework');
 			<!--VERY IMPORTANT MESSAGE: where there is id, state, partner_type and liason, this is how it is sorted, make sure name is same as database if you want sorting/ordering capabilities in the table -->
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_FEATURED', 'featured', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PARTNERS_COL_PARTNER_TYPE', 'partner_type_primary', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -68,7 +75,7 @@ Html::behavior('framework');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php echo $this->rows->pagination; ?></td>
+				<td colspan="7"><?php echo $this->rows->pagination; ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -84,6 +91,34 @@ Html::behavior('framework');
 				<!-- displays the id -->
 				<td class="priority-5">
 					<?php echo $row->get('id'); ?>
+				</td>
+
+				<!-- Featured -->
+				<td class="priority-3">
+					<?php
+					if ($row->get('featured') == 1)
+					{
+						$alt  = Lang::txt('JYES');
+						$cls  = 'default';
+						$task = 'unfeature';
+					}
+					else if ($row->get('featured') == 0)
+					{
+						$alt  = Lang::txt('JNO');
+						$task = 'feature';
+						$cls  = 'notdefault';
+					}
+
+					//makes name link clickable if we have edit capabilities, just displays name otherwise
+					if ($canDo->get('core.edit.featured')) { ?>
+						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $cls; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 
 				<!-- can make name linkable or not depending if admin has edit capabilities -->
@@ -141,20 +176,17 @@ Html::behavior('framework');
 								<?php
 								if ($row->get('partner_type') == $partner_type->get('id')){
 									echo $this->escape($partner_type->get('internal'));
-						}
-					}
-				
-				?>
-							
+								}
+							} ?>
 						</span>
 				</td>
+
 				<!--Primary Secondary Liason -->
 				<td class="priority-4">
 					<span>
 						<?php echo $this->escape($row->get('QUBES_liason_primary')); ?>
 					</span>
 				</td>
-
 			</tr>
 			<?php
 			$i++;

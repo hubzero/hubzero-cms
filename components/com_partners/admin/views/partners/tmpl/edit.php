@@ -4,6 +4,7 @@ defined('_HZEXEC_') or die();
 
 // Get the permissions helper
 $canDo = \Components\Partners\Helpers\Permissions::getActions('partner');
+
 //use Components\Partners\Models\Partner;
 // Toolbar is a helper class to simplify the creation of Toolbar 
 // titles, buttons, spacers and dividers in the Admin Interface.
@@ -157,8 +158,6 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 
-
-
 		<fieldset class="adminform" >
 			<!-- partner types form for selecting partner type, radio button = can only select one partner type -->
 			<legend><span><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES'); ?></span></legend>
@@ -186,12 +185,7 @@ function submitbutton(pressbutton)
 				</div>
 			<?php } ?>
 		</fieldset>
-
-
-
-			
 	</div>
-
 
 	<div class="col width-40 fltrt">
 		<table class="meta">
@@ -215,6 +209,13 @@ function submitbutton(pressbutton)
 					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
 					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
 					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-featured"><?php echo Lang::txt('COM_PARTNERS_FIELD_FEATURED'); ?>:</label><br />
+				<select name="fields[featured]" id="field-featured">
+					<option value="0"<?php if ($this->row->get('featured') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JNO'); ?></option>
+					<option value="1"<?php if ($this->row->get('featured') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JYES'); ?></option>
 				</select>
 			</div>
 		</fieldset>

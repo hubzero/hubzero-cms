@@ -50,6 +50,8 @@ class Partners extends AdminController
 		$this->registerTask('apply', 'save');
 		$this->registerTask('publish', 'state');
 		$this->registerTask('unpublish', 'state');
+		$this->registerTask('feature', 'featured');
+		$this->registerTask('unfeature', 'featured');
 
 		// Call the parent execute() method. Important! Otherwise, the
 		// controller will never actually execute anything.
@@ -67,7 +69,7 @@ class Partners extends AdminController
 		//
 		// The Request::getState() method makes it easy to retain values of 
 		// certain variables across page accesses. This makes development much 
-		// simpler because we no longer has to worry about losing variable values 
+		// simpler because we no longer have to worry about losing variable values 
 		// if it is left out of a form. The best example is that the form will
 		// retain the proper filters even after navigating to the edit entry form
 		// and back.
@@ -82,7 +84,11 @@ class Partners extends AdminController
 				'state',
 				-1
 			)),
-
+			'featured' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.featured',
+				'featured',
+				-1
+			)),
 			'partner_type' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.partner_type',
 				'partner_type',
@@ -114,6 +120,11 @@ class Partners extends AdminController
 		if ($this->view->filters['state'] >= 0)
 		{
 			$record->whereEquals('state', $this->view->filters['state']);
+		}
+
+		if ($this->view->filters['featured'] >= 0)
+		{
+			$record->whereEquals('featured', $this->view->filters['featured']);
 		}
 
 		if ($search = $this->view->filters['search'])
@@ -226,8 +237,6 @@ class Partners extends AdminController
 		return $result;
 	}
 
-
-
 	/**
 	 * Save changes to an entry
 	 *
@@ -243,17 +252,13 @@ class Partners extends AdminController
 		// *only* coming in through the submitted edit form.
 		Request::checkToken();
 
-
-
-
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
-
 
 		// Initiate model and bind the incoming data to it
 		$row = Partner::oneOrNew($fields['id'])->set($fields);
 		
-				// Get the partner type has been assigned to.
+		// Get the partner type has been assigned to.
 		//
 		// Here we're grabbing the array of partner_types (radio buttons) and
 		// assigning the model to the partner_type
@@ -412,7 +417,7 @@ class Partners extends AdminController
 	}
 
 	/**
-	 * Sets the state of one or more entries, no change from DRWHO
+	 * Sets the state of one or more entries
 	 *
 	 * @return  void
 	 */
@@ -486,6 +491,88 @@ class Partners extends AdminController
 			break;
 			case 'archive':
 				$message = Lang::txt('COM_PARTNERS_ITEMS_ARCHIVED', $success);
+			break;
+		}
+
+		// Set the redirect URL to the main entries listing.
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			$message
+		);
+	}
+
+	/**
+	 * Sets the featured state of one or more entries
+	 *
+	 * @return  void
+	 */
+	public function featuredTask()
+	{
+		// [SECURITY] Check for request forgeries
+		//
+		// Unlike deleteTask() above, we're allowing requests from both
+		// GET and POST. This allows us to have single click "toggle" buttons
+		// on the entries list as well as handle checkboxes+toolbar button presses
+		// which submit a form. This is a little less secure but state change
+		// is fairly innocuous.
+		Request::checkToken(['get', 'post']);
+
+		$feature = $this->_task == 'feature' ? 1 : 0;
+
+		// Incoming
+		//
+		// We're expecting an array of incoming IDs from the
+		// entries listing. But, we'll force the data into an
+		// array just to be extra sure.
+		$ids = Request::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Check for a resource
+		if (count($ids) < 1)
+		{
+			// No entries found, so go back to the entries list with
+			// a message scolding the user for not selecting anything. Tsk, tsk.
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PARTNERS_SELECT_ENTRY_TO', $this->_task),
+				'error'
+			);
+			return;
+		}
+
+		// Loop through all the IDs
+		$success = 0;
+		foreach ($ids as $id)
+		{
+			// Load the entry and set its state
+			$row = Partner::oneOrNew(intval($id))->set(array('featured' => $feature));
+
+			// Store new content
+			if (!$row->save())
+			{
+				// If the save() process fails for any reason, we'll take the 
+				// error message passed from the model and assign it to the message
+				// handler to be displayed by the template after we redirect back
+				// to the main listing.
+				Notify::error($row->getError());
+				continue;
+			}
+
+			// Here, we're countign the number of successful state changes
+			// so we can display that number in a message when we're done.
+			$success++;
+		}
+
+		// Get the appropriate message for the task called. We're
+		// passing in the number of successful state changes so it
+		// can be displayed in the message.
+		switch ($this->_task)
+		{
+			case 'feature':
+				$message = Lang::txt('COM_PARTNERS_ITEMS_FEATURED', $success);
+			break;
+			case 'unfeature':
+				$message = Lang::txt('COM_PARTNERS_ITEMS_UNFEATURED', $success);
 			break;
 		}
 
