@@ -36,7 +36,8 @@
 		position: absolute;
 		overflow: visible;
 		left: -999em;
-		margin: -37px 0 0 0;
+		/*margin: -37px 0 0 0;*/
+		margin: 0;
 		padding: 15px;
 		border: none;
 		width: 210px;
@@ -55,7 +56,7 @@
 		-o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	}
-	.shareinfo dd:before,
+	/*.shareinfo dd:before,
 	.shareinfo dd:after {
 		content: "";
 		position: absolute;
@@ -69,7 +70,7 @@
 	.shareinfo dd:after {
 		right: -16px;
 		border-color: transparent transparent transparent rgba(245, 245, 245, 0.9);
-	}
+	}*/
 	.metadata .shareinfo dd p,
 	.shareinfo dd p {
 		margin: 0;
@@ -85,7 +86,9 @@
 		background-color: #fff;
 	}
 	.shareinfo.active dd {
-		left: -250px;
+		/*left: -250px;*/
+		left: 0;
+		top: 99.9%;
 	}
 	.shareinfo dt {
 		margin: 0;
