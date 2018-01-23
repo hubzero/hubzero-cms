@@ -33,11 +33,20 @@
 defined('_HZEXEC_') or die();
 
 // Push the module CSS to the template
+// $this->getLayoutPath('_item');
 $this->css();
 ?>
 <div <?php echo 'class="network-logos' . (($this->moduleclass) ? ' ' . $this->moduleclass : '') . '"';?>>
-	<?php foreach($this->partners as $partner)
-	{
-		$this->getLayoutPath('_item');
+	<?php 
+	$i = 0;
+	foreach($this->partners as $partner) {
+		if ($i < $this->limit) {
+			if ($partner->get('state')) {
+				require $this->getLayoutPath('_item');
+			}
+			$i++;
+		} else {
+			break;
+		}
 	} ?>
 </div>

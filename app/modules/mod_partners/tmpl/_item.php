@@ -32,4 +32,6 @@
 // no direct access
 defined('_HZEXEC_') or die();
 ?>
-<div class="logo">&nbsp;</div>
+<div class="logo tooltips" title="<?php echo '<h4>QUBES Activities:</h4>' . $partner->get('activities'); ?>">
+	<a href="<?php echo Route::url('groups' . DS . $partner->get('groups_cn')); ?>"><img src="<?php echo 'app/site/media/images/partners/' . $partner->get('logo_img') ?>" alt="<?php echo $partner->get('name'); ?>"></a>
+</div>
