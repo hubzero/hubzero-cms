@@ -43,6 +43,7 @@ class Permissions
 			'create',
 			'edit',
 			'edit.state',
+			'edit.featured',
 			'delete'
 		);
 
