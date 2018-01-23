@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2017 HUBzero Foundation, LLC.
+ * Copyright 2005-2018 HUBzero Foundation, LLC.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  *
  * @package   hubzero-cms
  * @author    Zach Weidner <zweidner@purdue.edu>
- * @copyright Copyright 2005-2017 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2018 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
@@ -39,7 +39,7 @@ include_once dirname(__DIR__) . '/helpers/composer.php';
 
 
 /**
- * Migrations Controller
+ * Repositories Controller
  */
 class Repositories extends AdminController
 {
@@ -56,7 +56,6 @@ class Repositories extends AdminController
 	public function displayTask()
 	{
 		// Paging
-		//************************************************/
 		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
@@ -71,7 +70,7 @@ class Repositories extends AdminController
 				'int'
 			)
 		);
-		//************************************************/
+
 		$repositories = ComposerHelper::getRepositoryConfigs();
 		// Output the HTML
 		$this->view
@@ -121,7 +120,7 @@ class Repositories extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken();
+		Request::checkToken();
 
 		$temp = new StdClass;
 		$alias             = Request::getVar('alias', null);
