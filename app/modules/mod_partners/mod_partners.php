@@ -34,4 +34,8 @@ namespace Modules\Partners;
 
 require_once __DIR__ . DS . 'helper.php';
 
+echo '<script>';
+echo '  alert("Hello, World!");';
+echo '</script>';
+
 with(new Helper($params, $module))->display();
