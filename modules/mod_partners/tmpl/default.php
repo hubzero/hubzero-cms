@@ -41,7 +41,8 @@ $this->css();
 	$i = 0;
 	foreach($this->partners as $partner) {
 		if ($i < $this->limit) {
-			if ($partner->get('state')) {
+			if ($partner->get('state') &&
+				($this->featured ? $partner->get('featured') : 1)) {
 				require $this->getLayoutPath('_item');
 			}
 			$i++;
