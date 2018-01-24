@@ -51,7 +51,7 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="MOD_PARTNERS_PARAM_CLASS_LABEL" description="MOD_PARTNERS_PARAM_CLASS_DESC" />
 				<field name="limit" type="text" default="5" label="MOD_PARTNERS_PARAM_LIMIT_LABEL" description="MOD_PARTNERS_PARAM_LIMIT_DESC" />
-				<field name="include_archived" type="list" default="0" label="MOD_PARTNERS_PARAM_FEATURED_LABEL" description="MOD_PARTNERS_PARAM_FEATURED_DESC">
+				<field name="featured" type="list" default="0" label="MOD_PARTNERS_PARAM_FEATURED_LABEL" description="MOD_PARTNERS_PARAM_FEATURED_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>

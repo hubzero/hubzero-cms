@@ -63,7 +63,7 @@ class Helper extends Module
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 100));
-		$this->featured = $this->params->get('featured');
+		$this->featured = $this->params->get('featured', 0);
 
 		// Get the partners
 		$this->partners = $this->_getPartners();
