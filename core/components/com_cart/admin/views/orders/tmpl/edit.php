@@ -29,17 +29,19 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+$canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('order');
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_CART').': View order');
+Toolbar::title(Lang::txt('COM_CART').': Edit order info');
 
-Toolbar::cancel();
-
-if (User::authorise('core.edit', $this->option . '.component'))
+if ($canDo->get('core.edit'))
 {
-	Toolbar::custom('edit', 'edit.png', '', 'Edit', false);
+	Toolbar::apply();
+	Toolbar::save();
 }
+Toolbar::cancel();
 
 $this->css();
 ?>
@@ -52,6 +54,8 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
+
+	<?php echo $this->editor()->save('text'); ?>
 
 	submitform(pressbutton);
 }
@@ -201,7 +205,7 @@ function submitbutton(pressbutton)
 							<span><?php echo $product; ?></span>
 						</td>
 						<td><span><?php echo $itemInfo->sPrice; ?></span></td>
-						<td><span><?php echo $itemOrdered['transactionInfo']->qty; ?></span></td>
+						<td><input type="text" name="tiQty[<?php echo $itemInfo->sId; ?>]" size="10" maxlength="100" value="<?php echo $itemOrdered['transactionInfo']->qty; ?>" /></td>
 					</tr>
 			<?php
 				}
@@ -217,10 +221,13 @@ function submitbutton(pressbutton)
 		foreach ($this->items as $sId => $item)
 		{
 			$meta = $item['transactionInfo']->tiMeta;
+			//print_r($item); die;
 			if (!empty($meta->checkoutNotes))
 			{
 				$notes[] = array(
 					//'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
+					'object' => 'transactionItem',
+					'objectId' => $item['info']->sId,
 					'label' => $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku,
 					'notes' => $meta->checkoutNotes);
 			}
@@ -235,6 +242,8 @@ function submitbutton(pressbutton)
 		if ($this->tInfo->tiNotes)
 		{
 			$notes[] = array(
+				'object' => 'transaction',
+				'objectId' => $this->tInfo->tId,
 				'label' => '<strong>' . $genericNotesLabel . '</strong>',
 				'notes' => $this->tInfo->tiNotes);
 		}
@@ -245,6 +254,7 @@ function submitbutton(pressbutton)
 			echo '<legend><span>Notes/Comments</span></legend>';
 			foreach ($notes as $note)
 			{
+				//print_r($note); die;
 				echo '<p>';
 				echo $note['label'];
 				if ($note['label'])
@@ -252,6 +262,14 @@ function submitbutton(pressbutton)
 					echo ': ';
 				}
 				echo $note['notes'];
+				if ($note['object'] == 'transactionItem')
+				{
+					echo '<textarea rows="6" name="checkoutNotes[' . $note['objectId'] . ']">' . $note['notes'] . '</textarea>';
+				}
+				elseif ($note['object'] == 'transaction')
+				{
+					echo '<textarea rows="6" name="tiNotes">' . $note['notes'] . '</textarea>';
+				}
 				echo '</p>';
 			}
 			echo '</fieldset>';
