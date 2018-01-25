@@ -133,7 +133,7 @@ class Projects extends Base
 
 		$project = Request::getVar('alias');
 		$task = $this->_task;
-		$return = Route::url('index.php?option=com_projects&alias=' . $project . '&task=' . $task, false);
+		$return = Route::url('index.php?option=com_projects&alias=' . $project, false);
 		if (User::isGuest())
 		{
 			$redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);
@@ -144,9 +144,10 @@ class Projects extends Base
 		{
 			if ($this->model->exists())
 			{
+				$userId = User::getInstance()->get('id');
 				$member = \Components\Projects\Models\Orm\Owner::blank();
 				$member->set('projectid', $this->model->get('id'));
-				$member->set('userid', 1002);
+				$member->set('userid', $userId);
 				$member->set('status', 3);
 				$currentTime = Date::of()->toSql();
 				$member->set('added', $currentTime);
@@ -169,7 +170,7 @@ class Projects extends Base
 						'memberrequest',
 						$message
 					);
-					Notify::success('You have sucessfully requested membership');
+					Notify::success(Lang::txt('COM_PROJECTS_MEMBERSHIPREQUEST_SUCCESS'));
 				}
 			}
 		}
