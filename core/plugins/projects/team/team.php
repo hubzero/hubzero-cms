@@ -57,7 +57,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  array
 	 */
-	protected $_msg = NULL;
+	protected $_msg = null;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -65,12 +65,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 * @param   string  $alias
 	 * @return  array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array(
 			'name'    => 'team',
 			'title'   => Lang::txt('PLG_PROJECTS_TEAM_TAB_TEAM'),
-			'submenu' => NULL,
+			'submenu' => null,
 			'show'    => true,
 			'icon'    => 'f042'
 		);
@@ -332,7 +332,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		$userId = User::getInstance()->get('id');
 		$projectId = $this->model->get('id');
-		$view->currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId); 
+		$view->currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
 		$view->count_groups = $groups ? count($groups) : 0;
 		$view->params   = $this->model->params;
 		$view->option   = $this->_option;
@@ -438,7 +438,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->publication = new \Components\Publications\Models\Publication($pid, NULL, $vid);
+		$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
 		if (!$view->publication->exists())
 		{
@@ -471,7 +471,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Get css
 		if (!$ajax)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team','selector');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team', 'selector');
 		}
 
 		// Instantiate project owner
@@ -929,7 +929,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$ownerId = Request::getVar('owner', 0);
 		if ($currentUser->isManager() && $ownerId != 0)
 		{
-			$owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);	
+			$owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
 			$owner->set('status', 1);
 			$owner->set('added', Date::of()->toSql());
 			if ($owner->save())
@@ -967,7 +967,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$confirm = Request::getInt('confirm', 0);
 		if ($currentUser->isManager() && $ownerId != 0)
 		{
-			$owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);	
+			$owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
 			if ($confirm != 1)
 			{
 				$view = new \Hubzero\Plugin\View(

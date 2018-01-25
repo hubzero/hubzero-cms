@@ -128,7 +128,7 @@ class Projects extends Base
 		Request::checkToken('get');
 		if (!$this->model->allowMembershipRequest())
 		{
-			App::abort(404, 'Invalid request'); 
+			App::abort(404, 'Invalid request');
 		}
 
 		$project = Request::getVar('alias');
