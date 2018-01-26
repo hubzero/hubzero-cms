@@ -29,13 +29,23 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-JFormHelper::loadFieldClass('list');
+namespace Hubzero\Form\Fields;
+
+use Hubzero\Form\Fields\Select;
+use Html;
 
 /**
  * Renders a list of resource types
  */
-class JFormFieldResourcetype extends JFormFieldList
+class Resourcetype extends Select
 {
+	/**
+	 * The form field type.
+	 *
+	 * @var  string
+	 */
+	protected $type = 'resourcetype';
+
 	/**
 	 * Method to get the field options.
 	 *
@@ -43,12 +53,9 @@ class JFormFieldResourcetype extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$db = \App::get('db');
+		include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
-		include_once \Component::path('com_resources') . DS . 'tables' . DS . 'type.php';
-		$model = new \Components\Resources\Tables\Type($db);
-
-		$types = $model->getMajorTypes();
+		$types = \Components\Resources\Models\Type::getMajorTypes();
 
 		$options = array();
 
