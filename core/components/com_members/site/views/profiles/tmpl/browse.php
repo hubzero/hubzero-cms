@@ -64,39 +64,6 @@ foreach ($this->fields as $field)
 <section class="main section">
 	<form action="<?php echo Route::url($base); ?>" method="get" class="section-inner">
 		<aside class="aside">
-			<?php /*<div class="container">
-				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_SITE_MEMBERS'); ?></h3>
-				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_EXPLANATION'); ?></p>
-				<p><?php echo Lang::txt('COM_MEMBERS_BROWSE_SORTING_EXPLANATION'); ?></p>
-			</div><!-- / .container -->
-
-			<div class="container">
-				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_MEMBER_STATS'); ?></h3>
-				<table>
-					<tbody>
-						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_TOTAL_MEMBERS'); ?></th>
-							<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
-						</tr>
-						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_PRIVATE_PROFILES'); ?></th>
-							<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
-						</tr>
-						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_BROWSE_NEW_PROFILES'); ?></th>
-							<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
-						</tr>
-					</tbody>
-				</table>
-			</div><!-- / .container -->
-
-			<div class="container">
-				<h3><?php echo Lang::txt('COM_MEMBERS_BROWSE_LOOKING_FOR_GROUPS'); ?></h3>
-				<p>
-					<?php echo Lang::txt('COM_MEMBERS_BROWSE_GO_TO_GROUPS', Route::url('index.php?option=com_groups')); ?>
-				</p>
-			</div><!-- / .container -->*/ ?>
-
 			<div class="container">
 				<fieldset>
 					<legend><?php echo Lang::txt('Narrow results'); ?></legend>
@@ -427,6 +394,9 @@ foreach ($this->fields as $field)
 									break;
 								}
 							}
+
+							$results = Event::trigger('members.onMemberProfile', array($row));
+							$extras = implode("\n", $results);
 							?>
 							<div class="result<?php echo ($cls) ? ' ' . $cls : ''; ?>">
 								<div class="result-body">
@@ -472,16 +442,18 @@ foreach ($this->fields as $field)
 											<?php } ?>
 										<?php } ?>
 									</div>
-									<div class="result-options">
-										<?php if ($messageuser) { ?>
-											<a class="icon-email btn message-member" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
-												<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE'); ?>
-											</a>
-										<?php } ?>
-										<a class="icon-user btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $row->get('id') . '&active=profile'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->escape($row->get('name'))); ?>">
-											<?php echo Lang::txt('COM_MEMBERS_PROFILE'); ?>
-										</a>
-									</div>
+									<?php if ($extras || $messageuser) { ?>
+										<div class="result-options">
+											<?php if ($messageuser) { ?>
+												<a class="icon-email btn message-member" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
+													<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE'); ?>
+												</a>
+											<?php } ?>
+											<?php if ($extras) { ?>
+												<?php echo $extras; ?>
+											<?php } ?>
+										</div>
+									<?php } ?>
 									<?php if (!User::isGuest() && User::get('id') == $row->get('id')) { ?>
 										<span class="you">
 											<?php echo Lang::txt('COM_MEMBERS_BROWSE_YOUR_PROFILE'); ?>
