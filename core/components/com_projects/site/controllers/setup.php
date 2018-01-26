@@ -245,8 +245,8 @@ class Setup extends Base
 		}
 
 		// New project?
-		$new = $this->model->exists() ? false : true;
-		$setup = ($new || $this->model->inSetup()) ? true : false;
+		$new = !$this->model->exists();
+		$setup = ($new || $this->model->inSetup());
 
 		// Is user authorized to create a project?
 		if ($new && !$this->model->access('create'))
@@ -641,7 +641,7 @@ class Setup extends Base
 		$new = $this->model->exists() ? false : true;
 
 		// Are we in setup?
-		$setup = ($new || $this->model->inSetup()) ? true : false;
+		$setup = ($new || $this->model->inSetup());
 
 		// Incoming
 		$private = Request::getInt('private', 1);
@@ -787,13 +787,6 @@ class Setup extends Base
 								return false;
 							}
 						}
-						// Make sure project creator is manager
-						/*$objO->reassignRole(
-							$this->model->get('id'),
-							array(User::get('id')),
-							0,
-							1
-						);*/
 					}
 					elseif (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 1, 1, 1))
 					{
@@ -802,8 +795,75 @@ class Setup extends Base
 					}
 				}
 
+				if (!$new)
+				{
+					// Save privacy
+					if (isset($_POST['private']))
+					{
+						$this->model->set('private', $private);
+
+						// Save changes
+						if (!$this->model->store())
+						{
+							$this->setError($this->model->getError());
+							return false;
+						}
+					}
+					// Save params
+					$incoming   = Request::getVar('params', array());
+					if (!empty($incoming))
+					{
+						foreach ($incoming as $key => $value)
+						{
+							$this->model->saveParam($key, $value);
+							$this->model->params->set($key, $value);
+
+							// If grant information changed
+							if ($key == 'grant_status')
+							{
+								// Meta data for comment
+								$meta = '<meta>' . Date::of('now')->toLocal('M d, Y') . ' - ' . User::get('name') . '</meta>';
+
+								$cbase   = $this->model->get('admin_notes');
+								$cbase  .= '<nb:sponsored>' . Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE') . $meta . '</nb:sponsored>';
+								$this->model->set('admin_notes', $cbase);
+
+								// Save admin notes
+								if (!$this->model->store())
+								{
+									$this->setError($this->model->getError());
+									return false;
+								}
+
+								$admingroup = $this->config->get('ginfo_group', '');
+
+								if (\Hubzero\User\Group::getInstance($admingroup))
+								{
+									$admins = Helpers\Html::getGroupMembers($admingroup);
+
+									// Send out email to admins
+									if (!empty($admins))
+									{
+										Helpers\Html::sendHUBMessage(
+											$this->_option,
+											$this->model,
+											$admins,
+											Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
+											'projects_new_project_admin',
+											'admin',
+											Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE'),
+											'sponsored'
+										);
+									}
+								}
+							}
+						}
+					}
+				}
+
 				// Record activity
 				$this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_INFO_UPDATED'));
+				$this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_SETTINGS_UPDATED'));
 			break;
 
 			case 'team':
@@ -976,7 +1036,7 @@ class Setup extends Base
 		}
 
 		// Which section are we editing?
-		$sections = array('info', 'team', 'settings');
+		$sections = array('info', 'team');
 		if ($this->config->get('edit_settings', 0) == 0)
 		{
 			array_pop($sections);
