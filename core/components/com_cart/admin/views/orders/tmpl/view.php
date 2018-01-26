@@ -262,8 +262,58 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
+	<?php
+	if ($this->log)
+	{
+	?>
+	<div class="log">
+		<h3>Changelog</h3>
+		<div class="inner">
+
+		<?php
+		// let's show the logs
+		foreach ($this->log as $log)
+		{
+			echo '<article>';
+			$header = '<header>' . $log->description . ' on ' . date("F j, Y, g:i a", strtotime($log->created)) . ' by ' . $log->user . ' [' . $log->created_by . ']</header>';
+			echo $header;
+
+			foreach ($log->details as $change)
+			{
+				echo '<div class="change">';
+				echo '<p class="msg">' . $change->message . '</p>';
+				?>
+
+				<div class="diff">
+					<div>
+						<p>New value:</p>
+						<div class="value"><?php echo $change->new; ?></div>
+					</div>
+					<div>
+						<p>Old value:</p>
+						<div class="value old"><?php echo $change->old; ?></div>
+					</div>
+				</div>
+
+				<?php
+				echo '</div>';
+			}
+
+			echo '</article>';
+		}
+		?>
+
+		</div>
+	</div>
+
+	<?php
+	}
+	?>
+
+	<div class="clr"></div>
+
 	<input type="hidden" name="id" value="<?php echo $this->tId; ?>" />
-	<input type="hidden" name="task" value="save" />
+	<input type="hidden" name="task" value="view" />
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

@@ -153,6 +153,8 @@ class Orders extends AdminController
 		$transactionItems = Cart::getTransactionItems($id, false);
 		$transactionInfo = Cart::getTransactionInfo($id);
 
+		//print_r($transactionItems); die;
+
 		$tInfo = $transactionInfo;
 
 		foreach ($transactionItems as $item)
@@ -176,6 +178,59 @@ class Orders extends AdminController
 		// Get user info
 		$userId = Cart::getCartUser($tInfo->crtId);
 		$user = User::getInstance($userId);
+
+		// Get the log of changes
+		$changesLog = CartOrders::getOrderChangesLog($id);
+
+		// Build log messages
+		if (!empty($changesLog))
+		{
+			foreach ($changesLog as $log)
+			{
+				// Get user info
+				$profile = User::getInstance($log->created_by);
+				$userName = $profile->get('name');
+				$log->user = $userName;
+
+				$log->details = json_decode($log->details);
+
+				foreach ($log->details as $item)
+				{
+					if ($item->object == 'cart_transaction_item')
+					{
+						// find the item's (SKU) info
+						$skuInfo = $transactionItems[$item->sId];
+						$msg = $skuInfo['info']->sSku;
+
+						if (is_object($item->key) && !empty($item->key->tiMeta) && $item->key->tiMeta == 'checkoutNotes')
+						{
+							$msg .= ' <strong>notes</strong>';
+						}
+						elseif ($item->key == 'tiQty')
+						{
+							$msg .= ' <strong>quantity</strong>';
+						}
+
+						$msg .= ' value was updated';
+					}
+					elseif ($item->object == 'cart_transaction_info')
+					{
+						$msg = 'Order';
+
+						if ($item->key == 'tiNotes')
+						{
+							$msg .= ' <strong>notes</strong>';
+						}
+
+						$msg .= ' value was updated';
+					}
+
+					$item->message = $msg;
+				}
+			}
+
+			$this->view->log = $changesLog;
+		}
 
 		$this->view->user = $user;
 		$this->view->tInfo = $tInfo;
@@ -291,10 +346,20 @@ class Orders extends AdminController
 			$tiInfo->$sId->meta->checkoutNotes = $notes;
 		}
 
-		//print_r($tiInfo); die;
+		$itemsChanges = Cart::updateTransactionItems($id, $tiInfo);
+		$transactionChanges = Cart::updateTransactionInfo($id, $transactionInfo);
 
-		Cart::updateTransactionItems($id, $tiInfo);
-		Cart::updateTransactionInfo($id, $transactionInfo);
+		// Log the changes
+		//print_r($itemsChanges);
+		//print_r($transactionChanges); //die;
+
+		$orderChanges = array_merge($itemsChanges, $transactionChanges);
+		//print_r($orderChanges); die;
+
+		if (!empty($orderChanges))
+		{
+			CartOrders::logOrderChanges($id, $orderChanges);
+		}
 
 		if ($redirect)
 		{
@@ -629,5 +694,28 @@ class Orders extends AdminController
 		}
 		fclose($output);
 		die;
+	}
+
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return  void
+	 */
+	public function cancelTask()
+	{
+		// Incoming
+		$id = Request::getVar('id', '');
+		$from = Request::getVar('from', '');
+
+		$attr = '';
+		if ($from && $from == 'edit')
+		{
+			$attr = '&task=view&id=' . $id;
+		}
+
+		// Set the redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $attr, false)
+		);
 	}
 }
