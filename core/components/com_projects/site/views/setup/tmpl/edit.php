@@ -158,19 +158,16 @@ else
 								case 'info':
 								default:
 									$this->view('_edit_info')
+										->set('config', $this->config)
 										->set('model', $this->model)
 										->set('option', $this->option)
+										->set('privacy', $privacy)
+										->set('publishing', $this->publishing)
 										->display();
 									break;
 								case 'team':
 									$this->view('_edit_team')
 										->set('content', $this->content)
-										->set('model', $this->model)
-										->display();
-									break;
-								case 'settings':
-									$this->view('_edit_settings')
-										->set('config', $this->config)
 										->set('model', $this->model)
 										->display();
 									break;
