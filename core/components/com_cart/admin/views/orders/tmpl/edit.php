@@ -281,7 +281,8 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<input type="hidden" name="id" value="<?php echo $this->tId; ?>" />
-	<input type="hidden" name="task" value="save" />
+	<input type="hidden" name="task" value="edit" />
+	<input type="hidden" name="from" value="edit" />
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
