@@ -43,7 +43,9 @@ defined('_HZEXEC_') or die();
 			</tr>
 			<tr>
 				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></td>
-				<td><input name="title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" /></td>
+				<td>
+					<input name="title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" />
+				</td>
 			</tr>
 			<tr>
 				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></td>
@@ -64,7 +66,74 @@ defined('_HZEXEC_') or die();
 				 ->display();
 	?>
 </div><!-- / .basic info -->
+
+<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_ACCESS'); ?></h5>
+
+<label>
+	<input class="option" name="private" type="radio" value="1" <?php if (!$this->model->isPublic()) { echo 'checked="checked"'; }?> />
+	<?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?>
+</label>
+
+<label>
+	<input class="option" name="private" type="radio" value="0" <?php if ($this->model->isPublic()) { echo 'checked="checked"'; }?> />
+	<?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?>
+</label>
+
+<?php if ($this->model->isPublic()): ?>
+	<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_OPTIONS_FOR_PUBLIC'); ?></h5>
+	<p class="hint">
+		<?php echo Lang::txt('COM_PROJECTS_YOUR_PROJECT_IS'); ?>
+		<span class="prominent urgency"><?php echo $this->privacy; ?></span>
+	</p>
+	<label for="params-allow_membershiprequest">
+		<input type="hidden"  name="params[allow_membershiprequest]" value="0" />
+		<input type="checkbox" class="option" name="params[allow_membershiprequest]" id="params-allow_membershiprequest" value="1" <?php if ($this->model->params->get('allow_membershiprequest')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_MEMBERSHIPREQUEST'); ?>
+	</label>
+	<label>
+		<input type="hidden"  name="params[team_public]" value="0" />
+		<input type="checkbox" class="option" name="params[team_public]" value="1" <?php if ($this->model->params->get( 'team_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?>
+	</label>
+
+	<?php if ($this->publishing): ?>
+		<label>
+			<input type="hidden"  name="params[publications_public]" value="0" />
+			<input type="checkbox" class="option" name="params[publications_public]" value="1" <?php if ($this->model->params->get( 'publications_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?>
+		</label>
+	<?php endif; ?>
+
+	<?php
+		$pparams = Plugin::params( 'projects', 'notes' );
+		if ($pparams->get('enable_publinks')): ?>
+			<label>
+				<input type="hidden"  name="params[notes_public]" value="0" />
+				<input type="checkbox" class="option" name="params[notes_public]" value="1" <?php if ($this->model->params->get( 'notes_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_NOTES_PUBLIC'); ?>
+			</label>
+	<?php endif; ?>
+
+	<?php
+		$pparams = Plugin::params( 'projects', 'files' );
+		if ($pparams->get('enable_publinks')): ?>
+			<label>
+				<input type="hidden"  name="params[files_public]" value="0" />
+				<input type="checkbox" class="option" name="params[files_public]" value="1" <?php if ($this->model->params->get( 'files_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_FILES_PUBLIC'); ?>
+			</label>
+	<?php endif; ?>
+<?php endif; ?>
+
+<?php
+if ($this->config->get('grantinfo', 0))
+{
+	$this->view('_edit_grant_info')
+		->set('model', $this->model)
+		->display();
+}
+?>
+
 <p class="submitarea">
-	<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
-	<span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=info'); ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a></span>
+	<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_CHANGES'); ?>" />
+	<span>
+		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=info'); ?>" class="btn btn-cancel">
+			<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>
+		</a>
+	</span>
 </p>
