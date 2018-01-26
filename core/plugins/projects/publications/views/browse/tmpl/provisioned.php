@@ -31,8 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$pubconfig = Component::params( 'com_publications' );
-
+$pubconfig = Component::params('com_publications');
 ?>
 <div class="grid contribute">
 	<div class="col span4">
@@ -47,9 +46,35 @@ $pubconfig = Component::params( 'com_publications' );
 <?php if ($pubconfig->get('contribute', 0)) { ?>
 		<div class="contrib-start simple">
 			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_OUTSIDE'); ?></p>
-			<p class="submitarea">
-				<span><a href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=files'); ?>" class="btn btn-primary"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISH_FILES'); ?></a></span>
-			</p>
+			<?php
+			if (count($this->choices) > 0)
+			{
+				foreach ($this->choices as $current)
+				{
+					?>
+					<p class="submitarea">
+						<span>
+							<a class="btn btn-primary<?php echo ($current->description) ? ' tooltips" title="' . $this->escape($current->description) . '"' : ''; ?>" href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=' . $current->alias); ?>">
+								<?php echo $this->escape($current->type); ?>
+							</a>
+						</span>
+					</p>
+					<?php
+				}
+			}
+			else
+			{
+				?>
+				<p class="submitarea">
+					<span>
+						<a class="btn btn-primary" href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=files'); ?>">
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISH_FILES'); ?>
+						</a>
+					</span>
+				</p>
+				<?php
+			}
+			?>
 		</div>
 <?php } ?>
 	</div>
