@@ -35,25 +35,43 @@ defined('_HZEXEC_') or die();
 ?>
 
 <?php 
-$offset = array();
+$boards = array();
 foreach ($this->items as $item) {
 	if ($item["type"] === "static") {
+		// Initialize boards from new collection
 		$collection = $item["content"];
-		if (!array_key_exists($collection, $offset)) { 
-			$offset[$collection] = 0; 
+		if (!array_key_exists($collection, $boards)) { 
+			$boards[$collection] = $this->_getBillboards($collection);
 		}
 
-		$boards = $this->_getBillboards($collection);
-		$start = $offset[$collection];
-		$n = min($item["n"], count($boards)-$start);
-		foreach (array_slice($boards, $start, $n) as $board) { ?>
+		// Make sure we don't ask for too much
+		$n = min($item["n"], count($boards[$collection]));
+		if ($n < $item["n"]) {
+			echo 'Showcase Module Error: Not enough billboards left in collection "' . $collection . '"!';
+		}
+
+		// 
+		if ($item["ordering"] === "ordered") {
+			$item_boards = array_slice($boards[$collection], 0, $n);
+			$boards[$collection] = array_slice($boards[$collection], $n, count($boards[$collection]));
+		} elseif ($item["ordering"] === "random") {
+			$rind = array_flip(array_rand($boards[$collection], $n));
+			$item_boards = array_intersect_key($boards[$collection], $rind);
+			$boards[$collection] = array_diff_key($boards[$collection], $rind);
+		} else {
+			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "ordered" or "random".';
+		}
+
+		foreach ($item_boards as $board) { ?>
 			<div class="<?php echo $item['class'] ?>">
 				<div class="billboard-image">
 					<img src="<?php echo $this->image_location; ?><?php echo $board->background_img; ?>"/>
 				</div>
 			</div>
 		<?php }
-		$offset[$collection] += $n;
+	} elseif ($item["type"] === "dynamic") {
+	} else {
+		echo 'Showcase Module Error: Unknown type "' . $item["type"] . '".  Possible values include "static" or "dynamic".';
 	}
 }
 ?>
