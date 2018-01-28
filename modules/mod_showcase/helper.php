@@ -79,7 +79,7 @@ class Helper extends Module
     		if ($str_item !== false) {
     			$item = explode(',', $str_item);
     			$items[] = array(
-    			  "n" => $item[0],
+    			  "n" => (int) $item[0],
     			  "class" => $item[1],
     			  "type" => $item[2],
     			  "ordering" => $item[3],
