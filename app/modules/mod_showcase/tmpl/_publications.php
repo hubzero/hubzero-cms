@@ -29,28 +29,31 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
+// no direct access
 defined('_HZEXEC_') or die();
-?>
 
-<?php 
-$boards = array();
-foreach ($this->items as $item) {
-	if ($item["type"] === "static") {
-		require $this->getLayoutPath('_billboards');
-	} elseif ($item["type"] === "dynamic") {
-		switch ($item["content"])
-		{
-			case 'publications':
-				require $this->getLayoutPath('_publications');
-			break;
+$pubs = $this->_getPublications();
 
-			default:
-				echo 'Showcase Module Error: Unknown dynamic type "' . $item["content"] . '".  Possible values include "publications".';
-			break;
-		}
+// Make sure we don't ask for too much
+$n = min($item["n"], count($pubs));
+if ($n < $item["n"]) {
+	echo 'Showcase Module Error: Not enough publications left!';
+}
+
+$i = 0;
+foreach ($pubs as $pub)
+{
+	if ($i++ < $n) {
+		echo '<div class="' . $item['class'] . '">
+';
+		echo '  <div class="resource-img">';
+		echo '    <a href="' . $pub->link() . '">';
+		echo '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
+		echo '    </a>';
+		echo '  </div>';
+		echo '</div>';
 	} else {
-		echo 'Showcase Module Error: Unknown type "' . $item["type"] . '".  Possible values include "static" or "dynamic".';
+		break;
 	}
 }
 ?>

@@ -32,6 +32,7 @@
 namespace Modules\Showcase;
 
 use Hubzero\Module\Module;
+use Components\Publications\Models\Publication;
 
 /**
  * Mod_Showcase helper class, used to query for billboards and contains the display method
@@ -61,6 +62,30 @@ class Helper extends Module
 		return $rows;
 	}
 
+	/**
+	 * Get the most recent publications.
+	 * @return array Publications, ordered by most recent.
+	 */
+	private function _getPublications()
+	{
+		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+
+		$pubmodel = new \Components\Publications\Models\Publication();
+		$filters = array(
+			'start'   => 0,
+			'dev'     => 1,
+			'sortby'  => 'date_created',
+			'sortdir' => 'DESC'
+		);
+		$pubs = $pubmodel->entries('list', $filters);
+
+		return $pubs;
+	}
+
+	/**
+	 * Parse the item specifications.
+	 * @return [type] [description]
+	 */
 	private function _parseItems()
 	{
 		$str_items = $this->params->get('items');
@@ -103,9 +128,6 @@ class Helper extends Module
 		$this->css();
 
 		$this->items = $this->_parseItems();
-
-		// Get the billboard slides
-		// $this->slides = $this->_getBillboards();
 
 		// Get the billboard background location from the billboards parameters
 		$params = \Component::params('com_billboards');
