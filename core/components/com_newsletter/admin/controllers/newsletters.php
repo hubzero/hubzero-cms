@@ -150,7 +150,8 @@ class Newsletters extends AdminController
 		$records = Newsletter::all()
 			->including(['template', function ($template){
 				$template->select('*');
-			}]);
+			}])
+			->whereEquals('deleted', 0);
 
 		if ($filters['search'])
 		{
