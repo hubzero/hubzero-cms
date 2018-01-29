@@ -63,4 +63,3 @@ class plgSystemContent extends \Hubzero\Plugin\Plugin
 		Event::trigger('search.onRemoveIndex', array($table, $model));
 	}
 }
-

@@ -206,13 +206,13 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-     * Build and return the url
-     *
-     * @param   string  $as
-     * @return  string
-     */
-    public function tags()
-    {
+	 * Build and return the url
+	 *
+	 * @param   string  $as
+	 * @return  string
+	 */
+	public function tags()
+	{
 		$cloud = new \Components\Tags\Models\Cloud();
 		$filters = array(
 			'scope' => 'publications',
@@ -263,7 +263,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		$obj->id            = 'publication-' . $this->get('id');
 		$obj->hubtype       = 'publication';
 		$obj->title         = $activeVersion->get('title');
-	
+
 		$description = $activeVersion->get('abstract') . ' ' . $activeVersion->get('description');
 		$description = html_entity_decode($description);
 		$description = \Hubzero\Utility\Sanitize::stripAll($description);
@@ -283,7 +283,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 					'title' => $tag->raw_tag,
 					'access_level' => $tag->admin == 0 ? 'public' : 'private',
 					'type' => 'tag'
-				); 
+				);
 			}
 		}
 

@@ -125,13 +125,12 @@ class Searchable extends AdminController
 			$component->set('indexed_records', 0);
 			if ($component->save())
 			{
-				Notify::success(Lang::txt('COM_SEARCH_DELETE_COMPONENT_SUCCESS', ucfirst($component->name))); 
+				Notify::success(Lang::txt('COM_SEARCH_DELETE_COMPONENT_SUCCESS', ucfirst($component->name)));
 			}
 		}
 
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
-		
-	}	
+	}
 
 	public function newTagsTask()
 	{

@@ -59,30 +59,3 @@ Hubzero\Base\ClassLoader::register();
 */
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'hubzero' . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Base' . DIRECTORY_SEPARATOR . 'helpers.php';
-
-spl_autoload_register(function($class){
-	$splitClass = explode('\\', strtolower($class));
-	$splitClass = array_filter($splitClass);
-	$extensionType = array_shift($splitClass);
-	$extensionPrefixes= array(
-	'components' => 'com_'
-	);
-	$extension = array_shift($splitClass);
-	$extension = isset($extensionPrefixes[$extensionType]) ? $extensionPrefixes[$extensionType] . $extension : $extension;
-	array_unshift($splitClass, $extensionType, $extension);
-	$extendedPath = implode('/', $splitClass);
-	$fullAppPath =  PATH_APP . '/' . $extendedPath . '.php';
-	$fullCorePath =  PATH_CORE . '/' . $extendedPath . '.php';
-	try {
-		if (file_exists($fullAppPath))
-		{
-			require_once $fullAppPath;
-		}
-		else if (file_exists($fullCorePath)) 
-		{
-			require_once $fullCorePath;
-		}
-	} catch (Exception $ex) {
-		return false;
-	}
-});
