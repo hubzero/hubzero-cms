@@ -60,7 +60,7 @@ class DiscoveryHelper
 	/**
 	 * Gets list of all components that currently exist
 	 *
-	 *	@return array
+	 * @return array
 	 */
 	public static function getCompleteComponentList()
 	{
