@@ -49,7 +49,7 @@ class Helper extends Module
 	public function run()
 	{
 		require_once(Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
-		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
+		require_once(Component::path('com_resources') . DS . 'models' . DS . 'type.php');
 
 		$database = \App::get('db');
 
@@ -60,8 +60,7 @@ class Helper extends Module
 			->rows();
 
 		// Get major types
-		$t = new \Components\Resources\Tables\Type($database);
-		$this->categories = $t->getMajorTypes();
+		$this->categories = \Components\Resources\Models\Type::getMajorTypes();
 
 		require $this->getLayoutPath();
 	}
