@@ -153,7 +153,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			$this->config = Component::params('com_wishlist');
 
 			// Get list owners
-			$owners = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);
+			$owners = $objOwner->get_owners($id, $this->config->get('group'), $wishlist);
 
 			// Authorize admins & list owners
 			if (!User::isGuest())
