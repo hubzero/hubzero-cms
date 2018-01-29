@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 ?>
 
 <p class="wishlist">
-	<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&active=wishlist'); ?>">
+	<a href="<?php echo $this->url; ?>">
 		<?php echo Lang::txt('NUM_WISHES', $this->items); ?>
 	</a>
 	(<a href="<?php echo Route::url('index.php?option=com_wishlist&id=' . $this->wishlistid . '&task=add'); ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_WISHLIST_ADD_NEW_WISH'); ?></a>)
