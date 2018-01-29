@@ -223,7 +223,8 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'metadata')
 				->set('publication', $publication)
 				->set('items', $items)
-				->set('wishlistid', $id);
+				->set('wishlistid', $id)
+				->set('url', Route::url($publication->link($this->_name)));
 
 			$metadata = $view->loadTemplate();
 		}
