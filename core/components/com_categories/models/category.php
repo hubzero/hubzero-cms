@@ -225,8 +225,12 @@ class Category extends Nested
 	 */
 	public function automaticParams($data)
 	{
-		if (!empty($data['params']) && ($data['params'] instanceof Registry))
+		if (!empty($data['params']) && !is_string($data['params']))
 		{
+			if (!($data['params'] instanceof Registry))
+			{
+				$data['params'] = new Registry($data['params']);
+			}
 			$data['params'] = $data['params']->toString();
 		}
 		return $data['params'];
@@ -271,8 +275,12 @@ class Category extends Nested
 	 */
 	public function automaticMetadata($data)
 	{
-		if (!empty($data['metadata']) && ($data['metadata'] instanceof Registry))
+		if (!empty($data['metadata']) && !is_string($data['metadata']))
 		{
+			if (!($data['metadata'] instanceof Registry))
+			{
+				$data['metadata'] = new Registry($data['metadata']);
+			}
 			$data['metadata'] = $data['metadata']->toString();
 		}
 		return $data['metadata'];

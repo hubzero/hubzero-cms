@@ -351,7 +351,7 @@ class Categories extends AdminController
 			return $this->editTask($category);
 		}
 
-		Notify::success(Lang::txt('COM_CATEGORY_SAVED'));
+		Notify::success(Lang::txt('COM_CATEGORIES_SAVE_SUCCESS'));
 
 		if ($this->_task == 'apply' || $this->_task == 'save2copy')
 		{
