@@ -1,28 +1,27 @@
 <?php
-// this is a very basic cards display for the partners, needs to be edited before it is pushed to the real world
+// this is a very basic table display for the partners, needs to be edited before it is pushed to the real world
 // Push CSS to the document
 //
-// The css() method provides a quick and convenient way to attach stylesheets.
-//
-// 1. The name of the stylesheet to be pushed to the document (file extension is optional).
-//    If no name is provided, the name of the component or plugin will be used. For instance,
+// The css() method provides a quick and convenient way to attach stylesheets. 
+// 
+// 1. The name of the stylesheet to be pushed to the document (file extension is optional). 
+//    If no name is provided, the name of the component or plugin will be used. For instance, 
 //    if called within a view of the component com_tags, the system will look for a stylesheet named tags.css.
-//
-// 2. The name of the extension to look for the stylesheet. For components, this will be
-//    the component name (e.g., com_tags). For plugins, this is the name of the plugin folder
+// 
+// 2. The name of the extension to look for the stylesheet. For components, this will be 
+//    the component name (e.g., com_tags). For plugins, this is the name of the plugin folder 
 //    and requires the third argument be passed to the method.
 //
 // Method chaining is also allowed.
-// $this->css()
+// $this->css()  
 //      ->css('another');
 
-$this->css('cards');
+$this->css();
 
 // Similarly, a js() method is available for pushing javascript assets to the document.
 // The arguments accepted are the same as the css() method described above.
 //
-$this->js('cards');
-$this->js('https://use.fontawesome.com/88cd5351e6.js');
+// $this->js();
 
 // Set the document title
 //
@@ -55,41 +54,51 @@ Pathway::append(
 	</div>
 </header>
 
-<!-- Need to add checks if metadata is available before displaying -->
 <section class="main section">
 	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
 		<div class="subject">
-			<div class="cards">
-				<?php foreach ($this->records as $record) {
-					if ($record->get('state')) { // Display only if published ?>
-				    <div class="card [ is-collapsed ]">
-      					<div class="card__inner [ js-expander ]">
-      						<img src="<?php echo 'app/site/media/images/partners/' . $record->get('logo_img') ?>" alt="<?php echo $record->get('name'); ?>" class="card-logo">
-      					</div>
-      					<div class="card__expander">
-        					<i class="fa fa-close [ js-collapser ]" aria-hidden="true"></i>
-        					<div class="inner-expander">
-        						<?php echo 'About: ' . '<p>' . $record->get('about') . '</p>'; ?>
-        						<div class="liason">
-        							Partner Liaison:
-        							<p><?php echo $record->get('partner_liason_primary'); ?></p>
-        						</div>
-        						<div class="liason">
-        							QUBES Liaison:
-        							<p><?php echo $record->get('QUBES_liason_primary'); ?></p>
-        						</div>
-        					</div>
-        					<div class="inner-expander">
-        						<?php echo 'Activities: ' . '<p>' . $record->get('activities') . '</p>'; ?>
-        						<div class="social">
-        							<a class="card-link" href="<?php echo Route::url('groups' . DS . $record->get('groups_cn')); ?>">Learn more</a><br>
-        							<a class="social-icon" href="https://twitter.com/<?php echo $record->get('twitter_handle'); ?>" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-        						</div>
-        					</div>
-        				</div>
-      				</div>
-				<?php } } ?>
-			</div>
+			<table class="entries">
+				<caption><?php echo Lang::txt('COM_PARTNERS'); ?></caption>
+				<thead>
+					<tr>
+						<th><?php echo Lang::txt('COM_PARTNERS_COL_NAME'); ?></th>
+						<th><?php echo Lang::txt('COM_PARTNERS_COL_PARTNER_TYPE'); ?></th>
+						<th><?php echo Lang::txt('COM_PARTNER_COL_ABOUT'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->records as $record) { ?>
+						<tr>
+							
+							<td>
+								<a href="<?php echo Route::url('groups' . DS . $record->get('groups_cn')); ?>">
+									<?php echo $this->escape($record->get('name')); ?>
+								</a>
+							</td>
+
+							<td>
+								<?php echo $this->escape($record->partner_type()->get('external')); ?>
+							</td>
+
+							<td>
+								<?php echo $this->escape(strip_tags($record->get('about'))); ?>
+							</td>
+
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+
+
+			<?php 
+			echo $this
+				->records
+				->pagination
+				->setAdditionalUrlParam('partner_type', $this->filters['partner_type']);
+
+			$results = Event::trigger('partners.onAfterDisplay');
+			echo implode("\n", $results);
+			?>
 		</div>
 		<aside class="aside">
 			<fieldset>

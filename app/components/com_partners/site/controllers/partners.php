@@ -96,8 +96,27 @@ class Partners extends SiteController
 			$records = Partner_type::oneOrFail($partner_type)->partners();
 		}
 
-		// Get a list of records
-		$this->view->records = $records->paginated()->ordered();
+		// Get a list of records and split into sponsored, featured, and other
+		$sponsored = array();
+		$featured = array();
+		$other = array();
+		$records = $records->paginated()->ordered();
+		foreach($records as $key => $record) 
+		{
+			if (in_array($record->get('partner_type'), array(4,5))) 
+			{
+				$sponsored[] = $record;
+			} elseif ($record->get('featured')) 
+			{
+				$featured[] = $record;
+			} else {
+				$other[] = $record;
+			}
+		}
+
+		$this->view->sponsored = $sponsored;
+		$this->view->featured = $featured;
+		$this->view->other = $other;
 
 		// Output the view
 		// 
@@ -114,7 +133,7 @@ class Partners extends SiteController
 	 *
 	 * @return	void
 	 */
-	public function cardsTask()
+	public function tableTask()
 	{
 		// Get our model
 		// This is the entry point to the database and the 
@@ -161,7 +180,7 @@ class Partners extends SiteController
 		// we may be redirected from editTask(), which can happen if the
 		// user is not logged in.
 		$this->view
-		     ->setLayout('cards')
+		     ->setLayout('table')
 		     ->display();
 	}
 }
