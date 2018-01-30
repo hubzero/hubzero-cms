@@ -2,7 +2,9 @@
 <extension type="component" version="2.0">
 	<name>Partners</name>
 	<author>QUBEShub</author>
-	<copyright>Copyright 2017 QUBEShub.org</copyright>
+	<creationDate>January 2018</creationDate>
+	<version>0.0.999</version>
+	<copyright>Copyright 2018 QUBEShub.org</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Adding partner component for QUBES partners, should be able to be used by other organizations </description>
 	<files>
@@ -10,9 +12,6 @@
 		<filename>partners.php</filename>
 		<filename>index.html</filename>
 	</files>
-	<languages>
-		<language tag="en-GB">en-GB.com_partners.ini</language>
-	</languages>
 	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">install.sql</file>
@@ -29,4 +28,8 @@
 			<filename>index.html</filename>
 		</files>
 	</administration>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.com_partners.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.com_partners.sys.ini</language>
+	</languages>
 </extension>

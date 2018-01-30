@@ -1,27 +1,28 @@
 <?php
-// this is a very basic table display for the partners, needs to be edited before it is pushed to the real world
+// this is a very basic cards display for the partners, needs to be edited before it is pushed to the real world
 // Push CSS to the document
 //
-// The css() method provides a quick and convenient way to attach stylesheets. 
-// 
-// 1. The name of the stylesheet to be pushed to the document (file extension is optional). 
-//    If no name is provided, the name of the component or plugin will be used. For instance, 
+// The css() method provides a quick and convenient way to attach stylesheets.
+//
+// 1. The name of the stylesheet to be pushed to the document (file extension is optional).
+//    If no name is provided, the name of the component or plugin will be used. For instance,
 //    if called within a view of the component com_tags, the system will look for a stylesheet named tags.css.
-// 
-// 2. The name of the extension to look for the stylesheet. For components, this will be 
-//    the component name (e.g., com_tags). For plugins, this is the name of the plugin folder 
+//
+// 2. The name of the extension to look for the stylesheet. For components, this will be
+//    the component name (e.g., com_tags). For plugins, this is the name of the plugin folder
 //    and requires the third argument be passed to the method.
 //
 // Method chaining is also allowed.
-// $this->css()  
+// $this->css()
 //      ->css('another');
 
-$this->css();
+$this->css('cards');
 
 // Similarly, a js() method is available for pushing javascript assets to the document.
 // The arguments accepted are the same as the css() method described above.
 //
-// $this->js();
+$this->js('cards');
+$this->js('https://use.fontawesome.com/88cd5351e6.js');
 
 // Set the document title
 //
@@ -45,72 +46,57 @@ Pathway::append(
 );
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_PARTNERS'); ?></h2>
-
-	<div id="content-header-extra">
-		<p>
-			<a class="icon-prev btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_PARTNERS_MAIN'); ?></a>
-		</p>
-	</div>
+	<h2>Our Partners</h2>
 </header>
 
+<!-- Need to add checks if metadata is available before displaying -->
 <section class="main section">
+	<h2><?php echo Lang::txt('COM_PARTNERS_SPONSORED'); ?></h2>
 	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
 		<div class="subject">
-			<table class="entries">
-				<caption><?php echo Lang::txt('COM_PARTNERS'); ?></caption>
-				<thead>
-					<tr>
-						<th><?php echo Lang::txt('COM_PARTNERS_COL_NAME'); ?></th>
-						<th><?php echo Lang::txt('COM_PARTNERS_COL_PARTNER_TYPE'); ?></th>
-						<th><?php echo Lang::txt('COM_PARTNER_COL_ABOUT'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($this->records as $record) { ?>
-						<tr>
-							
-							<td>
-								<a href="<?php echo Route::url('groups' . DS . $record->get('groups_cn')); ?>">
-									<?php echo $this->escape($record->get('name')); ?>
-								</a>
-							</td>
-
-							<td>
-								<?php echo $this->escape($record->partner_type()->get('external')); ?>
-							</td>
-
-							<td>
-								<?php echo $this->escape(strip_tags($record->get('about'))); ?>
-							</td>
-
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-
-
-			<?php 
-			echo $this
-				->records
-				->pagination
-				->setAdditionalUrlParam('partner_type', $this->filters['partner_type']);
-
-			$results = Event::trigger('partners.onAfterDisplay');
-			echo implode("\n", $results);
-			?>
+			<div class="cards">
+				<?php foreach ($this->sponsored as $record) {
+					if ($record->get('state')) { // Display only if published
+						$this->view('_card')
+							 ->set('option', $this->option)
+							 ->set('controller', $this->controller)
+							 ->set('record', $record)
+							 ->display();
+					} 
+				} ?>
+			</div>
 		</div>
-		<aside class="aside">
-			<fieldset>
-				<select name="partner_type">
-					<option value=""><?php echo Lang::txt('COM_PARTNERS_PARTNER_TYPES_ALL'); ?></option>
-					<?php foreach (\Components\Partners\Models\Partner_type::all() as $partner_type) { ?>
-						<option<?php if ($this->filters['partner_type'] == $partner_type->get('id')) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($partner_type->get('id')); ?>"><?php echo $this->escape($partner_type->get('external')); ?></option>
-					<?php } ?>
-				</select>
-				<input type="submit" value="<?php echo Lang::txt('COM_PARTNERS_GO'); ?>" />
-			</fieldset>
-
-		</aside>
+	</form>
+	<h2><?php echo Lang::txt('COM_PARTNERS_FEATURED'); ?></h2>
+		<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
+		<div class="subject">
+			<div class="cards">
+				<?php foreach ($this->featured as $record) {
+					if ($record->get('state')) { // Display only if published
+						$this->view('_card')
+							 ->set('option', $this->option)
+							 ->set('controller', $this->controller)
+							 ->set('record', $record)
+							 ->display();
+					} 
+				} ?>
+			</div>
+		</div>
+	</form>
+	<h2><?php echo Lang::txt('COM_PARTNERS_OTHER'); ?></h2>
+		<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
+		<div class="subject">
+			<div class="cards">
+				<?php foreach ($this->other as $record) {
+					if ($record->get('state')) { // Display only if published
+						$this->view('_card')
+							 ->set('option', $this->option)
+							 ->set('controller', $this->controller)
+							 ->set('record', $record)
+							 ->display();
+					} 
+				} ?>
+			</div>
+		</div>
 	</form>
 </section>
