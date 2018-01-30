@@ -264,9 +264,9 @@ class Events extends SiteController
 		$this->offset = Config::get('offset');
 
 		// Incoming
-		$this->year     = Request::getVar('year', strftime("%Y", time()+($this->offset*60*60)));
-		$this->month    = Request::getVar('month', strftime("%m", time()+($this->offset*60*60)));
-		$this->day      = Request::getVar('day', strftime("%d", time()+($this->offset*60*60)));
+		$this->year     = Request::getInt('year', Date::of('now')->format('Y'));
+		$this->month    = Request::getInt('month', Date::of('now')->format('m'));
+		$this->day      = Request::getInt('day', Date::of('now')->format('d'));
 		$this->category = Request::getInt('category', 0);
 		$this->gid      = intval(User::get('gid'));
 
@@ -281,7 +281,7 @@ class Events extends SiteController
 		}
 
 		// make sure we have a valid year
-		if ($this->year < 1000)
+		if ($this->year < 1000 || $this->year > 9999)
 		{
 			App::abort(404, Lang::txt('COM_EVENTS_YEAR_NOT_VALID'));
 			return;
