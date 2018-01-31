@@ -37,26 +37,25 @@ defined('_HZEXEC_') or die();
  */
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'discoveryhelper.php';
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
+require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'searchcomponent.php';
 
 use \Components\Search\Helpers\DiscoveryHelper;
 use \Components\Search\Models\Solr\SearchComponent;
 use \Hubzero\Search\Index;
+
 class plgSearchSolr extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * onContentSave 
 	 * 
-	 * @param mixed $table 
-	 * @param mixed $model 
-	 * @access public
-	 * @return void
+	 * @param   mixed  $table
+	 * @param   mixed  $model
+	 * @return  void
 	 */
 	public function onAddIndex($table, $model)
 	{
-		/**
-		 * @TODO: Implement mechanism to send to Solr index
-		 * This Event is called in the Relational save() method.
-		 **/
+		// @TODO: Implement mechanism to send to Solr index
+		// This Event is called in the Relational save() method.
 		$modelName = '';
 		if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
 		{
@@ -75,29 +74,26 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 	/**
 	 * onContentDestroy 
 	 * 
-	 * @param mixed $table 
-	 * @param mixed $model 
-	 * @access public
-	 * @return void
+	 * @param   mixed  $table
+	 * @param   mixed  $model
+	 * @return  void
 	 */
 	public function onRemoveIndex($table, $model)
 	{
-		/**
-		 * @TODO: Implement mechanism to send to Solr index
-		 * This Event is called in the Relational save() method.
-		 **/
-			$modelName = '';
-			if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
+		// @TODO: Implement mechanism to send to Solr index
+		// This Event is called in the Relational save() method.
+		$modelName = '';
+		if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
+		{
+			$extensionName = strtolower(explode('\\', $modelName)[1]);
+			$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
+			if ($searchComponent->get('state') == 1)
 			{
-				$extensionName = strtolower(explode('\\', $modelName)[1]);
-				$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
-				if ($searchComponent->get('state') == 1)
-				{
-					$config = Component::params('com_search');
-					$index = new \Hubzero\Search\Index($config);
-					$modelIndexId = $model->searchResult()['id'];
-					$index->delete($modelIndexId);
-				}
+				$config = Component::params('com_search');
+				$index = new \Hubzero\Search\Index($config);
+				$modelIndexId = $model->searchResult()['id'];
+				$index->delete($modelIndexId);
 			}
+		}
 	}
 }

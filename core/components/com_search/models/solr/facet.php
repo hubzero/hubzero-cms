@@ -41,13 +41,17 @@ use Hubzero\Database\Relational;
  */
 class Facet extends Relational
 {
+	/**
+	 * Table name
+	 * 
+	 * @var  string
+	 */
 	protected $table = '#__solr_search_facets';
 
 	/**
 	 * children 
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  object
 	 */
 	public function children()
 	{
@@ -57,7 +61,6 @@ class Facet extends Relational
 	/**
 	 * toplevel 
 	 * 
-	 * @access public
 	 * @return void
 	 */
 	public function toplevel()
@@ -80,7 +83,7 @@ class Facet extends Relational
 	/**
 	 * Convert facet name to solr query safe name
 	 *
-	 * @return string name of query
+	 * @return  string  name of query
 	 */
 	public function getQueryName()
 	{
@@ -91,7 +94,7 @@ class Facet extends Relational
 	/**
 	 * Get parent facet
 	 *
-	 * @return Components\Search\Models\Solr\Facet 
+	 * @return  object  Components\Search\Models\Solr\Facet 
 	 */
 	public function parentFacet()
 	{
@@ -101,7 +104,7 @@ class Facet extends Relational
 	/**
 	 * Checks if current Facet has a parent
 	 *
-	 * @return boolean
+	 * @return  boolean
 	 */
 	public function hasParent()
 	{
@@ -115,7 +118,7 @@ class Facet extends Relational
 	/**
 	 * Automatically merge current facet string with parent
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function transformFacet()
 	{
@@ -132,23 +135,26 @@ class Facet extends Relational
 
 	/**
 	 * Build HTML list of current item and its nested children
-	 * @param array $counts prefetched solr array of counts of all facets
-	 * @param int $activeType id of currently selected facet
-	 * @param string $terms search terms currently applied ot the search
-	 * @param string $childTerms any currently applied filters
-	 * 
-	 * @return string HTML list with links to apply a facet with currently selected searchTerms
+	 *
+	 * @param   array   $counts      prefetched solr array of counts of all facets
+	 * @param   int     $activeType  id of currently selected facet
+	 * @param   string  $terms       search terms currently applied ot the search
+	 * @param   string  $childTerms  any currently applied filters
+	 * @return  string  HTML list with links to apply a facet with currently selected searchTerms
 	 */
 	public function formatWithCounts($counts, $activeType = null, $terms = null, $childTerms = null)
 	{
 		$countIndex = $this->getQueryName();
 		$count = isset($counts[$countIndex]) ? $counts[$countIndex] : 0;
+
+		$html = '';
+
 		if ($count > 0)
 		{
 			$class = ($activeType == $this->id) ? 'class="active"' : '';
-			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . 
-				$this->id . $childTerms);
-			$html = '<li><a ' . $class . ' href="' . $link . '">';
+			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . $this->id . $childTerms);
+
+			$html .= '<li><a ' . $class . ' href="' . $link . '">';
 			$html .= $this->name . '<span class="item-count">' . $count . '</span></a>';
 			if ($this->children->count() > 0)
 			{
@@ -160,7 +166,8 @@ class Facet extends Relational
 				$html .= '</ul>';
 			}
 			$html .= '</li>';
-			return $html;
 		}
+
+		return $html;
 	}
 }

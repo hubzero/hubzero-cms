@@ -32,22 +32,25 @@
 
 namespace Components\Search\Models\Solr;
 
-require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 use Components\Search\Helpers\DiscoveryHelper;
+use Component;
 
+require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
 
 /**
  * Database model for search components
  *
  * @uses  \Hubzero\Database\Relational
-
  */
 class SearchComponent extends Relational
 {
+	/**
+	 * Table namespace
+	 *
+	 * @var  string
+	 */
 	protected $namespace = 'solr_search';
 
 	/**
@@ -59,12 +62,17 @@ class SearchComponent extends Relational
 		'created'
 	);
 
+	/**
+	 * Hubzero\Search\Adapters\SolrIndexAdapter
+	 *
+	 * @var  object
+	 */
 	private $searchIndexer = null;
 
 	/**
 	 * Discover searchable components
 	 *
-	 * @return Hubzero\Database\Rows
+	 * @return  object  Hubzero\Database\Rows
 	 */
 	public function getNewComponents()
 	{
@@ -81,8 +89,9 @@ class SearchComponent extends Relational
 
 	/**
 	 * Add results to solr index
-	 * @param int $offset where to begin the database query
-	 * @return mixed array of values if more records
+	 *
+	 * @param   int    $offset  where to begin the database query
+	 * @return  mixed  array of values if more records
 	 */
 	public function indexSearchResults($offset)
 	{
@@ -91,7 +100,9 @@ class SearchComponent extends Relational
 		$commitWithin = $params->get('solr_commit', 50000);
 		$model = $this->getSearchableModel();
 		$newQuery = $this->getSearchIndexer();
+
 		$modelResults = $model::searchResults($batchSize, $offset);
+
 		if (count($modelResults) > 0)
 		{
 			foreach ($modelResults as $result)
@@ -99,18 +110,19 @@ class SearchComponent extends Relational
 				$newQuery->index($result->searchResult(), true, $commitWithin, $batchSize);
 			}
 			$results = array(
-				'limit' => $batchSize,
+				'limit'  => $batchSize,
 				'offset' => $offset + $batchSize
 			);
 			return $results;
 		}
+
 		return false;
 	}
 
 	/**
 	 * Get total record count of component
 	 *
-	 * @return int number of batches to retrieve
+	 * @return  int  number of batches to retrieve
 	 */
 	public function getSearchCount()
 	{
@@ -124,7 +136,7 @@ class SearchComponent extends Relational
 	/**
 	 * Get model that contains the searchable records
 	 *
-	 * @return Interface Hubzero\Search\Searchable
+	 * @return  object  Interface Hubzero\Search\Searchable
 	 */
 	public function getSearchableModel()
 	{
@@ -136,7 +148,7 @@ class SearchComponent extends Relational
 	/**
 	 * Populate the Solr Indexer so that batch processing uses the same object.
 	 *
-	 * @return Hubzero\Search\Adapters\SolrIndexAdapter
+	 * @return  object  Hubzero\Search\Adapters\SolrIndexAdapter
 	 */
 	private function getSearchIndexer()
 	{
