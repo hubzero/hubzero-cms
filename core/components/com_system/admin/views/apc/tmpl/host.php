@@ -213,7 +213,7 @@ jQuery(document).ready(function($){
 						</td>
 						<td>
 							<span class="green box">&nbsp;</span>
-							<?php echo "Hits: {$this->cache['num_hits']} " . sprintf(" (%.1f%%)", $this->cache['num_hits']*100/($this->cache['num_hits']+$this->cache['num_misses'])); ?>
+							<?php echo "Hits: {$this->cache['num_hits']} " . (($this->cache['num_hits']+$this->cache['num_misses']) > 0 ? sprintf(" (%.1f%%)", $this->cache['num_hits']*100/($this->cache['num_hits']+$this->cache['num_misses'])) : '0.0%'); ?>
 						</td>
 					</tr>
 					<tr class="row1">
@@ -223,7 +223,7 @@ jQuery(document).ready(function($){
 						</td>
 						<td>
 							<span class="red box">&nbsp;</span>
-							<?php echo "Misses: {$this->cache['num_misses']} " . sprintf(" (%.1f%%)", $this->cache['num_misses']*100/($this->cache['num_hits']+$this->cache['num_misses'])); ?>
+							<?php echo "Misses: {$this->cache['num_misses']} " . (($this->cache['num_hits']+$this->cache['num_misses']) > 0 ? sprintf(" (%.1f%%)", $this->cache['num_misses']*100/($this->cache['num_hits']+$this->cache['num_misses'])) : '0.0%'); ?>
 						</td>
 					</tr>
 				</tbody>
