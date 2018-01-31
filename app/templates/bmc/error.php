@@ -194,6 +194,11 @@ Lang::load('tpl_' . $this->template, __DIR__);
 											?></p>
 									</div>
 								</section>
+								<?php if ($this->debug) { ?>
+									<section id="techinfo">
+										<?php echo $this->renderBacktrace(); ?>
+									</section><!-- / #techinfo -->
+								<?php } ?>
 							</div><!-- / .content -->
 						</div>
 					</div>
