@@ -1197,12 +1197,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "e099e1ec56286702894d9977f54eccee3fb0c14d"
+                "reference": "22086011750b76d33d0d7046a9a020c72338cca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/e099e1ec56286702894d9977f54eccee3fb0c14d",
-                "reference": "e099e1ec56286702894d9977f54eccee3fb0c14d",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/22086011750b76d33d0d7046a9a020c72338cca0",
+                "reference": "22086011750b76d33d0d7046a9a020c72338cca0",
                 "shasum": ""
             },
             "require": {
@@ -1237,7 +1237,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2018-01-26 11:20:46"
+            "time": "2018-01-31 14:27:46"
         },
         {
             "name": "hubzero/orcid-php",
@@ -2145,6 +2145,7 @@
                 "xls",
                 "xlsx"
             ],
+            "abandoned": "phpoffice/phpspreadsheet",
             "time": "2014-03-02 15:22:49"
         },
         {
