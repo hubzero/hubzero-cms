@@ -136,13 +136,13 @@ class DiscoveryHelper
 			if (in_array($model, $ormModels))
 			{
 				$ormClassName = $baseNameSpace . 'Orm\\' . $className;
-				include_once $ormModelPath . $model;	
+				include_once $ormModelPath . $model;
 				if (self::isSearchable($ormClassName))
 				{
 					return $ormClassName;
 				}
 			}
-			include_once $modelPath . $model;	
+			include_once $modelPath . $model;
 			if (self::isSearchable($fullClassName))
 			{
 				return $fullClassName;
