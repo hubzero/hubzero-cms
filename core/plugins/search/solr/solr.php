@@ -36,6 +36,7 @@ defined('_HZEXEC_') or die();
  * Handles asynchrous enqueuement, helps maintain the index
  */
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'discoveryhelper.php';
+require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'searchcomponent.php';
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 
 use \Components\Search\Helpers\DiscoveryHelper;
