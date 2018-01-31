@@ -52,6 +52,7 @@ if ($item["ordering"] === "ordered") {
 	// Pulls billboards randomly
 	$rind = array_flip(array_rand($boards[$collection], $n));
 	$item_boards = array_intersect_key($boards[$collection], $rind);
+	shuffle($item_boards);
 	$boards[$collection] = array_diff_key($boards[$collection], $rind);
 } else {
 	echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "ordered" or "random".';
