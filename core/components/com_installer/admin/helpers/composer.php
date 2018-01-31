@@ -36,8 +36,6 @@ use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
 use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginEvents;
-use Composer\Installer;
-use Composer\Factory;
 
 /**
  * Composer helper class
@@ -73,7 +71,7 @@ class ComposerHelper
 		// Set up a composer object
 		if (!self::$factory)
 		{
-			self::$factory = new Factory();
+			self::$factory = new \Composer\Factory();
 		}
 
 		if (!self::$composer)
@@ -149,7 +147,7 @@ class ComposerHelper
 		self::_init();
 		if (!self::$installer)
 		{
-			self::$installer = Installer::create(self::_getIO(), self::_getComposer());
+			self::$installer = \Composer\Installer::create(self::_getIO(), self::_getComposer());
 		}
 		return self::$installer;
 	}

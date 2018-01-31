@@ -105,6 +105,41 @@ class Version extends Relational
 		'description'
 	);
 
+	public function transformStatusName()
+	{
+		$status = $this->get('state');
+		$name = '';
+		Lang::load('com_publications', \Component::path('com_publications') . '/admin');
+		switch ($status)
+		{
+			case 0:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
+				break;
+
+			case 1:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED');
+				break;
+
+			case 3:
+			default:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
+				break;
+
+			case 4:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_READY');
+				break;
+
+			case 5:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_PENDING');
+				break;
+
+			case 7:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
+				break;
+		}
+		return $name;
+	}
+
 	/**
 	 * Generates automatic modified field value
 	 *

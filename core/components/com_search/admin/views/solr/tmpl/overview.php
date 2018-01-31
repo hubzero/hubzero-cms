@@ -47,6 +47,10 @@ Submenu::addEntry(
 	'index.php?option='.$option.'&task=searchindex'
 );
 Submenu::addEntry(
+	Lang::txt('Searchable Components'),
+	'index.php?option='.$option.'&task=display&controller=searchable'
+);
+Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
 	'index.php?option='.$option.'&task=manageBlacklist'
 );

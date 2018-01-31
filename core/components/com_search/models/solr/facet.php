@@ -51,11 +51,7 @@ class Facet extends Relational
 	 */
 	public function children()
 	{
-		$children = $this->all()
-			->whereEquals('parent_id', $this->id)
-			->rows();
-
-		return $children;
+		return $this->oneToMany('Facet', 'parent_id');
 	}
 
 	/**
@@ -69,17 +65,102 @@ class Facet extends Relational
 		if (!$this->isNew())
 		{
 			$tops = $this->all()
-				->whereEquals('parent_id', 0)
 				->where('id', '!=', $this->id)
 				->rows();
 		}
 		else
 		{
 			$tops = $this->all()
-				->whereEquals('parent_id', 0)
 				->rows();
 		}
 
 		return $tops;
+	}
+
+	/**
+	 * Convert facet name to solr query safe name
+	 *
+	 * @return string name of query
+	 */
+	public function getQueryName()
+	{
+		$name = str_replace(' ', '_', $this->name);
+		return $name;
+	}
+
+	/**
+	 * Get parent facet
+	 *
+	 * @return Components\Search\Models\Solr\Facet 
+	 */
+	public function parentFacet()
+	{
+		return $this->oneToOne('Facet', 'id', 'parent_id');
+	}
+
+	/**
+	 * Checks if current Facet has a parent
+	 *
+	 * @return boolean
+	 */
+	public function hasParent()
+	{
+		if ($this->parentFacet->get('id') > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Automatically merge current facet string with parent
+	 *
+	 * @return string
+	 */
+	public function transformFacet()
+	{
+		if ($this->hasParent())
+		{
+			$facet = '(' . $this->parentFacet->facet . ') AND (' . $this->get('facet') . ')';
+		}
+		else
+		{
+			$facet = $this->get('facet');
+		}
+		return $facet;
+	}
+
+	/**
+	 * Build HTML list of current item and its nested children
+	 * @param array $counts prefetched solr array of counts of all facets
+	 * @param int $activeType id of currently selected facet
+	 * @param string $terms search terms currently applied ot the search
+	 * @param string $childTerms any currently applied filters
+	 * 
+	 * @return string HTML list with links to apply a facet with currently selected searchTerms
+	 */
+	public function formatWithCounts($counts, $activeType = null, $terms = null, $childTerms = null)
+	{
+		$countIndex = $this->getQueryName();
+		$count = isset($counts[$countIndex]) ? $counts[$countIndex] : 0;
+		if ($count > 0)
+		{
+			$class = ($activeType == $this->id) ? 'class="active"' : '';
+			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . 
+				$this->id . $childTerms);
+			$html = '<li><a ' . $class . ' href="' . $link . '">';
+			$html .= $this->name . '<span class="item-count">' . $count . '</span></a>';
+			if ($this->children->count() > 0)
+			{
+				$html .= '<ul>';
+				foreach ($this->children as $child)
+				{
+					$html .= $child->formatWithCounts($counts, $activeType, $terms, $childTerms);
+				}
+				$html .= '</ul>';
+			}
+			$html .= '</li>';
+			return $html;
+		}
 	}
 }

@@ -33,6 +33,7 @@ defined('_HZEXEC_') or die();
 use Hubzero\Search\Query;
 use Hubzero\Search\Index;
 use Components\Search\Models\Solr\QueueDB;
+use Components\Search\Models\Solr\SearchComponent as SearchComponent;
 
 /**
  * Cron plugin for Search indexing
@@ -55,10 +56,36 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 				'name'   => 'processQueue',
 				'label'  => Lang::txt('PLG_CRON_SEARCH_PROCESS_QUEUE'),
 				'params' => ''
+			),
+			array(
+				'name'	 => 'runFullIndex',
+				'label'  => Lang::txt('Run Full Index'),
+				'params' => ''
 			)
 		);
 
 		return $obj;
+	}
+
+	public function runFullIndex()
+	{
+		$components = SearchComponent::all()
+			->where('indexed', 'IS', null)
+			->where('state', 'IS', null)
+			->orWhereEquals('state', 0)
+			->rows();
+		$component = $components->first();
+		$recordsIndexed = $component->indexSearchResults();
+		if (!$recordsIndexed)
+		{
+			$component->set('state', 1);
+			$component->set('indexed', Date::of()->toSql());
+		}
+		else
+		{
+			$component->set('indexed_records', $recordsIndexed);
+		}
+		$component->save();
 	}
 
 	/**
