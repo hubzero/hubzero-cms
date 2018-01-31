@@ -163,8 +163,16 @@ $noResult = count($this->results) > 0 ? false : true;
 													<?php endforeach; ?>
 												</ul>
 											</div>
+										<?php elseif (isset($result['tags'])): ?>
+											<!-- Tags -->
+											<div class="result-tags">
+												<ul class="tags">
+-                                                   <?php foreach ($result['tags'] as $tag): ?>
+-                                                   	<li><a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>"><?php echo $tag; ?></a></li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
 										<?php endif; ?>
-
 										<!-- Result URL -->
 										<div class="result-url"><a href="<?php echo $result['url']; ?>"><?php echo $result['url']; ?></a></div>
 									</div> <!-- End Result Body -->
@@ -183,10 +191,12 @@ $noResult = count($this->results) > 0 ? false : true;
 						</nav>
 						<div class="clearfix"></div>
 						<input type="hidden" name="terms" value="<?php echo $terms; ?>" />
-						<?php foreach ($this->childTerms as $index => $child): ?>
-							<input type="hidden" name="<?php echo 'childTerms[' . $index . '][id]';?>" value="<?php echo $child['id']; ?>" />
-							<input type="hidden" name="<?php echo 'childTerms[' . $index . '][title]';?>" value="<?php echo $child['title']; ?>" />
-						<?php endforeach; ?>
+						<?php if (!empty($this->childTerms)):?>
+							<?php foreach ($this->childTerms as $index => $child): ?>
+								<input type="hidden" name="<?php echo 'childTerms[' . $index . '][id]';?>" value="<?php echo $child['id']; ?>" />
+								<input type="hidden" name="<?php echo 'childTerms[' . $index . '][title]';?>" value="<?php echo $child['title']; ?>" />
+							<?php endforeach; ?>
+						<?php endif; ?>
 						<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 					</form>
 				</div><!-- / .container -->

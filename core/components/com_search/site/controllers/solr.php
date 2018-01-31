@@ -42,6 +42,7 @@ use Lang;
 use stdClass;
 
 require_once \Component::path('com_search') . DS . 'models' . DS . 'solr' . DS .'facet.php';
+require_once \Component::path('com_search') . '/helpers/urlqueryhelper.php';
 
 /**
  * Search controller class

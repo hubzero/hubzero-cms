@@ -32,6 +32,7 @@
 
 namespace Components\Search\Models\Solr;
 
+require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Hubzero\Utility\String;
