@@ -93,7 +93,7 @@ class Solr extends SiteController
 		{
 			$facetString = !User::authorise('core.admin') ? $facet->facet . ' AND (' . $query->adapter->getAccessString() . ')' : $facet->facet;
 			$multifacet->createQuery($facet->getQueryName(), $facetString, array('exclude' => 'root_type', 'include' => 'child_type'));
-		} 
+		}
 
 		$filters = Request::getVar('filters', array());
 		$queryTerms = $terms;
@@ -109,7 +109,7 @@ class Solr extends SiteController
 		$childTermsString = '';
 		foreach ($childTerms as $index => $child)
 		{
-			$childTermsString .= '&childTerms[' . $index . ']' . '[id]=' . $child['id']; 
+			$childTermsString .= '&childTerms[' . $index . ']' . '[id]=' . $child['id'];
 			$childTermsString .= '&childTerms[' . $index . ']' . '[title]=' . $child['title'];
 		}
 		$urlQuery = '?terms=' . $terms . $childTermsString;
