@@ -65,10 +65,10 @@ class Apc extends AdminController
 
 		// Set some defaults
 		$this->_defaults('DATE_FORMAT', 'Y/m/d H:i:s'); // US time format
-		$this->_defaults('GRAPH_SIZE',200); // Image size
+		$this->_defaults('GRAPH_SIZE', 200); // Image size
 
 		// Rewrite $PHP_SELF to block XSS attacks
-		$PHP_SELF = isset($_SERVER['PHP_SELF']) ? htmlentities(strip_tags($_SERVER['PHP_SELF'],''), ENT_QUOTES, 'UTF-8') : '';
+		$PHP_SELF = isset($_SERVER['PHP_SELF']) ? htmlentities(strip_tags($_SERVER['PHP_SELF'], ''), ENT_QUOTES, 'UTF-8') : '';
 
 		// Get current time
 		$this->time = time();
@@ -85,11 +85,11 @@ class Apc extends AdminController
 		}
 
 		// Operation constants
-		define('OB_HOST_STATS',1);
-		define('OB_SYS_CACHE',2);
-		define('OB_USER_CACHE',3);
-		define('OB_SYS_CACHE_DIR',4);
-		define('OB_VERSION_CHECK',9);
+		define('OB_HOST_STATS', 1);
+		define('OB_SYS_CACHE', 2);
+		define('OB_USER_CACHE', 3);
+		define('OB_SYS_CACHE_DIR', 4);
+		define('OB_VERSION_CHECK', 9);
 
 		// Check validity of input variables
 		$vardom = array(
@@ -144,25 +144,43 @@ class Apc extends AdminController
 		{
 			if (!isset($_REQUEST[$var]))
 			{
-				$MYREQUEST[$var] = NULL;
+				$MYREQUEST[$var] = null;
 			}
-			else if (!is_array($_REQUEST[$var]) && preg_match($dom.'D',$_REQUEST[$var]))
+			else if (!is_array($_REQUEST[$var]) && preg_match($dom.'D', $_REQUEST[$var]))
 			{
 				$MYREQUEST[$var] = $_REQUEST[$var];
 			}
 			else
 			{
-				$MYREQUEST[$var] = $_REQUEST[$var] = NULL;
+				$MYREQUEST[$var] = $_REQUEST[$var] = null;
 			}
 		}
 
 		// Check parameter sematics
-		if (empty($MYREQUEST['SCOPE']))  $MYREQUEST['SCOPE'] = "A";
-		if (empty($MYREQUEST['SORT1']))  $MYREQUEST['SORT1'] = "H";
-		if (empty($MYREQUEST['SORT2']))  $MYREQUEST['SORT2'] = "D";
-		if (empty($MYREQUEST['OB']))     $MYREQUEST['OB']    = OB_HOST_STATS;
-		if (!isset($MYREQUEST['COUNT'])) $MYREQUEST['COUNT'] = 20;
-		if (!isset($this->scope_list[$MYREQUEST['SCOPE']])) $MYREQUEST['SCOPE'] = 'A';
+		if (empty($MYREQUEST['SCOPE']))
+		{
+			$MYREQUEST['SCOPE'] = "A";
+		}
+		if (empty($MYREQUEST['SORT1']))
+		{
+			$MYREQUEST['SORT1'] = "H";
+		}
+		if (empty($MYREQUEST['SORT2']))
+		{
+			$MYREQUEST['SORT2'] = "D";
+		}
+		if (empty($MYREQUEST['OB']))
+		{
+			$MYREQUEST['OB'] = OB_HOST_STATS;
+		}
+		if (!isset($MYREQUEST['COUNT']))
+		{
+			$MYREQUEST['COUNT'] = 20;
+		}
+		if (!isset($this->scope_list[$MYREQUEST['SCOPE']]))
+		{
+			$MYREQUEST['SCOPE'] = 'A';
+		}
 
 		$task = (!empty($this->_task)) ? "&task={$this->_task}" : '';
 
@@ -194,10 +212,16 @@ class Apc extends AdminController
 
 		if (!function_exists('apc_cache_info') || !($this->cache = @apc_cache_info($cache_mode)))
 		{
-			$this->setError(Lang::txt('No cache info available.  APC does not appear to be running.'));
+			$this->setError(Lang::txt('No cache info available. APC does not appear to be running.'));
 			Request::setVar('task', 'error');
-			parent::execute();
-			return;
+			return parent::execute();
+		}
+
+		if (!$this->cache || !is_array($this->cache))
+		{
+			$this->setError(Lang::txt('No cache info available. APC does not appear to be running.'));
+			Request::setVar('task', 'error');
+			return parent::execute();
 		}
 
 		// Avoid division by 0 errors on a cache clear
@@ -225,14 +249,10 @@ class Apc extends AdminController
 	 */
 	public function errorTask()
 	{
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -278,14 +298,10 @@ class Apc extends AdminController
 		$this->view->time             = $this->time;
 		$this->view->cache_mode       = $this->cache_mode;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -302,14 +318,10 @@ class Apc extends AdminController
 		$this->view->cache           = $this->cache;
 		$this->view->scope_list      = $this->scope_list;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -319,14 +331,10 @@ class Apc extends AdminController
 	 */
 	public function versionTask()
 	{
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -342,14 +350,10 @@ class Apc extends AdminController
 		$this->view->cache           = $this->cache;
 		$this->view->scope_list      = $this->scope_list;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -365,14 +369,10 @@ class Apc extends AdminController
 		$this->view->cache           = $this->cache;
 		$this->view->scope_list      = $this->scope_list;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -398,7 +398,10 @@ class Apc extends AdminController
 	 */
 	private function _defaults($d, $v)
 	{
-		if (!defined($d)) define($d, $v);
+		if (!defined($d))
+		{
+			define($d, $v);
+		}
 	}
 
 	/**
@@ -411,7 +414,10 @@ class Apc extends AdminController
 	{
 		foreach (array('','K','M','G') as $i => $k)
 		{
-			if ($s < 1024) break;
+			if ($s < 1024)
+			{
+				break;
+			}
 			$s/=1024;
 		}
 		return sprintf("%5.1f %sBytes", $s, $k);
@@ -420,8 +426,8 @@ class Apc extends AdminController
 	/**
 	 * Make timestamp human readable
 	 *
-	 * @param    integer $ts Time stamp
-	 * @return   string
+	 * @param   integer  $ts  Time stamp
+	 * @return  string
 	 */
 	private function _duration($ts)
 	{
@@ -433,16 +439,46 @@ class Apc extends AdminController
 		$hours = (int)(($rem)/3600) - $days*24 - $weeks*7*24;
 		$mins  = (int)(($rem)/60) - $hours*60 - $days*24*60 - $weeks*7*24*60;
 		$str   = '';
-		if ($years == 1) $str .= "$years year, ";
-		if ($years > 1)  $str .= "$years years, ";
-		if ($weeks == 1) $str .= "$weeks week, ";
-		if ($weeks > 1)  $str .= "$weeks weeks, ";
-		if ($days == 1)  $str .= "$days day,";
-		if ($days > 1)   $str .= "$days days,";
-		if ($hours == 1) $str .= " $hours hour and";
-		if ($hours > 1)  $str .= " $hours hours and";
-		if ($mins == 1)  $str .= " 1 minute";
-		else $str .= " $mins minutes";
+		if ($years == 1)
+		{
+			$str .= "$years year, ";
+		}
+		if ($years > 1)
+		{
+			$str .= "$years years, ";
+		}
+		if ($weeks == 1)
+		{
+			$str .= "$weeks week, ";
+		}
+		if ($weeks > 1)
+		{
+			$str .= "$weeks weeks, ";
+		}
+		if ($days == 1)
+		{
+			$str .= "$days day,";
+		}
+		if ($days > 1)
+		{
+			$str .= "$days days,";
+		}
+		if ($hours == 1)
+		{
+			$str .= " $hours hour and";
+		}
+		if ($hours > 1)
+		{
+			$str .= " $hours hours and";
+		}
+		if ($mins == 1)
+		{
+			$str .= " 1 minute";
+		}
+		else
+		{
+			$str .= " $mins minutes";
+		}
 
 		return $str;
 	}
@@ -498,41 +534,41 @@ class Apc extends AdminController
 				imagearc($im, $centerX, $centerY, $diameter, $diameter, $start, $end, $color2);
 				imageline($im, $centerX, $centerY, $centerX + cos(deg2rad($start)) * $r, $centerY + sin(deg2rad($start)) * $r, $color2);
 				imageline($im, $centerX, $centerY, $centerX + cos(deg2rad($start+1)) * $r, $centerY + sin(deg2rad($start)) * $r, $color2);
-				imageline($im, $centerX, $centerY, $centerX + cos(deg2rad($end-1))   * $r, $centerY + sin(deg2rad($end))   * $r, $color2);
-				imageline($im, $centerX, $centerY, $centerX + cos(deg2rad($end))   * $r, $centerY + sin(deg2rad($end))   * $r, $color2);
-				imagefill($im,$centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2, $color2);
+				imageline($im, $centerX, $centerY, $centerX + cos(deg2rad($end-1)) * $r, $centerY + sin(deg2rad($end)) * $r, $color2);
+				imageline($im, $centerX, $centerY, $centerX + cos(deg2rad($end)) * $r, $centerY + sin(deg2rad($end)) * $r, $color2);
+				imagefill($im, $centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2, $color2);
 			}
 			if ($text)
 			{
 				if ($placeindex>0)
 				{
-					imageline($im,$centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2,$diameter, $placeindex*12,$color1);
-					imagestring($im,4,$diameter, $placeindex*12,$text,$color1);
+					imageline($im, $centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2, $diameter, $placeindex*12, $color1);
+					imagestring($im, 4, $diameter, $placeindex*12, $text, $color1);
 				}
 				else
 				{
-					imagestring($im,4,$centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2,$text,$color1);
+					imagestring($im, 4, $centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2, $text, $color1);
 				}
 			}
 		}
 
-		function text_arc($im, $centerX, $centerY, $diameter, $start, $end, $color1,$text,$placeindex=0)
+		function text_arc($im, $centerX, $centerY, $diameter, $start, $end, $color1, $text, $placeindex=0)
 		{
 			$r=$diameter/2;
 			$w=deg2rad((360+$start+($end-$start)/2)%360);
 
 			if ($placeindex>0)
 			{
-				imageline($im,$centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2,$diameter, $placeindex*12,$color1);
-				imagestring($im,4,$diameter, $placeindex*12,$text,$color1);
+				imageline($im, $centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2, $diameter, $placeindex*12, $color1);
+				imagestring($im, 4, $diameter, $placeindex*12, $text, $color1);
 			}
 			else
 			{
-				imagestring($im,4,$centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2,$text,$color1);
+				imagestring($im, 4, $centerX + $r*cos($w)/2, $centerY + $r*sin($w)/2, $text, $color1);
 			}
 		}
 
-		function fill_box($im, $x, $y, $w, $h, $color1, $color2,$text='',$placeindex='')
+		function fill_box($im, $x, $y, $w, $h, $color1, $color2, $text='', $placeindex='')
 		{
 			global $col_black;
 
@@ -558,8 +594,8 @@ class Apc extends AdminController
 						$px = 5;
 						$py = $placeindex*12+6;
 						imagefilledrectangle($im, $px+90, $py+3, $px+90-4, $py-3, $color2);
-						imageline($im,$x,$y+$h/2,$px+90,$py,$color2);
-						imagestring($im,2,$px,$py-6,$text,$color1);
+						imageline($im, $x, $y+$h/2, $px+90, $py, $color2);
+						imagestring($im, 2, $px, $py-6, $text, $color1);
 					}
 					else
 					{
@@ -574,13 +610,13 @@ class Apc extends AdminController
 							$py = ($placeindex%15)*12+6;
 						}
 						imagefilledrectangle($im, $px, $py+3, $px-4, $py-3, $color2);
-						imageline($im,$x+$w,$y+$h/2,$px,$py,$color2);
-						imagestring($im,2,$px+2,$py-6,$text,$color1);
+						imageline($im, $x+$w, $y+$h/2, $px, $py, $color2);
+						imagestring($im, 2, $px+2, $py-6, $text, $color1);
 					}
 				}
 				else
 				{
-					imagestring($im,4,$x+5,$y1-16,$text,$color1);
+					imagestring($im, 4, $x+5, $y1-16, $text, $color1);
 				}
 			}
 		}
@@ -600,23 +636,23 @@ class Apc extends AdminController
 		}
 
 		$col_white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
-		$col_red   = imagecolorallocate($image, 0xD0, 0x60,  0x30);
+		$col_red   = imagecolorallocate($image, 0xD0, 0x60, 0x30);
 		$col_green = imagecolorallocate($image, 0x60, 0xF0, 0x60);
-		$col_black = imagecolorallocate($image,   0,   0,   0);
+		$col_black = imagecolorallocate($image, 0, 0, 0);
 		imagecolortransparent($image, $col_white);
 
 		switch ($MYREQUEST['IMG'])
 		{
 			case 1:
-				$s=$mem['num_seg']*$mem['seg_size'];
-				$a=$mem['avail_mem'];
-				$x=$y=$size/2;
+				$s = $mem['num_seg']*$mem['seg_size'];
+				$a = $mem['avail_mem'];
+				$x = $y = $size/2;
 				$fuzz = 0.000001;
 
 				// This block of code creates the pie chart.  It is a lot more complex than you
 				// would expect because we try to visualize any memory fragmentation as well.
 				$angle_from = 0;
-				$string_placement=array();
+				$string_placement = array();
 				for ($i=0; $i<$mem['num_seg']; $i++)
 				{
 					$ptr = 0;
@@ -627,25 +663,31 @@ class Apc extends AdminController
 						if ($block['offset']!=$ptr)
 						{
 							$angle_to = $angle_from+($block['offset']-$ptr)/$s;
-							if (($angle_to+$fuzz) > 1) $angle_to = 1;
+							if (($angle_to+$fuzz) > 1)
+							{
+								$angle_to = 1;
+							}
 							if (($angle_to*360) - ($angle_from*360) >= 1)
 							{
-								fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_red);
+								fill_arc($image, $x, $y, $size, $angle_from*360, $angle_to*360, $col_black, $col_red);
 								if (($angle_to-$angle_from)>0.05)
 								{
-									array_push($string_placement, array($angle_from,$angle_to));
+									array_push($string_placement, array($angle_from, $angle_to));
 								}
 							}
 							$angle_from = $angle_to;
 						}
 						$angle_to = $angle_from+($block['size'])/$s;
-						if (($angle_to+$fuzz) > 1) $angle_to = 1;
+						if (($angle_to+$fuzz) > 1)
+						{
+							$angle_to = 1;
+						}
 						if (($angle_to*360) - ($angle_from*360) >= 1)
 						{
-							fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_green);
+							fill_arc($image, $x, $y, $size, $angle_from*360, $angle_to*360, $col_black, $col_green);
 							if (($angle_to-$angle_from)>0.05)
 							{
-								array_push($string_placement, array($angle_from,$angle_to));
+								array_push($string_placement, array($angle_from, $angle_to));
 							}
 						}
 						$angle_from = $angle_to;
@@ -654,17 +696,20 @@ class Apc extends AdminController
 					if ($ptr < $mem['seg_size'])
 					{
 						$angle_to = $angle_from + ($mem['seg_size'] - $ptr)/$s;
-						if (($angle_to+$fuzz) > 1) $angle_to = 1;
-						fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_red);
+						if (($angle_to+$fuzz) > 1)
+						{
+							$angle_to = 1;
+						}
+						fill_arc($image, $x, $y, $size, $angle_from*360, $angle_to*360, $col_black, $col_red);
 						if (($angle_to-$angle_from)>0.05)
 						{
-							array_push($string_placement, array($angle_from,$angle_to));
+							array_push($string_placement, array($angle_from, $angle_to));
 						}
 					}
 				}
 				foreach ($string_placement as $angle)
 				{
-					text_arc($image,$x,$y,$size,$angle[0]*360,$angle[1]*360,$col_black,$this->_bsize($s*($angle[1]-$angle[0])));
+					text_arc($image, $x, $y, $size, $angle[0]*360, $angle[1]*360, $col_black, $this->_bsize($s*($angle[1]-$angle[0])));
 				}
 				break;
 
@@ -672,16 +717,16 @@ class Apc extends AdminController
 				$s = $cache['num_hits']+$cache['num_misses'];
 				$a = $cache['num_hits'];
 
-				fill_box($image, 30,$size,50,-$a*($size-21)/$s,$col_black,$col_green,sprintf("%.1f%%",$cache['num_hits']*100/$s));
-				fill_box($image,130,$size,50,-max(4,($s-$a)*($size-21)/$s),$col_black,$col_red,sprintf("%.1f%%",$cache['num_misses']*100/$s));
+				fill_box($image, 30, $size, 50, -$a*($size-21)/$s, $col_black, $col_green, sprintf("%.1f%%", $cache['num_hits']*100/$s));
+				fill_box($image, 130, $size, 50, -max(4, ($s-$a)*($size-21)/$s), $col_black, $col_red, sprintf("%.1f%%", $cache['num_misses']*100/$s));
 				break;
 
 			case 3:
-				$s=$mem['num_seg']*$mem['seg_size'];
-				$a=$mem['avail_mem'];
-				$x=130;
-				$y=1;
-				$j=1;
+				$s = $mem['num_seg']*$mem['seg_size'];
+				$a = $mem['avail_mem'];
+				$x = 130;
+				$y = 1;
+				$j = 1;
 
 				// This block of code creates the bar chart.  It is a lot more complex than you
 				// would expect because we try to visualize any memory fragmentation as well.
@@ -698,8 +743,14 @@ class Apc extends AdminController
 							if ($h>0)
 							{
 								$j++;
-								if ($j<75) fill_box($image,$x,$y,50,$h,$col_black,$col_red,$this->_bsize($block['offset']-$ptr),$j);
-								else fill_box($image,$x,$y,50,$h,$col_black,$col_red);
+								if ($j<75)
+								{
+									fill_box($image, $x, $y, 50, $h, $col_black, $col_red, $this->_bsize($block['offset']-$ptr), $j);
+								}
+								else
+								{
+									fill_box($image, $x, $y, 50, $h, $col_black, $col_red);
+								}
 							}
 							$y+=$h;
 						}
@@ -707,8 +758,14 @@ class Apc extends AdminController
 						if ($h>0)
 						{
 							$j++;
-							if ($j<75) fill_box($image,$x,$y,50,$h,$col_black,$col_green,$this->_bsize($block['size']),$j);
-							else fill_box($image,$x,$y,50,$h,$col_black,$col_green);
+							if ($j<75)
+							{
+								fill_box($image, $x, $y, 50, $h, $col_black, $col_green, $this->_bsize($block['size']), $j);
+							}
+							else
+							{
+								fill_box($image, $x, $y, 50, $h, $col_black, $col_green);
+							}
 						}
 						$y+=$h;
 						$ptr = $block['offset']+$block['size'];
@@ -718,7 +775,7 @@ class Apc extends AdminController
 						$h = (GRAPH_SIZE-5) * ($mem['seg_size'] - $ptr) / $s;
 						if ($h > 0)
 						{
-							fill_box($image,$x,$y,50,$h,$col_black,$col_red,$this->_bsize($mem['seg_size']-$ptr),$j++);
+							fill_box($image, $x, $y, 50, $h, $col_black, $col_red, $this->_bsize($mem['seg_size']-$ptr), $j++);
 						}
 					}
 				}
@@ -728,8 +785,8 @@ class Apc extends AdminController
 				$s = $cache['num_hits']+$cache['num_misses'];
 				$a = $cache['num_hits'];
 
-				fill_box($image, 30,$size,50,-$a*($size-21)/$s,$col_black,$col_green,sprintf("%.1f%%",$cache['num_hits']*100/$s));
-				fill_box($image,130,$size,50,-max(4,($s-$a)*($size-21)/$s),$col_black,$col_red,sprintf("%.1f%%",$cache['num_misses']*100/$s));
+				fill_box($image, 30, $size, 50, -$a*($size-21)/$s, $col_black, $col_green, sprintf("%.1f%%", $cache['num_hits']*100/$s));
+				fill_box($image, 130, $size, 50, -max(4, ($s-$a)*($size-21)/$s), $col_black, $col_red, sprintf("%.1f%%", $cache['num_misses']*100/$s));
 				break;
 		}
 
