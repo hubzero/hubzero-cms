@@ -36,6 +36,8 @@ $menu = App::get('menu');
 Html::behavior('framework', true);
 Html::behavior('modal');
 
+$this->addScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js");
+$this->addScript("https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.js");
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/vendor/hammer.js');
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 

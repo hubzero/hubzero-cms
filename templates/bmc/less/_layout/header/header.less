@@ -298,9 +298,13 @@ header.page {
 		.transition();
 		height: 3.6rem;
 		font-family: @fontGeometricLight;
+		position: absolute;
+		width: 100%;
+		transform: translate(0, 100%);
+		bottom: 0;
 
 		&.out {
-			transform: translate(0, -100%);
+			transform: translate(0, 0);
 		}
 
 		nav {
