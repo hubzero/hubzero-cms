@@ -247,7 +247,26 @@ $saveOrder = $listOrder == 'ordering';
 					<?php echo $item->name; ?>
 				</td>
 				<td class="priority-4 center">
-					<?php echo $item->pages; ?>
+					<?php
+					$pages = $item->pages;
+					if (is_null($item->pages))
+					{
+						$pages = Lang::txt('JNONE');
+					}
+					elseif ($item->pages < 0)
+					{
+						$pages = Lang::txt('COM_MODULES_ASSIGNED_VARIES_EXCEPT');
+					}
+					elseif ($item->pages > 0)
+					{
+						$pages = Lang::txt('COM_MODULES_ASSIGNED_VARIES_ONLY');
+					}
+					else
+					{
+						$pages = Lang::txt('JALL');
+					}
+					echo $pages;
+					?>
 				</td>
 				<td class="priority-4 center">
 					<?php echo $this->escape($item->access_level); ?>

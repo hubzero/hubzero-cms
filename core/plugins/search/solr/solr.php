@@ -35,23 +35,69 @@ defined('_HZEXEC_') or die();
 /**
  * Handles asynchrous enqueuement, helps maintain the index
  */
+require_once Component::path('com_search') . DS . 'helpers' . DS . 'discoveryhelper.php';
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 
+use \Components\Search\Helpers\DiscoveryHelper;
+use \Components\Search\Models\Solr\SearchComponent;
+use \Hubzero\Search\Index;
 class plgSearchSolr extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * onContentAvailable 
+	 * onContentSave 
 	 * 
 	 * @param mixed $table 
 	 * @param mixed $model 
 	 * @access public
 	 * @return void
 	 */
-	public function onContentAvailable($table, $model)
+	public function onAddIndex($table, $model)
 	{
 		/**
 		 * @TODO: Implement mechanism to send to Solr index
 		 * This Event is called in the Relational save() method.
 		 **/
+		$modelName = '';
+		if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
+		{
+			$extensionName = strtolower(explode('\\', $modelName)[1]);
+			$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
+			if ($searchComponent->get('state') == 1)
+			{
+				$config = Component::params('com_search');
+				$index = new \Hubzero\Search\Index($config);
+				$modelIndex = $model->searchResult();
+				$index->updateIndex($modelIndex, 30000);
+			}
+		}
+	}
+
+	/**
+	 * onContentDestroy 
+	 * 
+	 * @param mixed $table 
+	 * @param mixed $model 
+	 * @access public
+	 * @return void
+	 */
+	public function onRemoveIndex($table, $model)
+	{
+		/**
+		 * @TODO: Implement mechanism to send to Solr index
+		 * This Event is called in the Relational save() method.
+		 **/
+			$modelName = '';
+			if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
+			{
+				$extensionName = strtolower(explode('\\', $modelName)[1]);
+				$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
+				if ($searchComponent->get('state') == 1)
+				{
+					$config = Component::params('com_search');
+					$index = new \Hubzero\Search\Index($config);
+					$modelIndexId = $model->searchResult()['id'];
+					$index->delete($modelIndexId);
+				}
+			}
 	}
 }

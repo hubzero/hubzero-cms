@@ -126,6 +126,15 @@ class Owner extends Relational
 			->row();
 	}
 
+	public static function getProjectManagers($projectid)
+	{
+		return self::all()
+			->including('user')
+			->whereEquals('projectid', $projectid)
+			->whereEquals('role', self::ROLE_MANAGER)
+			->rows();
+	}
+
 	/**
 	 * Is the user a manager of the project?
 	 *

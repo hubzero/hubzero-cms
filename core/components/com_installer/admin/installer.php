@@ -43,7 +43,7 @@ if ($task = \Request::getCmd('task'))
 		$c = \Request::setVar('controller', trim($c));
 	}
 }
-$controllerName = \Request::getCmd('controller', 'install');
+$controllerName = \Request::getCmd('controller', 'manage');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	\App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));

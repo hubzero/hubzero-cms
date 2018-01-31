@@ -19,7 +19,7 @@
 -->
 
 <config>
-	<fieldset name="basic">
+	<fieldset name="basic" addfieldpath="/core/components/com_publications/config/fields">
 		<field name="enabled" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_COMPONENT_ON" description="COM_PUBLICATIONS_CONFIG_COMPONENT_ON_DESC">
 			<option value="0">JOFF</option>
 			<option value="1">JON</option>
@@ -28,6 +28,7 @@
 			<option value="0">COM_PUBLICATIONS_NOT_ALLOW</option>
 			<option value="1">COM_PUBLICATIONS_ALLOW</option>
 		</field>
+		<field name="contribute_default" type="mastertype" default="files" label="COM_PUBLICATIONS_CONFIG_DEFAULT_CATDEFAULT" description="COM_PUBLICATIONS_CONFIG_DEFAULT_CATDEFAULT_DESC" />
 		<field name="forks" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_ALLOW_FORKS" description="COM_PUBLICATIONS_CONFIG_ALLOW_FORKS_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>

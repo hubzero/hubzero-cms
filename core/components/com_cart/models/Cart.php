@@ -29,6 +29,7 @@
 
 namespace Components\Cart\Models;
 
+use Components\Storefront\Models\Product;
 use Hubzero\Base\Model;
 use Lang;
 use Components\Storefront\Models\Warehouse;
@@ -748,7 +749,7 @@ abstract class Cart
 	 * @param   bool   $verifySkuInfo  a flag wheretr the sku info should be verified for availability
 	 * @return  mixed  List of items in the transaction, false if no items in transaction
 	 */
-	public static function getTransactionItems($tId, $verifySkuInfo = true)
+	public static function getTransactionItems($tId, $verifySkuInfo = true, $returnSimpleInfo = false)
 	{
 		$db = \App::get('db');
 
@@ -762,6 +763,11 @@ abstract class Cart
 		}
 
 		$allSkuInfo = $db->loadObjectList('sId');
+		if ($returnSimpleInfo)
+		{
+			return($allSkuInfo);
+		}
+
 		$skus = $db->loadColumn();
 
 		$warehouse = new Warehouse();
@@ -877,7 +883,7 @@ abstract class Cart
 	}
 
 	/**
-	 * Complete the transaction, mark it as completed, done, success...
+	 * Set a single transaction item info
 	 *
 	 * @param   int    $tId   Transaction ID
 	 * @param   array  $item
@@ -903,7 +909,7 @@ abstract class Cart
 	}
 
 	/**
-	 * Set transaction items
+	 * Set transaction items (the initial transaction at #__cart_transaction_info)
 	 *
 	 * @param   int  $tId    Transaction ID
 	 * @param   obj  $items  Items
@@ -928,6 +934,95 @@ abstract class Cart
 	}
 
 	/**
+	 * Update the existing items in the transaction (#__cart_transaction_items). Update can be partial retaining the rest of the info.
+	 *
+	 * @param   int    $tId  transaction ID
+	 * @param   obect  $tiInfo  transaction items info
+	 * @param   bool   $returnChanges flag whether the changes should be recorded and returned
+	 * @return  mixed  bool if $returnChanges is set to false, array if $returnChanges is set to true
+	 */
+	public static function updateTransactionItems($tId, $tiInfo, $returnChanges = true)
+	{
+		$db = \App::get('db');
+
+		// Get the current transaction items simple info to properly handle the meta
+		$transactionItems = self::getTransactionItems($tId, false, true);
+
+		foreach ($transactionItems as $transactionItem)
+		{
+			$transactionItem->tiMeta = json_decode($transactionItem->tiMeta);
+		}
+
+		//print_r($transactionItems); die;
+		//print_r($tiInfo); die;
+
+		// We can check what changes have been made here and return them
+
+		if ($returnChanges)
+		{
+			$transactionItemsChanges = array();
+		}
+
+		foreach ($tiInfo as $sId => $sInfo)
+		{
+			$setSql = array();
+			foreach ($sInfo as $key => $val)
+			{
+				// Handle each update, except for meta
+				if ($key != 'meta')
+				{
+					$setSql[] = '`' . $key . '` = ' . $val;
+
+					// note the changes
+					if ($returnChanges && $transactionItems[$sId]->$key != $val)
+					{
+						$transactionItemsChanges[] = array('object' => 'cart_transaction_item', 'sId' => $sId, 'key' => $key, 'old' => $transactionItems[$sId]->$key, 'new' => $val);
+					}
+				}
+				else
+				{
+					// get the current object to save the other values that are not being saved
+					$currentMetaObj = array();
+					if ($transactionItems[$sId]->tiMeta)
+					{
+						$currentMetaObj = $transactionItems[$sId]->tiMeta;
+					}
+
+					// update the current meta with the submitted values
+					foreach ($val as $k => $v)
+					{
+						// note the changes
+						if ($returnChanges && $currentMetaObj->$k != $v)
+						{
+							$transactionItemsChanges[] = array('object' => 'cart_transaction_item', 'sId' => $sId, 'key' => array('tiMeta' => $k), 'old' => $currentMetaObj->$k, 'new' => $v);
+						}
+
+						$currentMetaObj->$k = $v;
+					}
+
+					$setSql[] = '`tiMeta` = ' . $db->quote(json_encode($currentMetaObj));
+				}
+			}
+
+			$setSql = (implode(', ', $setSql));
+			//echo $setSql; die;
+			//print_r($transactionItemsChanges); die;
+
+			$sql = "UPDATE `#__cart_transaction_items` SET " . $setSql . " WHERE `tId` = " . $db->quote($tId) . " AND `sId` = " . $db->quote($sId);
+			$db->setQuery($sql);
+			//echo $db->toString(); die;
+			$db->query();
+		}
+
+		if ($returnChanges)
+		{
+			return $transactionItemsChanges;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Update transaction status
 	 *
 	 * @param   string  $status
@@ -948,6 +1043,60 @@ abstract class Cart
 		{
 			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * Update transaction info
+	 *
+	 * @param   int     $tId     Transaction ID
+	 * @param   array   $tInfo		Transaction info
+	 * @param   bool   $returnChanges flag whether the changes should be recorded and returned
+	 * @return  mixed  bool if $returnChanges is set to false, array if $returnChanges is set to true
+	 */
+	public static function updateTransactionInfo($tId, $tInfo, $returnChanges = true)
+	{
+		$db = \App::get('db');
+
+		if ($returnChanges)
+		{
+			// get transaction info to check the changes against
+			$currerntTransactionInfo = self::getTransactionInfo($tId);
+			$transactionChanges = array();
+		}
+
+		$setSql = array();
+		foreach ($tInfo as $key => $val)
+		{
+			$setSql[] = '`' . $key . '` = ' . $db->quote($val);
+
+			// note the changes
+			if ($returnChanges && $currerntTransactionInfo->$key != $val)
+			{
+				$transactionChanges[] = array('object' => 'cart_transaction_info', 'tId' => $tId, 'key' => $key, 'old' => $currerntTransactionInfo->$key, 'new' => $val);
+			}
+		}
+
+		$setSql = implode(', ', $setSql);
+		//echo $setSql; die;
+
+		$sql = "UPDATE `#__cart_transaction_info` SET " . $setSql . " WHERE `tId` = " . $db->quote($tId);
+		$db->setQuery($sql);
+		//echo $db->toString(); die;
+		$db->query();
+
+		if ($returnChanges)
+		{
+			return $transactionChanges;
+		}
+
+		$affectedRows = $db->getAffectedRows();
+
+		if (!$affectedRows)
+		{
+			return false;
+		}
+
 		return true;
 	}
 

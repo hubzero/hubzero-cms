@@ -34,14 +34,18 @@ namespace Components\Search\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Search\Models\Solr\Blacklist;
 use Components\Search\Models\Solr\Facet;
+use Components\Search\Models\Solr\SearchComponent;
 use \Hubzero\Search\Query;
+use \Hubzero\Search\Index;
 use Components\Search\Helpers\SolrHelper;
+use Components\Search\Helpers\DiscoveryHelper;
 use Components\Developer\Models\Application;
 use Hubzero\Access\Group as Accessgroup;
 use stdClass;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
+require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'searchcomponent.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'facet.php';
 require_once Component::path('com_developer') . DS . 'models' . DS . 'application.php';
 
@@ -202,6 +206,32 @@ class Solr extends AdminController
 		$this->view->display();
 	}
 
+	public function optimizeTask()
+	{
+		$config = Component::params('com_search');
+		$index = new \Hubzero\Search\Index($config);
+		try
+		{
+			$result = $index->optimize();
+			if ($result->getStatus() == 0)
+			{
+				Notify::success('Successfully Optimized');
+			}
+			else
+			{
+				Notify::error('Optimization failed');
+			}
+			App::redirect(
+				Route::url('index.php?option=com_search&task=display', false)
+			);
+		}
+		catch (\Solarium\Exception\HttpException $e)
+		{
+			$this->view->setError($e->getMessage());
+			$this->displayTask();
+		}
+	}
+
 	/**
 	 * documentByTypeTask - view a type's records
 	 * 
@@ -315,7 +345,7 @@ class Solr extends AdminController
 			// Redirect back to the search page.
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentlisting&facet='.$facet.'&limitstart='.$limitstart.'&limit='.$limit.'&filter='.$filter, false),
-				'Submitted ' . $id . ' for removal.',
+				'Submitted ' . $id . ' for a456281089622edf93ac39e53d91c6b2d5d117bcremoval.',
 				'success'
 			);
 		}

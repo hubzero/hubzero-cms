@@ -156,7 +156,7 @@ class Helper extends Module
 							$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 							$filters = $controller->getFilters(1);
 
-							$entries = Wish::all()
+							$entries = \Components\Wishlist\Models\Wish::all()
 								->whereEquals('wishlist', $wishlist->get('id'));
 
 							$wishes = $entries

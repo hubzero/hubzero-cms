@@ -152,11 +152,12 @@ class Orders extends AdminController
 		// Get transaction info
 		$transactionItems = Cart::getTransactionItems($id, false);
 		$transactionInfo = Cart::getTransactionInfo($id);
-		$transactionInfoItems = unserialize($transactionInfo->tiItems);
+
+		//print_r($transactionItems); die;
 
 		$tInfo = $transactionInfo;
 
-		foreach ($transactionInfoItems as $item)
+		foreach ($transactionItems as $item)
 		{
 			// Check if the product is still available
 			$warehouse = new Warehouse();
@@ -172,7 +173,110 @@ class Orders extends AdminController
 			}
 		}
 
-		$tInfo->tiItems = $transactionInfoItems;
+		$tInfo->tiItems = $transactionItems;
+
+		// Get user info
+		$userId = Cart::getCartUser($tInfo->crtId);
+		$user = User::getInstance($userId);
+
+		// Get the log of changes
+		$changesLog = CartOrders::getOrderChangesLog($id);
+
+		// Build log messages
+		if (!empty($changesLog))
+		{
+			foreach ($changesLog as $log)
+			{
+				// Get user info
+				$profile = User::getInstance($log->created_by);
+				$userName = $profile->get('name');
+				$log->user = $userName;
+
+				$log->details = json_decode($log->details);
+
+				foreach ($log->details as $item)
+				{
+					if ($item->object == 'cart_transaction_item')
+					{
+						// find the item's (SKU) info
+						$skuInfo = $transactionItems[$item->sId];
+						$msg = $skuInfo['info']->sSku;
+
+						if (is_object($item->key) && !empty($item->key->tiMeta) && $item->key->tiMeta == 'checkoutNotes')
+						{
+							$msg .= ' <strong>notes</strong>';
+						}
+						elseif ($item->key == 'tiQty')
+						{
+							$msg .= ' <strong>quantity</strong>';
+						}
+
+						$msg .= ' value was updated';
+					}
+					elseif ($item->object == 'cart_transaction_info')
+					{
+						$msg = 'Order';
+
+						if ($item->key == 'tiNotes')
+						{
+							$msg .= ' <strong>notes</strong>';
+						}
+
+						$msg .= ' value was updated';
+					}
+
+					$item->message = $msg;
+				}
+			}
+
+			$this->view->log = $changesLog;
+		}
+
+		$this->view->user = $user;
+		$this->view->tInfo = $tInfo;
+		$this->view->items = $transactionItems;
+		$this->view->tId = $id;
+
+		$this->view
+			->setLayout('view')
+			->display();
+	}
+
+	/**
+	 * Edit the order info
+	 *
+	 * @return  void
+	 */
+	public function editTask()
+	{
+		// Incoming
+		$id = Request::getVar('id', array(0));
+
+		// Get transaction info
+		$transactionItems = Cart::getTransactionItems($id, false);
+		$transactionInfo = Cart::getTransactionInfo($id);
+
+		//print_r($transactionItems); die;
+
+		$tInfo = $transactionInfo;
+
+		foreach ($transactionItems as $item)
+		{
+			// Check if the product is still available
+			$warehouse = new Warehouse();
+			$skuInfo = $warehouse->getSkuInfo($item['info']->sId);
+			if (!$skuInfo)
+			{
+				// product no longer available
+				$item['info']->available = false;
+			}
+			else
+			{
+				$item['info']->available = true;
+			}
+		}
+
+		$tInfo->tiItems = $transactionItems;
 
 		// Get user info
 		$userId = Cart::getCartUser($tInfo->crtId);
@@ -184,8 +288,88 @@ class Orders extends AdminController
 		$this->view->tId = $id;
 
 		$this->view
-			->setLayout('view')
+			->setLayout('edit')
 			->display();
+	}
+
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save the order info
+	 *
+	 * @return  void
+	 */
+	public function saveTask($redirect = true)
+	{
+		// Incoming
+		$id = Request::getVar('id', '');
+
+		// get the transaction items' QTYs
+		$tiQty = Request::getVar('tiQty', array());
+
+		// get the transaction items' checkoutNotes
+		$tiCheckoutNotes = Request::getVar('checkoutNotes', array());
+
+		// get the transaction notes
+		$tiNotes = Request::getVar('tiNotes', '');
+		$transactionInfo = array('tiNotes' => $tiNotes);
+
+		//print_r($tiCheckoutNotes); die;
+
+		// Create transaction items' info object
+		$tiInfo = new \stdClass();
+
+		// populate the QTYs
+		foreach ($tiQty as $sId => $qty)
+		{
+			if (empty($tiInfo->$sId))
+			{
+				$tiInfo->$sId = new \stdClass();
+			}
+			$tiInfo->$sId->tiQty = $qty;
+		}
+
+		// populate the notes
+		foreach ($tiCheckoutNotes as $sId => $notes)
+		{
+			if (empty($tiInfo->$sId))
+			{
+				$tiInfo->$sId = new \stdClass();
+			}
+			if (empty($tiInfo->$sId->meta))
+			{
+				$tiInfo->$sId->meta = new \stdClass();
+			}
+			$tiInfo->$sId->meta->checkoutNotes = $notes;
+		}
+
+		$itemsChanges = Cart::updateTransactionItems($id, $tiInfo);
+		$transactionChanges = Cart::updateTransactionInfo($id, $transactionInfo);
+
+		// Log the changes
+		//print_r($itemsChanges);
+		//print_r($transactionChanges); //die;
+
+		$orderChanges = array_merge($itemsChanges, $transactionChanges);
+		//print_r($orderChanges); die;
+
+		if (!empty($orderChanges))
+		{
+			CartOrders::logOrderChanges($id, $orderChanges);
+		}
+
+		if ($redirect)
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false),
+				Lang::txt('Order info saved')
+			);
+		}
+
+		$this->editTask();
 	}
 
 	/**
@@ -510,5 +694,28 @@ class Orders extends AdminController
 		}
 		fclose($output);
 		die;
+	}
+
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return  void
+	 */
+	public function cancelTask()
+	{
+		// Incoming
+		$id = Request::getVar('id', '');
+		$from = Request::getVar('from', '');
+
+		$attr = '';
+		if ($from && $from == 'edit')
+		{
+			$attr = '&task=view&id=' . $id;
+		}
+
+		// Set the redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $attr, false)
+		);
 	}
 }

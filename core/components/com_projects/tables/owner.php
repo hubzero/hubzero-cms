@@ -531,7 +531,7 @@ class Owner extends \JTable
 		}
 		elseif ($status == 'active')
 		{
-			$query .= " AND o.status!=2 ";
+			$query .= " AND o.status NOT IN (2,4)";
 		}
 		if ($native != '-')
 		{
