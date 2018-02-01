@@ -1387,7 +1387,7 @@ class Tool
 		$sql = "SELECT f.toolname FROM `#__tool` AS f
 			JOIN `#__tool_groups` AS g ON f.id=g.toolid AND g.role=1
 			JOIN `#__xgroups` AS xg ON g.cn=xg.cn
-			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->query($uid);
+			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->quote($uid);
 
 		$db->setQuery($sql);
 
@@ -1728,7 +1728,7 @@ class Tool
 		$query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
 		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
 		$query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
-		$query .= "WHERE g.toolid = " . $db->query($toolid) . " AND g.role=1";
+		$query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=1";
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
@@ -1747,7 +1747,7 @@ class Tool
 
 		$query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
 		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
-		$query .= "WHERE g.toolid = " . $db->query($toolid) . " AND g.role=0";
+		$query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=0";
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
@@ -1772,7 +1772,7 @@ class Tool
 
 		$query  = "SELECT tv.toolname, tg.cn ";
 		$query .= "FROM `#__tool_groups` AS tg, `#__tool_version` AS tv ";
-		$query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $db->query($toolid) . " AND role=0 AND tv.instance=" . $db->query($instance) . " AND tv.toolaccess='@GROUP'";
+		$query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $db->quote($toolid) . " AND role=0 AND tv.instance=" . $db->quote($instance) . " AND tv.toolaccess='@GROUP'";
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
@@ -1792,7 +1792,7 @@ class Tool
 		{
 			return false;
 		}
-		$query = "UPDATE `#__tool` SET ticketid=" . $db->query($ticketid) . " WHERE id=" . $db->query($toolid);
+		$query = "UPDATE `#__tool` SET ticketid=" . $db->quote($ticketid) . " WHERE id=" . $db->quote($toolid);
 		$db->setQuery($query);
 		if ($db->query())
 		{
@@ -1814,7 +1814,7 @@ class Tool
 		{
 			return false;
 		}
-		$db->setQuery("SELECT ticketid FROM `#__tool` WHERE id=" . $db->query($toolid));
+		$db->setQuery("SELECT ticketid FROM `#__tool` WHERE id=" . $db->quote($toolid));
 		return $db->loadResult();
 	}
 

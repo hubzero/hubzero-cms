@@ -836,7 +836,7 @@ class Html
 					$ht = \Components\Tools\Models\Tool::getInstance($hztv->toolid);
 					if ($ht)
 					{ // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
-						$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->tool);
+						$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->get('tool', $resource->get('alias')));
 					}
 				}
 
