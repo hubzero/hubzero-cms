@@ -221,7 +221,11 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		return $cloud->tags('list', $filters);
 	}
 
-
+	/**
+	 * Get most recent version that is still marked as active
+	 * 
+	 * @return Components\Publications\Models\Orm\Version
+	 */
 	public function getActiveVersion()
 	{
 		if (empty($this->activeVersion))
@@ -243,14 +247,22 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		return $this->activeVersion;
 	}
 
+	/*
+	 * Generate link to current active version
+	 * @return string 
+	 */
 	public function link()
 	{
-		$link = 'index.php?option=com_publications';
+		$link = 'index.php?option=com_publications&task=view';
 		$link .= $this->get('alias') ? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
 		$link .= $this->_base . '&v=' . $this->getActiveVersion()->id;
 		return $link;
 	}
 
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
 	public function searchResult()
 	{
 		$activeVersion = $this->getActiveVersion();
@@ -317,12 +329,20 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		return $obj;
 	}
 
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 * @return integer
+	 */
 	public static function searchTotal()
 	{
 		$total = self::all()->total();
 		return $total;
 	}
 
+	/**
+	 * Get records to be included in solr index
+	 * @return Hubzero\Database\Rows
+	 */
 	public static function searchResults($limit, $offset = 0)
 	{
 		return self::all()->start($offset)->limit($limit)->rows();

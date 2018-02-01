@@ -1104,7 +1104,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
 				require_once Component::path('com_tools') . '/tables/tool.php';
 
-				$obj = new \Components\Tools\Tables\Tool(App::get('db'));
+				$db = App::get('db');
+				$obj = new \Components\Tools\Tables\Tool($db);
 				$obj->loadFromName($this->get('alias'));
 
 				// check if user in tool dev team
