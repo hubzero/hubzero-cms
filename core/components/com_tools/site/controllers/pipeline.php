@@ -2250,7 +2250,7 @@ class Pipeline extends SiteController
 		}
 		else
 		{
-			if ($row->exists())
+			if ($row->get('id'))
 			{
 				// save tag
 				$row->tag('tool:' . $tool['toolname'], User::get('id'));
