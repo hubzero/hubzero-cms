@@ -64,7 +64,7 @@ class Author extends Relational
 	 **/
 	protected $rules = array(
 		'author' => 'notempty',
-		'cid'    => 'positive|nonzero'
+		'cid'    => 'nonzero'
 	);
 
 	/**

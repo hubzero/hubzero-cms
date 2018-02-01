@@ -594,8 +594,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					$view->authorString = $authorString;
 			}
 			// tags & badges
-			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
-			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
+			$view->tags = \Components\Citations\Helpers\Format::citationTags($view->row, false);
+			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, false);
 		}
 
 		// Output HTML
