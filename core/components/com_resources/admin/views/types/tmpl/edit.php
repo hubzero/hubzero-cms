@@ -159,7 +159,7 @@ function submitbutton(pressbutton)
 							continue;
 						}
 						$path = Plugin::path($plugin->folder, $plugin->element);
-						echo $path . '<br />';
+
 						$found[] = 'plg_' . $plugin->element;
 						if (strstr($plugin->name, '_'))
 						{
