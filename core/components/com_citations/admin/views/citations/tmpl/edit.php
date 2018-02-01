@@ -49,7 +49,7 @@ Toolbar::help('citation');
 $this->setEscape("htmlentities");
 
 //need to fix these fields
-$author = html_entity_decode($this->row->author);
+$author = html_entity_decode($this->row->getAuthorString());
 $author = (!preg_match('!\S!u', $author)) ? utf8_encode($author) : $author;
 
 $ceditor = html_entity_decode($this->row->editor);
