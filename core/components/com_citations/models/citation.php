@@ -37,6 +37,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Hubzero\Utility\Str;
 use Components\Tags\Models\Tag;
+use stdClass;
 
 require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'author.php';
@@ -54,7 +55,7 @@ require_once \Component::path('com_publications') . DS . 'models' . DS . 'orm' .
  *
  * @uses \Hubzero\Database\Relational
  */
-class Citation extends Relational
+class Citation extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table namespace
@@ -1495,5 +1496,88 @@ class Citation extends Relational
 		}
 
 		return implode(';', $convertedAuthors);
+	}
+
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
+	public function searchResult()
+	{
+		$citation = new stdClass;
+		$citation->title = $this->title;
+		$citation->hubtype = 'citation';
+		$citation->id = 'citation-' . $this->id;
+		$citation->description = $this->abstract;
+		$citation->doi = $this->doi;
+		$tags = explode(',', $this->keywords);
+		foreach ($tags as $key => &$tag)
+		{
+			$tag = \Hubzero\Utility\Sanitize::stripAll($tag);
+			if ($tag == '')
+			{
+				unset($tags[$key]);
+			}
+		}
+		$citation->tags = $tags;
+
+		$citation->author = explode(';', $this->author);
+
+		if ($this->published == 1)
+		{
+			$citation->access_level = 'public';
+		}
+		else
+		{
+			$citation->access_level = 'private';
+		}
+
+		if ($this->scope == 'member')
+		{
+			$citation->owner_type = 'user';
+			$citation->owner = $this->uid;
+			$citation->url = '/members/' . $this->uid . '/citations';
+		}
+		elseif ($this->scope == 'group')
+		{
+			$citation->owner_type = 'group';
+			$citation->owner = $this->scope_id;
+			$group = \Hubzero\User\Group::getInstance($this->scope_id);
+			if ($group)
+			{
+				$group = $group->get('cn');
+				$citation->url = '/groups/' . $group . '/citations';
+			}
+			else
+			{
+				$citation->url = '/citations/' . $this->id;
+			}
+		}
+		else
+		{
+			$citation->owner_type = 'user';
+			$citation->owner = $this->uid;
+			$citation->url = '/citations/view/' . $this->id;
+		}
+		return $citation;
+	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 *	@return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 * @return Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
 	}
 }
