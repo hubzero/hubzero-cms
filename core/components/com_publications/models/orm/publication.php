@@ -331,7 +331,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 
 	/**
 	 * Get total number of records that will be indexed by Solr.
-	 *	@return integer
+	 * @return integer
 	 */
 	public static function searchTotal()
 	{
