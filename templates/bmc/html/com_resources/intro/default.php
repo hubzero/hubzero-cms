@@ -66,24 +66,24 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
 
 <section class="discover">
   <h2>Discover our Resources</h2>
-  <a href="#one" class="link-anchor">
-    <div class="resources">
+  <div class="resources">
+    <a href="#one" class="link-anchor">
       <h4>OER</h4>
       <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui.</p>
-    </div>
-  </a>
-  <a href="#two" class="link-anchor">
-    <div class="resources">
+    </a>
+  </div>
+  <div class="resources">
+    <a href="#two" class="link-anchor">
       <h4>Collections</h4>
       <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui.</p>
-    </div>
-  </a>
-  <a href="#three" class="link-anchor">
-    <div class="resources">
+    </a>
+  </div>
+  <div class="resources">
+    <a href="#three" class="link-anchor">
       <h4>Software</h4>
       <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui.</p>
-    </div>
-  </a>
+    </a>
+  </div>
 </section>
 
 <section id="one">
@@ -92,16 +92,12 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
       <h2>Open Education Resources</h2>
       <p>Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
     </div>
-    <div class="big"></div>
   </article>
   <article class="resource-fmn">
     <div class="featured-container">
       <div class="featured-product"></div>
       <div class="featured-product"></div>
       <div class="featured-product"></div>
-      <!-- <div class="featured-product"></div>
-      <div class="featured-product"></div>
-      <div class="featured-product"></div> -->
     </div>
     <div class="fmn">
       <h2>Faculty Mentoring Network Products</h2>
@@ -112,16 +108,13 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   <article class="resource-partner">
     <div class="partner">
       <h2>Partner Products</h2>
-      <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum.</p>
+      <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.</p>
       <h6 class="link"><a href="#">browse</a></h6>
     </div>
     <div class="featured-container">
       <div class="featured-product"></div>
       <div class="featured-product"></div>
       <div class="featured-product"></div>
-      <!-- <div class="featured-product"></div>
-      <div class="featured-product"></div>
-      <div class="featured-product"></div> -->
     </div>
   </article>
 </section>
@@ -141,5 +134,15 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
     <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper.</p>
     <h6 class="link"><a href="#">run it</a></h6>
   </div>
-  <div class="big"></div>
+  <div class="software-logos">
+    <h6>R-Studio IDE for R</h6>
+    <h6>NetLogo</h6>
+    <h6>Copasi</h6>
+    <h6>QtOctave</h6>
+    <h6>ImageJ</h6>
+    <h6>Mesquite</h6>
+    <h6>PPLANE</h6>
+    <h6>XPPAUT</h6>
+    <h6>Avida-ED</h6>
+  </div>
 </section>

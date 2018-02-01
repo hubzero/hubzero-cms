@@ -1,0 +1,562 @@
+//Color variables
+$green: #84bf41;
+$dark-blue: #2E2D4D;
+$teal: #007991;
+$pink: #cb48b7;
+$med-blue: #5f5980;
+$light-gray: #F1F2F2;
+$orange: #cca231;
+$black: #000;
+$white: #fff;
+
+// .body {
+//   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+// }
+// h1, h2, h3, h4, h5, h6 {
+//   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+// }
+// .group-php-page {
+//   display: grid;
+//   grid-template-columns: repeat(4, [col] 1fr);
+//   grid-template-rows: repeat(9, [row] auto);
+// }
+.contentpane {
+  display: grid;
+  grid-template-columns: repeat(4, [col] 1fr);
+  grid-template-rows: repeat(9, [row] auto);
+}
+.contentpaneopen {
+  grid-column: col / span 4;
+  grid-row: row / span 9;
+}
+.link {
+  text-transform: uppercase;
+}
+.link-anchor {
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+  &:visited {
+    color: inherit;
+  }
+}
+.white {
+  color: $white;
+  a {
+    padding: .25em .75em;
+    border: 1px solid $white;
+  }
+  a:active {
+    color: $white;
+  }
+  a:visited {
+    color: $white;
+  }
+  a:hover {
+    color: $orange;
+  }
+}
+
+//Feature
+.feature {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: col / span 4;
+  grid-row: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  grid-auto-rows: 125px;
+  grid-auto-flow: dense;
+  .big {
+    flex: 1 1 200px;
+    height: 125px;
+    grid-column: span 2;
+    grid-row: span 2;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+  .vertical {
+    flex: 1 2 200px;
+    height: 125px;
+    grid-row: span 2;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+  .horizontal {
+    flex: 1 2 200px;;
+    height: 125px;
+    grid-column: span 2;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+  .regular {
+    flex: 1 1 200px;
+    height: 125px;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+}
+//Search
+.search-wrapper {
+  grid-column: col / span 4;
+  grid-row: row 2;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 0;
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+  }
+}
+#rsearch {
+  width: 70%;
+}
+.page-body > .content form.search input[type="submit"] {
+  background-color: $green;
+  color: $white;
+}
+
+//Explore
+.explore {
+  grid-column: col / span 4;
+  grid-row: row 3;
+  padding: 2.5em;
+  .community-container {
+    display: flex;
+    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    grid-auto-rows: minmax(250px, 1fr);
+    grid-gap: 10px;
+  }
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+    height: 2.5rem;
+  }
+}
+.communities {
+  width: 20rem;
+  padding: 10px;
+  p {
+    border-left: 3px solid $green;
+    padding-left: 10px;
+  }
+}
+
+//Faculty Mentoring Network
+#one {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-column: col / span 4;
+  grid-row: row 4;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  background-color: $dark-blue;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  a {
+    color: $white;
+    &:active {
+      color: $white;
+    }
+    &:visited {
+      color: $white;
+    }
+  }
+  .vertical {
+    flex: 1 1 250px;
+    height: 17rem;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+  .fmn {
+    width: 100%;
+    grid-column: span 4;
+    text-align: center;
+    padding: 2.5em;
+  }
+}
+
+//Workshops and Meetings
+#two {
+  display: flex;
+  justify-content: center;
+  grid-column: col / span 4;
+  grid-row: row 5;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  background-color: $teal;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  a {
+    color: $white;
+  }
+    &:active {
+      color: $white;
+    }
+    &:visited {
+      color: $white;
+    }
+  .workshops {
+    width: 50%;
+    grid-column: 1 / span 3;
+    padding: 2.5em;
+  }
+  .regular {
+    flex: 1 1 175px;
+    height: 20rem;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+}
+
+//Classrooms
+#three {
+  display: flex;
+  grid-column: col / span 4;
+  grid-row: row 6;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: $pink;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  a {
+    color: $white;
+  }
+    &:active {
+      color: $white;
+    }
+    &:visited {
+      color: $white;
+    }
+  .horizontal {
+    width: 50%;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+  .classrooms {
+    width: 50%;
+    padding: 2.5em;
+  }
+}
+
+//Collaborative Publishing
+#four {
+  grid-column: col / span 4;
+  grid-row: row 7;
+  background: url('/app/site/media/images/stefan-stefancik-257625.jpg');
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/stefan-stefancik-257625.jpg');
+  background-size: 100%;
+  background-position: center;
+  color: $white;
+  text-align: center;
+  padding: 2.5em;
+  h2 {
+    color: $white;
+  }
+}
+
+//Project Websites
+#five {
+  display: flex;
+  grid-column: col / span 4;
+  grid-row: row 8;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  background-color: $green;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  a {
+    color: $white;
+  }
+    &:active {
+      color: $white;
+    }
+    &:visited {
+      color: $white;
+    }
+  .sites {
+    width: 50%;
+    grid-column: 1 / span 3;
+    padding: 2.5em;
+  }
+  .regular {
+    flex: 1 1 175px;
+    height: 20rem;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+
+}
+// Private Working Groups
+#c-six {
+  display: flex;
+  grid-column: col / span 4;
+  grid-row: row 9;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: $med-blue;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  a {
+    color: $white;
+  }
+    &:active {
+      color: $white;
+    }
+    &:visited {
+      color: $white;
+    }
+  .horizontal {
+    width: 50%;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+  .groups {
+    width: 50%;
+    padding: 2.5em;
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 589px) {
+  #one {
+    grid-template-rows: repeat(5, 1fr);
+    .vertical {
+      grid-column: 1 / span 4;
+    }
+  }
+  #two {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(4, 1fr);
+    .workshops {
+      width: 100%;
+      grid-column: span 6;
+    }
+    .regular {
+      width: 100%;
+      height: 15rem;
+      grid-column: span 6;
+    }
+  }
+  #three {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .classrooms {
+      width: 100%;
+      order: -1;
+      grid-column: span 4;
+      grid-row: 1;
+    }
+    .horizontal {
+      width: 100%;
+      height: 15rem;
+      grid-column: span 4;
+    }
+  }
+  #five {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(4, 1fr);
+    .sites {
+      width: 100%;
+      grid-column: span 6;
+    }
+    .regular {
+      width: 100%;
+      height: 15rem;
+      grid-column: span 6;
+    }
+  }
+  #c-six {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .groups {
+      width: 100%;
+      order: -1;
+      grid-column: span 4;
+      grid-row: 1;
+    }
+    .horizontal {
+      width: 100%;
+      height: 15rem;
+      grid-column: span 4;
+    }
+  }
+}
+@media only screen and (min-width: 590px) and (max-width: 900px) {
+  #one {
+    grid-template-rows: repeat(3, 1fr);
+    .vertical {
+      grid-column: span 2;
+    }
+  }
+  #two {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .workshops {
+      width: 100%;
+      grid-column: 1 / span 6;
+    }
+    .regular {
+      flex: 1 1 175px;
+      grid-column: span 2;
+    }
+  }
+  #three {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .classrooms {
+      width: 100%;
+      order: -1;
+      grid-column: span 4;
+      grid-row: 1;
+    }
+    .horizontal {
+      width: 100%;
+      height: 20rem;
+      grid-column: span 4;
+    }
+  }
+  #five {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .sites {
+      width: 100%;
+      grid-column: span 6;
+    }
+    .regular {
+      flex: 1 1 175px;
+      grid-column: span 2;
+    }
+  }
+  #c-six {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .groups {
+      width: 100%;
+      order: -1;
+      grid-column: span 4;
+      grid-row: 1;
+    }
+    .horizontal {
+      width: 100%;
+      height: 20rem;
+      grid-column: span 4;
+    }
+  }
+}
+@media only screen and (min-width: 901px) and (max-width: 1200px) {
+  #two {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .workshops {
+      width: 100%;
+      grid-row: span 2;
+    }
+    .regular {
+      width: 30%;
+      grid-column: span 2;
+    }
+    .vertical {
+      grid-column: 6 / span 1;
+      grid-row: 1 / span 2;
+    }
+  }
+  #five {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .sites {
+      width: 100%;
+      grid-row: span 2;
+    }
+    .regular {
+      flex: 1 1 175px;
+      grid-column: span 2;
+    }
+    .vertical {
+      grid-column: 6 / span 1;
+      grid-row: 1 / span 2;
+    }
+  }
+}
+//Reset widths if css grid is supported
+@supports (display:grid) {
+  .feature {
+    .big {
+      width: auto;
+      height: auto;
+    }
+    .vertical {
+      width: auto;
+      height: auto;
+    }
+    .horizontal {
+      width: auto;
+      height: auto;
+    }
+    .regular {
+      width: auto;
+      height: auto;
+    }
+  }
+  .explore {
+    .community-container {
+      .communities {
+        width: auto;
+      }
+    }
+  }
+  #one {
+    .fmn {
+      width: auto;
+    }
+    .vertical {
+      width: auto;
+      height: auto;
+    }
+  }
+  #two {
+    .workshops {
+      width: auto;
+    }
+    .regular {
+      width: auto;
+      height: auto;
+    }
+  }
+  #three {
+    .horizontal {
+      width: auto;
+    }
+    .classrooms {
+      width: auto;
+    }
+  }
+  #five {
+    .sites {
+      width: auto;
+    }
+    .regular {
+      width: auto;
+      height: auto;
+    }
+  }
+  #c-six {
+    .horizontal {
+      width: auto;
+    }
+    .groups {
+      width: auto;
+    }
+  }
+}
