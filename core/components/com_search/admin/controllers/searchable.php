@@ -57,7 +57,7 @@ class Searchable extends AdminController
 {
 
 	/**
-	 * Manage facets
+	 * Display list of currently searchable components
 	 * 
 	 * @return  void
 	 */
@@ -71,6 +71,11 @@ class Searchable extends AdminController
 			->display();
 	}
 
+	/**
+	 * Task to begin indexing documents for the component
+	 * 
+	 * @return void
+	 */
 	public function activateIndexTask()
 	{
 		$ids = Request::getArray('id', array());
@@ -106,6 +111,11 @@ class Searchable extends AdminController
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
 	}
 
+	/**
+	 * Removes all documents associated with the component
+	 * 
+	 * @return void
+	 */
 	public function deleteIndexTask()
 	{
 		$ids = Request::getArray('id', array());
@@ -125,6 +135,7 @@ class Searchable extends AdminController
 			$component->set('indexed_records', 0);
 			if ($component->save())
 			{
+				$searchIndex->optimize();
 				Notify::success(Lang::txt('COM_SEARCH_DELETE_COMPONENT_SUCCESS', ucfirst($component->name)));
 			}
 		}
@@ -132,12 +143,11 @@ class Searchable extends AdminController
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
 	}
 
-	public function newTagsTask()
-	{
-		$resources = \Components\Publications\Models\Orm\Publication::one(1);
-		print_r($resources->searchResult());
-	}
-
+	/**
+	 * Discover new components that are searchable
+	 *
+	 * @return void 
+	 */
 	public function discoverTask()
 	{
 		$componentModel = new \Components\Search\Models\Solr\SearchComponent();

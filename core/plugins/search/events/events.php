@@ -286,11 +286,10 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__events;";
+				$sql = "SELECT id FROM `#__events`;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
 		}
 	}
 }
-
