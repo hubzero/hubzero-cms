@@ -1,0 +1,325 @@
+//Color variables
+$green: #84bf41;
+$dark-blue: #2E2D4D;
+$teal: #007991;
+$pink: #cb48b7;
+$med-blue: #5f5980;
+$light-gray: #F1F2F2;
+$orange: #cca231;
+$black: #000;
+$white: #fff;
+
+// .body {
+//   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+// }
+// h1, h2, h3, h4, h5, h6 {
+//   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+// }
+// .group-php-page {
+//   display: grid;
+//   grid-template-columns: repeat(4, [col] 1fr);
+//   grid-template-rows: repeat(9, [row] auto);
+// }
+.contentpane {
+  display: grid;
+  grid-template-columns: repeat(4, [col] 1fr);
+  grid-template-rows: repeat(6, [row] auto);
+}
+.contentpaneopen {
+  grid-column: col / span 4;
+  grid-row: row / span 6;
+}
+.link-anchor {
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+  &:visited {
+    color: inherit;
+  }
+}
+
+//Header
+.service-header {
+  grid-column: col / span 4;
+  grid-row: row;
+  padding: 2.5em;
+  text-align: center;
+}
+
+//Services
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: col / span 4;
+  grid-row: row 2;
+  padding: 2.5em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-gap: 10px;
+}
+.service {
+  flex: 1 1 250px;
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+    height: 4.5rem;
+  }
+  padding: 10px;
+  p {
+    border-left: 3px solid $green;
+    padding-left: 10px;
+  }
+}
+
+//Community Building
+#one {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: col / span 4;
+  grid-row: row 3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  .community {
+    width: 100%;
+    grid-column: 1 / span 3;
+    grid-row: 1;
+    background-color: $dark-blue;
+    color: $white;
+    text-align: center;
+    padding: 2.5em;
+    h2 {
+      color: $white;
+    }
+  }
+  .regular {
+    flex: 1 1 250px;
+    height: 20rem;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+}
+
+//Run a FMN
+#two {
+  display: flex;
+  grid-column: col / span 4;
+  grid-row: row 4;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  .mentor {
+    width: 50%;
+    background-color: $teal;
+    color: $white;
+    padding: 2.5em;
+    h2 {
+      color: $white;
+    }
+  }
+  .big {
+    width: 50%;
+    height: 20rem;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+}
+
+//Run a Workshop
+#three {
+  display: flex;
+  grid-column: col / span 4;
+  grid-row: row 5;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  .workshop {
+    width: 50%;
+    grid-column: 3 / span 2;
+    background-color: $pink;
+    color: $white;
+    padding: 2.5em;
+    h2 {
+      color: $white;
+    }
+  }
+  .regular {
+    width: 24%;
+    height: 20rem;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+}
+
+//Curate Your Own Resources
+#four {
+  display: flex;
+  grid-column: col / span 4;
+  grid-row: row 6;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  .big {
+    width: 50%;
+    height: 20rem;
+    background-color: #D8D8D8;
+    border: 1px solid #979797;
+  }
+  .curate {
+    width: 50%;
+    background-color: $green;
+    color: $white;
+    padding: 2.5em;
+    h2 {
+      color: $white;
+    }
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 589px) {
+  #one {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(4, 1fr);
+    .community {
+      width: 100%;
+      grid-column: 1 / span 4;
+      grid-row: 1;
+    }
+    .regular {
+      width: 100%;
+      grid-column: span 4;
+    }
+  }
+  #two {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .mentor {
+      width: 100%;
+      grid-column: 1 / span 4;
+    }
+    .big {
+      width: 100%;
+      grid-column: span 4;
+    }
+  }
+  #three {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(3, 1fr);
+    .workshop {
+      width: 100%;
+      order: -1;
+      grid-column: 1 / span 4;
+      grid-row: 1;
+    }
+    .regular {
+      width: 100%;
+      grid-column: span 4;
+    }
+  }
+  #four {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .curate {
+      width: 100%;
+      grid-column: 1 / span 4;
+    }
+    .big {
+      width: 100%;
+      grid-column: span 4;
+    }
+  }
+}
+@media only screen and (min-width: 590px) and (max-width: 900px) {
+  #one {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    .community {
+      grid-column: 1 / span 4;
+    }
+    .regular {
+      grid-column: span 2;
+    }
+    .horizontal {
+      grid-column: span 4;
+    }
+  }
+  #two {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .mentor {
+      width: 100%;
+      grid-column: 1 / span 4;
+    }
+    .big {
+      width: 100%;
+      grid-column: span 4;
+    }
+  }
+  #three {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .workshop {
+      width: 100%;
+      order: -1;
+      grid-column: 1 / span 4;
+      grid-row: 1;
+    }
+    .regular {
+      width: 100%;
+      grid-column: span 2;
+      grid-row: 2;
+    }
+  }
+  #four {
+    flex-wrap: wrap;
+    grid-template-rows: repeat(2, 1fr);
+    .curate {
+      width: 100%;
+      grid-column: 1 / span 4;
+    }
+    .big {
+      width: 100%;
+      grid-column: span 4;
+    }
+  }
+}
+//Reset widths if css grid is supported
+@supports (display:grid) {
+  .services {
+    .service {
+      width: auto;
+    }
+  }
+  #one {
+    .community {
+      width: auto;
+    }
+    .regular {
+      width: auto;
+      height: auto;
+    }
+  }
+  #two {
+    .mentor {
+      width: auto;
+    }
+    .big {
+      width: auto;
+      height: auto;
+    }
+  }
+  #three {
+    .workshop {
+      width: auto;
+    }
+    .regular {
+      width: auto;
+      height: auto;
+    }
+  }
+  #four {
+    .curate {
+      width: auto;
+    }
+    .big {
+      width: auto;
+      height: auto;
+    }
+  }
+}
