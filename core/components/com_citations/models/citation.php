@@ -82,15 +82,6 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	);
 
 	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'author'
-	);
-
-	/**
 	 * Separate badges?
 	 *
 	 * @var  boolean
@@ -1461,16 +1452,15 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 	/**
 	 * Output a list of authors
-	 *
+	 * @param boolean $includeMemberId if true, include member ID next to author name
 	 * @return  string
 	 */
-	public function automaticAuthor()
+	public function getAuthorString($includeMemberId = true)
 	{
-		if (!empty($this->tempId))
+		if ($this->isNew() && !empty($this->tempId))
 		{
 			$this->set('id', $this->tempId);
 		}
-
 		$authors = $this->relatedAuthors()->order('ordering', 'ASC')->rows();
 		$convertedAuthors = array();
 		foreach ($authors as $author)
@@ -1482,7 +1472,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			$authorText = $lastName;
 			$authorText .= ', ' . $firstName;
 			$authorText .= !empty($firstName) && !empty($middleName) ? ' ' . $middleName : '';
-			$authorText .= !empty($memberId) ? '{{' . $memberId . '}}' : '';
+			if ($includeMemberId)
+			{
+				$authorText .= !empty($memberId) ? '{{' . $memberId . '}}' : '';
+			}
 			if (empty(trim($authorText)))
 			{
 				continue;
@@ -1490,7 +1483,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			$convertedAuthors[] = $authorText;
 		}
 
-		if (!empty($this->tempId))
+		if ($this->isNew() && !empty($this->tempId))
 		{
 			$this->removeAttribute('id');
 		}
@@ -1521,7 +1514,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		}
 		$citation->tags = $tags;
 
-		$citation->author = explode(';', $this->author);
+		$citation->author = explode(';', $this->getAuthorString(false));
 
 		if ($this->published == 1)
 		{
