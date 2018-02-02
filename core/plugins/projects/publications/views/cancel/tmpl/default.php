@@ -63,16 +63,21 @@ $crumbs = $draft
 <form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->pub->link('editbase')); ?>">
 <?php } ?>
 	<fieldset>
-		<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" id="projectid" />
+		
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="cancel" />
 		<input type="hidden" name="confirm" value="1" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		
 		<input type="hidden" name="version" value="<?php echo $this->pub->versionAlias; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->isProvisioned() ? 1 : 0; ?>" />
 		<?php if ($this->project->isProvisioned()) { ?>
-		<input type="hidden" name="task" value="submit" />
+			<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
+			<input type="hidden" name="task" value="submit" />
+			<input type="hidden" name="option" value="com_publications" />
+		<?php } else { ?>
+			<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" id="projectid" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<?php } ?>
 	</fieldset>
 	<?php if ($this->getError()) { ?>
