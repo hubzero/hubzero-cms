@@ -33,24 +33,23 @@ namespace Components\Projects\Helpers;
 use Hubzero\Base\Obj;
 
 /**
- * Projects Layout helper class
+ * Projects Access helper class
  */
-class LayoutHelper extends Obj
+class AccessHelper extends Obj
 {
-	/**
-	 * Make a call
-	 *
-	 * @param   string  $subdirectory
-	 * @param   string  $layout
-	 * @return  string
-	 */
-	public static function accessPublic($subdirectory, $layout)
-	{
-		if (!User::isGuest() && $subdirectory === 'public')
-		{
-			$layout = 'internal';
-		}
 
-		return $layout;
+	/*
+	 * Determines if a directory is open to public access
+	 *
+	 * @param string $subdir
+	 * @return bool
+	 */
+	public static function allowPublicAccess($subdir)
+	{
+		$isPublicDirectory = preg_match('/^\/?public.*/', $subdir); //!= 'public' && $subdir != '/public')
+		$allowPublicAccess = !User::isGuest() && $isPublicDirectory;
+
+		return $allowPublicAccess;
 	}
+
 }
