@@ -253,7 +253,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function link()
 	{
-		$link = 'index.php?option=com_publications&task=view';
+		$link = 'index.php?option=com_publications';
 		$link .= $this->get('alias') ? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
 		$link .= $this->_base . '&v=' . $this->getActiveVersion()->id;
 		return $link;
@@ -301,7 +301,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		$description = \Hubzero\Utility\Sanitize::stripAll($description);
 
 		$obj->description   = $description;
-		$obj->url           = Request::root() . $this->link();
+		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->doi           = $activeVersion->get('doi');
 
 		$tags = $this->tags();

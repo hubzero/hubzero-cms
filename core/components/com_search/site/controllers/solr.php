@@ -33,6 +33,7 @@ namespace Components\Search\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Search\Models\Solr\Facet;
+use Components\Tags\Models\Tag as Tag;
 use Document;
 use Pathway;
 use Request;
@@ -41,8 +42,9 @@ use Config;
 use Lang;
 use stdClass;
 
-require_once \Component::path('com_search') . DS . 'models' . DS . 'solr' . DS .'facet.php';
+require_once \Component::path('com_search') . '/models/solr/facet.php';
 require_once \Component::path('com_search') . '/helpers/urlqueryhelper.php';
+require_once \Component::path('com_tags') . '/models/tag.php';
 
 /**
  * Search controller class
@@ -68,7 +70,13 @@ class Solr extends SiteController
 		$sortDir = Request::getVar('sortDir', '');
 		$type = Request::getInt('type', null);
 		$section = Request::getVar('section', 'content');
-
+		$tagString = Request::getVar('tags','');
+		$tags = null;
+		if ($tagString)
+		{
+			$tags = explode(",", $tagString);
+			$tags = Tag::all()->whereIn('tag', $tags)->rows();
+		}
 		// Map coordinates
 		if ($section == 'map')
 		{
@@ -97,22 +105,20 @@ class Solr extends SiteController
 
 		$filters = Request::getVar('filters', array());
 		$queryTerms = $terms;
-		if (!empty($childTerms))
+		if ($tags && $tags->count() > 0)
 		{
-			foreach ($childTerms as $child)
+			foreach ($tags as $tag)
 			{
 				// This string tells Solr to filter the parents out based on childTerm
-				$queryTerms .= ' +{!parent which=hubtype:*}' . $child['id'];
+				$queryTerms .= ' +{!parent which=hubtype:*}' . 'id:tag-' . $tag->id;
 			}
 		}
-		// To pass to the view
-		$childTermsString = '';
-		foreach ($childTerms as $index => $child)
+		$tagParams = '';
+		if (!empty($tagString))
 		{
-			$childTermsString .= '&childTerms[' . $index . ']' . '[id]=' . $child['id'];
-			$childTermsString .= '&childTerms[' . $index . ']' . '[title]=' . $child['title'];
+			$tagParams = '&tags=' . $tagString;
 		}
-		$urlQuery = '?terms=' . $terms . $childTermsString;
+		$urlQuery = '?terms=' . $terms . $tagParams;
 		$rootFacets = Facet::all()
 			->including('children')
 			->including('parentFacet')
@@ -205,8 +211,8 @@ class Solr extends SiteController
 		$this->view->pagination->setAdditionalUrlParam('type', $type);
 		foreach ($childTerms as $index => $child)
 		{
-			$this->view->pagination->setAdditionalUrlParam('childTerms[' . $index . '][id]', $child['id']);
-			$this->view->pagination->setAdditionalUrlParam('childTerms[' . $index . '][title]', $child['title']);
+			$this->view->pagination->setAdditionalUrlParam('tags', $tagString);
+			$this->view->pagination->setAdditionalUrlParam('tags', $child['title']);
 		}
 
 		if (isset($results) && count($results) > 0)
@@ -238,8 +244,9 @@ class Solr extends SiteController
 		\Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
 
 		$this->view->terms = $terms;
+		$this->view->tags = $tagString;
 		$this->view->childTerms = $childTerms;
-		$this->view->childTermsString = $childTermsString;
+		$this->view->childTermsString =  $tagParams;
 		$this->view->type = $type;
 		$this->view->section = $section;
 		$this->view->setLayout('display');

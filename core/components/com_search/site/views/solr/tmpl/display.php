@@ -34,6 +34,7 @@ defined('_HZEXEC_') or die();
 
 $this->css('search-enhanced');
 $this->js('suggest');
+$this->js('solr');
 
 $terms = isset($this->terms) ? $this->terms : '';
 $noResult = count($this->results) > 0 ? false : true;
@@ -59,7 +60,21 @@ $noResult = count($this->results) > 0 ? false : true;
 			<label for="terms">Search terms</label>
 			<input type="text" name="terms" id="terms" value="<?php echo htmlspecialchars($terms); ?>" placeholder="Enter keyword or phrase" />
 			<input type="hidden" name="section" value="<?php echo $this->escape($this->section); ?>" />
+			<input type="hidden" name="type" value="<?php echo !empty($this->type) ? $this->type : ''; ?>" />
 		</fieldset>
+		<?php	
+			$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
+								array(
+									array('tags', 'tags', 'actags', '', $this->tags)
+									)	
+							);
+
+			if (count($tags_list) > 0) {
+				echo $tags_list[0];
+			} else {
+				echo '<input type="text" name="tags" value="' . $tags . '" />';
+			}
+		?>
 		<?php if ($this->section == 'map' && 0) { ?>
 			<fieldset class="map-search">
 				<input type="hidden" name="minlat" id="minlat" value="<?php if (isset($this->minlat)) echo $this->minlat; ?>" />
@@ -103,12 +118,6 @@ $noResult = count($this->results) > 0 ? false : true;
 			<div class="subject">
 				<div class="container">
 					<div class="results list"><!-- add "tiled" to class for tiled view -->
-						<?php if (!empty($this->childTerms)): ?>
-							<?php $baseUrl = Route::url('index.php?option=com_search&terms=' . $this->terms . '&type=' . $this->type); ?>
-							<?php foreach ($this->childTerms as $filterType => $values): ?>
-								<a class="tag closable" href="<?php echo \Components\Search\Helpers\UrlQueryHelper::buildQueryString($baseUrl, $this->childTerms, $filterType);?>"><?php echo $filterType . ': ' . $values['title']; ?></a>
-							<?php endforeach; ?>
-						<?php endif; ?>
 						<?php foreach ($this->results as $result): ?>
 							<?php if (is_array($result)): ?>
 								<div class="result <?php echo (isset($result['access_level']) ? $result['access_level'] : 'public'); ?>" id="<?php echo $result['id']; ?>">
@@ -156,8 +165,9 @@ $noResult = count($this->results) > 0 ? false : true;
 													?>
 													<?php foreach ($result['_childDocuments_'] as $tag): ?>
 														<li>
-															<a class="tag" href="<?php echo $baseTagUrl . '&childTerms[tag][id]=id:' . $tag['id'] .
-																'&childTerms[tag][title]=' . $tag['title'][0]; ?>"><?php echo $tag['title'][0]; ?>
+															<?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0];?>
+															<a class="tag" href="<?php echo $baseTagUrl . '&tags=' . $description;?>" data-tag="<?php echo $description;?>">
+																<?php echo $tag['title'][0]; ?>
 															</a>
 														</li>
 													<?php endforeach; ?>
@@ -191,11 +201,8 @@ $noResult = count($this->results) > 0 ? false : true;
 						</nav>
 						<div class="clearfix"></div>
 						<input type="hidden" name="terms" value="<?php echo $terms; ?>" />
-						<?php if (!empty($this->childTerms)):?>
-							<?php foreach ($this->childTerms as $index => $child): ?>
-								<input type="hidden" name="<?php echo 'childTerms[' . $index . '][id]';?>" value="<?php echo $child['id']; ?>" />
-								<input type="hidden" name="<?php echo 'childTerms[' . $index . '][title]';?>" value="<?php echo $child['title']; ?>" />
-							<?php endforeach; ?>
+						<?php if (!empty($this->tags)):?>
+							<input type="hidden" name="tags" value="<?php echo $this->tags; ?>" />
 						<?php endif; ?>
 						<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 					</form>
