@@ -128,7 +128,23 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 			}
 
 			// There are third party plugins, so show them on the registration form
-			if (!empty($authenticators))
+			$provider_html = "";
+			foreach ($authenticators as $a)
+			{
+				$refl = new ReflectionClass('plgauthentication'.$a['name']);
+				if ($refl->hasMethod('onRenderOption'))
+				{
+					$html = $refl->getMethod('onRenderOption')->invoke(null);
+					$provider_html .= is_array($html) ? implode("\n", $html) : $html;
+				}
+				else
+				{
+					$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
+					$provider_html .= '<div class="signin">Sign in with ' . $a['display'] . '</div>';
+					$provider_html .= '</a>';
+				}
+			}
+			if (!empty($provider_html))
 			{
 				$this->css('providers.css', 'com_users');
 				?>
@@ -140,22 +156,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					<legend>Connect With</legend>
 					<div id="providers" class="auth">
 						<?php
-						foreach ($authenticators as $a)
-						{
-							$refl = new ReflectionClass('plgauthentication'.$a['name']);
-							if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(null)))
-							{
-								echo is_array($html) ? implode("\n", $html) : $html;
-							}
-							else
-							{
-								?>
-								<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']); ?>">
-									<div class="signin">Sign in with <?php echo $a['display']; ?></div>
-								</a>
-								<?php
-							}
-						}
+							echo $provider_html;
 						?>
 					</div>
 				</fieldset>
