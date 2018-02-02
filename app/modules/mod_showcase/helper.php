@@ -32,6 +32,7 @@
 namespace Modules\Showcase;
 
 use Hubzero\Module\Module;
+use Hubzero\User\Group;
 use Components\Publications\Models\Publication;
 
 /**
@@ -66,20 +67,59 @@ class Helper extends Module
 	 * Get the most recent publications.
 	 * @return array Publications, ordered by most recent.
 	 */
-	private function _getPublications()
+	private function _getPublications($featured = 0)
 	{
 		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 		$pubmodel = new \Components\Publications\Models\Publication();
 		$filters = array(
 			'start'   => 0,
-			'dev'     => 1,
+			'dev'     => 0,
 			'sortby'  => 'date_created',
 			'sortdir' => 'DESC'
 		);
+
+		if ($featured) {
+			$filters['featured'] = 1;
+		}
+
 		$pubs = $pubmodel->entries('list', $filters);
 
 		return $pubs;
+	}
+
+	/**
+	 * Get groups.  We are overriding Hubzero\User\Group\Helper::getFeaturedGroups()
+	 * @return array Groups.
+	 */
+	private function _getGroups($featured = 0)
+	{
+		//database object
+		$db = \App::get('db');
+
+		//query to get groups
+		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc, g.created
+				FROM `#__xgroups` AS g
+				WHERE (g.type=1
+				OR g.type=3)
+				AND g.published=1
+				AND g.approved=1
+				AND g.discoverability=0";
+
+		if ($featured) {
+			//parse the featured group list
+			$featuredGroupList = \Component::params('com_groups')->get('intro_featuredgroups_list', '');
+			$featuredGroupList = array_map('trim', array_filter(explode(',', $featuredGroupList), 'trim'));
+			$sql .= "	AND g.cn IN ('" . implode("','", $featuredGroupList) . "')";
+		}
+
+		$sql .= "   ORDER BY `created` DESC;";
+
+		$db->setQuery($sql);
+		if (!$db->getError())
+		{
+			return $db->loadObjectList();
+		}
 	}
 
 	/**
@@ -108,7 +148,8 @@ class Helper extends Module
     			  "class" => $item[1],
     			  "type" => $item[2],
     			  "ordering" => $item[3],
-    			  "content" => $item[4]
+    			  "content" => $item[4],
+    			  "featured" => ($item[2] === 'dynamic' and count($item) > 5 ? $item[5] : 0)
     			);
     		}
     		$i++;
