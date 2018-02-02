@@ -1549,16 +1549,42 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		$citation->author = explode(';', $this->getAuthorString(false));
 		if ($this->scope == 'member')
 		{
-			$citation->url = '/members/' . $this->uid . '/citations';
+			$url = '/members/' . $this->uid . '/citations';
 		}
 		elseif ($this->scope != 'group')
 		{
-			$citation->url = '/citations/view/' . $this->id;
+			$url = '/citations/view/' . $this->id;
 		}
 
 		if ($this->published == 1 && $this->scope != 'group')
 		{
-			$citation->access_level = 'public';
+			if ($this->scope == 'member')
+			{
+				$user = User::getInstance($this->uid);
+				if ($user->get('blocked') == 0 && $user->get('approved') > 0) 	
+				{
+					if ($user->get('access') == 1)
+					{
+						$citation->access_level = 'public';
+					}
+					elseif ($user->get('access') == 2)
+					{
+						$citation->access_level = 'registered';
+					}
+					else
+					{
+						$citation->access_level = 'private';
+					}
+				}
+				else
+				{
+					$citation->access_level = 'private';
+				}
+			}
+			else
+			{
+				$citation->access_level = 'public';
+			}
 		}
 		elseif ($this->scope == 'group')
 		{
@@ -1566,7 +1592,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			if ($group)
 			{
 				$groupName = $group->get('cn');
-				$citation->url = '/groups/' . $groupName . '/citations';
+				$url = '/groups/' . $groupName . '/citations';
 				$citationAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'citations');
 				if ($citationAccess == 'anyone')
 				{
@@ -1590,6 +1616,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			$citation->owner_type = 'user';
 			$citation->owner = $this->uid;
 		}
+		$citation->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $url);
 		return $citation;
 	}
 
