@@ -73,7 +73,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array(
 			'citations' => Lang::txt('PLG_MEMBERS_CITATIONS'),
-			'icon'      => '275D'
+			'icon'      => '275D',
+			'menu'      => $this->params->get('display_tab', 1)
 		);
 		return $areas;
 	}

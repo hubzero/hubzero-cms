@@ -80,6 +80,12 @@ class Pipeline extends AdminController
 				'search_field',
 				'all'
 			)),
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				-1,
+				'int'
+			),
 			// Sorting
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -117,12 +123,6 @@ class Pipeline extends AdminController
 		// Get records
 		$this->view->rows = Tool::getToolSummaries($this->view->filters, true);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Display results
 		$this->view->display();
 	}
@@ -130,37 +130,32 @@ class Pipeline extends AdminController
 	/**
 	 * Edit an entry
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		// Incoming instance ID
-		$id = Request::getInt('id', 0);
-
-		// Do we have an ID?
-		if (!$id)
-		{
-			return $this->cancelTask();
-		}
-
 		if (!is_object($row))
 		{
+			// Incoming instance ID
+			$id = Request::getInt('id', 0);
+
+			// Do we have an ID?
+			if (!$id)
+			{
+				return $this->cancelTask();
+			}
+
 			$row = Tool::getInstance($id);
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
 		}
 
 		// Display results
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -206,6 +201,8 @@ class Pipeline extends AdminController
 
 		$row->update();
 
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
+
 		if ($this->getTask() == 'apply')
 		{
 			App::redirect(
@@ -215,8 +212,7 @@ class Pipeline extends AdminController
 		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_ITEM_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 

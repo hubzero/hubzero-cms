@@ -30,23 +30,20 @@
 
 namespace Components\Cart\Site;
 
-//import needed Joomla! libs
-//jimport('joomla.filesystem.folder');
-//jimport('joomla.application.component.view');
-
-use Filesystem;
+use Request;
+use App;
 
 // require base component controller
 require_once(__DIR__ . DS . 'controllers' . DS . 'component.php');
 
-$controllerName = \Request::getCmd('controller', '');
+$controllerName = Request::getCmd('controller', '');
 if (empty($controllerName))
 {
 	App::redirect(Request::base() . 'cart/cart');
 }
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	App::abort(404, Lang::txt('Page Not Found'));
+	App::abort(404, \Lang::txt('Page Not Found'));
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
@@ -54,4 +51,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

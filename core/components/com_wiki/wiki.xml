@@ -3,10 +3,10 @@
 <!--
 @package    hubzero-cms
 @file       components/com_wiki/wiki.xml
-@copyright  Copyright 2005-2015 HUBzero Foundation, LLC.
+@copyright  Copyright 2005-2018 HUBzero Foundation, LLC.
 @license    http://opensource.org/licenses/MIT MIT
 
-Copyright 2005-2015 HUBzero Foundation, LLC.
+Copyright 2005-2018 HUBzero Foundation, LLC.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,35 +32,14 @@ HUBzero is a registered trademark of Purdue University.
 <extension type="component" version="1.5">
 	<name>Wiki</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2009 HUBzero Foundation, LLC.</copyright>
+	<copyright>Copyright 2005-2018 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Manage wiki pages</description>
-	<files>
-		<filename>router.php</filename>
-		<filename>controller.php</filename>
-		<filename>wiki.css</filename>
-		<filename>wiki.php</filename>
-		<filename>index.html</filename>
-	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_wiki.ini</language>
 	</languages>
 	<administration>
 		<menu>Wiki</menu>
-		<files>
-			<filename>controller.php</filename>
-			<filename>wiki.php</filename>
-			<filename>views/revision/tmpl/default.php</filename>
-			<filename>views/revision/tmpl/default.xml</filename>
-			<filename>views/revisions/tmpl/default.php</filename>
-			<filename>views/revisions/tmpl/default.xml</filename>
-			<filename>views/pages/tmpl/default.php</filename>
-			<filename>views/pages/tmpl/default.xml</filename>
-			<filename>views/page/tmpl/default.php</filename>
-			<filename>views/page/tmpl/default.xml</filename>
-			<filename>views/page/tmpl/delete.php</filename>
-			<filename>views/page/tmpl/delete.xml</filename>
-		</files>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_wiki.ini</language>
 		</languages>

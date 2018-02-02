@@ -89,7 +89,7 @@ class MediaViewMedia extends JViewLegacy
 		{
 			$title = Lang::txt('JTOOLBAR_DELETE');
 			$dhtml = "<a href=\"#\" onclick=\"MediaManager.submit('folder.delete')\" data-title=\"$title\">
-						<span class=\"icon-32-delete\">$title</span>
+						<span class=\"icon-32-delete\">\n$title\n</span>
 					</a>";
 			Toolbar::appendButton('Custom', $dhtml, 'delete');
 			Toolbar::divider();

@@ -36,7 +36,7 @@ use Hubzero\Module\Module;
 use Component;
 use Components\Billboards\Models\Billboard;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
+require_once Component::path('com_billboards') . DS . 'models' . DS . 'billboard.php';
 
 /**
  * Module helper class, used to query for billboards and contains the display method

@@ -33,9 +33,14 @@ namespace Components\Cart\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Cart\Helpers\CartDownload;
 use Components\Storefront\Models\Warehouse;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Controller class for knowledge base categories
@@ -49,6 +54,19 @@ class Downloads extends AdminController
 	 */
 	public function displayTask()
 	{
+		// Do some filter cleaning
+		$setPId = Request::getInt('pId', 0);
+		$setSId = Request::getInt('sId', 0);
+
+		if ($setPId)
+		{
+			Request::setVar('sId', 0);
+		}
+		elseif ($setSId)
+		{
+			Request::setVar('pId', 0);
+		}
+
 		// Get filters
 		$this->view->filters = array(
 			'search' => Request::getState(
@@ -58,27 +76,27 @@ class Downloads extends AdminController
 			),
 			// Get sorting variables
 			'sort' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sort',
-					'filter_order',
-					'dDownloaded'
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'dDownloaded'
 			),
 			'sort_Dir' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.sortdir',
-					'filter_order_Dir',
-					'ASC'
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
 			),
 			// Get paging variables
 			'limit' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limit',
-					'limit',
-					Config::get('list_limit'),
-					'int'
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
 			),
 			'start' => Request::getState(
-					$this->_option . '.' . $this->_controller . '.limitstart',
-					'limitstart',
-					0,
-					'int'
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
 			),
 			'skuRequested' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.skuRequested',
@@ -94,30 +112,49 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.report-to',
 				'report-to',
 				date('m/d/Y')
+			),
+			'uidNumber' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.uidNumber',
+				'uidNumber',
+				0,
+				'int'
+			),
+			'pId' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.pId',
+				'pId',
+				0,
+				'int'
+			),
+			'sId' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sId',
+				'sId',
+				0,
+				'int'
 			)
 		);
 
 		// Is a particular SKU requested?
 		$skuRequested = Request::getInt('sku', 0);
-		if (!$skuRequested && !empty($this->view->filters['skuRequested'])) {
+		if (!$skuRequested && !empty($this->view->filters['skuRequested']))
+		{
 			$skuRequested = $this->view->filters['skuRequested'];
 		}
-		if ($skuRequested) {
+		if ($skuRequested)
+		{
 			$warehouse = new Warehouse();
 			$skuInfo = $warehouse->getSkuInfo($skuRequested);
 			if ($skuInfo)
 			{
 				$skuName = $skuInfo['info']->pName . ', ' . $skuInfo['info']->sSku;
 			}
-			else {
+			else
+			{
 				$skuName = 'Product no longer exists';
 			}
 
 			$this->view->filters['skuRequested'] = $skuRequested;
 			$this->view->skuRequestedName = $skuName;
 		}
-
-		//print_r($this->view->filters); die;
 
 		// Clean filters -- reset to default if needed
 		$allowedSorting = array('product', 'dName', 'dDownloaded', 'dStatus');
@@ -131,8 +168,6 @@ class Downloads extends AdminController
 
 		// Get records
 		$this->view->rows = CartDownload::getDownloads('list', $this->view->filters);
-
-		//print_r($this->view->rows); die;
 
 		// Output the HTML
 		$this->view->display();
@@ -187,7 +222,6 @@ class Downloads extends AdminController
 				date('m/d/Y')
 			)
 		);
-		//print_r($this->view->filters);
 
 		// Get record count
 		$this->view->total = CartDownload::getDownloadsSku('count', $this->view->filters);
@@ -235,15 +269,16 @@ class Downloads extends AdminController
 		if (count($ids) < 1)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					($state == 1 ? Lang::txt('COM_CART_SELECT_ACTIVE') : Lang::txt('COM_CART_SELECT_INACTIVE')),
-					'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				($state == 1 ? Lang::txt('COM_CART_SELECT_ACTIVE') : Lang::txt('COM_CART_SELECT_INACTIVE')),
+				'error'
 			);
 			return;
 		}
 
 		// Save downloads
-		try {
+		try
+		{
 			CartDownload::setStatus($ids, $state);
 		}
 		catch (\Exception $e)
@@ -257,16 +292,16 @@ class Downloads extends AdminController
 		{
 			case '1':
 				$message = Lang::txt('COM_CART_ACTIVATED', count($ids));
-			break;
+				break;
 			case '0':
 				$message = Lang::txt('COM_CART_DEACTIVATED', count($ids));
-			break;
+				break;
 		}
 
 		// Redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				$message
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+			$message
 		);
 	}
 
@@ -344,7 +379,8 @@ class Downloads extends AdminController
 						$metaEula = 'EULA accepted';
 					}
 				}
-				else {
+				else
+				{
 					$metaEula = '';
 				}
 			}
@@ -371,7 +407,8 @@ class Downloads extends AdminController
 		$output = fopen("php://output", "w");
 		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'User Details', 'EULA', 'IP', 'Status');
 		fputcsv($output, $row);
-		foreach ($rows as $row) {
+		foreach ($rows as $row)
+		{
 			fputcsv($output, $row);
 		}
 		fclose($output);
@@ -432,7 +469,8 @@ class Downloads extends AdminController
 		$output = fopen("php://output", "w");
 		$row = array('Product', 'SKU', 'Downloaded (times)');
 		fputcsv($output, $row);
-		foreach ($rows as $row) {
+		foreach ($rows as $row)
+		{
 			// replace($row) empty vals with n/a
 			foreach ($row as $k => $val)
 			{
@@ -447,3 +485,4 @@ class Downloads extends AdminController
 		die;
 	}
 }
+

@@ -251,7 +251,7 @@ class Templates extends AdminController
 		$new_template->set('editable', 1);
 
 		//save copied template
-		if (!$new_templatee->save())
+		if (!$new_template->save())
 		{
 			Notify::error(Lang::txt('COM_NEWSLETTER_TEMPLATE_DUPLICATE_FAILED'));
 

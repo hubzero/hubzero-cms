@@ -33,7 +33,10 @@ namespace Components\Members\Models;
 
 use Hubzero\User\User;
 use Hubzero\Config\Registry;
+use stdClass;
+use Request;
 use Event;
+use Route;
 
 require_once(__DIR__ . DS . 'profile.php');
 require_once(__DIR__ . DS . 'tags.php');
@@ -44,7 +47,7 @@ require_once(__DIR__ . DS . 'host.php');
 /**
  * User model
  */
-class Member extends User
+class Member extends User implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table to which the class pertains
@@ -555,5 +558,71 @@ class Member extends User
 			->set(array('usageAgreement' => 0));
 
 		return $query->execute();
+	}
+
+	/**
+	 * Get records
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
+	}
+
+	/**
+	 * Get a record count
+	 *
+	 * @return  integer
+	 */
+	public static function searchTotal()
+	{
+		return self::all()->total();
+	}
+
+	/**
+	 * Get a record
+	 *
+	 * @return  array
+	 */
+	public function searchResult()
+	{
+		$obj = new stdClass;
+		$obj->hubtype = 'member';
+		$obj->id      = 'member-' . $this->get('id');
+		$obj->title   = $this->get('name');
+
+		$base = rtrim(Request::base(), '/');
+		$obj->url = str_replace('/administrator', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '&id=' . $this->get('id')), '/'));
+
+		// @TODO: Add more fields to the SOLR core.
+		$fields = $this->profiles()->rows()->toObject();
+		$description = '';
+		foreach ($fields as $field)
+		{
+			if ($field->access == 1)
+			{
+				$description .= $field->profile_value . ' ';
+			}
+		}
+		$obj->description = $description;
+
+		$access = $this->get('access');
+		if ($access == 1)
+		{
+			$obj->access_level = 'public';
+			$obj->owner = $this->get('id');
+			$obj->owner_type = 'user';
+		}
+		else
+		{
+			$obj->access_level = 'private';
+			$obj->owner = $this->get('id');
+			$obj->owner_type = 'user';
+		}
+
+		return (array) $obj;
 	}
 }

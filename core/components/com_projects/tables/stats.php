@@ -117,7 +117,7 @@ class Stats extends \JTable
 	{
 		$stats = array();
 
-		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once \Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
 
 		$obj  = new Project($this->_db);
 		$objO = new Owner($this->_db);
@@ -319,7 +319,7 @@ class Stats extends \JTable
 		else
 		{
 			// Get repo model
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'repo.php');
+			require_once dirname(__DIR__) . DS . 'models' . DS . 'repo.php';
 
 			// Compute
 			$repo     = new \Components\Projects\Models\Repo();

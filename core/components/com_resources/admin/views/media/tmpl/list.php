@@ -76,14 +76,15 @@ defined('_HZEXEC_') or die();
 				<tbody>
 				<?php
 				$folders = $this->folders;
+
 				for ($i=0; $i<count($folders); $i++)
 				{
 					$folderName = key($folders);
 
 					$numFiles = 0;
-					if (is_dir(PATH_CORE . DS . $folders[$folderName]))
+					if (is_dir($folderName))
 					{
-						$d = @dir(PATH_CORE . DS . $folders[$folderName]);
+						$d = @dir($folderName);
 
 						while (false !== ($entry = $d->read()))
 						{

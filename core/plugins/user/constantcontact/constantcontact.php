@@ -33,7 +33,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-
 /**
  * User plugin for hub users
  */
@@ -49,11 +48,11 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 	{
 		//get the user's email and mail preference option
 		$userEmailAddress          = $user->get('email');
-		$userEmailPreferenceOption = $user->get('mailPreferenceOption');
+		$userEmailPreferenceOption = $user->get('sendEmail');
 
 		//get values from plugin params
-		$_ccUsername   = $this->params->get('ccUsername','');
-		$_ccPassword   = $this->params->get('ccPassword','');
+		$_ccUsername   = $this->params->get('ccUsername', '');
+		$_ccPassword   = $this->params->get('ccPassword', '');
 		$_ccApiKey     = $this->params->get('ccApiKey', '');
 		$_ccManagePref = $this->params->get('ccManageEmailPreference', 0);
 
@@ -70,11 +69,10 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 		}
 
 		//include constant contact library
-		require_once(__DIR__ . DS . 'lib' . DS . 'ConstantContact.php');
-
+		require_once __DIR__ . DS . 'lib' . DS . 'ConstantContact.php';
 
 		//build constant contact object
-		$ConstantContact = new Constantcontact("basic", $_ccApiKey, $_ccUsername, $_ccPassword);
+		$ConstantContact = new Constantcontact('basic', $_ccApiKey, $_ccUsername, $_ccPassword);
 
 		//if we are unable to get lists that means authentication stuff is broken
 		try
@@ -112,7 +110,7 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 			$Contact = $ConstantContact->getContactDetails($ccContact[0]);
 
 			//set new contact details
-			$Contact->optInSource = "ACTION_BY_CONTACT";
+			$Contact->optInSource = 'ACTION_BY_CONTACT';
 			$Contact->lists = array($defaultList);
 
 			//update contact
@@ -146,11 +144,11 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 		}
 
 		//include constant contact library
-		require_once(__DIR__ . DS . 'lib' . DS . 'ConstantContact.php');
+		require_once __DIR__ . DS . 'lib' . DS . 'ConstantContact.php';
 
 		//get values from plugin params
-		$_ccUsername = $this->params->get('ccUsername','');
-		$_ccPassword = $this->params->get('ccPassword','');
+		$_ccUsername = $this->params->get('ccUsername', '');
+		$_ccPassword = $this->params->get('ccPassword', '');
 		$_ccApiKey   = $this->params->get('ccApiKey', '');
 
 		//build constant contact object

@@ -191,7 +191,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		$template = \Components\Citations\Models\Format::getDefault();
 
 		$formatter = new \Components\Citations\Helpers\Format();
-		$formatter->setTemplate($template);
+		$formatter->setTemplate($template->format);
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="citation-entry">' . "\n";
@@ -230,7 +230,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 
 		$cc = \Components\Citations\Models\Citation::oneOrNew($row->id);
 
-		$html .= '<p>' . $formatter->formatCitation($cc, null, $config->get("citation_coins", 1), $config) . '</p>';
+		$html .= '<p>' . $formatter->formatCitation($cc->toObject(), null, $config->get("citation_coins", 1), $config) . '</p>';
 		$html .= "\t" . '</li>'."\n";
 
 		// Return output

@@ -55,14 +55,17 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 		{
 			try
 			{
-				$gids = JUserHelper::getUserGroups($userId);
+				$gids = User::getInstance($userId)
+					->accessgroups()
+					->rows()
+					->fieldsByKey('group_id');
 				$db = App::get('db');
 
 				//
 				// Quota class
 				//
 
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php');
+				require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
 				// Check for an existing quota record
 				$row = Components\Members\Models\Quota::all()
@@ -105,8 +108,8 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 						$val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks ? $val['soft_blocks'] : $cls->soft_blocks);
 					}
 
-					$row->set('hard_files',  $val['hard_files']);
-					$row->set('soft_files',  $val['soft_files']);
+					$row->set('hard_files', $val['hard_files']);
+					$row->set('soft_files', $val['soft_files']);
 					$row->set('hard_blocks', $val['hard_blocks']);
 					$row->set('soft_blocks', $val['soft_blocks']);
 
@@ -120,8 +123,8 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 				// Session limits
 				//
 
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclass.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+				require_once Component::path('com_tools') . DS . 'tables' . DS . 'sessionclass.php';
+				require_once Component::path('com_tools') . DS . 'tables' . DS . 'preferences.php';
 
 				$row = new \Components\Tools\Tables\Preferences($db);
 
@@ -178,7 +181,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				$this->_subject->setError($e->getMessage());
+				Log::error($e->getMessage());
 				return false;
 			}
 		}
@@ -226,7 +229,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				$this->_subject->setError($e->getMessage());
+				Log::error($e->getMessage());
 				return false;
 			}
 		}

@@ -108,10 +108,10 @@ $this->css()
 						$check = "<input class=\"chkbox\" type=\"checkbox\" id=\"msg{$row->id}\" value=\"{$row->id}\" name=\"mid[]\" />";
 
 						//get the message status
-						$status = ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "<span class=\"read\">read</span>" : "<span class=\"unread\">unread</span>";
+						$status = ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00') ? "<span class=\"read\">read</span>" : "<span class=\"unread\">unread</span>";
 
 						//get the component that created message
-						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
+						$component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) : $row->component;
 
 						//url to view message
 						$url = Route::url($this->member->link() . '&active=messages&msg=' . $row->id);
@@ -132,7 +132,7 @@ $this->css()
 
 						//subject link
 						$subject_cls = "message-link";
-						$subject_cls .= ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
+						$subject_cls .= ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
 
 						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}</a>";
 

@@ -2884,7 +2884,7 @@ class WikiParser
 		$toclevel      = 0;
 		$prevtoclevel  = 0;
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'sanitizer.php');
+		include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'sanitizer.php';
 
 		foreach ($matches[3] as $headline)
 		{

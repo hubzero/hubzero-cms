@@ -56,7 +56,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array(
 			'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
-			'icon'    => 'f007'
+			'icon'    => 'f007',
+			'menu'    => $this->params->get('display_tab', 1)
 		);
 		return $areas;
 	}
@@ -298,7 +299,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		// return percentage
-		return number_format(($num_filled_fields/$num_fields) * 100, 0);
+		return ($num_fields ? number_format(($num_filled_fields/$num_fields) * 100, 0) : 100);
 	}
 
 	/**

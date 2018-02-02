@@ -201,12 +201,19 @@ defined('_HZEXEC_') or die();
 		<?php
 		if ($this->depth < $this->wish->config()->get('comments_depth', 3))
 		{
+			$comments = $this->comment->replies()
+				->whereIn('state', array(
+					Components\Wishlist\Models\Comment::STATE_PUBLISHED,
+					Components\Wishlist\Models\Comment::STATE_FLAGGED
+				))
+				->rows();
+
 			$this->view('_list')
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('cls', $cls)
 			     ->set('depth', $this->depth)
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->rows())
+			     ->set('comments', $comments)
 			     ->set('wishlist', $this->wishlist)
 			     ->set('wish', $this->wish)
 			     ->display();

@@ -123,6 +123,10 @@ class Link extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
+				if ($attach->type != $this->_name)
+				{
+					continue;
+				}
 				$itemUrl = $url . '&a=' . $attach->id;
 				$title   = $attach->title ? $attach->title : $configs->title;
 				$title   = $title ? $title : $attach->path;

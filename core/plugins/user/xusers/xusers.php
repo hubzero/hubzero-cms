@@ -116,7 +116,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		Log::auth($xuser->get('id') . ' [' . $xuser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
 
 		// correct apache log data
-		apache_note('auth','login');
+		apache_note('auth', 'login');
 
 		// Log attempt to the database
 		Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
@@ -255,7 +255,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
+			require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
 			$quota = Components\Members\Models\Quota::all()
 				->whereEquals('user_id', $xuser->get('id'))
@@ -545,7 +545,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
+			require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
 			$quota = Components\Members\Models\Quota::all()
 				->whereEquals('user_id', $user['id'])
@@ -581,7 +581,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$result = '/bin/bash';
 			}
 
-			$query = "UPDATE `#__users` SET `loginShell` = " . $db->quote($result) . " WHERE u.`id`=" . $db->quote($user['id']);
+			$query = "UPDATE `#__users` SET `loginShell` = " . $db->quote($result) . " WHERE `id`=" . $db->quote($user['id']);
 			$db->setQuery($query);
 			$db->query();
 
@@ -601,7 +601,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$result = '/bin/bash';
 			}
 
-			$query = "UPDATE `#__users` SET `ftpShell` = " . $db->quote($result) . " WHERE u.`id`=" . $db->quote($user['id']);
+			$query = "UPDATE `#__users` SET `ftpShell` = " . $db->quote($result) . " WHERE `id`=" . $db->quote($user['id']);
 			$db->setQuery($query);
 			$db->query();
 
@@ -650,7 +650,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		\Hubzero\Auth\Link::delete_by_user_id($user['id']);
 
 		// Check if quota exists for the user
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'quota.php';
+		require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
 		$quota = Components\Members\Models\Quota::all()
 			->whereEquals('user_id', $user['id'])
@@ -692,7 +692,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	{
 		Log::auth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 
-		apache_note('auth','logout');
+		apache_note('auth', 'logout');
 
 		// If this is a temporary user created during the auth_link process (ex: username is a negative number)
 		// and they're logging out (i.e. they didn't finish the process to create a full account),

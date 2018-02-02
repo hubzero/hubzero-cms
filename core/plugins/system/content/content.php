@@ -47,7 +47,19 @@ class plgSystemContent extends \Hubzero\Plugin\Plugin
 	public function onContentSave($table, $model)
 	{
 		//@TODO: Add check for isIndexable
-		Event::trigger('search.onContentAvailable', array($table, $model));
+		Event::trigger('search.onAddIndex', array($table, $model));
+	}
+
+	/**
+	 * Hook for after parsing route
+	 *
+	 * @param   object  $table
+	 * @param   object  $model
+	 * @return  void
+	 */
+	public function onContentDestroy($table, $model)
+	{
+		//@TODO: Add check for isIndexable
+		Event::trigger('search.onRemoveIndex', array($table, $model));
 	}
 }
-

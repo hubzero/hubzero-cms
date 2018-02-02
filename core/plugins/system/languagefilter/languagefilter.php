@@ -247,7 +247,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		{
 			if ($item = App::get('menu')->getItem($Itemid))
 			{
-				if ($item->home && $uri->getVar('option')!='com_search')
+				if ($item->home && $uri->getVar('option') != 'com_search')
 				{
 					$link  = $item->link;
 					$parts = parse_url($link);
@@ -291,7 +291,8 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			 || $sef != self::$lang_codes[self::$tag]->sef
 			 || $this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie)
 			{
-				$uri->setPath($uri->getPath() . '/' . $sef . '/');
+				//$uri->setPath($uri->getPath() . '/' . $sef);
+				$uri->setPath($sef . '/' . $uri->getPath());
 			}
 			else
 			{
@@ -349,16 +350,17 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					{
 						// Use the current language sef or the default one
 						$sef = isset(self::$lang_codes[$lang_code]) ? self::$lang_codes[$lang_code]->sef : self::$default_sef;
-						$uri->setPath($sef . '/' . $path);
+						$uri->setPath('/' . $sef . ($path ? '/' . $path : ''));
 
 						if (Config::get('sef_rewrite'))
 						{
-							App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
+							//App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
+							App::redirect($uri->root() . ltrim($uri->toString(array('query', 'fragment')), '/'));
 						}
 						else
 						{
 							$path = $uri->toString(array('path', 'query', 'fragment'));
-							App::redirect($uri->root() . 'index.php' . ($path ? ('/' . $path) : ''));
+							App::redirect($uri->root() . 'index.php' . ($path ? '/' . $path : ''));
 						}
 					}
 				}
@@ -403,7 +405,8 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			}
 
 			$lang_code = isset(self::$sefs[$sef]) ? self::$sefs[$sef]->lang_code : '';
-			if ($lang_code && Lang::exists($lang_code))
+
+			if ($lang_code && (Lang::exists($lang_code, PATH_APP . '/bootstrap/site') || Lang::exists($lang_code, PATH_CORE . '/bootstrap/Site')))
 			{
 				array_shift($parts);
 				$uri->setPath(implode('/', $parts));

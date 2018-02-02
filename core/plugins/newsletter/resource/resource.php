@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 use Components\Resources\Models\Entry;
 
-require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Plugin class for Newsletter resources

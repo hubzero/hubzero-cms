@@ -48,6 +48,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="display_tab" type="list" default="1" label="PLG_MEMBERS_RESUME_PARAM_DISPLAY_TAB_LABEL" description="PLG_MEMBERS_RESUME_PARAM_DISPLAY_TAB_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 				<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
 				<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt" description="Allowed file types" />
 				<field name="limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>

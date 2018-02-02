@@ -30,7 +30,8 @@
  */
 
 use Components\Cart\Models\Cart;
-require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php';
+
+require_once Component::path('com_cart') . DS . 'models' . DS . 'Cart.php';
 
 /**
  * Cart plugin for Payment: Offline
@@ -63,9 +64,17 @@ class plgCartOffline extends \Hubzero\Plugin\Plugin
 		return $payment;
 	}
 
+	/**
+	 * On selected payment
+	 *
+	 * @param   object  $transaction
+	 * @param   object  $user
+	 * @return  bool
+	 */
 	public function onSelectedPayment($transaction, $user)
 	{
 		$provider = Request::getWord('paymentProvider', false, 'post');
+
 		if ($provider != 'offline')
 		{
 			return false;
@@ -141,6 +150,12 @@ class plgCartOffline extends \Hubzero\Plugin\Plugin
 		return $response;
 	}
 
+	/**
+	 * On complete
+	 *
+	 * @param   string  $provider
+	 * @return  mixed
+	 */
 	public function onComplete($provider)
 	{
 		if ($provider != 'offline')

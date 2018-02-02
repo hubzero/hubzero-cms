@@ -35,8 +35,6 @@ defined('_HZEXEC_') or die();
 
 use Components\Events\Models\Orm\Event as CalEvent;
 
-require_once Component::path('com_events') . DS . 'models' . DS . 'orm' . DS . 'event.php';
-
 /**
  * Search events
  */
@@ -288,11 +286,10 @@ class plgSearchEvents extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__events;";
+				$sql = "SELECT id FROM `#__events`;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
 		}
 	}
 }
-

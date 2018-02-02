@@ -71,7 +71,7 @@ class Jobs extends SiteController
 		{
 			$ip = Request::ip();
 
-			$ips = explode(',', $this->config->get('whitelist',''));
+			$ips = explode(',', $this->config->get('whitelist', ''));
 			$ips = array_map('trim', $ips);
 
 			if (!in_array($ip, $ips))
@@ -101,7 +101,7 @@ class Jobs extends SiteController
 		// Get the list of jobs that should be run
 		$results = Job::all()
 			->whereEquals('state', 1)
-			->where('next_run', '<=', Date::toLocal('Y-m-d H:i:s'))
+			->where('next_run', '<=', Date::toSql())
 			->whereEquals('publish_up', '0000-00-00 00:00:00', 1)->orWhere('publish_up', '<=', $now, 1)
 			->resetDepth()
 			->whereEquals('publish_down', '0000-00-00 00:00:00', 1)->orWhere('publish_down', '>', $now, 1)
@@ -140,7 +140,7 @@ class Jobs extends SiteController
 				}
 
 				$job->mark('end_run');
-				$job->set('last_run', Date::toLocal('Y-m-d H:i:s')); //Date::toSql());
+				$job->set('last_run', Date::toSql());
 				$job->set('next_run', $job->nextRun());
 				$job->save();
 

@@ -56,7 +56,8 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array(
 			'usage' => Lang::txt('PLG_MEMBERS_USAGE'),
-			'icon'  => 'f080'
+			'icon'  => 'f080',
+			'menu'  => $this->params->get('display_tab', 1)
 		);
 		return $areas;
 	}
@@ -416,7 +417,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  array
 	 */
-	public function getSerialResourceTypes()
+	public static function getSerialResourceTypes()
 	{
 		$database = App::get('db');
 
@@ -432,7 +433,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	 * @param   integer  $parent_id
 	 * @return  array
 	 */
-	public function getSerialResourceChildren($parent_id)
+	public static function getSerialResourceChildren($parent_id)
 	{
 		$database = App::get('db');
 

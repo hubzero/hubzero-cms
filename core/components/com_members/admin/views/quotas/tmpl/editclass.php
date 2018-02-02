@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 				<p><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_DESC'); ?></p>
 				<?php
 				// Include the component HTML helpers.
-				Html::addIncludePath(PATH_CORE . '/components/com_users/admin/helpers/html');
+				Html::addIncludePath(Component::path('com_users') . '/admin/helpers/html');
 
 				$groups = array();
 				foreach ($this->row->groups() as $g)

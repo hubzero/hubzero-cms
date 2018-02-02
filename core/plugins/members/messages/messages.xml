@@ -45,6 +45,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="display_tab" type="list" default="1" label="PLG_MEMBERS_MESSAGES_PARAM_DISPLAY_TAB_LABEL" description="PLG_MEMBERS_MESSAGES_PARAM_DISPLAY_TAB_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 				<field name="default_method" type="list" default="email" label="Default Method" description="The default messaging method">
 					<option value="email">Email</option>
 					<option value="internal">Internal</option>

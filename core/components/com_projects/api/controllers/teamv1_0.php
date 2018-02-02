@@ -60,7 +60,7 @@ class Teamv1_0 extends ApiController
 		$this->_task = Request::getWord('task', 'list');
 
 		// Load component language file
-		Lang::load('com_projects') || Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('com_projects') || Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');
 
 		// Incoming
 		$id = Request::getVar('id', '');

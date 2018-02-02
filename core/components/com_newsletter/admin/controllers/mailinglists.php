@@ -73,6 +73,7 @@ class Mailinglists extends AdminController
 	{
 		// instantiate mailing list object
 		$lists = Mailinglist::all()
+			->whereEquals('deleted', 0)
 			->ordered()
 			->rows();
 

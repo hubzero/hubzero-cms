@@ -28,7 +28,7 @@ $this->css()
 <?php
 	// Display status message
 	$view = new \Hubzero\Component\View(array(
-		'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
+		'base_path' => Component::path('com_projects') . DS . 'site',
 		'name'      => 'projects',
 		'layout'    => '_statusmsg',
 	));

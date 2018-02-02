@@ -58,24 +58,44 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER'); ?>" />
 
-		<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_GO'); ?>" />
-		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['state'] == '-1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_ALL_STATES'); ?></option>
+					<option value="0"<?php if ($this->filters['state'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->filters['state'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED'); ?></option>
+					<option value="2"<?php if ($this->filters['state'] === 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CREATED'); ?></option>
+					<option value="3"<?php if ($this->filters['state'] === 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED'); ?></option>
+					<option value="4"<?php if ($this->filters['state'] === 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED'); ?></option>
+					<option value="5"<?php if ($this->filters['state'] === 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED'); ?></option>
+					<option value="6"<?php if ($this->filters['state'] === 6) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED'); ?></option>
+					<option value="7"<?php if ($this->filters['state'] === 7) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					<option value="8"<?php if ($this->filters['state'] === 8) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED'); ?></option>
+					<option value="9"<?php if ($this->filters['state'] === 9) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_ABANDONED'); ?></option>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_NAME', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_TOOLS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_COL_REGISTERED', 'registered', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_COL_STATECHANGED', 'state_changed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_VERSIONS', 'versions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_REGISTERED', 'registered', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATECHANGED', 'state_changed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_VERSIONS', 'versions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -101,17 +121,39 @@ function submitbutton(pressbutton)
 
 			switch ($row['state'])
 			{
-				case 0: $state = 'unpublished'; break;
-				case 1: $state = 'registered';  break;
-				case 2: $state = 'created';     break;
-				case 3: $state = 'uploaded';    break;
-				case 4: $state = 'installed';   break;
-				case 5: $state = 'updated';     break;
-				case 6: $state = 'approved';    break;
-				case 7: $state = 'published';   break;
-				case 8: $state = 'retired';     break;
-				case 9: $state = 'abandoned';   break;
-				default: $state = 'unknown';    break;
+				case 0:
+					$state = 'unpublished';
+					break;
+				case 1:
+					$state = 'registered';
+					break;
+				case 2:
+					$state = 'created';
+					break;
+				case 3:
+					$state = 'uploaded';
+					break;
+				case 4:
+					$state = 'installed';
+					break;
+				case 5:
+					$state = 'updated';
+					break;
+				case 6:
+					$state = 'approved';
+					break;
+				case 7:
+					$state = 'published';
+					break;
+				case 8:
+					$state = 'retired';
+					break;
+				case 9:
+					$state = 'abandoned';
+					break;
+				default:
+					$state = 'unknown';
+					break;
 			}
 			?>
 			<tr class="<?php echo "row$k"; ?>">

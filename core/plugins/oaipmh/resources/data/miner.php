@@ -187,7 +187,9 @@ class Miner extends Obj implements Provider
 				$filters['from'] .= ' 00:00:00';
 			}
 			$query .= " AND (
-				(r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` >= " . $this->database->quote($filters['from']) . ") OR (r.`publish_up` = '0000-00-00 00:00:00' AND r.`created` >= " . $this->database->quote($filters['from']) . ")
+				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` >= " . $this->database->quote($filters['from']) . ")
+				OR
+				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` >= " . $this->database->quote($filters['from']) . ")
 			)";
 		}
 		if (isset($filters['until']) && $filters['until'])
@@ -202,7 +204,9 @@ class Miner extends Obj implements Provider
 				$filters['until'] .= ' 00:00:00';
 			}
 			$query .= " AND (
-				(r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` < " . $this->database->quote($filters['until']) . ") OR (r.`publish_up` = '0000-00-00 00:00:00' AND r.`created` < " . $this->database->quote($filters['until']) . ")
+				(r.`publish_up` IS NOT NULL AND r.`publish_up` != '0000-00-00 00:00:00' AND r.`publish_up` < " . $this->database->quote($filters['until']) . ")
+				OR
+				((r.`publish_up` IS NULL OR r.`publish_up` = '0000-00-00 00:00:00') AND r.`created` < " . $this->database->quote($filters['until']) . ")
 			)";
 		}
 
@@ -401,10 +405,12 @@ class Miner extends Obj implements Provider
 		if ($children = $this->database->loadObjectList())
 		{
 			require_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
-			require_once Component::path('com_resources') . DS . 'tables' . DS . 'type.php';
+			require_once Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
 			foreach ($children as $child)
 			{
+				$child->type = \Components\Resources\Models\Type::oneOrNew($child->type);
+
 				$uri = \Components\Resources\Helpers\Html::processPath('com_resources', $child, $id, 3);
 				if (substr($uri, 0, 4) != 'http')
 				{

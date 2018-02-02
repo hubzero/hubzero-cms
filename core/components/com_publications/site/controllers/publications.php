@@ -140,6 +140,10 @@ class Publications extends SiteController
 		$pointer       = $this->_id ? '&id=' . $this->_id : '&alias=' . $this->_alias;
 		$this->_route  = 'index.php?option=' . $this->_option;
 		$this->_route .= $this->_identifier ? $pointer : '';
+		if ($active = Request::getWord('active'))
+		{
+			$this->_route .= '&active=' . $active;
+		}
 	}
 
 	/**
@@ -1014,7 +1018,7 @@ class Publications extends SiteController
 
 			case 'bibtex':
 			default:
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
+				include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
 
 				$bibtex = new \Structures_BibTex();
 				$addarray = array();
@@ -1195,7 +1199,7 @@ class Publications extends SiteController
 
 		// Load language file
 		Lang::load('com_projects') ||
-		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
 		// Instantiate a new view
 		$this->view  = new \Hubzero\Component\View(array(
@@ -1390,7 +1394,7 @@ class Publications extends SiteController
 
 		// Load language file
 		Lang::load('com_projects') ||
-		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
 		// Set page title
 		$this->_task_title = Lang::txt('COM_PUBLICATIONS_FORK');
@@ -1751,6 +1755,13 @@ class Publications extends SiteController
 		{
 			$oldid = $attachment->get('id');
 
+			if ($pth = $attachment->get('path'))
+			{
+				// @TODO: Maybe find a better, more reliable way to do this?
+				$pth = str_replace('./', '', $pth);
+				$attachment->set('path', $pth);
+			}
+
 			$attachment->set('id', 0);
 			$attachment->set('publication_id', $version->get('publication_id'));
 			$attachment->set('publication_version_id', $version->get('id'));
@@ -1795,31 +1806,40 @@ class Publications extends SiteController
 				// Check the default location
 				if (!file_exists($from . $file))
 				{
-					// OK, maybe it's in the gallery
-					$from  = dirname($pubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
-					$toPub = dirname($newpubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
-
-					if (!file_exists($from . $file))
+					// Check for alternate file name without the /galery sub-directory
+					if (file_exists($from . $file2))
 					{
-						// Let's try an alternate file name
-						if (!file_exists($from . $file2))
+						$file = $file2;
+						$filenew = $file2new;
+					}
+					else
+					{
+						// OK, maybe it's in the gallery
+						$from  = dirname($pubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+						$toPub = dirname($newpubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+
+						if (!file_exists($from . $file))
 						{
-							Notify::error('File does not exist: ' . $from . $file2);
-							continue;
+							// Let's try an alternate file name
+							if (!file_exists($from . $file2))
+							{
+								Notify::error('File does not exist: ' . $from . $file2);
+								continue;
+							}
+							// Found it
+							else
+							{
+								$dirHierarchy = $galleryParams['dirHierarchy'];
+
+								$file = $file2;
+								$filenew = $file2new;
+							}
 						}
 						// Found it
 						else
 						{
 							$dirHierarchy = $galleryParams['dirHierarchy'];
-
-							$file = $file2;
-							$filenew = $file2new;
 						}
-					}
-					// Found it
-					else
-					{
-						$dirHierarchy = $galleryParams['dirHierarchy'];
 					}
 				}
 

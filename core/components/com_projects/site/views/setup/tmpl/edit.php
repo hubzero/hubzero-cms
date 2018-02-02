@@ -157,145 +157,22 @@ else
 							{
 								case 'info':
 								default:
-						?>
-						<h4><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO')); ?></h4>
-							<div>
-								<table id="infotbl">
-									<tbody>
-										<tr>
-											<td class="htd"><?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?></td>
-											<td><?php echo $this->model->get('alias'); ?></td>
-										</tr>
-										<tr>
-											<td class="htd"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></td>
-											<td><input name="title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" /></td>
-										</tr>
-										<tr>
-											<td class="htd"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></td>
-											<td>
-												<span class="clear"></span>
-												<?php
-													echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'about', array('class' => 'minimal no-footer'));
-												?>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<?php
-									// Display project image upload
-									$this->view('_picture')
-									     ->set('model', $this->model)
-									     ->set('option', $this->option)
-									     ->display();
-								?>
-							</div><!-- / .basic info -->
-							<p class="submitarea">
-								<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
-								<span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=info'); ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a></span>
-							</p>
-						<?php
-								break;
+									$this->view('_edit_info')
+										->set('config', $this->config)
+										->set('model', $this->model)
+										->set('option', $this->option)
+										->set('privacy', $privacy)
+										->set('publishing', $this->publishing)
+										->display();
+									break;
 								case 'team':
+									$this->view('_edit_team')
+										->set('content', $this->content)
+										->set('model', $this->model)
+										->display();
+									break;
 						?>
-						<h4><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_TEAM')); ?></h4>
-						<div id="cbody">
-							<?php echo $this->content; ?>
-						</div>
-						<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_PROJECT') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?> <?php if ($this->model->access('manager')) { ?>
-							<span class="mini"><a href="<?php echo Route::url($this->model->link('team') . '&action=changeowner'); ?>" class="showinbox"><?php echo ucfirst(Lang::txt('COM_PROJECTS_EDIT')); ?></a></span>
-						<?php } ?></h5>
-						<?php if ($this->model->groupOwner() && $cn = $this->model->groupOwner('cn'))
-						{
-							$ownedby = ucfirst(Lang::txt('COM_PROJECTS_GROUP')) . ' <a href="' . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . ' ' . $this->model->groupOwner('description') . ' (' . $cn . ')</a>';
-						}
-						else
-						{
-							$ownedby = '<a href="' . Route::url('index.php?option=com_members&id=' . $this->model->owner('id')) . '">' . $this->model->owner('name') . '</a>';
-						} echo '<span class="mini">' . $ownedby . '</span>'; ?>
 						<?php
-								break;
-								case 'settings':
-						?>
-						<h4><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_SETTINGS')); ?></h4>
-						<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_ACCESS'); ?></h5>
-						<label><input class="option" name="private" type="radio" value="1" <?php if (!$this->model->isPublic()) { echo 'checked="checked"'; }?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></label>
-						<label><input class="option" name="private" type="radio" value="0" <?php if ($this->model->isPublic()) { echo 'checked="checked"'; }?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></label>
-						<?php if ($this->model->isPublic()) { ?>
-						<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_OPTIONS_FOR_PUBLIC'); ?></h5>
-						<p class="hint"><?php echo Lang::txt('COM_PROJECTS_YOUR_PROJECT_IS'); ?> <span class="prominent urgency"><?php echo $privacy; ?></span></p>
-						<label>
-							<input type="hidden"  name="params[team_public]" value="0" />
-							<input type="checkbox" class="option" name="params[team_public]" value="1" <?php if ($this->model->params->get( 'team_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?>
-						</label>
-
-						<?php if ($this->publishing) { ?>
-						<label>
-							<input type="hidden"  name="params[publications_public]" value="0" />
-							<input type="checkbox" class="option" name="params[publications_public]" value="1" <?php if ($this->model->params->get( 'publications_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?>
-						</label>
-						<?php } ?>
-
-						<?php
-						$pparams = Plugin::params( 'projects', 'notes' );
-						if ($pparams->get('enable_publinks')) { ?>
-						<label>
-							<input type="hidden"  name="params[notes_public]" value="0" />
-							<input type="checkbox" class="option" name="params[notes_public]" value="1" <?php if ($this->model->params->get( 'notes_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_NOTES_PUBLIC'); ?>
-						</label>
-						<?php } ?>
-
-						<?php
-						$pparams = Plugin::params( 'projects', 'files' );
-						if ($pparams->get('enable_publinks')) { ?>
-						<label>
-							<input type="hidden"  name="params[files_public]" value="0" />
-							<input type="checkbox" class="option" name="params[files_public]" value="1" <?php if ($this->model->params->get( 'files_public')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_FILES_PUBLIC'); ?>
-						</label>
-						<?php } ?>
-
-						<?php } ?>
-						<?php if ($this->config->get('grantinfo', 0)) { ?>
-						<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_INFO'); ?></h5>
-						<?php
-							$approved = ($this->model->params->get( 'grant_status') == 1) ? 1 : 0;
-							if ($approved)
-							{ ?>
-							<p class="notice notice_passed"><?php echo Lang::txt('COM_PROJECTS_GRANT_APPROVED_WITH_CODE'); ?> <span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_approval', 'N/A'))); ?></span></p>
-						<?php } else { ?>
-							<p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_INFO_WHY'); ?></p>
-						<?php } ?>
-						<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->model->params->get( 'grant_title', 'N/A'))) . '</span>'; } else {  ?>
-						 <input name="params[grant_title]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_title'))); ?>" class="long" />
-						<?php } ?>
-						</label>
-						<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->model->params->get( 'grant_PI', 'N/A'))) . '</span>'; } else {  ?>
-						 <input name="params[grant_PI]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_PI'))); ?>" class="long"  />
-						<?php } ?>
-						</label>
-						<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->model->params->get( 'grant_agency', 'N/A'))) . '</span>'; } else {  ?>
-						 <input name="params[grant_agency]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_agency'))); ?>" class="long"  />
-						<?php } ?>
-						</label>
-						<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->model->params->get( 'grant_budget', 'N/A'))) . '</span>'; } else {  ?>
-						 <input name="params[grant_budget]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_budget'))); ?>" class="long"  />
-						<?php } ?>
-						</label>
-						<?php if (!$approved) { ?>
-							<label><input class="option" name="params[grant_status]" type="checkbox" value="0" <?php if ($this->model->params->get( 'grant_status') == 2) { echo 'checked="checked"'; } ?> /> <?php echo $this->model->params->get( 'grant_status') == 2
-							? Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL')
-							: Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_NOTIFY_ADMIN') ; ?></label>
-						<?php } ?>
-						<?php } ?>
-						<p class="submitarea">
-							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
-						</p>
-						<?php
-							break;
 							case 'info_custom': ?>
 								<fieldset>
 									<legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO')); ?></legend>

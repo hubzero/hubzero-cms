@@ -109,13 +109,13 @@ class Router extends Base
 			// For wiki routing
 			$segments = array();
 			$scope = 1;
-			$parts = explode ( '/', $query['scope'] );
+			$parts = explode('/', $query['scope']);
 			if (count($parts) >= 3)
 			{
 				$segments[] = $parts[1]; // alias
 				$segments[] = 'notes'; // active
 
-				for ( $i = 3; $i < count($parts); $i++ )
+				for ($i = 3; $i < count($parts); $i++)
 				{
 					$segments[] = $parts[$i]; // inlcude parent page names
 				}
@@ -164,14 +164,14 @@ class Router extends Base
 			'edit', 'browse', 'intro',
 			'features', 'auth', 'delete',
 			'fixownership', 'suspend', 'reinstate',
-			'process', 'activate'
+			'process', 'activate', 'requestaccess'
 		);
 
 		// Media tasks
-		$mediaTasks = array( 'deleteimg', 'media', 'thumb', 'doajaxupload' );
+		$mediaTasks = array('deleteimg', 'media', 'thumb', 'doajaxupload');
 
 		// Tasks managed by Setup controller
-		$setupTasks = array( 'setup', 'start', 'edit', 'save', 'verify', 'suggestalias' );
+		$setupTasks = array('setup', 'start', 'edit', 'save', 'verify', 'suggestalias');
 
 		if (empty($segments[0]))
 		{
@@ -304,11 +304,9 @@ class Router extends Base
 						$vars['pid'] = $segments[2];
 						$blocks = array();
 
-						if (is_file(PATH_CORE . DS . 'components'
-							. DS . 'com_publications' . DS . 'tables' . DS . 'block.php'))
+						if (is_file(\Component::path('com_publications') . DS . 'tables' . DS . 'block.php'))
 						{
-							include_once(PATH_CORE . DS . 'components'
-								. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
+							include_once \Component::path('com_publications') . DS . 'tables' . DS . 'block.php';
 							$database = \App::get('db');
 
 							$b = new \Components\Publications\Tables\Block($database);
@@ -381,7 +379,7 @@ class Router extends Base
 						'edit', 'start', 'save', 'register', 'attach', 'source',
 						'cancel', 'update', 'message', 'verify', 'addimage'
 					);
-					if (in_array( $segments[2], $appActions ))
+					if (in_array($segments[2], $appActions))
 					{
 						$vars['action'] = $segments[2];
 					}
@@ -390,7 +388,7 @@ class Router extends Base
 						$vars['tool'] = $segments[2];
 						$vars['action'] = 'status';
 					}
-					if (!empty($segments[3]) && in_array( $segments[3], $appActions ))
+					if (!empty($segments[3]) && in_array($segments[3], $appActions))
 					{
 						$vars['action'] = $segments[3];
 					}
@@ -415,7 +413,7 @@ class Router extends Base
 					$action = array_pop($remaining);
 					$pagename = '';
 
-					if (in_array( $action, $wiki_actions ))
+					if (in_array($action, $wiki_actions))
 					{
 						$vars['action'] = $action;
 						$pagename = array_pop($remaining);
@@ -434,7 +432,7 @@ class Router extends Base
 						{
 							$scope = 'projects' . DS . $vars['alias'] . DS . 'notes';
 
-							for ( $i = 0; $i < count($remaining); $i++ )
+							for ($i = 0; $i < count($remaining); $i++)
 							{
 								$scope .= DS . $remaining[$i]; // inlcude parent page names
 							}

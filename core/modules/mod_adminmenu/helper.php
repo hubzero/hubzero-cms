@@ -34,6 +34,7 @@ namespace Modules\AdminMenu;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Arr;
+use Component;
 use Request;
 use Lang;
 use User;
@@ -180,9 +181,9 @@ class Helper extends Module
 						// Load the core file then
 						// Load extension-local file.
 						$lang->load($component->element . '.sys', PATH_APP . '/bootstrap/administrator', null, false, false)
-						|| $lang->load($component->element . '.sys', ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->element . '/admin', null, false, false)
+						|| $lang->load($component->element . '.sys', Component::path($component->element) . '/admin', null, false, false)
 						|| $lang->load($component->element . '.sys', PATH_APP . '/bootstrap/administrator', $lang->getDefault(), false, false)
-						|| $lang->load($component->element . '.sys', ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->element . '/admin', $lang->getDefault(), false, false);
+						|| $lang->load($component->element . '.sys', Component::path($component->element) . '/admin', $lang->getDefault(), false, false);
 					}
 					$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
 				}

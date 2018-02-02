@@ -108,13 +108,13 @@ $menu->getParent();
 //
 // Users Submenu
 //
-if (User::authorise('core.manage', 'com_users'))
+if (User::authorise('core.manage', 'com_members'))
 {
 	$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_COM_USERS_USERS'), '#'), true
 	);
-	$createUser = $shownew && User::authorise('core.create', 'com_users');
-	$createGrp  = User::authorise('core.admin', 'com_users');
+	$createUser = $shownew && User::authorise('core.create', 'com_members');
+	$createGrp  = User::authorise('core.admin', 'com_members');
 
 	/*$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_COM_USERS_USER_MANAGER'), 'index.php?option=com_users&view=users', 'class:user') //, $createUser
@@ -138,9 +138,13 @@ if (User::authorise('core.manage', 'com_users'))
 		);
 		$menu->getParent();
 	}
-	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_GROUPS'), 'index.php?option=com_groups', 'class:groups')
-	);
+
+	if (User::authorise('core.manage', 'com_groups'))
+	{
+		$menu->addChild(
+			new Node(Lang::txt('MOD_MENU_COM_GROUPS'), 'index.php?option=com_groups', 'class:groups')
+		);
+	}
 
 	if ($createGrp)
 	{

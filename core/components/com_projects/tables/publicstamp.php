@@ -40,21 +40,21 @@ class Stamp extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__project_public_stamps', 'id', $db );
+		parent::__construct('#__project_public_stamps', 'id', $db);
 	}
 
 	/**
 	 * Load item
 	 *
-	 * @param      integer 	$projectid		Project ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $projectid  Project ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function loadItem ( $stamp = '')
+	public function loadItem($stamp = '')
 	{
 		if (!$stamp)
 		{
@@ -65,10 +65,10 @@ class Stamp extends \JTable
 		$query  = "SELECT * FROM $this->_tbl WHERE stamp=" . $this->_db->quote($stamp);
 		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			$this->bind( $result );
+			$this->bind($result);
 			if ($this->expires && $this->expires != '0000-00-00 00:00:00' &&  $this->expires < $now)
 			{
 				// Clean up expired value
@@ -82,7 +82,7 @@ class Stamp extends \JTable
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -90,11 +90,11 @@ class Stamp extends \JTable
 	/**
 	 * Get listed items
 	 *
-	 * @param      int		$projectid		Project ID
-	 * @param      string 	$type
-	 * @return     object array
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $type
+	 * @return  object   array
 	 */
-	public function getPubList ( $projectid = 0, $type = '')
+	public function getPubList($projectid = 0, $type = '')
 	{
 		if (!$projectid)
 		{
@@ -105,18 +105,19 @@ class Stamp extends \JTable
 		$query .= " AND type=" . $this->_db->quote($type)
 				. " AND listed=1 ORDER BY created DESC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Check if stamp exists
 	 *
-	 * @param      integer 	$projectid		Project ID
-	 * @param      string 	$reference		Reference string to object (JSON)
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $reference  Reference string to object (JSON)
+	 * @param   string   $type
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function checkStamp ( $projectid = 0, $reference = '', $type = '')
+	public function checkStamp($projectid = 0, $reference = '', $type = '')
 	{
 		if (!$projectid || !$reference)
 		{
@@ -127,14 +128,14 @@ class Stamp extends \JTable
 		$query .= " AND reference=" . $this->_db->quote($reference)
 				. " AND type= " . $this->_db->quote($type) . " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -142,11 +143,14 @@ class Stamp extends \JTable
 	/**
 	 * Register stamp
 	 *
-	 * @param      integer 	$projectid		Project ID
-	 * @param      string 	$reference		Reference string to object (JSON)
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $reference  Reference string to object (JSON)
+	 * @param   string   $type
+	 * @param   integer  $listed
+	 * @param   boolean  $expires
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function registerStamp ( $projectid = 0, $reference = '', $type = 'files', $listed = 0, $expires = NULL)
+	public function registerStamp($projectid = 0, $reference = '', $type = 'files', $listed = 0, $expires = null)
 	{
 		if (!$projectid || !$reference)
 		{
@@ -156,7 +160,7 @@ class Stamp extends \JTable
 		$now = Date::toSql();
 
 		$obj = new self($this->_db);
-		$obj->checkStamp( $projectid, $reference, $type );
+		$obj->checkStamp($projectid, $reference, $type);
 
 		// Load record
 		if ($obj->id)
@@ -165,18 +169,18 @@ class Stamp extends \JTable
 			{
 				// Expired
 				$obj->delete();
-				return $this->registerStamp( $projectid, $reference, $type, $listed, $expires);
+				return $this->registerStamp($projectid, $reference, $type, $listed, $expires);
 			}
 			else
 			{
-				if ($listed === NULL && $expires === NULL)
+				if ($listed === null && $expires === null)
 				{
 					return $obj->stamp;
 				}
 
 				// These values may be updated
-				$obj->listed	= $listed === NULL ? $obj->listed : $listed;
-				$obj->expires	= $expires === NULL ? $obj->expires : $expires;
+				$obj->listed  = $listed === null ? $obj->listed : $listed;
+				$obj->expires = $expires === null ? $obj->expires : $expires;
 				$obj->store();
 
 				return $obj->stamp;
@@ -185,19 +189,19 @@ class Stamp extends \JTable
 
 		// Make new entry
 		$created = Date::toSql();
-		$created_by	= User::get('id');
+		$created_by = User::get('id');
 
 		// Generate stamp
-		require_once( PATH_CORE . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'html.php');
-		$stamp 		= \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
+		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+		$stamp = \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
 
 		$query = "INSERT INTO $this->_tbl (stamp, projectid, listed, type, reference, expires, created, created_by)
-				 VALUES ('$stamp', '$projectid', '$listed', '$type', '$reference', '$expires' , '$created', '$created_by' )";
+				 VALUES ('$stamp', '$projectid', '$listed', '$type', '$reference', '$expires' , '$created', '$created_by')";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 

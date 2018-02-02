@@ -219,7 +219,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
 		switch ($category)
 		{
@@ -257,7 +257,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
 		$database = App::get('db');
 
@@ -421,7 +421,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 			case 'answercomment':
 				$comment = \Hubzero\Item\Comment::oneOrFail($referenceid);
-				$comment->set('state', $comment::STATE_DELETED);
+				$comment->set('state', \Hubzero\Item\Comment::STATE_DELETED);
 
 				if (!$comment->save())
 				{
@@ -453,4 +453,3 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		return $database->loadResult();
 	}
 }
-

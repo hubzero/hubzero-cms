@@ -105,7 +105,6 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 					AND DATEDIFF(`publish_down`, '{$now}') <= {$maxDays}";
 		$db->setQuery($query);
 		$skus = $db->loadObjectList('sId');
-		//print_r($skus); die;
 
 		// Build an index of all SKU notifications that should potentially be sent
 		$notificationsIndex = array();
@@ -131,14 +130,10 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//print_r($affectedSkus);
-		//print_r($notificationsIndex); die;
-
 		// Get all existing notifications about potentially affected SKUs
 		$query = "SELECT scope_id, meta FROM jos_notifications WHERE scope = 'publishDownSku' AND scope_id IN ({$affectedSkus})";
 		$db->setQuery($query);
 		$notifications = $db->loadObjectList();
-		//print_r($notifications); die;
 
 		// Clean the $notificationsIndex
 		// Go through all notifications and remove the references from the $notificationsIndex for those already sent
@@ -146,7 +141,7 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		{
 			// Get meta
 			$meta = unserialize($notification->meta);
-			//print_r($notificationsIndex); die;
+
 			// Unset the index matching the current notification
 			if ($meta['publish_down'] == $notificationsIndex[$notification->scope_id]['publish_down'])
 			{
@@ -180,7 +175,6 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 					AND DATEDIFF(`publish_down`, '{$now}') <= {$maxDays}";
 		$db->setQuery($query);
 		$products = $db->loadObjectList('pId');
-		//print_r($products); die;
 
 		// Build an index of all Product notifications that should potentially be sent
 		$notificationsIndex = array();
@@ -206,14 +200,10 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//print_r($affectedProducts);
-		//print_r($notificationsIndex); die;
-
 		// Get all existing notifications about potentially affected Products
 		$query = "SELECT scope_id, meta FROM jos_notifications WHERE scope = 'publishDownProduct' AND scope_id IN ({$affectedProducts})";
 		$db->setQuery($query);
 		$notifications = $db->loadObjectList();
-		//print_r($notifications); die;
 
 		// Clean the $notificationsIndex
 		// Go through all notifications and remove the references from the $notificationsIndex for those already sent
@@ -221,7 +211,7 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		{
 			// Get meta
 			$meta = unserialize($notification->meta);
-			//print_r($notificationsIndex); die;
+
 			// Unset the index matching the current notification
 			if ($meta['publish_down'] == $notificationsIndex[$notification->scope_id]['publish_down'])
 			{
@@ -271,13 +261,13 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		}
 
 		$eview = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'site',
+			'base_path' => Component::path('com_storefront') . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => 'publish_down_notification'
 		));
-		$eview->option    = 'com_storefront';
-		$eview->skus  = $skusInfo;
-		$eview->products  = $productsInfo;
+		$eview->option   = 'com_storefront';
+		$eview->skus     = $skusInfo;
+		$eview->products = $productsInfo;
 
 		$plain = $eview->loadTemplate();
 		$plain = str_replace("\n", "\r\n", $plain);
@@ -313,14 +303,14 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	* Summary
-	*
-	* @param  array  $notificationsIndex
-	* @param  [type] $scope
-	*/
+	 * Summary
+	 *
+	 * @param   array   $notificationsIndex
+	 * @param   string  $scope
+	 * @return  bool
+	 */
 	private function recordNotifications($notificationsIndex, $scope)
 	{
-		//print_r($notificationsIndex); die;
 		$values = '';
 
 		foreach ($notificationsIndex as $id => $info)
@@ -342,7 +332,7 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		{
 			return;
 		}
-		$db = clone(App::get('db'));
+		$db = App::get('db');
 		$sql = "INSERT INTO `#__notifications` (scope, scope_id, notified, meta) VALUES" . $values;
 		$db->setQuery($sql);
 		$db->query();

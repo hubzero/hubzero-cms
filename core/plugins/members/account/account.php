@@ -66,6 +66,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		{
 			$areas['account'] = Lang::txt('PLG_MEMBERS_ACCOUNT');
 			$areas['icon'] = 'f085';
+			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 
 		return $areas;
@@ -322,15 +323,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function sendtoken()
 	{
-		// Import helpers/classes
-		jimport('joomla.mail.helper');
-		jimport('joomla.user.helper');
-
 		// Make sure they're logged in
 		if ($this->user->isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken'))),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false),
 				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
@@ -346,9 +343,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Generate a new random token and hash it
-		//$token       = App::hash(JUserHelper::genRandomPassword());
-		//$salt        = JUserHelper::getSalt('crypt-md5');
-		//$hashedToken = md5($token.$salt).':'.$salt;
 		$token = abs(\Components\Members\Helpers\Utility::genemailconfirm());
 
 		// Store the hashed token
@@ -374,8 +368,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function confirmtoken()
 	{
-		jimport('joomla.user.helper');
-
 		// Check if they're logged in
 		if ($this->user->isGuest())
 		{
@@ -550,9 +542,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Load some needed libraries
-		jimport('joomla.user.helper');
-
 		// Fire the onBeforeStoreUser trigger
 		Event::trigger('user.onBeforeStoreUser', array($this->user->toArray(), false));
 
@@ -611,7 +600,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Save the changes
 		if (!$result)
 		{
-			$view->setError( Lang::txt('MEMBERS_PASS_CHANGE_FAILED') );
+			$view->setError(Lang::txt('MEMBERS_PASS_CHANGE_FAILED'));
 			return $view->loadTemplate();
 		}
 
@@ -755,7 +744,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!Filesystem::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
+			require_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
 			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
 			{
@@ -821,7 +810,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!Filesystem::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
+			require_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
 			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
 			{

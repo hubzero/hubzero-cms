@@ -1511,6 +1511,14 @@ class Curation extends Obj
 		$status->authornotice  = null;
 		$status->updated_by    = 0;
 
+		// Make sure the step exists
+		// If it doesn't, this is possibly a block that was
+		// disabled on the master type and later enabled.
+		if (!isset($pub->_curationModel->_progress->blocks->$step))
+		{
+			return $status;
+		}
+
 		if ($elId)
 		{
 			$reviewStatus = $pub->_curationModel->_progress->blocks->$step->review->elements->$elId;

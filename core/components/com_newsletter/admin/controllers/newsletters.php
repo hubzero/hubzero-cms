@@ -38,6 +38,7 @@ use Components\Newsletter\Models\MailingList;
 use Components\Newsletter\Models\Mailing;
 use Components\Newsletter\Models\Primary;
 use Components\Newsletter\Models\Secondary;
+use Components\Newsletter\Models\Mailing\Recipient;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
 use stdClass;
@@ -77,17 +78,31 @@ class Newsletters extends AdminController
 	 */
 	private function dependencyCheck()
 	{
-		$sql = "SELECT * FROM `#__cron_jobs` WHERE `plugin`=" . $this->database->quote('newsletter') . " AND `event`=" . $this->database->quote('processMailings');
-		$this->database->setQuery($sql);
-		$sendMailingsCronJob = $this->database->loadObject();
+		// Is the CRON component enabled?
+		if (!\Component::isEnabled('com_cron'))
+		{
+			return false;
+		}
 
-		//if we dont have an object create new cron job
+		$database = App::get('db');
+
+		// Does the database table exist?
+		if (!$database->tableExists('#__cron_jobs'))
+		{
+			return false;
+		}
+
+		$sql = "SELECT * FROM `#__cron_jobs` WHERE `plugin`=" . $database->quote('newsletter') . " AND `event`=" . $database->quote('processMailings');
+		$database->setQuery($sql);
+		$sendMailingsCronJob = $database->loadObject();
+
+		// If we dont have an object create new cron job
 		if (!is_object($sendMailingsCronJob))
 		{
 			return false;
 		}
 
-		//is the cron job turned off
+		// Is the cron job turned off?
 		if (is_object($sendMailingsCronJob) && $sendMailingsCronJob->state == 0)
 		{
 			return false;
@@ -104,12 +119,7 @@ class Newsletters extends AdminController
 	public function displayTask()
 	{
 		// dependency check
-		if (!$this->dependencyCheck())
-		{
-			// show missing dependency layout
-			$this->view->setLayout('dependency')->display();
-			return;
-		}
+		$dependency = $this->dependencyCheck();
 
 		// Filters
 		$filters = array(
@@ -140,7 +150,8 @@ class Newsletters extends AdminController
 		$records = Newsletter::all()
 			->including(['template', function ($template){
 				$template->select('*');
-			}]);
+			}])
+			->whereEquals('deleted', 0);
 
 		if ($filters['search'])
 		{
@@ -164,6 +175,7 @@ class Newsletters extends AdminController
 			->setLayout('display')
 			->set('rows', $rows)
 			->set('filters', $filters)
+			->set('dependency', $dependency)
 			->display();
 	}
 
@@ -408,7 +420,7 @@ class Newsletters extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$publish = $this->getTask() == 'publish' ? 1 : 0;
+		$publish = $this->getTask() == 'publish' ? Newsletter::STATE_PUBLISHED : Newsletter::STATE_UNPUBLISHED;
 
 		// Get the request vars
 		$ids = Request::getVar('id', array());
@@ -911,16 +923,16 @@ class Newsletters extends AdminController
 			));
 
 		// Save mailing object
-		if (!$newsletterMailing->save())
+		if (!$mailing->save())
 		{
 			Notify::error(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_FAIL'));
 			return $this->sendNewsletterTask();
 		}
 
 		// create recipients
-		$this->_sendTo($newsletterMailing, $newsletterContacts);
+		$this->_sendTo($mailing, $newsletterContacts);
 
-		return $newsletterMailing;
+		return $mailing;
 	}
 
 	/**

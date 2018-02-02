@@ -37,6 +37,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Hubzero\Utility\Str;
 use Components\Tags\Models\Tag;
+use stdClass;
 
 require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'author.php';
@@ -54,7 +55,7 @@ require_once \Component::path('com_publications') . DS . 'models' . DS . 'orm' .
  *
  * @uses \Hubzero\Database\Relational
  */
-class Citation extends Relational
+class Citation extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table namespace
@@ -78,15 +79,6 @@ class Citation extends Relational
 	protected $rules = array(
 		'type'  => 'notempty',
 		'title' => 'notempty'
-	);
-
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'author'
 	);
 
 	/**
@@ -1460,16 +1452,15 @@ class Citation extends Relational
 
 	/**
 	 * Output a list of authors
-	 *
+	 * @param boolean $includeMemberId if true, include member ID next to author name
 	 * @return  string
 	 */
-	public function automaticAuthor()
+	public function getAuthorString($includeMemberId = true)
 	{
-		if (!empty($this->tempId))
+		if ($this->isNew() && !empty($this->tempId))
 		{
 			$this->set('id', $this->tempId);
 		}
-
 		$authors = $this->relatedAuthors()->order('ordering', 'ASC')->rows();
 		$convertedAuthors = array();
 		foreach ($authors as $author)
@@ -1481,7 +1472,10 @@ class Citation extends Relational
 			$authorText = $lastName;
 			$authorText .= ', ' . $firstName;
 			$authorText .= !empty($firstName) && !empty($middleName) ? ' ' . $middleName : '';
-			$authorText .= !empty($memberId) ? '{{' . $memberId . '}}' : '';
+			if ($includeMemberId)
+			{
+				$authorText .= !empty($memberId) ? '{{' . $memberId . '}}' : '';
+			}
 			if (empty(trim($authorText)))
 			{
 				continue;
@@ -1489,11 +1483,100 @@ class Citation extends Relational
 			$convertedAuthors[] = $authorText;
 		}
 
-		if (!empty($this->tempId))
+		if ($this->isNew() && !empty($this->tempId))
 		{
 			$this->removeAttribute('id');
 		}
 
 		return implode(';', $convertedAuthors);
+	}
+
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
+	public function searchResult()
+	{
+		$citation = new stdClass;
+		$citation->title = $this->title;
+		$citation->hubtype = 'citation';
+		$citation->id = 'citation-' . $this->id;
+		$citation->description = $this->abstract;
+		$citation->doi = $this->doi;
+		$tags = explode(',', $this->keywords);
+		foreach ($tags as $key => &$tag)
+		{
+			$tag = \Hubzero\Utility\Sanitize::stripAll($tag);
+			if ($tag == '')
+			{
+				unset($tags[$key]);
+			}
+		}
+		$citation->tags = $tags;
+
+		$citation->author = explode(';', $this->getAuthorString(false));
+		if ($this->scope == 'member')
+		{	
+			$citation->url = '/members/' . $this->uid . '/citations';
+		}
+		elseif ($this->scope != 'group')
+		{
+			$citation->url = '/citations/view/' . $this->id;
+		}
+
+		if ($this->published == 1 && $this->scope != 'group')
+		{
+			$citation->access_level = 'public';
+		}
+		elseif ($this->scope == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($this->scope_id);
+			if ($group)
+			{
+				$groupName = $group->get('cn');
+				$citation->url = '/groups/' . $groupName . '/citations';
+				$citationAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'citations');
+				if ($citationAccess == 'anyone')
+				{
+					$citation->access_level = 'public';
+				}	
+				elseif ($citationAccess == 'registered')
+				{
+					$citation->access_level = 'registered';
+				}
+				else
+				{
+					$citation->access_level = 'private';
+					$citation->owner_type = 'group';
+					$citation->owner = $this->scope_id;
+				}
+			}
+		}
+		else
+		{
+			$citation->access_level = 'private';
+			$citation->owner_type = 'user';
+			$citation->owner = $this->uid;
+		}
+		return $citation;
+	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 *	@return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 * @return Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
 	}
 }

@@ -41,19 +41,19 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Retrieve records for items tagged with specific tags
 	 *
-	 * @param      array   $tags       Tags to match records against
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * @param   array    $tags        Tags to match records against
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
@@ -104,10 +104,16 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
-			case 'title': $order_by .= 'title ASC, publish_up';  break;
-			case 'id':    $order_by .= "id DESC";                break;
+			case 'title':
+				$order_by .= 'title ASC, publish_up';
+				break;
+			case 'id':
+				$order_by .= "id DESC";
+				break;
 			case 'date':
-			default:      $order_by .= 'publish_up DESC, title'; break;
+			default:
+				$order_by .= 'publish_up DESC, title';
+				break;
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -130,12 +136,12 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 	/**
 	 * Static method for formatting results
 	 *
-	 * @param      object $row Database row
-	 * @return     string HTML
+	 * @param   object  $row  Database row
+	 * @return  string  HTML
 	 */
 	public static function out($row)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
 		$row->scope    = $row->rcount;
 		$row->scope_id = $row->data2;
@@ -152,4 +158,3 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 }
-

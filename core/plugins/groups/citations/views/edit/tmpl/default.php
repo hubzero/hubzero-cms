@@ -52,12 +52,12 @@ $b = array();
 
 foreach ($this->tags as $tag)
 {
-	$t[] = $tag['raw_tag'];
+	$t[] = $tag;
 }
 
 foreach ($this->badges as $badge)
 {
-	$b[] = $badge['raw_tag'];
+	$b[] = $badge;
 }
 
 $tags_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', implode(",", $t))));

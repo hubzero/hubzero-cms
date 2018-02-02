@@ -1088,26 +1088,27 @@ class Items extends AdminController
 		// Append any errors
 		if ($this->getError())
 		{
-			$output .= ' ' . $this->getError();
+			Notify::error($this->getError());
+		}
+
+		if ($output)
+		{
+			Notify::success($output);
 		}
 
 		// Redirect to edit view?
 		if ($redirect)
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $this->model->get('version_number'), false),
-				$output
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $this->model->get('version_number'), false)
 			);
 		}
 		else
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$output
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 		}
-
-		return;
 	}
 
 	/**
@@ -1271,7 +1272,7 @@ class Items extends AdminController
 
 		$version = count($ids) == 1 ? Request::getVar('version', 'all') : 'all';
 
-		require_once (PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
+		require_once \Component::path('com_projects') . DS . 'tables' . DS . 'activity.php';
 
 		foreach ($ids as $id)
 		{

@@ -55,9 +55,7 @@ class Helper extends Module
 			return;
 		}
 
-		\JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/admin/models', 'ContentModel');
-
-		jimport('joomla.application.categories');
+		\JModelLegacy::addIncludePath(\Component::path('com_content') . '/admin/models', 'ContentModel');
 
 		// [!] Legacy compatibility
 		$params = $this->params;

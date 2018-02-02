@@ -62,7 +62,8 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 		{
 			$areas = array(
 				'todo' => Lang::txt('PLG_MEMBERS_TODO'),
-				'icon' => 'f08d'
+				'icon' => 'f08d',
+				'menu' => $this->params->get('display_tab', 1)
 			);
 		}
 		return $areas;

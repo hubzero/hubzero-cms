@@ -51,7 +51,7 @@ class Events extends GroupMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -69,7 +69,7 @@ class Events extends GroupMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -106,9 +106,9 @@ class Events extends GroupMacro
 	/**
 	 * Get a list of events for a group
 	 *
-	 * @param      object $group
-	 * @param      array  $filters
-	 * @return     array
+	 * @param   object  $group
+	 * @param   array   $filters
+	 * @return  array
 	 */
 	private function getGroupEvents($group, $filters = array())
 	{
@@ -116,7 +116,7 @@ class Events extends GroupMacro
 		$database = \App::get('db');
 
 		// Build query
-		$sql = "SELECT * FROM #__events
+		$sql = "SELECT * FROM `#__events`
 				WHERE publish_up >= UTC_TIMESTAMP()
 				AND scope=" . $database->quote('group') . "
 				AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
@@ -163,7 +163,7 @@ class Events extends GroupMacro
 					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
 					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('g:i a');
 				}
-				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
+				else if (isset($event->publish_down) && $event->publish_down && $event->publish_down != '0000-00-00 00:00:00')
 				{
 					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
 					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('m/d/Y @ g:i a');

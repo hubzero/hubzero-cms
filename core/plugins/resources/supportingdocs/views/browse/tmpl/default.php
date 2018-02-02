@@ -239,7 +239,7 @@ else
 								}
 							}
 
-							// Add PATH_CORE
+							// Add base path
 							$filename = PATH_APP . $filename;
 
 							$width  = 0;

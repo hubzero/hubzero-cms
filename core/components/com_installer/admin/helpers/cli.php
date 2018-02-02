@@ -216,6 +216,43 @@ class Cli
 	}
 
 	/**
+	 * Install a package via composer
+	 * 
+	 * @param   string    $packageName      Name of the package to install in the form of vendor/name
+	 * @param   string    $packageVersion   Version of the package to install
+	 * @return  string
+	 */
+	public static function installPackage($packageName, $packageVersion)
+	{
+		$args = array('-option=package', '-task=install');
+		if (!empty($packageName))
+		{
+			$args[] = '-package=' . $packageName;
+		}
+		if (!empty($packageVersion))
+		{
+			$args[] = '-version=' . $packageVersion;
+		}
+		return self::call('composer', 'repository', $args);
+	}
+
+	/**
+	 * Remove a package via composer
+	 * 
+	 * @param    string    $packageName     Name of the package to remove in the form of vendor/name
+	 * @return   string
+	 */
+	public static function removePackage($packageName)
+	{
+		$args = array('-option=package', '-task=remove');
+		if (!empty($packageName))
+		{
+			$args[] = '-package=' . $packageName;
+		}
+		return self::call('composer', 'repository', $args);
+	}
+
+	/**
 	 * Make actual muse calls
 	 *
 	 * @param   string  $cmd   the command to run

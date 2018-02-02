@@ -163,7 +163,7 @@ class Events extends GroupMacro
 					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
 					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('g:i a');
 				}
-				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
+				else if (isset($event->publish_down) && $event->publish_down && $event->publish_down != '0000-00-00 00:00:00')
 				{
 					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
 					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('m/d/Y @ g:i a');
@@ -196,4 +196,3 @@ class Events extends GroupMacro
 		return $content;
 	}
 }
-

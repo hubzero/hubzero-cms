@@ -31,6 +31,7 @@
 namespace Components\Storefront\Site\Controllers;
 
 use Components\Storefront\Models\Warehouse;
+use Components\Storefront\Models\Product as P;
 use Components\Cart\Models\CurrentCart;
 use Components\Cart\Helpers\Audit;
 use Exception;
@@ -83,7 +84,11 @@ class Product extends \Hubzero\Component\SiteController
 		}
 		$pId = $pInfo->pId;
 
+		$p = new P($pId);
+		$meta = $p->getMeta();
+
 		$this->view->pId = $pId;
+		$this->view->meta = $meta;
 		$this->view->css();
 		$this->view->js('product_display.js');
 

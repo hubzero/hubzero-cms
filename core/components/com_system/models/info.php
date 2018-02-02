@@ -121,7 +121,9 @@ class Info extends Obj
 				{
 					foreach ($data as $key => $value)
 					{
-						if (in_array($key, $blur))
+						if (in_array($key, $blur)
+						 || substr($key, -strlen('password')) == 'password'
+						 || substr($key, -strlen('secret')) == 'secret')
 						{
 							$value = 'xxxxxx';
 						}
@@ -131,7 +133,9 @@ class Info extends Obj
 				}
 				else
 				{
-					if (in_array($data, $blur))
+					if (in_array($data, $blur)
+					 || substr($data, -strlen('password')) == 'password'
+					 || substr($data, -strlen('secret')) == 'secret')
 					{
 						$value = 'xxxxxx';
 					}

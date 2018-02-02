@@ -593,7 +593,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		if ($isNew && $this->_options['emailnew'] == 1)
 		{
 			$eview = new \Hubzero\Component\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'site',
+				'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'confirm'
 			));

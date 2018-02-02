@@ -139,19 +139,26 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 		{
 			$ids[] = $version->get('page_id');
 		}
-		$rows = \Components\Wiki\Models\Page::all()
+		$query = \Components\Wiki\Models\Page::all()
 			->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
 			->whereEquals('scope', 'site')
-			->whereIn('id', $ids)
-			->limit($limit)
-			->start($limitstart);
+			->whereIn('id', $ids);
 
 		if (!$limit)
 		{
-			return $rows->count();
+			return $query->total();
 		}
 		else
 		{
+			if ($limitstart < 0)
+			{
+				$limitstart = 0;
+			}
+
+			$rows = $query
+				->limit($limit)
+				->start($limitstart);
+
 			return $rows->rows();
 		}
 	}

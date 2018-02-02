@@ -84,7 +84,31 @@ $this->css('theme' . $theme . '.css');
 	?>
 
 	<section class="main section">
-		<div class="project-inner-wrap">
+		<div class="project-inner-wrap grid">
+			<?php $member = $this->model->member(); ?>
+			<?php $link = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $this->model->get('alias') . '&' . Session::getFormToken() . '=1'); ?>
+			<?php if ($this->model->allowMembershipRequest()): ?>
+				<?php if (!$member): ?>
+					<div class="btn-container tooltips span4">
+						<a href="<?php echo $link;?>" class="tooltips btn btn-success"><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ;?></a>
+					</div>
+				<?php elseif ($member->get('status') == 3): ?>
+					<div class="btn-container tooltips span4" title="Membership Request Pending">
+						<a href="<?php echo $link; ?>" class="tooltips btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ;?></a>
+					</div>
+				<?php elseif ($member->get('status') == 4): ?>
+					<?php 
+						$params = new Hubzero\Config\Registry($member->get('params')); 
+						$denyMessage = 'Membership has been denied. <br/>';
+						$denyMessage .= 'Reason: <br/>';
+						$denyMessage .= $params->get('denyMessage');	
+					?>
+					
+					<div class="btn-container tooltips span4" title="<?php echo $denyMessage;?>">
+						<a href="<?php echo $link; ?>" class="btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ;?></a>
+					</div>
+				<?php endif; ?>
+			<?php endif; ?>
 			<?php if ($this->model->about('parsed')) { ?>
 				<div class="public-list-header">
 					<h3><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></h3>

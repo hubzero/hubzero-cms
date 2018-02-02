@@ -46,9 +46,14 @@ class Installer
 	public static function addSubmenu($vName = 'install')
 	{
 		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_INSTALL'),
-			Route::url('index.php?option=com_installer'),
-			$vName == 'install'
+			Lang::txt('COM_INSTALLER_SUBMENU_MANAGE'),
+			Route::url('index.php?option=com_installer&controller=manage'),
+			$vName == 'manage'
+		);
+		Submenu::addEntry(
+			Lang::txt('COM_INSTALLER_SUBMENU_PACKAGES'),
+			Route::url('index.php?option=com_installer&controller=packages'),
+			$vName == 'repositories'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS'),
@@ -56,29 +61,14 @@ class Installer
 			$vName == 'migrations'
 		);
 		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_MANAGE'),
-			Route::url('index.php?option=com_installer&controller=manage'),
-			$vName == 'manage'
+			Lang::txt('COM_INSTALLER_SUBMENU_LANGUAGES'),
+			Route::url('index.php?option=com_installer&controller=languages'),
+			$vName == 'languages'
 		);
-		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_DISCOVER'),
-			Route::url('index.php?option=com_installer&controller=discover'),
-			$vName == 'discover'
-		);
-		/*Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_DATABASE'),
-			Route::url('index.php?option=com_installer&controller=database'),
-			$vName == 'database'
-		);*/
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_WARNINGS'),
 			Route::url('index.php?option=com_installer&controller=warnings'),
 			$vName == 'warnings'
-		);
-		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_LANGUAGES'),
-			Route::url('index.php?option=com_installer&controller=languages'),
-			$vName == 'languages'
 		);
 	}
 

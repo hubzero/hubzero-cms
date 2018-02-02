@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 				<!-- Facet -->
 				<div class="input-wrap">
 					<label for="field-facet"><?php echo Lang::txt('COM_SEARCH_FIELD_FACET'); ?>:</label><br />
-						<input type="text" name="fields[facet]" id="field-facet" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->facet->facet)); ?>" />
+						<input type="text" name="fields[facet]" id="field-facet" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->facet->get('facet'))); ?>" />
 				</div>
 
 				<!-- Parent -->
@@ -98,7 +98,7 @@ function submitbutton(pressbutton)
 							foreach ($parents as $parent)
 							{
 						?>
-								<option value="<?php echo $parent->id; ?>"><?php echo $parent->name; ?></option>
+								<option value="<?php echo $parent->id; ?>" <?php echo $this->facet->parent_id == $parent->id ? 'selected="selected"' : '';?>><?php echo $parent->name; ?></option>
 						<?php
 							}
 						?>

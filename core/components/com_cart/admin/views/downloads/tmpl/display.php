@@ -28,6 +28,8 @@
  */
 
 defined('_HZEXEC_') or die();
+use Components\Storefront\Models\Product;
+use Components\Storefront\Models\Sku;
 
 $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('download');
 
@@ -50,16 +52,48 @@ Toolbar::spacer();
 Toolbar::help('downloads');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
+	function submitbutton(pressbutton)
+	{
+		var form = document.adminForm;
+		if (pressbutton == 'cancel') {
+			submitform(pressbutton);
+			return;
+		}
+		// do field validation
 		submitform(pressbutton);
-		return;
 	}
-	// do field validation
-	submitform(pressbutton);
-}
+
+	$( function() {
+		var dateFormat = "mm/dd/yy",
+			from = $( "#filter-report-from" )
+				.datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 1
+				})
+				.on( "change", function() {
+					to.datepicker( "option", "minDate", getDate( this ) );
+				}),
+			to = $( "#filter-report-to" ).datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 1
+				})
+				.on( "change", function() {
+					from.datepicker( "option", "maxDate", getDate( this ) );
+				});
+
+		function getDate( element ) {
+			var date;
+			try {
+				date = $.datepicker.parseDate( dateFormat, element.value );
+			} catch( error ) {
+				date = null;
+			}
+
+			return date;
+		}
+	} );
 </script>
 
 <?php
@@ -73,21 +107,18 @@ $this->view('_submenu')
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
 				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
-
-				<input type="submit" value="<?php echo Lang::txt('COM_CART_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-report-from').val('<?php echo date('m/d/Y', strtotime('-1 month')); ?>');$('#filter-report-to').val('<?php echo date('m/d/Y'); ?>');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7 align-right">
 				<?php
 				if (!empty($this->filters['skuRequested']))
 				{
-				?>
+					?>
 					<select name="skuRequested" id="skuRequested" onchange="this.form.submit();">
 						<option value="0"<?php if ($this->filters['skuRequested'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('All SKUs'); ?></option>
 						<option value="<?php echo $this->filters['skuRequested']; ?>" selected="selected"><?php echo $this->skuRequestedName; ?></option>
 					</select>
 					&nbsp;&nbsp;
-				<?php
+					<?php
 				}
 				?>
 				<label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
@@ -102,30 +133,71 @@ $this->view('_submenu')
 
 	<table class="adminlist">
 		<thead>
+		<?php if ($this->filters['uidNumber'] || $this->filters['pId'] || $this->filters['sId']) { ?>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col">IP</th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th colspan="8"><?php
+					if ($this->filters['uidNumber'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
+						$user = User::getInstance($this->filters['uidNumber']);
+
+						echo($user->get('id') ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber']);
+						?>
+						<button type="button"
+								onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
+					if ($this->filters['pId'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+						$product = Product::getInstance($this->filters['pId']);
+
+						echo($product->getName());
+						?>
+						<button type="button"
+								onclick="$('#filter_pId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
+					if ($this->filters['sId'])
+					{
+						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+						$sku = Sku::getInstance($this->filters['sId']);
+
+						echo($sku->getName());
+						?>
+						<button type="button"
+								onclick="$('#filter_sId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+						<?php
+					}
+					?>
+
+				</th>
 			</tr>
+		<?php } ?>
+		<tr>
+			<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			<th scope="col">IP</th>
+			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+		</tr>
 		</thead>
 		<tfoot>
-			<tr>
-				<td colspan="8">
-					<?php
-					// Initiate paging
-					echo $this->pagination(
-							$this->total,
-							$this->filters['start'],
-							$this->filters['limit']
-					);
-					?>
-				</td>
-			</tr>
+		<tr>
+			<td colspan="8">
+				<?php
+				// Initiate paging
+				echo $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				?>
+			</td>
+		</tr>
 		</tfoot>
 		<tbody>
 		<?php
@@ -161,16 +233,38 @@ $this->view('_submenu')
 					}
 					if (!stripslashes($row->sSku))
 					{
-						$product .= ', <span class="missing">SKU n/a</span>';
+						$product .= '<br />SKU: <span class="missing">n/a</span>';
 					}
 					else {
-						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
 					}
 					?>
+
+					<?php
+					$product = '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&pId=' . $row->pId) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
+					if (!stripslashes($row->pName))
+					{
+						$product = '<span class="missing">Product n/a</span>';
+					}
+					if (!stripslashes($row->sSku))
+					{
+						$product .= '<br />SKU: <span class="missing">n/a</span>';
+					}
+					else {
+						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&sId=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+					}
+					?>
+
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>
-					<span><?php echo $this->escape(stripslashes($row->dName)) . ' / ' . $this->escape(stripslashes($row->username)); ?></span>
+					<?php if ($row->uidNumber) { ?>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber); ?>">
+						<?php } ?>
+						<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
+						<?php if ($row->uidNumber) { ?>
+					</a>
+				<?php } ?>
 				</td>
 				<td>
 					<?php
@@ -208,7 +302,8 @@ $this->view('_submenu')
 							}
 						}
 					}
-					else {
+					else
+					{
 						echo '&nbsp;';
 					}
 					?>
@@ -220,15 +315,15 @@ $this->view('_submenu')
 					<span><?php echo $this->escape(stripslashes($row->dIp)); ?></span>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->dId) ?>" title="<?php echo Lang::txt('COM_CART_SET_TASK', $task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->dId) ?>" title="<?php echo Lang::txt('COM_CART_SET_TASK', $task);?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
 						<span><?php echo $alt; ?></span>
 					</span>
-				<?php } ?>
+					<?php } ?>
 				</td>
 			</tr>
 			<?php
@@ -245,6 +340,9 @@ $this->view('_submenu')
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="uidNumber" id="filter_uidNumber" value="<?php echo $this->filters['uidNumber']; ?>" />
+	<input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->filters['pId']; ?>" />
+	<input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->filters['sId']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

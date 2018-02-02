@@ -35,6 +35,7 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Bank\MarketHistory;
 use Hubzero\Bank\Transaction;
+use Component;
 use Notify;
 use Request;
 use Config;
@@ -548,13 +549,13 @@ class Points extends AdminController
 		$royaltyResources = MarketHistory::getRecord('', $action, 'resources', $curyear, $resmsg);
 
 		// Include economy classes
-		if (is_file(PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
+		if (is_file(Component::path('com_answers') . DS . 'helpers' . DS . 'economy.php'))
 		{
-			require_once PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php';
+			require_once Component::path('com_answers') . DS . 'helpers' . DS . 'economy.php';
 		}
-		if (is_file(PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php'))
+		if (is_file(Component::path('com_resources') . DS . 'helpers' . DS . 'economy.php'))
 		{
-			require_once PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php';
+			require_once Component::path('com_resources') . DS . 'helpers' . DS . 'economy.php';
 		}
 
 		$AE = new \Components\Answers\Helpers\Economy($this->database);

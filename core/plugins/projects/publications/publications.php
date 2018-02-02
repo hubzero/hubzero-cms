@@ -2624,7 +2624,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$activities = Hubzero\Activity\Log::all()
 							->whereEquals('scope', 'publication')
 							->whereEquals('scope_id', $pid)
-							->whereEquals('state', 1)
 							->rows()
 							->toArray();
 
@@ -2768,6 +2767,28 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function contribute()
 	{
+		$choices = array();
+
+		if ($this->_pubconfig->get('contribute', 0))
+		{
+			$mt = new \Components\Publications\Tables\MasterType($this->_database);
+			$choice = $this->_pubconfig->get('contribute_default', 'files');
+
+			if ($choice != '*')
+			{
+				$type = $mt->getType($choice);
+
+				if ($type)
+				{
+					$choices[] = $type;
+				}
+			}
+			else
+			{
+				$choices = $mt->getTypes('*', 1, 0, 'ordering');
+			}
+		}
+
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'projects',
@@ -2783,6 +2804,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Instantiate a publication object
 		$view->pub     = new \Components\Publications\Models\Publication();
 		$view->project = $this->model;
+		$view->choices = $choices;
 
 		return $view->loadTemplate();
 	}

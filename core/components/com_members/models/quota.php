@@ -119,7 +119,7 @@ class Quota extends Relational
 		{
 			$command = "update_quota '" . $this->get('user_id') . "' '" . $this->get('soft_blocks') . "' '" . $this->get('hard_blocks') . "'";
 
-			$cmd = "/bin/sh " . PATH_CORE . "/components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
+			$cmd = "/bin/sh " . \Component::path('com_tools') . "/scripts/mw {$command} 2>&1 </dev/null";
 
 			exec($cmd, $results, $status);
 
@@ -200,10 +200,12 @@ class Quota extends Relational
 
 		if ($users && count($users) > 0)
 		{
+			$model = self::blank();
+
 			// Update their class id, and their actual quota will be
 			// updated the next time they log in.
-			$result = self::blank()->getQuery()
-				->update($this->getTableName())
+			$result = $model->getQuery()
+				->update($model->getTableName())
 				->set(array('class_id' => (int)$deflt->get('id')))
 				->whereIn('id', $users)
 				->execute();

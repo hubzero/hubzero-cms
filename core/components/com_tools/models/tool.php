@@ -141,7 +141,11 @@ class Tool
 	 *
 	 * @var array
 	 */
-	static $_propertyattrmap = array('toolname' => 'toolName', 'title' => 'cn', 'version' => 'member');
+	static $_propertyattrmap = array(
+		'toolname' => 'toolName',
+		'title' => 'cn',
+		'version' => 'member'
+	);
 
 	/**
 	 * Description for '_updatedkeys'
@@ -160,11 +164,9 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'clear'
+	 * Clear data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 void
+	 * @return  void
 	 */
 	public function clear()
 	{
@@ -172,7 +174,7 @@ class Tool
 
 		$this->_updatedkeys = array();
 
-		foreach ($cvars as $key=>$value)
+		foreach ($cvars as $key => $value)
 		{
 			if ($key{0} != '_')
 			{
@@ -196,8 +198,8 @@ class Tool
 	/**
 	 * Log a debug message
 	 *
-	 * @param     string $msg Message to log
-	 * @return    void
+	 * @param   string  $msg  Message to log
+	 * @return  void
 	 */
 	private function logDebug($msg)
 	{
@@ -207,7 +209,7 @@ class Tool
 	/**
 	 * Get the names of all tools
 	 *
-	 * @return    array
+	 * @return  array
 	 */
 	public function getToolNames()
 	{
@@ -218,12 +220,9 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'toArray'
+	 * Return data as an array
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  string $format Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @return  mixed
 	 */
 	public function toArray()
 	{
@@ -231,7 +230,7 @@ class Tool
 
 		if (true)
 		{
-			foreach (self::$_propertyattrmap as $key=>$value)
+			foreach (self::$_propertyattrmap as $key => $value)
 			{
 				$current = $this->__get($key);
 
@@ -245,12 +244,10 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'getInstance'
+	 * Get a tool instance
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $instance Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   mixed  $instance
+	 * @return  mixed
 	 */
 	public static function getInstance($instance)
 	{
@@ -265,12 +262,10 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'createInstance'
+	 * Create a tool instance
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $name Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   string  $name
+	 * @return  mixed
 	 */
 	public static function createInstance($name)
 	{
@@ -308,8 +303,7 @@ class Tool
 		}
 		if (is_numeric($this->id))
 		{
-			$query = "INSERT INTO #__tool (id,toolname,title) VALUES (" . $db->Quote($this->id) .
-				"," . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
+			$query = "INSERT INTO #__tool (id,toolname,title) VALUES (" . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
 
 			$db->setQuery();
 
@@ -322,8 +316,7 @@ class Tool
 		}
 		else
 		{
-			$query = "INSERT INTO #__tool (toolname,title) VALUES (" .
-				$db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
+			$query = "INSERT INTO #__tool (toolname,title) VALUES (" . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
 
 			$db->setQuery($query);
 
@@ -331,8 +324,7 @@ class Tool
 
 			if ($result === false && $db->getErrorNum() == 1062)
 			{
-				$query = "SELECT id FROM #__tool WHERE toolname=" .
-					$db->Quote($this->toolname) . ";";
+				$query = "SELECT id FROM #__tool WHERE toolname=" . $db->Quote($this->toolname) . ";";
 
 				$db->setQuery($query);
 
@@ -357,11 +349,9 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'create'
+	 * Create an entry
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function create()
 	{
@@ -381,11 +371,9 @@ class Tool
 	}
 
 	/**
-	 * Short description for '_mysql_read'
+	 * Read an entry
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	private function _mysql_read()
 	{
@@ -419,7 +407,7 @@ class Tool
 
 		$this->clear();
 
-		foreach ($result as $key=>$value)
+		foreach ($result as $key => $value)
 		{
 			$this->__set($key, $value);
 		}
@@ -441,8 +429,8 @@ class Tool
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param	  unknown $toolname Parameter description (if any) ...
-	 * @return	 boolean Return description (if any) ...
+	 * @param   string   $toolname
+	 * @return  boolean
 	 */
 	public function read($toolname = null)
 	{
@@ -452,16 +440,14 @@ class Tool
 
 			if (!empty($toolname) && !is_string($toolname) && !is_numeric($toolname))
 			{
-				$this->_error(__FUNCTION__ . ": invalid tool version instance defined",
-					E_USER_ERROR);
+				$this->_error(__FUNCTION__ . ": invalid tool version instance defined", E_USER_ERROR);
 				die();
 			}
 		}
 
 		if (!empty($toolname) && !is_string($toolname) && !is_numeric($toolname))
 		{
-			$this->_error(__FUNCTION__ . ": Argument #1 is not a valid string and not numeric",
-				E_USER_ERROR);
+			$this->_error(__FUNCTION__ . ": Argument #1 is not a valid string and not numeric", E_USER_ERROR);
 			die();
 		}
 
@@ -491,7 +477,7 @@ class Tool
 	 * @param	  boolean $all Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	function _mysql_update($all = false)
+	public function _mysql_update($all = false)
 	{
 		$db = \App::get('db');
 
@@ -501,7 +487,7 @@ class Tool
 
 		$first = true;
 
-		foreach ($classvars as $property=>$value)
+		foreach ($classvars as $property => $value)
 		{
 			if (($property{0} == '_') || in_array($property, $this->_list_keys))
 			{
@@ -526,7 +512,7 @@ class Tool
 
 			if ($value === null)
 			{
-				$query .= "`$property`=NULL";
+				$query .= "`$property`=null";
 			}
 			else
 			{
@@ -620,7 +606,7 @@ class Tool
 			}
 			else
 			{
-				foreach ($list as $key=>$value)
+				foreach ($list as $key => $value)
 				{
 					$list[$key] = $db->Quote($value);
 				}
@@ -733,7 +719,7 @@ class Tool
 			return false;
 		}
 
-		$db->setQuery("UPDATE `#__tool_version` SET toolid=NULL WHERE toolid=" . $db->Quote($this->id) . ";");
+		$db->setQuery("UPDATE `#__tool_version` SET toolid=null WHERE toolid=" . $db->Quote($this->id) . ";");
 
 		$db->query();
 
@@ -1246,6 +1232,7 @@ class Tool
 		}
 
 		$sqlsearch = ' AND ';
+
 		$words = explode(' ', $filters['search']);
 
 		switch ($filters['search_field'])
@@ -1266,8 +1253,7 @@ class Tool
 				$sqlsearch .= " (";
 				foreach ($words as $word)
 				{
-					$sqlsearch .= " (t.id LIKE '$word') OR (t.title LIKE '%$word%') OR " .
-						" (t.toolname LIKE '%$word%') OR";
+					$sqlsearch .= " (t.id LIKE '$word') OR (t.title LIKE '%$word%') OR (t.toolname LIKE '%$word%') OR";
 				}
 				$sqlsearch = substr($sqlsearch, 0, - 3);
 				$sqlsearch .= ") ";
@@ -1275,6 +1261,27 @@ class Tool
 		}
 
 		return $sqlsearch;
+	}
+
+	/**
+	 * Filter by state
+	 *
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  string
+	 */
+	protected static function buildQueryState($filters = array(), $admin = false)
+	{
+		$sql = '';
+
+		if (isset($filters['state']) && $filters['state'] >= 0)
+		{
+			$db = \App::get('db');
+
+			$sql .= " AND t.state=" . $db->Quote($filters['state']) . " ";
+		}
+
+		return $sql;
 	}
 
 	/**
@@ -1307,6 +1314,7 @@ class Tool
 		$query = "SELECT count(DISTINCT t.toolname) FROM #__tool AS t ";
 		$query .= "WHERE 1=1 ";
 		$query .= self::buildQuerySearch($filters, $admin);
+		$query .= self::buildQueryState($filters, $admin);
 		$query .= ";";
 		$db->setQuery($query);
 
@@ -1314,13 +1322,11 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'getToolSummaries'
+	 * Get tool summaries
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  array $filters Parameter description (if any) ...
-	 * @param	  boolean $admin Parameter description (if any) ...
-	 * @return    array
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  array
 	 */
 	static function getToolSummaries($filters = array(), $admin = false)
 	{
@@ -1330,6 +1336,7 @@ class Tool
 			" t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v " .
 			" where t.id=v.toolid ";
 		$query .= self::buildQuerySearch($filters, $admin);
+		$query .= self::buildQueryState($filters, $admin);
 		$query .= " GROUP BY t.toolname ";
 		$query .= self::buildQuerySort($filters, $admin);
 		$query .= self::buildQueryLimit($filters, $admin);
@@ -1363,12 +1370,10 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'getToolContributions'
+	 * Get tools for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $userid Parameter description (if any) ...
-	 * @return    mixed False on error, array on success
+	 * @param   integer  $userid
+	 * @return  mixed    False on error, array on success
 	 */
 	public static function getToolContributions($userid = null)
 	{
@@ -1379,23 +1384,22 @@ class Tool
 
 		$db = \App::get('db');
 
-		$sql = "SELECT f.toolname FROM `#__tool` as f " . "JOIN #__tool_groups AS g ON " .
-			" f.id=g.toolid AND g.role=1 " . "JOIN #__xgroups AS xg ON g.cn=xg.cn " .
-			"JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber AND uidNumber='$uid' ";
+		$sql = "SELECT f.toolname FROM `#__tool` AS f
+			JOIN `#__tool_groups` AS g ON f.id=g.toolid AND g.role=1
+			JOIN `#__xgroups` AS xg ON g.cn=xg.cn
+			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->quote($uid);
 
-		$this->_db->setQuery($sql);
+		$db->setQuery($sql);
 
-		return $this->_db->loadColumn();
+		return $db->loadColumn();
 	}
 
 	/**
-	 * Short description for 'getResourceId'
+	 * Get resource ID for a tool
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $toolname Parameter description (if any) ...
-	 * @param	  unknown $id Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   string   $toolname
+	 * @param   integer  $id
+	 * @return  mixed
 	 */
 	public static function getResourceId($toolname = null, $id = null)
 	{
@@ -1450,20 +1454,18 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'validate'
+	 * Validate tool info
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  array &$tool Parameter description (if any) ...
-	 * @param	  array &$err Parameter description (if any) ...
-	 * @param	  unknown $id Parameter description (if any) ...
-	 * @return	 boolean Return description (if any) ...
+	 * @param   array    &$tool
+	 * @param   array    &$err
+	 * @param   integer  $id
+	 * @return  boolean
 	 */
 	public static function validate(&$tool, &$err, $id)
 	{
 		$db = \App::get('db');
 
-		$query = "SELECT t.id FROM `#__tool` AS t WHERE LOWER(t.toolname)=LOWER(" .  $db->Quote($tool['toolname']) . ") ";
+		$query = "SELECT t.id FROM `#__tool` AS t WHERE LOWER(t.toolname)=LOWER(" . $db->Quote($tool['toolname']) . ") ";
 
 		if ($id)
 		{
@@ -1476,17 +1478,17 @@ class Tool
 
 		$result = $db->loadResult();
 
-		if ($result || (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id))
+		if ($result || (in_array($tool['toolname'], array('test', 'shortname', 'hub', 'tool')) && !$id))
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
-		else if ((preg_match('#^[a-zA-Z0-9]{3,15}$#',$tool['toolname']) == '' || is_numeric($tool['toolname'])) && !$id)
+		else if ((preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) == '' || is_numeric($tool['toolname'])) && !$id)
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME');
 		}
 
 		// Check if repository exists under /apps - added to allow for auto-AddRepo
-		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) OR is_dir('/apps/'.$tool['toolname'])))
+		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) || is_dir('/apps/'.$tool['toolname'])))
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
@@ -1533,14 +1535,14 @@ class Tool
 			$err['exec'] = Lang::txt('COM_TOOLS_ERR_EXEC');
 		}
 
-		if ($tool['exec']=='@GROUP' && empty($tool['membergroups']))
+		if ($tool['exec'] == '@GROUP' && empty($tool['membergroups']))
 		{
 			$err['membergroups'] = Lang::txt('COM_TOOLS_ERR_GROUPS_EMPTY');
 		}
-		else if (empty($tool['membergroups']) or $tool['exec']!='@GROUP')
+		else if (empty($tool['membergroups']) or $tool['exec'] != '@GROUP')
 		{
 		}
-		else if ($tool['exec']=='@GROUP')
+		else if ($tool['exec'] == '@GROUP')
 		{
 		}
 
@@ -1577,7 +1579,10 @@ class Tool
 			}
 		}
 
-		if (empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || preg_match('#[^0-9]#' , $tool['vncGeometryX']) || preg_match('#[^0-9]#' , $tool['vncGeometryY']))
+		if (empty($tool['vncGeometryX'])
+		 || empty($tool['vncGeometryY'])
+		 || preg_match('#[^0-9]#', $tool['vncGeometryX'])
+		 || preg_match('#[^0-9]#', $tool['vncGeometryY']))
 		{
 			$err['vncGeometry'] = Lang::txt('COM_TOOLS_ERR_VNCGEOMETRY');
 		}
@@ -1587,7 +1592,7 @@ class Tool
 		{
 			if (!filter_var($tool['github'], FILTER_VALIDATE_URL))
 			{
-			      $err['github'] = Lang::txt('invalid Github URL');
+				$err['github'] = Lang::txt('invalid Github URL');
 			}
 		}
 
@@ -1600,14 +1605,12 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'validateVersion'
+	 * Validate version
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $newversion Parameter description (if any) ...
-	 * @param	  string &$err Parameter description (if any) ...
-	 * @param	  unknown $id Parameter description (if any) ...
-	 * @return	 string Return description (if any) ...
+	 * @param   string   $newversion
+	 * @param   string   &$err
+	 * @param   integer  $id
+	 * @return  string
 	 */
 	public static function validateVersion($newversion, &$err, $id)
 	{
@@ -1640,14 +1643,12 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'validateLicense'
+	 * Validate license
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  array $license Parameter description (if any) ...
-	 * @param	  string $code Parameter description (if any) ...
-	 * @param	  unknown &$err Parameter description (if any) ...
-	 * @return	 integer Return description (if any) ...
+	 * @param   array   $license
+	 * @param   string  $code
+	 * @param   string  &$err
+	 * @return  integer
 	 */
 	public static function validateLicense($license, $code, &$err)
 	{
@@ -1657,15 +1658,15 @@ class Tool
 
 		if (!$license['text'])
 		{
-			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_EMPTY') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_EMPTY');
 		}
 		else if ($bingo)
 		{
-			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_DEFAULTS') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_DEFAULTS');
 		}
-		else if (!$license['authorize'] && $code=='@OPEN')
+		else if (!$license['authorize'] && $code == '@OPEN')
 		{
-			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_AUTH_MISSING') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_AUTH_MISSING');
 		}
 		else
 		{
@@ -1676,11 +1677,9 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'getMyTools'
+	 * Get my tools
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 object Return description (if any) ...
+	 * @return  array
 	 */
 	public static function getMyTools()
 	{
@@ -1700,17 +1699,15 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'getToolId'
+	 * Get tool ID based on tool name
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $toolname Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   string  $toolname
+	 * @return  mixed
 	 */
-	public static function getToolId($toolname=NULL)
+	public static function getToolId($toolname=null)
 	{
 		$db = \App::get('db');
-		if ($toolname=== NULL)
+		if ($toolname === null)
 		{
 			return false;
 		}
@@ -1719,12 +1716,10 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'getToolDevelopers'
+	 * Get tool developers
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  string $toolid Parameter description (if any) ...
-	 * @return	 unknown Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @return  array
 	 */
 	public static function getToolDevelopers($toolid)
 	{
@@ -1733,28 +1728,26 @@ class Tool
 		$query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
 		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
 		$query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
-		$query .= "WHERE g.toolid = '" . $toolid . "' AND g.role=1 ";
+		$query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=1";
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getToolGroups'
+	 * Get tool groups
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  string $toolid Parameter description (if any) ...
-	 * @param	  array $groups Parameter description (if any) ...
-	 * @return	 array Return description (if any) ...
+	 * @param   string  $toolid
+	 * @param   array   $groups
+	 * @return  array
 	 */
 	public static function getToolGroups($toolid, $groups = array())
 	{
 		$db = \App::get('db');
 
-		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
-		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		$query .= "WHERE g.toolid = '" . $toolid . "' AND g.role=0 ";
+		$query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
+		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
+		$query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=0";
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
@@ -1769,39 +1762,37 @@ class Tool
 	 *		 removing the #__tool_groups entry if the tool is changed to no longer be restricted to a group.  At the moment, this function also
 	 *		 checks to ensure that toolaccess='@GROUP' from the #__tool_version table
 	 *
-	 * @param	  string $toolid is the tool id
-	 * @param	  string $instance is the tool version instance
-	 * @return	 array Return list of groups
+	 * @param   string  $toolid    is the tool id
+	 * @param   string  $instance  is the tool version instance
+	 * @return  array   Return list of groups
 	 */
 	public static function getToolGroupsRestriction($toolid, $instance)
 	{
 		$db = \App::get('db');
 
 		$query  = "SELECT tv.toolname, tg.cn ";
-		$query .= "FROM #__tool_groups AS tg, #__tool_version AS tv ";
-		$query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $toolid . " AND role=0 AND tv.instance='" . $instance ."' AND tv.toolaccess='@GROUP'";
+		$query .= "FROM `#__tool_groups` AS tg, `#__tool_version` AS tv ";
+		$query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $db->quote($toolid) . " AND role=0 AND tv.instance=" . $db->quote($instance) . " AND tv.toolaccess='@GROUP'";
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'saveTicketId'
+	 * Save ticket ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  string $toolid Parameter description (if any) ...
-	 * @param	  string $ticketid Parameter description (if any) ...
-	 * @return	 boolean Return description (if any) ...
+	 * @param   string   $toolid
+	 * @param   string   $ticketid
+	 * @return  boolean
 	 */
-	public static function saveTicketId($toolid=NULL, $ticketid=NULL)
+	public static function saveTicketId($toolid=null, $ticketid=null)
 	{
 		$db = \App::get('db');
-		if ($toolid=== NULL or $ticketid=== NULL)
+		if ($toolid === null or $ticketid === null)
 		{
 			return false;
 		}
-		$query = "UPDATE #__tool SET ticketid='" . $ticketid . "' WHERE id=" . $toolid;
+		$query = "UPDATE `#__tool` SET ticketid=" . $db->quote($ticketid) . " WHERE id=" . $db->quote($toolid);
 		$db->setQuery($query);
 		if ($db->query())
 		{
@@ -1811,21 +1802,19 @@ class Tool
 	}
 
 	/**
-	 * Short description for 'getTicketId'
+	 * Get ticket ID for given tool
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  string $toolid Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @return  mixed
 	 */
-	public static function getTicketId($toolid=NULL)
+	public static function getTicketId($toolid=null)
 	{
 		$db = \App::get('db');
-		if ($toolid=== NULL)
+		if ($toolid === null)
 		{
 			return false;
 		}
-		$db->setQuery('SELECT ticketid FROM `#__tool` WHERE id="' . $toolid . '"');
+		$db->setQuery("SELECT ticketid FROM `#__tool` WHERE id=" . $db->quote($toolid));
 		return $db->loadResult();
 	}
 
@@ -1834,9 +1823,9 @@ class Tool
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param	  array $filters Parameter description (if any) ...
-	 * @param	  unknown $admin Parameter description (if any) ...
-	 * @return	 string Return description (if any) ...
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  string
 	 */
 	public static function xbuildQuery($filters, $admin)
 	{
@@ -1845,10 +1834,18 @@ class Tool
 
 		switch ($filters['filterby'])
 		{
-			case 'mine':      $filter .= " AND f.registered_by='" . User::get('username') . "' "; break;
-			case 'published': $filter .= " AND f.published='1' AND f.state!='9' ";					break;
-			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
-			case 'all':       $filter .= " ";														break;
+			case 'mine':
+				$filter .= " AND f.registered_by='" . User::get('username') . "' ";
+				break;
+			case 'published':
+				$filter .= " AND f.published='1' AND f.state!='9' ";
+				break;
+			case 'dev':
+				$filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' ";
+				break;
+			case 'all':
+				$filter .= " ";
+				break;
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -1889,9 +1886,9 @@ class Tool
 	/**
 	 * Get a list of tools
 	 *
-	 * @param     array   $filters Filters to build query from
-	 * @param     boolean $admin   Admin access?
-	 * @return    array
+	 * @param   array    $filters Filters to build query from
+	 * @param   boolean  $admin   Admin access?
+	 * @return  array
 	 */
 	public static function getTools($filters=array(), $admin=false)
 	{

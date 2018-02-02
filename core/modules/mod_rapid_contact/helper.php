@@ -132,6 +132,16 @@ class Helper extends Module
 		{
 			$this->posted = Request::getVar('rp', array(), 'post');
 
+			// Make sure input is of the correct type.
+			foreach ($this->posted as $key => $val)
+			{
+				if (is_array($val))
+				{
+					$val = '';
+				}
+				$this->posted[$key] = (string) $val;
+			}
+
 			if ($this->enable_anti_spam)
 			{
 				if (!isset($this->posted['anti_spam_answer']) || ($this->posted['anti_spam_answer'] != $this->anti_spam_a))

@@ -32,6 +32,9 @@
 
 namespace Components\Publications\Tables;
 
+use Date;
+use User;
+
 /**
  * Table class for publications
  */
@@ -40,7 +43,7 @@ class Publication extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object  &$db  Database
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -51,8 +54,8 @@ class Publication extends \JTable
 	/**
 	 * Load by alias
 	 *
-	 * @param      string 	$oid
-	 * @return     object or false
+	 * @param   string  $oid
+	 * @return  mixed   object or false
 	 */
 	public function loadPublication($oid=null)
 	{
@@ -76,8 +79,8 @@ class Publication extends \JTable
 	/**
 	 * Load by alias
 	 *
-	 * @param      string 	$oid
-	 * @return     object or false
+	 * @param   string  $oid
+	 * @return  mixed  object or false
 	 */
 	public function loadAlias($oid=null)
 	{
@@ -100,7 +103,7 @@ class Publication extends \JTable
 	/**
 	 * Check for missing fields
 	 *
-	 * @return     boolean true or false
+	 * @return  boolean  true or false
 	 */
 	public function check()
 	{
@@ -115,20 +118,21 @@ class Publication extends \JTable
 	/**
 	 * Build query
 	 *
-	 * @param      array 		$filters
-	 * @return     query string
+	 * @param   array  $filters
+	 * @param   bool   $admin
+	 * @return  query  string
 	 */
 	public function buildQuery($filters = array(), $admin = false)
 	{
-		$now 		= Date::toSql();
-		$groupby 	= ' GROUP BY C.id ';
+		$now = Date::toSql();
+		$groupby  = ' GROUP BY C.id ';
 
-		$project 		= isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
-		$dev 			= isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
-		$projects 		= isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
-		$mine 			= isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
-		$featured		= isset($filters['featured']) && $filters['featured'] ? 1 : 0;
-		$sortby  		= isset($filters['sortby']) ? $filters['sortby'] : 'title';
+		$project  = isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
+		$dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
+		$projects = isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
+		$mine     = isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
+		$featured = isset($filters['featured']) && $filters['featured'] ? 1 : 0;
+		$sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
 		$query  = "FROM ";
 		if (isset($filters['tag']) && $filters['tag'] != '')
@@ -322,7 +326,7 @@ class Publication extends \JTable
 		}
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
+			include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 			$tagging = new \Components\Publications\Helpers\Tags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
@@ -426,9 +430,9 @@ class Publication extends \JTable
 	/**
 	 * Get record count
 	 *
-	 * @param      array 		$filters
-	 * @param      boolean		$admin
-	 * @return     object
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  object
 	 */
 	public function getCount($filters = array(), $admin = false)
 	{
@@ -445,9 +449,9 @@ class Publication extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array 		$filters
-	 * @param      boolean		$admin
-	 * @return     object
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  object
 	 */
 	public function getRecords($filters = array(), $admin = false)
 	{
@@ -481,9 +485,9 @@ class Publication extends \JTable
 	/**
 	 * Get provisioned publication
 	 *
-	 * @param      integer		$pid
-	 * @param      boolean		$getid
-	 * @return     object
+	 * @param   integer  $pid
+	 * @param   boolean  $getid
+	 * @return  mixed    object
 	 */
 	public function getProvPublication($pid = 0, $getid = false)
 	{
@@ -513,11 +517,11 @@ class Publication extends \JTable
 	/**
 	 * Get publication
 	 *
-	 * @param      integer		$pid
-	 * @param      string		$version
-	 * @param      integer		$project_id
-	 * @param      string		$alias
-	 * @return     object
+	 * @param   integer  $pid
+	 * @param   string   $version
+	 * @param   integer  $project_id
+	 * @param   string   $alias
+	 * @return  object
 	 */
 	public function getPublication($pid = null, $version = 'default', $project_id = null, $alias = null)
 	{
@@ -582,11 +586,11 @@ class Publication extends \JTable
 	/**
 	 * Calculate rating
 	 *
-	 * @return     integer
+	 * @return  void
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery("SELECT rating FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($this->id));
+		$this->_db->setQuery("SELECT rating FROM `#__publication_ratings` WHERE publication_id=" . $this->_db->quote($this->id));
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -612,7 +616,7 @@ class Publication extends \JTable
 	/**
 	 * Update rating
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateRating()
 	{
@@ -627,8 +631,8 @@ class Publication extends \JTable
 	/**
 	 * Delete publication existence
 	 *
-	 * @param      integer 		$id
-	 * @return     void
+	 * @param   integer  $id
+	 * @return  void
 	 */
 	public function deleteExistence($id = null)
 	{
@@ -638,14 +642,14 @@ class Publication extends \JTable
 		}
 
 		// Delete tag associations
-		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='publications' AND objectid=". $this->_db->quote($id));
+		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='publications' AND objectid=". $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();
 			exit;
 		}
 		// Delete ratings
-		$this->_db->setQuery("DELETE FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($id));
+		$this->_db->setQuery("DELETE FROM `#__publication_ratings` WHERE publication_id=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();
@@ -656,9 +660,10 @@ class Publication extends \JTable
 	/**
 	 * Get top-level publication stats
 	 *
-	 * @param      array 	$validProjects
-	 * @param      string 	$get
-	 * @return     mixed
+	 * @param   array   $validProjects
+	 * @param   string  $get
+	 * @param   string  $when
+	 * @return  mixed
 	 */
 	public function getPubStats($validProjects = array(), $get = 'total', $when = null)
 	{

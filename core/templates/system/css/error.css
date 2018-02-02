@@ -6,7 +6,7 @@
  */
 
 * {
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	margin: 0;
 	padding: 0;
 	-webkit-box-sizing: border-box;
@@ -28,10 +28,10 @@ html {
 body {
 	height: 100%;
 	margin: 0;
-	padding: 0;
+	padding: 1em;
 	background: #fff;
 	color: #222;
-	font-size: 0.8em;
+	font-size: 0.9em;
 	line-height: 1.7;
 	font-weight: normal;
 	text-rendering: optimizeLegibility;
@@ -62,7 +62,7 @@ h1 {
 }
 
 .container {
-	margin: 6em auto;
+	margin: 1em auto;
 	max-width: 65em;
 	background: #FFF;
 	border: 1px solid #999;
@@ -91,7 +91,6 @@ table {
 table caption {
 	padding: 0.2em 0.5em;
 	background: #eee;
-
 }
 table th,
 table td {
@@ -109,6 +108,9 @@ table td {
 	vertical-align: top;
 }
 
+.trace {
+	overflow-x: auto;
+}
 .trace .cls {
 	color: #9b859d;
 }
@@ -131,4 +133,23 @@ html.rtl .trace {
 }
 html.rtl .TD {
 	text-align: left;
+}
+
+@media (max-width: 40em) {
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr, caption {
+		display: block;
+		word-wrap: break-word;
+	}
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+}
+@media (min-width: 50em) {
+	.container {
+		margin: 3em auto;
+	}
 }
