@@ -1109,6 +1109,7 @@ class Register extends SiteController
 		$eview->registerDate = $xprofile->get('registerDate');
 		$eview->baseURL    = $this->baseURL;
 		$eview->confirm    = $confirm;
+		$eview->email      = $email;
 
 		$msg = new \Hubzero\Mail\Message();
 		$msg->setSubject($subject)
@@ -1241,6 +1242,7 @@ class Register extends SiteController
 						$eview->registerDate = $xprofile->get('registerDate');
 						$eview->baseURL    = $this->baseURL;
 						$eview->confirm    = $confirm;
+						$eview->email      = $email;
 
 						$msg = new \Hubzero\Mail\Message();
 						$msg->setSubject($subject)
@@ -1305,25 +1307,59 @@ class Register extends SiteController
 	 */
 	public function confirmTask()
 	{
-		// Incoming
+		// Incoming, some versions of the code used 'code' some use 'confirm'
 		$code = Request::getVar('confirm', false);
 		if (!$code)
 		{
 			$code = Request::getVar('code', false);
 		}
 
-		$cookie = \Hubzero\Utility\Cookie::eat('authenticator');
+		// Get the return value if it was requested
+		$return = Request::getVar('return', false);
 
 		// Check if the user is logged in
 		if (User::isGuest())
 		{
-			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code, false, true));
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-				Lang::txt('Please login in so we can confirm your account.'),
-				'warning'
-			);
+			// See if they've provided an email address as well
+			// perhaps we can log them in with that and their token
+			$email = Request::getVar('email', false);
+
+			if ($email != false)
+			{
+				// An email was provided
+				// Get the Users controller
+				require_once Component::path('com_users') . '/site/controllers/user.php';
+				$user_controller = new \UsersControllerUser();
+
+				// Return back here while resetting the return to here
+				$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code . '&return=' . $return, false, true));
+
+				// Set up a request to send to the login method
+				Request::setVar('return', $return);
+				Request::setVar('authenticator', 'emailtoken');
+				Request::setVar('email', $email);
+				Request::setVar('task', 'user.login');
+				Request::setVar('option', 'com_users');
+	
+				$user_controller->login();
+				// UsersControlleUser->login() always redirects, should never make it here
+			}
+			else
+			{
+				// Didn't provide enough information, warn about it
+				// and let them log in to confirm their email address
+				$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code . '&return=' . $return, false, true));
+				App::redirect(
+					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+					Lang::txt('Please login in to confirm your email address.'),
+					'warning'
+				);
+			}
 		}
+
+		// Grab the authenticator cookie, the user is logged in
+		// Continue confirming the email address
+		$cookie = \Hubzero\Utility\Cookie::eat('authenticator');
 
 		// @FIXME The session is overriding the activation code
 		$xprofile = User::oneByActivationToken(-$code);
@@ -1331,7 +1367,7 @@ class Register extends SiteController
 
 		if ($xprofile->get('id') != $user->get('id'))
 		{
-			// Profile and logged in user does not math
+			// Profile and logged in user does not match
 			$this->setError('login mismatch');
 
 			// Build logout/login/confirm redirect flow
