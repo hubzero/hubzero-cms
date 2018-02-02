@@ -8,8 +8,7 @@
 
 defined('_HZEXEC_') or die();
 
-//require_once JPATH_COMPONENT.'/controller.php';
-require_once Component::path('com_users') . '/site/controller.php'; 
+require_once Component::path('com_users') . '/site/controller.php';
 
 /**
  * Registration controller class for Users.
