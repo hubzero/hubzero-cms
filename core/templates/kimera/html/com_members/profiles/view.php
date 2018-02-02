@@ -171,7 +171,7 @@ if (!$no_html)
 
 					$metadata = $this->sections[$k]['metadata'];
 					$meta_count = (isset($metadata['count']) && $metadata['count'] != "") ? $metadata['count'] : "";
-					if (isset($metadata['alert']) && $metadata['alert'] != "")
+					if (isset($metadata['alert']) && $metadata['alert'] != '')
 					{
 						$meta_alert = $metadata['alert'];
 						$cls .= ' with-alert';
@@ -265,6 +265,19 @@ if (!$no_html)
 				if ($this->getError())
 				{
 					echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
+				}
+
+				$results = array();
+				$notifications = Notify::messages('com_members.profile');
+				foreach ($notifications as $notification)
+				{
+					$results[] = $notification['message'];
+				}
+				$results = implode("<br />\n", $results);
+
+				if ($results)
+				{
+					echo '<p class="info">' . $results . '</p>';
 				}
 				?>
 			</div>

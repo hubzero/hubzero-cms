@@ -102,6 +102,36 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		$members    = array();
 		$managers   = array();
 
+		// Look for any invites by email
+		$emails = Hubzero\User\Group\InviteEmail::all()
+			->whereEquals('email', $member->get('email'))
+			->rows();
+
+		foreach ($emails as $emailed)
+		{
+			$g = Hubzero\User\Group::getInstance($emailed->get('gidNumber'));
+
+			if (!$g || !$g->get('gidNumber'))
+			{
+				continue;
+			}
+
+			$group = new stdClass;
+			$group->gidNumber = $g->gidNumber;
+			$group->published = $g->published;
+			$group->approved = $g->approved;
+			$group->cn = $g->cn;
+			$group->description = $g->description;
+			$group->logo = $g->logo;
+			$group->created = $g->created;
+			$group->join_policy = $g->join_policy;
+			$group->registered = 0;
+			$group->regconfirmed = 1;
+			$group->manager = 0;
+
+			$invitees[] = $group;
+		}
+
 		$groups = self::getGroups($member->get('id'), 'all', 1);
 
 		if ($groups)
@@ -263,7 +293,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "profile" tab's metadata overview
 		if ($returnmeta)
 		{
-			//display a different message if its me
+			// Display a message if it's me
 			if ($member->get('id') == $user->get('id'))
 			{
 				$arr['metadata']['count'] = count($groups);
@@ -272,7 +302,10 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 				{
 					$title = Lang::txt('PLG_MEMBERS_GROUPS_NEW_INVITATIONS', count($invitees));
 					$link = Route::url($member->link() . '&active=groups&filter=invitees');
-					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . Lang::txt('PLG_MEMBERS_GROUPS_ALERT') . '</h5>' . $title . '</span></a>';
+
+					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span>' . $title . '</span></a>';
+
+					Notify::info($arr['metadata']['alert'], 'com_members.profile');
 				}
 			}
 		}

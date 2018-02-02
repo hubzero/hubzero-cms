@@ -269,6 +269,19 @@ if (!$no_html)
 				{
 					echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 				}
+
+				$results = array();
+				$notifications = Notify::messages('com_members.profile');
+				foreach ($notifications as $notification)
+				{
+					$results[] = $notification['message'];
+				}
+				$results = implode("<br />\n", $results);
+
+				if ($results)
+				{
+					echo '<p class="info">' . $results . '</p>';
+				}
 				?>
 			</div>
 			<div id="page_content" class="member_<?php echo $this->active; ?>">
