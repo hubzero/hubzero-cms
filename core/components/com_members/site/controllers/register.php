@@ -1340,7 +1340,7 @@ class Register extends SiteController
 				Request::setVar('email', $email);
 				Request::setVar('task', 'user.login');
 				Request::setVar('option', 'com_users');
-	
+
 				$user_controller->login();
 				// UsersControlleUser->login() always redirects, should never make it here
 			}
