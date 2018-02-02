@@ -190,6 +190,10 @@ class Types extends AdminController
 
 			foreach ($fields as $val)
 			{
+				if (!isset($val['title']))
+				{
+					continue;
+				}
 				if ($val['title'])
 				{
 					$element = new stdClass();
