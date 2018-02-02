@@ -49,8 +49,10 @@ require_once __DIR__ . '/helpers/sync.php';
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
+require_once Component::path('com_projects') . '/helpers/accessHelper.php';
 
 use Components\Projects\Models\Orm\Connection;
+use Components\Projects\Helpers\AccessHelper;
 
 /**
  * Projects Files plugin
@@ -188,10 +190,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Project model
 		$this->model = $model;
-		$subdirectory = Request::getVar('subdir');
+		$subdir = Request::getVar('subdir');
 
 		// Check authorization
-		if ($this->model->exists() && !$this->model->access('member') && $subdirectory != 'public')
+		if ($this->model->exists() && !$this->model->access('member') && !AccessHelper::allowPublicAccess($subdir))
 		{
 			return $arr;
 		}

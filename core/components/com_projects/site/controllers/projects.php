@@ -36,7 +36,7 @@ namespace Components\Projects\Site\Controllers;
 use Components\Projects\Tables;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
-use Components\Projects\Helpers\LayoutHelper;
+use Components\Projects\Helpers\AccessHelper;
 use Components\Projects\Models\Orm\Description;
 use Components\Projects\Models\Orm\Description\Field;
 use Exception;
@@ -44,7 +44,7 @@ use stdClass;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/layoutHelper.php';
+require_once dirname(dirname(__DIR__)) . '/helpers/accessHelper.php';
 require_once Component::path('com_projects') . '/models/orm/owner.php';
 
 /**
@@ -478,7 +478,7 @@ class Projects extends Base
 		}
 
 		// Determine layout to load
-		$layout = ($this->model->access('member')) ? 'internal' : 'external';
+		$layout = ($this->model->access('member') || AccessHelper::allowPublicAccess($subdir)) ? 'internal' : 'external';
 		$layout = $this->model->access('member')
 				&& $preview && $this->model->isPublic()
 				? 'external' : $layout;
@@ -575,7 +575,7 @@ class Projects extends Base
 		}
 
 		// Private project
-		if (!$this->model->isPublic() && $layout != 'invited' && $subdir != 'public')
+		if (!$this->model->isPublic() && $layout != 'invited' && !AccessHelper::allowPublicAccess($subdir))
 		{
 			// Login required
 			if (User::isGuest())
@@ -625,8 +625,6 @@ class Projects extends Base
 
 		// Get tabbed plugins
 		$this->view->tabs = Helpers\Html::getTabs($plugins);
-
-		$layout = LayoutHelper::accessPublic(Request::getVar('subdir'), $layout);
 
 		// Go through plugins
 		$this->view->content = '';
