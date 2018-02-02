@@ -51,12 +51,19 @@ class Helper extends Module
 
 		// Query to grab all the billboards associated with the selected collection
 		// Make sure we only grab published billboards
-		$query = 'SELECT b.*, c.*' .
+		$query = 'SELECT b.*, c.name' .
 				' FROM #__billboards_billboards as b, #__billboards_collections as c' .
 				' WHERE c.id = b.collection_id' .
 				' AND published = 1' .
 				' AND c.name = ' . $db->quote($collection) .
 				' ORDER BY `ordering` ASC';
+
+/*		if ($indices)
+		{
+			$query .= ' AND b.id IN (' . str_replace(';', ',', $indices) . ')';
+		}*/
+		// $query .= ' ORDER BY `ordering` ASC';
+
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
@@ -89,7 +96,9 @@ class Helper extends Module
 	}
 
 	/**
-	 * Get groups.  We are overriding Hubzero\User\Group\Helper::getFeaturedGroups()
+	 * Get groups.  
+	 * 
+	 * We are mirroring code at Hubzero\User\Group\Helper::getFeaturedGroups()
 	 * @return array Groups.
 	 */
 	private function _getGroups($featured = 0)
@@ -149,7 +158,8 @@ class Helper extends Module
     			  "type" => $item[2],
     			  "ordering" => $item[3],
     			  "content" => $item[4],
-    			  "featured" => ($item[2] === 'dynamic' and count($item) > 5 ? $item[5] : 0)
+    			  "featured" => (($item[2] === 'dynamic' and count($item) > 5) ? $item[5] : 0),
+    			  "indices" => (($item[3] === 'indexed' and count($item) > 5) ? explode(';', $item[5]) : 0)
     			);
     		}
     		$i++;

@@ -54,6 +54,19 @@ if ($item["ordering"] === "ordered") {
 	$item_boards = array_intersect_key($boards[$collection], $rind);
 	shuffle($item_boards);
 	$boards[$collection] = array_diff_key($boards[$collection], $rind);
+} elseif ($item["ordering"] === "indexed") {
+	// Pulls billboards based on id - this should be everything
+	$item_boards = array();
+	$remove_keys = array();
+	foreach ($boards[$collection] as $key => $board)
+	{
+		if (in_array($board->ordering, $item["indices"]))
+		{
+			$item_boards[] = $board;
+			$remove_keys[] = $key;
+		}
+	}
+	$boards[$collection] = array_diff_key($boards[$collection], array_flip($remove_keys));
 } else {
 	echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "ordered" or "random".';
 }
