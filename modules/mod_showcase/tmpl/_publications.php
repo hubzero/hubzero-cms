@@ -32,12 +32,12 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$pubs = $this->_getPublications();
+$pubs = $this->_getPublications($item["featured"]);
 
 // Make sure we don't ask for too much
 $n = min($item["n"], count($pubs));
 if ($n < $item["n"]) {
-	echo 'Showcase Module Error: Not enough publications left!';
+	echo 'Showcase Module Error: Not enough requested publications!';
 }
 
 $i = 0;

@@ -29,32 +29,43 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
+// no direct access
 defined('_HZEXEC_') or die();
-?>
 
-<?php 
-$boards = array();
-foreach ($this->items as $item) {
-	if ($item["type"] === "static") {
-		require $this->getLayoutPath('_billboards');
-	} elseif ($item["type"] === "dynamic") {
-		switch ($item["content"])
-		{
-			case 'publications':
-				require $this->getLayoutPath('_publications');
-			break;
+$groups = $this->_getGroups($item["featured"]);
 
-			case 'groups':
-				require $this->getLayoutPath('_groups');
-			break;
+// Make sure we don't ask for too much
+$n = min($item["n"], count($groups));
+if ($n < $item["n"]) {
+	echo 'Showcase Module Error: Not enough selected groups left!';
+}
 
-			default:
-				echo 'Showcase Module Error: Unknown dynamic type "' . $item["content"] . '".  Possible values include "publications".';
-			break;
+$i = 0;
+foreach ($groups as $grp)
+{
+	$group = Hubzero\User\Group::getInstance($grp->gidNumber);
+	if ($i++ < $n) {
+		echo '<div class="' . $item['class'] . '">
+';
+		$path = PATH_APP . '/site/groups/' . $group->get('gidNumber') . '/uploads/' . $group->get('logo');
+
+		if ($group->get('logo') && is_file($path)) {
+			echo '  <div class="group-img">';
+			echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
+			echo '      <img src="' . with(new Hubzero\Content\Moderator($path))->getUrl() . '" alt="' . $this->escape(stripslashes($group->get('description'))) . '" />';
+			echo '    </a>';
+			echo '  </div>';
+		} else {
+			echo '  <div class="group-description">';
+			echo '    <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
+			echo '  </div>';
 		}
+
+		// echo '    <a href="' . echo Route::url('index.php?option=' . $this->option . '&cn='. $group->get('cn')) . '">';
+		// echo '    </a>';
+		echo '</div>';
 	} else {
-		echo 'Showcase Module Error: Unknown type "' . $item["type"] . '".  Possible values include "static" or "dynamic".';
+		break;
 	}
 }
 ?>
