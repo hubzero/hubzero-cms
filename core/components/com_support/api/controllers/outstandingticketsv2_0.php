@@ -34,6 +34,7 @@ namespace Components\Support\Api\Controllers;
 
 use Components\Support\Models\Criterion;
 use Hubzero\Component\ApiController;
+use Component;
 
 require_once Component::path('com_support') . '/models/criterion.php';
 require_once Component::path('com_support') . '/helpers/acl.php';
