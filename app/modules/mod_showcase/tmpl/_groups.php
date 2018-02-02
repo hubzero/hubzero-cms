@@ -45,7 +45,7 @@ foreach ($groups as $grp)
 {
 	$group = Hubzero\User\Group::getInstance($grp->gidNumber);
 	if ($i++ < $n) {
-		echo '<div class="' . $item['class'] . '">
+		echo '<div class="' . $item['class'] . ' group' . ($item["featured"] ? ' featured' : '') . '">
 ';
 		$path = PATH_APP . '/site/groups/' . $group->get('gidNumber') . '/uploads/' . $group->get('logo');
 
@@ -57,7 +57,9 @@ foreach ($groups as $grp)
 			echo '  </div>';
 		} else {
 			echo '  <div class="group-description">';
-			echo '    <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
+			echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
+			echo '      <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
+			echo '    </a>';
 			echo '  </div>';
 		}
 

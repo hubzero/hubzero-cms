@@ -44,7 +44,7 @@ $i = 0;
 foreach ($pubs as $pub)
 {
 	if ($i++ < $n) {
-		echo '<div class="' . $item['class'] . '">
+		echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
 ';
 		echo '  <div class="resource-img">';
 		echo '    <a href="' . $pub->link() . '">';
