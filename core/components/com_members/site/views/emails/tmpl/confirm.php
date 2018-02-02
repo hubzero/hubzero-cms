@@ -37,7 +37,7 @@ $this->baseURL = rtrim(str_replace('/administrator', '', $this->baseURL), '/');
 
 $link = Config::get('sef') && App::isAdmin()
 	? '/members/confirm?confirm=' . -$this->confirm
-	: Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm);
+	: Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm . '&email=' . urlencode($email));
 ?>
 This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
 
