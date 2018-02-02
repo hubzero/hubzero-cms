@@ -1515,42 +1515,48 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		$citation->tags = $tags;
 
 		$citation->author = explode(';', $this->getAuthorString(false));
+		if ($this->scope == 'member')
+		{	
+			$citation->url = '/members/' . $this->uid . '/citations';
+		}
+		elseif ($this->scope != 'group')
+		{
+			$citation->url = '/citations/view/' . $this->id;
+		}
 
-		if ($this->published == 1)
+		if ($this->published == 1 && $this->scope != 'group')
 		{
 			$citation->access_level = 'public';
+		}
+		elseif ($this->scope == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($this->scope_id);
+			if ($group)
+			{
+				$groupName = $group->get('cn');
+				$citation->url = '/groups/' . $groupName . '/citations';
+				$citationAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'citations');
+				if ($citationAccess == 'anyone')
+				{
+					$citation->access_level = 'public';
+				}	
+				elseif ($citationAccess == 'registered')
+				{
+					$citation->access_level = 'registered';
+				}
+				else
+				{
+					$citation->access_level = 'private';
+					$citation->owner_type = 'group';
+					$citation->owner = $this->scope_id;
+				}
+			}
 		}
 		else
 		{
 			$citation->access_level = 'private';
-		}
-
-		if ($this->scope == 'member')
-		{
 			$citation->owner_type = 'user';
 			$citation->owner = $this->uid;
-			$citation->url = '/members/' . $this->uid . '/citations';
-		}
-		elseif ($this->scope == 'group')
-		{
-			$citation->owner_type = 'group';
-			$citation->owner = $this->scope_id;
-			$group = \Hubzero\User\Group::getInstance($this->scope_id);
-			if ($group)
-			{
-				$group = $group->get('cn');
-				$citation->url = '/groups/' . $group . '/citations';
-			}
-			else
-			{
-				$citation->url = '/citations/' . $this->id;
-			}
-		}
-		else
-		{
-			$citation->owner_type = 'user';
-			$citation->owner = $this->uid;
-			$citation->url = '/citations/view/' . $this->id;
 		}
 		return $citation;
 	}
