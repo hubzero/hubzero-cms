@@ -73,7 +73,7 @@ if ($item["ordering"] === "ordered") {
 
 // Display individual boards
 foreach ($item_boards as $board) { ?>
-	<div class="<?php echo $item['class'] ?>">
+	<div class="<?php echo $item['class'] ?> billboard">
 		<div class="billboard-image">
 			<?php
 			if (!empty($board->learn_more_target))
@@ -82,6 +82,21 @@ foreach ($item_boards as $board) { ?>
 			}
 			?>
 			<img src="<?php echo $this->image_location; ?><?php echo $board->background_img; ?>"/>
+			<?php
+			if (!empty($board->learn_more_target))
+			{
+				echo '</a>';
+			}
+			?>
+		</div>
+		<div class="billboard-header">
+			<?php
+			if (!empty($board->learn_more_target))
+			{
+				echo '<a href="' . $board->learn_more_target . '">';
+			}
+			?>
+			<span><?php echo $board->header; ?></span>
 			<?php
 			if (!empty($board->learn_more_target))
 			{

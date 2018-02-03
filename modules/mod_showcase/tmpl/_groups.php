@@ -55,13 +55,12 @@ foreach ($groups as $grp)
 			echo '      <img src="' . with(new Hubzero\Content\Moderator($path))->getUrl() . '" alt="' . $this->escape(stripslashes($group->get('description'))) . '" />';
 			echo '    </a>';
 			echo '  </div>';
-		} else {
-			echo '  <div class="group-description">';
-			echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
-			echo '      <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
-			echo '    </a>';
-			echo '  </div>';
 		}
+		echo '  <div class="group-description">';
+		echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
+		echo '      <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
+		echo '    </a>';
+		echo '  </div>';
 
 		// echo '    <a href="' . echo Route::url('index.php?option=' . $this->option . '&cn='. $group->get('cn')) . '">';
 		// echo '    </a>';

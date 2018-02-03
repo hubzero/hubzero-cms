@@ -51,6 +51,11 @@ foreach ($pubs as $pub)
 		echo '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
 		echo '    </a>';
 		echo '  </div>';
+		echo '  <div class="resource-title">';
+		echo '    <a href="' . $pub->link() . '">';
+		echo '      <span>' . $pub->get('title') . '</span>';
+		echo '    </a>';
+		echo '  </div>';
 		echo '</div>';
 	} else {
 		break;
