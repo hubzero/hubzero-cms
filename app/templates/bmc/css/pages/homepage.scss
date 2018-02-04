@@ -212,54 +212,80 @@ h3 {
     width: 50%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 250px;
+    grid-template-rows: repeat(2, 200px);
     .big {
       grid-column: span 2;
       grid-row: span 2;
-      background-color: #D8D8D8;
-      border: 1px solid #979797;
       .billboard-image {
         height: 100%;
         img {
           height: 100%;
           width: 100%;
-          object-fit: cover;
-        }
-      }
-    }
-    .regular {
-      background-color: #D8D8D8;
-      border: 1px solid #979797;
-      .billboard-image {
-        width: 100%;
-        height: 100%;
-        img {
-          height: 100%;
-          width: 100%;
-          object-fit: cover;
-        }
-      }
-      .resource-img {
-        width: 100%;
-        height: 100%;
-        img {
-          width: 100%;
-          height: 100%;
           object-fit: cover;
         }
       }
     }
     .horizontal {
       grid-column: span 2;
-      background-color: #D8D8D8;
-      border: 1px solid #979797;
-      .billboard-image {
+    }
+    .billboard-image {
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      img {
         height: 100%;
-        img {
-          height: 100%;
-          width: 100%;
-          object-fit: cover;
-        }
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    .billboard-image::after {
+      content: '';
+      display: block;
+      position: relative;
+      background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.6) 100%);
+      margin-top: -200px;
+      height: 200px;
+      width: 100%;
+    }
+    .billboard-header {
+      position: relative;
+      bottom: 34%;
+      padding: 10px;
+      a {
+        color: $white;
+      }
+    }
+    .resource-img {
+      width: 100%;
+      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .resource-img::after {
+      content: '';
+      display: block;
+      position: relative;
+      background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.6) 100%);
+      margin-top: -200px;
+      height: 200px;
+      width: 100%;
+    }
+    .group {
+      align-self: center;
+      .group-img {
+        text-align: center;
+      }
+      .group-description {
+        text-align: center;
+      }
+    }
+    .resource {
+      .resource-title {
+        position: relative;
+        bottom: 30%;
       }
     }
   }
