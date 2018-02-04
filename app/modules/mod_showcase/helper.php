@@ -157,10 +157,42 @@ class Helper extends Module
     			  "class" => $item[1],
     			  "type" => $item[2],
     			  "ordering" => $item[3],
-    			  "content" => $item[4],
+    			  "content" => strtolower($item[4]),
     			  "featured" => (($item[2] === 'dynamic' and count($item) > 5) ? $item[5] : 0),
-    			  "indices" => (($item[3] === 'indexed' and count($item) > 5) ? explode(';', $item[5]) : 0)
+    			  "indices" => (($item[3] === 'indexed' and count($item) > 5) ? explode(';', $item[5]) : 0),
+    			  "tag" => 0, // Set this below
+    			  "tag-target" => 0 // Set this below
     			);
+
+    			// Add autotags to dynamic content
+    			if (($this->autotag) and ($items[$i]["type"] === 'dynamic')) {
+    				$items[$i]["tag"] = ucfirst(rtrim($items[$i]["content"], 's'));
+    				switch ($items[$i]["content"])
+    				{
+    					case 'publications':
+    						$items[$i]["tag-target"] = Route::url('index.php?option=com_publications');
+    					break;
+
+    					case 'groups':
+    						$items[$i]["tag-target"] = Route::url('index.php?option=com_groups');
+    					break;
+
+    					default:
+    					break;
+    				}
+    			}
+
+    			// Add optional tag
+				$tag = 0;
+				if (($items[$i]["indices"] or $items[$i]["featured"]) and count($item) > 6) {
+					$tag = explode(';', $item[6]);
+				} elseif ((!$items[$i]["indices"] and !$items[$i]["featured"]) and count($item) > 5) {
+					$tag = explode(';', $item[5]);
+				}
+				if ($tag) {
+					$items[$i]["tag"] = $tag[0];
+					$items[$i]["tag-target"] = (count($tag) > 1 ? $tag[1] : 0);
+				}
     		}
     		$i++;
 		}
@@ -178,6 +210,7 @@ class Helper extends Module
 	{
 		$this->css();
 
+		$this->autotag = $this->params->get('autotag');
 		$this->items = $this->_parseItems();
 
 		// Get the billboard background location from the billboards parameters

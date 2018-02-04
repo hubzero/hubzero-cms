@@ -56,6 +56,19 @@ foreach ($groups as $grp)
 			echo '    </a>';
 			echo '  </div>';
 		}
+		if ($item['tag']) {
+			echo '  <div class="group-tag">';
+			if ($item['tag-target'])
+			{
+				echo '    <a href="' . $item['tag-target'] . '">';
+			}
+			echo '      <span>' . $item['tag'] . '</span>';
+			if ($item['tag-target'])
+			{
+				echo '    </a>';
+			}
+			echo '  </div>';
+		}
 		echo '  <div class="group-description">';
 		echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
 		echo '      <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
