@@ -89,6 +89,17 @@ foreach ($item_boards as $board) { ?>
 			}
 			?>
 		</div>
+		<?php if ($item['tag']): ?>
+			<div class="billboard-tag">
+				<?php if ($item['tag-target']): ?>
+					<a href="<?php echo $item['tag-target']; ?>">
+				<?php endif; ?>
+					<span><?php echo $item['tag']; ?></span>
+				<?php if ($item['tag-target']): ?>
+					</a>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
 		<div class="billboard-header">
 			<?php
 			if (!empty($board->learn_more_target))
