@@ -149,6 +149,26 @@ class Ticket extends Relational
 	}
 
 	/**
+	 * Is the user the owner of the ticket?
+	 *
+	 * @param   integer  $id
+	 * @return  boolean
+	 */
+	public function isOwner($id='')
+	{
+		if ($this->isOwned())
+		{
+			$id = $id ?: User::get('id');
+
+			if ($this->get('owner') == $id)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Get the owner object
 	 *
 	 * @return  object
@@ -371,6 +391,8 @@ class Ticket extends Relational
 	 */
 	public function isWatching($user_id=null)
 	{
+		$user_id = $user_id ?: User::get('id');
+
 		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
 
 		if ($tbl->get('id'))
@@ -389,6 +411,8 @@ class Ticket extends Relational
 	 */
 	public function watch($user_id)
 	{
+		$user_id = $user_id ?: User::get('id');
+
 		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
 
 		if ($tbl->get('id'))
@@ -416,6 +440,8 @@ class Ticket extends Relational
 	 */
 	public function stopWatching($user_id)
 	{
+		$user_id = $user_id ?: User::get('id');
+
 		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
 
 		if (!$tbl->get('id'))
