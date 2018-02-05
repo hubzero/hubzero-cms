@@ -79,7 +79,7 @@ $revision = $this->revision;
 							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->alias); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
 						<?php } ?>
 					</h2>
-					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
+					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
 				</header>
 
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
@@ -290,14 +290,14 @@ $revision = $this->revision;
 			$this->view('_tabs')
 				->set('option', $this->option)
 				->set('cats', $this->cats)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 
 			$this->view('_sections')
 				->set('option', $this->option)
 				->set('sections', $this->sections)
-				->set('resource', $this->model->resource)
+				->set('resource', $this->model)
 				->set('active', $this->tab)
 				->display();
 			?>
