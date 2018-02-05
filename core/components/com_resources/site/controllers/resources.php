@@ -591,7 +591,7 @@ class Resources extends SiteController
 				{
 					include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'audience.php';
 
-					$bits['filters'] = Audience\Level::all();
+					$bits['filters'] = Level::all();
 				}
 
 				$rt = new Tags($bits['id']);
@@ -1749,7 +1749,7 @@ class Resources extends SiteController
 		$tags = rtrim($tags, ',');
 
 		$author = '';
-		foreach ($resources->authors()->ordered()->rows() as $con)
+		foreach ($resource->authors()->ordered()->rows() as $con)
 		{
 			if ($con->get('role') != 'submitter')
 			{
@@ -2456,6 +2456,8 @@ class Resources extends SiteController
 		$handle = '';
 		if ($revision)
 		{
+			require_once dirname(dirname(__DIR__)) . '/models/doi.php';
+
 			$rdoi = Doi::oneByResource($id, $revision);
 
 			if ($rdoi->get('doi') && $tconfig->get('doi_shoulder'))

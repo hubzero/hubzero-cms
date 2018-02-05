@@ -460,7 +460,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function parents()
 	{
 		$model = new Association();
-		return $model->manyToMany(__NAMESPACE__ . '\\Entry', $model->getTableName(), 'child_id', 'parent_id');
+		return $this->manyToMany(__NAMESPACE__ . '\\Entry', $model->getTableName(), 'child_id', 'parent_id');
 	}
 
 	/**

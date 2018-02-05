@@ -108,8 +108,9 @@ $sql = "SELECT authorid, role, name FROM `#__author_assoc` "
 	 . "AND subid=" . $parent->id . " "
 	 . "ORDER BY ordering";
 
-$this->database->setQuery($sql);
-$lectureAuthors = $this->database->loadObjectList();
+$database = App::get('db');
+$database->setQuery($sql);
+$lectureAuthors = $database->loadObjectList();
 
 //get the author names from ids
 $a = array();
