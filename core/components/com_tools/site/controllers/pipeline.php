@@ -1854,8 +1854,12 @@ class Pipeline extends SiteController
 		$row = \Components\Support\Models\Ticket::oneOrNew($ticketid);
 		if ($row->get('id') && isset($newstuff['toolname']))
 		{
-			$row->set('group', $this->config->get('group_prefix', 'app-') . $newstuff['toolname']);
-			$row->save();
+			$group = \Hubzero\User\Group::getInstance($this->config->get('group_prefix', 'app-') . $newstuff['toolname']);
+			if ($group)
+			{
+				$row->set('group_id', $group->get('gidNumber', 0));
+				$row->save();
+			}
 		}
 
 		$rowc = \Components\Support\Models\Comment::blank();
