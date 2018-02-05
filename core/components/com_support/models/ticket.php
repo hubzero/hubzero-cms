@@ -82,6 +82,16 @@ class Ticket extends Relational
 	);
 
 	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'owner',
+		'group_id'
+	);
+
+	/**
 	 * Tag cloud
 	 *
 	 * @var  object
@@ -112,6 +122,56 @@ class Ticket extends Relational
 		}
 
 		return $data['summary'];
+	}
+
+	/**
+	 * Generates automatic owner field value
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticOwner($data)
+	{
+		if (!isset($data['owner']) || !$data['owner'])
+		{
+			$data['owner'] = 0;
+		}
+
+		if ($data['owner'] && is_string($data['owner']))
+		{
+			$owner = User::getInstance($data['owner']);
+			if ($owner && $owner->get('id'))
+			{
+				$data['owner'] = (int) $owner->get('id');
+			}
+		}
+
+		return $data['owner'];
+	}
+
+	/**
+	 * Generates automatic group_id field value
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticGroupId($data)
+	{
+		if (!isset($data['group_id']) || !$data['group_id'])
+		{
+			$data['group_id'] = 0;
+		}
+
+		if ($data['group_id'] && is_string($data['group_id']))
+		{
+			$group = \Hubzero\User\Group::getInstance($data['group_id']);
+			if ($group && $group->get('gidNumber'))
+			{
+				$data['group_id'] = (int) $group->get('gidNumber');
+			}
+		}
+
+		return $data['group_id'];
 	}
 
 	/**

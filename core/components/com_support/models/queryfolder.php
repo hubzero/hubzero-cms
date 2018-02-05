@@ -89,7 +89,7 @@ class QueryFolder extends Relational
 	 *
 	 * @var  array
 	 */
-	public $awlays = array(
+	public $always = array(
 		'alias',
 		'modified',
 		'modified_by'

@@ -77,7 +77,7 @@ class Query extends Relational
 	 *
 	 * @var  array
 	 */
-	public $awlays = array(
+	public $always = array(
 		'sort',
 		'sort_dir'
 	);
