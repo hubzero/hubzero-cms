@@ -504,7 +504,7 @@ class Admin extends SiteController
 			$url = Request::base() . ltrim(Route::url('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
 
 			// Check if DOI exists for this revision
-			$objDOI = \Components\Resources\Tables\Doi::all()
+			$objDOI = \Components\Resources\Models\Doi::all()
 				->whereEquals('rid', $status['resourceid']);
 			if ($status['revision'])
 			{
@@ -525,7 +525,13 @@ class Admin extends SiteController
 			else
 			{
 				// Get latest DOI label
-				$latestdoi  = $objDOI->getLatestDoi($status['resourceid']);
+				$latestdoi = \Components\Resources\Models\Doi::all()
+					->whereEquals('rid', $status['resourceid'])
+					->order('doi_label', 'desc')
+					->limit(1)
+					->row()
+					->get('doi');
+
 				$newlabel   = ($latestdoi) ? (intval($latestdoi) + 1): 1;
 
 				// Collect metadata
@@ -541,20 +547,30 @@ class Admin extends SiteController
 				$authors = $objA->getAuthorsDOI($status['resourceid']);
 
 				// Register DOI
-				$doiSuccess = $objDOI->registerDOI($authors, $this->config, $metadata, $doierr);
+				$doiSuccess = $objDOI->register($authors, $this->config, $metadata, $doierr);
 
 				// Save [new] DOI record
 				if ($doiSuccess)
 				{
-					if (!$objDOI->loadDOI($status['resourceid'], $status['revision']))
+					$objDOI = \Components\Resources\Models\Doi::oneByResource($status['resourceid'], $status['revision']);
+					if (!$objDOI->get('id'))
 					{
-						if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'], 0, $doiSuccess))
+						$objDOI = \Components\Resources\Models\Doi::blank()
+							->set(array(
+								'local_revision' => $status['revision'],
+								'doi_label' => $newlabel,
+								'rid' => $status['resourceid'],
+								'alias' => $status['toolname'],
+								'versionid' => 0,
+								'doi' => $doiSuccess
+							));
+						if ($objDOI->save())
 						{
 							$this->setMessage(Lang::txt('COM_TOOLS_SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
 						}
 						else
 						{
-							$this->setError(Lang::txt('COM_TOOLS_ERR_DOI_STORE_FAILED'));
+							$this->setError(Lang::txt('COM_TOOLS_ERR_DOI_STORE_FAILED'). ' ' . $objDOI->getError());
 							$result = false;
 						}
 					}
