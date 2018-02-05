@@ -34,8 +34,8 @@ namespace Components\Courses\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Courses\Models\Course;
-use Components\Resources\Tables\MediaTrackingDetailed;
-use Components\Resources\Tables\MediaTracking;
+use Components\Resources\Models\MediaTracking\Detailed;
+use Components\Resources\Models\MediaTracking;
 use stdClass;
 use Filesystem;
 use Request;
@@ -57,8 +57,8 @@ class Media extends SiteController
 	public function trackingTask()
 	{
 		// Include need media tracking library
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'mediatracking.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'mediatrackingdetailed.php');
+		require_once \Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php';
+		require_once \Component::path('com_resources') . DS . 'models' . DS . 'mediatracking' . DS . 'detailed.php';
 
 		// Instantiate objects
 		$database = \App::get('db');
@@ -79,127 +79,122 @@ class Media extends SiteController
 			return;
 		}
 
-		// Instantiate new media tracking object
-		$mediaTracking         = new MediaTracking($database);
-		$mediaTrackingDetailed = new MediaTrackingDetailed($database);
-
 		// Load tracking information for user for this resource
-		$trackingInformation         = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $resourceid, 'course');
-		$trackingInformationDetailed = $mediaTrackingDetailed->loadByDetailId($detailedId);
+		$trackingInformation         = MediaTracking::oneByUserAndResource(User::get('id'), $resourceid, 'course');
+		$trackingInformationDetailed = Detailed::oneOrNew($detailedId);
 
 		// Are we creating a new tracking record
-		if (!is_object($trackingInformation))
+		if ($trackingInformation->isNew())
 		{
-			$trackingInformation                              = new stdClass;
-			$trackingInformation->user_id                     = User::get('id');
-			$trackingInformation->session_id                  = $session->getId();
-			$trackingInformation->ip_address                  = $ipAddress;
-			$trackingInformation->object_id                   = $resourceid;
-			$trackingInformation->object_type                 = 'course';
-			$trackingInformation->object_duration             = $duration;
-			$trackingInformation->current_position            = $time;
-			$trackingInformation->farthest_position           = $time;
-			$trackingInformation->current_position_timestamp  = Date::toSql();
-			$trackingInformation->farthest_position_timestamp = Date::toSql();
-			$trackingInformation->completed                   = 0;
-			$trackingInformation->total_views                 = 1;
-			$trackingInformation->total_viewing_time          = 0;
+			$trackingInformation->set(array(
+				'user_id'                     => User::get('id'),
+				'session_id'                  => $session->getId(),
+				'ip_address'                  => $ipAddress,
+				'object_id'                   => $resourceid,
+				'object_type'                 => 'course',
+				'object_duration'             => $duration,
+				'current_position'            => $time,
+				'farthest_position'           => $time,
+				'current_position_timestamp'  => Date::toSql(),
+				'farthest_position_timestamp' => Date::toSql(),
+				'completed'                   => 0,
+				'total_views'                 => 1,
+				'total_viewing_time'          => 0
+			));
 		}
 		else
 		{
 			// Get the amount of video watched from last tracking event
-			$time_viewed = (int)$time - (int)$trackingInformation->current_position;
+			$time_viewed = (int)$time - (int)$trackingInformation->get('current_position');
 
 			// If we have a positive value and its less then our ten second threshold,
 			// add viewing time to total watched time
 			if ($time_viewed < 10 && $time_viewed > 0)
 			{
-				$trackingInformation->total_viewing_time += $time_viewed;
+				$trackingInformation->set('total_viewing_time', $trackingInformation->get('total_viewing_time') + $time_viewed);
 			}
 
 			// Set the new current position
-			$trackingInformation->current_position           = $time;
-			$trackingInformation->current_position_timestamp = Date::toSql();
+			$trackingInformation->set('current_position', $time);
+			$trackingInformation->set('current_position_timestamp', Date::toSql());
 
 			// Set the object duration
 			if ($duration > 0)
 			{
-				$trackingInformation->object_duration = $duration;
+				$trackingInformation->set('object_duration', $duration);
 			}
 
 			// Check to see if we need to set a new farthest position
-			if ($trackingInformation->current_position > $trackingInformation->farthest_position)
+			if ($trackingInformation->get('current_position') > $trackingInformation->get('farthest_position'))
 			{
-				$trackingInformation->farthest_position           = $time;
-				$trackingInformation->farthest_position_timestamp = Date::toSql();
+				$trackingInformation->set('farthest_position', $time);
+				$trackingInformation->set('farthest_position_timestamp', Date::toSql());
 			}
 
 			// If event type is start, means we need to increment view count
 			if ($event == 'start' || $event == 'replay')
 			{
-				$trackingInformation->total_views++;
+				$trackingInformation->set('total_views', $trackingInformation->get('total_views') + 1);
 			}
 
 			// If event type is end, we need to increment completed count
 			if ($event == 'ended')
 			{
-				$trackingInformation->completed++;
+				$trackingInformation->set('completed', $trackingInformation->get('completed') + 1);
 			}
 		}
 
 		// Save detailed tracking info
-		if ($event == 'start' || !$trackingInformationDetailed)
+		if ($event == 'start' || $trackingInformationDetailed->isNew())
 		{
-			$trackingInformationDetailed                              = new stdClass;
-			$trackingInformationDetailed->user_id                     = User::get('id');
-			$trackingInformationDetailed->session_id                  = $session->getId();
-			$trackingInformationDetailed->ip_address                  = $ipAddress;
-			$trackingInformationDetailed->object_id                   = $resourceid;
-			$trackingInformationDetailed->object_type                 = 'course';
-			$trackingInformationDetailed->object_duration             = $duration;
-			$trackingInformationDetailed->current_position            = $time;
-			$trackingInformationDetailed->farthest_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp  = Date::toSql();
-			$trackingInformationDetailed->farthest_position_timestamp = Date::toSql();
-			$trackingInformationDetailed->completed                   = 0;
+			$trackingInformationDetailed->set(array(
+				'user_id'                     => User::get('id'),
+				'session_id'                  => $session->getId(),
+				'ip_address'                  => $ipAddress,
+				'object_id'                   => $resourceid,
+				'object_type'                 => 'course',
+				'object_duration'             => $duration,
+				'current_position'            => $time,
+				'farthest_position'           => $time,
+				'current_position_timestamp'  => Date::toSql(),
+				'farthest_position_timestamp' => Date::toSql(),
+				'completed'                   => 0
+			));
 		}
 		else
 		{
 			// Set the new current position
-			$trackingInformationDetailed->current_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp = Date::toSql();
+			$trackingInformationDetailed->set('current_position', $time);
+			$trackingInformationDetailed->set('current_position_timestamp', Date::toSql());
 
 			// Set the object duration
 			if ($duration > 0)
 			{
-				$trackingInformationDetailed->object_duration = $duration;
+				$trackingInformationDetailed->set('object_duration', $duration);
 			}
 
 			// Check to see if we need to set a new farthest position
-			if (isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
+			if ($trackingInformationDetailed->get('current_position') > $trackingInformationDetailed->get('farthest_position'))
 			{
-				$trackingInformationDetailed->farthest_position           = $time;
-				$trackingInformationDetailed->farthest_position_timestamp = Date::toSql();
+				$trackingInformationDetailed->set('farthest_position', $time);
+				$trackingInformationDetailed->set('farthest_position_timestamp', Date::toSql());
 			}
 
 			// If event type is end, we need to increment completed count
 			if ($event == 'ended')
 			{
-				$trackingInformationDetailed->completed++;
+				$trackingInformationDetailed->set('completed', $trackingInformationDetailed->get('completed') + 1);
 			}
 		}
 
 		// Save detailed
-		$mediaTrackingDetailed->save($trackingInformationDetailed);
+		$trackingInformationDetailed->save();
 
 		// Save tracking information
-		if ($mediaTracking->save($trackingInformation))
+		if ($trackingInformation->save())
 		{
-			if (!isset($trackingInformation->id))
-			{
-				$trackingInformation->id = $mediaTracking->id;
-			}
-			$trackingInformation->detailedId = $mediaTrackingDetailed->id;
+			$trackingInformation = $trackingInformation->toObject();
+			$trackingInformation->detailedId = $trackingInformationDetailed->get('id');
 			echo json_encode($trackingInformation);
 		}
 	}
