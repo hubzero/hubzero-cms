@@ -1016,7 +1016,7 @@ class Tickets extends SiteController
 		$row->set('created', Date::toSql());
 		$row->set('login', $reporter['login']);
 		$row->set('severity', (isset($problem['severity']) ? $problem['severity'] : 'normal'));
-		$row->set('owner', (isset($problem['owner']) ? $problem['owner'] : null));
+		$row->set('owner', (isset($problem['owner']) ? $problem['owner'] : 0));
 		$row->set('category', (isset($problem['category']) ? $problem['category'] : ''));
 		$row->set('summary', $problem['short']);
 		$row->set('report', $problem['long']);
