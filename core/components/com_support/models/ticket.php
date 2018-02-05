@@ -169,6 +169,24 @@ class Ticket extends Relational
 	}
 
 	/**
+	 * Is the user the submitter of the ticket?
+	 *
+	 * @param   string  $username
+	 * @return  boolean
+	 */
+	public function isSubmitter($username='')
+	{
+		$username = $username ?: User::get('username');
+
+		if ($this->get('login') == $username)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get the owner object
 	 *
 	 * @return  object
