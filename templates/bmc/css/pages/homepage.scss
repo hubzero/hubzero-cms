@@ -242,17 +242,34 @@ h3 {
       content: '';
       display: block;
       position: relative;
-      background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.6) 100%);
+      background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);
       margin-top: -200px;
       height: 200px;
       width: 100%;
     }
-    .billboard-header {
+    .billboard {
       position: relative;
-      bottom: 34%;
-      padding: 10px;
-      a {
-        color: $white;
+      .billboard-tag {
+        position: absolute;
+        bottom: 50px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 0 10px;
+        a {
+          color: $white;
+        }
+      }
+      .billboard-header {
+        position: absolute;
+        bottom: 0;
+        height: 50px;
+        line-height: 1em;
+        padding: 10px;
+        overflow: hidden;
+        a {
+          color: $white;
+        }
       }
     }
     .resource-img {
@@ -268,10 +285,34 @@ h3 {
       content: '';
       display: block;
       position: relative;
-      background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 50%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.6) 100%);
+      background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);
       margin-top: -200px;
       height: 200px;
       width: 100%;
+    }
+    .resource {
+      position: relative;
+      .resource-tag {
+        position: absolute;
+        bottom: 50px;
+        padding: 0 10px;
+        a {
+          color: $white;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: 11px;
+        }
+      }
+      .resource-title {
+        position: absolute;
+        bottom: 0;
+        height: 50px;
+        line-height: 1em;
+        padding: 10px;
+        a {
+          color: $white;
+        }
+      }
     }
     .group {
       align-self: center;
@@ -280,12 +321,6 @@ h3 {
       }
       .group-description {
         text-align: center;
-      }
-    }
-    .resource {
-      .resource-title {
-        position: relative;
-        bottom: 30%;
       }
     }
   }

@@ -261,19 +261,39 @@ h3 {
   content: '';
   display: block;
   position: relative;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, transparent 20%, transparent 50%, transparent 80%, rgba(0, 0, 0, 0.6) 100%);
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
   margin-top: -200px;
   height: 200px;
   width: 100%;
 }
 
-.community .module-right .billboard-header {
+.community .module-right .billboard {
   position: relative;
-  bottom: 34%;
-  padding: 10px;
 }
 
-.community .module-right .billboard-header a {
+.community .module-right .billboard .billboard-tag {
+  position: absolute;
+  bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 0 10px;
+}
+
+.community .module-right .billboard .billboard-tag a {
+  color: #fff;
+}
+
+.community .module-right .billboard .billboard-header {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  line-height: 1em;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.community .module-right .billboard .billboard-header a {
   color: #fff;
 }
 
@@ -292,10 +312,39 @@ h3 {
   content: '';
   display: block;
   position: relative;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, transparent 20%, transparent 50%, transparent 80%, rgba(0, 0, 0, 0.6) 100%);
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
   margin-top: -200px;
   height: 200px;
   width: 100%;
+}
+
+.community .module-right .resource {
+  position: relative;
+}
+
+.community .module-right .resource .resource-tag {
+  position: absolute;
+  bottom: 50px;
+  padding: 0 10px;
+}
+
+.community .module-right .resource .resource-tag a {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.community .module-right .resource .resource-title {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  line-height: 1em;
+  padding: 10px;
+}
+
+.community .module-right .resource .resource-title a {
+  color: #fff;
 }
 
 .community .module-right .group {
@@ -308,11 +357,6 @@ h3 {
 
 .community .module-right .group .group-description {
   text-align: center;
-}
-
-.community .module-right .resource .resource-title {
-  position: relative;
-  bottom: 30%;
 }
 
 .three {
