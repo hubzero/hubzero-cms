@@ -32,54 +32,42 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$groups = $this->_getGroups($item["featured"]);
-
-// Make sure we don't ask for too much
-$n = min($item["n"], count($groups));
-if ($n < $item["n"]) {
-	echo 'Showcase Module Error: Not enough selected groups left!';
-}
-
-$i = 0;
-foreach ($groups as $grp)
+foreach ($item_groups as $grp)
 {
 	$group = Hubzero\User\Group::getInstance($grp->gidNumber);
-	if ($i++ < $n) {
-		echo '<div class="' . $item['class'] . ' group' . ($item["featured"] ? ' featured' : '') . '">
-';
-		$path = PATH_APP . '/site/groups/' . $group->get('gidNumber') . '/uploads/' . $group->get('logo');
 
-		if ($group->get('logo') && is_file($path)) {
-			echo '  <div class="group-img">';
-			echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
-			echo '      <img src="' . with(new Hubzero\Content\Moderator($path))->getUrl() . '" alt="' . $this->escape(stripslashes($group->get('description'))) . '" />';
-			echo '    </a>';
-			echo '  </div>';
-		}
-		if ($item['tag']) {
-			echo '  <div class="group-tag">';
-			if ($item['tag-target'])
-			{
-				echo '    <a href="' . $item['tag-target'] . '">';
-			}
-			echo '      <span>' . $item['tag'] . '</span>';
-			if ($item['tag-target'])
-			{
-				echo '    </a>';
-			}
-			echo '  </div>';
-		}
-		echo '  <div class="group-description">';
+	echo '<div class="' . $item['class'] . ' group' . ($item["featured"] ? ' featured' : '') . '">
+';
+	$path = PATH_APP . '/site/groups/' . $group->get('gidNumber') . '/uploads/' . $group->get('logo');
+
+	if ($group->get('logo') && is_file($path)) {
+		echo '  <div class="group-img">';
 		echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
-		echo '      <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
+		echo '      <img src="' . with(new Hubzero\Content\Moderator($path))->getUrl() . '" alt="' . $this->escape(stripslashes($group->get('description'))) . '" />';
 		echo '    </a>';
 		echo '  </div>';
-
-		// echo '    <a href="' . echo Route::url('index.php?option=' . $this->option . '&cn='. $group->get('cn')) . '">';
-		// echo '    </a>';
-		echo '</div>';
-	} else {
-		break;
 	}
+	if ($item['tag']) {
+		echo '  <div class="group-tag">';
+		if ($item['tag-target'])
+		{
+			echo '    <a href="' . $item['tag-target'] . '">';
+		}
+		echo '      <span>' . $item['tag'] . '</span>';
+		if ($item['tag-target'])
+		{
+			echo '    </a>';
+		}
+		echo '  </div>';
+	}
+	echo '  <div class="group-description">';
+	echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
+	echo '      <span>' . $this->escape(stripslashes($group->get('description'))) . '</span>';
+	echo '    </a>';
+	echo '  </div>';
+
+	// echo '    <a href="' . echo Route::url('index.php?option=' . $this->option . '&cn='. $group->get('cn')) . '">';
+	// echo '    </a>';
+	echo '</div>';
 }
 ?>

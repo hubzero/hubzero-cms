@@ -32,46 +32,36 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$pubs = $this->_getPublications($item["featured"]);
-
-// Make sure we don't ask for too much
-$n = min($item["n"], count($pubs));
-if ($n < $item["n"]) {
-	echo 'Showcase Module Error: Not enough requested publications!';
-}
-
-$i = 0;
-foreach ($pubs as $pub)
+foreach ($item_pubs as $pub_info)
 {
-	if ($i++ < $n) {
-		echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
+	// $pub = \Components\Publications\Models\Publication($result);
+	$pub = Components\Publications\Models\Publication::getInstance($pub_info->id);
+	
+	echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
 ';
-		echo '  <div class="resource-img">';
-		echo '    <a href="' . $pub->link() . '">';
-		echo '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
-		echo '    </a>';
-		echo '  </div>';
-		if ($item['tag']) {
-			echo '  <div class="resource-tag">';
-			if ($item['tag-target'])
-			{
-				echo '    <a href="' . $item['tag-target'] . '">';
-			}
-			echo '      <span>' . $item['tag'] . '</span>';
-			if ($item['tag-target'])
-			{
-				echo '    </a>';
-			}
-			echo '  </div>';
+	echo '  <div class="resource-img">';
+	echo '    <a href="' . $pub->link() . '">';
+	echo '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
+	echo '    </a>';
+	echo '  </div>';
+	if ($item['tag']) {
+		echo '  <div class="resource-tag">';
+		if ($item['tag-target'])
+		{
+			echo '    <a href="' . $item['tag-target'] . '">';
 		}
-		echo '  <div class="resource-title">';
-		echo '    <a href="' . $pub->link() . '">';
-		echo '      <span>' . $pub->get('title') . '</span>';
-		echo '    </a>';
+		echo '      <span>' . $item['tag'] . '</span>';
+		if ($item['tag-target'])
+		{
+			echo '    </a>';
+		}
 		echo '  </div>';
-		echo '</div>';
-	} else {
-		break;
 	}
+	echo '  <div class="resource-title">';
+	echo '    <a href="' . $pub->link() . '">';
+	echo '      <span>' . $pub->get('title') . '</span>';
+	echo '    </a>';
+	echo '  </div>';
+	echo '</div>';
 }
 ?>
