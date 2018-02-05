@@ -40,6 +40,14 @@ use Components\Publications\Models\Publication;
  */
 class Helper extends Module
 {
+	protected $db = null;
+
+	protected $groups = [];
+
+	protected $pubs = [];
+
+	protected $featured = [];
+
 	/**
 	 * Get the list of billboads in the selected collection
 	 *
@@ -47,8 +55,6 @@ class Helper extends Module
 	 */
 	private function _getBillboards($collection)
 	{
-		$db = \App::get('db');
-
 		// Query to grab all the billboards associated with the selected collection
 		// Make sure we only grab published billboards
 		$query = 'SELECT b.*, c.name' .
@@ -58,14 +64,8 @@ class Helper extends Module
 				' AND c.name = ' . $db->quote($collection) .
 				' ORDER BY `ordering` ASC';
 
-/*		if ($indices)
-		{
-			$query .= ' AND b.id IN (' . str_replace(';', ',', $indices) . ')';
-		}*/
-		// $query .= ' ORDER BY `ordering` ASC';
-
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
+		$this->db->setQuery($query);
+		$rows = $this->db->loadObjectList();
 
 		return $rows;
 	}
@@ -74,61 +74,142 @@ class Helper extends Module
 	 * Get the most recent publications.
 	 * @return array Publications, ordered by most recent.
 	 */
-	private function _getPublications($featured = 0)
+	private function _getPublications($item)
 	{
-		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+		if (empty($this->pubs)) {
+			include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
-		$pubmodel = new \Components\Publications\Models\Publication();
-		$filters = array(
-			'start'   => 0,
-			'dev'     => 0,
-			'sortby'  => 'date_created',
-			'sortdir' => 'DESC'
-		);
+			//query to get publications
+			$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM `jos_publication_versions` as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM `jos_publication_versions` WHERE publication_id=C.id AND state!=3) AS versions FROM `jos_publication_versions` as V, `jos_projects` as PP, `jos_publication_master_types` AS MT, `jos_publications` AS C LEFT JOIN `jos_publication_categories` AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM `jos_publication_versions` AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
 
-		if ($featured) {
-			$filters['featured'] = 1;
+			$this->db->setQuery($sql . ' AND V.state != 2 GROUP BY C.id ORDER BY C.created DESC');
+			if (!$this->db->getError())
+			{
+				$this->pubs = $this->db->loadObjectList('id');
+			}
+		
+			// Get featured publications
+			$this->db->setQuery($sql . ' AND C.featured = 1 AND V.state != 2 GROUP BY C.id ORDER BY C.created DESC');
+			if (!$this->db->getError())
+			{
+				$this->featured["pubs"] = $this->db->loadObjectList('id');
+			}
 		}
 
-		$pubs = $pubmodel->entries('list', $filters);
+		// Make sure we don't ask for too much
+		$n = min($item["n"], ($item["featured"] ? count($this->featured["pubs"]) : count($this->pubs)));
+		if ($n < $item["n"]) {
+			echo 'Showcase Module Error: Not enough requested publications left!';
+			return [];
+		}
 
-		return $pubs;
+		if ($item["ordering"] === "recent") {
+			if ($item["featured"]) {
+				$item_pubs = array_slice($this->featured["pubs"], 0, $n, $preserve = true);
+			} else {
+				$item_pubs = array_slice($this->pubs, 0, $n, $preserve = true);
+			}
+		} elseif ($item["ordering"] === "random") {
+			if ($item["featured"]) {
+				$rind = array_flip((array)array_rand($this->featured["pubs"], $n));
+				$item_pubs = $this->shuffle_assoc(array_intersect_key($this->featured["pubs"], $rind));
+			} else {
+				$rind = array_flip((array)array_rand($this->pubs, $n));
+				$item_pubs = $this->shuffle_assoc(array_intersect_key($this->pubs, $rind));
+			}
+		} elseif ($item["ordering"] === "indexed") {
+			$item_pubs = array_filter($this->pubs, function($pub) use ($item) {
+				return in_array($pub->id, $item["indices"]);
+			});
+		} else {
+			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
+			return [];
+		}
+		// Remove used pubs from master lists
+		$this->pubs = array_diff_key($this->pubs, $item_pubs);
+		$this->featured["pubs"] = array_diff_key($this->featured["pubs"], $item_pubs);
+
+		return $item_pubs;
 	}
 
 	/**
 	 * Get groups.  
 	 * 
 	 * We are mirroring code at Hubzero\User\Group\Helper::getFeaturedGroups()
-	 * @return array Groups.
+	 * @return true
 	 */
-	private function _getGroups($featured = 0)
+	private function _getGroups($item)
 	{
-		//database object
-		$db = \App::get('db');
+		if (empty($this->groups)) {
+			//query to get groups
+			$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc, g.created
+					FROM `#__xgroups` AS g
+					WHERE (g.type=1
+					OR g.type=3)
+					AND g.published=1
+					AND g.approved=1
+					AND g.discoverability=0";
 
-		//query to get groups
-		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc, g.created
-				FROM `#__xgroups` AS g
-				WHERE (g.type=1
-				OR g.type=3)
-				AND g.published=1
-				AND g.approved=1
-				AND g.discoverability=0";
+			$this->db->setQuery($sql . " ORDER BY `created` DESC;");
+			if (!$this->db->getError())
+			{
+				$this->groups = $this->db->loadObjectList('gidNumber');
+			}
 
-		if ($featured) {
-			//parse the featured group list
+			// Get the featured group list (whether we need it or not)
 			$featuredGroupList = \Component::params('com_groups')->get('intro_featuredgroups_list', '');
 			$featuredGroupList = array_map('trim', array_filter(explode(',', $featuredGroupList), 'trim'));
-			$sql .= "	AND g.cn IN ('" . implode("','", $featuredGroupList) . "')";
+			$sql_feat = $sql . "	AND g.cn IN ('" . implode("','", $featuredGroupList) . "')";
+
+			$this->db->setQuery($sql_feat . "ORDER BY `created` DESC;");
+			if (!$this->db->getError())
+			{
+				$this->featured["groups"] = $this->db->loadObjectList('gidNumber');
+			}
 		}
 
-		$sql .= "   ORDER BY `created` DESC;";
-
-		$db->setQuery($sql);
-		if (!$db->getError())
-		{
-			return $db->loadObjectList();
+		// Make sure we don't ask for too much
+		$n = min($item["n"], ($item["featured"] ? count($this->featured["groups"]) : count($this->groups)));
+		if ($n < $item["n"]) {
+			echo 'Showcase Module Error: Not enough selected groups left!';
+			return [];
 		}
+
+		if ($item["ordering"] === "recent") {
+			if ($item["featured"]) {
+				$item_groups = array_slice($this->featured["groups"], 0, $n, $preserve = true);
+			} else {
+				$item_groups = array_slice($this->groups, 0, $n, $preserve = true);
+			}
+		} elseif ($item["ordering"] === "random") {
+			if ($item["featured"]) {
+				$rind = array_flip((array)array_rand($this->featured["groups"], $n));
+				$item_groups = $this->shuffle_assoc(array_intersect_key($this->featured["groups"], $rind));
+			} else {
+				$rind = array_flip((array)array_rand($this->groups, $n));
+				$item_groups = $this->shuffle_assoc(array_intersect_key($this->groups, $rind));
+			}
+		} elseif ($item["ordering"] === "indexed") {
+			$item_groups = array_filter($this->groups, function($group) use ($item) {
+				return in_array($group->gidNumber, $item["indices"]);
+			});
+		} else {
+			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
+			return [];
+		}
+		// Remove used groups from master lists
+		$this->groups = array_diff_key($this->groups, $item_groups);
+		$this->featured["groups"] = array_diff_key($this->featured["groups"], $item_groups);
+
+		return $item_groups;
+	}
+
+	/**
+	 * Get partners.
+	 * @return array Partners
+	 */
+	private function _getPartners()
+	{
 	}
 
 	/**
@@ -201,6 +282,24 @@ class Helper extends Module
 	}
 
 	/**
+	 * Associative array shuffle
+	 * @param  array $list Unshuffled associative array
+	 * @return array       Shuffled associative array
+	 */
+	private function shuffle_assoc($list) { 
+		if (!is_array($list)) return $list; 
+
+  		$keys = array_keys($list); 
+  		shuffle($keys); 
+  		$random = array(); 
+  		foreach ($keys as $key) { 
+    		$random[$key] = $list[$key]; 
+  		}
+
+  		return $random; 
+	} 
+
+	/**
 	 * Display method
 	 * Used to add CSS for each slide as well as the javascript file(s) and the parameterized function
 	 *
@@ -209,6 +308,8 @@ class Helper extends Module
 	public function display()
 	{
 		$this->css();
+
+		$this->db = \App::get('db');
 
 		$this->autotag = $this->params->get('autotag');
 		$this->items = $this->_parseItems();

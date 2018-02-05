@@ -42,10 +42,12 @@ foreach ($this->items as $item) {
 		switch ($item["content"])
 		{
 			case 'publications':
+				$item_pubs = $this->_getPublications($item);
 				require $this->getLayoutPath('_publications');
 			break;
 
 			case 'groups':
+				$item_groups = $this->_getGroups($item);
 				require $this->getLayoutPath('_groups');
 			break;
 
