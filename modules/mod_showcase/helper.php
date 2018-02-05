@@ -61,7 +61,7 @@ class Helper extends Module
 				' FROM #__billboards_billboards as b, #__billboards_collections as c' .
 				' WHERE c.id = b.collection_id' .
 				' AND published = 1' .
-				' AND c.name = ' . $db->quote($collection) .
+				' AND c.name = ' . $this->db->quote($collection) .
 				' ORDER BY `ordering` ASC';
 
 		$this->db->setQuery($query);
@@ -238,7 +238,7 @@ class Helper extends Module
     			  "class" => $item[1],
     			  "type" => $item[2],
     			  "ordering" => $item[3],
-    			  "content" => strtolower($item[4]),
+    			  "content" => ($item[2] === 'static' ? $item[4] : strtolower($item[4])),
     			  "featured" => (($item[2] === 'dynamic' and count($item) > 5) ? $item[5] : 0),
     			  "indices" => (($item[3] === 'indexed' and count($item) > 5) ? explode(';', $item[5]) : 0),
     			  "tag" => 0, // Set this below
