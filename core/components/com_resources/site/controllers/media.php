@@ -365,8 +365,7 @@ class Media extends SiteController
 		// Are we creating a new tracking record?
 		if ($trackingInformation->isNew())
 		{
-			$trackingInformation = new stdClass;
-			$mediaTracking->set(array(
+			$trackingInformation->set(array(
 				'user_id'                     => User::get('id'),
 				'session_id'                  => $session->getId(),
 				'ip_address'                  => $ipAddress,
