@@ -2079,7 +2079,7 @@ class Tickets extends SiteController
 		}
 
 		// Load the record
-		$ticket = Ticket::orOrFail($id);
+		$ticket = Ticket::oneOrFail($id);
 
 		$description = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_DELETED', '<a href="' . Route::url($ticket->link()) . '">#' . $ticket->get('id') . ' - ' . $ticket->get('summary') . '</a>');
 

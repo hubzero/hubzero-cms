@@ -213,12 +213,10 @@ elseif ($type == 'html5')
 if ($type == 'hubpresenter' || $type == 'html5')
 {
 	// Include media tracking for html5 and hubpresenter videos
-	require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'mediatracking.php');
-	$dbo = \App::get('db');
-	$mediaTracking = new \Components\Resources\Tables\MediaTracking($dbo);
+	require_once Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php';
 
 	// Get tracking for this user for this resource
-	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $this->asset->id, 'course');
+	$tracking = \Components\Resources\Models\MediaTracking::oneByUserAndResource(User::get('id'), $this->asset->id, 'course');
 
 	// Check to see if we already have a time query param
 	$hasTime = (Request::getVar('time', '') != '') ? true : false;
