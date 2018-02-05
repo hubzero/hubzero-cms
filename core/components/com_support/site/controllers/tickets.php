@@ -2400,13 +2400,16 @@ class Tickets extends SiteController
 				}
 
 				$attachments = Attachment::all()
-					->whereEquals('ticket', $listdir)
+					->whereEquals('ticket', $tmp)
 					->rows();
 
 				foreach ($attachments as $attachment)
 				{
 					$attachment->set('ticket', $listdir);
-					$attachment->save();
+					if (!$attachment->save())
+					{
+						$this->setError($attachment->getError());
+					}
 				}
 			}
 		}
