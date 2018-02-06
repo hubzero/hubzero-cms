@@ -71,7 +71,7 @@ $this->css()
 
 		<?php if ($this->newsletter != '') : ?>
 			<div class="container">
-				<iframe id="newsletter-iframe" width="100%" height="0" src="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>"></iframe>
+				<iframe id="newsletter-iframe" width="100%" height="0" title="<?php echo $this->escape($this->title); ?>" src="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>"></iframe>
 			</div>
 		<?php else : ?>
 			<p class="info">
