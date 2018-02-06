@@ -29,39 +29,36 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
+// no direct access
 defined('_HZEXEC_') or die();
-?>
 
-<?php 
-$boards = array();
-foreach ($this->items as $item) {
-	if ($item["type"] === "static") {
-		require $this->getLayoutPath('_billboards');
-	} elseif ($item["type"] === "dynamic") {
-		switch ($item["content"])
+foreach ($item_partners as $partner)
+{	
+	echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
+';
+	echo '  <div class="partner-img">';
+	echo '    <a href="' . Route::url('groups' . DS . $partner->groups_cn) . '">';
+	echo '      <img src="app/site/media/images/partners/' . $partner->logo_img . '" alt="">';
+	echo '    </a>';
+	echo '  </div>';
+	if ($item['tag']) {
+		echo '  <div class="partner-tag">';
+		if ($item['tag-target'])
 		{
-			case 'publications':
-				$item_pubs = $this->_getPublications($item);
-				require $this->getLayoutPath('_publications');
-			break;
-
-			case 'groups':
-				$item_groups = $this->_getGroups($item);
-				require $this->getLayoutPath('_groups');
-			break;
-
-			case 'partners':
-				$item_partners = $this->_getPartners($item);
-				require $this->getLayoutPath('_partners');
-			break;
-
-			default:
-				echo 'Showcase Module Error: Unknown dynamic type "' . $item["content"] . '".  Possible values include "publications".';
-			break;
+			echo '    <a href="' . $item['tag-target'] . '">';
 		}
-	} else {
-		echo 'Showcase Module Error: Unknown type "' . $item["type"] . '".  Possible values include "static" or "dynamic".';
+		echo '      <span>' . $item['tag'] . '</span>';
+		if ($item['tag-target'])
+		{
+			echo '    </a>';
+		}
+		echo '  </div>';
 	}
+	echo '  <div class="partner-title">';
+	echo '    <a href="' . Route::url('groups' . DS . $partner->groups_cn) . '">';
+	echo '      <span>' . $partner->name . '</span>';
+	echo '    </a>';
+	echo '  </div>';
+	echo '</div>';
 }
 ?>
