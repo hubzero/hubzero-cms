@@ -255,7 +255,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function transformLogicaltype()
 	{
 		//return $this->belongsToOne(__NAMESPACE__ . '\\Type', 'logicaltype_id')->row();
-		return Type::oneOrNew($this->get('logicaltype'));
+		return Type::oneOrNew($this->get('logical_type'));
 	}
 
 	/**

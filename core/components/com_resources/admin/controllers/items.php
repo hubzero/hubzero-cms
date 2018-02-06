@@ -682,14 +682,14 @@ class Items extends AdminController
 		// Build selects of various types
 		if ($row->standalone != 1)
 		{
-			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 30)->rows(), 'type', $row->get('type'), '', '', '', '');
-			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 28)->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
-			$lists['sub_type']     = Html::selectType(Type::all()->whereEquals('category', 30)->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
+			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'type', $row->get('type'), '', '', '', '');
+			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 28)->order('type', 'asc')->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
+			$lists['sub_type']     = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
 		}
 		else
 		{
-			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 27)->rows(), 'type', $row->get('type'), '', '', '', '');
-			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 21)->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
+			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 27)->order('type', 'asc')->rows(), 'type', $row->get('type'), '', '', '', '');
+			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 21)->order('type', 'asc')->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
 		}
 
 		// Build the <select> of admin users
@@ -812,10 +812,11 @@ class Items extends AdminController
 		$row->set('publish_up', Date::of($row->get('publish_up'), Config::get('offset'))->toSql());
 
 		// publish down
-		if ($row->get('publish_down') == '0000-00-00 00:00:00'
+		if (!$row->get('publish_down')
+		 || $row->get('publish_down') == '0000-00-00 00:00:00'
 		 || $row->get('publish_down') == Lang::txt('COM_RESOURCES_NEVER'))
 		{
-			$row->set('publish_down', null);
+			$row->set('publish_down', '0000-00-00 00:00:00');
 		}
 		else
 		{

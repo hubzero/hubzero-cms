@@ -147,7 +147,7 @@ function doFileoptions()
 				} else if (act == '2') {
 					//if (filepath) {
 					//document.forms['adminForm'].elements['path'].value = '<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath;
-					document.forms['adminForm'].elements['path'].value = filepath;
+					document.forms['adminForm'].elements['fields[path]'].value = filepath;
 					//}
 				} else if (act == '3') {
 					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
