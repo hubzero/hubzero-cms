@@ -1881,7 +1881,7 @@ class Resources extends SiteController
 				}
 
 				// Get the contributors of this resource
-				$author = strip_tags($row->authorList());
+				$author = strip_tags($row->authorsList());
 
 				$rtt = new Tags($row->id);
 				$rtags = $rtt->render('string');
