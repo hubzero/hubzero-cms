@@ -322,6 +322,10 @@ class Helper extends Module
     						$items[$i]["tag-target"] = Route::url('index.php?option=com_groups');
     					break;
 
+    					case 'partners':
+    						$items[$i]["tag-target"] = Route::url('index.php?option=com_partners');
+    					break;
+
     					default:
     					break;
     				}
