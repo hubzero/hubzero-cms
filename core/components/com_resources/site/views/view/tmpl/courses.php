@@ -122,7 +122,7 @@ if ($mode != 'preview')
 
 					if ($ccount > 0)
 					{
-						$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $model->type->get('type');
+						$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $this->model->type->get('type');
 
 						$this->view('_primary')
 							->set('option', $this->option)

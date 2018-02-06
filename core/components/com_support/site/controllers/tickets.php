@@ -1016,7 +1016,7 @@ class Tickets extends SiteController
 		$row->set('created', Date::toSql());
 		$row->set('login', $reporter['login']);
 		$row->set('severity', (isset($problem['severity']) ? $problem['severity'] : 'normal'));
-		$row->set('owner', (isset($problem['owner']) ? $problem['owner'] : null));
+		$row->set('owner', (isset($problem['owner']) ? $problem['owner'] : 0));
 		$row->set('category', (isset($problem['category']) ? $problem['category'] : ''));
 		$row->set('summary', $problem['short']);
 		$row->set('report', $problem['long']);
@@ -2079,7 +2079,7 @@ class Tickets extends SiteController
 		}
 
 		// Load the record
-		$ticket = Ticket::orOrFail($id);
+		$ticket = Ticket::oneOrFail($id);
 
 		$description = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_DELETED', '<a href="' . Route::url($ticket->link()) . '">#' . $ticket->get('id') . ' - ' . $ticket->get('summary') . '</a>');
 
@@ -2400,13 +2400,16 @@ class Tickets extends SiteController
 				}
 
 				$attachments = Attachment::all()
-					->whereEquals('ticket', $listdir)
+					->whereEquals('ticket', $tmp)
 					->rows();
 
 				foreach ($attachments as $attachment)
 				{
 					$attachment->set('ticket', $listdir);
-					$attachment->save();
+					if (!$attachment->save())
+					{
+						$this->setError($attachment->getError());
+					}
 				}
 			}
 		}

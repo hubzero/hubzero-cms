@@ -111,6 +111,8 @@ class Watching extends Relational
 	public static function oneByUserAndTicket($user_id, $ticket_id)
 	{
 		return self::all()
+			->disableCaching()
+			->purgeCache()
 			->whereEquals('user_id', $user_id)
 			->whereEquals('ticket_id', $ticket_id)
 			->row();

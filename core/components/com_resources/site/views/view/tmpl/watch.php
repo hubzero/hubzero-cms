@@ -60,6 +60,8 @@ if (!is_object($presentation))
 //get this resource
 $rr = \Components\Resources\Models\Entry::oneOrFail($this->resid);
 
+$this->doc->setTitle(stripslashes($rr->title));
+
 //get the parent resource
 $parent = $rr->parents()
 	->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
@@ -67,7 +69,7 @@ $parent = $rr->parents()
 	->first();
 
 //check to see if parent type is series
-if ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses')
+if ($parent && ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses'))
 {
 	//if we have a series get children
 	$children = $parent->children()
@@ -85,7 +87,7 @@ if ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Cou
 
 		foreach ($sub_child as $sc)
 		{
-			if (strtolower($sc->type->get('title')) == "hubpresenter")
+			if (strtolower($sc->type->get('title')) == 'hubpresenter')
 			{
 				$hasHUBpresenter = true;
 			}
@@ -93,7 +95,7 @@ if ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Cou
 
 		if (!$hasHUBpresenter)
 		{
-			unset($children[$k]);
+			$children->drop($k);
 		}
 	}
 }
@@ -108,8 +110,9 @@ $sql = "SELECT authorid, role, name FROM `#__author_assoc` "
 	 . "AND subid=" . $parent->id . " "
 	 . "ORDER BY ordering";
 
-$this->database->setQuery($sql);
-$lectureAuthors = $this->database->loadObjectList();
+$database = App::get('db');
+$database->setQuery($sql);
+$lectureAuthors = $database->loadObjectList();
 
 //get the author names from ids
 $a = array();
@@ -190,7 +193,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 
 	<?php if ($children) : ?>
 		<form name="presentation-picker" id="presentation-picker" method="post">
-			<label for="presentations">Select a different presentation: 
+			<label for="presentations">Select a different presentation:
 				<select name="presentation" id="presentation">
 					<optgroup label="<?php echo $parent->title; ?>">
 						<?php foreach ($children as $c) : ?>
@@ -539,5 +542,3 @@ $presentation->subtitles = array_values($presentation->subtitles);
 		<a href="javascript:void(0);" class="btn btn-secondardy icon-popout embed-popout">Pop Out</a>
 	</div>
 </div>
-
-<?php $this->doc->setTitle(stripslashes($rr->title)); ?>
