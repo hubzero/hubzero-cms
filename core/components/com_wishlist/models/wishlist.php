@@ -251,7 +251,7 @@ class Wishlist extends Relational
 
 			if (!$this->_adapter)
 			{
-				throw new RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
+				throw new \RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
 			}
 		}
 		return $this->_adapter;
