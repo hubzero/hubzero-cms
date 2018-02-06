@@ -311,7 +311,11 @@ class Helper extends Module
 
     			// Add autotags to dynamic content
     			if (($this->autotag) and ($items[$i]["type"] === 'dynamic')) {
-    				$items[$i]["tag"] = ucfirst(rtrim($items[$i]["content"], 's'));
+    				if ($items[$i]["content"] === 'publications') {
+    					$items[$i]["tag"] = "Resource";
+    				} else {
+    					$items[$i]["tag"] = ucfirst(rtrim($items[$i]["content"], 's'));
+    				}
     				switch ($items[$i]["content"])
     				{
     					case 'publications':
