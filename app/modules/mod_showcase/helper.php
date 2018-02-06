@@ -34,6 +34,10 @@ namespace Modules\Showcase;
 use Hubzero\Module\Module;
 use Hubzero\User\Group;
 use Components\Publications\Models\Publication;
+use Components\Partners\Models\Partner;
+
+include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
 
 /**
  * Mod_Showcase helper class, used to query for billboards and contains the display method
@@ -45,6 +49,8 @@ class Helper extends Module
 	protected $groups = [];
 
 	protected $pubs = [];
+
+	protected $partners = [];
 
 	protected $featured = [];
 
@@ -77,8 +83,6 @@ class Helper extends Module
 	private function _getPublications($item)
 	{
 		if (empty($this->pubs)) {
-			include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
-
 			//query to get publications
 			$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM `jos_publication_versions` as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM `jos_publication_versions` WHERE publication_id=C.id AND state!=3) AS versions FROM `jos_publication_versions` as V, `jos_projects` as PP, `jos_publication_master_types` AS MT, `jos_publications` AS C LEFT JOIN `jos_publication_categories` AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM `jos_publication_versions` AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
 
@@ -96,6 +100,7 @@ class Helper extends Module
 			}
 		}
 
+		// This code really needs to be turned into a function
 		// Make sure we don't ask for too much
 		$n = min($item["n"], ($item["featured"] ? count($this->featured["pubs"]) : count($this->pubs)));
 		if ($n < $item["n"]) {
@@ -118,6 +123,7 @@ class Helper extends Module
 				$item_pubs = $this->shuffle_assoc(array_intersect_key($this->pubs, $rind));
 			}
 		} elseif ($item["ordering"] === "indexed") {
+			// Just use array_intersect_keys silly!
 			$item_pubs = array_filter($this->pubs, function($pub) use ($item) {
 				return in_array($pub->id, $item["indices"]);
 			});
@@ -168,6 +174,7 @@ class Helper extends Module
 			}
 		}
 
+		// This code really needs to be turned into a function
 		// Make sure we don't ask for too much
 		$n = min($item["n"], ($item["featured"] ? count($this->featured["groups"]) : count($this->groups)));
 		if ($n < $item["n"]) {
@@ -190,6 +197,7 @@ class Helper extends Module
 				$item_groups = $this->shuffle_assoc(array_intersect_key($this->groups, $rind));
 			}
 		} elseif ($item["ordering"] === "indexed") {
+			// Just use array_intersect_keys silly!
 			$item_groups = array_filter($this->groups, function($group) use ($item) {
 				return in_array($group->gidNumber, $item["indices"]);
 			});
@@ -208,8 +216,64 @@ class Helper extends Module
 	 * Get partners.
 	 * @return array Partners
 	 */
-	private function _getPartners()
+	private function _getPartners($item)
 	{
+		if (empty($this->partners))
+		{
+			$sql = "SELECT p.*
+					FROM `#__partner_partners` AS p
+					WHERE p.state=1";
+
+			$this->db->setQuery($sql . " ORDER BY `date_joined` DESC;");
+			if (!$this->db->getError())
+			{
+				$this->partners = $this->db->loadObjectList('id');
+			}
+
+			// Get featured partners
+			$this->db->setQuery($sql . ' AND p.featured=1 ORDER BY `date_joined` DESC;');
+			if (!$this->db->getError())
+			{
+				$this->featured["partners"] = $this->db->loadObjectList('id');
+			}
+		}
+
+		// This code really needs to be turned into a function
+		// Make sure we don't ask for too much
+		$n = min($item["n"], ($item["featured"] ? count($this->featured["partners"]) : count($this->partners)));
+		if ($n < $item["n"]) {
+			echo 'Showcase Module Error: Not enough selected partners left!';
+			return [];
+		}
+
+		if ($item["ordering"] === "recent") {
+			if ($item["featured"]) {
+				$item_partners = array_slice($this->featured["partners"], 0, $n, $preserve = true);
+			} else {
+				$item_partners = array_slice($this->partners, 0, $n, $preserve = true);
+			}
+		} elseif ($item["ordering"] === "random") {
+			if ($item["featured"]) {
+				$rind = array_flip((array)array_rand($this->featured["partners"], $n));
+				$item_partners = $this->shuffle_assoc(array_intersect_key($this->featured["partners"], $rind));
+			} else {
+				$rind = array_flip((array)array_rand($this->partners, $n));
+				$item_partners = $this->shuffle_assoc(array_intersect_key($this->partners, $rind));
+			}
+		} elseif ($item["ordering"] === "indexed") {
+			// Just use array_intersect_keys silly!
+			$item_partners = array_filter($this->partners, function($partner) use ($item) {
+				return in_array($partner->id, $item["indices"]);
+			});
+		} else {
+			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
+			return [];
+		}
+		// Remove used partners from master lists
+		$this->partners = array_diff_key($this->partners, $item_partners);
+		$this->featured["partners"] = array_diff_key($this->featured["partners"], $item_partners);
+
+		return $item_partners;
 	}
 
 	/**
