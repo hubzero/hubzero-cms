@@ -37,6 +37,7 @@ use Components\Resources\Tables\Type;
 use Components\Resources\Tables\Review;
 use Components\Resources\Tables\Assoc;
 use Components\Resources\Tables\Contributor;
+use Components\Resources\Tables\License;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Html;
@@ -123,6 +124,11 @@ class Items extends AdminController
 				$this->_option . '.resources.type',
 				'type',
 				''
+			),
+			'license' => Request::getState(
+				$this->_option . '.resources.license',
+				'license',
+				''
 			)
 		);
 
@@ -138,12 +144,14 @@ class Items extends AdminController
 		$rt = new Type($this->database);
 		$this->view->types = $rt->getMajorTypes();
 
+		$license = new License($this->database);
+		$this->view->licenses = $license->getRecords();
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
 		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -853,10 +861,13 @@ class Items extends AdminController
 			foreach ($params as $k => $v)
 			{
 				$txt->set($k, $v);
+				if ($k == "license")
+				{
+					$row->license = $v;
+				}
 			}
 			$row->params = $txt->toString();
 		}
-
 		// Get attributes
 		$attribs = Request::getVar('attrib', array(), 'post');
 		if (is_array($attribs))
@@ -868,12 +879,12 @@ class Items extends AdminController
 				{
 					if (strtotime(trim($v)) === false)
 					{
-						$v = NULL;
+						$v = null;
 					}
 
 					$v = trim($v)
 						? Date::of($v, Config::get('offset'))->toSql()
-						: NULL;
+						: null;
 				}
 				$txta->set($k, $v);
 			}
@@ -1282,12 +1293,24 @@ class Items extends AdminController
 		// Choose access level
 		switch ($this->_task)
 		{
-			case 'accesspublic':     $access = 0; break;
-			case 'accessregistered': $access = 1; break;
-			case 'accessspecial':    $access = 2; break;
-			case 'accessprotected':  $access = 3; break;
-			case 'accessprivate':    $access = 4; break;
-			default: $access = 0; break;
+			case 'accesspublic':
+				$access = 0;
+				break;
+			case 'accessregistered':
+				$access = 1;
+				break;
+			case 'accessspecial':
+				$access = 2;
+				break;
+			case 'accessprotected':
+				$access = 3;
+				break;
+			case 'accessprivate':
+				$access = 4;
+				break;
+			default:
+				$access = 0;
+				break;
 		}
 
 		// Load resource info
@@ -1728,7 +1751,7 @@ class Items extends AdminController
 	 * @param      string  $order      Field to order the users by
 	 * @return     string
 	 */
-	private function userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
+	private function userSelect($name, $active, $nouser=0, $javascript=null, $order='a.name')
 	{
 		$database = \App::get('db');
 
@@ -1876,4 +1899,3 @@ class Items extends AdminController
 			->display();
 	}
 }
-

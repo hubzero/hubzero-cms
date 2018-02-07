@@ -74,7 +74,7 @@ class Resource extends \JTable
 	 * @param   string   $oid  Resource alias
 	 * @return  boolean  True on success
 	 */
-	public function loadAlias($oid=NULL)
+	public function loadAlias($oid=null)
 	{
 		return $this->load($oid);
 	}
@@ -88,7 +88,7 @@ class Resource extends \JTable
 	 */
 	public function loadByFile($oid=NULL, $parent_id=null)
 	{
-		if ($oid === NULL || $parent_id === NULL)
+		if ($oid === null || $parent_id === null)
 		{
 			return false;
 		}
@@ -231,7 +231,7 @@ class Resource extends \JTable
 	 * @param   integer  $id  Resource ID
 	 * @return  boolean  True on success
 	 */
-	public function deleteExistence($id=NULL)
+	public function deleteExistence($id=null)
 	{
 		if (!$id)
 		{
@@ -397,15 +397,29 @@ class Resource extends \JTable
 		{
 			switch ($filters['sortby'])
 			{
-				case 'date_created':    $query .= 'created DESC';          break;
-				case 'date_modified':    $query .= 'modified DESC';        break;
-				case 'title':   $query .= 'title ASC, publish_up';         break;
-				case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
-				case 'ranking': $query .= "ranking DESC";                  break;
-				case 'random':  $query .= "RAND()";                        break;
+				case 'date_created':
+					$query .= 'created DESC';
+					break;
+				case 'date_modified':
+					$query .= 'modified DESC';
+					break;
+				case 'title':
+					$query .= 'title ASC, publish_up';
+					break;
+				case 'rating':
+					$query .= "rating DESC, times_rated DESC";
+					break;
+				case 'ranking':
+					$query .= "ranking DESC";
+					break;
+				case 'random':
+					$query .= "RAND()";
+					break;
 				case 'date':
 				case 'date_published':
-				default: $query .= 'publish_up DESC';      break;
+				default:
+					$query .= 'publish_up DESC';
+					break;
 			}
 		}
 
@@ -800,6 +814,10 @@ class Resource extends \JTable
 		{
 			$sql .= " AND r.type=" . $this->_db->quote($filters['type']);
 		}
+		if (isset($filters['license']) && $filters['license'] != 'all')
+		{
+			$sql .= " AND r.license=" . $this->_db->quote($filters['license']);
+		}
 		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
@@ -842,6 +860,10 @@ class Resource extends \JTable
 		if (isset($filters['type']) && $filters['type'])
 		{
 			$sql .= " AND r.type=" . $this->_db->quote($filters['type']);
+		}
+		if (isset($filters['license']) && $filters['license'] != 'all')
+		{
+			$sql .= " AND r.license=" .$this->_db->quote($filters['license']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{

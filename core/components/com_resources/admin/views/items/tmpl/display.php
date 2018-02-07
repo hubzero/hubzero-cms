@@ -105,6 +105,13 @@ function submitbutton(pressbutton)
 					<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
 
+				<select name="license" id="filter-license" onchange="this.form.submit();">
+					<option value="all"<?php echo ($this->filters['license'] == 'all') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
+					<?php foreach ($this->licenses as $license) { ?>
+					<option value="<?php echo $license->name; ?>"<?php echo ($this->filters['license'] == $license->name) ? 'selected="selected"' : ''; ?>><?php echo $license->title; ?></option>
+					<?php } ?>
+				</select>
+
 				<label for="type"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
 				<?php echo \Components\Resources\Helpers\Html::selectType($this->types, 'type', $this->filters['type'], Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'), '', ' onchange="this.form.submit();"', ''); ?>
 			</div>
@@ -120,7 +127,7 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_STATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_MODIFIED', 'modified', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_RESOURCES_COL_LICENSE'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_LICENSE', 'modified', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_CHILDREN', 'children', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_TAGS'); ?></th>
