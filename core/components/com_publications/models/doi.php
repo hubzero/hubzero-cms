@@ -732,12 +732,16 @@ class Doi extends Obj
 		curl_setopt_array($ch, $options);
 
 		$response = curl_exec($ch);
+		var_dump($response);
+		echo "\n";
 		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		curl_close($ch);
 
 		if ($success === 201 || $success === 200)
 		{
-			$out = explode('/', $response);
+			$resArray = explode('_', $response);
+			$doiStr = reset($resArray);
+			$out = explode('/', $doiStr);
 			$handle = trim(end($out));
 			if ($handle)
 			{
