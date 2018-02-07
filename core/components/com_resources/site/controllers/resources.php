@@ -283,7 +283,7 @@ class Resources extends SiteController
 			// For example, /resources/onlinepresentation => Oneline Presentation
 			foreach ($types as $type)
 			{
-				if (trim($filters['type']) == $type->get('type'))
+				if (trim($filters['type']) == $type->get('alias'))
 				{
 					$filters['type'] = $type->get('id');
 
