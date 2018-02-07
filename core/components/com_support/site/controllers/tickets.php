@@ -1720,13 +1720,13 @@ class Tickets extends SiteController
 		}
 
 		// Update ticket status if necessary
+		$row->set('open', $row->status->get('open', 1));
+
 		if ($id && isset($incoming['status']) && $incoming['status'] == 0)
 		{
 			$row->set('open', 0);
 			$row->set('resolved', Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'));
 		}
-
-		$row->set('open', $row->status->get('open', 1));
 
 		// If an existing ticket AND closed AND previously open
 		if ($id && !$row->get('open') && $row->get('open') != $old->get('open'))
