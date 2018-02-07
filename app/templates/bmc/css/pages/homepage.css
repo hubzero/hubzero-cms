@@ -1,3 +1,27 @@
+.resources .module-left .billboard .billboard-tag, .resources .module-left .resource .resource-tag, .resources .module-left .partner-tag, .resources .module-left .group .group-tag, .community .module-right .billboard .billboard-tag, .community .module-right .resource .resource-tag, .community .module-right .partner-tag, .community .module-right .group .group-tag {
+  position: absolute;
+  bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 5px 10px;
+  background-color: #84bf41;
+}
+
+.resources .module-left .billboard .billboard-tag a, .resources .module-left .resource .resource-tag a, .resources .module-left .partner-tag a, .resources .module-left .group .group-tag a, .community .module-right .billboard .billboard-tag a, .community .module-right .resource .resource-tag a, .community .module-right .partner-tag a, .community .module-right .group .group-tag a {
+  color: #fff;
+}
+
+.resources .module-left .billboard-image::after, .resources .module-left .resource-img::after, .resources .module-left .partner-img::after, .resources .module-left .group .group-img::after, .community .module-right .billboard-image::after, .community .module-right .resource-img::after, .community .module-right .partner-img::after, .community .module-right .group .group-img::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  height: 200px;
+  width: 100%;
+}
+
 .contentpane {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
@@ -98,10 +122,186 @@ h3 {
   padding: 2.5em;
 }
 
-.resources .big {
+.resources .module-left {
   width: 50%;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+}
+
+.resources .module-left .big {
+  grid-column: span 3;
+}
+
+.resources .module-left .big .billboard-image {
+  height: 100%;
+}
+
+.resources .module-left .big .billboard-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.resources .module-left .horizontal {
+  grid-column: span 2;
+}
+
+.resources .module-left .billboard-image {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.resources .module-left .billboard-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.resources .module-left .billboard {
+  position: relative;
+}
+
+.resources .module-left .billboard .billboard-header {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.resources .module-left .billboard .billboard-header a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.resources .module-left .resource-img {
+  width: 100%;
+  height: 100%;
+}
+
+.resources .module-left .resource-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.resources .module-left .resource {
+  position: relative;
+}
+
+.resources .module-left .resource .resource-tag {
+  background-color: #2E2D4D;
+}
+
+.resources .module-left .resource .resource-title {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.resources .module-left .resource .resource-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.resources .module-left .partner-img {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+.resources .module-left .partner-img img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.resources .module-left .partner-title {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.resources .module-left .partner-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.resources .module-left .group {
+  position: relative;
+}
+
+.resources .module-left .group .group-img {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+.resources .module-left .group .group-img img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.resources .module-left .group .group-description {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.resources .module-left .group .group-description a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
 }
 
 .software {
@@ -224,6 +424,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 200px);
+  grid-gap: 5px;
 }
 
 .community .module-right .big {
@@ -257,43 +458,30 @@ h3 {
   object-fit: cover;
 }
 
-.community .module-right .billboard-image::after {
-  content: '';
-  display: block;
-  position: relative;
-  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
-  margin-top: -200px;
-  height: 200px;
-  width: 100%;
-}
-
 .community .module-right .billboard {
   position: relative;
-}
-
-.community .module-right .billboard .billboard-tag {
-  position: absolute;
-  bottom: 50px;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 11px;
-  padding: 0 10px;
-}
-
-.community .module-right .billboard .billboard-tag a {
-  color: #fff;
 }
 
 .community .module-right .billboard .billboard-header {
   position: absolute;
   bottom: 0;
-  height: 50px;
-  line-height: 1em;
   padding: 10px;
-  overflow: hidden;
 }
 
 .community .module-right .billboard .billboard-header a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: #fff;
 }
 
@@ -308,55 +496,111 @@ h3 {
   object-fit: cover;
 }
 
-.community .module-right .resource-img::after {
-  content: '';
-  display: block;
-  position: relative;
-  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
-  margin-top: -200px;
-  height: 200px;
-  width: 100%;
-}
-
 .community .module-right .resource {
   position: relative;
 }
 
 .community .module-right .resource .resource-tag {
-  position: absolute;
-  bottom: 50px;
-  padding: 0 10px;
-}
-
-.community .module-right .resource .resource-tag a {
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 11px;
+  background-color: #2E2D4D;
 }
 
 .community .module-right .resource .resource-title {
   position: absolute;
   bottom: 0;
-  height: 50px;
-  line-height: 1em;
   padding: 10px;
 }
 
 .community .module-right .resource .resource-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.community .module-right .partner-img {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+.community .module-right .partner-img img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.community .module-right .partner-title {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.community .module-right .partner-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: #fff;
 }
 
 .community .module-right .group {
-  align-self: center;
+  position: relative;
 }
 
 .community .module-right .group .group-img {
+  height: 100%;
+  width: 100%;
   text-align: center;
+  overflow: hidden;
+}
+
+.community .module-right .group .group-img img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .community .module-right .group .group-description {
-  text-align: center;
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.community .module-right .group .group-description a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
 }
 
 .three {
@@ -460,6 +704,7 @@ h3 {
     width: 100%;
     grid-column: 1 / span 4;
     grid-row: 2;
+    grid-template-rows: repeat(4, 150px);
   }
   .community .module-right .big {
     grid-column: span 4;
@@ -482,17 +727,17 @@ h3 {
 }
 
 @media only screen and (min-width: 901px) and (max-width: 1200px) {
-  .community .right {
-    grid-template-rows: repeat(4, 2fr);
+  .community .module-right {
+    grid-template-rows: repeat(4, 200px);
   }
-  .community .right .big {
+  .community .module-right .big {
     grid-column: span 4;
     grid-row: span 2;
   }
-  .community .right .regular {
+  .community .module-right .regular {
     grid-column: span 2;
   }
-  .community .right .horizontal {
+  .community .module-right .horizontal {
     grid-column: span 4;
   }
   .three .service {
@@ -504,7 +749,7 @@ h3 {
   .resources .oer {
     width: auto;
   }
-  .resources .big {
+  .resources .module-left {
     width: auto;
   }
   .software .left {

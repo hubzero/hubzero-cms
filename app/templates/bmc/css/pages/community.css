@@ -1,3 +1,27 @@
+.module-feature .billboard .billboard-tag {
+  position: absolute;
+  bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 5px 10px;
+  background-color: #84bf41;
+}
+
+.module-feature .billboard .billboard-tag a {
+  color: #fff;
+}
+
+.module-feature .billboard-image::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  height: 200px;
+  width: 100%;
+}
+
 .contentpane {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
@@ -46,47 +70,71 @@
   color: #cca231;
 }
 
-.feature {
+.module-feature {
   display: flex;
   flex-wrap: wrap;
   grid-column: col / span 4;
   grid-row: row;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-  grid-auto-rows: 125px;
-  grid-auto-flow: dense;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(2, 200px);
 }
 
-.feature .big {
+.module-feature .big {
   flex: 1 1 200px;
   height: 125px;
   grid-column: span 2;
   grid-row: span 2;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
 }
 
-.feature .vertical {
-  flex: 1 2 200px;
-  height: 125px;
-  grid-row: span 2;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
-}
-
-.feature .horizontal {
+.module-feature .horizontal {
   flex: 1 2 200px;
   height: 125px;
   grid-column: span 2;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
 }
 
-.feature .regular {
+.module-feature .regular {
   flex: 1 1 200px;
   height: 125px;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
+}
+
+.module-feature .billboard-image {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.module-feature .billboard-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.module-feature .billboard {
+  position: relative;
+}
+
+.module-feature .billboard .billboard-header {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.module-feature .billboard .billboard-header a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 200px;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
 }
 
 .search-wrapper {
