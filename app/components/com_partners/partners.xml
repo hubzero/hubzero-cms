@@ -31,5 +31,5 @@
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.com_partners.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.com_partners.sys.ini</language>
-	</languages>
+		<language tag="en-GB">language/en-GB/en-GB.com_partners.menu.ini</language>	</languages>
 </extension>
