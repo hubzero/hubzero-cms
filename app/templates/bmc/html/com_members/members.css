@@ -1,0 +1,15 @@
+/* not yet supported
+.keyframes(@name; @arguments) {
+	@-moz-keyframes @name { @arguments(); }
+	@-webkit-keyframes @name { @arguments(); }
+	@keyframes @name { @arguments(); }
+}
+*/
+@import url("/core/components/com_members/site/assets/css/members.css");
+#page_menu li a,
+#page_menu li span {
+  color: #676767;
+}
+#page_sidebar {
+  background: #f5f5f5;
+}

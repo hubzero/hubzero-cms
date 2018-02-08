@@ -106,7 +106,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 	</head>
 	<body class="<?php echo $pageClass; ?>" data-component="<?php echo Request::getVar('option', ''); ?>" data-subnav="<?php echo $showSubnav; ?>">
 		<div class="wrap">
-			<div class="content-panel">
+			<div class="content-panel <?php echo $subnavComponnent; ?>">
 				<?php
 				$headerClass = '';
 				if ($menu->getActive() != $menu->getDefault()) {
