@@ -39,6 +39,7 @@ use Components\Newsletter\Models\Mailing;
 use Components\Newsletter\Models\Primary;
 use Components\Newsletter\Models\Secondary;
 use Components\Newsletter\Models\Mailing\Recipient;
+use Components\Members\Models\Member;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
 use stdClass;
@@ -644,7 +645,7 @@ class Newsletters extends AdminController
 	{
 		//get request vars
 		$newsletterId  = Request::getInt('nid', 0);
-		$mailinglistId = Request::getInt('mailinglist', '-1');
+		$mailinglistId = Request::getInt('mailinglist', -1);
 
 		//instantiate newsletter campaign object & load campaign
 		$newsletter = Newsletter::oneOrFail($newsletterId);
@@ -663,8 +664,11 @@ class Newsletters extends AdminController
 			return $this->cancelTask();
 		}
 
-		// get emails based on mailing list
-		$mailinglist = Mailinglist::oneOrFail($mailinglistId);
+		if ($mailinglistId !== -1)
+		{
+			// get emails based on mailing list
+			$mailinglist = Mailinglist::oneOrFail($mailinglistId);
+		}
 
 		// build newsletter for sending
 		$htmlContent  = $newsletter->buildNewsletter($newsletter);
@@ -691,10 +695,22 @@ class Newsletters extends AdminController
 		);
 
 		// get count of emails
-		$count = $mailinglist
-			->emails()
-			->whereEquals('status', 'active')
-			->total();
+		if (isset($mailinglist))
+		{
+			$count = $mailinglist
+				->emails()
+				->whereEquals('status', 'active')
+				->total();
+		}
+		else
+		{
+			$count = Member::all()
+				->whereEquals('sendEmail', 1)
+				->where('block', '!=', 1)
+				->where('approved', '!=', 0)
+				->where('activation', '>', 0)
+				->total(); 
+		}
 		$left = $count;
 
 		// make sure we have emails
@@ -708,15 +724,26 @@ class Newsletters extends AdminController
 		while ($left >= 0)
 		{
 			// get emails
-			$emails = $mailinglist
-				->emails()
-				->whereEquals('status', 'active')
+			if (isset($mailinglist))
+			{	
+				$emails = $mailinglist->emails()->whereEquals('status', 'active');
+			}
+			else
+			{
+				$emails = Member::all()
+					->select('email')
+					->whereEquals('sendEmail', 1)
+					->where('block', '!=', 1)
+					->where('activation', '>', 0)
+					->where('approved', '!=', 0);
+			}
+			$emails = $emails
 				->limit($filters['limit'])
 				->start($filters['start'])
 				->rows()
 				->toArray();
-
 			// add recipeients
+
 			$this->_sendTo($mailing, $emails);
 
 			// nullify vars
