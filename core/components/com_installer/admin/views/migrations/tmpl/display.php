@@ -35,8 +35,8 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_MIGRATIONS'));
 
-Toolbar::custom('runup', 'down', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_UP');
-Toolbar::custom('rundown', 'up', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_DOWN');
+Toolbar::custom('runup', 'up', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_UP');
+Toolbar::custom('rundown', 'down', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_DOWN');
 Toolbar::spacer();
 Toolbar::custom('migrate', 'purge', '', 'Run pending migrations', false);
 
