@@ -409,8 +409,6 @@ class Doi extends Obj
 		curl_setopt_array($ch, $options);
 
 		$response = curl_exec($ch);
-		var_dump($response);
-		echo "\n";
 		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		curl_close($ch);
 
@@ -420,6 +418,7 @@ class Doi extends Obj
 			$doiStr = reset($resArray);
 			$out = explode('/', $doiStr);
 			$handle = trim(end($out));
+			
 			if ($handle)
 			{
 				// Return DOI
