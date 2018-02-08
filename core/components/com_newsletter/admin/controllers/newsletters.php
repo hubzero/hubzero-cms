@@ -709,7 +709,7 @@ class Newsletters extends AdminController
 				->where('block', '!=', 1)
 				->where('approved', '!=', 0)
 				->where('activation', '>', 0)
-				->total(); 
+				->total();
 		}
 		$left = $count;
 
@@ -725,7 +725,7 @@ class Newsletters extends AdminController
 		{
 			// get emails
 			if (isset($mailinglist))
-			{	
+			{
 				$emails = $mailinglist->emails()->whereEquals('status', 'active');
 			}
 			else
