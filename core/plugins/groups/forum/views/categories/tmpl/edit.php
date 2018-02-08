@@ -64,7 +64,7 @@ if ($this->category->get('section_id') == 0)
 
 			<label for="field-section_id">
 				<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION'); ?>
-				<span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?>
+				<span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 				<select name="fields[section_id]" id="field-section_id">
 					<option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION_SELECT'); ?></option>
 					<?php foreach ($this->forum->sections(array('state' => 1))->rows() as $section) { ?>
