@@ -1,0 +1,41 @@
+@import "../../less/_mixins/mixins";
+@import "../../less/_vars/vars";
+
+@import url("/core/components/com_projects/site/assets/css/projects.css");
+
+#basic_info {
+	overflow: hidden;
+}
+
+#project-innerwrap,
+.main-menu {
+	background: @colorSidebarBg;
+}
+
+.main-menu li a, .main-menu li span {
+	color: @colorNavMain;
+}
+
+.page-com_projects .com_projects {
+
+	.ptitle {
+		position: relative;
+	}
+
+	#member_options {
+		float: none;
+		position: absolute;
+		margin-top: 0;
+		top: 1.5rem;
+		right: 0;
+
+		#options-dock {
+			margin-top: 0;
+			top: 100%
+		}
+
+		li:hover #options-dock {
+			top: 100%;
+		}
+	}
+}
