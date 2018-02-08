@@ -1078,7 +1078,7 @@ class Resources extends SiteController
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
 		// Get tracking for this user for this resource
-		$tracking = MediaTracking::oneForUserAndResource(User::get('id'), $activechild->id);
+		$tracking = MediaTracking::oneByUserAndResource(User::get('id'), $activechild->id);
 
 		// Check to see if we already have a time query param
 		$hasTime = (Request::getVar('time', '') != '') ? true : false;
