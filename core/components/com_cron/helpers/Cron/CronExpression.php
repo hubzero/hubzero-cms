@@ -253,7 +253,7 @@ class CronExpression
 	{
 		if (null === $currentTime || 'now' === $currentTime)
 		{
-			$currentDate = date('Y-m-d H:i');
+			$currentDate = gmdate('Y-m-d H:i');
 			$currentTime = strtotime($currentDate);
 		}
 		else if ($currentTime instanceof DateTime)
@@ -288,7 +288,7 @@ class CronExpression
 	{
 		$currentDate = $currentTime instanceof DateTime
 			? $currentTime
-			: new DateTime($currentTime ?: 'now');
+			: new DateTime($currentTime ?: 'now', new \DateTimeZone('GMT'));
 
 		$currentDate->setTime($currentDate->format('H'), $currentDate->format('i'), 0);
 		$nextRun = clone $currentDate;
