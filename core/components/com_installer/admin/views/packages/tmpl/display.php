@@ -66,7 +66,6 @@ $filterstring = "";
 			<tr>
 				<th scope="col">Extension</th>
 				<th scope="col priority-3">Installed Version</th>
-				<th scope="col">Out of Date</th>
 				<th scope="col priority-4">Description</th>
 			</tr>
 		</thead>
@@ -94,7 +93,6 @@ $filterstring = "";
 						</a>
 					</td>
 					<td> <?php echo $package->getFullPrettyVersion(); ?> </td>
-					<td> </td>
 					<td> <?php echo $package->getDescription(); ?> </td>
 				</tr>
 			<?php endforeach; ?>
