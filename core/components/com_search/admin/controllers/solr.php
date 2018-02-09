@@ -345,7 +345,7 @@ class Solr extends AdminController
 			// Redirect back to the search page.
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentlisting&facet='.$facet.'&limitstart='.$limitstart.'&limit='.$limit.'&filter='.$filter, false),
-				'Submitted ' . $id . ' for a456281089622edf93ac39e53d91c6b2d5d117bcremoval.',
+				'Submitted ' . $id . ' for removal.',
 				'success'
 			);
 		}
