@@ -43,7 +43,7 @@ $status = '';
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=install'); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
-		<div class="col span7">
+		<div class="col span5">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
 
@@ -56,7 +56,9 @@ $status = '';
 					</select> 
 
 				</div>
-				<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_PACKAGE'); ?>">
+				<div class="input-wrap">
+					<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_PACKAGE'); ?>">
+				</div>
 
 			</fieldset>
 		</div>
