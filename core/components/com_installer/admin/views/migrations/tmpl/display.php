@@ -52,6 +52,7 @@ $this->css();
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col">Extension</th>
 				<th scope="col priority-3">Date</th>
+				<th scope="col">Filename</th>
 				<th scope="col">Status</th>
 				<th scope="col priority-4">Description</th>
 			</tr>
@@ -101,13 +102,19 @@ $this->css();
 						<input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['entry']); ?>" onclick="isChecked(this.checked);" />
 					</td>
 					<td>
-						<span class="hasTip" title="<?php echo $this->escape('File :: ' . $row['entry']); ?>"><?php echo $component; ?><br />
+						<?php echo $component; ?><br />
 						<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='.urlencode(str_replace('/migrations', '', $row['scope']))); ?>" class="dir-locale <?php echo ($row['core'] ? 'dir-core' : 'dir-app'); ?>"><?php echo str_replace('/migrations', '', $row['scope']); ?></a>
 					</td>
 					<td class="priority-3"><?php echo $date; ?></td>
+					<td>
+						<?php $migrationName = explode('/', $row['entry']);
+									$migrationName = end($migrationName);
+									echo $migrationName;
+						?>
+					</td>
 					<td class="status">
 						<?php if ($row['status'] == 'pending') : ?>
-							<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=migrate&file='.$row['entry']); ?>">
+							<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=migrate&file='.$row['entry']).'&'.Session::getFormToken().'=1'; ?>">
 						<?php endif; ?>
 							<span class="state <?php echo ($row['status'] == 'complete') ? 'published' : $row['status']; ?>">
 								<span class="text"><?php echo $row['status']; ?></span>
