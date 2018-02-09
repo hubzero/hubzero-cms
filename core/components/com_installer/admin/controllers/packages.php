@@ -28,16 +28,14 @@
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Utility\Composer as ComposerHelper;
 use Components\Installer\Admin\Helpers\Cli;
-use Components\Installer\Admin\Helpers\ComposerHelper;
 use Request;
 use Config;
 use Route;
 use App;
 
 include_once dirname(__DIR__) . '/helpers/cli.php';
-include_once dirname(__DIR__) . '/helpers/composer.php';
-
 
 /**
  * Packages Controller
