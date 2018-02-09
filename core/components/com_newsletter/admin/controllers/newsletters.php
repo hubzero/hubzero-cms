@@ -625,6 +625,7 @@ class Newsletters extends AdminController
 					->whereEquals('status', 'queued');
 			}])
 			->whereEquals('nid', $id)
+			->whereEquals('deleted', 0)
 			->rows();
 
 		// Output the HTML
