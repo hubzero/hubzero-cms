@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 $this->css();
 ?>
 	<header id="content-header">
-		<h2><?php echo Lang::txt('COM_FORUM'); ?></h2>
+		<h2>dfsdf<?php echo Lang::txt('COM_FORUM'); ?></h2>
 
 		<div id="content-header-extra">
 			<p>
