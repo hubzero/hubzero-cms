@@ -954,6 +954,30 @@ HUB.ProjectPublicationsDraft = {
 			});
 		}
 
+		var recommendedTags = $('input[id*="tagfa"]:checked');
+
+		if (recommendedTags.length > 0)
+		{
+			var depth_met = false;
+			recommendedTags.each(function(i, item)
+		  {
+				selected = selected ? selected + ',' + $(item).next('label').html() : $(item).next('label').html();
+
+				// Check for correct depth - note that this will only work when there is only ONE
+				//   focus area per master type
+				if ($(item).parentsUntil('fieldset').length >= $(item).closest('fieldset').attr('value'))
+				{
+					depth_met = true;
+				}
+		  });
+			// Trigger incomplete block by removing all selected tags (right now, only trigger for
+			//   incomplete block is zero tags)
+			if (!depth_met)
+			{
+				selected = '';
+			}
+		}
+
 		return selected;
 	},
 
