@@ -34,6 +34,7 @@ use Components\Publications\Models\Block as Base;
 use stdClass;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php');
+require_once \Component::path('com_publications') . DS . 'helpers' . DS . 'recommendedTags.php';
 
 /**
  * Tags block
@@ -184,9 +185,8 @@ class Tags extends Base
 			return false;
 		}
 
-		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db );
-		$tags 		= trim(Request::getVar('tags', '', 'post'));
-		$tagsHelper->tag_object($actor, $pub->id, $tags, 1);
+		$recommendedTagsHelper = new \Components\Publications\Helpers\RecommendedTags( $pub->id, 0, $this->_parent->_db );
+		$recommendedTagsHelper->processTags( $pub->id );
 
 		// Reflect the update in curation record
 		$this->_parent->set('_update', 1);
@@ -213,12 +213,14 @@ class Tags extends Base
 		$status 	 = new \Components\Publications\Models\Status();
 
 		$tagsHelper  = new \Components\Publications\Helpers\Tags( $this->_parent->_db);
+		$recommendedTagsHelper = new \Components\Publications\Helpers\RecommendedTags( $pub->id, 0, $this->_parent->_db );
 
 		// Required?
 		$required = $manifest->params->required;
 		$count = $tagsHelper->countTags($pub->id);
 		$status->status = $required && $count == 0 ? 0 : 1;
 		$status->status = !$required && $count == 0 ? 2 : $status->status;
+		$status->status = $status->status && $recommendedTagsHelper->checkStatus( $pub->id );
 
 		return $status;
 	}
