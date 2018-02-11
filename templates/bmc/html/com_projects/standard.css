@@ -45,7 +45,7 @@
 .main-menu ul.projecttools li {
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #494a5a;
   position: relative;
 }
 .main-menu ul.projecttools li a:before {
@@ -55,7 +55,7 @@
 }
 .main-menu ul.projecttools li a:hover:before,
 .main-menu ul.projecttools li a:hover {
-  color: #666;
+  color: #fff;
 }
 .main-menu ul.projecttools li a,
 .main-menu ul.projecttools li.assets > span {
@@ -87,10 +87,6 @@
 .main-menu ul.projecttools li.editing {
   background: #fff;
   padding-right: 0;
-}
-.main-menu ul.projecttools li > a:hover,
-.main-menu ul.projecttools li > span:hover {
-  background: #fff;
 }
 .main-menu ul.projecttools li.pt_title,
 .main-menu ul.projecttools li.pt_title:hover {
@@ -266,5 +262,5 @@
   }
 }
 .main-menu {
-  background: #f5f5f5;
+  background: #222b37;
 }

@@ -42,12 +42,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
 
 
 <section class="feature">
-  <div class="featured-product"></div>
-  <div class="featured-product"></div>
-  <div class="featured-product"></div>
-  <div class="featured-product"></div>
-  <div class="featured-product"></div>
-  <div class="featured-product"></div>
+  {xhub:module position="resourcesFeature"}
 </section>
 
 <div class="search-wrapper">

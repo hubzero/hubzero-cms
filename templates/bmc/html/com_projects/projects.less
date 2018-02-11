@@ -12,8 +12,19 @@
 	background: @colorSidebarBg;
 }
 
-.main-menu li a, .main-menu li span {
-	color: @colorNavMain;
+.main-menu li a,
+.main-menu li span {
+	color: @colorSidebarText;
+}
+
+.main-menu li a:hover,
+.main-menu li a:hover span {
+	color: @colorSidebarTextHover;
+}
+
+.main-menu li.active a,
+.main-menu li.active span {
+	color: @colorSidebarBg;
 }
 
 .page-com_projects .com_projects {

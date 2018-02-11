@@ -4,9 +4,26 @@
 @import url("/core/components/com_members/site/assets/css/members.css");
 
 #page_menu li a, #page_menu li span {
-	color: @colorNavMain;
+	color: @colorSidebarText;
+}
+
+#page_menu li.active > a {
+	color: @colorSidebarTextActive;
+	background: #fff;
 }
 
 #page_sidebar {
 	background: @colorSidebarBg;
+}
+
+#page_menu li.active:after {
+	display: none;
+}
+
+#page_menu li a:hover {
+	color: @colorSidebarTextHover;
+}
+
+#page_menu li {
+	border-bottom-color: @colorSidebarLine;
 }
