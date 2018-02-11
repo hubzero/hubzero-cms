@@ -1,10 +1,10 @@
 //Color variables
 $green: #84bf41;
-$dark-blue: #2E2D4D;
+$dark-blue: #222b37;
+// $dark-blue: #2E2D4D;
 $teal: #007991;
 $pink: #cb48b7;
 $med-blue: #5f5980;
-$med-gray: #9B9B9B;
 $light-gray: #F1F2F2;
 $orange: #cca231;
 $black: #000;
@@ -138,15 +138,15 @@ $white: #fff;
   grid-row: row 4;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, auto);
+  grid-template-rows: repeat(3, minmax(20rem, auto));
 }
 .resource-oer {
   grid-column: 1 / span 4;
   grid-row: 1;
+  background: url('/app/site/media/images/pexels-photo-590493.jpg');
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/pexels-photo-590493.jpg');
+  background-size: cover;
   .oer {
-    background: url('/app/site/media/images/patrick-tomasso-71909.jpg');
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/patrick-tomasso-71909.jpg');
-    background-size: 200%;
     color: $white;
     h2 {
       color: $white;
@@ -162,6 +162,11 @@ $white: #fff;
   grid-row: 2;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  background-color: $dark-blue;
+  color: $white;
+  h2 {
+    color: $white;
+  }
   .featured-container {
     display: flex;
     flex-wrap: wrap;
@@ -185,12 +190,7 @@ $white: #fff;
   .fmn {
     width: 50%;
     padding: 2.5em;
-    background-color: $dark-blue;
-    color: $white;
     grid-column: 3 / span 2;
-    h2 {
-      color: $white;
-    }
   }
 }
 .resource-partner {
@@ -200,15 +200,15 @@ $white: #fff;
   grid-row: 3;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  background-color: $dark-blue;
+  color: $white;
+  h2 {
+    color: $white;
+  }
   .partner {
     width: 50%;
     grid-column: 1 / span 2;
-    background-color: $dark-blue;
-    color: $white;
     padding: 2.5em;
-    h2 {
-      color: $white;
-    }
   }
   .featured-container {
     width: 50%;
@@ -242,8 +242,10 @@ $white: #fff;
   grid-template-columns: repeat(2, 1fr);
   .big {
     width: 50%;
-    background-color: #D8D8D8;
-    border: 1px solid #979797;
+    background-image: url('/app/site/media/images/collections.jpg');
+    background-size: 80%;
+    background-position: top center;
+    background-repeat: no-repeat;
   }
   .collections {
     width: 50%;
@@ -263,20 +265,16 @@ $white: #fff;
   grid-column: col / span 4;
   grid-row: row 6;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  .big {
-    width: 50%;
-    background-color: #D8D8D8;
-    border: 1px solid #979797;
+  grid-template-rows: repeat(2, 1fr);
+  background-color: $med-blue;
+  color: $white;
+  h2 {
+    color: $white;
   }
   .software {
     width: 50%;
+    text-align: center;
     padding: 2.5em;
-    background-color: $med-blue;
-    color: $white;
-    h2 {
-      color: $white;
-    }
   }
   .software-logos {
     width: 50%;
@@ -295,7 +293,7 @@ $white: #fff;
       height: 50px;
       align-self: center;
       margin: 0;
-      color: $med-gray;
+      color: $light-gray;
     }
   }
 }

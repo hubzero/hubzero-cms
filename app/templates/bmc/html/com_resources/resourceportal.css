@@ -131,18 +131,18 @@
   grid-row: row 4;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, auto);
+  grid-template-rows: repeat(3, minmax(20rem, auto));
 }
 
 .resource-oer {
   grid-column: 1 / span 4;
   grid-row: 1;
+  background: url("/app/site/media/images/pexels-photo-590493.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url("/app/site/media/images/pexels-photo-590493.jpg");
+  background-size: cover;
 }
 
 .resource-oer .oer {
-  background: url("/app/site/media/images/patrick-tomasso-71909.jpg");
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url("/app/site/media/images/patrick-tomasso-71909.jpg");
-  background-size: 200%;
   color: #fff;
   padding: 2.5em;
   text-align: center;
@@ -159,6 +159,12 @@
   grid-row: 2;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  background-color: #222b37;
+  color: #fff;
+}
+
+.resource-fmn h2 {
+  color: #fff;
 }
 
 .resource-fmn .featured-container {
@@ -186,13 +192,7 @@
 .resource-fmn .fmn {
   width: 50%;
   padding: 2.5em;
-  background-color: #2E2D4D;
-  color: #fff;
   grid-column: 3 / span 2;
-}
-
-.resource-fmn .fmn h2 {
-  color: #fff;
 }
 
 .resource-partner {
@@ -202,18 +202,18 @@
   grid-row: 3;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  background-color: #222b37;
+  color: #fff;
+}
+
+.resource-partner h2 {
+  color: #fff;
 }
 
 .resource-partner .partner {
   width: 50%;
   grid-column: 1 / span 2;
-  background-color: #2E2D4D;
-  color: #fff;
   padding: 2.5em;
-}
-
-.resource-partner .partner h2 {
-  color: #fff;
 }
 
 .resource-partner .featured-container {
@@ -249,8 +249,10 @@
 
 #two .big {
   width: 50%;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
+  background-image: url("/app/site/media/images/collections.jpg");
+  background-size: 80%;
+  background-position: top center;
+  background-repeat: no-repeat;
 }
 
 #two .collections {
@@ -270,24 +272,19 @@
   grid-column: col / span 4;
   grid-row: row 6;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-#three .big {
-  width: 50%;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
-}
-
-#three .software {
-  width: 50%;
-  padding: 2.5em;
+  grid-template-rows: repeat(2, 1fr);
   background-color: #5f5980;
   color: #fff;
 }
 
-#three .software h2 {
+#three h2 {
   color: #fff;
+}
+
+#three .software {
+  width: 50%;
+  text-align: center;
+  padding: 2.5em;
 }
 
 #three .software-logos {
@@ -309,7 +306,7 @@
   height: 50px;
   align-self: center;
   margin: 0;
-  color: #9B9B9B;
+  color: #F1F2F2;
 }
 
 @media only screen and (min-width: 320px) and (max-width: 900px) {

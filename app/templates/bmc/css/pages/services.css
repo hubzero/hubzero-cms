@@ -1,12 +1,15 @@
-.contentpane {
+.contentpaneopen {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
-  grid-template-rows: repeat(6, [row] auto);
+  grid-template-rows: repeat(6, [row] minmax(22rem, auto));
 }
 
-.contentpaneopen {
-  grid-column: col / span 4;
-  grid-row: row / span 6;
+.contentpaneopen p:first-child {
+  margin: 0;
+}
+
+.contentpaneopen p:nth-child(2) {
+  margin: 0;
 }
 
 .link-anchor {
@@ -24,8 +27,23 @@
 .service-header {
   grid-column: col / span 4;
   grid-row: row;
-  padding: 2.5em;
+  background: url("/app/site/media/images/jeff-sheldon-3231.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/jeff-sheldon-3231.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #000;
+  color: #fff;
   text-align: center;
+}
+
+.service-header .intro {
+  padding: 2.5em;
+  align-self: center;
+}
+
+.service-header h2 {
+  color: #fff;
 }
 
 .services {
@@ -68,7 +86,7 @@
   width: 100%;
   grid-column: 1 / span 3;
   grid-row: 1;
-  background-color: #2E2D4D;
+  background-color: #84bf41;
   color: #fff;
   text-align: center;
   padding: 2.5em;
@@ -78,11 +96,74 @@
   color: #fff;
 }
 
-#one .regular {
-  flex: 1 1 250px;
-  height: 20rem;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
+#one .module-community {
+  grid-column: 1 / span 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 20rem;
+}
+
+#one .module-community .group {
+  position: relative;
+}
+
+#one .module-community .group .group-img {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+#one .module-community .group .group-img img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#one .module-community .group .group-img::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  height: 200px;
+  width: 100%;
+}
+
+#one .module-community .group .group-tag {
+  position: absolute;
+  bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 5px 10px;
+  background-color: #84bf41;
+}
+
+#one .module-community .group .group-tag a {
+  color: #fff;
+}
+
+#one .module-community .group .group-description {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+#one .module-community .group .group-description a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
 }
 
 #two {
@@ -91,13 +172,14 @@
   grid-row: row 4;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  background-color: #007991;
+  color: #fff;
 }
 
 #two .mentor {
   width: 50%;
-  background-color: #007991;
-  color: #fff;
   padding: 2.5em;
+  align-self: center;
 }
 
 #two .mentor h2 {
@@ -106,9 +188,10 @@
 
 #two .big {
   width: 50%;
-  height: 20rem;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
+  background: url("/app/site/media/images/workplace-1245776_1920.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #three {
@@ -117,25 +200,28 @@
   grid-row: row 5;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  background-color: #cb48b7;
+  color: #fff;
 }
 
 #three .workshop {
   width: 50%;
   grid-column: 3 / span 2;
-  background-color: #cb48b7;
-  color: #fff;
   padding: 2.5em;
+  align-self: center;
 }
 
 #three .workshop h2 {
   color: #fff;
 }
 
-#three .regular {
-  width: 24%;
-  height: 20rem;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
+#three .big {
+  width: 50%;
+  grid-column: span 2;
+  background: url("/app/site/media/images/javier-quesada-222120.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #four {
@@ -144,20 +230,22 @@
   grid-row: row 6;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  background-color: #222b37;
+  color: #fff;
 }
 
 #four .big {
   width: 50%;
-  height: 20rem;
-  background-color: #D8D8D8;
-  border: 1px solid #979797;
+  background: url("/app/site/media/images/pexels-photo-392018.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #four .curate {
   width: 50%;
-  background-color: #84bf41;
-  color: #fff;
   padding: 2.5em;
+  align-self: center;
 }
 
 #four .curate h2 {
@@ -167,12 +255,16 @@
 @media only screen and (min-width: 320px) and (max-width: 589px) {
   #one {
     flex-wrap: wrap;
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: 1fr 2fr;
   }
   #one .community {
     width: 100%;
     grid-column: 1 / span 4;
     grid-row: 1;
+  }
+  #one .module-community {
+    grid-column: 1 / span 4;
+    grid-template-rows: repeat(3, 15rem);
   }
   #one .regular {
     width: 100%;
@@ -192,7 +284,7 @@
   }
   #three {
     flex-wrap: wrap;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
   }
   #three .workshop {
     width: 100%;
@@ -200,7 +292,7 @@
     grid-column: 1 / span 4;
     grid-row: 1;
   }
-  #three .regular {
+  #three .big {
     width: 100%;
     grid-column: span 4;
   }
@@ -221,15 +313,16 @@
 @media only screen and (min-width: 590px) and (max-width: 900px) {
   #one {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: 1fr 2fr;
   }
   #one .community {
     grid-column: 1 / span 4;
   }
-  #one .regular {
-    grid-column: span 2;
+  #one .module-community {
+    grid-column: 1 span 4;
+    grid-template-rows: repeat(3, 15rem);
   }
-  #one .horizontal {
+  #one .module-community .regular {
     grid-column: span 4;
   }
   #two {
@@ -254,9 +347,9 @@
     grid-column: 1 / span 4;
     grid-row: 1;
   }
-  #three .regular {
+  #three .big {
     width: 100%;
-    grid-column: span 2;
+    grid-column: span 4;
     grid-row: 2;
   }
   #four {
@@ -294,7 +387,7 @@
   #three .workshop {
     width: auto;
   }
-  #three .regular {
+  #three .big {
     width: auto;
     height: auto;
   }

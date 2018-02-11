@@ -3,8 +3,23 @@
 
 @import url("/core/components/com_groups/site/assets/css/groups.css");
 
-#page_menu li a, #page_menu li span {
-	color: @colorNavMain;
+#page_menu {
+
+	li {
+		border-bottom-color: @colorSidebarLine;
+
+		a {
+
+			&:hover {
+				color: @colorSidebarTextActive;
+			}
+		}
+	}
+
+	li a,
+	li span {
+		color: @colorSidebarText;
+	}
 }
 
 #page_sidebar {
@@ -29,4 +44,35 @@
 	h3 {
 		font-size: 1.1rem;
 	}
+}
+
+.groups-container .group-contents {
+	border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.groups-container .group-alias,
+.group-meta span {
+	color: @colorHeadings;
+}
+
+.groups-container .user-actions a {
+	line-height: 1em;
+}
+
+.groups-container .group-identity>span:after {
+	font-size: 60px;
+}
+
+#page_menu li ul:after,
+#page_menu li ul li .page:before {
+	background: @colorSidebarLine;
+}
+
+#page_menu li.active > a {
+	background: #fff;
+	color: @colorSidebarTextActive;
+}
+
+#page_menu li.active:after {
+	display: none;
 }
