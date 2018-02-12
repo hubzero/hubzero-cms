@@ -655,10 +655,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		{
 			$path = DS . ltrim($path, DS);
 
-			if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
+			/*if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
 			{
 				$path = DS . trim($this->params->get('uploadpath'), DS) . $path;
-			}
+			}*/
 		}
 
 		return $path;
