@@ -342,7 +342,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		$names = array();
 
-		foreach ($this->authors as $contributor)
+		foreach ($this->authors()->order('ordering', 'asc')->rows() as $contributor)
 		{
 			if (strtolower($contributor->get('role')) == 'submitter')
 			{
