@@ -343,13 +343,13 @@ if ($mode != 'preview')
 											break;
 										case 'pdf':
 										default:
-											if ($grandchild->get('logicaltype') == 14)
+											if ($grandchild->get('logical_type') == 14)
 											{
 												$ext = Filesystem::extension($grandchild->path);
 												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
 												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a>'."\n";
 											}
-											elseif ($grandchild->get('logicaltype') == 51)
+											elseif ($grandchild->get('logical_type') == 51)
 											{
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 											}
