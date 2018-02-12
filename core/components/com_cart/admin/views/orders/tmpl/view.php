@@ -263,7 +263,7 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<?php
-	if ($this->log)
+	if (isset($this->log))
 	{
 	?>
 	<div class="log">
