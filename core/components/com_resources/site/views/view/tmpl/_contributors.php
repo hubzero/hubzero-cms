@@ -81,6 +81,11 @@ if ($this->contributors)
 		}
 		$contributor->org = $this->escape(stripslashes(trim($contributor->org)));
 
+		if (!isset($contributor->authorid) && isset($contributor->uid))
+		{
+			$contributor->authorid = $contributor->uid;
+		}
+
 		$link = $name;
 		if ($contributor->authorid)
 		{
