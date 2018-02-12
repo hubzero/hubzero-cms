@@ -130,6 +130,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		}
 		$stats = $query->whereEquals('resid', $model->id)
 			->whereEquals('period', $period)
+			->whereEquals('datetime', $dthis . '-00 00:00:00')
 			->row();
 
 		$clusters = \Components\Resources\Models\Stat\Cluster::all()
