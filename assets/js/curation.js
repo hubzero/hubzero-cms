@@ -946,35 +946,44 @@ HUB.ProjectPublicationsDraft = {
 		var selected = '';
 		var tags = $('.token-input-token-act p');
 
-		if (tags.length > 0)
+		tags.each(function(i, item)
 		{
-			tags.each(function(i, item)
-			{
-				selected = selected ? selected + ',' + $(item).html() : $(item).html();
-			});
-		}
+			selected = selected ? selected + ',' + $(item).html() : $(item).html();
+		});
 
 		var recommendedTags = $('input[id*="tagfa"]:checked');
-
-		if (recommendedTags.length > 0)
+		var depth_met = false;
+		var max_depth = 0;
+		var item_depth = 0;
+		recommendedTags.each(function(i, item)
 		{
-			var depth_met = false;
-			recommendedTags.each(function(i, item)
-		  {
-				selected = selected ? selected + ',' + $(item).next('label').html() : $(item).next('label').html();
+			selected = selected ? selected + ',' + $(item).next('label').html() : $(item).next('label').html();
 
-				// Check for correct depth - note that this will only work when there is only ONE
-				//   focus area per master type
-				if ($(item).parentsUntil('fieldset').length >= $(item).closest('fieldset').attr('value'))
-				{
-					depth_met = true;
-				}
-		  });
-			// Trigger incomplete block by removing all selected tags (right now, only trigger for
-			//   incomplete block is zero tags)
+			// Check for correct depth - note that this will only work when there is only ONE
+			//   focus area per master type
+			item_depth = $(item).parentsUntil('fieldset').length;
+			max_depth = Math.max(item_depth, max_depth);
+			// Note:  This is a little redundant - keeping here as it allows for the future where maybe
+			// we have more than one focus area.  If only one, then don't need this.
+			if (item_depth >= $(item).closest('fieldset').attr('value'))
+			{
+				depth_met = true;
+			}
+		});
+
+		// Trigger incomplete block by removing all selected tags (right now, only trigger for
+		//   incomplete block is zero tags)
+		if ($('#tagsPick fieldset .required').length) {
 			if (!depth_met)
 			{
+				if (max_depth > 0) {
+					$('#tagsPick fieldset .required').html('required - must select at least one sub-item');
+				} else {
+					$('#tagsPick fieldset .required').html('required');
+				}
 				selected = '';
+			} else {
+				$('#tagsPick fieldset .required').html('required');
 			}
 		}
 
