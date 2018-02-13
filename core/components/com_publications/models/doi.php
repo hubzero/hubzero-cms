@@ -418,7 +418,6 @@ class Doi extends Obj
 			$doiStr = reset($resArray);
 			$out = explode('/', $doiStr);
 			$handle = trim(end($out));
-			
 			if ($handle)
 			{
 				// Return DOI
