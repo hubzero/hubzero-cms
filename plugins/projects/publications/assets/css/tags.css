@@ -3,7 +3,7 @@
 }
 
 #tagsPick fieldset fieldset {
-    margin: 1.5em 2em;
+    margin: 1.5em 0em;
     padding: 0 0 1.5em 0;
     border: 1px solid #e5e5e5;
     float: none;
@@ -27,7 +27,8 @@
     margin: 0 0 0 1em;
 }
 
-#tagsPick fieldset .required {
+#tagsPick fieldset .required,
+#tagsPick fieldset .optional {
     font-size: 0.8em !important;
     margin-top: 0.3em;
 }
