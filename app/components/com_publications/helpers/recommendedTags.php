@@ -42,17 +42,27 @@ class RecommendedTags extends \Hubzero\Base\Obj
 
 	private $tags = array();
 
-  private $existing_tags = array();
-
-  private $existing_map = array();
-
-  private $focus_areas = array();
-
   private $focus_areas_map = array();
 
-  private $fa_properties = array();
+  // Ordered list of raw tags (no label in db).
+  //   Example: array ( 0 => 'genetics', 1 => 'ecology', )
+  private $existing_tags = array();
 
+  // Boolean array of tags (no label in db).
+  //   Example: array ( 'genetics' => true, 'ecology' => true, )
+  private $existing_map = array();
+
+  // Ordered list of recommended tags (label in db).
+  //   Example: array ( 0 => array ( 'id' => '9', 'raw_tag' => 'Gravy', 'label' => 'Thanksgiving', ), 1 => array ( 'id' => '11', 'raw_tag' => 'Turkey', 'label' => 'Thanksgiving', ), 2 => array ( 'id' => '14', 'raw_tag' => 'Thighs', 'label' => 'Thanksgiving', ), )
+  private $focus_areas = array();
+
+  // Boolean array of recommended tags (label in db)
+  //   Example: array ( 'gravy' => true, 'turkey' => true, 'thighs' => true, )
   private $existing_fa_map = array();
+
+  // Array of focus area $fa_properties
+  //   Example:  array ( 'Thanksgiving' => array ( 'raw_tag' => 'Thanksgiving', 'id' => '6', 'tag_id' => '8', 'mandatory_depth' => NULL, 'multiple_depth' => '1', ), )
+  private $fa_properties = array();
 
 	const ENDORSED_TAG = 2;
 	const REGULAR_TAG  = 1;
@@ -72,6 +82,11 @@ class RecommendedTags extends \Hubzero\Base\Obj
 			INNER JOIN #__tags t ON t.id = fa.tag_id'
 		);
 		$this->fa_properties = $this->_db->loadAssocList('raw_tag');
+
+    // Make sure recommended tags are updated in the tags object table with the proper label.
+    // Note that this SHOULD be done globally after removing or adding a focus area in com_tags,
+    // but I'm being lazy now.
+    $this->_updateTags($pid);
 
 		$this->_db->setQuery(
 			'SELECT t.id, raw_tag, (label IS NOT NULL AND label != "") AS is_focus_area, label
@@ -182,6 +197,36 @@ class RecommendedTags extends \Hubzero\Base\Obj
 		}
 	}
 
+  // Make sure recommended tags are updated in the tags object table with the proper label.
+  // This is done to ensure they show up in the recommended tags tree, not in the input field.
+  // Note that this SHOULD be done globally after removing or adding a focus area in com_tags,
+  // but I'm being lazy now.
+  //
+  // REFACTOR:  Add in error handling for db query.
+  private function _updateTags($pid)
+  {
+    if ($this->fa_properties) {
+      $focus_area = array_keys($this->fa_properties)[0];
+      $this->_db->setQuery(
+        'SELECT master_type
+         FROM #__publications
+         WHERE id = ' . $pid
+      );
+      $master_type = (int) $this->_db->loadColumn();
+
+      $fatree = $this->loadFocusAreas($master_type);
+      $rtags = $this->flatten($fatree, 'id');
+      $query = 'UPDATE #__tags_object
+                SET label = ' . $this->_db->quote($focus_area) . '
+                WHERE objectid = ' . $pid . '
+                AND tbl = \'publications\'
+                AND tagid IN (' . implode(',', $rtags) .')';
+
+      $this->_db->setQuery($query);
+      $this->_db->query();
+    }
+  }
+
   /**
    * Recursive method for loading hierarchical focus areas (tags)
    *
@@ -242,6 +287,19 @@ class RecommendedTags extends \Hubzero\Base\Obj
       $fa['children'] = $this->loadFocusAreas($master_type, $labels, $fa['id'], $fa['label']);
     }
     return $fas;
+  }
+
+  public function flatten($array, $filter = 'tag')
+  {
+    $flattened = array();
+    array_walk_recursive($array, function($v, $k) use (&$flattened, $filter) {
+      if ($k === $filter)
+      {
+        $flattened[] = $v;
+      }
+    });
+
+    return $flattened;
   }
 
   public function checkStatus($pid)
