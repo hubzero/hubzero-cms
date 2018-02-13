@@ -85,7 +85,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 								foreach ($focusareas as $label=>$fas):
 								?>
 									<fieldset value="<?php echo ($fa_props[$label]['mandatory_depth'] ? $fa_props[$label]['mandatory_depth'] : 0) ?>">
-										<legend><?php echo 'Select from '.$label.' ontology: '.($fa_props[$label]['mandatory_depth'] ? '<span class="required">required to depth of ' . $fa_props[$label]['mandatory_depth'] . '</span>' : ''); ?></legend>
+										<legend><?php echo 'Choose from these recommended tags: '.($fa_props[$label]['mandatory_depth'] ? '<span class="required">required</span>' : '<span class="optional">optional</span>'); ?></legend>
 										<?php $recommended->fa_controls(++$idx, $fas, $fa_props, $fa_existing); ?>
 									</fieldset>
 								<?php
@@ -96,6 +96,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 						<?php
 						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $recommended->get_existing_tags_value_list())) );
 
+						echo 'Enter your own tags below:';
 						if (count($tf) > 0) {
 							echo $tf[0];
 						} else {
