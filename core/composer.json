@@ -54,7 +54,8 @@
         "php-amqplib/php-amqplib": "2.5.*",
         "league/flysystem-aws-s3-v2": "^1.0",
         "simplepie/simplepie": "1.5",
-	"solarium/solarium" : "3.8.1"
+	"solarium/solarium" : "3.8.1",
+        "cilogon/oauth2-cilogon": "^1.1"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"
