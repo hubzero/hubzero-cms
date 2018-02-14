@@ -97,6 +97,8 @@
 }
 
 #one .module-community {
+  display: flex;
+  flex-wrap: wrap;
   grid-column: 1 / span 4;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -104,6 +106,8 @@
 }
 
 #one .module-community .group {
+  flex: 1 1 20rem;
+  height: 15rem;
   position: relative;
 }
 
@@ -280,6 +284,7 @@
   }
   #two .big {
     width: 100%;
+    height: 20rem;
     grid-column: span 4;
   }
   #three {
@@ -294,6 +299,7 @@
   }
   #three .big {
     width: 100%;
+    height: 20rem;
     grid-column: span 4;
   }
   #four {
@@ -306,6 +312,7 @@
   }
   #four .big {
     width: 100%;
+    height: 20rem;
     grid-column: span 4;
   }
 }
@@ -335,6 +342,7 @@
   }
   #two .big {
     width: 100%;
+    height: 20rem;
     grid-column: span 4;
   }
   #three {
@@ -349,6 +357,7 @@
   }
   #three .big {
     width: 100%;
+    height: 20rem;
     grid-column: span 4;
     grid-row: 2;
   }
@@ -362,6 +371,7 @@
   }
   #four .big {
     width: 100%;
+    height: 20rem;
     grid-column: span 4;
   }
 }
@@ -372,6 +382,9 @@
   }
   #one .community {
     width: auto;
+  }
+  #one .module-community .group {
+    height: auto;
   }
   #one .regular {
     width: auto;

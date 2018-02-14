@@ -88,7 +88,7 @@ $membership_control = $params->get('membership_control', 1);
 	<meta name="viewport" content="width=device-width" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500" type="text/css" />
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/group.css" type="text/css" />
 	<jdoc:include type="head" />
 </head>
@@ -113,35 +113,6 @@ $membership_control = $params->get('membership_control', 1);
 						<a class="user-account-link loggedin icon" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
 							Logged in
 						</a>
-						<div class="account-details">
-							<div class="user-info">
-								<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="cf">
-											<span class="user-image">
-												<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" />
-											</span>
-
-									<p>
-										<span class="account-name"><?php echo stripslashes(User::get('name')) . ' (' . stripslashes(User::get('username')) . ')'; ?></span><br>
-										<span class="account-email"><?php echo User::get('email'); ?></span>
-									</p>
-								</a>
-							</div>
-							<ul>
-								<li id="account-dashboard">
-									<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_DASHBOARD'); ?></span></a>
-								</li>
-								<li id="account-profile">
-									<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_PROFILE'); ?></span></a>
-								</li>
-								<li id="account-logout">
-									<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_LOGOUT'); ?></span></a>
-								</li>
-							</ul>
-
-							<button class="close">
-								<span>close</span>
-							</button>
-						</div>
 					<?php
 					}
 					else
@@ -280,6 +251,35 @@ $membership_control = $params->get('membership_control', 1);
 	</div>
 </div>
 
+<div class="account-details">
+	<div class="user-info">
+		<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="cf">
+											<span class="user-image">
+												<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" />
+											</span>
+
+			<p>
+				<span class="account-name"><?php echo stripslashes(User::get('name')) . ' (' . stripslashes(User::get('username')) . ')'; ?></span><br>
+				<span class="account-email"><?php echo User::get('email'); ?></span>
+			</p>
+		</a>
+	</div>
+	<ul>
+		<li id="account-dashboard">
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_DASHBOARD'); ?></span></a>
+		</li>
+		<li id="account-profile">
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_PROFILE'); ?></span></a>
+		</li>
+		<li id="account-logout">
+			<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_LOGOUT'); ?></span></a>
+		</li>
+	</ul>
+
+	<button class="close">
+		<span>close</span>
+	</button>
+</div>
 <div class="hub-overlay"></div>
 
 <jdoc:include type="message" />

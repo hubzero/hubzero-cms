@@ -64,25 +64,6 @@ $white: #fff;
   height: 200px;
   width: 100%;
 }
-
-
-// .body {
-//   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
-// }
-// h1, h2, h3, h4, h5, h6 {
-//   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-// }
-// .group-php-page {
-//   display: grid;
-//   grid-template-columns: repeat(4, [col] 1fr);
-//   grid-template-rows: repeat(4, [row] auto);
-// }
-
-// .contentpane {
-//   display: grid;
-//   grid-template-columns: repeat(4, [col] 1fr);
-//   grid-template-rows: repeat(4, [row] auto);
-// }
 .contentpaneopen {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
@@ -100,6 +81,7 @@ $white: #fff;
   grid-row: row;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  height: 25rem;
   background: url('/app/site/media/images/pexels-photo-355988.jpg');
   background-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.7) 100%), url('/app/site/media/images/pexels-photo-355988.jpg');
   background-size: cover;
@@ -151,6 +133,7 @@ h3 {
   }
   .module-left {
     width: 50%;
+    display: flex;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 5px;
@@ -210,6 +193,7 @@ h3 {
     }
     .resource {
       position: relative;
+      margin: 5px;
       .resource-tag {
         @include showcase-tag($dark-blue, $white);
       }
@@ -377,26 +361,24 @@ h3 {
       }
     }
   }
-  .module-right {
+  .right {
     width: 50%;
+  }
+  .module-right {
+    display: flex;
+    flex-wrap: wrap;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 200px);
     grid-gap: 5px;
-    .big {
-      grid-column: span 2;
-      grid-row: span 2;
-      .billboard-image {
-        height: 100%;
-        img {
-          height: 100%;
-          width: 100%;
-          object-fit: cover;
-        }
-      }
-    }
     .horizontal {
+      width: 24rem;
+      height: 15rem;
       grid-column: span 2;
+    }
+    .regular {
+      width: 12rem;
+      height: 15rem;
     }
     .billboard-image {
       width: 100%;
@@ -552,6 +534,7 @@ h3 {
 @media only screen and (min-width: 320px) and (max-width: 900px) {
   .intro-container {
     .intro {
+      width: 100%;
       grid-column: 1 / span 4;
     }
   }
@@ -560,6 +543,7 @@ h3 {
     grid-template-rows: 20rem auto;
     .module-left {
       width: 100%;
+      flex-wrap: wrap;
       grid-column: 1 / span 4;
       grid-row: 2;
       grid-template-rows: repeat(3, 17rem);
@@ -672,6 +656,7 @@ h3 {
 //Reset widths if css grid is supported
 @supports (display:grid) {
   .intro-container {
+    height: auto;
     .intro {
       width: auto;
     }
@@ -704,8 +689,19 @@ h3 {
     .left {
       width: auto;
     }
+    .right {
+      width: auto;
+    }
     .module-right {
       width: auto;
+      .horizontal {
+        width: auto;
+        height: auto;
+      }
+      .regular {
+        width: auto;
+        height: auto;
+      }
     }
   }
   .three {

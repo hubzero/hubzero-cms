@@ -1,0 +1,20 @@
+/* not yet supported
+.keyframes(@name; @arguments) {
+	@-moz-keyframes @name { @arguments(); }
+	@-webkit-keyframes @name { @arguments(); }
+	@keyframes @name { @arguments(); }
+}
+*/
+@import url('/core/plugins/projects/publications/assets/css/curation.css');
+.button-wrapper:before {
+  color: #fff;
+  margin-left: 0.5rem;
+  z-index: 10;
+}
+.item-add:before {
+  margin: -0.1rem 0 0 -1.2em;
+  line-height: 1em;
+}
+.blockelement input.btn {
+  width: auto;
+}

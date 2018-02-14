@@ -22,11 +22,6 @@
   width: 100%;
 }
 
-/* .contentpane {
-  display: grid;
-  grid-template-columns: repeat(4, [col] 1fr);
-  grid-template-rows: repeat(9, [row] auto);
-} */
 .contentpaneopen {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
@@ -96,21 +91,24 @@
 }
 
 .module-feature .big, .module-feature .flex {
-  flex: 1 1 200px;
-  height: 200px;
+  flex: 1 1 20rem;
+  height: 15rem;
+  margin: 2.5px;
   grid-column: span 2;
   grid-row: span 2;
 }
 
 .module-feature .horizontal {
-  flex: 1 2 200px;
-  height: 200px;
+  flex: 1 1 20rem;
+  height: 15rem;
+  margin: 2.5px;
   grid-column: span 2;
 }
 
 .module-feature .regular {
-  flex: 1 1 200px;
-  height: 200px;
+  flex: 1 1 20rem;
+  height: 15rem;
+  margin: 2.5px;
 }
 
 .module-feature .billboard-image {
@@ -311,6 +309,10 @@
   color: #fff;
 }
 
+#one p {
+  margin: 1em 0;
+}
+
 #one .fmn {
   width: 100%;
   grid-column: span 4;
@@ -319,6 +321,8 @@
 }
 
 #one .module-fmn {
+  display: flex;
+  flex-wrap: wrap;
   grid-column: span 4;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -326,8 +330,8 @@
 }
 
 #one .module-fmn .regular {
-  flex: 1 1 250px;
-  height: 17rem;
+  flex: 1 1 20rem;
+  height: 15rem;
 }
 
 #one .module-fmn .billboard-image {
@@ -386,17 +390,21 @@
 }
 
 #two .module-workshops {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
   grid-column: 4 / span 3;
   align-self: center;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 17rem;
+  grid-template-rows: 20rem;
   grid-gap: 5px;
 }
 
 #two .module-workshops .regular {
-  flex: 1 1 175px;
-  height: 17rem;
+  flex: 1 1 20rem;
+  height: 15rem;
+  margin: 2.5px;
 }
 
 #two .module-workshops .billboard-image {
@@ -443,14 +451,14 @@
   grid-row: row 6;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 20rem;
   margin-bottom: 4em;
 }
 
 #three .horizontal {
   width: 50%;
   background: url("/app/site/media/images/climate-kic-350836.jpg");
-  background-size: 125%;
-  background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -463,6 +471,11 @@
 #four {
   grid-column: col / span 4;
   grid-row: row 7;
+  height: 15rem;
+  background: url("/app/site/media/images/stefan-stefancik-257625.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url("/app/site/media/images/stefan-stefancik-257625.jpg");
+  background-size: 100%;
+  background-position: center;
   background-color: #222b37;
   color: #fff;
   text-align: center;
@@ -490,6 +503,9 @@
 }
 
 #five .module-sites {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
   grid-column: span 3;
   align-self: center;
   display: grid;
@@ -499,8 +515,9 @@
 }
 
 #five .module-sites .regular {
-  flex: 1 1 175px;
-  height: 20rem;
+  flex: 1 1 20rem;
+  height: 15rem;
+  margin: 2.5px;
 }
 
 #five .module-sites .group {
@@ -543,6 +560,7 @@
 }
 
 #c-six {
+  display: flex;
   grid-column: col / span 4;
   grid-row: row 9;
   text-align: center;
@@ -559,21 +577,21 @@
   color: #fff;
 }
 
-#c-six:active {
+#c-six a:active {
   color: #fff;
 }
 
-#c-six:visited {
+#c-six a:visited {
   color: #fff;
+}
+
+#c-six p {
+  margin: 1em 0;
 }
 
 @media only screen and (min-width: 320px) and (max-width: 589px) {
   #one {
     flex-wrap: wrap;
-    grid-template-rows: 25rem auto;
-  }
-  #one .module-fmn {
-    grid-template-rows: repeat(4, 15rem);
   }
   #one .module-fmn .regular {
     grid-column: 1 / span 4;
@@ -587,12 +605,14 @@
     grid-column: span 6;
   }
   #two .module-workshops {
+    width: 100%;
     grid-column: span 6;
     grid-template-rows: repeat(3, 15rem);
   }
   #two .module-workshops .regular {
     width: 100%;
     height: 15rem;
+    margin: 2.5px;
     grid-column: span 6;
   }
   #three {
@@ -619,6 +639,7 @@
     grid-column: span 6;
   }
   #five .module-sites {
+    width: 100%;
     grid-column: span 6;
     grid-template-rows: repeat(3, 15rem);
   }
@@ -771,18 +792,17 @@
   .feature .big, .feature .module-feature .flex, .module-feature .feature .flex {
     width: auto;
     height: auto;
-  }
-  .feature .vertical {
-    width: auto;
-    height: auto;
+    margin: 0;
   }
   .feature .horizontal {
     width: auto;
     height: auto;
+    margin: 0;
   }
   .feature .regular {
     width: auto;
     height: auto;
+    margin: 0;
   }
   .explore p {
     margin: 1em 0;
@@ -809,9 +829,13 @@
   #two .workshops {
     width: auto;
   }
+  #two .module-workshops {
+    width: auto;
+  }
   #two .module-workshops .regular {
     width: auto;
     height: auto;
+    margin: 0;
   }
   #three p {
     margin: 1em 0;
@@ -828,9 +852,13 @@
   #five .sites {
     width: auto;
   }
+  #five .module-sites {
+    width: auto;
+  }
   #five .module-sites .regular {
     width: auto;
     height: auto;
+    margin: 0;
   }
   #c-six p {
     margin: 1em 0;

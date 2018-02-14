@@ -10,17 +10,42 @@ $orange: #cca231;
 $black: #000;
 $white: #fff;
 
-// .body {
-//   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
-// }
-// h1, h2, h3, h4, h5, h6 {
-//   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-// }
-// .group-php-page {
-//   display: grid;
-//   grid-template-columns: repeat(4, [col] 1fr);
-//   grid-template-rows: repeat(9, [row] auto);
-// }
+//Mixins for showcase module
+@mixin showcase-header($font-size, $line-height, $lines-to-show) {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $white;
+}
+@mixin showcase-tag($background-color, $link-color) {
+  position: absolute;
+  bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 5px 10px;
+  background-color: $background-color;
+  a {
+    color: $link-color;
+  }
+}
+@mixin image-gradient {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);
+  height: 200px;
+  width: 100%;
+}
+
 .content {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
@@ -76,13 +101,35 @@ $white: #fff;
   grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
   grid-auto-rows: 320px;
   grid-gap: 5px;
-  .featured-product {
-    width: 175px;
-    height: 320px;
-    margin: 5px;
-    background-color: #D8D8D8;
-    border: 1px solid #979797;
-  }
+  .resource-img {
+      width: 100%;
+      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .resource-img::after {
+      @include image-gradient;
+    }
+    .resource {
+      position: relative;
+      flex: 1 1 10rem;
+      height: 15rem;
+      margin: 2.5px;
+      .resource-tag {
+        @include showcase-tag($dark-blue, $white);
+      }
+      .resource-title {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        a {
+          @include showcase-header(1em, 1, 2);
+        }
+      }
+    }
 }
 
 //search
@@ -121,6 +168,7 @@ $white: #fff;
   }
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+    color: inherit;
   }
 }
 .resources {
@@ -167,7 +215,7 @@ $white: #fff;
   h2 {
     color: $white;
   }
-  .featured-container {
+  .module-fmn {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -179,14 +227,36 @@ $white: #fff;
     grid-auto-rows: 320px;
     grid-gap: 5px;
     align-self: center;
-    .featured-product {
-      width: 175px;
-      height: 320px;
-      margin: 5px;
-      background-color: #D8D8D8;
-      border: 1px solid #979797;
     }
-  }
+    .resource-img {
+        width: 100%;
+        height: 100%;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .resource-img::after {
+        @include image-gradient;
+      }
+      .resource {
+        position: relative;
+        flex: 1 1 10rem;
+        height: 15rem;
+        margin: 2.5px;
+        .resource-tag {
+          @include showcase-tag($dark-blue, $white);
+        }
+        .resource-title {
+          position: absolute;
+          bottom: 0;
+          padding: 10px;
+          a {
+            @include showcase-header(1em, 1, 2);
+          }
+        }
+      }
   .fmn {
     width: 50%;
     padding: 2.5em;
@@ -210,7 +280,7 @@ $white: #fff;
     grid-column: 1 / span 2;
     padding: 2.5em;
   }
-  .featured-container {
+  .module-partner {
     width: 50%;
     display: flex;
     flex-wrap: wrap;
@@ -222,14 +292,37 @@ $white: #fff;
     grid-auto-rows: 320px;
     grid-gap: 5px;
     align-self: center;
-    .featured-product {
-      width: 175px;
-      height: 320px;
-      margin: 5px;
-      background-color: #D8D8D8;
-      border: 1px solid #979797;
-    }
+
   }
+  .resource-img {
+      width: 100%;
+      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .resource-img::after {
+      @include image-gradient;
+    }
+    .resource {
+      position: relative;
+      flex: 1 1 10rem;
+      height: 15rem;
+      margin: 2.5px;
+      .resource-tag {
+        @include showcase-tag($dark-blue, $white);
+      }
+      .resource-title {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        a {
+          @include showcase-header(1em, 1, 2);
+        }
+      }
+    }
 }
 
 //Collections
@@ -250,10 +343,12 @@ $white: #fff;
   .collections {
     width: 50%;
     padding: 2.5em;
-    background-color: $green;
-    color: $white;
-    h2 {
-      color: $white;
+    align-self: center;
+    .link {
+      a {
+        color: $green;
+        border: 1px solid $green;
+      }
     }
   }
 }
@@ -309,14 +404,14 @@ $white: #fff;
   #one {
     .resource-fmn {
       flex-wrap: wrap;
-      grid-template-rows: repeat(2, 1fr);
+      grid-template-rows: 1fr 2fr;
       .fmn {
         width: 100%;
         order: -1;
         grid-column: 1 / span 4;
         grid-row: 1;
       }
-      .featured-container {
+      .module-fmn {
         width: 100%;
         grid-column: 1 / span 4;
         grid-row: 2;
@@ -324,14 +419,14 @@ $white: #fff;
     }
     .resource-partner {
       flex-wrap: wrap;
-      grid-template-rows: repeat(2, 1fr);
+      grid-template-rows: 1fr 2fr;
       .partner {
         width: 100%;
         order: -1;
         grid-column: 1 / span 4;
         grid-row: 1;
       }
-      .featured-container {
+      .module-partner {
         width: 100%;
         grid-column: 1 / span 4;
         grid-row: 2;
@@ -340,7 +435,7 @@ $white: #fff;
   }
   #two {
     flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: 1fr 1fr;
     .collections {
       width: 100%;
       grid-column: 1 / span 4;
@@ -348,7 +443,7 @@ $white: #fff;
     }
     .big {
       width: 100%;
-      height: 250px;
+      height: auto;
       order: 1;
       grid-column: 1 / span 4;
       grid-row: 2;
@@ -372,7 +467,7 @@ $white: #fff;
 //Reset widths if css grid is supported
 @supports (display:grid) {
   .feature {
-    .featured-product {
+    .regular {
       width: auto;
       height: auto;
       margin: 0;
@@ -391,12 +486,10 @@ $white: #fff;
       .fmn {
         width: auto;
       }
-      .featured-container {
+      .module-fmn {
         width: auto;
-        .featured-product {
-          width: auto;
+        .regular {
           height: auto;
-          margin: 0;
         }
       }
     }
@@ -404,12 +497,10 @@ $white: #fff;
       .partner {
         width: auto;
       }
-      .featured-container {
+      .module-partner {
         width: auto;
-        .featured-product {
-          width: auto;
+        .regular {
           height: auto;
-          margin: 0;
         }
       }
     }

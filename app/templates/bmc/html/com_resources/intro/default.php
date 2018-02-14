@@ -37,12 +37,15 @@ $this->css('introduction.css', 'system')
 
 Document::addScript('/app/templates' . DS . App::get('template')->template . DS . 'js' . DS . 'masonry.pkgd.min.js');
 Document::addScript('/app/templates' . DS . App::get('template')->template . DS . 'js' . DS . 'fit.js');
+\Hubzero\Module\Helper::displayModules($position);
 
 ?>
 
 
 <section class="feature">
-  {xhub:module position="resourcesFeature"}
+  <?php
+ \Hubzero\Module\Helper::displayModules('resourcesFeature');
+   ?>
 </section>
 
 <div class="search-wrapper">
@@ -89,37 +92,39 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
     </div>
   </article>
   <article class="resource-fmn">
-    <div class="featured-container">
-      <div class="featured-product"></div>
-      <div class="featured-product"></div>
-      <div class="featured-product"></div>
+    <div class="module-fmn">
+      <?php
+     \Hubzero\Module\Helper::displayModules('resourcesFmn');
+       ?>
     </div>
     <div class="fmn">
       <h2>Faculty Mentoring Network Products</h2>
       <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.</p>
-      <h6 class="link"><a href="#">browse</a></h6>
+      <!-- <h6 class="link"><a href="#">browse</a></h6> -->
     </div>
   </article>
   <article class="resource-partner">
     <div class="partner">
       <h2>Partner Products</h2>
       <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.</p>
-      <h6 class="link"><a href="#">browse</a></h6>
+      <!-- <h6 class="link"><a href="#">browse</a></h6> -->
     </div>
-    <div class="featured-container">
-      <div class="featured-product"></div>
-      <div class="featured-product"></div>
-      <div class="featured-product"></div>
+    <div class="module-partner">
+      <?php
+     \Hubzero\Module\Helper::displayModules('resourcesPartner');
+       ?>
     </div>
   </article>
 </section>
 
 <section id="two">
-  <div class="big"></div>
+  <div class="big">
+    <img src="/app/site/media/images/collections.jpg" alt="Collections">
+  </div>
   <div class="collections">
     <h2>Collections</h2>
     <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper.</p>
-    <h6 class="link"><a href="#">browse</a></h6>
+    <h6 class="link"><a href="/resources/collections">browse</a></h6>
   </div>
 </section>
 
@@ -127,7 +132,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   <div class="software">
     <h2>Software</h2>
     <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper.</p>
-    <h6 class="link"><a href="#">run it</a></h6>
+    <h6 class="link"><a href="/resources/software">run it</a></h6>
   </div>
   <div class="software-logos">
     <h6>R-Studio IDE for R</h6>
