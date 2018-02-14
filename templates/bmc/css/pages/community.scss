@@ -47,22 +47,6 @@ $white: #fff;
   height: 200px;
   width: 100%;
 }
-// .body {
-//   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
-// }
-// h1, h2, h3, h4, h5, h6 {
-//   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-// }
-// .group-php-page {
-//   display: grid;
-//   grid-template-columns: repeat(4, [col] 1fr);
-//   grid-template-rows: repeat(9, [row] auto);
-// }
-/* .contentpane {
-  display: grid;
-  grid-template-columns: repeat(4, [col] 1fr);
-  grid-template-rows: repeat(9, [row] auto);
-} */
 .contentpaneopen {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
@@ -119,8 +103,9 @@ $white: #fff;
   grid-auto-flow: dense;
   grid-gap: 5px;
   .big {
-    flex: 1 1 200px;
-    height: 200px;
+    flex: 1 1 20rem;
+    height: 15rem;
+    margin: 2.5px;
     grid-column: span 2;
     grid-row: span 2;
   }
@@ -128,13 +113,15 @@ $white: #fff;
     @extend .big;
   }
   .horizontal {
-    flex: 1 2 200px;;
-    height: 200px;
+    flex: 1 1 20rem;
+    height: 15rem;
+    margin: 2.5px;
     grid-column: span 2;
   }
   .regular {
-    flex: 1 1 200px;
-    height: 200px;
+    flex: 1 1 20rem;
+    height: 15rem;
+    margin: 2.5px;
   }
   .billboard-image {
     width: 100%;
@@ -292,6 +279,9 @@ $white: #fff;
       color: $white;
     }
   }
+  p {
+    margin: 1em 0;
+  }
   .fmn {
     width: 100%;
     grid-column: span 4;
@@ -299,13 +289,15 @@ $white: #fff;
     padding: 2.5em;
   }
   .module-fmn {
+    display: flex;
+    flex-wrap: wrap;
     grid-column: span 4;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 17rem;
     .regular {
-      flex: 1 1 250px;
-      height: 17rem;
+      flex: 1 1 20rem;
+      height: 15rem;
     }
     .billboard-image {
       width: 100%;
@@ -353,15 +345,19 @@ $white: #fff;
     padding: 2.5em;
   }
   .module-workshops {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
     grid-column: 4 / span 3;
     align-self: center;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 17rem;
+    grid-template-rows: 20rem;
     grid-gap: 5px;
     .regular {
-      flex: 1 1 175px;
-      height: 17rem;
+      flex: 1 1 20rem;
+      height: 15rem;
+      margin: 2.5px;
     }
     .billboard-image {
       width: 100%;
@@ -400,12 +396,13 @@ $white: #fff;
   grid-row: row 6;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 20rem;
   margin-bottom: 4em;
   .horizontal {
     width: 50%;
     background: url('/app/site/media/images/climate-kic-350836.jpg');
-    background-size: 125%;
-    background-position: center;
+    background-size: cover;
+    // background-position: center;
     background-repeat: no-repeat;
   }
   .classrooms {
@@ -419,10 +416,11 @@ $white: #fff;
 #four {
   grid-column: col / span 4;
   grid-row: row 7;
-  // background: url('/app/site/media/images/stefan-stefancik-257625.jpg');
-  // background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/stefan-stefancik-257625.jpg');
-  // background-size: 100%;
-  // background-position: center;
+  height: 15rem;
+  background: url('/app/site/media/images/stefan-stefancik-257625.jpg');
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/stefan-stefancik-257625.jpg');
+  background-size: 100%;
+  background-position: center;
   background-color: $dark-blue;
   color: $white;
   text-align: center;
@@ -447,6 +445,9 @@ $white: #fff;
     padding: 2.5em;
   }
   .module-sites {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
     grid-column: span 3;
     align-self: center;
     display: grid;
@@ -454,8 +455,9 @@ $white: #fff;
     grid-template-rows: 17rem;
     grid-gap: 5px;
     .regular {
-      flex: 1 1 175px;
-      height: 20rem;
+      flex: 1 1 20rem;
+      height: 15rem;
+      margin: 2.5px;
     }
     .group {
       position: relative;
@@ -489,11 +491,9 @@ $white: #fff;
 }
 // Private Working Groups
 #c-six {
-  // display: flex;
+  display: flex;
   grid-column: col / span 4;
   grid-row: row 9;
-  // display: grid;
-  // grid-template-columns: repeat(2, 1fr);
   text-align: center;
   background-color: $med-blue;
   color: $white;
@@ -503,13 +503,16 @@ $white: #fff;
   }
   a {
     color: $white;
-  }
     &:active {
       color: $white;
     }
     &:visited {
       color: $white;
     }
+  }
+  p {
+    margin: 1em 0;
+  }
   // .horizontal {
   //   width: 50%;
   //   background-color: #D8D8D8;
@@ -523,9 +526,9 @@ $white: #fff;
 @media only screen and (min-width: 320px) and (max-width: 589px) {
   #one {
     flex-wrap: wrap;
-    grid-template-rows: 25rem auto;
+    // grid-template-rows: 25rem auto;
     .module-fmn {
-      grid-template-rows: repeat(4, 15rem);
+      // grid-template-rows: repeat(4, 15rem);
       .regular {
         grid-column: 1 / span 4;
       }
@@ -539,11 +542,13 @@ $white: #fff;
       grid-column: span 6;
     }
     .module-workshops{
+      width: 100%;
       grid-column: span 6;
       grid-template-rows: repeat(3, 15rem);
       .regular {
         width: 100%;
         height: 15rem;
+        margin: 2.5px;
         grid-column: span 6;
       }
     }
@@ -571,6 +576,7 @@ $white: #fff;
       grid-column: span 6;
     }
     .module-sites {
+      width: 100%;
       grid-column: span 6;
       grid-template-rows: repeat(3, 15rem);
       .regular {
@@ -729,18 +735,17 @@ $white: #fff;
     .big {
       width: auto;
       height: auto;
-    }
-    .vertical {
-      width: auto;
-      height: auto;
+      margin: 0;
     }
     .horizontal {
       width: auto;
       height: auto;
+      margin: 0;
     }
     .regular {
       width: auto;
       height: auto;
+      margin: 0;
     }
   }
   .explore {
@@ -776,9 +781,11 @@ $white: #fff;
       width: auto;
     }
     .module-workshops {
+      width: auto;
       .regular {
         width: auto;
         height: auto;
+        margin: 0;
       }
     }
   }
@@ -801,9 +808,11 @@ $white: #fff;
       width: auto;
     }
     .module-sites {
+      width: auto;
       .regular {
         width: auto;
         height: auto;
+        margin: 0;
       }
     }
   }

@@ -15,8 +15,6 @@
 
 @import "template_mixins.less";
 @import "group_core.less";
-// import template vars
-@import "../less/template_vars.less";
 
 @panelsDelay: 0.1s; // transition delay for sliding panels
 @sizeXS: 400px;
@@ -26,7 +24,8 @@
 @sizeXL: 1600px;
 @sizeXXL: 2000px;
 
-@poweredBySize: 3rem;
+@poweredBySize: 44px;
+@colorAuxMenu: #292929;
 
 p {
 	margin: 1em 0;
@@ -45,10 +44,72 @@ ul li {
 	right: 0;
 	bottom: 0;
 	background: #292929;
-	z-index: 899;
+	z-index: 1002;
 	.opacity(85);
 	.transition();
-	.translate(-100%);
+	.translate(100%);
+}
+
+.account-details {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	text-align: left;
+	color: #fff;
+	position: absolute;
+	z-index: 1003;
+	top: 0;
+	right: 0;
+	//left: 0;
+	bottom: 0;
+	background: @colorAuxMenu;
+	border: none;
+	padding: @padContain;
+	overflow: auto;
+	width: 100%;
+	max-width: 400px;
+	.transition();
+	.translate(100%);
+	.transition-delay(@panelsDelay);
+
+	&.open {
+		.translate(0);
+	}
+
+	&:after {
+		display: none;
+	}
+
+	a {
+		color: #fff;
+		border: none;
+
+		&:hover {
+			//color: @colorBlueOnDark;
+		}
+	}
+
+	ul {
+		margin: 10px 0 0 0;
+		list-style: none;
+	}
+
+	.user-info {
+		p {
+			text-transform: none;
+
+			.account-email {
+				font-family: 'Roboto';
+				font-weight: 300;
+			}
+		}
+	}
+
+	// close button
+	button {
+		.closeButton(40px);
+		top: @padContain;
+		right: @padContain;
+	}
 }
 
 // prevent scrolling when any of the panels is open
@@ -63,7 +124,7 @@ body.panel-open {
 /* Group Bar */
 .super-group-bar {
 	background: #f8f8f8;
-	z-index: 999;
+	z-index: 1001;
 	font-family: 'Ubuntu', sans-serif;
 	font-weight: 400;
 
@@ -175,10 +236,10 @@ body.panel-open {
 							left: 0;
 							top: 0;
 							text-transform: none;
-							font-family: 'tornado';
+							font-family: 'Fontcons';
 							font-size: @iconSize;
 							line-height: 2rem;
-							content: 'a';
+							content: '\f007';
 							.transition(all linear .2s);
 						}
 
@@ -219,65 +280,6 @@ body.panel-open {
 
 			// Account panel
 			.user-account {
-				.account-details {
-					font-family: 'Roboto', sans-serif;
-					font-weight: 400;
-					text-align: left;
-					color: #fff;
-					position: absolute;
-					z-index: 900;
-					top: 0;
-					right: 0;
-					left: 0;
-					bottom: 0;
-					background: @colorAuxMenu;
-					border: none;
-					padding: @padContain;
-					overflow: auto;
-					max-width: 400px;
-					.transition();
-					.translate(-100%);
-					.transition-delay(@panelsDelay);
-
-					&.open {
-						.translate(0);
-					}
-
-					&:after {
-						display: none;
-					}
-
-					a {
-						color: #fff;
-						border: none;
-
-						&:hover {
-							color: @colorBlueOnDark;
-						}
-					}
-
-					ul {
-						margin: 10px 0 0 0;
-					}
-
-					.user-info {
-						p {
-							text-transform: none;
-
-							.account-email {
-								font-family: 'Roboto';
-								font-weight: 300;
-							}
-						}
-					}
-
-					// close button
-					button {
-						.closeButton(40px);
-						top: @padContain;
-						right: @padContain;
-					}
-				}
 			}
 
 			// Group dash
@@ -315,7 +317,7 @@ body.panel-open {
 						line-height: 1.4em;
 
 						&:hover {
-							color: @colorBlueOnDark;
+							//color: @colorBlueOnDark;
 						}
 
 						span {
@@ -393,18 +395,4 @@ body.panel-open {
 	100% {
 		color: #00a1e4;;
 	}
-}
-
-@pathTemplate: "/app/templates/NaN";
-
-@font-face {
-	font-family: 'tornado';
-	src: url('@{pathTemplate}/fonts/tornado/tornado.eot');
-	src: url('@{pathTemplate}/fonts/tornado/tornado.eot?#iefix') format('embedded-opentype'),
-	url('@{pathTemplate}/fonts/tornado/tornado.woff') format('woff'),
-	url('@{pathTemplate}/fonts/tornado/tornado.ttf') format('truetype'),
-	url('@{pathTemplate}/fonts/tornado/tornado.svg#tornado') format('svg');
-	font-weight: normal;
-	font-style: normal;
-
 }

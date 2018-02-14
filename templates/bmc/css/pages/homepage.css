@@ -17,6 +17,7 @@
   grid-row: row;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  height: 25rem;
   background: url("/app/site/media/images/pexels-photo-355988.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/pexels-photo-355988.jpg");
   background-size: cover;
@@ -72,6 +73,7 @@ h3 {
 
 .resources .module-left {
   width: 50%;
+  display: flex;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 5px;
@@ -181,6 +183,7 @@ h3 {
 
 .resources .module-left .resource {
   position: relative;
+  margin: 5px;
 }
 
 .resources .module-left .resource .resource-tag {
@@ -513,31 +516,28 @@ h3 {
   top: 50%;
 }
 
-.community .module-right {
+.community .right {
   width: 50%;
+}
+
+.community .module-right {
+  display: flex;
+  flex-wrap: wrap;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 200px);
   grid-gap: 5px;
 }
 
-.community .module-right .big {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.community .module-right .big .billboard-image {
-  height: 100%;
-}
-
-.community .module-right .big .billboard-image img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
 .community .module-right .horizontal {
+  width: 24rem;
+  height: 15rem;
   grid-column: span 2;
+}
+
+.community .module-right .regular {
+  width: 12rem;
+  height: 15rem;
 }
 
 .community .module-right .billboard-image {
@@ -849,6 +849,7 @@ h3 {
 
 @media only screen and (min-width: 320px) and (max-width: 900px) {
   .intro-container .intro {
+    width: 100%;
     grid-column: 1 / span 4;
   }
   .resources {
@@ -857,6 +858,7 @@ h3 {
   }
   .resources .module-left {
     width: 100%;
+    flex-wrap: wrap;
     grid-column: 1 / span 4;
     grid-row: 2;
     grid-template-rows: repeat(3, 17rem);
@@ -962,6 +964,9 @@ h3 {
 }
 
 @supports (display: grid) {
+  .intro-container {
+    height: auto;
+  }
   .intro-container .intro {
     width: auto;
   }
@@ -986,8 +991,19 @@ h3 {
   .community .left {
     width: auto;
   }
+  .community .right {
+    width: auto;
+  }
   .community .module-right {
     width: auto;
+  }
+  .community .module-right .horizontal {
+    width: auto;
+    height: auto;
+  }
+  .community .module-right .regular {
+    width: auto;
+    height: auto;
   }
   .three .service {
     width: auto;
