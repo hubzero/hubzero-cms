@@ -168,6 +168,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public $revision = null;
 
+
 	/**
 	 * Generates automatic alias field value
 	 *
@@ -1590,6 +1591,30 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $allowedgroups;
 	}
 
+	 /**
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'resource';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
+
+	/*
+	 * Convert model results into solr readable generic object.
+	 * @return stdClass
+	 */
 	public function searchResult()
 	{
 		$obj = new stdClass;
@@ -1597,8 +1622,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$obj->url = Request::root() . $this->link();
 		$obj->title = $this->title;
 		$id = $this->id;
-		$obj->id = 'resource-' . $id;
-		$obj->hubtype = 'resource';
+		$obj->id = $this->searchId();
+		$obj->hubtype = $this->searchNamespace();
 
 		$obj->type = $this->type()->type;
 

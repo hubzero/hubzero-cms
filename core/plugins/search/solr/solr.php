@@ -65,7 +65,15 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 				$commitWithin = $config->get('solr_commit');
 				$index = new \Hubzero\Search\Index($config);
 				$modelIndex = $model->searchResult();
-				$index->updateIndex($modelIndex, $commitWithin);
+				if ($modelIndex === false)
+				{
+					$index->updateIndex($modelIndex, $commitWithin);
+				}
+				else
+				{
+					$modelIndexId = $model->searchId();
+					$index->delete($modelIndexId);
+				}
 			}
 		}
 	}
@@ -90,7 +98,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 			{
 				$config = Component::params('com_search');
 				$index = new \Hubzero\Search\Index($config);
-				$modelIndexId = $model->searchResult()['id'];
+				$modelIndexId = $model->searchId();
 				$index->delete($modelIndexId);
 			}
 		}

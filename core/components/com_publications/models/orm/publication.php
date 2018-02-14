@@ -259,6 +259,26 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		return $link;
 	}
 
+	 /**
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'publication';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
+
 	/*
 	 * Generate search document for Solr
 	 * @return array
@@ -272,8 +292,8 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		$obj = new stdClass;
-		$obj->id            = 'publication-' . $this->get('id');
-		$obj->hubtype       = 'publication';
+		$obj->id            = $this->searchId();
+		$obj->hubtype       = $this->searchNamespace();
 		$obj->title         = $activeVersion->get('title');
 
 		$description = $activeVersion->get('abstract') . ' ' . $activeVersion->get('description');
