@@ -88,6 +88,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	 */
 	private $badgesSeparated = false;
 
+
 	/**
 	 * Returns results based on filters applied.
 	 *
@@ -1490,6 +1491,25 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 		return implode(';', $convertedAuthors);
 	}
+	/**
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'citation';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
 
 	/*
 	 * Generate search document for Solr
@@ -1499,8 +1519,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	{
 		$citation = new stdClass;
 		$citation->title = $this->title;
-		$citation->hubtype = 'citation';
-		$citation->id = 'citation-' . $this->id;
+		$citation->hubtype = $this->searchNamespace();
+		$citation->id = $this->searchId();
 		$citation->description = $this->abstract;
 		$citation->doi = $this->doi;
 		$tags = explode(',', $this->keywords);
