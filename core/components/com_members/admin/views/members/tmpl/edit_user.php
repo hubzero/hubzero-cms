@@ -169,6 +169,10 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 					</td>
 				</tr>
 				<tr>
+					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_REGISTERIP'); ?></th>
+					<th><?php echo $this->profile->get('registerIP'); ?></th>
+				</tr>
+				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_REGISTERDATE'); ?></th>
 					<th><?php echo $this->profile->get('registerDate'); ?></th>
 				</tr>
