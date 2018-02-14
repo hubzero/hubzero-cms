@@ -122,7 +122,7 @@ if ($mode != 'preview')
 
 					if ($ccount > 0)
 					{
-						$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $model->type->get('type');
+						$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $this->model->type->get('type');
 
 						$this->view('_primary')
 							->set('option', $this->option)
@@ -343,13 +343,13 @@ if ($mode != 'preview')
 											break;
 										case 'pdf':
 										default:
-											if ($grandchild->get('logicaltype') == 14)
+											if ($grandchild->get('logical_type') == 14)
 											{
 												$ext = Filesystem::extension($grandchild->path);
 												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
 												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a>'."\n";
 											}
-											elseif ($grandchild->get('logicaltype') == 51)
+											elseif ($grandchild->get('logical_type') == 51)
 											{
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 											}

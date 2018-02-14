@@ -283,7 +283,7 @@ class Resources extends SiteController
 			// For example, /resources/onlinepresentation => Oneline Presentation
 			foreach ($types as $type)
 			{
-				if (trim($filters['type']) == $type->get('type'))
+				if (trim($filters['type']) == $type->get('alias'))
 				{
 					$filters['type'] = $type->get('id');
 
@@ -591,7 +591,7 @@ class Resources extends SiteController
 				{
 					include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'audience.php';
 
-					$bits['filters'] = Audience\Level::all();
+					$bits['filters'] = Level::all();
 				}
 
 				$rt = new Tags($bits['id']);
@@ -1078,7 +1078,7 @@ class Resources extends SiteController
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
 		// Get tracking for this user for this resource
-		$tracking = MediaTracking::oneForUserAndResource(User::get('id'), $activechild->id);
+		$tracking = MediaTracking::oneByUserAndResource(User::get('id'), $activechild->id);
 
 		// Check to see if we already have a time query param
 		$hasTime = (Request::getVar('time', '') != '') ? true : false;
@@ -1749,7 +1749,7 @@ class Resources extends SiteController
 		$tags = rtrim($tags, ',');
 
 		$author = '';
-		foreach ($resources->authors()->ordered()->rows() as $con)
+		foreach ($resource->authors()->ordered()->rows() as $con)
 		{
 			if ($con->get('role') != 'submitter')
 			{
@@ -1881,7 +1881,7 @@ class Resources extends SiteController
 				}
 
 				// Get the contributors of this resource
-				$author = strip_tags($row->authorList());
+				$author = strip_tags($row->authorsList());
 
 				$rtt = new Tags($row->id);
 				$rtags = $rtt->render('string');
@@ -2456,6 +2456,8 @@ class Resources extends SiteController
 		$handle = '';
 		if ($revision)
 		{
+			require_once dirname(dirname(__DIR__)) . '/models/doi.php';
+
 			$rdoi = Doi::oneByResource($id, $revision);
 
 			if ($rdoi->get('doi') && $tconfig->get('doi_shoulder'))

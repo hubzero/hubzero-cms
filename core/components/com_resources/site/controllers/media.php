@@ -359,14 +359,13 @@ class Media extends SiteController
 		}
 
 		// Load tracking information for user for this resource
-		$trackingInformation         = MediaTracking::oneForUserAndResource(User::get('id'), $resourceid);
+		$trackingInformation         = MediaTracking::oneByUserAndResource(User::get('id'), $resourceid);
 		$trackingInformationDetailed = Detailed::oneOrNew($detailedId);
 
 		// Are we creating a new tracking record?
 		if ($trackingInformation->isNew())
 		{
-			$trackingInformation = new stdClass;
-			$mediaTracking->set(array(
+			$trackingInformation->set(array(
 				'user_id'                     => User::get('id'),
 				'session_id'                  => $session->getId(),
 				'ip_address'                  => $ipAddress,

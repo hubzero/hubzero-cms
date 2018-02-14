@@ -65,40 +65,43 @@ class Helper extends Module
 		$st = new Ticket($database);
 
 		$types = array(
-			'common' => Query::allCommon()->rows()
+			'common' => array()
 			//'mine'   => $sq->getMine()
 		);
-		// Loop through each grouping
-		foreach ($types as $key => $queries)
+		$queries = Query::allCommon()->rows();
+
+		if (count($queries) <= 0)
 		{
-			if (!is_array($queries) || count($queries) <= 0)
-			{
-				$one = new stdClass;
-				$one->count = 0;
-				$one->id    = 0;
+			$one = new stdClass;
+			$one->count = 0;
+			$one->id    = 0;
 
-				$two = new stdClass;
-				$two->count = 0;
-				$two->id    = 0;
+			$types['common'][] = $one;
 
-				$three = new stdClass;
-				$three->count = 0;
-				$three->id    = 0;
+			$two = new stdClass;
+			$two->count = 0;
+			$two->id    = 0;
 
-				$types[$key] = $queries = array(
-					$one,
-					$two,
-					$three
-				);
-			}
+			$types['common'][] = $two;
+
+			$three = new stdClass;
+			$three->count = 0;
+			$three->id    = 0;
+
+			$types['common'][] = $three;
+		}
+		else
+		{
 			// Loop through each query in a group
 			foreach ($queries as $k => $query)
 			{
 				if ($query->id)
 				{
 					// Get a record count
-					$types[$key][$k]->count = Ticket::countWithQuery($query);
+					$query->set('count', Ticket::countWithQuery($query));
 				}
+
+				$types['common'][] = $query;
 			}
 		}
 

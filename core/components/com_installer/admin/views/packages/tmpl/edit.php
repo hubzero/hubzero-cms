@@ -65,7 +65,9 @@ $status = '';
 					</select>
 
 				</div>
-				<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_VERSION'); ?>">
+				<div class="input-wrap">
+					<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_VERSION'); ?>">
+				</div>
 
 			</fieldset>
 		</div>

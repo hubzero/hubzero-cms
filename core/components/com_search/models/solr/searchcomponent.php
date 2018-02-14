@@ -107,7 +107,11 @@ class SearchComponent extends Relational
 		{
 			foreach ($modelResults as $result)
 			{
-				$newQuery->index($result->searchResult(), true, $commitWithin, $batchSize);
+				$searchResult = $result->searchResult();
+				if ($searchResult)
+				{
+					$newQuery->index($searchResult, true, $commitWithin, $batchSize);
+				}
 			}
 			$results = array(
 				'limit'  => $batchSize,

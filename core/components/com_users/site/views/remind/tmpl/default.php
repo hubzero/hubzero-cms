@@ -54,4 +54,4 @@ Html::behavior('formvalidation');
 		<p class="submit"><button type="submit" class="validate"><?php echo Lang::txt('Submit'); ?></button></p>
 		<?php echo Html::input('token'); ?>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

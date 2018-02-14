@@ -226,15 +226,21 @@ switch ($this->level)
 		$html .= '><a href="'.$sef.'">'.$this->escape(stripslashes($resource->title)).'</a></h4>';
 		$html .= '<p>'.\Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 400).' &nbsp; <a href="'.$sef.'">'.Lang::txt('COM_RESOURCES_LEARN_MORE').'</a></p>';
 
+		$usersgroups = array();
 		if (!User::isGuest())
 		{
 			$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 			// Get the groups the user has access to
-			$usersgroups = \Components\Resources\Site\Controllers\Resources::getUsersGroups($xgroups);
-		}
-		else
-		{
-			$usersgroups = array();
+			if (!empty($xgroups))
+			{
+				foreach ($xgroups as $group)
+				{
+					if ($group->regconfirmed)
+					{
+						$usersgroups[] = $group->cn;
+					}
+				}
+			}
 		}
 
 		if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized)

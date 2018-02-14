@@ -82,6 +82,16 @@ class Ticket extends Relational
 	);
 
 	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'owner',
+		'group_id'
+	);
+
+	/**
 	 * Tag cloud
 	 *
 	 * @var  object
@@ -115,6 +125,56 @@ class Ticket extends Relational
 	}
 
 	/**
+	 * Generates automatic owner field value
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticOwner($data)
+	{
+		if (!isset($data['owner']) || !$data['owner'])
+		{
+			$data['owner'] = 0;
+		}
+
+		if ($data['owner'] && is_string($data['owner']))
+		{
+			$owner = User::getInstance($data['owner']);
+			if ($owner && $owner->get('id'))
+			{
+				$data['owner'] = (int) $owner->get('id');
+			}
+		}
+
+		return $data['owner'];
+	}
+
+	/**
+	 * Generates automatic group_id field value
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticGroupId($data)
+	{
+		if (!isset($data['group_id']) || !$data['group_id'])
+		{
+			$data['group_id'] = 0;
+		}
+
+		if ($data['group_id'] && is_string($data['group_id']))
+		{
+			$group = \Hubzero\User\Group::getInstance($data['group_id']);
+			if ($group && $group->get('gidNumber'))
+			{
+				$data['group_id'] = (int) $group->get('gidNumber');
+			}
+		}
+
+		return $data['group_id'];
+	}
+
+	/**
 	 * Is the ticket open?
 	 *
 	 * @return  boolean
@@ -145,6 +205,44 @@ class Ticket extends Relational
 		{
 			return true;
 		}
+		return false;
+	}
+
+	/**
+	 * Is the user the owner of the ticket?
+	 *
+	 * @param   integer  $id
+	 * @return  boolean
+	 */
+	public function isOwner($id='')
+	{
+		if ($this->isOwned())
+		{
+			$id = $id ?: User::get('id');
+
+			if ($this->get('owner') == $id)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Is the user the submitter of the ticket?
+	 *
+	 * @param   string  $username
+	 * @return  boolean
+	 */
+	public function isSubmitter($username='')
+	{
+		$username = $username ?: User::get('username');
+
+		if ($this->get('login') == $username)
+		{
+			return true;
+		}
+
 		return false;
 	}
 
@@ -371,6 +469,8 @@ class Ticket extends Relational
 	 */
 	public function isWatching($user_id=null)
 	{
+		$user_id = $user_id ?: User::get('id');
+
 		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
 
 		if ($tbl->get('id'))
@@ -389,6 +489,8 @@ class Ticket extends Relational
 	 */
 	public function watch($user_id)
 	{
+		$user_id = $user_id ?: User::get('id');
+
 		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
 
 		if ($tbl->get('id'))
@@ -416,6 +518,8 @@ class Ticket extends Relational
 	 */
 	public function stopWatching($user_id)
 	{
+		$user_id = $user_id ?: User::get('id');
+
 		$tbl = Watching::oneByUserAndTicket($user_id, $this->get('id'));
 
 		if (!$tbl->get('id'))

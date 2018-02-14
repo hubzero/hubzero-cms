@@ -35,10 +35,18 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
+$access = array(0);
+if (!User::isGuest())
+{
+	$access[] = 1;
+}
+
 if ($this->model->isTool())
 {
 	$children = $this->model->children()
 		->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+		->whereIn('access', $access)
+		->order('ordering', 'asc')
 		->rows();
 }
 else
@@ -46,6 +54,8 @@ else
 	$children = $this->model->children()
 		->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
 		->whereEquals('standalone', 0)
+		->whereIn('access', $access)
+		->order('ordering', 'asc')
 		->rows();
 }
 ?>
@@ -103,7 +113,7 @@ else
 						$ltparams = $lt->params;
 
 						// Check the link action by child's type
-						if ($child->logicaltype)
+						if ($child->logical_type)
 						{
 							$rtLinkAction = $ltparams->get('linkAction', 'extension');
 						}
@@ -200,7 +210,7 @@ else
 								break;
 						}
 
-						$title = ($child->logicaltitle) ? $child->logicaltitle : stripslashes($child->title);
+						$title = ($child->logical_type) ? $child->logicaltype->type : stripslashes($child->title);
 					}
 
 					$url = \Components\Resources\Helpers\Html::processPath($this->option, $child, $this->model->id, $linkAction);

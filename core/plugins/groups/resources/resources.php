@@ -645,7 +645,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 						{
 							if ($i == 0)
 							{
-								$counts[] = Components\Resources\Models\Entry::allWithFilters($filters)->total();
+								$counts[] = self::allWithFilters($filters)->total();
 							}
 							else
 							{
@@ -657,7 +657,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 							$filters['type'] = $cats[$a]['id'];
 
 							// Execute a count query for each area/category
-							$counts[] = Components\Resources\Models\Entry::allWithFilters($filters)->total();
+							$counts[] = self::allWithFilters($filters)->total();
 						}
 						$i++;
 					}
@@ -668,5 +668,144 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$this->_total = $counts;
 			return $counts;
 		}
+	}
+
+	/**
+	 * Include needed libraries and push scripts and CSS to the document
+	 *
+	 * @param   array  $filters
+	 * @return  object
+	 */
+	public static function allWithFilters($filters = array())
+	{
+		$query = \Components\Resources\Models\Entry::all();
+
+		$r = $query->getTableName();
+		$a = \Components\Resources\Models\Author::blank()->getTableName();
+
+		$query
+			->select($r . '.*');
+
+		if (isset($filters['standalone']))
+		{
+			$query->whereEquals($r . '.standalone', $filters['standalone']);
+		}
+
+		if (isset($filters['published']))
+		{
+			$query->whereIn($r . '.published', (array) $filters['published']);
+		}
+
+		if (isset($filters['group']))
+		{
+			$query->whereEquals($r . '.group_owner', (string) $filters['group']);
+		}
+
+		if (isset($filters['type']))
+		{
+			if (!is_numeric($filters['type']))
+			{
+				$filters['type'] = Type::oneByAlias($filters['type'])->get('id');
+			}
+			$query->whereEquals($r . '.type', $filters['type']);
+		}
+
+		if (isset($filters['tag']) && $filters['tag'])
+		{
+			$to = \Components\Tags\Models\Objct::blank()->getTableName();
+			$tg = \Components\Tags\Models\Tag::blank()->getTableName();
+
+			$cloud = new \Components\Resources\Helpers\Tags();
+			$tags = $cloud->parse($filters['tag']);
+
+			$query->join($to, $to . '.objectid', $r . '.id');
+			$query->join($tg, $tg . '.id', $to . '.tagid', 'inner');
+			$query->whereEquals($to . '.tbl', 'resources');
+			$query->whereIn($tg . '.tag', $tags);
+		}
+
+		if (isset($filters['search']))
+		{
+			$query->whereLike($r . '.title', $filters['search'], 1)
+				->orWhereLike($r . '.fulltxt', $filters['search'], 1)
+				->resetDepth();
+		}
+
+		if (isset($filters['created_by']))
+		{
+			$query->whereEquals($r . '.created_by', $filters['created_by']);
+		}
+
+		if (isset($filters['author']))
+		{
+			$query
+				->join($a, $a . '.subid', $r . '.id', 'left')
+				->whereEquals($a . '.subtable', 'resources')
+				->whereEquals($a . '.authorid', $filters['author']);
+
+			if (isset($filters['notauthorrole']))
+			{
+				$query->where($a . '.role', '!=', $filters['notauthorrole']);
+			}
+		}
+
+		if (isset($filters['access']) && !empty($filters['access']))
+		{
+			if (!is_array($filters['access']) && !is_numeric($filters['access']))
+			{
+				switch ($filters['access'])
+				{
+					case 'public':
+						$filters['access'] = 0;
+						break;
+					case 'protected':
+						$filters['access'] = 3;
+						break;
+					case 'private':
+						$filters['access'] = 4;
+						break;
+					case 'all':
+					default:
+						$filters['access'] = array(0, 1, 2, 3, 4);
+						break;
+				}
+			}
+
+			if (isset($filters['usergroups']) && !empty($filters['usergroups']))
+			{
+				$query->whereIn($r . '.access', (array) $filters['access'], 1)
+					->orWhereIn($r . '.group_owner', (array) $filters['usergroups'], 1)
+					->resetDepth();
+			}
+			else
+			{
+				$query->whereIn($r . '.access', (array) $filters['access']);
+			}
+		}
+		elseif (isset($filters['usergroups']) && !empty($filters['usergroups']))
+		{
+			$query->whereIn($r . '.group_owner', (array) $filters['usergroups']);
+		}
+
+		if (isset($filters['now']))
+		{
+			$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
+				->resetDepth()
+				->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
+				->resetDepth();
+		}
+
+		if (isset($filters['startdate']) && $filters['startdate'])
+		{
+			$query->where($r . '.publish_up', '>', $filters['startdate']);
+		}
+		if (isset($filters['enddate']) && $filters['enddate'])
+		{
+			$query->where($r . '.publish_up', '<', $filters['enddate']);
+		}
+
+		return $query;
 	}
 }

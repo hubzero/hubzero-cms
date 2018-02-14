@@ -255,7 +255,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function transformLogicaltype()
 	{
 		//return $this->belongsToOne(__NAMESPACE__ . '\\Type', 'logicaltype_id')->row();
-		return Type::oneOrNew($this->get('logicaltype'));
+		return Type::oneOrNew($this->get('logical_type'));
 	}
 
 	/**
@@ -342,7 +342,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		$names = array();
 
-		foreach ($this->authors as $contributor)
+		foreach ($this->authors()->order('ordering', 'asc')->rows() as $contributor)
 		{
 			if (strtolower($contributor->get('role')) == 'submitter')
 			{
@@ -460,7 +460,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function parents()
 	{
 		$model = new Association();
-		return $model->manyToMany(__NAMESPACE__ . '\\Entry', $model->getTableName(), 'child_id', 'parent_id');
+		return $this->manyToMany(__NAMESPACE__ . '\\Entry', $model->getTableName(), 'child_id', 'parent_id');
 	}
 
 	/**
@@ -655,10 +655,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		{
 			$path = DS . ltrim($path, DS);
 
-			if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
+			/*if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
 			{
 				$path = DS . trim($this->params->get('uploadpath'), DS) . $path;
-			}
+			}*/
 		}
 
 		return $path;

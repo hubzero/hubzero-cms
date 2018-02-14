@@ -93,6 +93,7 @@ class CartOrders
 				OR x.`username` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
 				OR sku.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
 				OR p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR t.`tId` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
 			)";
 		}
 

@@ -105,8 +105,13 @@ function submitbutton(pressbutton)
 					<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
 
-				<label for="type"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
-				<?php echo \Components\Resources\Helpers\Html::selectType($this->types, 'type', $this->filters['type'], Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'), '', ' onchange="this.form.submit();"', ''); ?>
+				<label for="filter-ype"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
+				<select name="type" id="filter-type" onchange="this.form.submit();">
+					<option value=""><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'); ?></option>
+					<?php foreach ($this->types as $type) { ?>
+						<option value="<?php echo $type->id; ?>"<?php echo ($this->filters['type'] == $type->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($type->type); ?></option>
+					<?php } ?>
+				</select>
 			</div>
 		</div>
 	</fieldset>

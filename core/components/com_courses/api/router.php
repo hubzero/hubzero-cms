@@ -88,8 +88,19 @@ class Router extends Base
 			}
 			else
 			{
-				$vars['controller'] = $segments[0];
-				$vars['task']       = $segments[1];
+				if (in_array($segments[0], array('list', 'read', 'update', 'create', 'delete')))
+				{
+					$vars['controller'] = 'courses';
+					$vars['task']       = $segments[0];
+				}
+				else
+				{
+					$vars['controller'] = $segments[0];
+					if (isset($segments[1]))
+					{
+						$vars['task'] = $segments[1];
+					}
+				}
 			}
 		}
 

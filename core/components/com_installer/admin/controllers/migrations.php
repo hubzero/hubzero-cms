@@ -115,14 +115,20 @@ class Migrations extends AdminController
 	}
 
 	/**
-	 * Perform rollback
+	 * Perform up migration on single file
 	 *
 	 * @return  void
 	 */
 	public function migrateTask()
 	{
+		// Check authorization
+		if (!User::authorise('core.manage'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Check for request forgeries
-		Request::checkToken();
+		Request::checkToken('get');
 
 		$file     = Request::getVar('file', null);
 
