@@ -37,6 +37,12 @@ defined('_HZEXEC_') or die();
 $html = '';
 
 	$url = $this->activechild->path;
+	$url = DS . ltrim($url, DS);
+
+	if (substr($url, 0, strlen($this->config->get('uploadpath'))) != $this->config->get('uploadpath'))
+	{
+		$url = DS . trim($this->config->get('uploadpath'), DS) . $url;
+	}
 
 	// Get some attributes
 	$attribs = new \Hubzero\Config\Registry($this->activechild->get('attribs'));
