@@ -50,9 +50,11 @@ require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS .
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
 require_once Component::path('com_projects') . '/helpers/accessHelper.php';
+require_once Component::path('com_projects') . '/helpers/urlHelper.php';
 
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Helpers\AccessHelper;
+use Components\Projects\Helpers\UrlHelper;
 
 /**
  * Projects Files plugin
@@ -105,20 +107,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($this->params->get('default_action', 'browse') == 'connections')
 		{
 			$model = new Components\Projects\Models\Project(Request::getVar('alias', ''));
-
+			$userIsMember = $model->access('member');
 			$active = Request::getInt('connection', 0);
 
 			$area['children'] = array();
 			$area['children'][] = array(
 				'name'  => 'default',
 				'title' => sprintf($this->params->get('default_connection_name', '%s Master Repository'), $model->get('title')),
-				'url'   => $model->link('files') . '&action=browse',
+				'url'   => UrlHelper::updatePerMembership($model->link('files') . '&action=browse', $userIsMember),
 				'class' => 'filesystem default' . (Request::getVar('action') == 'browse' && !$active ? ' active' : ''),
 				//'image' => '/core/plugins/filesystem/local/assets/img/icon.png',
 				'icon'  => 'f0a0'
 			);
 
-			if ($model->exists() && $model->access('member'))
+			if ($model->exists())
 			{
 				$connections = Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))->connections()->thatICanView();
 
@@ -126,13 +128,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				{
 					foreach ($connections as $connection)
 					{
-						//$imgRel = '/plugins/filesystem/' . $connection->provider->alias . '/assets/img/icon.png';
-						//$img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel;
-
 						$area['children'][] = array(
 							'title' => $connection->name,
 							'name'  => $connection->provider->alias,
-							'url'   => $model->link('files') . '&action=browse&connection=' . $connection->id,
+							'url'   => UrlHelper::updatePerMembership($model->link('files') . '&action=browse&connection=' . $connection->id, $userIsMember),
 							'class' => 'filesystem ' . $connection->provider->alias . (!$connection->isShared() ? ' private' : '') . ($active == $connection->id ? ' active' : ''),
 							//'image' => $img,
 							'icon'  => 'f0a0'
