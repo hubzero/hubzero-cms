@@ -182,10 +182,15 @@ body.panel-open .hub-overlay {
   -ms-transform: translate(0, 0);
   -o-transform: translate(0, 0);
 }
+/* Make sure header isn't too big */
+.header-id {
+  font-size: 1.8rem !important;
+}
 /* Group Bar */
 .super-group-bar {
-  background: #f8f8f8;
-  z-index: 1001;
+  background: #000000;
+  z-index: 999;
+  /* Was 1001 */
   font-family: 'Ubuntu', sans-serif;
   font-weight: 400;
   text-rendering: optimizeLegibility;
@@ -202,7 +207,7 @@ body.panel-open .hub-overlay {
 .super-group-bar .content .branding .poweredby {
   display: block;
   font-size: 0.8rem;
-  color: #3e3e3e;
+  color: #eee;
   line-height: 1.2em;
   margin-bottom: 0.6rem;
   border: none;
@@ -265,7 +270,7 @@ body.panel-open .hub-overlay {
   font-size: 0.8rem;
   line-height: 2rem;
   border: 0;
-  color: #616161;
+  color: #eee;
 }
 .super-group-bar .content .subnav > li > a.icon {
   padding-left: 1.5rem;
@@ -287,14 +292,14 @@ body.panel-open .hub-overlay {
   transition: all linear 0.2s;
 }
 .super-group-bar .content .subnav > li > a.icon:hover {
-  color: #0b0b0b;
+  color: #8c8c8c;
 }
 .super-group-bar .content .subnav > li > a.icon:hover:before {
   -webkit-transform: translate(0.1rem, 0);
   -moz-transform: translate(0.1rem, 0);
   -ms-transform: translate(0.1rem, 0);
   -o-transform: translate(0.1rem, 0);
-  color: #616161;
+  color: #8c8c8c;
 }
 @media (min-width: 520px) {
   .super-group-bar .content .subnav > li > a {
@@ -307,6 +312,9 @@ body.panel-open .hub-overlay {
 .super-group-bar .content .subnav a {
   display: inline-block;
   text-transform: uppercase;
+}
+.super-group-bar .content .subnav a:hover {
+  color: #8c8c8c;
 }
 .super-group-bar .content .subnav li {
   list-style: none;
@@ -447,6 +455,16 @@ body.panel-open .hub-overlay {
   filter: alpha(opacity=0);
   -moz-opacity: 0;
   opacity: 0;
+}
+/* Sidebar nav */
+/* !important is so I don't have to update every supergroup */
+/* REMOVE LATER */
+.sidebar-nav li a:before,
+.sidebar-nav li span:before {
+  margin-top: -0.5em !important;
+}
+.sidebar-nav li .meta {
+  margin-top: -2.45em !important;
 }
 @keyframes colorWheel {
   0% {
