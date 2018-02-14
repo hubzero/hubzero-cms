@@ -342,6 +342,7 @@ class Newsletter extends AdminController
 			$this->newsletter->modified      = $newsletterNewsletter->modified;
 			$this->newsletter->modified_by   = $newsletterNewsletter->modified_by;
 			$this->newsletter->params        = $newsletterNewsletter->params;
+			$this->newsletter->autogen       = $newsletterNewsletter->autogen;
 
 			// set the id so we can pick up the stories
 			Request::setVar('id', array($this->newsletter->id));
