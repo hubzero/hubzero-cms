@@ -1,3 +1,5 @@
+// out: group.css
+
 /**
  * @package    hubzero-cms
  * @file       templates/system/css/group.css
@@ -26,6 +28,7 @@
 
 @poweredBySize: 44px;
 @colorAuxMenu: #292929;
+@colorBtnHover: #8c8c8c;
 
 p {
 	margin: 1em 0;
@@ -121,10 +124,15 @@ body.panel-open {
 	}
 }
 
+/* Make sure header isn't too big */
+.header-id {
+	font-size: 1.8rem !important;
+}
+
 /* Group Bar */
 .super-group-bar {
-	background: #f8f8f8;
-	z-index: 1001;
+	background: #000000;
+	z-index: 999; /* Was 1001 */
 	font-family: 'Ubuntu', sans-serif;
 	font-weight: 400;
 
@@ -145,7 +153,7 @@ body.panel-open {
 			.poweredby {
 				display: block;
 				font-size: 0.8rem;
-				color: #3e3e3e;
+				color: #eee;
 				line-height: 1.2em;
 				margin-bottom: 0.6rem;
 				border: none;
@@ -226,7 +234,7 @@ body.panel-open {
 					font-size: 0.8rem;
 					line-height: 2rem;
 					border: 0;
-					color: #616161;
+					color: #eee;
 
 					&.icon {
 						padding-left: @iconSize + 0.5rem;
@@ -244,11 +252,11 @@ body.panel-open {
 						}
 
 						&:hover {
-							color: #0b0b0b;
+							color: @colorBtnHover;
 
 							&:before {
 								.translate(0.1rem);
-								color: #616161;
+								color: @colorBtnHover;
 							}
 						}
 					}
@@ -270,7 +278,7 @@ body.panel-open {
 				text-transform: uppercase;
 
 				&:hover {
-					//color: @colorBlue;
+					color: @colorBtnHover;
 				}
 			}
 
@@ -371,6 +379,24 @@ body.panel-open {
 					}
 				}
 			}
+		}
+	}
+}
+
+/* Sidebar nav */
+/* !important is so I don't have to update every supergroup */
+/* REMOVE LATER */
+.sidebar-nav {
+
+	li {
+
+		a:before,
+		span:before {
+			margin-top: -0.5em !important;
+		}
+
+		.meta {
+			margin-top: -2.45em !important;
 		}
 	}
 }
