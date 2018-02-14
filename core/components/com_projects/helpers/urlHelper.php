@@ -42,7 +42,7 @@ class UrlHelper extends Object
 			$url = self::_appendQueryCharacter($url);
 			$url .= 'subdir=public';
 		}
-		
+
 		return $url;
 	}
 
