@@ -65,7 +65,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 		$this->cilogon = new \CILogon\OAuth2\Client\Provider\CILogon([
 			'clientId' => $this->params->get('app_id'),
 			'clientSecret' => $this->params->get('app_secret'),
-			'redirectUri' => $redirect 
+			'redirectUri' => $redirect
 		]);
 		return $this->cilogon;
 	}
@@ -159,7 +159,6 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				throw new Exception('Mismatched state');
 			}
 			Session::clear('state', 'cilogon');
-		
 			$token = $this->cilogon()->getAccessToken('authorization_code', array('code' => Request::getVar('code')));
 		}
 		catch (\Exception $e)
@@ -167,7 +166,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage());
 			return;
-		}	
+		}
 		// Make sure we have a user_id (gc returns 0 for a non-logged in user)
 		if ((isset($user_id) && $user_id > 0) || (isset($token) && $token))
 		{
