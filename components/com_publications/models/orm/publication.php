@@ -33,6 +33,7 @@
 namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
+use stdClass;
 
 require_once __DIR__ . DS . 'version.php';
 require_once __DIR__ . DS . 'rating.php';
@@ -42,7 +43,7 @@ require_once __DIR__ . DS . 'category.php';
 /**
  * Model class for publication
  */
-class Publication extends Relational
+class Publication extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * Fields and their validation criteria
@@ -52,6 +53,8 @@ class Publication extends Relational
 	protected $rules = array(
 		'title' => 'notempty'
 	);
+
+	public $activeVersion = null;
 
 	/**
 	 * Automatic fields to populate every time a row is created
@@ -200,5 +203,148 @@ class Publication extends Relational
 			return $this->config->get($key, $default);
 		}
 		return $this->config;
+	}
+
+	/**
+	 * Build and return the url
+	 *
+	 * @param   string  $as
+	 * @return  string
+	 */
+	public function tags()
+	{
+		$cloud = new \Components\Tags\Models\Cloud();
+		$filters = array(
+			'scope' => 'publications',
+			'scope_id' => $this->id
+		);
+		return $cloud->tags('list', $filters);
+	}
+
+	/**
+	 * Get most recent version that is still marked as active
+	 * 
+	 * @return Components\Publications\Models\Orm\Version
+	 */
+	public function getActiveVersion()
+	{
+		if (empty($this->activeVersion))
+		{
+			$versions = $this->versions->sort('id', false);
+			foreach ($versions as $version)
+			{
+				if ($version->state == 1)
+				{
+					$this->activeVersion = $version;
+					break;
+				}
+			}
+			if (empty($this->activeVersion))
+			{
+				$this->activeVersion = $versions->first();
+			}
+		}
+		return $this->activeVersion;
+	}
+
+	/*
+	 * Generate link to current active version
+	 * @return string 
+	 */
+	public function link()
+	{
+		$link = 'index.php?option=com_publications&task=view';
+		$link .= $this->get('alias') ? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
+		$link .= $this->_base . '&v=' . $this->getActiveVersion()->id;
+		return $link;
+	}
+
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
+	public function searchResult()
+	{
+		$activeVersion = $this->getActiveVersion();
+		if (!$activeVersion)
+		{
+			return false;
+		}
+
+		$obj = new stdClass;
+		$obj->id            = 'publication-' . $this->get('id');
+		$obj->hubtype       = 'publication';
+		$obj->title         = $activeVersion->get('title');
+
+		$description = $activeVersion->get('abstract') . ' ' . $activeVersion->get('description');
+		$description = html_entity_decode($description);
+		$description = \Hubzero\Utility\Sanitize::stripAll($description);
+
+		$obj->description   = $description;
+		$obj->url           = Request::root() . $this->link();
+		$obj->doi           = $activeVersion->get('doi');
+
+		$tags = $this->tags();
+		if (count($tags) > 0)
+		{
+			$obj->tags = array();
+			foreach ($tags as $tag)
+			{
+				$obj->tags[] = array(
+					'id' => 'tag-' . $tag->id,
+					'title' => $tag->raw_tag,
+					'access_level' => $tag->admin == 0 ? 'public' : 'private',
+					'type' => 'tag'
+				);
+			}
+		}
+
+		$authors = $activeVersion->authors;
+		foreach ($authors as $author)
+		{
+			$obj->author[] = $author->name;
+		}
+
+		$obj->owner_type = 'user';
+		$obj->owner = $this->created_by;
+		if ($activeVersion->statusName != 'published')
+		{
+			$obj->access_level = 'private';
+		}
+		elseif ($activeVersion->statusName == 'published')
+		{
+			if ($this->access == 0)
+			{
+				$obj->access_level = 'public';
+			}
+			elseif ($this->access == 1)
+			{
+				$obj->access_level = 'registered';
+			}
+			else
+			{
+				$obj->access_level = 'private';
+			}
+		}
+		return $obj;
+	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 * @return Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
 	}
 }
