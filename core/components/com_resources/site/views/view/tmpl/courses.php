@@ -115,7 +115,7 @@ if ($mode != 'preview')
 					$schildren = $this->model->children()
 						->whereEquals('standalone', 1)
 						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-						->ordered()
+						->order('ordering', 'asc')
 						->rows();
 
 					$ccount = count($schildren);
@@ -152,7 +152,7 @@ if ($mode != 'preview')
 					$children = $this->model->children()
 						->whereEquals('standalone', 0)
 						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-						->ordered()
+						->order('ordering', 'asc')
 						->rows();
 
 					$firstChild = $children->first();
@@ -309,7 +309,7 @@ if ($mode != 'preview')
 							$grandchildren = $child->children()
 								->whereEquals('standalone', 0)
 								->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-								->ordered()
+								->order('ordering', 'asc')
 								->rows();
 
 							if (count($grandchildren) > 0)
