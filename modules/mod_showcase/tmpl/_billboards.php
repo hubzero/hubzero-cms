@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 // Initialize boards from new collection
 $collection = $item["content"];
-if (!array_key_exists($collection, $boards)) { 
+if (!array_key_exists($collection, $boards)) {
 	$boards[$collection] = $this->_getBillboards($collection);
 }
 
@@ -74,31 +74,31 @@ if ($item["ordering"] === "ordered") {
 // Display individual boards
 foreach ($item_boards as $board) { ?>
 	<div class="<?php echo $item['class'] ?> billboard">
+		<?php
+		if (!empty($board->learn_more_target))
+		{
+			echo '<a href="' . $board->learn_more_target . '">';
+		}
+		?>
 		<div class="billboard-image">
-			<?php
-			if (!empty($board->learn_more_target))
-			{
-				echo '<a href="' . $board->learn_more_target . '">';
-			}
-			?>
 			<img src="<?php echo $this->image_location; ?><?php echo $board->background_img; ?>"/>
-			<?php
-			if (!empty($board->learn_more_target))
-			{
-				echo '</a>';
-			}
-			?>
 		</div>
+		<?php
+		if (!empty($board->learn_more_target))
+		{
+			echo '</a>';
+		}
+		?>
 		<?php if ($item['tag']): ?>
-			<div class="billboard-tag">
-				<?php if ($item['tag-target']): ?>
-					<a href="<?php echo $item['tag-target']; ?>">
-				<?php endif; ?>
+			<?php if ($item['tag-target']): ?>
+		  <a href="<?php echo $item['tag-target']; ?>">
+			<?php endif; ?>
+			  <div class="billboard-tag">
 					<span><?php echo $item['tag']; ?></span>
-				<?php if ($item['tag-target']): ?>
-					</a>
-				<?php endif; ?>
-			</div>
+  			</div>
+			<?php if ($item['tag-target']): ?>
+			</a>
+		  <?php endif; ?>
 		<?php endif; ?>
 		<div class="billboard-header">
 			<?php

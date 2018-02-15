@@ -33,26 +33,26 @@
 defined('_HZEXEC_') or die();
 
 foreach ($item_partners as $partner)
-{	
+{
 	echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
 ';
-	echo '  <div class="partner-img">';
-	echo '    <a href="' . Route::url('groups' . DS . $partner->groups_cn) . '">';
+  echo '  <a href="' . Route::url('groups' . DS . $partner->groups_cn) . '">';
+  echo '    <div class="partner-img">';
 	echo '      <img src="app/site/media/images/partners/' . $partner->logo_img . '" alt="">';
-	echo '    </a>';
-	echo '  </div>';
+	echo '    </div>';
+	echo '  </a>';
 	if ($item['tag']) {
-		echo '  <div class="partner-tag">';
 		if ($item['tag-target'])
 		{
-			echo '    <a href="' . $item['tag-target'] . '">';
+			echo '  <a href="' . $item['tag-target'] . '">';
 		}
+		echo '    <div class="partner-tag">';
 		echo '      <span>' . $item['tag'] . '</span>';
+		echo '    </div>';
 		if ($item['tag-target'])
 		{
-			echo '    </a>';
+			echo '  </a>';
 		}
-		echo '  </div>';
 	}
 	echo '  <div class="partner-title">';
 	echo '    <a href="' . Route::url('groups' . DS . $partner->groups_cn) . '">';
