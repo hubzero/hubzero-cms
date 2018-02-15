@@ -259,7 +259,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		return $link;
 	}
 
-	 /**
+	/*
 	 * Namespace used for solr Search
 	 * @return string
 	 */
