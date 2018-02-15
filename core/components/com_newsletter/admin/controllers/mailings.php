@@ -61,7 +61,7 @@ class Mailings extends AdminController
 				$newsletter->select('*');
 			}])
 			->whereEquals('deleted', 0)
-			->ordered()
+			->order('id', 'desc')
 			->rows();
 
 		// Add the number sent
