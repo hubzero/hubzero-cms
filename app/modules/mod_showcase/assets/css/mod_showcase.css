@@ -13,6 +13,13 @@
 
 */
 
+  .billboard-tag span,
+	.group-tag span,
+	.partner-tag span,
+	.resource-tag span {
+    color: white;
+  }
+
 /* Container Styling */
 	.slider {
 		position:relative;
@@ -77,8 +84,8 @@
 		text-shadow:none;
 		}
 	.slide a:hover.learnmore {
-		border-bottom:none;    
-		background:#777;  
+		border-bottom:none;
+		background:#777;
 		}
 	.slide div .learnmore {
 		font-size: 1em;

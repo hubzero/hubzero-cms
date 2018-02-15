@@ -36,26 +36,26 @@ foreach ($item_pubs as $pub_info)
 {
 	// $pub = \Components\Publications\Models\Publication($result);
 	$pub = Components\Publications\Models\Publication::getInstance($pub_info->id);
-	
+
 	echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
 ';
-	echo '  <div class="resource-img">';
-	echo '    <a href="' . $pub->link() . '">';
+	echo '  <a href="' . $pub->link() . '">';
+	echo '    <div class="resource-img">';
 	echo '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
-	echo '    </a>';
-	echo '  </div>';
+	echo '    </div>';
+	echo '  </a>';
 	if ($item['tag']) {
-		echo '  <div class="resource-tag">';
 		if ($item['tag-target'])
 		{
-			echo '    <a href="' . $item['tag-target'] . '">';
+			echo '  <a href="' . $item['tag-target'] . '">';
 		}
+		echo '    <div class="resource-tag">';
 		echo '      <span>' . $item['tag'] . '</span>';
+		echo '    </div>';
 		if ($item['tag-target'])
 		{
-			echo '    </a>';
+			echo '  </a>';
 		}
-		echo '  </div>';
 	}
 	echo '  <div class="resource-title">';
 	echo '    <a href="' . $pub->link() . '">';

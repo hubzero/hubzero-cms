@@ -41,24 +41,24 @@ foreach ($item_groups as $grp)
 	$path = PATH_APP . '/site/groups/' . $group->get('gidNumber') . '/uploads/' . $group->get('logo');
 
 	if ($group->get('logo') && is_file($path)) {
-		echo '  <div class="group-img">';
-		echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
+		echo '  <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
+		echo '    <div class="group-img">';
 		echo '      <img src="' . with(new Hubzero\Content\Moderator($path))->getUrl() . '" alt="' . $this->escape(stripslashes($group->get('description'))) . '" />';
-		echo '    </a>';
-		echo '  </div>';
+		echo '    </div>';
+		echo '  </a>';
 	}
 	if ($item['tag']) {
-		echo '  <div class="group-tag">';
 		if ($item['tag-target'])
 		{
-			echo '    <a href="' . $item['tag-target'] . '">';
+			echo '  <a href="' . $item['tag-target'] . '">';
 		}
+		echo '    <div class="group-tag">';
 		echo '      <span>' . $item['tag'] . '</span>';
+		echo '    </div>';
 		if ($item['tag-target'])
 		{
-			echo '    </a>';
+			echo '  </a>';
 		}
-		echo '  </div>';
 	}
 	echo '  <div class="group-description">';
 	echo '    <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
