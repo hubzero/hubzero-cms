@@ -187,6 +187,18 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		//return total message count
 		$arr['metadata']['count'] = $this->_total;
 
+		$invites = $this->model->table('Owner')->checkInvitesByEmail($member->get('email'));
+
+		if (count($invites))
+		{
+			$title = Lang::txt('PLG_MEMBERS_PROJECTS_NEW_INVITATIONS', count($invites));
+			$link = Route::url($member->link() . '&active=projects');
+
+			$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span>' . $title . '</span></a>';
+
+			Notify::info($arr['metadata']['alert'], 'com_members.profile');
+		}
+
 		return $arr;
 	}
 
@@ -203,6 +215,8 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 
 		$view->projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
 		$view->newcount = $this->model->table()->getUpdateCount($view->projects, $this->_user->get('id'));
+
+		$invites = $this->model->table('Owner')->checkInvitesByEmail($this->_user->get('email'));
 
 		if ($which == 'all')
 		{
@@ -224,6 +238,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 			$view->rows = $this->model->entries('list', $this->_filters);
 		}
 
+		$view->invites = $invites;
 		$view->which   = $which;
 		$view->total   = $this->_total;
 		$view->user    = $this->_user;

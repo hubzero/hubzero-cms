@@ -950,6 +950,27 @@ class Owner extends \JTable
 	}
 
 	/**
+	 * Check if person has invites, locate record by email
+	 *
+	 * @param   string  $email
+	 * @return  mixed
+	 */
+	public function checkInvitesByEmail($email = '')
+	{
+		if (!trim($email))
+		{
+			return false;
+		}
+
+		$query = "SELECT p.alias, p.title, o.*
+				FROM $this->_tbl AS o
+				INNER JOIN `#__projects` AS p ON p.id=o.projectid
+				WHERE o.userid=0 AND o.status=0 AND o.invited_email=" . $this->_db->quote($email);
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
 	 * Check if person is invited, locate record by email
 	 *
 	 * @param      integer $projectid
