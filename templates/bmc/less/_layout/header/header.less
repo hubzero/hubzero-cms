@@ -297,11 +297,23 @@ header.page {
 		position: relative;
 		.transition();
 		height: 3.6rem;
+		//min-height: 3.6rem;
 		font-family: @fontGeometricLight;
 		position: absolute;
 		width: 100%;
 		transform: translate(0, 100%);
 		bottom: 0;
+
+		// spacer (hacky, but hell, it works!!!!)
+		&:after {
+			.ab();
+			height: 5px;
+			background: #FBFBFB;
+			width: 100%;
+			bottom: 100%;
+			left: 0;
+			//background: red;
+		}
 
 		&.out {
 			transform: translate(0, 0);

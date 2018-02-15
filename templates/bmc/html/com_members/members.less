@@ -7,9 +7,23 @@
 	color: @colorSidebarText;
 }
 
+#page_menu li a {
+	line-height: 1.6rem;
+}
+
+#page_menu li a:before, #page_menu li a:after {
+	font-size: 1.2em;
+	height: auto;
+}
+
 #page_menu li.active > a {
 	color: @colorSidebarTextActive;
 	background: #fff;
+
+	&:hover,
+	&:before {
+		color: @colorSidebarTextActive;
+	}
 }
 
 #page_sidebar {
@@ -26,4 +40,12 @@
 
 #page_menu li {
 	border-bottom-color: @colorSidebarLine;
+}
+
+#page_menu li .meta .count {
+	text-shadow: none;
+}
+
+#page_menu li .alrt, #page_menu li .alrt:hover {
+	z-index: 500;
 }

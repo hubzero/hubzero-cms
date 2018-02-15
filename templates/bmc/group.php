@@ -251,36 +251,46 @@ $membership_control = $params->get('membership_control', 1);
 	</div>
 </div>
 
-<div class="account-details">
-	<div class="user-info">
-		<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="cf">
+
+<?php
+if (!User::isGuest())
+{
+	?>
+	<div class="account-details">
+		<div class="user-info">
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="cf">
 											<span class="user-image">
-												<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" />
+												<img src="<?php echo $profile->getPicture(); ?>"
+													 alt="<?php echo User::get('name'); ?>"/>
 											</span>
 
-			<p>
-				<span class="account-name"><?php echo stripslashes(User::get('name')) . ' (' . stripslashes(User::get('username')) . ')'; ?></span><br>
-				<span class="account-email"><?php echo User::get('email'); ?></span>
-			</p>
-		</a>
-	</div>
-	<ul>
-		<li id="account-dashboard">
-			<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_DASHBOARD'); ?></span></a>
-		</li>
-		<li id="account-profile">
-			<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_PROFILE'); ?></span></a>
-		</li>
-		<li id="account-logout">
-			<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_LOGOUT'); ?></span></a>
-		</li>
-	</ul>
+				<p>
+					<span
+						class="account-name"><?php echo stripslashes(User::get('name')) . ' (' . stripslashes(User::get('username')) . ')'; ?></span><br>
+					<span class="account-email"><?php echo User::get('email'); ?></span>
+				</p>
+			</a>
+		</div>
+		<ul>
+			<li id="account-dashboard">
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_DASHBOARD'); ?></span></a>
+			</li>
+			<li id="account-profile">
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_PROFILE'); ?></span></a>
+			</li>
+			<li id="account-logout">
+				<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_SYSTEM_LOGOUT'); ?></span></a>
+			</li>
+		</ul>
 
-	<button class="close">
-		<span>close</span>
-	</button>
-</div>
-<div class="hub-overlay"></div>
+		<button class="close">
+			<span>close</span>
+		</button>
+	</div>
+	<div class="hub-overlay"></div>
+	<?php
+}
+?>
 
 <jdoc:include type="message" />
 <jdoc:include type="component" />

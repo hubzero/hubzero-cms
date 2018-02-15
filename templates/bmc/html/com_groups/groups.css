@@ -9,8 +9,17 @@
 #page_menu li {
   border-bottom-color: #494a5a;
 }
+#page_menu li a {
+  line-height: 1.6rem;
+}
 #page_menu li a:hover {
-  color: #000;
+  color: #fff;
+}
+#page_menu li a:before {
+  line-height: 1.6rem;
+}
+#page_menu li .meta .count {
+  text-shadow: none;
 }
 #page_menu li a,
 #page_menu li span {
@@ -51,6 +60,27 @@
   background: #fff;
   color: #000;
 }
+#page_menu li.active > a:before {
+  color: #000;
+}
 #page_menu li.active:after {
   display: none;
+}
+#description,
+#member_browser {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+#description:after,
+#member_browser:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  top: 15px;
+  left: 25px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  padding-top: 0;
 }

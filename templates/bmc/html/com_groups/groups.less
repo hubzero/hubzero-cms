@@ -9,10 +9,19 @@
 		border-bottom-color: @colorSidebarLine;
 
 		a {
+			line-height: 1.6rem;
 
 			&:hover {
-				color: @colorSidebarTextActive;
+				color: @colorSidebarTextHover;
 			}
+
+			&:before {
+				line-height: 1.6rem;
+			}
+		}
+
+		.meta .count {
+			text-shadow: none;
 		}
 	}
 
@@ -71,8 +80,26 @@
 #page_menu li.active > a {
 	background: #fff;
 	color: @colorSidebarTextActive;
+
+	&:before {
+		color: @colorSidebarTextActive;
+	}
 }
 
 #page_menu li.active:after {
 	display: none;
+}
+
+#description, #member_browser {
+	.box-sizing(content-box);
+
+	&:after {
+		.box-sizing(content-box);
+		top: 15px;
+		left: 25px;
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+		padding-top: 0;
+	}
 }

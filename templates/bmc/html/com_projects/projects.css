@@ -23,7 +23,13 @@
 }
 .main-menu li.active a,
 .main-menu li.active span {
-  color: #222b37;
+  color: #000;
+}
+.main-menu li.active a:hover {
+  color: #000;
+}
+.main-menu li.active a:hover span {
+  color: #000;
 }
 .page-com_projects .com_projects .ptitle {
   position: relative;
@@ -41,4 +47,9 @@
 }
 .page-com_projects .com_projects #member_options li:hover #options-dock {
   top: 100%;
+}
+.suggestions a:before {
+  font-family: 'Fontcons';
+  margin-top: 0;
+  line-height: 1em;
 }

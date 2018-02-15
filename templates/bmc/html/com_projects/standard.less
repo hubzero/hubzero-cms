@@ -32,7 +32,7 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	border-top: 1px solid #e8e8e8;
+	border-top: 1px solid @colorSidebarLine;
 }
 .main-menu ul.projecttools ul {
 	padding: 0;
@@ -66,15 +66,14 @@
 	border-right: 1px solid #FFF;
 	margin-right: -1px;
 }
+
 .main-menu ul.projecttools li.active:last-child {
 	border-bottom: 1px solid #e8e8e8;
 }
 .main-menu ul.projecttools li.active:first-child {
 	border-top: 1px solid #e8e8e8;
 }
-.main-menu ul.projecttools li.active>a {
-	color: #000;
-}
+
 .main-menu ul.projecttools li.active>a:before,
 #plg-header h3:before {
 	color: black;
