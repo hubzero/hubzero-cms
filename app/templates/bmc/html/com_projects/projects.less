@@ -24,7 +24,18 @@
 
 .main-menu li.active a,
 .main-menu li.active span {
-	color: @colorSidebarBg;
+	color: @colorSidebarTextActive;
+}
+
+.main-menu li.active a {
+
+	&:hover {
+		color: @colorSidebarTextActive;
+
+		span {
+			color: @colorSidebarTextActive;
+		}
+	}
 }
 
 .page-com_projects .com_projects {
@@ -49,4 +60,10 @@
 			top: 100%;
 		}
 	}
+}
+
+.suggestions a:before {
+	font-family: 'Fontcons';
+	margin-top: 0;
+	line-height: 1em;
 }

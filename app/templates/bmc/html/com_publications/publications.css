@@ -34,10 +34,6 @@
 		background: transparent;
 		padding: 0;
 	}
-	.com_publications .license {
-		color: #f1f1f1;
-		color: rgba(255, 255, 255, 0.75);
-	}
 
 /* Resource page */
 	.com_resources #content-header .metadata {
@@ -381,8 +377,6 @@
 	}
 	.pubdate, .pubinfo {
 		font-size: 85%;
-		color: #999;
-		color: rgba(255, 255, 255, 0.75);
 	}
 
 /* Supporting docs (on main publication page) */

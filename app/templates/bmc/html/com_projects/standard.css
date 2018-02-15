@@ -34,7 +34,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid #494a5a;
 }
 .main-menu ul.projecttools ul {
   padding: 0;
@@ -73,9 +73,6 @@
 }
 .main-menu ul.projecttools li.active:first-child {
   border-top: 1px solid #e8e8e8;
-}
-.main-menu ul.projecttools li.active > a {
-  color: #000;
 }
 .main-menu ul.projecttools li.active > a:before,
 #plg-header h3:before {
