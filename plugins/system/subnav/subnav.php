@@ -56,14 +56,18 @@ class plgSystemSubnav extends \Hubzero\Plugin\Plugin
 		foreach ($comMappings as $mapping)
 		{
 			$mapping = explode(',', $mapping);
-			$componentsMap[trim($mapping[0])] = trim($mapping[1]);
+			if (count($mapping) === 2) {
+				$componentsMap[trim($mapping[0])] = trim($mapping[1]);
+			}
 		}
 
 		$urlsMap = array();
 		foreach ($urlMappings as $mapping)
 		{
 			$mapping = explode(',', $mapping);
-			$urlsMap[trim($mapping[0])] = trim($mapping[1]);
+			if (count($mapping) === 2) {
+				$urlsMap[trim($mapping[0])] = trim($mapping[1]);
+			}
 		}
 
 		$map = array('com' => $componentsMap, 'url' => $urlsMap);
