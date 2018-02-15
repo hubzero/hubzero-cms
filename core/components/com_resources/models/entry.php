@@ -1591,7 +1591,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $allowedgroups;
 	}
 
-	 /**
+	/*
 	 * Namespace used for solr Search
 	 * @return string
 	 */

@@ -1536,7 +1536,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 		$citation->author = explode(';', $this->getAuthorString(false));
 		if ($this->scope == 'member')
-		{	
+		{
 			$citation->url = '/members/' . $this->uid . '/citations';
 		}
 		elseif ($this->scope != 'group')
@@ -1559,7 +1559,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				if ($citationAccess == 'anyone')
 				{
 					$citation->access_level = 'public';
-				}	
+				}
 				elseif ($citationAccess == 'registered')
 				{
 					$citation->access_level = 'registered';
@@ -1583,7 +1583,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 	/**
 	 * Get total number of records that will be indexed by Solr.
-	 *	@return integer
+	 * @return integer
 	 */
 	public static function searchTotal()
 	{
