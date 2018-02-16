@@ -88,7 +88,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   <article class="resource-oer">
     <div class="oer">
       <h2>Open Education Resources</h2>
-      <p>Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+      <p>Open Education Practices (OEP) are the basis of the QUBESHub community.  OEP communities are built around a shared interest and desire to continuously improve and share resources and tools.  In open source software communities, users are also developers.  In a similar vein, QUBESHub users are invited to share their adaptations to existing educational resources through our publishing process.</p>
     </div>
   </article>
   <article class="resource-fmn">
@@ -99,14 +99,14 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
     </div>
     <div class="fmn">
       <h2>Faculty Mentoring Network Products</h2>
-      <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.</p>
+      <p>Participants in QUBES Faculty Mentoring Networks have developed new education materials and adapted existing classroom modules. Our FMN participants have shared these modifications along with “how to” teaching notes for you to adopt and adapt in your own courses. </p>
       <!-- <h6 class="link"><a href="#">browse</a></h6> -->
     </div>
   </article>
   <article class="resource-partner">
     <div class="partner">
       <h2>Partner Products</h2>
-      <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.</p>
+      <p>QUBES partners bring a range of resources to the community including teaching modules, powerpoints on tricky topics, and datasets. Resources from QUBES partners are available on their websites for you to adopt and adapt in your classroom. </p>
       <!-- <h6 class="link"><a href="#">browse</a></h6> -->
     </div>
     <div class="module-partner">
