@@ -139,8 +139,8 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 							<div class="aux">
 								<nav class="nav-secondary">
 									<ul>
-										<li><a href="#">About</a></li>
-										<li><a href="#">News & Activities</a></li>
+										<li><a href="/about">About</a></li>
+										<li><a href="/news">News & Activities</a></li>
 									</ul>
 								</nav>
 								<nav class="buttons">

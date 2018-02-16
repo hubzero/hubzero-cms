@@ -159,98 +159,11 @@ $membership_control = $params->get('membership_control', 1);
 							<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_JOIN'); ?></span>
 						</a>
 					<?php endif; ?>
-
-					<div class="group-dash">
-						<div class="links-header">
-							<?php if ($isManager) : ?>
-								<?php echo Lang::txt('TPL_SYSTEM_GROUPS_MANAGER_DASHBOARD'); ?>
-								<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_MANAGER_DASHBOARD_DESC'); ?></span>
-							<?php elseif ($isMember) : ?>
-								<?php echo Lang::txt('TPL_SYSTEM_GROUPS_MEMBER_DASHBOARD'); ?>
-								<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_MEMBER_DASHBOARD_DESC'); ?></span>
-							<?php elseif ($isPending) : ?>
-								<?php echo Lang::txt('TPL_SYSTEM_GROUPS_PENDING_DASHBOARD'); ?>
-								<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_PENDING_DASHBOARD_DESC'); ?></span>
-							<?php elseif ($isInvitee) : ?>
-								<?php echo Lang::txt('TPL_SYSTEM_GROUPS_INVITEE_DASHBOARD'); ?>
-								<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_INVITEE_DASHBOARD_DESC'); ?></span>
-							<?php endif; ?>
-						</div>
-						<ul class="links cf">
-							<?php if ($isInvitee && $membership_control == 1) : ?>
-								<li>
-									<a class="accept" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=accept'); ?>">
-										<?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT'); ?>
-										<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT_DESC'); ?></span>
-									</a>
-								</li>
-							<?php endif; ?>
-
-							<?php if ($isPending && $membership_control == 1) : ?>
-								<li>
-									<a class="cancel-request" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>">
-										<?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST'); ?>
-										<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST_DESC'); ?></span>
-									</a>
-								</li>
-							<?php endif; ?>
-
-							<?php if (($isManager || \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.invite')) && $membership_control == 1) : ?>
-								<li>
-									<a class="membership" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active=members'); ?>">
-										<?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE'); ?>
-										<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE_DESC'); ?></span>
-									</a>
-								</li>
-							<?php endif; ?>
-
-							<?php if ($isManager || \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.edit')) : ?>
-								<li>
-									<a class="settings" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=edit'); ?>">
-										<?php echo Lang::txt('TPL_SYSTEM_GROUP_EDIT'); ?>
-										<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_EDIT_DESC'); ?></span>
-									</a>
-								</li>
-							<?php endif; ?>
-
-							<?php if ($isManager || \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.pages')) : ?>
-								<li>
-									<a class="pages" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=pages'); ?>">
-										<?php echo Lang::txt('TPL_SYSTEM_GROUP_PAGES'); ?>
-										<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_PAGES_DESC'); ?></span>
-									</a>
-								</li>
-							<?php endif; ?>
-
-							<?php if (($isMember || ($isManager && count($group->get('managers')) > 1)) && $membership_control == 1) : ?>
-								<li>
-									<a class="cancel" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>">
-										<?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL'); ?>
-										<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_DESC'); ?></span>
-									</a>
-								</li>
-							<?php endif; ?>
-
-							<?php if ($isManager && $membership_control == 1) : ?>
-								<li>
-									<a class="delete danger" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=delete'); ?>">
-										<?php echo Lang::txt('TPL_SYSTEM_GROUP_DELETE'); ?>
-										<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_DELETE_DESC'); ?></span>
-									</a>
-								</li>
-							<?php endif; ?>
-						</ul>
-
-						<button class="close">
-							<span>close</span>
-						</button>
-					</div>
 				</li>
 			</ul>
 		</div>
 	</div>
 </div>
-
 
 <?php
 if (!User::isGuest())
@@ -291,6 +204,92 @@ if (!User::isGuest())
 	<?php
 }
 ?>
+
+<div class="group-dash">
+	<div class="links-header">
+		<?php if ($isManager) : ?>
+			<?php echo Lang::txt('TPL_SYSTEM_GROUPS_MANAGER_DASHBOARD'); ?>
+			<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_MANAGER_DASHBOARD_DESC'); ?></span>
+		<?php elseif ($isMember) : ?>
+			<?php echo Lang::txt('TPL_SYSTEM_GROUPS_MEMBER_DASHBOARD'); ?>
+			<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_MEMBER_DASHBOARD_DESC'); ?></span>
+		<?php elseif ($isPending) : ?>
+			<?php echo Lang::txt('TPL_SYSTEM_GROUPS_PENDING_DASHBOARD'); ?>
+			<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_PENDING_DASHBOARD_DESC'); ?></span>
+		<?php elseif ($isInvitee) : ?>
+			<?php echo Lang::txt('TPL_SYSTEM_GROUPS_INVITEE_DASHBOARD'); ?>
+			<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_INVITEE_DASHBOARD_DESC'); ?></span>
+		<?php endif; ?>
+	</div>
+	<ul class="links cf">
+		<?php if ($isInvitee && $membership_control == 1) : ?>
+			<li>
+				<a class="accept" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=accept'); ?>">
+					<?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT'); ?>
+					<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT_DESC'); ?></span>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if ($isPending && $membership_control == 1) : ?>
+			<li>
+				<a class="cancel-request" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>">
+					<?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST'); ?>
+					<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST_DESC'); ?></span>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if (($isManager || \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.invite')) && $membership_control == 1) : ?>
+			<li>
+				<a class="membership" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active=members'); ?>">
+					<?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE'); ?>
+					<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE_DESC'); ?></span>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if ($isManager || \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.edit')) : ?>
+			<li>
+				<a class="settings" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=edit'); ?>">
+					<?php echo Lang::txt('TPL_SYSTEM_GROUP_EDIT'); ?>
+					<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_EDIT_DESC'); ?></span>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if ($isManager || \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.pages')) : ?>
+			<li>
+				<a class="pages" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=pages'); ?>">
+					<?php echo Lang::txt('TPL_SYSTEM_GROUP_PAGES'); ?>
+					<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_PAGES_DESC'); ?></span>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if (($isMember || ($isManager && count($group->get('managers')) > 1)) && $membership_control == 1) : ?>
+			<li>
+				<a class="cancel" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>">
+					<?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL'); ?>
+					<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_DESC'); ?></span>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if ($isManager && $membership_control == 1) : ?>
+			<li>
+				<a class="delete danger" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=delete'); ?>">
+					<?php echo Lang::txt('TPL_SYSTEM_GROUP_DELETE'); ?>
+					<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_DELETE_DESC'); ?></span>
+				</a>
+			</li>
+		<?php endif; ?>
+	</ul>
+
+	<button class="close">
+		<span>close</span>
+	</button>
+</div>
 
 <jdoc:include type="message" />
 <jdoc:include type="component" />

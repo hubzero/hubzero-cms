@@ -39,7 +39,7 @@ ul li {
   margin: 0.5em 0;
 }
 .hub-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -63,7 +63,7 @@ ul li {
   font-weight: 400;
   text-align: left;
   color: #fff;
-  position: absolute;
+  position: fixed;
   z-index: 1003;
   top: 0;
   right: 0;
@@ -165,6 +165,144 @@ ul li {
   -o-transform: rotate(0deg);
 }
 .account-details button:hover:after {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  opacity: 0;
+}
+.group-dash {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  text-align: left;
+  color: #fff;
+  position: fixed;
+  z-index: 1003;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #292929;
+  border: none;
+  padding: 20px;
+  overflow: auto;
+  width: 100%;
+  max-width: 400px;
+  -moz-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  -webkit-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+  -webkit-transform: translate(100%, 0);
+  -moz-transform: translate(100%, 0);
+  -ms-transform: translate(100%, 0);
+  -o-transform: translate(100%, 0);
+  -webkit-transition-delay: 0.1s;
+  -moz-transition-delay: 0.1s;
+  -ms-transition-delay: 0.1s;
+  -o-transition-delay: 0.1s;
+}
+.group-dash.open {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+}
+.group-dash:after {
+  display: none;
+}
+.group-dash a {
+  color: #fff;
+  line-height: 1.4em;
+}
+.group-dash a span {
+  text-transform: none;
+  font-weight: 300;
+  display: block;
+  color: #b3b3b3;
+}
+.group-dash .links-header {
+  font-size: 1.6rem;
+  padding-right: 60px;
+  padding-top: 0.5rem;
+  padding-bottom: 2rem;
+  line-height: 1.6em;
+}
+.group-dash .links-header span {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.3em;
+  color: #b3b3b3;
+}
+.group-dash ul {
+  margin: 10px 0 0 0;
+  list-style: none;
+}
+.group-dash ul li {
+  margin: 1em 0;
+}
+.group-dash .user-info p {
+  text-transform: none;
+}
+.group-dash .user-info p .account-email {
+  font-family: 'Roboto';
+  font-weight: 300;
+}
+.group-dash button {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  font-size: 0;
+  text-indent: -9999px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  outline: none;
+  top: 20px;
+  right: 20px;
+}
+.group-dash button :focus {
+  outline: none;
+}
+.group-dash button:before,
+.group-dash button:after {
+  position: absolute;
+  display: block;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #fff;
+  content: "";
+  -moz-transition: all linear 0.1s;
+  -o-transition: all linear 0.1s;
+  -webkit-transition: all linear 0.1s;
+  transition: all linear 0.1s;
+}
+.group-dash button:before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+.group-dash button:after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+}
+.group-dash button:hover:before {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+}
+.group-dash button:hover:after {
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -ms-transform: rotate(0deg);
@@ -319,146 +457,10 @@ body.panel-open .hub-overlay {
 .super-group-bar .content .subnav li {
   list-style: none;
 }
-.super-group-bar .content .subnav .subnav-membership .group-dash {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  text-align: left;
-  color: #fff;
-  position: absolute;
-  z-index: 900;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background: #292929;
-  border: none;
-  padding: 20px;
-  overflow: auto;
-  max-width: 400px;
-  -moz-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  -webkit-transition: all ease 0.2s;
-  transition: all ease 0.2s;
-  -webkit-transform: translate(-100%, 0);
-  -moz-transform: translate(-100%, 0);
-  -ms-transform: translate(-100%, 0);
-  -o-transform: translate(-100%, 0);
-  -webkit-transition-delay: 0.1s;
-  -moz-transition-delay: 0.1s;
-  -ms-transition-delay: 0.1s;
-  -o-transition-delay: 0.1s;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash.open {
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  -o-transform: translate(0, 0);
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash:after {
-  display: none;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash a {
-  color: #fff;
-  line-height: 1.4em;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash a span {
-  text-transform: none;
-  font-weight: 300;
-  display: block;
-  color: #b3b3b3;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash .links-header {
-  font-size: 1.6rem;
-  padding-right: 60px;
-  padding-top: 0.5rem;
-  padding-bottom: 2rem;
-  line-height: 1.6em;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash .links-header span {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 300;
-  line-height: 1.3em;
-  color: #b3b3b3;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash ul {
-  margin: 10px 0 0 0;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash ul li {
-  margin: 1em 0;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash .user-info p {
-  text-transform: none;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash .user-info p .account-email {
-  font-family: 'Roboto';
-  font-weight: 300;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash button {
-  display: block;
-  position: absolute;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  width: 40px;
-  height: 40px;
-  font-size: 0;
-  text-indent: -9999px;
-  border: none;
-  cursor: pointer;
-  background: none;
-  outline: none;
-  top: 20px;
-  right: 20px;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash button :focus {
-  outline: none;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash button:before,
-.super-group-bar .content .subnav .subnav-membership .group-dash button:after {
-  position: absolute;
-  display: block;
-  top: 20px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: #fff;
-  content: "";
-  -moz-transition: all linear 0.1s;
-  -o-transition: all linear 0.1s;
-  -webkit-transition: all linear 0.1s;
-  transition: all linear 0.1s;
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash button:before {
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash button:after {
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash button:hover:before {
-  -webkit-transform: rotate(0deg);
-  -moz-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  -o-transform: rotate(0deg);
-}
-.super-group-bar .content .subnav .subnav-membership .group-dash button:hover:after {
-  -webkit-transform: rotate(0deg);
-  -moz-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  -o-transform: rotate(0deg);
-  filter: alpha(opacity=0);
-  -moz-opacity: 0;
-  opacity: 0;
-}
+/* BEGIN: Supergroup template fixes */
+/* REMOVE LATER */
 /* Sidebar nav */
 /* !important is so I don't have to update every supergroup */
-/* REMOVE LATER */
 .sidebar-nav li a:before,
 .sidebar-nav li span:before {
   margin-top: -0.5em !important;
@@ -466,6 +468,10 @@ body.panel-open .hub-overlay {
 .sidebar-nav li .meta {
   margin-top: -2.45em !important;
 }
+.super-group-menu > ul li a {
+  padding: 6px 15px !important;
+}
+/* END: Supergroup template fixes */
 @keyframes colorWheel {
   0% {
     color: #00a1e4;
