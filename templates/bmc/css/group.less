@@ -41,7 +41,7 @@ ul li {
 // Overlay
 
 .hub-overlay {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -58,7 +58,7 @@ ul li {
 	font-weight: 400;
 	text-align: left;
 	color: #fff;
-	position: absolute;
+	position: fixed;
 	z-index: 1003;
 	top: 0;
 	right: 0;
@@ -94,6 +94,96 @@ ul li {
 	ul {
 		margin: 10px 0 0 0;
 		list-style: none;
+	}
+
+	.user-info {
+		p {
+			text-transform: none;
+
+			.account-email {
+				font-family: 'Roboto';
+				font-weight: 300;
+			}
+		}
+	}
+
+	// close button
+	button {
+		.closeButton(40px);
+		top: @padContain;
+		right: @padContain;
+	}
+}
+
+// Group dash
+.group-dash {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	text-align: left;
+	color: #fff;
+	position: fixed;
+	z-index: 1003;
+	top: 0;
+	right: 0;
+	//left: 0;
+	bottom: 0;
+	background: @colorAuxMenu;
+	border: none;
+	padding: @padContain;
+	overflow: auto;
+	width: 100%;
+	max-width: 400px;
+	.transition();
+	.translate(100%);
+	.transition-delay(@panelsDelay);
+
+	&.open {
+		.translate(0);
+	}
+
+	&:after {
+		display: none;
+	}
+
+	a {
+		color: #fff;
+		line-height: 1.4em;
+
+		&:hover {
+			//color: @colorBlueOnDark;
+		}
+
+		span {
+			text-transform: none;
+			font-weight: 300;
+			display: block;
+			color: #b3b3b3;
+		}
+	}
+
+	.links-header {
+		font-size: 1.6rem;
+		padding-right: 60px;
+		padding-top: 0.5rem;
+		padding-bottom: 2rem;
+		line-height: 1.6em;
+
+		span {
+			display: block;
+			font-size: 0.9rem;
+			font-weight: 300;
+			line-height: 1.3em;
+			color: #b3b3b3;
+		}
+	}
+
+	ul {
+		margin: 10px 0 0 0;
+		list-style: none;
+
+		li {
+			margin: 1em 0;
+		}
 	}
 
 	.user-info {
@@ -290,102 +380,15 @@ body.panel-open {
 			.user-account {
 			}
 
-			// Group dash
-			.subnav-membership {
-				.group-dash {
-					font-family: 'Roboto', sans-serif;
-					font-weight: 400;
-					text-align: left;
-					color: #fff;
-					position: absolute;
-					z-index: 900;
-					top: 0;
-					right: 0;
-					left: 0;
-					bottom: 0;
-					background: @colorAuxMenu;
-					border: none;
-					padding: @padContain;
-					overflow: auto;
-					max-width: 400px;
-					.transition();
-					.translate(-100%);
-					.transition-delay(@panelsDelay);
-
-					&.open {
-						.translate(0);
-					}
-
-					&:after {
-						display: none;
-					}
-
-					a {
-						color: #fff;
-						line-height: 1.4em;
-
-						&:hover {
-							//color: @colorBlueOnDark;
-						}
-
-						span {
-							text-transform: none;
-							font-weight: 300;
-							display: block;
-							color: #b3b3b3;
-						}
-					}
-
-					.links-header {
-						font-size: 1.6rem;
-						padding-right: 60px;
-						padding-top: 0.5rem;
-						padding-bottom: 2rem;
-						line-height: 1.6em;
-
-						span {
-							display: block;
-							font-size: 0.9rem;
-							font-weight: 300;
-							line-height: 1.3em;
-							color: #b3b3b3;
-						}
-					}
-
-					ul {
-						margin: 10px 0 0 0;
-
-						li {
-							margin: 1em 0;
-						}
-					}
-
-					.user-info {
-						p {
-							text-transform: none;
-
-							.account-email {
-								font-family: 'Roboto';
-								font-weight: 300;
-							}
-						}
-					}
-
-					// close button
-					button {
-						.closeButton(40px);
-						top: @padContain;
-						right: @padContain;
-					}
-				}
-			}
 		}
 	}
 }
 
+/* BEGIN: Supergroup template fixes */
+/* REMOVE LATER */
+
 /* Sidebar nav */
 /* !important is so I don't have to update every supergroup */
-/* REMOVE LATER */
 .sidebar-nav {
 
 	li {
@@ -400,6 +403,11 @@ body.panel-open {
 		}
 	}
 }
+
+.super-group-menu > ul li a {
+	padding: 6px 15px !important;
+}
+/* END: Supergroup template fixes */
 
 // Powered by color wheel animation
 @keyframes colorWheel {

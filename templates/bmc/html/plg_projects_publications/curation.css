@@ -6,7 +6,8 @@
 }
 */
 @import url('/core/plugins/projects/publications/assets/css/curation.css');
-.button-wrapper:before {
+.button-wrapper:before,
+.disabled .button-wrapper.bw-previous:before {
   color: #fff;
   margin-left: 0.5rem;
   z-index: 10;
@@ -17,4 +18,18 @@
 }
 .blockelement input.btn {
   width: auto;
+}
+#pub-editor input.btn:focus {
+  background-color: #000;
+}
+ul.itemlist li.item-new,
+div.item-new {
+  padding: 1em;
+}
+.checker:before,
+.element_overview .checker:before {
+  margin-top: 0.7em;
+}
+.draft-review .element-instructions:before {
+  margin: -0.3em 0 0 -70px;
 }

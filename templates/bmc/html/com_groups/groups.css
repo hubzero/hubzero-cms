@@ -84,3 +84,22 @@
   line-height: 40px;
   padding-top: 0;
 }
+/* BEGIN: Fixing page creation */
+.btn-info {
+  color: #fff;
+  border-color: inherit;
+  background: #6E9C39;
+}
+.form-controls .save .btn {
+  border: 1px solid #fff;
+  border-right-color: inherit;
+  border-bottom-color: inherit;
+}
+a.fs-dropdown-selected-item span {
+  font-weight: normal;
+  color: #000;
+}
+.item-list .item-container:before {
+  top: 10px;
+}
+/* END: Fixing page creation */

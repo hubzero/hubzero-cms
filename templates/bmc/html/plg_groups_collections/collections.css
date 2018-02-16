@@ -1,0 +1,6 @@
+@import url('/core/plugins/groups/collections/assets/css/collections.css');
+
+.post .actions a.edit,
+.post .actions a.delete {
+		width: inherit;
+}
