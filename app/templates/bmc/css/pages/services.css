@@ -60,16 +60,12 @@
 .service {
   flex: 1 1 250px;
   padding: 10px;
+  border-left: 1px solid #5f5980;
 }
 
 .service h4 {
   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
   height: 4.5rem;
-}
-
-.service p {
-  border-left: 3px solid #84bf41;
-  padding-left: 10px;
 }
 
 #one {

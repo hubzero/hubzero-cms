@@ -173,16 +173,12 @@ $white: #fff;
   }
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-    color: inherit;
   }
 }
 .resources {
   width: 30%;
   padding: 10px;
-  p {
-    border-left: 3px solid $green;
-    padding-left: 10px;
-  }
+  border-left: 1px solid $dark-blue;
 }
 
 //OER and Resources
@@ -192,13 +188,13 @@ $white: #fff;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, minmax(20rem, auto));
+  background: url('/app/site/media/images/pexels-photo-590493.jpg');
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/pexels-photo-590493.jpg');
+  background-size: cover;
 }
 .resource-oer {
   grid-column: 1 / span 4;
   grid-row: 1;
-  background: url('/app/site/media/images/pexels-photo-590493.jpg');
-  background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/pexels-photo-590493.jpg');
-  background-size: cover;
   .oer {
     position: relative;
     top: 50%;
@@ -219,7 +215,6 @@ $white: #fff;
   grid-row: 2;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background-color: $dark-blue;
   color: $white;
   h2 {
     color: $white;
@@ -280,7 +275,6 @@ $white: #fff;
   grid-row: 3;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background-color: $dark-blue;
   color: $white;
   h2 {
     color: $white;

@@ -176,17 +176,12 @@
 
 .discover h4 {
   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-  color: inherit;
 }
 
 .resources {
   width: 30%;
   padding: 10px;
-}
-
-.resources p {
-  border-left: 3px solid #84bf41;
-  padding-left: 10px;
+  border-left: 1px solid #222b37;
 }
 
 #one {
@@ -195,14 +190,14 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, minmax(20rem, auto));
+  background: url("/app/site/media/images/pexels-photo-590493.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url("/app/site/media/images/pexels-photo-590493.jpg");
+  background-size: cover;
 }
 
 .resource-oer {
   grid-column: 1 / span 4;
   grid-row: 1;
-  background: url("/app/site/media/images/pexels-photo-590493.jpg");
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url("/app/site/media/images/pexels-photo-590493.jpg");
-  background-size: cover;
 }
 
 .resource-oer .oer {
@@ -225,7 +220,6 @@
   grid-row: 2;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background-color: #222b37;
   color: #fff;
 }
 
@@ -325,7 +319,6 @@
   grid-row: 3;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background-color: #222b37;
   color: #fff;
 }
 

@@ -60,6 +60,7 @@ $white: #fff;
 }
 .link {
   text-transform: uppercase;
+  margin-top: 3rem;
 }
 .link-anchor {
   color: inherit;
@@ -249,10 +250,7 @@ $white: #fff;
 .communities {
   width: 20rem;
   padding: 10px;
-  p {
-    border-left: 3px solid $green;
-    padding-left: 10px;
-  }
+  border-left: 1px solid $green;
 }
 
 //Faculty Mentoring Network
