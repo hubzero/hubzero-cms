@@ -1,0 +1,4 @@
+@import url('/core/plugins/members/collections/assets/css/collections.css');
+#hubForm .item-asset .delete {
+  height: 1.5em;
+}

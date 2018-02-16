@@ -84,6 +84,25 @@
   line-height: 40px;
   padding-top: 0;
 }
+#page_options {
+  position: static;
+  padding: 0.5em 0 1em 0;
+}
+/* BEGIN: Fixing files plugin */
+.qq-upload-button span,
+.qq-upload-drop-area span {
+  font-size: 0.8em;
+}
+.filelist-headers ul {
+  list-style: none;
+}
+.upload-filelist-toolbar .filelist-headers div {
+  margin-top: -12px !important;
+}
+.upload-filelist-toolbar .filelist-headers li {
+  padding: 12px 5px !important;
+}
+/* END: Fixing files plugin */
 /* BEGIN: Fixing page creation */
 .btn-info {
   color: #fff;
