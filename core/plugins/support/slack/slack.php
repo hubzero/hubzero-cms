@@ -284,7 +284,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 				'title_link' => $url,
 				'text'       => $text, // The text for inside the attachment
 				'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
-				'author_name' => $comment->creator()->get('name'),
+				'author_name' => $comment->creator->get('name'),
 			);
 			if (!Component::params('com_support')->get('email_terse'))
 			{
