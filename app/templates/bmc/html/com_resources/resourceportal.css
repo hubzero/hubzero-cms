@@ -476,11 +476,20 @@
   text-align: center;
 }
 
-#three .software-logos h6 {
-  width: 100px;
+#three .software-logos .logo-wrap {
+  width: 125px;
+  height: 125px;
+}
+
+#three .software-logos .logo-wrap img {
+  max-height: 50px;
+}
+
+#three .software-logos .logo-wrap h6 {
+  width: auto;
   height: 50px;
   align-self: center;
-  margin: 0;
+  margin-top: 5px;
   color: #F1F2F2;
 }
 

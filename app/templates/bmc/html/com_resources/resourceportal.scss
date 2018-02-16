@@ -389,12 +389,19 @@ $white: #fff;
     justify-items: center;
     align-self: center;
     text-align: center;
-    h6 {
-      width: 100px;
-      height: 50px;
-      align-self: center;
-      margin: 0;
-      color: $light-gray;
+    .logo-wrap {
+      width: 125px;
+      height: 125px;
+      img {
+        max-height: 50px;
+      }
+      h6 {
+        width: auto;
+        height: 50px;
+        align-self: center;
+        margin-top: 5px;
+        color: $light-gray;
+      }
     }
   }
 }
