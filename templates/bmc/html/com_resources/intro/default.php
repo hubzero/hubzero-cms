@@ -37,7 +37,7 @@ $this->css('introduction.css', 'system')
 
 Document::addScript('/app/templates' . DS . App::get('template')->template . DS . 'js' . DS . 'masonry.pkgd.min.js');
 Document::addScript('/app/templates' . DS . App::get('template')->template . DS . 'js' . DS . 'fit.js');
-\Hubzero\Module\Helper::displayModules($position);
+// \Hubzero\Module\Helper::displayModules($position);
 
 ?>
 
@@ -135,14 +135,59 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
     <h6 class="link"><a href="/resources/software">run it</a></h6>
   </div>
   <div class="software-logos">
-    <h6>R-Studio IDE for R</h6>
-    <h6>NetLogo</h6>
-    <h6>Copasi</h6>
-    <h6>QtOctave</h6>
-    <h6>ImageJ</h6>
-    <h6>Mesquite</h6>
-    <h6>PPLANE</h6>
-    <h6>XPPAUT</h6>
-    <h6>Avida-ED</h6>
+    <div class="logo-wrap">
+      <a href="/tools/rstudio">
+        <img src="/app/site/media/images/tools/RStudio-Logo-All-White.png" />
+        <h6>R-Studio IDE for R</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/tools/netlogo">
+        <img src="/app/site/media/images/tools/netlogo-logo.png" />
+        <h6>NetLogo</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/tools/copasi">
+        <img src="/app/site/media/images/tools/copasi-logo.png" />
+        <h6>Copasi</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/tools/qtoctave">
+        <img src="/app/site/media/images/tools/qtoctave-logo.png" />
+        <h6>QtOctave</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/tools/imagej">
+        <img src="/app/site/media/images/tools/imagej-logo.png" />
+        <h6>ImageJ</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/tools/mesquite">
+        <img src="/app/site/media/images/tools/mesquite-logo.png" />
+        <h6>Mesquite</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/tools/pplane">
+        <img src="/app/site/media/images/tools/pplane-logo.png" />
+        <h6>PPLANE</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/tools/xppaut">
+        <img src="/app/site/media/images/tools/xppaut-logo.gif" />
+        <h6>XPPAUT</h6>
+      </a>
+    </div>
+    <div class="logo-wrap">
+      <a href="/resources/1015">
+        <img src="/app/site/media/images/tools/Avida-ED-logo.png" />
+        <h6>Avida-ED</h6>
+      </a>
+    </div>
   </div>
 </section>
