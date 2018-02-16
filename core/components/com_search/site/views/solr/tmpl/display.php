@@ -167,8 +167,8 @@ $noResult = count($this->results) > 0 ? false : true;
 											<!-- Tags -->
 											<div class="result-tags">
 												<ul class="tags">
--                                                   <?php foreach ($result['tags'] as $tag): ?>
--                                                   	<li><a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>"><?php echo $tag; ?></a></li>
+													<?php foreach ($result['tags'] as $tag): ?>
+														<li><a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>"><?php echo $tag; ?></a></li>
 													<?php endforeach; ?>
 												</ul>
 											</div>
