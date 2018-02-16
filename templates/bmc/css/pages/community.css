@@ -38,6 +38,7 @@
 
 .link {
   text-transform: uppercase;
+  margin-top: 3rem;
 }
 
 .link-anchor {
@@ -273,11 +274,7 @@
 .communities {
   width: 20rem;
   padding: 10px;
-}
-
-.communities p {
-  border-left: 3px solid #84bf41;
-  padding-left: 10px;
+  border-left: 1px solid #84bf41;
 }
 
 #one {

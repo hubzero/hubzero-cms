@@ -49,7 +49,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
 </section>
 
 <div class="search-wrapper">
-  <h4>Create, download, modify, or browse our free open education resources!</h4>
+  <h4>Browse our many open education resources created by the QUBES community</h4>
   <form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="search">
     <fieldset>
       <p>
@@ -66,20 +66,20 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   <h2>Discover our Resources</h2>
   <div class="resources">
     <a href="#one" class="link-anchor">
-      <h4>OER</h4>
-      <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui.</p>
+      <h4>FMN & Partner Products</h4>
+      <p>Discover resources created by our Faculty Mentoring Networks (FMNs) and partners - all based upon the foundation of Open Education Practices</p>
     </a>
   </div>
   <div class="resources">
     <a href="#two" class="link-anchor">
       <h4>Collections</h4>
-      <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui.</p>
+      <p>Browse community driven collection of resources or create your own collection around your topic of interest</p>
     </a>
   </div>
   <div class="resources">
     <a href="#three" class="link-anchor">
       <h4>Software</h4>
-      <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec sed odio dui.</p>
+      <p>Create your own customized activities and datasets which students can run using free software without having the need to purchase and install locally</p>
     </a>
   </div>
 </section>
@@ -123,7 +123,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   </div>
   <div class="collections">
     <h2>Collections</h2>
-    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper.</p>
+    <p>Collections is both a community driven set of resources and a tool used by our groups and members to share resources found not only on QUBESHub, but across other sites as well.</p>
     <h6 class="link"><a href="/resources/collections">browse</a></h6>
   </div>
 </section>
@@ -131,7 +131,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
 <section id="three">
   <div class="software">
     <h2>Software</h2>
-    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper.</p>
+    <p>QUBES hosts various software that can be run in the browser without having to worry about any installation on your local machine. Faculty can now have students run free modeling and statistical software using customized activities and datasets made by you.</p>
     <h6 class="link"><a href="/resources/software">run it</a></h6>
   </div>
   <div class="software-logos">
