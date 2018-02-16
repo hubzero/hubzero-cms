@@ -431,7 +431,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$a = \Components\Citations\Models\Association::blank()->getTableName();
 
 		$citation = $query
-			->join($a, $a . '.cid', $c . '.$id', 'inner')
+			->join($a, $a . '.cid', $c . '.id', 'inner')
 			->whereEquals($a . '.tbl', 'publication')
 			->whereEquals($c . '.doi', $doi)
 			->row();
