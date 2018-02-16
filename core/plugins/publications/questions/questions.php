@@ -102,7 +102,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$this->option      = $option;
 
 		// Get a needed library
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
 		// Get all the questions for this publication
 		$this->filters = array(
