@@ -695,6 +695,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function formatted($config = array('format' => 'apa'), $highlight = null)
 	{
+		if ($this->isNew())
+		{
+			return '';
+		}
 		if (!empty($this->get('formatted')))
 		{
 			return $this->get('formatted');
