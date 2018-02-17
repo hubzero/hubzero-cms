@@ -57,5 +57,6 @@ HUBzero is a registered trademark of Purdue University.
 	</config>
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.mod_showcase.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_showcase.sys.ini</language>
 	</languages>
 </extension>
