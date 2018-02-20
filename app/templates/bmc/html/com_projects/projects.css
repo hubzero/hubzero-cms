@@ -31,6 +31,19 @@
 .main-menu li.active a:hover span {
   color: #000;
 }
+.main-menu ul li.active li {
+  background: #eee;
+}
+.main-menu ul li.active li a:before,
+.main-menu ul li.active li a:hover:before {
+  color: #000;
+}
+.main-menu ul li li {
+  background: #151b23;
+}
+.main-menu ul li li.active {
+  background: #fff;
+}
 .page-com_projects .com_projects .ptitle {
   position: relative;
 }

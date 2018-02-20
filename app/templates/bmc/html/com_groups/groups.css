@@ -88,6 +88,12 @@
   position: static;
   padding: 0.5em 0 1em 0;
 }
+#page_identity {
+  border: 4px solid #FFFFFF;
+  background: white;
+  border-radius: 20%;
+  overflow: hidden;
+}
 /* BEGIN: Fixing files plugin */
 .qq-upload-button span,
 .qq-upload-drop-area span {

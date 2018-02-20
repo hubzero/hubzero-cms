@@ -1,3 +1,5 @@
+// out: projects.css
+
 @import "../../less/_mixins/mixins";
 @import "../../less/_vars/vars";
 
@@ -35,6 +37,31 @@
 		span {
 			color: @colorSidebarTextActive;
 		}
+	}
+}
+
+// This is actually in standard.less
+// Address files sub-menus
+.main-menu ul li {
+
+	&.active li {
+		background: #eee;
+
+		a {
+
+			&:before,
+			&:hover:before {
+				color: @colorSidebarTextActive;
+			}
+		}
+	}
+
+	li {
+		background: #151b23;
+	}
+
+	li.active {
+		background: #fff;
 	}
 }
 
