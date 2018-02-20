@@ -45,3 +45,13 @@
 #page_menu li .alrt:hover {
   z-index: 500;
 }
+#page_identity {
+  border: 4px solid #FFFFFF;
+  background: white;
+  border-radius: 20%;
+  overflow: hidden;
+}
+#page_identity a#page_identity_change {
+  left: -4px;
+  font-size: 1em;
+}
