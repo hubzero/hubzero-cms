@@ -292,7 +292,7 @@ class Publications extends Macro
 		}
 		if ($project)
 		{
-			array_push($args, '(PP.id IN (' . $project . '))');
+			array_push($args, '(PP.alias IN (' . $project . '))');
 		}
 		if ($id)
 		{
@@ -443,7 +443,7 @@ class Publications extends Macro
 		{
 			if (preg_match('/project=([\w;]*)/', $arg, $matches))
 			{
-				$project = str_replace(';',',',(isset($matches[1])) ? $matches[1] : '');
+				$project = implode(',', array_map(array($this->_db, 'quote'), explode(';', (isset($matches[1])) ? $matches[1] : '')));
 				unset($args[$k]);
 				return $project;
 			}
