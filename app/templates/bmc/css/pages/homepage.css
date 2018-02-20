@@ -1,7 +1,7 @@
-.contentpaneopen {
+.group-php-page {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
-  grid-template-rows: repeat(4, [row] minmax(30rem, auto));
+  grid-template-rows: repeat(4, [row] auto);
 }
 
 .green {
