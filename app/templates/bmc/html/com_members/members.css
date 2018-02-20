@@ -29,6 +29,13 @@
 #page_sidebar {
   background: #222b37;
 }
+#page_sidebar .message-member a {
+  width: auto;
+  height: auto;
+}
+#page_sidebar .message-member a:before {
+  margin-right: 0.2em;
+}
 #page_menu li.active:after {
   display: none;
 }
