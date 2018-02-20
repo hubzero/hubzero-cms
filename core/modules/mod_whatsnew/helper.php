@@ -156,7 +156,7 @@ class Helper extends Module
 		if ($this->period != null)
 		{
 			$searchstring = strtolower($this->period);
-			foreach ($areas as $c=>$t)
+			foreach ($areas as $c => $t)
 			{
 				$regexp = "/" . $c . ":/";
 				if (strpos($searchstring, $c . ":") !== false)
