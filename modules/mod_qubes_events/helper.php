@@ -76,14 +76,14 @@ class Helper extends Module
 
 		*/
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'tags.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'event.php');
+		include_once(\Component::path('com_events') . DS . 'models' . DS . 'tags.php');
+		include_once(\Component::path('com_events') . DS . 'models' . DS . 'event.php');
 
 		// Get all events tagged as needed
 
 		\Plugin::import('tags', 'events');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+		include_once(\Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 		$tagobj = \Components\Tags\Models\Tag::oneByTag('qubeshappenings');
 		$tags = array($tagobj);
 
