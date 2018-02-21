@@ -256,7 +256,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 				</div>
 
 				<footer class="global">
-					<?php include "footer.php"; ?>
+					<?php $errorPage = false; include "footer.php"; ?>
 				</footer>
 			</div>
 			<div class="dashboard-panel" id="dashboard-panel">
