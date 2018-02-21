@@ -24,6 +24,11 @@
   color: inherit;
 }
 
+.link {
+  text-transform: uppercase;
+  margin-top: 3rem;
+}
+
 .service-header {
   grid-column: col / span 4;
   grid-row: row;
@@ -89,6 +94,10 @@
 }
 
 #one .community h2 {
+  color: #fff;
+}
+
+#one .community a {
   color: #fff;
 }
 

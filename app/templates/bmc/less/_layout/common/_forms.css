@@ -96,6 +96,9 @@ input[type="file"]:focus {
   display: block;
   padding: 1.5em 2em 0 2em;
 }
+#hubForm label:last-child {
+  padding-bottom: 1.5em;
+}
 #hubForm input,
 #hubForm select,
 #hubForm textarea {

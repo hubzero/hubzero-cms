@@ -52,7 +52,7 @@
 	ul.sub-menu {
 		margin-left: -25px;
 		margin-right: -25px;
-		margin-top: -25px;
+		margin-top: 0;
 		padding-left: 25px;
 		padding-right: 25px;
 		margin-bottom: 25px;
@@ -112,3 +112,11 @@
 			margin-bottom: 30px;
 		}
 	}
+
+.com_resources .upperpane + .section {
+	padding-top: 30px;
+
+	@media (min-width: @sizeM) {
+		padding-top: 60px;
+	}
+}
