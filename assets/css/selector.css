@@ -4,7 +4,7 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
+ * version 2 as published by the Free Software Foundation.
  */
 
 /*
@@ -169,7 +169,7 @@
 		cursor: pointer;
 	}
 	.pub-selector .item-info:before,
-	.pub-selector .selectedfilter .item-info:before, 
+	.pub-selector .selectedfilter .item-info:before,
 	.pub-selector .selectedfilter:hover .item-info:before {
 		width: 16px;
 		height: 16px;
@@ -180,20 +180,30 @@
 		float: left;
 		position: relative;
 	}
+	.pub-selector .item-toggle {
+		font-size: 0.8em;
+		float: right;
+		margin-top: 3px;
+	}
 	.pub-selector .item-toggle:after,
 	.pub-selector .selectedfilter .item-toggle:after,
 	.pub-selector .selectedfilter:hover .item-toggle:after {
 		width: 18px;
-		height: 18px;
-		font-size: 18px;
+		font-size: 14px;
 		font-family: 'Fontcons';
 		content: "\2304";
 		float: right;
-		margin-right: 2px;
+		margin: -3px 4px;
 		position: relative;
 	}
 	.pub-selector .item-toggle:hover {
 		cursor: copy;
+	}
+	.pub-selector .item-toggle:before {
+		content: "Show info";
+	}
+	.pub-selector .item-toggle.toggled:before {
+		content: "Hide info";
 	}
 	.pub-selector .item-toggle.toggled:after {
 		content: "\2303" !important;
@@ -236,10 +246,10 @@
 	#abox-content {
 		text-align: left;
 	}
-	
+
 /* Misc
 ---------------------------- */
-	
+
 	.item-fullinfo {
 		display: block;
 		margin-left: 3em;
@@ -274,7 +284,7 @@
 	}
 
 /* Common styles
----------------------------- */	
+---------------------------- */
 	.formlabel {
 		color: #999;
 		text-align: right;
