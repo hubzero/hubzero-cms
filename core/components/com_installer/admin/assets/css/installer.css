@@ -132,6 +132,15 @@
 	text-align: center;
 }
 
+.com_installer .breadcrumb {
+	margin-left: 3em;
+}
+.com_installer .breadcrumb:after {
+	font-family: "Fontcons";
+	content: "\2716";
+	margin-left: 1em;
+}
+
 .toolbar-box .icon-32-up:before {
 	content: '\f0aa';
 }

@@ -69,8 +69,12 @@ class Migrations extends AdminController
 			)
 		);
 
+		$breadcrumb = '';
 		if ($filters['folder'])
 		{
+			// Show that a filter is in place
+			$breadcrumb = $filters['folder'];
+
 			// If the path does not start with a slash,
 			// assume relative to the ROOT path
 			if (substr($filters['folder'], 0, 1) != '/')
@@ -109,6 +113,7 @@ class Migrations extends AdminController
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
+			->set('breadcrumb', $breadcrumb)
 			->set('total', $total)
 			->set('rows', $rows)
 			->display();

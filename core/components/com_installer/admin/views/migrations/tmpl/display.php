@@ -43,9 +43,13 @@ Toolbar::custom('migrate', 'purge', '', 'Run pending migrations', false);
 Html::behavior('tooltip');
 
 $this->css();
+
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="updateRepositoryForm">
+	<?php if (!empty($this->breadcrumb)): ?>
+	<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='); ?>" class="breadcrumb">Filter: <?php echo $this->breadcrumb; ?></a>
+	<?php endif; ?>
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
