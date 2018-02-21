@@ -2,10 +2,32 @@
 
 <main>
   <nav>
-    <jdoc:include type="modules" name="footer" />
+    <?php
+    if (!$errorPage)
+    {
+      ?>
+      <jdoc:include type="modules" name="footer" />
+      <?php
+    }
+    else
+    {
+      echo Module::position('footer');
+    }
+    ?>
   </nav>
   <div class="form">
-    <jdoc:include type="modules" name="news" />
+    <?php
+    if (!$errorPage)
+    {
+      ?>
+      <jdoc:include type="modules" name="news" />
+      <?php
+    }
+    else
+    {
+      echo Module::position('news');
+    }
+    ?>
     <ul class="social">
       <li><a href="https://www.facebook.com/qubeshub"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455.7 455.7"><style>.st0{fill:#FFFFFF;}</style><path class="st0" d="M0 0v455.7h242.7v-176h-59.3v-71.9h59.3v-60.4c0-43.9 35.6-79.5 79.5-79.5h62v64.6h-44.4c-13.9 0-25.3 11.3-25.3 25.3v50H383l-9.5 71.9h-59.1v176h141.2V0H0z"/></svg></div><span>Facebook</span></a></li>
       <li><a href="https://twitter.com/qubeshub"><div class="icon"><svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455.7 455.7"><style>.st0{fill:#FFFFFF;}</style><path class="st0" d="M0 0v455.7h455.7V0H0zm361.3 163.9c.1 2.7.2 5.4.2 8.1 0 108.3-87.8 196.2-196.2 196.2-38.6 0-74.5-11.1-104.9-30.4 59.3 8.9 101.1-28.9 101.1-28.9-52.8-4.1-63.3-48.1-63.3-48.1 18.7 3.2 30.4-1.3 30.4-1.3-59.5-13.9-54.4-68.3-54.4-68.3 13.8 8.2 29.7 8.9 29.7 8.9C51.4 153.9 84.3 109 84.3 109c55.1 66.7 136 71.2 141.3 71.4-1.2-5-1.8-10.2-1.8-15.6 0-38 30.8-68.8 68.8-68.8 19.8 0 37.7 8.4 50.2 21.8 3.5-1 6.9-2 10.1-3.1 19.5-6.5 33.4-13.9 33.4-13.9-3.4 20.1-28.2 37-30 38.2-.1 0-.1.1-.1.1h.1c19.3-1.9 38.9-10.1 38.9-10.1-5.8 12.4-30 31.9-33.9 34.9z"/></svg></div><span>Twitter</span></a></li>

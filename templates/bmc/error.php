@@ -55,18 +55,13 @@ Lang::load('tpl_' . $this->template, __DIR__);
 		<title><?php echo Config::get('sitename') . ' - ' . $code; ?></title>
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_newsletter/mod_newsletter.css" />
 		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
 		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.ui.js', false, true, true); ?>"></script>
 		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.fancybox.js', false, true, true); ?>"></script>
+		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.fancybox.js', false, true, true); ?>"></script>
+		<script type="text/javascript" src="/app/templates/bmc/js/vendor/hammer.js"></script>
 		<script type="text/javascript" src="<?php echo str_replace('/core', '', $this->baseurl); ?>/templates/<?php echo $this->template; ?>/js/hub.js"></script>
-		<script type="text/javascript" src="/app/templates/v/html/mod_reportproblems/mod_reportproblems.js"></script>
-		<script type="text/javascript">
-			jQuery(document).ready(function(jq) {
-				HUB.Modules.ReportProblems.initialize('.helpme');
-			});
-		</script>
-
 		<!--[if lt IE 9]><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script><![endif]-->
 	</head>
 	<body data-subnav="<?php echo $showSubnav; ?>">
@@ -205,7 +200,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 				</div>
 
 				<footer class="global">
-					<?php include "footer.php"; ?>
+					<?php $errorPage = true; include "footer.php"; ?>
 				</footer>
 			</div>
 			<div class="dashboard-panel" id="dashboard-panel">

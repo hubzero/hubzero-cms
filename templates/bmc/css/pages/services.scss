@@ -63,7 +63,11 @@ $white: #fff;
   height: 200px;
   width: 100%;
 }
-
+// .group-php-page {
+//   display: grid;
+//   grid-template-columns: repeat(4, [col] 1fr);
+//   grid-template-rows: repeat(4, [row] auto);
+// }
 .contentpaneopen {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
@@ -83,6 +87,10 @@ $white: #fff;
   &:visited {
     color: inherit;
   }
+}
+.link {
+  text-transform: uppercase;
+  margin-top: 3rem;
 }
 
 //Header
@@ -145,6 +153,9 @@ $white: #fff;
     text-align: center;
     padding: 2.5em;
     h2 {
+      color: $white;
+    }
+    a {
       color: $white;
     }
   }
