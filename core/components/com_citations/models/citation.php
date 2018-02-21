@@ -88,7 +88,6 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	 */
 	private $badgesSeparated = false;
 
-
 	/**
 	 * Returns results based on filters applied.
 	 *
@@ -99,7 +98,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	public static function getFilteredRecords($filters = array(), $admin = false)
 	{
 		$records = self::all();
+
 		$recordIdField = $records->getQualifiedFieldName('id');
+
 		$records->select($records->getQualifiedFieldName('*'))
 				->select('u.username')
 				->select('F.format', 'template')
@@ -115,8 +116,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				}])
 				->join('#__users AS u', $records->getQualifiedFieldName('uid'), 'u.id', 'left')
 				->join('#__citations_secondary AS CS', $recordIdField, 'CS.cid', 'left')
-				->join('#__citations_format AS F', $records->getQualifiedFieldName('format'), 'F.style', 'left')
-				->group($recordIdField);
+				->join('#__citations_format AS F', $records->getQualifiedFieldName('format'), 'F.style', 'left');
+				//->group($recordIdField);
+
 		// scope & scope Id
 		if (!empty($filters['scope']) && $filters['scope'] != 'all')
 		{
@@ -130,7 +132,6 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			else
 			{
 				$records->whereEquals('scope', $filters['scope']);
-
 			}
 		}
 		elseif ($filters['scope'] != 'all')
@@ -198,6 +199,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			}, 1);
 			$records->resetDepth();
 		}
+
 		if (!empty($filters['publishedin']))
 		{
 			$records->whereLike('booktitle', $filters['publishedin'], 1);
@@ -239,6 +241,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			}, 1);
 		}
 		$records->filterByReftype($filters);
+
 		return $records;
 	}
 
@@ -507,7 +510,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	/**
 	 * Check if a user can edit
 	 *
-	 * @param   itneger  $userId
+	 * @param   integer  $userId
 	 * @return  bool
 	 */
 	public function canEdit($userId = null)
@@ -1167,7 +1170,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Format resourc elinks
+	 * Format resource links
 	 *
 	 * @return  mixed
 	 */
@@ -1457,7 +1460,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 	/**
 	 * Output a list of authors
-	 * @param boolean $includeMemberId if true, include member ID next to author name
+	 *
+	 * @param   boolean  $includeMemberId  if true, include member ID next to author name
 	 * @return  string
 	 */
 	public function getAuthorString($includeMemberId = true)
@@ -1495,9 +1499,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 		return implode(';', $convertedAuthors);
 	}
+
 	/**
 	 * Namespace used for solr Search
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public function searchNamespace()
 	{
@@ -1505,9 +1511,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		return $searchNamespace;
 	}
 
-	/*
+	/**
 	 * Generate solr search Id
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public function searchId()
 	{
@@ -1515,9 +1522,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		return $searchId;
 	}
 
-	/*
+	/**
 	 * Generate search document for Solr
-	 * @return array
+	 *
+	 * @return  array
 	 */
 	public function searchResult()
 	{
@@ -1587,6 +1595,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 	/**
 	 * Get total number of records that will be indexed by Solr.
+	 *
 	 * @return integer
 	 */
 	public static function searchTotal()
@@ -1597,7 +1606,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 	/**
 	 * Get records to be included in solr index
-	 * @return Hubzero\Database\Rows
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object   Hubzero\Database\Rows
 	 */
 	public static function searchResults($limit, $offset = 0)
 	{
