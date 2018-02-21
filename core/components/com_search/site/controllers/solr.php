@@ -181,7 +181,11 @@ class Solr extends SiteController
 
 		$results  = $query->getResults();
 		$numFound = $query->getNumFound();
-		$facetResult = $query->resultsFacetSet->getFacet('hubtypes');
+		$facetResult = array();
+		if (isset($query->resultsFacetSet) && $query->resultsFacetSet)
+		{
+			$facetResult = $query->resultsFacetSet->getFacet('hubtypes');
+		}
 		$facetCounts = array();
 		foreach ($facetResult as $facet => $count)
 		{
