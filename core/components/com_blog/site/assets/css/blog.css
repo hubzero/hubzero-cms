@@ -21,25 +21,14 @@
 		margin-top: 0;
 		padding-top: 0;
 	}
-	/*ol.blog-entries li li {
-		margin-left: 20px;
-	}*/
+
 	.blog-entries dl.entry-meta {
 		margin: 0.5em 0;
 		padding: 0;
 		color: #999;
 		font-size: 0.85em;
 	}
-	.blog-entries .expired .entry-title:before {
-		content: "\f070";
-		font-family: "Fontcons";
-		font-weight: normal;
-	}
-	.blog-entries .expired .entry-content {
-		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
-		filter: alpha(opacity=35);
-		opacity: 0.35;
-	}
+
 	.blog-entries li dl.entry-meta dt a.comment-counter:link,
 	.blog-entries li dl.entry-meta dt a.comment-counter:visited,
 	.blog-entries li dl.entry-meta dt a.comment-counter:active {
@@ -169,15 +158,9 @@
 	.entry-options .edit:before,
 	.entry-options .delete:before{
 		margin-right: 1em;
-		font-family: "Fontcons";
 		font-weight: normal;
 	}
-	.entry-options .edit:before {
-		content: "\270E";
-	}
-	.entry-options .delete:before {
-		content: "\f014";
-	}
+
 	.entry-options .edit:hover {
 		color: #222;
 	}
@@ -349,52 +332,6 @@
 		display: block;
 	}
 
-	/* Links */
-	.entry-content a.ext-link:before {
-		font-family: "Fontcons";
-		content: "\f08e";
-		color: #ccc;
-		margin-right: 0.2em;
-	}
-	.entry-content a.missing:before {
-		content: "?";
-		color: #ccc;
-		margin-right: 0.2em;
-	}
-
-	.entry-content .mbox-content {
-		border: 1px solid #aaa;
-		background: #fff;
-		border-left: 10px solid #f28500;
-		padding: 0;
-		width: 250px;
-		font-size: 0.85em;
-		position: relative;
-	}
-	.entry-content .mbox-content p.mbox-text {
-		padding: 0.4em 0.4em 0.4em 4.4em;
-		margin: 0;
-		line-height: 1.4em;
-	}
-	.entry-content .mbox-content .mbox-date {
-		font-style: italic;
-	}
-	.entry-content .mbox-unreferenced p:before {
-		font-family: "Fontcons";
-		content: "\275D"; /* \f072 */
-		color: #ddd;
-		font-size: 3em;
-		line-height: 1;
-		position: absolute;
-		top: 0.1em;
-		left: 0.3em;
-		font-weight: normal;
-	}
-	.entry-content .rellink {
-		font-style: italic;
-		padding-left: 1.6em;
-		margin-bottom: 0.5em;
-	}
 	.entry-content td {
 		background-color: #fff;
 	}

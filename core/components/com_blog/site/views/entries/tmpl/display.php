@@ -151,12 +151,12 @@ $rows = $this->archive->entries($this->filters)
 
 						if ($row->ended())
 						{
-							$cls .= ' expired';
+							//$cls .= ' expired';
 						}
 						?>
 						<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
 							<article>
-								<h4 class="entry-title">
+								<h4 class="entry-title<?php if ($row->ended()) { echo ' icon-eye-close'; } ?>">
 									<a href="<?php echo Route::url($row->link()); ?>">
 										<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 									</a>
@@ -208,10 +208,10 @@ $rows = $this->archive->entries($this->filters)
 									<?php } ?>
 									<?php if (User::get('id') == $row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
 										<dd class="entry-options">
-											<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+											<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
 												<?php echo Lang::txt('JACTION_EDIT'); ?>
 											</a>
-											<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+											<a class="icon-trash delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 												<?php echo Lang::txt('JACTION_DELETE'); ?>
 											</a>
 										</dd>

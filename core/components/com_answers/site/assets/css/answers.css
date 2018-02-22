@@ -17,12 +17,7 @@
 	.entry-state {
 		text-transform: uppercase;
 	}
-	.entry-comments a:before {
-		content: "\f0e6";
-		font-family: "Fontcons";
-		margin-right: 0.2em;
-		color: #999;
-	}
+
 	.entries .reward {
 		text-align: right;
 	}
@@ -33,19 +28,22 @@
 		display: inline;
 	}
 
-	.entries .entry-id:before {
-		content: "\f0e5";
-		font-family: "Fontcons";
+	.entries .entry-id,
+	.entries .entry-identifier {
+		font-weight: normal;
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		line-height: 1;
+		font-size: 1.2em;
+		color: #999;
 	}
-	.entries .answered .entry-id:before {
-		content: "\f086";
+	.entries .answered .entry-identifier:before {
 		color: #a284db;
 	}
 	.entries .answered .entry-state {
 		color: #a284db;
-	}
-	.entries .flagged .entry-id:before {
-		content: "\2691";
 	}
 
 	p.voting {
@@ -59,10 +57,6 @@
 	}
 	.entry-popularity {
 		display: none;
-	}
-
-	ol.comments .comment-options a.active:before {
-		content: "\2716";
 	}
 
 	.question .entry-content {
@@ -80,6 +74,7 @@
 		color: #999;
 	}
 	.entry-reward a {
+		font-size: 1.2em;
 		width: 1em;
 		height: 1em;
 		display: inline-block;
@@ -87,10 +82,7 @@
 		white-space: nowrap;
 	}
 	.entry-reward a:before {
-		content: "\f006";
-		font-family: "Fontcons";
 		margin-right: 1em;
-		font-size: 16px;
 	}
 
 /* Answer form */
@@ -128,7 +120,7 @@
 	}
 
 /* Introduction columns */
-	.pointvalue a, 
+	.pointvalue a,
 	.questions .rewardset a {
 		margin: 0 0.2em 0 0;
 		padding: 0;
@@ -141,8 +133,6 @@
 		font-size: 1.2em;
 	}
 	.pointvalue a:before {
-		content: "\f006";
-		font-family: "Fontcons";
 		margin-right: 1em;
 	}
 	.pointvalue a:hover {
@@ -152,7 +142,7 @@
 		color: #000;
 		font-weight:bold;
 		text-transform: lowercase;
-		font-size: inherit;	
+		font-size: inherit;
 		padding: 0;
 	}
 
@@ -234,10 +224,10 @@
 	}
 /* Abuse button */
 	.abuseitem {
-		padding: 10px 10px 10px 30px; 
+		padding: 10px 10px 10px 30px;
 		margin: 0 0 3em 0;
 		text-align: left;
-		border: 1px solid #EFCCC2; 
+		border: 1px solid #EFCCC2;
 		background: #FFF2EF;
 	}
 	.abuseitem h4 {
@@ -298,7 +288,7 @@
 		padding: 0;
 	}
 
-	ol.comments .comment-options:hover a, 
+	ol.comments .comment-options:hover a,
 	ol.comments .comment-options a.accept {
 		visibility: visible;
 	}
@@ -307,8 +297,6 @@
 		float: right;
 	}
 	ol.comments .comment-options a.accept:before {
-		content: "\2714";
-		font-family: "Fontcons";
 		margin-right: 0.3em;
 	}
 
