@@ -33,6 +33,7 @@ namespace Components\Search\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Search\Models\Solr\Facet;
+use Components\Search\Models\Solr\SearchComponent;
 use Components\Tags\Models\Tag as Tag;
 use Document;
 use Pathway;
@@ -43,6 +44,7 @@ use Lang;
 use stdClass;
 
 require_once \Component::path('com_search') . '/models/solr/facet.php';
+require_once \Component::path('com_search') . '/models/solr/searchcomponent.php';
 require_once \Component::path('com_search') . '/helpers/urlqueryhelper.php';
 require_once \Component::path('com_tags') . '/models/tag.php';
 
@@ -242,12 +244,24 @@ class Solr extends SiteController
 
 		// Set the document title
 		\Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
+		$components = SearchComponent::all()->whereEquals('state', '1')->rows();
+		$viewOverrides = array();
+		foreach ($components as $component)
+		{
+			if (!$viewOverride = $component->getViewOverride())
+			{
+				continue;
+			}
+			$name = \Hubzero\Utility\Inflector::singularize(strtolower($component->get('name')));
+			$viewOverrides[$name] = $viewOverride;
+		}
 
 		$this->view->terms = $terms;
 		$this->view->tags = $tagString;
 		$this->view->childTerms = $childTerms;
 		$this->view->childTermsString =  $tagParams;
 		$this->view->type = $type;
+		$this->view->viewOverrides = $viewOverrides;
 		$this->view->section = $section;
 		$this->view->setLayout('display');
 		$this->view->urlQuery = $urlQuery;
@@ -310,28 +324,13 @@ class Solr extends SiteController
 				$snippet = str_replace("\r", '', $snippet);
 				$snippet = str_replace("<br/>", '', $snippet);
 				$snippet = str_replace("<br>", '', $snippet);
-				$snippet = \Hubzero\Utility\Str::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
+				$snippet = \Hubzero\Utility\Str::excerpt($snippet, $terms, $radius = 500, $ellipsis = '…');
 				$snippet = \Hubzero\Utility\Str::highlight($snippet, $terms, $highlightOptions);
 				$result['snippet'] = trim($snippet);
 
-				if (isset($result['author']))
+				if (!empty($result['author']))
 				{
-					$authorCnt = 1;
-					$authorString = '';
-					foreach ($result['author'] as $author)
-					{
-						if ($authorCnt < count($result['author']))
-						{
-							$authorString .= $author;
-							$authorString .= ',';
-						}
-						else
-						{
-							$authorString .= $author;
-						}
-						$authorCnt++;
-					}
-					$result['authorString'] = $authorString;
+					$result['authorString'] = implode(', ', $result['author']);
 				}
 			}
 			else
