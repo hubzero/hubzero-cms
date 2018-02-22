@@ -212,18 +212,21 @@ class RecommendedTags extends \Hubzero\Base\Obj
          FROM #__publications
          WHERE id = ' . $pid
       );
-      $master_type = (int) $this->_db->loadColumn();
+      $master_type = (int) $this->_db->loadResult();
 
       $fatree = $this->loadFocusAreas($master_type);
       $rtags = $this->flatten($fatree, 'id');
-      $query = 'UPDATE #__tags_object
-                SET label = ' . $this->_db->quote($focus_area) . '
-                WHERE objectid = ' . $pid . '
-                AND tbl = \'publications\'
-                AND tagid IN (' . implode(',', $rtags) .')';
+      if (!empty($rtags))
+        {
+        $query = 'UPDATE #__tags_object
+                  SET label = ' . $this->_db->quote($focus_area) . '
+                  WHERE objectid = ' . $pid . '
+                  AND tbl = \'publications\'
+                  AND tagid IN (' . implode(',', $rtags) .')';
 
-      $this->_db->setQuery($query);
-      $this->_db->query();
+        $this->_db->setQuery($query);
+        $this->_db->query();
+      }
     }
   }
 
