@@ -54,7 +54,7 @@ $this->css()
 	}
 
 	// && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
-	$assigned = ($this->wish->get('assigned')) ? Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO', '<a href="'.Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.$this->wish->owner('name').'</a>') : '';
+	$assigned = ($this->wish->get('assigned')) ? Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO', '<a href="'.Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.$this->wish->assignee->get('name').'</a>') : '';
 
 	if (!$assigned && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1) && $this->wish->get('status')==0)
 	{
@@ -206,25 +206,25 @@ $this->css()
 					<?php if ($this->wishlist->access('admin') && $this->wishlist->get('admin') != 3) { ?>
 						<?php if (!$this->wish->isGranted()) { ?>
 							<li>
-								<a class="changestatus" href="<?php echo Route::url($this->wish->link('changestatus')); ?>">
+								<a class="icon-pushpin changestatus" href="<?php echo Route::url($this->wish->link('changestatus')); ?>">
 									<?php echo Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS'); ?>
 								</a>
 							</li>
 						<?php } ?>
 							<li>
-								<a class="transfer" href="<?php echo Route::url($this->wish->link('move')); ?>">
+								<a class="icon-resize-horizontal transfer" href="<?php echo Route::url($this->wish->link('move')); ?>">
 									<?php echo Lang::txt('COM_WISHLIST_MOVE'); ?>
 								</a>
 							</li>
 						<?php if ($this->wish->isPrivate()) { ?>
 							<li>
-								<a class="makepublic" href="<?php echo Route::url($this->wish->link('privacy', array('private' => '0'))); ?>">
+								<a class="icon-eye-open makepublic" href="<?php echo Route::url($this->wish->link('privacy', array('private' => '0'))); ?>">
 									<?php echo Lang::txt('COM_WISHLIST_MAKE_PUBLIC'); ?>
 								</a>
 							</li>
 						<?php } else { ?>
 							<li>
-								<a class="makeprivate" href="<?php echo Route::url($this->wish->link('privacy', array('private' => '1'))); ?>">
+								<a class="icon-eye-close makeprivate" href="<?php echo Route::url($this->wish->link('privacy', array('private' => '1'))); ?>">
 									<?php echo Lang::txt('COM_WISHLIST_MAKE_PRIVATE'); ?>
 								</a>
 							</li>
@@ -232,19 +232,19 @@ $this->css()
 					<?php } ?>
 					<?php if (($this->wishlist->access('manage') && $this->wishlist->get('admin') != 3) || User::get('id') == $this->wish->get('proposed_by')) { ?>
 						<li>
-							<a class="edit" href="<?php echo Route::url($this->wish->link('edit')); ?>">
+							<a class="icon-edit edit" href="<?php echo Route::url($this->wish->link('edit')); ?>">
 								<?php echo ucfirst(Lang::txt('COM_WISHLIST_ACTION_EDIT')); ?>
 							</a>
 						</li>
 					<?php } ?>
 						<li>
-							<a class="abuse" data-txt-flagged="<?php echo Lang::txt('COM_WISHLIST_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->wish->link('report')); ?>">
+							<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('COM_WISHLIST_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->wish->link('report')); ?>">
 								<?php echo Lang::txt('COM_WISHLIST_REPORT_ABUSE'); ?>
 							</a>
 						</li>
 					<?php if (User::get('id') == $this->wish->get('proposed_by') && $this->wish->isOpen()) { ?>
 						<li>
-							<a class="delete" href="<?php echo Route::url($this->wish->link('withdraw')); ?>">
+							<a class="icon-trash delete" href="<?php echo Route::url($this->wish->link('withdraw')); ?>">
 								<?php echo Lang::txt('COM_WISHLIST_ACTION_WITHDRAW_WISH'); ?>
 							</a>
 						</li>
@@ -377,7 +377,7 @@ $this->css()
 								?>
 									<td class="reward">
 									<?php if ($this->wishlist->get('banking')) { ?>
-										<span class="entry-reward">
+										<span class="entry-reward icon-coins">
 										<?php if ($this->wish->get('bonus', 0) > 0 && ($this->wish->isOpen() or $this->wish->isAccepted())) { ?>
 											<a class="bonus tooltips" href="<?php echo Route::url($this->wish->link('addbonus')); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS'); ?>">+ <?php echo $this->wish->get('bonus', 0); ?></a>
 										<?php } else if ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
