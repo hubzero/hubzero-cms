@@ -169,7 +169,7 @@ class Publicationsv1_1 extends ApiController
 				$description = \Hubzero\Utility\Sanitize::stripAll($description);
 
 				$obj->description   = $description;
-				$obj->url           = Route::url($entry->link('version'));
+				$obj->url           = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('version')), '/'));
 				$obj->doi           = $entry->get('doi');
 				$statusName         = $entry->getStatusName();
 				$obj->status        = $statusName;
