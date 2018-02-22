@@ -1561,7 +1561,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			if ($this->scope == 'member')
 			{
 				$user = User::getInstance($this->uid);
-				if ($user->get('blocked') == 0 && $user->get('approved') > 0) 	
+				if ($user->get('blocked') == 0 && $user->get('approved') > 0)
 				{
 					if ($user->get('access') == 1)
 					{

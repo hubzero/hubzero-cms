@@ -70,7 +70,7 @@ class Solr extends SiteController
 		$sortDir = Request::getVar('sortDir', '');
 		$type = Request::getInt('type', null);
 		$section = Request::getVar('section', 'content');
-		$tagString = Request::getVar('tags','');
+		$tagString = Request::getVar('tags', '');
 		$tags = null;
 		if ($tagString)
 		{
