@@ -29,19 +29,19 @@ HUB.ProjectFilesFileUpload = {
 
 	initialize: function() {
 		var $ = this.jQuery;
-		
+
 		var isMSIE = /*@cc_on!@*/0;
 		if (isMSIE) {
 		  	// Turn it off in IE
 		 	return false;
-		} 
-		
-		if ($("#archiveCheck").length) 
+		}
+
+		if ($("#archiveCheck").length)
 		{
 			$("#archiveCheck").remove();
 		}
-				
-		if ($("#ajax-uploader").length) 
+
+		if ($("#ajax-uploader").length)
 		{
 			var uploader = new qq.ButtonFileUploader({
 				element: $("#ajax-uploader")[0],
@@ -51,9 +51,9 @@ HUB.ProjectFilesFileUpload = {
 				debug: true,
 				maxChunkSize: 10000000,
 				template: '<div class="qq-uploader">' +
-							'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+							'<div class="qq-upload-button"><span>Click or drop file</span></div>' +
 							'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
-							'<ul class="qq-upload-list"></ul>' + 
+							'<ul class="qq-upload-list"></ul>' +
 						   '</div>',
 				fileTemplate: '<li>' +
 						'<span class="qq-upload-icon"></span>' +
@@ -62,63 +62,65 @@ HUB.ProjectFilesFileUpload = {
 						'<span class="qq-upload-status"></span>' +
 						'<a class="qq-upload-cancel" href="#">Cancel</a>' +
 						'<span class="qq-upload-ext"></span>' +
-		                '<span class="qq-upload-size"></span>' +	
+		                '<span class="qq-upload-size"></span>' +
 						'<span class="qq-upload-spinner"></span>' +
-						'<span class="qq-upload-error"></span>' +	                
+						'<span class="qq-upload-error"></span>' +
 		            '</li>',
 				button: null,
 
 				onComplete: function(id, file, response) {
-					
+
 					if (response.error)
 					{
 						HUB.ProjectFilesFileUpload.failed = HUB.ProjectFilesFileUpload.failed + 1;
 					}
-										
+
 					if (response.success > 0)
 					{
 						HUB.ProjectFilesFileUpload.uploaded = HUB.ProjectFilesFileUpload.uploaded + response.success;
-						
+
 						if (response.isNew == false)
 						{
 							HUB.ProjectFilesFileUpload.updated = HUB.ProjectFilesFileUpload.updated + response.success;
 						}
 					}
-					
+
 					// All files processed?
 					HUB.ProjectFilesFileUpload.processed = HUB.ProjectFilesFileUpload.processed + 1;
 					if (HUB.ProjectFilesFileUpload.processed == HUB.ProjectFilesFileUpload.queued)
 					{
 						HUB.ProjectFilesFileUpload.uploadComplete();
 					}
-					
+
 				}
 			});
 		}
-						
+
 		if ($('#f-upload').length)
 		{
 			$('#f-upload').addClass('btnaction');
 			$('#f-upload').addClass('disabled');
-			
+
 			$('#f-upload').on('click', function(e) {
 				e.preventDefault();
 
 				var queue = uploader.checkQueue();
 				var files = uploader.checkFiles();
-				
+
+				const possibleIssuesAcknowledged = this._acknowledgePossibleIssues(queue);
+
 				// Record number of items in queue
 				HUB.ProjectFilesFileUpload.queued = queue.length;
-				
+
 				if (queue.length == 0)
 				{
 					// do nothing
 				}
 				else
-				{					
+				{
 					// Archive file present?
 					var arch = uploader._checkArchive();
-					
+
 					if (arch && !$('#f-upload').hasClass('started'))
 					{
 						var question  = 'Do you wish to expand selected archive file(s)?';
@@ -126,24 +128,24 @@ HUB.ProjectFilesFileUpload = {
 						var noanswer  = 'no, upload as an archive';
 
 						// Add confirmation
-						$('#f-upload').parent().after('<div class="confirmaction" id="confirm-box" style="display:block;">' + 
-							'<p>' + question + '</p>' + 
-							'<p>' + 
-								'<a href="#" class="confirm" id="confirm-yes">' + yesanswer + '</a>' + 
-								'<a href="#" class="confirm c-no" id="confirm-no">' + noanswer + '</a>' + 
+						$('#f-upload').parent().after('<div class="confirmaction" id="confirm-box" style="display:block;">' +
+							'<p>' + question + '</p>' +
+							'<p>' +
+								'<a href="#" class="confirm" id="confirm-yes">' + yesanswer + '</a>' +
+								'<a href="#" class="confirm c-no" id="confirm-no">' + noanswer + '</a>' +
 								'<a href="#" class="cancel" id="confirm-box-cancel">cancel</a>' +
-							'</p>' + 
+							'</p>' +
 						'</div>');
 
 						$('#confirm-box-cancel').on('click', function(e){
 							e.preventDefault();
 							$('#confirm-box').remove();
 						});
-						
+
 						$('#confirm-yes').on('click', function(e){
 							e.preventDefault();
 							$('#confirm-box').remove();
-							
+
 							// Start upload
 							uploader.startUploads(1);
 						});
@@ -151,29 +153,29 @@ HUB.ProjectFilesFileUpload = {
 						$('#confirm-no').on('click', function(e){
 							e.preventDefault();
 							$('#confirm-box').remove();
-							
+
 							// Start upload
 							uploader.startUploads(0);
 						});
 
 						// Move close to item
-						var coord = $('#f-upload').position();		
+						var coord = $('#f-upload').position();
 						$('#confirm-box').css('left', coord.left - 50).css('top', coord.top + 100 );
 					}
 					else
 					{
-						// Start upload						
+						// Start upload
 						uploader.startUploads(0);
-					}					
+					}
 				}
-							
+
 				return false;
-			});
+			}.bind(this));
 		}
 	},
 
-	addConfirm: function () 
-	{	
+	addConfirm: function ()
+	{
 		var $ = this.jQuery;
 		if ($('#confirm-box')) {
 			$('#confirm-box').remove();
@@ -183,40 +185,63 @@ HUB.ProjectFilesFileUpload = {
 
 		// Add confirmation
 		var ancestor = $(link).parent().parent();
-		$(ancestor).after('<div class="confirmaction" id="confirm-box" style="display:block;">' + 
-			'<p>' + question + '</p>' + 
-			'<p>' + 
-				'<a href="' + href + '" class="confirm">' + yesanswer + '</a>' + 
-				'<a href="#" class="cancel" id="confirm-box-cancel">' + noanswer + '</a>' + 
-			'</p>' + 
+		$(ancestor).after('<div class="confirmaction" id="confirm-box" style="display:block;">' +
+			'<p>' + question + '</p>' +
+			'<p>' +
+				'<a href="' + href + '" class="confirm">' + yesanswer + '</a>' +
+				'<a href="#" class="cancel" id="confirm-box-cancel">' + noanswer + '</a>' +
+			'</p>' +
 		'</div>');
-		
+
 		$('#confirm-box-cancel').on('click', function(e){
 			e.preventDefault();
 			$('#confirm-box').remove();
 		});
-		
+
 		// Move close to item
 		var coord = $($(link).parent()).position();
-		
+
 		$('html, body').animate({
 			scrollTop: $(link).offset().top
 		}, 2000);
-		
+
 		$('#confirm-box').css('left', coord.left).css('top', coord.top + 200);
 	},
-			
-	uploadComplete: function() 
+
+	uploadComplete: function()
 	{
 		var $ = this.jQuery;
 
 		var form = $('#hubForm-ajax');
 		if (form.length)
-		{			
+		{
 			// Redirect back to file list
 			//form.submit();
 			window.location.replace(form.attr('action'));
 		}
+	},
+
+	_acknowledgePossibleIssues: function(files)
+	{
+		const message = this._generatePossibleIssuesMessage(files)
+		const acknowledged = confirm(message)
+
+		return acknowledged
+	},
+
+	_generatePossibleIssuesMessage: function(files)
+	{
+		let message = "The following file(s) may not be uploaded because the format is not recognized: \n\n"
+
+		files.forEach((file) => {
+			if (file.type === '') {
+				message += `• ${file.name}\n`
+			}
+		})
+
+		message += "\nYou may \"Cancel\" and remove the files or attempt to upload by selecting \"OK\"."
+
+		return message
 	}
 };
 
