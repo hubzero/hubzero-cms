@@ -1,7 +1,0 @@
-app/cache/**
-app/logs/**
-app/config/**
-app/site/**
-app/tmp/**
-core/vendor/**
-*.sublime-*
