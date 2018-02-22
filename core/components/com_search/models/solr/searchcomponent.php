@@ -88,6 +88,31 @@ class SearchComponent extends Relational
 	}
 
 	/**
+	 * Check if any override views for solr results exist in the component.
+	 * @param string $layout name of view file used to format individual results.
+	 * @param string $name name of the view directory containing the layout file.
+	 * @return mixed returns array of values if file found, false if not
+	 */
+	public function getViewOverride($layout = 'solr', $name = 'search')
+	{
+		$base_path = Component::path($this->get('name')) . '/site';
+		$override_path = Component::canonical($this->get('name')) . '/' . $name;
+		$templatePath = '';
+		if (App::has('template'))
+		{
+			$templatePath = App::get('template')->path . '/html';
+		}
+		$fileName = $layout . '.php';
+		$overrideFile = $templatePath . '/' . $override_path . '/' . $fileName; 	
+		$viewFile = $base_path . '/views/' . $name . '/tmpl/' . $fileName;
+		if (file_exists($viewFile) || file_exists($overrideFile))
+		{
+			return compact('layout', 'name', 'base_path', 'override_path');
+		}
+		return false;
+	}
+
+	/**
 	 * Add results to solr index
 	 *
 	 * @param   int    $offset  where to begin the database query
