@@ -253,10 +253,30 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function link()
 	{
-		$link = 'index.php?option=com_publications&task=view';
+		$link = 'index.php?option=com_publications';
 		$link .= $this->get('alias') ? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
 		$link .= $this->_base . '&v=' . $this->getActiveVersion()->id;
 		return $link;
+	}
+
+	/*
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'publication';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
 	}
 
 	/*
@@ -272,8 +292,8 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		$obj = new stdClass;
-		$obj->id            = 'publication-' . $this->get('id');
-		$obj->hubtype       = 'publication';
+		$obj->id            = $this->searchId();
+		$obj->hubtype       = $this->searchNamespace();
 		$obj->title         = $activeVersion->get('title');
 
 		$description = $activeVersion->get('abstract') . ' ' . $activeVersion->get('description');
@@ -281,7 +301,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 		$description = \Hubzero\Utility\Sanitize::stripAll($description);
 
 		$obj->description   = $description;
-		$obj->url           = Request::root() . $this->link();
+		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->doi           = $activeVersion->get('doi');
 
 		$tags = $this->tags();
