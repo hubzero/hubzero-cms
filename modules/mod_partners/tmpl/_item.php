@@ -33,5 +33,5 @@
 defined('_HZEXEC_') or die();
 ?>
 <div class="logo tooltips" title="<?php echo $partner->get('name'); ?>">
-	<a href="<?php echo Route::url('groups' . DS . $partner->get('groups_cn')); ?>"><img src="<?php echo 'app/site/media/images/partners/' . $partner->get('logo_img') ?>" alt="<?php echo $partner->get('name'); ?>"></a>
+	<a href="<?php echo ($this->record->get('groups_cn') ? Route::url('groups' . DS . $this->record->get('groups_cn')) : $this->record->get('site_url')); ?>"><img src="<?php echo 'app/site/media/images/partners/' . $partner->get('logo_img') ?>" alt="<?php echo $partner->get('name'); ?>"></a>
 </div>

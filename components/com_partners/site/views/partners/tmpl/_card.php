@@ -30,7 +30,7 @@
  */
 
 // no direct access
-defined('_HZEXEC_') or die(); 
+defined('_HZEXEC_') or die();
 ?>
 
 <div class="card [ is-collapsed ]">
@@ -53,7 +53,7 @@ defined('_HZEXEC_') or die();
 	   <div class="inner-expander">
 		<?php echo 'Activities: ' . '<p>' . $this->record->get('activities') . '</p>'; ?>
             <div class="social">
-			 <a class="card-link" href="<?php echo Route::url('groups' . DS . $this->record->get('groups_cn')); ?>">Learn more</a><br>
+			 <a class="card-link" href="<?php echo ($this->record->get('groups_cn') ? Route::url('groups' . DS . $this->record->get('groups_cn')) : $this->record->get('site_url')); ?>">Learn more</a><br>
 			 <a class="social-icon" href="https://twitter.com/<?php echo $this->record->get('twitter_handle'); ?>" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
             </div>
 	   </div>
