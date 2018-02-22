@@ -134,7 +134,7 @@ if (!$this->comment->get('item_id'))
 					--><?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?><!--
 				--></a>
 				<?php if (User::get('id') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid') && $this->depth <= 1) { ?>
-					<a class="accept" href="<?php echo Route::url($this->comment->link('accept')); ?>"><?php echo Lang::txt('COM_ANSWERS_ACCEPT_ANSWER'); ?></a>
+					<a class="icon-success accept" href="<?php echo Route::url($this->comment->link('accept')); ?>"><?php echo Lang::txt('COM_ANSWERS_ACCEPT_ANSWER'); ?></a>
 				<?php } ?>
 			<?php } ?>
 			</p>

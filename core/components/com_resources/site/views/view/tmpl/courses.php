@@ -115,7 +115,7 @@ if ($mode != 'preview')
 					$schildren = $this->model->children()
 						->whereEquals('standalone', 1)
 						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-						->ordered()
+						->order('ordering', 'asc')
 						->rows();
 
 					$ccount = count($schildren);
@@ -152,7 +152,7 @@ if ($mode != 'preview')
 					$children = $this->model->children()
 						->whereEquals('standalone', 0)
 						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-						->ordered()
+						->order('ordering', 'asc')
 						->rows();
 
 					$firstChild = $children->first();
@@ -309,7 +309,7 @@ if ($mode != 'preview')
 							$grandchildren = $child->children()
 								->whereEquals('standalone', 0)
 								->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-								->ordered()
+								->order('ordering', 'asc')
 								->rows();
 
 							if (count($grandchildren) > 0)
@@ -343,13 +343,13 @@ if ($mode != 'preview')
 											break;
 										case 'pdf':
 										default:
-											if ($grandchild->get('logicaltype') == 14)
+											if ($grandchild->get('logical_type') == 14)
 											{
 												$ext = Filesystem::extension($grandchild->path);
 												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
 												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a>'."\n";
 											}
-											elseif ($grandchild->get('logicaltype') == 51)
+											elseif ($grandchild->get('logical_type') == 51)
 											{
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 											}

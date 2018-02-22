@@ -67,6 +67,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 	 */
 	private $profileLoaded = false;
 
+
 	/**
 	 * Get profile fields
 	 *
@@ -569,7 +570,13 @@ class Member extends User implements \Hubzero\Search\Searchable
 	 */
 	public static function searchResults($limit, $offset = 0)
 	{
-		return self::all()->start($offset)->limit($limit)->rows();
+		return self::all()
+			->start($offset)
+			->limit($limit)
+			->whereEquals('block', 0)
+			->whereEquals('activation', 1)
+			->where('approved', '>', 0)
+			->rows();
 	}
 
 	/**
@@ -579,7 +586,31 @@ class Member extends User implements \Hubzero\Search\Searchable
 	 */
 	public static function searchTotal()
 	{
-		return self::all()->total();
+		return self::all()
+			->whereEquals('block', 0)
+			->whereEquals('activation', 1)
+			->where('approved', '>', 0)
+			->total();
+	}
+
+	/**
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'member';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
 	}
 
 	/**
@@ -589,13 +620,17 @@ class Member extends User implements \Hubzero\Search\Searchable
 	 */
 	public function searchResult()
 	{
+		if ($this->get('activation') <= 0 || $this->get('block') > 0)
+		{
+			return false;
+		}
 		$obj = new stdClass;
-		$obj->hubtype = 'member';
-		$obj->id      = 'member-' . $this->get('id');
+		$obj->hubtype = $this->searchNamespace();
+		$obj->id      = $this->searchId();
 		$obj->title   = $this->get('name');
 
 		$base = rtrim(Request::base(), '/');
-		$obj->url = str_replace('/administrator', '', $base . '/' . ltrim(Route::url('index.php?option=com_members' . '&id=' . $this->get('id')), '/'));
+		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', 'index.php?option=com_members' . '&id=' . $this->get('id'));
 
 		// @TODO: Add more fields to the SOLR core.
 		$fields = $this->profiles()->rows()->toObject();

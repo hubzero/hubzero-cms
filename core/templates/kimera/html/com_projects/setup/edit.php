@@ -238,8 +238,8 @@ else
 										<p class="hint">
 											<?php echo Lang::txt('COM_PROJECTS_YOUR_PROJECT_IS'); ?>
 											<span class="prominent urgency"><?php
-											$privacy = (!$this->model->isPublic() ? Lang::txt('COM_PROJECTS_PRIVATE') : Lang::txt('COM_PROJECTS_PUBLIC');
-											echo $privacy); ?></span>
+											$privacy = (!$this->model->isPublic() ? Lang::txt('COM_PROJECTS_PRIVATE') : Lang::txt('COM_PROJECTS_PUBLIC'));
+											echo $privacy; ?></span>
 										</p>
 										<label for="params-allow_membershiprequest">
 											<input type="hidden"  name="params[allow_membershiprequest]" value="0" />

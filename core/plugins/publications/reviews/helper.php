@@ -218,25 +218,19 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 
 		if ($vote)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
-			$v = new \Components\Answers\Tables\Vote($database);
-			if ($voted)
-			{
-				$v->load($voted);
-			}
-			$v->referenceid = $id;
-			$v->category    = $cat;
-			$v->voter       = User::get('id');
-			$v->ip          = $ip;
-			$v->voted       = Date::toSql();
-			$v->helpful     = $vote;
+			require_once __DIR__ . DS . 'models' . DS . 'vote.php';
 
-			if (!$v->check())
-			{
-				$this->setError($v->getError());
-				return;
-			}
-			if (!$v->store())
+			$v = \Plugins\Publications\Reviews\Models\Vote::oneByUserAndPublication(User::get('id'), $id);
+			$v->set(array(
+				'referenceid' => $id,
+				'category'    => $cat,
+				'voter'       => User::get('id'),
+				'ip'          => $ip,
+				'voted'       => Date::toSql(),
+				'helpful'     => $vote
+			));
+
+			if (!$v->save())
 			{
 				$this->setError($v->getError());
 				return;

@@ -60,7 +60,8 @@ class Mailings extends AdminController
 			->including(['newsletter', function ($newsletter){
 				$newsletter->select('*');
 			}])
-			->ordered()
+			->whereEquals('deleted', 0)
+			->order('id', 'desc')
 			->rows();
 
 		// Add the number sent

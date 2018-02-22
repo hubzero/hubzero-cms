@@ -80,6 +80,41 @@ $this->css();
 		</nav>
 
 		<?php
+		if (count($this->invites))
+		{
+			?>
+			<table class="entries">
+				<caption><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_INVITED') . ' <span>(' . count($this->invites) . ')</span>'; ?></caption>
+				<tbody>
+					<?php
+					foreach ($this->invites as $invite)
+					{
+						$row = new Components\Projects\Models\Project($invite->projectid);
+						?>
+						<tr class="mline">
+							<td class="th_image">
+								<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
+									<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo htmlentities($this->escape($row->get('title'))); ?>" class="project-image" />
+								</a>
+							</td>
+							<td class="th_privacy">
+								<?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?>
+							</td>
+							<td class="th_title">
+								<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
+							</td>
+							<td>
+								<a class="btn btn-success" href="<?php echo Route::url('index.php?option=com_projects&alias=' . $invite->alias . '&confirm=' . $invite->invited_code . '&email=' . $invite->invited_email); ?>"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_ACCEPT'); ?></a>
+							</td>
+						</tr>
+						<?php
+					}
+					?>
+				</tbody>
+			</table>
+			<?php
+		}
+
 		if ($this->which == 'all')
 		{
 			// Show owned projects first

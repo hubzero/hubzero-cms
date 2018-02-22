@@ -56,7 +56,7 @@ if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getIn
 		if (isset($cookie->user_id))
 		{
 			$user     = User::getInstance($cookie->user_id);
-			$user_img = $cookie->user_img;
+			$user_img = isset($cookie->user_img) ? $cookie->user_img : '';
 			Request::setVar('primary', $primary);
 		}
 	}

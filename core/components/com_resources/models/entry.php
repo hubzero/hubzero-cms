@@ -168,6 +168,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public $revision = null;
 
+
 	/**
 	 * Generates automatic alias field value
 	 *
@@ -342,7 +343,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		$names = array();
 
-		foreach ($this->authors as $contributor)
+		foreach ($this->authors()->order('ordering', 'asc')->rows() as $contributor)
 		{
 			if (strtolower($contributor->get('role')) == 'submitter')
 			{
@@ -655,10 +656,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		{
 			$path = DS . ltrim($path, DS);
 
-			if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
+			/*if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
 			{
 				$path = DS . trim($this->params->get('uploadpath'), DS) . $path;
-			}
+			}*/
 		}
 
 		return $path;
@@ -1590,15 +1591,39 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $allowedgroups;
 	}
 
+	/*
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'resource';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
+
+	/*
+	 * Convert model results into solr readable generic object.
+	 * @return stdClass
+	 */
 	public function searchResult()
 	{
 		$obj = new stdClass;
 
-		$obj->url = Request::root() . $this->link();
+		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->title = $this->title;
 		$id = $this->id;
-		$obj->id = 'resource-' . $id;
-		$obj->hubtype = 'resource';
+		$obj->id = $this->searchId();
+		$obj->hubtype = $this->searchNamespace();
 
 		$obj->type = $this->type()->type;
 
@@ -1618,11 +1643,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			foreach ($tags as $tag)
 			{
 				$title = $tag->get('raw_tag', '');
+				$description = $tag->get('tag', '');
 				$obj->tags[] = array(
 					'id' => 'tag-' . $tag->id,
 					'title' => $title,
+					'description' => $description,
 					'access_level' => $tag->admin == 0 ? 'public' : 'private',
-					'type' => 'tag'
+					'type' => 'resource-tag'
 				);
 			}
 		}

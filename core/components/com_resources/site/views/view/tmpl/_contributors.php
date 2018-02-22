@@ -81,10 +81,15 @@ if ($this->contributors)
 		}
 		$contributor->org = $this->escape(stripslashes(trim($contributor->org)));
 
-		$link = $name;
-		if ($contributor->id)
+		if (!isset($contributor->authorid) && isset($contributor->uid))
 		{
-			$profile = User::getInstance($contributor->id);
+			$contributor->authorid = $contributor->uid;
+		}
+
+		$link = $name;
+		if ($contributor->authorid)
+		{
+			$profile = User::getInstance($contributor->authorid);
 			if ($profile->get('id') && in_array($profile->get('access'), User::getAuthorisedViewLevels()))
 			{
 				$link = '<a href="' . Route::url($profile->link()) . '" rel="contributor" title="' . Lang::txt('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) . '">' . $name . '</a>';

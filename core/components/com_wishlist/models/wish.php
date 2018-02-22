@@ -455,7 +455,7 @@ class Wish extends Relational
 				{
 					case static::WISH_STATE_ACCEPTED:
 						$state  = Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED_INFO');
-						$state .= $this->plan()->exists()
+						$state .= $this->plan()->get('id')
 								? '; ' . Lang::txt('COM_WISHLIST_WISH_PLAN_STARTED')
 								: '';
 						$state .= $this->due() != '0000-00-00 00:00:00'

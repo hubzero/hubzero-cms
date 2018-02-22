@@ -194,13 +194,16 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 								$name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
 							}
 						}
-						$cls  = ($row->isclosed())   ? 'answered' : '';
-						$cls  = ($row->isReported()) ? 'flagged'  : $cls;
-						$cls .= ($row->get('created_by') == User::get('id')) ? ' mine' : '';
+						$cls = ($row->isclosed())   ? 'answered' : '';
+						$cls = ($row->isReported()) ? 'flagged' : $cls;
+						$cls .= ($row->get('created_by') == User::get('id') ? ' mine' : '');
+
+						$icn = ($row->isclosed())   ? 'icon-comments' : 'icon-comment-alt';
+						$icn = ($row->isReported()) ? 'icon-flag' : $icn;
 						?>
-							<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
+							<tr<?php if ($cls) { echo ' class="' . $cls . '"'; } ?>>
 								<th class="priority-5" scope="row">
-									<span class="entry-id"><?php echo $row->get('id'); ?></span>
+									<span class="entry-identifier <?php echo $icn; ?>"><?php echo $row->get('id'); ?></span>
 								</th>
 								<td>
 									<?php if (!$row->isReported()) { ?>
@@ -223,7 +226,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 											<?php echo ($row->get('state')==1) ? Lang::txt('COM_ANSWERS_STATE_CLOSED') : Lang::txt('COM_ANSWERS_STATE_OPEN'); ?>
 										</span>
 										<span class="entry-details-divider">&bull;</span>
-										<span class="entry-comments">
+										<span class="entry-comments icon-comments-alt">
 											<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_RESPONSES_TO_THIS_QUESTION', $row->get('rcount')); ?>">
 												<?php echo $row->responses->count(); ?>
 											</a>
@@ -235,7 +238,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 										<?php if ($row->get('reward')) { ?>
 											<span class="entry-reward">
 												<?php echo $row->get('points'); ?>
-												<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
+												<a class="icon-coins" href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
 													<?php echo Lang::txt('COM_ANSWERS_POINTS'); ?>
 												</a>
 											</span>

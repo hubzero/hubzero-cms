@@ -33,14 +33,19 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import.png');
+$canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-Toolbar::custom('run', 'script', 'script', 'COM_RESOURCES_RUN');
-Toolbar::custom('runtest', 'runtest', 'script', 'COM_RESOURCES_TEST_RUN');
-Toolbar::spacer();
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::deleteList();
+Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import');
+
+if ($canDo->get('core.create'))
+{
+	Toolbar::custom('run', 'script', 'script', 'COM_RESOURCES_RUN');
+	Toolbar::custom('runtest', 'runtest', 'script', 'COM_RESOURCES_TEST_RUN');
+	Toolbar::spacer();
+	Toolbar::addNew();
+	Toolbar::editList();
+	Toolbar::deleteList();
+}
 
 Toolbar::spacer();
 Toolbar::help('import');
@@ -67,13 +72,21 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
-				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
-				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS', 'count', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED', 'created_at', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN', 'ran_at', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="6"><?php
+				// Initiate paging
+				echo $this->imports->pagination;
+				?></td>
+			</tr>
+		</tfoot>
 		<tbody>
 			<?php if ($this->imports->count() > 0) : ?>
 				<?php foreach ($this->imports as $i => $import) : ?>
@@ -155,6 +168,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

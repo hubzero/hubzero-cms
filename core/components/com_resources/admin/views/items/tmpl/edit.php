@@ -420,8 +420,8 @@ function popratings()
 					<div class="input-wrap">
 						<label for="publish_down"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
 						<?php
-							$down = 'Never';
-							if (strtolower($this->row->publish_down) != 'never')
+							$down = Lang::txt('COM_RESOURCES_NEVER');
+							if ($this->row->publish_down && $this->row->publish_down != '0000-00-00 00:00:00' && $this->row->publish_down != Lang::txt('COM_RESOURCES_NEVER'))
 							{
 								$down = Date::of($this->row->publish_down)->toLocal('Y-m-d H:i:s');
 							}

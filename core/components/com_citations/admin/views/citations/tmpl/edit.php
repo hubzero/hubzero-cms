@@ -68,7 +68,7 @@ $journal = html_entity_decode($this->row->journal);
 $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 ?>
 
-<script type="text/javascript" src="<?php echo Request::root(); ?>core/components/com_citations/site/assets/js/citations.js"></script>
+<!-- <script type="text/javascript" src="<?php echo Request::root(); ?>core/components/com_citations/site/assets/js/citations.js"></script> -->
 
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -87,6 +87,18 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	//}
 }
+function citeaddRow(id) {
+	var tr    = $('#' + id).find('tbody tr:last');
+	var clone = tr.clone(true);
+	var cindex = $('#' + id).find('tbody tr').length;
+	var inputs = clone.find('input,select');
+
+	inputs.val('');
+	inputs.each(function(i, el){
+		$(el).attr('name', $(el).attr('name').replace(/\[\d+\]/, '[' + cindex + ']'));
+	});
+	tr.after(clone);
+};
 </script>
 <?php
 	if ($this->getError())
@@ -329,7 +341,7 @@ function submitbutton(pressbutton)
 					</thead>
 					<tfoot>
 						<tr>
-							<td colspan="3"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
+							<td colspan="3"><a href="#" onclick="citeaddRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
 						</tr>
 					</tfoot>
 					<tbody>

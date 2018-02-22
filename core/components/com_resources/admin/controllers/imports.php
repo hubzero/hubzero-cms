@@ -96,6 +96,7 @@ class Imports extends AdminController
 		// Output the HTML
 		$this->view
 			->set('imports', $imports)
+			->set('filters', $filters)
 			->setLayout('display')
 			->display();
 	}

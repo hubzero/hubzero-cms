@@ -110,7 +110,7 @@ if ($mode != 'preview')
 					$children = $this->model->children()
 						->whereEquals('standalone', 1)
 						->whereEquals('published', 1)
-						->ordered()
+						->order('ordering', 'asc')
 						->rows();
 
 					$ccount = count($children);
@@ -141,7 +141,7 @@ if ($mode != 'preview')
 						$grandchildren = $child->children()
 							->whereEquals('standalone', 0)
 							->whereEquals('published', 1)
-							->ordered()
+							->order('ordering', 'asc')
 							->rows();
 
 						if (count($grandchildren) > 0)

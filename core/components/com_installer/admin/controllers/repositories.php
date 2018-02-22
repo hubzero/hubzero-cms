@@ -28,15 +28,12 @@
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Installer\Admin\Helpers\ComposerHelper;
+use Hubzero\Utility\Composer as ComposerHelper;
 use Request;
 use Config;
 use StdClass;
 use Route;
 use App;
-
-include_once dirname(__DIR__) . '/helpers/composer.php';
-
 
 /**
  * Repositories Controller

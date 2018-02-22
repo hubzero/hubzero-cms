@@ -60,17 +60,25 @@ function submitbutton(pressbutton)
 			<thead>
 				<tr>
 					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->hooks->count(); ?>);" /></th>
-					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME'); ?></th>
-					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE'); ?></th>
-					<th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE'); ?></th>
+					<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+					<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+					<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE', 'file', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				</tr>
 			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="4"><?php
+					// Initiate paging
+					echo $this->hooks->pagination;
+					?></td>
+				</tr>
+			</tfoot>
 			<tbody>
 				<?php if ($this->hooks->count() > 0) : ?>
 					<?php foreach ($this->hooks as $i => $hook) : ?>
 						<tr>
 							<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
 							</td>
 							<td>
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $hook->get('id')); ?>">
@@ -84,10 +92,16 @@ function submitbutton(pressbutton)
 								<?php
 									switch ($hook->get('type'))
 									{
-										case 'postconvert':    echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_TYPE_POSTCONVERT');    break;
-										case 'postmap':        echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_TYPE_POSTMAP');        break;
+										case 'postconvert':
+											echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_TYPE_POSTCONVERT');
+											break;
+										case 'postmap':
+											echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_TYPE_POSTMAP');
+											break;
 										case 'postparse':
-										default:               echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_TYPE_POSTPARSE');      break;
+										default:
+											echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_TYPE_POSTPARSE');
+											break;
 									}
 								?>
 							</td>
@@ -107,10 +121,13 @@ function submitbutton(pressbutton)
 			</tbody>
 		</table>
 	</fieldset>
+
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

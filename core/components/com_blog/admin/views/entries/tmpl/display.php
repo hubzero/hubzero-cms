@@ -270,11 +270,11 @@ function submitbutton(pressbutton)
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&entry_id=' . $row->get('id')); ?>">
-							<?php echo Lang::txt('COM_BLOG_COMMENTS', $row->comments->count()); ?>
+							<?php echo Lang::txt('COM_BLOG_COMMENTS', $row->comments()->total()); ?>
 						</a>
 					<?php } else { ?>
 						<span class="comment">
-							<?php echo Lang::txt('COM_BLOG_COMMENTS', $row->comments->count()); ?>
+							<?php echo Lang::txt('COM_BLOG_COMMENTS', $row->comments()->total()); ?>
 						</span>
 					<?php } ?>
 				</td>

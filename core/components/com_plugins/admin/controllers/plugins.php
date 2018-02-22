@@ -175,9 +175,18 @@ class Plugins extends AdminController
 		}
 
 		// Filter by search in id
-		if (!empty($filters['search']) && stripos($filters['search'], 'id:') === 0)
+		if (!empty($filters['search']))
 		{
-			$query->whereEquals($p . '.extension_id', (int) substr($filters['search'], 3));
+			if (stripos($filters['search'], 'id:') === 0)
+			{
+				$query->whereEquals($p . '.extension_id', (int) substr($filters['search'], 3));
+			}
+			else
+			{
+				$query->whereLike($p . '.name', $filters['search'], 1)
+					->orWhereLike($p . '.element', $filters['search'], 1)
+					->resetDepth();
+			}
 		}
 
 		if ($filters['sort'] == 'name')

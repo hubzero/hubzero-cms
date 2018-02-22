@@ -472,10 +472,13 @@ class Citations extends SiteController
 
 		// parse the return from resolver lookup
 		$xml = simplexml_load_string($r);
-		$resolver = $xml->resolverRegistryEntry->resolver;
+		if (is_object($xml))
+		{
+			$resolver = $xml->resolverRegistryEntry->resolver;
+		}
 
 		// if we have resolver set vars for creating open urls
-		if ($resolver != null)
+		if (isset($result) && $resolver != null)
 		{
 			$openUrl['link'] = $resolver->baseURL;
 			$openUrl['text'] = $resolver->linkText;

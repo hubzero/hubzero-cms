@@ -92,6 +92,7 @@ class ImportHooks extends AdminController
 		// Output the HTML
 		$this->view
 			->set('hooks', $hooks)
+			->set('filters', $filters)
 			->setLayout('display')
 			->display();
 	}

@@ -126,7 +126,7 @@ $revision = $this->revision;
 					$children = $this->model->children()
 						->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
 						->whereEquals('standalone', 0)
-						->ordered()
+						->order('ordering', 'asc')
 						->rows();
 
 					$firstChild = $children->first();

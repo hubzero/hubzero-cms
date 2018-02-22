@@ -35,7 +35,6 @@ namespace Modules\WhatsNew;
 
 use Hubzero\Module\Module;
 use Components\Whatsnew\Helpers\Period;
-use MembersModelTags;
 use Component;
 use Request;
 use Event;
@@ -125,7 +124,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(Component::path('com_whatsnew') . DS . 'helpers' . DS . 'period.php');
+		include_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'period.php';
 		$live_site = rtrim(Request::base(), '/');
 
 		// Get some initial parameters
@@ -135,13 +134,11 @@ class Helper extends Module
 		$this->period = $this->params->get('period', 'resources:month');
 		$this->tagged = intval($this->params->get('tagged', 0));
 
-		$database = \App::get('db');
-
 		// Build the feed link if necessary
 		if ($this->feed)
 		{
 			$this->feedlink = Route::url('index.php?option=com_whatsnew&task=feed.rss&period=' . $this->period);
-			$this->feedlink = DS . trim($this->feedlink, DS);
+			$this->feedlink = '/' . trim($this->feedlink, '/');
 			$this->feedlink = $live_site . $this->feedlink;
 			if (substr($this->feedlink, 0, 5) == 'https')
 			{
@@ -156,10 +153,10 @@ class Helper extends Module
 		$area = '';
 
 		// Check the search string for a category prefix
-		if ($this->period != NULL)
+		if ($this->period != null)
 		{
 			$searchstring = strtolower($this->period);
-			foreach ($areas as $c=>$t)
+			foreach ($areas as $c => $t)
 			{
 				$regexp = "/" . $c . ":/";
 				if (strpos($searchstring, $c . ":") !== false)
@@ -220,7 +217,8 @@ class Helper extends Module
 		{
 			foreach ($results as $result)
 			{
-				if (is_array($result) && !empty($result))
+				if (($result instanceof \Iterator && $result->count() > 0)
+				 || (is_array($result) && !empty($result)))
 				{
 					$rows = $result;
 					break;
@@ -233,7 +231,8 @@ class Helper extends Module
 
 		if ($this->tagged)
 		{
-			include_once(Component::path('com_members') . DS . 'models' . DS . 'tags.php');
+			include_once Component::path('com_members') . DS . 'models' . DS . 'tags.php';
+
 			$mt = new \Components\Members\Models\Tags(User::get('id'));
 			$tags = $mt->tags();
 

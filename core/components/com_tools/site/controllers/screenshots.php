@@ -185,13 +185,14 @@ class Screenshots extends SiteController
 		// Build the path
 		$listdir  = $row->relativepath() . DS . $vid;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir;
-		$this->view->upath = $row->filespace();
 
 		// Make sure wpath is preceded by app
 		if (substr($this->view->wpath, 0, 4) != DS . 'app')
 		{
 			$this->view->wpath = DS . 'app' . $this->view->wpath;
 		}
+
+		$this->view->upath = PATH_ROOT . $this->view->wpath;
 
 		// Instantiate a new screenshot object
 		$shot = Screenshot::oneByFilename($this->view->file, $pid, $vid);

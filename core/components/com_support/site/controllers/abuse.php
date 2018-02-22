@@ -185,7 +185,12 @@ class Abuse extends SiteController
 		$incoming = array_map('trim', $_POST);
 
 		// Initiate class and bind posted items to database fields
-		$row = Report::blank()->set($incoming);
+		$row = Report::blank()->set(array(
+			'report'      => (isset($incoming['report']) ? $incoming['report'] : ''),
+			'category'    => (isset($incoming['category']) ? $incoming['category'] : ''),
+			'referenceid' => (isset($incoming['referenceid']) ? $incoming['referenceid'] : 0),
+			'subject'     => (isset($incoming['subject']) ? $incoming['subject'] : 'Other')
+		));
 
 		$row->set('report', Sanitize::clean($row->get('report')));
 		$row->set('report', nl2br($row->get('report')));

@@ -342,6 +342,11 @@ $router->rules('parse')->append('limit', function ($uri)
 		$uri->delVar('start');
 		\App::get('router')->forget('start');
 	}
+	// Make sure the values are sane
+	if (intval($uri->getVar('limitstart')) < 0 || intval($uri->getVar('limit')) < 0)
+	{
+		\App::abort(404, \Lang::txt('Invalid pagination value.'));
+	}
 });
 
 /*
