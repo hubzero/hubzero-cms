@@ -65,7 +65,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 				$commitWithin = $config->get('solr_commit');
 				$index = new \Hubzero\Search\Index($config);
 				$modelIndex = $model->searchResult();
-				if ($modelIndex === false)
+				if ($modelIndex !== false)
 				{
 					$index->updateIndex($modelIndex, $commitWithin);
 				}
