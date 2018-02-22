@@ -49,16 +49,7 @@
 	.blog-entries dl.entry-meta {
 		font-style: italic;
 	}
-	.blog-entries .expired .entry-title:before {
-		content: "\f070";
-		font-family: "Fontcons";
-		font-weight: normal;
-	}
-	.blog-entries .expired .entry-content {
-		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
-		filter: alpha(opacity=35);
-		opacity: 0.35;
-	}
+
 	/* Metadata */
 	dl.entry-meta dt {
 		display: none;
@@ -140,15 +131,9 @@
 	.entry-options .edit:before,
 	.entry-options .delete:before{
 		margin-right: 1em;
-		font-family: "Fontcons";
 		font-weight: normal;
 	}
-	.entry-options .edit:before {
-		content: "\270E";
-	}
-	.entry-options .delete:before {
-		content: "\f014";
-	}
+
 	.entry-options .edit:hover {
 		color: #222;
 	}
@@ -287,34 +272,7 @@
 	.entry-content blockquote:before {
 		display: none;
 	}
-	/*.entry-content pre {
-		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
-		color: #555;
-		background-color: #f7f7f7;
-		border: 1px solid #d7d7d7;
-		margin: 1em 1.75em;
-		padding: .25em;
-		overflow: auto;
-		font-size: 0.85em;
-		line-height: 1.95em;
-		white-space: pre;
-		white-space: pre-wrap;
-		word-wrap: break-word;
-		white-space: -moz-pre-wrap;
-		white-space: -pre-wrap;
-		white-space: -o-pre-wrap;
-	}
-	.entry-content .pre {
-		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
-		color: #555;
-		background-color: #f7f7f7;
-		border: 1px solid #d7d7d7;
-		margin: 1em 1.35em;
-		padding: .25em;
-		overflow: auto;
-		font-size: 1.15em;
-		line-height: 1.35em;
-	}*/
+
 	.entry-content tt,
 	.entry-content code {
 		display: inline-block;
@@ -338,52 +296,6 @@
 		display: block;
 	}
 
-	/* Links */
-	.entry-content a.ext-link:before {
-		font-family: "Fontcons";
-		content: "\f08e";
-		color: #ccc;
-		margin-right: 0.2em;
-	}
-	.entry-content a.missing:before {
-		content: "?";
-		color: #ccc;
-		margin-right: 0.2em;
-	}
-
-	.entry-content .mbox-content {
-		border: 1px solid #aaa;
-		background: #fff;
-		border-left: 10px solid #f28500;
-		padding: 0;
-		width: 250px;
-		font-size: 0.85em;
-		position: relative;
-	}
-	.entry-content .mbox-content p.mbox-text {
-		padding: 0.4em 0.4em 0.4em 4.4em;
-		margin: 0;
-		line-height: 1.4em;
-	}
-	.entry-content .mbox-content .mbox-date {
-		font-style: italic;
-	}
-	.entry-content .mbox-unreferenced p:before {
-		font-family: "Fontcons";
-		content: "\275D"; /* \f072 */
-		color: #ddd;
-		font-size: 3em;
-		line-height: 1;
-		position: absolute;
-		top: 0.1em;
-		left: 0.3em;
-		font-weight: normal;
-	}
-	.entry-content .rellink {
-		font-style: italic;
-		padding-left: 1.6em;
-		margin-bottom: 0.5em;
-	}
 	.entry-content td {
 		background-color: #fff;
 	}
@@ -405,79 +317,6 @@
 		padding: 0 1em;
 	}
 
-	/*ol.comments .comment-options a {
-		visibility: hidden;
-	}
-	ol.comments .comment-options,
-	ol.comments .comment-options:hover a,
-	ol.comments .comment-options a.reply {
-		visibility: visible;
-	}*/
-	ol.comments .comment-options a {
-		color: #ccc;
-		border: none;
-	}
-	ol.comments .comment-options:hover a {
-		color: #999;
-	}
-	ol.comments .comment-options a.active,
-	ol.comments .comment-options a:hover {
-		color: #333;
-	}
-	ol.comments .comment-options a.abuse:hover,
-	ol.comments .comment-options a.delete:hover {
-		color: #c00;
-	}
-	ol.comments .comment-options a:before {
-		margin-right: 0.4em;
-	}
-	ol.comments .comment-options a.active:before {
-		content: "\2716";
-	}
-/* Add comment */
-	.comment-add {
-		margin: 0 -1.61803399em -0.61803399em -1.61803399em;
-		padding: 1.61803399em;
-		border: 1px solid #ddd;
-		background-color: #f1f1f1;
-		border: none;
-		border-top: 1px solid #ddd;
-	}
-	.comment-add legend {
-		display: none;
-	}
-	.comment-add label {
-		display: block;
-	}
-	.comment-add label span.label-text {
-		display: none;
-	}
-	.comment-add .cancelreply {
-		margin-left: 2em;
-	}
-	.comment-add .submit {
-		clear: both;
-		margin: -1.5em 0 0 0;
-		padding: 0;
-		text-align: right;
-	}
-	.comment-add input, 
-	.comment-add select, 
-	.comment-add textarea {
-		margin: 0.25em 0 0.5em 0;
-		width: 100%;
-	}
-	.comment-add .submit input,
-	.comment-add .option {
-		width: auto;
-	}
-	.comment-add .upload-label {
-		margin-bottom: 0.5em;
-	}
-	.comment-add .reply-anonymous-label {
-		width: 50%;
-	}
-
 /* Figures */
 	.entry-content .figure {
 		display: inline-block;
@@ -486,7 +325,7 @@
 		padding: 4px;
 	}
 	.entry-content .figure img {
-		margin: 0; /*.5em;*/
+		margin: 0;
 		padding: 0;
 		background: transparent;
 		text-align: center;
@@ -504,7 +343,7 @@
 	}
 
 	#attachments .delete {
-		width: 1em; 
+		width: 1em;
 		overflow: hidden;
 		display: block;
 		white-space: nowrap;

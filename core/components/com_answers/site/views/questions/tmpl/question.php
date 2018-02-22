@@ -304,7 +304,7 @@ $this->css()
 
 				<?php if ($this->question->reward() && $this->question->isOpen() && $this->question->config('banking')) { ?>
 					<p class="intro">
-						<?php echo Lang::txt('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php echo $this->question->config('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo Lang::txt('COM_ANSWERS_NUMBER_POINTS', $this->question->reward()); ?></span>
+						<?php echo Lang::txt('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a class="icon-coins" href="<?php echo $this->question->config('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo Lang::txt('COM_ANSWERS_NUMBER_POINTS', $this->question->reward()); ?></span>
 					</p>
 				<?php } ?>
 
