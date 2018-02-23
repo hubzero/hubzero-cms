@@ -82,7 +82,7 @@ Document::setTitle(Lang::txt('COM_KB'));
 								if (count($popular) > 0) { ?>
 									<ul class="articles">
 									<?php foreach ($popular as $row) { ?>
-										<li>
+										<li class="icon-file">
 											<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
 												<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 											</a>
@@ -110,7 +110,7 @@ Document::setTitle(Lang::txt('COM_KB'));
 								if (count($recent) > 0) { ?>
 									<ul class="articles">
 									<?php foreach ($recent as $row) { ?>
-										<li>
+										<li class="icon-file">
 											<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
 												<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 											</a>
@@ -161,7 +161,7 @@ Document::setTitle(Lang::txt('COM_KB'));
 									<?php foreach ($articles as $article) {
 										$article->set('calias', $row->get('path'));
 										?>
-										<li>
+										<li class="icon-file">
 											<a href="<?php echo Route::url($article->link()); ?>">
 												<?php echo $this->escape(stripslashes($article->get('title'))); ?>
 											</a>

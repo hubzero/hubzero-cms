@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_kb/kb.css
+ * @file        components/com_kb/site/assets/css/kb.css
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
@@ -25,19 +25,19 @@
 		position: relative;
 		background-image: none;
 	}
-	.com_kb ul.articles li:before {
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 0;
-		font-family: "Fontcons";
-		content: "\f016";
-		color: #aaa;
-	}
 
 /* Entries (table) */
-	.com_kb .entries .entry-id:before {
-		content: "\f016";
+	.com_kb .entries .entry-identifier {
+		display: block;
+		overflow: hidden;
+		width: 1.2em;
+		height: 1.2em;
+		margin: .5em 0 0 0;
+		color: #999;
+		font-size: 1.2em;
+	}
+	.com_kb .entries .entry-identifier:before {
+		margin-right: 1em;
 	}
 	.com_kb .entries tbody td.voting,
 	.com_kb .container .voting {

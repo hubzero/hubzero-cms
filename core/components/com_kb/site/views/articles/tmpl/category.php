@@ -151,7 +151,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 							?>
 							<tr>
 								<th>
-									<span class="entry-id"><?php echo $row->get('id'); ?></span>
+									<span class="entry-identifier icon-file"><?php echo $row->get('id'); ?></span>
 								</th>
 								<td>
 									<a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a><br />
