@@ -757,7 +757,7 @@ class Profiles extends SiteController
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
-				Lang::txt('You must be logged in to access this area.'),
+				Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
 				'warning'
 			);
 		}
@@ -776,7 +776,7 @@ class Profiles extends SiteController
 	{
 		// Incoming
 		$id  = Request::getVar('id', 0);
-		$tab = Request::getVar('active', 'dashboard');  // The active tab (section)
+		$tab = Request::getVar('active');  // The active tab (section)
 
 		// Get the member's info
 		if (is_numeric($id))
@@ -875,10 +875,9 @@ class Profiles extends SiteController
 			}
 		}
 
-		//if ($tab != 'profile' && !in_array($tab, $available))
+		// If no active tab specified, default to the first available
 		if (!in_array($tab, $available) && isset($available[0]))
 		{
-			//$tab = 'profile';
 			$tab = $available[0];
 		}
 
