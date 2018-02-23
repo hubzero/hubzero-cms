@@ -2556,7 +2556,7 @@ class Resources extends SiteController
 
 				//$auths = explode(';', $row->author);
 				//for ($i=0, $n=count($auths); $i < $n; $i++)
-				foreach ($row->contributors('!submitter') as $auth)
+				foreach ($row->contributors('!submitter') as $i => $auth)
 				{
 					//$author = trim($auths[$i]);
 					$author = preg_replace('/\{\{(.+)\}\}/i', '', $auth->name);
