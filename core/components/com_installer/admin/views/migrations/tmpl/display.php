@@ -118,7 +118,7 @@ $this->css();
 					</td>
 					<td class="status">
 						<?php if ($row['status'] == 'pending') : ?>
-							<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=migrate&file='.$row['entry']).'&'.Session::getFormToken().'=1'; ?>">
+							<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=migrate&file='.$row['file']).'&'.Session::getFormToken().'=1'; ?>">
 						<?php endif; ?>
 							<span class="state <?php echo ($row['status'] == 'complete') ? 'published' : $row['status']; ?>">
 								<span class="text"><?php echo $row['status']; ?></span>
