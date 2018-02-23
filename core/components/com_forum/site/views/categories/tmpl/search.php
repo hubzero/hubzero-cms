@@ -88,13 +88,16 @@ $this->css()
 										}
 									}
 									$cls = array();
+									$icn = 'icon-comments';
 									if ($row->get('closed'))
 									{
 										$cls[] = 'closed';
+										$icn = 'icon-lock';
 									}
 									if ($row->get('sticky'))
 									{
 										$cls[] = 'sticky';
+										$icn = 'icon-asterisk';
 									}
 
 									$category = $row->get('category_id');
@@ -116,7 +119,7 @@ $this->css()
 									?>
 									<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
 										<th class="priority-5" scope="row">
-											<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
+											<span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
 										</th>
 										<td>
 											<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $secalias . '&category=' . $catalias . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']); ?>">

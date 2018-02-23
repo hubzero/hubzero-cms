@@ -103,7 +103,7 @@ class Article extends Relational
 	/**
 	 * Fields to be parsed
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $parsed = array(
 		'fulltxt'
@@ -236,22 +236,28 @@ class Article extends Relational
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string  $as  What data to return
+	 * @param   string  $as   What data to return
+	 * @param   string  $key  Field to parse
 	 * @return  string
 	 */
 	private function _datetime($as='', $key='created')
 	{
-		$as = strtolower($as);
 		$dt = $this->get($key);
 
-		if ($as == 'date')
+		if ($as)
 		{
-			$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-		}
-
-		if ($as == 'time')
-		{
-			$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+			if (strtolower($as) == 'date')
+			{
+				$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+			}
+			elseif (strtolower($as) == 'time')
+			{
+				$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+			}
+			else
+			{
+				$dt = Date::of($dt)->toLocal($as);
+			}
 		}
 
 		return $dt;
