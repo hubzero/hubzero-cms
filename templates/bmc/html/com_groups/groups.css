@@ -95,8 +95,8 @@
   overflow: hidden;
 }
 /* BEGIN: Fixing files plugin */
-.qq-upload-button span,
-.qq-upload-drop-area span {
+.files-wrap .qq-upload-button span,
+.files-wrap .qq-upload-drop-area span {
   font-size: 0.8em;
 }
 .filelist-headers ul {
