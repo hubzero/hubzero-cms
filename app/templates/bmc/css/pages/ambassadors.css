@@ -1,0 +1,98 @@
+.contentpaneopen {
+  display: grid;
+  grid-template-columns: repeat(4, [col] 1fr);
+  grid-template-rows: 2fr 1fr auto 1fr;
+}
+
+.contentpaneopen p:first-child {
+  margin: 0;
+}
+
+.contentpaneopen p:nth-child(2) {
+  margin: 0;
+}
+
+.ambassador-header {
+  grid-column: col/span 4;
+  grid-row: 1;
+  background: url("/app/site/media/images/providence-doucet-87304-unsplash.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/providence-doucet-87304-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 20rem;
+  text-align: center;
+  padding: 2.5em;
+  color: #fff;
+}
+
+.ambassador-header .intro {
+  grid-column: 2/span 2;
+  align-self: center;
+}
+
+.ambassador-header h2 {
+  color: #fff;
+}
+
+.ambassador {
+  grid-column: col/span 4;
+  grid-row: 2;
+  padding: 2.5em;
+}
+
+.ambassador p {
+  margin: 1em 0 !important;
+}
+
+.img-container {
+  grid-column: col 3/span 2;
+  grid-row: 3;
+  padding: 2.5em;
+}
+
+.participate {
+  grid-column: col/span 2;
+  grid-row: 3;
+  align-self: center;
+  padding: 0 2.5em;
+}
+
+.apply {
+  grid-column: col/span 4;
+  grid-row: 4;
+  padding: 2.5em;
+}
+
+.apply .emphasis {
+  font-weight: bold;
+  color: #007991;
+}
+
+.apply .link {
+  margin-top: 4em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.apply .link a {
+  padding: .25em .75em;
+  border: 1px solid #007991;
+  color: #007991 !important;
+}
+
+.apply .link a:active {
+  color: #007991;
+}
+
+.apply .link a:visited {
+  color: #007991;
+}
+
+@supports (display: grid) {
+  .ambassador-header {
+    height: auto;
+  }
+}
