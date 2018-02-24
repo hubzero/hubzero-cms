@@ -65,15 +65,6 @@
 		text-align: center;
 	}
 
-	.com_tags .sort-options a:before {
-		content: "\2191";
-		font-family: "Fontcons";
-	}
-	.com_tags .sort-options a.asc:before {
-		content: "\2193";
-		font-family: "Fontcons";
-	}
-
 /* Related tags */
 	#related h3 {
 		display: block;
