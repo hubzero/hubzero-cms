@@ -311,12 +311,28 @@ jQuery(function(jq)
 			'<fieldset>' + 
 				'<legend>Show for resource types:</legend>' + 
 				'<div class="input-wrap">' + 
-					'<select name="types-new-' + new_idx + '[]" id="types-new-' + new_idx + '" multiple="multiple" size="' + window.resourceTypes.length + '">';
+					'<select name="rtypes-new-' + new_idx + '[]" id="rtypes-new-' + new_idx + '" multiple="multiple" size="' + window.resourceTypes.length + '">';
 					$(window.resourceTypes).each(function(_idx, type)
 					{
 						html += '<option value="' + type.id + '">' + type.type + '</option>';
 					});
 					html += '</select>' + 
+					'</div>' +
+			'</fieldset>' +
+			'<fieldset>' + 
+				'<legend>Show for publication types:</legend>' + 
+				'<div class="input-wrap">' + 
+					'<select name="ptypes-new-' + new_idx + '[]" id="ptypes-new-' + new_idx + '" multiple="multiple" size="' + window.publicationTypes.length + '">';
+					$(window.publicationTypes).each(function(_idx, type)
+					{
+						html += '<option value="' + type.id + '">' + type.type + '</option>';
+					});
+					html += '</select>' + 
+				'</div>' +
+			'</fieldset>' +
+			'<fieldset>' +
+				'<legend>Requirement:</legend>' +
+				'<div class="input-wrap">' +
 					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-optional" value="optional" /> optional</label><br />' +
 					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-mandatory" value="mandatory" /> mandatory</label><br />' + 
 					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-depth" value="depth" /></label> <label for="mandatory-depth-new-' + new_idx + '">until depth:</label><br />' + 
@@ -329,7 +345,7 @@ jQuery(function(jq)
 					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-multiple" value="multiple" /> multiple-select (checkbox)</label><br />' + 
 					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-single" value="single" /> single-select (radio) </label><br />' + 
 					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-depth" value="depth" /> single-select</label> <label for="multiple-depth-new-' + new_idx + '">until depth: </label><br />' + 
-					 '<input type="text" name="multiple-depth-new-' + new_idx + '" id="multiple-depth-new-' + new_idx + '" />' + 
+					'<input type="text" name="multiple-depth-new-' + new_idx + '" id="multiple-depth-new-' + new_idx + '" />' + 
 				'</div>' + 
 			'</fieldset>' + 
 			'<div class="input-wrap">' + 

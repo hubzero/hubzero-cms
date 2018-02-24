@@ -47,19 +47,21 @@ $this->js('tag_graph.js');
 
 $dbh = App::get('db');
 $dbh->setQuery(
-	'SELECT *, (SELECT group_concat(resource_type_id) FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS types
-	FROM `#__tags` t
-	INNER JOIN `#__focus_areas` fa ON fa.tag_id = t.id
-	ORDER BY raw_tag'
+	'SELECT *, (SELECT group_concat(resource_type_id) FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS rtypes, (SELECT group_concat(master_type_id) FROM `#__focus_area_publication_master_type_rel` WHERE focus_area_id = fa.id) AS ptypes FROM `#__tags` t INNER JOIN `#__focus_areas` fa ON fa.tag_id = t.id ORDER BY raw_tag'
 );
 $fas = $dbh->loadAssocList();
 $dbh->setQuery(
 	'SELECT DISTINCT id, type FROM `#__resource_types` WHERE category = (SELECT id FROM `#__resource_types` WHERE type = \'Main Types\') AND contributable ORDER BY type'
 );
-$types = $dbh->loadAssocList('id');
+$rtypes = $dbh->loadAssocList('id');	// Resource types
+$dbh->setQuery(
+	'SELECT DISTINCT id, type FROM `#__publication_master_types` WHERE contributable ORDER BY type'
+);
+$ptypes = $dbh->loadAssocList('id');	// Publication master types
 ?>
 <script type="text/javascript">
-window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
+window.resourceTypes = <?php echo json_encode(array_values($rtypes)); ?>;
+window.publicationTypes = <?php echo json_encode(array_values($ptypes)); ?>;
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
@@ -68,7 +70,8 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 			<div id="fas">
 			<?php
 			foreach ($fas as $i => $fa):
-				$type_ids = array_flip(explode(',', $fa['types']));
+				$rtype_ids = array_flip(explode(',', $fa['rtypes']));
+				$ptype_ids = array_flip(explode(',', $fa['ptypes']));
 			?>
 				<fieldset class="adminform" id="group-<?php echo $i; //echo $fa['id']; ?>">
 					<legend><span><?php echo Lang::txt('COM_TAGS_GROUP'); ?></span></legend>
@@ -78,16 +81,35 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 						<input type="text" name="name-<?php echo $fa['id']; ?>" id="name-<?php echo $fa['id']; ?>" value="<?php echo str_replace('"', '&quot;', $fa['raw_tag']); ?>" />
 					</div>
 
+					<!-- Resources -->
 					<fieldset>
 						<legend><?php echo Lang::txt('COM_TAGS_GROUP_RESOURCE_TYPES'); ?>:</legend>
 
 						<div class="input-wrap">
-							<select id="types-<?php echo $fa['id']; ?>" name="types-<?php echo $fa['id']; ?>[]" multiple="multiple" size="<?php echo count($types); ?>">
-								<?php foreach ($types as $type): ?>
-									<option value="<?php echo $type['id']; ?>" <?php if (isset($type_ids[$type['id']])) echo 'selected="selected" '; ?>><?php echo $type['type']; ?></option>
+							<select id="rtypes-<?php echo $fa['id']; ?>" name="rtypes-<?php echo $fa['id']; ?>[]" multiple="multiple" size="<?php echo count($rtypes); ?>">
+								<?php foreach ($rtypes as $type): ?>
+									<option value="<?php echo $type['id']; ?>" <?php if (isset($rtype_ids[$type['id']])) echo 'selected="selected" '; ?>><?php echo $type['type']; ?></option>
 								<?php endforeach; ?>
 							</select>
+						</div>
+					</fieldset>
 
+					<!-- Publications -->
+					<fieldset>
+						<legend><?php echo Lang::txt('COM_TAGS_GROUP_PUBLICATION_TYPES'); ?>:</legend>
+						<div class="input-wrap">
+							<select id="ptypes-<?php echo $fa['id']; ?>" name="ptypes-<?php echo $fa['id']; ?>[]" multiple="multiple" size="<?php echo count($ptypes); ?>">
+								<?php foreach ($ptypes as $type): ?>
+									<option value="<?php echo $type['id']; ?>" <?php if (isset($ptype_ids[$type['id']])) echo 'selected="selected" '; ?>><?php echo $type['type']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+					</fieldset>
+
+					<!-- Requirement -->
+					<fieldset>
+						<legend><?php echo Lang::txt('COM_TAGS_GROUP_REQUIREMENT'); ?>:</legend>
+						<div class="input-wrap">
 							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="optional" <?php if (is_null($fa['mandatory_depth'])) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_OPTIONAL'); ?></label><br />
 							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="mandatory" <?php if (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label><br />
 							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['mandatory_depth'] > 1) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label> <label><?php echo Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>:</label><br />
@@ -95,6 +117,7 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 						</div>
 					</fieldset>
 
+					<!-- Selection type -->
 					<fieldset>
 						<legend><?php echo Lang::txt('COM_TAGS_GROUP_SELECTION_TYPE'); ?>:</legend>
 						<div class="input-wrap">
