@@ -354,21 +354,25 @@ $legacy = array(
 							<div class="section-edit-content">
 								<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registation="password" data-section-profile="password">
 									<span class="section-edit-errors"></span>
-									<label for="password">
-										<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
-										<input type="password" name="oldpass" id="password" class="input-text" />
-									</label>
-									<label for="newpass" class="side-by-side">
-										<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_NEW'); ?>
-										<input type="password" name="newpass" id="newpass" class="input-text" />
-									</label>
-									<label for="newpass2" class="side-by-side no-padding-right">
-										<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CONFIRM'); ?>
-										<input type="password" name="newpass2" id="newpass2" class="input-text" />
-									</label>
+									<div class="input-wrap">
+										<label for="password">
+											<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
+											<input type="password" name="oldpass" id="password" class="input-text" />
+										</label>
+									</div>
+									<div class="input-wrap">
+										<label for="newpass" class="side-by-side">
+											<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_NEW'); ?>
+											<input type="password" name="newpass" id="newpass" class="input-text" />
+										</label>
+										<label for="newpass2" class="side-by-side no-padding-right">
+											<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CONFIRM'); ?>
+											<input type="password" name="newpass2" id="newpass2" class="input-text" />
+										</label>
+									</div>
 									<input type="hidden" name="change" value="1" />
-									<input type="submit" class="section-edit-submit" value="Save" />
-									<input type="reset" class="section-edit-cancel" value="Cancel" />
+									<input type="submit" class="section-edit-submit btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
+									<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_CANCEL'); ?>" />
 									<input type="hidden" name="option" value="com_members" />
 									<input type="hidden" name="controller" value="profiles" />
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />

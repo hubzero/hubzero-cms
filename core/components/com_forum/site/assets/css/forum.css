@@ -1,8 +1,8 @@
 /**
- * @package	 hubzero-cms
- * @file		components/com_feedback/feedback.css
+ * @package     hubzero-cms
+ * @file        components/com_feedback/site/assets/css/feedback.css
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license	 http://opensource.org/licenses/MIT MIT
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -102,41 +102,22 @@
 	.entries caption a {
 		float: right;
 	}
-	.entries caption .edit {
-		left: ;
+
+	.entries .entry-identifier {
+		display: block;
+		overflow: hidden;
+		width: 1.2em;
+		height: 1.2em;
+		margin: .5em 0 0 0;
+		color: #999;
+		font-size: 1.2em;
+	}
+	.entries .entry-identifier:before {
+		margin-right: 1em;
 	}
 
-	#content-header-extra .comments:before {
-		font-family: "Fontcons";
-		content: "\f086";
-	}
-	#content-header-extra .categories:before {
-		font-family: "Fontcons";
-		content: "\f07b";
-	}
-	.com_forum .entries .entry-id:before {
-		content: "\f086";
-	}
-	.com_forum h3.closed:before {
-		font-family: "Fontcons";
-		margin-right: 0.2em;
-		color: #999;
-	}
-	.com_forum h3.closed:before,
-	.com_forum .entries .closed .entry-id:before {
-		content: "\f023";
-	}
-	.com_forum .entries .sticky .entry-id:before {
-		content: "\273D";
-	}
-	.com_forum .categories .entry-id:before {
-		content: "\f07b";
-	}
 	.com_forum .categories tbody th + td {
 		width: 70%;
-	}
-	.com_forum .categories .closed .entry-id:before {
-		content: "\f023";
 	}
 
 	.entry-details a {
@@ -190,15 +171,6 @@
 	}
 	.com_forum .post-comment-title {
 		margin-top: 2em;
-	}
-
-	.com_forum .container .order-options a:before {
-		content: "\2193";
-		font-family: "Fontcons";
-	}
-	.com_forum .container .order-options a.asc:before {
-		content: "\2191";
-		font-family: "Fontcons";
 	}
 
 	.aside .entry-comment {
@@ -257,8 +229,6 @@
 		left: 50%;
 		font-size: 5em;
 		margin-left: -0.5em;
-		content: "\f086";
-		font-family: "Fontcons";
 	}
 	.instructions legend,
 	.instructions label {

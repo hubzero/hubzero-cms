@@ -122,10 +122,15 @@ $this->css()
 								<?php foreach ($categories as $row) { ?>
 									<?php
 									$row->set('section_alias', $section->get('alias'));
+									$icn = 'icon-folder';
+									if ($row->get('closed'))
+									{
+										$icn = 'icon-lock';
+									}
 									?>
 									<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
 										<th class="priority-5" scope="row">
-											<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
+											<span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
 										</th>
 										<td>
 											<a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
@@ -288,7 +293,7 @@ $this->css()
 		</aside><!-- / .aside -->
 	</div>
 <?php } else { ?>
-	<div class="instructions">
+	<div class="instructions icon-comments">
 		<?php if ($this->config->get('access-create-section')) { ?>
 			<p class="notification"><?php echo Lang::txt('COM_FORUM_EMPTY_MODERATOR', Route::url('index.php?option=' . $this->option . '&action=populate')); ?></p>
 

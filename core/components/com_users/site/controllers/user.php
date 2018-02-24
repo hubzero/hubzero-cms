@@ -155,7 +155,14 @@ class UsersControllerUser extends UsersController
 		// Set the return URL in the user state to allow modification by plugins
 		User::setState('users.login.form.return', $data['return']);
 
-		$result = App::get('auth')->login($credentials, $options);
+		try
+		{
+			$result = App::get('auth')->login($credentials, $options);
+		}
+		catch (Exception $e)
+		{
+			$result = $e;
+		}
 
 		// Perform the log in.
 		if (true === $result)
