@@ -13,9 +13,11 @@
 
 //Header
 .ambassador-header {
+  @include flexbox;
   @include grid(col / span 4, 1);
   @include bcg-img('/app/site/media/images/providence-doucet-87304-unsplash.jpg');
   @include grid-template(repeat(4,1fr), null);
+  align-items: center;
   height: 20rem;
   text-align: center;
   padding: 2.5em;
@@ -23,9 +25,6 @@
   .intro {
     @include grid(2 / span 2, null);
     align-self: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
   }
   h2 {
     color: $white;
