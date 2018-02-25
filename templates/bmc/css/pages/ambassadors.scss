@@ -23,6 +23,9 @@
   .intro {
     @include grid(2 / span 2, null);
     align-self: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
   h2 {
     color: $white;
@@ -41,11 +44,14 @@
 //Ways to Participate
 .img-container {
   @include grid(col 3 / span 2, 3);
+  float: right;
+  width: 50%;
   padding: 2.5em;
 }
 .participate {
   @include grid(col / span 2, 3);
   align-self: center;
+  width: 50%;
   padding: 0 2.5em;
 }
 
@@ -64,9 +70,33 @@
   }
 }
 
+@media only screen and (min-width: 320px) and (max-width: 899px) {
+  .contentpaneopen {
+    @include grid-template(repeat(4, [col] 1fr), 2fr 1fr 1fr 1fr 1fr);
+  }
+  .participate {
+    @include grid(col / span 4, 3);
+    width: 100%;
+  }
+  .img-container {
+    @include grid(col / span 4, 4);
+    float: none;
+    width: 100%;
+  }
+  .apply {
+    @include grid(null, 5);
+  }
+}
 //Reset widths if css grid is supported
 @supports (display:grid) {
-  .ambassador-header{
+  .ambassador-header {
     height: auto;
+  }
+  .img-container {
+    width: auto;
+    float: none;
+  }
+  .participate {
+    width: auto;
   }
 }
