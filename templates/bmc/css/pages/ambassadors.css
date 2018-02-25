@@ -13,6 +13,8 @@
 }
 
 .ambassador-header {
+  display: flex;
+  flex-wrap: nowrap;
   grid-column: col/span 4;
   grid-row: 1;
   background: url("/app/site/media/images/providence-doucet-87304-unsplash.jpg");
@@ -22,6 +24,7 @@
   background-repeat: no-repeat;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  align-items: center;
   height: 20rem;
   text-align: center;
   padding: 2.5em;
@@ -31,9 +34,6 @@
 .ambassador-header .intro {
   grid-column: 2/span 2;
   align-self: center;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .ambassador-header h2 {
