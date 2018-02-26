@@ -124,6 +124,13 @@
 		font-size: 0.85em;
 		font-style: italic;
 	}
+
+	.result-extras > .result-citation {
+		font-style: normal;
+		font-size: 1.1em;
+		opacity: 1;
+		color: black;
+	}
 	.result-extras>span {
 		margin-right: 1.5em;
 	}
@@ -133,6 +140,17 @@
 	}
 	.result-tags .tags li {
 		padding: 0;
+	}
+
+	.result-badges {
+		display: inline-block;
+		margin-left: .5em;
+	}
+
+	.result-badges .tags > li > a.tag {
+		background: brown !important;
+		color: white !important;
+		font-weight:bold;
 	}
 
 	.result-privacy .private:before {

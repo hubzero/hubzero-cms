@@ -42,10 +42,12 @@ use Plugin;
 use Config;
 use Lang;
 use stdClass;
+use Components\Resources\Models\Entry;
 
 require_once \Component::path('com_search') . '/models/solr/facet.php';
 require_once \Component::path('com_search') . '/models/solr/searchcomponent.php';
 require_once \Component::path('com_search') . '/helpers/urlqueryhelper.php';
+require_once \Component::path('com_resources') . '/models/entry.php';
 require_once \Component::path('com_tags') . '/models/tag.php';
 
 /**
