@@ -255,6 +255,11 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 				->order('created', 'desc')
 				->rows();
 
+			foreach ($rows as $row)
+			{
+				$row->set('href', Route::url($row->link()));
+			}
+
 			return $rows;
 		}
 		else
