@@ -225,7 +225,9 @@ class Cloud extends \Hubzero\Base\Obj
 		 || isset($filters['scope_id'])
 		 || isset($filters['label']))
 		{
-			$results->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id');
+			$results
+				->select($tbl . '.label')
+				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id');
 
 			if (isset($filters['tagger_id']) && $filters['tagger_id'])
 			{
@@ -293,7 +295,6 @@ class Cloud extends \Hubzero\Base\Obj
 				$results
 					->select($results->getTableName() . '.*')
 					->group($results->getTableName() . '.id');
-
 				if (!$this->_cache['tags.list'] || $clear)
 				{
 					if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')

@@ -31,11 +31,10 @@
  */
 
 namespace Components\Resources\Models\Element;
-
 use Components\Resources\Models\Element as Base;
 use stdClass;
 use Lang;
-
+require_once Component::path('resources') . '/models/element.php';
 /**
  * Renders a category element
  */
