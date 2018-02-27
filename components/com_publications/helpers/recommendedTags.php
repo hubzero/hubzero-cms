@@ -205,6 +205,16 @@ class RecommendedTags extends \Hubzero\Base\Obj
   // REFACTOR:  Add in error handling for db query.
   private function _updateTags($pid)
   {
+    // First, do a global remove of label on pub tags
+    $query = 'UPDATE #__tags_object
+              SET label = \'\'
+              WHERE objectid = ' . $pid . '
+              AND tbl = \'publications\'';
+    $this->_db->setQuery($query);
+    $this->_db->query();
+
+    // Now, IF there is a focus area, assign label to all existing
+    //   tags in that focus area.
     if ($this->fa_properties) {
       $focus_area = array_keys($this->fa_properties)[0];
       $this->_db->setQuery(
@@ -319,7 +329,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
       foreach ($rtags as $idx => $rtag)
       {
         $this->_db->setQuery(
-          'SELECT t.tag, t.id
+          'SELECT lower(t.raw_tag) as raw_tag, t.id
           FROM `#__tags_object` to1
           INNER JOIN `#__tags` t ON t.id = to1.tagid
           INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $fas[$rtag['label']]['tag_id'] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
@@ -330,7 +340,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
         $possible_parents = $this->_db->loadAssocList();
         foreach ($possible_parents as $par)
         {
-          if (isset($map[$par['tag']]))
+          if (isset($map[$par['raw_tag']]))
           {
             $parent[] = $par;
             $any_match = true;
