@@ -132,4 +132,22 @@ class Packages extends AdminController
 			->set('availablePackages', $availablePackages)
 			->display();
 	}
+
+	/**
+	 * Remove a package
+	 * 
+	 * @return void
+	 */
+	public function removeTask()
+	{
+		Request::checkToken();
+
+		$packages = Request::getVar('packages', array());
+
+		foreach ($packages as $package)
+		{
+			Cli::removePackage($package);
+		}
+		$this->cancelTask();
+	}
 }
