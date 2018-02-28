@@ -187,7 +187,7 @@ class Message
 			return;
 		}
 
-		if (mb_substr($icon, 0, 1) == ":" && mb_substr($icon, mb_strlen($icon) - 1, 1) == ":")
+		if (mb_substr($icon, 0, 1) == ':' && mb_substr($icon, mb_strlen($icon) - 1, 1) == ':')
 		{
 			$this->iconType = self::ICON_TYPE_EMOJI;
 		}
@@ -344,7 +344,7 @@ class Message
 		{
 			$attachmentObject = new Attachment($attachment);
 
-			if ( ! isset($attachment['mrkdwn_in']))
+			if (!isset($attachment['mrkdwn_in']))
 			{
 				$attachmentObject->setMarkdownFields($this->getMarkdownInAttachments());
 			}
@@ -405,7 +405,10 @@ class Message
 	 */
 	public function send($text = null)
 	{
-		if ($text) $this->setText($text);
+		if ($text)
+		{
+			$this->setText($text);
+		}
 
 		$this->client->sendMessage($this);
 	}

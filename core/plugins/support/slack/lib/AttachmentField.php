@@ -32,11 +32,20 @@ class AttachmentField
 	 */
 	public function __construct(array $attributes)
 	{
-		if (isset($attributes['title'])) $this->setTitle($attributes['title']);
+		if (isset($attributes['title']))
+		{
+			$this->setTitle($attributes['title']);
+		}
 
-		if (isset($attributes['value'])) $this->setValue($attributes['value']);
+		if (isset($attributes['value']))
+		{
+			$this->setValue($attributes['value']);
+		}
 
-		if (isset($attributes['short'])) $this->setShort($attributes['short']);
+		if (isset($attributes['short']))
+		{
+			$this->setShort($attributes['short']);
+		}
 	}
 
 	/**
