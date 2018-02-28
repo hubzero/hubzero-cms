@@ -77,6 +77,16 @@ class Entries extends SiteController
 		parent::execute();
 	}
 
+	public function testTask()
+	{
+		$entries = Entry::all();
+		foreach ($entries as $entry)
+		{
+			print_r($entry->searchResult());
+		}
+		exit();
+	}
+
 	/**
 	 * Display a list of entries
 	 *

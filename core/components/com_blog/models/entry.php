@@ -39,6 +39,7 @@ use Component;
 use Lang;
 use User;
 use Date;
+use stdClass;
 
 require_once __DIR__ . DS . 'tags.php';
 require_once __DIR__ . DS . 'comment.php';
@@ -46,7 +47,7 @@ require_once __DIR__ . DS . 'comment.php';
 /**
  * Model class for a blog entry
  */
-class Entry extends Relational
+class Entry extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table namespace
@@ -361,6 +362,10 @@ class Entry extends Relational
 		}
 
 		$cloud = new Tags($this->get('id'));
+		if ($what == 'object')
+		{
+			return $cloud;
+		}
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
@@ -771,5 +776,175 @@ class Entry extends Relational
 		$form->bind($data);
 
 		return $form;
+	}
+
+	/**
+	 * Namespace used for solr Search
+	 *
+	 * @return  string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'blog';
+		return $searchNamespace;
+	}
+
+	/**
+	 * Generate solr search Id
+	 *
+	 * @return  string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
+
+	/**
+	 * Generate search document for Solr
+	 *
+	 * @return  array
+	 */
+	public function searchResult()
+	{
+		if ($this->state == 2)
+		{
+			return false;
+		}
+		$blog = new stdClass;
+		$blog->title = $this->title;
+		$blog->hubtype = $this->searchNamespace();
+		$blog->id = $this->searchId();
+		$blog->description = $this->content;
+		$creator = $this->creator;
+		$blog->author[] = $creator->name;
+		$tags = $this->tags('object')->tags();
+		if (!empty($tags))
+		{
+			foreach ($tags as $tag)
+			{
+				$title = $tag->get('raw_tag', '');
+				$description = $tag->get('tag', '');
+				$label = $tag->get('label', '');
+				$blog->tags[] = array(
+					'id' => 'tag-' . $tag->id,
+					'title' => $title,
+					'description' => $description,
+					'access_level' => $tag->admin == 0 ? 'public' : 'private',
+					'type' => 'blog-tag',
+					'badge_b' => $label == 'badge' ? true : false
+				);
+			}
+		}
+		$blog->owner_type = 'user';
+		$blog->owner = $creator->id;
+		if (($this->state == 1) && ($this->access < 2) && ($this->scope == 'site'))
+		{
+			$blog->access_level = $this->access == 1 ? 'public' : 'registered';
+		}
+		elseif ($this->scope != 'site')
+		{
+			if ($this->scope == 'member')
+			{
+				if ($this->state == 0)
+				{
+					$blog->access_level = 'private';
+				}
+				else
+				{
+					if ($creator->get('blocked') == 0 && $creator->get('approved') > 0)
+					{
+						$access = ($creator->get('access') >= $this->access) ? $creator->get('access') : $this->access;
+						if ($access > 2)
+						{
+							$blog->access_level = 'private';
+						}
+						elseif ($access == 2)
+						{
+							$blog->access_level = 'registered';
+						}
+						elseif ($access == 1)
+						{
+							$blog->access_level = 'private';
+						}
+					}
+				}
+				$blog->owner_type = 'user';
+				$blog->owner = $this->scope_id;
+			}
+			elseif ($this->scope == 'group')
+			{
+				if ($this->state == 0)
+				{
+					$blog->access_level = 'private';
+				}
+				else
+				{
+					$group = \Hubzero\User\Group::getInstance($this->scope_id);
+					if ($group)
+					{
+						$groupName = $group->get('cn');
+						$blogAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'blog');
+						if ($blogAccess == 'anyone')
+						{
+							$groupAccess = 1;
+						}
+						elseif ($blogAccess == 'registered')
+						{
+							$groupAccess = 2;
+						}
+						else
+						{
+							$groupAccess = 4;
+						}
+						$access = ($groupAccess >= $this->access) ? $groupAccess : $this->access;
+						if ($access > 2)
+						{
+							$blog->access_level = 'private';
+						}
+						elseif ($access == 2)
+						{
+							$blog->access_level = 'registered';
+						}
+						elseif ($access == 1)
+						{
+							$blog->access_level = 'public';
+						}
+					}
+					else
+					{
+						$blog->access_level = 'private';
+					}
+				}
+				$blog->owner_type = 'group';
+				$blog->owner = $this->scope_id;
+			}
+		}
+		
+		$blog->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
+		return $blog;
+	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 *
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object   Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
 	}
 }
