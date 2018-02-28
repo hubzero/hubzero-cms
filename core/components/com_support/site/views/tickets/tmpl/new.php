@@ -78,6 +78,19 @@ $tmpl = (Request::getVar('tmpl', '')) ? '&tmpl=component' : '';
 
 // are we trying to assign a group
 $group = Request::getVar('group', '');
+
+// Populate the row for users that are not logged and have issues with the page
+if (User::isGuest())
+{
+	//echo Request::getVar('reporter[email]', null, 'post'); die;
+	$this->row->submitter->set('username', Request::getVar('reporter[login]', null, 'post'));
+	$this->row->set('report', Request::getVar('problem[long]', null, 'post'));
+	$this->row->set('name', Request::getVar('reporter[name]', null, 'post'));
+	$this->row->set('email', Request::getVar('reporter[email]', null, 'post'));
+	$this->row->set('os', Request::getVar('problem[os]', null, 'post'));
+	$this->row->set('browser', Request::getVar('problem[browser]', null, 'post'));
+}
+
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
