@@ -28,10 +28,16 @@
 	border: none;
 	position: absolute;
 	top: 1em;
-	right: 1em;
+	right: 0;
 	color: #999;
 	text-decoration: none;
 	text-align: left;
+	top: 50%;
+	-webkit-transform: translate(0, -50%);
+	-moz-transform: translate(0, -50%);
+	-ms-transform: translate(0, -50%);
+	-o-transform: translate(0, -50%);
+	transform: translate(0, -50%);
 }
 .captcha-block a:hover {
 	color: #222;
@@ -44,6 +50,7 @@
 	margin-right: 5em;
 }
 .captcha-wrap {
-	padding-top: 1em;
+	padding-right: 3em;
+	margin-top: 1em;
 	position: relative;
 }
