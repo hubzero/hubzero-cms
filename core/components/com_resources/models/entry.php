@@ -1646,8 +1646,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$solrDateFormat = 'Y-m-d\TH:i:s\Z';
 		$obj->date_created = Date::of($this->get('created'))->format($solrDateFormat);
 		$obj->publish_up = Date::of($this->get('publish_up'))->format($solrDateFormat);
-		
-
 		$obj->description = $this->searchableDescription();
 		$obj->author = $this
 			->authors()
