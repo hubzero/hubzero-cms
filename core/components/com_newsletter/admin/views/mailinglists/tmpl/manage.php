@@ -77,6 +77,14 @@ Toolbar::cancel();
 				</th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="6"><?php
+				// initiate paging
+				echo $this->list_emails->pagination;
+				?></td>
+			</tr>
+		</tfoot>
 		<tbody>
 			<?php if (count($this->list_emails) > 0) : ?>
 				<?php foreach ($this->list_emails as $k => $le) : ?>

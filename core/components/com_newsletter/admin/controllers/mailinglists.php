@@ -75,6 +75,7 @@ class Mailinglists extends AdminController
 		$lists = Mailinglist::all()
 			->whereEquals('deleted', 0)
 			->ordered()
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// diplay list of mailing lists
@@ -259,6 +260,7 @@ class Mailinglists extends AdminController
 
 		$list_emails = $model
 			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		//diplay list of mailing lists

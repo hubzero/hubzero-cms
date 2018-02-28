@@ -68,6 +68,14 @@ if ($canDo->get('core.admin'))
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_TOTAL_SUBSCRIBERS'); ?></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="5"><?php
+				// initiate paging
+				echo $this->lists->pagination;
+				?></td>
+			</tr>
+		</tfoot>
 		<tbody>
 			<?php if (count($this->lists) > 0) : ?>
 				<?php foreach ($this->lists as $k => $list) : ?>

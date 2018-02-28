@@ -121,6 +121,14 @@ Joomla.submitbutton = function(pressbutton)
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TRACKING'); ?></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="7"><?php
+				// initiate paging
+				echo $this->rows->pagination;
+				?></td>
+			</tr>
+		</tfoot>
 		<tbody>
 			<?php if ($this->rows->count() > 0) : ?>
 				<?php foreach ($this->rows as $k => $newsletter) : ?>

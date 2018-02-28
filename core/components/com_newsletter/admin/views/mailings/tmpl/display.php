@@ -74,6 +74,14 @@ Joomla.submitbutton = function(pressbutton)
 				<th scope="col"	class="priority-4"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_REOCCUR'); ?></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="5"><?php
+				// initiate paging
+				echo $this->mailings->pagination;
+				?></td>
+			</tr>
+		</tfoot>
 		<tbody>
 			<?php if (count($this->mailings) > 0) : ?>
 				<?php foreach ($this->mailings as $k => $mailing) : ?>
