@@ -34,7 +34,7 @@ if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'])
 }
 else
 {
-	define('PATH_ROOT', __DIR__);
+	define('PATH_ROOT', dirname(__DIR__));
 }
 
 
