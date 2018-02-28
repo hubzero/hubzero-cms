@@ -66,3 +66,19 @@
   margin-top: 0;
   line-height: 1em;
 }
+.pub-image {
+  width: inherit;
+}
+ol.steps li {
+  height: inherit;
+}
+.setup-wrap #hubForm fieldset {
+  padding-bottom: 2em;
+}
+.edit-project #hubForm .combine_options {
+  margin: 1em 1em;
+}
+.edit-project #hubForm .add-team {
+  margin: 2em 1em;
+  padding-bottom: 2em;
+}
