@@ -52,7 +52,7 @@ class Mailings extends AdminController
 	/**
 	 * Display Newsletter Mailings
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -62,11 +62,10 @@ class Mailings extends AdminController
 			}])
 			->whereEquals('deleted', 0)
 			->order('id', 'desc')
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// Add the number sent
-		$rows = array();
-
 		foreach ($mailings as $mailing)
 		{
 			$emails_sent = $mailing
@@ -80,14 +79,12 @@ class Mailings extends AdminController
 
 			$mailing->set('emails_sent', $emails_sent);
 			$mailing->set('emails_total', $emails_total);
-
-			$rows[] = $mailing;
 		}
 
 		// Output the HTML
 		$this->view
 			->setLayout('display')
-			->set('mailings', $rows)
+			->set('mailings', $mailings)
 			->display();
 	}
 
@@ -282,7 +279,7 @@ class Mailings extends AdminController
 	/**
 	 * Stop sending campaign or deleted scheduled
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function stopTask()
 	{
