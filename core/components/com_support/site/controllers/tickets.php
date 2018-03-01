@@ -1207,9 +1207,9 @@ class Tickets extends SiteController
 				{
 					$rowc->addTo(array(
 						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-						'name'  => $row->owner('name'),
-						'email' => $row->owner('email'),
-						'id'    => $row->owner('id')
+						'name'  => $row->assignee->get('name'),
+						'email' => $row->assignee->get('email'),
+						'id'    => $row->assignee->get('id')
 					));
 				}
 				elseif ($row->get('group_id'))
