@@ -40,19 +40,19 @@ if (!\User::authorise('core.manage', $option))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-// Include jtables
+// Include models
 require_once dirname(__DIR__) . DS . 'models' . DS . 'entry.php';
 
-// include helpers
+// Include helpers
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
-// include importer
+// Include importer
 require_once dirname(__DIR__) . DS . 'import' . DS . 'importer.php';
 
-// get controller name
+// Get controller name
 $controllerName = \Request::getCmd('controller', 'items');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
