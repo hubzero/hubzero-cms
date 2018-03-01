@@ -1,15 +1,7 @@
-.contentpaneopen {
+.wrapper {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
   grid-template-rows: 2fr 1fr auto 1fr;
-}
-
-.contentpaneopen p:first-child {
-  margin: 0;
-}
-
-.contentpaneopen p:nth-child(2) {
-  margin: 0;
 }
 
 .ambassador-header {

@@ -1,15 +1,7 @@
-.contentpaneopen {
+.wrapper {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
   grid-template-rows: repeat(6, [row] minmax(22rem, auto));
-}
-
-.contentpaneopen p:first-child {
-  margin: 0;
-}
-
-.contentpaneopen p:nth-child(2) {
-  margin: 0;
 }
 
 .link-anchor {
@@ -30,8 +22,12 @@
 }
 
 .service-header {
+  display: flex;
+  flex-wrap: nowrap;
   grid-column: col/span 4;
   grid-row: row;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   background: url("/app/site/media/images/jeff-sheldon-3231.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/jeff-sheldon-3231.jpg");
   background-size: cover;
@@ -43,8 +39,27 @@
 }
 
 .service-header .intro {
+  grid-column: 2/span 2;
   padding: 2.5em;
   align-self: center;
+}
+
+.service-header .intro .link {
+  text-transform: uppercase;
+}
+
+.service-header .intro .link a {
+  padding: .25em .75em;
+  border: 1px solid #fff;
+  color: #fff !important;
+}
+
+.service-header .intro .link a:active {
+  color: #fff;
+}
+
+.service-header .intro .link a:visited {
+  color: #fff;
 }
 
 .service-header h2 {
@@ -65,7 +80,7 @@
 .service {
   flex: 1 1 250px;
   padding: 10px;
-  border-left: 1px solid #5f5980;
+  border-left: 1px solid #007991;
 }
 
 .service h4 {

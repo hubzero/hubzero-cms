@@ -32,7 +32,7 @@
   width: 100%;
 }
 
-.contentpaneopen {
+.wrapper {
   display: grid;
   grid-template-columns: repeat(4, [col] 1fr);
   grid-template-rows: repeat(4, [row] minmax(30rem, auto));
@@ -100,6 +100,25 @@ h3 {
   width: 50%;
   padding: 2.5em;
   align-self: center;
+}
+
+.resources .oer .link {
+  text-transform: uppercase;
+  padding-top: 2em;
+}
+
+.resources .oer .link a {
+  padding: .25em .75em;
+  border: 1px solid #fff;
+  color: #fff !important;
+}
+
+.resources .oer .link a:active {
+  color: #fff;
+}
+
+.resources .oer .link a:visited {
+  color: #fff;
 }
 
 .resources .module-left {
@@ -194,17 +213,21 @@ h3 {
   flex-wrap: wrap;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-gap: 5px;
-  grid-auto-rows: 50px;
+  grid-gap: 10px;
+  grid-auto-rows: 125px;
   justify-items: center;
   align-self: center;
   text-align: center;
 }
 
+.software .software-logos .logo-wrap img {
+  height: 65%;
+  object-fit: scale-down;
+}
+
 .software .software-logos h6 {
-  width: 100px;
-  height: 50px;
   align-self: center;
+  padding-top: .5em;
   margin: 0;
   color: #F1F2F2;
 }
