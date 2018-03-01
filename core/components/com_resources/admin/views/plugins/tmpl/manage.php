@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PLUGINS'), 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PLUGINS'), 'resources');
 
 if ($this->html)
 {
@@ -41,7 +41,7 @@ if ($this->html)
 else
 {
 	Toolbar::cancel();
-?>
+	?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 		<p class="warning"><?php echo Lang::txt('COM_RESOURCES_ERROR_PLUGIN_NO_INTERFACE'); ?></p>
 
@@ -52,4 +52,5 @@ else
 
 		<?php echo Html::input('token'); ?>
 	</form>
-<?php } ?>
+	<?php
+}
