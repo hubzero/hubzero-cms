@@ -920,7 +920,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				$blog->owner = $this->scope_id;
 			}
 		}
-		
 		$blog->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		return $blog;
 	}
