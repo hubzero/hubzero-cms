@@ -1,19 +1,8 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 
-// .group-php-page {
-//   display: grid;
-//   grid-template-columns: repeat(4, [col] 1fr);
-//   grid-template-rows: repeat(4, [row] auto);
-// }
-.contentpaneopen {
+.wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(9, [row] auto), null);
-  p:first-child {
-    margin: 0;
-  }
-  p:nth-child(2) {
-    margin: 0;
-  }
 }
 .link {
   text-transform: uppercase;

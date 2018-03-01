@@ -1,13 +1,7 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 
-// .group-php-page {
-//   display: grid;
-//   grid-template-columns: repeat(4, [col] 1fr);
-//   grid-template-rows: repeat(4, [row] auto);
-// }
-
-.contentpaneopen {
+.wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(4, [row] minmax(30rem, auto)));
 }
 .link {
@@ -55,6 +49,10 @@ h3 {
     width: 50%;
     padding: 2.5em;
     align-self: center;
+    .link {
+      @include buttons($white);
+      padding-top: 2em;
+    }
   }
   .module-left {
     @include flexbox;
@@ -98,15 +96,20 @@ h3 {
     width: 50%;
     padding: 2.5em;
     @include flexbox(wrap);
-    @include grid-template(repeat(auto-fit, minmax(100px, 1fr)), null, 5px);
-    grid-auto-rows: 50px;
+    @include grid-template(repeat(auto-fit, minmax(100px, 1fr)), null, 10px);
+    grid-auto-rows: 125px;
     justify-items: center;
     align-self: center;
     text-align: center;
+    .logo-wrap {
+      img {
+        height: 65%;
+        object-fit: scale-down;
+      }
+    }
     h6 {
-      width: 100px;
-      height: 50px;
       align-self: center;
+      padding-top: .5em;
       margin: 0;
       color: $light-gray;
     }

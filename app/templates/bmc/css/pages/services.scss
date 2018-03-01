@@ -1,14 +1,8 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 
-.contentpaneopen {
+.wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(6, [row] minmax(22rem, auto)));
-  p:first-child {
-    margin: 0;
-  }
-  p:nth-child(2) {
-    margin: 0;
-  }
 }
 .link-anchor {
   color: inherit;
@@ -26,14 +20,20 @@
 
 //Header
 .service-header {
+  @include flexbox;
   @include grid(col / span 4, row);
+  @include grid-template(repeat(4, 1fr), null);
   @include bcg-img('/app/site/media/images/jeff-sheldon-3231.jpg');
   background-color: $black;
   color: $white;
   text-align: center;
   .intro {
+    @include grid(2 / span 2, null);
     padding: 2.5em;
     align-self: center;
+    .link {
+      @include buttons($white);
+    }
   }
   h2 {
     color: $white;
@@ -54,7 +54,7 @@
     height: 4.5rem;
   }
   padding: 10px;
-  border-left: 1px solid $med-blue;
+  border-left: 1px solid $teal;
 }
 
 //Community Building
