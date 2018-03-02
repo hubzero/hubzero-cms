@@ -132,7 +132,12 @@ if ($params->get('supportedtag') && isset($this->supported))
 
 		if ($this->line->authors->count() && $params->get('show_authors'))
 		{
-			$info[] = Lang::txt('COM_RESOURCES_CONTRIBUTORS') . ': ' . $this->line->authorsList();
+			$authors = $this->line->authorsList();
+
+			if (trim($authors))
+			{
+				$info[] = Lang::txt('COM_RESOURCES_CONTRIBUTORS') . ': ' . $authors;
+			}
 		}
 
 		echo implode(' <span>|</span> ', $info);
