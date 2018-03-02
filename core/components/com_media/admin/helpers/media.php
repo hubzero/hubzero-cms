@@ -3,15 +3,17 @@
  * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-defined('_HZEXEC_') or die();
-
 /**
  * @package		Joomla.Administrator
  * @subpackage	com_media
  */
-abstract class MediaHelper
+
+namespace Components\Media\Admin\Helpers;
+
+class MediaHelper
 {
+	public static $extension = 'com_media';
+
 	/**
 	 * Checks if the file is an image
 	 * @param string The filename
