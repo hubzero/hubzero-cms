@@ -1833,7 +1833,7 @@ class Wishlists extends SiteController
 		$refid    = Request::getInt('rid', 0);
 		$category = Request::getCmd('category', '');
 
-		$wishlist = Wishlist::oneOrFail($refid, $category);
+		$wishlist = Wishlist::oneByReference($refid, $category);
 		if (!$wishlist->get('id'))
 		{
 			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));

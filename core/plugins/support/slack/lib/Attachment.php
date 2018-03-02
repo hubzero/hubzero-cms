@@ -104,31 +104,70 @@ class Attachment
 	 */
 	public function __construct(array $attributes)
 	{
-		if (isset($attributes['fallback'])) $this->setFallback($attributes['fallback']);
+		if (isset($attributes['fallback']))
+		{
+			$this->setFallback($attributes['fallback']);
+		}
 
-		if (isset($attributes['text'])) $this->setText($attributes['text']);
+		if (isset($attributes['text']))
+		{
+			$this->setText($attributes['text']);
+		}
 
-		if (isset($attributes['image_url'])) $this->setImageUrl($attributes['image_url']);
+		if (isset($attributes['image_url']))
+		{
+			$this->setImageUrl($attributes['image_url']);
+		}
 
-		if (isset($attributes['thumb_url'])) $this->setThumbUrl($attributes['thumb_url']);
+		if (isset($attributes['thumb_url']))
+		{
+			$this->setThumbUrl($attributes['thumb_url']);
+		}
 
-		if (isset($attributes['pretext'])) $this->setPretext($attributes['pretext']);
+		if (isset($attributes['pretext']))
+		{
+			$this->setPretext($attributes['pretext']);
+		}
 
-		if (isset($attributes['color'])) $this->setColor($attributes['color']);
+		if (isset($attributes['color']))
+		{
+			$this->setColor($attributes['color']);
+		}
 
-		if (isset($attributes['fields'])) $this->setFields($attributes['fields']);
+		if (isset($attributes['fields']))
+		{
+			$this->setFields($attributes['fields']);
+		}
 
-		if (isset($attributes['mrkdwn_in'])) $this->setMarkdownFields($attributes['mrkdwn_in']);
+		if (isset($attributes['mrkdwn_in']))
+		{
+			$this->setMarkdownFields($attributes['mrkdwn_in']);
+		}
 
-		if (isset($attributes['title'])) $this->setTitle($attributes['title']);
+		if (isset($attributes['title']))
+		{
+			$this->setTitle($attributes['title']);
+		}
 
-		if (isset($attributes['title_link'])) $this->setTitleLink($attributes['title_link']);
+		if (isset($attributes['title_link']))
+		{
+			$this->setTitleLink($attributes['title_link']);
+		}
 
-		if (isset($attributes['author_name'])) $this->setAuthorName($attributes['author_name']);
+		if (isset($attributes['author_name']))
+		{
+			$this->setAuthorName($attributes['author_name']);
+		}
 
-		if (isset($attributes['author_link'])) $this->setAuthorLink($attributes['author_link']);
+		if (isset($attributes['author_link']))
+		{
+			$this->setAuthorLink($attributes['author_link']);
+		}
 
-		if (isset($attributes['author_icon'])) $this->setAuthorIcon($attributes['author_icon']);
+		if (isset($attributes['author_icon']))
+		{
+			$this->setAuthorIcon($attributes['author_icon']);
+		}
 	}
 
 	/**
@@ -276,7 +315,7 @@ class Attachment
 	 */
 	public function getTitle()
 	{
-			return $this->title;
+		return $this->title;
 	}
 
 	/**
@@ -287,9 +326,9 @@ class Attachment
 	 */
 	public function setTitle($title)
 	{
-			$this->title = $title;
+		$this->title = $title;
 
-			return $this;
+		return $this;
 	}
 
 	/**
@@ -299,7 +338,7 @@ class Attachment
 	 */
 	public function getTitleLink()
 	{
-				return $this->title_link;
+		return $this->title_link;
 	}
 
 	/**
@@ -310,9 +349,9 @@ class Attachment
 	 */
 	public function setTitleLink($title_link)
 	{
-			$this->title_link = $title_link;
+		$this->title_link = $title_link;
 
-			return $this;
+		return $this;
 	}
 
 	/**
@@ -425,7 +464,6 @@ class Attachment
 
 			return $this;
 		}
-
 		elseif (is_array($field))
 		{
 			$this->fields[] = new AttachmentField($field);
@@ -510,7 +548,10 @@ class Attachment
 	{
 		$fields = [];
 
-		foreach ($this->getFields() as $field) $fields[] = $field->toArray();
+		foreach ($this->getFields() as $field)
+		{
+			$fields[] = $field->toArray();
+		}
 
 		return $fields;
 	}

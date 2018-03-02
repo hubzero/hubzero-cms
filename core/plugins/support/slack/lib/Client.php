@@ -90,21 +90,45 @@ class Client
 	{
 		$this->endpoint = $endpoint;
 
-		if (isset($attributes['channel'])) $this->setDefaultChannel($attributes['channel']);
+		if (isset($attributes['channel']))
+		{
+			$this->setDefaultChannel($attributes['channel']);
+		}
 
-		if (isset($attributes['username'])) $this->setDefaultUsername($attributes['username']);
+		if (isset($attributes['username']))
+		{
+			$this->setDefaultUsername($attributes['username']);
+		}
 
-		if (isset($attributes['icon'])) $this->setDefaultIcon($attributes['icon']);
+		if (isset($attributes['icon']))
+		{
+			$this->setDefaultIcon($attributes['icon']);
+		}
 
-		if (isset($attributes['link_names'])) $this->setLinkNames($attributes['link_names']);
+		if (isset($attributes['link_names']))
+		{
+			$this->setLinkNames($attributes['link_names']);
+		}
 
-		if (isset($attributes['unfurl_links'])) $this->setUnfurlLinks($attributes['unfurl_links']);
+		if (isset($attributes['unfurl_links']))
+		{
+			$this->setUnfurlLinks($attributes['unfurl_links']);
+		}
 
-		if (isset($attributes['unfurl_media'])) $this->setUnfurlMedia($attributes['unfurl_media']);
+		if (isset($attributes['unfurl_media']))
+		{
+			$this->setUnfurlMedia($attributes['unfurl_media']);
+		}
 
-		if (isset($attributes['allow_markdown'])) $this->setAllowMarkdown($attributes['allow_markdown']);
+		if (isset($attributes['allow_markdown']))
+		{
+			$this->setAllowMarkdown($attributes['allow_markdown']);
+		}
 
-		if (isset($attributes['markdown_in_attachments'])) $this->setMarkdownInAttachments($attributes['markdown_in_attachments']);
+		if (isset($attributes['markdown_in_attachments']))
+		{
+			$this->setMarkdownInAttachments($attributes['markdown_in_attachments']);
+		}
 
 		$this->guzzle = $guzzle ?: new Guzzle;
 	}

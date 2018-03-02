@@ -48,6 +48,7 @@ require_once __DIR__ . DS . 'type.php';
 require_once __DIR__ . DS . 'author.php';
 require_once __DIR__ . DS . 'license.php';
 require_once __DIR__ . DS . 'screenshot.php';
+include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 /**
@@ -812,9 +813,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function fields()
 	{
 		$data = array();
-
 		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('fulltxt'), $matches, PREG_SET_ORDER);
-
 		if (count($matches) > 0)
 		{
 			foreach ($matches as $match)
@@ -822,7 +821,26 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				$data[$match[1]] = stripslashes($match[2]);
 			}
 		}
-
+		$citations = '';
+		$elements = new \Components\Resources\Models\Elements($data, $this->type()->customFields);
+		$schema = $elements->getSchema();
+		if (is_object($schema))
+		{
+			if (!isset($schema->fields) || !is_array($schema->fields))
+			{
+				$schema->fields = array();
+			}
+			foreach ($schema->fields as $field)
+			{
+				if (isset($data[$field->name]))
+				{
+					if ($value = $elements->display($field->type, $data[$field->name]))
+					{
+						$data[$field->name] = $value;
+					}
+				}
+			}
+		}
 		return $data;
 	}
 
@@ -1538,7 +1556,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	}
 	public function searchableDescription()
 	{
-		$description = $this->fulltxt . ' ' . $this->introtext;
+		$description = $this->description . ' ' . $this->introtext;
 		$description = html_entity_decode($description);
 		$description = \Hubzero\Utility\Sanitize::stripAll($description);
 		return $description;
@@ -1617,16 +1635,17 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchResult()
 	{
+		$type = $this->type();
 		$obj = new stdClass;
-
 		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->title = $this->title;
 		$id = $this->id;
 		$obj->id = $this->searchId();
 		$obj->hubtype = $this->searchNamespace();
-
-		$obj->type = $this->type()->type;
-
+		$obj->type = $type->type;
+		$solrDateFormat = 'Y-m-d\TH:i:s\Z';
+		$obj->date_created = Date::of($this->get('created'))->format($solrDateFormat);
+		$obj->publish_up = Date::of($this->get('publish_up'))->format($solrDateFormat);
 		$obj->description = $this->searchableDescription();
 		$obj->author = $this
 			->authors()
@@ -1644,13 +1663,24 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			{
 				$title = $tag->get('raw_tag', '');
 				$description = $tag->get('tag', '');
+				$label = $tag->get('label', '');
 				$obj->tags[] = array(
 					'id' => 'tag-' . $tag->id,
 					'title' => $title,
 					'description' => $description,
 					'access_level' => $tag->admin == 0 ? 'public' : 'private',
-					'type' => 'resource-tag'
+					'type' => 'resource-tag',
+					'badge_b' => $label == 'badge' ? true : false
 				);
+			}
+		}
+		$fields = $this->fields();
+		if (!empty($fields))
+		{
+			foreach ($fields as $key => $value)
+			{
+				$fieldName = $key . '_s';
+				$obj->$fieldName = $value;
 			}
 		}
 

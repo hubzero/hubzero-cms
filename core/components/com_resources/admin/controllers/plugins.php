@@ -33,6 +33,8 @@
 namespace Components\Resources\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Utility\Arr;
+use Components\Plugins\Models\Plugin;
 use Exception;
 use Request;
 use Config;
@@ -40,6 +42,8 @@ use Event;
 use Route;
 use Lang;
 use App;
+
+include_once \Component::path('com_plugins') . '/models/plugin.php';
 
 /**
  * Manage resource types
@@ -53,25 +57,24 @@ class Plugins extends AdminController
 	 */
 	public function execute()
 	{
-		$task = Request::getVar('task', '');
+		$task   = Request::getVar('task', '');
 		$plugin = Request::getVar('plugin', '');
+
 		if ($plugin && $task && $task != 'manage')
 		{
 			Request::setVar('action', $task);
 			Request::setVar('task', 'manage');
 		}
 
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
-		$this->registerTask('orderup', 'order');
-		$this->registerTask('orderdown', 'order');
-		$this->registerTask('accesspublic', 'access');
-		$this->registerTask('accessspecial', 'access');
-		$this->registerTask('accessregistered', 'access');
+		// States
+		$this->registerTask('unpublish', 'publish');  // Value = 0
+		$this->registerTask('archive', 'publish');  // Value = 2
+		$this->registerTask('trash', 'publish');  // Value = -2
+		$this->registerTask('report', 'publish'); // Value = -3
 
-		$this->_folder = 'resources';
+		// Reordering
+		$this->registerTask('orderup', 'reorder');
+		$this->registerTask('orderdown', 'reorder');
 
 		parent::execute();
 	}
@@ -83,130 +86,125 @@ class Plugins extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Incoming
-		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
+		$filters = array(
+			'folder' => 'resources',
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'filter_search',
+				''
+			)),
+			'state' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.state',
+				'filter_state',
+				''
 			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'filter_access',
 				0,
 				'int'
 			),
+			'enabled' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.enabled',
+				'filter_state',
+				'',
+				'int'
+			),
+			// Get sorting variables
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'ordering'
+				'folder'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
-			),
-			'state' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.state',
-				'state',
-				'',
-				'word'
-			),
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				'',
-				'word'
-			))
+			)
 		);
 
-		$where = array();
-		$this->client = Request::getWord('filter_client', 'site');
+		$query = Plugin::all()
+			->where('state', '>=', 0);
 
-		if ($this->client == 'admin')
+		$p = $query->getTableName();
+		$u = '#__users';
+		$a = '#__viewlevels';
+
+		$query->select($p . '.*');
+
+		// Join over the users for the checked out user.
+		$query
+			->select($u . '.name', 'editor')
+			->join($u, $u . '.id', $p . '.checked_out', 'left');
+
+		// Join over the access groups.
+		$query
+			->select($a . '.title', 'access_level')
+			->join($a, $a . '.id', $p . '.access', 'left');
+
+		// Filter by access level.
+		if ($filters['access'])
 		{
-			$where[] = 'p.client_id = 1';
-			$client_id = 1;
+			$query->whereEquals($p . '.access', (int) $filters['access']);
+		}
+
+		// Filter by published state
+		if (is_numeric($filters['state']))
+		{
+			$query->whereEquals($p . '.enabled', (int) $filters['state']);
+		}
+		elseif ($filters['state'] === '')
+		{
+			$query->whereIn($p . '.enabled', array(0, 1));
+		}
+
+		// Filter by folder.
+		if ($filters['folder'])
+		{
+			$query->whereEquals($p . '.folder', $filters['folder']);
+		}
+
+		// Filter by search in id
+		if (!empty($filters['search']) && stripos($filters['search'], 'id:') === 0)
+		{
+			$query->whereEquals($p . '.extension_id', (int) substr($filters['search'], 3));
+		}
+
+		if ($filters['sort'] == 'name')
+		{
+			$query->order('name', $filters['sort_Dir']);
+			$query->order('ordering', 'asc');
+		}
+		else if ($filters['sort'] == 'ordering')
+		{
+			$query->order('folder', 'asc');
+			$query->order('ordering', $filters['sort_Dir']);
+			$query->order('name', 'asc');
 		}
 		else
 		{
-			$where[] = 'p.client_id = 0';
-			$where[] = 'p.folder = ' . $this->database->Quote($this->_folder);
-			$client_id = 0;
+			$query->order($filters['sort'], $filters['sort_Dir']);
+			$query->order('name', 'asc');
+			$query->order('ordering', 'asc');
 		}
 
-		if ($this->view->filters['search'])
+		$items = $query
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		// Check if there are no matching items
+		if (!count($items))
 		{
-			$where[] = 'LOWER(p.name) LIKE ' . $this->database->Quote('%' . $this->view->filters['search'] . '%');
-		}
-		if ($this->view->filters['state'])
-		{
-			if ($this->view->filters['state'] == 'P')
-			{
-				$where[] = 'p.published = 1';
-			}
-			else if ($this->view->filters['state'] == 'U')
-			{
-				$where[] = 'p.published = 0';
-			}
-		}
-		$where[] = 'p.type = ' . $this->database->Quote('plugin');
-
-		$where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-		$orderby = ' ORDER BY ' . $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'] . ', p.ordering ASC';
-
-		// get the total number of records
-		$query = 'SELECT COUNT(*)'
-			. ' FROM #__extensions AS p'
-			. $where;
-
-		$this->database->setQuery($query);
-		$this->view->total = $this->database->loadResult();
-
-		$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS access_level'
-			. ' FROM #__extensions AS p'
-			. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
-			. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'
-			. $where
-			. ' GROUP BY p.extension_id'
-			. $orderby;
-
-		$this->database->setQuery($query, $this->view->filters['start'], $this->view->filters['limit']);
-		$this->view->rows = $this->database->loadObjectList();
-		if ($this->database->getErrorNum())
-		{
-			throw new Exception($this->database->stderr(), 500);
+			Notify::warning(Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS'));
 		}
 
-		$lang = Lang::getRoot();
-		if ($this->view->rows)
-		{
-			foreach ($this->view->rows as &$item)
-			{
-				$source = PATH_CORE . '/plugins/' . $item->folder . '/' . $item->element;
-				$extension = 'plg_' . $item->folder . '_' . $item->element;
-					$lang->load($extension . '.sys', PATH_APP . '/plugins/' . $item->folder . '/' . $item->element, null, false, false)
-				||	$lang->load($extension . '.sys', $source, null, false, false)
-				||	$lang->load($extension . '.sys', PATH_APP . '/plugins/' . $item->folder . '/' . $item->element, $lang->getDefault(), false, false)
-				||	$lang->load($extension . '.sys', $source, $lang->getDefault(), false, false);
-				$item->name = Lang::txt($item->name);
-			}
-		}
+		$manage = Event::trigger('resources.onCanManage');
 
-		// Show related content
-		$this->view->manage = Event::trigger('resources.onCanManage');
-
-		$this->view->client = $this->client;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('items', $items)
+			->set('manage', $manage)
+			->display();
 	}
 
 	/**
@@ -221,12 +219,9 @@ class Plugins extends AdminController
 
 		if (!$plugin)
 		{
-			// Redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED')
-			);
-			return;
+			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED'));
+
+			return $this->cancelTask();
 		}
 
 		// Show related content
@@ -239,104 +234,21 @@ class Plugins extends AdminController
 			)
 		);
 
-		$this->view->html = '';
+		$html = '';
 
 		if (count($out) > 0)
 		{
 			foreach ($out as $o)
 			{
-				$this->view->html .= $o;
+				$html .= $o;
 			}
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			\Notify::error($error);
-		}
-
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Edit a plugin
-	 *
-	 * @param      object $row JPluginTable
-	 * @return     void
-	 */
-	public function editTask($row = null)
-	{
-		$cid = Request::getVar('cid', array(0), '', 'array');
-		\Hubzero\Utility\Arr::toInteger($cid, array(0));
-
-		App::redirect(
-			Route::url('index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources', false)
-		);
-	}
-
-	/**
-	 * Save changes to a plugin
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
-
-		$client = Request::getWord('filter_client', 'site');
-
-		// Bind data
-		$row = \JTable::getInstance('extension');
-		if (!$row->bind(Request::get('post')))
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
-
-		// Store content
-		if (!$row->store())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
-
-		$row->checkin();
-		$row->reorder(
-			'folder = ' . $this->database->Quote($row->folder) . '
-			AND ordering > -10000
-			AND ordering < 10000
-			AND (' . ($client == 'admin' ? "client_id=1" : "client_id=0") . ')'
-		);
-
-		switch ($this->_task)
-		{
-			case 'apply':
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client . '&task=edit&cid=' . $row->id, false),
-					Lang::txt('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
-				);
-			break;
-
-			case 'save':
-			default:
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
-					Lang::txt('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
-				);
-			break;
-		}
+		$this->view
+			->set('html', $html)
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -349,56 +261,70 @@ class Plugins extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['post', 'get']);
 
-		$state = $this->_task == 'publish' ? 1 : 0;
-
-		// Incoming
-		$id = Request::getVar('id', array(0), '', 'array');
-		\Hubzero\Utility\Arr::toInteger($id, array(0));
-
-		$client = Request::getWord('filter_client', 'site');
-
-		if (count($id) < 1)
-		{
-			$action = $state ? Lang::txt('COM_RESOURCES_PUBLISH') : Lang::txt('COM_RESOURCES_UNPUBLISH');
-
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
-				Lang::txt('COM_RESOURCES_ERROR_SELECT_TO', $action),
-				'error'
-			);
-			return;
-		}
-
-		$query = "UPDATE `#__extensions` SET enabled = ".(int) $state
-			. " WHERE extension_id IN (" . implode(',', $id) . ")"
-			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) User::get('id') . "))";
-
-		$this->database->setQuery($query);
-		if (!$this->database->query())
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
-				$this->database->getErrorMsg(),
-				'error'
-			);
-			return;
-		}
-
-		if (count($id) == 1)
-		{
-			$row = \JTable::getInstance('extension');
-			$row->checkin($id[0]);
-		}
-
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false)
+		// Get items to publish from the request.
+		$cid   = Request::getVar('id', array(), '', 'array');
+		$data  = array(
+			'publish'   => 1,
+			'unpublish' => 0,
+			'archive'   => 2,
+			'trash'     => -2,
+			'report'    => -3
 		);
+		$task  = $this->getTask();
+		$value = Arr::getValue($data, $task, 0, 'int');
+
+		$success = 0;
+
+		foreach ($cid as $id)
+		{
+			// Load the record
+			$model = Plugin::oneOrFail(intval($id));
+
+			// Set state
+			$model->set('enabled', $value);
+
+			if (!$model->save())
+			{
+				Notify::error($model->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Set the success message
+			if ($value == 1)
+			{
+				$ntext = 'COM_RESOURCES_N_ITEMS_PUBLISHED';
+			}
+			elseif ($value == 0)
+			{
+				$ntext = 'COM_RESOURCES_N_ITEMS_UNPUBLISHED';
+			}
+			elseif ($value == 2)
+			{
+				$ntext = 'COM_RESOURCES_N_ITEMS_ARCHIVED';
+			}
+			else
+			{
+				$ntext = 'COM_RESOURCES_N_ITEMS_TRASHED';
+			}
+
+			Notify::success(Lang::txts($ntext, $success));
+		}
+
+		// Redirect back to the listing
+		$this->cancelTask();
 	}
 
 	/**
 	 * Reorder a plugin
 	 *
-	 * @param   integer  $access  Access level to set
 	 * @return  void
 	 */
 	public function orderTask()
@@ -406,86 +332,37 @@ class Plugins extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['post', 'get']);
 
-		$cid    = Request::getVar('id', array(0), 'post', 'array');
-		\Hubzero\Utility\Arr::toInteger($cid, array(0));
+		// Initialise variables.
+		$ids = Request::getVar('id', null, 'post', 'array');
+		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
-		$uid    = $cid[0];
-		$inc    = ($this->_task == 'orderup' ? -1 : 1);
-		$client = Request::getWord('filter_client', 'site');
+		$success = 0;
 
-		// Currently Unsupported
-		if ($client == 'admin')
+		foreach ($ids as $id)
 		{
-			$where = "client_id = 1";
-		}
-		else
-		{
-			$where = "client_id = 0";
-		}
+			// Load the record and reorder it
+			$model = Plugin::oneOrFail(intval($id));
 
-		$row = \JTable::getInstance('extension');
-		$row->load($uid);
-		$row->move($inc, 'folder=' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND (' . $where . ')');
+			if (!$model->move($inc))
+			{
+				Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED', $model->getError()));
+				continue;
+			}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
-	 * Set the access of a plugin
-	 *
-	 * @return  void
-	 */
-	public function accessTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['post', 'get']);
-
-		switch ($this->_task)
-		{
-			case 'accesspublic':     $access = 1; break;
-			case 'accessregistered': $access = 2; break;
-			case 'accessspecial':    $access = 3; break;
+			$success++;
 		}
 
-		// Incoming
-		$cid = Request::getVar('id', array(0), 'post', 'array');
-		\Hubzero\Utility\Arr::toInteger($cid, array(0));
-
-		// Load the object
-		$row = \JTable::getInstance('extension');
-		$row->load($cid[0]);
-
-		// Set the access
-		$row->access = $access;
-
-		// Check data
-		if (!$row->check())
+		if ($success)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Set the success message
+			Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ITEM_REORDERED'));
 		}
 
-		// Store data
-		if (!$row->store())
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
-
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		// Redirect back to the listing
+		$this->cancelTask();
 	}
 
 	/**
@@ -498,59 +375,41 @@ class Plugins extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['post', 'get']);
 
-		$cid = Request::getVar('id', array(0), 'post', 'array');
-		\Hubzero\Utility\Arr::toInteger($cid, array(0));
-
-		$total = count($cid);
+		$pks   = Request::getVar('id', array(0), 'post', 'array');
 		$order = Request::getVar('order', array(0), 'post', 'array');
-		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
-		$row = \JTable::getInstance('extension');
+		// Sanitize the input
+		Arr::toInteger($pks);
+		Arr::toInteger($order);
 
-		$conditions = array();
+		// Save the ordering
+		$return = Plugin::saveorder($pks, $order);
 
-		// update ordering values
-		for ($i=0; $i < $total; $i++)
+		if ($return === false)
 		{
-			$row->load((int) $cid[$i]);
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering = $order[$i];
-				if (!$row->store())
-				{
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						$this->database->getErrorMsg(),
-						'error'
-					);
-					return;
-				}
-				// remember to updateOrder this group
-				$condition = 'folder = ' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND client_id = ' . (int) $row->client_id;
-				$found = false;
-				foreach ($conditions as $cond)
-				{
-					if ($cond[1] == $condition)
-					{
-						$found = true;
-						break;
-					}
-				}
-				if (!$found) $conditions[] = array($row->id, $condition);
-			}
+			// Reorder failed
+			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED'));
+		}
+		else
+		{
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Reorder succeeded.
+			Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ORDERING_SAVED'));
 		}
 
-		// execute updateOrder for each group
-		foreach ($conditions as $cond)
-		{
-			$row->load($cond[0]);
-			$row->reorder($cond[1]);
-		}
+		// Redirect back to the listing
+		$this->cancelTask();
+	}
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_RESOURCES_ORDERING_SAVED')
-		);
+	/**
+	 * Clean cached data
+	 *
+	 * @return  void
+	 */
+	public function cleanCache()
+	{
+		Cache::clean('com_plugins');
 	}
 }
