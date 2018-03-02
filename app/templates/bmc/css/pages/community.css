@@ -269,7 +269,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   grid-gap: 10px;
-  grid-auto-rows: minmax(250px, 1fr);
 }
 
 .explore h4 {
@@ -321,6 +320,24 @@
   grid-column: span 4;
   text-align: center;
   padding: 2.5em;
+}
+
+#one .fmn .link {
+  text-transform: uppercase;
+}
+
+#one .fmn .link a {
+  padding: .25em .75em;
+  border: 1px solid #fff;
+  color: #fff !important;
+}
+
+#one .fmn .link a:active {
+  color: #fff;
+}
+
+#one .fmn .link a:visited {
+  color: #fff;
 }
 
 #one .module-fmn {
@@ -393,6 +410,24 @@
   align-self: center;
   grid-column: 1/span 3;
   padding: 2.5em;
+}
+
+#two .workshops .link {
+  text-transform: uppercase;
+}
+
+#two .workshops .link a {
+  padding: .25em .75em;
+  border: 1px solid #84bf41;
+  color: #84bf41 !important;
+}
+
+#two .workshops .link a:active {
+  color: #84bf41;
+}
+
+#two .workshops .link a:visited {
+  color: #84bf41;
 }
 
 #two .module-workshops {
@@ -586,20 +621,22 @@
   color: #fff;
 }
 
-#c-six a {
+#c-six .link {
+  text-transform: uppercase;
+}
+
+#c-six .link a {
+  padding: .25em .75em;
+  border: 1px solid #fff;
+  color: #fff !important;
+}
+
+#c-six .link a:active {
   color: #fff;
 }
 
-#c-six a:active {
+#c-six .link a:visited {
   color: #fff;
-}
-
-#c-six a:visited {
-  color: #fff;
-}
-
-#c-six p {
-  margin: 1em 0;
 }
 
 @media only screen and (min-width: 320px) and (max-width: 589px) {

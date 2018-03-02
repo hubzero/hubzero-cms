@@ -107,7 +107,7 @@ h3 {
   padding-top: 2em;
 }
 
-.resources .oer .link a {
+.resources .oer .link a, .resources .oer .link .software .software-logos h6 a:active, .software .software-logos h6 .resources .oer .link a:active, .resources .oer .link .software .software-logos h6 a:visited, .software .software-logos h6 .resources .oer .link a:visited, .resources .oer .link .software .software-logos h6 a:hover, .software .software-logos h6 .resources .oer .link a:hover {
   padding: .25em .75em;
   border: 1px solid #fff;
   color: #fff !important;
@@ -192,7 +192,7 @@ h3 {
   padding-top: 2em;
 }
 
-.software .left .link a, .software .network .right .link a, .network .software .right .link a {
+.software .left .link a, .software .network .right .link a, .network .software .right .link a, .software .left .link .software-logos h6 a:active, .software .software-logos h6 .left .link a:active, .software .left .link .software-logos h6 a:visited, .software .software-logos h6 .left .link a:visited, .software .left .link .software-logos h6 a:hover, .software .software-logos h6 .left .link a:hover {
   padding: .25em .75em;
   border: 1px solid #fff;
   color: #fff !important;
@@ -229,6 +229,10 @@ h3 {
   align-self: center;
   padding-top: .5em;
   margin: 0;
+  color: #F1F2F2;
+}
+
+.software .software-logos h6 a, .software .software-logos h6 a:active, .software .software-logos h6 a:visited, .software .software-logos h6 a:hover {
   color: #F1F2F2;
 }
 
@@ -274,17 +278,17 @@ h3 {
   padding-top: 2em;
 }
 
-.network .link a {
+.network .link a, .network .link .software .software-logos h6 a:active, .software .software-logos h6 .network .link a:active, .network .link .software .software-logos h6 a:visited, .software .software-logos h6 .network .link a:visited, .network .link .software .software-logos h6 a:hover, .software .software-logos h6 .network .link a:hover {
   padding: .25em .75em;
   border: 1px solid #84bf41;
   color: #84bf41 !important;
 }
 
-.network .link a:active {
+.network .link a:active, .network .link .software .software-logos h6 a:active, .software .software-logos h6 .network .link a:active {
   color: #84bf41;
 }
 
-.network .link a:visited {
+.network .link a:visited, .network .link .software .software-logos h6 a:visited, .software .software-logos h6 .network .link a:visited {
   color: #84bf41;
 }
 
@@ -315,7 +319,7 @@ h3 {
   text-align: center;
 }
 
-.community .left .button a, .community .network .right .button a, .network .community .right .button a {
+.community .left .button a, .community .network .right .button a, .network .community .right .button a, .community .left .button .software .software-logos h6 a:active, .software .software-logos h6 .community .left .button a:active, .community .left .button .software .software-logos h6 a:visited, .software .software-logos h6 .community .left .button a:visited, .community .left .button .software .software-logos h6 a:hover, .software .software-logos h6 .community .left .button a:hover {
   padding: .25em .75em;
   border: 1px solid #84bf41;
   color: #84bf41 !important;
@@ -449,7 +453,7 @@ h3 {
   background-color: #84bf41;
 }
 
-.community .module-right .partner-tag a {
+.community .module-right .partner-tag a, .community .module-right .partner-tag .software .software-logos h6 a:active, .software .software-logos h6 .community .module-right .partner-tag a:active, .community .module-right .partner-tag .software .software-logos h6 a:visited, .software .software-logos h6 .community .module-right .partner-tag a:visited, .community .module-right .partner-tag .software .software-logos h6 a:hover, .software .software-logos h6 .community .module-right .partner-tag a:hover {
   color: #fff;
 }
 
@@ -459,7 +463,7 @@ h3 {
   padding: 10px;
 }
 
-.community .module-right .partner-title a {
+.community .module-right .partner-title a, .community .module-right .partner-title .software .software-logos h6 a:active, .software .software-logos h6 .community .module-right .partner-title a:active, .community .module-right .partner-title .software .software-logos h6 a:visited, .software .software-logos h6 .community .module-right .partner-title a:visited, .community .module-right .partner-title .software .software-logos h6 a:hover, .software .software-logos h6 .community .module-right .partner-title a:hover {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
@@ -561,7 +565,7 @@ h3 {
   text-transform: uppercase;
 }
 
-.three .service .link a {
+.three .service .link a, .three .service .link .software .software-logos h6 a:active, .software .software-logos h6 .three .service .link a:active, .three .service .link .software .software-logos h6 a:visited, .software .software-logos h6 .three .service .link a:visited, .three .service .link .software .software-logos h6 a:hover, .software .software-logos h6 .three .service .link a:hover {
   padding: .25em .75em;
   border: 1px solid #84bf41;
   color: #84bf41 !important;

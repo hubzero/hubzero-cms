@@ -143,7 +143,6 @@
   .community-container {
     @include flexbox(wrap);
     @include grid-template(repeat(auto-fit, minmax(210px, 1fr)), null, 10px);
-    grid-auto-rows: minmax(250px, 1fr);
   }
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
@@ -184,6 +183,9 @@
     @include grid(span 4, null);
     text-align: center;
     padding: 2.5em;
+    .link {
+      @include buttons($white);
+    }
   }
   .module-fmn {
     @include flexbox(wrap);
@@ -225,6 +227,9 @@
     align-self: center;
     @include grid(1 / span 3, null);
     padding: 2.5em;
+    .link {
+      @include buttons($green);
+    }
   }
   .module-workshops {
     @include flexbox(wrap);
@@ -344,17 +349,8 @@
   h2 {
     color: $white;
   }
-  a {
-    color: $white;
-    &:active {
-      color: $white;
-    }
-    &:visited {
-      color: $white;
-    }
-  }
-  p {
-    margin: 1em 0;
+  .link {
+    @include buttons($white);
   }
 }
 @media only screen and (min-width: 320px) and (max-width: 589px) {
