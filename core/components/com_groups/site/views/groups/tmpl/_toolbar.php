@@ -110,7 +110,7 @@ if ($this->group->isSuperGroup())
 				<ul class="dropdown-menu">
 				<?php if ($this->group->get('published') != 2) : ?>
 					<?php if ($isManager) : ?>
-						<?php if ($membership_control == 1) : ?>
+						<?php if ($membership_control == 1 && $this->group->get('join_policy') != 3) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
 									<?php echo Lang::txt('COM_GROUPS_TOOLBAR_INVITE'); ?>

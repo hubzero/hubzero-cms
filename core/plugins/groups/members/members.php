@@ -435,6 +435,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function approve()
 	{
+		// Membership cannot be changed
+		if ($this->group->get('join_policy') == 3)
+		{
+			return false;
+		}
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
@@ -776,6 +782,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function remove()
 	{
+		// Membership cannot be changed
+		if ($this->group->get('join_policy') == 3)
+		{
+			return false;
+		}
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
@@ -937,10 +949,16 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Add members
 	 *
-	 * @return  void
+	 * @return  mixed
 	 */
 	private function add()
 	{
+		// Membership cannot be changed
+		if ($this->group->get('join_policy') == 3)
+		{
+			return false;
+		}
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
