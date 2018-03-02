@@ -112,6 +112,12 @@ h3 {
       padding-top: .5em;
       margin: 0;
       color: $light-gray;
+      a {
+        color: $light-gray;
+        &:active, &:visited, &:hover {
+          @extend a;
+        }
+      }
     }
   }
 }

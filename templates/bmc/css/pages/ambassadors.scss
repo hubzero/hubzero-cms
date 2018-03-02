@@ -2,7 +2,7 @@
 @import 'mixins.scss';
 
 .wrapper {
-  @include grid-template(repeat(4, [col] 1fr), 2fr 1fr auto 1fr);
+  @include grid-template(repeat(4, [col] 1fr), 1.5fr 1fr auto 1fr);
 }
 
 //Header

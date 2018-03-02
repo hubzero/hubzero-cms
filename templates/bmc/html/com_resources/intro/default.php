@@ -73,7 +73,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   <div class="resources">
     <a href="#two" class="link-anchor">
       <h4>Collections</h4>
-      <p>Browse community driven collection of resources or create your own collection around your topic of interest</p>
+      <p>Browse community driven collections of resources or create your own collection around your topic of interest</p>
     </a>
   </div>
   <div class="resources">
@@ -88,7 +88,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   <article class="resource-oer">
     <div class="oer">
       <h2>Open Education Resources</h2>
-      <p>Open Education Practices (OEP) are the basis of the QUBESHub community.  OEP communities are built around a shared interest and desire to continuously improve and share resources and tools.  In open source software communities, users are also developers.  In a similar vein, QUBESHub users are invited to share their adaptations to existing educational resources through our publishing process.</p>
+      <p>Open Education Practices (OEP) are the basis of the QUBES community.  OEP communities are built around a shared interest and desire to continuously improve and share resources and tools.  In open source software communities, users are also developers.  In a similar vein, QUBES users are invited to share their adaptations to existing educational resources through our publishing process.</p>
     </div>
   </article>
   <article class="resource-fmn">
@@ -123,7 +123,7 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
   </div>
   <div class="collections">
     <h2>Collections</h2>
-    <p>Collections is both a community driven set of resources and a tool used by our groups and members to share resources found not only on QUBESHub, but across other sites as well.</p>
+    <p>Collections are both a community driven set of resources and a tool used by our groups and members to share resources found not only on QUBES, but across other sites as well.</p>
     <h6 class="link"><a href="/resources/collections">browse</a></h6>
   </div>
 </section>

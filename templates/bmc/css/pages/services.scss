@@ -2,7 +2,7 @@
 @import 'mixins.scss';
 
 .wrapper {
-  @include grid-template(repeat(4, [col] 1fr), repeat(6, [row] minmax(22rem, auto)));
+  @include grid-template(repeat(4, [col] 1fr), repeat(7, [row] minmax(22rem, auto)));
 }
 .link-anchor {
   color: inherit;
@@ -150,6 +150,22 @@
     align-self: center;
     h2 {
       color: $white;
+    }
+  }
+}
+
+//Contact
+#five {
+  @include flexbox;
+  @include grid(col / span 4, row 7);
+  @include grid-template(repeat(4, 1fr), null);
+  padding: 2.5em;
+  .contact-qubes {
+    @include grid(2 / span 2, null);
+    align-self: center;
+    text-align: center;
+    .link {
+      @include buttons($green);
     }
   }
 }
