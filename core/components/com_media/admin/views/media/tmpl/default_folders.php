@@ -8,9 +8,12 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+//ddie($this->folderTree);
 ?>
 <ul <?php echo $this->folders_id; ?>>
-	<?php foreach ($this->folders['children'] as $folder) : ?>
-		<li id="<?php echo $folder['data']->relative; ?>"><a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $folder['data']->relative); ?>" target="folderframe"><?php echo $folder['data']->name; ?></a><?php echo $this->getFolderLevel($folder); ?></li>
-	<?php endforeach; ?>
+	<?php foreach ($this->folderTree as $folder) { ?>
+		<li id="<?php echo $folder['name']; ?>">
+			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $folder['name']); ?>" target="folderframe"><?php echo $folder['name']; ?></a><?php //echo $this->getFolderLevel($folder); ?>
+		</li>
+	<?php } ?>
 </ul>

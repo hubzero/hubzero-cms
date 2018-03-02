@@ -14,7 +14,12 @@ defined('_HZEXEC_') or die();
  * @subpackage	com_media
  * @since		1.6
  */
-class MediaControllerFile extends JControllerLegacy
+
+use Hubzero\Component\AdminController;
+use \Hubzero\Filesystem\Util;
+use User;
+
+class MediaControllerFile extends AdminController
 {
 	/**
 	 * Upload a file
@@ -67,7 +72,7 @@ class MediaControllerFile extends JControllerLegacy
 			// The request is valid
 			$err = null;
 
-			$filepath = \Hubzero\Filesystem\Util::normalizePath(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
+			$filepath = Util::normalizePath(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
 
 			if (!MediaHelper::canUpload($file, $err))
 			{

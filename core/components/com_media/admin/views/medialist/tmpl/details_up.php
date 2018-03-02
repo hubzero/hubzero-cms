@@ -12,12 +12,12 @@ defined('_HZEXEC_') or die();
 ?>
 		<tr>
 			<td class="imgTotal">
-				<a class="up-item" href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">
+				<a class="up-item" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">
 					..
 				</a>
 			</td>
 			<td class="description">
-				<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">..</a>
+				<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">..</a>
 			</td>
 			<td>&#160;</td>
 			<td>&#160;</td>
