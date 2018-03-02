@@ -1,45 +1,37 @@
 <?php
-/**
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
 
-defined('_HZEXEC_') or die();
+namespace Components\Media\Admin;
 
-// Access check.
-$asset = Request::getCmd('asset');
-$author = Request::getCmd('author');
-
-if (!User::authorise('core.manage', 'com_media')
-	&&	(!$asset or (
-			!User::authorise('core.edit', $asset)
-		&&	!User::authorise('core.create', $asset)
-		&& 	count(User::getAuthorisedCategories($asset, 'core.create')) == 0)
-		&&	!(User::get('id') == $author && User::authorise('core.edit.own', $asset))))
+if (!\User::authorise('core.manage', 'com_media'))
 {
-	return App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 $params = Component::params('com_media');
 
-// Load the admin HTML view
-require_once JPATH_COMPONENT.'/helpers/media.php';
-
-// Set the path definitions
-$popup_upload = Request::getCmd('pop_up', null);
-$path = "file_path";
+require_once dirname(__DIR__) . DS . 'models' . DS . 'files.php';
+require_once __DIR__ . '/helpers/media.php';
+require_once __DIR__ . DS . 'helpers' . DS . 'media.php';
 
 $view = Request::getCmd('view');
-if (substr(strtolower($view), 0, 6) == "images" || $popup_upload == 1)
+$controllerName = \Request::getCmd('controller', 'media_test');
+
+define('COM_MEDIA_BASE', PATH_APP . '/' . $params->get($path, 'site/media'));
+define('COM_MEDIA_BASEURL', rtrim(Request::root(), '/') . substr(PATH_APP, strlen(PATH_ROOT)) . '/' . $params->get($path, 'site/media'));
+
+\Submenu::addEntry(
+	\Lang::txt('Thumbnail View'),
+	\Route::url('index.php?option=com_media&controller=media'),
+	($controllerName == 'media')
+);
+
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$path = "image_path";
+	$controllerName = 'media';
 }
 
-define('COM_MEDIA_BASE', PATH_APP . '/' . $params->get($path, 'images'));
-define('COM_MEDIA_BASEURL', rtrim(Request::root(), '/') . substr(PATH_APP, strlen(PATH_ROOT)) . '/' . $params->get($path, 'images'));
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-$controller	= JControllerLegacy::getInstance('Media');
-$controller->execute(Request::getCmd('task'));
-$controller->redirect();
+$controller = new $controllerName();
+$controller->execute();

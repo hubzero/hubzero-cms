@@ -12,15 +12,12 @@ defined('_HZEXEC_') or die();
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
-					<a class="up-item" href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">
+					<a class="up-item" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->parent); ?>" target="folderframe">
 						..
 					</a>
 				</div>
 			</div>
-			<div class="controls">
-				<span>&#160;</span>
-			</div>
 			<div class="imginfoBorder">
-				<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">..</a>
+				<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->parent); ?>" target="folderframe">..</a>
 			</div>
 		</div>

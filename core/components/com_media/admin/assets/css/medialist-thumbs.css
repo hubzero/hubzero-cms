@@ -16,19 +16,19 @@ div.imgTotal { }
 div.imgBorder {
 	height: 72px;
 	vertical-align: middle;
-	width: 88px;
+	width: 90px;
 	overflow: hidden;
 }
 
 div.imgBorder a {
 	height: 72px;
-	width: 88px;
+	width: 90px;
 	display: block;
 }
 
 div.imgBorder a:hover {
 	height: 72px;
-	width: 88px;
+	width: 90px;
 	background-color: #f0f0f0;
 	color : #FF6600;
 }
@@ -63,14 +63,29 @@ div.imginfoBorder {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	width: 88px;
-	height: 15px;
 	vertical-align: middle;
 	text-align: center;
 	overflow: hidden;
 }
 
+div.imginfoBorder input {
+	margin: 0px;
+}
+
+div.imginfoBorder a {
+	pointer-events: none;
+	cursor: default;
+}
+
 div.imgBorder a {
 	cursor: pointer;
+}
+
+div.imgBorder input {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 50%;
+        display: inline-block;
 }
 
 .buttonHover {

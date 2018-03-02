@@ -31,12 +31,14 @@
 				target = node.attr('target') != null ? node.attr('target') : '_self';
 
 				// Get the current URL.
+/*
 				uri = self._getUriObject(self.frameurl);
 				current = uri.file+'?'+uri.query;
 
 				if (current != 'undefined?undefined' && current != encodeURI(node.attr('href'))) {
 					window.frames[target].location.href = node.attr('href');
 				}
+*/
 			});
 			/*this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../core/assets/images/mootree.gif', onClick:
 					function(node){
@@ -74,6 +76,7 @@
 			this.frameurl = this.frame.location.href;
 
 			var folder = this.getFolder();
+			var basepath = "/var/www/hub/app/site/media";
 			if (folder) {
 				this.updatepaths.each(function(i, path){ path.value =folder; });
 				this.folderpath.value = basepath+'/'+folder;
@@ -89,9 +92,9 @@
 				this.tree.select(node, true);
 			}
 
-			$(viewstyle).addClass('active');
+			//$(viewstyle).addClass('active');
 
-			a = this._getUriObject($('#uploadForm').attr('action'));
+//			a = this._getUriObject($('#uploadForm').attr('action'));
 			/*q = new Hash(this._getQueryObject(a.query));
 			q.set('folder', folder);
 			var query = [];
@@ -100,6 +103,7 @@
 					this.push(k+'='+v);
 				}
 			}, query);*/
+/*
 			q = this._getQueryObject(a.query);
 			q.folder = folder;
 			var query = [];
@@ -115,6 +119,7 @@
 			} else {
 				$('#uploadForm').attr('action', a.scheme+'://'+a.domain+a.path+'?'+a.query);
 			}
+*/
 		},
 
 		oncreatefolder: function()
@@ -193,7 +198,7 @@
 			return rs;
 		},
 
-		_getUriObject: function(u){
+		_getUriObject: function(u) {
 			var bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
 			var barts = null;
 			if (bits) {
@@ -207,6 +212,30 @@
 			return (barts)
 				? barts //.associate(['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'])
 				: null;
+		},
+
+		delete: function()
+		{
+			var self = this;
+			$("#toolbar-delete").click(function() {
+				$("#folderframe").contents().find(".manager input[name=folder]").each(function() {
+					$("form[name=adminForm] input[name=folder]").val($(this).val());
+				});
+				var clicked = [];
+				$("#folderframe").contents().find(".imginfoBorder input[type=checkbox]").each(function() {
+					if ($(this).is(":checked")) {
+						clicked.push($(this).attr("value"));
+					}
+				});
+				var count = 0;
+				var input = $("form[name=adminForm] input[name=task]");
+				clicked.forEach(function(element) {
+					var cb = $("<input type='hidden' name='rm[]' id='cb" + count + "' value='" + clicked[count] + "' />");
+					input.append(cb);
+					count++;
+				});
+				Joomla.submitbutton('delete');
+			});
 		}
 	};
 })($);
@@ -217,4 +246,5 @@ jQuery(document).ready(function($){
 	MediaManager.trace = 'start';
 	document.updateUploader = function() { MediaManager.onloadframe(); };
 	MediaManager.onloadframe();
+	MediaManager.delete();
 });
