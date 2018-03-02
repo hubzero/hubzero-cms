@@ -66,7 +66,7 @@
 		</div><!-- end result snippet -->
 	<?php endif; ?>
 
-	<?php if (isset($this->result['_childDocuments_'])): ?>
+	<?php if (isset($this->result['_childDocuments_']) && $this->tagSearch): ?>
 		<!-- Tags -->
 		<div class="result-tags">
 			<ul class="tags">

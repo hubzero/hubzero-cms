@@ -44,6 +44,10 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="solr_log_path" type="text" menu="hide" default="/srv/hubzero-solr/logs/solr.log" label="COM_SEARCH_PARAM_SOLR_LOG_PATH" description="COM_SEARCH_PARAM_SOLR_LOG_PATH_LABEL" />
 		<field name="solr_commit" type="text" menu="hide" default="300000" label="COM_SEARCH_PARAM_SOLR_COMMIT" description="COM_SEARCH_PARAM_SOLR_COMMIT_LABEL" />
 		<field name="solr_batchsize" type="text" menu="hide" default="2000" label="COM_SEARCH_PARAM_SOLR_BATCHSIZE" description="COM_SEARCH_PARAM_SOLR_BATCHSIZE_LABEL" />
+		<field name="solr_tagsearch" type="list" default="0" label="COM_SEARCH_PARAM_SOLR_TAGSEARCH" description="COM_SEARCH_PARAM_SOLR_TAGSEARCH_LABEL">
+			<option value="1">On</option>
+			<option value="0">Off</option>
+		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_search" section="component">

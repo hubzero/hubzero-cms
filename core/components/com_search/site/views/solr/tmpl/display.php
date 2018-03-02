@@ -38,6 +38,8 @@ $this->js('solr');
 
 $terms = isset($this->terms) ? $this->terms : '';
 $noResult = count($this->results) > 0 ? false : true;
+$searchParams = Component::params('com_search');
+$tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 
 ?>
 
@@ -63,16 +65,19 @@ $noResult = count($this->results) > 0 ? false : true;
 			<input type="hidden" name="type" value="<?php echo !empty($this->type) ? $this->type : ''; ?>" />
 		</fieldset>
 		<?php	
-			$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
-								array(
-									array('tags', 'tags', 'actags', '', $this->tags)
-									)	
-							);
+			if ($tagSearch)
+			{
+				$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
+									array(
+										array('tags', 'tags', 'actags', '', $this->tags)
+										)	
+								);
 
-			if (count($tags_list) > 0) {
-				echo $tags_list[0];
-			} else {
-				echo '<input type="text" name="tags" value="' . $tags . '" />';
+				if (count($tags_list) > 0) {
+					echo $tags_list[0];
+				} else {
+					echo '<input type="text" name="tags" value="' . $tags . '" />';
+				}
 			}
 		?>
 		<?php if ($this->section == 'map' && 0) { ?>
@@ -127,6 +132,7 @@ $noResult = count($this->results) > 0 ? false : true;
 									$overrideView = new \Hubzero\View\View($this->viewOverrides[$hubType]);
 									$overrideView->set('result', $result)
 										->set('terms', $this->terms)
+										->set('tagSearch', $tagSearch)
 										->display();
 								}
 								else
@@ -134,6 +140,7 @@ $noResult = count($this->results) > 0 ? false : true;
 									$this->setLayout('_result')
 										->set('result', $result)
 										->set('terms', $terms)
+										->set('tagSearch', $tagSearch)
 										->display();
 								}
 							?>
