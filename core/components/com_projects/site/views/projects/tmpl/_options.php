@@ -48,6 +48,7 @@ $role .= '</span>';
 
 $counts = $this->model->get('counts');
 
+$member = $this->model->member();
 ?>
 <ul id="member_options">
 	<li><?php echo ucfirst($role); ?>
@@ -61,7 +62,7 @@ $counts = $this->model->get('counts');
 		<?php if ($this->model->isPublic()) { ?>
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1'); ?>"><?php echo Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a></li>
 		<?php } ?>
-		<?php if (isset($counts['team']) && $counts['team'] > 1 && $this->model->member()->get('status') == 1) { ?>
+		<?php if (isset($counts['team']) && $counts['team'] > 1 && $member && $member->get('status') == 1) { ?>
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></li>
 		<?php } ?>
 				</ul>
