@@ -310,11 +310,16 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 			$obj->tags = array();
 			foreach ($tags as $tag)
 			{
+				$title = $tag->get('raw_tag', '');
+				$description = $tag->get('tag', '');
+				$label = $tag->get('label', '');
 				$obj->tags[] = array(
 					'id' => 'tag-' . $tag->id,
-					'title' => $tag->raw_tag,
+					'title' => $title,
+					'description' => $description,
 					'access_level' => $tag->admin == 0 ? 'public' : 'private',
-					'type' => 'tag'
+					'type' => 'publication-tag',
+					'badge_b' => $label == 'badge' ? true : false
 				);
 			}
 		}
