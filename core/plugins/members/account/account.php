@@ -66,6 +66,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		{
 			$areas['account'] = Lang::txt('PLG_MEMBERS_ACCOUNT');
 			$areas['icon'] = 'f085';
+			$areas['icon-class'] = 'icon-cogs';
 			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 

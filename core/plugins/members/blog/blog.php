@@ -57,6 +57,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$areas = array(
 			'blog' => Lang::txt('PLG_MEMBERS_BLOG'),
 			'icon' => 'f075',
+			'icon-class' => 'icon-comment',
 			'menu' => $this->params->get('display_tab', 1)
 		);
 		return $areas;

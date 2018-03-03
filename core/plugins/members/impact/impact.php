@@ -118,6 +118,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			{
 				$areas['impact'] = Lang::txt('PLG_MEMBERS_IMPACT');
 				$areas['icon']   = 'f012';
+				$areas['icon-class']   = 'icon-signal';
 				$areas['menu']   = $this->params->get('display_tab', 1);
 			}
 		}

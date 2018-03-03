@@ -62,6 +62,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		{
 			$areas['groups'] = Lang::txt('PLG_MEMBERS_GROUPS');
 			$areas['icon'] = 'f042';
+			$areas['icon-class'] = 'icon-group';
 			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 
