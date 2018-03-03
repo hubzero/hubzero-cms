@@ -153,7 +153,22 @@
 .resources {
   width: 30%;
   padding: 10px;
-  border-left: 1px solid #222b37;
+}
+
+.resources h4 {
+  position: relative;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #222b37;
+}
+
+.resources h4:after {
+  content: '';
+  width: 65%;
+  height: 1.1px;
+  background-color: #fff;
+  position: absolute;
+  right: 0;
+  bottom: -1px;
 }
 
 #one {
