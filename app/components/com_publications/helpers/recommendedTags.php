@@ -40,6 +40,8 @@ class RecommendedTags extends \Hubzero\Base\Obj
 {
   public $_db  = null;
 
+  public $has_focus_area = false;
+
 	private $tags = array();
 
   private $focus_areas_map = array();
@@ -75,6 +77,15 @@ class RecommendedTags extends \Hubzero\Base\Obj
 		), $opts);
 
 		$this->_db = $db;
+
+    // Need to make sure we actually need to worry about focus areas
+    $this->_db->setQuery(
+      'SELECT master_type
+       FROM #__publications
+       WHERE id = ' . $pid
+    );
+    $master_type = (int) $this->_db->loadResult();
+    $this->has_focus_area = !empty($this->loadFocusAreas($master_type));
 
 		$this->_db->setQuery(
 			'SELECT t.raw_tag, fa.*
@@ -317,70 +328,72 @@ class RecommendedTags extends \Hubzero\Base\Obj
 
   public function checkStatus($pid)
   {
-    $map = $this->get_existing_focus_areas_map();
-    $fas = $this->get_focus_area_properties();
-    array_walk($fas, function(&$v, $k) {
-      $v['actual_depth'] = 0;
-    });
-    $rtags = $this->get_focus_areas();
+    if ($this->has_focus_area) {
+      $map = $this->get_existing_focus_areas_map();
+      $fas = $this->get_focus_area_properties();
+      array_walk($fas, function(&$v, $k) {
+        $v['actual_depth'] = 0;
+      });
+      $rtags = $this->get_focus_areas();
 
-    if ($fas) {
-      // Calculate depth
-      foreach ($rtags as $idx => $rtag)
-      {
-        $this->_db->setQuery(
-          'SELECT lower(t.raw_tag) as raw_tag, t.id
-          FROM `#__tags_object` to1
-          INNER JOIN `#__tags` t ON t.id = to1.tagid
-          INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $fas[$rtag['label']]['tag_id'] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
-          WHERE to1.objectid = (SELECT id FROM jos_tags WHERE raw_tag = ' . $this->_db->quote($rtag['raw_tag']) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
-        );
-        $any_match = false;
-        $parent = array();
-        $possible_parents = $this->_db->loadAssocList();
-        foreach ($possible_parents as $par)
+      if ($fas) {
+        // Calculate depth
+        foreach ($rtags as $idx => $rtag)
         {
-          if (isset($map[$par['raw_tag']]))
+          $this->_db->setQuery(
+            'SELECT lower(t.raw_tag) as raw_tag, t.id
+            FROM `#__tags_object` to1
+            INNER JOIN `#__tags` t ON t.id = to1.tagid
+            INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $fas[$rtag['label']]['tag_id'] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+            WHERE to1.objectid = (SELECT id FROM jos_tags WHERE raw_tag = ' . $this->_db->quote($rtag['raw_tag']) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
+          );
+          $any_match = false;
+          $parent = array();
+          $possible_parents = $this->_db->loadAssocList();
+          foreach ($possible_parents as $par)
           {
-            $parent[] = $par;
-            $any_match = true;
-          }
-        }
-        if (!$possible_parents || $any_match)
-        {
-          $filtered[] = $rtag;
-          $parent_id = array();
-          foreach ($parent as $par)
-          {
-            $parent_id[] = $par['id'];
-          }
-          if (isset($fas[$rtag['label']]) && $fas[$rtag['label']]['actual_depth'] < $fas[$rtag['label']]['mandatory_depth'])
-          {
-            // count depth if necessary to determine whether focus area constraints are satisified
-            for ($depth = $parent ? 2 : 1; $parent_id && $fas[$rtag['label']]['actual_depth'] < $fas[$rtag['label']]['mandatory_depth'] && $depth < $fas[$rtag['label']]['mandatory_depth']; ++$depth)
+            if (isset($map[$par['raw_tag']]))
             {
-              $this->_db->setQuery(
-                'SELECT t.id
-                FROM `#__tags_object` to1
-                INNER JOIN `#__tags` t ON t.id = to1.tagid
-                INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $fas[$rtag['label']]['tag_id'] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
-                WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
-              );
-              $parent_id = $this->_db->loadColumn();
+              $parent[] = $par;
+              $any_match = true;
             }
-            $fas[$rtag['label']]['actual_depth'] = max($depth, $fas[$rtag['label']]['actual_depth']);
+          }
+          if (!$possible_parents || $any_match)
+          {
+            $filtered[] = $rtag;
+            $parent_id = array();
+            foreach ($parent as $par)
+            {
+              $parent_id[] = $par['id'];
+            }
+            if (isset($fas[$rtag['label']]) && $fas[$rtag['label']]['actual_depth'] < $fas[$rtag['label']]['mandatory_depth'])
+            {
+              // count depth if necessary to determine whether focus area constraints are satisified
+              for ($depth = $parent ? 2 : 1; $parent_id && $fas[$rtag['label']]['actual_depth'] < $fas[$rtag['label']]['mandatory_depth'] && $depth < $fas[$rtag['label']]['mandatory_depth']; ++$depth)
+              {
+                $this->_db->setQuery(
+                  'SELECT t.id
+                  FROM `#__tags_object` to1
+                  INNER JOIN `#__tags` t ON t.id = to1.tagid
+                  INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $fas[$rtag['label']]['tag_id'] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+                  WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
+                );
+                $parent_id = $this->_db->loadColumn();
+              }
+              $fas[$rtag['label']]['actual_depth'] = max($depth, $fas[$rtag['label']]['actual_depth']);
+            }
           }
         }
-      }
 
-      // Check depth
-      foreach ($fas as $lbl => $fa)
-  		{
-  			if ($fa['actual_depth'] < $fa['mandatory_depth'])
-  			{
-          return 0;
-  			}
-  		}
+        // Check depth
+        foreach ($fas as $lbl => $fa)
+    		{
+    			if ($fa['actual_depth'] < $fa['mandatory_depth'])
+    			{
+            return 0;
+    			}
+    		}
+      }
     }
 
     return 1;
