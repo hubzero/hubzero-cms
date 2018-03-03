@@ -57,6 +57,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		$areas = array(
 			'contributions' => Lang::txt('PLG_MEMBERS_CONTRIBUTIONS'),
 			'icon' => 'f02d',
+			'icon-class' => 'icon-book',
 			'menu' => $this->params->get('display_tab', 1)
 		);
 		return $areas;
