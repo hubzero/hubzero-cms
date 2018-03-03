@@ -91,7 +91,20 @@
 .resources {
   width: 30%;
   padding: 10px;
-  border-left: 1px solid $dark-blue;
+  h4 {
+    position: relative;
+    padding-bottom: 1em;
+    border-bottom: 1px solid $dark-blue;
+    &:after {
+      content: '';
+      width: 65%;
+      height: 1.1px;
+      background-color: $white;
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+    }
+  }
 }
 
 //OER and Resources

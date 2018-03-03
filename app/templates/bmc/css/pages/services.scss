@@ -41,20 +41,33 @@
 }
 
 //Services
+.learn {
+  @include grid(col / span 4, row 2);
+  padding: 2.5em;
+}
 .services {
   @include flexbox(wrap);
-  @include grid(col / span 4, row 2);
-  @include grid-template(repeat(auto-fit, minmax(260px, 1fr)), null, 10px);
+  @include grid-template(repeat(auto-fit, minmax(425px, 1fr)), null, 10px);
   padding: 2.5em;
 }
 .service {
   flex: 1 1 250px;
+  padding: 10px;
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-    height: 4.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $teal;
+    &:after {
+      content: '';
+      width: 65%;
+      height: 1.1px;
+      background-color: $white;
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+    }
   }
-  padding: 10px;
-  border-left: 1px solid $teal;
 }
 
 //Community Building

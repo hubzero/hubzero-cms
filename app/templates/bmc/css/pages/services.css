@@ -66,13 +66,17 @@
   color: #fff;
 }
 
+.learn {
+  grid-column: col/span 4;
+  grid-row: row 2;
+  padding: 2.5em;
+}
+
 .services {
   display: flex;
   flex-wrap: wrap;
-  grid-column: col/span 4;
-  grid-row: row 2;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(425px, 1fr));
   grid-gap: 10px;
   padding: 2.5em;
 }
@@ -80,12 +84,23 @@
 .service {
   flex: 1 1 250px;
   padding: 10px;
-  border-left: 1px solid #007991;
 }
 
 .service h4 {
   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-  height: 4.5rem;
+  position: relative;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #007991;
+}
+
+.service h4:after {
+  content: '';
+  width: 65%;
+  height: 1.1px;
+  background-color: #fff;
+  position: absolute;
+  right: 0;
+  bottom: -1px;
 }
 
 #one {

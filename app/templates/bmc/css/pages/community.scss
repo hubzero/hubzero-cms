@@ -142,17 +142,30 @@
   margin-bottom: 5em;
   .community-container {
     @include flexbox(wrap);
-    @include grid-template(repeat(auto-fit, minmax(210px, 1fr)), null, 10px);
+    @include grid-template(repeat(auto-fit, minmax(425px, 1fr)), null, 10px);
+    grid-auto-rows: auto;
   }
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-    height: 4rem;
   }
 }
 .communities {
   width: 20rem;
   padding: 10px;
-  border-left: 1px solid $green;
+  h4 {
+    position: relative;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $green;
+    &:after {
+      content: '';
+      width: 65%;
+      height: 1.1px;
+      background-color: $white;
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+    }
+  }
 }
 
 //Faculty Mentoring Network
@@ -160,7 +173,7 @@
   @include flexbox(wrap);
   justify-content: center;
   @include grid(col / span 4, row 4);
-  @include grid-template(repeat(4, 1fr), repeat(2, 1fr), null);
+  @include grid-template(repeat(4, 1fr), repeat(3, 1fr), null);
   background-color: $teal;
   color: $white;
   h2 {
@@ -211,6 +224,15 @@
           @include showcase-header(1em, 1, 2);
         }
       }
+    }
+  }
+  .ambassador {
+    @include grid(1 / span 4, 3);
+    align-self: center;
+    text-align: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($white);
     }
   }
 }
