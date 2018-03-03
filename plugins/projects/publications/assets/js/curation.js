@@ -957,7 +957,14 @@ HUB.ProjectPublicationsDraft = {
 		var item_depth = 0;
 		recommendedTags.each(function(i, item)
 		{
-			selected = selected ? selected + ',' + $(item).next('label').html() : $(item).next('label').html();
+			// Only count items with parent also checked
+			if ($(item).parent().hasClass('top-level') ||
+			    $(item).parent().siblings("input").is(":checked")) {
+				selected = selected ? selected + ',' + $(item).next('label').html() : $(item).next('label').html();
+			} else {
+				$(item).prop('checked', false);
+				return false;
+			}
 
 			// Check for correct depth - note that this will only work when there is only ONE
 			//   focus area per master type
