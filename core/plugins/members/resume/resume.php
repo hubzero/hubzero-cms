@@ -92,6 +92,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			$areas['resume'] = Lang::txt('PLG_MEMBERS_RESUME');
 			$areas['icon'] = 'f016';
+			$areas['icon-class'] = 'icon-file';
 			$areas['menu'] = $this->params->get('display_tab', 1);
 		}
 

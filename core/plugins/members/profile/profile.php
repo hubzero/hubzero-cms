@@ -57,6 +57,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$areas = array(
 			'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
 			'icon'    => 'f007',
+			'icon-class'    => 'icon-user',
 			'menu'    => $this->params->get('display_tab', 1)
 		);
 		return $areas;

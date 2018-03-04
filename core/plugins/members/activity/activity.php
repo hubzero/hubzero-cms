@@ -59,6 +59,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 		{
 			$areas['activity'] = Lang::txt('PLG_MEMBERS_ACTIVITY');
 			$areas['icon']     = 'f056';
+			$areas['icon-class'] = 'icon-activity';
 			$areas['menu']     = $this->params->get('display_tab', 1);
 		}
 

@@ -57,6 +57,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 		$areas = array(
 			'usage' => Lang::txt('PLG_MEMBERS_USAGE'),
 			'icon'  => 'f080',
+			'icon-class'  => 'icon-bar-chart',
 			'menu'  => $this->params->get('display_tab', 1)
 		);
 		return $areas;
