@@ -79,10 +79,10 @@ class Publications extends SiteController
 
 		// Register tasks
 		$this->registerTask('view', 'page');
+		$this->registerTask('watch', 'page');
 		$this->registerTask('download', 'serve');
 		$this->registerTask('video', 'serve');
 		$this->registerTask('play', 'serve');
-		$this->registerTask('watch', 'serve');
 
 		$this->registerTask('wiki', 'wikipage');
 		$this->registerTask('submit', 'contribute');
