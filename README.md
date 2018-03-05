@@ -31,4 +31,4 @@ Please report any bugs or issues at https://help.hubzero.org/support.
 
 ## Roadmap
 
-Checkout what is on our development roadmap at https://hubzero.org/roadmap.
+Checkout what is on our development roadmap at https://help.hubzero.org/documentation/roadmap.
