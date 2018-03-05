@@ -76,7 +76,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 				// Check for a database error.
 				if ($db->getErrorNum())
 				{
-					$this->_subject->setError($db->getErrorMsg());
+					Notify::error($db->getErrorMsg());
 					return false;
 				}
 
@@ -185,7 +185,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	{
 		if (!($form instanceof Hubzero\Form\Form))
 		{
-			$this->_subject->setError('JERROR_NOT_A_FORM');
+			Notify::error('JERROR_NOT_A_FORM');
 			return false;
 		}
 
@@ -328,7 +328,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				$this->_subject->setError($e->getMessage());
+				Notify::error($e->getMessage());
 				return false;
 			}
 		}
@@ -371,7 +371,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				$this->_subject->setError($e->getMessage());
+				Notify::error($e->getMessage());
 				return false;
 			}
 		}
