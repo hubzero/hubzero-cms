@@ -96,14 +96,14 @@ class SearchComponent extends Relational
 	public function getViewOverride($layout = 'solr', $name = 'search')
 	{
 		$base_path = Component::path($this->get('name')) . '/site';
-		$override_path = Component::canonical($this->get('name')) . '/' . $name;
+		$override_path = Component::canonical($this->get('name'));
 		$templatePath = '';
 		if (App::has('template'))
 		{
 			$templatePath = App::get('template')->path . '/html';
 		}
 		$fileName = $layout . '.php';
-		$overrideFile = $templatePath . '/' . $override_path . '/' . $fileName; 	
+		$overrideFile = $templatePath . '/' . $override_path . '/' . $name . '/' . $fileName;
 		$viewFile = $base_path . '/views/' . $name . '/tmpl/' . $fileName;
 		if (file_exists($viewFile) || file_exists($overrideFile))
 		{
