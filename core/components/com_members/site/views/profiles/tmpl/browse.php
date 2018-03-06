@@ -66,17 +66,17 @@ foreach ($this->fields as $field)
 		<aside class="aside">
 			<div class="container">
 				<fieldset>
-					<legend><?php echo Lang::txt('Narrow results'); ?></legend>
+					<legend><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTERS'); ?></legend>
 
 					<div class="input-wrap">
 						<label for="filter-value-name">
 							<?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?>
-							<input type="text" name="search" id="filter-value-name" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Name or keyword...'); ?>" />
+							<input type="text" name="search" id="filter-value-name" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 						</label>
 					</div>
 
 					<fieldset class="filters">
-						<legend><?php echo Lang::txt('Filter'); ?></legend>
+						<legend><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER'); ?></legend>
 
 						<?php foreach ($filters as $field) : ?>
 							<div class="input-wrap">
@@ -144,11 +144,11 @@ foreach ($this->fields as $field)
 					</fieldset><!-- / filters -->
 
 					<fieldset class="sorting">
-						<legend><?php echo Lang::txt('Sort'); ?></legend>
+						<legend><?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT'); ?></legend>
 
 						<div class="input-wrap">
 							<label for="filter-value-sort">
-								<?php echo Lang::txt('Sort by'); ?>
+								<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_BY'); ?>
 								<select name="sort" id="filter-value-sort">
 									<option value="name"><?php echo $this->escape('Name'); ?></option>
 									<?php foreach ($this->fields as $field) : ?>
@@ -160,16 +160,16 @@ foreach ($this->fields as $field)
 
 						<div class="input-wrap">
 							<label for="filter-value-sort-dir">
-								<?php echo Lang::txt('Direction'); ?>
+								<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR'); ?>
 								<select name="sort_Dir" id="filter-value-sort-dir">
-									<option value="asc"<?php if ($this->filters['sort_Dir'] == 'asc') { echo ' selected="selected"'; } ?>><?php echo $this->escape('Ascending (A-Z)'); ?></option>
-									<option value="desc"<?php if ($this->filters['sort_Dir'] == 'desc') { echo ' selected="selected"'; } ?>><?php echo $this->escape('Descending (Z-A)'); ?></option>
+									<option value="asc"<?php if ($this->filters['sort_Dir'] == 'asc') { echo ' selected="selected"'; } ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')); ?></option>
+									<option value="desc"<?php if ($this->filters['sort_Dir'] == 'desc') { echo ' selected="selected"'; } ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')); ?></option>
 								</select>
 							</label>
 						</div>
 					</fieldset><!-- / sort -->
 
-					<p><input class="btn" type="submit" value="<?php echo Lang::txt('Apply'); ?>" /></p>
+					<p><input class="btn" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_APPLY'); ?>" /></p>
 				</fieldset>
 			</div>
 		</aside><!-- / .aside -->
@@ -232,7 +232,7 @@ foreach ($this->fields as $field)
 										?>
 										<li>
 											<i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($val); ?>
-											<a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('Remove filter'); ?>"><?php echo Lang::txt('Remove filter'); ?></a>
+											<a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?>"><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?></a>
 										</li>
 										<?php
 									}
@@ -250,7 +250,7 @@ foreach ($this->fields as $field)
 									?>
 									<li>
 										<i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($q['human_value']); ?>
-										<a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('Remove filter'); ?>"><?php echo Lang::txt('Remove filter'); ?></a>
+										<a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?>"><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?></a>
 									</li>
 								<?php } ?>
 							<?php endforeach; ?>
