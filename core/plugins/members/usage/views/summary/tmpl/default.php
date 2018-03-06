@@ -84,7 +84,7 @@ $this->css('usage', 'com_usage');
 		<?php if ($this->cluster_users) { ?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
-				<td><?php echo number_format($this->cluster_users).' users served in '.number_format($this->cluster_classes).' courses from '.number_format($this->cluster_schools).' institutions'; ?></td>
+				<td><?php echo Lang::txt('PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED', number_format($this->cluster_users), number_format($this->cluster_classes), number_format($this->cluster_schools)); ?></td>
 			</tr>
 		<?php } ?>
 		</tbody>
@@ -144,7 +144,7 @@ $this->css('usage', 'com_usage');
 				?>
 				<tr class="summary">
 					<td class="group"></td>
-					<td class="group textual-data"><?php echo Lang::txt('TOTAL'); ?></td>
+					<td class="group textual-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TOTAL'); ?></td>
 					<td class="group"><?php echo number_format($sum_usercount_12); ?></td>
 					<td class="group"><?php echo number_format($sum_simcount_12); ?></td>
 					<td class="group"><?php echo number_format($sum_usercount_14); ?></td>
