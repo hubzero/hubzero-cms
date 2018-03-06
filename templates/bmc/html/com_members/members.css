@@ -77,3 +77,14 @@
   padding: 0.5em 1em;
   text-align: center;
 }
+#page_options {
+  position: relative;
+  margin: -2em 0em 2.5em 2em;
+}
+#page_main > #page_options {
+  float: right;
+  margin: 0;
+}
+.member_collections > #page_options {
+  margin-bottom: 4.5em;
+}
