@@ -186,13 +186,13 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
 
 				<label for="uri">
 					<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_URL'); ?>:
-					<input type="text" name="cite[uri]" id="uri" size="30" maxlength="250" value="<?php echo $this->row->url; ?>" />
+					<input type="text" name="cite[url]" id="url" size="30" maxlength="250" value="<?php echo $this->row->url; ?>" />
 				</label>
 			</div>
 			<div class="formatted-cite">
 				<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED'); ?>:
 				<label for="formatted">
-					<textarea name="cite[formatted]" id="formatted" rows="4" cols="10"><?php echo stripslashes($this->row->formatted()); ?></textarea>
+					<textarea name="cite[formatted]" id="formatted" rows="4" cols="10"><?php echo stripslashes($this->row->formatted); ?></textarea>
 					<span class="hint"><?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_EXPLANATION'); ?> <?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_FORMAT'); ?> <?php echo strtoupper($citationFormat); ?></span>
 				</label>
 			</div>

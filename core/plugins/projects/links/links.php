@@ -491,7 +491,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				// Save available data
 				if ($data)
 				{
-					foreach ($citation->getProperties() as $key => $value)
+					foreach ($citation->getAttributes() as $key => $value)
 					{
 						$column = strtolower($key);
 						if (isset($data->$column))
@@ -534,12 +534,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 					{
 						$citation->set('type', $validTypes[$dType]);
 					}
-					elseif (!intval($c->type))
+					elseif (!intval($citation->type))
 					{
 						// Default to article
 						$citation->set('type', $validTypes['journal-article']);
 					}
 				}
+
 
 				if (!$citation->save())
 				{

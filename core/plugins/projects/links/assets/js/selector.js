@@ -45,9 +45,9 @@ HUB.ProjectLinksSelect = {
 		
 		// Enable adding new citation
 		HUB.ProjectLinksSelect.enableAdd();	
-		
-		if ($('#cancel-action')) {
-			$('#cancel-action').on('click', function(e) {
+		var cancelAction = jq('#cancel-action');	
+		if (cancelAction.length) {
+			cancelAction.on('click', function(e) {
 				$.fancybox.close();
 			});
 		}		

@@ -929,7 +929,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 								$a[] = $author;
 							}
 						}
-						$replace_values[$v] = implode(", ", $a);
+						$replace_values[$v] = implode(", ", array_filter($a));
 					}
 				}
 
