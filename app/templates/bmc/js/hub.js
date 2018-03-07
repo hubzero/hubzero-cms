@@ -551,7 +551,7 @@ jQuery(document).ready(function(jq) {
 	var $ = jq,
 		w = 760,
 		h = 520,
-		templatepath = '/templates/bmc/';
+		templatepath = '/app/templates/bmc/';
 
 	// Set focus on username field for login form
 	if ($('#username').length > 0) {
