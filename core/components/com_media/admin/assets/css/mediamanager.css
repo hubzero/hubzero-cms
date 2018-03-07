@@ -16,6 +16,12 @@
 	border: 0;
 }
 
+.uploadForms {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
+
 #folderForm {
 	display: inline-block;
 	width: 50%;
@@ -75,11 +81,11 @@
 }
 
 #uploadForm, #uploadForm fieldset {
-	display: inline;
+	display: inline-block;
 }
 
 #uploadForm legend {
-	display: inline;
+	display: inline-block;
 	font-weight: bold;
 }
 
