@@ -31,14 +31,12 @@
 				target = node.attr('target') != null ? node.attr('target') : '_self';
 
 				// Get the current URL.
-/*
 				uri = self._getUriObject(self.frameurl);
 				current = uri.file+'?'+uri.query;
 
 				if (current != 'undefined?undefined' && current != encodeURI(node.attr('href'))) {
 					window.frames[target].location.href = node.attr('href');
 				}
-*/
 			});
 			/*this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../core/assets/images/mootree.gif', onClick:
 					function(node){
@@ -94,7 +92,8 @@
 
 			//$(viewstyle).addClass('active');
 
-//			a = this._getUriObject($('#uploadForm').attr('action'));
+//console.log($('#uploadForm[action]'));
+//			a = this._getUriObject($('#uploadForm[action]'));
 			/*q = new Hash(this._getQueryObject(a.query));
 			q.set('folder', folder);
 			var query = [];
@@ -220,12 +219,14 @@
 			$("#toolbar-delete").click(function() {
 				$("#folderframe").contents().find(".manager input[name=folder]").each(function() {
 					$("form[name=adminForm] input[name=folder]").val($(this).val());
+					return;
 				});
 				var clicked = [];
 				$("#folderframe").contents().find(".imginfoBorder input[type=checkbox]").each(function() {
 					if ($(this).is(":checked")) {
 						clicked.push($(this).attr("value"));
 					}
+					return;
 				});
 				var count = 0;
 				var input = $("form[name=adminForm] input[name=task]");
@@ -233,9 +234,11 @@
 					var cb = $("<input type='hidden' name='rm[]' id='cb" + count + "' value='" + clicked[count] + "' />");
 					input.append(cb);
 					count++;
+					return;
 				});
 				Joomla.submitbutton('delete');
 			});
+			return;
 		}
 	};
 })($);

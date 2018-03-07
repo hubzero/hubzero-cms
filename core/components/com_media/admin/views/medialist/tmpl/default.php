@@ -8,4 +8,3 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
-ddie($this->children);
