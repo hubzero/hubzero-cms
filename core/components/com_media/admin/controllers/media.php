@@ -42,7 +42,8 @@ Html::behavior('framework', true);
 \Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager.css');
 Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
 Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
-//Html::asset('stylesheet', 'media/jquery.treeview_rtl.css', array(), true);
+
+		$this->view->setLayout('default');
 
                 $this->view
                         ->set('require_ftp', true)
@@ -306,6 +307,18 @@ Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=media&folder=' . $folder, false));
 	}
 
+	public function getFolderLevel($folder) {
+		$html = null;
+		if (isset($folder['children']) && count($folder['children']))
+		{
+			$tmp = $this->folder;
+			$this->folder = $folder;
+			$html = $this->loadTemplate('folders');
+			$this->folder = $tmp;
+		}
+		return $html;
+	}
+
         protected function reformatFilesArray($name, $type, $tmp_name, $error, $size)
         {
                 $name = Filesystem::clean($name);
@@ -340,14 +353,15 @@ Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
 		return $parent;
 	}
 
-	private function _buildFolderTree($folders, $parent_id = 0)
+	private function _buildFolderTree($folders, $parent_id = 0, $path = '')
 	{
 		$branch = array();
 		foreach ($folders as $folder)
 		{
 			if ($folder['parent'] == $parent_id)
 			{
-				$children = $this->_buildFolderTree($folders, $folder['id']);
+				$folder['path'] = ($path == '') ? $folder['name'] : $path . '/' . $folder['name'];
+				$children = $this->_buildFolderTree($folders, $folder['id'], $folder['path']);
 				if ($children)
 				{
 					$folder['children'] = $children;
