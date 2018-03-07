@@ -98,6 +98,10 @@
   border-radius: 20%;
   overflow: hidden;
 }
+#page_identity a {
+  min-width: 0;
+  max-width: none;
+}
 /* BEGIN: Fixing files plugin */
 .files-wrap .qq-upload-button span,
 .files-wrap .qq-upload-drop-area span {
