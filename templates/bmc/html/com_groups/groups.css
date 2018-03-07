@@ -56,6 +56,10 @@
 #page_menu li ul li .page:before {
   background: #494a5a;
 }
+#page_menu li ul li.active > a {
+  background: #fff;
+  color: #000;
+}
 #page_menu li.active > a {
   background: #fff;
   color: #000;
