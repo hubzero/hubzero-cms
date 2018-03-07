@@ -31,8 +31,9 @@ Toolbar::help('media');
 		<td class="media-tree">
 			<fieldset id="treeview">
 				<legend><?php echo Lang::txt('COM_MEDIA_FOLDERS'); ?></legend>
-				<div id="media-tree_tree"></div>
+				<div id="media-tree_tree">
 				<?php echo $this->loadTemplate('folders'); ?>
+				</div>
 			</fieldset>
 		</td>
 		<td class="media-browser">
