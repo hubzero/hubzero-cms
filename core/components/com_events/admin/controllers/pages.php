@@ -32,10 +32,18 @@
 
 namespace Components\Events\Admin\Controllers;
 
-use Components\Events\Tables\Page;
-use Components\Events\Tables\Event;
+use Components\Events\Models\Orm\Page;
 use Hubzero\Component\AdminController;
-use Exception;
+use Request;
+use Notify;
+use Route;
+use Event;
+use User;
+use Lang;
+use Date;
+use App;
+
+require_once dirname(dirname(__DIR__)) . '/models/orm/event.php';
 
 /**
  * Events controller for pages
@@ -43,165 +51,169 @@ use Exception;
 class Pages extends AdminController
 {
 	/**
-	 * Display a list of entries for an event
+	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function displayTask()
+	public function execute()
 	{
-		$ids = Request::getVar('id', array(0));
-		$ids = (!is_array($ids) ? array($ids) : $ids);
-		if (count($ids) < 1)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false)
-			);
-			return;
-		}
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
 
-		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['event_id'] = $ids[0];
-		$this->view->filters['search']   = urldecode(Request::getState(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		$this->view->filters['limit']    = Request::getState(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
-		);
-		$this->view->filters['start']    = Request::getState(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		$obj = new Page($this->database);
-
-		// Get a record count
-		$this->view->total = $obj->getCount($this->view->filters);
-
-		// Get records
-		$this->view->rows  = $obj->getRecords($this->view->filters);
-
-		$this->view->event = new Event($this->database);
-		$this->view->event->load($ids[0]);
-
-		// Output the HTML
-		$this->view->display();
+		parent::execute();
 	}
 
 	/**
-	 * Show a form for adding an entry
+	 * Display a list of pages for an event
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function addTask()
+	public function displayTask()
 	{
-		$id = Request::getVar('id', array());
-		if (is_array($id))
+		// Get filters
+		$filters = array(
+			'event_id' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.event_id',
+				'event_id',
+				0,
+				'int'
+			),
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+
+		$event = \Components\Events\Models\Orm\Event::oneOrFail($filters['event_id']);
+
+		// Get records
+		$query = $event->pages();
+
+		if ($filters['search'])
 		{
-			$id = (!empty($id)) ? $id[0] : 0;
+			$query->whereLike('title', strtolower((string)$filters['search']));
 		}
 
-		Request::setVar('id', array());
-		$this->editTask($id);
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		// Output the HTML
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->set('event', $event)
+			->display();
 	}
 
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @param      integer $eid Event ID
-	 * @return     void
+	 * @param   object  $row
+	 * @return  void
 	 */
-	public function editTask($eid=null)
+	public function editTask($row=null)
 	{
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$eid = ($eid) ? $eid : Request::getInt('event', 0);
-
-		$id = Request::getVar('id', array());
-		if (is_array($id))
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
 		{
-			$id = (!empty($id)) ? $id[0] : 0;
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Initiate database class and load info
-		$this->view->page = new Page($this->database);
-		$this->view->page->load($id);
+		Request::setVar('hidemainmenu', 1);
 
-		$this->view->event = new Event($this->database);
-		$this->view->event->load($eid);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		if (!is_object($row))
 		{
-			$this->view->setError($error);
+			// Incoming
+			$id = Request::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
+			// Load the article
+			$page = Page::oneOrNew($id);
 		}
+
+		if ($page->isNew())
+		{
+			$page->set('event_id', Request::getInt('event_id'));
+		}
+
+		$event = $page->event;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('page', $page)
+			->set('event', $event)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields['event_id'] = Request::getInt('event_id');
+
 		// Bind incoming data to object
-		$row = new Page($this->database);
-		if (!$row->bind($_POST))
+		$row = Page::oneOrNew($fields['id'])->set($fields);
+
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onEventsBeforeSavePage', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
 		{
-			throw new Exception($row->getError(), 500);
-		}
-
-		if (!$row->alias)
-		{
-			$row->alias = $row->title;
-		}
-
-		$row->event_id = Request::getInt('event', 0);
-		$row->alias = preg_replace("/[^a-zA-Z0-9]/", '', $row->alias);
-		$row->alias = strtolower($row->alias);
-
-		//set created date and user
-		if ($row->id == NULL || $row->id == '' || $row->id == 0)
-		{
-			$row->created = \Date::toSql();
-			$row->created_by = User::get('id');
-		}
-
-		//set modified date and user
-		$row->modified = \Date::toSql();
-		$row->modified_by = User::get('id');
-
-		// Check content for missing required data
-		if (!$row->check())
-		{
-			throw new Exception($row->getError(), 500);
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
-			throw new Exception($row->getError(), 500);
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
+		// Trigger after save event
+		Event::trigger('onEventsAfterSavePage', array(&$row, $isNew));
+
+		Notify::success(Lang::txt('COM_EVENTS_PAGE_SAVED'));
+
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $row->event_id, false),
-			Lang::txt('COM_EVENTS_PAGE_SAVED')
-		);
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($row);
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -214,40 +226,47 @@ class Pages extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
-		$event = Request::getInt('event', 0);
-		$ids   = Request::getVar('id', array(0));
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Get the single ID we're working with
-		if (!is_array($ids))
+		$removed = 0;
+
+		foreach ($ids as $id)
 		{
-			$ids = array();
-		}
+			$entry = Page::oneOrFail(intval($id));
 
-		// Do we have any IDs?
-		if (!empty($ids))
-		{
-			$page = new Page($this->database);
-
-			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id)
+			// Delete the entry
+			if (!$entry->destroy())
 			{
-				// Remove the profile
-				$page->delete($id);
+				Notify::error($entry->getError());
+				continue;
 			}
+
+			// Trigger before delete event
+			Event::trigger('onEventsAfterDeletePage', array($id));
+
+			$removed++;
 		}
 
-		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $event, false),
-			Lang::txt('EVENTS_PAGES_REMOVED')
-		);
+		if ($removed)
+		{
+			Notify::success(Lang::txt('EVENTS_PAGES_REMOVED'));
+		}
+
+		// Set the redirect
+		$this->cancelTask();
 	}
 
 	/**
 	 * Move an item up one in the ordering
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function orderupTask()
 	{
@@ -257,7 +276,7 @@ class Pages extends AdminController
 	/**
 	 * Move an item down one in the ordering
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function orderdownTask()
 	{
@@ -267,8 +286,8 @@ class Pages extends AdminController
 	/**
 	 * Move an item one down or own up int he ordering
 	 *
-	 * @param      string $move Direction to move
-	 * @return     void
+	 * @param   string  $move  Direction to move
+	 * @return  void
 	 */
 	protected function reorderTask($move='down')
 	{
@@ -276,19 +295,15 @@ class Pages extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$id = Request::getVar('id', array());
+		$id = Request::getVar('id', array(0));
 		$id = $id[0];
 		$pid = Request::getInt('event', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_EVENTS_PAGE_NO_ID'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_EVENTS_PAGE_NO_ID'));
+			return $this->cancelTask();
 		}
 
 		// Ensure we have a parent ID to work with
@@ -302,55 +317,27 @@ class Pages extends AdminController
 			return;
 		}
 
-		// Get the element moving down - item 1
-		$page1 = new Page($this->database);
-		$page1->load($id);
+		// Get the element moving
+		$page = Page::oneOrFail($id);
 
-		// Get the element directly after it in ordering - item 2
-		$page2 = clone($page1);
-		$page2->getNeighbor($this->_task);
-
-		switch ($move)
+		if (!$page->move($move == 'up' ? -1 : 1))
 		{
-			case 'up':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $page2->ordering;
-				$orderdn = $page1->ordering;
-
-				$page1->ordering = $orderup;
-				$page2->ordering = $orderdn;
-			break;
-
-			case 'down':
-				// Switch places: give item 1 the position of item 2, vice versa
-				$orderup = $page1->ordering;
-				$orderdn = $page2->ordering;
-
-				$page1->ordering = $orderdn;
-				$page2->ordering = $orderup;
-			break;
+			Notify::error($page->getError());
 		}
 
-		// Save changes
-		$page1->store();
-		$page2->store();
-
 		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $pid, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
 	 * Cancel a task by redirecting to main page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . Request::getInt('event', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&event_id=' . Request::getInt('event_id', 0), false)
 		);
 	}
 }
-

@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_PAGES'), 'event.png');
+Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_PAGES'), 'event');
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::deleteList();
@@ -51,7 +51,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER'); ?>" />
@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<th colspan="6">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id); ?>">
-						<?php echo stripslashes($this->event->title); ?>
+						<?php echo $this->escape(stripslashes($this->event->title)); ?>
 					</a>
 				</th>
 			</tr>
@@ -80,39 +80,41 @@ function submitbutton(pressbutton)
 				<td colspan="6">
 					<?php
 					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					$pageNav = $this->rows->pagination;
 					echo $pageNav->render();
 					?>
 				</td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-?>
-			<tr class="<?php echo "row$k"; ?>">
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
-				<td><?php echo $row->id; ?></td>
-				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event=' . $this->event->id); ?>"><?php echo $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')'; ?></a></td>
-				<td><?php echo $pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
-				<td><?php echo $pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
-				<td><?php echo $row->ordering; ?></td>
-			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 0;
+			$i = 0;
+			$orderings = $this->rows->fieldsByKey('ordering');
+			foreach ($this->rows as $row)
+			{
+				?>
+				<tr class="<?php echo "row$k"; ?>">
+					<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
+					<td><?php echo $row->id; ?></td>
+					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event_id=' . $this->event->id); ?>"><?php echo $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')'; ?></a></td>
+					<td>
+						<?php echo $pageNav->orderUpIcon($i, ($row->ordering != @$orderings[$i-1])); ?>
+					</td>
+					<td>
+						<?php echo $pageNav->orderDownIcon($i, $pageNav->total, ($row->ordering != @$orderings[$i+1])); ?>
+					</td>
+					<td><?php echo $row->ordering; ?></td>
+				</tr>
+				<?php
+				$i++;
+				$k = 1 - $k;
+			}
+			?>
 		</tbody>
 	</table>
 
-	<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
+	<input type="hidden" name="event_id" value="<?php echo $this->event->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="" />
