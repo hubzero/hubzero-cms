@@ -1,9 +1,6 @@
 @import '../css/variables.scss';
 @import '../css/mixins.scss';
 
-.content {
-  @include grid-template(repeat(4, [col] 1fr), repeat(5, [row] auto));
-}
 
 .link-anchor {
   color: inherit;
@@ -27,13 +24,26 @@
   }
 }
 
+.content {
+  @include grid-template(repeat(4, [col] 1fr), repeat(5, [row] auto));
+}
+.wrapper {
+  @include grid-template(repeat(4, [col] 1fr), repeat(5, [row] auto));
+}
+
 //Feature
 .feature {
-  @include flexbox(wrap);
   @include grid(col / span 4, row);
+  @include flexbox(wrap);
   @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
-  justify-content: center;
   grid-auto-rows: 300px;
+  justify-content: center;
+  .module-feature {
+    @include flexbox(wrap);
+    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
+    grid-auto-rows: 300px;
+    justify-content: center;
+  }
   .resource-img {
       @extend %showcase-img;
     }
@@ -201,23 +211,33 @@
   .resource-img {
     @extend %showcase-img;
     }
-    .resource {
-      position: relative;
-      flex: 1 1 10rem;
-      height: 15rem;
-      margin: 2.5px;
-      .resource-tag {
-        @include showcase-tag($dark-blue, $white);
-      }
-      .resource-title {
-        position: absolute;
-        bottom: 0;
-        padding: 10px;
-        a {
-          @include showcase-header(1em, 1, 2);
-        }
+  .resource {
+    position: relative;
+    flex: 1 1 10rem;
+    height: 15rem;
+    margin: 2.5px;
+    .resource-tag {
+      @include showcase-tag($dark-blue, $white);
+    }
+    .resource-title {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+      a {
+        @include showcase-header(1em, 1, 2);
       }
     }
+  }
+  .browse {
+    @include grid(1 / span 4, null);
+    text-align: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($white);
+      display: inline-block;
+      margin: 0 1em;
+    }
+  }
 }
 
 //Collections
@@ -281,6 +301,15 @@
       h6 {
         color: $light-gray;
         padding-top: .5em;
+        a {
+          color: $light-gray;
+          &:visited {
+            color: $light-gray'
+          }
+          &:hover {
+            color: $light-gray'
+          }
+        }
       }
     }
   }
