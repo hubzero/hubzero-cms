@@ -1,11 +1,5 @@
-$qubes-green: #84bf41;
-$white: #fff;
-$black: #000;
-$light-green: mix($qubes-green, $white, 65%);
-// $dark-green: mix($qubes-green, $black, 80%);
-$dark-green: #337357;
-$dark-blue: #2E2D4D;
-$pink: #cb48b7;
+@import '../css/variables.scss';
+@import "../css/mixins.scss";
 
 // h1, h2, h3, h4, h5, h6, p {
 //   font-family: 'Raleway', sans-serif;
@@ -71,6 +65,7 @@ img {
   }
   .downloads {
     margin-left: 10px;
+    margin-right: 5px;
   }
   .comments {
     margin-left: 40px;
@@ -197,7 +192,7 @@ img {
         padding: 10px 15px;
       }
       .primary {
-        background-color: $qubes-green;
+        background-color: $green;
         color: $white;
       }
     }
@@ -205,62 +200,65 @@ img {
       background-color: $dark-green;
     }
     .demo-two-title {
-      font-size: 18px;
-      line-height: 1.4em;
-      height: 80px;
-      padding-top: 20px;
-      overflow: hidden;
+      padding-top: .5em;
+      a {
+        @include truncate(1.1em, 1.4, 2);
+      }
+      // font-size: 18px;
+      // line-height: 1.4em;
+      // height: 80px;
+      // padding-top: 20px;
+      // overflow: hidden;
     }
-    .fade {
-      position: relative;
-      height: 4.2em; /* exactly three lines */
-    }
-    .fade:after {
-      content: "";
-      text-align: right;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 40%;
-      height: 1.4em;
-      background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
-    }
+    // .fade {
+    //   position: relative;
+    //   height: 4.2em; /* exactly three lines */
+    // }
+    // .fade:after {
+    //   content: "";
+    //   text-align: right;
+    //   position: absolute;
+    //   bottom: 0;
+    //   right: 0;
+    //   width: 40%;
+    //   height: 1.4em;
+    //   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+    // }
     .fork {
-      font-size: .7em;
-      line-height: 1.25em;
-      height: 2.5em;
+      @include truncate(.7em, 1.25, 2);
+      height: auto;
       margin: 10px 0;
       overflow-y: hidden;
       .fa {
         margin-right: 10px;
       }
     }
-    .fade-fork {
-      position: relative;
-      height: 2.5em; /* exactly two lines */
-    }
-    .fade-fork:after {
-      content: "";
-      text-align: right;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 40%;
-      height: 1.25em;
-      background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
-    }
+    // .fade-fork {
+    //   position: relative;
+    //   height: 2.5em; /* exactly two lines */
+    // }
+    // .fade-fork:after {
+    //   content: "";
+    //   text-align: right;
+    //   position: absolute;
+    //   bottom: 0;
+    //   right: 0;
+    //   width: 40%;
+    //   height: 1.25em;
+    //   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+    // }
     .author {
-      font-size: .9em;
-      height: 41px;
-      // margin-top: 10px;
+      @include truncate(.9em, 1.5, 2);
+      position: relative;
       .italic {
         font-style: italic;
       }
       .more-info {
         position: absolute;
+        top: 0;
         right: 10px;
         background-color: $white;
-        font-size: 11px;
+        font-size: .9em;
         font-style: italic;
         padding: 0 5px;
       }
@@ -274,24 +272,26 @@ img {
       padding: 10px 0;
       overflow: hidden;
       .abstract {
-        font-size: .9em;
-        line-height: 1.4em;
-        overflow: hidden;
+        @include truncate(.9em, 1.4, 4);
+        height: auto;
+        // font-size: .9em;
+        // line-height: 1.4em;
+        // overflow: hidden;
       }
-      .fade-abstract {
-        position: relative;
-        height: 7em; /* exactly five lines */
-      }
-      .fade-abstract:after {
-        content: "";
-        text-align: right;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 40%;
-        height: 1.4em;
-        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
-      }
+      // .fade-abstract {
+      //   position: relative;
+      //   height: 7em; /* exactly five lines */
+      // }
+      // .fade-abstract:after {
+      //   content: "";
+      //   text-align: right;
+      //   position: absolute;
+      //   bottom: 0;
+      //   right: 0;
+      //   width: 40%;
+      //   height: 1.4em;
+      //   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+      // }
       .resource-meta {
         font-size: .7em;
         padding: 5px 0 10px 0;
@@ -314,7 +314,7 @@ img {
         bottom: 0;
         right: 10px;
         background-color: $white;
-        font-size: 11px;
+        font-size: .9em;
         font-style: italic;
         padding: 0 5px;
         display: none;

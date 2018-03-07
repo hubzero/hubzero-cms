@@ -188,7 +188,7 @@ class Publications extends Macro
 				$p = $this->_db->loadResult();
 				$ancestor = new \Components\Publications\Models\Publication($p, 'default', $v);
 
-      			$html .= '        <span><i class="fa fa-code-fork" aria-hidden="true"></i>';
+      			$html .= '        <span><i class="fa fa-code-branch" aria-hidden="true"></i>';
 				if ($ancestor->version->get('state') == 1 &&
 					($ancestor->version->get('published_up') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_up') != '0000-00-00 00:00:00' && $ancestor->version->get('published_up') <= Date::toSql())) &&
 					($ancestor->version->get('published_down') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_down') != '0000-00-00 00:00:00' && $ancestor->version->get('published_down') > Date::toSql())))
