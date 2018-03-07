@@ -70,6 +70,7 @@ img {
 
 .meta-alt .downloads {
   margin-left: 10px;
+  margin-right: 5px;
 }
 
 .meta-alt .comments {
@@ -225,34 +226,38 @@ img {
 }
 
 .demo-two-card .demo-two-content .demo-two-title {
-  font-size: 18px;
-  line-height: 1.4em;
-  height: 80px;
-  padding-top: 20px;
+  padding-top: .5em;
+}
+
+.demo-two-card .demo-two-content .demo-two-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 3.08em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1.1em;
+  line-height: 1.4;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.demo-two-card .demo-two-content .fade {
-  position: relative;
-  height: 4.2em;
-  /* exactly three lines */
-}
-
-.demo-two-card .demo-two-content .fade:after {
-  content: "";
-  text-align: right;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 40%;
-  height: 1.4em;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), white 90%);
+  text-overflow: ellipsis;
 }
 
 .demo-two-card .demo-two-content .fork {
-  font-size: .7em;
-  line-height: 1.25em;
-  height: 2.5em;
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 1.75em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 0.7em;
+  line-height: 1.25;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: auto;
   margin: 10px 0;
   overflow-y: hidden;
 }
@@ -261,26 +266,20 @@ img {
   margin-right: 10px;
 }
 
-.demo-two-card .demo-two-content .fade-fork {
-  position: relative;
-  height: 2.5em;
-  /* exactly two lines */
-}
-
-.demo-two-card .demo-two-content .fade-fork:after {
-  content: "";
-  text-align: right;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 40%;
-  height: 1.25em;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), white 90%);
-}
-
 .demo-two-card .demo-two-content .author, .demo-two-card .demo-two-content .author-reveal {
-  font-size: .9em;
-  height: 41px;
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2.7em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 0.9em;
+  line-height: 1.5;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
 }
 
 .demo-two-card .demo-two-content .author .italic, .demo-two-card .demo-two-content .author-reveal .italic {
@@ -289,9 +288,10 @@ img {
 
 .demo-two-card .demo-two-content .author .more-info, .demo-two-card .demo-two-content .author-reveal .more-info {
   position: absolute;
+  top: 0;
   right: 10px;
   background-color: #fff;
-  font-size: 11px;
+  font-size: .9em;
   font-style: italic;
   padding: 0 5px;
 }
@@ -304,26 +304,19 @@ img {
 }
 
 .demo-two-card .demo-two-content .description .abstract {
-  font-size: .9em;
-  line-height: 1.4em;
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 5.04em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 0.9em;
+  line-height: 1.4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.demo-two-card .demo-two-content .description .fade-abstract {
-  position: relative;
-  height: 7em;
-  /* exactly five lines */
-}
-
-.demo-two-card .demo-two-content .description .fade-abstract:after {
-  content: "";
-  text-align: right;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 40%;
-  height: 1.4em;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), white 90%);
+  text-overflow: ellipsis;
+  height: auto;
 }
 
 .demo-two-card .demo-two-content .description .resource-meta {
@@ -351,7 +344,7 @@ img {
   bottom: 0;
   right: 10px;
   background-color: #fff;
-  font-size: 11px;
+  font-size: .9em;
   font-style: italic;
   padding: 0 5px;
   display: none;
