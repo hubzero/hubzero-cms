@@ -114,6 +114,10 @@ Document::addScript('/app/templates' . DS . App::get('template')->template . DS 
      \Hubzero\Module\Helper::displayModules('resourcesPartner');
        ?>
     </div>
+    <div class="browse">
+      <h6 class="link"><a href="/publications/browse">browse our oer products</a></h6>
+      <h6 class="link"><a href="/publications/submit">submit a resource</a></h6>
+    </div>
   </article>
 </section>
 
