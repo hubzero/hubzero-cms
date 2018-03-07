@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW'));
 
-Toolbar::title(Lang::txt('COM_EVENTS_PAGE' ) . ': ' . $text, 'event.png');
+Toolbar::title(Lang::txt('COM_EVENTS_PAGE' ) . ': ' . $text, 'event');
 Toolbar::save();
 Toolbar::cancel();
 ?>
@@ -51,7 +51,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -65,18 +65,18 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="title"><?php echo Lang::txt('COM_EVENTS_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="title" id="title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" />
+					<input type="text" name="fields[title]" id="title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?>">
 					<label for="alias"><?php echo Lang::txt('COM_EVENTS_ALIAS'); ?>:</label>
-					<input type="text" name="alias" id="alias" value="<?php echo $this->escape(stripslashes($this->page->alias)); ?>" />
+					<input type="text" name="fields[alias]" id="alias" value="<?php echo $this->escape(stripslashes($this->page->alias)); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?></span>
 				</div>
 
 				<div class="input-wrap">
 					<label for="pagetext"><?php echo Lang::txt('COM_EVENTS_PAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<?php echo $this->editor('pagetext', $this->escape(stripslashes($this->page->pagetext)), 40, 20); ?>
+					<?php echo $this->editor('fields[pagetext]', $this->escape(stripslashes($this->page->pagetext)), 40, 20); ?>
 				</div>
 			</fieldset>
 		</div>
@@ -108,7 +108,8 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
+	<input type="hidden" name="event_id" value="<?php echo $this->event->id; ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->page->id; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->page->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
