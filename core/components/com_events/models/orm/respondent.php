@@ -33,7 +33,7 @@ namespace Components\Events\Models\Orm;
 
 use Hubzero\Database\Relational;
 
-includE_once __DIR__ . '/race.php';
+include_once __DIR__ . '/race.php';
 
 /**
  * Hubs database model
