@@ -38,10 +38,6 @@
   grid-template-rows: repeat(4, [row] minmax(30rem, auto));
 }
 
-.link {
-  text-transform: uppercase;
-}
-
 .intro-container {
   grid-column: col/span 4;
   grid-row: row;
@@ -52,16 +48,23 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 25rem;
   background-color: #000;
   color: #fff;
+  height: 25rem;
 }
 
 .intro {
-  grid-column: 1/span 2;
-  width: 40%;
+  grid-column: 1/span 4;
+  width: 100%;
   align-self: center;
   padding: 2.5em;
+}
+
+@media only screen and (min-width: 901px) {
+  .intro {
+    grid-column: 1/span 2;
+    width: 40%;
+  }
 }
 
 .intro .tagline {
@@ -72,10 +75,18 @@
   grid-column: col/span 4;
   grid-row: row 2;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, minmax(23rem, auto));
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, auto);
   background-color: #5f5980;
   color: #fff;
+}
+
+@media only screen and (min-width: 901px) {
+  .one {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, minmax(23rem, auto));
+  }
 }
 
 .one h2, .one h3 {
@@ -88,18 +99,37 @@ h3 {
 
 .resources {
   display: flex;
-  flex-wrap: nowrap;
-  flex: 1;
-  grid-column: 1/span 4;
+  flex-wrap: wrap;
   grid-row: 1;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, auto);
+  flex: 1;
+}
+
+@media only screen and (min-width: 901px) {
+  .resources {
+    grid-column: 1/span 4;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+  }
 }
 
 .resources .oer {
-  width: 50%;
+  grid-column: 1fr;
+  grid-row: 1;
+  width: 100%;
   padding: 2.5em;
   align-self: center;
+}
+
+@media only screen and (min-width: 901px) {
+  .resources .oer {
+    grid-column: 3/span 2;
+    width: 50%;
+  }
 }
 
 .resources .oer .link {
@@ -125,10 +155,33 @@ h3 {
   display: flex;
   flex-wrap: nowrap;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   grid-gap: 5px;
+  grid-auto-rows: 15rem;
+  width: 100%;
   width: 50%;
   padding: 2.5em;
+}
+
+@media only screen and (min-width: 901px) {
+  .resources .module-left {
+    grid-column: 1/span 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 15rem);
+    grid-gap: 5px;
+  }
+}
+
+@media only screen and (min-width: 1201px) {
+  .resources .module-left {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-gap: 5px;
+    grid-auto-rows: auto;
+    width: 50%;
+  }
 }
 
 .resources .module-left .resource {
@@ -175,11 +228,21 @@ h3 {
 .software {
   display: flex;
   flex-wrap: nowrap;
-  flex: 1;
-  grid-column: 1/span 4;
+  grid-column: 1fr;
   grid-row: 2;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, auto);
+  flex: 1;
+}
+
+@media only screen and (min-width: 901px) {
+  .software {
+    grid-column: 1/span 4;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .software .left, .software .network .right, .network .software .right {
@@ -207,14 +270,14 @@ h3 {
 }
 
 .software .software-logos {
-  width: 50%;
-  padding: 2.5em;
   display: flex;
   flex-wrap: wrap;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 10px;
   grid-auto-rows: 125px;
+  width: 50%;
+  padding: 2.5em;
   justify-items: center;
   align-self: center;
   text-align: center;
@@ -242,15 +305,27 @@ h3 {
 
 .two {
   grid-column: col/span 4;
-  grid-row: 3;
+  grid-row: row 3;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, auto);
 }
 
 .network {
   display: flex;
   flex-wrap: nowrap;
+  grid-row: 1;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 23rem;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, auto);
+}
+
+@media only screen and (min-width: 901px) {
+  .network {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 23rem;
+  }
 }
 
 .network .network-logos {
@@ -269,8 +344,27 @@ h3 {
 }
 
 .network .left, .network .right {
+  width: 100%;
   padding: 2.5em;
-  width: 50%;
+}
+
+@media only screen and (min-width: 901px) {
+  .network .left, .network .right {
+    grid-column: 1/span 1;
+    width: 50%;
+  }
+}
+
+.network .right {
+  grid-column: 1fr;
+  grid-row: 1;
+}
+
+@media only screen and (min-width: 901px) {
+  .network .right {
+    grid-column: 2/span 1;
+    width: 50%;
+  }
 }
 
 .network .link {
@@ -296,26 +390,57 @@ h3 {
   display: flex;
   flex-wrap: nowrap;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, auto);
+}
+
+@media only screen and (min-width: 901px) {
+  .community {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
 }
 
 .community .left, .community .network .right, .network .community .right {
-  width: 50%;
+  width: 100%;
   padding: 2.5em;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+}
+
+@media only screen and (min-width: 620px) {
+  .community .left, .community .network .right, .network .community .right {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    width: 50%;
+  }
 }
 
 .community .left .title, .community .network .right .title, .network .community .right .title {
-  grid-column: 1/span 2;
+  grid-row: 1;
+}
+
+@media only screen and (min-width: 620px) {
+  .community .left .title, .community .network .right .title, .network .community .right .title {
+    grid-column: span 2;
+  }
 }
 
 .community .left ul, .community .network .right ul, .network .community .right ul {
+  grid-row: 2;
   list-style: none;
 }
 
+@media only screen and (min-width: 620px) {
+  .community .left ul, .community .network .right ul, .network .community .right ul {
+    grid-column: span 1;
+  }
+}
+
 .community .left .button, .community .network .right .button, .network .community .right .button {
+  grid-row: 3;
   text-transform: uppercase;
+  margin: 1em 0;
   text-align: center;
 }
 
@@ -333,13 +458,25 @@ h3 {
   color: #84bf41;
 }
 
+@media only screen and (min-width: 620px) {
+  .community .left .button, .community .network .right .button, .network .community .right .button {
+    grid-row: 2;
+  }
+}
+
 .community .left .button h6, .community .network .right .button h6, .network .community .right .button h6 {
   position: relative;
   top: 50%;
 }
 
 .community .right {
-  width: 50%;
+  width: 100%;
+}
+
+@media only screen and (min-width: 1001px) {
+  .community .right {
+    width: 50%;
+  }
 }
 
 .community .module-right {
@@ -347,19 +484,40 @@ h3 {
   flex-wrap: wrap;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 200px);
-  grid-gap: 5px;
+  grid-template-rows: repeat(4, 15rem);
+}
+
+@media only screen and (min-width: 1001px) {
+  .community .module-right {
+    display: grid;
+    grid-template-columns: nykk;
+    grid-template-rows: repeat(2, 15rem);
+    grid-gap: 5px;
+  }
 }
 
 .community .module-right .horizontal {
+  grid-column: span 4;
   width: 24rem;
   height: 15rem;
-  grid-column: span 2;
+}
+
+@media only screen and (min-width: 1001px) {
+  .community .module-right .horizontal {
+    grid-column: span 2;
+  }
 }
 
 .community .module-right .regular {
+  grid-column: span 2;
   width: 12rem;
   height: 15rem;
+}
+
+@media only screen and (min-width: 1001px) {
+  .community .module-right .regular {
+    grid-column: span 1;
+  }
 }
 
 .community .module-right .billboard {
@@ -527,11 +685,20 @@ h3 {
   grid-column: col/span 4;
   grid-row: row 4;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto;
+  grid-template-columns: 2fr;
+  grid-template-rows: repeat(5, auto);
   grid-gap: 10px;
   justify-self: center;
   padding: 2.5em;
+}
+
+@media only screen and (min-width: 901px) {
+  .three {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 10px;
+  }
 }
 
 .three h4 {
@@ -545,11 +712,24 @@ h3 {
 }
 
 .three .service {
+  grid-column: 1/span 2;
   position: relative;
-  width: 21%;
+  width: 100%;
   border: 1px solid #84bf41;
   border-radius: 6px;
   padding: 1.5em 1em 2.5em 1em;
+}
+
+@media only screen and (min-width: 901px) {
+  .three .service {
+    grid-column: span 2;
+  }
+}
+
+@media only screen and (min-width: 1201px) {
+  .three .service {
+    grid-column: span 1;
+  }
 }
 
 .three .service h4 {
@@ -577,122 +757,6 @@ h3 {
 
 .three .service .link a:visited {
   color: #84bf41;
-}
-
-@media only screen and (min-width: 320px) and (max-width: 900px) {
-  .intro-container .intro {
-    width: 100%;
-    grid-column: 1 / span 4;
-  }
-  .resources {
-    flex-wrap: wrap;
-    grid-template-rows: 20rem auto;
-  }
-  .resources .module-left {
-    width: 100%;
-    flex-wrap: wrap;
-    grid-column: 1 / span 4;
-    grid-row: 2;
-    grid-template-rows: repeat(3, 17rem);
-  }
-  .resources .module-left .regular {
-    grid-column: span 3;
-  }
-  .resources .oer {
-    width: 100%;
-    order: -1;
-    grid-column: 1 / span 4;
-    grid-row: 1;
-  }
-  .software {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-  }
-  .software .left, .software .network .right, .network .software .right {
-    width: 100%;
-    grid-column: 1 / span 4;
-    grid-row: 1;
-  }
-  .software .software-logos {
-    width: 100%;
-    grid-column: 1 / span 4;
-    grid-row: 2;
-  }
-  .network {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-  }
-  .network .left, .network .right {
-    width: 100%;
-    grid-column: 1 / span 4;
-    grid-row: 2;
-  }
-  .network .right {
-    width: 100%;
-    order: -1;
-    grid-column: 1 / span 4;
-    grid-row: 1;
-  }
-  .community {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-  }
-  .community .left, .community .network .right, .network .community .right {
-    width: 100%;
-    grid-column: 1 / span 4;
-    grid-row: 1;
-  }
-  .community .right {
-    width: 100%;
-    grid-column: 1 / span 4;
-    grid-row: 2;
-  }
-  .community .module-right {
-    grid-template-rows: repeat(4, 150px);
-  }
-  .community .module-right .big {
-    grid-column: span 4;
-    grid-row: span 2;
-  }
-  .community .module-right .regular {
-    grid-column: span 2;
-  }
-  .community .module-right .horizontal {
-    grid-column: span 4;
-  }
-  .three {
-    flex-wrap: wrap;
-    grid-template-rows: 1fr 2fr 2fr 2fr 2fr;
-  }
-  .three .service {
-    width: 100%;
-    grid-column: 1 / span 4;
-  }
-}
-
-@media only screen and (min-width: 901px) and (max-width: 1200px) {
-  .resources .module-left {
-    grid-template-rows: repeat(3, 15rem);
-  }
-  .resources .module-left .regular {
-    grid-column: span 3;
-  }
-  .community .module-right {
-    grid-template-rows: repeat(4, 200px);
-  }
-  .community .module-right .big {
-    grid-column: span 4;
-    grid-row: span 2;
-  }
-  .community .module-right .regular {
-    grid-column: span 2;
-  }
-  .community .module-right .horizontal {
-    grid-column: span 4;
-  }
-  .three .service {
-    grid-column: span 2;
-  }
 }
 
 @supports (display: grid) {
