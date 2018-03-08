@@ -618,7 +618,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 		// In this case, we're expecting JSON output
 		// @TODO: Move to API
-		if (isset($filters['created']))
+		if (isset($filters['created']) && $filters['created'])
 		{
 			$data = new stdClass();
 			$data->activities = array();
