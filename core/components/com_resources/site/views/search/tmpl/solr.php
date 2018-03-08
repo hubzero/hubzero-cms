@@ -33,7 +33,9 @@
 <div class="result <?php echo (isset($this->result['access_level']) ? $this->result['access_level'] : 'public'); ?>" id="<?php echo $this->result['id']; ?>">
 <div class="result-body">
 	<!-- Cateogory : mandatory -->
-	<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
+	<?php if (isset($this->result['hubtype'])):?>
+		<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
+	<?php endif; ?>
 	<br/>
 	<span class="result-category"><?php echo $this->result['type'];?></span>
 	<div class="result-badges">
