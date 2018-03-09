@@ -495,7 +495,7 @@ class Imports extends AdminController
 	 * @param   object   $import  Models\Import
 	 * @return  boolean
 	 */
-	private function _createImportFilespace(Models\Import $import)
+	private function _createImportFilespace(\Components\Resources\Models\Import $import)
 	{
 		// upload path
 		$uploadPath = $import->fileSpacePath();
