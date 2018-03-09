@@ -62,9 +62,9 @@ class Publications extends Macro
 							<ul>
 								<li><code>[[Publications()]]</code> - Shows all publications.</li>
 								<li><code>[[Publications(limit=5)]]</code> - Show the 5 most recent publications.</li>
-								<li><code>[[Publications(sponsor=1003)]]</code> - Display a sponsor ribbon with each publication, linking to Group 1003 (multiple sponsors are allowed if separated by a semicolon).</li>
-								<li><code>[[Publications(group=1003;1006, project=2, id=2;6;8)]]</code> - Display all publications from Groups 1003 and 1006, Project 2, and Publications with ids 2, 6, and 8.</li>
-								<li><code>[[Publications(group=1003, focusarea=myfa)]]</code> - Display all publications from Group 1003, using the children tags of the myfa tag as the primary categories.  Color scheme used is <a href="http://colorbrewer2.org/#type=qualitative&scheme=Dark2">Dark2 from http://colorbrewer2.org</a>.</li>
+								<li><code>[[Publications(sponsor=mygroup)]]</code> - Display a sponsor ribbon with each publication, linking to Group "mygroup" (multiple sponsors are allowed if separated by a semicolon).</li>
+								<li><code>[[Publications(group=mygroup1;mygroup2, project=myproject, id=2;6;8)]]</code> - Display all publications from Groups "mygroup1" and "mygroup2", Project "myproject", and Publications with ids 2, 6, and 8.</li>
+								<li><code>[[Publications(group=mygroup, focusarea=myfa)]]</code> - Display all publications from Group "mygroup", using the children tags of the "myfa" tag as the primary categories.  Color scheme used is <a href="http://colorbrewer2.org/#type=qualitative&scheme=Dark2">Dark2 from http://colorbrewer2.org</a>.</li>
 							</ul>';
 		return $txt['html'];
 	}
@@ -283,12 +283,12 @@ class Publications extends Macro
 		);
 		$items = $pubmodel->entries('list', $filters);*/
 
-		$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3) AS versions FROM #__publication_versions as V, #__projects as PP, #__publication_master_types AS MT, #__publications AS C LEFT JOIN #__publication_categories AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM #__publication_versions AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
+		$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=C.group_owner) AS group_cn, (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=PP.owned_by_group) AS project_group_cn, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3) AS versions FROM #__publication_versions as V, #__projects as PP, #__publication_master_types AS MT, #__publications AS C LEFT JOIN #__publication_categories AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM #__publication_versions AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
 
 		$args = array();
 		if ($group)
 		{
-			array_push($args, '(C.group_owner IN (' . $group . ') OR PP.owned_by_group IN (' . $group . '))');
+			array_push($args, '((SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=C.group_owner) IN (' . $group . ') OR (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=PP.owned_by_group) IN (' . $group . '))');
 		}
 		if ($project)
 		{
@@ -422,7 +422,7 @@ class Publications extends Macro
 		{
 			if (preg_match('/group=([\w;]*)/', $arg, $matches))
 			{
-				$group = str_replace(';',',',(isset($matches[1])) ? $matches[1] : '');
+				$group = implode(',', array_map(array($this->_db, 'quote'), explode(';', (isset($matches[1])) ? $matches[1] : '')));
 				unset($args[$k]);
 				return $group;
 			}
