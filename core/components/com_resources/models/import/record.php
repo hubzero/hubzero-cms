@@ -142,7 +142,7 @@ class Record extends Obj
 	public function check()
 	{
 		// run save check method
-		if (!$this->record->resource->check())
+		if (!$this->record->resource->validate())
 		{
 			array_push($this->record->errors, $this->record->resource->getError());
 		}
