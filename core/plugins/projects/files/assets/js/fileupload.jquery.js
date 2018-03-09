@@ -241,12 +241,24 @@ HUB.ProjectFilesFileUpload = {
 		const unrecognizedFiles = []
 
 		files.forEach((file) => {
-			if (file.type === '') {
+			if (file.type === '' && !this._formatIsAccepted(file)) {
 				unrecognizedFiles.push(file)
 			}
 		})
 
 		return unrecognizedFiles
+	},
+
+	_formatIsAccepted: function(file)
+	{
+		const match = file.name.match(/\.(.*$)/)
+		const format = match ? match[1] : '';
+		// define an object of the form { <file type>: true }
+		// currently loaded via views/upload/tmpl/default.php L91
+		// <script src="...assets/js/acceptedFormats.js" ...>
+		const isAccepted = !!HUB.ProjectFilesFileUpload.acceptedFormats[format]
+
+		return isAccepted
 	},
 
 	_generatePossibleIssuesMessage: function(unrecognizedFiles)
