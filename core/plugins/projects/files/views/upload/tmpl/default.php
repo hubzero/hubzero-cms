@@ -88,7 +88,10 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.fileuploader.js"></script>
 					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.queueuploader.js"></script>
 					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
-					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/acceptedFormats.js"></script>
+					<?php
+						if (file_exists(PATH_CORE . '/plugins/projects/files/assets/js/acceptedFormats.js')): ?>
+						<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/acceptedFormats.js"></script>
+					<?php endif; ?>
 		<?php } else { ?>
 				<label class="addnew">
 					<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
