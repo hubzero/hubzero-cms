@@ -251,6 +251,7 @@ HUB.ProjectFilesFileUpload = {
 
 	_formatIsAccepted: function(file)
 	{
+		HUB.ProjectFilesFileUpload.acceptedFormats = HUB.ProjectFilesFileUpload.acceptedFormats || {}
 		const match = file.name.match(/\.(.*$)/)
 		const format = match ? match[1] : '';
 		// define an object of the form { <file type>: true }
