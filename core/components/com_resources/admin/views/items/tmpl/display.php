@@ -104,6 +104,12 @@ function submitbutton(pressbutton)
 					<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
 					<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
+				<select name="license" id="filter-license" onchange="this.form.submit();">
+					<option value="all"<?php echo ($this->filters['license'] == 'all') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
+					<?php foreach ($this->licenses as $license) { ?>
+					<option value="<?php echo $license; ?>"<?php echo ($this->filters['license'] == $license) ? 'selected="selected"' : ''; ?>><?php echo $license; ?></option>
+					<?php } ?>
+				</select>
 
 				<label for="filter-ype"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
 				<select name="type" id="filter-type" onchange="this.form.submit();">
@@ -125,7 +131,7 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_STATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_MODIFIED', 'modified', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_RESOURCES_COL_LICENSE'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_LICENSE', 'license', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_CHILDREN', 'children', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_TAGS'); ?></th>
@@ -145,11 +151,9 @@ function submitbutton(pressbutton)
 		$i = 0;
 		$filterstring  = '';
 
-		$database = App::get('db');
-
 		foreach ($this->rows as $row)
 		{
-			$license = $row->params->get('license');
+			$license = $row->license;
 
 			// Build some publishing info
 			$info  = Lang::txt('COM_RESOURCES_CREATED') . ': ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
