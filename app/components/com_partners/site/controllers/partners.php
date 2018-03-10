@@ -15,14 +15,14 @@ use App;
 
 /**
  * Partners controller for showing partners
- * 
- * Accepts an array of configuration values to the constructor. If no config 
+ *
+ * Accepts an array of configuration values to the constructor. If no config
  * passed, it will automatically determine the component and controller names.
  * Internally, sets the $database, $user, $view, and component $config.
- * 
- * Executable tasks are determined by method name. All public methods that end in 
+ *
+ * Executable tasks are determined by method name. All public methods that end in
  * "Task" (e.g., displayTask, editTask) are callable by the end user.
- * 
+ *
  * View name defaults to controller name with layout defaulting to task name. So,
  * a $controller of "One" and a $task of "two" will map to:
  *
@@ -61,13 +61,13 @@ class Partners extends SiteController
 	public function displayTask()
 	{
 		// Get our model
-		// This is the entry point to the database and the 
+		// This is the entry point to the database and the
 		// table of characters we'll be retrieving data from
 		$this->view->model = new Partner();
 
 		// NOTE:
 		// A \Hubzero\Component\View object is auto-created when calling
-		// execute() on the controller. By default, the view directory is 
+		// execute() on the controller. By default, the view directory is
 		// set to the controller name and layout is set to task name.
 		//
 		// controller=foo&task=bar   loads a view from:
@@ -100,13 +100,13 @@ class Partners extends SiteController
 		$sponsored = array();
 		$featured = array();
 		$other = array();
-		$records = $records->paginated()->ordered();
-		foreach($records as $key => $record) 
+		// $records = $records->paginated()->ordered();
+		foreach($records as $key => $record)
 		{
-			if (in_array($record->get('partner_type'), array(4,5))) 
+			if (in_array($record->get('partner_type'), array(4,5)))
 			{
 				$sponsored[] = $record;
-			} elseif ($record->get('featured')) 
+			} elseif ($record->get('featured'))
 			{
 				$featured[] = $record;
 			} else {
@@ -119,8 +119,8 @@ class Partners extends SiteController
 		$this->view->other = $other;
 
 		// Output the view
-		// 
-		// Make sure we load the correct view. This is for cases where 
+		//
+		// Make sure we load the correct view. This is for cases where
 		// we may be redirected from editTask(), which can happen if the
 		// user is not logged in.
 		$this->view
@@ -136,13 +136,13 @@ class Partners extends SiteController
 	public function tableTask()
 	{
 		// Get our model
-		// This is the entry point to the database and the 
+		// This is the entry point to the database and the
 		// table of characters we'll be retrieving data from
 		$this->view->model = new Partner();
 
 		// NOTE:
 		// A \Hubzero\Component\View object is auto-created when calling
-		// execute() on the controller. By default, the view directory is 
+		// execute() on the controller. By default, the view directory is
 		// set to the controller name and layout is set to task name.
 		//
 		// controller=foo&task=bar   loads a view from:
@@ -175,8 +175,8 @@ class Partners extends SiteController
 		$this->view->records = $records->paginated()->ordered();
 
 		// Output the view
-		// 
-		// Make sure we load the correct view. This is for cases where 
+		//
+		// Make sure we load the correct view. This is for cases where
 		// we may be redirected from editTask(), which can happen if the
 		// user is not logged in.
 		$this->view
