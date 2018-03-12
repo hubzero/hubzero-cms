@@ -433,6 +433,12 @@ class Tickets extends AdminController
 
 		$ticket->set('open', $ticket->status->get('open', 1));
 
+		if ($id && isset($data['status']) && $data['status'] == 0)
+		{
+			$ticket->set('open', 0);
+			$ticket->set('resolved', Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'));
+		}
+
 		// If an existing ticket AND closed AND previously open
 		if ($id && !$ticket->get('open') && $ticket->get('open') != $old->get('open'))
 		{
