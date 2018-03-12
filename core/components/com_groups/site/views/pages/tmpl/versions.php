@@ -43,7 +43,7 @@ foreach ($stylesheets as $stylesheet)
 	Document::addStylesheet($stylesheet);
 }
 
-include_once(Component::path('com_wiki') . DS . 'helpers' . DS . 'differenceengine.php');
+include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'Diff.php';
 
 // add styles & scripts
 $this->css()
