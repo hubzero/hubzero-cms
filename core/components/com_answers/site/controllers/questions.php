@@ -744,7 +744,7 @@ class Questions extends SiteController
 		$recipients = array($row->get('created_by'));
 		$recipients = $this->recipients($recipients);
 
-		foreach (Event::trigger('answers.onQuestionNotify') as $results)
+		foreach (Event::trigger('answers.onQuestionNotify', array($row)) as $results)
 		{
 			$recipients = array_merge($recipients, $results);
 		}
