@@ -38,7 +38,7 @@ use User;
 /**
  * Table class for publications
  */
-class Publication extends \JTable
+class Publication extends \Hubzero\Database\Table
 {
 	/**
 	 * Constructor
