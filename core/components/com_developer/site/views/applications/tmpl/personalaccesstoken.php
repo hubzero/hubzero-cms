@@ -32,45 +32,16 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-$this->css('applications')
-     ->css()
-     ->js();
-
-// get active var
-$active = isset($this->active) ? $this->active : Request::getCmd('active');
 ?>
-
-<header id="content-header">
-	<h2><?php echo $this->escape($this->application->get('name')); ?></h2>
-
-	<div id="content-header-extra">
-		<p>
-			<a class="btn icon-browse" href="<?php echo Route::url('index.php?option=com_developer&controller=applications'); ?>">
-				<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS_ALL'); ?>
-			</a>
-		</p>
+<div class="subject full">
+	<div class="container cf">
+		<h3>
+		<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_PERSONAL_APPLICATION_TOKEN'); ?>
+		</h3>
+		<div class="tokens access-tokens">
+		<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_NEW_PERSONAL_APPLICATION_TOKEN'); ?>: 
+		<b><?php echo $this->accesstoken ?></b></br>
+		<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_MAKE_SURE_PERSONAL_APPLICATION_TOKEN'); ?>
+		</div>
 	</div>
-</header>
-
-<?php
-	echo $this->view('_menu')
-			  ->set('active', $active)
-			  ->set('application', $this->application)
-			  ->display();
-?>
-
-<section class="main section">
-	<div class="section-inner">
-		<?php
-		echo $this->view($active)
-					->set('application', $this->application)
-					->set('accesstoken', isset($this->accesstoken) ? $this->accesstoken : null)
-				  ->display();
-
-		echo $this->view('_sidebar')
-				  ->set('active', $active)
-				  ->display();
-		?>
-	</div>
-</section>
+</div>
