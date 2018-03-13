@@ -57,7 +57,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 	{
 		$modelClass = new ReflectionClass($model);
 		$modelNamespace = explode('\\', $modelClass->getNamespaceName());
-		$componentName = strtolower($modelNamespace[1]); 
+		$componentName = strtolower($modelNamespace[1]);
 		$searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
 		if ($searchComponent && $searchComponent->get('state') == 1)
 		{
