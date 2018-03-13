@@ -125,7 +125,7 @@ class Publication extends Obj
 			// Some adjustments
 			$this->version->id = $this->get('version_id');
 
-			$this->params = Component::params('com_publications');
+			$this->params = clone Component::params('com_publications');
 			$this->params->merge(new \Hubzero\Config\Registry($this->version->params));
 			if (isset($this->version->type_params))
 			{
@@ -179,7 +179,7 @@ class Publication extends Obj
 			}
 
 			// Collect params
-			$this->params = Component::params('com_publications');
+			$this->params = clone Component::params('com_publications');
 			$this->params->merge(new \Hubzero\Config\Registry($this->version->params));
 			$this->params->merge($this->_type->_params);
 		}
