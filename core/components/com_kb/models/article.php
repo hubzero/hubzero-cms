@@ -709,7 +709,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		{
 			$access_level = 'private';
 		}
-	
+
 		$article->title = $this->title;
 		$article->access_level = $access_level;
 		$article->owner_type = 'user';

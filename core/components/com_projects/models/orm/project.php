@@ -572,8 +572,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 				{
 					return $member['userid'];
 				}
-			}
-		, $this->team->toArray());
+			}, $this->team->toArray());
 		$page->owner = $team;
 		$page->id = $this->searchId();
 		$page->title = $this->title;
