@@ -39,10 +39,9 @@ require_once Component::path('com_search') . DS . 'helpers' . DS . 'discoveryhel
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 
-use \Components\Search\Helpers\DiscoveryHelper;
-use \Components\Search\Models\Solr\SearchComponent;
-use \Hubzero\Search\Index;
-use ReflectionClass;
+use Components\Search\Helpers\DiscoveryHelper;
+use Components\Search\Models\Solr\SearchComponent;
+use Hubzero\Search\Index;
 
 class plgSearchSolr extends \Hubzero\Plugin\Plugin
 {
@@ -61,7 +60,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 		$searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
 		if ($searchComponent && $searchComponent->get('state') == 1)
 		{
-			$searchModel = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
+			$searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
 			if ($searchModel === false)
 			{
 				$searchModel = $searchComponent->getSearchableModel();
@@ -78,7 +77,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 			{
 				$config = Component::params('com_search');
 				$commitWithin = $config->get('solr_commit');
-				$index = new \Hubzero\Search\Index($config);
+				$index = new Hubzero\Search\Index($config);
 				$modelIndex = $model->searchResult();
 				if ($modelIndex !== false)
 				{
@@ -105,14 +104,14 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 		// @TODO: Implement mechanism to send to Solr index
 		// This Event is called in the Relational save() method.
 		$modelName = '';
-		if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
+		if ($modelName = Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
 		{
 			$extensionName = strtolower(explode('\\', $modelName)[1]);
 			$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
 			if ($searchComponent->get('state') == 1)
 			{
 				$config = Component::params('com_search');
-				$index = new \Hubzero\Search\Index($config);
+				$index = new Hubzero\Search\Index($config);
 				$modelIndexId = $model->searchId();
 				$index->delete($modelIndexId);
 			}
