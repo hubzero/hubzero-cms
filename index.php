@@ -28,7 +28,13 @@ define('DS', DIRECTORY_SEPARATOR);
 |
 */
 
-define('PATH_ROOT', $_SERVER["DOCUMENT_ROOT"]);
+$root = __DIR__;
+if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'])
+{
+	$root = $_SERVER['DOCUMENT_ROOT'];
+}
+
+define('PATH_ROOT', $root);
 define('PATH_CORE', __DIR__ . '/core');
 
 require_once PATH_CORE . DS . 'bootstrap' . DS . 'paths.php';
