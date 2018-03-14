@@ -94,7 +94,7 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 <section class="main section">
 	<?php if ($noResult) {
 		if (!empty($terms))
-		{
+		{ ?>
 			<div class="info">
 				<?php if (isset($this->spellSuggestions)) { ?>
 					<h3><?php echo Lang::txt('COM_SEARCH_DIDYOUMEAN'); ?></h3>
