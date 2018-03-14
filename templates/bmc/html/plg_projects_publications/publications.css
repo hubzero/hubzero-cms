@@ -30,3 +30,11 @@
 	font-size: 1.3rem;
 	padding: 0;
 }
+
+ul.next-options li:before {
+	margin-top: -0.5em;
+}
+
+p#c-instruct, p.c-instruct {
+	color: #4c4c4c;
+}
