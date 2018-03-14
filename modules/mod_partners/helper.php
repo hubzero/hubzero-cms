@@ -50,7 +50,7 @@ class Helper extends Module
 	 */
 	private function _getPartners()
 	{
-		return Partner::all()->paginated()->ordered();
+		return Partner::all();
 	}
 
 	/**
