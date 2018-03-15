@@ -63,9 +63,9 @@ class Collection extends Table
 	 * @param   string   $object_type  Object type
 	 * @return  boolean  True on success
 	 */
-	public function load($oid=NULL, $object_id=null, $object_type=null)
+	public function load($oid=null, $object_id=null, $object_type=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}
