@@ -32,6 +32,7 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 use User;
 use Date;
@@ -39,13 +40,13 @@ use Date;
 /**
  * Table class for job openings
  */
-class Job extends \JTable
+class Job extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -55,7 +56,7 @@ class Job extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -77,15 +78,15 @@ class Job extends \JTable
 	/**
 	 * Get a user's openings
 	 *
-	 * @param      integer $uid     User ID
-	 * @param      integer $current Get current?
-	 * @param      integer $admin   Admin access?
-	 * @param      integer $active  Active openings?
-	 * @return     array
+	 * @param   integer  $uid      User ID
+	 * @param   integer  $current  Get current?
+	 * @param   integer  $admin    Admin access?
+	 * @param   integer  $active   Active openings?
+	 * @return  array
 	 */
-	public function get_my_openings($uid = NULL, $current = 0, $admin = 0, $active = 0)
+	public function get_my_openings($uid = null, $current = 0, $admin = 0, $active = 0)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			$uid = User::get('id');
 		}
@@ -104,18 +105,16 @@ class Job extends \JTable
 	}
 
 	/**
-	 * Short description for 'countMyActiveOpenings'
+	 * Count active openings for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      integer $onlypublished Parameter description (if any) ...
-	 * @param      mixed $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   integer  $uid
+	 * @param   integer  $onlypublished
+	 * @param   mixed    $admin
+	 * @return  object
 	 */
-	public function countMyActiveOpenings($uid = NULL, $onlypublished = 0, $admin = 0)
+	public function countMyActiveOpenings($uid = null, $onlypublished = 0, $admin = 0)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			$uid = User::get('id');
 		}
@@ -138,11 +137,11 @@ class Job extends \JTable
 	/**
 	 * Get job openings
 	 *
-	 * @param      array   $filters      Filters to build query from
-	 * @param      integer $uid          User ID
-	 * @param      itneger $admin        Admin access?
-	 * @param      string  $subscription Subscription code
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filters       Filters to build query from
+	 * @param   integer  $uid           User ID
+	 * @param   integer  $admin         Admin access?
+	 * @param   string   $subscription  Subscription code
+	 * @return  object
 	 */
 	public function get_openings($filters = array(), $uid = 0, $admin = 0, $subscription = '', $count = 0)
 	{
@@ -152,8 +151,6 @@ class Job extends \JTable
 
 		$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
 		$active = isset($filters['active']) && $filters['active'] == 1 ? 1 : 0;
-
-		//$sort = isset($filters['search'] && $filters['search'] != '' ? 'keywords DESC, ' : '';
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -181,28 +178,37 @@ class Job extends \JTable
 		// list  sorting
 		switch ($filters['sortby'])
 		{
-			case 'opendate':    $sort .= 'j.status ASC, j.opendate ' . $sortdir . ', ';
-								$sort .= $defaultsort=='type' ? 'j.type ASC' : 'c.ordernum ASC ';
-								break;
-			case 'category':    $sort .= 'isnull ' . $sortdir . ', c.ordernum ' . $sortdir . ', j.status ASC, j.opendate DESC ';
-								break;
-			case 'type':    	$sort .= 'typenull ' . $sortdir . ', j.type ' . $sortdir . ', j.opendate DESC ';
-								break;
+			case 'opendate':
+				$sort .= 'j.status ASC, j.opendate ' . $sortdir . ', ';
+				$sort .= $defaultsort=='type' ? 'j.type ASC' : 'c.ordernum ASC ';
+				break;
+			case 'category':
+				$sort .= 'isnull ' . $sortdir . ', c.ordernum ' . $sortdir . ', j.status ASC, j.opendate DESC ';
+				break;
+			case 'type':
+				$sort .= 'typenull ' . $sortdir . ', j.type ' . $sortdir . ', j.opendate DESC ';
+				break;
 			// admin sorting
-			case 'added':    	$sort .= 'j.added ' . $sortdir . ' ';
-								break;
-			case 'status':    	$sort .= 'j.status ' . $sortdir . ' ';
-								break;
-			case 'title':    	$sort .= 'j.title ' . $sortdir . ' ';
-								break;
-			case 'location':    $sort .= 'j.companyName ' . $sortdir . ', j.companyLocation ' . $sortdir;
-								break;
-			case 'adminposting':$sort .= 'j.employerid ' . $sortdir . ' ';
-								break;
-			default: 			$sort .= $defaultsort=='type'
-								? 'j.type ASC, j.status ASC, j.opendate DESC'
-								: 'c.ordernum ASC, j.status ASC, j.opendate DESC ';
-								break;
+			case 'added':
+				$sort .= 'j.added ' . $sortdir . ' ';
+				break;
+			case 'status':
+				$sort .= 'j.status ' . $sortdir . ' ';
+				break;
+			case 'title':
+				$sort .= 'j.title ' . $sortdir . ' ';
+				break;
+			case 'location':
+				$sort .= 'j.companyName ' . $sortdir . ', j.companyLocation ' . $sortdir;
+				break;
+			case 'adminposting':
+				$sort .= 'j.employerid ' . $sortdir . ' ';
+				break;
+			default:
+				$sort .= $defaultsort=='type'
+					? 'j.type ASC, j.status ASC, j.opendate DESC'
+					: 'c.ordernum ASC, j.status ASC, j.opendate DESC ';
+				break;
 		}
 
 		if ($count)
@@ -211,16 +217,16 @@ class Job extends \JTable
 		}
 		else
 		{
-			$sql  = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS NULL AS isnull, j.type=0 as typenull, ";
+			$sql  = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS null AS isnull, j.type=0 as typenull, ";
 
-			$sql .= $admin ? "s.expires  AS inactive,  " : ' NULL AS inactive, ';
+			$sql .= $admin ? "s.expires  AS inactive,  " : ' null AS inactive, ';
 			if ($uid)
 			{
 				$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=" . $this->_db->quote($uid) . ") AS manager,";
 			}
 			else
 			{
-				$sql.= "\n NULL AS manager,";
+				$sql.= "\n null AS manager,";
 			}
 			$sql.= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
 			if (!User::isGuest())
@@ -231,8 +237,8 @@ class Job extends \JTable
 			}
 			else
 			{
-				$sql .= "\n NULL AS applied,";
-				$sql .= "\n NULL AS withdrawn,";
+				$sql .= "\n null AS applied,";
+				$sql .= "\n null AS withdrawn,";
 			}
 			$sql .= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
 
@@ -293,8 +299,8 @@ class Job extends \JTable
 		}
 		if ($active)
 		{
-			$sql .= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS NULL OR j.closedate > " . $this->_db->quote($now) . ") ";
-			$sql .= "\n AND (j.expiredate ='0000-00-00 00:00:00' OR j.expiredate IS NULL OR j.expiredate> " . $this->_db->quote($now) . ") ";
+			$sql .= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS null OR j.closedate > " . $this->_db->quote($now) . ") ";
+			$sql .= "\n AND (j.expiredate ='0000-00-00 00:00:00' OR j.expiredate IS null OR j.expiredate> " . $this->_db->quote($now) . ") ";
 		}
 
 		if (!$count)
@@ -314,12 +320,12 @@ class Job extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $code Job code
-	 * @return     boolean True upon success
+	 * @param   string   $code  Job code
+	 * @return  boolean  True upon success
 	 */
-	public function loadJob($code=NULL)
+	public function loadJob($code=null)
 	{
-		if ($code === NULL)
+		if ($code === null)
 		{
 			return false;
 		}
@@ -335,16 +341,16 @@ class Job extends \JTable
 	/**
 	 * Delete an open job
 	 *
-	 * @param      integer $jid Job ID
-	 * @return     boolean True upon success
+	 * @param   integer  $jid  Job ID
+	 * @return  boolean  True upon success
 	 */
 	public function delete_opening($jid)
 	{
-		if ($jid === NULL)
+		if ($jid === null)
 		{
 			$jid == $this->id;
 		}
-		if ($jid === NULL)
+		if ($jid === null)
 		{
 			return false;
 		}
@@ -362,24 +368,24 @@ class Job extends \JTable
 	/**
 	 * Get job opening
 	 *
-	 * @param      integer $jid     Job ID
-	 * @param      integer $uid     User ID
-	 * @param      integer $admin   Admin access?
-	 * @param      string  $jobcode Job code
-	 * @return     mixed False if errors, array if records found, null if not
+	 * @param   integer  $jid      Job ID
+	 * @param   integer  $uid      User ID
+	 * @param   integer  $admin    Admin access?
+	 * @param   string   $jobcode  Job code
+	 * @return  mixed    False if errors, array if records found, null if not
 	 */
 	public function get_opening($jid = 0, $uid = 0, $admin = 0, $jobcode = '')
 	{
-		if ($jid === NULL && $jobcode == '')
+		if ($jid === null && $jobcode == '')
 		{
 			return false;
 		}
 
-		$now   = Date::toSql();
-		$myid  = User::get('id');
+		$now  = Date::toSql();
+		$myid = User::get('id');
 
 		$sql  = "SELECT j.*, ";
-		$sql .= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
+		$sql .= $admin ? "s.expires IS null AS inactive,  " : ' null AS inactive, ';
 		$sql .= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
 		if (!User::isGuest())
 		{
@@ -388,8 +394,8 @@ class Job extends \JTable
 		}
 		else
 		{
-			$sql .= "\n NULL AS applied,";
-			$sql .= "\n NULL AS withdrawn,";
+			$sql .= "\n null AS applied,";
+			$sql .= "\n null AS withdrawn,";
 		}
 		$sql .= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
 		$sql .= "\n FROM $this->_tbl AS j";
@@ -420,7 +426,7 @@ class Job extends \JTable
 
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
-		$result = $result ? $result[0] : NULL;
+		$result = $result ? $result[0] : null;
 		return $result;
 	}
 }

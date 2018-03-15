@@ -32,16 +32,18 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for job admins
  */
-class JobAdmin extends \JTable
+class JobAdmin extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,13 +53,13 @@ class JobAdmin extends \JTable
 	/**
 	 * Check if a user is an admin for a job
 	 *
-	 * @param      integer $uid User ID
-	 * @param      integer $jid Job ID
-	 * @return     boolean True if admin
+	 * @param   integer  $uid  User ID
+	 * @param   integer  $jid  Job ID
+	 * @return  boolean  True if admin
 	 */
 	public function isAdmin($uid,  $jid)
 	{
-		if ($uid === NULL or $jid === NULL)
+		if ($uid === null or $jid === null)
 		{
 			return false;
 		}
@@ -76,12 +78,12 @@ class JobAdmin extends \JTable
 	/**
 	 * Get a list of administrators
 	 *
-	 * @param      integer $jid Job ID
-	 * @return     array
+	 * @param   integer  $jid  Job ID
+	 * @return  array
 	 */
 	public function getAdmins($jid)
 	{
-		if ($jid === NULL)
+		if ($jid === null)
 		{
 			return false;
 		}
@@ -104,4 +106,3 @@ class JobAdmin extends \JTable
 		return $admins;
 	}
 }
-

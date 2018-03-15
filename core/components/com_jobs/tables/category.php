@@ -32,16 +32,18 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for job category
  */
-class JobCategory extends \JTable
+class JobCategory extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,10 +53,10 @@ class JobCategory extends \JTable
 	/**
 	 * Get all records
 	 *
-	 * @param      string  $sortby    Field to sort by
-	 * @param      string  $sortdir   Sort direction (ASC/DESC)
-	 * @param      integer $getobject Return records as objects?
-	 * @return     array
+	 * @param   string   $sortby     Field to sort by
+	 * @param   string   $sortdir    Sort direction (ASC/DESC)
+	 * @param   integer  $getobject  Return records as objects?
+	 * @return  array
 	 */
 	public function getCats($sortby = 'ordernum', $sortdir = 'ASC', $getobject = 0)
 	{
@@ -83,9 +85,9 @@ class JobCategory extends \JTable
 	/**
 	 * Get a category
 	 *
-	 * @param      itneger $id      Category ID
-	 * @param      string  $default Default value if no record found
-	 * @return     mixed False if errors, String upon success
+	 * @param   itneger  $id       Category ID
+	 * @param   string   $default  Default value if no record found
+	 * @return  mixed    False if errors, String upon success
 	 */
 	public function getCat($id = null, $default = 'Unspecified')
 	{
@@ -106,9 +108,9 @@ class JobCategory extends \JTable
 	/**
 	 * Update the ordering of records
 	 *
-	 * @param      integer $id       Category ID
-	 * @param      integer $ordernum ORder number to make it
-	 * @return     boolean True upon success
+	 * @param   integer  $id        Category ID
+	 * @param   integer  $ordernum  ORder number to make it
+	 * @return  boolean  True upon success
 	 */
 	public function updateOrder($id = null, $ordernum = 1)
 	{

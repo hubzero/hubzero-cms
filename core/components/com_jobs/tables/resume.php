@@ -32,16 +32,18 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for job resumes
  */
-class Resume extends \JTable
+class Resume extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +53,7 @@ class Resume extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -73,22 +75,22 @@ class Resume extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $name Parameter description (if any) ...
-	 * @return     boolean True upon success
+	 * @param   integer  $name  Parameter description (if any) ...
+	 * @return  boolean  True upon success
 	 */
-	public function loadResume($name=NULL)
+	public function loadResume($name=null)
 	{
-		if ($name !== NULL)
+		if ($name !== null)
 		{
 			$this->_tbl_key = 'uid';
 		}
 		$k = $this->_tbl_key;
-		if ($name !== NULL)
+		if ($name !== null)
 		{
 			$this->$k = $name;
 		}
 		$name = $this->$k;
-		if ($name === NULL)
+		if ($name === null)
 		{
 			return false;
 		}
@@ -104,16 +106,16 @@ class Resume extends \JTable
 	/**
 	 * Delete a record
 	 *
-	 * @param      integer $id Resume ID
-	 * @return     boolean False if errors, True upon success
+	 * @param   integer  $id  Resume ID
+	 * @return  boolean  False if errors, True upon success
 	 */
-	public function delete_resume($id = NULL)
+	public function delete_resume($id = null)
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			$id == $this->id;
 		}
-		if ($id === NULL)
+		if ($id === null)
 		{
 			return false;
 		}
@@ -131,18 +133,18 @@ class Resume extends \JTable
 	/**
 	 * Get resume files
 	 *
-	 * @param      string  $pile  shortlisted or applied
-	 * @param      integer $uid   User ID
-	 * @param      integer $admin Admin access?
-	 * @return     array
+	 * @param   string   $pile   shortlisted or applied
+	 * @param   integer  $uid    User ID
+	 * @param   integer  $admin  Admin access?
+	 * @return  array
 	 */
 	public function getResumeFiles($pile = 'all', $uid = 0, $admin = 0)
 	{
 		$query  = "SELECT DISTINCT r.uid, r.filename FROM $this->_tbl AS r ";
 		$query .= "JOIN #__jobs_seekers AS s ON s.uid=r.uid ";
-		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
+		$query .= ($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
 		$uid = $admin ? 1 : $uid;
-		$query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->quote($uid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
+		$query .= ($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->quote($uid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
 
 		$files = array();
@@ -161,4 +163,3 @@ class Resume extends \JTable
 		return array_unique($files);
 	}
 }
-
