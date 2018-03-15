@@ -32,16 +32,18 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for job employer
  */
-class Employer extends \JTable
+class Employer extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,13 +53,13 @@ class Employer extends \JTable
 	/**
 	 * Check if a user is an employer
 	 *
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $uid
+	 * @param   integer  $admin
+	 * @return  boolean
 	 */
 	public function isEmployer($uid, $admin=0)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			return false;
 		}
@@ -85,12 +87,12 @@ class Employer extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $uid User ID
-	 * @return     boolean True upon success
+	 * @param   integer  $uid  User ID
+	 * @return  boolean  True upon success
 	 */
-	public function loadEmployer($uid=NULL)
+	public function loadEmployer($uid=null)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			return false;
 		}
@@ -106,13 +108,13 @@ class Employer extends \JTable
 	/**
 	 * Get an employer
 	 *
-	 * @param      integer $uid              User ID
-	 * @param      string  $subscriptionCode Subscription code
-	 * @return     mixed False if errors, Array upon success
+	 * @param   integer $ uid               User ID
+	 * @param   string   $subscriptionCode  Subscription code
+	 * @return  mixed    False if errors, Array upon success
 	 */
-	public function getEmployer($uid = NULL, $subscriptionCode = NULL)
+	public function getEmployer($uid = null, $subscriptionCode = null)
 	{
-		if ($uid === NULL or $subscriptionCode === NULL)
+		if ($uid === null or $subscriptionCode === null)
 		{
 			return false;
 		}
@@ -140,4 +142,3 @@ class Employer extends \JTable
 		return false;
 	}
 }
-

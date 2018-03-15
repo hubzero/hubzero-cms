@@ -32,16 +32,18 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for job shortlist
  */
-class Shortlist extends \JTable
+class Shortlist extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +53,7 @@ class Shortlist extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -73,14 +75,14 @@ class Shortlist extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $emp      Employer ID
-	 * @param      integer $seeker   Seeker ID
-	 * @param      string  $category Category
-	 * @return     boolean True upon success
+	 * @param   integer  $emp       Employer ID
+	 * @param   integer  $seeker    Seeker ID
+	 * @param   string   $category  Category
+	 * @return  boolean  True upon success
 	 */
 	public function loadEntry($emp, $seeker, $category = 'resume')
 	{
-		if ($emp === NULL or $seeker === NULL)
+		if ($emp === null or $seeker === null)
 		{
 			return false;
 		}
@@ -94,4 +96,3 @@ class Shortlist extends \JTable
 		return false;
 	}
 }
-

@@ -32,16 +32,18 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for job prefs
  */
-class Prefs extends \JTable
+class Prefs extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,13 +53,13 @@ class Prefs extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $uid      User ID
-	 * @param      string  $category Category
-	 * @return     boolean True upon success
+	 * @param   integer  $uid       User ID
+	 * @param   string   $category  Category
+	 * @return  boolean  True upon success
 	 */
 	public function loadPrefs($uid, $category = 'resume')
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			return false;
 		}
@@ -71,4 +73,3 @@ class Prefs extends \JTable
 		return false;
 	}
 }
-

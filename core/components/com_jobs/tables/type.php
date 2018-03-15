@@ -32,16 +32,18 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for job types
  */
-class JobType extends \JTable
+class JobType extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,9 +53,9 @@ class JobType extends \JTable
 	/**
 	 * Get all records
 	 *
-	 * @param      string $sortby  Sort by field
-	 * @param      string $sortdir Sort direction ASC/DESC
-	 * @return     array
+	 * @param   string  $sortby   Sort by field
+	 * @param   string  $sortdir  Sort direction ASC/DESC
+	 * @return  array
 	 */
 	public function getTypes($sortby = 'id', $sortdir = 'ASC')
 	{
@@ -76,9 +78,9 @@ class JobType extends \JTable
 	/**
 	 * Load a record from the database
 	 *
-	 * @param      integer $id      Type ID
-	 * @param      string  $default Default value to return
-	 * @return     string
+	 * @param   integer  $id       Type ID
+	 * @param   string   $default  Default value to return
+	 * @return  string
 	 */
 	public function getType($id = null, $default = 'Unspecified')
 	{
