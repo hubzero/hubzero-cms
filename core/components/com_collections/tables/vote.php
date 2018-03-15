@@ -32,6 +32,7 @@
 
 namespace Components\Collections\Tables;
 
+use Hubzero\Database\Table;
 use Date;
 use User;
 use Lang;
@@ -39,7 +40,7 @@ use Lang;
 /**
  * Table class for post votes
  */
-class Vote extends \JTable
+class Vote extends Table
 {
 	/**
 	 * Constructor
