@@ -92,9 +92,10 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$return = '';
 		$b64dreturn = '';
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		$return = '';
+		$return = Session::get('returnUrl', null, 'cilogon');
+		if (!empty($return))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
@@ -102,7 +103,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				$b64dreturn = '';
 			}
 		}
-
+		Session::clear('state', 'returnUrl');
 		$options['return'] = $b64dreturn;
 
 		// Check to make sure they didn't deny our application permissions
@@ -131,11 +132,13 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	 */
 	public function display($view, $tpl)
 	{
+		$returnUrl = Request::getVar('return', '', 'method', 'base64');
 		$provider = $this->cilogon();
 		$loginUrl = $provider->getAuthorizationUrl(array(
 			'scope' => ['openid', 'email', 'profile', 'org.cilogon.userinfo']
 		));
 		Session::set('state', $provider->getState(), 'cilogon');
+		Session::set('returnUrl', $returnUrl, 'cilogon');
 		// Redirect to the login URL
 		App::redirect($loginUrl);
 	}
