@@ -62,9 +62,9 @@ class Following extends Table
 	 * @param   string   $follower_type   Follower type
 	 * @return  boolean  True on success
 	 */
-	public function load($oid=NULL, $following_type=null, $follower_id=null, $follower_type=null)
+	public function load($oid=null, $following_type=null, $follower_id=null, $follower_type=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}
