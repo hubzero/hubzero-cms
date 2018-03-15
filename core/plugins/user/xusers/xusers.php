@@ -375,12 +375,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				{
 					$db = App::get('db');
 
-					$component = new JTableExtension($this->database);
-					$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
-					$params = new \Hubzero\Config\Registry($component->params);
+					$params = Component::params('com_members');
 					$params->set('homedir', $hubHomeDir);
-					$component->params = $params->toString();
-					$component->store();
+
+					$query = "UPDATE `#__extensions` SET `params` = " . $db->quote($params->toString()) . " WHERE `type`='component' AND `element`=" . $db->quote('com_members');
+					$db->setQuery($query);
+					$db->query();
 				}
 			}
 
