@@ -157,20 +157,27 @@ class Orders extends AdminController
 
 		$tInfo = $transactionInfo;
 
-		foreach ($transactionItems as $item)
+		foreach ($transactionItems as $sId => $item)
 		{
 			// Check if the product is still available
 			$warehouse = new Warehouse();
-			$skuInfo = $warehouse->getSkuInfo($item['info']->sId);
+			$skuInfo = $warehouse->getSkuInfo($sId);
 			if (!$skuInfo)
 			{
 				// product no longer available
+				// Make an attempt at not throwing an error in the view
 				$item['info']->available = false;
+				$item['info']->pId = 0;
+				$item['info']->pName = 'N/A';
+				$item['info']->sId = $sId;
+				$item['info']->sSku = 0;
 			}
 			else
 			{
+				$item['info'] = $skuInfo['info'];
 				$item['info']->available = true;
 			}
+			$transactionItems[$sId] = $item;
 		}
 
 		$tInfo->tiItems = $transactionItems;
@@ -382,6 +389,8 @@ class Orders extends AdminController
 		// Do some filter cleaning
 		$setPId = Request::getInt('pId', 0);
 		$setSId = Request::getInt('sId', 0);
+		dlog($setSId);
+		dlog($setPId);
 
 		if ($setPId)
 		{
@@ -452,6 +461,7 @@ class Orders extends AdminController
 				'int'
 			)
 		);
+		dlog($this->view->filters);
 
 		if ($this->view->filters['order'])
 		{

@@ -194,13 +194,13 @@ function submitbutton(pressbutton)
 								$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
 							}
 							else {
-								$product = $this->escape(stripslashes($itemInfo->pName)) .  ', ' . $this->escape(stripslashes($itemInfo->sSku));
+								$product = $this->escape(stripslashes(isset($itemInfo->pName) ? $itemInfo->pName : 'N/A')) .  ', ' . $this->escape(stripslashes(isset($itemInfo->sSku) ? $itemInfo->sSku : 'N/A'));
 								$product .= ' <br><em>&nbsp;&mdash;&nbsp;Item is no longer available</em>';
 							}
 							?>
 							<span><?php echo $product; ?></span>
 						</td>
-						<td><span><?php echo $itemInfo->sPrice; ?></span></td>
+						<td><span><?php echo isset($itemInfo->sPrice) ? $itemInfo->sPrice : 'N/A'; ?></span></td>
 						<td><span><?php echo $itemOrdered['transactionInfo']->qty; ?></span></td>
 					</tr>
 			<?php
