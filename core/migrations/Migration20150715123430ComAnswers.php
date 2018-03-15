@@ -25,16 +25,31 @@ class Migration20150715123430ComAnswers extends Base
 
 			if (!$id)
 			{
-				include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+				if (class_exists('Hubzero\Access\Asset'))
+				{
+					$parent = \Hubzero\Access\Asset::oneOrNew(\Hubzero\Access\Asset::getRootId());
 
-				$tbl = new \JTableAsset($this->db);
-				$tbl->level  = 1;
-				$tbl->parent = 1;
-				$tbl->name   = 'com_answers';
-				$tbl->title  = 'com_answers';
-				$tbl->rules  = $rules;
-				$tbl->check();
-				$tbl->store();
+					$tbl = \Hubzero\Access\Asset::blank();
+					$tbl->set('level', 1);
+					$tbl->set('parent', 1);
+					$tbl->set('name', 'com_answers');
+					$tbl->set('title', 'com_answers');
+					$tbl->set('rules', $rules);
+					$tbl->saveAsLastChildOf($parent);
+				}
+				elseif (file_exists(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php'))
+				{
+					include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+
+					$tbl = new \JTableAsset($this->db);
+					$tbl->level  = 1;
+					$tbl->parent = 1;
+					$tbl->name   = 'com_answers';
+					$tbl->title  = 'com_answers';
+					$tbl->rules  = $rules;
+					$tbl->check();
+					$tbl->store();
+				}
 			}
 			else
 			{
@@ -61,16 +76,31 @@ class Migration20150715123430ComAnswers extends Base
 
 			if (!$id)
 			{
-				include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+				if (class_exists('Hubzero\Access\Asset'))
+				{
+					$parent = \Hubzero\Access\Asset::oneOrNew(\Hubzero\Access\Asset::getRootId());
 
-				$tbl = new \JTableAsset($this->db);
-				$tbl->level  = 1;
-				$tbl->parent = 1;
-				$tbl->name   = 'com_answers';
-				$tbl->title  = 'com_answers';
-				$tbl->rules  = $rules;
-				$tbl->check();
-				$tbl->store();
+					$tbl = \Hubzero\Access\Asset::blank();
+					$tbl->set('level', 1);
+					$tbl->set('parent', 1);
+					$tbl->set('name', 'com_answers');
+					$tbl->set('title', 'com_answers');
+					$tbl->set('rules', $rules);
+					$tbl->saveAsLastChildOf($parent);
+				}
+				elseif (file_exists(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php'))
+				{
+					include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+
+					$tbl = new \JTableAsset($this->db);
+					$tbl->level  = 1;
+					$tbl->parent = 1;
+					$tbl->name   = 'com_answers';
+					$tbl->title  = 'com_answers';
+					$tbl->rules  = $rules;
+					$tbl->check();
+					$tbl->store();
+				}
 			}
 			else
 			{

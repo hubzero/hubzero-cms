@@ -25,14 +25,31 @@ class Migration20160927193030ComProjects extends Base
 
 			if (!$id)
 			{
-				$tbl = new \JTableAsset($this->db);
-				$tbl->level  = 1;
-				$tbl->parent = 1;
-				$tbl->name   = 'com_projects';
-				$tbl->title  = 'com_projects';
-				$tbl->rules  = $rules;
-				$tbl->check();
-				$tbl->store();
+				if (class_exists('Hubzero\Access\Asset'))
+				{
+					$parent = \Hubzero\Access\Asset::oneOrNew(\Hubzero\Access\Asset::getRootId());
+
+					$tbl = \Hubzero\Access\Asset::blank();
+					$tbl->set('level', 1);
+					$tbl->set('parent', 1);
+					$tbl->set('name', 'com_projects');
+					$tbl->set('title', 'com_projects');
+					$tbl->set('rules', $rules);
+					$tbl->saveAsLastChildOf($parent);
+				}
+				elseif (file_exists(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php'))
+				{
+					include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+
+					$tbl = new \JTableAsset($this->db);
+					$tbl->level  = 1;
+					$tbl->parent = 1;
+					$tbl->name   = 'com_projects';
+					$tbl->title  = 'com_projects';
+					$tbl->rules  = $rules;
+					$tbl->check();
+					$tbl->store();
+				}
 			}
 			else
 			{
@@ -59,14 +76,31 @@ class Migration20160927193030ComProjects extends Base
 
 			if (!$id)
 			{
-				$tbl = new \JTableAsset($this->db);
-				$tbl->level  = 1;
-				$tbl->parent = 1;
-				$tbl->name   = 'com_projects';
-				$tbl->title  = 'com_projects';
-				$tbl->rules  = $rules;
-				$tbl->check();
-				$tbl->store();
+				if (class_exists('Hubzero\Access\Asset'))
+				{
+					$parent = \Hubzero\Access\Asset::oneOrNew(\Hubzero\Access\Asset::getRootId());
+
+					$tbl = \Hubzero\Access\Asset::blank();
+					$tbl->set('level', 1);
+					$tbl->set('parent', 1);
+					$tbl->set('name', 'com_projects');
+					$tbl->set('title', 'com_projects');
+					$tbl->set('rules', $rules);
+					$tbl->saveAsLastChildOf($parent);
+				}
+				elseif (file_exists(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php'))
+				{
+					include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+
+					$tbl = new \JTableAsset($this->db);
+					$tbl->level  = 1;
+					$tbl->parent = 1;
+					$tbl->name   = 'com_projects';
+					$tbl->title  = 'com_projects';
+					$tbl->rules  = $rules;
+					$tbl->check();
+					$tbl->store();
+				}
 			}
 			else
 			{
