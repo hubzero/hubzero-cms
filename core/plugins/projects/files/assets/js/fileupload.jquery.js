@@ -253,7 +253,8 @@ HUB.ProjectFilesFileUpload = {
 	{
 		HUB.ProjectFilesFileUpload.acceptedFormats = HUB.ProjectFilesFileUpload.acceptedFormats || {}
 		const match = file.name.match(/\.(.*$)/)
-		const format = match ? match[1] : '';
+		let format = match ? match[1] : '';
+		format = format.toLowerCase()
 		// define an object of the form { <file type>: true }
 		// currently loaded via views/upload/tmpl/default.php L91
 		// <script src="...assets/js/acceptedFormats.js" ...>
@@ -264,13 +265,13 @@ HUB.ProjectFilesFileUpload = {
 
 	_generatePossibleIssuesMessage: function(unrecognizedFiles)
 	{
-		let message = "The following file(s) may not be uploaded because the format is not recognized: \n\n"
+		let message = HUB.ProjectFilesFileUpload.acceptedFormatsMessageStart
 
 		unrecognizedFiles.forEach((file) => {
 			message += `• ${file.name}\n`
 		})
 
-		message += "\nYou may \"Cancel\" and remove the files or attempt to upload by selecting \"OK\"."
+		message += HUB.ProjectFilesFileUpload.acceptedFormatsMessageEnd
 
 		return message
 	}
