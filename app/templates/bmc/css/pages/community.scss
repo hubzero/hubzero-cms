@@ -4,10 +4,10 @@
 .wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(9, [row] auto), null);
 }
-.link {
-  text-transform: uppercase;
-  margin-top: 3rem;
-}
+// .link {
+//   text-transform: uppercase;
+//   margin-top: 3rem;
+// }
 .link-anchor {
   color: inherit;
   &:hover {
@@ -17,52 +17,84 @@
     color: inherit;
   }
 }
-.white {
-  color: $white;
-  a {
-    padding: .25em .75em;
-    border: 1px solid $white;
-  }
-  a:active {
-    color: $white;
-  }
-  a:visited {
-    color: $white;
-  }
-  a:hover {
-    color: $orange;
-  }
-}
+// .white {
+//   color: $white;
+//   a {
+//     padding: .25em .75em;
+//     border: 1px solid $white;
+//   }
+//   a:active {
+//     color: $white;
+//   }
+//   a:visited {
+//     color: $white;
+//   }
+//   a:hover {
+//     color: $orange;
+//   }
+// }
 
 //Feature
 .feature {
   @include grid(col / span 4, row);
+  p {
+    @include grid-support {
+      margin: 1em 0;
+    }
+  }
 }
 .module-feature {
   @include flexbox(wrap);
   @include grid(col / span 4, row);
-  @include grid-template(repeat(auto-fit, minmax(200px, 1fr)), null, 5px);
-  grid-auto-rows: 200px;
+  @include grid-template(repeat(auto-fit, minmax(12.5rem, 1fr)), null, 5px);
+  grid-auto-rows: 12.5rem;
   grid-auto-flow: dense;
   .big {
+    @include grid(span 2, span 2);
     flex: 1 1 20rem;
     height: 15rem;
     margin: 2.5px;
-    @include grid(span 2, span 2);
+    @include respond-at(1240px) {
+      @include grid(null, span 1);
+    }
+    @include grid-support {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
   }
   .flex {
     @extend .big;
+    @include respond-at(1035px) {
+      @include grid(span 3, span 1);
+    }
+    @include respond-at(1445px) {
+      @include grid(null, span 1);
+    }
   }
   .horizontal {
+    @include grid(span 2, null);
     flex: 1 1 20rem;
     height: 15rem;
     margin: 2.5px;
-    @include grid(span 2, null);
+    @include respond-at(625px) {
+      @include grid(span 3, null);
+    }
+    @include grid-support {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
   }
   .regular {
     flex: 1 1 20rem;
     height: 15rem;
     margin: 2.5px;
+    @include grid-support {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
   }
   .billboard-image {
     @extend %showcase-img;
@@ -138,15 +170,23 @@
 //Explore
 .explore {
   @include grid(col / span 4, row 3);
-  padding: 2.5em;
+  padding: 1em;
   margin-bottom: 5em;
+  @include respond-at(590px) {
+    padding: 2.5em;
+  }
   .community-container {
     @include flexbox(wrap);
-    @include grid-template(repeat(auto-fit, minmax(425px, 1fr)), null, 10px);
+    @include grid-template(repeat(auto-fit, minmax(22.5rem, 1fr)), null, 10px);
     grid-auto-rows: auto;
   }
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
   }
 }
 .communities {
@@ -166,14 +206,18 @@
       bottom: -1px;
     }
   }
+  @include grid-support {
+    width: auto;
+  }
 }
 
 //Faculty Mentoring Network
 #one {
   @include flexbox(wrap);
-  justify-content: center;
   @include grid(col / span 4, row 4);
-  @include grid-template(repeat(4, 1fr), repeat(3, 1fr), null);
+  @include grid-template(repeat(4, 1fr), repeat(3, auto));
+  // @include grid-template(repeat(4, 1fr), repeat(3, 1fr), null);
+  justify-content: center;
   background-color: $teal;
   color: $white;
   h2 {
@@ -199,14 +243,29 @@
     .link {
       @include buttons($white);
     }
+    @include grid-support {
+      width: auto;
+    }
   }
   .module-fmn {
     @include flexbox(wrap);
     @include grid(span 4, null);
-    @include grid-template(repeat(4, 1fr), 17rem);
+    @include grid-template(repeat(4, 1fr), null);
+    grid-auto-rows: 17rem;
     .regular {
+      @include grid(span 4, null);
       flex: 1 1 20rem;
       height: 15rem;
+      @include respond-at(590px) {
+        @include grid(span 2, null);
+      }
+      @include respond-at(960px) {
+        @include grid(span 1, null);
+      }
+      @include grid-support {
+        width: auto;
+        height: auto;
+      }
     }
     .billboard-image {
       @extend %showcase-img;
@@ -224,6 +283,9 @@
           @include showcase-header(1em, 1, 2);
         }
       }
+    }
+    @include grid-support {
+      width: auto;
     }
   }
   .ambassador {
@@ -233,36 +295,75 @@
     padding: 2.5em;
     .link {
       @include buttons($white);
+      margin-top: 3em;
     }
   }
 }
 
 //Workshops and Meetings
 #two {
-  @include flexbox;
-  justify-content: center;
+  @include flexbox(wrap);
   @include grid(col / span 4, row 5);
-  @include grid-template(repeat(6, 1fr), null);
-  margin: 4em 0;
+  @include grid-template(repeat(6, 1fr), repeat(2, auto));
+  justify-content: center;
+  // margin: 4em 0;
   .workshops {
-    width: 50%;
+    @include grid(span 6, 1);
+    width: 100%;
+    // width: 50%;
     align-self: center;
-    @include grid(1 / span 3, null);
+    // @include grid(1 / span 3, null);
     padding: 2.5em;
     .link {
       @include buttons($green);
     }
+    @include respond-at(901px) {
+      @include grid(1 / span 3, 1);
+    }
+    @include grid-support {
+      width: auto;
+    }
   }
   .module-workshops {
     @include flexbox(wrap);
-    @include grid(4 / span 3, null);
-    width: 50%;
+    @include grid(span 6, 2);
+    @include grid-template(repeat(3, 1fr), null);
+    grid-auto-rows: 17rem;
+    width: 100%;
     align-self: center;
-    @include grid-template(repeat(3, 1fr), 20rem, 5px);
+    @include respond-at(590px) {
+      @include grid-template(repeat(4, 1fr), repeat(2, 17rem));
+    }
+    @include respond-at(901px) {
+      @include grid(4 /span 3, 1);
+      width: 50%;
+    }
+    @include respond-at(1100px) {
+      @include grid-template(repeat(3, 1fr), minmax(20rem, 1fr));
+    }
     .regular {
+      @include grid(span 3, null);
       flex: 1 1 20rem;
       height: 15rem;
       margin: 2.5px;
+      @include respond-at(590px) {
+        @include grid(span 2, null);
+      }
+      @include respond-at(1100px) {
+        @include grid(span 1, null);
+      }
+      @include grid-support {
+        width: auto;
+        height: auto;
+      }
+    }
+    div:last-child {
+      @include respond-at(590px) {
+        @include grid(span 4, null);
+      }
+      @include respond-at(1100px) {
+        @include grid(span 1, null);
+      }
     }
     .billboard-image {
       @extend %showcase-img;
@@ -281,33 +382,68 @@
         }
       }
     }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include respond-at(901px) {
+    @include grid-template(repeat(6, 1fr), 1fr);
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
   }
 }
 
 //Classrooms
 #three {
-  @include flexbox;
+  @include flexbox(wrap);
   @include grid(col / span 4, row 6);
-  @include grid-template(repeat(2, 1fr), 20rem);
+  @include grid-template(repeat(2, 1fr), repeat(2, minmax(20rem, 1fr)));
   margin-bottom: 4em;
+  @include respond-at(901px) {
+    @include grid-template(null, 1fr);
+  }
   .horizontal {
-    width: 50%;
+    @include grid(1 / span 2, 2);
+    width: 100%;
     background: url('/app/site/media/images/climate-kic-350836.jpg');
     background-size: cover;
-    // background-position: center;
     background-repeat: no-repeat;
+    @include respond-at(901px) {
+      @include grid(1 / span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
   }
   .classrooms {
-    width: 50%;
+    @include grid(1 / span 2, 1);
+    width: 100%;
+    order: -1;
     padding: 2.5em;
     align-self: center;
+    @include respond-at(901px) {
+      @include grid(2 / span 1, null);
+      order: 1;
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
   }
 }
 
 //Collaborative Publishing
 #four {
   @include grid(col / span 4, row 7);
-  height: 15rem;
   @include bcg-img('/app/site/media/images/stefan-stefancik-257625.jpg');
   background-color: $dark-blue;
   color: $white;
@@ -320,26 +456,68 @@
 
 //Project Websites
 #five {
-  @include flexbox;
+  @include flexbox(wrap);
   @include grid(col / span 4, row 8);
-  @include grid-template(repeat(6, 1fr), null);
+  @include grid-template(repeat(6, 1fr), 1fr auto);
   margin: 4em 0;
+  @include respond-at(1100px) {
+    @include grid-template(repeat(6, 1fr), minmax(20rem, 1fr));
+  }
   .sites {
-    width: 50%;
+    @include grid(1 / span 6, 1);
+    width: 100%;
     align-self: center;
-    @include grid(1 / span 3, null);
     padding: 2.5em;
+    @include respond-at(1100px) {
+      @include grid(1 / span 3, 1);
+    }
+    @include grid-support {
+      width: auto;
+    }
   }
   .module-sites {
     @include flexbox(wrap);
-    width: 50%;
-    @include grid(span 3, null);
+    @include grid(span 6, 2);
+    @include grid-template(repeat(3, 1fr), repeat(3, 17rem));
+    width: 100%;
     align-self: center;
-    @include grid-template(repeat(3, 1fr), 17rem, 5px);
+    @include respond-at(590px) {
+      @include grid-template(repeat(4, 1fr), repeat(2, 17rem));
+    }
+    @include respond-at(751px) {
+      @include grid-template(repeat(3, 1fr), 17rem);
+    }
+    @include respond-at(1100px) {
+      @include grid(4 / span 7, 1);
+      @include grid-template(repeat(3, 1fr), minmax(20rem, 1fr));
+    }
+    @include grid-support {
+      width: auto;
+    }
     .regular {
+      @include grid(span 3, null);
       flex: 1 1 20rem;
       height: 15rem;
       margin: 2.5px;
+      @include respond-at(590px) {
+        @include grid(span 2, null);
+      }
+      @include respond-at(751px) {
+        @include grid(span 1, null);
+      }
+      @include grid-support {
+        width: auto;
+        height: auto;
+        margin: 0;
+      }
+    }
+    div:last-child {
+      @include respond-at(590px) {
+        @include grid(span 4, null);
+      }
+      @include respond-at(751px) {
+        @include grid(span 1, null);
+      }
     }
     .group {
       position: relative;
@@ -359,6 +537,11 @@
       }
     }
   }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
+  }
 }
 // Private Working Groups
 #c-six {
@@ -374,306 +557,9 @@
   .link {
     @include buttons($white);
   }
-}
-@media only screen and (min-width: 320px) and (max-width: 589px) {
-  #one {
-    flex-wrap: wrap;
-    // grid-template-rows: 25rem auto;
-    .module-fmn {
-      // grid-template-rows: repeat(4, 15rem);
-      .regular {
-        grid-column: 1 / span 4;
-      }
-    }
-  }
-  #two {
-    flex-wrap: wrap;
-    grid-template-rows: 25rem auto;
-    .workshops {
-      width: 100%;
-      grid-column: span 6;
-    }
-    .module-workshops{
-      width: 100%;
-      grid-column: span 6;
-      grid-template-rows: repeat(3, 15rem);
-      .regular {
-        width: 100%;
-        height: 15rem;
-        margin: 2.5px;
-        grid-column: span 6;
-      }
-    }
-  }
-  #three {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .classrooms {
-      width: 100%;
-      order: -1;
-      grid-column: span 4;
-      grid-row: 1;
-    }
-    .horizontal {
-      width: 100%;
-      height: 15rem;
-      grid-column: span 4;
-    }
-  }
-  #five {
-    flex-wrap: wrap;
-    grid-template-rows: 25rem auto;
-    .sites {
-      width: 100%;
-      grid-column: span 6;
-    }
-    .module-sites {
-      width: 100%;
-      grid-column: span 6;
-      grid-template-rows: repeat(3, 15rem);
-      .regular {
-        width: 100%;
-        height: 15rem;
-        grid-column: span 6;
-      }
-    }
-  }
-  #c-six {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .groups {
-      width: 100%;
-      order: -1;
-      grid-column: span 4;
-      grid-row: 1;
-    }
-    .horizontal {
-      width: 100%;
-      height: 15rem;
-      grid-column: span 4;
-    }
-  }
-}
-@media only screen and (min-width: 590px) and (max-width: 900px) {
-  #one {
-    .module-fmn {
-      grid-template-rows: repeat(2, 10rem);
-      .regular {
-        grid-column: span 2;
-      }
-    }
-  }
-  #two {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .workshops {
-      width: 100%;
-      grid-column: 1 / span 6;
-    }
-    .module-workshops {
-      width: 100%;
-      grid-column: 1 / span 6;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, 10rem);
-      .regular {
-        grid-column: span 2;
-      }
-      div:last-child {
-        grid-column: span 4;
-      }
-    }
-  }
-  #three {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .classrooms {
-      width: 100%;
-      order: -1;
-      grid-column: span 4;
-      grid-row: 1;
-    }
-    .horizontal {
-      width: 100%;
-      height: 20rem;
-      grid-column: span 4;
-    }
-  }
-  #five {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .sites {
-      width: 100%;
-      grid-column: span 6;
-    }
-    .module-sites {
-      width: 100%;
-      grid-column: 1 / span 6;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, 10rem);
-      .regular {
-        grid-column: span 2;
-      }
-      div:last-child {
-        grid-column: span 4;
-      }
-    }
-  }
-}
-@media only screen and (min-width: 625px) and (max-width: 829px) {
-  .feature {
-    .horizontal {
-      grid-column: span 3;
-    }
-  }
-}
-@media only screen and (min-width: 901px) and (max-width: 1200px) {
-  #two {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .workshops {
-      width: 100%;
-      grid-column: 1 / span 6;
-      grid-row: 1;
-    }
-    .module-workshops {
-      grid-column: 1 / span 6;
-      grid-row: 2;
-    }
-  }
-  #five {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .sites {
-      width: 100%;
-      grid-column: 1 / span 6;
-      grid-row: 1;
-    }
-    .module-sites {
-      grid-column: 1 / span 6;
-      grid-row: 2;
-    }
-  }
-}
-@media only screen and (min-width: 1035px) and (max-width: 1239px) {
-  .feature {
-    .flex {
-      grid-column: span 3;
-      grid-row: span 1;
-    }
-  }
-}
-@media only screen and (min-width: 1240px) and (max-width: 1444px) {
-  .feature {
-    .big {
-      grid-row: span 1;
-    }
-  }
-}
-@media only screen and (min-width: 1445px) and (max-width: 1650px) {
-  .feature {
-    .flex {
-      grid-row: span 1;
-    }
-  }
-}
-//Reset widths if css grid is supported & reset <p> margins
-@supports (display:grid) {
-  .feature {
+  @include grid-support {
     p {
       margin: 1em 0;
-    }
-    .big {
-      width: auto;
-      height: auto;
-      margin: 0;
-    }
-    .horizontal {
-      width: auto;
-      height: auto;
-      margin: 0;
-    }
-    .regular {
-      width: auto;
-      height: auto;
-      margin: 0;
-    }
-  }
-  .explore {
-    p {
-      margin: 1em 0;
-    }
-    .community-container {
-      .communities {
-        width: auto;
-      }
-    }
-  }
-  #one {
-    p {
-      margin: 1em 0;
-    }
-    .fmn {
-      width: auto;
-    }
-    .module-fmn {
-      width: auto;
-      .regular {
-        width: auto;
-        height: auto;
-      }
-    }
-  }
-  #two {
-    p {
-      margin: 1em 0;
-    }
-    .workshops {
-      width: auto;
-    }
-    .module-workshops {
-      width: auto;
-      .regular {
-        width: auto;
-        height: auto;
-        margin: 0;
-      }
-    }
-  }
-  #three {
-    p {
-      margin: 1em 0;
-    }
-    .horizontal {
-      width: auto;
-    }
-    .classrooms {
-      width: auto;
-    }
-  }
-  #five {
-    p {
-      margin: 1em 0;
-    }
-    .sites {
-      width: auto;
-    }
-    .module-sites {
-      width: auto;
-      .regular {
-        width: auto;
-        height: auto;
-        margin: 0;
-      }
-    }
-  }
-  #c-six {
-    p {
-      margin: 1em 0;
-    }
-    .horizontal {
-      width: auto;
     }
     .groups {
       width: auto;
