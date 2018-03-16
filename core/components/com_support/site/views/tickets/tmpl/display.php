@@ -229,11 +229,7 @@ $this->css()
 								->row()
 								->get('created', '0000-00-00 00:00:00');
 
-							$tags = '';
-							if (isset($alltags[$row->get('id')]))
-							{
-								$tags = $row->tags('linkedlist');
-							}
+							$tags = $row->tags('linkedlist');
 							?>
 							<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
 								<td<?php if ($row->get('status')) { echo ($row->status->get('color') ? ' style="border-left-color: #' . $row->status->get('color') . ';"' : ''); } ?>>
