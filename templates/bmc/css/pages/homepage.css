@@ -335,6 +335,7 @@ h3 {
 
 .software .software-logos .logo-wrap img {
   height: 65%;
+  width: 100px;
   object-fit: scale-down;
 }
 
