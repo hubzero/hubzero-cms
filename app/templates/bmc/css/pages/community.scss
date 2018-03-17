@@ -4,10 +4,7 @@
 .wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(9, [row] auto), null);
 }
-// .link {
-//   text-transform: uppercase;
-//   margin-top: 3rem;
-// }
+
 .link-anchor {
   color: inherit;
   &:hover {
@@ -17,22 +14,6 @@
     color: inherit;
   }
 }
-// .white {
-//   color: $white;
-//   a {
-//     padding: .25em .75em;
-//     border: 1px solid $white;
-//   }
-//   a:active {
-//     color: $white;
-//   }
-//   a:visited {
-//     color: $white;
-//   }
-//   a:hover {
-//     color: $orange;
-//   }
-// }
 
 //Feature
 .feature {
@@ -216,7 +197,6 @@
   @include flexbox(wrap);
   @include grid(col / span 4, row 4);
   @include grid-template(repeat(4, 1fr), repeat(3, auto));
-  // @include grid-template(repeat(4, 1fr), repeat(3, 1fr), null);
   justify-content: center;
   background-color: $teal;
   color: $white;
@@ -250,7 +230,7 @@
   .module-fmn {
     @include flexbox(wrap);
     @include grid(span 4, null);
-    @include grid-template(repeat(4, 1fr), null);
+    @include grid-template(repeat(4, 1fr), null, 5px);
     grid-auto-rows: 17rem;
     .regular {
       @include grid(span 4, null);
@@ -306,19 +286,20 @@
   @include grid(col / span 4, row 5);
   @include grid-template(repeat(6, 1fr), repeat(2, auto));
   justify-content: center;
-  // margin: 4em 0;
+  margin: 4em 0;
   .workshops {
     @include grid(span 6, 1);
     width: 100%;
-    // width: 50%;
     align-self: center;
-    // @include grid(1 / span 3, null);
     padding: 2.5em;
     .link {
       @include buttons($green);
     }
     @include respond-at(901px) {
       @include grid(1 / span 3, 1);
+    }
+    @include respond-at(1100px) {
+      width: 50%;
     }
     @include grid-support {
       width: auto;
@@ -327,7 +308,7 @@
   .module-workshops {
     @include flexbox(wrap);
     @include grid(span 6, 2);
-    @include grid-template(repeat(3, 1fr), null);
+    @include grid-template(repeat(3, 1fr), null, 5px);
     grid-auto-rows: 17rem;
     width: 100%;
     align-self: center;
@@ -336,14 +317,14 @@
     }
     @include respond-at(901px) {
       @include grid(4 /span 3, 1);
-      width: 50%;
     }
     @include respond-at(1100px) {
       @include grid-template(repeat(3, 1fr), minmax(20rem, 1fr));
+      width: 50%;
     }
     .regular {
       @include grid(span 3, null);
-      flex: 1 1 20rem;
+      flex: 1 1 15rem;
       height: 15rem;
       margin: 2.5px;
       @include respond-at(590px) {
@@ -355,6 +336,7 @@
       @include grid-support {
         width: auto;
         height: auto;
+        margin: 0;
       }
     }
     div:last-child {
@@ -408,6 +390,7 @@
   .horizontal {
     @include grid(1 / span 2, 2);
     width: 100%;
+    height: 20rem;
     background: url('/app/site/media/images/climate-kic-350836.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -417,6 +400,7 @@
     }
     @include grid-support {
       width: auto;
+      height: auto;
     }
   }
   .classrooms {
@@ -470,6 +454,7 @@
     padding: 2.5em;
     @include respond-at(1100px) {
       @include grid(1 / span 3, 1);
+      width: 50%;
     }
     @include grid-support {
       width: auto;
@@ -478,7 +463,7 @@
   .module-sites {
     @include flexbox(wrap);
     @include grid(span 6, 2);
-    @include grid-template(repeat(3, 1fr), repeat(3, 17rem));
+    @include grid-template(repeat(3, 1fr), repeat(3, 17rem), 5px);
     width: 100%;
     align-self: center;
     @include respond-at(590px) {
@@ -490,13 +475,14 @@
     @include respond-at(1100px) {
       @include grid(4 / span 7, 1);
       @include grid-template(repeat(3, 1fr), minmax(20rem, 1fr));
+      width: 50%;
     }
     @include grid-support {
       width: auto;
     }
     .regular {
       @include grid(span 3, null);
-      flex: 1 1 20rem;
+      flex: 1 1 15rem;
       height: 15rem;
       margin: 2.5px;
       @include respond-at(590px) {
