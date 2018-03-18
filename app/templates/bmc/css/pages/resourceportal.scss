@@ -1,48 +1,7 @@
-//Color variables
-$green: #84bf41;
-$dark-blue: #2E2D4D;
-$teal: #007991;
-$pink: #cb48b7;
-$med-blue: #5f5980;
-$med-gray: #9B9B9B;
-$light-gray: #F1F2F2;
-$orange: #cca231;
-$black: #000;
-$white: #fff;
+@import 'variables.scss';
+@import 'mixins.scss';
 
-// .body {
-//   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
-// }
-// h1, h2, h3, h4, h5, h6 {
-//   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-// }
-// .group-php-page {
-//   display: grid;
-//   grid-template-columns: repeat(4, [col] 1fr);
-//   grid-template-rows: repeat(9, [row] auto);
-// }
-.content {
-  display: grid;
-  grid-template-columns: repeat(4, [col] 1fr);
-  grid-template-rows: repeat(5, [row] auto);
-}
-.link {
-  text-transform: uppercase;
-  a {
-    color: $white;
-    padding: .25em .75em;
-    border: 1px solid $white;
-  }
-  &:active {
-    color: $white;
-  }
-  &:visited {
-    color: $white;
-  }
-  &:hover {
-    color: $orange;
-  }
-}
+
 .link-anchor {
   color: inherit;
   &:hover {
@@ -65,33 +24,52 @@ $white: #fff;
   }
 }
 
+.wrapper {
+  @include grid-template(repeat(4, [col] 1fr), repeat(6, [row] auto));
+}
+
 //Feature
 .feature {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  grid-column: col / span 4;
-  grid-row: row;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-  grid-auto-rows: 320px;
-  grid-gap: 5px;
-  .featured-product {
-    width: 175px;
-    height: 320px;
-    margin: 5px;
-    background-color: #D8D8D8;
-    border: 1px solid #979797;
+  @include grid(col / span 4, row);
+  .module-feature {
+    @include flexbox(wrap);
+    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
+    grid-auto-rows: 300px;
+    justify-content: center;
   }
+  .resource-img {
+      @extend %showcase-img;
+    }
+    .resource {
+      position: relative;
+      flex: 1 1 10rem;
+      height: 15rem;
+      margin: 2.5px;
+      .resource-tag {
+        @include showcase-tag($dark-blue, $white);
+      }
+      .resource-title {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        a {
+          @include showcase-header(1em, 1, 2);
+        }
+      }
+      @include grid-support {
+        width: auto;
+        height: auto;
+        margin: 0;
+      }
+    }
 }
 
 //search
 .search-wrapper {
-  grid-column: col / span 4;
-  grid-row: row 2;
+  @include grid(col / span 4, row 2);
   justify-content: center;
   text-align: center;
-  padding: 30px 0;
+  padding: 2.5em;
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
   }
@@ -106,47 +84,64 @@ $white: #fff;
 
 //Discover
 .discover {
-  display: flex;
-  flex-wrap: wrap;
-  grid-column: col / span 4;
-  grid-row: row 3;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  grid-gap: 10px;
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 3);
+  @include grid-template(repeat(3, 1fr), repeat(4, auto), 10px);
+  justify-content: center;
   padding: 30px;
   h2 {
-    grid-column: 1 / span 3;
+    @include grid(1 / span 3, null);
     width: 100%;
+    @include grid-support {
+      width: auto;
+    }
   }
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
   }
+  @include respond-at(800px) {
+    @include grid-template(null, repeat(2, auto));
+  }
 }
 .resources {
-  width: 30%;
+  @include grid(span 3, null);
+  width: 100%;
+  // width: 30%;
   padding: 10px;
-  p {
-    border-left: 3px solid $green;
-    padding-left: 10px;
+  h4 {
+    position: relative;
+    padding-bottom: 1em;
+    border-bottom: 1px solid $dark-blue;
+    &:after {
+      content: '';
+      width: 65%;
+      height: 1.1px;
+      background-color: $white;
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+    }
+  }
+  @include respond-at(800px) {
+    @include grid(span 1, null);
+  }
+  @include grid-support {
+    width: auto;
   }
 }
 
 //OER and Resources
 #one {
-  grid-column: col / span 4;
-  grid-row: row 4;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, auto);
+  @include grid(col / span 4, row 4);
+  // @include grid-template(repeat(4, 1fr), repeat(3, minmax(20rem, auto)));
+  @include grid-template(repeat(4, 1fr), repeat(3, auto));
+  @include bcg-img('/app/site/media/images/pexels-photo-590493.jpg');
 }
 .resource-oer {
-  grid-column: 1 / span 4;
-  grid-row: 1;
+  @include flexbox;
+  @include grid(1 / span 4, 1);
   .oer {
-    background: url('/app/site/media/images/patrick-tomasso-71909.jpg');
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url('/app/site/media/images/patrick-tomasso-71909.jpg');
-    background-size: 200%;
+    align-self: center;
     color: $white;
     h2 {
       color: $white;
@@ -156,286 +151,227 @@ $white: #fff;
   }
 }
 .resource-fmn {
-  display: flex;
+  @include flexbox(wrap);
+  @include grid(1 / span 4, 2);
+  @include grid-template(repeat(4, 1fr), repeat(2, auto));
   flex: 1;
-  grid-column: 1 / span 4;
-  grid-row: 2;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  .featured-container {
-    display: flex;
-    flex-wrap: wrap;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  .module-fmn {
+    @include flexbox(wrap);
+    @include grid(1 / span 4, 2);
+    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
+    grid-auto-rows: 17rem;
     justify-content: center;
-    width: 50%;
-    grid-column: 1 / span 2;
+    width: 100%;
     padding: 1em;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-    grid-auto-rows: 320px;
-    grid-gap: 5px;
     align-self: center;
-    .featured-product {
-      width: 175px;
-      height: 320px;
-      margin: 5px;
-      background-color: #D8D8D8;
-      border: 1px solid #979797;
+    @include respond-at(401px) {
+      div:last-child {
+        @include grid(span 2, null);
+      }
+    }
+    @include respond-at(581px) {
+      div:last-child {
+        @include grid(span 1, null);
+      }
+    }
+    @include respond-at(901px) {
+      @include grid(1 / span 2, 1);
+      width: 50%;
+      div:last-child {
+        @include grid(span 2, null);
+      }
+    }
+    @include respond-at(1146px) {
+      div:last-child {
+        @include grid(span 1, null);
+      }
+    }
+    @include grid-support {
+      width: auto;
     }
   }
+    .resource-img {
+        @extend %showcase-img;
+      }
+      .resource {
+        position: relative;
+        flex: 1 1 10rem;
+        height: 15rem;
+        margin: 2.5px;
+        .resource-tag {
+          @include showcase-tag($dark-blue, $white);
+        }
+        .resource-title {
+          position: absolute;
+          bottom: 0;
+          padding: 10px;
+          a {
+            @include showcase-header(1em, 1, 2);
+          }
+        }
+        @include grid-support {
+          height: auto;
+        }
+      }
   .fmn {
-    width: 50%;
+    @include grid(1 / span 4, 1);
+    width: 100%;
     padding: 2.5em;
-    background-color: $dark-blue;
-    color: $white;
-    grid-column: 3 / span 2;
-    h2 {
-      color: $white;
+    align-self: center;
+    @include respond-at(901px) {
+      @include grid(3 / span 2, 1);
     }
+  }
+  @include respond-at(901px) {
+    @include grid(null, 1fr);
+    width: 50%;
+  }
+  @include grid-support {
+    width: auto;
   }
 }
 .resource-partner {
-  display: flex;
-  flex: 1;
-  grid-column: 1 / span 4;
-  grid-row: 3;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  @extend .resource-fmn;
+  @include grid(1/ span 4, 3);
   .partner {
-    width: 50%;
-    grid-column: 1 / span 2;
-    background-color: $dark-blue;
-    color: $white;
-    padding: 2.5em;
-    h2 {
-      color: $white;
+    @extend .fmn;
+    @include respond-at(901px) {
+      @include grid(1 / span 2, 1);
     }
   }
-  .featured-container {
-    width: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    grid-column: 3 / span 2;
-    padding: 1em;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-    grid-auto-rows: 320px;
-    grid-gap: 5px;
-    align-self: center;
-    .featured-product {
-      width: 175px;
-      height: 320px;
-      margin: 5px;
-      background-color: #D8D8D8;
-      border: 1px solid #979797;
+  .module-partner {
+    @extend .module-fmn;
+    @include respond-at(901px) {
+      @include grid(3 / span 2, 1);
+    }
+  }
+  .browse {
+    @include grid(1 / span 4, null);
+    text-align: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($white);
+      display: inline-block;
+      margin: 1em;
     }
   }
 }
 
 //Collections
 #two {
-  display: flex;
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 5);
+  @include grid-template(repeat(2, 1fr), repeat(2, auto));
   flex: 1;
-  grid-column: col / span 4;
-  grid-row: row 5;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   .big {
-    width: 50%;
-    background-color: #D8D8D8;
-    border: 1px solid #979797;
+    @include grid(span 2, 2);
+    width: 100%;
+    img {
+      display: block;
+      width: 30rem;
+      margin: 0 auto;
+    }
+    @include respond-at(901px) {
+      @include grid(span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+      height: auto;
+    }
   }
   .collections {
-    width: 50%;
+    @include grid(span 2, 1);
+    width: 100%;
     padding: 2.5em;
-    background-color: $green;
-    color: $white;
-    h2 {
-      color: $white;
+    align-self: center;
+    .link {
+      @include buttons($green);
+      margin-top: 3em;
     }
+    @include respond-at(901px) {
+      @include grid(span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include respond-at(901px) {
+    @include grid-template(null, 1fr);
   }
 }
 
 //Software
 #three {
-  display: flex;
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 6);
+  @include grid-template(repeat(2, 1fr), repeat(2, auto));
+  @include bcg($med-blue, $white);
   flex: 1;
-  grid-column: col / span 4;
-  grid-row: row 6;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  .big {
-    width: 50%;
-    background-color: #D8D8D8;
-    border: 1px solid #979797;
+  h2 {
+    color: $white;
   }
   .software {
-    width: 50%;
+    @include grid(span 2, 1);
+    width: 100%;
+    text-align: center;
+    align-self: center;
     padding: 2.5em;
-    background-color: $med-blue;
-    color: $white;
-    h2 {
-      color: $white;
+    .link {
+      @include buttons($white);
+      margin-top: 3em;
+    }
+    @include respond-at(901px) {
+      @include grid(span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
     }
   }
   .software-logos {
-    width: 50%;
+    @include flexbox(wrap);
+    @include grid(span 2, 2);
+    @include grid-template(repeat(auto-fit, minmax(100px, 1fr)), null, 5px);
+    grid-auto-rows: 125px;
+    width: 100%;
     padding: 2.5em;
-    display: flex;
-    flex-wrap: wrap;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    grid-auto-rows: 50px;
-    grid-gap: 5px;
     justify-items: center;
     align-self: center;
     text-align: center;
-    h6 {
-      width: 100px;
-      height: 50px;
-      align-self: center;
-      margin: 0;
-      color: $med-gray;
-    }
-  }
-}
-@media only screen and (min-width: 320px) and (max-width: 900px) {
-  .discover {
-    grid-template-rows: repeat(4, 1fr);
-    justify-content: center;
-    .resources {
-      width: 100%;
-      grid-column: span 3;
-    }
-  }
-  #one {
-    .resource-fmn {
-      flex-wrap: wrap;
-      grid-template-rows: repeat(2, 1fr);
-      .fmn {
-        width: 100%;
-        order: -1;
-        grid-column: 1 / span 4;
-        grid-row: 1;
+    .logo-wrap {
+      img {
+        height: 65%;
+        object-fit: scale-down;
       }
-      .featured-container {
-        width: 100%;
-        grid-column: 1 / span 4;
-        grid-row: 2;
-      }
-    }
-    .resource-partner {
-      flex-wrap: wrap;
-      grid-template-rows: repeat(2, 1fr);
-      .partner {
-        width: 100%;
-        order: -1;
-        grid-column: 1 / span 4;
-        grid-row: 1;
-      }
-      .featured-container {
-        width: 100%;
-        grid-column: 1 / span 4;
-        grid-row: 2;
-      }
-    }
-  }
-  #two {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .collections {
-      width: 100%;
-      grid-column: 1 / span 4;
-      grid-row: 1;
-    }
-    .big {
-      width: 100%;
-      height: 250px;
-      order: 1;
-      grid-column: 1 / span 4;
-      grid-row: 2;
-    }
-  }
-  #three {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .software {
-      width: 100%;
-      grid-column: 1 / span 4;
-      grid-row: 1;
-    }
-    .software-logos {
-      width: 100%;
-      grid-column: 1 / span 4;
-      grid-row: 2;
-    }
-  }
-}
-//Reset widths if css grid is supported
-@supports (display:grid) {
-  .feature {
-    .featured-product {
-      width: auto;
-      height: auto;
-      margin: 0;
-    }
-  }
-  .discover {
-    h2 {
-      width: auto;
-    }
-    .resources {
-      width: auto;
-    }
-  }
-  #one {
-    .resource-fmn {
-      .fmn {
-        width: auto;
-      }
-      .featured-container {
-        width: auto;
-        .featured-product {
-          width: auto;
-          height: auto;
-          margin: 0;
-        }
-      }
-    }
-    .resource-partner {
-      .partner {
-        width: auto;
-      }
-      .featured-container {
-        width: auto;
-        .featured-product {
-          width: auto;
-          height: auto;
-          margin: 0;
-        }
-      }
-    }
-  }
-
-  #two {
-    .big {
-      width: auto;
-      height: auto;
-    }
-    .collections {
-      width: auto;
-    }
-  }
-  #three {
-    .software {
-      width: auto;
-    }
-    .software-logos {
-      width: auto;
       h6 {
-        width: auto;
-        height: auto;
+        color: $light-gray;
+        padding-top: .5em;
+        a {
+          color: $light-gray;
+          &:visited {
+            color: $light-gray'
+          }
+          &:hover {
+            color: $light-gray'
+          }
+        }
       }
     }
+    @include respond-at(901px) {
+      @include grid(span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include respond-at(901px) {
+    @include grid-template(null, 1fr);
   }
 }
