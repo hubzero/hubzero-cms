@@ -74,232 +74,45 @@ if ($this->row->id) {
 
 $time = $this->row->attribs->get('timeof', '');
 $time = strtotime($time) === false ? null : $time;
+
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'resethits') {
-		if (confirm('<?php echo Lang::txt('COM_RESOURCES_CONFIRM_HITS_RESET'); ?>')){
-			submitform(pressbutton);
-			return;
-		} else {
-			return;
-		}
-	}
-
-	if (pressbutton == 'resetrating') {
-		if (confirm('<?php echo Lang::txt('COM_RESOURCES_CONFIRM_RATINGS_RESET'); ?>')){
-			submitform(pressbutton);
-			return;
-		} else {
-			return;
-		}
-	}
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert('<?php echo Lang::txt('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
-	} else if (document.getElementById('type').value == "-1"){
-		alert('<?php echo Lang::txt('COM_RESOURCES_ERROR_MISSING_TYPE'); ?>');
-	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
-		submitform(pressbutton);
-	}
-}
-
-function doFileoptions()
-{
-	var fwindow = window.filer.window.imgManager;
-
-	if (fwindow) {
-		if (fwindow.document) {
-			var fform = fwindow.document.forms['filelist'];
-
-			if (fform) {
-				//var filepath = fform.elements['listdir'];
-				var slctdfiles = fform.slctdfile;
-				if (slctdfiles.length > 1) {
-					for (var i = 0; i < slctdfiles.length; i++)
-					{
-						if (slctdfiles[i].checked) {
-							var filepath = slctdfiles[i].value;
-						}
-					}
-				} else {
-					var filepath = slctdfiles.value;
-				}
-
-				box = document.adminForm.fileoptions;
-				act = box.options[box.selectedIndex].value;
-
-				//var selection = window.filer.document.forms[0].dirPath;
-				//var dir = selection.options[selection.selectedIndex].value;
-
-				if (act == '1') {
-					document.forms['adminForm'].elements['params[series_banner]'].value = '<?php echo $this->rconfig->get('uploadpath') . '/'; ?>' + filepath;
-				} else if (act == '2') {
-					//if (filepath) {
-					//document.forms['adminForm'].elements['path'].value = '<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath;
-					document.forms['adminForm'].elements['fields[path]'].value = filepath;
-					//}
-				} else if (act == '3') {
-					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-					content = content + '<p><img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" /></p>';
-					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
-				} else if (act == '4') {
-					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-					content = content + '<p><a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a></p>';
-					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
-				}
-			}
-		}
-	}
-}
-function popratings()
-{
-	window.open("<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1', false); ?>", 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
-	return false;
-}
-</script>
+<?php
+$this->view('_edit_script')
+	->set('rconfig', $this->rconfig)
+	->set('row', $this->row)
+	->display();
+?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
-
-		<?php if ($this->row->type->isForTools()) { ?>
-				<div class="input-wrap">
-					<p class="warning"><?php echo Lang::txt('COM_RESOURCES_WARNING_TOOLS_USE_PIPELINE'); ?></p>
-				</div>
-				<div class="input-wrap">
-					<label for="field-alias"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
-					<input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
-				</div>
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?>">
-					<label for="attrib-canonical"><?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL'); ?>:</label><br />
-					<input type="text" name="attrib[canonical]" id="attrib-canonical" maxlength="250" value="<?php echo $this->row->attribs->get('canonical', ''); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?></span>
-				</div>
-				<input type="hidden" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-				<input type="hidden" name="fields[type]" id="type" value="7" />
-		<?php } else { ?>
-
-				<div class="input-wrap">
-					<label for="field-title"><?php echo Lang::txt('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-				</div>
-
-				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_RESOURCES_FIELD_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->lists['type']; ?>
-				</div>
-
-			<?php if ($this->row->standalone == 1) { ?>
-				<div class="input-wrap">
-					<label for="field-alias"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
-					<input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
-				</div>
-
-				<div class="input-wrap">
-					<label for="field-license"><?php echo Lang::txt('COM_RESOURCES_FIELD_LICENSE'); ?>:</label><br />
-					<select name="fields[license]" id="field-license" onchange="this.form.submit();">
-						<option value=""<?php echo ($this->row->get('license', $this->row->params->get('license')) == '') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_NONE'); ?></option>
-						<?php foreach ($this->licenses as $license) { ?>
-							<option value="<?php echo $license->get('name'); ?>"<?php echo ($this->row->get('license', $this->row->params->get('license')) == $license->get('name')) ? 'selected="selected"' : ''; ?>><?php echo $license->get('title'); ?></option>
-						<?php } ?>
-					</select>
-				</div>
-
-				<div class="grid">
-					<div class="col span6">
-						<div class="input-wrap">
-							<label for="attrib-location"><?php echo Lang::txt('COM_RESOURCES_FIELD_LOCATION'); ?>:</label><br />
-							<input type="text" name="attrib[location]" id="attrib-location" maxlength="250" value="<?php echo $this->row->attribs->get('location', ''); ?>" />
-						</div>
-					</div>
-					<div class="col span6">
-						<div class="input-wrap">
-							<label for="attrib-timeof"><?php echo Lang::txt('COM_RESOURCES_FIELD_TIME'); ?>:</label><br />
-							<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? Date::of($time)->toLocal('Y-m-d H:i:s') : ''; ?>" placeholder="YYYY-MM-DD hh:mm:ss" />
-						</div>
-					</div>
-				</div>
-
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?>">
-					<label for="attrib-canonical"><?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL'); ?>:</label><br />
-					<input type="text" name="attrib[canonical]" id="attrib-canonical" maxlength="250" value="<?php echo $this->row->attribs->get('canonical', ''); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?></span>
-				</div>
-			<?php } else { ?>
-				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_RESOURCES_FIELD_LOGICAL_TYPE'); ?>:</label><br />
-					<?php echo $this->lists['logical_type']; ?>
-					<input type="hidden" name="fields[alias]" value="" />
-				</div>
-
-				<div class="input-wrap">
-					<label for="field-path"><?php echo Lang::txt('COM_RESOURCES_FIELD_PATH'); ?>:</label><br />
-					<input type="text" name="fields[path]" id="field-path" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->path)); ?>" />
-				</div>
-
-				<div class="input-wrap">
-					<label for="attrib[duration]"><?php echo Lang::txt('COM_RESOURCES_FIELD_DURATION'); ?>:</label><br />
-					<input type="text" name="attrib[duration]" id="attrib[duration]" maxlength="100" value="<?php echo $this->row->attribs->get('duration', ''); ?>" />
-				</div>
-
-				<div class="grid">
-					<div class="col span6">
-						<div class="input-wrap">
-							<label for="attrib[width]"><?php echo Lang::txt('COM_RESOURCES_FIELD_WIDTH'); ?>:</label><br />
-							<input type="text" name="attrib[width]" id="attrib[width]" maxlength="250" value="<?php echo $this->row->attribs->get('width', ''); ?>" />
-						</div>
-					</div>
-					<div class="col span6">
-						<div class="input-wrap">
-							<label for="attrib[height]"><?php echo Lang::txt('COM_RESOURCES_FIELD_HEIGHT'); ?>:</label><br />
-							<input type="text" name="attrib[height]" id="attrib[height]" maxlength="250" value="<?php echo $this->row->attribs->get('height', ''); ?>" />
-						</div>
-					</div>
-				</div>
-
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ATTRIBUTES_HINT'); ?>">
-					<label for="attrib[attributes]"><?php echo Lang::txt('COM_RESOURCES_FIELD_ATTRIBUTES'); ?>:</label><br />
-					<input type="text" name="attrib[attributes]" id="attrib[attributes]" maxlength="100" value="<?php echo $this->row->attribs->get('attributes', ''); ?>" /><br />
-					<span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_ATTRIBUTES_HINT'); ?></span>
-				</div>
-			<?php } ?>
-				<div class="input-wrap">
-					<label for="field-introtext"><?php echo Lang::txt('COM_RESOURCES_FIELD_INTRO_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php
-					echo $this->editor('fields[introtext]', $this->escape(stripslashes($this->row->introtext)), 45, 5, 'field-introtext');
-					?>
-				</div>
-				<div class="input-wrap">
-					<label for="field-fulltxt"><?php echo Lang::txt('COM_RESOURCES_FIELD_MAIN_TEXT'); ?>:</label><br />
-					<?php
-					echo $this->editor('fields[fulltxt]', $this->escape($this->row->description), 45, 15, 'field-fulltxt');
-					?>
-				</div>
-
-		<?php } ?>
+				<?php
+				if ($this->row->type->isForTools())
+				{
+					$this->view('_edit_tool_fields')
+						->set('row', $this->row)
+						->display();
+				}
+				else
+				{
+					$this->view('_edit_non_tool_fields')
+						->set('lists', $this->lists)
+						->set('row', $this->row)
+						->set('time', $time)
+						->display();
+				}
+				?>
 			</fieldset>
 
 		<?php if ($this->row->standalone == 1 && !$this->row->type->isForTools()) { ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('Custom fields'); ?></span></legend>
-
 				<div class="input-wrap" id="resource-custom-fields">
 					<?php
 					include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
-
 					$elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 					echo $elements->render();
 					?>
@@ -461,6 +274,8 @@ function popratings()
 				echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_TAGS'), 'tags-page');
 				?>
 				<textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
+				<?php echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_BADGES'), 'badges-page'); ?>
+				<textarea name="badges" id="badges" cols="35" rows="6"><?php echo $this->lists['badges']; ?></textarea>
 				<?php
 				echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 				echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
