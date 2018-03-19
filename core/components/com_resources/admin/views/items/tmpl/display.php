@@ -104,6 +104,8 @@ function submitbutton(pressbutton)
 					<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
 					<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
+
+				<label for="filter-license"><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE'); ?>:</label>
 				<select name="license" id="filter-license" onchange="this.form.submit();">
 					<option value="all"<?php echo ($this->filters['license'] == 'all') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
 					<?php foreach ($this->licenses as $license) { ?>
@@ -111,7 +113,7 @@ function submitbutton(pressbutton)
 					<?php } ?>
 				</select>
 
-				<label for="filter-ype"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
+				<label for="filter-type"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
 				<select name="type" id="filter-type" onchange="this.form.submit();">
 					<option value=""><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'); ?></option>
 					<?php foreach ($this->types as $type) { ?>
