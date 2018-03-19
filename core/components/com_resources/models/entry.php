@@ -268,7 +268,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function license()
 	{
 		//return $this->oneToOne(__NAMESPACE__ . '\\License', 'license_id');
-		return License::oneByName($this->params->get('license'));
+		return License::oneByName($this->get('license', $this->params->get('license')));
 	}
 
 	/**

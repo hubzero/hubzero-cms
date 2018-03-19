@@ -136,11 +136,6 @@ class Items extends AdminController
 		$query = Entry::all()
 			->whereEquals('standalone', 1);
 
-		$licenses = array();
-		foreach ($query as $row) {
-			$licenses[] = $row->license;
-		}
-
 		if ($filters['search'])
 		{
 			if (is_numeric($filters['search']))
@@ -179,6 +174,10 @@ class Items extends AdminController
 
 		// Get major types
 		$types = Type::getMajorTypes();
+
+		$licenses = License::all()
+			->order('text', 'asc')
+			->rows();
 
 		// Output the HTML
 		$this->view
