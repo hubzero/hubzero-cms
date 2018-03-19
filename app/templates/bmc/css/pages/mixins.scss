@@ -36,6 +36,12 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+@mixin bcg-plain-img($url) {
+  background: url($url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 @mixin bcg($color, $text-color) {
   background-color: $color;
   color: $text-color;
