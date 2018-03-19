@@ -11,18 +11,6 @@
     color: inherit;
   }
 }
-.white {
-  color: $white;
-  a:active {
-    color: $white;
-  }
-  a:visited {
-    color: $white;
-  }
-  a:hover {
-    color: $orange;
-  }
-}
 
 .wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(6, [row] auto));
@@ -106,7 +94,6 @@
 .resources {
   @include grid(span 3, null);
   width: 100%;
-  // width: 30%;
   padding: 10px;
   h4 {
     position: relative;
@@ -124,6 +111,7 @@
   }
   @include respond-at(800px) {
     @include grid(span 1, null);
+    width: 30%;
   }
   @include grid-support {
     width: auto;
@@ -133,7 +121,6 @@
 //OER and Resources
 #one {
   @include grid(col / span 4, row 4);
-  // @include grid-template(repeat(4, 1fr), repeat(3, minmax(20rem, auto)));
   @include grid-template(repeat(4, 1fr), repeat(3, auto));
   @include bcg-img('/app/site/media/images/pexels-photo-590493.jpg');
 }
@@ -222,13 +209,18 @@
     width: 100%;
     padding: 2.5em;
     align-self: center;
+    order: -1;
     @include respond-at(901px) {
       @include grid(3 / span 2, 1);
+      order: 1;
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
     }
   }
   @include respond-at(901px) {
     @include grid(null, 1fr);
-    width: 50%;
   }
   @include grid-support {
     width: auto;
@@ -241,6 +233,7 @@
     @extend .fmn;
     @include respond-at(901px) {
       @include grid(1 / span 2, 1);
+      order: -1;
     }
   }
   .module-partner {
@@ -253,6 +246,7 @@
     @include grid(1 / span 4, null);
     text-align: center;
     padding: 2.5em;
+    margin: 0 auto;
     .link {
       @include buttons($white);
       display: inline-block;
@@ -289,12 +283,14 @@
     width: 100%;
     padding: 2.5em;
     align-self: center;
+    order: -1;
     .link {
       @include buttons($green);
       margin-top: 3em;
     }
     @include respond-at(901px) {
       @include grid(span 1, 1);
+      order: 1;
       width: 50%;
     }
     @include grid-support {
@@ -342,9 +338,13 @@
     width: 100%;
     padding: 2.5em;
     justify-items: center;
+    justify-content: center;
     align-self: center;
     text-align: center;
     .logo-wrap {
+      width: 8rem;
+      height: 8rem;
+      padding: 5px;
       img {
         height: 65%;
         object-fit: scale-down;
