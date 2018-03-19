@@ -107,7 +107,7 @@ function submitbutton(pressbutton)
 				<select name="license" id="filter-license" onchange="this.form.submit();">
 					<option value="all"<?php echo ($this->filters['license'] == 'all') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
 					<?php foreach ($this->licenses as $license) { ?>
-					<option value="<?php echo $license; ?>"<?php echo ($this->filters['license'] == $license) ? 'selected="selected"' : ''; ?>><?php echo $license; ?></option>
+						<option value="<?php echo $license->get('name'); ?>"<?php echo ($this->filters['license'] == $license->get('name')) ? 'selected="selected"' : ''; ?>><?php echo $license->get('title'); ?></option>
 					<?php } ?>
 				</select>
 
@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 
 		foreach ($this->rows as $row)
 		{
-			$license = $row->license;
+			$license = $row->get('license');
 
 			// Build some publishing info
 			$info  = Lang::txt('COM_RESOURCES_CREATED') . ': ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
