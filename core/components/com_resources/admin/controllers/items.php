@@ -776,6 +776,10 @@ class Items extends AdminController
 			$lists['authors'] = $authorslist->loadTemplate();
 		}
 
+		$licenses = License::all()
+			->order('text', 'asc')
+			->rows();
+
 		// Output the HTML
 		$this->view
 			->set('row', $row)
@@ -785,6 +789,7 @@ class Items extends AdminController
 			->set('rconfig', $this->config)
 			->set('params', $params)
 			->set('return', $return)
+			->set('licenses', $licenses)
 			->setLayout('edit')
 			->setErrors($this->getErrors())
 			->display();
