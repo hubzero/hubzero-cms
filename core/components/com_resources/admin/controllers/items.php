@@ -32,6 +32,8 @@
 
 namespace Components\Resources\Admin\Controllers;
 
+require_once Component::path('com_resources') . '/helpers/badges.php';
+
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
@@ -40,6 +42,7 @@ use Components\Resources\Models\Author;
 use Components\Resources\Models\License;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
+use Components\Resources\Helpers\Badges;
 use Components\Resources\Helpers\Html;
 use Components\Resources\Helpers\Helper;
 use Hubzero\Component\AdminController;
@@ -751,6 +754,13 @@ class Items extends AdminController
 				// Get the tags on this item
 				$tagger = new Tags($row->id);
 				$lists['tags'] = $tagger->render('string');
+
+				// Get the badges on this item
+				$badges = new Badges([
+					'scope' => 'resources',
+					'scopeId' => $row->id
+				]);
+				$lists['badges'] = $badges->render('string');
 			}
 
 			// Build <select> of contributors
@@ -986,6 +996,16 @@ class Items extends AdminController
 		// Save the tags
 		$rt = new Tags($row->get('id'));
 		$rt->setTags($tags, User::get('id'), 1, 1);
+
+		// Incoming badges
+		$badgeString = Request::getVar('badges', '', 'post');
+
+		// Save the badges
+		$badges = new Badges([
+			'scope' => 'resources',
+			'scopeId' => $row->get('id')
+		]);
+		$badges->updateBadges($badgeString, User::get('id'), 1, 1);
 
 		// Incoming authors
 		if (!$row->isTool())
