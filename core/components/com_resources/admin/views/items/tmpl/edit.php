@@ -99,6 +99,7 @@ $this->view('_edit_script')
 				else
 				{
 					$this->view('_edit_non_tool_fields')
+						->set('licenses', $this->licenses)
 						->set('lists', $this->lists)
 						->set('row', $this->row)
 						->set('time', $time)
