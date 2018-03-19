@@ -18,6 +18,16 @@
 	<input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
 </div>
 
+<div class="input-wrap">
+	<label for="field-license"><?php echo Lang::txt('COM_RESOURCES_FIELD_LICENSE'); ?>:</label><br />
+	<select name="fields[license]" id="field-license" onchange="this.form.submit();">
+		<option value=""<?php echo ($this->row->get('license', $this->row->params->get('license')) == '') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_NONE'); ?></option>
+		<?php foreach ($this->licenses as $license) { ?>
+			<option value="<?php echo $license->get('name'); ?>"<?php echo ($this->row->get('license', $this->row->params->get('license')) == $license->get('name')) ? 'selected="selected"' : ''; ?>><?php echo $license->get('title'); ?></option>
+		<?php } ?>
+	</select>
+</div>
+
 <div class="grid">
 	<div class="col span6">
 		<div class="input-wrap">
@@ -88,4 +98,3 @@
 	echo $this->editor('fields[fulltxt]', $this->escape($this->row->description), 45, 15, 'field-fulltxt');
 	?>
 </div>
-
