@@ -12,60 +12,40 @@
     flex: 1 1 20rem;
     height: 15rem;
     margin: 2.5px;
+    @include grid-support {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
   }
   .horizontal {
-    @include grid(span 2, null);
-    flex: 1 1 20rem;
-    height: 15rem;
-    margin: 2.5px;
+    @extend .big;
+    @include grid(span 2, span 1);
     img {
-      height: 200px;
-    }
-  }
-  .regular {
-    flex: 1 1 20rem;
-    height: 15rem;
-    margin: 2.5px;
-    img {
-      height: 200px;
-    }
-  }
-  .billboard-image {
-    @extend %showcase-img;
-  }
-  .billboard {
-    position: relative;
-    .billboard-tag {
-      @include showcase-tag($green, $white);
-    }
-    .billboard-header {
-      position: absolute;
-      bottom: 0;
-      padding: 10px;
-      a {
-        @include showcase-header(1em, 1, 2);
+      @include grid-support {
+        height: 200px
       }
     }
   }
+.regular {
+  @extend .horizontal;
+  @include grid(span 1, null);
+  }
 }
-
-//Reset widths if css grid is supported & reset <p> margins
-@supports (display:grid) {
-  .module-news {
-    .big {
-      width: auto;
-      height: auto;
-      margin: 0;
-    }
-    .regular {
-      width: auto;
-      height: auto;
-      margin: 0;
-    }
-    .horizontal {
-      width: auto;
-      height: auto;
-      margin: 0;
+.billboard-image {
+  @extend %showcase-img;
+}
+.billboard {
+  position: relative;
+  .billboard-tag {
+    @include showcase-tag($green, $white);
+  }
+  .billboard-header {
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    a {
+      @include showcase-header(1em, 1, 2);
     }
   }
 }

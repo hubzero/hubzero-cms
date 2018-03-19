@@ -1,15 +1,15 @@
-.module-news .billboard-image {
+.billboard-image {
   width: 100%;
   height: 100%;
 }
 
-.module-news .billboard-image img {
+.billboard-image img {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.module-news .billboard-image::after {
+.billboard-image::after {
   content: '';
   display: block;
   position: absolute;
@@ -31,7 +31,7 @@
   grid-auto-flow: dense;
 }
 
-.module-news .big {
+.module-news .big, .module-news .horizontal, .module-news .regular {
   grid-column: span 2;
   grid-row: span 2;
   flex: 1 1 20rem;
@@ -39,32 +39,34 @@
   margin: 2.5px;
 }
 
-.module-news .horizontal {
-  grid-column: span 2;
-  flex: 1 1 20rem;
-  height: 15rem;
-  margin: 2.5px;
+@supports (display: grid) {
+  .module-news .big, .module-news .horizontal, .module-news .regular {
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
 }
 
-.module-news .horizontal img {
-  height: 200px;
+.module-news .horizontal, .module-news .regular {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+@supports (display: grid) {
+  .module-news .horizontal img, .module-news .regular img {
+    height: 200px;
+  }
 }
 
 .module-news .regular {
-  flex: 1 1 20rem;
-  height: 15rem;
-  margin: 2.5px;
+  grid-column: span 1;
 }
 
-.module-news .regular img {
-  height: 200px;
-}
-
-.module-news .billboard {
+.billboard {
   position: relative;
 }
 
-.module-news .billboard .billboard-tag {
+.billboard .billboard-tag {
   position: absolute;
   bottom: 50px;
   text-transform: uppercase;
@@ -74,17 +76,17 @@
   background-color: #84bf41;
 }
 
-.module-news .billboard .billboard-tag a {
+.billboard .billboard-tag a {
   color: #fff;
 }
 
-.module-news .billboard .billboard-header {
+.billboard .billboard-header {
   position: absolute;
   bottom: 0;
   padding: 10px;
 }
 
-.module-news .billboard .billboard-header a {
+.billboard .billboard-header a {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
@@ -98,22 +100,4 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: #fff;
-}
-
-@supports (display: grid) {
-  .module-news .big {
-    width: auto;
-    height: auto;
-    margin: 0;
-  }
-  .module-news .regular {
-    width: auto;
-    height: auto;
-    margin: 0;
-  }
-  .module-news .horizontal {
-    width: auto;
-    height: auto;
-    margin: 0;
-  }
 }
