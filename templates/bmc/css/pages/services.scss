@@ -14,8 +14,7 @@
   }
 }
 .link {
-  text-transform: uppercase;
-  margin-top: 3rem;
+  margin-top: 3em;
 }
 
 //Header
@@ -28,11 +27,14 @@
   color: $white;
   text-align: center;
   .intro {
-    @include grid(2 / span 2, null);
+    @include grid(1 / span 4, null);
     padding: 2.5em;
     align-self: center;
     .link {
       @include buttons($white);
+    }
+    @include respond-at(901px) {
+      @include grid(2 / span 2, null);
     }
   }
   h2 {
@@ -47,11 +49,13 @@
 }
 .services {
   @include flexbox(wrap);
-  @include grid-template(repeat(auto-fit, minmax(425px, 1fr)), null, 10px);
-  padding: 2.5em;
+  @include grid-template(repeat(auto-fit, minmax(20rem, 1fr)), null, 10px);
+  @include respond-at(901px) {
+    padding: 2.5em;
+  }
 }
 .service {
-  flex: 1 1 250px;
+  flex: 1 1 20rem;
   padding: 10px;
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
@@ -72,9 +76,9 @@
 
 //Community Building
 #one {
-  @include flexbox(wrap);
+  @include flexbox;
   @include grid(col / span 4, row 3);
-  @include grid-template(repeat(3, 1fr), null);
+  @include grid-template(repeat(3, 1fr), 1fr);
   .community {
     width: 100%;
     @include grid(1 / span 3, null);
@@ -87,83 +91,96 @@
     }
     .link {
       @include buttons($white);
+      a {
+        display: block;
+        @include respond-at(670px) {
+          display: initial;
+        }
+      }
+    }
+    @include grid-support {
+      width: auto;
     }
   }
 }
 
 //Run a FMN
 #two {
-  @include flexbox;
+  @include flexbox(wrap);
   @include grid(col / span 4, row 4);
-  @include grid-template(repeat(2, 1fr), null);
+  @include grid-template(repeat(2, 1fr), repeat(2, 1fr));
   background-color: $teal;
   color: $white;
   .mentor {
-    width: 50%;
+    @include grid(span 2, 1);
+    width: 100%;
     padding: 2.5em;
     align-self: center;
     h2 {
       color: $white;
     }
+    @include respond-at(901px) {
+      @include grid(1 / span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
   }
   .big {
-    width: 50%;
-    background: url('/app/site/media/images/workplace-1245776_1920.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    @include grid(span 2, 2);
+    @include bcg-plain-img('/app/site/media/images/workplace-1245776_1920.jpg');
+    width: 100%;
+    height: 20rem;
+    @include respond-at(901px) {
+      @include grid(2 / span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto !important;
+      height: auto !important;
+    }
+  }
+  @include respond-at(901px) {
+    @include grid-template(null, 1fr);
   }
 }
 
 //Run a Workshop
 #three {
-  display: flex;
-  grid-column: col / span 4;
-  grid-row: row 5;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  @extend #two;
+  @include grid(col / span 4, row 5);
   background-color: $pink;
-  color: $white;
   .workshop {
-    width: 50%;
-    @include grid(3 / span 2, null);
-    padding: 2.5em;
-    align-self: center;
-    h2 {
-      color: $white;
+    @extend .mentor;
+    order: -1;
+    @include respond-at(901px) {
+      @include grid(2 / span 1, 1);
+      order: 1;
     }
   }
   .big {
-    width: 50%;
-    grid-column: span 2;
-    background: url('/app/site/media/images/javier-quesada-222120.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    @extend .big;
+    @include bcg-plain-img('/app/site/media/images/javier-quesada-222120.jpg');
+    height: 20rem;
+    @include respond-at(901px) {
+      @include grid(1 / span 1, 1);
+    }
   }
 }
 
 //Curate Your Own Resources
 #four {
-  @include flexbox;
+  @extend #two;
   @include grid(col / span 4, row 6);
-  @include grid-template(repeat(2, 1fr), null);
   background-color: $dark-blue;
-  color: $white;
   .big {
-    width: 50%;
-    background: url('/app/site/media/images/pexels-photo-392018.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    @extend .big;
+    @include bcg-plain-img('/app/site/media/images/pexels-photo-392018.jpg');
   }
   .curate {
-    width: 50%;
-    padding: 2.5em;
-    align-self: center;
-    h2 {
-      color: $white;
-    }
+    @extend .mentor;
+    order: -1;
   }
 }
 
@@ -177,175 +194,9 @@
     @include grid(2 / span 2, null);
     align-self: center;
     text-align: center;
+    margin: 0 auto;
     .link {
       @include buttons($green);
-    }
-  }
-}
-@media only screen and (min-width: 320px) and (max-width: 589px) {
-  #one {
-    flex-wrap: wrap;
-    grid-template-rows: 1fr 2fr;
-    .community {
-      width: 100%;
-      grid-column: 1 / span 4;
-      grid-row: 1;
-    }
-    .module-community {
-      grid-column: 1 / span 4;
-      grid-template-rows: repeat(3, 15rem);
-    }
-    .regular {
-      width: 100%;
-      grid-column: span 4;
-    }
-  }
-  #two {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .mentor {
-      width: 100%;
-      grid-column: 1 / span 4;
-    }
-    .big {
-      width: 100%;
-      height: 20rem;
-      grid-column: span 4;
-    }
-  }
-  #three {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .workshop {
-      width: 100%;
-      order: -1;
-      grid-column: 1 / span 4;
-      grid-row: 1;
-    }
-    .big {
-      width: 100%;
-      height: 20rem;
-      grid-column: span 4;
-    }
-  }
-  #four {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .curate {
-      width: 100%;
-      grid-column: 1 / span 4;
-    }
-    .big {
-      width: 100%;
-      height: 20rem;
-      grid-column: span 4;
-    }
-  }
-}
-@media only screen and (min-width: 590px) and (max-width: 900px) {
-  #one {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr 2fr;
-    .community {
-      grid-column: 1 / span 4;
-    }
-    .module-community {
-      grid-column: 1 span 4;
-      grid-template-rows: repeat(3, 15rem);
-      .regular {
-        grid-column: span 4;
-      }
-    }
-  }
-  #two {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .mentor {
-      width: 100%;
-      grid-column: 1 / span 4;
-    }
-    .big {
-      width: 100%;
-      height: 20rem;
-      grid-column: span 4;
-    }
-  }
-  #three {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .workshop {
-      width: 100%;
-      order: -1;
-      grid-column: 1 / span 4;
-      grid-row: 1;
-    }
-    .big {
-      width: 100%;
-      height: 20rem;
-      grid-column: span 4;
-      grid-row: 2;
-    }
-  }
-  #four {
-    flex-wrap: wrap;
-    grid-template-rows: repeat(2, 1fr);
-    .curate {
-      width: 100%;
-      grid-column: 1 / span 4;
-    }
-    .big {
-      width: 100%;
-      height: 20rem;
-      grid-column: span 4;
-    }
-  }
-}
-//Reset widths if css grid is supported
-@supports (display:grid) {
-  .services {
-    .service {
-      width: auto;
-    }
-  }
-  #one {
-    .community {
-      width: auto;
-    }
-    .module-community {
-      .group {
-        height: auto;
-      }
-    }
-    .regular {
-      width: auto;
-      height: auto;
-    }
-  }
-  #two {
-    .mentor {
-      width: auto;
-    }
-    .big {
-      width: auto;
-      height: auto;
-    }
-  }
-  #three {
-    .workshop {
-      width: auto;
-    }
-    .big {
-      width: auto;
-      height: auto;
-    }
-  }
-  #four {
-    .curate {
-      width: auto;
-    }
-    .big {
-      width: auto;
-      height: auto;
     }
   }
 }
