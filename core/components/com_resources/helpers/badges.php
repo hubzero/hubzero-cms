@@ -57,7 +57,7 @@ class Badges
 	 */
 	public function __construct($args = [])
 	{
-		$this->scope = $args['scope'];;
+		$this->scope = $args['scope'];
 		$this->scopeId = $args['scopeId'];
 		$this->_db = App::get('db');
 	}
@@ -241,7 +241,7 @@ class Badges
 		$badges = $this->all();
 		$allBadgesAs = [];
 
-		foreach($badges as $badge)
+		foreach ($badges as $badge)
 		{
 			$allBadgesAs[] = $badge->$attribute;
 		}
