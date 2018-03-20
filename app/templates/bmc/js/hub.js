@@ -168,7 +168,7 @@ if (!jq) {
 
 
 	TPL.init = function() {
-		$('body > .wrap > .content-panel a[href*="#"]')
+		$('body > .wrap > .content-panel.com_content a[href*="#"]')
 		// Remove links that don't actually link to anything
 		.not('[href="#"]')
 		.not('[href="#0"]')
