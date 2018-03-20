@@ -589,9 +589,6 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		// load all member preferences
-		//$this->database->setQuery("SELECT * from `#__xprofiles_dashboard_preferences`");
-		//$memberPreferences = $this->database->loadObjectList();
-
 		$memberPreferences = Plugins\Members\Dashboard\Models\Preference::all()
 			->ordered()
 			->rows();
@@ -662,13 +659,9 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			// encode params
 			$params = json_encode($params);
 
+			// update user params
 			$memberPreference->set('preferences', $params);
 			$memberPreference->save();
-
-			// update user params
-			/*$sql = "UPDATE `#__xprofiles_dashboard_preferences` SET `preferences`=" . $this->database->quote($params) . " WHERE `uidNumber`=" . $memberPreference->uidNumber;
-			$this->database->setQuery($sql);
-			$this->database->query();*/
 		}
 
 		// return message
@@ -686,9 +679,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	{
 		$query = "SELECT *
 		          FROM `#__modules` AS m
-		          WHERE position=" . $this->database->quote($position)  . "
+		          WHERE position=" . $this->database->quote($position) . "
 		          AND m.published=1
 		          AND m.client_id=0
+		          AND m.access IN (0, " . implode(',', User::getAuthorisedViewLevels()) . ")
 		          ORDER BY m.ordering";
 		$this->database->setQuery($query);
 		$modules = $this->database->loadObjectList('id');
