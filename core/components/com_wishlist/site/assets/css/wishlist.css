@@ -318,6 +318,9 @@
 		margin-left: 70px;
 		border-color: #FFFDEF;
 	}
+	.wish .entry-content {
+		background: #fff;
+	}
 /* Comments */
 	/* Header */
 	h3.comments-title {
