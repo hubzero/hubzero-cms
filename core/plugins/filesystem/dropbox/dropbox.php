@@ -29,6 +29,14 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient.php';
+
+use Plugins\Filesystem\Dropbox\DropboxOauthClient;
+use Srmklive\Dropbox\Adapter\DropboxAdapter;
+use Srmklive\Dropbox\Client\DropboxClient;
+use Hubzero\Utility\Arr;
+use Hubzero\Session;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -38,50 +46,60 @@ defined('_HZEXEC_') or die();
 class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Initializes the dropbox connection
+	 * Initializes the Dropbox connection
 	 *
-	 * @param   array   $params  Any connection params needed
-	 * @return  \League\Flysystem\Dropbox\DropboxAdapter
+	 * @param   array   $params  Client application data
+	 * @return  DropboxAdapter
 	 **/
 	public static function init($params = [])
 	{
-		// Get the params
-		$pparams = Plugin::params('filesystem', 'dropbox');
-
 		if (isset($params['app_token']))
 		{
-			$accessToken = $params['app_token'];
+			$accessToken = $params['app_token']->access_token;
 		}
 		else
 		{
-			$info = [
-				'key'    => isset($params['app_key']) ? $params['app_key'] : $pparams->get('app_key'),
-				'secret' => isset($params['app_secret']) ? $params['app_secret'] : $pparams->get('app_secret')
-			];
-
-			\Session::set('dropbox.app_key', $info['key']);
-			\Session::set('dropbox.app_secret', $info['secret']);
-			\Session::set('dropbox.connection_to_set_up', Request::getVar('connection', 0));
-
-			$appInfo          = \Dropbox\AppInfo::loadFromJson($info);
-			$clientIdentifier = 'hubzero-cms/2.0';
-			$redirectUri      = trim(Request::root(), '/') . '/developer/callback/dropboxAuthorize';
-			$csrfTokenStore   = new \Dropbox\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
-			$oauth            = new \Dropbox\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore);
-
-			// Redirect to dropbox
-			// We hide the return url in the state field...that's not exactly what
-			// it was intended for, but it does the trick
-			$return = (Request::getVar('return')) ? Request::getVar('return') : Request::current(true);
-			$return = base64_encode($return);
-			App::redirect($oauth->start($return));
+			self::_getAccessToken($params);
 		}
 
-		$app_secret = isset($params['app_secret']) ? $params['app_secret'] : $pparams->get('app_secret');
 		// Create the client
-		$client = new \Dropbox\Client($accessToken, $app_secret);
+		$client = new DropboxClient($accessToken);
 
 		// Return the adapter
-		return new \League\Flysystem\Dropbox\DropboxAdapter($client, (isset($params['subdir']) ? $params['subdir'] : null));
+		return new DropboxAdapter($client, Arr::getValue($params, 'subdir'));
 	}
+
+	/**
+	 * Retrieves Dropbox code used to get access token
+	 *
+	 * @param   array   $params  Client application data
+	 * @return  void
+	 **/
+	protected static function _getAccessToken($params)
+	{
+		$oauthClient = new DropboxOauthClient();
+		$authUrl = $oauthClient->getAuthorizationUrl();
+		$oauthState = $oauthClient->getState();
+
+		self::_setLocalOauthData($oauthState);
+
+		$oauthClient->getAuthorizationCode($authUrl);
+	}
+
+	/**
+	 * Sets OAuth-relevant data in local user session
+	 *
+	 * @param   array   $state  OAuth state
+	 * @return  void
+	 **/
+	protected static function _setLocalOauthData($state)
+	{
+		$connectionId = Request::getVar('connection', 0);
+		$projectsFilesUrl = Request::current();
+
+		Session::set('dropbox.connection_to_set_up', $connectionId);
+		Session::set('dropbox.local_origin_url', $projectsFilesUrl);
+		Session::set('dropbox.state', $state);
+	}
+
 }
