@@ -1,11 +1,32 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-/**
- * @package		Joomla.Administrator
- * @subpackage	com_media
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Media\Admin\Helpers;
@@ -13,28 +34,6 @@ namespace Components\Media\Admin\Helpers;
 class MediaHelper
 {
 	public static $extension = 'com_media';
-
-	/**
-	 * Checks if the file is an image
-	 * @param string The filename
-	 * @return boolean
-	 */
-	public static function isImage($fileName)
-	{
-		static $imageTypes = 'xcf|odg|gif|jpg|png|bmp';
-		return preg_match("/\.(?:$imageTypes)$/i", $fileName);
-	}
-
-	/**
-	 * Checks if the file is an image
-	 * @param string The filename
-	 * @return boolean
-	 */
-	public static function getTypeIcon($fileName)
-	{
-		// Get file extension
-		return strtolower(substr($fileName, strrpos($fileName, '.') + 1));
-	}
 
 	/**
 	 * Checks if the file can be uploaded
@@ -153,6 +152,12 @@ class MediaHelper
 		return true;
 	}
 
+	/**
+	 * Returns a quantifier based on the argument
+	 *
+	 * @param   int     Numeric size of a file
+	 * @return  string
+	 */
 	public static function parseSize($size)
 	{
 		if ($size < 1024) {
@@ -166,24 +171,38 @@ class MediaHelper
 		}
 	}
 
+	/**
+	 * Find new sizes for an image
+	 *
+	 * @param   int     Original width
+	 * @param   int     Original height
+	 * @param   int     Target size
+	 * @return  array
+	 */
 	public static function imageResize($width, $height, $target)
 	{
-		//takes the larger size of the width and height and applies the
-		//formula accordingly...this is so this script will work
-		//dynamically with any size image
+		// Take the larger size of the width and height and applies the
+		// formula accordingly...this is so this script will work
+		// dynamically with any size image
 		if ($width > $height) {
 			$percentage = ($target / $width);
 		} else {
 			$percentage = ($target / $height);
 		}
 
-		//gets the new value and applies the percentage, then rounds the value
+		// Get the new value, apply the percentage, and round the value
 		$width = round($width * $percentage);
 		$height = round($height * $percentage);
 
 		return array($width, $height);
 	}
 
+	/**
+	 * Count files in a directory
+	 *
+	 * @param   string  Directory
+	 * @return  int
+	 */
 	public static function countFiles($dir)
 	{
 		$total_file = 0;
@@ -207,4 +226,51 @@ class MediaHelper
 		return array ($total_file, $total_dir);
 	}
 
+	public static function getParent($folder)
+	{
+		$parent = substr($folder, 0, strrpos($folder, '/'));
+		return $parent;
+	}
+
+	public static function getChildren($directory, $folder)
+	{
+		$children = \Filesystem::listContents($directory . $folder);
+		foreach ($children as &$child)
+		{
+			$child['name'] = str_replace('/', '', substr($child['path'], 0, strlen($child['path'])));
+			$child['path'] = $folder . $child['path'];
+			if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $child['name']))
+			{
+				$child['type'] = 'img';
+			}
+		}
+		return $children;;
+	}
+
+	public static function _buildFolderTree($folders, $parent_id = 0, $path = '')
+	{
+		$branch = array();
+		foreach ($folders as $folder)
+		{
+			if ($folder['parent'] == $parent_id)
+			{
+                                $folder['path'] = ($path == '') ? $folder['name'] : $path . '/' . $folder['name'];
+				$children = MediaHelper::_buildFolderTree($folders, $folder['id'], $folder['path']);
+				if ($children)
+				{
+					$folder['children'] = $children;
+				}
+                                $branch[] = $folder;
+			}
+		}
+		return $branch;
+        }
+
+	public static function createPath(&$folders, $path)
+	{
+		foreach ($folders as &$folder)
+		{
+			$folder['path'] = str_replace($path, '', $folder['fullname']);
+		}
+	}
 }
