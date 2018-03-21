@@ -36,6 +36,8 @@ use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Filesystem;
 use Lang;
+use User;
+use Date;
 
 /**
  * Plugin extension model
@@ -103,6 +105,47 @@ class Plugin extends Relational
 		'element' => 'notempty',
 		'name'    => 'notempty'
 	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'modified',
+		'modified_by'
+	);
+
+	/**
+	 * Generates automatic modified field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticModified($data)
+	{
+		if (!isset($data['modified'])
+		 || !$data['modified']
+		  || $data['modified'] == '0000-00-00 00:00:00')
+		{
+			$data['modified'] = Date::of('now')->toSql();
+		}
+		return $data['modified'];
+	}
+
+	/**
+	 * Generates automatic modified by field value
+	 *
+	 * @return  int
+	 */
+	public function automaticModifiedBy($data)
+	{
+		if (!isset($data['modified_by']) || !$data['modified_by'])
+		{
+			$data['modified_by'] = User::get('id');
+		}
+		return $data['modified_by'];
+	}
 
 	/**
 	 * Get all records
