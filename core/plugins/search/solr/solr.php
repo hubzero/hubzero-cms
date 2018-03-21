@@ -61,6 +61,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 		if ($searchComponent && $searchComponent->get('state') == 1)
 		{
 			$searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
+			$indexResultModel = $model;
 			if ($searchModel === false)
 			{
 				$searchModel = $searchComponent->getSearchableModel();
@@ -70,23 +71,27 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 				{
 					return false;
 				}
-				$model = $searchModel::one($model->get('id'));
+				$indexResultModel = $searchModel::one($model->get('id'));
 			}
 
-			if ($model)
+			if ($indexResultModel)
 			{
 				$config = Component::params('com_search');
 				$commitWithin = $config->get('solr_commit');
 				$index = new Hubzero\Search\Index($config);
-				$modelIndex = $model->searchResult();
+				$modelIndex = $indexResultModel->searchResult();
 				if ($modelIndex !== false)
 				{
-					$index->updateIndex($modelIndex, $commitWithin);
+					$message = $index->updateIndex($modelIndex, $commitWithin);
 				}
 				else
 				{
-					$modelIndexId = $model->searchId();
-					$index->delete($modelIndexId);
+					$modelIndexId = $indexResultModel->searchId();
+					$message = $index->delete($modelIndexId);
+				}
+				if ($message)
+				{
+					Notify::error($message);
 				}
 			}
 		}

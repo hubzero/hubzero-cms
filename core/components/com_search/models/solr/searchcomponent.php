@@ -35,6 +35,7 @@ namespace Components\Search\Models\Solr;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Components\Search\Helpers\DiscoveryHelper;
+use \Solarium\Exception\HttpException;
 use Component;
 
 require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
@@ -140,11 +141,15 @@ class SearchComponent extends Relational
 			}
 			$results = array(
 				'limit'  => $batchSize,
-				'offset' => $offset + $batchSize
+				'offset' => $offset + $batchSize,
 			);
+			$error = $newQuery->finalize();
+			if ($error)
+			{
+				$results['error'] = $error;
+			}
 			return $results;
 		}
-
 		return false;
 	}
 
