@@ -1,7 +1,33 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Drew Thoennes <dthoenne@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Media\Admin\Controllers;
@@ -31,17 +57,16 @@ class Media extends AdminController
 		$folder = Request::getVar('folder', '', '', 'path');
                 $session = \App::get('session');
                 $state = \User::getState('folder');
-                $directory = '/var/www/hub/app/site/media/';
-                $folders = Filesystem::directoryTree($directory);
-		$folderTree = $this->_buildFolderTree($folders);
+                $folders = Filesystem::directoryTree(COM_MEDIA_BASE);
+		$folderTree = MediaHelper::_buildFolderTree($folders);
 
-		$this->createPath($folders, $directory);
+		MediaHelper::createPath($folders, COM_MEDIA_BASE);
 
-Html::behavior('framework', true);
+\Html::behavior('framework', true);
 \Hubzero\Document\Assets::addComponentScript('com_media', 'mediamanager.js');
 \Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager.css');
-Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
-Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
+\Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
+\Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
 
 		$this->view->setLayout('default');
 
@@ -55,13 +80,13 @@ Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
                         ->set('folder', $folder)
                         ->set('folders', $folders)
 			->set('folderTree', $folderTree)
-			->set('parent', $this->getParent($folder))
+			->set('parent', MediaHelper::getParent($folder))
                         ->display();
 	}
 
 	public function newTask()
 	{
-                Session::checkToken(['get', 'post']);
+                \Session::checkToken(['get', 'post']);
 
                 $folder      = Request::getCmd('foldername', '');
                 $folderCheck = Request::getVar('foldername', null, '', 'string');
@@ -84,7 +109,7 @@ Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
                                 return false;
                         }
 
-                        $path = \Hubzero\Filesystem\Util::normalizePath('/var/www/hub/app/site/media/' . $parent . '/' . $folder);
+                        $path = \Hubzero\Filesystem\Util::normalizePath(COM_MEDIA_BASE . $parent . '/' . $folder);
 
                         if (!is_dir($path) && !is_file($path))
                         {
@@ -307,18 +332,6 @@ Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=media&folder=' . $folder, false));
 	}
 
-	public function getFolderLevel($folder) {
-		$html = null;
-		if (isset($folder['children']) && count($folder['children']))
-		{
-			$tmp = $this->folder;
-			$this->folder = $folder;
-			$html = $this->loadTemplate('folders');
-			$this->folder = $tmp;
-		}
-		return $html;
-	}
-
         protected function reformatFilesArray($name, $type, $tmp_name, $error, $size)
         {
                 $name = Filesystem::clean($name);
@@ -331,44 +344,4 @@ Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
                         'filepath' => Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
                 );
         }
-
-	public function ftpValidate()
-	{
-		// Set FTP credentials, if given
-		//JClientHelper::setCredentialsFromRequest('ftp');
-		\User::setState('ftp', false);
-	}
-
-	private function createPath(&$folders, $path)
-	{
-		foreach ($folders as &$folder)
-		{
-			$folder['path'] = str_replace($path, '', $folder['fullname']);
-		}
-	}
-
-	private function getParent($folder)
-	{
-		$parent = substr($folder, 0, strpos($folder, '/'));
-		return $parent;
-	}
-
-	private function _buildFolderTree($folders, $parent_id = 0, $path = '')
-	{
-		$branch = array();
-		foreach ($folders as $folder)
-		{
-			if ($folder['parent'] == $parent_id)
-			{
-				$folder['path'] = ($path == '') ? $folder['name'] : $path . '/' . $folder['name'];
-				$children = $this->_buildFolderTree($folders, $folder['id'], $folder['path']);
-				if ($children)
-				{
-					$folder['children'] = $children;
-				}
-				$branch[] = $folder;
-			}
-		}
-		return $branch;
-	}
 }
