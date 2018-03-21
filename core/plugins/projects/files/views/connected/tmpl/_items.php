@@ -45,8 +45,7 @@ if (!strstr($handlerBase, '{'))
 ?>
 
 <?php foreach ($this->items as $item) : ?>
-<?php //Skip the file if we can verify that it's got a mimetype that we can't handle properly at this point in time ?> 
-<?php if ($item->isFile() && strpos($item->getMimeType(), "application/vnd.google") === 0) :  continue; endif;?>
+<?php //Skip the file if we can verify that it's got a mimetype that we can't handle properly at this point in time ?>
 	<tr class="mini faded mline connections">
 		<?php if ($this->model->access('content')) : ?>
 			<td class="middle_valign">
@@ -85,7 +84,19 @@ if (!strstr($handlerBase, '{'))
 		<td class="shrinked middle_valign"></td>
 		<td class="shrinked middle_valign"><?php echo ($item->isFile()) ? $item->getSize() : ''; ?></td>
 		<td class="shrinked middle_valign">
-			<?php echo $item->getTimestamp() ? \Components\Projects\Helpers\Html::formatTime(Date::of($item->getTimestamp())->toSql()) : 'N/A'; ?>
+			<?php
+					try
+					{
+						$timestamp = $item->getTimestamp();
+						$timestamp = \Components\Projects\Helpers\Html::formatTime(Date::of($timestamp)->toSql());
+					}
+					catch (Exception $e)
+					{
+						$timestamp = 'N/A';
+					}
+
+						echo $timestamp;
+			?>
 		</td>
 		<td class="shrinked middle_valign">
 			<?php echo ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') : User::getInstance($item->getOwner())->get('name'); ?>
