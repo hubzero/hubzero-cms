@@ -8,6 +8,10 @@
 	height: 85%;
 }
 
+.media-browser legend {
+	font-weight: bold;
+}
+
 #treeview {
 	padding: 10px;
 	width: 190px;
