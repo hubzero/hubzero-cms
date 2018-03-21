@@ -242,10 +242,10 @@ class Tags extends Base
 			$manifest = array(
 				'name' 			=> 'tags',
 				'label' 		=> 'Tags',
-				'title' 		=> 'Publication Tags',
-				'draftHeading' 	=> 'Add tags',
-				'draftTagline'	=> 'Make your publication more discoverable:',
-				'about'			=> 'Tags help users find your publication. Before adding your own tags, try finding good matches in existing tag library.',
+				'title' 		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_TAGS_TITLE'),
+				'draftHeading' 	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_TAGS_DRAFT_HEADING'),
+				'draftTagline'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_TAGS_DRAFT_TAGLINE'),
+				'about'			=> Lang::txt('COM_PUBLICATIONS_BLOCKS_TAGS_ABOUT'),
 				'adminTips'		=> '',
 				'elements' 		=> array(),
 				'params'		=> array( 'required' => 1, 'published_editing' => 0 )
