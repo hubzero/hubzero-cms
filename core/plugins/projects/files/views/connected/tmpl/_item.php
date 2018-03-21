@@ -6,7 +6,6 @@ $itemIsFile = $item->isFile();
 $itemName = $item->getName();
 $itemOwner = ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') : User::getInstance($item->getOwner())->get('name');
 $itemPath = $item->getPath();
-$itemTimestamp = $item->getTimestamp() ? Html::formatTime(Date::of($item->getTimestamp())->toSql()) : 'N/A';
 $itemTypeInputName = $item->isFile() ? 'asset[]' : 'folder[]';
 $itemTypeJs = $item->isDir() ? ' dirr' : '';
 $model = $this->model;
@@ -17,6 +16,16 @@ $fileDeleteUrl = Route::url($model->link('files') . "&action=delete$subdirPath&a
 $fileDeleteTip = Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP');
 $fileMoveUrl = Route::url($model->link('files') . "&action=move$subdirPath&asset=$urlEncodedItemName");
 $fileMoveTip = Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP');
+
+try
+{
+	$itemTimestamp = $item->getTimestamp();
+	$itemTimestamp = Html::formatTime(Date::of($itemTimestamp)->toSql());
+}
+catch (Exception $e)
+{
+	$itemTimestamp = 'N/A';
+}
 
 if ($itemIsFile)
 {
