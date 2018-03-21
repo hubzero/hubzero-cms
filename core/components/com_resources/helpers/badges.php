@@ -32,8 +32,10 @@
 
 namespace Components\Resources\Helpers;
 
+require_once Component::path('com_tags') . '/models/objct.php';
 require_once Component::path('com_tags') . '/models/tag.php';
 
+use Components\Tags\Models\Objct;
 use Components\Tags\Models\Tag;
 use Hubzero\Utility\Arr;
 use App;
@@ -46,8 +48,6 @@ class Badges
 {
 
 	const LABEL = 'badge';
-	const TAGS_TABLE = '#__tags';
-	const BADGE_TABLE = '#__tags_object';
 
 	/**
 	 * Instantiate a Badges instance
@@ -193,13 +193,18 @@ class Badges
 	protected function _addBadge($tagId, $taggerId, $admin, $strength)
 	{
 		$taggedOn = Date::toSql();
-		$query = "INSERT INTO " . self::BADGE_TABLE;
-		$query .= " (objectid,tagid,strength,taggerid,taggedon,tbl,label)";
-		$query .= "values('$this->scopeId',$tagId,$strength,$taggerId,'$taggedOn','$this->scope',";
-		$query .= "'" . self::LABEL . "');";
+		$tagAssociation = Objct::blank();
+		$tagAssociation->set([
+			'objectid' => $this->scopeId,
+			'tagid' => $tagId,
+			'strength' => $strength,
+			'taggerid' => $taggerId,
+			'taggedon' => $taggedOn,
+			'tbl' => $this->scope,
+			'label' => self::LABEL
+		]);
 
-		$this->_db->setQuery($query);
-		$this->_db->execute();
+		$tagAssociation->save();
 	}
 
 	/**
@@ -224,11 +229,15 @@ class Badges
 	 */
 	protected function _removeBadge($tagId)
 	{
-		$query = 'DELETE FROM ' . self::BADGE_TABLE;
-		$query .= " WHERE tagid = $tagId AND tbl = '$this->scope' AND objectid = $this->scopeId;";
+		$tagAssociationId = Objct::all()
+			->select('id')
+			->whereEquals('tagid', $tagId)
+			->whereEquals('tbl', $this->scope)
+			->whereEquals('objectid', $this->scopeId)
+			->rows()->toArray()[0]['id'];
+		$tagAssociation = Objct::one($tagAssociationId);
 
-		$this->_db->setQuery($query);
-		$this->_db->execute();
+		$tagAssociation->destroy();
 	}
 
 
@@ -256,10 +265,16 @@ class Badges
 	 */
 	public function all()
 	{
-		$query = "SELECT tags.id, tags.raw_tag FROM `" . self::TAGS_TABLE . "` AS tags LEFT JOIN `" . self::BADGE_TABLE . "` AS links on links.tagid = tags.id WHERE links.tbl = '$this->scope' AND links.objectid = '$this->scopeId' AND links.label = '" . self::LABEL . "'";
-
-		$this->_db->setQuery($query);
-		$badges = $this->_db->loadObjectList();
+		$badgeIds = Objct::all()
+			->select('tagid')
+			->whereEquals('tbl', $this->scope)
+			->whereEquals('objectid', $this->scopeId)
+			->whereEquals('label', self::LABEL)
+			->rows()->toArray();
+		$badges = array_map(function($badgeId) {
+			$badgeId = $badgeId['tagid'];
+			return Tag::one($badgeId);
+		}, $badgeIds);
 
 		return $badges;
 	}
