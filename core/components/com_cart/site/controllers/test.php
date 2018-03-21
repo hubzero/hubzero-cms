@@ -54,6 +54,24 @@ class Test extends ComponentController
 		parent::execute();
 	}
 
+	private static function getBaseUrl()
+	{
+		// output: /myproject/index.php
+		$currentPath = $_SERVER['PHP_SELF'];
+
+		// output: Array ( [dirname] => /myproject [basename] => index.php [extension] => php [filename] => index )
+		$pathInfo = pathinfo($currentPath);
+
+		// output: localhost
+		$hostName = $_SERVER['HTTP_HOST'];
+
+		// output: http://
+		$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')?'https':'http';
+
+		// return: http://localhost/myproject/
+		return $protocol.'://'.$hostName.$pathInfo['dirname'];
+	}
+
 	/**
 	 * Display default page
 	 *
@@ -61,7 +79,6 @@ class Test extends ComponentController
 	 */
 	public function displayTask()
 	{
-
 		die('no access');
 
 	}
@@ -396,10 +413,13 @@ class Test extends ComponentController
 
 			// OMG!!! Ok, there was no way I could cURL post to the hub, so I post to the external server that in turn posts back to the hub. I KNOW!!!!!
 
+			$baseUrl = self::getBaseUrl();
+
 			$ch = curl_init();
 			//curl_setopt($ch, CURLOPT_URL, 'https://shunko.aws.hubzero.org/cart/order/postback');
 			//curl_setopt($ch, CURLOPT_URL, 'https://shunko.aws.hubzero.org/cart/cart/hui');
-			curl_setopt($ch, CURLOPT_URL, 'http://shunko.com/test/post.php');
+			//curl_setopt($ch, CURLOPT_URL, 'http://shunko.com/test/post.php');
+			curl_setopt($ch, CURLOPT_URL, $baseUrl . 'cart/order/postback');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
