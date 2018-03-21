@@ -38,7 +38,8 @@ if (!\User::authorise('core.manage', 'com_media'))
 
 $params = Component::params('com_media');
 define('COM_MEDIA_BASE', PATH_APP . '/' . $params->get($path, 'site/media'));
-define('COM_MEDIA_BASEURL', rtrim(Request::root(), '/') . substr(PATH_APP, strlen(PATH_ROOT)) . '/' . $params->get($path, 'site/media'));
+//define('COM_MEDIA_BASEURL', rtrim(Request::root(), '/') . substr(PATH_APP, strlen(PATH_ROOT)) . '/' . $params->get($path, 'site/media'));
+define('COM_MEDIA_BASEURL', '/' . $params->get($path, 'app/site/media'));
 require_once __DIR__ . DS . 'helpers' . DS . 'media.php';
 
 $controllerName = \Request::getCmd('controller', 'media_test');

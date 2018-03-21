@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 <ul <?php echo $this->folders_id; ?>>
 	<?php foreach ($this->folderTree as $folder) { ?>
 		<li id="<?php echo $folder['name']; ?>">
-			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $folder['path']); ?>" target="folderframe"><?php echo $folder['name']; ?></a>
+			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>" target="folderframe"><?php echo $folder['name']; ?></a>
 			<?php if (isset($folder['children']) && count($folder['children'])) {
 				$temp = $this->folderTree;
 				$this->folderTree = $folder['children'];
