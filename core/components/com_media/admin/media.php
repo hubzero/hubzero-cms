@@ -48,12 +48,6 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'media';
 }
 
-\Submenu::addEntry(
-	\Lang::txt('Thumbnail View'),
-	\Route::url('index.php?option=com_media&controller=media'),
-	($controllerName == 'media')
-);
-
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
