@@ -167,6 +167,29 @@ Html::behavior('formvalidation');
 							<?php endif; ?>
 						</td>
 					</tr>
+					<?php if ($this->item->modified && $this->item->modified != '0000-00-00 00:00:00') : ?>
+						<tr>
+							<th>
+								<?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_LABEL'); ?>
+							</th>
+							<td>
+								<time datetime="<?php echo $this->escape($this->item->modified); ?>"><?php echo $this->escape(Date::of($this->item->modified)->toLocal()); ?></time>
+							</td>
+						</tr>
+					<?php endif; ?>
+					<?php if ($this->item->modified_by) : ?>
+						<tr>
+							<th>
+								<?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_BY_LABEL'); ?>
+							</th>
+							<td>
+								<?php
+								$modifier = User::getInstance($this->item->modified_by);
+								echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->item->modified_by . ')');
+								?>
+							</td>
+						</tr>
+					<?php endif; ?>
 				</tbody>
 			</table>
 		</div>
