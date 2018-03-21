@@ -239,7 +239,8 @@ class Publications extends SiteController
 	{
 		if (!$this->_title)
 		{
-			$this->_title = Lang::txt(strtoupper($this->_option));
+			// $this->_title = Lang::txt(strtoupper($this->_option));
+			$this->_title = 'Resources';
 			if ($this->_task)
 			{
 				switch ($this->_task)
@@ -471,7 +472,8 @@ class Publications extends SiteController
 		);
 
 		// Get type if not given
-		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+		// $this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+		$this->_title = 'Resources: ';
 		if ($this->view->filters['category'] != '')
 		{
 			$t->load($this->view->filters['category']);

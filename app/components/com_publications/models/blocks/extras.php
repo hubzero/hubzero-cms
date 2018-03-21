@@ -83,9 +83,9 @@ class Extras extends Base
 			$manifest = array(
 				'name' 			=> 'extras',
 				'label' 		=> 'Extras',
-				'title' 		=> 'Publication Gallery and Supporting Docs',
-				'draftHeading' 	=> 'Let\'s jazz up the publication page',
-				'draftTagline'	=> 'Add images/supporting docs:',
+				'title' 		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_EXTRAS_TITLE'),
+				'draftHeading' 	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_EXTRAS_DRAFT_HEADING'),
+				'draftTagline'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_EXTRAS_DRAFT_TAGLINE'),
 				'about'			=> '',
 				'adminTips'		=> '',
 				'elements' 		=> array(
@@ -93,8 +93,8 @@ class Extras extends Base
 						'name'		=> 'dataselector',
 						'type' 		=> 'attachment',
 						'label'		=> 'Image Gallery',
-						'about'		=> '<p>Select image file(s) from the project repository</p>',
-						'aboutProv'	=> '<p>Attach image file(s) for publication gallery</p>',
+						'about'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_EXTRAS_IMG_GALLERY_ABOUT'),
+						'aboutProv'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_EXTRAS_IMG_GALLERY_ABOUT_PROV'),
 						'adminTips'	=> '',
 						'params' 	=> array (
 							'type'			=> 'file',
@@ -119,8 +119,8 @@ class Extras extends Base
 						'name'		=> 'dataselector',
 						'type' 		=> 'attachment',
 						'label'		=> 'Supporting Docs',
-						'about'		=> '<p>And supporting materials related to publication</p>',
-						'aboutProv'	=> '<p>Attach a file or a number of files</p>',
+						'about'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_EXTRAS_SUPP_DOCS_ABOUT'),
+						'aboutProv'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_EXTRAS_SUPP_DOCS_ABOUT_PROV'),
 						'adminTips'	=> '',
 						'params' 	=> array (
 							'type'			=> 'file',
