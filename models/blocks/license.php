@@ -411,10 +411,10 @@ class License extends Base
 			$manifest = array(
 				'name' 			=> 'license',
 				'label' 		=> 'License',
-				'title' 		=> 'Publication License',
-				'draftHeading' 	=> 'Choose License',
-				'draftTagline'	=> 'Define copyright and terms of use:',
-				'about'			=> 'It is important that you provide a license for your publication stating your copyright and terms of use of your content.',
+				'title' 		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_LICENSE_TITLE'),
+				'draftHeading' 	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_LICENSE_DRAFT_HEADING'),
+				'draftTagline'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_LICENSE_DRAFT_TAGLINE'),
+				'about'			=> Lang::txt('COM_PUBLICATIONS_BLOCKS_LICENSE_DRAFT_ABOUT'),
 				'adminTips'		=> '',
 				'elements' 		=> array(),
 				'params'		=> array( 'required' => 1, 'published_editing' => 0, 'include' => array(), 'exclude' => array())

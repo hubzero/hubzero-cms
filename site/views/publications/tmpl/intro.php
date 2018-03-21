@@ -56,7 +56,7 @@ $this->css('introduction.css', 'system')
 <section class="section intropage">
 	<div class="grid">
 		<div class="col <?php echo (!User::isGuest() && $this->contributable) ? 'span4' : 'span6';  ?>">
-			<h3><?php echo Lang::txt('Recent Publications'); ?></h3>
+			<h3><?php echo Lang::txt('COM_PUBLICATIONS_RECENT_PUBLICATIONS'); ?></h3>
 			<?php
 			if ($this->results && count($this->results) > 0)
 			{

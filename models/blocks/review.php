@@ -194,9 +194,9 @@ class Review extends Base
 			$manifest = array(
 				'name' 			=> 'review',
 				'label' 		=> 'Review',
-				'title' 		=> 'Publication Review',
-				'draftHeading' 	=> 'Review Publication',
-				'draftTagline'	=> 'Here is your publication at a glance:',
+				'title' 		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_REVIEW_TITLE'),
+				'draftHeading' 	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_REVIEW_DRAFT_HEADING'),
+				'draftTagline'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_REVIEW_DRAFT_TAGLINE'),
 				'about'			=> '',
 				'adminTips'		=> '',
 				'elements' 		=> array(),
