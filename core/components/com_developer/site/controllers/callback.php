@@ -31,8 +31,15 @@
 
 namespace Components\Developer\Site\Controllers;
 
+require_once \Component::path('com_projects') . '/models/orm/connection.php';
+require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient.php';
+
+use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Hubzero\Component\SiteController;
-require_once \Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+use Hubzero\Session;
+use Exception;
+use Notify;
+use App;
 
 /**
  * Handles hub callbacks from external applications
@@ -50,35 +57,34 @@ class Callback extends SiteController
 	 **/
 	public function dropboxAuthorizeTask()
 	{
-		$pparams = \Plugin::params('filesystem', 'dropbox');
+		$config = \Plugin::params('filesystem', 'dropbox');
+		$connectionId = Session::get('dropbox.connection_to_set_up', false);
+		$authorizationCode = Request::getString('code');
+		$localOriginUrl = Session::get('dropbox.local_origin_url');
+		$dropboxFilesUrl = "$localOriginUrl/browse?connection=$connectionId";
+		$oauthClient = new DropboxOauthClient();
+		$localState = Session::get('dropbox.state');
+		$returnedState = Request::getString('state');
 
-		$new_connection = Session::get('dropbox.connection_to_set_up', false);
+		if ($returnedState != $localState)
+		{
+			Notify::error("Security concern: OAuth state incongruency<br/><br/>Contact support on multiple failures");
+			App::redirect($localOriginUrl);
+		}
 
-		$info = [
-			'key'    => $pparams->get('app_key'),
-			'secret' => $pparams->get('app_secret'),
-		];
-
-		$appInfo          = \Dropbox\AppInfo::loadFromJson($info);
-		$clientIdentifier = 'hubzero-cms/2.0';
-		$redirectUri      = trim(\Request::root(), '/') . '/developer/callback/dropboxAuthorize';
-		$csrfTokenStore   = new \Dropbox\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
-		$oauth            = new \Dropbox\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore);
-
-		list($accessToken, $userId, $urlState) = $oauth->finish($_GET);
+		$accessToken = $oauthClient->getAccessToken($authorizationCode);
 
 		//if this is a new connection, we can save the token on the server to ensure that it is used next time
-		if ($new_connection)
+		if ($connectionId)
 		{
-			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
-			$connection_params = json_decode($pparams);
-			$connection_params->app_token = $accessToken;
-			$connection->set('params', json_encode($connection_params));
+			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($connectionId);
+			$connectionParams = json_decode($config);
+			$connectionParams->app_token = $accessToken;
+			$connection->set('params', json_encode($connectionParams));
 			$connection->save();
 		}
 
-		// Redirect to the local endpoint
-		App::redirect(base64_decode($urlState));
+		App::redirect($dropboxFilesUrl);
 	}
 
 	/**

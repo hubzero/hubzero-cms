@@ -31,6 +31,7 @@ if ($itemMimeType && strpos($itemMimeType, "application/vnd.google") === 0)
 else
 {
 	$linkUrl = Route::url($this->model->link('files') . "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
+	$linkTarget = '';
 }
 
 ?>
