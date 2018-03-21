@@ -92,7 +92,7 @@ if (!$this->config->get('email_terse'))
 			}
 		}
 	}
-	$message .= strip_tags($this->comment->comment);
+	$message .= $this->comment->get('comment');
 	if ($this->comment->attachments->count() > 0)
 	{
 		$message .= "\n\n";

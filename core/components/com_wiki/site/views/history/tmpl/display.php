@@ -141,10 +141,10 @@ $revisions = $this->page->versions()
 
 							switch ($revision->get('approved'))
 							{
-								case 1: $status = '<span class="approved icon-approved">approved</span>'; break;
+								case 1: $status = '<span class="approved icon-success">approved</span>'; break;
 								case 0:
 								default:
-									$status = '<span class="suggested icon-suggested">suggested</span>';
+									$status = '<span class="suggested icon-warning">suggested</span>';
 									break;
 							}
 
@@ -194,7 +194,7 @@ $revisions = $this->page->versions()
 									<a href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version'))); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
 										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d h:i:s')); ?></time>
 									</a>
-									<a class="tooltips markup" href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version') . '&format=raw')); ?>" title="<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE'); ?>">
+									<a class="tooltips markup icon-file-alt-text" href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version') . '&format=raw')); ?>" title="<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE'); ?>">
 										<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP'); ?>
 									</a>
 								</td>

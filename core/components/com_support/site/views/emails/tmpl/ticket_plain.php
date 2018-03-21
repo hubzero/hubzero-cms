@@ -79,7 +79,7 @@ if (!$this->config->get('email_terse'))
 	$message .= strtoupper(Lang::txt('COM_SUPPORT_COOKIES')).': ' . ($this->ticket->get('cookies') ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED')) . "\n";
 	$message .= strtoupper(Lang::txt('COM_SUPPORT_REFERRER')).': '. $this->ticket->get('referrer') . "\n";
 	$message .= '----------------------------'."\n\n";
-	$message .= strip_tags($this->ticket->content);
+	$message .= $this->ticket->get('report');
 	if ($this->ticket->attachments->count() > 0)
 	{
 		$message .= "\n\n";

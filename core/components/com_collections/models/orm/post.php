@@ -34,13 +34,15 @@ namespace Components\Collections\Models\Orm;
 use Hubzero\Database\Relational;
 use Lang;
 use Date;
+use stdClass;
 
 require_once __DIR__ . DS . 'item.php';
+require_once __DIR__ . DS . 'collection.php';
 
 /**
  * Collection post model
  */
-class Post extends Relational
+class Post extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table namespace
@@ -156,7 +158,7 @@ class Post extends Relational
 	 */
 	public function collection()
 	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Collection');
+		return $this->belongsToOne('Collection');
 	}
 
 	/**
@@ -166,7 +168,7 @@ class Post extends Relational
 	 */
 	public function item()
 	{
-		return $this->oneToOne('Item');
+		return $this->oneToOne('Item', 'id', 'item_id');
 	}
 
 	/**
@@ -177,6 +179,18 @@ class Post extends Relational
 	public function isOriginal()
 	{
 		return ($this->get('original') == 1);
+	}
+
+	public function transformDescription()
+	{
+		$description = $this->get('description');
+		$description = \Hubzero\Utility\Sanitize::stripAll($description);
+		if (empty($description))
+		{
+			$description = $this->item->get('description');
+			$description = \Hubzero\Utility\Sanitize::stripAll($description);
+		}
+		return $description;
 	}
 
 	/**
@@ -214,5 +228,129 @@ class Post extends Relational
 		$this->set('collection_id', $collection_id);
 
 		return $this->save();
+	}
+
+	/**
+	 * Namespace used for solr Search
+	 *
+	 * @return  string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'collection';
+		return $searchNamespace;
+	}
+
+	/**
+	 * Generate solr search Id
+	 *
+	 * @return  string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
+
+	/**
+	 * Generate search document for Solr
+	 *
+	 * @return  array
+	 */
+	public function searchResult()
+	{
+		if ($this->item->state != 1 || $this->collection->state != 1)
+		{
+			return false;
+		}
+		$post = new stdClass;
+		$post->title = $this->item->title;
+		$ownerType = $this->collection->object_type;
+		$post->owner_type = $ownerType == 'member' ? 'user' : $ownerType;
+		$post->access_level = $this->getAccessLevel();
+		$post->author[] = $this->creator->name;
+		$post->owner = $this->collection->object_id;
+		$post->hubtype = $this->searchNamespace();
+		$post->id = $this->searchId();
+		$post->description = $this->description;
+		$post->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
+		return $post;
+	}
+
+	/**
+	 * Get access level of post based on parent collection and group permissions
+	 *
+	 * @return  string
+	 */
+	public function getAccessLevel()
+	{
+		$accessLevel = array();
+		$accessLevel[] = $this->collection->access;
+		if ($this->collection->object_type == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($this->collection->object_id);
+			if ($group)
+			{
+				$groupAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'collections');
+				if ($groupAccess == 'anyone')
+				{
+					$accessLevel[] = 1;
+				}
+				elseif ($groupAccess == 'registered')
+				{
+					$accessLevel[] = 2;
+				}
+				else
+				{
+					$accessLevel[] = 4;
+				}
+			}
+		}
+		$accessLevel = max($accessLevel);
+		switch ($accessLevel)
+		{
+			case 0:
+			case 1:
+				return 'public';
+				break;
+			case 2:
+				return 'registered';
+				break;
+			default:
+				return 'private';
+				break;
+		}
+	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 *
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object   Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
+	}
+
+	/**
+	 * Get link for current collection post
+	 * @return	string
+	 */
+	public function link()
+	{
+		return 'index.php?option=collections&controller=posts&post=' . $this->get('id');
 	}
 }

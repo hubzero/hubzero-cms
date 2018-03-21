@@ -1209,12 +1209,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "1cebcb215421e129944e3cbc07d143d73cabd51a"
+                "reference": "5f785c9550146bfeb7450c4258a3f62377003dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/1cebcb215421e129944e3cbc07d143d73cabd51a",
-                "reference": "1cebcb215421e129944e3cbc07d143d73cabd51a",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/5f785c9550146bfeb7450c4258a3f62377003dc5",
+                "reference": "5f785c9550146bfeb7450c4258a3f62377003dc5",
                 "shasum": ""
             },
             "require": {
