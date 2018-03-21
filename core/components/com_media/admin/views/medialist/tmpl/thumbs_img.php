@@ -39,8 +39,8 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div class="imgBorder center">
-					<a class="img-preview" href="<?php echo '/app/site/media/' . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>" style="display: block; width: 100%; height: 100%">
-						<img src="<?php echo '/app/site/media/' . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], MediaHelper::parseSize($this->currentImg['size'])); ?>" width="<?php echo '60'; //echo $this->_tmp_img->width_60; ?>" height="<?php echo '60'; //echo $this->_tmp_img->height_60; ?>" />
+					<a class="img-preview" href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>" style="display: block; width: 100%; height: 100%">
+						<img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], MediaHelper::parseSize($this->currentImg['size'])); ?>" width="<?php echo '60'; //echo $this->_tmp_img->width_60; ?>" height="<?php echo '60'; //echo $this->_tmp_img->height_60; ?>" />
 					</a>
 				</div>
 			</div>
