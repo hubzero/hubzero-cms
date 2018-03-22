@@ -82,8 +82,6 @@ class Order extends ComponentController
 		$provider = Request::getVar('provider', '', 'get');
 		$pay = Event::trigger('cart.onComplete', array($provider));
 
-		//print_r($provider); die;
-
 		$verificationVar = false;
 
 		foreach ($pay as $response)
@@ -131,7 +129,7 @@ class Order extends ComponentController
 		{
 			die('Error processing your order...');
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 
@@ -202,7 +200,7 @@ class Order extends ComponentController
 			$redirect_url = Route::url('index.php?option=' . 'com_cart') . '/order/complete/' .
 				'?custom=' . $token . '-' . $transaction->info->tId;
 			App::redirect(
-					$redirect_url
+				$redirect_url
 			);
 		}
 	}

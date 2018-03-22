@@ -29,6 +29,9 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Cart\Models\Cart;
+require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php';
+
 /**
  * Cart plugin for Payment: UPay
  */
@@ -51,24 +54,108 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 	public function onRenderPaymentOptions($cart, $user)
 	{
 		$view = $this->view('default', 'payment')
-			->set('user', $user)
-			->set('cart', $cart);
+			->set('url', Route::url('index.php?option=com_cart&controller=checkout/confirm'));
 
 		$payment = array();
 		$payment['options'] = $view->loadTemplate();
-		$payment['title'] = $this->params->get('title', 'Offline');
+		$payment['title'] = $this->params->get('title', 'UPay');
 
 		return $payment;
 	}
 
-	/**
-	 * Return a list of filters that can be applied
-	 *
-	 * @return  array
-	 */
-	public function onProcessPayment($transaction, $user)
+	public function onPostback($postData)
 	{
-		return true;
+		$provider = Request::getWord('provider', false, 'post');
+		if ($provider != 'upay')
+		{
+			return false;
+		}
+
+		// get the transaction Id
+		// Get transaction ID
+		$tId = $postData['EXT_TRANS_ID'];
+
+		$response = array();
+		$response['status'] = 'ok';
+
+		if (!$tId)
+		{
+			// Transaction id couldn't be extracted
+			$response['status'] = 'error';
+			$response['error'] = 'Postback did not have the valid transaction ID ';
+		}
+
+		$tInfo = Cart::getTransactionFacts($tId);
+
+		if (!$tInfo)
+		{
+			// Transaction doesn't exist, set error
+			$response['status'] = 'error';
+			$response['error'] =  'Incoming payment for the transaction that does not exist: ' . $tId;
+		}
+
+		// Verify the postback
+		// Verify the verification var
+		if ($this->params->get('paymentValidationKey') != $postData['posting_key'])
+		{
+			$response['status'] = 'error';
+			$response['error'] =  'Payment Validation Key does not match the configured key. Verification failed.';
+		}
+
+		// Verify the amount
+		// Get expected payment
+		$expectedPayment = $tInfo->info->tiTotal;
+		$paymentReceived = $postData['pmt_amt'];
+
+		if ($expectedPayment != $paymentReceived)
+		{
+			$response['status'] = 'error';
+			$response['error'] =  'Payment received(' . $paymentReceived . ') does not match the expected payment(' . $expectedPayment . ')';
+		}
+
+		if ($response['status'] == 'ok')
+		{
+			$message = 'Transaction completed. ';
+			$message .= 'Transaction ID: ' . $tId;
+			$response['msg'] = $message;
+
+			$response['tInfo'] = $tInfo;
+			$response['payment'] = array('upay', false);
+		}
+
+		return $response;
+	}
+
+	public function onSelectedPayment($transaction, $user)
+	{
+		$provider = Request::getWord('paymentProvider', false, 'post');
+		if ($provider != 'upay')
+		{
+			return false;
+		}
+
+		$siteDetails = new \stdClass();
+		$siteDetails->siteId = $this->params->get('paymentSiteId');
+
+		$this->setTransactionDetails($transaction);
+
+		// Payment selected mark transaction as awaiting payment
+		Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
+
+		$view = $this->view('code', 'payment')
+			->set('user', $user)
+			->set('postUrl', $this->getPostURL())
+			->set('transaction', $transaction)
+			->set('siteDetails', $siteDetails)
+			->set('transactionDetails', $this->transactionDetails);
+
+		$payment = array();
+		$payment['status'] = 'ok';
+		$payment['paymentInfo'] = 'UPay payment provider';
+		$payment['response'] = $view->loadTemplate();
+		$payment['title'] = $this->params->get('title', 'UPay');
+
+		return $payment;
 	}
 
 	/**
@@ -78,7 +165,7 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 	 */
 	private function getPostURL()
 	{
-		if ($this->params->get('env') == 'LIVE')
+		if ($this->params->get('env') == 'live')
 		{
 			$url = 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
 		}
@@ -91,14 +178,40 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Generate the validation key
+	 * Set transaction details
 	 *
-	 * @param   array   $transaction
-	 * @return  string
 	 */
-	private function generateValidationKey($transaction)
+	private function setTransactionDetails($transactionDetails)
 	{
-		$base = $this->params->get('validationKey') . $transaction['EXT_TRANS_ID'] . $transaction['AMT'];
-		return base64_encode(md5($base, true));
+		$hubName  = Config::get('sitename');
+
+		$params = Component::params(Request::getVar('option'));
+
+		$this->options = new \stdClass();
+		$this->options->transactionName = "$hubName online purchase";
+
+		$this->transactionDetails = array();
+		$this->transactionDetails['EXT_TRANS_ID'] = $transactionDetails->info->tId;
+		$this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
+		$this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
+
+		$base = $this->params->get('validationKey') . $this->transactionDetails['EXT_TRANS_ID'] . $this->transactionDetails['AMT'];
+		$validationKey =  base64_encode(md5($base, true));
+
+		$this->transactionDetails['VALIDATION_KEY'] = $validationKey;
+		$this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' .
+			$transactionDetails->token . '-' . $transactionDetails->info->tId;
+	}
+
+	public function onComplete($provider)
+	{
+		if (!Request::getVar('UPAY_SITE_ID', '', 'get'))
+		{
+			return false;
+		}
+
+		$response = array();
+		$response['verificationVar'] = 'tId';
+		return $response;
 	}
 }
