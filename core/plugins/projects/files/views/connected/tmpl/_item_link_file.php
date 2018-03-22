@@ -11,13 +11,32 @@ $handlerPath = str_replace(
 );
 $handlers = Handler::getLaunchUrlsForFile($handlerPath);
 $urlEncodedItemName = urlencode($this->itemName);
-$itemDownloadLink = Route::url($this->model->link('files') . "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
 $itemDropdownClass = ($handlers) ? ' hasMultiple' : '';
 $itemFileNameShort = Html::shortenFileName($this->itemFileName, 60);
+$itemMimeType = $this->itemMimeType;
+
+if ($itemMimeType && strpos($itemMimeType, "application/vnd.google") === 0)
+{
+	$formatMappings = [
+		'document' => 'document',
+		'presentation' => 'presentation',
+		'spreadsheet' => 'spreadsheets'
+	];
+	$match = [];
+	preg_match('/\.(\w+\z)/', $itemMimeType, $match);
+	$itemFormat = $formatMappings[$match[1]];
+	$linkUrl = "https://docs.google.com/$itemFormat/d/$urlEncodedItemName/edit";
+	$linkTarget = 'target="blank"';
+}
+else
+{
+	$linkUrl = Route::url($this->model->link('files') . "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
+}
+
 ?>
 
 <div class="file-action-dropdown<?php echo $itemDropdownClass; ?>">
-	<a href="<?php echo $itemDownloadLink; ?>" class="preview file:<?php echo urlencode($this->itemName); ?>">
+	<a href="<?php echo $linkUrl; ?>" class="preview file:<?php echo $urlEncodedItemName; ?>" <?php echo $linkTarget; ?>>
 		<?php echo $itemFileNameShort; ?>
 	</a>
 	<?php if ($handlers && count($handlers) > 0) : ?>

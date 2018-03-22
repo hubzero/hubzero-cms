@@ -3,6 +3,13 @@ $connectionId = $this->connectionId;
 $item = $this->item;
 $itemName = $this->itemName;
 $model = $this->model;
+try {
+	$itemMimeType = $item->getMimeType();
+}
+catch (Exception $e)
+{
+	$itemMimeType = null;
+}
 
 echo \Components\Projects\Models\File::drawIcon($item->getExtension());
 if ($this->itemIsFile)
@@ -11,6 +18,7 @@ if ($this->itemIsFile)
 			->set('connectionId', $connectionId)
 			->set('handlerBase', $this->handlerBase)
 			->set('itemFileName', $item->getFileName())
+			->set('itemMimeType', $itemMimeType)
 			->set('itemName', $itemName)
 			->set('itemPath', $this->itemPath)
 			->set('model', $model)
