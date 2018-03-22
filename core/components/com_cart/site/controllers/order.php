@@ -283,5 +283,4 @@ class Order extends ComponentController
 
 		return true;
 	}
-
 }
