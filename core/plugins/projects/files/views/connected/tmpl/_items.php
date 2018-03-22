@@ -42,20 +42,12 @@ if (!strstr($handlerBase, '{'))
 
 <?php foreach ($this->items as $item): ?>
 	<?php
-		// Skip the file if we can verify that it's got a mimetype that we can't handle properly at this point in time
-		if ($item->isFile() && strpos($item->getMimeType(), "application/vnd.google") === 0)
-		{
-			continue;
-		}
-		else
-		{
-			$this->view('_item')
-				->set('connection', $this->connection)
-				->set('handlerBase', $handlerBase)
-				->set('item', $item)
-				->set('model', $this->model)
-				->set('subdir', $this->subdir)
-				->display();
-		}
+		$this->view('_item')
+			->set('connection', $this->connection)
+			->set('handlerBase', $handlerBase)
+			->set('item', $item)
+			->set('model', $this->model)
+			->set('subdir', $this->subdir)
+			->display();
 	?>
 <?php endforeach; ?>
