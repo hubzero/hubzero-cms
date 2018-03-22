@@ -30,10 +30,6 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'orm' . DS . 'handler.php';
-
-use \Components\Tools\Models\Orm\Handler;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -44,57 +40,22 @@ if (!strstr($handlerBase, '{'))
 }
 ?>
 
-<?php foreach ($this->items as $item) : ?>
-<?php //Skip the file if we can verify that it's got a mimetype that we can't handle properly at this point in time ?> 
-<?php if ($item->isFile() && strpos($item->getMimeType(), "application/vnd.google") === 0) :  continue; endif;?>
-	<tr class="mini faded mline connections">
-		<?php if ($this->model->access('content')) : ?>
-			<td class="middle_valign">
-				<input type="checkbox" value="<?php echo urlencode($item->getPath()); ?>" name="<?php echo $item->isFile() ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $item->isDir() ? ' dirr' : ''; ?>" />
-			</td>
-		<?php endif; ?>
-		<?php $subdirPath = $this->subdir ? '&subdir=' . urlencode($this->subdir) : ''; ?>
-		<td class="middle_valign nobsp is-relative">
-			<?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
-			<?php if ($item->isFile()) : ?>
-				<div class="file-action-dropdown<?php
-					$handlerPath = str_replace(
-						array('{project}', '{file}'),
-						array($this->model->get('alias'), $item->getPath()),
-						$handlerBase
-					);
-
-					echo ($handlers = Handler::getLaunchUrlsForFile($handlerPath)) ? ' hasMultiple' : ''; ?>">
-					<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
-						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getFileName(), 60); ?>
-					</a>
-					<?php if ($handlers && count($handlers) > 0) : ?>
-						<?php foreach ($handlers as $handler) : ?>
-						<a href="<?php echo Route::url($handler['url']); ?>">
-							<?php echo $handler['prompt']; ?>
-						</a>
-						<?php endforeach; ?>
-					<?php endif; ?>
-				</div>
-			<?php else : ?>
-				<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id . '&subdir=' . urlencode($item->getPath())); ?>" class="dir:<?php echo urlencode($item->getName()); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->getName(); ?>">
-					<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getDisplayName(), 60); ?>
-				</a>
-			<?php endif; ?>
-		</td>
-		<td class="shrinked middle_valign"></td>
-		<td class="shrinked middle_valign"><?php echo ($item->isFile()) ? $item->getSize() : ''; ?></td>
-		<td class="shrinked middle_valign">
-			<?php echo $item->getTimestamp() ? \Components\Projects\Helpers\Html::formatTime(Date::of($item->getTimestamp())->toSql()) : 'N/A'; ?>
-		</td>
-		<td class="shrinked middle_valign">
-			<?php echo ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') : User::getInstance($item->getOwner())->get('name'); ?>
-		</td>
-		<td class="shrinked middle_valign nojs">
-			<?php if ($this->model->access('content')) : ?>
-				<a href="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
-				<a href="<?php echo Route::url($this->model->link('files') . '&action=move' . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a>
-			<?php endif; ?>
-		</td>
-	</tr>
+<?php foreach ($this->items as $item): ?>
+	<?php
+		// Skip the file if we can verify that it's got a mimetype that we can't handle properly at this point in time
+		if ($item->isFile() && strpos($item->getMimeType(), "application/vnd.google") === 0)
+		{
+			continue;
+		}
+		else
+		{
+			$this->view('_item')
+				->set('connection', $this->connection)
+				->set('handlerBase', $handlerBase)
+				->set('item', $item)
+				->set('model', $this->model)
+				->set('subdir', $this->subdir)
+				->display();
+		}
+	?>
 <?php endforeach; ?>
