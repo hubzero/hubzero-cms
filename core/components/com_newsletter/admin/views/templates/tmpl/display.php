@@ -75,7 +75,8 @@ if ($canDo->get('core.admin'))
 		</thead>
 		<tbody>
 			<?php if (count($this->templates) > 0) : ?>
-				<?php foreach ($this->templates as $k => $template) : ?>
+				<?php foreach ($this->templates as $k => $template) :
+					if ($template->deleted) continue; ?>
 					<tr>
 						<td>
 								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" onclick="isChecked(this.checked);" />
@@ -83,7 +84,7 @@ if ($canDo->get('core.admin'))
 						<td>
 							<?php if (!$template->editable) : ?>
 								<?php echo $template->name; ?>
-								<br />
+								<br/>
 								<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE_OR_DELETABLE'); ?></span>
 							<?php else: ?>
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $template->id); ?>">
