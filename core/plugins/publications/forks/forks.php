@@ -254,8 +254,8 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 		// the "other" list and sort everything by title
 		foreach ($owned as $own)
 		{
-			// If not a manager, collaborator, or author, skip
-			if (!in_array($own->get('role'), array(1, 2, 3)))
+			// If not a  1 = manager, 0 = collaborator, or 2 = author, 5 = reviewer, skip
+			if (!in_array($own->get('role'), array(0, 1, 2, 3)))
 			{
 				continue;
 			}
@@ -268,8 +268,8 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 
 		foreach ($other as $own)
 		{
-			// If not a manager, collaborator, or author, skip
-			if (!in_array($own->get('role'), array(1, 2, 3)))
+			// If not a  1 = manager, 0 = collaborator, or 2 = author, 5 = reviewer, skip
+			if (!in_array($own->get('role'), array(0, 1, 2, 3)))
 			{
 				continue;
 			}
