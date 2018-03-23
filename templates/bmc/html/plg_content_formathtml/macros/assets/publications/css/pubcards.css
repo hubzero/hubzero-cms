@@ -63,9 +63,15 @@ img {
   margin-right: 15px;
 }
 
-.meta-alt .fa {
+.meta-alt .icon-download {
   font-size: 18px !important;
+  font-style: normal;
   margin: 0 5px;
+}
+
+.meta-alt .icon-download:before {
+  content: '\f019';
+  font-family: 'Fontcons';
 }
 
 .meta-alt .downloads {
@@ -248,10 +254,10 @@ img {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
-  height: 1.75em;
+  height: 2em;
   /* Fallback for non-webkit */
   margin: 0 auto;
-  font-size: 0.7em;
+  font-size: 0.8em;
   line-height: 1.25;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -262,8 +268,14 @@ img {
   overflow-y: hidden;
 }
 
-.demo-two-card .demo-two-content .fork .fa {
+.demo-two-card .demo-two-content .fork i.item-fork {
+  font-style: normal;
   margin-right: 10px;
+}
+
+.demo-two-card .demo-two-content .fork i.item-fork:before {
+  content: '\f16b';
+  font-family: 'Fontcons';
 }
 
 .demo-two-card .demo-two-content .author, .demo-two-card .demo-two-content .author-reveal {
