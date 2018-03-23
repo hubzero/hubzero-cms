@@ -1,10 +1,6 @@
-@import '../css/variables.scss';
-@import "../css/mixins.scss";
+@import '../../../../../../css/pages/variables.scss';
+@import "../../../../../../css/pages/mixins.scss";
 
-// h1, h2, h3, h4, h5, h6, p {
-//   font-family: 'Raleway', sans-serif;
-//   line-height: 1em;
-// }
 
 a {
   border: none;
@@ -59,9 +55,14 @@ img {
   .heart {
     margin-right: 15px;
   }
-  .fa {
+  .icon-download {
     font-size: 18px !important;
+    font-style: normal;
     margin: 0 5px;
+    &:before {
+      content: '\f019';
+      font-family: 'Fontcons';
+    }
   }
   .downloads {
     margin-left: 10px;
@@ -204,49 +205,21 @@ img {
       a {
         @include truncate(1.1em, 1.4, 2);
       }
-      // font-size: 18px;
-      // line-height: 1.4em;
-      // height: 80px;
-      // padding-top: 20px;
-      // overflow: hidden;
     }
-    // .fade {
-    //   position: relative;
-    //   height: 4.2em; /* exactly three lines */
-    // }
-    // .fade:after {
-    //   content: "";
-    //   text-align: right;
-    //   position: absolute;
-    //   bottom: 0;
-    //   right: 0;
-    //   width: 40%;
-    //   height: 1.4em;
-    //   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
-    // }
     .fork {
-      @include truncate(.7em, 1.25, 2);
+      @include truncate(.8em, 1.25, 2);
       height: auto;
       margin: 10px 0;
       overflow-y: hidden;
-      .fa {
+      i.item-fork {
+        font-style: normal;
         margin-right: 10px;
+        &:before {
+          content: '\f16b';
+          font-family: 'Fontcons';
+        }
       }
     }
-    // .fade-fork {
-    //   position: relative;
-    //   height: 2.5em; /* exactly two lines */
-    // }
-    // .fade-fork:after {
-    //   content: "";
-    //   text-align: right;
-    //   position: absolute;
-    //   bottom: 0;
-    //   right: 0;
-    //   width: 40%;
-    //   height: 1.25em;
-    //   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
-    // }
     .author {
       @include truncate(.9em, 1.5, 2);
       position: relative;
@@ -274,24 +247,7 @@ img {
       .abstract {
         @include truncate(.9em, 1.4, 4);
         height: auto;
-        // font-size: .9em;
-        // line-height: 1.4em;
-        // overflow: hidden;
       }
-      // .fade-abstract {
-      //   position: relative;
-      //   height: 7em; /* exactly five lines */
-      // }
-      // .fade-abstract:after {
-      //   content: "";
-      //   text-align: right;
-      //   position: absolute;
-      //   bottom: 0;
-      //   right: 0;
-      //   width: 40%;
-      //   height: 1.4em;
-      //   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
-      // }
       .resource-meta {
         font-size: .7em;
         padding: 5px 0 10px 0;

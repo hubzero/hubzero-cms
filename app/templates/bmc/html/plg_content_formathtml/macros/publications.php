@@ -173,7 +173,7 @@ class Publications extends Macro
 
       		// Post
       		$html .= '	  <div class="demo-two-post">';
-      		$html .= '      <div class="demo-two-title fade">';
+      		$html .= '      <div class="demo-two-title">';
       		$html .= '        <a href="' . $pub->link() . '">' . $pub->get('title') . '</a>';
       		$html .= '      </div>';
 
@@ -188,7 +188,7 @@ class Publications extends Macro
 				$p = $this->_db->loadResult();
 				$ancestor = new \Components\Publications\Models\Publication($p, 'default', $v);
 
-      			$html .= '        <span><i class="fa fa-code-branch" aria-hidden="true"></i>';
+      			$html .= '        <span><i class="item-fork" aria-hidden="true"></i>';
 				if ($ancestor->version->get('state') == 1 &&
 					($ancestor->version->get('published_up') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_up') != '0000-00-00 00:00:00' && $ancestor->version->get('published_up') <= Date::toSql())) &&
 					($ancestor->version->get('published_down') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_down') != '0000-00-00 00:00:00' && $ancestor->version->get('published_down') > Date::toSql())))
@@ -254,7 +254,7 @@ class Publications extends Macro
 				ORDER BY `year` ASC, `month` ASC"
 			);
 			$downloads = (int) $this->_db->loadResult();
-        	$html .= '    <a href="' . $pub->link('serve') . '?render=archive"><i class="downloads tooltips fa fa-download" title="Download" aria-hidden="true"></i></a><a href="' . $pub->link() . '/usage?v=' . $pub->version->version_number . '">' . $downloads . ' downloads</a>';
+        	$html .= '    <a href="' . $pub->link('serve') . '?render=archive"><i class="downloads tooltips icon-download" title="Download" aria-hidden="true"></i></a><a href="' . $pub->link() . '/usage?v=' . $pub->version->version_number . '">' . $downloads . ' downloads</a>';
 
         	// Comments
         	// $html .= '    <a href="#"><i class="comments tooltips fa fa-comment-o" title="Comment" aria-hidden="true"></i></a><a href="#">0 comments</a>';
