@@ -98,7 +98,7 @@ class Newsletter extends Relational
 	 */
 	public function automaticAlias($data)
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['name']);
 		$alias = str_replace(' ', '-', $alias);
 		$alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 
@@ -350,7 +350,7 @@ class Newsletter extends Relational
 	public function buildNewsletter($campaign, $stripHtmlAndBodyTags = false)
 	{
 		//are we overriding content with template vs using stories?
-		if ($campaign->get('template_id') == '-1')
+		if ($campaign->get('template') == '-1')
 		{
 			$campaignTemplate = $campaign->html_content;
 			$campaignPrimaryStories = '';

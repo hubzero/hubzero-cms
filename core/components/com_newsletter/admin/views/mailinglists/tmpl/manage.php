@@ -82,12 +82,14 @@ Toolbar::cancel();
 				<td colspan="6"><?php
 				// initiate paging
 				echo $this->list_emails->pagination;
+				$k = 0;
+
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if (count($this->list_emails) > 0) : ?>
-				<?php foreach ($this->list_emails as $k => $le) : ?>
+			<?php if (count($this->list_emails) > 0) { ?>
+				<?php foreach ($this->list_emails as $le) { ?>
 					<tr>
 						<td width="30">
 							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" onclick="isChecked(this.checked);" />
@@ -133,14 +135,14 @@ Toolbar::cancel();
 							 ?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
-			<?php else : ?>
+				<?php $k++; } ?>
+			<?php } else { ?>
 				<tr>
 					<td colspan="6">
 						<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS',"javascript:submitbutton('addemail');"); ?>
 					</td>
 				</tr>
-			<?php endif; ?>
+			<?php } ?>
 		</tbody>
 	</table>
 

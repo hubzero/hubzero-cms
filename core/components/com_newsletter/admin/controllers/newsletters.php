@@ -454,7 +454,7 @@ class Newsletters extends AdminController
 		if ($success)
 		{
 			// Set success message
-			$msg = ($publish) ? 'COM_NEWSLETTER_PUBLISHED_SUCCESS' : 'COM_NEWSLETTER_UNPUBLISHED_SUCCESS';
+			$msg = ($publish) ? Lang::txt('COM_NEWSLETTER_PUBLISHED_SUCCESS') : Lang::txt('COM_NEWSLETTER_UNPUBLISHED_SUCCESS');
 
 			Notify::success($msg);
 		}

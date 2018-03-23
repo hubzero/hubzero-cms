@@ -126,12 +126,14 @@ Joomla.submitbutton = function(pressbutton)
 				<td colspan="7"><?php
 				// initiate paging
 				echo $this->rows->pagination;
+
+				$k = 0;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if ($this->rows->count() > 0) : ?>
-				<?php foreach ($this->rows as $k => $newsletter) : ?>
+			<?php if ($this->rows->count() > 0) { ?>
+				<?php foreach ($this->rows as $newsletter) { ?>
 					<tr>
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" onclick="isChecked(this.checked);" />
@@ -147,7 +149,7 @@ Joomla.submitbutton = function(pressbutton)
 						<td class="priority-4">
 							<?php
 								$activeTemplate = '';
-								if ($newsletter->get('template_id') == '-1')
+								if ($newsletter->get('template') == '-1')
 								{
 									$activeTemplate = Lang::txt('COM_NEWSLETTER_NO_TEMPLATE');
 								}
@@ -185,15 +187,16 @@ Joomla.submitbutton = function(pressbutton)
 							<?php endif; ?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
-			<?php else : ?>
+				<?php $k++;
+					} ?>
+			<?php } else { ?>
 				<tr>
 					<td colspan="7">
 						<?php echo Lang::txt('COM_NEWSLETTER_NO_NEWSLETTER'); ?>
 						<a onclick="javascript:submitbutton('add');" href="#"><?php echo Lang::txt('COM_NEWSLETTER_CREATE_NEWSLETTER'); ?></a>
 					</td>
 				</tr>
-			<?php endif; ?>
+			<?php } ?>
 		</tbody>
 	</table>
 
