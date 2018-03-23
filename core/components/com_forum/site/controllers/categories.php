@@ -240,8 +240,8 @@ class Categories extends SiteController
 		$filters = array(
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
-			'orderBy'    => Request::getVar('orderBy', 'created'),
-			'orderDir'   => Request::getVar('orderDir', 'DESC'),
+			'orderBy'    => Request::getWord('orderBy', 'created'),
+			'orderDir'   => Request::getWord('orderDir', 'DESC'),
 			'state'      => Category::STATE_PUBLISHED,
 			'access'     => User::getAuthorisedViewLevels()
 		);
