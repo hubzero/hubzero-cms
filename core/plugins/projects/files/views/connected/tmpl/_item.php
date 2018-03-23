@@ -17,6 +17,17 @@ $fileDeleteUrl = Route::url($model->link('files') . "&action=delete$subdirPath&a
 $fileDeleteTip = Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP');
 $fileMoveUrl = Route::url($model->link('files') . "&action=move$subdirPath&asset=$urlEncodedItemName");
 $fileMoveTip = Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP');
+
+if ($itemIsFile)
+{
+	$itemSize = $item->getSize();
+	$itemSize = ($itemSize > 0) ? $itemSize : 'N/A';
+}
+else
+{
+	$itemSize = '';
+}
+
 ?>
 
 <tr class="mini faded mline connections">
@@ -42,7 +53,7 @@ $fileMoveTip = Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP');
 		?>
 	</td>
 	<td class="shrinked middle_valign"></td>
-	<td class="shrinked middle_valign"><?php echo ($itemIsFile) ? $item->getSize() : ''; ?></td>
+	<td class="shrinked middle_valign"><?php echo $itemSize; ?></td>
 	<td class="shrinked middle_valign"><?php echo $itemTimestamp; ?></td>
 	<td class="shrinked middle_valign"><?php echo $itemOwner; ?></td>
 	<td class="shrinked middle_valign nojs">
