@@ -389,8 +389,6 @@ class Orders extends AdminController
 		// Do some filter cleaning
 		$setPId = Request::getInt('pId', 0);
 		$setSId = Request::getInt('sId', 0);
-		dlog($setSId);
-		dlog($setPId);
 
 		if ($setPId)
 		{
@@ -461,7 +459,6 @@ class Orders extends AdminController
 				'int'
 			)
 		);
-		dlog($this->view->filters);
 
 		if ($this->view->filters['order'])
 		{
