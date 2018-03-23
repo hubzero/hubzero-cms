@@ -79,12 +79,14 @@ Joomla.submitbutton = function(pressbutton)
 				<td colspan="5"><?php
 				// initiate paging
 				echo $this->mailings->pagination;
+				$k = 0;
+
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if (count($this->mailings) > 0) : ?>
-				<?php foreach ($this->mailings as $k => $mailing) : ?>
+			<?php if (count($this->mailings) > 0) { ?>
+				<?php foreach ($this->mailings as $mailing) { ?>
 					<tr>
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->id; ?>" onclick="isChecked(this.checked);" />
@@ -128,14 +130,14 @@ Joomla.submitbutton = function(pressbutton)
 							?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
-			<?php else : ?>
+				<?php $k++; } ?>
+			<?php } else { ?>
 				<tr>
-					<td colspan="4">
+					<td colspan="5">
 						<?php echo Lang::txt('COM_NEWSLETTER_NO_MAILINGS'); ?>
 					</td>
 				</tr>
-			<?php endif; ?>
+			<?php } ?>
 		</tbody>
 	</table>
 
