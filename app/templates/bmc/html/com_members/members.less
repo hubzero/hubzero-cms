@@ -92,12 +92,17 @@
 
 #page_options {
 	position: relative;
-  margin: -2em 0em 2.5em 2em;
+	margin: -2em 0em 2.5em 2em;
 }
 
-#page_main > #page_options {
-	float: right;
-	margin: 0;
+#page_main {
+
+	position: relative;
+
+	& > #page_options {
+		float: right;
+		margin: 0;
+	}
 }
 
 .member_collections > #page_options {
