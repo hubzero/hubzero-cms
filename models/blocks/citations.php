@@ -304,7 +304,7 @@ class Citations extends Base
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
-
+		unset($cite['uri']);
 		$citation = \Components\Citations\Models\Citation::all()->set($cite);
 		$citation->set('created', $new ? Date::toSql() : $citation->get('created'));
 		$citation->set('uid', $new ? $actor : $citation->get('uid'));
