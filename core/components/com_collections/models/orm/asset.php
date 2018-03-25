@@ -33,6 +33,7 @@ namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Component;
+use Filesystem;
 use Lang;
 use Date;
 

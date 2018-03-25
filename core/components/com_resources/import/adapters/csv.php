@@ -136,6 +136,8 @@ class Csv implements \Components\Resources\Import\Interfaces\Adapter
 
 			// do we have a post convert callback ?
 			$resource = $this->map($resource, $callbacks['postconvert'], $dryRun);
+			$resource->record->resource = $resource->record->resource->toObject();
+			$resource->record->type = $resource->record->type->toObject();
 
 			// add to data array
 			array_push($this->data, $resource);

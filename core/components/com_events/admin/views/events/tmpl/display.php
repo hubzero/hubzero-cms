@@ -201,7 +201,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php endif; ?>
 				</td>
 				<td style="white-space: nowrap;">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&id=' . $row->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&event_id=' . $row->id); ?>">
 						<?php echo Lang::txt('COM_EVENTS_EVENT_NUMBER_OF_PAGES', $pages); ?>
 					</a>
 				</td>

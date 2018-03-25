@@ -32,7 +32,6 @@ HUBzero is a registered trademark of Purdue University.
 <extension type="component" version="1.5">
 	<params>
 		<param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />
-		<param name="license" type="text" size="20" default="" label="License" description="License for resource" />
 		<param name="show_authors" type="list" default="" label="Contributors" description="Show/Hide the list of contributors">
 			<option value="">Use Global</option>
 			<option value="0">Hide</option>

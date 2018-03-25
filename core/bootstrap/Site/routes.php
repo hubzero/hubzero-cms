@@ -338,11 +338,15 @@ $router->rules('parse')->append('limit', function ($uri)
 	$limitstart = $uri->getVar('start');
 	if (!is_null($limitstart))
 	{
-		$uri->setVar('limitstart', (int) $limitstart);
+		$uri->setVar('limitstart', $limitstart);
 		$uri->delVar('start');
 		\App::get('router')->forget('start');
 	}
 	// Make sure the values are sane
+	if ($uri->getVar('limitstart') > 9223372036854775807 || $uri->getVar('limit') > 9223372036854775807)
+	{
+		\App::abort(404, \Lang::txt('Pagination value beyond the bounds of supported integer values.'));
+	}
 	if (intval($uri->getVar('limitstart')) < 0 || intval($uri->getVar('limit')) < 0)
 	{
 		\App::abort(404, \Lang::txt('Invalid pagination value.'));

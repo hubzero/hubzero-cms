@@ -32,19 +32,20 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 use Date;
 
 /**
  * Table class for job stats
  */
-class JobStats extends \JTable
+class JobStats extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -54,7 +55,7 @@ class JobStats extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -76,14 +77,14 @@ class JobStats extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $itemid   Job ID
-	 * @param      string  $category Job type
-	 * @param      string  $type     Record type
-	 * @return     boolean True upon success
+	 * @param   integer  $itemid    Job ID
+	 * @param   string   $category  Job type
+	 * @param   string   $type      Record type
+	 * @return  boolean  True upon success
 	 */
-	public function loadStat($itemid = NULL, $category = NULL, $type = "viewed")
+	public function loadStat($itemid = null, $category = null, $type = "viewed")
 	{
-		if ($itemid === NULL or $category === NULL)
+		if ($itemid === null or $category === null)
 		{
 			return false;
 		}
@@ -102,18 +103,16 @@ class JobStats extends \JTable
 	}
 
 	/**
-	 * Short description for 'getStats'
+	 * Get stats
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $itemid   Job ID
-	 * @param      string  $category Job type
-	 * @param      integer $admin    Admin access?
-	 * @return     mixed False if errors, Array upon success
+	 * @param   integer  $itemid    Job ID
+	 * @param   string   $category  Job type
+	 * @param   integer  $admin     Admin access?
+	 * @return  mixed    False if errors, Array upon success
 	 */
-	public function getStats($itemid = NULL, $category = 'employer', $admin = 0)
+	public function getStats($itemid = null, $category = 'employer', $admin = 0)
 	{
-		if ($itemid === NULL)
+		if ($itemid === null)
 		{
 			return false;
 		}
@@ -163,13 +162,13 @@ class JobStats extends \JTable
 	/**
 	 * Get a view
 	 *
-	 * @param      integer $itemid   Job ID
-	 * @param      string  $category Job type
-	 * @param      string  $type     Record type
-	 * @param      string  $when     Timestamp
-	 * @return     integer
+	 * @param   integer  $itemid    Job ID
+	 * @param   string   $category  Job type
+	 * @param   string   $type      Record type
+	 * @param   string   $when      Timestamp
+	 * @return  integer
 	 */
-	public function getView($itemid=NULL, $category=NULL, $type='viewed', $when ='')
+	public function getView($itemid=null, $category=null, $type='viewed', $when ='')
 	{
 		$lastweek  = Date::of(time() - (7 * 24 * 60 * 60))->format('Y-m-d H:i:s');
 		$lastmonth = Date::of(time() - (30 * 24 * 60 * 60))->format('Y-m-d H:i:s');
@@ -215,23 +214,23 @@ class JobStats extends \JTable
 	/**
 	 * Save view
 	 *
-	 * @param      integer $itemid   Job ID
-	 * @param      string  $category Job type
-	 * @param      string  $type     Record type
-	 * @return     boolean True upon success, False if errors
+	 * @param   integer  $itemid    Job ID
+	 * @param   string   $category  Job type
+	 * @param   string   $type      Record type
+	 * @return  boolean  True upon success, False if errors
 	 */
-	public function saveView($itemid=NULL, $category=NULL, $type='viewed')
+	public function saveView($itemid=null, $category=null, $type='viewed')
 	{
-		if ($itemid=== NULL)
+		if ($itemid=== null)
 		{
 			$itemid = $this->itemid;
 		}
-		if ($category === NULL)
+		if ($category === null)
 		{
 			$category = $this->category;
 		}
 
-		if ($itemid === NULL or $category === NULL)
+		if ($itemid === null or $category === null)
 		{
 			return false;
 		}
@@ -278,7 +277,7 @@ class JobStats extends \JTable
 	/**
 	 * Remove records before a certaind ate
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cleanup()
 	{
@@ -290,13 +289,13 @@ class JobStats extends \JTable
 	/**
 	 * Delete records for an item
 	 *
-	 * @param      integer $itemid   Job ID
-	 * @param      string  $category Job category
-	 * @return     boolean True upon success
+	 * @param   integer  $itemid    Job ID
+	 * @param   string   $category  Job category
+	 * @return  boolean  True upon success
 	 */
 	public function deleteStats($itemid, $category)
 	{
-		if ($itemid === NULL or $category === NULL)
+		if ($itemid === null or $category === null)
 		{
 			$this->setError(Lang::txt('Missing argument'));
 			return false;
@@ -305,4 +304,3 @@ class JobStats extends \JTable
 		$this->_db->query();
 	}
 }
-

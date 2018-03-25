@@ -35,6 +35,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Content\Moderator;
 use Lang;
 use Date;
+use stdClass;
 
 require_once __DIR__ . DS . 'invitee.php';
 require_once __DIR__ . DS . 'applicant.php';
@@ -48,7 +49,7 @@ require_once __DIR__ . DS . 'log.php';
 /**
  * Group model
  */
-class Group extends Relational
+class Group extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table to which the class pertains
@@ -453,5 +454,83 @@ class Group extends Relational
 		$picture = $picture ?: $fallback;
 
 		return $picture;
+	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 *
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object   Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
+	}
+
+	/**
+	 * Namespace used for solr Search
+	 *
+	 * @return  string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'group';
+		return $searchNamespace;
+	}
+
+	/**
+	 * Generate solr search Id
+	 *
+	 * @return  string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->get('id');
+		return $searchId;
+	}
+
+	/**
+	 * Generate search document for Solr
+	 *
+	 * @return  array
+	 */
+	public function searchResult()
+	{
+		$groupTypes = array(1, 3);
+		if (!in_array($this->type, $groupTypes) || $this->get('published') != 1 || $this->get('approved') != 1)
+		{
+			return false;
+		}
+		$group = new \stdClass;
+		if ($this->get('discoverability') == 0)
+		{
+			$access_level = 'public';
+		}
+		else
+		{
+			$access_level = 'private';
+		}
+
+		$group->url = Request::root() . 'groups/' . $this->cn;
+		$group->access_level = $access_level;
+		$group->owner_type = 'group';
+		$group->owner = $this->get('id');
+		$group->id = $this->searchId();
+		$group->title = $this->description;
+		$group->hubtype = $this->searchNamespace();
+		$group->description = \Hubzero\Utility\Sanitize::stripAll($this->public_desc);
+		return $group;
 	}
 }

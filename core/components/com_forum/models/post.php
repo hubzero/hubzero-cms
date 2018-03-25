@@ -82,7 +82,8 @@ class Post extends Relational
 	 **/
 	public $always = array(
 		'title',
-		'scope'
+		'scope',
+		'asset_id'
 	);
 
 	/**
@@ -94,8 +95,7 @@ class Post extends Relational
 		'created',
 		'created_by',
 		'lft',
-		'rgt',
-		'asset_id'
+		'rgt'
 	);
 
 	/**

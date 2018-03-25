@@ -32,6 +32,7 @@
 
 namespace Components\Collections\Tables;
 
+use Hubzero\Database\Table;
 use Date;
 use User;
 use Lang;
@@ -39,7 +40,7 @@ use Lang;
 /**
  * Table class for following something
  */
-class Following extends \JTable
+class Following extends Table
 {
 	/**
 	 * Constructor
@@ -61,9 +62,9 @@ class Following extends \JTable
 	 * @param   string   $follower_type   Follower type
 	 * @return  boolean  True on success
 	 */
-	public function load($oid=NULL, $following_type=null, $follower_id=null, $follower_type=null)
+	public function load($oid=null, $following_type=null, $follower_id=null, $follower_type=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}

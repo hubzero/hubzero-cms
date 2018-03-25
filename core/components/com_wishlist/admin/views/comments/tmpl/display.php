@@ -125,12 +125,19 @@ function submitbutton(pressbutton)
 					$task = 'unpublish';
 					$alt = Lang::txt('COM_WISHLIST_PUBLISHED');
 				break;
+				case 4:
 				case 2:
 					$class = 'trash';
 					$task = 'publish';
 					$alt = Lang::txt('COM_WISHLIST_TRASHED');
 				break;
+				case 3:
+					$class = 'flag';
+					$task = 'publish';
+					$alt = Lang::txt('COM_WISHLIST_FLAGGED');
+				break;
 				case 0:
+				default:
 					$class = 'unpublish';
 					$task = 'publish';
 					$alt = Lang::txt('COM_WISHLIST_UNPUBLISHED');

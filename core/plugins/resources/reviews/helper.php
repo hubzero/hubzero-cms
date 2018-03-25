@@ -178,7 +178,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		$reply->save();
 
 		App::Redirect(
-			Route::url('index.php?option=' . $this->_option . '&id=' . $this->resource->id . '&active=reviews', false)
+			Route::url($this->resource->link() . '&active=reviews', false)
 		);
 	}
 
@@ -241,7 +241,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews', false)
+			Route::url($this->resource->link() . '&active=reviews', false)
 		);
 	}
 
@@ -344,15 +344,35 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		}
 
 		// Calculate the new average rating for the parent resource
-		$this->resource->calculateRating();
-		$this->resource->updateRating();
+		$ratings = \Components\Resources\Reviews\Models\Review::all()
+			->whereEquals('resource_id', $this->resource->get('id'))
+			->rows()
+			->fieldsByKey('rating');
+
+		$totalcount = count($ratings);
+		$totalvalue = 0;
+
+		// Add the ratings up
+		foreach ($ratings as $rating)
+		{
+			$totalvalue = $totalvalue + $rating;
+		}
+
+		// Find the average of all ratings
+		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
+
+		// Round to the nearest half
+		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
+
+		// Recalculate the average rating for the parent resource
+		$this->resource->set('rating', $newrating);
+		$this->resource->set('times_rated', $totalcount);
+		$this->resource->save();
 
 		// Instantiate a helper object and get all the contributor IDs
-		$database = App::get('db');
-
-		$helper = new \Components\Resources\Helpers\Helper($this->resource->id, $database);
-		$helper->getContributorIDs();
-		$users = $helper->contributorIDs;
+		$users = $this->resource->authors()
+			->rows()
+			->fieldsByKey('authorid');
 
 		// Build the subject
 		$subject = Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
@@ -426,12 +446,33 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		$review->set('state', \Components\Resources\Reviews\Models\Review::STATE_DELETED);
 		$review->save();
 
+		$ratings = \Components\Resources\Reviews\Models\Review::all()
+			->whereEquals('resource_id', $this->resource->get('id'))
+			->rows()
+			->fieldsByKey('rating');
+
+		$totalcount = count($ratings);
+		$totalvalue = 0;
+
+		// Add the ratings up
+		foreach ($ratings as $rating)
+		{
+			$totalvalue = $totalvalue + $rating;
+		}
+
+		// Find the average of all ratings
+		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
+
+		// Round to the nearest half
+		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
+
 		// Recalculate the average rating for the parent resource
-		$this->resource->calculateRating();
-		$this->resource->updateRating();
+		$this->resource->set('rating', $newrating);
+		$this->resource->set('times_rated', $totalcount);
+		$this->resource->save();
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&id=' . $this->resource->id . '&active=reviews', false)
+			Route::url($this->resource->link() . '&active=reviews', false)
 		);
 	}
 }

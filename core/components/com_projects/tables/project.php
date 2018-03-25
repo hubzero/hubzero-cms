@@ -35,7 +35,7 @@ namespace Components\Projects\Tables;
 /**
  * Table class for projects
  */
-class Project extends \JTable
+class Project extends \Hubzero\Database\Table
 {
 	/**
 	 * Constructor

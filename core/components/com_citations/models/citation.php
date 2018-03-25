@@ -929,7 +929,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 								$a[] = $author;
 							}
 						}
-						$replace_values[$v] = implode(", ", $a);
+						$replace_values[$v] = implode(", ", array_filter($a));
 					}
 				}
 
@@ -1163,7 +1163,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		if ($this->eprint)
 		{
 			$details .= '<span>|</span>';
-			$details .= '<a href="' . Str::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+			$details .= '<a href="' . Str::ampReplace($this->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
 		}
 
 		return $details;

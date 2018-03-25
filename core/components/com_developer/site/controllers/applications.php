@@ -625,12 +625,12 @@ class Applications extends SiteController
 		// Ask OAuth for an access token to be added to the application
 		$response = $server->handleTokenRequest($request);
 
-		// Redirect back to the main listing with a success message
-		App::redirect(
-			Route::url('index.php?option=com_developer&controller=applications&id=' . $id . '&active=tokens'),
-			Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_PERSONAL_ACCESS_TOKEN_SUCCESS', $response->getParameter('access_token')),
-			'passed'
-		);
+		$this->view
+			->setLayout('view')
+			->set('application', $application)
+			->set('active', 'personalaccesstoken')
+			->set('accesstoken', $response->getParameter('access_token'))
+			->display();
 	}
 
 	/**

@@ -50,7 +50,7 @@ if ($tmpl != 'component') { ?>
 				</li>
 			<?php } ?>
 			<li class="page-index" data-title="<?php echo Lang::txt('COM_WIKI_PAGE_INDEX'); ?>">
-				<a class="icon-index index btn" href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:AllPages'); ?>" title="<?php echo Lang::txt('COM_WIKI_INDEX'); ?>">
+				<a class="icon-list-ul index btn" href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:AllPages'); ?>" title="<?php echo Lang::txt('COM_WIKI_INDEX'); ?>">
 					<span><?php echo Lang::txt('COM_WIKI_INDEX'); ?></span>
 				</a>
 			</li>
@@ -78,7 +78,7 @@ if ($tmpl != 'component') { ?>
 <ul class="sub-menu">
 	<li class="page-text<?php if ($this->controller == 'pages' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
 		<a href="<?php echo Route::url($this->page->link()); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?>">
-			<span><?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?></span>
+			<span class="icon-align-left"><?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?></span>
 		</a>
 	</li>
 	<?php if ($tmpl != 'component') { ?>
@@ -86,25 +86,25 @@ if ($tmpl != 'component') { ?>
 			<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
 				<li class="page-edit<?php if ($this->controller == 'pages' && $this->task == 'edit') { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('edit')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?>">
-						<span><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>
+						<span class="icon-pencil"><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>
 					</a>
 				</li>
 			<?php } ?>
 			<?php if ($this->page->access('view', 'comment')) { ?>
 				<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('comments')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?>">
-						<span><?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?></span>
+						<span class="icon-comments"><?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?></span>
 					</a>
 				</li>
 			<?php } ?>
 				<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('history')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?>">
-						<span><?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?></span>
+						<span class="icon-clock"><?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?></span>
 					</a>
 				</li>
 				<li class="page-pdf">
 					<a href="<?php echo Route::url($this->page->link('pdf')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_PDF'); ?>">
-						<span><?php echo Lang::txt('COM_WIKI_TAB_PDF'); ?></span>
+						<span class="icon-download-alt"><?php echo Lang::txt('COM_WIKI_TAB_PDF'); ?></span>
 					</a>
 				</li>
 			<?php
@@ -112,7 +112,7 @@ if ($tmpl != 'component') { ?>
 					|| (!$this->page->isLocked() && $this->page->access('delete', 'page'))) { ?>
 				<li class="page-delete<?php if ($this->controller == 'pages' && $this->task == 'delete') { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('delete')); ?>" title="<?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?>">
-						<span><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>
+						<span class="icon-remove-sign"><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>
 					</a>
 				</li>
 			<?php } ?>

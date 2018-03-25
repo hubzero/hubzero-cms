@@ -38,7 +38,7 @@ $this->css('applications')
      ->js();
 
 // get active var
-$active = Request::getCmd('active');
+$active = isset($this->active) ? $this->active : Request::getCmd('active');
 ?>
 
 <header id="content-header">
@@ -64,7 +64,8 @@ $active = Request::getCmd('active');
 	<div class="section-inner">
 		<?php
 		echo $this->view($active)
-				  ->set('application', $this->application)
+					->set('application', $this->application)
+					->set('accesstoken', isset($this->accesstoken) ? $this->accesstoken : null)
 				  ->display();
 
 		echo $this->view('_sidebar')

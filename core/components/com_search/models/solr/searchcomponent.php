@@ -35,6 +35,7 @@ namespace Components\Search\Models\Solr;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Components\Search\Helpers\DiscoveryHelper;
+use \Solarium\Exception\HttpException;
 use Component;
 
 require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
@@ -96,14 +97,14 @@ class SearchComponent extends Relational
 	public function getViewOverride($layout = 'solr', $name = 'search')
 	{
 		$base_path = Component::path($this->get('name')) . '/site';
-		$override_path = Component::canonical($this->get('name')) . '/' . $name;
+		$override_path = Component::canonical($this->get('name'));
 		$templatePath = '';
 		if (App::has('template'))
 		{
 			$templatePath = App::get('template')->path . '/html';
 		}
 		$fileName = $layout . '.php';
-		$overrideFile = $templatePath . '/' . $override_path . '/' . $fileName; 	
+		$overrideFile = $templatePath . '/' . $override_path . '/' . $name . '/' . $fileName;
 		$viewFile = $base_path . '/views/' . $name . '/tmpl/' . $fileName;
 		if (file_exists($viewFile) || file_exists($overrideFile))
 		{
@@ -140,11 +141,15 @@ class SearchComponent extends Relational
 			}
 			$results = array(
 				'limit'  => $batchSize,
-				'offset' => $offset + $batchSize
+				'offset' => $offset + $batchSize,
 			);
+			$error = $newQuery->finalize();
+			if ($error)
+			{
+				$results['error'] = $error;
+			}
 			return $results;
 		}
-
 		return false;
 	}
 

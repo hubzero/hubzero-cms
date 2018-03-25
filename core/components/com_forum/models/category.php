@@ -85,7 +85,8 @@ class Category extends Relational
 		'alias',
 		'modified',
 		'modified_by',
-		'scope'
+		'scope',
+		'asset_id'
 	);
 
 	/**
@@ -96,8 +97,7 @@ class Category extends Relational
 	public $initiate = array(
 		'created',
 		'created_by',
-		'ordering',
-		'asset_id'
+		'ordering'
 	);
 
 	/**

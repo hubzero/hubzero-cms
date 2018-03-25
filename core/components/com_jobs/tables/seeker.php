@@ -32,19 +32,20 @@
 
 namespace Components\Jobs\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 use User;
 
 /**
  * Table class for job seeker
  */
-class JobSeeker extends \JTable
+class JobSeeker extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -54,7 +55,7 @@ class JobSeeker extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -70,22 +71,22 @@ class JobSeeker extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $name User id
-	 * @return     boolean True upon success
+	 * @param   integer  $name  User id
+	 * @return  boolean  True upon success
 	 */
-	public function loadSeeker($name=NULL)
+	public function loadSeeker($name=null)
 	{
-		if ($name !== NULL)
+		if ($name !== null)
 		{
 			$this->_tbl_key = 'uid';
 		}
 		$k = $this->_tbl_key;
-		if ($name !== NULL)
+		if ($name !== null)
 		{
 			$this->$k = $name;
 		}
 		$name = $this->$k;
-		if ($name === NULL)
+		if ($name === null)
 		{
 			return false;
 		}
@@ -101,28 +102,28 @@ class JobSeeker extends \JTable
 	/**
 	 * Get a shortlist count for a yser
 	 *
-	 * @param      integer $uid User ID
-	 * @return     integer
+	 * @param   integer  $uid  User ID
+	 * @return  integer
 	 */
 	public function countShortlistedBy($uid=0)
 	{
-		if ($uid == NULL)
+		if ($uid == null)
 		{
 			return 0;
 		}
 
-		$this->_db->setQuery("SELECT COUNT(*) FROM #__jobs_shortlist AS W WHERE W.seeker=" . $this->_db->quote($uid));
+		$this->_db->setQuery("SELECT COUNT(*) FROM `#__jobs_shortlist` AS W WHERE W.seeker=" . $this->_db->quote($uid));
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Count seekers
 	 *
-	 * @param      array   $filters   Filters to build query
-	 * @param      integer $uid       User ID
-	 * @param      integer $excludeme Exclude a user?
-	 * @param      integer $admin     Admin access?
-	 * @return     integer
+	 * @param   array    $filters    Filters to build query
+	 * @param   integer  $uid        User ID
+	 * @param   integer  $excludeme  Exclude a user?
+	 * @param   integer  $admin      Admin access?
+	 * @return  integer
 	 */
 	public function countSeekers($filters, $uid=0, $excludeme = 0, $admin = 0)
 	{
@@ -145,12 +146,12 @@ class JobSeeker extends \JTable
 	/**
 	 * Get a list of seekers
 	 *
-	 * @param      array   $filters   Filters to build query
-	 * @param      integer $uid       User ID
-	 * @param      integer $excludeme Exclude a user?
-	 * @param      integer $admin     Admin access?
-	 * @param      integer $count     Get record counts
-	 * @return     array
+	 * @param   array    $filters    Filters to build query
+	 * @param   integer  $uid        User ID
+	 * @param   integer  $excludeme  Exclude a user?
+	 * @param   integer  $admin      Admin access?
+	 * @param   integer  $count      Get record counts
+	 * @return  array
 	 */
 	public function getSeekers($filters, $uid=0, $excludeme = 0, $admin = 0, $count = 0)
 	{
@@ -208,7 +209,7 @@ class JobSeeker extends \JTable
 			$catquery = "AND (s.sought_cid = " . $this->_db->quote($filters['category']) . " OR  s.sought_cid = 0) ";
 		}
 
-		$query.= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $catquery . ") AS category ";
+		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $catquery . ") AS category ";
 
 		// Types
 		$typequery = 'AND 1=2';
@@ -217,33 +218,37 @@ class JobSeeker extends \JTable
 			$typequery = "AND (s.sought_type = " . $this->_db->quote($filters['type']) . " OR  s.sought_type = 0) ";
 		}
 
-		$query.= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $typequery . ") AS type ";
+		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $typequery . ") AS type ";
 
 		// Matching
-		$query.= "\n , (SELECT (type + category + keywords)) AS matching ";
+		$query .= "\n , (SELECT (type + category + keywords)) AS matching ";
 
 		// Join with profile & current resume
 		$query .= "FROM #__xprofiles AS x JOIN #__jobs_seekers AS s ON s.uid=x.uidNumber JOIN #__jobs_resumes AS r ON r.uid=s.uid  ";
 
 		// Get shortlisted only
-		$query .= 	$filters['filterby'] == 'shortlisted' ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
+		$query .= $filters['filterby'] == 'shortlisted' ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
 
 		// Get applied only
-		$query .= 	$filters['filterby'] == 'applied' ? " JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->quote($empid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
+		$query .= $filters['filterby'] == 'applied' ? " JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->quote($empid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
 
 		// Ordering
 		$query .= "ORDER BY ";
 		switch ($filters['sortby'])
 		{
-			case 'lastupdate':  $query .= 'r.created DESC ';
-								break;
-			case 'position':    $query .= 's.sought_cid ASC, s.sought_type ASC';
-								break;
-			case 'bestmatch':   $query .= 'matching DESC ';
-								break;
-			default: 			$query .= 'r.created DESC ';
-								break;
+			case 'lastupdate':
+				$query .= 'r.created DESC ';
+				break;
+			case 'position':
+				$query .= 's.sought_cid ASC, s.sought_type ASC';
+				break;
+			case 'bestmatch':
+				$query .= 'matching DESC ';
+				break;
+			default:
+				$query .= 'r.created DESC ';
+				break;
 		}
 
 		// Paging
@@ -275,14 +280,14 @@ class JobSeeker extends \JTable
 	/**
 	 * Get a seeker
 	 *
-	 * @param      integer $uid   User ID
-	 * @param      integer $eid   Employer ID
-	 * @param      integer $admin Admin access?
-	 * @return     array
+	 * @param   integer  $uid    User ID
+	 * @param   integer  $eid    Employer ID
+	 * @param   integer  $admin  Admin access?
+	 * @return  array
 	 */
 	public function getSeeker($uid, $eid=0, $admin = 0)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			return false;
 		}
@@ -302,4 +307,3 @@ class JobSeeker extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

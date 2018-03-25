@@ -39,9 +39,9 @@ require_once Component::path('com_search') . DS . 'helpers' . DS . 'discoveryhel
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 
-use \Components\Search\Helpers\DiscoveryHelper;
-use \Components\Search\Models\Solr\SearchComponent;
-use \Hubzero\Search\Index;
+use Components\Search\Helpers\DiscoveryHelper;
+use Components\Search\Models\Solr\SearchComponent;
+use Hubzero\Search\Index;
 
 class plgSearchSolr extends \Hubzero\Plugin\Plugin
 {
@@ -54,25 +54,44 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAddIndex($table, $model)
 	{
-		$modelName = '';
-		if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
+		$modelClass = new ReflectionClass($model);
+		$modelNamespace = explode('\\', $modelClass->getNamespaceName());
+		$componentName = strtolower($modelNamespace[1]);
+		$searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
+		if ($searchComponent && $searchComponent->get('state') == 1)
 		{
-			$extensionName = strtolower(explode('\\', $modelName)[1]);
-			$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
-			if ($searchComponent->get('state') == 1)
+			$searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
+			$indexResultModel = $model;
+			if ($searchModel === false)
+			{
+				$searchModel = $searchComponent->getSearchableModel();
+				$searchModelBlank = new $searchModel;
+				$searchModelTable = $searchModelBlank->getTableName();
+				if ($table != $searchModelTable)
+				{
+					return false;
+				}
+				$indexResultModel = $searchModel::one($model->get('id'));
+			}
+
+			if ($indexResultModel)
 			{
 				$config = Component::params('com_search');
 				$commitWithin = $config->get('solr_commit');
-				$index = new \Hubzero\Search\Index($config);
-				$modelIndex = $model->searchResult();
+				$index = new Hubzero\Search\Index($config);
+				$modelIndex = $indexResultModel->searchResult();
 				if ($modelIndex !== false)
 				{
-					$index->updateIndex($modelIndex, $commitWithin);
+					$message = $index->updateIndex($modelIndex, $commitWithin);
 				}
 				else
 				{
-					$modelIndexId = $model->searchId();
-					$index->delete($modelIndexId);
+					$modelIndexId = $indexResultModel->searchId();
+					$message = $index->delete($modelIndexId);
+				}
+				if ($message)
+				{
+					Notify::error($message);
 				}
 			}
 		}
@@ -90,14 +109,14 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 		// @TODO: Implement mechanism to send to Solr index
 		// This Event is called in the Relational save() method.
 		$modelName = '';
-		if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
+		if ($modelName = Components\Search\Helpers\DiscoveryHelper::isSearchable($model))
 		{
 			$extensionName = strtolower(explode('\\', $modelName)[1]);
 			$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
 			if ($searchComponent->get('state') == 1)
 			{
 				$config = Component::params('com_search');
-				$index = new \Hubzero\Search\Index($config);
+				$index = new Hubzero\Search\Index($config);
 				$modelIndexId = $model->searchId();
 				$index->delete($modelIndexId);
 			}

@@ -780,7 +780,7 @@ abstract class Cart
 				foreach ($allSkuInfo as $sId => $skuInfo)
 				{
 					$info = array();
-					$info['info'] = false;
+					$info['info'] = new \stdClass();
 					$info['meta'] = false;
 
 					$transactionInfo = new \stdClass();

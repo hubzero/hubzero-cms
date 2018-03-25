@@ -34,6 +34,7 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 use Event;
 use User;
+use stdClass;
 
 include_once __DIR__ . '/owner.php';
 include_once __DIR__ . '/description.php';
@@ -46,7 +47,7 @@ include_once __DIR__ . '/type.php';
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Project extends Relational
+class Project extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * State constants
@@ -495,4 +496,89 @@ class Project extends Relational
 
 		return $src;
 	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 *
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object   Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
+	}
+
+	/**
+	 * Namespace used for solr Search
+	 *
+	 * @return  string
+	 */
+	public function searchNamespace()
+	{
+		$searchNamespace = 'project';
+		return $searchNamespace;
+	}
+
+	/**
+	 * Generate solr search Id
+	 *
+	 * @return  string
+	 */
+	public function searchId()
+	{
+		$searchId = $this->searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
+
+	/**
+	 * Generate search document for Solr
+	 *
+	 * @return  array
+	 */
+	public function searchResult()
+	{
+		if ($this->get('state') != 1)
+		{
+			return false;
+		}
+		$page = new stdClass;
+		if ($this->get('state') == 1 && $this->get('private') < 1)
+		{
+			$access_level = 'public';
+		}
+		else
+		{
+			$access_level = 'private';
+		}
+
+		$page->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
+		$page->access_level = $access_level;
+		$page->owner_type = 'user';
+		$team = array();
+		$team = array_map(function($member){
+				if ($member['status'] == 1 && !empty($member['userid']) && $member['userid'] > 0)
+				{
+					return $member['userid'];
+				}
+			}, $this->team->toArray());
+		$page->owner = $team;
+		$page->id = $this->searchId();
+		$page->title = $this->title;
+		$page->hubtype = $this->searchNamespace();
+		$page->description = \Hubzero\Utility\Sanitize::stripAll($this->about);
+		return $page;
+	}
+
 }

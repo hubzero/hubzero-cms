@@ -37,6 +37,7 @@ use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
 use Components\Resources\Models\Rating;
 use Components\Resources\Models\Author;
+use Components\Resources\Models\License;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Html;
@@ -124,6 +125,11 @@ class Items extends AdminController
 				$this->_option . '.resources.type',
 				'type',
 				''
+			),
+			'license' => Request::getState(
+				$this->_option . '.resources.license',
+				'license',
+				'all'
 			)
 		);
 
@@ -156,6 +162,11 @@ class Items extends AdminController
 			$query->whereEquals('published', (int)$filters['status']);
 		}
 
+		if ($filters['license'] != 'all')
+		{
+			$query->whereEquals('license', $filters['license']);
+		}
+
 		$rows = $query
 			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
@@ -164,11 +175,16 @@ class Items extends AdminController
 		// Get major types
 		$types = Type::getMajorTypes();
 
+		$licenses = License::all()
+			->order('text', 'asc')
+			->rows();
+
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
 			->set('rows', $rows)
 			->set('types', $types)
+			->set('licenses', $licenses)
 			->display();
 	}
 
@@ -750,6 +766,10 @@ class Items extends AdminController
 			$lists['authors'] = $authorslist->loadTemplate();
 		}
 
+		$licenses = License::all()
+			->order('text', 'asc')
+			->rows();
+
 		// Output the HTML
 		$this->view
 			->set('row', $row)
@@ -759,6 +779,7 @@ class Items extends AdminController
 			->set('rconfig', $this->config)
 			->set('params', $params)
 			->set('return', $return)
+			->set('licenses', $licenses)
 			->setLayout('edit')
 			->setErrors($this->getErrors())
 			->display();

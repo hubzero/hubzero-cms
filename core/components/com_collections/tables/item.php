@@ -32,6 +32,7 @@
 
 namespace Components\Collections\Tables;
 
+use Hubzero\Database\Table;
 use Date;
 use User;
 use Lang;
@@ -39,7 +40,7 @@ use Lang;
 /**
  * Table class for collection items
  */
-class Item extends \JTable
+class Item extends Table
 {
 	/**
 	 * Constructor
@@ -106,7 +107,7 @@ class Item extends \JTable
 	 * @param   string   $oid  Description
 	 * @return  boolean  True on success
 	 */
-	public function loadByDescription($oid=NULL)
+	public function loadByDescription($oid=null)
 	{
 		$fields = array(
 			'description' => trim((string) $oid)
@@ -121,7 +122,7 @@ class Item extends \JTable
 	 * @param   string   $oid  Title
 	 * @return  boolean  True on success
 	 */
-	public function loadByTitle($oid=NULL)
+	public function loadByTitle($oid=null)
 	{
 		$fields = array(
 			'title' => trim((string) $oid)

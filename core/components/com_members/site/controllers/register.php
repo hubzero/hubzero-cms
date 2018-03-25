@@ -1324,7 +1324,7 @@ class Register extends SiteController
 			// perhaps we can log them in with that and their token
 			$email = Request::getVar('email', false);
 
-			if ($email != false)
+			if ($email != false && Plugin::isEnabled('authentication', 'emailtoken'))
 			{
 				// An email was provided
 				// Get the Users controller

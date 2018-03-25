@@ -31,8 +31,9 @@
  */
 
 namespace Components\Collections\Site\Controllers;
-
+require_once Component::path('com_collections') . '/models/orm/post.php';
 use Components\Collections\Models\Collection;
+use Components\Collections\Models\Orm\Post;
 use Components\Collections\Models\Archive;
 use Hubzero\Component\SiteController;
 use Document;

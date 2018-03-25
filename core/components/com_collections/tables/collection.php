@@ -32,6 +32,7 @@
 
 namespace Components\Collections\Tables;
 
+use Hubzero\Database\Table;
 use Date;
 use User;
 use Lang;
@@ -39,7 +40,7 @@ use Lang;
 /**
  * Table class for collections
  */
-class Collection extends \JTable
+class Collection extends Table
 {
 	/**
 	 * Constructor
@@ -62,9 +63,9 @@ class Collection extends \JTable
 	 * @param   string   $object_type  Object type
 	 * @return  boolean  True on success
 	 */
-	public function load($oid=NULL, $object_id=null, $object_type=null)
+	public function load($oid=null, $object_id=null, $object_type=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}

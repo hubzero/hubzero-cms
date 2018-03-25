@@ -95,6 +95,11 @@ class Searchable extends AdminController
 				$recordsIndexed['state'] = 1;
 				$recordsIndexed['link'] = Route::url('index.php?option=' . $this->_option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
 			}
+			elseif (isset($recordsIndexed['error']))
+			{
+				$error = $recordsIndexed['error'];
+				Notify::error($error);
+			}
 			else
 			{
 				$component->set('indexed_records', $recordsIndexed['offset']);
@@ -126,8 +131,9 @@ class Searchable extends AdminController
 		foreach ($components as $component)
 		{
 			$searchIndex = new \Hubzero\Search\Index($this->config);
-			$componentName = Inflector::singularize($component->name);
-			$deleteQuery = array('hubtype' => $componentName);
+			$componentSearchModel = $component->getSearchableModel();
+			$modelNamespace = $componentSearchModel::blank()->searchNamespace();
+			$deleteQuery = array('hubtype' => $modelNamespace);
 			$searchIndex->delete($deleteQuery);
 			$component->set('state', 0);
 			$date = Date::of()->toSql();
@@ -135,7 +141,6 @@ class Searchable extends AdminController
 			$component->set('indexed_records', 0);
 			if ($component->save())
 			{
-				$searchIndex->optimize();
 				Notify::success(Lang::txt('COM_SEARCH_DELETE_COMPONENT_SUCCESS', ucfirst($component->name)));
 			}
 		}

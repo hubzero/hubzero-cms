@@ -32,6 +32,7 @@
 
 namespace Components\Collections\Tables;
 
+use Hubzero\Database\Table;
 use Component;
 use Filesystem;
 use Date;
@@ -41,7 +42,7 @@ use Lang;
 /**
  * Table class for collection item asset
  */
-class Asset extends \JTable
+class Asset extends Table
 {
 	/**
 	 * Constructor

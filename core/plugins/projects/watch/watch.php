@@ -300,10 +300,10 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 				->join($l, $l . '.id', $r . '.log_id')
 				->whereIn($r . '.scope', array('project'))
 				->whereEquals($r . '.scope_id', $project->get('id'))
-				->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
-				->whereEquals($l . '.parent', 0);
+				->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+				//->whereEquals($l . '.parent', 0);
 
-			if ($activities)
+			if (!empty($activities))
 			{
 				$recipient->whereIn($l . '.id', $activities);
 			}

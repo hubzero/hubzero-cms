@@ -250,22 +250,31 @@ class Migration20151001185523ComKb extends Base
 	 */
 	public function category($category)
 	{
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'category.php');
+		$id = 0;
 
-		$tbl = new \JTableCategory($this->db);
-		$tbl->title       = $category->title;
-		$tbl->alias       = $category->alias;
-		$tbl->description = $category->description;
-		$tbl->extension   = 'com_kb';
-		$tbl->published   = $category->state;
-		$tbl->access      = $category->access;
-		$tbl->parent_id   = ($category->section ? $category->section : 1);
-		$tbl->language    = '*';
-		$tbl->level       = $category->level;
-		$tbl->path        = $category->path;
-		$tbl->store();
+		if (is_file(\Component::path('com_categories') . DS . 'models' . DS . 'category.php'))
+		{
+			include_once \Component::path('com_categories') . DS . 'models' . DS . 'category.php';
 
-		return $tbl->id;
+			// NOTE: We're using a model to do this as creating an entry involves
+			// multiple queries due to the 'nested set' structure of the table
+			$tbl = \Components\Categories\Models\Category::blank();
+			$tbl->set('title', $category->title);
+			$tbl->set('alias', $category->alias);
+			$tbl->set('description', $category->description);
+			$tbl->set('extension', 'com_kb');
+			$tbl->set('published', $category->state);
+			$tbl->set('access', $category->access);
+			$tbl->set('parent_id', ($category->section ? $category->section : 1));
+			$tbl->set('language', '*');
+			$tbl->set('level', $category->level);
+			$tbl->set('path', $category->path);
+			$tbl->save();
+
+			$id = $tbl->get('id');
+		}
+
+		return $id;
 	}
 
 	/**
@@ -276,15 +285,20 @@ class Migration20151001185523ComKb extends Base
 	 */
 	public function section($tbl)
 	{
-		$category = new \JTableCategory($this->db);
-		$category->title   = $tbl->title;
-		$category->alias   = $tbl->alias;
-		$category->description = $tbl->description;
-		$category->state   = $tbl->published;
-		$category->access  = $tbl->access;
-		$category->section = $tbl->parent_id;
-		$category->store();
+		$id = 0;
 
-		return $category->id;
+		if ($this->db->tableExists('#__faq_categories'))
+		{
+			$query = "INSERT INTO `#__faq_categories` (`id`, `title`, `alias`, `description`, `section`, `state`, `access`, `asset_id`)
+					VALUES (NULL, " . $this->db->quote($tbl->title) . ", " . $this->db->quote($tbl->alias) . ", " . $this->db->quote($tbl->description) . ", " . $this->db->quote($tbl->parent_id) . ", " . $this->db->quote($tbl->published) . ", " . $this->db->quote($tbl->access) . ", NULL)";
+			$this->db->setQuery($query);
+			$this->db->query();
+
+			$query = "SELECT id FROM `#__faq_categories` WHERE `title`=" . $this->db->quote($tbl->title) . " AND `alias`=" . $this->db->quote($tbl->alias) . " AND `section`=" . $this->db->quote($tbl->parent_id) . " LIMIT 1";
+			$this->db->setQuery($query);
+			$id = $this->db->loadResult();
+		}
+
+		return $id;
 	}
 }

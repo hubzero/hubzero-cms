@@ -80,7 +80,8 @@ class Section extends Relational
 	 **/
 	public $always = array(
 		'alias',
-		'scope'
+		'scope',
+		'asset_id'
 	);
 
 	/**
@@ -91,8 +92,7 @@ class Section extends Relational
 	public $initiate = array(
 		'created',
 		'created_by',
-		'ordering',
-		'asset_id'
+		'ordering'
 	);
 
 	/**

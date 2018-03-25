@@ -66,6 +66,8 @@ class Record extends Obj
 	 */
 	public function __construct($raw, $options = array(), $mode = 'UPDATE')
 	{
+		static $fields = null;
+
 		// store our incoming data
 		$this->raw      = $raw;
 		$this->_options = $options;
@@ -90,6 +92,26 @@ class Record extends Obj
 
 		// bind data
 		$this->bind();
+	}
+
+	/**
+	 * Get the columns from database table.
+	 *
+	 * @return  mixed  An array of the field names, or false if an error occurs.
+	 */
+	public function getFields()
+	{
+		static $cache = null;
+
+		if ($cache === null)
+		{
+			// Lookup the fields for this table only once.
+			$fields = $this->_database->getTableColumns($this->record->resource->getTableName(), false);
+
+			$cache = $fields;
+		}
+
+		return $cache;
 	}
 
 	/**
@@ -142,7 +164,7 @@ class Record extends Obj
 	public function check()
 	{
 		// run save check method
-		if (!$this->record->resource->check())
+		if (!$this->record->resource->validate())
 		{
 			array_push($this->record->errors, $this->record->resource->getError());
 		}
@@ -309,8 +331,17 @@ class Record extends Obj
 			$this->raw->access = (int) $this->_options['access'];
 		}
 
-		// bind resource data
-		$this->record->resource->set($this->raw);
+		$raw = (array)$this->raw;
+		$props = $this->getFields();
+
+		foreach ($raw as $key => $val)
+		{
+			if (isset($props[$key]))
+			{
+				// bind resource data
+				$this->record->resource->set($key, $val);
+			}
+		}
 
 		// resource params
 		$params = new \Hubzero\Config\Registry($this->record->resource->get('params'));
@@ -332,8 +363,10 @@ class Record extends Obj
 			$this->raw->custom_fields = array();
 		}
 
+		$this->record->type = $this->record->resource->type;
+
 		// bind custom fields to types custom fields
-		if (isset($this->record->type->id))
+		if ($this->record->type->id)
 		{
 			$resourcesElements = new \Components\Resources\Models\Elements((array) $this->raw->custom_fields, $this->record->type->customFields);
 			$customFieldsHtml  = $resourcesElements->toDatabaseHtml();

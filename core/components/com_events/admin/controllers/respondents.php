@@ -32,16 +32,18 @@
 
 namespace Components\Events\Admin\Controllers;
 
-use Components\Events\Tables\Respondent;
-use Components\Events\Tables\Event;
+use Components\Events\Models\Orm\Respondent;
+use Components\Events\Models\Orm\Event;
 use Components\Events\Helpers\Csv;
 use Hubzero\Component\AdminController;
 use Exception;
 use Request;
-use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
+
+require_once dirname(dirname(__DIR__)) . '/models/orm/event.php';
 
 /**
  * Events controller class for respondents
@@ -49,41 +51,12 @@ use App;
 class Respondents extends AdminController
 {
 	/**
-	 * View respondent details
-	 *
-	 * @return     void
-	 */
-	public function respondentTask()
-	{
-		$this->view->resp = new Respondent(array(
-			'respondent_id' => Request::getInt('id', 0)
-		));
-
-		// Incoming
-		$id = Request::getInt('event_id', 0);
-
-		$this->view->event = new Event($this->database);
-		$this->view->event->load($id);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
 	 * Display a list of respondents
 	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
-		$this->view->resp = $this->getRespondents();
-
 		// Incoming
 		$ids = Request::getVar('id', array(0));
 		$id = $ids[0];
@@ -96,89 +69,165 @@ class Respondents extends AdminController
 			return;
 		}
 
-		$this->view->event = new Event($this->database);
-		$this->view->event->load($id);
+		// Get filters
+		$filters = array(
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'registered'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			)
+		);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$event = Event::oneOrFail($id);
+
+		$rows = $event->respondents()
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('event', $event)
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
-	 * Get respondents for an event
+	 * View respondent details
 	 *
-	 * @return     object
+	 * @return  void
 	 */
-	private function getRespondents()
+	public function respondentTask()
 	{
-		$sorting = Request::getVar('sortby', 'registered DESC');
-		$filters = array(
-			'search' => urldecode(Request::getString('search')),
-			'id'     => Request::getVar('id', array()),
-			'sortby' => $sorting == 'registerby DESC' ? 'registered DESC' : $sorting,
-			'limit'  => Request::getState($this->_option . '.limit', 'limit', Config::get('list_limit'), 'int'),
-			'offset' => Request::getInt('limitstart', 0)
-		);
-		if (!$filters['limit'])
-		{
-			$filters['limit'] = 30;
-		}
-		return new Respondent($filters);
+		$event = Event::oneOrFail(Request::getInt('event_id', 0));
+
+		$resp = Respondent::oneOrFail(Request::getInt('id', 0));
+
+		// Output the HTML
+		$this->view
+			->set('event', $event)
+			->set('resp', $respondent)
+			->display();
 	}
 
 	/**
 	 * Download a list of respondents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
+		$filters = array(
+			'event_id' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.event_id',
+				'id',
+				array()
+			),
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'registered'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			)
+		);
+
+		$query = Respondent::all();
+
+		if ($filters['search'])
+		{
+			$query->whereLike('first_name', strtolower((string)$filters['search']), 1)
+				->orWhereLike('last_name', strtolower((string)$filters['search']), 1)
+				->resetDepth();
+		}
+
+		if ($filters['event_id'])
+		{
+			if (!is_array($filters['event_id']))
+			{
+				$filters['event_id'] = array($filters['event_id']);
+			}
+			if (!empty($filters['event_id']))
+			{
+				$query->whereIn('event_id', $filters['event_id']);
+			}
+		}
+
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		Csv::downloadlist($this->getRespondents(), $this->_option);
 	}
 
 	/**
 	 * Remove one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming
-		$workshop = Request::getInt('workshop', 0);
-		$ids = Request::getVar('rid', array());
-
-		// Get the single ID we're working with
-		if (!is_array($ids))
+		if (!User::authorise('core.delete', $this->_option))
 		{
-			$ids = array();
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Do we have any IDs?
-		if (!empty($ids))
-		{
-			$r = new Respondent(array());
+		// Incoming
+		$ids = Request::getVar('rid', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id)
+		$removed = 0;
+
+		foreach ($ids as $id)
+		{
+			$entry = Respondent::oneOrFail(intval($id));
+
+			// Delete the entry
+			if (!$entry->destroy())
 			{
-				// Remove the profile
-				$r->delete($id);
+				Notify::error($entry->getError());
+				continue;
 			}
+
+			// Trigger before delete event
+			\Event::trigger('onEventsAfterDeleteRespondent', array($id));
+
+			$removed++;
+		}
+
+		if ($removed)
+		{
+			Notify::success(Lang::txt('COM_EVENTS_RESPONDENT_REMOVED'));
 		}
 
 		// Output messsage and redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $workshop, false),
-			Lang::txt('COM_EVENTS_RESPONDENT_REMOVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . Request::getInt('event', 0), false)
 		);
 	}
 }
-

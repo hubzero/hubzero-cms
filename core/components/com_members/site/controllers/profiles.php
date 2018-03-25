@@ -903,6 +903,17 @@ class Profiles extends SiteController
 			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
 		);
+		foreach ($cats as $k => $c)
+		{
+			if ($tab == key($c))
+			{
+				Pathway::append(
+					$c[$tab],
+					'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&active=' . $tab
+				);
+				break;
+			}
+		}
 
 		// Output HTML
 		$this->view

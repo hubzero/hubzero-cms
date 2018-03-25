@@ -350,7 +350,7 @@ class Newsletter extends Relational
 	public function buildNewsletter($campaign, $stripHtmlAndBodyTags = false)
 	{
 		//are we overriding content with template vs using stories?
-		if ($campaign->template == '-1')
+		if ($campaign->get('template_id') == '-1')
 		{
 			$campaignTemplate = $campaign->html_content;
 			$campaignPrimaryStories = '';
