@@ -1,8 +1,0 @@
-@import url('/core/plugins/groups/calendar/assets/css/calendar.css');
-
-.upload:before {
-	content: '\f046';
-	top: 0;
-	font-size: 70px;
-	line-height: 100px;
-}

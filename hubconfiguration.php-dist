@@ -1,7 +1,0 @@
-<?php
-class HubConfig {
-    var $forgeRepoURL = 'https://myhub-fqdn';
-    var $svn_user = 'hubrepo';
-    var $svn_password = 'hubrepo-password';
-}
-?>
