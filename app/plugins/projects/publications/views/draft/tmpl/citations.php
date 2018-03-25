@@ -66,15 +66,14 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 				?>
 					<ul class="itemlist" id="citations-list">
 					<?php foreach ($this->pub->_citations as $cite) {
-
 							$citeText = $cite->formatted
 										? '<p>' . $cite->formatted . '</p>'
-										: \Components\Citations\Helpers\Format::formatReference($cite, '');
+										: $cite->formatted();
 						 ?>
 						<li>
 							<span class="item-options">
-									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->id . '&p=' . $props); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->id . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>
