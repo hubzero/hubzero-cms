@@ -34,7 +34,7 @@ use Components\Publications\Models\Block as Base;
 use stdClass;
 use Request;
 use Event;
-use Lang;
+// use Lang;
 use User;
 use Date;
 
@@ -831,10 +831,10 @@ class Authors extends Base
 			$manifest = array(
 				'name'         => 'authors',
 				'label'        => 'Authors',
-				'title'        => 'Publication Authors',
-				'draftHeading' => 'Who are the authors?',
-				'draftTagline' => 'Build the author list',
-				'about'        => '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
+				'title'        => Lang::txt('COM_PUBLICATIONS_BLOCKS_AUTHORS_TITLE'),
+				'draftHeading' => Lang::txt('COM_PUBLICATIONS_BLOCKS_AUTHORS_DRAFT_HEADING'),
+				'draftTagline' => Lang::txt('COM_PUBLICATIONS_BLOCKS_AUTHORS_DRAFT_TAGLINE'),
+				'about'        => Lang::txt('COM_PUBLICATIONS_BLOCKS_AUTHORS_ABOUT'),
 				'adminTips'    => '',
 				'elements'     => array(),
 				'params'       => array(

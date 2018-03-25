@@ -79,10 +79,10 @@ class Publications extends SiteController
 
 		// Register tasks
 		$this->registerTask('view', 'page');
+		$this->registerTask('watch', 'page');
 		$this->registerTask('download', 'serve');
 		$this->registerTask('video', 'serve');
 		$this->registerTask('play', 'serve');
-		$this->registerTask('watch', 'serve');
 
 		$this->registerTask('wiki', 'wikipage');
 		$this->registerTask('submit', 'contribute');
@@ -239,7 +239,8 @@ class Publications extends SiteController
 	{
 		if (!$this->_title)
 		{
-			$this->_title = Lang::txt(strtoupper($this->_option));
+			// $this->_title = Lang::txt(strtoupper($this->_option));
+			$this->_title = 'Resources';
 			if ($this->_task)
 			{
 				switch ($this->_task)
@@ -471,7 +472,8 @@ class Publications extends SiteController
 		);
 
 		// Get type if not given
-		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+		// $this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
+		$this->_title = 'Resources: ';
 		if ($this->view->filters['category'] != '')
 		{
 			$t->load($this->view->filters['category']);

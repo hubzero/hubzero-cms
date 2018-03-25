@@ -519,9 +519,9 @@ class Content extends Base
 			$manifest = array(
 				'name' 			=> 'content',
 				'label' 		=> 'Content',
-				'title' 		=> 'Publication Content',
-				'draftHeading' 	=> 'Let\'s work on publication content',
-				'draftTagline'	=> 'Here is what\'s required:',
+				'title' 		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_CONTENT_TITLE'),
+				'draftHeading' 	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_CONTENT_DRAFT_HEADING'),
+				'draftTagline'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_CONTENT_DRAFT_TAGLINE'),
 				'about'			=> '',
 				'adminTips'		=> '',
 				'elements' 		=> array(

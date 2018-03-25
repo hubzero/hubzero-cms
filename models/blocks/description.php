@@ -433,24 +433,24 @@ class Description extends Base
 			$manifest = array(
 				'name' 			=> 'description',
 				'label' 		=> 'Description',
-				'title' 		=> 'Publication Description',
-				'draftHeading' 	=> 'Name and describe your publication',
-				'draftTagline'	=> 'Here is what\'s required:',
+				'title' 		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_TITLE'),
+				'draftHeading' 	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_DRAFT_HEADING'),
+				'draftTagline'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_DRAFT_TAGLINE'),
 				'about'			=> '',
 				'adminTips'		=> '',
 				'elements' 	=> array(
 					1 => array (
 						'name' 		=> 'metadata',
 						'type' 		=> 'metadata',
-						'label'		=> 'Publication Title',
-						'about'		=> '<p>Pick a descriptive yet concise publication title that will quickly tell users about its content.</p>',
+						'label'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_TITLE'),
+						'about'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_TITLE_ABOUT'),
 						'adminTips'	=> '',
 						'params' 	=> array (
 							'required' 		=> 1,
 							'aliasmap' 		=> 'title',
 							'field' 		=> 'title',
 							'input' 		=> 'text',
-							'placeholder'	=> 'Type publication title',
+							'placeholder'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_TITLE_PLACEHOLDER'),
 							'default'		=> 'Untitled Draft',
 							'maxlength' 	=> '255'
 						)
@@ -458,15 +458,15 @@ class Description extends Base
 					2 => array (
 						'name' 		=> 'metadata',
 						'type' 		=> 'metadata',
-						'label'		=> 'Publication Abstract',
-						'about'		=> '<p>Provide a short (max 255 characters) abstract for your publication</p>',
+						'label'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_ABSTRACT'),
+						'about'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_ABSTRACT_ABOUT'),
 						'adminTips'	=> '',
 						'params' 	=> array (
 							'required' 		=> 1,
 							'aliasmap' 		=> 'abstract',
 							'field' 		=> 'abstract',
 							'input' 		=> 'textarea',
-							'placeholder'	=> 'Type publication abstract',
+							'placeholder'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_ABSTRACT_PLACEHOLDER'),
 							'default'		=> '',
 							'maxlength' 	=> '255',
 							'cols'			=> '50',
@@ -476,15 +476,15 @@ class Description extends Base
 					3 => array (
 						'name' 		=> 'metadata',
 						'type' 		=> 'metadata',
-						'label'		=> 'Publication Description',
-						'about'		=> '<p>Describe your publication in detail</p>',
+						'label'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_DESCRIPTION'),
+						'about'		=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_DESCRIPTION_ABOUT'),
 						'adminTips'	=> '',
 						'params' 	=> array (
 							'required' 		=> 1,
 							'aliasmap' 		=> 'description',
 							'field' 		=> 'description',
 							'input' 		=> 'editor',
-							'placeholder'	=> 'Describe publication',
+							'placeholder'	=> Lang::txt('COM_PUBLICATIONS_BLOCKS_DESCRIPTION_ELEMENT_DESCRIPTION_PLACEHOLDER'),
 							'default'		=> '',
 							'maxlength' 	=> '3000',
 							'cols'			=> '50',
@@ -498,7 +498,7 @@ class Description extends Base
 			if ($new == true)
 			{
 				$manifest['label']			= 'Metadata';
-				$manifest['title']			= 'Publication Metadata';
+				$manifest['title']			= 'Resource Metadata';
 				$manifest['draftHeading'] 	= 'Provide some metadata';
 				$manifest['elements'] 		= array(1 => $this->getElementManifest());
 			}
