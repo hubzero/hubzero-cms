@@ -33,30 +33,28 @@
 <div class="result <?php echo (isset($this->result['access_level']) ? $this->result['access_level'] : 'public'); ?>" id="<?php echo $this->result['id']; ?>">
 <div class="result-body">
 	<!-- Cateogory : mandatory -->
-	<?php if (isset($this->result['hubtype'])):?>
-		<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
-	<?php endif; ?>
+	<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
 	<br/>
+	<div class="result-subtype">
 	<span class="result-category"><?php echo $this->result['type'];?></span>
-	<div class="result-badges">
-		<ul class="tags">
-			<?php 
-				$baseTagUrl = Route::url('index.php?option=com_search&terms=' . $this->terms); 
-			?>
-			<?php if (isset($this->result['_childDocuments_'])): ?>	
-				<?php foreach ($this->result['_childDocuments_'] as $index => $badge): ?>
-					<?php if (isset($badge['badge_b']) && $badge['badge_b']): ?>
-						<li>
-							<?php $description = !empty($badge['description']) ? $badge['description'] : $badge['title'][0];?>
-							<a class="tag" href="<?php echo $baseTagUrl . '&tags=' . $description;?>" data-tag="<?php echo $description;?>">
-								<?php echo $badge['title'][0]; ?>
-							</a>
-						</li>
-					<?php unset($this->result['_childDocuments_'][$index]); ?>
-					<?php endif; ?>
-				<?php endforeach; ?>
-			<?php endif; ?>
-		</ul>
+		<div class="result-badges">
+			<span class="tags">
+				<?php 
+					$baseTagUrl = Route::url('index.php?option=com_search&terms=' . $this->terms); 
+				?>
+				<?php if (isset($this->result['_childDocuments_'])): ?>	
+					<?php foreach ($this->result['_childDocuments_'] as $index => $badge): ?>
+						<?php if (isset($badge['badge_b']) && $badge['badge_b']): ?>
+								<?php $description = !empty($badge['description']) ? $badge['description'] : $badge['title'][0];?>
+								<a class="tag" href="<?php echo $baseTagUrl . '&tags=' . $description;?>" data-tag="<?php echo $description;?>">
+									<?php echo $badge['title'][0]; ?>
+								</a>
+						<?php unset($this->result['_childDocuments_'][$index]); ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</span>
+		</div>
 	</div>
 	<!-- Title : mandatory -->
 	<h3 class="result-title"><a href="<?php echo $this->result['url']; ?>"><b><!-- highlight portion --></b><?php echo $this->result['title']; ?></a></h3>

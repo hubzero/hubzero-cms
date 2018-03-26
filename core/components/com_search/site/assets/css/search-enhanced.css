@@ -147,10 +147,14 @@
 		margin-left: .5em;
 	}
 
-	.result-badges .tags > li > a.tag {
+	.result-badges .tags > a.tag {
 		background: brown !important;
 		color: white !important;
 		font-weight:bold;
+	}
+	
+	.result-subtype {
+		margin:.5em 0;
 	}
 
 	.result-privacy .private:before {

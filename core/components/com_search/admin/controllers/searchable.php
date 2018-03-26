@@ -95,6 +95,11 @@ class Searchable extends AdminController
 				$recordsIndexed['state'] = 1;
 				$recordsIndexed['link'] = Route::url('index.php?option=' . $this->_option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
 			}
+			elseif (isset($recordsIndexed['error']))
+			{
+				$error = $recordsIndexed['error'];
+				Notify::error($error);
+			}
 			else
 			{
 				$component->set('indexed_records', $recordsIndexed['offset']);

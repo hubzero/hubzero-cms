@@ -61,9 +61,7 @@ class Test extends ComponentController
 	 */
 	public function displayTask()
 	{
-
 		die('no access');
-
 	}
 
 	/**
@@ -399,7 +397,8 @@ class Test extends ComponentController
 			$ch = curl_init();
 			//curl_setopt($ch, CURLOPT_URL, 'https://shunko.aws.hubzero.org/cart/order/postback');
 			//curl_setopt($ch, CURLOPT_URL, 'https://shunko.aws.hubzero.org/cart/cart/hui');
-			curl_setopt($ch, CURLOPT_URL, 'http://shunko.com/test/post.php');
+			//curl_setopt($ch, CURLOPT_URL, 'http://shunko.com/test/post.php');
+			curl_setopt($ch, CURLOPT_URL, Request::root() . 'cart/order/postback');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
@@ -421,7 +420,7 @@ class Test extends ComponentController
 
 			// Redirect to confirmation page
 			App::redirect(
-					Route::url('index.php?option=' . 'com_cart') . 'order/complete?' . $req
+				Route::url('index.php?option=' . 'com_cart') . 'order/complete?' . $req
 			);
 		}
 
