@@ -3,3 +3,7 @@
 .publication-forks .results-none:before {
 	line-height: 1em;
 }
+
+.fork-options ul {
+	max-height: 60%;
+}
