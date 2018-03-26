@@ -40,7 +40,7 @@ if (is_object($this->mailinglist)) : ?>
 		<h4>Subscribe to our newsletter</h4>
 
 		<?php if (is_object($this->subscription)) : ?>
-			<span><?php echo Lang::txt('You are already subscribed to our newsletter. <br><a href="_QQ_"%s"_QQ_">Manage your newsletter subscriptions.</a>', Route::url('index.php?option=com_newsletter&task=subscribe')); ?></span>
+			<span><?php echo Lang::txt('You are already subscribed to our newsletter. <br><a href="%s">Manage your newsletter subscriptions.</a>', Route::url('index.php?option=com_newsletter&task=subscribe')); ?></span>
 		<?php else : ?>
 			<div>
 				<label for="email">
