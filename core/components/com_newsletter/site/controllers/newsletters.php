@@ -229,9 +229,9 @@ class Newsletters extends SiteController
 			$cmd = '/usr/local/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
 		}
 
-		if (file_exists('/usr/bin/phantomjs'))
+		else if (file_exists('/usr/bin/phantomjs'))
 		{
-			$rasterizeFile = dirname(__DIR__) . DS . 'site' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
+			$rasterizeFile = dirname(__DIR__) . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
 			$fallback = '/usr/bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --web-security=false ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
 			if (!$cmd)
 			{
