@@ -599,6 +599,9 @@ class Wish extends Relational
 		);
 		$this->set('about', \Hubzero\Utility\Sanitize::clean($string));
 
+		$this->removeAttribute('referenceid');
+		$this->removeAttribute('category');
+
 		return parent::save();
 	}
 
