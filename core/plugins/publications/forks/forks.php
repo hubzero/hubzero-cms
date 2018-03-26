@@ -153,7 +153,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make sure the license applied allows for derivations
-		if (!$publication->license()->derivatives)
+		if ($publication->license() && !$publication->license()->derivatives)
 		{
 			return $arr;
 		}
