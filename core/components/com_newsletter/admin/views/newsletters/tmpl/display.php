@@ -149,7 +149,7 @@ Joomla.submitbutton = function(pressbutton)
 						<td class="priority-4">
 							<?php
 								$activeTemplate = '';
-								if ($newsletter->get('template') == '-1')
+								if ($newsletter->get('template_id') == '-1')
 								{
 									$activeTemplate = Lang::txt('COM_NEWSLETTER_NO_TEMPLATE');
 								}
