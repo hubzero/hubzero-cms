@@ -432,7 +432,7 @@ class ResourceMapGenerator
 			return;
 		}
 
-		if (Request::getInt('no_html') || Request::getInt('format') == 'raw')
+		if (Request::getInt('no_html') || Request::getWord('format') == 'raw')
 		{
 			return;
 		}
