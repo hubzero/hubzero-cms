@@ -158,7 +158,7 @@ class Newsletters extends SiteController
 		$newsletters = Newsletter::all()
 			->whereEquals('published', 1)
 			->whereEquals('deleted', 0)
-			->ordered()
+			->order('created', 'desc')
 			->rows();
 
 		//build title
