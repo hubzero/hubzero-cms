@@ -130,14 +130,14 @@ function submitbutton(pressbutton)
 				</div>
 
 				<div class="input-wrap">
-					<label for="newsletter-template"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
-					<select name="newsletter[template]" id="newsletter-template_id">
+					<label for="newsletter-template_id"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
+					<select name="newsletter[template_id]" id="newsletter-template_id">
 						<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?></option>
-						<option value="-1" <?php if ($this->newsletter->template == '-1') : ?>selected="selected"<?php endif; ?>>
+						<option value="-1" <?php if ($this->newsletter->template_id == '-1') : ?>selected="selected"<?php endif; ?>>
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
 						</option>
 						<?php foreach ($this->templates as $t) : ?>
-							<?php echo $sel = ($t->id == $this->newsletter->template) ? 'selected="selected"' : '' ; ?>
+							<?php echo $sel = ($t->id == $this->newsletter->template_id) ? 'selected="selected"' : '' ; ?>
 							<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
 								<?php echo $this->escape($t->name); ?>
 							</option>
@@ -300,7 +300,7 @@ function submitbutton(pressbutton)
 
 	<div class="col width-100">
 		<?php if ($this->newsletter->id != null) : ?>
-			<?php if ($this->newsletter->template == '-1' || (!$this->newsletter->template && $this->newsletter->content != '')) : ?>
+			<?php if ($this->newsletter->template_id == '-1' || (!$this->newsletter->template_id && $this->newsletter->content != '')) : ?>
 				<fieldset class="adminform">
 					<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT'); ?></legend>
 
