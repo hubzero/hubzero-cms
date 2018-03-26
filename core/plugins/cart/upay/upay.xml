@@ -44,11 +44,15 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="validation_key" type="text" size="32" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_SECRET_LABEL" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_SECRET_DESC" />
-				<field name="display_name" type="text" size="32" default="" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_NAME_LABEL" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_NAME_DESC" default="Facebook" />
-				<field name="env"  type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_SITELOGIN_DESC">
+				<field name="title" type="text" default="PayPal" label="Tab title" description="Tab title"/>
+
+				<field type="spacer" />
+
+				<field name="paymentSiteId" type="text" default="" label="UPay site ID" description="UPay site ID"/>
+				<field name="paymentValidationKey" type="text" default="" label="Payment validation key" description="Payment validation key"/>
+				<field name="env" type="radio" label="Environment" default="1" description="Environment">
 					<option value="live">Live</option>
-					<option value="dev">Dev</option>
+					<option value="sandbox">Sandbox</option>
 				</field>
 			</fieldset>
 		</fields>

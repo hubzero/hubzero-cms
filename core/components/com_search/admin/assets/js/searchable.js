@@ -30,7 +30,7 @@ function indexResults(url, link, limit, offset, numprocess){
 			numprocess: numprocess
 		},
 		success: function(response){
-			if (response.state != 1)
+			if (response.state != 1 && response.error === undefined)
 			{
 				var currentProcess = $(link).attr('data-current');
 				currentProcess++;
@@ -38,6 +38,11 @@ function indexResults(url, link, limit, offset, numprocess){
 				console.log("Indexed " + currentProcess + " of " + response.numprocess);
 				$(link).text('Indexed ' + currentProcess + ' of ' + response.numprocess);
 				indexResults(url, link, response.limit, response.offset, response.numprocess);
+			}
+			else if (response.error)
+			{
+				activeProcesses--;
+				location.reload();
 			}
 			else
 			{

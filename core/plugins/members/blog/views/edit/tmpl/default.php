@@ -158,4 +158,3 @@ $this->css('jquery.datepicker.css', 'system')
 			<?php } ?>
 		</p>
 	</form>
-</div><!-- / .section -->
