@@ -2188,6 +2188,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		if ($state == 1 && (!$pub->version->get('accepted') || $pub->version->get('accepted') == '0000-00-00 00:00:00')
+		{
+			$pub->version->set('accepted', Date::toSql());
+		}
+
 		// Save state
 		$pub->version->set('state', $state);
 		$pub->version->set('main', $main);
