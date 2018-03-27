@@ -1,0 +1,86 @@
+#footer {
+  padding: 0;
+  color: #aaa;
+  font-size: .9em;
+  background: #ddd;
+}
+#footer h2 {
+  display: none;
+}
+#footer h3 {
+  margin: 0;
+  padding: 0 0 1em 0;
+  text-transform: uppercase;
+  font-size: 1em;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+}
+#footer a {
+  color: #777;
+  border-bottom: 0;
+}
+#footer a:hover {
+  color: #222;
+  border-bottom: 1px solid #222;
+}
+#footer ul {
+  list-style: none;
+  margin: 0;
+}
+#footer li {
+  padding: .4em 0;
+  margin: 0;
+}
+#footer #ancillary a:before {
+  content: "#";
+  color: rgba(0, 0, 0, 0.2);
+  margin-right: 0.5em;
+}
+#footer ul#legalese {
+  overflow: hidden;
+  text-align: right;
+  font-size: .85em;
+  color: #777;
+  background: #e6e6e6;
+  *zoom: 1;
+  border: 1px solid transparent;
+}
+#footer ul#legalese li {
+  display: inline;
+  margin-left: 2em;
+  text-shadow: none;
+  color: #aaa;
+}
+#footer ul#legalese .policy {
+  position: absolute;
+  margin: 0;
+  left: 30px;
+  text-align: left;
+  line-height: 1.2;
+}
+#footer ul#legalese a {
+  color: #777;
+}
+#footer ul#legalese a:hover {
+  color: #222;
+  border-bottom: 1px solid #222;
+}
+#footer ul#legalese:before,
+#footer ul#legalese:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+#footer ul#legalese:after {
+  clear: both;
+}
+@media (min-width: 70em) {
+  #footer #ancillary,
+  #footer ul#legalese {
+    padding: 30px 60px;
+  }
+  #footer #ancillary .policy,
+  #footer ul#legalese .policy {
+    left: 60px;
+  }
+}

@@ -1,0 +1,20 @@
+// import template vars
+@import "../less/_vars/vars.less";
+
+html {
+	font-family: sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	.box-sizing(border-box);
+}
+
+*, *:before, *:after {
+	.box-sizing(inherit);
+}
+
+a,
+a:active,
+a:visited {
+	text-decoration: none;
+	color: @colorLink;
+}

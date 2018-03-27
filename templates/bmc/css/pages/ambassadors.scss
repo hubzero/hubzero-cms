@@ -1,0 +1,116 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+
+.wrapper {
+  @include grid-template(repeat(4, [col] 1fr), repeat(4, auto));
+}
+.contentpaneopen {
+  p {
+    margin: 0;
+  }
+}
+
+//Header
+.ambassador-header {
+  @include flexbox;
+  @include grid(col / span 4, 1);
+  @include bcg-img('/app/site/media/images/providence-doucet-87304-unsplash.jpg');
+  align-items: center;
+  height: 20rem;
+  text-align: center;
+  padding: 2.5em;
+  color: $white;
+  .intro {
+    @include grid(1 / span 4, null);
+    align-self: center;
+    width: 100%;
+    margin: 0 auto;
+    @include respond-at(901px) {
+      @include grid(2 / span 2, null);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  h2 {
+    color: $white;
+  }
+  @include respond-at(901px) {
+    @include grid-template(repeat(4,1fr), 1fr);
+  }
+  @include grid-support {
+    width: auto;
+  }
+}
+
+//Ambassador Description
+.ambassador {
+  @include grid(col / span 4, 2);
+  padding: 2.5em;
+  p {
+    margin: 1em 0 !important;
+  }
+}
+
+//Ways to Participate
+.participate-wrapper {
+  @include flexbox(wrap);
+  @include grid(col / span 4, 3);
+  @include grid-template(repeat(2, 1fr), 1.5fr 1fr);
+  @include bcg($teal, $white);
+  .big {
+    @include grid(span 2, 2);
+    @include bcg-plain-img('/app/site/media/images/pexels-photo-462680.jpg');
+    width: 100%;
+    @include respond-at(901px) {
+      @include grid(2 / span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+      height: auto;
+    }
+  }
+  .participate {
+    @include grid(span 2, 1);
+    align-self: center;
+    order: -1;
+    width: 100%;
+    padding: 2.5em;
+    ul{
+      li {
+        a {
+          text-decoration: underline;
+          color: $white;
+        }
+      }
+    }
+    @include respond-at(901px) {
+      @include grid(1 / span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include respond-at(901px) {
+    @include grid-template(repeat(2, 1fr), 1fr);
+  }
+}
+
+
+//Apply
+.apply {
+  @include grid(col / span 4, 4);
+  padding: 2.5em;
+  .emphasis {
+    font-weight: bold;
+    color: $teal;
+  }
+  .link {
+    margin-top: 4em;
+    text-align: center;
+    @include buttons($teal);
+  }
+}

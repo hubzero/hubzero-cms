@@ -1,0 +1,21 @@
+@import url('/core/plugins/groups/collections/assets/css/collections.css');
+
+.post .actions a.edit,
+.post .actions a.delete {
+		width: inherit;
+}
+
+#page_content.group_collections {
+		margin: 15px 20px;
+}
+
+#hubForm .item-asset .delete {
+  height: 1.5em;
+}
+
+.linker-button span:before,
+.qq-upload-button span:before {
+	font-size: 1.5em;
+	left: -0.1em;
+	top: 0;
+}

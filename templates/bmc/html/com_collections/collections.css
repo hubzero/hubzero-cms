@@ -1,0 +1,55 @@
+/* not yet supported
+.keyframes(@name; @arguments) {
+	@-moz-keyframes @name { @arguments(); }
+	@-webkit-keyframes @name { @arguments(); }
+	@keyframes @name { @arguments(); }
+}
+*/
+@import url("../../../../../core/components/com_collections/site/assets/css/collections.css");
+section.main {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+@media (min-width: 900px) {
+  section.main {
+    padding-right: 30px;
+  }
+}
+@media (min-width: 1200px) {
+  section.main {
+    padding-right: 40px;
+  }
+}
+@media (min-width: 1600px) {
+  section.main {
+    padding-right: 50px;
+  }
+}
+@media (min-width: 2000px) {
+  section.main {
+    padding-right: 60px;
+  }
+}
+@media (min-width: 900px) {
+  section.main {
+    padding-left: 30px;
+  }
+}
+@media (min-width: 1200px) {
+  section.main {
+    padding-left: 40px;
+  }
+}
+@media (min-width: 1600px) {
+  section.main {
+    padding-left: 50px;
+  }
+}
+@media (min-width: 2000px) {
+  section.main {
+    padding-left: 60px;
+  }
+}
+#posts {
+  margin: 0 -10px;
+}

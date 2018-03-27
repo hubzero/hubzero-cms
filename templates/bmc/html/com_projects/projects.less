@@ -1,0 +1,119 @@
+// out: projects.css
+
+@import "../../less/_mixins/mixins";
+@import "../../less/_vars/vars";
+
+@import url("/core/components/com_projects/site/assets/css/projects.css");
+
+#basic_info {
+	overflow: hidden;
+}
+
+#project-innerwrap,
+.main-menu {
+	background: @colorSidebarBg;
+}
+
+.main-menu li a,
+.main-menu li span {
+	color: @colorSidebarText;
+}
+
+.main-menu li a:hover,
+.main-menu li a:hover span {
+	color: @colorSidebarTextHover;
+}
+
+.main-menu li.active a,
+.main-menu li.active span {
+	color: @colorSidebarTextActive;
+}
+
+.main-menu li.active a {
+
+	&:hover {
+		color: @colorSidebarTextActive;
+
+		span {
+			color: @colorSidebarTextActive;
+		}
+	}
+}
+
+// This is actually in standard.less
+// Address files sub-menus
+.main-menu ul li {
+
+	&.active li {
+		background: #eee;
+
+		a {
+
+			&:before,
+			&:hover:before {
+				color: @colorSidebarTextActive;
+			}
+		}
+	}
+
+	li {
+		background: #151b23;
+	}
+
+	li.active {
+		background: #fff;
+	}
+}
+
+.page-com_projects .com_projects {
+
+	.ptitle {
+		position: relative;
+	}
+
+	#member_options {
+		float: none;
+		position: absolute;
+		margin-top: 0;
+		top: 1.5rem;
+		right: 0;
+
+		#options-dock {
+			margin-top: 0;
+			top: 100%
+		}
+
+		li:hover #options-dock {
+			top: 100%;
+		}
+	}
+}
+
+.suggestions a:before {
+	font-family: 'Fontcons';
+	margin-top: 0;
+	line-height: 1em;
+}
+
+.pub-image {
+	width: inherit;
+}
+
+ol.steps li {
+	height: inherit;
+}
+
+.setup-wrap #hubForm fieldset {
+	padding-bottom: 2em;
+}
+
+.edit-project #hubForm {
+	.combine_options{
+		margin: 1em 1em;
+	}
+
+	.add-team {
+		margin: 2em 1em;
+		padding-bottom: 2em;
+	}
+}

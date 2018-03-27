@@ -1,0 +1,122 @@
+@import url("/core/components/com_resources/site/assets/css/resources.css");
+
+	.metadata {
+		border: 1px solid #efefef;
+		margin: 0;
+	}
+	
+	.com_resources .overviewcontainer #content-header h2 {
+		line-height: 1.2em;	
+	}
+	#content .browse {
+		font-size: 1.2em;
+	}
+	#content .browse a {
+		font-size: 1em;
+	}
+	#content .browse.popular:before {
+		content: "\f004";
+		/*display: block;
+		position: absolute;
+		left: 0;
+		top: 0em;
+		width: 20px;
+		height: 20px;
+		font-family: 'Fontcons';
+		color: #aaa;*/
+		top: 0;
+		font-size: 25px;
+	}
+
+/* Tabbed view containers */
+	.com_resources .upperpane {
+		background: #fff;
+	}
+	section.upperpane .subject, .upperpane .subject {
+		margin-bottom: 1em !important;
+		width: 100%;
+		padding: 0 30px 0 0;
+		background: #fff;
+	}
+	
+	section.upperpane .subject+.aside, .upperpane .subject+.aside {
+		background: #fff;
+		top: 0;
+		padding: 0;
+		width: 270px;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+	}
+	
+	ul.sub-menu {
+		margin-left: -25px;
+		margin-right: -25px;
+		margin-top: 0;
+		padding-left: 25px;
+		padding-right: 25px;
+		margin-bottom: 25px;
+	}
+	.com_resources .noborder .aside:before {
+		top: 0;
+	}
+	.com_resources .upperpane .aside:before,
+	.com_resources .upperpane .aside:after,
+	.com_resources .upperpane .subject:before,
+	.com_resources .noborder .aside:after {
+		display: none;
+	}
+	
+	.extracontent .tool a:before, .com_resources .resource-type.tool:before,
+	.extracontent .toolsoffsite a:before, .com_resources .resource-type.toolsoffsite:before {
+		font-family: "qubes";
+		content: "t";
+	}
+	
+	.extracontent .data a:before, .com_resources .resource-type.data:before {
+		font-family: "qubes";
+		content: "d";
+	}
+	
+	.extracontent .model a:before, .com_resources .resource-type.model:before {
+		font-family: "qubes";
+		content: "c";
+	}
+	
+	.extracontent .reference a:before, .com_resources .resource-type.reference:before {
+		font-family: "qubes";
+		content: "a";
+	}
+	
+	.extracontent .teaching a:before, .com_resources .resource-type.teaching:before {
+		font-family: "qubes";
+		content: "p";
+	}
+	
+	@media (max-width: 888px) {
+		section.upperpane .subject+.aside, .upperpane .subject+.aside {
+			width: auto;
+		}
+	}
+	
+	@media (max-width: 480px) {
+		section.upperpane .subject, .upperpane .subject {
+			padding: 0;
+		}
+		ul.sub-menu {
+			margin-left: -10px;
+			margin-right: -10px;
+			margin-top: -30px;
+			padding-left: 10px;
+			padding-right: 10px;
+			margin-bottom: 30px;
+		}
+	}
+
+.com_resources .upperpane + .section {
+	padding-top: 30px;
+
+	@media (min-width: @sizeM) {
+		padding-top: 60px;
+	}
+}

@@ -1,0 +1,46 @@
+/* The main template style file, where everything is loaded */
+
+// *********** Core Styles ****************
+
+@import "variables";
+@import "mixins";
+
+@import "reset";
+
+// Fonts
+@import "fontcons"; // Fontcons defines available icons
+@import "icons"; // !! Dependant upon Fontcons
+
+// Grid
+@import "grid";
+
+// Alerts
+@import "notifications";
+
+// Popovers
+@import "modal";
+@import "tooltip";
+
+// Misc
+@import "tags";
+@import "voting";
+@import "comments";
+
+// Utility classes
+@import "utilities"; // Has to be last to override when necessary
+
+
+// *********** Template Styles ****************
+
+@import "_vendor/vendor";
+
+@import "_vars/vars";
+@import "_mixins/mixins";
+
+@import "fonts";
+
+// General overall non-element-specific
+@import "_general/general";
+
+// Layout element-specific
+@import "_layout/layout";

@@ -1,0 +1,554 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+
+.wrapper {
+  @include grid-template(repeat(4, [col] 1fr), repeat(9, [row] auto), null);
+}
+
+.link-anchor {
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+  &:visited {
+    color: inherit;
+  }
+}
+
+//Feature
+.feature {
+  @include grid(col / span 4, row);
+  p {
+    @include grid-support {
+      margin: 1em 0;
+    }
+  }
+}
+.module-feature {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row);
+  @include grid-template(repeat(auto-fit, minmax(12.5rem, 1fr)), null, 5px);
+  grid-auto-rows: 12.5rem;
+  grid-auto-flow: dense;
+  .big {
+    @include grid(span 2, span 2);
+    flex: 1 1 20rem;
+    height: 15rem;
+    margin: 2.5px;
+    @include respond-at(1240px) {
+      @include grid(null, span 1);
+    }
+    @include grid-support {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
+  }
+  .flex {
+    @extend .big;
+    @include respond-at(1035px) {
+      @include grid(span 3, span 1);
+    }
+    @include respond-at(1445px) {
+      @include grid(null, span 1);
+    }
+  }
+  .horizontal {
+    @include grid(span 2, null);
+    flex: 1 1 20rem;
+    height: 15rem;
+    margin: 2.5px;
+    @include respond-at(625px) {
+      @include grid(span 3, null);
+    }
+    @include grid-support {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
+  }
+  .regular {
+    flex: 1 1 20rem;
+    height: 15rem;
+    margin: 2.5px;
+    @include grid-support {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
+  }
+  .billboard-image {
+    @extend %showcase-img;
+  }
+  .billboard {
+    position: relative;
+    .billboard-tag {
+      @include showcase-tag($green, $white);
+    }
+    .billboard-header {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+      a {
+        @include showcase-header(1em, 1, 2);
+      }
+    }
+  }
+  .resource {
+    position: relative;
+    .partner-img {
+      @extend %showcase-group;
+    }
+    .partner-tag {
+      @include showcase-tag($green, $white);
+    }
+    .partner-title {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+      a {
+        @include showcase-header(1em, 1, 2);
+      }
+    }
+  }
+  .group {
+    position: relative;
+    .group-img {
+      @extend %showcase-group;
+    }
+    .group-tag {
+      @include showcase-tag($green, $white);
+    }
+    .group-description {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+      a {
+        @include showcase-header(1em, 1, 2);
+      }
+    }
+  }
+}
+//Search
+.search-wrapper {
+  @include grid(col / span 4, row 2);
+  justify-content: center;
+  text-align: center;
+  padding: 2.5em;
+  margin-bottom: 5em;
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+  }
+}
+#rsearch {
+  width: 70%;
+}
+.page-body > .content form.search input[type="submit"] {
+  background-color: $green;
+  color: $white;
+}
+
+//Explore
+.explore {
+  @include grid(col / span 4, row 3);
+  padding: 1em;
+  margin-bottom: 5em;
+  @include respond-at(590px) {
+    padding: 2.5em;
+  }
+  .community-container {
+    @include flexbox(wrap);
+    @include grid-template(repeat(auto-fit, minmax(22.5rem, 1fr)), null, 10px);
+    grid-auto-rows: auto;
+  }
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
+  }
+}
+.communities {
+  width: 20rem;
+  padding: 10px;
+  h4 {
+    position: relative;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $green;
+    &:after {
+      content: '';
+      width: 65%;
+      height: 1.1px;
+      background-color: $white;
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+    }
+  }
+  @include grid-support {
+    width: auto;
+  }
+}
+
+//Faculty Mentoring Network
+#one {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 4);
+  @include grid-template(repeat(4, 1fr), repeat(3, auto));
+  justify-content: center;
+  background-color: $teal;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  a {
+    color: $white;
+    &:active {
+      color: $white;
+    }
+    &:visited {
+      color: $white;
+    }
+  }
+  p {
+    margin: 1em 0;
+  }
+  .fmn {
+    width: 100%;
+    @include grid(span 4, null);
+    text-align: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($white);
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  .module-fmn {
+    @include flexbox(wrap);
+    @include grid(span 4, null);
+    @include grid-template(repeat(4, 1fr), null, 5px);
+    grid-auto-rows: 17rem;
+    .regular {
+      @include grid(span 4, null);
+      flex: 1 1 20rem;
+      height: 15rem;
+      @include respond-at(590px) {
+        @include grid(span 2, null);
+      }
+      @include respond-at(960px) {
+        @include grid(span 1, null);
+      }
+      @include grid-support {
+        width: auto;
+        height: auto;
+      }
+    }
+    .billboard-image {
+      @extend %showcase-img;
+    }
+    .billboard {
+      position: relative;
+      .billboard-tag {
+        @include showcase-tag($green, $white);
+      }
+      .billboard-header {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        a {
+          @include showcase-header(1em, 1, 2);
+        }
+      }
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  .ambassador {
+    @include grid(1 / span 4, 3);
+    align-self: center;
+    text-align: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($white);
+      margin-top: 3em;
+    }
+  }
+}
+
+//Workshops and Meetings
+#two {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 5);
+  @include grid-template(repeat(6, 1fr), repeat(2, auto));
+  justify-content: center;
+  margin: 4em 0;
+  .workshops {
+    @include grid(span 6, 1);
+    width: 100%;
+    align-self: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($green);
+    }
+    @include respond-at(901px) {
+      @include grid(1 / span 3, 1);
+    }
+    @include respond-at(1100px) {
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  .module-workshops {
+    @include flexbox(wrap);
+    @include grid(span 6, 2);
+    @include grid-template(repeat(3, 1fr), null, 5px);
+    grid-auto-rows: 17rem;
+    width: 100%;
+    align-self: center;
+    @include respond-at(590px) {
+      @include grid-template(repeat(4, 1fr), repeat(2, 17rem));
+    }
+    @include respond-at(901px) {
+      @include grid(4 /span 3, 1);
+    }
+    @include respond-at(1100px) {
+      @include grid-template(repeat(3, 1fr), minmax(20rem, 1fr));
+      width: 50%;
+    }
+    .regular {
+      @include grid(span 3, null);
+      flex: 1 1 15rem;
+      height: 15rem;
+      margin: 2.5px;
+      @include respond-at(590px) {
+        @include grid(span 2, null);
+      }
+      @include respond-at(1100px) {
+        @include grid(span 1, null);
+      }
+      @include grid-support {
+        width: auto;
+        height: auto;
+        margin: 0;
+      }
+    }
+    div:last-child {
+      @include respond-at(590px) {
+        @include grid(span 4, null);
+      }
+      @include respond-at(1100px) {
+        @include grid(span 1, null);
+      }
+    }
+    .billboard-image {
+      @extend %showcase-img;
+    }
+    .billboard {
+      position: relative;
+      .billboard-tag {
+        @include showcase-tag($green, $white);
+      }
+      .billboard-header {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        a {
+          @include showcase-header(1em, 1, 2);
+        }
+      }
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include respond-at(901px) {
+    @include grid-template(repeat(6, 1fr), 1fr);
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
+  }
+}
+
+//Classrooms
+#three {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 6);
+  @include grid-template(repeat(2, 1fr), repeat(2, minmax(20rem, 1fr)));
+  margin-bottom: 4em;
+  @include respond-at(901px) {
+    @include grid-template(null, 1fr);
+  }
+  .horizontal {
+    @include grid(1 / span 2, 2);
+    width: 100%;
+    height: 20rem;
+    background: url('/app/site/media/images/climate-kic-350836.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    @include respond-at(901px) {
+      @include grid(1 / span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+      height: auto;
+    }
+  }
+  .classrooms {
+    @include grid(1 / span 2, 1);
+    width: 100%;
+    order: -1;
+    padding: 2.5em;
+    align-self: center;
+    @include respond-at(901px) {
+      @include grid(2 / span 1, null);
+      order: 1;
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
+  }
+}
+
+//Collaborative Publishing
+#four {
+  @include grid(col / span 4, row 7);
+  @include bcg-img('/app/site/media/images/stefan-stefancik-257625.jpg');
+  background-color: $dark-blue;
+  color: $white;
+  text-align: center;
+  padding: 2.5em;
+  h2 {
+    color: $white;
+  }
+}
+
+//Project Websites
+#five {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 8);
+  @include grid-template(repeat(6, 1fr), 1fr auto);
+  margin: 4em 0;
+  @include respond-at(1100px) {
+    @include grid-template(repeat(6, 1fr), minmax(20rem, 1fr));
+  }
+  .sites {
+    @include grid(1 / span 6, 1);
+    width: 100%;
+    align-self: center;
+    padding: 2.5em;
+    @include respond-at(1100px) {
+      @include grid(1 / span 3, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  .module-sites {
+    @include flexbox(wrap);
+    @include grid(span 6, 2);
+    @include grid-template(repeat(3, 1fr), repeat(3, 17rem), 5px);
+    width: 100%;
+    align-self: center;
+    @include respond-at(590px) {
+      @include grid-template(repeat(4, 1fr), repeat(2, 17rem));
+    }
+    @include respond-at(751px) {
+      @include grid-template(repeat(3, 1fr), 17rem);
+    }
+    @include respond-at(1100px) {
+      @include grid(4 / span 7, 1);
+      @include grid-template(repeat(3, 1fr), minmax(20rem, 1fr));
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+    .regular {
+      @include grid(span 3, null);
+      flex: 1 1 15rem;
+      height: 15rem;
+      margin: 2.5px;
+      @include respond-at(590px) {
+        @include grid(span 2, null);
+      }
+      @include respond-at(751px) {
+        @include grid(span 1, null);
+      }
+      @include grid-support {
+        width: auto;
+        height: auto;
+        margin: 0;
+      }
+    }
+    div:last-child {
+      @include respond-at(590px) {
+        @include grid(span 4, null);
+      }
+      @include respond-at(751px) {
+        @include grid(span 1, null);
+      }
+    }
+    .group {
+      position: relative;
+      .group-img {
+        @extend %showcase-group;
+      }
+      .group-tag {
+        @include showcase-tag($green, $white);
+      }
+      .group-description {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        a {
+          @include showcase-header(1em, 1, 2);
+        }
+      }
+    }
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
+  }
+}
+// Private Working Groups
+#c-six {
+  @include flexbox;
+  @include grid(col / span 4, row 9);
+  text-align: center;
+  background-color: $med-blue;
+  color: $white;
+  padding: 2.5em;
+  h2 {
+    color: $white;
+  }
+  .link {
+    @include buttons($white);
+  }
+  @include grid-support {
+    p {
+      margin: 1em 0;
+    }
+    .groups {
+      width: auto;
+    }
+  }
+}
