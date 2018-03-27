@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 				<p><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_USERGROUPS_DESC'); ?></p>
 				<?php
 				// Include the component HTML helpers.
-				Html::addIncludePath(Component::path('com_users') '/admin/helpers/html');
+				Html::addIncludePath(Component::path('com_users') . '/admin/helpers/html');
 				?>
 				<div class="input-wrap">
 					<?php echo Html::access('usergroups', 'fields[groups]', $this->row->getGroupIds(), true); ?>
