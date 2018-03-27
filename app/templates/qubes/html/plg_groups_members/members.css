@@ -1,0 +1,11 @@
+@import url("/core/plugins/groups/members/assets/css/members.css");
+
+.entries-menu {
+	width: auto;
+}
+
+.entries-search {
+	float: right !important;
+	width: auto !important;
+}
+

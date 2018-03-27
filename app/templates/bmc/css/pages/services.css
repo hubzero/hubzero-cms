@@ -1,0 +1,327 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, [col] 1fr);
+  grid-template-rows: repeat(7, [row] minmax(22rem, auto));
+}
+
+.link-anchor {
+  color: inherit;
+}
+
+.link-anchor:hover {
+  color: inherit;
+}
+
+.link-anchor:visited {
+  color: inherit;
+}
+
+.link {
+  margin-top: 3em;
+}
+
+.service-header {
+  display: flex;
+  flex-wrap: nowrap;
+  grid-column: col/span 4;
+  grid-row: row;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: url("/app/site/media/images/jeff-sheldon-3231.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/jeff-sheldon-3231.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+}
+
+.service-header .intro {
+  grid-column: 1/span 4;
+  padding: 2.5em;
+  align-self: center;
+}
+
+.service-header .intro .link {
+  text-transform: uppercase;
+}
+
+.service-header .intro .link a {
+  padding: .25em .75em;
+  border: 1px solid #fff;
+  color: #fff !important;
+}
+
+.service-header .intro .link a:active {
+  color: #fff;
+}
+
+.service-header .intro .link a:visited {
+  color: #fff;
+}
+
+@media only screen and (min-width: 901px) {
+  .service-header .intro {
+    grid-column: 2/span 2;
+  }
+}
+
+.service-header h2 {
+  color: #fff;
+}
+
+.learn {
+  grid-column: col/span 4;
+  grid-row: row 2;
+  padding: 2.5em;
+}
+
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-gap: 10px;
+}
+
+@media only screen and (min-width: 901px) {
+  .services {
+    padding: 2.5em;
+  }
+}
+
+.service {
+  flex: 1 1 20rem;
+  padding: 10px;
+}
+
+.service h4 {
+  font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+  position: relative;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #007991;
+}
+
+.service h4:after {
+  content: '';
+  width: 65%;
+  height: 1.1px;
+  background-color: #fff;
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+}
+
+#one {
+  display: flex;
+  flex-wrap: nowrap;
+  grid-column: col/span 4;
+  grid-row: row 3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+}
+
+#one .community {
+  width: 100%;
+  grid-column: 1/span 3;
+  background-color: #84bf41;
+  color: #fff;
+  text-align: center;
+  padding: 2.5em;
+}
+
+#one .community h2 {
+  color: #fff;
+}
+
+#one .community .link {
+  text-transform: uppercase;
+}
+
+#one .community .link a {
+  padding: .25em .75em;
+  border: 1px solid #fff;
+  color: #fff !important;
+}
+
+#one .community .link a:active {
+  color: #fff;
+}
+
+#one .community .link a:visited {
+  color: #fff;
+}
+
+#one .community .link a {
+  display: block;
+}
+
+@media only screen and (min-width: 670px) {
+  #one .community .link a {
+    display: initial;
+  }
+}
+
+@supports (display: grid) {
+  #one .community {
+    width: auto;
+  }
+}
+
+#two, #three, #four {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: col/span 4;
+  grid-row: row 4;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  background-color: #007991;
+  color: #fff;
+}
+
+#two .mentor, #three .mentor, #four .mentor, #three .workshop, #four .curate {
+  grid-column: span 2;
+  grid-row: 1;
+  width: 100%;
+  padding: 2.5em;
+  align-self: center;
+}
+
+#two .mentor h2, #three .mentor h2, #four .mentor h2, #three .workshop h2, #four .curate h2 {
+  color: #fff;
+}
+
+@media only screen and (min-width: 901px) {
+  #two .mentor, #three .mentor, #four .mentor, #three .workshop, #four .curate {
+    grid-column: 1/span 1;
+    grid-row: 1;
+    width: 50%;
+  }
+}
+
+@supports (display: grid) {
+  #two .mentor, #three .mentor, #four .mentor, #three .workshop, #four .curate {
+    width: auto;
+  }
+}
+
+#two .big, #three .big, #four .big {
+  grid-column: span 2;
+  grid-row: 2;
+  background: url("/app/site/media/images/workplace-1245776_1920.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 20rem;
+}
+
+@media only screen and (min-width: 901px) {
+  #two .big, #three .big, #four .big {
+    grid-column: 2/span 1;
+    grid-row: 1;
+    width: 50%;
+  }
+}
+
+@supports (display: grid) {
+  #two .big, #three .big, #four .big {
+    width: auto !important;
+    height: auto !important;
+  }
+}
+
+@media only screen and (min-width: 901px) {
+  #two, #three, #four {
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+}
+
+#three {
+  grid-column: col/span 4;
+  grid-row: row 5;
+  background-color: #cb48b7;
+}
+
+#three .workshop {
+  order: -1;
+}
+
+@media only screen and (min-width: 901px) {
+  #three .workshop {
+    grid-column: 2/span 1;
+    grid-row: 1;
+    order: 1;
+  }
+}
+
+#three .big {
+  background: url("/app/site/media/images/javier-quesada-222120.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 20rem;
+}
+
+@media only screen and (min-width: 901px) {
+  #three .big {
+    grid-column: 1/span 1;
+    grid-row: 1;
+  }
+}
+
+#four {
+  grid-column: col/span 4;
+  grid-row: row 6;
+  background-color: #222b37;
+}
+
+#four .big {
+  background: url("/app/site/media/images/pexels-photo-392018.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#four .curate {
+  order: -1;
+}
+
+#five {
+  display: flex;
+  flex-wrap: nowrap;
+  grid-column: col/span 4;
+  grid-row: row 7;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 2.5em;
+}
+
+#five .contact-qubes {
+  grid-column: 2/span 2;
+  align-self: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+#five .contact-qubes .link {
+  text-transform: uppercase;
+}
+
+#five .contact-qubes .link a {
+  padding: .25em .75em;
+  border: 1px solid #84bf41;
+  color: #84bf41 !important;
+}
+
+#five .contact-qubes .link a:active {
+  color: #84bf41;
+}
+
+#five .contact-qubes .link a:visited {
+  color: #84bf41;
+}

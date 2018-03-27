@@ -1,0 +1,20 @@
+/* not yet supported
+.keyframes(@name; @arguments) {
+	@-moz-keyframes @name { @arguments(); }
+	@-webkit-keyframes @name { @arguments(); }
+	@keyframes @name { @arguments(); }
+}
+*/
+@import url('/core/plugins/members/groups/assets/css/groups.css');
+.group .group-contents {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.group .user-actions a {
+  line-height: 1em;
+}
+.group-alias {
+  color: #1c1b20;
+}
+.group .group-identity > span:after {
+  font-size: 60px;
+}

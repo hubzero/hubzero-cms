@@ -1,0 +1,123 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/pagination.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Pagination (multiple pages)
+// --------------------------------------------------
+
+.list-footer {
+	margin: @baseLineHeight 0;
+	padding: 0;
+	color: lighten(@paginationColor, 50%);
+	background-image: none;
+	list-style: none;
+	line-height: @baseLineHeight;
+
+	li {
+		float: left;
+		margin: 0;
+		padding: 0 (@baseFontSize / 3);
+		background-image: none;
+		list-style: none;
+	}
+	.limit,
+	.counter {
+		font-size: 11px;
+	}
+	.counter {
+		float: right;
+		padding: 0;
+		color: @paginationColor;
+	}
+	.page { 
+		padding: 0 0.21em;
+	}
+	.limit {
+		padding-right: @baseFontSize;
+		color: @paginationColor;
+		float: right;
+	}
+	.start {
+		margin-left: 0;
+		padding-left: 0;
+	}
+	.next,
+	.prev {
+		display: none;
+	}
+	input,
+	label {
+		display: inline;
+		width: auto;
+	}
+
+	// Disabled buttons
+	span {
+		padding: 0.3em 0.71em;
+		text-align: center;
+		text-shadow: 0px -1px 1px #1E2D4D;
+		color: #999;
+		.background-clip(padding-box);
+		display: inline-block;
+		.border-radius(0.25em);
+		#gradient > .vertical(#FAFAFA, #e0e0e0);
+		border: 1px solid #CCC;
+		.box-shadow(inset 0 0 1px #fff);
+		text-shadow: 0 1px 0 #fff;
+		border-color: #CCC;
+		outline: 0;
+		font-weight: bold;
+		font-size: 11px;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		position: relative;
+	}
+
+	// Current page
+	strong {
+		text-shadow: 0 1px 0 white;
+		display: inline-block;
+		padding: 0.35em 0.71em;
+		text-decoration: none;
+		color: #555;
+		border-color: #888 #AAA #CCC;
+		.box-shadow(~"inset 0 1px 5px rgba(0, 0, 0, 0.25), 0 1px 0 #fff");
+		#gradient > .vertical(#C8C8C8, #E6E6E6);
+	}
+
+	// Page links
+	a,
+	a:visited {
+		padding: 0.3em 0.71em;
+		text-align: center;
+		text-shadow: 0px -1px 1px #1E2D4D;
+		color: #555;
+		.background-clip(padding-box);
+		display: inline-block;
+		.border-radius(0.25em);
+		#gradient > .vertical(#FAFAFA, #e0e0e0);
+		border: 1px solid #CCC;
+		.box-shadow(inset 0 0 1px #fff);
+		text-shadow: 0 1px 0 #fff;
+		border-color: #CCC #CCC #AAA #AAA;
+		outline: 0;
+		font-weight: bold;
+		font-size: 11px;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		cursor: pointer;
+		position: relative;
+
+		&:hover {
+			#gradient > .vertical(#f1f1f1, #e8e8e8);
+			border: 1px solid #aaaaaa;
+			.box-shadow(~"inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35)");
+		}
+	}
+}

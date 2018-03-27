@@ -1,0 +1,84 @@
+/* not yet supported
+.keyframes(@name; @arguments) {
+	@-moz-keyframes @name { @arguments(); }
+	@-webkit-keyframes @name { @arguments(); }
+	@keyframes @name { @arguments(); }
+}
+*/
+@import url("/core/components/com_projects/site/assets/css/projects.css");
+#basic_info {
+  overflow: hidden;
+}
+#project-innerwrap,
+.main-menu {
+  background: #222b37;
+}
+.main-menu li a,
+.main-menu li span {
+  color: #d2d2d2;
+}
+.main-menu li a:hover,
+.main-menu li a:hover span {
+  color: #fff;
+}
+.main-menu li.active a,
+.main-menu li.active span {
+  color: #000;
+}
+.main-menu li.active a:hover {
+  color: #000;
+}
+.main-menu li.active a:hover span {
+  color: #000;
+}
+.main-menu ul li.active li {
+  background: #eee;
+}
+.main-menu ul li.active li a:before,
+.main-menu ul li.active li a:hover:before {
+  color: #000;
+}
+.main-menu ul li li {
+  background: #151b23;
+}
+.main-menu ul li li.active {
+  background: #fff;
+}
+.page-com_projects .com_projects .ptitle {
+  position: relative;
+}
+.page-com_projects .com_projects #member_options {
+  float: none;
+  position: absolute;
+  margin-top: 0;
+  top: 1.5rem;
+  right: 0;
+}
+.page-com_projects .com_projects #member_options #options-dock {
+  margin-top: 0;
+  top: 100%;
+}
+.page-com_projects .com_projects #member_options li:hover #options-dock {
+  top: 100%;
+}
+.suggestions a:before {
+  font-family: 'Fontcons';
+  margin-top: 0;
+  line-height: 1em;
+}
+.pub-image {
+  width: inherit;
+}
+ol.steps li {
+  height: inherit;
+}
+.setup-wrap #hubForm fieldset {
+  padding-bottom: 2em;
+}
+.edit-project #hubForm .combine_options {
+  margin: 1em 1em;
+}
+.edit-project #hubForm .add-team {
+  margin: 2em 1em;
+  padding-bottom: 2em;
+}
