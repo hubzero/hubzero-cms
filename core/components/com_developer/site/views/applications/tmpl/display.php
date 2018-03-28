@@ -106,6 +106,7 @@ $this->css('applications')
 					</li>
 				<?php endif; ?>
 			</ul>
+			<?php echo $this->tokens->pagination; ?>
 		</div>
 	</div>
 </section>

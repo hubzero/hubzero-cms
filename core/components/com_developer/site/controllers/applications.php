@@ -89,6 +89,7 @@ class Applications extends SiteController
 		$tokens = Accesstoken::all()
 			->whereEquals('uidNumber', User::get('id'))
 			->whereIn('state', array(1))
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		// build pathway
