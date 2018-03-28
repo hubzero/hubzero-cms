@@ -104,7 +104,6 @@ class Quota extends Relational
 	{
 		// Use getInstance, rather than User::get('username'), as existing
 		// user object won't get the right username if it was just updated
-		die('before');
 		$username = $this->member()->get('username');
 
 		// Don't try to save quotas for auth link temp accounts (negative number usernames)
