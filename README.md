@@ -1,34 +1,47 @@
-# The HUBzero® Platform for Scientific Collaboration
-[![Build Status](https://travis-ci.org/hubzero/hubzero-cms.svg?branch=master)](https://travis-ci.org/hubzero/hubzero-cms)
+# QUBESHub Instance of The HUBzero® Platform for Scientific Collaboration
 
-## What is HUBzero?
+**Main idea**:  The `app` directory is a subtree of both `dev` and the `master` branch, pointing to the `app` branch on GitHub.  The `dev` machine has `origin` set to `hubzero/hubzero-cms`, while the vagrant box has `origin` set to `qubeshub/hubzero-cms`.
 
-HUBzero is an open source software platform for building powerful Web sites that support scientific discovery, learning, and collaboration. Some refer to such web sites as "collaboratories" supporting "team science." We call them "hubs" because each site becomes a focal point for its user community. The HUBzero platform now supports dozens of hubs across a variety of disciplines, including cancer research, pharmaceuticals, biofuels, microelectromechanical systems, climate modeling, water quality, volcanology, and more.
+# Development Workflow
 
-For more information about HUBzero, visit https://hubzero.org.
+The vagrant box pulls from this fork of the HubZero CMS.  So, if you are developing within the `app` directory and do not care about pushing changes to `dev` yet, you should be able to simply give the following:
 
-## Installation
+```
+git push origin master
+```
 
-### Virtual Machine
+Interesting stuff happens only when you want code pushed to (or from) `dev`.
 
-Preconfigured virtual machine images that contain the full version of the HUBzero platform can be found at http://hubzero.org/download. See the Quick Start file inside the package for a step-by-step method to get the virtual machine up and running.
+## How to push changes to `dev`
 
-### Packages
+If you want to push changes to `dev`, you need to update the `app` repository, as the `dev` machine has the `app` directory added as a subtree.  To do this:
 
-Instructions for installing the HUBzero platform from packages can be found at http://help.hubzero.org/documentation/current/installation.
+```
+git subtree push --prefix=app origin app
+```
 
-## Documentation
+This will update the `app` branch on GitHub, as long as `origin` is set to `https://github.com/qubeshub/hubzero.cms` (which it should be).
 
-Both user and developer documentation for the CMS can be found at https://help.hubzero.org/documentation/current.
+On the `dev` machine, all you have to do now is:
 
-## Contributing
+```
+git subtree pull --prefix=app qubeshub app
+```
 
-HUBzero is an open source project, with code contributions from numerous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://help.hubzero.org/documentation/current/webdevs/index/contributions.
+Note the change of the remote from `origin` to `qubeshub`.  On `dev`, `origin` is set to `https://github.com/hubzero/hubzero.cms`, and `qubeshub` is set to `https://github.com/qubeshub/hubzero.cms`.
 
-## Issues
+# How to push changes from `dev`
 
-Please report any bugs or issues at https://help.hubzero.org/support.
+If you are developing on `dev`, then NEVER push to `origin` (well, you probably won't be able to anyways).  In this case, everything should be subtree pushed, like this:
 
-## Roadmap
+```
+git subtree push --prefix=app qubeshub app
+```
 
-Checkout what is on our development roadmap at https://help.hubzero.org/documentation/roadmap.
+Then, in order for those changes to be integrated into the `master` branch, perform the following from the vagrant box:
+
+```
+git subtree pull --prefix=app origin app
+```
+
+Note that this is essentially the reverse workflow of working on the vagrant box.
