@@ -188,6 +188,12 @@ class Helper extends Module
 			$this->params->set('button_show_add', 0);
 		}
 
-		require $this->getLayoutPath();
+		$layout = 'default';
+		if (!$this->params->get('show_recent', 1))
+		{
+			$layout = 'simple';
+		}
+
+		require $this->getLayoutPath($layout);
 	}
 }
