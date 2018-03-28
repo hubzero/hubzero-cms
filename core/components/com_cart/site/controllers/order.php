@@ -33,6 +33,11 @@ namespace Components\Cart\Site\Controllers;
 use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Filesystem;
+use Request;
+use Route;
+use Event;
+use Lang;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php';
@@ -45,7 +50,7 @@ class Order extends ComponentController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -64,7 +69,7 @@ class Order extends ComponentController
 	/**
 	 * Default task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function homeTask()
 	{
@@ -74,7 +79,7 @@ class Order extends ComponentController
 	/**
 	 * This is a redirect page where the customer ends up after payment is complete
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function completeTask()
 	{
@@ -105,11 +110,14 @@ class Order extends ComponentController
 			$customVar = Request::getVar($verificationVar, '');
 
 			$tId = false;
-			if (strstr($customVar, '-')) {
+			if (strstr($customVar, '-'))
+			{
 				$customData = explode('-', $customVar);
 				$token = $customData[0];
 				$tId = $customData[1];
-			} else {
+			}
+			else
+			{
 				$token = $customVar;
 			}
 
@@ -121,9 +129,7 @@ class Order extends ComponentController
 		}
 
 		// Get transaction info
-		$tInfo =  Cart::getTransactionFacts($tId);
-		//print_r($tId); die;
-		//print_r($tInfo);die;
+		$tInfo = Cart::getTransactionFacts($tId);
 
 		if (empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed')
 		{
@@ -155,7 +161,7 @@ class Order extends ComponentController
 	/**
 	 * Place order (for orders with zero balances)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function placeTask()
 	{
@@ -179,8 +185,6 @@ class Order extends ComponentController
 			die('Error processing your order. Bad security token.');
 		}
 
-		//print_r($transaction); die;
-
 		// Check if the order total is 0
 		if ($transaction->info->tiTotal != 0)
 		{
@@ -192,7 +196,6 @@ class Order extends ComponentController
 		{
 			die('Cannot process transaction. Transaction status is invalid.');
 		}
-		//print_r($transaction); die;
 
 		if ($this->completeOrder($transaction))
 		{
@@ -208,7 +211,7 @@ class Order extends ComponentController
 	/**
 	 * Payment gateway postback: make sure everything checks out and complete transaction
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function postbackTask()
 	{
@@ -231,9 +234,6 @@ class Order extends ComponentController
 		// Initialize logger
 		$logger = new \CartMessenger('Payment Postback');
 
-		//echo 'postbackResponse'; die;
-		//print_r($_POST); die;
-
 		// Get the plugins working
 		$pay = Event::trigger('cart.onPostback', array($_POST, User::getRoot()));
 
@@ -241,8 +241,6 @@ class Order extends ComponentController
 		{
 			if ($response)
 			{
-				//print_r($response['payment']); die;
-
 				if ($response['status'] == 'ok')
 				{
 					$logger->setMessage($response['msg']);
@@ -256,7 +254,8 @@ class Order extends ComponentController
 
 					$this->completeOrder($response['tInfo'], $response['payment']);
 				}
-				else {
+				else
+				{
 					$logger->setMessage($response['error']);
 					$logger->setPostback($_POST);
 					$logger->log(\LoggingLevel::ERROR);
@@ -270,7 +269,9 @@ class Order extends ComponentController
 	/**
 	 * Complete transaction
 	 *
-	 * @return     void
+	 * @param   object   $tInfo
+	 * @param   boolean  $paymentInfo
+	 * @return  void
 	 */
 	private function completeOrder($tInfo, $paymentInfo = false)
 	{
@@ -284,4 +285,3 @@ class Order extends ComponentController
 		return true;
 	}
 }
-
