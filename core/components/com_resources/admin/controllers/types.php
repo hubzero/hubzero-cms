@@ -181,6 +181,9 @@ class Types extends AdminController
 		// Initiate extended database class
 		$row = Type::oneOrNew($type['id'])->set($type);
 
+		// Update contributable in the row
+		isset($type['contributable']) ? $row->set('contributable', 1) : $row->set('contributable', 0);
+
 		// Get the custom fields
 		$fields = Request::getVar('fields', array(), 'post');
 		if (is_array($fields))
