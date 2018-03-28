@@ -56,6 +56,8 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 			try
 			{
 				$gids = User::getInstance($userId)
+					->disableCaching()
+					->purgeCache()
 					->accessgroups()
 					->rows()
 					->fieldsByKey('group_id');
