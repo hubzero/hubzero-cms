@@ -100,7 +100,7 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 			'Markdown.Converter.js',
 			'Markdown.Sanitizer.js',
 			'Markdown.Editor.js',
-			'editorForm.js'
+			"editorForm.php?INPUT_ID=" . self::INPUT_ID
 		];
 
 		$scriptPaths = $this->_buildAssetPaths($scriptNames, self::JS_DIRECTORY);
