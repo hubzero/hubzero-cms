@@ -1,5 +1,14 @@
+<?php
+header('Content-Type: application/javascript');
 
-const INPUT_ID = 'wmd-input'
+$variableNames =['INPUT_ID'];
+
+foreach ($variableNames as $name)
+{
+	echo "const $name = " . json_encode($_GET[$name] ? $_GET[$name] : null) . "\n";
+}
+?>
+
 const htmlConverter = new HUB.PageDown.HtmlConverter()
 
 $(document).ready(() => {
