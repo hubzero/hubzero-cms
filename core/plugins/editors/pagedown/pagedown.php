@@ -200,6 +200,7 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 	 * Set a default height if needed
 	 *
 	 * @param   array   $params   Editor configuration data
+	 * @param   int     $rows     Number of rows for the textarea
 	 * @return  void
 	 */
 	protected function _setDefaultHeight(&$params, $rows)
