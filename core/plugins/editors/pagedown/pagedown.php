@@ -33,8 +33,6 @@
 // no direct access
 defined('_HZEXEC_') or die;
 
-require_once __DIR__ . '/helpers/htmlConverter.php';
-
 /**
  * PageDown Editor Plugin
  **/
@@ -97,10 +95,12 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 	protected function  _getScriptPaths()
 	{
 		$scriptNames = [
+			'turndown.js',
+			'htmlToMarkdownConverter.js',
 			'Markdown.Converter.js',
 			'Markdown.Sanitizer.js',
 			'Markdown.Editor.js',
-			'onFormSubmit.js'
+			'editorForm.js'
 		];
 
 		$scriptPaths = $this->_buildAssetPaths($scriptNames, self::JS_DIRECTORY);
