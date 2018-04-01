@@ -98,7 +98,7 @@ class Newsletter extends Relational
 	 */
 	public function automaticAlias($data)
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['name']);
 		$alias = str_replace(' ', '-', $alias);
 		$alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 

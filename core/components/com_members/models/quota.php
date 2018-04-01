@@ -38,6 +38,7 @@ use User;
 use Lang;
 
 include_once __DIR__ . DS . 'quota' . DS . 'category.php';
+include_once __DIR__ . DS . 'member.php';
 
 /**
  * User quota model

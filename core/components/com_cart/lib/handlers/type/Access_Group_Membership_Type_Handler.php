@@ -80,7 +80,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 			$table = User::getInstance($userId);
 
 			// Trigger the onAftereStoreUser event
-			Event::trigger('onUserAfterSave', array($table->toArray(), false, true, null));
+			Event::trigger('user.onUserAfterSave', array($table->toArray(), false, true, null));
 		}
 		catch (Exception $e)
 		{

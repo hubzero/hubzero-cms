@@ -73,12 +73,13 @@ if ($canDo->get('core.admin'))
 				<td colspan="5"><?php
 				// initiate paging
 				echo $this->lists->pagination;
+				$k = 0;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if (count($this->lists) > 0) : ?>
-				<?php foreach ($this->lists as $k => $list) : ?>
+			<?php if (count($this->lists) > 0) { ?>
+				<?php foreach ($this->lists as $list) { ?>
 					<tr>
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $list->id; ?>" onclick="isChecked(this.checked);" />
@@ -100,14 +101,15 @@ if ($canDo->get('core.admin'))
 							<?php echo $list->emails()->total(); ?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
-			<?php else : ?>
+				<?php $k++;
+					} ?>
+			<?php } else { ?>
 				<tr>
 					<td colspan="5">
 						<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_LISTS', "javascript:submitbutton('add');"); ?>
 					</td>
 				</tr>
-			<?php endif; ?>
+			<?php } ?>
 		</tbody>
 	</table>
 

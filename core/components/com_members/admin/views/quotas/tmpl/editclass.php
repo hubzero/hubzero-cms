@@ -99,7 +99,7 @@ function submitbutton(pressbutton)
 				Html::addIncludePath(Component::path('com_users') . '/admin/helpers/html');
 
 				$groups = array();
-				foreach ($this->row->groups() as $g)
+				foreach ($this->row->groups as $g)
 				{
 					$groups[] = $g->get('group_id');
 				}
