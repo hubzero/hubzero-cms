@@ -36,7 +36,9 @@
 	<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
 	<br/>
 	<div class="result-subtype">
+	<?php if (isset($this->result['type'])):?>
 	<span class="result-category"><?php echo $this->result['type'];?></span>
+	<?php endif; ?>
 		<div class="result-badges">
 			<span class="tags">
 				<?php 
