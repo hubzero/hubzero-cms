@@ -715,6 +715,18 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			->including('log')
 			->join($l, $l . '.id', $r . '.log_id');
 
+		// return feed view now if no projects found/provided
+		$view = $this->view('shared', 'activity')
+			->set('filters', $filters)
+			->set('uid', $uid)
+			->set('model', $model)
+			->set('limit', $limit)
+			->set('activities', array())
+			->set('total', 0);
+		if (empty($projects))
+		{
+			return $view->loadTemplate();
+		}
 		// Only pull activity the user has explicit access to
 		foreach ($projects as $project_id)
 		{
@@ -737,7 +749,6 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$recipient
 			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
 			->whereEquals($l . '.parent', 0);
-
 		$total = $recipient->copy()->total();
 
 		$activities = $recipient
@@ -747,13 +758,9 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			->rows();
 
 		// Output HTML
-		$view = $this->view('shared', 'activity')
-			->set('limit', $limit)
-			->set('filters', $filters)
+		$view
 			->set('activities', $activities)
-			->set('total', $total)
-			->set('uid', $uid)
-			->set('model', $model);
+			->set('total', $total);
 
 		return $view->loadTemplate();
 	}
