@@ -106,9 +106,9 @@ class Articles extends AdminController
 	public function displayTask()
 	{
 		if ($layout = Request::getVar('layout'))
-        {
-            $this->context .= '.'.$layout;
-        }
+		{
+			$this->context .= '.'.$layout;
+		}
 		$filters = array(
 			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . 'search',
@@ -166,7 +166,7 @@ class Articles extends AdminController
 			if (isset($filters[$index]) && $filters[$index] != '')
 			{
 				$articles->whereEquals($column, $filters[$index]);
-			}	
+			}
 		}
 
 		$searchableFields = array('title', 'alias');
@@ -220,10 +220,10 @@ class Articles extends AdminController
 	{
 		$id = Request::getInt('id', 0);
 		if (!($article instanceof Article))
-		{	
+		{
 			$article = Article::oneOrNew($id);
 		}
-		
+
 		if (!$article->isNew())
 		{
 			$assetId = $article->get('asset_id');
@@ -394,8 +394,7 @@ class Articles extends AdminController
 				'lang' => 'COM_CONTENT_N_ITEMS_TRASHED'
 			)
 		);
-		$state = $states[$this->_task];	
-
+		$state = $states[$this->_task];
 		$ids = Request::getArray('cid');
 		if (!empty($ids))
 		{
