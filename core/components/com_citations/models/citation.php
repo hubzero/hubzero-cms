@@ -449,7 +449,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 			if (!isset($groupCitations[$year]))
 			{
-				$groupCitations[$year] = array();
+				$groupCitations[$year] = $affiliations;
 			}
 
 			// Set count for affliation
