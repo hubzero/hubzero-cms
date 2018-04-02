@@ -267,4 +267,34 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 		return $editorDomJs;
 	}
 
+	/*
+	 * Not applicable in this editor
+	 *
+	 * @return  void
+	 */
+	public function onSave()
+	{
+		//stub
+	}
+
+	/*
+	 * Not applicable in this editor
+	 *
+	 * @return  void
+	 */
+	public function onGetContent()
+	{
+		//stub
+	}
+
+	/*
+	 * Not applicable in this editor
+	 *
+	 * @return  void
+	 */
+	public function onSetContent()
+	{
+		//stub
+	}
+
 }
