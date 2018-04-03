@@ -31,10 +31,15 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+use User;
+use Date;
+
 /**
  * Table class for publication review
  */
-class Review extends \JTable
+class Review extends Table
 {
 	/**
 	 * Constructor
@@ -62,7 +67,7 @@ class Review extends \JTable
 
 		if (!$this->publication_id)
 		{
-			$this->setError(\Lang::txt('Review entry missing Publication ID.'));
+			$this->setError(Lang::txt('Review entry missing Publication ID.'));
 		}
 
 		if ($this->getError())
@@ -72,10 +77,10 @@ class Review extends \JTable
 
 		if (!$this->created || $this->created == $this->_db->getNullDate())
 		{
-			$this->created = \Date::toSql();
+			$this->created = Date::toSql();
 		}
 
-		$this->created_by = $this->created_by ?: \User::get('id');
+		$this->created_by = $this->created_by ?: User::get('id');
 
 		return true;
 	}

@@ -31,32 +31,35 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for publication stats
  */
-class Stats extends \JTable
+class Stats extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_stats', 'id', $db );
+		parent::__construct('#__publication_stats', 'id', $db);
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->publication_id ) == '')
+		if (trim($this->publication_id) == '')
 		{
-			$this->setError( Lang::txt('Your entry must have a publication ID.') );
+			$this->setError(Lang::txt('Your entry must have a publication ID.'));
 			return false;
 		}
 		return true;
@@ -65,18 +68,18 @@ class Stats extends \JTable
 	/**
 	 * Load record
 	 *
-	 * @param      integer $publication_id      Pub ID
-	 * @param      integer $period 				Period
-	 * @param      integer $dthis
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $publication_id  Pub ID
+	 * @param   integer  $period          Period
+	 * @param   integer  $dthis
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function loadStats( $publication_id = NULL, $period = NULL, $dthis = NULL )
+	public function loadStats($publication_id = null, $period = null, $dthis = null)
 	{
-		if ($publication_id == NULL)
+		if ($publication_id == null)
 		{
 			$publication_id = $this->publication_id;
 		}
-		if ($publication_id == NULL)
+		if ($publication_id == null)
 		{
 			return false;
 		}
@@ -88,15 +91,15 @@ class Stats extends \JTable
 		$sql.= $dthis ? " AND datetime='" . $dthis . "-00 00:00:00'" : '';
 		$sql.= " ORDER BY datetime DESC LIMIT 1";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}

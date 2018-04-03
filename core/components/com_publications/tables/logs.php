@@ -32,12 +32,15 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+use Request;
 use Date;
+use User;
 
 /**
  * Table class for publication access logs
  */
-class Log extends \JTable
+class Log extends Table
 {
 	/**
 	 * Constructor

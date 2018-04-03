@@ -31,31 +31,32 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication handler associations
  */
-class HandlerAssoc extends \JTable
+class HandlerAssoc extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_handler_assoc', 'id', $db );
+		parent::__construct('#__publication_handler_assoc', 'id', $db);
 	}
 
 	/**
 	 * Get associated handler(s)
 	 *
-	 * @param      integer 	$vid 		Publication Version ID
-	 * @param      integer 	$elementid  Element ID
-	 *
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $vid        Publication Version ID
+	 * @param   integer  $elementid  Element ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getAssoc( $vid = NULL, $elementid = NULL )
+	public function getAssoc($vid = null, $elementid = null)
 	{
 		if (!intval($vid) || !intval($elementid))
 		{
@@ -75,13 +76,12 @@ class HandlerAssoc extends \JTable
 	/**
 	 * Load associated handler
 	 *
-	 * @param      integer 	$vid 		Publication Version ID
-	 * @param      integer 	$elementid  Element ID
-	 * @param      string 	$handler    Handler name
-	 *
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $vid        Publication Version ID
+	 * @param   integer  $elementid  Element ID
+	 * @param   string   $handler    Handler name
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getAssociation( $vid = NULL, $elementid = NULL, $handler = NULL )
+	public function getAssociation($vid = null, $elementid = null, $handler = null)
 	{
 		if (!intval($vid) || !intval($elementid) || !$handler)
 		{
@@ -97,6 +97,6 @@ class HandlerAssoc extends \JTable
 
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
-		return $result ? $result[0] : NULL;
+		return $result ? $result[0] : null;
 	}
 }
