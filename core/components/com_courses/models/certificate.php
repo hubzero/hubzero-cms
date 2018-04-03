@@ -386,7 +386,7 @@ class Certificate extends Base
 			$pdf->SetFont('Arial', '', 30); //($element->h * $size['h']));
 
 			$pdf->setXY($element->x * $size['w'], $element->y * $size['h']); //  - ($element->h * $size['h'])
-			$pdf->Cell($element->w * $size['w'], ($element->h * $size['h']), $val,'',1, 'C');
+			$pdf->Cell($element->w * $size['w'], ($element->h * $size['h']), $val, '', 1, 'C');
 		}
 
 		if (!$path)

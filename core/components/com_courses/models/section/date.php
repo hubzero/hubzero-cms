@@ -56,4 +56,3 @@ class Date extends Base
 	 */
 	protected $_scope = 'section_date';
 }
-

@@ -188,7 +188,7 @@ class Course extends Table
 	 * @param   mixed    $reset  Reset object
 	 * @return  boolean  True on success
 	 */
-	public function load($keys = NULL, $reset = true)
+	public function load($keys = null, $reset = true)
 	{
 		if (empty($keys))
 		{

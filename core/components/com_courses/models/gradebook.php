@@ -193,9 +193,9 @@ class GradeBook extends Base
 		foreach ($grades as $asset_id => $grade)
 		{
 			$stats[$asset_id]['responses'] = count($grade);
-			$stats[$asset_id]['average']   = (count($grade) > 0) ? round(array_sum($grade) / count($grade), 2) : NULL;
-			$stats[$asset_id]['min']       = (count($grade) > 0) ? round(min($grade)) : NULL;
-			$stats[$asset_id]['max']       = (count($grade) > 0) ? round(max($grade)) : NULL;
+			$stats[$asset_id]['average']   = (count($grade) > 0) ? round(array_sum($grade) / count($grade), 2) : null;
+			$stats[$asset_id]['min']       = (count($grade) > 0) ? round(min($grade)) : null;
+			$stats[$asset_id]['max']       = (count($grade) > 0) ? round(max($grade)) : null;
 		}
 
 		return $stats;
@@ -473,7 +473,7 @@ class GradeBook extends Base
 
 		if (count($grades) > 0)
 		{
-			foreach ($grades as $member_id=>$values)
+			foreach ($grades as $member_id => $values)
 			{
 				$scores[$member_id]['course_exam_count']     = 0;
 				$scores[$member_id]['course_quiz_count']     = 0;
@@ -483,7 +483,7 @@ class GradeBook extends Base
 				$scores[$member_id]['course_homework_sum']   = 0;
 
 				// Loop through units and compute scores
-				foreach ($values as $unit_id=>$val)
+				foreach ($values as $unit_id => $val)
 				{
 					// We're processing this unit/member, thus it doesn't need to be cleared - so remove it from the list of potentials
 					if (isset($unit_ids[$unit_id]) && ($key = array_search($member_id, $unit_ids[$unit_id])) !== false)
@@ -578,7 +578,7 @@ class GradeBook extends Base
 					}
 					else
 					{
-						$scores[$member_id]['units'][$unit_id]['unit_weighted'] = NULL;
+						$scores[$member_id]['units'][$unit_id]['unit_weighted'] = null;
 					}
 				}
 
@@ -638,7 +638,7 @@ class GradeBook extends Base
 				}
 				else
 				{
-					$scores[$member_id]['course_weighted'] = NULL;
+					$scores[$member_id]['course_weighted'] = null;
 				}
 			}
 		}
@@ -885,12 +885,10 @@ class GradeBook extends Base
 				$passing = $this->passing(true, $m);
 
 				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
-				if (
-					($exam_weight     == 0 || ($exam_weight     > 0 && isset($counts[$m]['exam'])     && $totals['exam']     == $counts[$m]['exam']))     &&
+				if (($exam_weight     == 0 || ($exam_weight     > 0 && isset($counts[$m]['exam'])     && $totals['exam']     == $counts[$m]['exam']))     &&
 					($quiz_weight     == 0 || ($quiz_weight     > 0 && isset($counts[$m]['quiz'])     && $totals['quiz']     == $counts[$m]['quiz']))     &&
 					($homework_weight == 0 || ($homework_weight > 0 && isset($counts[$m]['homework']) && $totals['homework'] == $counts[$m]['homework'])) &&
-					$passing[$m]
-					)
+					$passing[$m])
 				{
 					$return[] = $m;
 				}
