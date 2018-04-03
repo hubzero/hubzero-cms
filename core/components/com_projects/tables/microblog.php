@@ -32,42 +32,45 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for project updates
  */
-class Blog extends \JTable
+class Blog extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__project_microblog', 'id', $db );
+		parent::__construct('#__project_microblog', 'id', $db);
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (!$this->projectid)
 		{
-			$this->setError( Lang::txt('Missing project ID.') );
+			$this->setError(Lang::txt('Missing project ID.'));
 			return false;
 		}
-		if (trim( $this->blogentry ) == '')
+		if (trim($this->blogentry) == '')
 		{
-			$this->setError( Lang::txt('Please provide content.') );
+			$this->setError(Lang::txt('Please provide content.'));
 			return false;
 		}
 		if (!$this->posted_by)
 		{
-			$this->setError( Lang::txt('Missing creator ID.') );
+			$this->setError(Lang::txt('Missing creator ID.'));
 			return false;
 		}
 		return true;
@@ -76,37 +79,37 @@ class Blog extends \JTable
 	/**
 	 * Get items
 	 *
-	 * @param      integer $projectid
-	 * @param      array   $filters
-	 * @param      integer $id
-	 * @return     object
+	 * @param   integer  $projectid
+	 * @param   array    $filters
+	 * @param   integer  $id
+	 * @return  mixed
 	 */
-	public function getEntries($projectid = NULL, $filters=array(), $id = 0)
+	public function getEntries($projectid = null, $filters=array(), $id = 0)
 	{
-		if ($projectid === NULL)
+		if ($projectid === null)
 		{
 			return false;
 		}
-		$pc = new \Components\Projects\Tables\Comment( $this->_db );
+		$pc = new \Components\Projects\Tables\Comment($this->_db);
 
 		$query = "SELECT m.*, (SELECT COUNT(*) FROM " . $pc->getTableName()." AS c
 			WHERE c.itemid=m.id AND c.tbl='blog')
-			AS comments, u.name " . $this->_buildQuery( $projectid, $filters, $id );
+			AS comments, u.name " . $this->_buildQuery($projectid, $filters, $id);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Check if identical entry is made (prevents duplicates on multiple 'save' click)
 	 *
-	 * @param      integer $uid
-	 * @param      integer $projectid
-	 * @param      string  $entry
-	 * @param      string  $today
-	 * @return     integer or NULL
+	 * @param   integer  $uid
+	 * @param   integer  $projectid
+	 * @param   string   $entry
+	 * @param   string   $today
+	 * @return  mixed    integer or null
 	 */
-	public function checkDuplicate($uid = 0, $projectid = 0, $entry = NULL, $today = NULL)
+	public function checkDuplicate($uid = 0, $projectid = 0, $entry = null, $today = null)
 	{
 		if (!$projectid || !$uid)
 		{
@@ -117,17 +120,17 @@ class Blog extends \JTable
 				. $this->_db->quote($projectid)
 				. " AND blogentry=" . $this->_db->quote($entry)
 				. " AND posted  LIKE " . $this->_db->quote($today .  '%');
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Build query
 	 *
-	 * @param      integer $projectid
-	 * @param      array   $filters
-	 * @param      integer $id
-	 * @return     string
+	 * @param   integer  $projectid
+	 * @param   array    $filters
+	 * @param   integer  $id
+	 * @return  string
 	 */
 	private function _buildQuery($projectid = 0, $filters = array(), $id = 0)
 	{
@@ -182,9 +185,9 @@ class Blog extends \JTable
 	/**
 	 * Get item count
 	 *
-	 * @param      integer $projectid
-	 * @param      array $filters
-	 * @return     integer
+	 * @param   integer  $projectid
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function getCount($projectid = 0, $filters=array())
 	{
@@ -193,20 +196,20 @@ class Blog extends \JTable
 			return false;
 		}
 		$filters['limit'] = 0;
-		$query = "SELECT COUNT(*) " . $this->_buildQuery( $projectid, $filters );
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($projectid, $filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Delete item
 	 *
-	 * @param      integer $id
-	 * @param      boolean $permanent
-	 * @return     boolean True on success
+	 * @param   integer  $id
+	 * @param   boolean  $permanent
+	 * @return  boolean  True on success
 	 */
-	public function deletePost ($id = 0, $permanent = 0 )
+	public function deletePost($id = 0, $permanent = 0)
 	{
 		if (!$id)
 		{
@@ -220,10 +223,10 @@ class Blog extends \JTable
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
 		$query .= " WHERE id=" . $this->_db->quote($id);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -232,11 +235,11 @@ class Blog extends \JTable
 	/**
 	 * Delete items
 	 *
-	 * @param      integer $projectid
-	 * @param      boolean $permanent
-	 * @return     boolean True on success
+	 * @param   integer  $projectid
+	 * @param   boolean  $permanent
+	 * @return  boolean  True on success
 	 */
-	public function deletePosts ($projectid = 0, $permanent = 0 )
+	public function deletePosts($projectid = 0, $permanent = 0)
 	{
 		if (!$projectid)
 		{
@@ -250,10 +253,10 @@ class Blog extends \JTable
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
 		$query .= " WHERE projectid=" . intval($projectid);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;

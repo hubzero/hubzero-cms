@@ -32,10 +32,13 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for projects
  */
-class Project extends \Hubzero\Database\Table
+class Project extends Table
 {
 	/**
 	 * Constructor

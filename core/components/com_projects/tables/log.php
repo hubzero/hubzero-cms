@@ -32,19 +32,21 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for project logs
  */
-class Log extends \JTable
+class Log extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__project_logs', 'id', $db );
+		parent::__construct('#__project_logs', 'id', $db);
 	}
 }

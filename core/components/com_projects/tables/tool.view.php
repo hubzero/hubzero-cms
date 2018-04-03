@@ -32,17 +32,19 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+use Date;
+
 /**
  * Project Tool View class
- *
  */
-class ToolView extends  \JTable
+class ToolView extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -52,11 +54,11 @@ class ToolView extends  \JTable
 	/**
 	 * Get last view
 	 *
-	 * @param      integer $toolid 	Project tool id
-	 * @param      integer $userid	User id
-	 * @return     mixed Return string or NULL
+	 * @param   integer  $toolid  Project tool id
+	 * @param   integer  $userid  User id
+	 * @return  mixed    Return string or NULL
 	 */
-	public function loadView( $toolid = 0, $userid = 0)
+	public function loadView($toolid = 0, $userid = 0)
 	{
 		if (!intval($toolid) || !intval($userid))
 		{
@@ -83,19 +85,19 @@ class ToolView extends  \JTable
 	/**
 	 * Check if page was viewed recently
 	 *
-	 * @param      integer $toolid 	Project tool id
-	 * @param      integer $userid	User id
-	 * @return     mixed Return string or NULL
+	 * @param   integer  $toolid  Project tool id
+	 * @param   integer  $userid  User id
+	 * @return  mixed    Return string or NULL
 	 */
-	public function checkView( $toolid = 0, $userid = 0)
+	public function checkView($toolid = 0, $userid = 0)
 	{
 		if (!intval($toolid) || !intval($userid))
 		{
 			return false;
 		}
 
-		$now    	= Date::toSql();
-		$lastView 	= NULL;
+		$now      = Date::toSql();
+		$lastView = null;
 
 		if ($this->loadView($toolid, $userid))
 		{
@@ -104,7 +106,7 @@ class ToolView extends  \JTable
 		else
 		{
 			$this->parent_id = $toolid;
-			$this->userid 	 = $userid;
+			$this->userid    = $userid;
 		}
 
 		// Record new viewing time for future comparison

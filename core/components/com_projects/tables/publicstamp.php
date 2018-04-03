@@ -32,10 +32,14 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+use Date;
+use User;
+
 /**
  * Table class for project public links
  */
-class Stamp extends \JTable
+class Stamp extends Table
 {
 	/**
 	 * Constructor

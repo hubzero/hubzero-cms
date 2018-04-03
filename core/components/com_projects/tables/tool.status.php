@@ -32,17 +32,18 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Project tool status class
- *
  */
-class ToolStatus extends  \JTable
+class ToolStatus extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{

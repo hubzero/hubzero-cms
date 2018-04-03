@@ -32,17 +32,18 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Project Tool Instance class
- *
  */
-class ToolInstance extends  \JTable
+class ToolInstance extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -52,7 +53,7 @@ class ToolInstance extends  \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -74,12 +75,12 @@ class ToolInstance extends  \JTable
 	/**
 	 * Load from instance
 	 *
-	 * @param      string $instance
-	 * @return     object or false
+	 * @param   string  $instance
+	 * @return  mixed   object or false
 	 */
-	public function loadFromInstanceName($instance = NULL)
+	public function loadFromInstanceName($instance = null)
 	{
-		if ($instance === NULL)
+		if ($instance === null)
 		{
 			return false;
 		}
@@ -101,12 +102,12 @@ class ToolInstance extends  \JTable
 	/**
 	 * Load from parent
 	 *
-	 * @param      string $parent    Parent tool ID or name
-	 * @return     object or false
+	 * @param   string  $parent  Parent tool ID or name
+	 * @return  mixed   object or false
 	 */
-	public function loadFromParent($parent = NULL, $version = 'dev')
+	public function loadFromParent($parent = null, $version = 'dev')
 	{
-		if ($parent === NULL)
+		if ($parent === null)
 		{
 			return false;
 		}
@@ -147,8 +148,8 @@ class ToolInstance extends  \JTable
 	/**
 	 * Get all instances
 	 *
-	 * @param      integer $includedev
-	 * @return     object
+	 * @param   integer  $includedev
+	 * @return  object
 	 */
 	public function getAll($includedev = 1)
 	{
@@ -165,18 +166,18 @@ class ToolInstance extends  \JTable
 	/**
 	 * Get instances
 	 *
-	 * @param      string 	$parent_name
-	 * @param      int 		$parent_id
-	 * @param      int 		$exclude_dev
-	 * @return     mixed
+	 * @param   string  $parent_name
+	 * @param   int     $parent_id
+	 * @param   int     $exclude_dev
+	 * @return  mixed
 	 */
-	public function getInstances($parent_name = NULL, $parent_id = NULL, $exclude_dev = 0 )
+	public function getInstances($parent_name = null, $parent_id = null, $exclude_dev = 0)
 	{
-		if ($parent_name === NULL)
+		if ($parent_name === null)
 		{
 			$parent_name = $this->parent_name;
 		}
-		if ($parent_id === NULL)
+		if ($parent_id === null)
 		{
 			$parent_id = $this->parent_id;
 		}
@@ -199,9 +200,9 @@ class ToolInstance extends  \JTable
 	/**
 	 * Get Dev Instance Property
 	 *
-	 * @param      string $parent_name
-	 * @param      string $property
-	 * @return     object
+	 * @param   string  $parent_name
+	 * @param   string  $property
+	 * @return  object
 	 */
 	public function getDevInstanceProperty($parent_name, $property)
 	{
@@ -214,13 +215,13 @@ class ToolInstance extends  \JTable
 	/**
 	 * Update Parent Name
 	 *
-	 * @param      string $parent_id
-	 * @param      string $newname
-	 * @return     mixed
+	 * @param   string  $parent_id
+	 * @param   string  $newname
+	 * @return  mixed
 	 */
-	public function updateParentName($parent_id = NULL, $newname = NULL)
+	public function updateParentName($parent_id = null, $newname = null)
 	{
-		if ($newname === NULL || $parent_id === NULL )
+		if ($newname === null || $parent_id === null )
 		{
 			return false;
 		}

@@ -30,10 +30,12 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for project to-do's
  */
-class Todo extends \JTable
+class Todo extends Table
 {
 	/**
 	 * Constructor

@@ -32,32 +32,33 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for project database versions
  */
-class DatabaseVersion extends \JTable
+class DatabaseVersion extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__project_database_versions', 'id', $db );
+		parent::__construct('#__project_database_versions', 'id', $db);
 	}
 
 	/**
 	 * Get max version number
 	 *
-	 * @param      string 		$dbname
-	 *
-	 * @return     integer or NULL
+	 * @param    string  $dbname
+	 * @return   mixed   integer or NULL
 	 */
-	public function getMaxVersion( $dbname = '')
+	public function getMaxVersion($dbname = '')
 	{
-		if ($dbname === NULL)
+		if ($dbname === null)
 		{
 			return false;
 		}
