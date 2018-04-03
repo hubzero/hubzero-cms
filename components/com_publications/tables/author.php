@@ -31,6 +31,7 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 use Date;
 use User;
@@ -38,7 +39,7 @@ use User;
 /**
  * Table class for publication author
  */
-class Author extends \JTable
+class Author extends Table
 {
 	/**
 	 * Constructor
