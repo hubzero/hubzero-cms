@@ -181,7 +181,7 @@ class Access extends Table
 		$saved = 0;
 		if ($groups)
 		{
-			$add = explode(',',$groups);
+			$add = explode(',', $groups);
 		}
 		if ($sysgroup)
 		{
