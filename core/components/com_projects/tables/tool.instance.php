@@ -221,7 +221,7 @@ class ToolInstance extends Table
 	 */
 	public function updateParentName($parent_id = null, $newname = null)
 	{
-		if ($newname === null || $parent_id === null )
+		if ($newname === null || $parent_id === null)
 		{
 			return false;
 		}
