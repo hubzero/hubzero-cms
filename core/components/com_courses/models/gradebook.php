@@ -54,7 +54,7 @@ require_once(__DIR__ . DS . 'formDeployment.php');
 class GradeBook extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

@@ -32,15 +32,18 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+use Date;
+use User;
+
 /**
- *
  * Course assets table class
- *
  */
-class Asset extends \JTable
+class Asset extends Table
 {
 	/**
-	 * Contructor method for JTable class
+	 * Contructor method for Table class
 	 *
 	 * @param  database object
 	 * @return void

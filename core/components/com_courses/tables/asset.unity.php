@@ -32,15 +32,17 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for tracking unity asset results
  */
-class AssetUnity extends \JTable
+class AssetUnity extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object &$db Database
 	 * @return     void
 	 */
 	public function __construct(&$db)

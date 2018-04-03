@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Date;
 use Lang;
@@ -39,10 +40,10 @@ use Lang;
 /**
  * Course Units table class
  */
-class Unit extends \JTable
+class Unit extends Table
 {
 	/**
-	 * Contructor method for JTable class
+	 * Contructor method for Table class
 	 *
 	 * @param  database object
 	 * @return void

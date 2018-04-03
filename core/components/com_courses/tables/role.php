@@ -32,17 +32,18 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Table class for course membership reason
  */
-class Role extends \JTable
+class Role extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object &$db Database
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -215,4 +216,3 @@ class Role extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

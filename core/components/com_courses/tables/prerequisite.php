@@ -32,15 +32,17 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Courses prerequisites table
  */
-class Prerequisites extends \JTable
+class Prerequisites extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object &$db Database
 	 * @return     void
 	 */
 	public function __construct(&$db)

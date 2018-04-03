@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Date;
 use Lang;
@@ -39,10 +40,10 @@ use Lang;
 /**
  * Course Instances table class
  */
-class Offering extends \JTable
+class Offering extends Table
 {
 	/**
-	 * Contructor method for JTable class
+	 * Contructor method for Table class
 	 *
 	 * @param   object  &$db  Database object
 	 * @return  void
@@ -53,7 +54,7 @@ class Offering extends \JTable
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to an offering object
 	 *
 	 * This method must be invoked as:
 	 *     $inst = CoursesInstance::getInstance($alias);
@@ -63,7 +64,7 @@ class Offering extends \JTable
 	 * @param   array   $config  Config options
 	 * @return  object
 	 */
-	public static function getInstance($type, $prefix = 'JTable', $config = array())
+	public static function getInstance($type, $prefix = 'Table', $config = array())
 	{
 		static $instances;
 

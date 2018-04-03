@@ -51,7 +51,7 @@ require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 class Asset extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

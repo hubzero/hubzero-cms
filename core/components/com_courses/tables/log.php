@@ -32,12 +32,13 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Table class for logging course actions
  */
-class Log extends \JTable
+class Log extends Table
 {
 	/**
 	 * Constructor
@@ -231,4 +232,3 @@ class Log extends \JTable
 		return $this->_db->loadResult();
 	}
 }
-

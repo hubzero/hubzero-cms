@@ -44,7 +44,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' 
 class GradePolicies extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

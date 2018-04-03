@@ -56,7 +56,7 @@ require_once(__DIR__ . DS . 'gradebook.php');
 class Offering extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

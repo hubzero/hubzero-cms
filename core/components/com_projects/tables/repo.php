@@ -37,7 +37,7 @@ use Hubzero\Database\Table;
 /**
  * Table class for project repos
  */
-class Repo extends \JTable
+class Repo extends Table
 {
 	/**
 	 * Constructor

@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Date;
 use Lang;
@@ -39,7 +40,7 @@ use Lang;
 /**
  * Courses table class for section coupon codes
  */
-class SectionCode extends \JTable
+class SectionCode extends Table
 {
 	/**
 	 * Constructor
@@ -202,4 +203,3 @@ class SectionCode extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

@@ -49,7 +49,7 @@ require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 class Unit extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
