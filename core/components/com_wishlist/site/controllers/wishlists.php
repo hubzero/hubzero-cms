@@ -2221,10 +2221,9 @@ class Wishlists extends SiteController
 		if (User::isGuest())
 		{
 			// Get wishlist info
-			$wishlist = Wishlist::oneByReference(
-				Request::getInt('refid', 0),
-				Request::getCmd('cat', '')
-			);
+			$wish = Wish::oneOrFail(Request::getInt('refid', 0));
+
+			$wishlist = Wishlist::oneOrFail($wish->get('wishlist'));
 
 			// Set page title
 			$this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2)) ? $wishlist->get('title') : '';
