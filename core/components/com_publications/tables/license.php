@@ -31,31 +31,33 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication license
  */
-class License extends \JTable
+class License extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_licenses', 'id', $db );
+		parent::__construct('#__publication_licenses', 'id', $db);
 	}
 
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      mixed $oid Integer or string (alias)
-	 * @return     mixed False if error, Object on success
+	 * @param   mixed  $oid  Integer or string (alias)
+	 * @return  mixed  False if error, Object on success
 	 */
-	public function loadLicense($oid = NULL)
+	public function loadLicense($oid = null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}
@@ -82,7 +84,7 @@ class License extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -110,8 +112,8 @@ class License extends \JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters = array())
 	{
@@ -124,8 +126,8 @@ class License extends \JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%'
-				OR LOWER(c.`text`) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+				OR LOWER(c.`text`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		if (count($where) > 0)
@@ -140,8 +142,8 @@ class License extends \JTable
 	/**
 	 * Get record counts
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getCount($filters = array())
 	{
@@ -156,8 +158,8 @@ class License extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters = array())
 	{
@@ -186,28 +188,29 @@ class License extends \JTable
 	/**
 	 * Get licenses
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     object
+	 * @param   array   $filters  Filters to build query from
+	 * @return  object
 	 */
-	public function getLicenses ( $filters = array() )
+	public function getLicenses($filters = array())
 	{
 		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
 
-		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE active=1 ";
-		$query.= " ORDER BY " . $sortby;
+		$query  = "SELECT * FROM $this->_tbl ";
+		$query .= " WHERE active=1 ";
+		$query .= " ORDER BY " . $sortby;
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get licenses
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     object
+	 * @param   object  $manifest
+	 * @param   object  $selected
+	 * @return  object
 	 */
-	public function getBlockLicenses ( $manifest = NULL, $selected = NULL )
+	public function getBlockLicenses($manifest = null, $selected = null)
 	{
 		if (!$manifest)
 		{
@@ -216,8 +219,6 @@ class License extends \JTable
 
 		$include = isset($manifest->params->include) ? $manifest->params->include : array();
 		$exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : array();
-
-		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
 
 		$query = "SELECT * FROM $this->_tbl WHERE active=1 ";
 		if ($include && !empty($include))
@@ -230,7 +231,7 @@ class License extends \JTable
 				$query .= "id=" . $inc;
 				$query .= $i == count($include) ? " " : " OR ";
 			}
-			$query .= " )";
+			$query .= ")";
 		}
 		if ($exclude && !empty($exclude))
 		{
@@ -242,51 +243,51 @@ class License extends \JTable
 				$query .= "id != " . $ex;
 				$query .= $i == count($exclude) ? " " : " AND ";
 			}
-			$query .= " )";
+			$query .= ")";
 		}
 		if ($selected && !in_array($selected->id, $include))
 		{
 			$query .= " OR id=" . $selected->id;
 		}
 
-		$query.= " ORDER BY ordering";
+		$query .= " ORDER BY ordering";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get default license
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function getDefaultLicense()
 	{
-		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE main=1 ";
-		$query.= " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl ";
+		$query .= " WHERE main=1 ";
+		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get license by id
 	 *
-	 * @param      integer $id License ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $id  License ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getLicense ( $id = 0 )
+	public function getLicense ($id = 0)
 	{
 		if (!$id)
 		{
 			return false;
 		}
-		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE id=" . $this->_db->quote($id);
-		$query.= " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl ";
+		$query .= " WHERE id=" . $this->_db->quote($id);
+		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -294,12 +295,12 @@ class License extends \JTable
 	/**
 	 * Load by ordering
 	 *
-	 * @param      mixed $ordering Integer or string (alias)
-	 * @return     mixed False if error, Object on success
+	 * @param   mixed  $ordering  Integer or string (alias)
+	 * @return  mixed  False if error, Object on success
 	 */
-	public function loadByOrder($ordering = NULL)
+	public function loadByOrder($ordering = null)
 	{
-		if ($ordering === NULL)
+		if ($ordering === null)
 		{
 			return false;
 		}
@@ -319,15 +320,15 @@ class License extends \JTable
 	/**
 	 * Change order
 	 *
-	 * @param      integer $dir
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $dir
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function changeOrder ( $dir )
+	public function changeOrder($dir)
 	{
 		$newOrder = $this->ordering + $dir;
 
 		// Load record in prev position
-		$old = new self( $this->_db );
+		$old = new self($this->_db);
 		if ($old->loadByOrder($newOrder))
 		{
 			$old->ordering  = $this->ordering;
@@ -343,20 +344,20 @@ class License extends \JTable
 	/**
 	 * Get license by name
 	 *
-	 * @param      string $name License name
-	 * @return     mixed False if error, Object on success
+	 * @param   string  $name  License name
+	 * @return  mixed   False if error, Object on success
 	 */
-	public function getLicenseByName ( $name = '' )
+	public function getLicenseByName($name = '')
 	{
 		if (!$name)
 		{
 			return false;
 		}
-		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE name LIKE " . $this->_db->quote($name);
-		$query.= " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl ";
+		$query .= " WHERE name LIKE " . $this->_db->quote($name);
+		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -364,20 +365,20 @@ class License extends \JTable
 	/**
 	 * Get license by title
 	 *
-	 * @param      string $title License title
-	 * @return     mixed False if error, Object on success
+	 * @param   string  $title  License title
+	 * @return  mixed   False if error, Object on success
 	 */
-	public function getLicenseByTitle ( $title = '' )
+	public function getLicenseByTitle($title = '')
 	{
 		if (!$title)
 		{
 			return false;
 		}
-		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE title LIKE " . $this->_db->quote($title);
-		$query.= " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl ";
+		$query .= " WHERE title LIKE " . $this->_db->quote($title);
+		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -385,22 +386,21 @@ class License extends \JTable
 	/**
 	 * Get license by pub version id
 	 *
-	 * @param      integer $vid Pub version ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $vid  Pub version ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getPubLicense ( $vid = null )
+	public function getPubLicense($vid = null)
 	{
 		if (!$vid)
 		{
 			return false;
 		}
 
-		$query = "SELECT L.*, v.license_type, v.license_text FROM $this->_tbl AS L,
-		          #__publication_versions AS v  ";
+		$query = "SELECT L.*, v.license_type, v.license_text FROM $this->_tbl AS L, `#__publication_versions` AS v ";
 		$query.= " WHERE v.id=" . $this->_db->quote($vid) . " AND v.license_type=L.id";
 		$query.= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -408,14 +408,14 @@ class License extends \JTable
 	/**
 	 * Make license  not default
 	 *
-	 * @param      integer $except License ID to exclude
-	 * @return     boolean
+	 * @param   integer  $except  License ID to exclude
+	 * @return  boolean
 	 */
-	public function undefault ( $except = 0 )
+	public function undefault($except = 0)
 	{
-		$query = "UPDATE $this->_tbl SET main=0 ";
-		$query.= $except ? " WHERE id != " . $this->_db->quote($except) : '';
-		$this->_db->setQuery( $query );
+		$query  = "UPDATE $this->_tbl SET main=0 ";
+		$query .= $except ? " WHERE id != " . $this->_db->quote($except) : '';
+		$this->_db->setQuery($query);
 		if ($this->_db->query())
 		{
 			return true;

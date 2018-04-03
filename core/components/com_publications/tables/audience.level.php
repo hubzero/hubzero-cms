@@ -31,57 +31,31 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication audience level
  */
-class AudienceLevel extends \JTable
+class AudienceLevel extends Table
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       		= NULL;
-
-	/**
-	 * varchar(11)
-	 *
-	 * @var string
-	 */
-	var $label 			= NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $title 			= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $description 	= NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_audience_levels', 'id', $db );
+		parent::__construct('#__publication_audience_levels', 'id', $db);
 	}
 
 	/**
 	 * Get records to a determined level
 	 *
-	 * @param      integer $numlevels 		Number of levels to return
-	 * @param      array   $levels    		Array to populate
-	 * @param      array   $return_array    Return as array?
-	 * @return     array
+	 * @param   integer  $numlevels     Number of levels to return
+	 * @param   array    $levels        Array to populate
+	 * @param   array    $return_array  Return as array?
+	 * @return  array
 	 */
 	public function getLevels($numlevels = 4, $levels = array(), $return_array = 1)
 	{
