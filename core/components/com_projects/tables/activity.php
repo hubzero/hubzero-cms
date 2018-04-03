@@ -534,7 +534,7 @@ class Activity extends Table
 				$d++;
 			}
 
-			return number_format($c/$d,0);
+			return number_format($c/$d, 0);
 		}
 	}
 
