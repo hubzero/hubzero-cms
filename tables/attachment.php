@@ -373,7 +373,7 @@ class Attachment extends Table
 				{
 					$tquery .= $this->_db->quote($role) . ",";
 				}
-				$tquery = substr($tquery,0,strlen($tquery) - 1);
+				$tquery = substr($tquery, 0, strlen($tquery) - 1);
 				$query .= " AND (a.role IN (" . $tquery . ")) ";
 			}
 			elseif ($filters['role'] == 4)

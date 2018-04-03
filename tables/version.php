@@ -643,7 +643,7 @@ class Version extends Table
 			{
 				$tquery .= "'".$v."',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery.") ";
 		}
 
