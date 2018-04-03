@@ -93,9 +93,9 @@ class Offering extends Table
 	 * @param   integer  $course_id  Course ID
 	 * @return  boolean  True on success
 	 */
-	public function load($oid=NULL, $course_id=null)
+	public function load($oid=null, $course_id=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}

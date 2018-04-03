@@ -60,7 +60,7 @@ class Unit extends Table
 	 * @param      mixed $oid Unique ID or alias of object to retrieve
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL, $offering_id=null)
+	public function load($oid=null, $offering_id=null)
 	{
 		if (empty($oid))
 		{

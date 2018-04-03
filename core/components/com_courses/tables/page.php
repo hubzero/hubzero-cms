@@ -37,7 +37,7 @@ use Lang;
 /**
  * Table class for course page
  */
-Class Page extends Table
+class Page extends Table
 {
 	/**
 	 * Constructor

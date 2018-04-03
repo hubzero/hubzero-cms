@@ -40,7 +40,7 @@ use Lang;
 /**
  * Table class for course page
  */
-Class PageHit extends Table
+class PageHit extends Table
 {
 	/**
 	 * Constructor

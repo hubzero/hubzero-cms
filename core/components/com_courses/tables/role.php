@@ -57,9 +57,9 @@ class Role extends Table
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL, $offering_id=null)
+	public function load($oid=null, $offering_id=null)
 	{
-		if ($oid === NULL)
+		if ($oid === null)
 		{
 			return false;
 		}

@@ -433,7 +433,7 @@ class GradeBook extends Table
 		if (!empty($data))
 		{
 			// Get member id's
-			foreach ($data as $member_id=>$member)
+			foreach ($data as $member_id => $member)
 			{
 				$member_ids[] = $member_id;
 			}
@@ -452,9 +452,9 @@ class GradeBook extends Table
 		$inserts = array();
 		$updates = array();
 
-		foreach ($data as $member_id=>$member)
+		foreach ($data as $member_id => $member)
 		{
-			foreach ($member['units'] as $unit_id=>$unit)
+			foreach ($member['units'] as $unit_id => $unit)
 			{
 				// Check for empty unit_id
 				// This is a hack for storing "extra" grades added via the gradebook - they come in with unit_id of NULL

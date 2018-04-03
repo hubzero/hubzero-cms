@@ -93,7 +93,7 @@ class SectionCode extends Table
 	 * @param   integer  $section_id  Unique section ID
 	 * @return  boolean  True on success
 	 */
-	public function load($oid=NULL, $section_id=NULL)
+	public function load($oid=null, $section_id=null)
 	{
 		if (empty($oid))
 		{

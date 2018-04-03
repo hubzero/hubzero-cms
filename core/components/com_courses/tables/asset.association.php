@@ -97,9 +97,9 @@ class AssetAssociation extends Table
 	 * @param      string  $scope    Scope
 	 * @return     boolean True on success
 	 */
-	public function loadByAssetScope($asset_id=NULL, $scope_id=NULL, $scope=NULL)
+	public function loadByAssetScope($asset_id=null, $scope_id=null, $scope=null)
 	{
-		if ($asset_id === NULL || $scope_id === NULL || $scope === NULL)
+		if ($asset_id === null || $scope_id === null || $scope === null)
 		{
 			return false;
 		}
