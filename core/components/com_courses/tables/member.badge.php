@@ -32,10 +32,12 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Courses member badges table
  */
-class MemberBadge extends \JTable
+class MemberBadge extends Table
 {
 	/**
 	 * Constructor

@@ -32,10 +32,12 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Courses section badge criteria table
  */
-class SectionBadgeCriteria extends \JTable
+class SectionBadgeCriteria extends Table
 {
 	/**
 	 * Constructor

@@ -46,7 +46,7 @@ require_once(__DIR__ . DS . 'prerequisite.php');
 class Member extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

@@ -32,16 +32,17 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use Date;
 use Lang;
 
 /**
  * Course asset groups table class
  */
-class Member extends \JTable
+class Member extends Table
 {
 	/**
-	 * Contructor method for JTable class
+	 * Contructor method for Table class
 	 *
 	 * @param  database object
 	 * @return void
@@ -57,9 +58,9 @@ class Member extends \JTable
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
-	public function load($uid=null, $cid=NULL, $oid=NULL, $sid=NULL, $student=NULL)
+	public function load($uid=null, $cid=null, $oid=null, $sid=null, $student=null)
 	{
-		if ($uid === NULL)
+		if ($uid === null)
 		{
 			return false;
 		}
@@ -68,7 +69,7 @@ class Member extends \JTable
 		{
 			return $this->loadBySection($uid, $sid);
 		}
-		else if ($cid === NULL)
+		else if ($cid === null)
 		{
 			return parent::load($uid);
 		}
@@ -112,9 +113,9 @@ class Member extends \JTable
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
-	public function loadBySection($uid=null, $oid=NULL)
+	public function loadBySection($uid=null, $oid=null)
 	{
-		if ($uid === NULL || $oid === NULL)
+		if ($uid === null || $oid === null)
 		{
 			return false;
 		}
@@ -150,9 +151,9 @@ class Member extends \JTable
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
-	public function loadByOffering($uid=null, $oid=NULL)
+	public function loadByOffering($uid=null, $oid=null)
 	{
-		if ($uid === NULL || $oid === NULL)
+		if ($uid === null || $oid === null)
 		{
 			return false;
 		}
@@ -383,7 +384,7 @@ class Member extends \JTable
 		}
 		else
 		{
-			$query .= "NULL";
+			$query .= "null";
 		}
 		$query .= " AS course_manager ";*/
 		$query .= $this->_buildquery($filters);

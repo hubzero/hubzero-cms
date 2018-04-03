@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Date;
 use Lang;
@@ -39,13 +40,13 @@ use Lang;
 /**
  * Course announcement table class
  */
-class Announcement extends \JTable
+class Announcement extends Table
 {
 	/**
-	 * Constructor method for JTable class
+	 * Constructor method for Table class
 	 *
-	 * @param  database object
-	 * @return void
+	 * @param   object  database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{

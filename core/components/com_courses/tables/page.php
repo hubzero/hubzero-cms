@@ -31,17 +31,18 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Table class for course page
  */
-Class Page extends \JTable
+Class Page extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object &$db Database
 	 * @return     void
 	 */
 	public function __construct(&$db)

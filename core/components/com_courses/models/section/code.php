@@ -45,7 +45,7 @@ require_once(dirname(__DIR__) . DS . 'base.php');
 class Code extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

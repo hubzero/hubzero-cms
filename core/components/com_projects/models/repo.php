@@ -125,7 +125,7 @@ class Repo extends Obj
 		}
 		else
 		{
-			// Use regex to avoid what might be a caching thing with JTables
+			// Use regex to avoid what might be a caching thing with Tables
 			$matches = array();
 			preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
 			// Only use git adapter if project specifies it - otherwise assume we're not using git
@@ -177,7 +177,7 @@ class Repo extends Obj
 
 			if (is_object($this->get('project')))
 			{
-				// Use regex to avoid what might be a caching thing with JTables
+				// Use regex to avoid what might be a caching thing with Tables
 				$matches = array();
 				preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
 				// Only use git adapter if project specifies it - otherwise assume we're not using git

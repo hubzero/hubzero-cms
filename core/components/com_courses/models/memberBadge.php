@@ -41,7 +41,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'member.badge.php');
 class MemberBadge extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

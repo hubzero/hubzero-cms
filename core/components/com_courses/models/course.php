@@ -51,7 +51,7 @@ require_once(__DIR__ . DS . 'tags.php');
 class Course extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

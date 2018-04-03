@@ -32,15 +32,16 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Course asset associations table class
  */
-class AssetAssociation extends \JTable
+class AssetAssociation extends Table
 {
 	/**
-	 * Contructor method for JTable class
+	 * Contructor method for Table class
 	 *
 	 * @param  database object
 	 * @return void

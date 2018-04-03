@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Date;
 use Lang;
@@ -39,10 +40,10 @@ use Lang;
 /**
  * Course section table class
  */
-class Section extends \JTable
+class Section extends Table
 {
 	/**
-	 * Contructor method for JTable class
+	 * Contructor method for Table class
 	 *
 	 * @param   object  &$db  database object
 	 * @return  void
@@ -59,7 +60,7 @@ class Section extends \JTable
 	 * @param   string  $scope     The page scope
 	 * @return  object
 	 */
-	public static function getInstance($type, $prefix = 'JTable', $config = array())
+	public static function getInstance($type, $prefix = 'Table', $config = array())
 	{
 		static $instances;
 

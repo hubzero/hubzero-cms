@@ -31,6 +31,8 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
+use Request;
 use User;
 use Date;
 use Lang;
@@ -38,7 +40,7 @@ use Lang;
 /**
  * Table class for course page
  */
-Class PageHit extends \JTable
+Class PageHit extends Table
 {
 	/**
 	 * Constructor
