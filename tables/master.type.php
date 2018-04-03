@@ -31,10 +31,13 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for publication master type
  */
-class MasterType extends \JTable
+class MasterType extends Table
 {
 	/**
 	 * Constructor
