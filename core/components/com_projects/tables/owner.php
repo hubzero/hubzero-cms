@@ -33,11 +33,13 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Session\Helper as SessionHelper;
+use Hubzero\Database\Table;
+use Lang;
 
 /**
  * Table class for project owners (team members)
  */
-class Owner extends \JTable
+class Owner extends Table
 {
 	/**
 	 * Constructor
@@ -293,9 +295,9 @@ class Owner extends \JTable
 	/**
 	 * Get user ID profile
 	 *
-	 * @param      string 	$email
-	 * @param      integer 	$projectid
-	 * @return     integer or null
+	 * @param   string   $email
+	 * @param   integer  $projectid
+	 * @return  mixed    integer or null
 	 */
 	public function getProfileId($email = '', $projectid = null)
 	{
@@ -316,11 +318,11 @@ class Owner extends \JTable
 	/**
 	 * Get names of project owners
 	 *
-	 * @param      integer $projectid
-	 * @param      integer $limit
-	 * @param      string  $get_uids
-	 * @param      integer $show_uid
-	 * @return     string
+	 * @param   integer  $projectid
+	 * @param   integer  $limit
+	 * @param   string   $get_uids
+	 * @param   integer  $show_uid
+	 * @return  string
 	 */
 	public function getOwnerNames($projectid = null, $limit = 5, $role = 'all', $show_uid = 0, $withUsername = false)
 	{
@@ -395,8 +397,8 @@ class Owner extends \JTable
 	/**
 	 * Get project creator
 	 *
-	 * @param      integer  $projectid
-	 * @return     object
+	 * @param   integer  $projectid
+	 * @return  object
 	 */
 	public function getCreator($projectid = null)
 	{
@@ -419,10 +421,10 @@ class Owner extends \JTable
 	/**
 	 * Get params of owners connected to external service
 	 *
-	 * @param      integer  $projectid
-	 * @param      string   $service
-	 * @param      array    $exclude
-	 * @return     object
+	 * @param   integer  $projectid
+	 * @param   string   $service
+	 * @param   array    $exclude
+	 * @return  object
 	 */
 	public function getConnected($projectid = null , $service = 'google', $exclude = array())
 	{
@@ -471,9 +473,9 @@ class Owner extends \JTable
 	/**
 	 * Get project owners
 	 *
-	 * @param      integer $projectid
-	 * @param      array $filters
-	 * @return     object
+	 * @param   integer  $projectid
+	 * @param   array    $filters
+	 * @return  object
 	 */
 	public function getOwners($projectid = null, $filters = array())
 	{
@@ -605,11 +607,11 @@ class Owner extends \JTable
 	/**
 	 * Get groups ids of groups belonging to a project
 	 *
-	 * @param      integer $projectid
-	 * @param      string $what
-	 * @param      boolean $native
-	 * @param      integer $join verify if group exists
-	 * @return     object
+	 * @param   integer  $projectid
+	 * @param   string   $what
+	 * @param   boolean  $native
+	 * @param   integer  $join     verify if group exists
+	 * @return  object
 	 */
 	public function getProjectGroups($projectid = null, $what='o.groupid', $native = 0, $join = 0)
 	{
@@ -810,9 +812,9 @@ class Owner extends \JTable
 	/**
 	 * Sync with system project group
 	 *
-	 * @param      string $alias project alias
-	 * @param      string $prefix all project group names start with this
-	 * @return     void
+	 * @param   string  $alias   project alias
+	 * @param   string  $prefix  all project group names start with this
+	 * @return  void
 	 */
 	public function sysGroup($alias = null, $prefix = 'pr-')
 	{
@@ -850,13 +852,13 @@ class Owner extends \JTable
 	/**
 	 * Remove project owners
 	 *
-	 * @param      integer $projectid
-	 * @param      array   $users      user or owner ids to remove
-	 * @param      boolean $byownerid  owner ids in users array?
-	 * @param      boolean $remove     permanently remove if true
-	 * @param      integer $status     what status to set
-	 * @param      boolean $all       if true delete all owners of a project
-	 * @return     false if errors, integer - number of deleted members
+	 * @param   integer  $projectid
+	 * @param   array    $users      user or owner ids to remove
+	 * @param   boolean  $byownerid  owner ids in users array?
+	 * @param   boolean  $remove     permanently remove if true
+	 * @param   integer  $status     what status to set
+	 * @param   boolean  $all        if true delete all owners of a project
+	 * @return  mixed    false if errors, integer - number of deleted members
 	 */
 	public function removeOwners($projectid = null, $users = array(), $byownerid = 0, $remove = 0, $status = 2, $all = 0)
 	{
@@ -914,11 +916,11 @@ class Owner extends \JTable
 	/**
 	 * Reassign role
 	 *
-	 * @param      integer $projectid
-	 * @param      array   $users      user or owner ids to remove
-	 * @param      boolean $byownerid  owner ids in users array?
-	 * @param      integer $role       new role
-	 * @return     false if errors, integer - number of members with role changed
+	 * @param   integer  $projectid
+	 * @param   array    $users      user or owner ids to remove
+	 * @param   boolean  $byownerid  owner ids in users array?
+	 * @param   integer  $role       new role
+	 * @return  mixed    false if errors, integer - number of members with role changed
 	 */
 	public function reassignRole($projectid = null, $users = array(), $byownerid = 0 , $role = 0)
 	{
@@ -973,9 +975,9 @@ class Owner extends \JTable
 	/**
 	 * Check if person is invited, locate record by email
 	 *
-	 * @param      integer $projectid
-	 * @param      string  $email
-	 * @return     boolean true if record found
+	 * @param   integer  $projectid
+	 * @param   string   $email
+	 * @return  boolean  true if record found
 	 */
 	public function checkInvited($projectid = null, $email = '')
 	{
@@ -996,9 +998,9 @@ class Owner extends \JTable
 	/**
 	 * Check if person is invited, locate record by name
 	 *
-	 * @param      integer $projectid
-	 * @param      string  $name
-	 * @return     boolean true if record found
+	 * @param   integer  $projectid
+	 * @param   string   $name
+	 * @return  boolean  true if record found
 	 */
 	public function checkInvitedByName($projectid = null, $name = '')
 	{
@@ -1019,12 +1021,12 @@ class Owner extends \JTable
 	/**
 	 * Save invitation
 	 *
-	 * @param      integer $projectid
-	 * @param      string  $email
-	 * @param      string  $code
-	 * @param      string  $name
-	 * @param      integer $role
-	 * @return     boolean true if saved
+	 * @param   integer  $projectid
+	 * @param   string   $email
+	 * @param   string   $code
+	 * @param   string   $name
+	 * @param   integer  $role
+	 * @return  boolean  true if saved
 	 */
 	public function saveInvite($projectid = null, $email = '', $code = '', $name = '', $role = 0)
 	{
@@ -1053,9 +1055,9 @@ class Owner extends \JTable
 	/**
 	 * Remove group id from owner record (make owner independent)
 	 *
-	 * @param      integer $projectid
-	 * @param      integer $groupid
-	 * @return     boolean true if success
+	 * @param   integer  $projectid
+	 * @param   integer  $groupid
+	 * @return  boolean  true if success
 	 */
 	public function removeGroupDependence($projectid = null, $groupid = 0 )
 	{
@@ -1079,16 +1081,16 @@ class Owner extends \JTable
 	/**
 	 * Save invitation
 	 *
-	 * @param      integer $projectid
-	 * @param      string  $actor      user id of person adding new member
-	 * @param      integer $userid
-	 * @param      integer $groupid
-	 * @param      integer $role
-	 * @param      integer $status
-	 * @param      integer $native
-	 * @param      string  $invited_email
-	 * @param      boolean $split_group_roles preserve group roles when adding to a project (manager/member)
-	 * @return     false if error, integer on success (number of saved records)
+	 * @param   integer  $projectid
+	 * @param   string   $actor             user id of person adding new member
+	 * @param   integer  $userid
+	 * @param   integer  $groupid
+	 * @param   integer  $role
+	 * @param   integer  $status
+	 * @param   integer  $native
+	 * @param   string   $invited_email
+	 * @param   boolean  $split_group_roles  preserve group roles when adding to a project (manager/member)
+	 * @return  mixed    false if error, integer on success (number of saved records)
 	 */
 	public function saveOwners($projectid = null, $actor = 0, $userid = 0, $groupid = 0, $role = 0, $status = 1, $native = 0, $invited_email = '', $split_group_roles = 0)
 	{
@@ -1197,9 +1199,9 @@ class Owner extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string  $projectid
-	 * @param      integer $owner       owner user id
-	 * @return     boolean False or object
+	 * @param   string   $projectid
+	 * @param   integer  $owner       owner user id
+	 * @return  boolean  False or object
 	 */
 	public function loadOwner($projectid = null, $owner = 0)
 	{
@@ -1226,11 +1228,11 @@ class Owner extends \JTable
 	/**
 	 * Save parameter
 	 *
-	 * @param      integer $projectid
-	 * @param      integer $owner owner user id
-	 * @param      string  $param
-	 * @param      string  $value
-	 * @return     void
+	 * @param   integer  $projectid
+	 * @param   integer  $owner  owner user id
+	 * @param   string   $param
+	 * @param   string   $value
+	 * @return  void
 	 */
 	public function saveParam($projectid = null, $owner = 0, $param = '', $value = 0)
 	{
@@ -1290,8 +1292,8 @@ class Owner extends \JTable
 	/**
 	 * Match user by name, return user id if match found
 	 *
-	 * @param      string $name
-	 * @return     integer user ID or null
+	 * @param   string   $name
+	 * @return  integer  user ID or null
 	 */
 	public function matchName($name = '')
 	{
@@ -1303,10 +1305,10 @@ class Owner extends \JTable
 	/**
 	 * Get team stats
 	 *
-	 * @param      array 	$exclude
-	 * @param      string 	$get
-	 * @param      date 	$when
-	 * @return     mixed
+	 * @param   array   $exclude
+	 * @param   string  $get
+	 * @param   date    $when
+	 * @return  mixed
 	 */
 	public function getTeamStats($exclude = array(), $get = 'total', $when = null)
 	{
@@ -1427,8 +1429,10 @@ class Owner extends \JTable
 	/**
 	 * Get top projects by team size
 	 *
-	 * @param      array 	$exclude
-	 * @return     mixed
+	 * @param   array    $exclude
+	 * @param   integer  $limit
+	 * @param   boolean  $publicOnly
+	 * @return  array
 	 */
 	public function getTopTeamProjects($exclude = array(), $limit = 3, $publicOnly = false)
 	{
@@ -1465,10 +1469,10 @@ class Owner extends \JTable
 	/**
 	 * Match invite
 	 *
-	 * @param      string $identifier
-	 * @param      string $code
-	 * @param      string $email
-	 * @return     boolean
+	 * @param   string  $identifier
+	 * @param   string  $code
+	 * @param   string  $email
+	 * @return  boolean
 	 */
 	public function matchInvite($identifier = null, $code = '', $email = '')
 	{
