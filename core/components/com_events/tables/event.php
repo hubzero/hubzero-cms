@@ -32,16 +32,19 @@
 
 namespace Components\Events\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Events table class for an event
  */
-class Event extends \JTable
+class Event extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +54,7 @@ class Event extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -83,10 +86,10 @@ class Event extends \JTable
 	/**
 	 * Set an event to published
 	 *
-	 * @param      integer $oid Event ID
-	 * @param      integer $state
-	 * @param      integer $state
-	 * @return     void
+	 * @param   integer  $oid    Event ID
+	 * @param   integer  $state
+	 * @param   integer  $userId
+	 * @return  void
 	 */
 	public function publish($oid = null, $state = 1, $userId = 0)
 	{
@@ -101,8 +104,8 @@ class Event extends \JTable
 	/**
 	 * Set an event to unpublished
 	 *
-	 * @param      integer $oid Event ID
-	 * @return     void
+	 * @param   integer  $oid  Event ID
+	 * @return  void
 	 */
 	public function unpublish($oid=null)
 	{
@@ -117,7 +120,7 @@ class Event extends \JTable
 	/**
 	 * Get the newest event date
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function getFirst()
 	{
@@ -128,7 +131,7 @@ class Event extends \JTable
 	/**
 	 * Get the oldest event date
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function getLast()
 	{
@@ -139,9 +142,9 @@ class Event extends \JTable
 	/**
 	 * Get events for a date range
 	 *
-	 * @param      string $period  Date range [month, year, week, day]
-	 * @param      array  $filters Extra filters to apply to query
-	 * @return     array
+	 * @param   string  $period   Date range [month, year, week, day]
+	 * @param   array   $filters  Extra filters to apply to query
+	 * @return  array
 	 */
 	public function getEvents($period='month', $filters=array())
 	{
@@ -308,8 +311,8 @@ class Event extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -339,15 +342,15 @@ class Event extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
 		$query = "SELECT a.*, cc.title AS category, u.name AS editor, 'Public' as groupname
-			FROM $this->_tbl AS a
-			LEFT JOIN #__users AS u ON u.id = a.checked_out
-			LEFT JOIN #__categories AS cc ON a.catid=cc.id";
+			FROM `$this->_tbl` AS a
+			LEFT JOIN `#__users` AS u ON u.id = a.checked_out
+			LEFT JOIN `#__categories` AS cc ON a.catid=cc.id";
 
 		$where = array();
 		if ($filters['catid'] > 0)
@@ -391,8 +394,8 @@ class Event extends \JTable
 	/**
 	 * Find all events matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters = array())
 	{
@@ -406,8 +409,8 @@ class Event extends \JTable
 	/**
 	 * Get count of events matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     int
+	 * @param   array  $filters
+	 * @return  int
 	 */
 	public function count($filters = array())
 	{
@@ -421,8 +424,8 @@ class Event extends \JTable
 	/**
 	 * Build query string for getting list or count of events
 	 *
-	 * @param      array   $filters
-	 * @return     string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters = array())
 	{

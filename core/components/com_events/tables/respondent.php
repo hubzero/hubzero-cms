@@ -31,62 +31,61 @@
 
 namespace Components\Events\Tables;
 
+use Hubzero\Database\Table;
 use Exception;
 
 /**
  * Event respondent
  */
-class Respondent extends \JTable
+class Respondent extends Table
 {
 	/**
 	 * Description for 'filters'
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
-	private $filters      = array();
+	private $filters = array();
 
 	/**
-	 * Description for 'order'
+	 * Ordering column
 	 *
 	 * @var string
 	 */
-	private $order        = NULL;
+	private $order = null;
 
 	/**
-	 * Description for 'order_desc'
+	 * Ordering direction
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	private $order_desc   = NULL;
+	private $order_desc = null;
 
 	/**
-	 * Description for 'search_terms'
+	 * Search terms
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $search_terms = '';
 
 	/**
-	 * Description for 'limit'
+	 * Record limit
 	 *
-	 * @var mixed
+	 * @var  integer
 	 */
-	private $limit        = 0;
+	private $limit = 0;
 
 	/**
-	 * Description for 'offset'
+	 * Record offset
 	 *
-	 * @var mixed
+	 * @var  integer
 	 */
-	private $offset       = 0;
+	private $offset = 0;
 
 	/**
-	 * Short description for 'getRacialIdentification'
+	 * Get racial information for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $resp_id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param    integer  $resp_id
+	 * @return   mixed
 	 */
 	public static function getRacialIdentification($resp_id)
 	{
@@ -104,11 +103,9 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for 'getSearchTerms'
+	 * Get search terms
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public function getSearchTerms()
 	{
@@ -116,11 +113,9 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for 'getOrdering'
+	 * Get ordering
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public function getOrdering()
 	{
@@ -128,11 +123,9 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for 'getPaginator'
+	 * Create a pagination object
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return  object
 	 */
 	public function getPaginator()
 	{
@@ -140,14 +133,11 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     void
-	 * @throws Exception  Exception description (if any) ...
-	 * @throws Exception  Exception description (if any) ...
+	 * @param   array  $filters
+	 * @return  void
+	 * @throws  Exception
 	 */
 	public function __construct($filters)
 	{
@@ -165,7 +155,7 @@ class Respondent extends \JTable
 				else if ($match[1] == 'special')
 				{
 					$this->order_desc = 'special ' . $match[2];
-					$this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT NULL THEN 1 WHEN comment IS NOT NULL THEN 2 ELSE 3 END ' . $match[2];
+					$this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT null THEN 1 WHEN comment IS NOT null THEN 2 ELSE 3 END ' . $match[2];
 				}
 				else
 				{
@@ -220,12 +210,10 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for 'fetch'
+	 * Get records or a count of records
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      boolean $bounded Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   boolean  $bounded
+	 * @return  mixed
 	 */
 	public function fetch($bounded = true)
 	{
@@ -237,11 +225,9 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get a list of records
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  array
 	 */
 	public function getRecords()
 	{
@@ -249,11 +235,9 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a count
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  integer
 	 */
 	public function getCount()
 	{
@@ -261,29 +245,27 @@ class Respondent extends \JTable
 	}
 
 	/**
-	 * Short description for 'deleteRespondents'
+	 * Delete respondents for an event
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $event_id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $event_id
+	 * @return  boolean
 	 */
-	public function deleteRespondents($event_id=NULL)
+	public function deleteRespondents($event_id=null)
 	{
-		if ($event_id === NULL)
+		if ($event_id === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . intval($event_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id)));
 		return $this->_db->query();
 	}
 
 	/**
 	 * Check for unique registration per event
 	 *
-	 * @param  string $email
-	 * @param  int $eventId
-	 * @return int
+	 * @param   string  $email
+	 * @param   int     $eventId
+	 * @return  int
 	 */
 	public static function checkUniqueEmailForEvent($email, $eventId)
 	{

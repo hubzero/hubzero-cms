@@ -61,8 +61,8 @@ class Configs
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -73,9 +73,9 @@ class Configs
 	/**
 	 * Method to set an overloaded variable to the component
 	 *
-	 * @param	string	$property	Name of overloaded variable to add
-	 * @param	mixed	$value 		Value of the overloaded variable
-	 * @return	void
+	 * @param   string  $property  Name of overloaded variable to add
+	 * @param   mixed   $value     Value of the overloaded variable
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -85,8 +85,8 @@ class Configs
 	/**
 	 * Method to get an overloaded variable of the component
 	 *
-	 * @param	string	$property	Name of overloaded variable to retrieve
-	 * @return	mixed 	Value of the overloaded variable
+	 * @param   string  $property  Name of overloaded variable to retrieve
+	 * @return  mixed   Value of the overloaded variable
 	 */
 	public function __get($property)
 	{
@@ -99,7 +99,7 @@ class Configs
 	/**
 	 * Get all configurations and populate $this
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function load()
 	{
@@ -139,7 +139,7 @@ class Configs
 	/**
 	 * Set the default configuration values
 	 *
-	 * @return     boolean True on success, false on errors
+	 * @return  boolean  True on success, false on errors
 	 */
 	public function loadDefaults()
 	{
@@ -175,8 +175,8 @@ class Configs
 	/**
 	 * Get a configuration value
 	 *
-	 * @param      string $f Property name
-	 * @return     string
+	 * @param   string  $f  Property name
+	 * @return  string
 	 */
 	public function getCfg($f='')
 	{
@@ -186,8 +186,7 @@ class Configs
 		}
 		else
 		{
-			return NULL;
+			return null;
 		}
 	}
 }
-
