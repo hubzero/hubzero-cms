@@ -182,7 +182,7 @@ class Respondent extends Table
 			unset($filters['limit']);
 		}
 
-		foreach ($filters as $key=>$val)
+		foreach ($filters as $key => $val)
 		{
 			switch ($key)
 			{
