@@ -215,27 +215,27 @@ class Profilesv1_0 extends ApiController
 		$user->set('name', Request::getVar('name', '', 'post'));
 		if (!$user->get('name'))
 		{
-			App::abort(500, Lang::txt('No name provided.'));
+			App::abort(400, Lang::txt('No name provided.'));
 		}
 
 		$user->set('username', Request::getVar('username', '', 'post'));
 		if (!$user->get('username'))
 		{
-			App::abort(500, Lang::txt('No username provided.'));
+			App::abort(400, Lang::txt('No username provided.'));
 		}
 		if (!\Hubzero\Utility\Validate::username($user->get('username')))
 		{
-			App::abort(500, Lang::txt('Username not valid.'));
+			App::abort(422, Lang::txt('Username not valid.'));
 		}
 
 		$user->set('email', Request::getVar('email', '', 'post'));
 		if (!$user->get('email'))
 		{
-			App::abort(500, Lang::txt('No email provided.'));
+			App::abort(400, Lang::txt('No email provided.'));
 		}
 		if (!\Hubzero\Utility\Validate::email($user->get('email')))
 		{
-			App::abort(500, Lang::txt('Email not valid.'));
+			App::abort(422, Lang::txt('Email not valid.'));
 		}
 
 		$name = explode(' ', $user->get('name'));
@@ -249,6 +249,12 @@ class Profilesv1_0 extends ApiController
 			$middleName = implode(' ', $name);
 		}
 
+		$password = Request::getVar('password', '', 'post');
+		if (!$password)
+		{
+			App::abort(400, Lang::txt('No password provided.'));
+		}
+
 		// Set the new info
 		$user->set('givenName', $givenName);
 		$user->set('middleName', $middleName);
@@ -256,20 +262,28 @@ class Profilesv1_0 extends ApiController
 		$user->set('activation', -rand(1, pow(2, 31)-1));
 		$user->set('access', 1);
 		$user->set('password', $password);
-		//$user->set('password_clear', $password);
 
 		$result = $user->save();
 
-		$user->set('password_clear', '');
-		$user->set('password', '');
-
 		if ($result)
 		{
-			$result = \Hubzero\User\Password::changePassword($user->get('id'), $password);
+			// Get password rules and validate
+			$password_rules = \Hubzero\Password\Rule::all()
+				->whereEquals('enabled', 1)
+				->rows();
 
-			// Set password back here in case anything else down the line is looking for it
-			$user->set('password', $password);
-			$user->save();
+			$validated = \Hubzero\Password\Rule::verify($password, $password_rules, $user->get('id'));
+
+			if (!empty($validated))
+			{
+				// Set error
+				App::abort(422, Lang::txt('COM_MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
+			}
+			else
+			{
+				// Save password
+				\Hubzero\User\Password::changePassword($user->get('id'), $password);
+			}
 		}
 
 		// Did we successfully create/update an account?
