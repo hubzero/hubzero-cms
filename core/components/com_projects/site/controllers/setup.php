@@ -751,7 +751,7 @@ class Setup extends Base
 							foreach ($addKeyValues as $description)
 							{
 								$newDescription = Description::blank();
-								$newDescription->set('description_value', $description);	
+								$newDescription->set('description_value', $description);
 								$existingFields->push($newDescription);
 							}
 						}
@@ -760,7 +760,7 @@ class Setup extends Base
 							$row = $existingFields->first();
 							if ($row)
 							{
-								$row->set('description_value', $kFieldValue);	
+								$row->set('description_value', $kFieldValue);
 							}
 							else
 							{
