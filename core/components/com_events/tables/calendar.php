@@ -31,16 +31,19 @@
 
 namespace Components\Events\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for event pages
  */
-class Calendar extends \JTable
+class Calendar extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -50,7 +53,7 @@ class Calendar extends \JTable
 	/**
 	 * Check Method for saving
 	 *
-	 * @return    bool
+	 * @return  bool
 	 */
 	public function check()
 	{
@@ -65,8 +68,8 @@ class Calendar extends \JTable
 	/**
 	 * Find all calendars matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters = array())
 	{
@@ -80,8 +83,8 @@ class Calendar extends \JTable
 	/**
 	 * Get count of calendars matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     int
+	 * @param   array  $filters
+	 * @return  int
 	 */
 	public function count($filters = array())
 	{
@@ -95,8 +98,8 @@ class Calendar extends \JTable
 	/**
 	 * Build query string for getting list or count of calendars
 	 *
-	 * @param      array   $filters
-	 * @return     string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters = array())
 	{
