@@ -985,9 +985,14 @@ class Threadsv1_0 extends ApiController
 				->row();
 			if ($post->get('id'))
 			{
-				$filters['start_at'] = Request::getVar('threads_start', '');
+				$threadsstart = Request::getVar('threads_start', '');
+				if ($threadsstart && $threadsstart != 'undefined')
+				{
+					$filters['start_at'] = Request::getVar('threads_start', '');
+				}
 				$filters['parent']   = 0;
 			}
+			$filters['thread']   = 0;
 			$data->threads = $forum->posts($filters)->total();
 		}
 		else
