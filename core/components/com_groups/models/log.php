@@ -36,7 +36,7 @@ use Hubzero\Base\Model;
 use Date;
 use User;
 
-// include needed jtables
+// include needed tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
 
 /**
@@ -69,7 +69,7 @@ class Log extends Model
 		// create database object
 		$this->_db = \App::get('db');
 
-		// create page cateogry jtable object
+		// create page cateogry table object
 		$this->_tbl = new $this->_tbl_name($this->_db);
 
 		// load object

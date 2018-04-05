@@ -39,9 +39,11 @@ use DateTime;
 use Route;
 use Lang;
 use Date;
+
 // include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
-require_once Component::path('com_events') . DS . 'models' . DS . 'eventdate.php';
+require_once \Component::path('com_events') . DS . 'models' . DS . 'eventdate.php';
+
 /**
  * Event model
  */
@@ -64,15 +66,15 @@ class Event extends Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     Object Id
-	 * @return     void
+	 * @param   mixed  Object Id
+	 * @return  void
 	 */
 	public function __construct($oid = null)
 	{
 		// create needed objects
 		$this->_db = \App::get('db');
 
-		// load page jtable
+		// load page table
 		$this->_tbl = new $this->_tbl_name($this->_db);
 
 		// load object
@@ -89,7 +91,8 @@ class Event extends Model
 	/**
 	 * Get Instance this Model
 	 *
-	 * @param   $key   Instance Key
+	 * @param   integer  $key  Instance Key
+	 * @return  object
 	 */
 	static function &getInstance($key=null)
 	{
@@ -111,7 +114,7 @@ class Event extends Model
 	/**
 	 * Return link to event
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function link()
 	{
@@ -122,7 +125,7 @@ class Event extends Model
 	/**
 	 * Returns calendar for event
 	 *
-	 * @return object
+	 * @return  object
 	 */
 	public function calendar()
 	{
@@ -132,7 +135,7 @@ class Event extends Model
 	/**
 	 * Parses the Events Repeating Rule
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function parseRepeatingRule()
 	{
@@ -189,7 +192,7 @@ class Event extends Model
 	/**
 	 * Generate Human Readable Repeating Info
 	 *
-	 * @return [type] [description]
+	 * @return  string
 	 */
 	public function humanReadableRepeatingRule()
 	{
@@ -226,7 +229,7 @@ class Event extends Model
 	/**
 	 * Export Event in iCal Format
 	 *
-	 * @return [type] [description]
+	 * @return  void
 	 */
 	public function export()
 	{
