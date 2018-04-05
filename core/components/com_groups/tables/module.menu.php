@@ -32,16 +32,18 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Groups Module table
  */
-class ModuleMenu extends \JTable
+class ModuleMenu extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +53,7 @@ class ModuleMenu extends \JTable
 	/**
 	 * Get pages of module menu
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getMenu($filters = array())
 	{
@@ -65,12 +67,12 @@ class ModuleMenu extends \JTable
 		return $this->_db->loadObjectList();
 	}
 
-
 	/**
 	 * Create menus matching module ID
 	 *
-	 * @param      $menus    Array of menus
-	 * @return     BOOL
+	 * @param   integer  $moduleid
+	 * @param   array    $pages
+	 * @return  boolean
 	 */
 	public function createMenus($moduleid, $pages = array())
 	{
@@ -104,8 +106,8 @@ class ModuleMenu extends \JTable
 	/**
 	 * Delete menus matching module ID
 	 *
-	 * @param      $moduleid    Module ID
-	 * @return     BOOL
+	 * @param   integer  $moduleid  Module ID
+	 * @return  boolean
 	 */
 	public function deleteMenus($moduleid)
 	{

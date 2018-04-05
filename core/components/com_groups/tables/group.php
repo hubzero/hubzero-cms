@@ -32,10 +32,12 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Groups table
  */
-class Group extends \JTable
+class Group extends Table
 {
 	/**
 	 * Constructor
@@ -143,6 +145,7 @@ class Group extends \JTable
 	/**
 	 * Insert or Update the object
 	 *
+	 * @param   boolean  $updateNulls
 	 * @return  boolean
 	 */
 	public function store($updateNulls = false)
@@ -156,6 +159,7 @@ class Group extends \JTable
 	 * Accepts either an alias or an ID
 	 *
 	 * @param   mixed    $oid  Unique ID or alias of object to retrieve
+	 * @param   boolean  $reset
 	 * @return  boolean  True on success
 	 */
 	public function load($oid = null, $reset = true)

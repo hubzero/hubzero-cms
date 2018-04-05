@@ -31,10 +31,12 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for group page
  */
-Class PageVersion extends \JTable
+Class PageVersion extends Table
 {
 	/**
 	 * Constructor

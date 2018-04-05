@@ -32,16 +32,19 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for group membership reason
  */
-class Reason extends \JTable
+class Reason extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,17 +54,17 @@ class Reason extends \JTable
 	/**
 	 * Load a record based on group ID and user ID and bind to $this
 	 *
-	 * @param   integer $uid User ID
-	 * @param   integer $gid Group ID
-	 * @return  boolean True on success
+	 * @param   integer  $uid  User ID
+	 * @param   integer  $gid  Group ID
+	 * @return  boolean  True on success
 	 */
 	public function loadReason($uid, $gid)
 	{
-		if ($uid === NULL || $gid === NULL)
+		if ($uid === null || $gid === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid) . " AND gidNumber=" . $this->_db->quote($gid) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -82,11 +85,11 @@ class Reason extends \JTable
 	 */
 	public function deleteReason($uid, $gid)
 	{
-		if ($uid === NULL || $gid === NULL)
+		if ($uid === null || $gid === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid) . " AND gidNumber=" . $this->_db->quote($gid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -116,4 +119,3 @@ class Reason extends \JTable
 		return true;
 	}
 }
-
