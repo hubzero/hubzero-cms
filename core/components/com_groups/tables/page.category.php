@@ -32,18 +32,19 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Groups Pages Category table
  */
-class PageCategory extends \JTable
+class PageCategory extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -52,6 +53,8 @@ class PageCategory extends \JTable
 
 	/**
 	 * Check method overload
+	 *
+	 * @return  void
 	 */
 	public function check()
 	{
@@ -72,6 +75,12 @@ class PageCategory extends \JTable
 		return true;
 	}
 
+	/**
+	 * Find all records matching filters
+	 *
+	 * @param   array  $filters
+	 * @return  array
+	 */
 	public function find($filters = array())
 	{
 		$sql = "SELECT * FROM {$this->_tbl}";
@@ -81,6 +90,12 @@ class PageCategory extends \JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Get count of records matching filters
+	 *
+	 * @param   array  $filters
+	 * @return  int
+	 */
 	public function count($filters = array())
 	{
 		$sql = "SELECT COUNT(*) FROM {$this->_tbl}";
@@ -90,6 +105,12 @@ class PageCategory extends \JTable
 		return $this->_db->loadObjectList();
 	}
 
+	/**
+	 * Build query string for getting list or count of records
+	 *
+	 * @param   array   $filters
+	 * @return  string
+	 */
 	private function _buildQuery($filters = array())
 	{
 		//vars
@@ -117,6 +138,12 @@ class PageCategory extends \JTable
 		return $sql;
 	}
 
+	/**
+	 * Get categories for a group
+	 *
+	 * @param   object  $group
+	 * @return  array
+	 */
 	public function getCategories($group)
 	{
 		$categories = array();

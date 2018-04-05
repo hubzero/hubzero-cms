@@ -32,18 +32,19 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Groups Module table
  */
-class Module extends \JTable
+class Module extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -53,7 +54,7 @@ class Module extends \JTable
 	/**
 	 * Overload check method to make sure we have needed vars
 	 *
-	 * @return     BOOL
+	 * @return  boolean
 	 */
 	public function check()
 	{
@@ -84,8 +85,8 @@ class Module extends \JTable
 	/**
 	 * Find all modules matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters = array())
 	{
@@ -96,28 +97,26 @@ class Module extends \JTable
 		return $this->_db->loadObjectList();
 	}
 
-
 	/**
 	 * Get count of modules matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     int
+	 * @param   array  $filters
+	 * @return  int
 	 */
 	public function count($filters = array())
 	{
 		$sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
-
 	/**
-	 * Build query string for getting list or count of pages
+	 * Build query string for getting list or count of records
 	 *
-	 * @param      array   $filters
-	 * @return     string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters = array())
 	{
@@ -128,19 +127,19 @@ class Module extends \JTable
 		// published
 		if (isset($filters['gidNumber']))
 		{
-			$where[] = "gidNumber=" . $this->_db->quote( $filters['gidNumber'] );
+			$where[] = "gidNumber=" . $this->_db->quote($filters['gidNumber']);
 		}
 
 		// title
 		if (isset($filters['title']))
 		{
-			$where[] = "title=" . $this->_db->quote( $filters['title'] );
+			$where[] = "title=" . $this->_db->quote($filters['title']);
 		}
 
 		// position
 		if (isset($filters['position']))
 		{
-			$where[] = "position=" . $this->_db->quote( $filters['position'] );
+			$where[] = "position=" . $this->_db->quote($filters['position']);
 		}
 
 		// state

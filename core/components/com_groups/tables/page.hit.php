@@ -31,16 +31,18 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for group page
  */
-Class PageHit extends \JTable
+Class PageHit extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
