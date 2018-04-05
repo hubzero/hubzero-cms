@@ -36,7 +36,7 @@ use Hubzero\Database\Table;
 /**
  * Table class for group page
  */
-Class PageHit extends Table
+class PageHit extends Table
 {
 	/**
 	 * Constructor
