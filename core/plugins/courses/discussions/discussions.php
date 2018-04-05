@@ -957,7 +957,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$threads = new stdClass;
 		$threads->lastchange = '0000-00-00 00:00:00';
 		$threads->lastid     = 0;
-		$threads->posts      = null;
+		$threads->posts      = array();
 		$threads->html       = null;
 		$threads->total      = 0;
 
@@ -966,9 +966,17 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			->whereIn('state', (array)$filters['state'])
 			->whereIn('access', $filters['access']);
 
-		if (isset($filters['start_at']) && $filters['start_at'])
+		if (isset($filters['start_at']) && $filters['start_at'] && $filters['start_at'] != 'undefined')
 		{
 			$entries->where('created', '>', $filters['start_at']);
+		}
+		if (isset($filters['scope']) && $filters['scope'])
+		{
+			$entries->whereEquals('scope', $filters['scope']);
+		}
+		if (isset($filters['scope_id']) && $filters['scope_id'])
+		{
+			$entries->whereEquals('scope_id', $filters['scope_id']);
 		}
 
 		$rows = $entries
@@ -1039,7 +1047,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			->whereIn('state', (array)$filters['state'])
 			->whereIn('access', $filters['access']);
 
-		if (isset($filters['start_at']) && $filters['start_at'])
+		if (isset($filters['start_at']) && $filters['start_at'] && $filters['start_at'] != 'undefined')
 		{
 			$entries->where('created', '>', $filters['start_at']);
 		}
