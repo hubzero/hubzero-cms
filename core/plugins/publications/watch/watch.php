@@ -151,7 +151,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 		// Login required
 		if (User::isGuest() || !$this->publication->exists())
 		{
-			$subscribeUrl = Route::url($this->publication->link('versionid') . '&active=watch&action=' . $this->action . '&confirm=' . $confirm, false);
+			$subscribeUrl = Route::url($this->publication->link('version') . '&active=watch&action=' . $this->action . '&confirm=' . $confirm, false);
 			$loginUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($subscribeUrl));
 			App::redirect(
 				$loginUrl
