@@ -405,7 +405,7 @@ class Tickets extends AdminController
 		$comment = Comment::blank();
 		$comment->set('ticket', $id);
 
-		// Check if changes were made inbetween the time the comment was started and posted
+		// Check if changes were made wthin the time the comment was started and posted
 		if ($id)
 		{
 			$started = Request::getVar('started', Date::toSql(), 'post');

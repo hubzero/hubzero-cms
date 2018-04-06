@@ -440,7 +440,7 @@ $this->css('course.css')
 					if ($this->course->isStudent())
 					{
 						// Filters for getting all available sections
-						// includng the default
+						// including the default
 						$filters = array(
 							'state'      => 1,
 							'available'  => true

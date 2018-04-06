@@ -888,7 +888,7 @@ class Connect extends Obj
 			$dir = dirname($fpath) != '.' ? dirname($fpath) : '';
 			$name = basename($fpath);
 
-			// Get file extention
+			// Get file extension
 			$parts = explode('.', $name);
 			$ext   = count($parts) > 1 ? array_pop($parts) : '';
 

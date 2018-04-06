@@ -257,7 +257,7 @@ class Event extends Model
 		$created  = gmdate('Ymd', strtotime($this->get('created'))) . 'T' . gmdate('His', strtotime($this->get('created'))) . 'Z';
 		$modified = gmdate('Ymd', strtotime($this->get('modified'))) . 'T' . gmdate('His', strtotime($this->get('modified'))) . 'Z';
 
-		//create ouput
+		//create output
 		$output  = "BEGIN:VCALENDAR\r\n";
 		$output .= "VERSION:2.0\r\n";
 		$output .= "PRODID:PHP\r\n";
@@ -291,7 +291,7 @@ class Event extends Model
 		$output .= "END:STANDARD\r\n";
 		$output .= "END:VTIMEZONE\r\n";
 
-		// ouput event info
+		// output event info
 		$output .= "BEGIN:VEVENT\r\n";
 		$output .= "UID:{$id}\r\n";
 		$output .= "DTSTAMP:{$now}\r\n";

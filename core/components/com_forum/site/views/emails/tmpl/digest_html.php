@@ -283,7 +283,7 @@ array_walk($this->posts, function($val, $idx) use (&$posts)
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
 														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-															This email was sent to you on behalf of <?php echo Request::root(); ?> becuase you are subscribed 
+															This email was sent to you on behalf of <?php echo Request::root(); ?> because you are subscribed 
 															to these group discussion threads. To unsubscribe, please log in and adjust your email preferences 
 															for the group of interest.
 														</span>

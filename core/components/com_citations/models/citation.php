@@ -91,7 +91,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	/**
 	 * Returns results based on filters applied.
 	 *
-	 * @param   array    $filters  the string containg the various applied filters.
+	 * @param   array    $filters  the string contaning the various applied filters.
 	 * @param   boolean  $admin
 	 * @return  object   Citation 
 	 */
@@ -452,7 +452,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				$groupCitations[$year] = $affiliations;
 			}
 
-			// Set count for affliation
+			// Set count for affiliation
 			if ($year == $emptyLabel)
 			{
 				$groupCitations[$emptyLabel][$affLabel] += $cite->totalcite;
@@ -1088,7 +1088,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		$cite = preg_replace('/, :/', ':', $cite);
 
 		// highlight citation data
-		// do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
+		// do before appending coins as we dont want that data accidentally highlighted (causes style issues)
 		$cite = ($highlight) ? Str::highlight($cite, $highlight) : $cite;
 
 		// if we want coins add them
@@ -1265,7 +1265,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			{
 				if ($tag->tbl == 'citations' && $tag->label == '')
 				{
-					//display tag if not admin tag or if admin tag and user is adminstrator
+					//display tag if not admin tag or if admin tag and user is administrator
 					if (!$tag->tag->admin || ($tag->tag->admin && $isAdmin))
 					{
 						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag->tag) . '">' . stripslashes($tag->tag->raw_tag) . '</a></li>';
@@ -1393,7 +1393,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Save record and propogate data
+	 * Save record and propagate data
 	 *
 	 * @return  bool
 	 */

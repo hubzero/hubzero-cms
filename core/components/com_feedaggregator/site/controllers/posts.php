@@ -287,7 +287,7 @@ class Posts extends SiteController
 
 								$post->set('description', (string) html_entity_decode(strip_tags($item->content, '<img>')));
 								$post->save(); //save the post
-							} // end check for prior existance
+							} // end check for prior existence
 						}
 						else if ($feedType == 'RSS')
 						{
@@ -359,7 +359,7 @@ class Posts extends SiteController
 				// Load individual item creator class
 				$item = new \Hubzero\Document\Type\Feed\Item();
 
-				// sanitize ouput
+				// sanitize output
 				$item->title = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->title);
 				$item->title = preg_replace("/&#?[a-z1-9]{2,8};/i","",$post->title);
 				$item->title = (string) strip_tags($item->title);
@@ -370,7 +370,7 @@ class Posts extends SiteController
 				$item->link = '<![CDATA[' . $post->link . ']]>';
 				$item->date = date($post->created);
 
-				// sanitize ouput
+				// sanitize output
 				$item->description = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->description);
 				$item->description = preg_replace('/[^A-Za-z0-9 ]/', '', $item->description);
 				$item->description = preg_replace("/&#?[a-z1-9]{2,8};/i","",$post->description);

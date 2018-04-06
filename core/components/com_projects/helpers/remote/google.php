@@ -708,7 +708,7 @@ class Google extends Obj
 					{
 						$title = Filesystem::clean($doc['title']);
 
-						// Get file extention
+						// Get file extension
 						$ext = Filesystem::extension($title);
 
 						if ($converted)
@@ -1383,7 +1383,7 @@ class Google extends Obj
 	 */
 	public static function getImportFilename($name = '', $importExt = '')
 	{
-		// Get file extention
+		// Get file extension
 		$parts = explode('.', $name);
 		$ext   = count($parts) > 1 ? array_pop($parts) : '';
 
@@ -1406,7 +1406,7 @@ class Google extends Obj
 	{
 		$ext = '';
 
-		// Get file extention
+		// Get file extension
 		$parts = explode('.', $file);
 		$ext   = count($parts) > 1 ? array_pop($parts) : '';
 

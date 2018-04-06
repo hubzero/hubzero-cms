@@ -98,10 +98,10 @@ class Jobs extends SiteController
 		$this->_industry           = $this->config->get('industry', '');
 		$this->_allowSubscriptions = $this->config->get('allowsubscriptions', 0);
 
-		// Get admin priviliges
+		// Get admin privileges
 		self::_authorizeAdmin();
 
-		// Get employer priviliges
+		// Get employer privileges
 		if ($this->_allowSubscriptions)
 		{
 			self::_authorizeEmployer($this->_admin);
@@ -111,7 +111,7 @@ class Jobs extends SiteController
 			$this->_emp = 0;
 		}
 
-		// Set component administrator priviliges
+		// Set component administrator privileges
 		$this->_masterAdmin = $this->_admin && !$this->_emp ? 1 : 0;
 
 		// Incoming

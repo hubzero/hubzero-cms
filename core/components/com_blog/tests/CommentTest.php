@@ -77,7 +77,7 @@ class CommentTest extends Database
 	}
 
 	/**
-	 * Tests that a call for a non-existant row via oneOrFail method throws an exception
+	 * Tests that a call for a non-existent row via oneOrFail method throws an exception
 	 *
 	 * @covers  Components\Blog\Models\Comment::oneOrFail
 	 * @expectedException RuntimeException
@@ -89,7 +89,7 @@ class CommentTest extends Database
 	}
 
 	/**
-	 * Tests that a request for a non-existant row via oneOrNew method returns new model
+	 * Tests that a request for a non-existent row via oneOrNew method returns new model
 	 *
 	 * @covers  Components\Blog\Models\Comment::oneOrNew
 	 * @return  void

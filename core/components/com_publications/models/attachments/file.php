@@ -713,7 +713,7 @@ class File extends Base
 	public function serve($element, $elementId, $pub, $blockParams, $itemId = 0)
 	{
 		// Incoming
-		$forceDownload = Request::getInt('download', 0); // Force downlaod action?
+		$forceDownload = Request::getInt('download', 0); // Force download action?
 
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);

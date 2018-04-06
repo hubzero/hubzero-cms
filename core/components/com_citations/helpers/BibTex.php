@@ -306,7 +306,7 @@ class Structures_BibTex
 	}
 
 	/**
-	 * Parses what is stored in content and clears the content if the parsing is successfull.
+	 * Parses what is stored in content and clears the content if the parsing is successful.
 	 *
 	 * @access public
 	 * @return boolean true on success and Exception if there was a problem

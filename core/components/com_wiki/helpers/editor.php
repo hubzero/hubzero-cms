@@ -263,7 +263,7 @@ class Editor extends Obj
 	/**
 	 * Load the editor
 	 *
-	 * @param   array  $config  Associative array of editor config paramaters
+	 * @param   array  $config  Associative array of editor config parameters
 	 * @return  void
 	 */
 	private function load($config = array())

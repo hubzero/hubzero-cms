@@ -905,7 +905,7 @@ class Citations extends SiteController
 		$doc = '';
 		$citations = Citation::all()->whereIn('id', $citationIds);
 
-		// for each citation we want to downlaod
+		// for each citation we want to download
 		foreach ($citations as $citation)
 		{
 			//get the badges

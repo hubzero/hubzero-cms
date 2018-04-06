@@ -362,7 +362,7 @@ class Page extends Model
 	 */
 	public function getChildren()
 	{
-		// load pages that are decendents of this page
+		// load pages that are decendants of this page
 		$archive  = new Page\Archive();
 		$children = $archive->pages('list', array(
 			'gidNumber' => $this->get('gidNumber'),
@@ -400,7 +400,7 @@ class Page extends Model
 	}
 
 	/**
-	 * Display indicator of Heirarchy
+	 * Display indicator of Hierarchy
 	 *
 	 * @param  [type] $hierarchyIndicator [description]
 	 * @return [type]                     [description]

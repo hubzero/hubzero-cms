@@ -106,7 +106,7 @@ $this->css()
 			if (is_object($user)) {
 				$name = $user->get('name');
 			} else {
-				$name = Lang::txt('EVENTS_CAL_LANG_UNKOWN');
+				$name = Lang::txt('EVENTS_CAL_LANG_UNKNOWN');
 			}
 			$category = (isset($this->categories[$this->row->catid])) ? $this->categories[$this->row->catid] : 'N/A';
 			$html .= '<table id="event-info">'."\n";

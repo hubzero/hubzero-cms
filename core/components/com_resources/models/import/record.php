@@ -461,7 +461,7 @@ class Record extends Obj
 
 				if (is_dir($directory))
 				{
-					// get iterator on direcotry
+					// get iterator on directory
 					$iterator = new \FilesystemIterator($directory);
 					$isDirEmpty = !$iterator->valid();
 

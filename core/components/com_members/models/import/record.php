@@ -462,7 +462,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 					}
 				}
 
-				// Try to create from portion preceeding @ in email address
+				// Try to create from portion preceding @ in email address
 				if (!$valid)
 				{
 					$username = strstr($this->record->entry->get('email'), '@', true);

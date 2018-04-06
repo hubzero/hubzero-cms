@@ -102,7 +102,7 @@ class NewsfeedsTableNewsfeed extends JTable
 		return true;
 	}
 	/**
-	 * Overriden JTable::store to set modified data and user id.
+	 * Overridden JTable::store to set modified data and user id.
 	 *
 	 * @param	boolean	True to update fields even if they are null.
 	 * @return	boolean	True on success.

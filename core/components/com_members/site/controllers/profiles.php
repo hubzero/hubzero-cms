@@ -835,7 +835,7 @@ class Profiles extends SiteController
 		{
 			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 
-			// Offer explaination and eternal redemption to the user, instead of leaving them high and dry
+			// Offer explanation and eternal redemption to the user, instead of leaving them high and dry
 			/*
 			$this->view
 				->set('title', Lang::txt('COM_MEMBERS_REGISTER_UNCONFIRMED'))
@@ -1479,7 +1479,7 @@ class Profiles extends SiteController
 			->ordered()
 			->rows();
 
-		// Ouput HTML
+		// Output HTML
 		$this->view
 			->set('title', $title)
 			->set('profile', $profile)
