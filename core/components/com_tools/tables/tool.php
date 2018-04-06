@@ -32,19 +32,20 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Lang;
 
 /**
  * Tools table for a Tool
  */
-class Tool extends \JTable
+class Tool extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -54,7 +55,7 @@ class Tool extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -68,12 +69,10 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'loadFromName'
+	 * Load a tool by name
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $toolname
+	 * @return  boolean
 	 */
 	public function loadFromName($toolname)
 	{
@@ -97,13 +96,11 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a SQL statement from passed filters
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      unknown $admin Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  string
 	 */
 	public function buildQuery($filters, $admin)
 	{
@@ -162,13 +159,11 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolCount'
+	 * Get a count of tools
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  integer
 	 */
 	public function getToolCount($filters=array(), $admin=false)
 	{
@@ -179,16 +174,14 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getMyTools'
+	 * Get my tools
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     object Return description (if any) ...
+	 * @return  array
 	 */
 	public function getMyTools()
 	{
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
-				FROM #__resources AS r, #__tool_version AS v
+				FROM `#__resources` AS r, `#__tool_version` AS v
 				WHERE r.published=1
 				AND r.type=7
 				AND r.standalone=1
@@ -202,13 +195,11 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getTools'
+	 * Get a list of tools
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  array
 	 */
 	public function getTools($filters=array(), $admin=false)
 	{
@@ -224,11 +215,9 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolsOldScheme'
+	 * Get all tools
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     object Return description (if any) ...
+	 * @return  array
 	 */
 	public function getToolsOldScheme()
 	{
@@ -237,63 +226,57 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getTicketId'
+	 * Get a ticket ID for a tool
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string   $toolid
+	 * @return  integer
 	 */
 	public function getTicketId($toolid=null)
 	{
-		if ($toolid=== null)
+		if ($toolid === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT ticketid FROM #__tool WHERE id=" . $this->_db->quote($toolid));
+		$this->_db->setQuery("SELECT ticketid FROM `#__tool` WHERE id=" . $this->_db->quote($toolid));
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getResourceId'
+	 * Get a resource ID for a tool
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @return  integer
 	 */
 	public function getResourceId($toolid=null)
 	{
-		if ($toolid=== null)
+		if ($toolid === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT r.id FROM #__tool as t LEFT JOIN #__resources as r ON r.alias = t.toolname WHERE t.id=" . $this->_db->quote($toolid));
+		$this->_db->setQuery("SELECT r.id FROM `#__tool` as t LEFT JOIN `#__resources` as r ON r.alias = t.toolname WHERE t.id=" . $this->_db->quote($toolid));
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getToolInstanceFromResource'
+	 * Get a tool instance from a resource ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $version Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $rid
+	 * @param   string  $version
+	 * @return  mixed
 	 */
 	public function getToolInstanceFromResource($rid=null, $version ='dev')
 	{
-		if ($rid=== null)
+		if ($rid === null)
 		{
 			return false;
 		}
 
-		$query = "SELECT v.instance FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
-		if ($version=='dev')
+		$query = "SELECT v.instance FROM `#__tool_version` as v JOIN `#__resources` as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
+		if ($version == 'dev')
 		{
 			$query.= " AND v.state=3 LIMIT 1";
 		}
-		else if ($version=='current')
+		else if ($version == 'current')
 		{
 			$query.= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
 		}
@@ -307,67 +290,59 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolIdFromResource'
+	 * Get a tool ID from a resource
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $rid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $rid
+	 * @return  integer
 	 */
 	public function getToolIdFromResource($rid=null)
 	{
-		if ($rid=== null)
+		if ($rid === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT t.id FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1");
+		$this->_db->setQuery("SELECT t.id FROM `#__tool` as t JOIN `#__resources` as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getToolnameFromResource'
+	 * Get toolname form resource
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $rid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $rid
+	 * @return  mixed
 	 */
 	public function getToolnameFromResource($rid=null)
 	{
-		if ($rid=== null)
+		if ($rid === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT t.toolname FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1");
+		$this->_db->setQuery("SELECT t.toolname FROM `#__tool` as t JOIN `#__resources` as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getToolId'
+	 * Get tool ID from name
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $toolname
+	 * @return  mixed
 	 */
 	public function getToolId($toolname=null)
 	{
-		if ($toolname=== null)
+		if ($toolname === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT id FROM #__tool WHERE toolname=" . $this->_db->quote($toolname) . " LIMIT 1");
+		$this->_db->setQuery("SELECT id FROM `#__tool` WHERE toolname=" . $this->_db->quote($toolname) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'saveTicketId'
+	 * Save ticket ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      string $ticketid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @param   integer  $ticketid
+	 * @return  boolean
 	 */
 	public function saveTicketId($toolid=null, $ticketid=null)
 	{
@@ -375,7 +350,7 @@ class Tool extends \JTable
 		{
 			return false;
 		}
-		$query = "UPDATE #__tool SET ticketid=" . $this->_db->quote($ticketid) . " WHERE id=" . $this->_db->quote($toolid);
+		$query = "UPDATE `#__tool` SET ticketid=" . $this->_db->quote($ticketid) . " WHERE id=" . $this->_db->quote($toolid);
 		$this->_db->setQuery($query);
 		if ($this->_db->query())
 		{
@@ -388,14 +363,12 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'updateTool'
+	 * Update a tool entry
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      string $newstate Parameter description (if any) ...
-	 * @param      string $priority Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $toolid
+	 * @param   string  $newstate
+	 * @param   string  $priority
+	 * @return  boolean
 	 */
 	public function updateTool($toolid=null, $newstate=null, $priority=null)
 	{
@@ -405,7 +378,7 @@ class Tool extends \JTable
 		}
 		if ($newstate or $priority)
 		{
-			$query = "UPDATE #__tool SET ";
+			$query = "UPDATE `#__tool` SET ";
 			if ($newstate)
 			{
 				$query.= "state=" . $this->_db->quote($newstate) . ", state_changed='" . Date::toSql() . "'";
@@ -430,13 +403,11 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolInfo'
+	 * Get tool info
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   itneger  $toolid
+	 * @param   string   $toolname
+	 * @return  array
 	 */
 	public function getToolInfo($toolid, $toolname='')
 	{
@@ -465,17 +436,15 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolDevGroup'
+	 * Get tool dev group
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @return  string
 	 */
 	public function getToolDevGroup($toolid)
 	{
-		$query  = "SELECT g.cn FROM #__tool_groups AS g ";
-		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
+		$query  = "SELECT g.cn FROM `#__tool_groups` AS g ";
+		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
 		$query .= "WHERE g.toolid = " . $this->_db->quote($toolid) . " AND g.role=1 LIMIT 1";
 
 		$this->_db->setQuery($query);
@@ -483,18 +452,16 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolDevelopers'
+	 * Get tool developers
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @return  array
 	 */
 	public function getToolDevelopers($toolid)
 	{
-		$query  = "SELECT m.uidNumber FROM #__tool_groups AS g ";
-		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
+		$query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
+		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
+		$query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
 		$query .= "WHERE g.toolid = " . $this->_db->quote($toolid) . " AND g.role=1 ";
 
 		$this->_db->setQuery($query);
@@ -502,18 +469,16 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolGroups'
+	 * Get tool groups
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $toolid Parameter description (if any) ...
-	 * @param      array $groups Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   integer  $toolid
+	 * @param   array    $groups
+	 * @return  array
 	 */
 	public function getToolGroups($toolid, $groups = array())
 	{
-		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
-		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
+		$query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
+		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
 		$query .= "WHERE g.toolid = " . $this->_db->quote($toolid) . " AND g.role=0 ";
 
 		$this->_db->setQuery($query);
@@ -521,15 +486,13 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolStatus'
+	 * Get tool status
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $toolid Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      array &$status Parameter description (if any) ...
-	 * @param      string $version Parameter description (if any) ...
-	 * @return     void
+	 * @param   integer  $toolid
+	 * @param   string   $option
+	 * @param   array    &$status
+	 * @param   string   $version
+	 * @return  void
 	 */
 	public function getToolStatus($toolid, $option, &$status, $version='dev')
 	{
@@ -551,17 +514,15 @@ class Tool extends \JTable
 	}
 
 	/**
-	 * Short description for 'buildToolStatus'
+	 * Build tool status
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $toolinfo Parameter description (if any) ...
-	 * @param      array $developers Parameter description (if any) ...
-	 * @param      array $authors Parameter description (if any) ...
-	 * @param      array $version Parameter description (if any) ...
-	 * @param      array &$status Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array   $toolinfo
+	 * @param   array   $developers
+	 * @param   array   $authors
+	 * @param   array   $version
+	 * @param   array   &$status
+	 * @param   string  $option
+	 * @return  array
 	 */
 	public function buildToolStatus($toolinfo, $developers=array(), $authors=array(), $version, &$status, $option)
 	{
@@ -619,8 +580,8 @@ class Tool extends \JTable
 			'license'       => isset($version[0]->license) ? $version[0]->license : '',
 			'hostreq'       => (isset($version[0]->hostreq) ? implode(', ', $version[0]->hostreq) : $hostreq),
 			'params'        => isset($version[0]->params) ? $version[0]->params : '',
-			'github'		=> $params->get('github'),
-			'publishType'	=> ($params->get('publishType') == 'weber=') ? 'jupyter' : 'standard'
+			'github'        => $params->get('github'),
+			'publishType'   => ($params->get('publishType') == 'weber=') ? 'jupyter' : 'standard'
 		);
 
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
@@ -633,7 +594,7 @@ class Tool extends \JTable
 
 		$status['currenttool']     = isset($current[0]->instance) ? $current[0]->instance : $status['toolname'] . $dev_suffix;
 		$status['currentrevision'] = isset($current[0]->revision) ? $current[0]->revision : $status['revision'];
-		$status['currentversion']  = isset($current[0]->version)  ? $current[0]->version  : $status['version'];
+		$status['currentversion']  = isset($current[0]->version) ? $current[0]->version : $status['version'];
 
 		return $status;
 	}

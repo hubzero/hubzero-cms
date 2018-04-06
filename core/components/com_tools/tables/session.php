@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,20 +22,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for middleware sessions
  */
-class Session extends \JTable
+class Session extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -49,9 +53,9 @@ class Session extends \JTable
 	/**
 	 * Load a record and bind it to $this object
 	 *
-	 * @param      integer $sess     Session number
-	 * @param      string  $username User to delete for
-	 * @return     boolean False if errors, True if success
+	 * @param   integer  $sess      Session number
+	 * @param   string   $username  User to delete for
+	 * @return  boolean  False if errors, True if success
 	 */
 	public function load($sess=null, $username=null)
 	{
@@ -86,9 +90,9 @@ class Session extends \JTable
 	/**
 	 * Retrieve a session
 	 *
-	 * @param      string $sess       Session number
-	 * @param      string $authorized Admin authorization?
-	 * @return     object
+	 * @param   string  $sess        Session number
+	 * @param   string  $authorized  Admin authorization?
+	 * @return  object
 	 */
 	public function loadSession($sess=null, $authorized=null)
 	{
@@ -125,9 +129,9 @@ class Session extends \JTable
 	/**
 	 * Check if a user owns a session
 	 *
-	 * @param      string $sess       Session number
-	 * @param      string $authorized Admin authorization?
-	 * @return     object
+	 * @param   string  $sess        Session number
+	 * @param   string  $authorized  Admin authorization?
+	 * @return  object
 	 */
 	public function checkSession($sess=null, $authorized=null)
 	{
@@ -167,11 +171,11 @@ class Session extends \JTable
 	/**
 	 * Get a session count for a user, optionally restricted to a specific app
 	 *
-	 * @param      string $username Username to look for
-	 * @param      string $appname  App to look for
-	 * @return     integer
+	 * @param   string   $username  Username to look for
+	 * @param   string   $appname   App to look for
+	 * @return  integer
 	 */
-	public function getCount($username=NULL, $appname=NULL)
+	public function getCount($username=null, $appname=null)
 	{
 		if ($username == null)
 		{
@@ -202,10 +206,10 @@ class Session extends \JTable
 	/**
 	 * Get sessions for a user, optionally restricted to a specific app
 	 *
-	 * @param      string $username   Username to look for
-	 * @param      string $appname    App to look for
-	 * @param      string $authorized Admin authorization?
-	 * @return     array
+	 * @param   string  $username    Username to look for
+	 * @param   string  $appname     App to look for
+	 * @param   string  $authorized  Admin authorization?
+	 * @return  array
 	 */
 	public function getRecords($username=null, $appname=null, $authorized=null)
 	{
@@ -250,8 +254,8 @@ class Session extends \JTable
 	/**
 	 * Get the time left until the session times out
 	 *
-	 * @param      integer $sess Sess ID
-	 * @return     integer
+	 * @param   integer  $sess  Sess ID
+	 * @return  integer
 	 */
 	public function getTimeout($sess)
 	{
@@ -271,7 +275,7 @@ class Session extends \JTable
 			FROM $this->_tbl AS s
 			LEFT JOIN $mv->_tbl AS v ON s.sessnum = v.sessnum
 			LEFT JOIN $mj->_tbl AS j ON s.sessnum = j.sessnum
-			WHERE viewid IS NULL AND jobid IS NULL
+			WHERE viewid IS null AND jobid IS null
 			AND s.sessnum=" . $this->_db->quote($sess);
 
 		$this->_db->setQuery($query);
@@ -281,8 +285,8 @@ class Session extends \JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to determien hwo to build query
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters)
 	{
@@ -346,8 +350,8 @@ class Session extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     integer
+	 * @param   array   $filters  Filters to determien hwo to build query
+	 * @return  integer
 	 */
 	public function getAllCount($filters=array())
 	{
@@ -362,8 +366,8 @@ class Session extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     array
+	 * @param   array  $filters  Filters to determien hwo to build query
+	 * @return  array
 	 */
 	public function getAllRecords($filters=array())
 	{

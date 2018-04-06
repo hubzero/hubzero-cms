@@ -32,10 +32,12 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table for storing user middleware preferences
  */
-class Preferences extends \JTable
+class Preferences extends Table
 {
 	/**
 	 * Constructor
@@ -51,7 +53,7 @@ class Preferences extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean False if invalid data, true on success
+	 * @return  boolean  False if invalid data, true on success
 	 */
 	public function check()
 	{
@@ -112,11 +114,11 @@ class Preferences extends \JTable
 	}
 
 	/**
-	 * Method to store a row in the database from the JTable instance properties.
+	 * Method to store a row in the database from the Table instance properties.
 	 * If a primary key value is set the row with that primary key value will be
 	 * updated with the instance property values.  If no primary key value is set
 	 * a new row will be inserted into the database with the properties from the
-	 * JTable instance.
+	 * Table instance.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 * @return  boolean  True on success.
@@ -173,9 +175,9 @@ class Preferences extends \JTable
 	/**
 	 * Get a count of, single entry, or list of entries
 	 * 
-	 * @param   string   $rtrn     Data to return
-	 * @param   array    $filters  Filters to apply to data retrieval
-	 * @param   array    $select   List of fields to select
+	 * @param   string  $rtrn     Data to return
+	 * @param   array   $filters  Filters to apply to data retrieval
+	 * @param   array   $select   List of fields to select
 	 * @return  mixed
 	 */
 	public function find($what='', $filters=array(), $select=array())
@@ -318,7 +320,7 @@ class Preferences extends \JTable
 			{
 				$quota = new self($this->_db);
 				$quota->load($r->id);
-				$quota->set('jobs',     $class->jobs);
+				$quota->set('jobs', $class->jobs);
 				$quota->set('class_id', $class->id);
 				$quota->store();
 			}

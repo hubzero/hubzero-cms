@@ -1,12 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
  *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,20 +22,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for middleware view permissions
  */
-class Viewperm extends \JTable
+class Viewperm extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -49,9 +53,9 @@ class Viewperm extends \JTable
 	/**
 	 * Load database rows
 	 *
-	 * @param      integer $sess     Session number
-	 * @param      string  $username User to load for
-	 * @return     array
+	 * @param   integer  $sess      Session number
+	 * @param   string   $username  User to load for
+	 * @return  array
 	 */
 	public function loadViewperm($sess=null, $username=null)
 	{
@@ -75,7 +79,7 @@ class Viewperm extends \JTable
 	/**
 	 * Update View perm
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateViewPerm()
 	{
@@ -97,9 +101,9 @@ class Viewperm extends \JTable
 	/**
 	 * Delete a record
 	 *
-	 * @param      integer $sess     Session number
-	 * @param      string  $username User to delete for
-	 * @return     boolean False if errors, True if success
+	 * @param   integer  $sess      Session number
+	 * @param   string   $username  User to delete for
+	 * @return  boolean  False if errors, True if success
 	 */
 	public function deleteViewperm($sess=null, $username=null)
 	{
@@ -128,8 +132,8 @@ class Viewperm extends \JTable
 	/**
 	 * Update a record
 	 *
-	 * @param      boolean $updateNulls Update null values?
-	 * @return     boolean False if errors, True if success
+	 * @param   boolean  $updateNulls  Update null values?
+	 * @return  boolean  False if errors, True if success
 	 */
 	public function update($updateNulls=false)
 	{
@@ -146,7 +150,7 @@ class Viewperm extends \JTable
 	/**
 	 * Insert a new record
 	 *
-	 * @return     boolean False if errors, True if success
+	 * @return  boolean  False if errors, True if success
 	 */
 	public function insert()
 	{

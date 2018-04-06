@@ -32,6 +32,7 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use Components\Tools\Helpers\Utils;
 use User;
 use Lang;
@@ -39,13 +40,13 @@ use Lang;
 /**
  * Table class for tool authors
  */
-class Author extends \JTable
+class Author extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -55,7 +56,7 @@ class Author extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -87,12 +88,10 @@ class Author extends \JTable
 	}
 
 	/**
-	 * Short description for 'getToolContributions'
+	 * Get tools for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $uid
+	 * @return  mixed
 	 */
 	public function getToolContributions($uid)
 	{
@@ -100,10 +99,10 @@ class Author extends \JTable
 		{
 			return false;
 		}
-		$sql = " SELECT f.toolname FROM #__tool as f "
-				. "JOIN #__tool_groups AS g ON f.id=g.toolid AND g.role=1 "
-				. "JOIN #__xgroups AS xg ON g.cn=xg.cn "
-				. "JOIN #__xgroups_managers AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $this->_db->quote($uid);
+		$sql = " SELECT f.toolname FROM `#__tool` as f "
+				. "JOIN `#__tool_groups` AS g ON f.id=g.toolid AND g.role=1 "
+				. "JOIN `#__xgroups` AS xg ON g.cn=xg.cn "
+				. "JOIN `#__xgroups_managers` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $this->_db->quote($uid);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -113,30 +112,28 @@ class Author extends \JTable
 	/**
 	 * Get the first author's name on a resource
 	 *
-	 * @param      integer $rid Resource ID
-	 * @return     string
+	 * @param   integer  $rid  Resource ID
+	 * @return  string
 	 */
 	public function getFirstAuthor($rid = 0)
 	{
-		$query  = "SELECT x.name FROM #__xprofiles x ";
-		$query .= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= " . $this->_db->quote($rid) . " AND aa.subtable='resources' ";
+		$query  = "SELECT x.name FROM `#__users` x ";
+		$query .= " JOIN `#__author_assoc` AS aa ON x.id=aa.authorid AND aa.subid= " . $this->_db->quote($rid) . " AND aa.subtable='resources' ";
 		$query .= " ORDER BY aa.ordering ASC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getAuthorsDOI'
+	 * Get an author's DOIs
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      mixed $rid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   integer  $rid
+	 * @return  array
 	 */
 	public function getAuthorsDOI($rid = 0)
 	{
-		$query  = "SELECT x.name FROM #__xprofiles x ";
-		$query .= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= " . $this->_db->quote($rid) . " AND aa.subtable='resources' ";
+		$query  = "SELECT x.name FROM `#__users` x ";
+		$query .= " JOIN `#__author_assoc` AS aa ON x.id=aa.authorid AND aa.subid= " . $this->_db->quote($rid) . " AND aa.subtable='resources' ";
 		$query .= " ORDER BY aa.ordering ASC";
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -145,36 +142,36 @@ class Author extends \JTable
 	/**
 	 * Get a list of the authors on a tool
 	 *
-	 * @param      string  $version  Tool version
-	 * @param      integer $rid      Resource ID
-	 * @param      string  $toolname Tool name
-	 * @param      string  $revision Tool revision
-	 * @param      array   $authors  Author list
-	 * @return     array
+	 * @param   string   $version   Tool version
+	 * @param   integer  $rid       Resource ID
+	 * @param   string   $toolname  Tool name
+	 * @param   string   $revision  Tool revision
+	 * @param   array    $authors   Author list
+	 * @return  array
 	 */
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
 		if ($version == 'dev' && $rid)
 		{
-			$query = "SELECT authorid as uidNumber FROM #__author_assoc WHERE subid= " . $this->_db->quote($rid) . " AND subtable='resources' ORDER BY ordering";
+			$query = "SELECT authorid as uidNumber FROM `#__author_assoc` WHERE subid= " . $this->_db->quote($rid) . " AND subtable='resources' ORDER BY ordering";
 			$this->_db->setQuery($query);
 			$authors = $this->_db->loadObjectList();
 		}
 		else
 		{
 			$query  = "SELECT DISTINCT a.uid as uidNumber ";
-			$query .= "FROM #__tool_authors as a  ";
+			$query .= "FROM `#__tool_authors` as a  ";
 			if ($version == 'current' && $toolname)
 			{
 				$objV = new Version($this->_db);
 				$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
 				if ($rev)
 				{
-					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->quote($toolname) . " AND a.revision=" . $this->_db->quote($rev);
+					$query .= "JOIN `#__tool_version` as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->quote($toolname) . " AND a.revision=" . $this->_db->quote($rev);
 				}
 				else
 				{
-					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->quote($toolname) . " AND v.state=1 ORDER BY v.revision DESC";
+					$query .= "JOIN `#__tool_version` as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->quote($toolname) . " AND v.state=1 ORDER BY v.revision DESC";
 				}
 			}
 			else if (is_numeric($version))
@@ -207,12 +204,12 @@ class Author extends \JTable
 	/**
 	 * Save a list of authors
 	 *
-	 * @param      array   $authors  List of authors to add
-	 * @param      string  $version  Tool version
-	 * @param      integer $rid      Resource ID
-	 * @param      integer $revision Revision number
-	 * @param      string  $toolname Tool name
-	 * @return     boolean False if errors, True if not
+	 * @param   array    $authors   List of authors to add
+	 * @param   string   $version   Tool version
+	 * @param   integer  $rid       Resource ID
+	 * @param   integer  $revision  Revision number
+	 * @param   string   $toolname  Tool name
+	 * @return  boolean  False if errors, True if not
 	 */
 	public function saveAuthors($authors, $version='dev', $rid=0, $revision=0, $toolname='')
 	{
@@ -237,7 +234,7 @@ class Author extends \JTable
 			{
 				foreach ($to_delete as $del)
 				{
-					$query = "DELETE FROM #__author_assoc  WHERE authorid=" . $this->_db->quote($del) . " AND subid=" . $this->_db->quote($rid) . " AND subtable='resources'";
+					$query = "DELETE FROM `#__author_assoc` WHERE authorid=" . $this->_db->quote($del) . " AND subid=" . $this->_db->quote($rid) . " AND subtable='resources'";
 					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
@@ -258,7 +255,7 @@ class Author extends \JTable
 			{
 				foreach ($to_delete as $del)
 				{
-					$query = "DELETE FROM #__author_assoc  WHERE authorid=" . $this->_db->quote($del) . " AND subid=" . $this->_db->quote($rid) . " AND subtable='resources'";
+					$query = "DELETE FROM `#__author_assoc` WHERE authorid=" . $this->_db->quote($del) . " AND subid=" . $this->_db->quote($rid) . " AND subtable='resources'";
 					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
@@ -313,7 +310,7 @@ class Author extends \JTable
 				if (!$name || !$organization)
 				{
 					// Do we have name/org info in previous version?
-					$query  = "SELECT name, organization FROM #__tool_authors ";
+					$query  = "SELECT name, organization FROM `#__tool_authors` ";
 					$query .= "WHERE toolname=" . $this->_db->quote($toolname) . " AND uid=" . $this->_db->quote($authid) . " AND revision < " . $this->_db->quote($revision);
 					$query .= " AND name IS NOT NULL AND organization IS NOT NULL ";
 					$query .= " ORDER BY revision DESC LIMIT 1";
@@ -352,8 +349,8 @@ class Author extends \JTable
 	 * Check the author's name
 	 * Ensures the individual name fields are filled in
 	 *
-	 * @param      integer $id User ID
-	 * @return     void
+	 * @param   integer  $id  User ID
+	 * @return  void
 	 */
 	private function _author_check($id)
 	{
