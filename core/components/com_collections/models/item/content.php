@@ -109,10 +109,9 @@ class Content extends GenericItem
 			return true;
 		}
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'content.php');
+		include_once \Component::path('com_content') . DS . 'models' . DS . 'article.php';
 
-		$article = new \JTableContent($this->_db);
-		$article->load($id);
+		$article = \Components\Content\Models\Article::oneOrNew($id);
 
 		if (!$article->id)
 		{
