@@ -944,7 +944,7 @@ class Items extends AdminController
 					break;
 
 				case 'revert':
-					// What is this? This sets it to the state it's alreayd in.
+					// What is this? This sets it to the state it's already in.
 					//$this->model->version->state = $state ? $state : 4;
 					$this->model->version->state = 3;
 					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_REVERTED');
