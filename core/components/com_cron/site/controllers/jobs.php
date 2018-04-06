@@ -65,7 +65,7 @@ class Jobs extends SiteController
 	public function displayTask()
 	{
 		// If the current user doesn't have access to manage the component,
-		// try to see if their IP address is in the whtielist.
+		// try to see if their IP address is in the whitelist.
 		// Otherwise, we stop any further code execution.
 		if (!User::authorise('core.manage', $this->_option))
 		{

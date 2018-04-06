@@ -79,7 +79,7 @@ class Utilities
 			$mkaipOutput = 'mkaip-' . str_replace( '/', '__', $row->doi) . '.out';
 
 			/**
-			 * Changes for receving error notification from mkAIP script
+			 * Changes for receiving error notification from mkAIP script
 			 * Exit status code 0 represents mkAIP script completes its execution and without any exception.
 			 * Exit status code 1 represents some exception is thrown out.
 			 **/

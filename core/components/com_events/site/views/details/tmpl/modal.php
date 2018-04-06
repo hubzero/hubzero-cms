@@ -197,7 +197,7 @@ defined('_HZEXEC_') or die();
 				if (is_object($user)) {
 					$name = $user->get('name');
 				} else {
-					$name = Lang::txt('EVENTS_CAL_LANG_UNKOWN');
+					$name = Lang::txt('EVENTS_CAL_LANG_UNKNOWN');
 				}
 				?>
 				<div class="container">

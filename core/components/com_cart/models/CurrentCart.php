@@ -934,7 +934,7 @@ class CurrentCart extends Cart
 	/**
 	 * Add coupon to cart
 	 * @param 	string		$couponCode coupon code
-	 * @return	bool		true on sucess
+	 * @return	bool		true on success
 	 */
 	public function addCoupon($couponCode)
 	{
@@ -1420,7 +1420,7 @@ class CurrentCart extends Cart
 	/**
 	 * Remove coupon from cart
 	 * @param 	int		$cnId coupon ID
-	 * @return	bool		true on sucess
+	 * @return	bool		true on success
 	 */
 	public function removeCoupon($cnId)
 	{

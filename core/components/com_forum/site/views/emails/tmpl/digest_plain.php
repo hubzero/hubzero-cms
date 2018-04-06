@@ -68,6 +68,6 @@ View this post on <?php echo Config::get('sitename'); ?>: <?php echo $link; ?>
 -----------------------
 <?php endforeach; ?>
 
-This email was sent to you on behalf of <?php echo Request::root(); ?> becuase you are subscribed 
+This email was sent to you on behalf of <?php echo Request::root(); ?> because you are subscribed 
 to these group discussion threads. To unsubscribe, please log in and adjust your email preferences 
 for the group of interest.

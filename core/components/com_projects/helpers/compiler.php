@@ -57,7 +57,7 @@ class Compiler extends Obj
 	{
 		$tex = 0;
 
-		// Get file extention
+		// Get file extension
 		if ($file)
 		{
 			$parts = explode('.', $file);

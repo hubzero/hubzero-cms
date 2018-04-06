@@ -359,7 +359,7 @@ class Html
 
 			// The following line was meant to remove quote marks from around the title
 			// Instead, it removes all quote marks, resulting in invalid HTML.
-			// So, we try a little mroe specific approach.
+			// So, we try a little more specific approach.
 			//$formatted = str_replace('"', '', $formatted);
 			$formatted = str_replace(array('<b>"', '"</b>'), array('<b>', '</b>'), $formatted);
 

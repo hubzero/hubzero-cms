@@ -490,7 +490,7 @@ class Category extends Nested
 	}
 
 	/**
-	 * Update postion of an entry
+	 * Update position of an entry
 	 *
 	 * @param   integer  $iterator
 	 * @param   object   $storage

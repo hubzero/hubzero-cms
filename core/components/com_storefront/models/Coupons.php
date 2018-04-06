@@ -120,10 +120,10 @@ class Coupons
 	 * Get complete info for a coupon
 	 *
 	 * @param 	int 		$cnId coupon ID
-	 * @param 	bool 		$returnObjects flag wheter to query/return  coupon objects
-	 * @param 	bool 		$returnConditions flag wheter to query/return  coupon conditions
-	 * @param 	bool 		$returnAction flag wheter to query/return  coupon action
-	 * @param 	bool 		$returnInfo flag wheter to query/return  coupon generic info
+	 * @param 	bool 		$returnObjects flag whether to query/return  coupon objects
+	 * @param 	bool 		$returnConditions flag whether to query/return  coupon conditions
+	 * @param 	bool 		$returnAction flag whether to query/return  coupon action
+	 * @param 	bool 		$returnInfo flag whether to query/return  coupon generic info
 	 * @return 	object		coupon info
 	 */
 	public function getCouponInfo($cnId, $returnObjects = true, $returnConditions = true, $returnAction = true, $returnInfo = false)

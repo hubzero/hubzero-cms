@@ -455,7 +455,7 @@ class Asset extends Base
 	/**
 	 * Get a count or list of parents for this entry
 	 *
-	 * @param   array $filters Fitlers to apply to results query
+	 * @param   array $filters Filters to apply to results query
 	 * @return  array
 	 */
 	public function parents($filters=array())

@@ -256,7 +256,7 @@ class Orcid extends SiteController
 	 *
 	 * @param   string  $fname  First name
 	 * @param   string  $lname  Last name
-	 * @param   string  $iname  Insitution name
+	 * @param   string  $iname  Institution name
 	 * @return  string
 	 */
 	private function _fetchXml($fname, $lname, $iname)

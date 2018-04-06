@@ -192,7 +192,7 @@ jQuery(window).load(function() {
 	var stylePaddingLeft, stylePaddingTop, styleBorderLeft, styleBorderTop;
 
 	// initialize our canvas, add a ghost canvas, set draw loop
-	// then add everything we want to intially exist on the canvas
+	// then add everything we want to initially exist on the canvas
 	function init() {
 		//certificate = $('#certificate');
 

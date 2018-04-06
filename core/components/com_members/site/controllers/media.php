@@ -650,7 +650,7 @@ class Media extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			App::abort(404, Lang::txt('An error occured while trying to output the file'));
+			App::abort(404, Lang::txt('An error occurred while trying to output the file'));
 		}
 
 		exit;

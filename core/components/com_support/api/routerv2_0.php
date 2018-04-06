@@ -85,7 +85,7 @@ class Router extends Base
 				if (is_numeric($segments[1]))
 				{
 					$vars['id'] = $segments[1];
-					// Read needs to be set explictly because read, list, and the api docblock all use GETs
+					// Read needs to be set explicttly because read, list, and the api docblock all use GETs
 					if (\App::get('request')->method() == 'GET')
 					{
 						$vars['task'] = 'read';
