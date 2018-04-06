@@ -511,7 +511,7 @@ class Warehouse extends \Hubzero\Base\Obj
 	 * Check if coupon exists
 	 *
 	 * @param  	string		coupon code
-	 * @return 	int 		coupon ID on sucess, null if no match found
+	 * @return 	int 		coupon ID on success, null if no match found
 	 */
 	public function couponExists($code)
 	{

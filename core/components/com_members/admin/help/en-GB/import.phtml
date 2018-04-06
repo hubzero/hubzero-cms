@@ -32,7 +32,7 @@
 
 		<h3>Import Hooks</h3>
 
-		<p>The "Hooks" section can be very useful but might be confusing at first. To make the importer applicable to all hubs it expects that the raw incoming resource data is mapped to the EXACT fields in the database. To accomodate all import situations, import hooks were made. There are three types of hooks, "post parse", "post map", and "post convert" which are the 3 events you can listen for in the import process. You can run any number of hooks at each of these events in the order that you set for that import. All hooks are called on a single record at a time, meaning each hook takes the data of one resource record at a time and is reponsible for returning a modified version of that resource data.</p>
+		<p>The "Hooks" section can be very useful but might be confusing at first. To make the importer applicable to all hubs it expects that the raw incoming resource data is mapped to the EXACT fields in the database. To accommodate all import situations, import hooks were made. There are three types of hooks, "post parse", "post map", and "post convert" which are the 3 events you can listen for in the import process. You can run any number of hooks at each of these events in the order that you set for that import. All hooks are called on a single record at a time, meaning each hook takes the data of one resource record at a time and is responsible for returning a modified version of that resource data.</p>
 
 		<p>Import hooks have a separate section found at: Components > Resources > Import Hooks. This allowed for the hooks (really php scripts) to be made into reusable blocks that you could attach to any or all of you imports.</p>
 
@@ -66,7 +66,7 @@
 	<section id="running">
 		<h2><span>Running an Import</span></h2>
 
-		<p>Running an import should be pretty easy. There are two modes, "dry-run" and "normal". Dry run simply allows you to run the import with all the hooks and settings in place, without actaully doing any creating or modifications to the data on in the database. Normal mode is the mode where it will save any incoming data.</p>
+		<p>Running an import should be pretty easy. There are two modes, "dry-run" and "normal". Dry run simply allows you to run the import with all the hooks and settings in place, without actually doing any creating or modifications to the data on in the database. Normal mode is the mode where it will save any incoming data.</p>
 
 		<p><strong>** We recommend running in dry run mode first and at least spot checking the results in the list to make sure everything looks good before mass importing records.</strong></p>
 	</section>

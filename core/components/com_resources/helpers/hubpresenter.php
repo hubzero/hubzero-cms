@@ -133,7 +133,7 @@ class Hubpresenter extends Obj
 		$json = json_encode($data);
 
 		$new_file    = PATH_APP . DS . $resource_path . DS . 'presentation.json';
-		$file_handle = fopen($new_file, 'w') or die("An Error Occured While Trying to Create the Presentation Manifest.");
+		$file_handle = fopen($new_file, 'w') or die("An Error Occurred While Trying to Create the Presentation Manifest.");
 		fwrite($file_handle, $json);
 	}
 }

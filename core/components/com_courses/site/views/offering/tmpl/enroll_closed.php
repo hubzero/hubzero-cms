@@ -74,8 +74,8 @@ $this->css('offering');
 			<div class="questions">
 				<p><strong><?php echo Lang::txt('COM_COURSES_I_SHOULD_HAVE_ACCESS'); ?></strong></p>
 				<p><?php echo Lang::txt('COM_COURSES_I_SHOULD_HAVE_ACCESS_EXPLANATION', Route::url('index.php?option=com_support')); ?></p>
-				<p><strong><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES'); ?></strong></p>
-				<p><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES_EXPLANATIONS', Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+				<p><strong><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_OTHER_COURSES'); ?></strong></p>
+				<p><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_OTHER_COURSES_EXPLANATIONS', Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 			</div><!-- / .questions -->
 		</div><!-- / #offering-introduction -->
 	</div>

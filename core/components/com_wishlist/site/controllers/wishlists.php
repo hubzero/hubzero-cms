@@ -241,7 +241,7 @@ class Wishlists extends SiteController
 		// remember list id for plugin use
 		$this->listid = isset($this->listid) ? $this->listid : $id;
 
-		// get admin priviliges
+		// get admin privileges
 		$this->authorize_admin();
 
 		// Authorize list owners
@@ -518,7 +518,7 @@ class Wishlists extends SiteController
 		$wish->set('category', $wishlist->get('category'));
 		$wish->set('referenceid', $wishlist->get('referenceid'));
 
-		// get admin priviliges
+		// get admin privileges
 		$this->authorize_admin();
 
 		// Set page title
@@ -1022,7 +1022,7 @@ class Wishlists extends SiteController
 			return $this->loginTask();
 		}
 
-		// get admin priviliges
+		// get admin privileges
 		if (!$wishlist->isPublic() && !$wishlist->access('manage'))
 		{
 			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));

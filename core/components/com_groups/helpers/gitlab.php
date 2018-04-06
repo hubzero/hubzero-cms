@@ -186,7 +186,7 @@ class Gitlab
 		$response = $this->client->request('GET', $this->url . DS . $resource, $this->options);
 
 		// json() method removed in Guzzle 6.0
-		// return $respone->json();
+		// return $response->json();
 
 		return json_decode($response->getBody(), true);
 	}

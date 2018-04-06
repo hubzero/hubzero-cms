@@ -287,7 +287,7 @@ class Html extends Obj
 	{
 		if ($file)
 		{
-			// Get file extention
+			// Get file extension
 			$parts = explode('.', $file);
 			$ext   = count($parts) > 1 ? array_pop($parts) : '';
 			$ext   = strtolower($ext);
@@ -732,7 +732,7 @@ class Html extends Obj
 	 */
 	public static function takeOutExt($filename = '')
 	{
-		// Take out extention
+		// Take out extension
 		if ($filename)
 		{
 			$parts = explode('.', $filename);
@@ -1221,10 +1221,10 @@ class Html extends Obj
 	 * @param   string  $parent
 	 * @param   bool    $linkit
 	 * @param   object  $adapter
-	 * @param   string  $seperator
+	 * @param   string  $separator
 	 * @return  string
 	 */
-	public static function buildFileBrowserCrumbs($dir = '', $url = '', &$parent = null, $linkit = true, $adapter = null, $seperator = '&raquo;')
+	public static function buildFileBrowserCrumbs($dir = '', $url = '', &$parent = null, $linkit = true, $adapter = null, $separator = '&raquo;')
 	{
 		$bc = null;
 		$href = '';
@@ -1261,7 +1261,7 @@ class Html extends Obj
 				}
 				else
 				{
-					$bc .= ' <span class="folder">' . $name . '</span> ' . $seperator;
+					$bc .= ' <span class="folder">' . $name . '</span> ' . $separator;
 				}
 			}
 		}

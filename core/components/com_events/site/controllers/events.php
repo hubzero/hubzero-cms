@@ -879,7 +879,7 @@ class Events extends SiteController
 	}
 
 	/**
-	 * Obfuscate an email adress
+	 * Obfuscate an email address
 	 *
 	 * @param      string $email Address to obfuscate
 	 * @return     string

@@ -45,7 +45,7 @@ use Lang;
 use App;
 
 /**
- * Members controlelr class for import hooks
+ * Members controller class for import hooks
  */
 class ImportHooks extends AdminController
 {

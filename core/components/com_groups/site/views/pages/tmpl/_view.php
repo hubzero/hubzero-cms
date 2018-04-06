@@ -53,7 +53,7 @@ $versions = $this->page->versions();
 // get page category
 $category = $this->page->category();
 
-// is ther a newer version of this page
+// is there a newer version of this page
 $newerVersion = false;
 $nextVersion  = $this->version->get('version') + 1;
 if ($versions->fetch('version', $nextVersion))

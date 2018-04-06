@@ -488,7 +488,7 @@ class Format
 		$cite = preg_replace('/, :/', ':', $cite);
 
 		// highlight citation data
-		// do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
+		// do before appending coins as we dont want that data accidentally highlighted (causes style issues)
 		$cite = ($highlight) ? Str::highlight($cite, $highlight) : $cite;
 
 		// if we want coins add them
@@ -822,7 +822,7 @@ class Format
 				{
 					$cls = ($tag->admin) ? 'admin' : '';
 
-					//display tag if not admin tag or if admin tag and user is adminstrator
+					//display tag if not admin tag or if admin tag and user is administrator
 					if (!$tag->admin || ($tag->admin && $isAdmin))
 					{
 						$html .= '<li class="' . $cls . '"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';

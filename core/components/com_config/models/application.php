@@ -86,7 +86,7 @@ class Application extends Obj
 	 * Config. If configuration data has been saved in the session, that
 	 * data will be merged into the original data, overwriting it.
 	 *
-	 * @return  array  An array containg all global config data.
+	 * @return  array  An array containing all global config data.
 	 */
 	public function getData()
 	{

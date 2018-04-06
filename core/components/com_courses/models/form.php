@@ -97,7 +97,7 @@ class PdfForm
 		// Build the upload path if it doesn't exist
 		$coursesPath = trim($config->get('uploadpath', '/site/courses'), DS);
 
-		// If the direcotry doesn't exist, create it
+		// If the directory doesn't exist, create it
 		if (!is_dir(PATH_APP . DS . $coursesPath))
 		{
 			mkdir(PATH_APP . DS . $coursesPath);
@@ -105,7 +105,7 @@ class PdfForm
 
 		$this->base = PATH_APP . DS . $coursesPath . DS . 'forms' . DS;
 
-		// If the direcotry doesn't exist, create it
+		// If the directory doesn't exist, create it
 		if (!is_dir($this->base))
 		{
 			mkdir($this->base);

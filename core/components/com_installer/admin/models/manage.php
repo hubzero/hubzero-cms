@@ -259,7 +259,7 @@ class Manage extends Extension
 			}
 			else
 			{
-				// Package uninstalled sucessfully
+				// Package uninstalled successfully
 				Notify::success(Lang::txt('COM_INSTALLER_UNINSTALL_SUCCESS', $rowtype));
 				$result = true;
 			}
