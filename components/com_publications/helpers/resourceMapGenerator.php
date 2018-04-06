@@ -214,7 +214,7 @@ class ResourceMapGenerator
 	}
 
 	/**
-	 * Inserts data infomation for each datatype.
+	 * Inserts data information for each datatype.
 	 *
 	 * @param   array   $aggregation  The aggregation that contains the data to be inserted
 	 * @param   object  $xmlwriter    The XMLWriter object for writing to buffer
@@ -258,7 +258,7 @@ class ResourceMapGenerator
 	/**
 	 * Builds the resource map in XML+RDFa format
 	 *
-	 * @return  mixed  String containig the XML; NULL on error
+	 * @return  mixed  String containing the XML; NULL on error
 	 */
 	public function getResourceMap()
 	{
