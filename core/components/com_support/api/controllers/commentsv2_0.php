@@ -184,7 +184,7 @@ class Commentsv2_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "cc",
-	 * 		"description": "Comma seperated list of email addresses to email updates to",
+	 * 		"description": "Comma separated list of email addresses to email updates to",
 	 * 		"type":        "string",
 	 * 		"required":    false,
 	 * 		"default":		 submitter,owner

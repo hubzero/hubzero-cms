@@ -906,7 +906,7 @@ class GradeBook extends Base
 	 **/
 	public function hasEarnedBadge($member_id=null)
 	{
-		// Check whether or not they're eligable for a badge at this point
+		// Check whether or not they're eligible for a badge at this point
 		// First, does this course even offers a badge
 		if ($this->course->offering()->section()->badge()->isAvailable())
 		{

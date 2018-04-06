@@ -508,7 +508,7 @@ class Log extends Table
 	 *
 	 * @param   string  $from     Date from
 	 * @param   string  $to       Date to
-	 * @param   array   $exclude  Data to excluse
+	 * @param   array   $exclude  Data to exclude
 	 * @param   string  $filter   Tag name to match
 	 * @return  void
 	 */

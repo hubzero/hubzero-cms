@@ -599,7 +599,7 @@ class Membership extends Base
 		// Get the group params
 		$gparams = new Registry($this->view->group->get('params'));
 
-		// If membership is managed in seperate place disallow action
+		// If membership is managed in separate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
@@ -787,7 +787,7 @@ class Membership extends Base
 		// Get the group params
 		$gparams = new Registry($this->view->group->get('params'));
 
-		// If membership is managed in seperate place disallow action
+		// If membership is managed in saperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
@@ -917,7 +917,7 @@ class Membership extends Base
 		// Get the group params
 		$gparams = new Registry($this->view->group->get('params'));
 
-		// If membership is managed in seperate place disallow action
+		// If membership is managed in saperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
@@ -1061,7 +1061,7 @@ class Membership extends Base
 		// Get the group params
 		$gparams = new Registry($this->view->group->get('params'));
 
-		// If membership is managed in seperate place disallow action
+		// If membership is managed in separate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');

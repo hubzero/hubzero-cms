@@ -1443,7 +1443,7 @@ class Tickets extends SiteController
 			$badwords = array();
 		}
 
-		// Build an array of patterns to check againts
+		// Build an array of patterns to check against
 		$patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
 		foreach ($badwords as $badword)
 		{
@@ -1709,7 +1709,7 @@ class Tickets extends SiteController
 		$rowc = Comment::blank();
 		$rowc->set('ticket', $id);
 
-		// Check if changes were made inbetween the time the comment was started and posted
+		// Check if changes were made within the time the comment was started and posted
 		$started = Request::getVar('started', Date::toSql(), 'post');
 
 		$lastcomment = $row->comments()

@@ -57,7 +57,7 @@ HUB.Courses = {
 		//scrolling asset browser
 		HUB.Courses.scrollingAssetBrowser();
 		
-		//course availablity checker
+		//course availability checker
 		HUB.Courses.courseIdAvailability();
 		
 		//course menu alert fixer

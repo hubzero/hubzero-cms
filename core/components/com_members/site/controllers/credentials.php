@@ -180,7 +180,7 @@ class Credentials extends SiteController
 	}
 
 	/**
-	 * Processes intial reset password request
+	 * Processes initial reset password request
 	 *
 	 * @return  void
 	 */

@@ -695,7 +695,7 @@ class Manage extends AdminController
 		}
 
 		// build command to run via shell
-		// this will init the git repo, make the inital commit and push to the repo management machine
+		// this will init the git repo, make the initial commit and push to the repo management machine
 		$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
 		$cmd .= $uploadPath  . ' ' . $authorInfo . ' ' . $gitLabProject['ssh_url_to_repo'] . ' 2>&1';
 

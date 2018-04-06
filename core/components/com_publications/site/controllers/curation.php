@@ -822,7 +822,7 @@ class Curation extends SiteController
 		// New version released?
 		if ($status == 1 && $pub->get('version_number') > 1)
 		{
-			// Notify subsrcibers
+			// Notify subscribers
 			Event::trigger('publications.onWatch', array($pub));
 		}
 

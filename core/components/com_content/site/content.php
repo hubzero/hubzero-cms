@@ -8,7 +8,7 @@
 
 defined('_HZEXEC_') or die();
 
-// Include dependancies
+// Include dependencies
 require_once JPATH_COMPONENT.'/helpers/route.php';
 require_once JPATH_COMPONENT.'/helpers/query.php';
 

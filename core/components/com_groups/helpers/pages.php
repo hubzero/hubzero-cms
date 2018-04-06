@@ -577,7 +577,7 @@ class Pages
 
 
 	/**
-	 * Checkin in all abondoned checkouts
+	 * Checkin in all abandoned checkouts
 	 *
 	 * @return   object
 	 */
