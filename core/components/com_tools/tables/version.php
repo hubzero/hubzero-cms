@@ -469,7 +469,7 @@ class Version extends Table
 	public function getVersionInfo($id, $version='', $toolname='', $instance='')
 	{
 		// data comes from mysql
-		$query  = "SELECT v.*, d.* ";
+		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi ";
 		$query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)
 		{
