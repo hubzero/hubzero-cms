@@ -99,7 +99,7 @@ class Host extends Table
 				$tmp = array();
 				foreach (get_object_vars($this) as $ky => $v)
 				{
-					if (is_array($v) or is_object($v) or $ky[0] == '_' )
+					if (is_array($v) or is_object($v) or $ky[0] == '_')
 					{ // internal or NA field
 						continue;
 					}
@@ -115,7 +115,7 @@ class Host extends Table
 					else
 					{
 						//$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
-						$val = $this->_db->quote($v); 
+						$val = $this->_db->quote($v);
 					}
 					$tmp[] = $this->_db->quoteName($ky) . '=' . $val;
 				}
