@@ -32,20 +32,19 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
- * Short description for 'Hosttype'
- *
- * Long description (if any) ...
+ * Table for host types
  */
-class Hosttype extends \JTable
+class Hosttype extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -55,7 +54,7 @@ class Hosttype extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean False if invalid data, true on success
+	 * @return  boolean  False if invalid data, true on success
 	 */
 	public function check()
 	{
@@ -85,9 +84,9 @@ class Hosttype extends \JTable
 	 *
 	 * Can be overloaded/supplemented by the child class
 	 *
-	 * @access public
-	 * @param boolean If false, null object variables are not updated
-	 * @return null|string null if successful otherwise returns and error message
+	 * @param   boolean  $insert
+	 * @param   boolean  $updateNulls  If false, null object variables are not updated
+	 * @return  mixed    null|string null if successful otherwise returns and error message
 	 */
 	public function store($insert=null, $updateNulls=false)
 	{
@@ -192,8 +191,8 @@ class Hosttype extends \JTable
 	 *
 	 * can be overloaded/supplemented by the child class
 	 *
-	 * @access public
-	 * @return true if successful otherwise returns and error message
+	 * @param   integer  $oid
+	 * @return  true     if successful otherwise returns and error message
 	 */
 	public function delete($oid=null)
 	{
@@ -220,8 +219,8 @@ class Hosttype extends \JTable
 	/**
 	 * Construct an SQL statement based on the array of filters passed
 	 *
-	 * @param      array $filters Filters to build SQL from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build SQL from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -245,8 +244,8 @@ class Hosttype extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build SQL from
-	 * @return     integer
+	 * @param   array   $filters  Filters to build SQL from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -261,8 +260,8 @@ class Hosttype extends \JTable
 	/**
 	 * Get a list of records
 	 *
-	 * @param      array $filters Filters to build SQL from
-	 * @return     array
+	 * @param   array  $filters  Filters to build SQL from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{

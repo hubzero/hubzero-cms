@@ -32,13 +32,14 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 use User;
 
 /**
  * Table class for tool/group mapping
  */
-class Group extends \JTable
+class Group extends Table
 {
 	/**
 	 * Constructor
