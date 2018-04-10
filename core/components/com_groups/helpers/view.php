@@ -831,7 +831,21 @@ class View
 
 		// get URI path
 		$path = Request::path();
-		$path = trim(str_replace('groups' . DS . $group->get('cn'), '', $path), DS);
+		// Find portion of URI after /group-cn/...
+		$temp = explode('/', $path);
+		$cnKey = array_search($group->get('cn'), $temp);
+		if ($cnKey == false)
+		{
+			// group cn was not found, assume overview
+			$path = 'overview';
+		}
+		else
+		{
+			// we found the group cn, take the remainder of the url
+			// Using index+1 because we already know the group cn
+			$temp = array_slice($temp, $cnKey+1);
+			$path = implode('/', $temp);
+		}
 
 		// make sure we have a path. if no path means were attempting to access the home page
 		if ($path == '')
