@@ -402,11 +402,18 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function automaticAttribs($data)
 	{
+		if (!isset($data['attribs']))
+		{
+			$data['attribs'] = '';
+		}
+
 		if (!empty($data['attribs']))
 		{
-			return json_encode($data['attribs']);
+			$metadata = new \Hubzero\Config\Registry($data['attribs']);
+			$data['attribs'] = $metadata->toString();
 		}
-		return '';
+
+		return $data['attribs'];
 	}
 
 	/**
@@ -417,11 +424,18 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function automaticMetadata($data)
 	{
+		if (!isset($data['metadata']))
+		{
+			$data['metadata'] = '';
+		}
+
 		if (!empty($data['metadata']))
 		{
-			return json_encode($data['metadata']);
+			$metadata = new \Hubzero\Config\Registry($data['metadata']);
+			$data['metadata'] = $metadata->toString();
 		}
-		return '';
+
+		return $data['metadata'];
 	}
 
 	/**
