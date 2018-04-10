@@ -680,7 +680,7 @@ class View
 		ob_start();
 		$template = new Template();
 		$template->set('group', \Hubzero\User\Group::getInstance(Request::getVar('cn', '')))
-			     ->set('tab', Request::getVar('active','overview'))
+			     ->set('tab', Request::getCmd('active', 'overview'))
 			     ->set('error', $lerror)
 			     ->parse()
 			     ->render();
