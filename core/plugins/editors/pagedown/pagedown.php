@@ -46,6 +46,8 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 	const CSS_DIRECTORY = 'core/plugins/editors/pagedown/assets/css';
 	const JS_DIRECTORY = 'core/plugins/editors/pagedown/assets/js';
 
+	protected $_editorCount = 1;
+
 	/*
 	 *  Adds editor scripts & stylesheets to the HTML document
 	 *
@@ -100,7 +102,7 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 			'Markdown.Converter.js',
 			'Markdown.Sanitizer.js',
 			'Markdown.Editor.js',
-			"editorForm.php?INPUT_ID=" . self::INPUT_ID
+			'editorForm.php?INPUT_ID=' . self::INPUT_ID
 		];
 
 		$scriptPaths = $this->_buildAssetPaths($scriptNames, self::JS_DIRECTORY);
@@ -134,7 +136,7 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 	protected function _buildAssetPaths($assetFileNames, $assetDirectory)
 	{
 		$assetPaths = array_map(function($fileName) use ($assetDirectory) {
-			return str_replace('/administrator', '', Request::base(true)) . "$assetDirectory/$fileName";
+			return str_replace('/administrator', '/', Request::base(true)) . "$assetDirectory/$fileName";
 		}, $assetFileNames);
 
 		return $assetPaths;
@@ -165,9 +167,8 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 		$this->_setDefaultHeight($params, $rows);
 
 		$editorDomElements = $this->_buildEditorDomElements($content, $name, $columns, $rows);
-		$editorDomJs = $this->_buildInitializationJs();
 
-		$editorDomContent = $editorDomElements . $editorDomJs;
+		$editorDomContent = $editorDomElements;
 
 		return $editorDomContent;
 	}
@@ -224,10 +225,11 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 	protected function _buildEditorDomElements($content, $name, $columns, $rows)
 	{
 		$editorDomElements = '<div>';
-		$editorDomElements .= '<div id="' . self::BUTTON_BAR_ID . '"></div>';
-		$editorDomElements .= $this->_buildTextarea($content, $name, $columns, $rows);
-		$editorDomElements .= '<div id="' . self::PREVIEW_ID  . '"></div>';
+		$idPostfix = ($this->_editorCount > 1) ? ("-" . $this->_editorCount) : '';
+		$editorDomElements .= '<div id="' . self::BUTTON_BAR_ID . $idPostfix . '"></div>';
+		$editorDomElements .= $this->_buildTextarea($content, $name, $columns, $rows, $idPostfix);
 		$editorDomElements .= '</div>';
+		$this->_editorCount++;
 
 		return $editorDomElements;
 	}
@@ -241,9 +243,9 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 	 * @param   int      $rows     Number of rows for the textarea
 	 * @return  string
 	 */
-	protected function _buildTextarea($content, $name, $columns, $rows)
+	protected function _buildTextarea($content, $name, $columns, $rows, $idPostfix)
 	{
-		$textarea = "<textarea name=\"$name\" id=\"" . self::INPUT_ID . "\" cols=\"$columns\" rows=\"$rows\">";
+		$textarea = "<textarea name=\"$name\" id=\"" . self::INPUT_ID . $idPostfix . "\" cols=\"$columns\" rows=\"$rows\">";
 		$textarea .= $content;
 		$textarea .= '</textarea>';
 
@@ -251,20 +253,33 @@ class plgEditorPageDown extends \Hubzer\Plugin\Plugin
 	}
 
 	/*
-	 * Build script to initialize editor
+	 * Not applicable in this editor
 	 *
-	 * @return  string
+	 * @return  void
 	 */
-	protected function _buildInitializationJs()
+	public function onSave()
 	{
-		$editorDomJs = '<script>';
-		$editorDomJs .= "const converter = new Markdown.Converter()\n";
-		$editorDomJs .= "const sanitizer = Markdown.getSanitizingConverter()\n";
-		$editorDomJs .= "const editor = new Markdown.Editor(converter)\n";
-		$editorDomJs .= "editor.run()\n";
-		$editorDomJs .= '</script>';
+		//stub
+	}
 
-		return $editorDomJs;
+	/*
+	 * Not applicable in this editor
+	 *
+	 * @return  void
+	 */
+	public function onGetContent()
+	{
+		//stub
+	}
+
+	/*
+	 * Not applicable in this editor
+	 *
+	 * @return  void
+	 */
+	public function onSetContent()
+	{
+		//stub
 	}
 
 }
