@@ -265,13 +265,13 @@ HUB.ProjectFilesFileUpload = {
 
 	_generatePossibleIssuesMessage: function(unrecognizedFiles)
 	{
-		let message = HUB.ProjectFilesFileUpload.acceptedFormatsMessageStart
+		let message = HUB.ProjectFilesFileUpload.acceptedFormatsMessageStart || "The following file(s) may not be uploaded because the format is not recognized: \n\n"
 
 		unrecognizedFiles.forEach((file) => {
 			message += `• ${file.name}\n`
 		})
 
-		message += HUB.ProjectFilesFileUpload.acceptedFormatsMessageEnd
+		message += HUB.ProjectFilesFileUpload.acceptedFormatsMessageEnd || "\nYou may \"Cancel\" and remove the files or attempt to upload by selecting \"OK\"."
 
 		return message
 	}
