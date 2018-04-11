@@ -84,23 +84,25 @@ $rows = $this->archive->entries($this->filters)
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_BLOG'); ?></h2>
 
-	<div id="content-header-extra">
-		<?php
-		$path  = 'index.php?option=' . $this->option . '&task=feed.rss';
-		$path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
-		$path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
+	<?php if ($this->config->get('feeds_enabled', 1)) : ?>
+		<div id="content-header-extra">
+			<?php
+			$path  = 'index.php?option=' . $this->option . '&task=feed.rss';
+			$path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
+			$path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
 
-		$feed = Route::url($path);
-		if (substr($feed, 0, 4) != 'http')
-		{
-			$live_site = rtrim(Request::base(),'/');
+			$feed = Route::url($path);
+			if (substr($feed, 0, 4) != 'http')
+			{
+				$live_site = rtrim(Request::base(),'/');
 
-			$feed = rtrim($live_site, '/') . '/' . ltrim($feed, '/');
-		}
-		$feed = str_replace('https:://','http://', $feed);
-		?>
-		<p><a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo Lang::txt('COM_BLOG_FEED'); ?></a></p>
-	</div>
+				$feed = rtrim($live_site, '/') . '/' . ltrim($feed, '/');
+			}
+			$feed = str_replace('https:://','http://', $feed);
+			?>
+			<p><a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo Lang::txt('COM_BLOG_FEED'); ?></a></p>
+		</div>
+	<?php endif; ?>
 </header>
 
 <section class="main section">
