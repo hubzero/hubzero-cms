@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/javascript');
 
-$variableNames =['INPUT_ID'];
+$variableNames = ['INPUT_ID'];
 
 foreach ($variableNames as $name)
 {
@@ -9,25 +9,43 @@ foreach ($variableNames as $name)
 }
 ?>
 
-const htmlConverter = new HUB.PageDown.HtmlConverter()
+const converter = new Markdown.Converter()
+const sanitizer = Markdown.getSanitizingConverter()
 
 $(document).ready(() => {
-	const $editorTextarea = $(`#${INPUT_ID}`)
-	const $inputParentForm = $editorTextarea.closest('form')
+
+	const htmlConverter = new HUB.PageDown.HtmlConverter()
+	let $editorTextareas = $(`[id^="${INPUT_ID}"]`)
+	$editorTextareas = $editorTextareas.toArray().map((textarea) => $(textarea))
+	const $parentForm = $editorTextareas[0].closest('form')
+
+	// Instantiate additional Markdown Editors
+	$editorTextareas.forEach(($textarea) => {
+		const id = $textarea.attr('id')
+		const idPostfix = id.replace(INPUT_ID, '')
+		const editor = new Markdown.Editor(converter, idPostfix)
+
+		editor.run()
+	})
 
 	// Convert HTML to Markdown for editing
-	const html = $editorTextarea.val()
-	const markdown = htmlConverter.toMarkdown(html)
-	$editorTextarea.val(markdown)
+	$editorTextareas.forEach(($textarea) => {
+		const html = $textarea.val()
+		const markdown = htmlConverter.toMarkdown(html)
+		$textarea.val(markdown)
+	})
 
 	// Convert Markdown to HTML before form submission
-	$inputParentForm.on('submit', (e) => {
+	$parentForm.on('submit', (e) => {
 		e.preventDefault()
 
-		const markdown = $editorTextarea.val()
-		const html = converter.makeHtml(markdown)
-		$editorTextarea.val(html)
+		$editorTextareas.forEach(($textarea) => {
+			const markdown = $textarea.val()
+			const html = converter.makeHtml(markdown)
+			$textarea.val(html)
+		})
 
-		$inputParentForm.unbind('submit').submit()
+		$parentForm.unbind('submit').submit()
 	})
+
 })
