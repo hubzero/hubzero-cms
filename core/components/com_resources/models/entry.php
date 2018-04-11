@@ -43,12 +43,13 @@ use Lang;
 use User;
 use App;
 use stdClass;
+
 require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'type.php';
 require_once __DIR__ . DS . 'author.php';
 require_once __DIR__ . DS . 'license.php';
 require_once __DIR__ . DS . 'screenshot.php';
-include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
+require_once __DIR__ . DS . 'elements.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 /**
@@ -385,7 +386,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			if ($this->isTool())
 			{
 				$db = App::get('db');
-				$sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization AS org, t.*, a.role"
+				$sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization, t.*, a.role"
 					 . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS v ON v.id=t.version_id"
 					 . " LEFT JOIN `#__author_assoc` AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid=" . $db->quote($this->get('id'))
 					 . " WHERE t.toolname=" . $db->quote($this->get('alias')) . " AND v.state<>3"
