@@ -41,6 +41,7 @@ use Exception;
 use Request;
 use Route;
 use User;
+use Date;
 use Lang;
 use App;
 
@@ -303,7 +304,7 @@ class Setup extends Base
 			else
 			{
 				// Set group syncing to "undecided" state
-				$this->model->set('sync_group', -1);
+				$this->model->set('sync_group', $this->config->get('sync_behavior', -1));
 			}
 		}
 
