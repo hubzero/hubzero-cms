@@ -37,6 +37,7 @@ use Hubzero\Access\Access;
 use Hubzero\Access\Rules;
 use Hubzero\Access\Asset;
 use Components\Content\Models\Article;
+use Components\Content\Models\Featured;
 use Request;
 use Config;
 use Notify;
@@ -135,34 +136,34 @@ class Articles extends AdminController
 		}
 		$filters = array(
 			'search' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'search',
+				$this->_option . '.' . $this->_controller . '.search',
 				'filter_search',
 				''
 			),
 			'access' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'access',
+				$this->_option . '.' . $this->_controller . '.access',
 				'filter_access',
 				0
 			),
 			'author_id' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'author_id',
+				$this->_option . '.' . $this->_controller . '.author_id',
 				'author_id'
 			),
 			'published' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'published',
+				$this->_option . '.' . $this->_controller . '.published',
 				'filter_published',
 				''
 			),
 			'category_id' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'category_id',
+				$this->_option . '.' . $this->_controller . '.category_id',
 				'filter_category_id'
 			),
 			'level' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'level',
+				$this->_option . '.' . $this->_controller . '.level',
 				0
 			),
 			'language' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'language',
+				$this->_option . '.' . $this->_controller . '.language',
 				''
 			),
 			'sort' => Request::getState(
@@ -246,6 +247,159 @@ class Articles extends AdminController
 			->set('filters', $filters)
 			->set('items', $itemsArray)
 			->setLayout($layout)
+			->display();
+	}
+
+	/**
+	 * Displays a list of featured entries
+	 *
+	 * @return  void
+	 */
+	public function featuredTask()
+	{
+		if ($layout = Request::getVar('layout'))
+		{
+			$this->context .= '.' . $layout;
+		}
+		$filters = array(
+			'search' => Request::getState(
+				$this->_option . '.featured.search',
+				'filter_search',
+				''
+			),
+			'access' => Request::getState(
+				$this->_option . '.featured.access',
+				'filter_access',
+				0
+			),
+			'author_id' => Request::getState(
+				$this->_option . '.featured.author_id',
+				'author_id'
+			),
+			'published' => Request::getState(
+				$this->_option . '.featured.published',
+				'filter_published',
+				''
+			),
+			'category_id' => Request::getState(
+				$this->_option . '.featured.category_id',
+				'filter_category_id'
+			),
+			'level' => Request::getState(
+				$this->_option . '.featured.level',
+				0
+			),
+			'language' => Request::getState(
+				$this->_option . '.featured.language',
+				''
+			),
+			'sort' => Request::getState(
+				$this->_option . '.featured.sort',
+				'filter_order',
+				'ordering'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.featured.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+
+		$query = Article::all();
+
+		$fp = Featured::blank()->getTableName();
+		$a  = $query->getTableName();
+		$l  = '#__languages';
+
+		$query
+			->select($l . '.title', 'language_title')
+			->select($a . '.id')
+			->select($a . '.title')
+			->select($a . '.alias')
+			->select($a . '.checked_out')
+			->select($a . '.checked_out_time')
+			->select($a . '.catid')
+			->select($a . '.state')
+			->select($a . '.access')
+			->select($a . '.created')
+			->select($a . '.created_by_alias')
+			->select($a . '.hits')
+			->select($a . '.language')
+			->select($a . '.publish_up')
+			->select($a . '.publish_down')
+			->join($l, $l . '.lang_code', $a . '.language', 'left');
+
+		// Join over the content table.
+		$query->select($fp . '.ordering');
+		$query->join($fp, $fp . '.content_id', $a . '.id', 'inner');
+
+		if (isset($filters['category_id']) && $filters['category_id'])
+		{
+			$query->whereEquals($a . '.catid', $filters['category_id']);
+		}
+
+		if (isset($filters['language']) && $filters['language'])
+		{
+			$query->whereEquals($a . '.language', $filters['language']);
+		}
+
+		if (isset($filters['access']))
+		{
+			$query->whereEquals($a . '.access', $filters['access']);
+		}
+
+		if (isset($filters['search']) && $filters['search'])
+		{
+			if (stripos($filters['search'], 'id:') === 0)
+			{
+				$query->whereEquals($a . '.id', (int) substr($filters['search'], 3));
+			}
+			else
+			{
+				$query->whereLike($a . '.title', $filters['search'], 1)
+					->orWhereLike($a . '.alias', $filters['search'], 1)
+					->resetDepth();
+			}
+		}
+
+		if (isset($filters['published']))
+		{
+			if ($filters['published'] == '')
+			{
+				$query->where($a . '.state', '>=', 0);
+			}
+			elseif ($filters['published'] != '*')
+			{
+				$query->whereEquals($a . '.state', $filters['published']);
+			}
+		}
+
+		$query->including('accessLevel')
+			->including('category')
+			->including('author');
+		if (strtolower($filters['sort']) == 'ordering')
+		{
+			$query->order('catid', 'asc');
+		}
+
+		$items = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		$itemsArray = array();
+		foreach ($items as $item)
+		{
+			$itemsArray[] = $item;
+		}
+
+		$this->view
+			->set('pagination', $items->pagination)
+			->set('authors', array())
+			->set('f_levels', array())
+			->set('filters', $filters)
+			->set('items', $itemsArray)
+			->setLayout('featured')
 			->display();
 	}
 

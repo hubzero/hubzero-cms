@@ -33,6 +33,7 @@
 defined('_HZEXEC_') or die();
 
 $canDo = Components\Content\Admin\Helpers\Permissions::getActions('article', $this->item->get('id'));
+
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
@@ -52,7 +53,6 @@ if ($canDo->get('core.edit')
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('article');
-
 
 $params = $this->item->attribs->toArray();
 
@@ -78,7 +78,7 @@ endif;
 	}
 </script>
 
-<form action="<?php echo Route::url('index.php?option=com_content&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -322,6 +322,7 @@ endif;
 			<?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
 				<fieldset class="panelform">
 					<?php echo $this->loadTemplate('metadata'); ?>
+				</fieldset>
 
 			<?php echo Html::sliders('end'); ?>
 		</div>
@@ -340,6 +341,8 @@ endif;
 		</div>
 	<?php endif; ?>
 
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="return" value="<?php echo Request::getCmd('return'); ?>" />
 	<?php echo Html::input('token'); ?>
