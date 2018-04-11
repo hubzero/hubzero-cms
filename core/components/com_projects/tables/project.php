@@ -631,33 +631,27 @@ class Project extends Table
 					? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state !=2))  "
 					: " AND p.state !=2 ";
 			$query .= " AND p.provisioned=0";*/
-			$query  = "SELECT DISTINCT p.id
-					FROM `#__project_owners` AS po
-					INNER JOIN $this->_tbl AS p ON p.id=po.projectid ";
-			if ($uid)
-			{
-				$query .= " LEFT JOIN `#__project_owners` AS o ON p.id=o.projectid ";
-			}
-			$query .= "WHERE p.provisioned=0
-					AND po.status=1
-					AND po.groupid=" . $this->_db->quote($groupid);
+
+			$query  = "SELECT DISTINCT p.id ";
+			$query .= " FROM #__project_owners as po, $this->_tbl AS p";
+			$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid != 0 AND p.state!= 2 ";
 			if ($uid)
 			{
 				$query .= " AND o.userid=" . $this->_db->quote($uid);
 			}
-			$query .= $active == 1
-					? " AND p.state NOT IN (2, 3) "
-					: " AND p.state = 2 ";
+			$query .=  " JOIN #__users as x ON x.id=p.created_by_user ";
+			$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
+			if ($active)
+			{
+				$query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . $groupid;
+			}
+			else
+			{
+				$query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . $groupid;
+			}
 
 			$this->_db->setQuery($query);
-			$result = $this->_db->loadObjectList();
-			if ($result)
-			{
-				foreach ($result as $r)
-				{
-					$ids[] = $r->id;
-				}
-			}
+			$ids = $this->_db->loadColumn();
 		}
 
 		return $ids;
