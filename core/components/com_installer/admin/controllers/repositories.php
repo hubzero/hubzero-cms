@@ -31,6 +31,7 @@ use Hubzero\Component\AdminController;
 use Hubzero\Utility\Composer as ComposerHelper;
 use Request;
 use Config;
+use Notify;
 use StdClass;
 use Route;
 use App;
@@ -40,11 +41,18 @@ use App;
  */
 class Repositories extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
 	public function execute()
 	{
 		$this->registerTask('add', 'edit');
+
 		parent::execute();
 	}
+
 	/**
 	 * Display a list of uninstalled extensions
 	 *
@@ -68,7 +76,16 @@ class Repositories extends AdminController
 			)
 		);
 
-		$repositories = ComposerHelper::getRepositoryConfigs();
+		try
+		{
+			$repositories = ComposerHelper::getRepositoryConfigs();
+		}
+		catch (\Exception $e)
+		{
+			Notify::error($e->getMessage());
+			$repositories = array();
+		}
+
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
@@ -82,11 +99,10 @@ class Repositories extends AdminController
 	 * 
 	 * @return void
 	 */
-
-	function editTask()
+	public function editTask()
 	{
 		if (!User::authorise('core.edit', $this->_option)
-		&& !User::authorise('core.create', $this->_option))
+		 && !User::authorise('core.create', $this->_option))
 		{
 			App::abort(403, "Unauthorized");
 		}
@@ -94,6 +110,7 @@ class Repositories extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		$alias = Request::getVar('alias', null);
+
 		// If no alias is given, assume we came in via addTask
 		$isNew = false;
 		if (is_null($alias))
@@ -153,8 +170,11 @@ class Repositories extends AdminController
 	public function removeTask()
 	{
 		$alias = Request::getVar('alias', null);
+
 		ComposerHelper::removeRepository($alias);
-		Notify::success("Successfully deleted repository, packages will remain until uninstalled");
+
+		Notify::success('Successfully deleted repository, packages will remain until uninstalled.');
+
 		$this->cancelTask();
 	}
 }
