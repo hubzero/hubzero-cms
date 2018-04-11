@@ -1,7 +1,32 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -9,10 +34,6 @@ defined('_HZEXEC_') or die();
 
 /**
  * Content component helper.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_content
- * @since		1.6
  */
 class ContentHelper
 {
@@ -21,10 +42,8 @@ class ContentHelper
 	/**
 	 * Configure the Linkbar.
 	 *
-	 * @param	string	$vName	The name of the active view.
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   string  $vName  The name of the active view.
+	 * @return  void
 	 */
 	public static function addSubmenu($vName)
 	{
@@ -36,7 +55,8 @@ class ContentHelper
 		Submenu::addEntry(
 			Lang::txt('COM_CONTENT_SUBMENU_CATEGORIES'),
 			Route::url('index.php?option=com_categories&extension=com_content'),
-			$vName == 'categories');
+			$vName == 'categories'
+		);
 		/*Submenu::addEntry(
 			Lang::txt('COM_CONTENT_SUBMENU_FEATURED'),
 			Route::url('index.php?option=com_content&view=featured'),
@@ -47,16 +67,14 @@ class ContentHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	int		The category ID.
-	 * @param	int		The article ID.
-	 *
-	 * @return	object
-	 * @since	1.6
+	 * @param   integer  $categoryId  The category ID.
+	 * @param   integer  $articleId   The article ID.
+	 * @return  object
 	 */
 	public static function getActions($categoryId = 0, $articleId = 0)
 	{
 		// Reverted a change for version 2.5.6
-		$result	= new \Hubzero\Base\Obj;
+		$result = new \Hubzero\Base\Obj;
 
 		if (empty($articleId) && empty($categoryId))
 		{
@@ -64,15 +82,21 @@ class ContentHelper
 		}
 		elseif (empty($articleId))
 		{
-			$assetName = 'com_content.category.'.(int) $categoryId;
+			$assetName = 'com_content.category.' . (int) $categoryId;
 		}
 		else
 		{
-			$assetName = 'com_content.article.'.(int) $articleId;
+			$assetName = 'com_content.article.' . (int) $articleId;
 		}
 
 		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.own',
+			'core.edit.state',
+			'core.delete'
 		);
 
 		foreach ($actions as $action)
@@ -93,7 +117,7 @@ class ContentHelper
 	{
 		// Filter settings
 		$config     = Component::params('com_config');
-		$userGroups = JAccess::getGroupsByUser(User::get('id'));
+		$userGroups = User::accessgroups()->rows()->fieldsByKey('group_id');
 
 		$filters = $config->get('filters');
 

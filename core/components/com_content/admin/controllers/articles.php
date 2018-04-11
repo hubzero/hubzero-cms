@@ -46,8 +46,16 @@ use Lang;
 use Date;
 use App;
 
+/**
+ * Controller class for content articles
+ */
 class Articles extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
 	public function execute()
 	{
 		$this->registerTask('add', 'edit');
@@ -60,29 +68,38 @@ class Articles extends AdminController
 		$this->registerTask('trash', 'state');
 		$this->registerTask('orderup', 'reorder');
 		$this->registerTask('orderdown', 'reorder');
+
 		parent::execute();
 	}
 
+	/**
+	 * Batch process entries
+	 *
+	 * @return  void
+	 */
 	public function batchTask()
 	{
 		$ids = Request::getArray('cid', array());
+
 		if (empty($ids))
 		{
 			Notify::error(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
-			$this->cancelTask();
+			return $this->cancelTask();
 		}
+
 		$batchOptions = Request::getArray('batch', array());
+
 		if (empty($batchOptions['category_id']))
 		{
 			Notify::error(Lang::txt('COM_CONTENT_BATCH_NO_CATEGORY_SELECTED'));
-			$this->cancelTask();
-			return;
+			return $this->cancelTask();
 		}
+
 		$action = $batchOptions['move_copy'] == 'm' ? 'moved' : 'copied';
 
 		$params = array(
-			'catid' => $batchOptions['category_id'],
-			'access' => isset($batchOptions['assetgroup_id']) ? $batchOptions['assetgroup_id'] : null,
+			'catid'    => $batchOptions['category_id'],
+			'access'   => isset($batchOptions['assetgroup_id']) ? $batchOptions['assetgroup_id'] : null,
 			'language' => isset($batchOptions['language_id']) ? $batchOptions['language_id'] : null
 		);
 		$params = array_filter($params);
@@ -96,18 +113,25 @@ class Articles extends AdminController
 				$article->removeAttribute('id');
 			}
 		}
+
 		if ($articles->save())
 		{
 			Notify::success(Lang::txt('COM_CONTENT_BATCH_SUCCESS', $action));
 		}
+
 		$this->cancelTask();
 	}
 
+	/**
+	 * Displays a list of entries
+	 *
+	 * @return  void
+	 */
 	public function displayTask()
 	{
 		if ($layout = Request::getVar('layout'))
 		{
-			$this->context .= '.'.$layout;
+			$this->context .= '.' . $layout;
 		}
 		$filters = array(
 			'search' => Request::getState(
@@ -152,6 +176,7 @@ class Articles extends AdminController
 				'ASC'
 			)
 		);
+
 		$articles = Article::all()
 			->select('`#__languages`.title', 'language_title')
 			->select('`#__content`.*')
@@ -200,25 +225,40 @@ class Articles extends AdminController
 		{
 			$articles->order('catid', 'asc');
 		}
-		$articles->order($filters['sort'], $filters['sort_Dir']);
-		$items = $articles->paginated('limitstart', 'limit')->rows();
+
+		$items = $articles
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		$itemsArray = array();
 		foreach ($items as $item)
 		{
 			$itemsArray[] = $item;
 		}
-		$this->view->set('pagination', $items->pagination);
-		$this->view->set('authors', array());
-		$this->view->set('f_levels', array());
-		$this->view->set('filters', $filters);
-		$this->view->set('items', $itemsArray);
+
 		$layout = Request::getCmd('layout', 'default');
-		$this->view->setLayout($layout)->display();
+
+		$this->view
+			->set('pagination', $items->pagination)
+			->set('authors', array())
+			->set('f_levels', array())
+			->set('filters', $filters)
+			->set('items', $itemsArray)
+			->setLayout($layout)
+			->display();
 	}
 
+	/**
+	 * Displays a form for editing an entry
+	 *
+	 * @param   mixed  $article
+	 * @return  void
+	 */
 	public function editTask($article = null)
 	{
 		$id = Request::getInt('id', 0);
+
 		if (!($article instanceof Article))
 		{
 			$article = Article::oneOrNew($id);
@@ -234,7 +274,7 @@ class Articles extends AdminController
 				if ($checkedOut != User::getInstance()->get('id'))
 				{
 					Notify::error(Lang::txt('COM_CONTENT_CHECKED_IN_ERROR', $article->id));
-					$this->cancelTask();
+					return $this->cancelTask();
 				}
 			}
 			if (!User::authorise('core.edit', $assetId))
@@ -246,7 +286,7 @@ class Articles extends AdminController
 				}
 			}
 			$article->set('checked_out', User::getInstance()->get('id'));
-			$article->set('checked_out_time', Date::of()->toSql());
+			$article->set('checked_out_time', Date::of('now')->toSql());
 			$article->save();
 		}
 		else
@@ -256,43 +296,63 @@ class Articles extends AdminController
 				App::abort(403, Lang::txt('COM_CONTENT_NOT_AUTHORIZED'));
 			}
 		}
+
 		$newTasks = array('save2new', 'save2copy');
 		$task = in_array($this->_task, $newTasks) ? 'add' : $this->_task;
-		$this->view->set('task', $task);
-		$this->view->set('item', $article);
-		$this->view->set('form', $article->getForm());
-		$this->view->setLayout('edit');
-		$this->view->display();
+
+		$this->view
+			->set('task', $task)
+			->set('item', $article)
+			->set('form', $article->getForm())
+			->setLayout('edit')
+			->display();
 	}
 
+	/**
+	 * Save changes to an entry
+	 *
+	 * @return  void
+	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
 		Request::checkToken();
+
+		// Incoming data
 		$items = Request::getVar('fields', array());
+
 		$articleId = Request::getInt('id');
+
 		$article = Article::oneOrNew($articleId);
+
 		$checkedOut = $article->get('checked_out');
 		if ($checkedOut)
 		{
-			$article->set('checked_out', '');
+			$article->set('checked_out', 0);
 			$article->set('checked_out_time', '');
 			$article->save();
 		}
+
 		if (!empty($items['rules']))
 		{
-			$rules = array_map(function($item){
-				return array_filter($item, 'strlen');
-			}, $items['rules']);
+			$rules = array_map(
+				function($item)
+				{
+					return array_filter($item, 'strlen');
+				},
+				$items['rules']
+			);
 			$article->assetRules = new Rules($rules);
 		}
 		unset($items['rules']);
+
 		$article->set($items);
 
-
-		if ($this->_task == 'save2copy')
+		if ($this->getTask() == 'save2copy')
 		{
 			$article->set('id', 0);
 		}
+
 		if (!$article->save())
 		{
 			Notify::error($article->getError());
@@ -300,22 +360,25 @@ class Articles extends AdminController
 		}
 
 		Notify::success(Lang::txt('COM_CONTENT_SAVE_SUCCESS'));
-		if ($this->_task == 'apply' || $this->_task == 'save2copy')
+
+		if ($this->getTask() == 'apply'
+		 || $this->getTask() == 'save2copy')
 		{
 			return $this->editTask($article);
 		}
-		elseif ($this->_task == 'save2new')
+		elseif ($this->getTask() == 'save2new')
 		{
 			Request::setVar('id', 0);
 			return $this->editTask();
 		}
+
 		$this->cancelTask();
 	}
 
 	/**
 	 * Changes the order of one or more records.
 	 *
-	 * @return  boolean  True on success
+	 * @return  void
 	 */
 	public function reorderTask()
 	{
@@ -358,10 +421,17 @@ class Articles extends AdminController
 		$this->cancelTask();
 	}
 
+	/**
+	 * Save ordering
+	 *
+	 * @return  void
+	 */
 	public function saveorderTask()
 	{
 		Request::checkToken();
+
 		$ordering = Request::getVar('order', array());
+
 		if (!Article::saveorder($ordering))
 		{
 			Notify::error(Lang::txt('COM_CONTENT_ORDERING_ERROR'));
@@ -370,12 +440,19 @@ class Articles extends AdminController
 		{
 			Notify::success(Lang::txt('COM_CONTENT_ORDERING_SUCCESS'));
 		}
+
 		$this->cancelTask();
 	}
 
+	/**
+	 * Change the state of one or more entries
+	 *
+	 * @return  void
+	 */
 	public function stateTask()
 	{
 		Request::checkToken();
+
 		$states = array(
 			'publish' => array(
 				'value' => '1',
@@ -394,8 +471,11 @@ class Articles extends AdminController
 				'lang' => 'COM_CONTENT_N_ITEMS_TRASHED'
 			)
 		);
-		$state = $states[$this->_task];
+
+		$state = $states[$this->getTask()];
+
 		$ids = Request::getArray('cid');
+
 		if (!empty($ids))
 		{
 			$articles = Article::all()->whereIn('id', $ids)->rows();
@@ -411,6 +491,7 @@ class Articles extends AdminController
 				$article->set('state', $state['value']);
 			}
 		}
+
 		if ($articles->count() != $permissionErrors)
 		{
 			if ($articles->save())
@@ -420,15 +501,27 @@ class Articles extends AdminController
 				Notify::success(Lang::txt($state['lang'], $count, $title));
 			}
 		}
+
 		$this->cancelTask();
 	}
 
+	/**
+	 * Cancel a task
+	 *
+	 * @return  void
+	 */
 	public function checkinTask()
 	{
 		Request::checkToken();
+
 		$ids = Request::getArray('cid');
-		$articles = Article::all()->whereIn('id', $ids)->rows();
+
+		$articles = Article::all()
+			->whereIn('id', $ids)
+			->rows();
+
 		$permissionErrors = 0;
+
 		foreach ($articles as $key => $article)
 		{
 			if (!User::authorise('core.admin', $article->asset_id))
@@ -440,9 +533,10 @@ class Articles extends AdminController
 					continue;
 				}
 			}
-			$article->set('checked_out', null);
+			$article->set('checked_out', 0);
 			$article->set('checked_out_time', null);
 		}
+
 		if ($articles->count() != $permissionErrors)
 		{
 			if ($articles->save())
@@ -452,23 +546,32 @@ class Articles extends AdminController
 				Notify::success(Lang::txt('COM_CONTENT_N_ITEMS_CHECKED_IN_MORE', $count, $title));
 			}
 		}
+
 		$this->cancelTask();
 	}
 
+	/**
+	 * Cancel a task
+	 *
+	 * @return  void
+	 */
 	public function cancelTask()
 	{
-		if ($this->_task == 'cancel')
+		if ($this->getTask() == 'cancel')
 		{
 			$id = Request::getInt('id', 0);
+
 			$article = Article::one($id);
 			$articleCheckedOut = $article instanceof Article ? $article->get('checked_out') : 0;
+
 			if ($article && User::getInstance()->get('id') == $articleCheckedOut)
 			{
-				$article->set('checked_out', null);
+				$article->set('checked_out', 0);
 				$article->set('checked_out_time', null);
 				$article->save();
 			}
 		}
+
 		parent::cancelTask();
 	}
 }
