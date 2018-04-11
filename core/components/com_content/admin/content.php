@@ -32,7 +32,7 @@
 namespace Components\Content\Admin;
 
 // Access check.
-if (!\User::authorise('core.manage', 'com_content')) 
+if (!\User::authorise('core.manage', 'com_content'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
