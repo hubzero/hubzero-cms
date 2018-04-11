@@ -736,6 +736,8 @@ class Tickets extends SiteController
 				->whereEquals('open', ($filters['show'] == -1 ? 1 : 0))
 				->whereIn('id', $watching)
 				->order('created', 'desc')
+				->start($filters['start'])
+				->limit($filters['limit'])
 				->rows();
 		}
 
