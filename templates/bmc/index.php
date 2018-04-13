@@ -309,6 +309,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 					<div class="inner">
 						<h4><a style="color: #8cc540;" href="/">Home</a></h4>
 						<jdoc:include type="modules" name="user3" />
+						<jdoc:include type="modules" name="mobile-menu" />
 					</div>
 				</div>
 				<div class="subpanel search">

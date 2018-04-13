@@ -40,6 +40,10 @@ button:hover {
   background: #eb6546;
   border-color: #eb6546;
 }
-.mobile-panel.show.menu .subpanel.search .label {
+.mobile-panel.show.menu .subpanel.search .label,
+.mobile-panel .subpanel.search .label {
   opacity: inherit;
+}
+.mobile-panel .subpanel.search .label {
+  font-size: 3rem;
 }
