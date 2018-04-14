@@ -141,7 +141,7 @@ else
 					}
 					$from .= ' <span class="publication-version"><abbr title="' . Lang::txt('Version') . '">v</abbr> ' . $this->escape($ancestor->version->get('version_label')) . '</span>';
 
-					echo '<p class="icon-fork fork-source">' . Lang::txt('Forked from: %s', $from) . '</p>';
+					echo '<p class="icon-fork fork-source">' . Lang::txt('Adapted from: %s', $from) . '</p>';
 				}
 
 				// Show status for authorized users
