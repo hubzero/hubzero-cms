@@ -38,16 +38,7 @@ $this->css();
 ?>
 <div <?php echo 'class="network-logos' . (($this->moduleclass) ? ' ' . $this->moduleclass : '') . '"';?>>
 	<?php
-	$i = 0;
 	foreach($this->partners as $partner) {
-		if ($i < $this->limit) {
-			if ($partner->get('state') &&
-				($this->featured ? $partner->get('featured') : 1)) {
-				require $this->getLayoutPath('_item');
-				$i++;
-			}
-		} else {
-			break;
-		}
+		require $this->getLayoutPath('_item');
 	} ?>
 </div>
