@@ -32,8 +32,11 @@
 
 namespace Components\Publications\Site\Controllers;
 
+require_once Component::path('com_publications') . '/models/bundle.php';
+
 use Hubzero\Component\SiteController;
 use Components\Publications\Tables;
+use Components\Publications\Models\Bundle;
 use Components\Publications\Models;
 use Components\Publications\Helpers;
 use Component;
@@ -657,18 +660,26 @@ class Publications extends SiteController
 		$body = '';
 		if ($tab == 'about')
 		{
+			$publicationVersionId = $this->model->get('version_id');
+			$bundle = Bundle::oneBy([
+				'publication_id' => $this->model->get('id'),
+				'publication_version_id' => $publicationVersionId
+			]);
 			// Build the HTML of the "about" tab
 			$view = new \Hubzero\Component\View(array(
 				'name'   => 'about',
 				'layout' => 'default'
 			));
 			$view->option      = $this->_option;
+			$view->controller  = $this->_controller;
+			$view->task        = $this->_task;
 			$view->config      = $this->config;
 			$view->database    = $this->database;
 			$view->publication = $this->model;
 			$view->authorized  = $authorized;
 			$view->restricted  = $restricted;
-			$view->version     = $this->model->versionAlias;
+			$view->version     = $publicationVersionId;
+			$view->bundle      = $bundle;
 			$view->sections    = $sections;
 			$body              = $view->loadTemplate();
 

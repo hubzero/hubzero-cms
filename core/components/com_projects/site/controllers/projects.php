@@ -386,18 +386,6 @@ class Projects extends Base
 		$subdir       = Request::getVar('subdir');
 		$sync         = false;
 
-		// Stop ajax action if user got logged out
-		/* [!] I don't think this is needed anymore. Leaving for awhile incase need to re-introduce.
-		if ($ajax && User::isGuest())
-		{
-			// Project on hold
-			$this->view = new \Hubzero\Component\View(array('name' => 'error', 'layout' => 'default'));
-			$this->view->error  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN');
-			$this->view->title  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
-			$this->view->display();
-			return;
-		}*/
-
 		// Check that project exists
 		if (!$this->model->exists())
 		{
@@ -694,12 +682,6 @@ class Projects extends Base
 					}
 				}
 			}
-			/*else
-			{
-				// No html output
-				App::redirect(Route::url($this->model->link()));
-				return;
-			}*/
 
 			// Get item counts
 			$counts = Event::trigger('projects.onProjectCount', array($this->model));
