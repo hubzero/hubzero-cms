@@ -873,6 +873,7 @@ class Tickets extends SiteController
 		// Incoming
 		$no_html  = Request::getInt('no_html', 0);
 		$verified = Request::getInt('verified', 0);
+		$verified = ($verified > 0 ? 1 : 0);
 		if (!isset($_POST['reporter']) || !isset($_POST['problem']))
 		{
 			// This really, REALLY shouldn't happen.
