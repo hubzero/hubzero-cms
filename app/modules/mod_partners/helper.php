@@ -50,7 +50,12 @@ class Helper extends Module
 	 */
 	private function _getPartners()
 	{
-		return Partner::all();
+		if ($this->featured) {
+			$partners = Partner::all()->whereEquals('state', 1)->whereEquals('featured', $this->featured);
+		} else {
+			$partners = Partner::all()->whereEquals('state', 1);
+		}
+		return $partners->rows()->pickRandom($this->limit);
 	}
 
 	/**
