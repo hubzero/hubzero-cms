@@ -396,7 +396,7 @@ class Router extends Base
 				}
 
 				// Notes
-				elseif (!empty($segments[2]) && $vars['active'] == 'notes') //!is_numeric($segments[2]) && 
+				elseif (!empty($segments[2]) && $vars['active'] == 'notes') //!is_numeric($segments[2]) &&
 				{
 					// Wiki actions
 					$wiki_actions = array('media', 'list', 'upload',

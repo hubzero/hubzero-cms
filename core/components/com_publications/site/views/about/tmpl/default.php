@@ -268,3 +268,9 @@ if (($this->publication->params->get('show_notes')) && $this->publication->get('
 }
 ?>
 </div><!-- / .pubabout -->
+
+<?php
+	$this->view('_bundle_metadata')
+		->set('bundle', $this->bundle)
+		->display();
+?>
