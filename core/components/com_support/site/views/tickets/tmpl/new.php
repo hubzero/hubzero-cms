@@ -38,41 +38,6 @@ $this->css()
      ->js('jquery.timepicker.js', 'system')
      ->js('new.js');
 
-$browsers = array(
-	'[unspecified]' => Lang::txt('COM_SUPPORT_TROUBLE_SELECT_BROWSER'),
-	'msie' => 'Internet Explorer',
-	'chrome' => 'Google Chrome',
-	'safari' => 'Safari',
-	'firefox' => 'Firefox',
-	'opera' => 'Opera',
-	'mozilla' => 'Mozilla',
-	'netscape' => 'Netscape',
-	'camino' => 'Camino',
-	'omniweb' => 'Omniweb',
-	'shiira' => 'Shiira',
-	'icab' => 'iCab',
-	'flock' => 'Flock',
-	'avant' => 'Avant Browser',
-	'seamonkey' => 'SeaMonkey',
-	'konqueror' => 'Konqueror',
-	'lynx' => 'Lynx',
-	'aol' => 'Aol',
-	'amaya' => 'Amaya',
-	'other' => 'Other'
-);
-
-$oses = array(
-	'[unspecified]' => Lang::txt('COM_SUPPORT_TROUBLE_SELECT_OS'),
-	'Windows' => 'Windows',
-	'Mac OS' => 'Mac OS',
-	'Linux' => 'Linux',
-	'Unix' => 'Unix',
-	'Google Chrome OS' => 'Google Chrome OS',
-	'Android' => 'Android',
-	'iOS' => 'iOS',
-	'Other' => 'Other'
-);
-
 // are we remotely loading ticket form
 $tmpl = (Request::getVar('tmpl', '')) ? '&tmpl=component' : '';
 
@@ -82,15 +47,11 @@ $group = Request::getVar('group', '');
 // Populate the row for users that are not logged and have issues with the page
 if (User::isGuest())
 {
-	//echo Request::getVar('reporter[email]', null, 'post'); die;
 	$this->row->submitter->set('username', Request::getVar('reporter[login]', null, 'post'));
 	$this->row->set('report', Request::getVar('problem[long]', null, 'post'));
 	$this->row->set('name', Request::getVar('reporter[name]', null, 'post'));
 	$this->row->set('email', Request::getVar('reporter[email]', null, 'post'));
-	$this->row->set('os', Request::getVar('problem[os]', null, 'post'));
-	$this->row->set('browser', Request::getVar('problem[browser]', null, 'post'));
 }
-
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -117,8 +78,6 @@ if (User::isGuest())
 
 			<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->row->get('referrer')); ?>" />
 			<input type="hidden" name="problem[tool]" value="<?php echo $this->escape($this->row->get('tool')); ?>" />
-			<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->row->get('osver')); ?>" />
-			<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->row->get('browserver')); ?>" />
 			<input type="hidden" name="problem[short]" value="<?php echo $this->escape($this->row->get('short')); ?>" />
 
 			<input type="hidden" name="no_html" value="0" />
@@ -147,34 +106,7 @@ if (User::isGuest())
 				<p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
 			<?php } ?>
 
-			<?php /*<label for="reporter_org">
-				<?php echo Lang::txt('COM_SUPPORT_ORGANIZATION'); ?>
-				<input type="text" name="reporter[org]" value="<?php echo (isset($this->reporter['org'])) ? $this->escape($this->reporter['org']) : ''; ?>" id="reporter_org" />
-			</label>*/ ?>
 			<input type="hidden" name="reporter[org]" value="<?php echo $this->row->get('organization', $this->row->submitter->get('organization')); ?>" id="reporter_org" />
-
-			<div class="grid">
-				<div class="col span6">
-					<label for="problem_os"<?php echo ($this->getError() && !$this->row->get('os')) ? ' class="fieldWithErrors"' : ''; ?>>
-						<?php echo Lang::txt('COM_SUPPORT_OS'); ?>
-						<select name="problem[os]" id="problem_os">
-						<?php foreach ($oses as $avalue => $alabel) { ?>
-							<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->get('os') || $alabel == $this->row->get('os')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
-						<?php } ?>
-						</select>
-					</label>
-				</div>
-				<div class="col span6 omega">
-					<label for="problem_browser"<?php echo ($this->getError() && $this->row->get('browser') == '') ? ' class="fieldWithErrors"' : ''; ?>>
-						<?php echo Lang::txt('COM_SUPPORT_BROWSER'); ?>
-						<select name="problem[browser]" id="problem_browser">
-						<?php foreach ($browsers as $avalue => $alabel) { ?>
-							<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->get('browser') || $alabel == $this->row->get('browser')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
-						<?php } ?>
-						</select>
-					</label>
-				</div>
-			</div><!-- / .group -->
 		</fieldset><div class="clear"></div>
 
 		<fieldset>
@@ -200,7 +132,7 @@ if (User::isGuest())
 					<noscript>
 						<label for="upload">
 							<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
-							<input type="file" name="upload" id="upload" />
+							<input type="file" name="upload[]" id="upload" multiple="multiple" />
 						</label>
 
 						<label for="field-description">
@@ -222,7 +154,7 @@ if (User::isGuest())
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_SUPPORT_DETAILS'); ?></legend>
 
-				<label>
+				<label for="tags">
 					<?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
 					<?php
 					$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
@@ -236,7 +168,7 @@ if (User::isGuest())
 
 				<div class="grid">
 					<div class="col span6">
-						<label>
+						<label for="acgroup">
 							<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
 							<?php
 							$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner')));
@@ -310,7 +242,7 @@ if (User::isGuest())
 				</label>
 				<?php } ?>
 
-				<label>
+				<label for="acmembers">
 					<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
 					$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', '')));
 					if (count($mc) > 0) {
