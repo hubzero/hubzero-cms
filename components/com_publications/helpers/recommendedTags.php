@@ -66,6 +66,8 @@ class RecommendedTags extends \Hubzero\Base\Obj
   //   Example:  array ( 'Thanksgiving' => array ( 'raw_tag' => 'Thanksgiving', 'id' => '6', 'tag_id' => '8', 'mandatory_depth' => NULL, 'multiple_depth' => '1', ), )
   private $fa_properties = array();
 
+  private $master_type = null;
+
 	const ENDORSED_TAG = 2;
 	const REGULAR_TAG  = 1;
 
@@ -84,13 +86,15 @@ class RecommendedTags extends \Hubzero\Base\Obj
        FROM #__publications
        WHERE id = ' . $pid
     );
-    $master_type = (int) $this->_db->loadResult();
-    $this->has_focus_area = !empty($this->loadFocusAreas($master_type));
+    $this->master_type = (int) $this->_db->loadResult();
+    $this->has_focus_area = !empty($this->loadFocusAreas());
 
 		$this->_db->setQuery(
-			'SELECT t.raw_tag, fa.*
-			FROM #__focus_areas fa
-			INNER JOIN #__tags t ON t.id = fa.tag_id'
+			'SELECT t.raw_tag, t.tag, f.*
+       FROM #__focus_area_publication_master_type_rel fp
+       INNER JOIN #__focus_areas f ON f.id = fp.focus_area_id
+       INNER JOIN #__tags t ON t.id = f.tag_id
+       WHERE fp.master_type_id = ' . $this->_db->quote($this->master_type)
 		);
 		$this->fa_properties = $this->_db->loadAssocList('raw_tag');
 
@@ -226,16 +230,8 @@ class RecommendedTags extends \Hubzero\Base\Obj
 
     // Now, IF there is a focus area, assign label to all existing
     //   tags in that focus area.
-    if ($this->fa_properties) {
-      $focus_area = array_keys($this->fa_properties)[0];
-      $this->_db->setQuery(
-        'SELECT master_type
-         FROM #__publications
-         WHERE id = ' . $pid
-      );
-      $master_type = (int) $this->_db->loadResult();
-
-      $fatree = $this->loadFocusAreas($master_type);
+    foreach ($this->fa_properties as $focus_area => $fa_properties) {
+      $fatree = $this->loadFocusAreas('\'' . $fa_properties['tag'] . '\'');
       $rtags = $this->flatten($fatree, 'id');
       if (!empty($rtags))
         {
@@ -260,7 +256,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
    * @param   string   $parent_label  Tag
    * @return  void
    */
-  public function loadFocusAreas($master_type, $labels = null, $parent_id = null, $parent_label = null)
+  public function loadFocusAreas($labels = null, $parent_id = null, $parent_label = null)
   {
     if (is_null($labels))
     {
@@ -269,7 +265,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
         FROM #__focus_area_publication_master_type_rel fp
         INNER JOIN #__focus_areas f ON f.id = fp.focus_area_id
         INNER JOIN #__tags t ON t.id = f.tag_id
-        WHERE fp.master_type_id = ' . $master_type
+        WHERE fp.master_type_id = ' . $this->master_type
       );
 
       if (!($labels = $this->_db->loadColumn()))
@@ -308,7 +304,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
     $fas = $this->_db->loadAssocList('raw_tag');
     foreach ($fas as &$fa)
     {
-      $fa['children'] = $this->loadFocusAreas($master_type, $labels, $fa['id'], $fa['label']);
+      $fa['children'] = $this->loadFocusAreas($labels, $fa['id'], $fa['label']);
     }
     return $fas;
   }

@@ -951,47 +951,51 @@ HUB.ProjectPublicationsDraft = {
 			selected = selected ? selected + ',' + $(item).html() : $(item).html();
 		});
 
-		var recommendedTags = $('input[id*="tagfa"]:checked');
-		var depth_met = false;
-		var max_depth = 0;
-		var item_depth = 0;
-		recommendedTags.each(function(i, item)
-		{
-			// Only count items with parent also checked
-			if ($(item).parent().hasClass('top-level') ||
-			    $(item).parent().siblings("input").is(":checked")) {
-				selected = selected ? selected + ',' + $(item).next('label').html() : $(item).next('label').html();
-			} else {
-				$(item).prop('checked', false);
-				return false;
-			}
+		var all_depths_met = true;
+		$('.focus-areas').children().each(function(ifa, fa) {
+			var depth_met = false;
+			var max_depth = 0;
+			var item_depth = 0;
 
-			// Check for correct depth - note that this will only work when there is only ONE
-			//   focus area per master type
-			item_depth = $(item).parentsUntil('fieldset').length;
-			max_depth = Math.max(item_depth, max_depth);
-			// Note:  This is a little redundant - keeping here as it allows for the future where maybe
-			// we have more than one focus area.  If only one, then don't need this.
-			if (item_depth >= $(item).closest('fieldset').attr('value'))
-			{
-				depth_met = true;
-			}
-		});
+			$(fa).find('input[id*="tagfa"]:checked').each(function(itag, tag) {
+				// Only count items with parent also checked
+				if ($(tag).parent().hasClass('top-level') ||
+			    	$(tag).parent().siblings("input").is(":checked")) {
+							selected = selected ? selected + ',' + $(tag).next('label').html() : $(tag).next('label').html();
+						} else {
+							$(tag).prop('checked', false);
+							return false;
+						}
 
-		// Trigger incomplete block by removing all selected tags (right now, only trigger for
-		//   incomplete block is zero tags)
-		if ($('#tagsPick fieldset .required').length) {
-			if (!depth_met)
-			{
+				// Check for correct depth - note that this will only work when there is only ONE
+				//   focus area per master type
+				item_depth = $(tag).parentsUntil('fieldset').length;
+				max_depth = Math.max(item_depth, max_depth);
+				if (item_depth >= $(tag).closest('fieldset').attr('value'))
+				{
+					depth_met = true;
+				}
+			});
+
+			// Trigger incomplete block by removing all selected tags (right now, only trigger for
+			//   incomplete block is zero tags)
+			$req = $(fa).find('.required');
+			if (!depth_met) {
 				if (max_depth > 0) {
-					$('#tagsPick fieldset .required').html('required - must select at least one sub-item');
+					$req.html('required - must select at least one sub-item');
 				} else {
-					$('#tagsPick fieldset .required').html('required');
+					$req.html('required');
 				}
 				selected = '';
 			} else {
-				$('#tagsPick fieldset .required').html('required');
+				$req.html('required');
 			}
+
+			all_depths_met = all_depths_met && depth_met;
+		});
+
+		if (!all_depths_met) {
+			selected = '';
 		}
 
 		return selected;

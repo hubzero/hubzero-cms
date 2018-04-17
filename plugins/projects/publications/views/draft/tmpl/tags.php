@@ -46,8 +46,7 @@ include_once \Component::path('com_publications') . DS . 'helpers' . DS . 'recom
 // Get focus areas - this may be redundant: check $recommended->get_focus_area_properties();
 $db = \App::get('db');
 $recommended = new \Components\Publications\Helpers\RecommendedTags($this->pub->id, 0, $db = $db);
-$db->setQuery('SELECT master_type FROM `#__publications` WHERE id = ' . $db->quote($this->pub->id));
-$fas = $recommended->loadFocusAreas($db->loadResult());
+$fas = $recommended->loadFocusAreas();
 $focusareas = array();
 foreach ($fas as $tag => $fa)
 {
@@ -75,7 +74,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 					</label>
 						<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 
-					<fieldset>
+					<fieldset class="focus-areas">
 						<?php
 							if (count($focusareas) > 0):
 								$fa_existing = $recommended->get_existing_focus_areas_map();
