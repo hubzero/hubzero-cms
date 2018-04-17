@@ -74,7 +74,7 @@ if (User::isGuest())
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="verified" value="<?php echo $this->row->get('verified'); ?>" />
+			<input type="hidden" name="verified" value="<?php echo $this->escape($this->row->get('verified')); ?>" />
 
 			<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->row->get('referrer')); ?>" />
 			<input type="hidden" name="problem[tool]" value="<?php echo $this->escape($this->row->get('tool')); ?>" />
@@ -87,12 +87,12 @@ if (User::isGuest())
 
 			<label for="reporter_login">
 				<?php echo Lang::txt('COM_SUPPORT_USERNAME'); ?>
-				<input type="text" name="reporter[login]" value="<?php echo $this->row->get('login', $this->row->submitter->get('username')); ?>" id="reporter_login" />
+				<input type="text" name="reporter[login]" value="<?php echo $this->escape($this->row->get('login', $this->row->submitter->get('username'))); ?>" id="reporter_login" />
 			</label>
 
 			<label for="reporter_name"<?php echo ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo Lang::txt('COM_SUPPORT_NAME'); ?> <span class="required"><?php echo Lang::txt('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[name]" value="<?php echo $this->row->get('name', $this->row->submitter->get('name')); ?>" id="reporter_name" />
+				<input type="text" name="reporter[name]" value="<?php echo $this->escape($this->row->get('name', $this->row->submitter->get('name'))); ?>" id="reporter_name" />
 			</label>
 			<?php if ($this->getError() && !$this->row->get('name')) { ?>
 				<p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_NAME'); ?></p>
@@ -100,13 +100,13 @@ if (User::isGuest())
 
 			<label for="reporter_email"<?php echo ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo Lang::txt('COM_SUPPORT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[email]" value="<?php echo $this->row->get('email', $this->row->submitter->get('email')); ?>" id="reporter_email" />
+				<input type="text" name="reporter[email]" value="<?php echo $this->escape($this->row->get('email', $this->row->submitter->get('email'))); ?>" id="reporter_email" />
 			</label>
 			<?php if ($this->getError() && !$this->row->get('email')) { ?>
 				<p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
 			<?php } ?>
 
-			<input type="hidden" name="reporter[org]" value="<?php echo $this->row->get('organization', $this->row->submitter->get('organization')); ?>" id="reporter_org" />
+			<input type="hidden" name="reporter[org]" value="<?php echo $this->escape($this->row->get('organization', $this->row->submitter->get('organization'))); ?>" id="reporter_org" />
 		</fieldset><div class="clear"></div>
 
 		<fieldset>
