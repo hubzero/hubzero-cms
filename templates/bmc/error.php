@@ -245,13 +245,13 @@ Lang::load('tpl_' . $this->template, __DIR__);
 		<div class="inner scroller">
 			<div class="subpanel menu">
 				<div class="inner">
-					<jdoc:include type="modules" name="user3" />
+					<?php echo Module::position('user3'); ?>
 				</div>
 			</div>
 			<div class="subpanel search">
 				<div class="inner">
 					<div class="label">Search</div>
-					<jdoc:include type="modules" name="search" />
+					<?php echo Module::position('search'); ?>
 				</div>
 			</div>
 			<div class="background">
