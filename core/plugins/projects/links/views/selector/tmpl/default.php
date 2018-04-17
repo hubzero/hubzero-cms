@@ -38,18 +38,18 @@ $manifest = $this->publication->curation('blocks', $this->step, 'manifest');
 $elementId = $this->element;
 if ($manifest->elements)
 {
-	$element  		= $manifest->elements->$elementId;
-	$typeParams   	= $element->params->typeParams;
+	$element    = $manifest->elements->$elementId;
+	$typeParams = $element->params->typeParams;
 }
 else
 {
-	$typeParams = NULL;
+	$typeParams = null;
 }
 
-$label  	= isset($typeParams->addLabel) ? $typeParams->addLabel : Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_TYPE_URL');
-$action 	= isset($typeParams->typeAction) ? $typeParams->typeAction : 'parseurl';
-$btnLabel 	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_SELECTION');
-$placeHolder= 'http://';
+$label       = isset($typeParams->addLabel) ? $typeParams->addLabel : Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_TYPE_URL');
+$action      = isset($typeParams->typeAction) ? $typeParams->typeAction : 'parseurl';
+$btnLabel    = Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_SELECTION');
+$placeHolder = 'http://';
 
 $title = $this->block == 'citations'
 	? Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_DOI')
@@ -57,30 +57,29 @@ $title = $this->block == 'citations'
 
 if ($this->block == 'citations')
 {
-	$label  	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_TYPE_DOI');
-	$action 	= 'parsedoi';
-	$btnLabel 	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_DOI');
-	$placeHolder= 'doi:';
+	$label       = Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_TYPE_DOI');
+	$action      = 'parsedoi';
+	$btnLabel    = Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_DOI');
+	$placeHolder = 'doi:';
 }
 
-$newCiteUrl = Route::url( $this->publication->link('editversionid') . '&active=links&action=newcite&p=' . $this->props);
-
+$newCiteUrl = Route::url($this->publication->link('editversionid') . '&active=links&action=newcite&p=' . $this->props);
 ?>
 <div id="abox-content-wrap">
 	<div id="abox-content" class="url-select">
-	<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/links/assets/js/selector.js"></script>
-		<h3><?php echo $title; ?> 	<span class="abox-controls">
+		<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/links/assets/js/selector.js"></script>
+		<h3>
+			<?php echo $title; ?>
+			<span class="abox-controls">
 				<a class="btn btn-success active" id="b-save"><?php echo $btnLabel; ?></a>
 				<?php if ($this->ajax) { ?>
-				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_LINKS_CANCEL'); ?></a>
+					<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_LINKS_CANCEL'); ?></a>
 				<?php } ?>
 			</span>
 		</h3>
 		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $this->publication->link('editversionid'); ?>">
-			<fieldset >
-				<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
+			<fieldset>
 				<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 				<input type="hidden" name="p" id="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
@@ -94,26 +93,31 @@ $newCiteUrl = Route::url( $this->publication->link('editversionid') . '&active=l
 				<input type="hidden" name="parseaction" id="parseaction" value="<?php echo $action; ?>" />
 				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo Route::url($this->publication->link('editbase')); ?>" />
 				<?php if ($this->model->isProvisioned()) { ?>
+					<input type="hidden" name="id" value="<?php echo $this->publication->get('id'); ?>" />
 					<input type="hidden" name="task" value="submit" />
+					<input type="hidden" name="option" value="com_publications" />
 					<input type="hidden" name="ajax" value="0" />
-				<?php }  ?>
+				<?php } else { ?>
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
+				<?php } ?>
 			</fieldset>
-				<div id="import-link">
-					<label>
-						<?php echo $label . ':'; ?>
+			<div id="import-link">
+				<label for="parse-url">
+					<?php echo $label . ':'; ?>
 					<input type="text" name="<?php echo $this->block == 'citations' ? 'citation-doi' : 'url[]'; ?>" size="40" id="parse-url" placeholder="<?php echo $placeHolder; ?>" value="" />
 					<input type="hidden" name="title[]" id="parse-title" value="" />
 					<input type="hidden" name="desc[]" id="parse-description" value="" />
-					</label>
-					<div id="preview-wrap"></div>
-				</div>
+				</label>
+				<div id="preview-wrap"></div>
+			</div>
 		</form>
 		<?php if ($this->block == 'citations') {
-			$config       = Component::params( 'com_citations' );
+			$config       = Component::params('com_citations');
 			$allow_import = $config->get('citation_import', 1);
 			if ($allow_import) { ?>
-			<p class="and_or centeralign">OR</p>
-			<p class="centeralign"><a href="<?php echo $newCiteUrl; ?>" class="btn" id="newcite-question"><?php echo Lang::txt('Enter manually'); ?></a></p>
+				<p class="and_or centeralign">OR</p>
+				<p class="centeralign"><a href="<?php echo $newCiteUrl; ?>" class="btn" id="newcite-question"><?php echo Lang::txt('Enter manually'); ?></a></p>
 			<?php }
 		} ?>
 	</div>

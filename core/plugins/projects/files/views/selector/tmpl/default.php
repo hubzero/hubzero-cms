@@ -172,127 +172,138 @@ if ($this->folders)
 ?>
 <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileselector.js"></script>
 <div id="abox-content">
-<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR'); ?> 	<span class="abox-controls">
-		<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
-		<?php if ($this->ajax) { ?>
-		<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
-		<?php } ?>
-	</span></h3>
+	<h3>
+		<?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR'); ?>
+		<span class="abox-controls">
+			<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
+			<?php if ($this->ajax) { ?>
+				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
+			<?php } ?>
+		</span>
+	</h3>
 
-<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url( $this->publication->link('edit')); ?>">
-	<fieldset >
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-		<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
-		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
-		<input type="hidden" id="selecteditems" name="selecteditems" value="" />
-		<input type="hidden" id="maxitems" name="maxitems" value="<?php echo $max; ?>" />
-		<input type="hidden" id="minitems" name="minitems" value="<?php echo $min; ?>" />
-		<input type="hidden" id="p" name="p" value="<?php echo $this->props; ?>" />
-		<input type="hidden" id="filterUrl" name="filterUrl" value="<?php echo $filterUrl; ?>" />
-		<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
-		<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
-		<input type="hidden" name="section" value="<?php echo $this->block; ?>" />
-		<input type="hidden" name="element" value="<?php echo $elId; ?>" />
-		<input type="hidden" name="el" value="<?php echo $elId; ?>" />
-		<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
-		<input type="hidden" name="active" value="publications" />
-		<input type="hidden" name="action" value="apply" />
-		<input type="hidden" name="move" value="continue" />
-		<?php if ($this->model->isProvisioned()) { ?>
-			<input type="hidden" name="task" value="submit" />
-			<input type="hidden" name="ajax" value="0" />
-		<?php }  ?>
-	</fieldset>
+	<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url( $this->publication->link('edit')); ?>">
+		<fieldset>
+			<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
+			<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
+			<input type="hidden" id="selecteditems" name="selecteditems" value="" />
+			<input type="hidden" id="maxitems" name="maxitems" value="<?php echo $max; ?>" />
+			<input type="hidden" id="minitems" name="minitems" value="<?php echo $min; ?>" />
+			<input type="hidden" id="p" name="p" value="<?php echo $this->props; ?>" />
+			<input type="hidden" id="filterUrl" name="filterUrl" value="<?php echo $filterUrl; ?>" />
+			<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
+			<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
+			<input type="hidden" name="section" value="<?php echo $this->block; ?>" />
+			<input type="hidden" name="element" value="<?php echo $elId; ?>" />
+			<input type="hidden" name="el" value="<?php echo $elId; ?>" />
+			<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
+			<input type="hidden" name="active" value="publications" />
+			<input type="hidden" name="action" value="apply" />
+			<input type="hidden" name="move" value="continue" />
+			<?php if ($this->model->isProvisioned()) { ?>
+				<input type="hidden" name="id" value="<?php echo $this->publication->get('id'); ?>" />
+				<input type="hidden" name="task" value="submit" />
+				<input type="hidden" name="option" value="com_publications" />
+				<input type="hidden" name="ajax" value="0" />
+			<?php } else { ?>
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
+			<?php } ?>
+		</fieldset>
 
-	<p class="requirement" id="req"><?php echo $req; ?></p>
+		<p class="requirement" id="req"><?php echo $req; ?></p>
 
-	<?php if ($this->showCons) : ?>
-		<p class="info connection-message"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTION_NOTE'); ?></p>
-	<?php endif; ?>
+		<?php if ($this->showCons) : ?>
+			<p class="info connection-message"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTION_NOTE'); ?></p>
+		<?php endif; ?>
 
-	<div id="content-selector" class="content-selector">
-		<?php
-			if ($this->showCons && empty($this->directory) && !Request::getInt('cid'))
-			{
-				// Show files
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'projects',
-						'element' => 'files',
-						'name'    => 'selector',
-						'layout'  => 'connections'
-					)
-				);
-				$view->model       = $this->model;
-				$view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
+		<div id="content-selector" class="content-selector">
+			<?php
+				if ($this->showCons && empty($this->directory) && !Request::getInt('cid'))
+				{
+					// Show files
+					$view = new \Hubzero\Plugin\View(
+						array(
+							'folder'  => 'projects',
+							'element' => 'files',
+							'name'    => 'selector',
+							'layout'  => 'connections'
+						)
+					);
+					$view->model       = $this->model;
+					$view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
 
-				echo $view->loadTemplate();
-			}
-			else
-			{
-				// Show files
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'projects',
-						'element' => 'files',
-						'name'    => 'selector',
-						'layout'  => 'selector'
-					)
-				);
-				$view->option       = $this->option;
-				$view->model        = $this->model;
-				$view->items        = $this->items;
-				$view->requirements = $params;
-				$view->publication  = $this->publication;
-				$view->selected     = $selected;
-				$view->allowed      = $allowed;
-				$view->used         = $used;
+					echo $view->loadTemplate();
+				}
+				else
+				{
+					// Show files
+					$view = new \Hubzero\Plugin\View(
+						array(
+							'folder'  => 'projects',
+							'element' => 'files',
+							'name'    => 'selector',
+							'layout'  => 'selector'
+						)
+					);
+					$view->option       = $this->option;
+					$view->model        = $this->model;
+					$view->items        = $this->items;
+					$view->requirements = $params;
+					$view->publication  = $this->publication;
+					$view->selected     = $selected;
+					$view->allowed      = $allowed;
+					$view->used         = $used;
 
-				echo $view->loadTemplate();
-			}
-		?>
-	</div>
+					echo $view->loadTemplate();
+				}
+			?>
+		</div>
 	</form>
+
 	<form id="upload-form" class="upload-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
+		<fieldset>
+			<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
+			<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
+			<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
+			<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
+			<input type="hidden" name="active" value="files" />
+			<input type="hidden" name="action" value="save" />
+			<input type="hidden" name="json" value="1" />
+			<input type="hidden" name="ajax" value="1" />
+			<input type="hidden" name="no_html" value="1" />
+			<?php if ($this->model->isProvisioned()) { ?>
+				<input type="hidden" name="provisioned" id="provisioned" value="1" />
+				<input type="hidden" name="id" value="<?php echo $this->publication->id; ?>" />
+				<input type="hidden" name="task" value="submit" />
+				<input type="hidden" name="option" value="com_publications" />
+			<?php } else { ?>
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
+			<?php } ?>
+		</fieldset>
+		<div id="status-box"></div>
 
-	<fieldset >
-		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
-		<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
-		<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-		<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
-		<input type="hidden" name="active" value="files" />
-		<input type="hidden" name="action" value="save" />
-		<input type="hidden" name="json" value="1" />
-		<input type="hidden" name="ajax" value="1" />
-		<input type="hidden" name="no_html" value="1" />
-	</fieldset>
-	<div id="status-box"></div>
+		<div id="quick-upload" class="quick-uploader">
+			<p><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
 
-	<div id="quick-upload" class="quick-uploader">
-		<?php if ($this->model->isProvisioned()) { ?>
-			<input type="hidden" name="provisioned" id="provisioned" value="1" />
-			<input type="hidden" name="task" value="submit" />
-		<?php } ?>
-		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
+			<label for="uploader">
+				<input name="upload[]" type="file" id="uploader" multiple="multiple" />
+			</label>
 
-		<label>
-			<input name="upload[]" type="file" id="uploader" multiple="multiple" />
-		</label>
-
-		<?php if (count($subdirOptions) > 1) { ?>
-		<label><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_INTO_SUBDIR'); ?>
-			<select name="subdir">
-				<?php foreach ($subdirOptions as $sd) { ?>
-					<option value="<?php echo $sd['path']; ?>"><?php echo $sd['label']; ?></options>
-				<?php } ?>
-			</select>
-		</label>
-		<?php } ?>
-		<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
-	</div>
-
+			<?php if (count($subdirOptions) > 1) { ?>
+				<label for="subdir">
+					<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_INTO_SUBDIR'); ?>
+					<select name="subdir" id="subdir">
+						<?php foreach ($subdirOptions as $sd) { ?>
+							<option value="<?php echo $sd['path']; ?>"><?php echo $sd['label']; ?></options>
+						<?php } ?>
+					</select>
+				</label>
+			<?php } ?>
+			<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
+		</div>
 	</form>
 </div>
