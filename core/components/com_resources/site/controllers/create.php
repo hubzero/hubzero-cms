@@ -32,9 +32,6 @@
 
 namespace Components\Resources\Site\Controllers;
 
-require_once Component::path('com_tags') . '/models/objct.php';
-require_once Component::path('com_tags') . '/models/tag.php';
-
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\License;
 use Components\Resources\Models\Type;
@@ -1187,19 +1184,20 @@ class Create extends SiteController
 	/*
 	 * Calculate which tag associations need to be created & destroyed for a resource
 	 *
-	 * @param    array   $tagAssociations   Tag association data
+	 * @param    integer   $resourceId        Resource record ID
+	 * @param    array     $associationData   Tag association data
 	 * @return   array
 	 */
-	protected function _diffResourceTags($resourceId, $tagAssociations)
+	protected function _diffResourceTags($resourceId, $associationData)
 	{
 		$diff = [];
 
 		$normalizedTagNames = array_map(function ($tag) {
 			return $tag[1];
-		}, $tagAssociations);
+		}, $associationData);
 
 		$diff['removed'] = $this->_calculateRemovedTagAssociations($resourceId, $normalizedTagNames);
-		$diff['added'] = $this->_calculateNewTagAssociations($resourceId, $normalizedTagNames, $tagAssociations);
+		$diff['added'] = $this->_calculateNewTagAssociations($resourceId, $normalizedTagNames, $associationData);
 
 		return $diff;
 	}
@@ -1232,10 +1230,10 @@ class Create extends SiteController
 	 *
 	 * @param   integer   $resourceId        Resource record ID
 	 * @param   array     $tagNames          Normalized tag names
-	 * @param   array     $tagAssociations   Tag association data
+	 * @param   array     $associationData   Tag association data
 	 * @return  array
 	 */
-	protected function _calculateNewTagAssociations($resourceId, $tagNames, $tagAssociations)
+	protected function _calculateNewTagAssociations($resourceId, $tagNames, $associationData)
 	{
 		$newTags = [];
 		$currentTagNames = Objct::all()
@@ -1250,7 +1248,7 @@ class Create extends SiteController
 		{
 			if (!in_array($tagName, $currentTagNames))
 			{
-				$newTags[] = $tagAssociations[$i];
+				$newTags[] = $associationData[$i];
 			}
 		}
 
