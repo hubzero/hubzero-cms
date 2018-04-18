@@ -1,16 +1,16 @@
 <?php
 /**
-* @version		$Id: router.php 8180 2007-07-23 05:52:29Z eddieajau $
-* @package		Joomla.Framework
-* @subpackage	Application
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @version		$Id: router.php 8180 2007-07-23 05:52:29Z eddieajau $
+ * @package		Joomla.Framework
+ * @subpackage	Application
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
+ * @license		GNU/GPL, see LICENSE.php
+ * Joomla! is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
 
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
@@ -81,12 +81,12 @@ class JRouterApi extends JRouter
 		$path = str_replace('index.php', '', $path);
 
 		//Set the route
-		$uri->setPath(trim($path , '/'));
+		$uri->setPath(trim($path, '/'));
 		$vars += parent::parse($uri);
 
 		/* HUBzero Extensions Follow to force registration and email confirmation */
 
-		$juser =  JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (!$juser->get('guest'))
 		{
@@ -98,7 +98,9 @@ class JRouterApi extends JRouter
 				if (($vars['option'] == 'com_user'))
 				{
 					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
+					{
 						return $vars;
+					}
 				}
 
 				if ($vars['option'] == 'com_members' && ((isset($vars['controller']) && $vars['controller'] == 'register') || (isset($vars['view']) && $vars['view'] == 'register'))) // register component can be accessed with incomplete registration
@@ -138,7 +140,9 @@ class JRouterApi extends JRouter
 				if ($vars['option'] == 'com_user')
 				{
 					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
+					{
 						return $vars;
+					}
 				}
 				else if ($uri->getPath() == 'legal/terms')
 				{
@@ -147,8 +151,12 @@ class JRouterApi extends JRouter
 				else if ($vars['option'] == 'com_members' && ((isset($vars['controller']) && $vars['controller'] == 'register') || (isset($vars['view']) && $vars['view'] == 'register')))
 				{
 					if (!empty($vars['task']))
-						if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
+					{
+						if (($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm'))
+						{
 							return $vars;
+						}
+					}
 				}
 
 				$vars = array();
@@ -210,7 +218,7 @@ class JRouterApi extends JRouter
 		{
 			if (stripos($uri->toString(), $_SERVER['REWROTE_TO']->getPath()) !== false)
 			{
-				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(),'',$uri->getPath()));
+				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(), '', $uri->getPath()));
 				$uri->setHost($_SERVER['REWROTE_FROM']->getHost());
 				$uri->setScheme($_SERVER['REWROTE_FROM']->getScheme());
 			}
@@ -237,7 +245,10 @@ class JRouterApi extends JRouter
 		if (!$uri->getVar('Itemid') && !$uri->getVar('option'))
 		{
 			$item = $menu->getDefault();
-			if (!is_object($item)) return $vars; // No default item set
+			if (!is_object($item))
+			{
+				return $vars; // No default item set
+			}
 
 			//Set the information in the request
 			$vars = $item->query;
@@ -261,7 +272,8 @@ class JRouterApi extends JRouter
 		if (count($this->getVars()) == 1)
 		{
 			$item = $menu->getItem($this->getVar('Itemid'));
-			if ($item !== NULL && is_array($item->query)) {
+			if ($item !== null && is_array($item->query))
+			{
 				$vars = $vars + $item->query;
 			}
 		}
@@ -287,7 +299,7 @@ class JRouterApi extends JRouter
 
 		if ($app->getCfg('sef_groups'))
 		{
-			$servername = rtrim(JURI::base(),'/');
+			$servername = rtrim(JURI::base(), '/');
 
 			$serveruri = JURI::getInstance($servername);
 			$sfqdn = $serveruri->getHost();
@@ -323,7 +335,6 @@ class JRouterApi extends JRouter
 					}
 				}
 			}
-
 		}
 
 		$menu  = JFactory::getApplication()->getMenu();
@@ -337,7 +348,8 @@ class JRouterApi extends JRouter
 		{
 
 			//If route is empty AND option is set in the query, assume it's non-sef url, and parse apropriately
-			if (isset($vars['option']) || isset($vars['Itemid'])) {
+			if (isset($vars['option']) || isset($vars['Itemid']))
+			{
 				return $this->_parseRawRoute($uri);
 			}
 
@@ -361,7 +373,7 @@ class JRouterApi extends JRouter
 
 		if (substr($route, 0, 9) == 'component')
 		{
-			$segments	= explode('/', $route);
+			$segments   = explode('/', $route);
 			$route      = str_replace('component/'.$segments[1], '', $route);
 
 			$vars['option'] = 'com_'.$segments[1];
@@ -380,8 +392,10 @@ class JRouterApi extends JRouter
 				{
 					// HUBzero Extension to pass local URLs through menu unchanged
 
-					if ($item->type == 'url') { // Pass local URLs through, but record Itemid
-						if (strpos("://",$item->route[0]) === false) {
+					if ($item->type == 'url')
+					{ // Pass local URLs through, but record Itemid
+						if (strpos("://",$item->route[0]) === false)
+						{
 							$vars['Itemid'] = $item->id;
 							break;
 						}
@@ -400,9 +414,11 @@ class JRouterApi extends JRouter
 
 		// HUBzero Extension to parse com_content component specially
 
-		if (empty($vars['option'])) {
-			$vars = $this->_parseContentRoute(explode('/',ltrim($route,"/")));
-			if (!empty($vars['option'])) {
+		if (empty($vars['option']))
+		{
+			$vars = $this->_parseContentRoute(explode('/', ltrim($route, "/")));
+			if (!empty($vars['option']))
+			{
 				$route = false;
 			}
 		}
@@ -413,13 +429,16 @@ class JRouterApi extends JRouter
 
 		if (empty($vars['option']))
 		{
-			$segments	= explode('/', $route);
+			$segments = explode('/', $route);
 
-			if ($segments[0] == 'search') {   // @FIXME: search component should probably be configurable
-				$plugin = JPluginHelper::getPlugin( 'system', 'xhub' );
-				$param = new JParameter( $plugin->params );
-				$search = $param->get('search','search');
-				if (empty($search)) {
+			if ($segments[0] == 'search')
+			{
+				// @FIXME: search component should probably be configurable
+				$plugin = JPluginHelper::getPlugin('system', 'xhub');
+				$param = new JParameter($plugin->params);
+				$search = $param->get('search', 'search');
+				if (empty($search))
+				{
 					$search = 'search';
 				}
 				$segments[0] = $search;
@@ -431,7 +450,8 @@ class JRouterApi extends JRouter
 			{
 				$vars['option'] = 'com_'.$segments[0];
 
-				if (!isset($vars['Itemid'])) {
+				if (!isset($vars['Itemid']))
+				{
 					$vars['Itemid'] = null;
 				}
 
@@ -442,12 +462,14 @@ class JRouterApi extends JRouter
 		// End HUBzero Extension to route based on unprefixed component name (if other routing fails to match)
 
 		// Set the active menu item
-		if ( isset($vars['Itemid']) ) {
-			$menu->setActive(  $vars['Itemid'] );
+		if (isset($vars['Itemid']))
+		{
+			$menu->setActive($vars['Itemid']);
 		}
 
-		if (empty($vars['Itemid'])) {
-			$vars['Itemid'] =  '-1';
+		if (empty($vars['Itemid']))
+		{
+			$vars['Itemid'] = '-1';
 		}
 
 		//Set the variables
@@ -456,7 +478,7 @@ class JRouterApi extends JRouter
 		/*
 		 * Parse the component route
 		 */
-		if (!empty($route) && isset($this->_vars['option']) )
+		if (!empty($route) && isset($this->_vars['option']))
 		{
 			$segments = explode('/', $route);
 			array_shift($segments);
@@ -469,13 +491,19 @@ class JRouterApi extends JRouter
 
 			if (file_exists($path) && count($segments))
 			{
-				if ($component != "com_search") { // Cheap fix on searches
+				if ($component != "com_search")
+				{
+					// Cheap fix on searches
 					//decode the route segments
-					if ($component == "com_content") { // @FIXME: HUBZERO don't do : to - conversion except in com_content
+					if ($component == "com_content")
+					{
+						// @FIXME: HUBZERO don't do : to - conversion except in com_content
 						$segments = $this->_decodeSegments($segments);
 					}
 				}
-				else { // fix up search for URL
+				else
+				{
+					// fix up search for URL
 					$total = count($segments);
 					for ($i=0; $i<$total; $i++)
 					{
@@ -505,11 +533,12 @@ class JRouterApi extends JRouter
 
 				if (!empty($row))
 				{
-					$myuri = JURI::getInstance( $row->newurl );
+					$myuri = JURI::getInstance($row->newurl);
 					$vars = $myuri->getQuery(true);
 
-					if ( isset($vars['Itemid']) ) {
-						$menu->setActive(  $vars['Itemid'] );
+					if (isset($vars['Itemid']))
+					{
+						$menu->setActive($vars['Itemid']);
 					}
 				}
 			}
@@ -517,25 +546,35 @@ class JRouterApi extends JRouter
 			// End HUBzero Extension to check redirection table if otherwise unable to match URL to content
 
 			//Set active menu item
-			if ($item =& $menu->getActive()) {
+			if ($item =& $menu->getActive())
+			{
 				$vars = $item->query;
 			}
-
 		}
 
 		// HUBzero Extension to pass common query parameters to apache (for logging)
 		if (function_exists('apache_note'))
 		{
 			if (!empty($vars['option']))
-				apache_note('component',$vars['option']);
+			{
+				apache_note('component', $vars['option']);
+			}
 			if (!empty($vars['view']))
-				apache_note('view',$vars['view']);
+			{
+				apache_note('view', $vars['view']);
+			}
 			if (!empty($vars['task']))
-				apache_note('task',$vars['task']);
+			{
+				apache_note('task', $vars['task']);
+			}
 			if (!empty($vars['action']))
-				apache_note('action',$vars['action']);
+			{
+				apache_note('action', $vars['action']);
+			}
 			if (!empty($vars['id']))
-				apache_note('action',$vars['id']);
+			{
+				apache_note('action', $vars['id']);
+			}
 		}
 		// End HUBzero Extension pass common query parameters to apache (for logging)
 
@@ -570,19 +609,21 @@ class JRouterApi extends JRouter
 		// Get the query data
 		$query = $uri->getQuery(true);
 
-		if (!isset($query['option'])) {
+		if (!isset($query['option']))
+		{
 			// HUBzero Extension to handle section, category, alias routing of com_content pages
 
 			$parts = $this->_buildContentRoute($query);
 
-			if (empty($parts)) {
+			if (empty($parts))
+			{
 				return;
 			}
 
 			$query['option'] = 'com_content';
 			$parts = $this->_encodeSegments($parts);
-			$result	= implode('/', $parts);
-			$tmp	= ($result != "") ? '/'.$result : '';
+			$result = implode('/', $parts);
+			$tmp    = ($result != "") ? '/'.$result : '';
 			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
 			$route .= '/'.$tmp;
 
@@ -602,8 +643,8 @@ class JRouterApi extends JRouter
 		/*
 		 * Build the component route
 		 */
-		$component	= preg_replace('/[^A-Z0-9_\.-]/i', '', $query['option']);
-		$tmp 		= '';
+		$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $query['option']);
+		$tmp       = '';
 
 		// Use the component routing handler if it exists
 		$path = JPATH_BASE.DS.'components'.DS.$component.DS.'router.php';
@@ -612,16 +653,22 @@ class JRouterApi extends JRouter
 		if (file_exists($path) && !empty($query))
 		{
 			require_once $path;
-			$function	= substr($component, 4).'BuildRoute';
-			$parts		= $function($query);
+			$function = substr($component, 4).'BuildRoute';
+			$parts    = $function($query);
 
 			// encode the route segments
-			if ($component != "com_search") { // Cheep fix on searches
-				if ($component == "com_content") { // @FIXME: quick fix for joomla breaking ':' in urls in com_wiki/com_topics (others?) {
+			if ($component != "com_search")
+			{
+				// Cheep fix on searches
+				if ($component == "com_content")
+				{
+					// @FIXME: quick fix for joomla breaking ':' in urls in com_wiki/com_topics (others?) {
 					$parts = $this->_encodeSegments($parts);
 				}
 			}
-			else { // fix up search for URL
+			else
+			{
+				// fix up search for URL
 				$total = count($parts);
 				for ($i=0; $i<$total; $i++)
 				{
@@ -630,8 +677,8 @@ class JRouterApi extends JRouter
 				}
 			}
 
-			$result	= implode('/', $parts);
-			$tmp	= ($result != "") ? '/'.$result : '';
+			$result = implode('/', $parts);
+			$tmp    = ($result != "") ? '/'.$result : '';
 		}
 
 		/*
@@ -761,17 +808,20 @@ class JRouterApi extends JRouter
 			if ($option	= $uri->getVar('option'))
 			{
 				$item = $menu->getItem($this->getVar('Itemid'));
-				if (isset($item) && $item->component == $option) {
+				if (isset($item) && $item->component == $option)
+				{
 					$uri->setVar('Itemid', $item->id);
 				}
 			}
 			else
 			{
-				if ($option = $this->getVar('option')) {
+				if ($option = $this->getVar('option'))
+				{
 					$uri->setVar('option', $option);
 				}
 
-				if ($itemid = $this->getVar('Itemid')) {
+				if ($itemid = $this->getVar('Itemid'))
+				{
 					$uri->setVar('Itemid', $itemid);
 				}
 			}
@@ -800,7 +850,9 @@ class JRouterApi extends JRouter
 		$segments = array();
 
 		if (!empty($query['view']) && $query['view'] != 'article')
+		{
 			return $segments;
+		}
 
 		if (empty($query['id']))
 		{
@@ -809,13 +861,19 @@ class JRouterApi extends JRouter
 			$alias = empty($query['alias']) ? '' : $query['alias'];
 
 			if (!empty($section))
+			{
 				$segments[] = $section;
+			}
 
 			if (!empty($category) && $category != $section)
+			{
 				$segments[] = $category;
+			}
 
 			if (!empty($alias) && $alias != $category)
+			{
 				$segments[] = $alias;
+			}
 
 			return($segments);
 		}
@@ -832,10 +890,14 @@ class JRouterApi extends JRouter
 			$segments[] = $row->section;
 
 			if ($row->category != $row->section)
+			{
 				$segments[] = $row->category;
+			}
 
 			if ($row->alias != $row->category)
+			{
 				$segments[] = $row->alias;
+			}
 
 			unset($query['view']);
 			unset($query['id']);
@@ -843,12 +905,14 @@ class JRouterApi extends JRouter
 
 			return $segments;
 		}
-		else {
+		else
+		{
 			$sql = "SELECT `#__content`.alias AS alias FROM `#__content` WHERE `#__content`.id='" . $id . "' AND `#__content`.sectionid=0 AND `#__content`.catid=0 LIMIT 1;";
 			$db->setQuery($sql);
 			$row =& $db->loadObject();
 
-			if (!empty($row)) {
+			if (!empty($row))
+			{
 				$segments[] = $row->alias;
 				unset($query['view']);
 				unset($query['id']);
@@ -890,30 +954,42 @@ class JRouterApi extends JRouter
 			return array();
 
 			if (empty($item->query['view']) || $item->query['view'] != 'article')
+			{
 				return array();
+			}
 
 			$section = empty($item->query['section']) ? '' : $item->query['section'];
 			$category = empty($item->query['category']) ? '' : $item->query['category'];
 			$alias = empty($item->query['alias']) ? '' : $item->query['alias'];
 
 			if (empty($section) && !empty($category))
+			{
 				$section = $category;
+			}
 			else if (!empty($section) && empty($category))
+			{
 				$category = $section;
+			}
 
 			if (empty($alias) && !empty($category))
+			{
 				$alias = $category;
+			}
 
-			if (!empty($alias)) {
-
+			if (!empty($alias))
+			{
 				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
 						"#__content.alias=" . $db->Quote($alias) . " AND ";
 
 				if (!empty($category))
+				{
 					$query .= "#__content.catid=#__categories.id AND " . "#__categories.alias=" . $db->Quote($category) . " AND " .
 					"#__content.sectionid=#__sections.id AND " . "#__sections.alias=" . $db->Quote($section) . "";
+				}
 				else
+				{
 					$query .= "#__content.catid=0 AND #__content.sectionid=0";
+				}
 
 				$query .= " AND #__content.state='1' LIMIT 1;";
 
@@ -926,13 +1002,16 @@ class JRouterApi extends JRouter
 		}
 
 		if (!empty($id) || empty($segments[0]))
+		{
 			array_shift($segments);
+		}
 
 		//decode the route segments
 		//$segments = $this->_decodeSegments($segments);
 		$count = count($segments);
 
-		if ($count > 3) {
+		if ($count > 3)
+		{
 			//echo "XRouter::_parseContentRoute(): Too many component segments<br>";
 			return array();
 		}
@@ -944,32 +1023,47 @@ class JRouterApi extends JRouter
 		if ($count == 3)
 		{
 			if (is_numeric($segments[2]))
+			{
 				$query .= " AND #__content.id=" . $db->Quote($segments[2]) . " ";
+			}
 			else
+			{
 				$query .= " AND #__content.alias=" . $db->Quote($segments[2]) . " ";
+			}
 
 			if (is_numeric($segments[1]))
+			{
 				$query .= " AND #__content.catid=" . $db->Quote($segments[1]) . " ";
+			}
 			else
+			{
 				$query .= " AND #__categories.alias=" . $db->Quote($segments[1]) . " ";
+			}
 
 			if (is_numeric($segments[0]))
+			{
 				$query .= " AND #__content.sectionid=" . $db->Quote($segments[0]) . " ";
+			}
 			else
+			{
 				$query .= " AND #__sections.alias='" . $db->Quote($segments[0]) . " ";
+			}
 
 			$query .= " AND #__content.state='1' LIMIT 1;";
 		}
 		else if ($count == 2)
 		{
-			if (!empty($id)) {
+			if (!empty($id))
+			{
 				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
 						"#__content.alias=" . $db->Quote($segments[1]) . " AND " .
 						"#__content.catid=#__categories.id AND " .
 						"#__categories.alias=" . $db->Quote($segments[0]) . " AND " .
 						"#__categories.section=#__sections.id AND " .
 						"#__sections.id=(SELECT sectionid FROM `#__content` WHERE id='" . $id . "') AND #__content.state='1' LIMIT 1;";
-			} else {
+			}
+			else
+			{
 				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
 						"#__content.alias=" . $db->Quote($segments[1]) . " AND " .
 						"#__content.catid=#__categories.id AND " .
@@ -1009,17 +1103,20 @@ class JRouterApi extends JRouter
 			$routesegments = explode('/', $item->route);
 			$rcount = count($routesegments);
 			//echo "routesegments = "; print_r($routesegments); echo "<br>";
-			if ($rcount > 2) {
+			if ($rcount > 2)
+			{
 				$section = $routesegments[$rcount-3];
 				$category = $routesegments[$rcount-2];
 				$page = $routesegments[$rcount-1];
 			}
-			if ($rcount > 1) {
+			if ($rcount > 1)
+			{
 				$section = $routesegments[$rcount-2];
 				$category = $routesegments[$rcount-1];
 				$page = $category;
 			}
-			else if ($rcount > 0) {
+			else if ($rcount > 0)
+			{
 				$section = $routesegments[$rcount-1];
 				$category = $section;
 				$page = $category;

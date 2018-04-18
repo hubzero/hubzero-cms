@@ -104,7 +104,7 @@ class JApi extends JApplication
 	public function __construct($config = array())
 	{
 		JLoader::import('joomla.user.user');
-		JLoader::register('JText' , JPATH_LIBRARIES . DS . 'joomla' . DS . 'methods.php');
+		JLoader::register('JText', JPATH_LIBRARIES . DS . 'joomla' . DS . 'methods.php');
 		JLoader::import('joomla.filter.filterinput');
 		JLoader::import('joomla.environment.uri');
 		JLoader::import('Hubzero.Api.Response');
@@ -166,7 +166,7 @@ class JApi extends JApplication
 		{
 			$method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
 
-			if (in_array($method,array('GET','PUT','POST','DELETE','HEAD','OPTIONS','TRACE','CONNECT')))
+			if (in_array($method, array('GET', 'PUT', 'POST', 'DELETE', 'HEAD', 'OPTIONS', 'TRACE', 'CONNECT')))
 			{
 				$_SERVER['REQUEST_METHOD'] = $method;
 			}
@@ -229,7 +229,7 @@ class JApi extends JApplication
 		{
 			$variables_order = ini_get('variables_order');
 
-			if (stripos($variables_order,"E") !== false)
+			if (stripos($variables_order, "E") !== false)
 			{
 				foreach ($_ENV as $key => $value)
 				{
@@ -237,7 +237,7 @@ class JApi extends JApplication
 				}
 			}
 
-			if (stripos($variables_order,"G") !== false)
+			if (stripos($variables_order, "G") !== false)
 			{
 				foreach ($_GET as $key => $value)
 				{
@@ -245,7 +245,7 @@ class JApi extends JApplication
 				}
 			}
 
-			if (stripos($variables_order,"P") !== false)
+			if (stripos($variables_order, "P") !== false)
 			{
 				foreach ($_POST as $key => $value)
 				{
@@ -253,7 +253,7 @@ class JApi extends JApplication
 				}
 			}
 
-			if (stripos($variables_order,"C") !== false)
+			if (stripos($variables_order, "C") !== false)
 			{
 				foreach ($_COOKIE as $key => $value)
 				{
@@ -261,7 +261,7 @@ class JApi extends JApplication
 				}
 			}
 
-			if (stripos($variables_order,"S") !== false)
+			if (stripos($variables_order, "S") !== false)
 			{
 				foreach ($_SERVER as $key => $value)
 				{
@@ -404,15 +404,15 @@ class JApi extends JApplication
 		 * into params for Oauth_Provider's constructor.
 		 */
 		$params = array();
-				;
-		if ( php_sapi_name() == 'cli')
+
+		if (php_sapi_name() == 'cli')
 		{
 			$queryvars = $this->request->get('queryvars');
 			$postvars = $this->request->get('postdata');
 
 			if (!empty($queryvars))
 			{
-				foreach ($queryvars as $key=>$value)
+				foreach ($queryvars as $key => $value)
 				{
 					if (isset($queryvars[$key]))
 					{
@@ -427,7 +427,7 @@ class JApi extends JApplication
 
 			if (!empty($postvars))
 			{
-				foreach ($postvars as $key=>$value)
+				foreach ($postvars as $key => $value)
 				{
 					if (isset($queryvars[$key]))
 					{
@@ -860,7 +860,7 @@ class JApi extends JApplication
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 * @return  JRouter  A JRouter object
 	 */
-	static public function getRouter($name = null, array $options = array())
+	public static function getRouter($name = null, array $options = array())
 	{
 		//die('getRouter() invalid in API application context');
 		/*
