@@ -536,7 +536,11 @@ class JApi extends JApplication
 			// use request headers as backup method to post vars
 			if (!$toolSessionId && !$toolSessionToken)
 			{
-				$headers          = apache_request_headers();
+				$headers = array();
+				if (function_exists('apache_request_headers'))
+				{
+					$headers          = apache_request_headers();
+				}
 				$toolSessionId    = (isset($headers['sessionnum'])) ? $headers['sessionnum'] : null;
 				$toolSessionToken = (isset($headers['sessiontoken'])) ? $headers['sessiontoken'] : null;
 			}
