@@ -524,18 +524,19 @@ class JRouterApi extends JRouter
 		}
 
 		// HUBzero Extension to pass common query parameters to apache (for logging)
-
-		if (!empty($vars['option']))
-			apache_note('component',$vars['option']);
-		if (!empty($vars['view']))
-			apache_note('view',$vars['view']);
-		if (!empty($vars['task']))
-			apache_note('task',$vars['task']);
-		if (!empty($vars['action']))
-			apache_note('action',$vars['action']);
-		if (!empty($vars['id']))
-			apache_note('action',$vars['id']);
-
+		if (function_exists('apache_note'))
+		{
+			if (!empty($vars['option']))
+				apache_note('component',$vars['option']);
+			if (!empty($vars['view']))
+				apache_note('view',$vars['view']);
+			if (!empty($vars['task']))
+				apache_note('task',$vars['task']);
+			if (!empty($vars['action']))
+				apache_note('action',$vars['action']);
+			if (!empty($vars['id']))
+				apache_note('action',$vars['id']);
+		}
 		// End HUBzero Extension pass common query parameters to apache (for logging)
 
 		return $vars;

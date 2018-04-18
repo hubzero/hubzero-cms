@@ -68,7 +68,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$lang = \App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
 	}
 
@@ -301,7 +300,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// Return the output
 		return $arr;
 	}
-
 
 	/**
 	 * Display a calendar
@@ -618,9 +616,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load com_events params file for registration fields
 		$view->registrationFields = new \Hubzero\Html\Parameter(
 			$view->event->get('params'),
-			PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
+			Component::path('com_events') . DS . 'events.xml'
 		);
-
 
 		//added need scripts and stylesheets
 		$this->js('fileupload/jquery.fileupload', 'system');
@@ -1017,7 +1014,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Authenticate Subscription Requests
 	 *
-	 * @return  void
+	 * @return  object
 	 */
 	private function authenticateSubscriptionRequest()
 	{
@@ -1054,7 +1051,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!is_object($user) || $user->id == '' || $user->id == 0)
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth', 'invalid');
 
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="' . $realm . '"');
@@ -1065,7 +1061,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!\Hubzero\User\Password::comparePasswords($user->passhash, $httpBasicPassword))
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth', 'invalid');
 
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="' . $realm . '"');
@@ -1123,7 +1118,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event->recurrence = $recurrence;
 
 		//return event details
-		echo json_encode(array('event'=> $event));
+		echo json_encode(array('event' => $event));
 		exit();
 	}
 
