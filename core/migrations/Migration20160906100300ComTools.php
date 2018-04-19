@@ -45,7 +45,7 @@ class Migration20160906100300ComTools extends Base
 			$mwdb->setQuery($query);
 			$mwdb->query();
 		}
-	
+
 		if ($mwdb->tableExists('session') && $mwdb->tableHasField('session', 'sessnum') && !$mwdb->tableHasKey('session', 'PRIMARY'))
 		{
 			$query = "ALTER TABLE `session` ADD PRIMARY KEY (`sessnum`)";

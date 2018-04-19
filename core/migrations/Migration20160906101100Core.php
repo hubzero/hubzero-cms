@@ -248,11 +248,11 @@ class Migration20160906101100Core extends Base
 		$this->dropIndex('#__project_logs', 'projectid');
 
 		if (!$this->db->tableHasKey('#__poll_options', 'idx_pollid_text'))
-                {
-                        $query = "ALTER TABLE #__poll_options ADD INDEX `idx_pollid_text` (`poll_id`, `text`(1))";
-                        $this->db->setQuery($query);
-                        $this->db->query();
-                }
+		{
+			$query = "ALTER TABLE `#__poll_options` ADD INDEX `idx_pollid_text` (`poll_id`, `text`(1))";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 
 		$this->dropIndex('#__poll_options', 'pollid');
 		$this->addIndex('#__poll_dates', 'idx_poll_id', 'poll_id');
