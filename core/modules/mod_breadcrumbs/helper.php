@@ -111,11 +111,11 @@ class Helper extends Module
 		{
 			if (Lang::isRTL())
 			{
-				$_separator = Html::asset('image', 'system/arrow_rtl.png', NULL, NULL, true);
+				$_separator = Html::asset('image', 'system/arrow_rtl.png', null, null, true);
 			}
 			else
 			{
-				$_separator = Html::asset('image', 'system/arrow.png', NULL, NULL, true);
+				$_separator = Html::asset('image', 'system/arrow.png', null, null, true);
 			}
 		}
 		else

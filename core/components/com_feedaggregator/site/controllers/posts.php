@@ -60,7 +60,7 @@ class Posts extends SiteController
 	 * @param   $posts mixed post objects
 	 * @return  void
 	 */
-	public function displayTask($posts = NULL)
+	public function displayTask($posts = null)
 	{
 		if (User::isGuest()) // have person login
 		{

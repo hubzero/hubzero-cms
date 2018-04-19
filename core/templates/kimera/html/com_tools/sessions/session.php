@@ -48,7 +48,7 @@ foreach ($this->shares as $share)
 	}
 }
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+include_once Component::path('com_tools') . DS . 'tables' . DS . 'preferences.php';
 
 $database = App::get('db');
 $preferences = new \Components\Tools\Tables\Preferences($database);
@@ -189,7 +189,7 @@ if (!$this->app->sess) {
 				$this->view('diskusage', 'storage')
 				     ->set('option', $this->option)
 				     ->set('amt', $this->app->percent)
-				     ->set('du', NULL)
+				     ->set('du', null)
 				     ->set('percent', 0)
 				     ->set('msgs', 0)
 				     ->set('ajax', 0)
