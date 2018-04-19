@@ -91,6 +91,10 @@ function submitbutton(pressbutton)
 					<label for="field-contributable"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
 					<input type="checkbox" name="type[contributable]" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_RESOURCES_FIELD_CONTRIBUTABLE_EXPLANATION'); ?>
 				</div>
+				<div class="input-wrap">
+					<label for="field-collection"><?php echo Lang::txt('COM_RESOURCES_FIELD_COLLECTION'); ?>:</label><br />
+					<input type="checkbox" name="type[collection]" id="field-collection" value="1"<?php echo ($this->row->collection) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_RESOURCES_FIELD_COLLECTION_EXPLANATION'); ?>
+				</div>
 				<?php if ($this->row->category != 27) { ?>
 					<div class="input-wrap">
 						<label for="params-linkaction"><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION'); ?>:</label><br />

@@ -115,7 +115,7 @@ class Association extends Relational
 	 */
 	public function automaticOrdering($data)
 	{
-		if (!isset($data['ordering']))
+		if (empty($data['ordering']))
 		{
 			$last = self::all()
 				->select('ordering')
@@ -128,6 +128,7 @@ class Association extends Relational
 
 		return $data['ordering'];
 	}
+
 
 	/**
 	 * Get the parent this resource is attached to
