@@ -98,11 +98,11 @@ class Posts extends SiteController
 
 		if (isset($posts))
 		{
-			$fromfeed = TRUE;
+			$fromfeed = true;
 		}
 		else
 		{
-			$fromfeed = FALSE;
+			$fromfeed = false;
 
 			// Don't have a 0, because then it won't return anything. Doing mysql-workbench default
 			if ($filters['limit'] == 0)
@@ -223,7 +223,7 @@ class Posts extends SiteController
 
 		foreach ($feeds as $feed)
 		{
-			if ($feed->enabled == 1 && filter_var($feed->url, FILTER_VALIDATE_URL) == TRUE)
+			if ($feed->enabled == 1 && filter_var($feed->url, FILTER_VALIDATE_URL) == true)
 			{
 				try
 				{
@@ -245,7 +245,7 @@ class Posts extends SiteController
 
 					$page = simplexml_load_string(utf8_encode($data));
 
-					if (isset($page->entry) == TRUE)
+					if (isset($page->entry) == true)
 					{
 						$items = $page->entry;
 						$feedType = 'ATOM';
@@ -266,7 +266,7 @@ class Posts extends SiteController
 								$link = $link;
 							}
 
-							if (in_array($link, $savedURLS) == FALSE) //checks to see if we have this item
+							if (in_array($link, $savedURLS) == false) //checks to see if we have this item
 							{
 								$post = new Post; //create post object
 								$post->set('title', html_entity_decode(strip_tags($item->title)));
@@ -276,7 +276,7 @@ class Posts extends SiteController
 								//ATOM original content link
 								$post->set('url', (string) $link);
 
-								if (isset($item->published) == TRUE)
+								if (isset($item->published) == true)
 								{
 									$post->set('created', Date::of($item->published)->toSql());
 								}
@@ -291,10 +291,10 @@ class Posts extends SiteController
 						}
 						else if ($feedType == 'RSS')
 						{
-							if (in_array($item->link, $savedURLS) == FALSE) //checks to see if we have this item
+							if (in_array($item->link, $savedURLS) == false) //checks to see if we have this item
 							{
 								$post = new Post; //create post object
-								$post->set('title',  (string) html_entity_decode(strip_tags($item->title)));
+								$post->set('title', (string) html_entity_decode(strip_tags($item->title)));
 								$post->set('feed_id', (integer) $feed->id);
 								$post->set('status', 0);  //force new status
 								$post->set('created', Date::of($item->pubDate)->toSql());
@@ -361,7 +361,7 @@ class Posts extends SiteController
 
 				// sanitize ouput
 				$item->title = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->title);
-				$item->title = preg_replace("/&#?[a-z1-9]{2,8};/i","",$post->title);
+				$item->title = preg_replace("/&#?[a-z1-9]{2,8};/i", "", $post->title);
 				$item->title = (string) strip_tags($item->title);
 				$item->title = html_entity_decode($item->title);
 				$item->title = Sanitize::clean($item->title);
@@ -373,7 +373,7 @@ class Posts extends SiteController
 				// sanitize ouput
 				$item->description = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->description);
 				$item->description = preg_replace('/[^A-Za-z0-9 ]/', '', $item->description);
-				$item->description = preg_replace("/&#?[a-z1-9]{2,8};/i","",$post->description);
+				$item->description = preg_replace("/&#?[a-z1-9]{2,8};/i", "", $post->description);
 				$item->description = html_entity_decode($post->description);
 				$item->description = Sanitize::html($post->description);
 

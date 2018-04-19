@@ -255,8 +255,8 @@ class JRouterSite extends JRouter
 				return $vars;
 			}
 
-			$badpassword = $session->get('badpassword',false);
-			$expiredpassword = $session->get('expiredpassword',false);
+			$badpassword = $session->get('badpassword', false);
+			$expiredpassword = $session->get('expiredpassword', false);
 
 			if ($badpassword || $expiredpassword)
 			{
@@ -369,7 +369,7 @@ class JRouterSite extends JRouter
 		{
 			if (stripos($uri->toString(), $_SERVER['REWROTE_TO']->getPath()) !== false)
 			{
-				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(),'',$uri->getPath()));
+				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(), '', $uri->getPath()));
 				$uri->setHost($_SERVER['REWROTE_FROM']->getHost());
 				$uri->setScheme($_SERVER['REWROTE_FROM']->getScheme());
 			}
@@ -417,7 +417,7 @@ class JRouterSite extends JRouter
 		if (count($this->getVars()) == 1 || ( $app->getLanguageFilter() && count( $this->getVars()) == 2 ))
 		{
 			$item = $menu->getItem($this->getVar('Itemid'));
-			if ($item !== NULL && is_array($item->query))
+			if ($item !== null && is_array($item->query))
 			{
 				$vars = $vars + $item->query;
 			}
@@ -431,8 +431,8 @@ class JRouterSite extends JRouter
 
 	protected function _parseSefRoute(&$uri)
 	{
-		$vars	= array();
-		$app	= JApplication::getInstance('site');
+		$vars = array();
+		$app  = JApplication::getInstance('site');
 
 		// Call System plugin to before parsing sef route
 		JDispatcher::getInstance()->trigger('onBeforeParseSefRoute', array($uri));
@@ -500,7 +500,7 @@ class JRouterSite extends JRouter
 		$vars = $uri->getQuery(true);
 
 		// Handle an empty URL (special case)
-		if (empty($route) && (JRequest::getVar('option','','post') == ''))
+		if (empty($route) && (JRequest::getVar('option', '', 'post') == ''))
 		{
 			// If route is empty AND option is set in the query, assume it's non-sef url, and parse apropriately
 			if (isset($vars['option']) || isset($vars['Itemid']))
