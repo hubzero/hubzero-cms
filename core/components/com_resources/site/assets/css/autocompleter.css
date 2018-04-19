@@ -1,0 +1,37 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/hubzero/autocompleter/autocompleter.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Autocompleter CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Tags */
+	ul.autocomplete-list {
+		overflow: hidden; 
+		height: auto !important; 
+		height: 1%;
+		/*width: 400px;*/
+		border: 1px solid #999;
+		cursor: text;
+		font-size: 12px;
+		font-family: Verdana;
+		min-height: 1px;
+		z-index: 9999;
+		margin: 0 !important;
+		padding: 0;
+		background-color: #fff;
+		list-style-type: none;
+		clear: left;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}

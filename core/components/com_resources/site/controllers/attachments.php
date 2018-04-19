@@ -32,6 +32,7 @@
 namespace Components\Resources\Site\Controllers;
 
 use Components\Resources\Models\Entry;
+use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
@@ -82,32 +83,64 @@ class Attachments extends SiteController
 
 		// Ensure we have an ID to work with
 		$pid = Request::getInt('pid', 0, 'post');
+		$resourceTitle = Request::getVar('resource-title');
+		$parentResource = null;
+		if (!$pid && !empty($resourceTitle))
+		{
+			$parentResource = Entry::blank();
+			$type = Request::getInt('type');
+			$parentResource->set(array(
+				'title' => $resourceTitle,
+				'standalone' => 1,
+				'published' => 2,
+				'type' => $type
+			));
+			if (!$parentResource->save())
+			{
+				$this->setError($parentResource->getError());
+				return $this->displayTask();
+			}
+			$pid = $parentResource->get('id');
+		}
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_NO_ID'));
 			return $this->displayTask();
 		}
 
-		// Create new record
-		$resource = Entry::blank()->set(array(
-			'title'        => 'A link',
-			'introtext'    => 'A link',
-			'created'      => Date::toSql(),
-			'created_by'   => User::get('id'),
-			'published'    => 1,
-			'publish_up'   => Date::toSql(),
-			'publish_down' => '0000-00-00 00:00:00',
-			'standalone'   => 0,
-			'access'       => 0,
-			'path'         => 'http://', // make sure no path is specified just yet
-			'type'         =>  11
-		));
-
-		// Save record
-		if (!$resource->save())
+		if (!$parentResource)
 		{
-			$this->setError($resource->getError());
-			return $this->displayTask();
+			$parentResource = Entry::one('pid');
+		}
+		if (!($parentResource->access('edit')) && !($parentResource->access('edit-own')))
+		{
+			App::abort(403, Lang::txt('COM_CONTRIBUTE_NOT_AUTH'));
+		}
+		$childId = Request::getInt('childid');
+		$resource = Entry::oneOrNew($childId);
+		if ($resource->isNew())
+		{
+			// Create new record
+			$resource->set(array(
+				'title'        => 'A link',
+				'introtext'    => 'A link',
+				'created'      => Date::toSql(),
+				'created_by'   => User::get('id'),
+				'published'    => 1,
+				'publish_up'   => Date::toSql(),
+				'publish_down' => '0000-00-00 00:00:00',
+				'standalone'   => 0,
+				'access'       => 0,
+				'path'         => 'http://', // make sure no path is specified just yet
+				'type'         =>  11
+			));
+
+			// Save record
+			if (!$resource->save())
+			{
+				$this->setError($resource->getError());
+				return $this->displayTask();
+			}
 		}
 
 		// Create new parent/child association
@@ -129,57 +162,88 @@ class Attachments extends SiteController
 	{
 		// Ensure we have an ID to work with
 		$pid = strtolower(Request::getInt('pid', 0));
+		$resourceTitle = Request::getVar('resource-title');
+		header('Content-Type: application/json');
+		if (!$pid && !empty($resourceTitle))
+		{
+			$parentResource = Entry::blank();
+			$type = Request::getInt('type');
+			$parentResource->set(array(
+				'title' => $resourceTitle,
+				'standalone' => 1,
+				'published' => 2,
+				'type' => $type
+			));
+			if (!$parentResource->save())
+			{
+				echo json_encode(array(
+					'success'   => false,
+					'errors'    => $parentResource->getErrors(),
+					'file'      => 'http://',
+					'directory' => '',
+					'parent'    => $pid,
+					'id'        => 0
+				));
+				exit();
+			}
+			$pid = $parentResource->get('id');
+		}
 		if (!$pid)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_RESOURCES_NO_ID')));
-			return;
+			exit();
 		}
 
-		// Create new record
-		$resource = Entry::blank()->set(array(
-			'title'        => 'A link',
-			'introtext'    => 'A link',
-			'created'      => Date::toSql(),
-			'created_by'   => User::get('id'),
-			'published'    => 1,
-			'publish_up'   => Date::toSql(),
-			'publish_down' => '0000-00-00 00:00:00',
-			'standalone'   => 0,
-			'access'       => 0,
-			'path'         => Request::getVar('url', 'http://'),
-			'type'         => 11
-		));
-
-		// Clean and validate path
-		$resource->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $resource->path);
-
-		if (!Validate::url($resource->path))
+		$childId = Request::getInt('childid');
+		$resource = Entry::oneOrNew($childId);
+		if ($resource->isNew())
 		{
-			echo json_encode(array(
-				'success'   => false,
-				'errors'    => array(Lang::txt('Link provided is not a valid URL.')),
-				'file'      => $resource->path,
-				'directory' => '',
-				'parent'    => $pid,
-				'id'        => 0
+			// Create new record
+			$resource->set(array(
+				'title'        => 'A link',
+				'introtext'    => 'A link',
+				'created'      => Date::toSql(),
+				'created_by'   => User::get('id'),
+				'published'    => 1,
+				'publish_up'   => Date::toSql(),
+				'publish_down' => '0000-00-00 00:00:00',
+				'standalone'   => 0,
+				'access'       => 0,
+				'path'         => Request::getVar('url', 'http://'),
+				'type'         => 11
 			));
-			return;
-		}
 
-		// Save record
-		if (!$resource->save())
-		{
-			echo json_encode(array(
-				'success'   => false,
-				'errors'    => $resource->getErrors(),
-				'file'      => 'http://',
-				'directory' => '',
-				'parent'    => $pid,
-				'id'        => 0
-			));
-			return;
-		}
+			// Clean and validate path
+			$resource->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $resource->path);
 
+			if (!Validate::url($resource->path))
+			{
+				echo json_encode(array(
+					'success'   => false,
+					'errors'    => array(Lang::txt('Link provided is not a valid URL.')),
+					'file'      => $resource->path,
+					'directory' => '',
+					'parent'    => $pid,
+					'id'        => 0
+				));
+				exit();
+			}
+
+			// Save record
+			if (!$resource->save())
+			{
+				echo json_encode(array(
+					'success'   => false,
+					'errors'    => $resource->getErrors(),
+					'file'      => 'http://',
+					'directory' => '',
+					'parent'    => $pid,
+					'id'        => 0
+				));
+				exit();
+			}
+		}
+		$parentResource = Entry::one($pid);
 		// Create new parent/child association
 		if (!$resource->makeChildOf($pid))
 		{
@@ -191,9 +255,8 @@ class Attachments extends SiteController
 				'parent'    => $pid,
 				'id'        => $resource->id
 			));
-			return;
+			exit();
 		}
-
 		// Output results
 		echo json_encode(array(
 			'success'   => true,
@@ -201,8 +264,10 @@ class Attachments extends SiteController
 			'file'      => $resource->path,
 			'directory' => '',
 			'parent'    => $pid,
-			'id'        => $resource->id
+			'id'        => $resource->id,
+			'message'	=> Lang::txt('COM_RESOURCES_ADD_CHILD_SUCCESS', $parentResource->title)
 		));
+		exit();
 	}
 
 	/**
@@ -692,7 +757,12 @@ class Attachments extends SiteController
 
 		// Load resource info
 		$resource = Entry::oneOrFail($id);
-
+		if ($resource->get('standalone') == 1)
+		{
+			$association = Association::oneByRelationship($pid, $id);
+			$association->destroy();
+			return $this->displayTask($pid);	
+		}
 		// Check for stored file
 		if ($resource->get('path') != '')
 		{

@@ -380,6 +380,69 @@ class Entriesv1_1 extends ApiController
 	}
 
 	/**
+	 * A simple search on title and id for use with autocomplete
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /resources/autocomplete
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       25
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "search",
+	 * 		"description":   "Term to search resource id or title",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "existingCids",
+	 * 		"description":   "List of Resource IDs to exclude from the search",
+	 * 		"type":          "array",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @return  void
+	 */
+	public function autocompleteTask()
+	{
+		$limit    = Request::getVar('limit', 25);
+		$search   = Request::getVar('search', '');
+		$existingCids = Request::getArray('existingCids');
+
+		require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+		$response = new stdClass;
+
+		$query = Entry::all();
+		if (!empty($search))
+		{
+			if (is_numeric($search))
+			{
+				$query->whereEquals('id', $search);
+			}
+			else
+			{
+				$query->where('title', 'LIKE', '%' . $search . '%', 'OR');
+			}
+		}
+
+		if (!empty($existingCids))
+		{
+			$query->where('id', 'NOT IN', $existingCids);
+		}
+		$response->records = $query
+			->select('id, title')
+			->whereEquals('standalone', 1)
+			->paginated()
+			->rows()->toArray();
+		$response->success = true;
+		$this->send($response);
+	}
+
+	/**
 	 * Render LaTeX expression
 	 *
 	 * @apiMethod GET
