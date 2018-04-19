@@ -11,15 +11,15 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to add default value to field for consistency between upgrade/new installs
+ * Migration script to drop misnamed field that can get left behind during upgrades
  **/
-class Migration2016090710280000ComCategories extends Base
+class Migration20160907102400ComCourses extends Base
 {
 	public function up()
 	{
-		if ($this->db->tableHasField('#__categories', 'title'))
+		if ($this->db->tableHasField('#__courses_form_respondents', 'attempts'))
 		{
-			$query = "ALTER TABLE `#__categories` CHANGE COLUMN `title` `title` varchar(255) NOT NULL DEFAULT '';";
+			$query = "ALTER TABLE `#__courses_form_respondents` DROP `attempts`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

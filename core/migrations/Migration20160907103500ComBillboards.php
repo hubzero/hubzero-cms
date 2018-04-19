@@ -11,15 +11,15 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to drop misnamed field that can get left behind during upgrades
+ * Migration script to fix character encoding on field (from past schema upgrade)
  **/
-class Migration2016090710240000ComCourses extends Base
+class Migration20160907103500ComBillboards extends Base
 {
 	public function up()
 	{
-		if ($this->db->tableHasField('#__courses_form_respondents', 'attempts'))
+		if ($this->db->tableHasField('#__billboards_collections', 'name'))
 		{
-			$query = "ALTER TABLE `#__courses_form_respondents` DROP `attempts`;";
+			$query = "ALTER TABLE `#__billboards_collections` CHANGE COLUMN `name` `name` varchar(255) DEFAULT NULL;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

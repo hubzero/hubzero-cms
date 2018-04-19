@@ -11,15 +11,15 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to fix character encoding on field (from past schema upgrade)
+ * Migration script to add default value to field for consistency between upgrade/new installs
  **/
-class Migration2016090710350000ComBillboards extends Base
+class Migration20160907102800ComCategories extends Base
 {
 	public function up()
 	{
-		if ($this->db->tableHasField('#__billboards_collections', 'name'))
+		if ($this->db->tableHasField('#__categories', 'title'))
 		{
-			$query = "ALTER TABLE `#__billboards_collections` CHANGE COLUMN `name` `name` varchar(255) DEFAULT NULL;";
+			$query = "ALTER TABLE `#__categories` CHANGE COLUMN `title` `title` varchar(255) NOT NULL DEFAULT '';";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

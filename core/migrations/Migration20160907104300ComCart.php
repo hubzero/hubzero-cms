@@ -13,9 +13,9 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to change database engine for cart_meta table
  **/
-class Migration2016090710430000ComCart extends Base
+class Migration20160907104300ComCart extends Base
 {
-	private function changeEngine($table,$engine)
+	private function changeEngine($table, $engine)
 	{
 		if ($this->db->tableExists($table) && strtolower($this->db->getEngine($table)) != $engine)
 		{
