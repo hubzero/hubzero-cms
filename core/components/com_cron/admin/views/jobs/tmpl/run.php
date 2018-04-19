@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Cron\Helpers\Permissions::getActions('component');
 
-Toolbar::title(Lang::txt('COM_CRON') . ': ' . Lang::txt('COM_CRON_RUN'), 'cron.png');
+Toolbar::title(Lang::txt('COM_CRON') . ': ' . Lang::txt('COM_CRON_RUN'), 'cron');
 
 function prettyPrint($json)
 {
@@ -43,18 +43,18 @@ function prettyPrint($json)
 	$level = 0;
 	$prev_char = '';
 	$in_quotes = false;
-	$ends_line_level = NULL;
+	$ends_line_level = null;
 	$json_length = strlen($json);
 
 	for ($i = 0; $i < $json_length; $i++)
 	{
 		$char = $json[$i];
-		$new_line_level = NULL;
+		$new_line_level = null;
 		$post = "";
-		if ($ends_line_level !== NULL)
+		if ($ends_line_level !== null)
 		{
 			$new_line_level  = $ends_line_level;
-			$ends_line_level = NULL;
+			$ends_line_level = null;
 		}
 		if ($char === '"' && $prev_char != '\\')
 		{
@@ -67,7 +67,7 @@ function prettyPrint($json)
 				case '}':
 				case ']':
 					$level--;
-					$ends_line_level = NULL;
+					$ends_line_level = null;
 					$new_line_level  = $level;
 				break;
 
@@ -89,11 +89,11 @@ function prettyPrint($json)
 				case "\r":
 					$char = '';
 					$ends_line_level = $new_line_level;
-					$new_line_level  = NULL;
+					$new_line_level  = null;
 				break;
 			}
 		}
-		if ($new_line_level !== NULL)
+		if ($new_line_level !== null)
 		{
 			$result .= "\n" . str_repeat("\t", $new_line_level);
 		}

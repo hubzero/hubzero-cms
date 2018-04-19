@@ -47,7 +47,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('section');
 
-$create_date = NULL;
+$create_date = null;
 if (intval($this->row->get('created')) <> 0)
 {
 	$create_date = Date::of($this->row->get('created'))->toSql();

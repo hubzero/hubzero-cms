@@ -46,7 +46,7 @@ class Options
 	 *
 	 * @var  object
 	 */
-	private static $current = NULL;
+	private static $current = null;
 
 	/**
 	 * Get award value per field
@@ -65,10 +65,8 @@ class Options
 	 * @param   integer  $uid
 	 * @return  boolean
 	 */
-	public function isEnabled($uid = NULL)
+	public function isEnabled($uid = null)
 	{
-		// What is the next line for?
-		//$dbg = isset($_GET['dbg']);
 		if (!$uid)
 		{
 			$uid = (int)User::get('id');
@@ -104,7 +102,7 @@ class Options
 	 * @param   integer  $uid
 	 * @return  boolean
 	 */
-	public function isCurlEnabled($uid = NULL)
+	public function isCurlEnabled($uid = null)
 	{
 		if (!$this->isEnabled($uid))
 		{

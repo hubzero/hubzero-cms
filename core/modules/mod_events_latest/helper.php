@@ -112,7 +112,7 @@ class Helper extends Module
 		$displayYear       = $this->params->get('display_year')        ? abs(intval($this->params->get('display_year'))) : 0;
 		$disableTitleStyle = $this->params->get('display_title_style') ? abs(intval($this->params->get('display_title_style'))) : 0;
 		$disableDateStyle  = $this->params->get('display_date_style')  ? abs(intval($this->params->get('display_date_style'))) : 0;
-		$customFormatStr   = $this->params->get('custom_format_str')   ? $this->params->get('custom_format_str') : NULL;
+		$customFormatStr   = $this->params->get('custom_format_str')   ? $this->params->get('custom_format_str') : null;
 		$charlimit         = $this->params->get('char_limit')          ? abs(intval($this->params->get('char_limit'))) : 150;
 
 		// Can't have a mode greater than 4

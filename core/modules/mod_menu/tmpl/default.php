@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die;
 
 <ul class="menu<?php echo $class_sfx; ?>"<?php
 	$tag = '';
-	if ($params->get('tag_id')!=NULL)
+	if ($params->get('tag_id') != null)
 	{
 		$tag = $params->get('tag_id').'';
 		echo ' id="' . $tag . '"';
