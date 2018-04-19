@@ -8,9 +8,9 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to more fix index naming conventions in CNS tables (prev migration also fixed to do these)
  **/
-class Migration2016090711260000Core extends Base
+class Migration20160907112600Core extends Base
 {
-	private function dropIndex($table,$key)
+	private function dropIndex($table, $key)
 	{
 		if ($this->db->tableHasKey($table, $key))
 		{

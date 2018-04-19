@@ -8,9 +8,9 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to change database engine for support_quest_folders
  **/
-class Migration2016090710560000ComSupport extends Base
+class Migration20160907105600ComSupport extends Base
 {
-	private function changeEngine($table,$engine)
+	private function changeEngine($table, $engine)
 	{
 		if ($this->db->tableExists($table) && strtolower($this->db->getEngine($table)) != $engine)
 		{

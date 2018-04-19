@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to add missing #__user_roles table
  **/
-class Migration2016090511300000Core extends Base
+class Migration20160905113000Core extends Base
 {
 	/**
 	 * Up

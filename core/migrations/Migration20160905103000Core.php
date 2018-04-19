@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to add missing fields to #__resource_stats_cluster table
  **/
-class Migration2016090510300000Core extends Base
+class Migration20160905103000Core extends Base
 {
 	/**
 	 * Up

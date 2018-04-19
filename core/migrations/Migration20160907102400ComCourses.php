@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to drop misnamed field that can get left behind during upgrades
  **/
-class Migration2016090710240000ComCourses extends Base
+class Migration20160907102400ComCourses extends Base
 {
 	public function up()
 	{

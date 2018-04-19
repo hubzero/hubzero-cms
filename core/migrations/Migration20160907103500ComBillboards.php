@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script to fix character encoding on field (from past schema upgrade)
  **/
-class Migration2016090710350000ComBillboards extends Base
+class Migration20160907103500ComBillboards extends Base
 {
 	public function up()
 	{
