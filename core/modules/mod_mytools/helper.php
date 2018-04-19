@@ -180,7 +180,7 @@ class Helper extends Module
 					if ($type == 'all')
 					{
 						// Highlight tools on the user's favorites list
-						if (in_array($tool->name,$favs))
+						if (in_array($tool->name, $favs))
 						{
 							$cls = 'favd';
 						}

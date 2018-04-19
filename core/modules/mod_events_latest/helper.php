@@ -135,7 +135,7 @@ class Helper extends Module
 		$startday = $this->params->get('start_day');
 		if (!defined('_CAL_CONF_STARDAY'))
 		{
-			define('_CAL_CONF_STARDAY',$startday);
+			define('_CAL_CONF_STARDAY', $startday);
 		}
 
 		// Set some vars depending upon mode
@@ -349,4 +349,3 @@ class Helper extends Module
 		return $new_rows_events;
 	}
 }
-

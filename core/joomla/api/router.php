@@ -310,7 +310,7 @@ class JRouterApi extends JRouter
 				list($rhostname, $rdomainname) = explode('.', $rfqdn, 2);
 				list($shostname, $sdomainname) = explode('.', $sfqdn, 2);
 
-				if ( ($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
+				if (($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
 				{
 					$suri = JURI::getInstance();
 					$group = \Hubzero\User\Group::getInstance($rhostname);
@@ -394,7 +394,7 @@ class JRouterApi extends JRouter
 
 					if ($item->type == 'url')
 					{ // Pass local URLs through, but record Itemid
-						if (strpos("://",$item->route[0]) === false)
+						if (strpos("://", $item->route[0]) === false)
 						{
 							$vars['Itemid'] = $item->id;
 							break;
