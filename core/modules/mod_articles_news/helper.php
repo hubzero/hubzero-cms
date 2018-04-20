@@ -33,10 +33,9 @@
 namespace Modules\ArticlesNews;
 
 use Hubzero\Module\Module;
+use Components\Content\Models\Article;
 use ContentHelperRoute;
 use Component;
-use JModelLegacy;
-use JFactory;
 use Route;
 use Event;
 use Lang;
@@ -74,51 +73,37 @@ class Helper extends Module
 	public static function getList(&$params)
 	{
 		require_once Component::path('com_content') . '/site/helpers/route.php';
+		require_once Component::path('com_content') . '/models/article.php';
 
-		JModelLegacy::addIncludePath(Component::path('com_content') . '/site/models', 'ContentModel');
-
-		$db  = App::get('db');
-
-		// Get an instance of the generic articles model
-		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
-
-		// Set application parameters in model
-		$appParams = JFactory::getApplication()->getParams();
-		$model->setState('params', $appParams);
+		$query = Article::all();
 
 		// Set the filters based on the module params
-		$model->setState('list.start', 0);
-		$model->setState('list.limit', (int) $params->get('count', 5));
-
-		$model->setState('filter.published', 1);
-
-		$model->setState('list.select', 'a.fulltext, a.id, a.title, a.alias, a.title_alias, a.introtext, a.state, a.catid, a.created, a.created_by, a.created_by_alias,' .
-			' a.modified, a.modified_by, a.publish_up, a.publish_down, a.images, a.urls, a.attribs, a.metadata, a.metakey, a.metadesc, a.access,' .
-			' a.hits, a.featured, a.language' );
+		$query->whereEquals('state', Article::STATE_PUBLISHED);
+		$query->start(0);
+		$query->limit((int) $params->get('count', 5));
 
 		// Access filter
 		$access = !Component::params('com_content')->get('show_noauth');
 		$authorised = User::getAuthorisedViewLevels();
-		$model->setState('filter.access', $access);
 
 		// Category filter
-		$model->setState('filter.category_id', $params->get('catid', array()));
+		$catids = $params->get('catid', array());
+		if (!empty($catids))
+		{
+			$query->whereIn('catid', $catids);
+		}
 
 		// Filter by language
-		$model->setState('filter.language', \App::get('language.filter'));
+		$query->whereEquals('language', App::get('language.filter'));
 
 		// Get ordering &  direction params
-		$ordering  = $params->get('ordering', 'a.publish_up');
-		$direction = $params->get('direction', 'DESC');
-
-		// Set ordering &  direction
-		$model->setState('list.ordering', $ordering);
-		$model->setState('list.direction', $direction);
+		$ordering = str_replace('a.', '', $params->get('ordering', 'a.publish_up'));
+		$query->order($ordering, $params->get('direction', 'DESC'));
 
 		//	Retrieve Content
-		$items = $model->getItems();
+		$items = $query->rows();
 
-		foreach ($items as &$item)
+		foreach ($items as $item)
 		{
 			$item->readmore = strlen(trim($item->fulltext));
 			$item->slug     = $item->id . ':' . $item->alias;

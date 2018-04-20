@@ -34,6 +34,8 @@ namespace Modules\ArticlesCategory;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Str;
+use Components\Content\Models\Article;
+use Components\Categories\Models\Category;
 use ContentHelperRoute;
 use Component;
 use stdClass;
@@ -41,7 +43,7 @@ use Request;
 use Route;
 use Date;
 use User;
-use JModelLegacy;
+use App;
 
 /**
  * Module class for displaying articles in a category
@@ -101,7 +103,7 @@ class Helper extends Module
 		$cacheparams->methodparams = $params;
 		$cacheparams->modeparams   = $cacheid;
 
-		$list = \Module::cache($module, $params, $cacheparams);
+		$list = self::getList($params); //\Module::cache($module, $params, $cacheparams);
 
 		if (!empty($list))
 		{
@@ -142,25 +144,20 @@ class Helper extends Module
 	{
 		require_once Component::path('com_content') . '/site/router.php';
 		require_once Component::path('com_content') . '/site/helpers/route.php';
-
-		JModelLegacy::addIncludePath(Component::path('com_content') . '/site/models', 'ContentModel');
-
-		// Get an instance of the generic articles model
-		$articles = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
+		require_once Component::path('com_content') . '/models/article.php';
 
 		// Set application parameters in model
 		$appParams = App::has('params') ? App::get('params') : new \Hubzero\Config\Registry('');
-		$articles->setState('params', $appParams);
 
 		// Set the filters based on the module params
-		$articles->setState('list.start', 0);
-		$articles->setState('list.limit', (int) $params->get('count', 0));
-		$articles->setState('filter.published', 1);
+		$query = Article::all();
+		$query->whereEquals('state', Article::STATE_PUBLISHED);
 
 		// Access filter
-		$access = !Component::params('com_content')->get('show_noauth');
-		$authorised = User::getAuthorisedViewLevels();
-		$articles->setState('filter.access', $access);
+		if (!Component::params('com_content')->get('show_noauth'))
+		{
+			$query->whereIn('access', User::getAuthorisedViewLevels());
+		}
 
 		// Prep for Normal or Dynamic Modes
 		$mode = $params->get('mode', 'normal');
@@ -188,12 +185,11 @@ class Helper extends Module
 								if (!$catid)
 								{
 									// Get an instance of the generic article model
-									$article = JModelLegacy::getInstance('Article', 'ContentModel', array('ignore_request' => true));
+									$article = Article::all();
+									$article->whereEquals('published', Article::STATE_PUBLISHED);
+									$article->whereEquals('id', (int) $article_id);
 
-									$article->setState('params', $appParams);
-									$article->setState('filter.published', 1);
-									$article->setState('article.id', (int) $article_id);
-									$item = $article->getItem();
+									$item = $article->row();
 
 									$catids = array($item->catid);
 								}
@@ -226,7 +222,6 @@ class Helper extends Module
 			case 'normal':
 			default:
 				$catids = $params->get('catid');
-				$articles->setState('filter.category_id.include', (bool) $params->get('category_filtering_type', 1));
 				break;
 		}
 
@@ -235,20 +230,25 @@ class Helper extends Module
 		{
 			if ($params->get('show_child_category_articles', 0) && (int) $params->get('levels', 0) > 0)
 			{
+				require_once Component::path('com_category') . '/models/category.php';
+
 				// Get an instance of the generic categories model
-				$categories = JModelLegacy::getInstance('Categories', 'ContentModel', array('ignore_request' => true));
-				$categories->setState('params', $appParams);
+				$categories = Category::all();
 				$levels = $params->get('levels', 1) ? $params->get('levels', 1) : 9999;
-				$categories->setState('filter.get_children', $levels);
-				$categories->setState('filter.published', 1);
-				$categories->setState('filter.access', $access);
+				$categories->where('level', '<=', $levels);
+				$categories->whereEquals('published', Category::STATE_PUBLISHED);
+				if (!Component::params('com_content')->get('show_noauth'))
+				{
+					$categories->whereIn('access', User::getAuthorisedViewLevels());
+				}
 				$additional_catids = array();
 
 				foreach ($catids as $catid)
 				{
-					$categories->setState('filter.parentId', $catid);
-					$recursive = true;
-					$items = $categories->getItems($recursive);
+					$catgories = clone $categories;
+					$catgories->whereEquals('parent_id', $catid);
+
+					$items = $catgories->rows();
 
 					if ($items)
 					{
@@ -266,42 +266,54 @@ class Helper extends Module
 				$catids = array_unique(array_merge($catids, $additional_catids));
 			}
 
-			$articles->setState('filter.category_id', $catids);
+			$query->whereIn('catid', $catids);
 		}
 
 		// Ordering
-		$articles->setState('list.ordering', $params->get('article_ordering', 'a.ordering'));
-		$articles->setState('list.direction', $params->get('article_ordering_direction', 'ASC'));
+		$ordering = str_replace('a.', '', $params->get('article_ordering', 'a.ordering'));
+		$query->order($ordering, $params->get('article_ordering_direction', 'ASC'));
 
 		// New Parameters
-		$articles->setState('filter.featured', $params->get('show_front', 'show'));
-		$articles->setState('filter.author_id', $params->get('created_by', ""));
-		$articles->setState('filter.author_id.include', $params->get('author_filtering_type', 1));
-		$articles->setState('filter.author_alias', $params->get('created_by_alias', ""));
-		$articles->setState('filter.author_alias.include', $params->get('author_alias_filtering_type', 1));
-		$excluded_articles = $params->get('excluded_articles', '');
+		if ($params->get('show_front', 'show') == 'hide')
+		{
+			$query->whereEquals('featured', 0);
+		}
+		if ($params->get('show_front', 'show') == 'only')
+		{
+			$query->whereEquals('featured', 1);
+		}
 
-		if ($excluded_articles)
+		if ($creator = $params->get('created_by', ''))
+		{
+			$query->whereEquals('created_by', $creator);
+		}
+
+		if ($excluded_articles = $params->get('excluded_articles', ''))
 		{
 			$excluded_articles = explode("\r\n", $excluded_articles);
-			$articles->setState('filter.article_id', $excluded_articles);
-			$articles->setState('filter.article_id.include', false); // Exclude
+			$query->whereRaw('id', 'NOT IN(' . implode(',', $excluded_articles) . ')');
 		}
 
 		$date_filtering = $params->get('date_filtering', 'off');
 		if ($date_filtering !== 'off')
 		{
-			$articles->setState('filter.date_filtering', $date_filtering);
-			$articles->setState('filter.date_field', $params->get('date_field', 'a.created'));
-			$articles->setState('filter.start_date_range', $params->get('start_date_range', '1000-01-01 00:00:00'));
-			$articles->setState('filter.end_date_range', $params->get('end_date_range', '9999-12-31 23:59:59'));
-			$articles->setState('filter.relative_date', $params->get('relative_date', 30));
+			$fld = str_replace('a.', '', $params->get('date_field', 'a.created'));
+
+			$query->where($fld, '>=', $params->get('start_date_range', '1000-01-01 00:00:00'));
+			$query->where($fld, '<', $params->get('end_date_range', '9999-12-31 23:59:59'));
+			if ($relativeDate = $params->get('relative_date', 30))
+			{
+				$query->whereRaw($fld, '>= DATE_SUB(' . Date::toSql() . ', INTERVAL ' . $relativeDate . ' DAY)');
+			}
 		}
 
 		// Filter by language
-		$articles->setState('filter.language', \App::get('language.filter'));
+		$query->whereEquals('language', App::get('language.filter'));
 
-		$items = $articles->getItems();
+		$query->start(0)
+			->limit((int) $params->get('count', 5));
+
+		$items = $query->rows();
 
 		// Display options
 		$show_date        = $params->get('show_date', 0);
@@ -327,7 +339,7 @@ class Helper extends Module
 		}
 
 		// Prepare data for display using display options
-		foreach ($items as &$item)
+		foreach ($items as $item)
 		{
 			$item->slug    = $item->id . ':' . $item->alias;
 			$item->catslug = $item->catid ? $item->catid . ':' . $item->category_alias : $item->catid;
