@@ -691,7 +691,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'stats_tops';
-		if (!in_array($table,$tables))
+		if (!in_array($table, $tables))
 		{
 			return '<p class="error">' . Lang::txt('Error: Required database table not found . ') . '</p>';
 		}

@@ -290,7 +290,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 									{
 										break;
 									}
-									for ($px=min($left,$width-1); $px>$left-12 && $px>=0; $px-=1)
+									for ($px=min($left, $width-1); $px>$left-12 && $px>=0; $px-=1)
 									{
 										$color = imagecolorat($img, $px, $py) & 0xff;
 										if ($color+$opacity < 190)
@@ -470,7 +470,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		$x = 20;
 		for ($i=0; $i<strlen($security_code); $i++)
 		{
-			$angle = rand(-45,45);
+			$angle = rand(-45, 45);
 			$y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
 
 			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
