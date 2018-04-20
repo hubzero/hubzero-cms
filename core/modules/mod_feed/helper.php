@@ -55,11 +55,11 @@ class Helper extends Module
 		$cache_time = 0;
 		if ($this->params->get('cache'))
 		{
-			// The cache_time will get fed into JCache to initiate the feed_parser cache group and eventually
-			// JCacheStorage will multiply the value by 60 and use that for its lifetime. The only way to sync
+			// The cache_time will get fed into Cache to initiate the feed_parser cache group and eventually
+			// Cache Storage will multiply the value by 60 and use that for its lifetime. The only way to sync
 			// the feed_parser cache (which caches with an empty dataset anyway) with the module cache is to
 			// first divide the module's cache time by 60 then inject that forward, which once stored into the
-			// JCacheStorage object, will be the correct value in minutes.
+			// Cache Storage object, will be the correct value in minutes.
 			$cache_time = $this->params->get('cache_time', 15) / 60;
 		}
 
