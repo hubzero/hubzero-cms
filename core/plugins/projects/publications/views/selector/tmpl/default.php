@@ -78,8 +78,8 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 			$task = 'apply';
 
 			// Get selections
-			$selections = NULL;
-			$selected   = NULL;
+			$selections = null;
+			$selected   = null;
 
 			$objL = new \Components\Publications\Tables\License($this->database);
 			$selected   = $objL->getPubLicense($this->publication->get('version_id'));
@@ -103,9 +103,9 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 					// Show selection
 					$view = new \Hubzero\Plugin\View(
 						array(
-							'folder'  =>'projects',
-							'element' =>'publications',
-							'name'    =>'selector',
+							'folder'  => 'projects',
+							'element' => 'publications',
+							'name'    => 'selector',
 							'layout'  => $this->block
 						)
 					);
@@ -138,9 +138,9 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 			// Show selection
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  =>'projects',
-					'element' =>'publications',
-					'name'    =>'selector',
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => 'selector',
 					'layout'  => $this->block
 				)
 			);

@@ -42,7 +42,7 @@ $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
 $mconfig = Component::params('com_members');
 $pPath   = trim($mconfig->get('webpath'), DS);
-$profileThumb = NULL;
+$profileThumb = null;
 
 // CSS
 $backgroundColor = '#FFFFFF';

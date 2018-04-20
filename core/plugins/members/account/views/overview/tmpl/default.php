@@ -91,7 +91,7 @@ $this->css()
 					$refl         = new \ReflectionClass('plgauthentication' . $domain->name);
 					?>
 
-					<?php if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(NULL))) : ?>
+					<?php if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(null))) : ?>
 						<?php echo is_array($html) ? implode("\n", $html) : $html; ?>
 					<?php else : ?>
 						<a href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $domain->name); ?>">

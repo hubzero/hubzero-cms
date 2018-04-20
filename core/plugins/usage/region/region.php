@@ -84,7 +84,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 		// Look up region list information...
 		$regionname = '';
-		$sql = "SELECT name, valfmt, size FROM regions WHERE region = '" . $db->Quote($region) . "'";
+		$sql = "SELECT name, valfmt, size FROM regions WHERE region = '" . $db->quote($region) . "'";
 		$db->setQuery($sql);
 		$result = $db->loadRow();
 		if ($result)
@@ -125,7 +125,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 			{
 				// Calculate the total value for this regionlist...
 				$regionlistset = array();
-				$sql = "SELECT regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->Quote($hub) . "' AND regions.region = '" . $db->Quote($region) . "' AND regionvals.datetime = '" . $db->Quote($dt) . "' AND regionvals.period = '" . $db->Quote($period[$pidx]["key"]) . "' AND regionvals.rank = '0'";
+				$sql = "SELECT regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->quote($hub) . "' AND regions.region = '" . $db->quote($region) . "' AND regionvals.datetime = '" . $db->quote($dt) . "' AND regionvals.period = '" . $db->quote($period[$pidx]["key"]) . "' AND regionvals.rank = '0'";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results)
@@ -133,10 +133,10 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 					foreach ($results as $row)
 					{
 						$formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
-						if (strstr($formattedval, "day") !== FALSE)
+						if (strstr($formattedval, "day") !== false)
 						{
 							$chopchar = strrpos($formattedval, ',');
-							if ($chopchar !== FALSE)
+							if ($chopchar !== false)
 							{
 								$formattedval = substr($formattedval, 0, $chopchar) . '+';
 							}
@@ -151,7 +151,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 				// Calculate the region values for the regionlist...
 				$rank = 1;
-				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->Quote($hub) . "' AND regions.region = '" . $db->Quote($region) . "' AND datetime = '" . $db->Quote($dt) . "' AND regionvals.period = '" . $db->Quote($period[$pidx]["key"]) . "' AND regionvals.rank > '0' ORDER BY regionvals.rank, regionvals.name";
+				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->quote($hub) . "' AND regions.region = '" . $db->quote($region) . "' AND datetime = '" . $db->quote($dt) . "' AND regionvals.period = '" . $db->quote($period[$pidx]["key"]) . "' AND regionvals.rank > '0' ORDER BY regionvals.rank, regionvals.name";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results)
@@ -166,10 +166,10 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 								$rank++;
 							}
 							$formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
-							if (strstr($formattedval, 'day') !== FALSE)
+							if (strstr($formattedval, 'day') !== false)
 							{
 								$chopchar = strrpos($formattedval, ',');
-								if ($chopchar !== FALSE)
+								if ($chopchar !== false)
 								{
 									$formattedval = substr($formattedval, 0, $chopchar) . '+';
 								}

@@ -133,10 +133,10 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 					foreach ($results as $row)
 					{
 						$formattedval = UsageHtml::valformat($row->value, $valfmt);
-						if (strstr($formattedval, 'day') !== FALSE)
+						if (strstr($formattedval, 'day') !== false)
 						{
 							$chopchar = strrpos($formattedval, ',');
-							if ($chopchar !== FALSE)
+							if ($chopchar !== false)
 							{
 								$formattedval = substr($formattedval, 0, $chopchar) . '+';
 							}
@@ -166,10 +166,10 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 								$rank++;
 							}
 							$formattedval = UsageHtml::valformat($row->value, $valfmt);
-							if (strstr($formattedval, 'day') !== FALSE)
+							if (strstr($formattedval, 'day') !== false)
 							{
 								$chopchar = strrpos($formattedval, ',');
-								if ($chopchar !== FALSE)
+								if ($chopchar !== false)
 								{
 									$formattedval = substr($formattedval, 0, $chopchar) . '+';
 								}

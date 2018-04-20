@@ -89,7 +89,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if ($code = Request::getVar('code', NULL))
+		if ($code = Request::getVar('code', null))
 		{
 			// Authenticate the user
 			$client->authenticate($code);
@@ -163,7 +163,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		       ->setClientSecret($this->params->get('app_secret'))
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
-		if (App::get('session')->get('scistarter.token', NULL))
+		if (App::get('session')->get('scistarter.token', null))
 		{
 			$client->setAccessToken(App::get('session')->get('scistarter.token'));
 		}
@@ -174,11 +174,13 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 			$account = $client->getUserData();
 
 			$accountIsOk = true;
-			if(!isset($account->user_id) || $account->user_id <= 0) {
+			if (!isset($account->user_id) || $account->user_id <= 0)
+			{
 				$accountIsOk = false;
 				$error_message = $response->error_message = Lang::txt('PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_UID');
 			}
-			elseif(!isset($account->email) || !$account->email) {
+			elseif (!isset($account->email) || !$account->email)
+			{
 				$accountIsOk = false;
 				$error_message = $response->error_message = Lang::txt('PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_EMAIL');
 			}
@@ -277,7 +279,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if ($code = Request::getVar('code', NULL))
+		if ($code = Request::getVar('code', null))
 		{
 			// Authenticate the user
 			$client->authenticate($code);

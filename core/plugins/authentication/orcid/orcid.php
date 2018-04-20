@@ -90,7 +90,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		$options['return'] = $b64dreturn;
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if (!Request::getVar('code', NULL))
+		if (!Request::getVar('code', null))
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
@@ -234,7 +234,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		      ->setRedirectUri(self::getRedirectUri('orcid'));
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if (!Request::getVar('code', NULL))
+		if (!Request::getVar('code', null))
 		{
 			// User didn't authorize our app, or, clicked cancel...
 			App::redirect(

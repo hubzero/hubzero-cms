@@ -152,7 +152,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		$options['return'] = $b64dreturn;
 
 		// Check to make sure they didn't deny our application permissions
-		if (Request::getVar('error', NULL))
+		if (Request::getVar('error', null))
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
