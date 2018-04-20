@@ -226,10 +226,9 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 				$id       = $user_profile->getId();
 				$fullname = $user_profile->getName();
 				$email    = $user_profile->getEmail();
-				
+
 				// Version 5 of the Facebook SDK no longer allows retrival of username
 				// $username = $user_profile->getField('username');
-
 			}
 			catch (\Facebook\Exceptions\FacebookResponseException $e)
 			{

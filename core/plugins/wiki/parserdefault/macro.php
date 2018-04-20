@@ -173,7 +173,7 @@ class WikiMacro
 	 * @param   array   $config  Configuration parameters
 	 * @return  object
 	 */
-	static public function getInstance($config=array())
+	public static function getInstance($config=array())
 	{
 		if (self::$thisInstance == null)
 		{

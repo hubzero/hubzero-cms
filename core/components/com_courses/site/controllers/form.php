@@ -600,7 +600,13 @@ class Form extends SiteController
 		{
 			$this->setView('form', 'complete');
 			$this->_task = 'complete';
-			$this->view->incomplete = array_filter($answers, function($ans) { return is_null($ans[0]); });
+			$this->view->incomplete = array_filter(
+				$answers,
+				function($ans)
+				{
+					return is_null($ans[0]);
+				}
+			);
 			$this->completeTask();
 		}
 	}
