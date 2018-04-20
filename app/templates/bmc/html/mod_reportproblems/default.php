@@ -45,14 +45,6 @@ defined('_HZEXEC_') or die();
 					<h3><a href="<?php echo Route::url('index.php?option=com_kb'); ?>"><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTION_KB_TITLE'); ?></a></h3>
 					<p>Find information on common questions and issues.</p>
 				</li>
-				<li class="help-qa">
-					<h3><a href="<?php echo Route::url('index.php?option=com_answers'); ?>"><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTION_ANSWERS_TITLE'); ?></a></h3>
-					<p><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTION_ANSWERS_DESC'); ?></p>
-				</li>
-				<li class="help-wish">
-					<h3><a href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTION_WISHLIST_TITLE'); ?></a></h3>
-					<p><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTION_WISHLIST_DESC'); ?></p>
-				</li>
 				<li class="help-tickets">
 					<h3><a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=display'); ?>">Support Messages</a></h3>
 					<p>Check on the status of your correspondences with members of the QUBES team.</p>

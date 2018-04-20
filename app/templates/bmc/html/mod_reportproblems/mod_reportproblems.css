@@ -16,6 +16,7 @@
   top: 5px;
 }
 #help-container h2 {
+	font-size: 2em;
 	border-bottom: 1px dashed #eee;
 	border-bottom: 1px dashed rgba(255, 255, 255, 0.8);
 }
@@ -29,6 +30,7 @@
 #help-container li h3 {
 	margin-bottom: 0.5em;
 	border: none;
+	font-size: 1.5em;
 }
 #help-container li {
 	border: none;
@@ -55,6 +57,7 @@
 .filetypes {
 	color: #eee;
 	color: rgba(255, 255, 255, 0.8);
+	display: none;
 }
 #help-container input[type=text],
 #help-container input[type=password],
@@ -116,7 +119,12 @@
 	background-color: transparent;
 	border-color: #0fa1ca;
 	border: none;
-	margin: 10px;
+	margin: 15px 0px -15px 0px;
+}
+#help-container input#trUpload,
+#help-container select#captcha-answer,
+#help-container input#captcha-answer {
+	margin-bottom: 1em;
 }
 
 #close-form {
