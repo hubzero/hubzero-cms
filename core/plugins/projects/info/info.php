@@ -50,13 +50,13 @@ class plgProjectsInfo extends \Hubzero\Plugin\Plugin
 	 * @param   string  $alias
 	 * @return  array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas($alias = null)
 	{
 		$area = array(
 			'name'    => $this->_name,
 			'alias'   => null,
 			'title'   => Lang::txt('PLG_PROJECTS_INFO'),
-			'submenu' => NULL,
+			'submenu' => null,
 			'show'    => true,
 			'icon'    => 'f05a'
 		);
@@ -71,7 +71,7 @@ class plgProjectsInfo extends \Hubzero\Plugin\Plugin
 	 * @param   string  $areas   Plugins to return data
 	 * @return  array   Return array of html
 	 */
-	public function onProject($model, $action = '', $areas = NULL)
+	public function onProject($model, $action = '', $areas = null)
 	{
 		$returnhtml = true;
 
@@ -156,8 +156,8 @@ class plgProjectsInfo extends \Hubzero\Plugin\Plugin
 		}
 
 		$fields = Components\Projects\Models\Orm\Description\Field::all()
-				->order('ordering', 'ASC')
-				->rows();
+			->order('ordering', 'ASC')
+			->rows();
 
 		$projectDescription = Components\Projects\Models\Orm\Description::all()
 			->where('project_id', '=', $model->get('id'))

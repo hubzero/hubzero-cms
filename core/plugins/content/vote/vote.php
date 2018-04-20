@@ -67,8 +67,8 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
 			$img = '';
 
 			// look for images in template if available
-			$starImageOn  = Html::asset('image', 'system/rating_star.png', NULL, NULL, true);
-			$starImageOff = Html::asset('image', 'system/rating_star_blank.png', NULL, NULL, true);
+			$starImageOn  = Html::asset('image', 'system/rating_star.png', null, null, true);
+			$starImageOff = Html::asset('image', 'system/rating_star_blank.png', null, null, true);
 
 			for ($i=0; $i < $rating; $i++)
 			{

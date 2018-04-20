@@ -61,7 +61,7 @@ class Local
 	{
 		if (!empty($this->socketPath))
 		{
-			$socket = fsockopen('unix://' . $this->socketPath, NULL, $errno, $errstr);
+			$socket = fsockopen('unix://' . $this->socketPath, null, $errno, $errstr);
 		}
 		else
 		{
@@ -224,8 +224,8 @@ class Local
 			$matches
 		))
 		{
-			($matches[1] == 'True' || $matches[1] == 'Yes')?
-				$result->isSpam = true :
+			($matches[1] == 'True' || $matches[1] == 'Yes') ?
+				$result->isSpam = true:
 				$result->isSpam = false;
 
 			$result->score    = (float)$matches[2];
@@ -240,13 +240,13 @@ class Local
 			 * processed message headers.
 			*/
 			if (preg_match(
-				  '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
-				  $header . $message,
-				  $matches))
+				'/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
+				$header . $message,
+				$matches
+			))
 			{
-
-				($matches[1] == 'Yes')?
-					$result->isSpam = true :
+				($matches[1] == 'Yes') ?
+					$result->isSpam = true:
 					$result->isSpam = false;
 
 				$result->score    = (float)$matches[2];
@@ -290,9 +290,9 @@ class Local
 		$socket = $this->getSocket();
 
 		$this->write($socket, "PING SPAMC/{$this->protocolVersion}\r\n\r\n");
-		list($headers, $message)= $this->read($socket);
+		list($headers, $message) = $this->read($socket);
 
-		if (strpos($headers, "PONG")=== false)
+		if (strpos($headers, "PONG") === false)
 		{
 			return false;
 		}

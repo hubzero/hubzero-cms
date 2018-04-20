@@ -46,7 +46,7 @@ defined('_HZEXEC_') or die();
 /**
  * Output PNG file
  */
-define('MW_MATH_PNG',    0);
+define('MW_MATH_PNG', 0);
 
 /**
  * Output simple rendering
@@ -56,7 +56,7 @@ define('MW_MATH_SIMPLE', 1);
 /**
  * Output HTML
  */
-define('MW_MATH_HTML',   2);
+define('MW_MATH_HTML', 2);
 
 /**
  * Output Source
@@ -326,18 +326,18 @@ class MathRenderer
 				{
 					$this->conservativeness = 0;
 				}
-				$this->mathml = NULL;
+				$this->mathml = null;
 			}
 			else if ($retval == 'X')
 			{
-				//$this->html = NULL;
+				//$this->html = null;
 				$this->mathml = substr($contents, 33);
 				$this->conservativeness = 0;
 			}
 			else if ($retval == '+')
 			{
-				//$this->html = NULL;
-				//$this->mathml = NULL;
+				//$this->html = null;
+				//$this->mathml = null;
 				$this->conservativeness = 0;
 			}
 			else
@@ -345,10 +345,17 @@ class MathRenderer
 				$errbit = htmlspecialchars(substr($contents, 1));
 				switch ($retval)
 				{
-					case 'E': $errmsg = $this->_error('math_lexing_error', $errbit);
-					case 'S': $errmsg = $this->_error('math_syntax_error', $errbit);
-					case 'F': $errmsg = $this->_error('math_unknown_function', $errbit);
-					default:  $errmsg = $this->_error('math_unknown_error2', $errbit);
+					case 'E':
+						$errmsg = $this->_error('math_lexing_error', $errbit);
+						break;
+					case 'S':
+						$errmsg = $this->_error('math_syntax_error', $errbit);
+						break;
+					case 'F':
+						$errmsg = $this->_error('math_unknown_function', $errbit);
+						break;
+					default:
+						$errmsg = $this->_error('math_unknown_error2', $errbit);
 				}
 			}
 
@@ -376,7 +383,6 @@ class MathRenderer
 
 			if (!file_exists($hashpath))
 			{
-				//if (!@wfMkdirParents($hashpath, 0755)) {
 				if (!$this->_makePath($hashpath))
 				{
 					return $this->_error('math_bad_output');

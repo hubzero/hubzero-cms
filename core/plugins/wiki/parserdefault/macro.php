@@ -44,7 +44,7 @@ class WikiMacro
 	 *
 	 * @var  string
 	 */
-	protected $_name = NULL;
+	protected $_name = null;
 
 	/**
 	 * Container for internal data
@@ -58,21 +58,21 @@ class WikiMacro
 	 *
 	 * @var  object
 	 */
-	protected $_db = NULL;
+	protected $_db = null;
 
 	/**
 	 * Container for errors
 	 *
 	 * @var  array
 	 */
-	protected $_error = NULL;
+	protected $_error = null;
 
 	/**
 	 * Container for errors
 	 *
 	 * @var  array
 	 */
-	protected $_arguments = NULL;
+	protected $_arguments = null;
 
 	/**
 	 * Allow macro in partial parsing?
@@ -93,7 +93,7 @@ class WikiMacro
 	 *
 	 * @var  object
 	 */
-	static protected $thisInstance = NULL;
+	static protected $thisInstance = null;
 
 	/**
 	 * Constructor
@@ -314,4 +314,3 @@ class WikiMacro
 		return isset($arguments[$key]);
 	}
 }
-

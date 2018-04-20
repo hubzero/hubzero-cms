@@ -103,7 +103,7 @@ $req .= ':';
 
 // Get attached items
 $attachments = $this->publication->attachments();
-$attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : NULL;
+$attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : null;
 $attachments = $attModel->getElementAttachments($elId, $attachments, $params->type);
 
 $used = array();
@@ -137,10 +137,10 @@ if (!empty($this->directory))
 	$layout = (Request::getInt('cid') && Request::getInt('cid') > 0) ? 'selector-remote' : 'selector';
 	$view = new \Hubzero\Plugin\View(
 		array(
-			'folder'	=>'projects',
-			'element'	=>'files',
-			'name'		=>'selector',
-			'layout'	=>$layout
+			'folder'  => 'projects',
+			'element' => 'files',
+			'name'    => 'selector',
+			'layout'  => $layout
 		)
 	);
 	$view->option       = $this->option;

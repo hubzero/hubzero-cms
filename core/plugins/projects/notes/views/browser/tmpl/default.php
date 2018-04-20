@@ -52,7 +52,7 @@ if ($items)
 {
 	foreach ($items as $note)
 	{
-		$parts = explode ( '/', $note->scope );
+		$parts = explode('/', $note->scope);
 		$remaining = array_slice($parts, 3);
 		$level = count($remaining) + 1;
 		$parent = $level > 1 ? array_shift($remaining) : '';
@@ -77,7 +77,7 @@ $missing = array();
 $shown = array();
 
 // Attached item
-$selected = NULL;
+$selected = null;
 if ($this->primary && !empty($this->attachments))
 {
 	$selected = $this->attachments[0]->object_name;
@@ -90,51 +90,57 @@ $route = $this->model->isProvisioned()
 
 ?>
 <ul id="c-browser" <?php if (count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?> >
-<?php
+	<?php
 	if (count($notes) > 0)
-	{ ?>
-
-		<?php foreach ($notes as $note)
+	{
+		foreach ($notes as $note)
 		{
 			foreach ($note as $level => $parent)
 			{
 				$p2 = 0;
 
 				foreach ($parent as $entry)
-				{ ?>
-					<?php if ($level == 1) { ?>
-					<li class="c-click notes toplevel" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?>
-					<?php } ?>
+				{
+					if ($level == 1)
+					{
+						?>
+						<li class="c-click notes toplevel" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?>
+						<?php
+					}
 
-					<?php if ($level == 2) {
+					if ($level == 2)
+					{
 						$p2++;
 						if ($p2 == 1)
 						{
 							echo '<ol>';
 						}
-					?>
-					<li class="c-click notes wikilevel_2" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?></li>
-					<?php
+						?>
+						<li class="c-click notes wikilevel_2" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?></li>
+						<?php
 						if ($p2 == count($parent))
 						{
 							echo '</ol>';
 						}
-					 }
-					?>
+					}
 
-					<?php
-						$shown[] = $entry->id;
+					$shown[] = $entry->id;
 
-						// Third level of notes
-						if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) {
-							foreach ($thirdlevel[$entry->pagename] as $subpage) { ?>
+					// Third level of notes
+					if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0)
+					{
+						foreach ($thirdlevel[$entry->pagename] as $subpage)
+						{
+							?>
 							<li class="c-click notes wikilevel_3" id="note::<?php echo $subpage->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($subpage->title, 35); ?></li>
-
-					<?php $shown[] = $subpage->id;	}
-					 } ?>
-
+							<?php
+							$shown[] = $subpage->id;
+						}
+					}
+					?>
 					</li>
-		<?php	}
+					<?php
+				}
 			}
 		}
 
@@ -162,12 +168,17 @@ $route = $this->model->isProvisioned()
 		if (count($missing) > 0)
 		{
 			foreach ($missing as $miss)
-			{ ?>
-				<li class="c-click notes i-missing" id="note::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_NOTES_MISSING_NOTE'); ?></span></li>
-		<?php	}
+			{
+				?>
+				<li class="c-click notes i-missing" id="note::<?php echo $miss['id']; ?>">
+					<?php echo $miss['title']; ?>
+					<span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_NOTES_MISSING_NOTE'); ?></span>
+				</li>
+				<?php
+			}
 		}
 	}
-?>
+	?>
 </ul>
 
 <?php if ((count($shown) + count($missing)) == 0) { ?>
