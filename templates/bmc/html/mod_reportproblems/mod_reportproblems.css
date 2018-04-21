@@ -36,14 +36,15 @@
 	border: none;
 }
 #help-container a {
-	color: #eb6546;
+	color: #97c563;
 	border-bottom: 1px dotted #344e54;
 	border-bottom: 1px dotted rgba(52, 78, 85, 0.4);
 	background-image: none;
+	font-weight: bold;
 }
 #help-pane a:hover {
 	border: none;
-	color: #fff;
+	color: #cca231;
 	background-image: none;
 }
 #help-container li p,
@@ -74,6 +75,10 @@
 	background-color: #fff;
 	border-color: #0fa1ca;
 }
+#help-container input[type="submit"]:hover {
+	background-color: #cca231;
+	border-color: #cca231;
+}
 #help-container li.help-kb,
 #help-container li.help-qa,
 #help-container li.help-wish,
@@ -99,7 +104,7 @@
 	top: 5px;
 	left: 0;
 	z-index: 100;
-	color: #eb6546;
+	color: #86bc49;
 	text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
 }
 #help-container li.help-kb:before {
@@ -148,9 +153,10 @@
 		margin-bottom: -2px;
 }
 
-#close-form:hover {
-	background: #eb6546;
-	border: 1px solid #eb6546 !important;
+#close-form:hover,
+#trSuccess button:hover {
+	background: #cca231;
+	border: 1px solid #cca231 !important;
 }
 
 /* Help Tab */
