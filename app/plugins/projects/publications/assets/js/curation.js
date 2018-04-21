@@ -982,13 +982,13 @@ HUB.ProjectPublicationsDraft = {
 			$req = $(fa).find('.required');
 			if (!depth_met) {
 				if (max_depth > 0) {
-					$req.html('required - must select at least one sub-item');
+					$req.removeClass('complete').html('required - must select at least one sub-item');
 				} else {
-					$req.html('required');
+					$req.removeClass('complete').html('required');
 				}
 				selected = '';
 			} else {
-				$req.html('required');
+				$req.addClass('complete').html('complete');
 			}
 
 			all_depths_met = all_depths_met && depth_met;
