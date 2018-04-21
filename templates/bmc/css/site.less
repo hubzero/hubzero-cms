@@ -19,3 +19,39 @@
     background: none;
   }
 }
+
+input[type="submit"],
+button {
+	line-height: 1.61803399em;
+	padding: 0.4045084975em 1em;
+	border: none;
+	background: #628d29;
+	color: #fff;
+	border: 1px solid #628d29;
+
+	-webkit-border-radius: .25em;
+	-moz-border-radius: .25em;
+	-ms-border-radius: .25em;
+	-o-border-radius: .25em;
+	border-radius: .25em;
+
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-ms-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+
+  &:hover {
+    background: #eb6546;
+  	border-color: #eb6546;
+  }
+}
+
+.mobile-panel.show.menu .subpanel.search .label,
+.mobile-panel .subpanel.search .label {
+  opacity: inherit;
+}
+
+.mobile-panel .subpanel.search .label {
+  font-size: 3rem;
+}

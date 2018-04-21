@@ -142,6 +142,11 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 									<ul>
 										<li><a href="/about">About</a></li>
 										<li><a href="/news">News & Activities</a></li>
+									  <li id="help" class="helpme">
+											<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('Need help? Send a trouble report to our support team.'); ?>">
+												<span><?php echo Lang::txt('Help'); ?></span>
+											</a>
+										</li>
 									</ul>
 								</nav>
 								<nav class="buttons">
@@ -180,6 +185,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								<span>&nbsp;</span>
 							</button>
 						</div>
+						<jdoc:include type="modules" name="helppane" />
 						<div class="search-panel">
 							<div class="text-field">
 								<jdoc:include type="modules" name="search" />
@@ -301,7 +307,9 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 			<div class="inner scroller">
 				<div class="subpanel menu">
 					<div class="inner">
+						<h4><a style="color: #8cc540;" href="/">Home</a></h4>
 						<jdoc:include type="modules" name="user3" />
+						<jdoc:include type="modules" name="mobile-menu" />
 					</div>
 				</div>
 				<div class="subpanel search">
