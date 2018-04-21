@@ -47,6 +47,9 @@
 .page-com_projects .com_projects .ptitle {
   position: relative;
 }
+.page-com_projects .com_projects #pimage {
+  margin: 1.5em 1em 1em 1.5em;
+}
 .page-com_projects .com_projects #member_options {
   float: none;
   position: absolute;
