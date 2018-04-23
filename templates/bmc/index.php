@@ -144,7 +144,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 										<li><a href="/news">News & Activities</a></li>
 									  <li id="help" class="helpme">
 											<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('Need help? Send a trouble report to our support team.'); ?>">
-												<span><?php echo Lang::txt('Support'); ?></span>
+												<span><?php echo Lang::txt('Help'); ?></span>
 											</a>
 										</li>
 									</ul>
