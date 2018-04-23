@@ -71,17 +71,44 @@ class Mailinglists extends AdminController
 	 */
 	public function displayTask()
 	{
+		$filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'sort' => Request::getstate(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'name'
+			),
+			'sort_Dir' => Request::getstate(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+
 		// instantiate mailing list object
 		$lists = Mailinglist::all()
-			->whereEquals('deleted', 0)
-			->ordered()
+			->whereEquals('deleted', 0);
+
+		if ($filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
+			$lists->whereLike('name', $filters['search']);
+		}
+
+		$rows = $lists
+			->ordered($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 
 		// diplay list of mailing lists
 		$this->view
 			->setLayout('display')
-			->set('lists', $lists)
+			->set('lists', $rows)
+			->set('filters', $filters)
 			->display();
 	}
 

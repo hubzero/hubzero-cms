@@ -57,6 +57,7 @@ Joomla.submitbutton = function(pressbutton)
 </script>
 
 <?php
+	$this->css('mailings.css');
 	if ($this->getError())
 	{
 		echo '<p class="error">' . $this->getError() . '</p>';
@@ -64,12 +65,23 @@ Joomla.submitbutton = function(pressbutton)
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
+	<fieldset id="filter-bar">
+		<div class="grid">
+			<div class="col">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+
+				<input type="submit" value="<?php echo Lang::txt('COM_NEWSLETTER_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+		</div>
+</fieldset>
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->mailings); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?></th>
-				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_DATE'); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILING_DATE', 'date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
 				<th scope="col"	class="priority-4"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_REOCCUR'); ?></th>
 			</tr>
@@ -145,6 +157,8 @@ Joomla.submitbutton = function(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

@@ -49,7 +49,7 @@ class Newsletter extends Relational
 	 *
 	 * @var  string
 	 */
-	public $orderBy = 'id';
+	public $orderBy = 'name';
 
 	/**
 	 * Default order direction for select queries
