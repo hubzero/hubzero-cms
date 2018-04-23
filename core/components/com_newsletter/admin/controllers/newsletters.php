@@ -135,16 +135,21 @@ class Newsletters extends AdminController
 				-1,
 				'int'
 			),
+			'type'=> Request::getstate(
+				$this->_option . '.' . $this->controller . '.type',
+				'type',
+				''
+			),
 			// Sorting
 			'sort' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'created'
+				'name'
 			),
 			'sort_Dir' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
-				'DESC'
+				'ASC'
 			)
 		);
 
@@ -157,13 +162,17 @@ class Newsletters extends AdminController
 		if ($filters['search'])
 		{
 			$filters['search'] = strtolower((string)$filters['search']);
-
 			$records->whereLike('name', $filters['search']);
 		}
 
 		if ($filters['published'] >= 0)
 		{
 			$records->whereEquals('published', $filters['published']);
+		}
+
+		if ($filters['type'] != '')
+		{
+			$records->whereEquals('type', $filters['type']);
 		}
 
 		$rows = $records
