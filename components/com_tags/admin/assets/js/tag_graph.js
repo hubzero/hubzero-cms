@@ -101,7 +101,7 @@ jQuery(function(jq)
 			.append("svg:svg")
 			.attr("width", w)
 			.attr("height", h);
-		d3.json("/administrator/index.php?option=com_tags&controller=relationships&task=implicit&tag=" + tag, function(json) 
+		d3.json("/administrator/index.php?option=com_tags&controller=relationships&task=implicit&tag=" + tag, function(json)
 		{
 			$('#description').val(json.description);
 			$('.tag-id').val(json.id);
@@ -157,7 +157,7 @@ jQuery(function(jq)
 				.duration(1000)
 				.style("opacity", 1);
 
-			force.on("tick", function() 
+			force.on("tick", function()
 			{
 				link
 					.attr("x1", function(d) { return d.source.x; })
@@ -187,7 +187,7 @@ jQuery(function(jq)
 			.attr("width", w)
 			.attr("height", 400);
 		console.log(tag);
-		d3.json("/administrator/index.php?option=com_tags&controller=relationships&task=hierarchy&tag=" + tag, function(json) 
+		d3.json("/administrator/index.php?option=com_tags&controller=relationships&task=hierarchy&tag=" + tag, function(json)
 		{
 			$('#description').val(json.description);
 			$('.tag-id').val(json.id);
@@ -222,15 +222,15 @@ jQuery(function(jq)
 					.attr("cy", function(d) { return d.y; })
 					.attr("rx", 5)
 					.attr('ry', 5)
-					.style("fill", function(d) 
-					{ 
-						return d.tag == $('#center-node').val() || d.raw_tag == $('#center-node').val() 
-							? '#79a' 
-							: d.type === 'parent' 
-								? '#fdc' 
+					.style("fill", function(d)
+					{
+						return d.tag == $('#center-node').val() || d.raw_tag == $('#center-node').val()
+							? '#79a'
+							: d.type === 'parent'
+								? '#fdc'
 								: d.type === 'label'
 								 ? '#cfd'
-								 : '#cdf'; 
+								 : '#cdf';
 					})
 					.call(force.drag)
 					.on('click', function(n)
@@ -238,7 +238,7 @@ jQuery(function(jq)
 						$('#center-node').val(n.raw_tag);
 						$('#tag-sel').submit();
 					});
-			
+
 			var labels = vis.selectAll('circle.node')
 			.data(json.nodes)
 			.enter().append('svg:text')
@@ -253,7 +253,7 @@ jQuery(function(jq)
 				.duration(1000)
 				.style("opacity", 1);
 
-			force.on("tick", function() 
+			force.on("tick", function()
 			{
 				link
 					.attr("x1", function(d) { return d.source.x; })
@@ -302,55 +302,63 @@ jQuery(function(jq)
 		++new_idx;
 		++form_idx;
 		evt.preventDefault();
-		var html = '<fieldset class="adminform" id="group-' + form_idx + '">' + 
-		'<legend><span>Group</span></legend>' + 
-			'<div class="input-wrap">' + 
-				'<label for="name-new-' + new_idx + '">Group name:</label>' + 
-				'<input type="text" name="name-new-' + new_idx + '" id="name-new-' + new_idx + '" />' + 
-			'</div>' + 
-			'<fieldset>' + 
-				'<legend>Show for resource types:</legend>' + 
-				'<div class="input-wrap">' + 
+		var html = '<fieldset class="adminform" id="group-' + form_idx + '">' +
+		'<legend><span>Group</span></legend>' +
+			'<div class="input-wrap">' +
+				'<label for="name-new-' + new_idx + '">Group name:</label>' +
+				'<input type="text" name="name-new-' + new_idx + '" id="name-new-' + new_idx + '" />' +
+			'</div>' +
+			'<div class="input-wrap">' +
+				'<label for="label-new-' + new_idx + '">Label:</label>' +
+				'<input type="text" name="label-new-' + new_idx + '" id="label-new-' + new_idx + '" />' +
+			'</div>' +
+			'<div class="input-wrap">' +
+				'<label for="about-new-' + new_idx + '">About:</label>' +
+				'<textarea name="about[' + new_idx + ']" id="about- ' + new_idx + '" cols="50" rows="5"></textarea>' +
+			'</div>' +
+			'<fieldset>' +
+				'<legend>Show for resource types:</legend>' +
+				'<div class="input-wrap">' +
 					'<select name="rtypes-new-' + new_idx + '[]" id="rtypes-new-' + new_idx + '" multiple="multiple" size="' + window.resourceTypes.length + '">';
 					$(window.resourceTypes).each(function(_idx, type)
 					{
 						html += '<option value="' + type.id + '">' + type.type + '</option>';
 					});
-					html += '</select>' + 
+					html += '</select>' +
 					'</div>' +
 			'</fieldset>' +
-			'<fieldset>' + 
-				'<legend>Show for publication types:</legend>' + 
-				'<div class="input-wrap">' + 
+			'<fieldset>' +
+				'<legend>Show for publication types:</legend>' +
+				'<div class="input-wrap">' +
 					'<select name="ptypes-new-' + new_idx + '[]" id="ptypes-new-' + new_idx + '" multiple="multiple" size="' + window.publicationTypes.length + '">';
 					$(window.publicationTypes).each(function(_idx, type)
 					{
 						html += '<option value="' + type.id + '">' + type.type + '</option>';
 					});
-					html += '</select>' + 
+					html += '</select>' +
 				'</div>' +
 			'</fieldset>' +
 			'<fieldset>' +
 				'<legend>Requirement:</legend>' +
 				'<div class="input-wrap">' +
 					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-optional" value="optional" /> optional</label><br />' +
-					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-mandatory" value="mandatory" /> mandatory</label><br />' + 
-					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-depth" value="depth" /></label> <label for="mandatory-depth-new-' + new_idx + '">until depth:</label><br />' + 
-					'<input type="text" name="mandatory-depth-new-' + new_idx + '" id="mandatory-depth-new-' + new_idx + '" />' + 
-				'</div>' + 
-			'</fieldset>' + 
-			'<fieldset>' + 
-				'<legend>Selection type:</legend>' + 
-				'<div class="input-wrap">' + 
-					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-multiple" value="multiple" /> multiple-select (checkbox)</label><br />' + 
-					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-single" value="single" /> single-select (radio) </label><br />' + 
-					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-depth" value="depth" /> single-select</label> <label for="multiple-depth-new-' + new_idx + '">until depth: </label><br />' + 
-					'<input type="text" name="multiple-depth-new-' + new_idx + '" id="multiple-depth-new-' + new_idx + '" />' + 
-				'</div>' + 
-			'</fieldset>' + 
-			'<div class="input-wrap">' + 
-				'<button class="delete-group" id="delete-' + form_idx + '" rel="group-' + form_idx + '">Delete group</button>' + 
-			'</div>' + 
+					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-mandatory" value="mandatory" /> mandatory</label><br />' +
+					'<label><input type="radio" name="mandatory-new-' + new_idx + '" id="mandatory-new-' + new_idx + '-depth" value="depth" /></label> <label for="mandatory-depth-new-' + new_idx + '">until depth:</label><br />' +
+					'<input type="text" name="mandatory-depth-new-' + new_idx + '" id="mandatory-depth-new-' + new_idx + '" />' +
+				'</div>' +
+			'</fieldset>' +
+			'<fieldset>' +
+				'<legend>Selection type:</legend>' +
+				'<div class="input-wrap">' +
+					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-multiple" value="multiple" /> multiple-select (checkbox)</label><br />' +
+					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-single" value="single" /> single-select (radio) </label><br />' +
+					'<label><input type="radio" name="multiple-new-' + new_idx + '" id="multiple-new-' + new_idx + '-depth" value="depth" /> single-select</label> <label for="multiple-depth-new-' + new_idx + '">until depth: </label><br />' +
+					'<input type="text" name="multiple-depth-new-' + new_idx + '" id="multiple-depth-new-' + new_idx + '" />' +
+				'</div>' +
+			'</fieldset>' +
+			'<div class="input-wrap">' +
+				'<button class="delete-group" id="delete-' + form_idx + '" rel="group-' + form_idx + '">Delete group</button>' +
+			'</div>' +
 		'</fieldset>';
 		var li = $(html);
 

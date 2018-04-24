@@ -447,7 +447,7 @@ class Relationships extends AdminController
 	 */
 	public function updatefocusareasTask()
 	{
-		$this->database->setQuery('SELECT id, tag_id, mandatory_depth, multiple_depth FROM `#__focus_areas`');
+		$this->database->setQuery('SELECT id, tag_id, label, about, mandatory_depth, multiple_depth FROM `#__focus_areas`');
 
 		$existing = $this->database->loadAssocList('id');
 
@@ -457,6 +457,7 @@ class Relationships extends AdminController
 		$this->database->setQuery('TRUNCATE TABLE #__focus_area_publication_master_type_rel');
 		$this->database->execute();
 		error_log(var_export($_POST, 1));
+		$about = Request::getVar('about', array(), 'post');
 		foreach ($existing as $id => $fa)
 		{
 			// no form field == deleted
@@ -470,7 +471,9 @@ class Relationships extends AdminController
 			$this->database->setQuery('UPDATE `#__focus_areas` SET
 				mandatory_depth = ' . ($_POST['mandatory-' . $id] === 'mandatory' ? 1 : ($_POST['mandatory-' . $id] === 'depth' ? (int)$_POST['mandatory-depth-' . $id] : 'NULL')) . ',
 				multiple_depth = ' . ($_POST['multiple-' . $id]  === 'multiple'  ? 1 : ($_POST['multiple-' . $id]  === 'depth' ? (int)$_POST['multiple-depth-' . $id]  : 'NULL')) . ',
-				tag_id = ' . $new_tag['id'].'
+				label = ' . $this->database->quote($_POST['label-' . $id]) . ',
+				about = ' . $this->database->quote($about[$id]) . ',
+				tag_id = ' . $new_tag['id'] . '
 				WHERE id = ' . $id
 			);
 			$this->database->execute();
@@ -494,6 +497,7 @@ class Relationships extends AdminController
 			}
 		}
 
+		// New focus area
 		for ($idx = 1; isset($_POST['name-new-' . $idx]); ++$idx)
 		{
 			if (!trim($_POST['name-new-' . $idx]))
@@ -502,9 +506,11 @@ class Relationships extends AdminController
 			}
 			$tag = $this->get_tag($_POST['name-new-' . $idx], false);
 
-			$this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES (' .
+			$this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, label, about, tag_id) VALUES (' .
 				($_POST['mandatory-new-' . $idx] === 'mandatory' ? 1 : ($_POST['mandatory-new-' . $idx] === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', ' .
 				($_POST['multiple-new-' . $idx]  === 'multiple'  ? 1 : ($_POST['multiple-new-' . $idx]  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', ' .
+				$this->database->quote($_POST['label-new-' . $idx]) . ', ' .
+				$this->database->quote($about[$idx]) . ', ' .
 				$tag['id'] . ')'
 			);
 			$this->database->execute();
