@@ -80,6 +80,14 @@ window.publicationTypes = <?php echo json_encode(array_values($ptypes)); ?>;
 						<label for="name-<?php echo $fa['id']; ?>"><?php echo Lang::txt('COM_TAGS_GROUP_NAME'); ?>:</label>
 						<input type="text" name="name-<?php echo $fa['id']; ?>" id="name-<?php echo $fa['id']; ?>" value="<?php echo str_replace('"', '&quot;', $fa['raw_tag']); ?>" />
 					</div>
+					<div class="input-wrap">
+						<label for="label-<?php echo $fa['id']; ?>"><?php echo Lang::txt('COM_TAGS_GROUP_LABEL'); ?>:</label>
+						<input type="text" name="label-<?php echo $fa['id']; ?>" id="label-<?php echo $fa['id']; ?>" value="<?php echo str_replace('"', '&quot;', $fa['label']); ?>" />
+					</div>
+					<div class="input-wrap">
+						<label for="about-<?php echo $fa['id']; ?>"><?php echo Lang::txt('COM_TAGS_GROUP_ABOUT'); ?>:</label>
+						<?php echo $this->editor('about[' . $fa['id'] . ']', $this->escape($fa['about']), 50, 5, 'about-' . $fa['id'], array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					</div>
 
 					<!-- Resources -->
 					<fieldset>
@@ -153,4 +161,3 @@ window.publicationTypes = <?php echo json_encode(array_values($ptypes)); ?>;
 		</div>
 	</div>
 </form>
-
