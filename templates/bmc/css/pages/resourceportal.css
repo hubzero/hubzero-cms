@@ -404,23 +404,58 @@
 }
 
 .resource-partner .browse .link {
-  text-transform: uppercase;
   display: inline-block;
   margin: 1em;
 }
 
 .resource-partner .browse .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-.resource-partner .browse .link a:active {
-  color: #fff;
+.resource-partner .browse .link a::before, .resource-partner .browse .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.resource-partner .browse .link a:visited {
-  color: #fff;
+.resource-partner .browse .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.resource-partner .browse .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.resource-partner .browse .link a:hover {
+  color: #cca231;
+}
+
+.resource-partner .browse .link a:hover::before, .resource-partner .browse .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.resource-partner .browse .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.resource-partner .browse .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 #two {
@@ -471,22 +506,57 @@
 }
 
 #two .collections .link {
-  text-transform: uppercase;
   margin-top: 3em;
 }
 
 #two .collections .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #6E9C39;
+  color: #6E9C39;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #84bf41;
-  color: #84bf41 !important;
 }
 
-#two .collections .link a:active {
-  color: #84bf41;
+#two .collections .link a::before, #two .collections .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-#two .collections .link a:visited {
-  color: #84bf41;
+#two .collections .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+#two .collections .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+#two .collections .link a:hover {
+  color: #cca231;
+}
+
+#two .collections .link a:hover::before, #two .collections .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+#two .collections .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+#two .collections .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @media only screen and (min-width: 901px) {
@@ -538,22 +608,57 @@
 }
 
 #three .software .link {
-  text-transform: uppercase;
   margin-top: 3em;
 }
 
 #three .software .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-#three .software .link a:active {
-  color: #fff;
+#three .software .link a::before, #three .software .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-#three .software .link a:visited {
-  color: #fff;
+#three .software .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+#three .software .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+#three .software .link a:hover {
+  color: #cca231;
+}
+
+#three .software .link a:hover::before, #three .software .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+#three .software .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+#three .software .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @media only screen and (min-width: 901px) {
@@ -591,6 +696,14 @@
   width: 8rem;
   height: 8rem;
   padding: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+@supports (display: grid) {
+  #three .software-logos .logo-wrap {
+    width: auto;
+    height: auto;
+  }
 }
 
 #three .software-logos .logo-wrap img {
@@ -608,7 +721,15 @@
 }
 
 #three .software-logos .logo-wrap h6 a:visited {
-  color: #F1F2F2 "\a           }\a           &:hover {\a             color: $light-gray";
+  color: #F1F2F2;
+}
+
+#three .software-logos .logo-wrap:hover {
+  transform: scale(1.1);
+}
+
+#three .software-logos .logo-wrap:hover a {
+  color: #cca231;
 }
 
 @media only screen and (min-width: 901px) {
