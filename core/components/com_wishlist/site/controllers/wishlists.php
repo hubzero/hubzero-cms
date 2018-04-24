@@ -1176,8 +1176,8 @@ class Wishlists extends SiteController
 			return;
 		}
 
-		$row->set('anonymous', Request::getInt('anonymous', 0));
-		$row->set('private', Request::getInt('private', 0));
+		//$row->set('anonymous', Request::getInt('anonymous', 0));
+		//$row->set('private', Request::getInt('private', 0));
 		//$row->set('about', Sanitize::clean($row->get('about')));
 		$row->set('proposed', ($wishid ? $row->get('proposed') : Date::toSql()));
 
