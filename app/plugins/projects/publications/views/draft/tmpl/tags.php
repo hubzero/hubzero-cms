@@ -80,11 +80,15 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 								$fa_existing = $recommended->get_existing_focus_areas_map();
 								$fa_props = $recommended->get_focus_area_properties();
 
+								echo 'Choose from these recommended tags:';
 								$idx = 0;
 								foreach ($focusareas as $label=>$fas):
 								?>
 									<fieldset value="<?php echo ($fa_props[$label]['mandatory_depth'] ? $fa_props[$label]['mandatory_depth'] : 0) ?>">
-										<legend><?php echo 'Choose from these recommended tags: '.($fa_props[$label]['mandatory_depth'] ? '<span class="required">required</span>' : '<span class="optional">optional</span>'); ?></legend>
+										<legend>
+											<span class="tooltips" title='<?php echo $fa_props[$label]['about']; ?>'><?php echo ($fa_props[$label]['label'] ? $fa_props[$label]['label'] : $label) ?></span>
+											<?php echo ($fa_props[$label]['mandatory_depth'] ? '<span class="required">required</span>' : '<span class="optional">optional</span>'); ?>
+										</legend>
 										<?php $recommended->fa_controls(++$idx, $fas, $fa_props, $fa_existing); ?>
 									</fieldset>
 								<?php
