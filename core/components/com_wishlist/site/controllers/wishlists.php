@@ -1376,7 +1376,7 @@ class Wishlists extends SiteController
 					$wish->set('granted_vid', ($vid ? $vid : 0));
 
 					//$w = Wish::oneOrNew($wish->get('id'));
-					$wish->set('points', $w->bonus);
+					$wish->set('points', $wish->bonus);
 
 					if ($this->banking)
 					{
