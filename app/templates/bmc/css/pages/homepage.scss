@@ -68,8 +68,10 @@ h3 {
     align-self: center;
     order: -1;
     .link {
-      @include buttons($white);
       padding-top: 2em;
+      a {
+        @include btn-border-drawing($white, $orange, 2px, bottom, right);
+      }
     }
     @include respond-at(901px) {
       @include grid(3 / span 2, null);
@@ -136,8 +138,10 @@ h3 {
     width: 100%;
     padding: 2.5em;
     .link {
-      @include buttons($white);
       padding-top: 2em;
+      a {
+        @include btn-border-drawing($white, $orange, 2px, bottom, right);
+      }
     }
     @include respond-at(901px) {
       width: 50%;
@@ -158,10 +162,21 @@ h3 {
     .logo-wrap {
       width: 9rem;
       height: 8rem;
+      transition: all 0.3s ease-in-out;
+      @include grid-support {
+        width: auto;
+        height: auto;
+      }
       img {
         height: 65%;
         width: 100px;
         object-fit: scale-down;
+      }
+      &:hover {
+        transform: scale(1.1);
+        a {
+          color: $orange;
+        }
       }
     }
     h6 {
@@ -171,9 +186,6 @@ h3 {
       color: $light-gray;
       a {
         color: $light-gray;
-        &:active, &:visited, &:hover {
-          @extend a;
-        }
       }
     }
     @include respond-at(901px) {
@@ -237,8 +249,10 @@ h3 {
     }
   }
   .link {
-    @include buttons($green);
     padding-top: 2em;
+    a {
+      @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
+    }
   }
 }
 .community {
@@ -271,9 +285,11 @@ h3 {
     }
     .button {
       @include grid(null, 3);
-      @include buttons($green);
       margin: 1em 0;
       text-align: center;
+      a {
+        @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
+      }
       @include respond-at(620px) {
         @include grid(null, 2);
       }
@@ -452,7 +468,9 @@ h3 {
       bottom: .5rem;
     }
     .link {
-      @include buttons($green);
+      a {
+        @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
+      }
     }
     @include grid-support {
       width: auto;
