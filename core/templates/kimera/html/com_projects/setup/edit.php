@@ -181,7 +181,7 @@ else
 										<input name="title" id="field-title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" />
 									</label>
 
-									<label for="field-title">
+									<label for="field-about">
 										<?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?>
 										<?php echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'about', array('class' => 'minimal no-footer')); ?>
 									</label>
