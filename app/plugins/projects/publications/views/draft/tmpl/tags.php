@@ -56,6 +56,14 @@ foreach ($fas as $tag => $fa)
 	}
 	$focusareas[$fa['label']][$tag] = $fa;
 }
+// Now sort by ordering
+function custom_sort($a,$b) {
+	return (int)$a['ordering']>(int)$b['ordering'];
+}
+foreach ($focusareas as $key => $fas)
+{
+	usort($focusareas[$key], "custom_sort");
+}
 
 $this->css('tags.css')
      ->js('tags.js');
