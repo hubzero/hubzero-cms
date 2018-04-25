@@ -732,7 +732,7 @@ class Items extends AdminController
 			$groups = \Hubzero\User\Group::find($filters);
 
 			// Build <select> of groups
-			$lists['groups'] = Html::selectGroup($groups, $row->group_owner);
+			$lists['groups'] = Html::selectGroup($groups, $row->group_owner->get('cn'));
 
 			// Get all contributors linked to this resource
 			$authnames = array();
