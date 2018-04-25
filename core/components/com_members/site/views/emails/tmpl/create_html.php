@@ -139,7 +139,7 @@ defined('_HZEXEC_') or die();
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 0 0.5em;" align="left">
-									<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email'))); ?>"><?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email'))); ?></a></p>
+									<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email'))); ?>"><?php echo $this->baseURL . Route::urlForClient('site', 'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email'))); ?></a></p>
 								</td>
 							</tr>
 						</tbody>
