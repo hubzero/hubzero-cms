@@ -221,7 +221,9 @@
     text-align: center;
     padding: 2.5em;
     .link {
-      @include buttons($white);
+      a {
+        @include btn-border-drawing($white, $orange, 2px, bottom, right);
+      }
     }
     @include grid-support {
       width: auto;
@@ -274,8 +276,10 @@
     text-align: center;
     padding: 2.5em;
     .link {
-      @include buttons($white);
       margin-top: 3em;
+      a {
+        @include btn-border-drawing($white, $orange, 2px, bottom, right);
+      }
     }
   }
 }
@@ -541,7 +545,9 @@
     color: $white;
   }
   .link {
-    @include buttons($white);
+    a {
+      @include btn-border-drawing($white, $orange, 2px, bottom, right);
+    }
   }
   @include grid-support {
     p {

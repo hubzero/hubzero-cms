@@ -35,6 +35,7 @@ defined('_HZEXEC_') or die();
 
 <div class="card [ is-collapsed ]">
     <div class="card__inner [ js-expander ]">
+    <i class="fa fa-info-circle"></i>
 		<img src="<?php echo 'app/site/media/images/partners/' . $this->record->get('logo_img') ?>" alt="<?php echo $this->record->get('name'); ?>" class="card-logo">
     </div>
 	<div class="card__expander">

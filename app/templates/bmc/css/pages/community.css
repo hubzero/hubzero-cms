@@ -384,22 +384,54 @@
   padding: 2.5em;
 }
 
-#one .fmn .link {
-  text-transform: uppercase;
-}
-
 #one .fmn .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-#one .fmn .link a:active {
-  color: #fff;
+#one .fmn .link a::before, #one .fmn .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-#one .fmn .link a:visited {
-  color: #fff;
+#one .fmn .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+#one .fmn .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+#one .fmn .link a:hover {
+  color: #cca231;
+}
+
+#one .fmn .link a:hover::before, #one .fmn .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+#one .fmn .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+#one .fmn .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @supports (display: grid) {
@@ -498,22 +530,57 @@
 }
 
 #one .ambassador .link {
-  text-transform: uppercase;
   margin-top: 3em;
 }
 
 #one .ambassador .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-#one .ambassador .link a:active {
-  color: #fff;
+#one .ambassador .link a::before, #one .ambassador .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-#one .ambassador .link a:visited {
-  color: #fff;
+#one .ambassador .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+#one .ambassador .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+#one .ambassador .link a:hover {
+  color: #cca231;
+}
+
+#one .ambassador .link a:hover::before, #one .ambassador .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+#one .ambassador .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+#one .ambassador .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 #two {
@@ -986,22 +1053,54 @@
   color: #fff;
 }
 
-#c-six .link {
-  text-transform: uppercase;
-}
-
 #c-six .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-#c-six .link a:active {
-  color: #fff;
+#c-six .link a::before, #c-six .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-#c-six .link a:visited {
-  color: #fff;
+#c-six .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+#c-six .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+#c-six .link a:hover {
+  color: #cca231;
+}
+
+#c-six .link a:hover::before, #c-six .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+#c-six .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+#c-six .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @supports (display: grid) {

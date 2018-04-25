@@ -248,9 +248,11 @@
     padding: 2.5em;
     margin: 0 auto;
     .link {
-      @include buttons($white);
       display: inline-block;
       margin: 1em;
+      a {
+        @include btn-border-drawing($white, $orange, 2px, bottom, right);
+      }
     }
   }
 }
@@ -285,8 +287,10 @@
     align-self: center;
     order: -1;
     .link {
-      @include buttons($green);
       margin-top: 3em;
+      a {
+        @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
+      }
     }
     @include respond-at(901px) {
       @include grid(span 1, 1);
@@ -319,8 +323,10 @@
     align-self: center;
     padding: 2.5em;
     .link {
-      @include buttons($white);
       margin-top: 3em;
+      a {
+        @include btn-border-drawing($white, $orange, 2px, bottom, right);
+      }
     }
     @include respond-at(901px) {
       @include grid(span 1, 1);
@@ -345,6 +351,11 @@
       width: 8rem;
       height: 8rem;
       padding: 5px;
+      transition: all 0.3s ease-in-out;
+      @include grid-support {
+        width: auto;
+        height: auto;
+      }
       img {
         height: 65%;
         object-fit: scale-down;
@@ -355,11 +366,14 @@
         a {
           color: $light-gray;
           &:visited {
-            color: $light-gray'
+            color: $light-gray;
           }
-          &:hover {
-            color: $light-gray'
-          }
+        }
+      }
+      &:hover {
+        transform: scale(1.1);
+        a {
+          color: $orange;
         }
       }
     }

@@ -124,6 +124,10 @@
   color: #fff;
 }
 
+.participate-wrapper .participate ul li a:hover {
+  color: #cca231;
+}
+
 @media only screen and (min-width: 901px) {
   .participate-wrapper .participate {
     grid-column: 1/span 1;
@@ -160,19 +164,54 @@
 .apply .link {
   margin-top: 4em;
   text-align: center;
-  text-transform: uppercase;
 }
 
 .apply .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #007991;
+  color: #007991;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #007991;
-  color: #007991 !important;
 }
 
-.apply .link a:active {
-  color: #007991;
+.apply .link a::before, .apply .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.apply .link a:visited {
-  color: #007991;
+.apply .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.apply .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.apply .link a:hover {
+  color: #cca231;
+}
+
+.apply .link a:hover::before, .apply .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.apply .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.apply .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
