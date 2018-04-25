@@ -344,42 +344,53 @@ class Relationships extends AdminController
 			$tag = $this->get_tag($tid);
 			$preload = $tag['raw_tag'];
 			$normalize = create_function('$a', 'return preg_replace(\'/[^a-zA-Z0-9]/\', \'\', strtolower($a));');
+			$update_child_query = 'UPDATE `#__tags_object` SET ordering = %d WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d';
 			// reconcile post data with what we already know about a tag's relationships
 			foreach (array(
 				'labels'   => array(
-					'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
+					'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid, ordering) VALUES (\'tags\', \'label\', %d, %d, %d)',
 					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d'
 				),
 				'labeled'  => array(
-					'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
+					'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid, ordering) VALUES (\'tags\', \'label\', %d, %d, %d)',
 					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d'
 				),
 				'parents'  => array(
-					'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
+					'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid, ordering) VALUES (\'tags\', \'parent\', %d, %d, %d)',
 					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d'
 				),
 				'children' => array(
-					'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
+					'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid, ordering) VALUES (\'tags\', \'parent\', %d, %d, %d)',
 					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d'
 				)) as $type => $sql)
 			{
+				// Used for ordering, which is only necessary for children
+				if ($type === 'children') {
+					$idx = 1;
+				} else {
+					$idx = NULL;
+				}
 				$ex = array_flip(array_map($normalize, $tag[$type]));
 				if (isset($_POST[$type]))
 				{
 					foreach ($_POST[$type] as $n_tag)
 					{
 						$norm_n_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($n_tag));
+						$n_tag = $this->get_tag($n_tag, false);
 
 						// co-occurring tags neither need to be added nor deleted, just remove them from the pool and carry on
 						if (isset($ex[$norm_n_tag]))
 						{
 							unset($ex[$norm_n_tag]);
+							if ($type === 'children') { // Update ordering for existing child
+								$this->database->setQuery(sprintf($update_child_query, $idx++, $tid, $n_tag['id']));
+								$this->database->execute();
+							}
 						}
 						// otherwise we need to add a new relationship
 						else
 						{
-							$n_tag = $this->get_tag($n_tag, false);
-							$this->database->setQuery(sprintf($sql[0], $tid, $n_tag['id']));
+							$this->database->setQuery(sprintf($sql[0], $tid, $n_tag['id'], $idx++));
 							$this->database->execute();
 						}
 					}
@@ -595,7 +606,8 @@ class Relationships extends AdminController
 				'SELECT DISTINCT t.raw_tag
 				FROM `#__tags_object` to1
 				INNER JOIN `#__tags` t ON t.id = to1.objectid
-				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = ' . $tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = ' . $tag['id'] . '
+				ORDER BY ordering'
 			);
 			$rv['children'] = $this->database->loadColumn();
 			$rv['description'] = stripslashes($rv['description']);

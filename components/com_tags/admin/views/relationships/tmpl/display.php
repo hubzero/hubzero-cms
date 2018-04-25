@@ -133,4 +133,7 @@ $this->css('tag_graph.css');
 <script type="text/javascript">
 var plgAutocompleterCss = '<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.css';
 </script>
+<script type="text/javascript">
+jQuery("#children").sortable();
+</script>
 <script src="<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.js"></script>
