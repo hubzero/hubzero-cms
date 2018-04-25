@@ -114,7 +114,7 @@ class Comments extends AdminController
 
 		if ($filters['search'])
 		{
-			$comments->whereLike('title', strtolower((string)$filters['search']));
+			$comments->whereLike('content', strtolower((string)$filters['search']));
 		}
 
 		if ($filters['entry_id'])
