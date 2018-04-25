@@ -53,6 +53,7 @@ use App;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
+include_once Component::path('members') . '/models/registration.php';
 
 /**
  * Manage site members
@@ -658,6 +659,35 @@ class Members extends AdminController
 		$this->cancelTask();
 	}
 
+	public function resendConfirmTask()
+	{
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->cancelTask();
+		}
+		Request::checkToken('get');
+		$id = Request::getInt('id');
+		$user = Member::oneOrFail($id);
+		$xregistration = new \Components\Members\Models\Registration();
+		$xregistration->loadProfile($user);
+		// Send confirmation email
+		if ($user->get('activation') < 0)
+		{
+			$sendEmail = \Components\Members\Helpers\Utility::sendConfirmEmail($user, $xregistration);
+		}
+		if ($sendEmail)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_RESEND_CONFIRM_SUCCESS'));
+		}
+		else
+		{
+			Notify::error(Lang::txt('COM_MEMBERS_RESEND_CONFIRM_ERROR'));
+		}
+		return $this->editTask($user);
+	}
 	/**
 	 * Removes a profile entry, associated picture, and redirects to main listing
 	 *
