@@ -105,7 +105,7 @@ class Resource extends Macro
 		if (is_numeric($resource))
 		{
 			// Yes, then get resource by ID
-			$r = Entry::one((int)$id);
+			$r = Entry::one((int)$resource);
 		}
 		else
 		{
