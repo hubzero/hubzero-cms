@@ -37,31 +37,30 @@ $required = $this->pub->curation('blocks', $this->step, 'required');
 
 $elName = "licensePick";
 
-$defaultText = $this->license ? $this->license->text : NULL;
+$defaultText = $this->license ? $this->license->text : null;
 $text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
 
 ?>
-
 <!-- Load content selection browser //-->
-<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
-		<?php if ($this->license) {
-			$info = $this->license->info;
-			if ($this->license->url) {
-				 $info .= ' <a href="' . $this->license->url . '" class="popup">' . Lang::txt('Read license terms') . ' &rsaquo;</a>';
-			}
-			?>
-			<div class="chosenitem">
-				<p class="item-title">
-			<?php if ($this->license) { echo '<img src="' . $this->license->icon . '" alt="' . htmlentities($this->license->title) . '" />'; } ?><?php echo $this->license->title; ?>
-					<span class="item-details"><?php echo $info; ?></span>
-				</p>
-				<?php if ($text) { ?>
-				<pre><?php echo $text; ?></pre>	
-				<?php } ?>
-			</div>
-
-		<?php } else { ?>
-			<?php echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>'; ?>
-		<?php } ?>
+<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
+	<?php if ($this->license) {
+		$info = $this->license->info;
+		if ($this->license->url)
+		{
+			$info .= ' <a href="' . $this->license->url . '" class="popup">' . Lang::txt('Read license terms') . ' &rsaquo;</a>';
+		}
+		?>
+		<div class="chosenitem">
+			<p class="item-title">
+				<?php if ($this->license) { echo '<img src="' . $this->license->icon . '" alt="' . htmlentities($this->license->title) . '" />'; } ?>
+				<?php echo $this->license->title; ?>
+				<span class="item-details"><?php echo $info; ?></span>
+			</p>
+			<?php if ($text) { ?>
+				<pre><?php echo $text; ?></pre>
+			<?php } ?>
+		</div>
+	<?php } else { ?>
+		<?php echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>'; ?>
+	<?php } ?>
 </div>

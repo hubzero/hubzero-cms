@@ -87,7 +87,7 @@ $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : 
 $updated  = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete)
 		|| $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
 
-$handlerOptions = count($this->attachments) > 0 && $useHandles ? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : NULL;
+$handlerOptions = count($this->attachments) > 0 && $useHandles ? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : null;
 
 $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
 
@@ -99,8 +99,9 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) {
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
-			<h5 class="element-title"><?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; } ?>
-			<span class="element-options"><a href="<?php echo $elementUrl; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
+			<h5 class="element-title">
+				<?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; } ?>
+				<span class="element-options"><a href="<?php echo $elementUrl; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
 			</h5>
 		</div>
 		<div class="block-aside-omega"></div>
@@ -109,7 +110,9 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) {
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
 		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
-			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo Lang::txt('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo Lang::txt('Optional'); ?></span><?php } ?>
+			<label id="<?php echo $elName; ?>-lbl">
+				<?php if ($required) { ?><span class="required"><?php echo Lang::txt('Required'); ?></span><?php } ?>
+				<?php if (!$required) { ?><span class="optional"><?php echo Lang::txt('Optional'); ?></span><?php } ?>
 				<?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) . ')'; }?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
