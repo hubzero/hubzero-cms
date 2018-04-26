@@ -51,6 +51,8 @@ Note that this is essentially the reverse workflow of working on the vagrant box
 On the Thursday or Friday before QA push, do the following:
 
 ```
+=======
+git fetch --all
 git pull upstream 2.2
 ```
 
