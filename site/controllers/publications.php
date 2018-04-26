@@ -99,6 +99,11 @@ class Publications extends SiteController
 		{
 			$this->_task = 'intro';
 		}
+		if (!$this->_id && !$this->_alias && in_array($this->_task, array('view', 'page')))
+		{
+			Request::setVar('task', 'intro');
+			$this->_task = 'intro';
+		}
 
 		parent::execute();
 	}
