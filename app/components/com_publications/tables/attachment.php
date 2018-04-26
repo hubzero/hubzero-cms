@@ -32,31 +32,33 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication attachments
  */
-class Attachment extends \JTable
+class Attachment extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_attachments', 'id', $db );
+		parent::__construct('#__publication_attachments', 'id', $db);
 	}
 
 	/**
 	 * Get array of file attachments
 	 *
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @return     object
+	 * @param   integer  $versionid  Pub version ID
+	 * @return  mixed    object or false
 	 */
-	public function getAttachmentsArray( $versionid = null, $role = '')
+	public function getAttachmentsArray($versionid = null, $role = '')
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			return false;
 		}
@@ -80,12 +82,12 @@ class Attachment extends \JTable
 	/**
 	 * Get attachment used as default publication thumbnail
 	 *
-	 * @param      integer 	$versionid		pub version id
-	 * @return     object
+	 * @param   integer  $versionid  pub version id
+	 * @return  object
 	 */
-	public function getDefault( $versionid )
+	public function getDefault($versionid)
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			$versionid = $this->publication_version_id;
 		}
@@ -98,14 +100,14 @@ class Attachment extends \JTable
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($versionid);
 		$query .= " AND params LIKE '%pubThumb=1%' LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -113,12 +115,12 @@ class Attachment extends \JTable
 	/**
 	 * Save project parameter
 	 *
-	 * @param      object $record
-	 * @param      string $param
-	 * @param      string $value
-	 * @return     void
+	 * @param   object  $record
+	 * @param   string  $param
+	 * @param   string  $value
+	 * @return  void
 	 */
-	public function saveParam ( $record = NULL, $param = '', $value = 0 )
+	public function saveParam ($record = null, $param = '', $value = 0)
 	{
 		if (!is_object($record))
 		{
@@ -175,7 +177,7 @@ class Attachment extends \JTable
 	 * @param      integer 	$projectid		project id
 	 * @return     void
 	 */
-	public function updateRecords( $projectid, $field, $from, $to )
+	public function updateRecords($projectid, $field, $from, $to)
 	{
 		$query = "UPDATE $this->_tbl AS A ";
 		$query.= "JOIN #__publications AS B ON B.id=A.publication_id ";
@@ -183,7 +185,7 @@ class Attachment extends \JTable
 		$query.= " WHERE A." . $field . "=" . $this->_db->quote($from)
 				. " AND B.project_id=" . $this->_db->quote($projectid);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($this->_db->query())
 		{
 			return true;
@@ -197,9 +199,9 @@ class Attachment extends \JTable
 	 * @param      integer 	$versionid		pub version id
 	 * @return     object
 	 */
-	public function sortAttachments( $versionid )
+	public function sortAttachments($versionid)
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			$versionid = $this->publication_version_id;
 		}
@@ -214,7 +216,7 @@ class Attachment extends \JTable
 		$query.= " WHERE a.publication_version_id=" . $this->_db->quote($versionid);
 		$query.= " ORDER BY a.ordering ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();
 
 		if ($results)
@@ -267,7 +269,7 @@ class Attachment extends \JTable
 	 * @param      array 	$find
 	 * @return     object
 	 */
-	public function getConnections ( $vid = NULL, $find = array() )
+	public function getConnections ($vid = null, $find = array())
 	{
 		if (!$vid)
 		{
@@ -283,7 +285,7 @@ class Attachment extends \JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
-		foreach ($find as $property => $value )
+		foreach ($find as $property => $value)
 		{
 			$query .= " AND " . $property . "=" . $this->_db->quote($value);
 		}
@@ -295,25 +297,25 @@ class Attachment extends \JTable
 	/**
 	 * Get attachments
 	 *
-	 * @param      integer 	$versionid		pub version id
-	 * @param      array 	$filters
-	 * @return     object
+	 * @param   integer  $versionid  pub version id
+	 * @param   array    $filters
+	 * @return  object
 	 */
-	public function getAttachments( $versionid, $filters=array() )
+	public function getAttachments($versionid, $filters=array())
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			$versionid = $this->publication_version_id;
 		}
 
 		$project = isset($filters['project']) && $filters['project'] != '' ? intval($filters['project']) : '';
-		$count 	 = isset($filters['count']) && $filters['count'] == 1 ? 1 : 0;
+		$count   = isset($filters['count']) && $filters['count'] == 1 ? 1 : 0;
 		$select  = isset($filters['select']) && $filters['select'] != '' ? $filters['select'] : '';
-		$aid  	 = isset($filters['id']) && intval($filters['id']) != 0 ? intval($filters['id']) : '';
-		$type  	 = isset($filters['type']) && $filters['type'] != '' ? $filters['type'] : '';
+		$aid     = isset($filters['id']) && intval($filters['id']) != 0 ? intval($filters['id']) : '';
+		$type    = isset($filters['type']) && $filters['type'] != '' ? $filters['type'] : '';
 		$element = isset($filters['element']) ? $filters['element'] : '';
 
-		if ($versionid === NULL && !$project)
+		if ($versionid === null && !$project)
 		{
 			return false;
 		}
@@ -342,7 +344,7 @@ class Attachment extends \JTable
 		if ($aid)
 		{
 			$query .= " a.id='".$aid."' LIMIT 1 ";
-			$this->_db->setQuery( $query );
+			$this->_db->setQuery($query);
 			return $this->_db->loadObjectList();
 		}
 		else
@@ -371,8 +373,8 @@ class Attachment extends \JTable
 				{
 					$tquery .= $this->_db->quote($role) . ",";
 				}
-				$tquery = substr($tquery,0,strlen($tquery) - 1);
-				$query .= " AND (a.role IN (" . $tquery . ") ) ";
+				$tquery = substr($tquery, 0, strlen($tquery) - 1);
+				$query .= " AND (a.role IN (" . $tquery . ")) ";
 			}
 			elseif ($filters['role'] == 4)
 			{
@@ -400,16 +402,21 @@ class Attachment extends \JTable
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Delete element attachment
 	 *
-	 * @return     object or FALSE
+	 * @param   integer  $vid
+	 * @param   array    $find
+	 * @param   integer  $elementId
+	 * @param   string   $type
+	 * @param   string   $role
+	 * @return  mixed    object or FALSE
 	 */
-	public function deleteElementAttachment( $vid = NULL, $find = array(), $elementId = 0, $type = 'file', $role = '' )
+	public function deleteElementAttachment($vid = null, $find = array(), $elementId = 0, $type = 'file', $role = '')
 	{
 		if (!$vid)
 		{
@@ -433,15 +440,15 @@ class Attachment extends \JTable
 			$query .= $role == 2 ? " AND (role = 0 OR role = 2)" : " AND role=" . intval($role);
 		}
 
-		foreach ($find as $property => $value )
+		foreach ($find as $property => $value)
 		{
 			$query .= " AND " . $property ."=" . $this->_db->quote($value);
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -450,9 +457,14 @@ class Attachment extends \JTable
 	/**
 	 * Load element attachment
 	 *
-	 * @return     object or FALSE
+	 * @param   integer  $vid
+	 * @param   array    $find
+	 * @param   integer  $elementId
+	 * @param   string   $type
+	 * @param   string   $role
+	 * @return  mixed    object or FALSE
 	 */
-	public function loadElementAttachment( $vid = NULL, $find = array(), $elementId = 0, $type = 'file', $role = '' )
+	public function loadElementAttachment($vid = null, $find = array(), $elementId = 0, $type = 'file', $role = '')
 	{
 		if (!$vid)
 		{
@@ -476,21 +488,21 @@ class Attachment extends \JTable
 			$query .= $role == 2 ? " AND (role = 0 OR role = 2)" : " AND role=" . intval($role);
 		}
 
-		foreach ($find as $property => $value )
+		foreach ($find as $property => $value)
 		{
 			$query .= " AND " . $property ."=" . $this->_db->quote($value);
 		}
 
 		$query .= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -498,12 +510,12 @@ class Attachment extends \JTable
 	/**
 	 * Load entry by version and path/object
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      string 	$identifier	Attached object identifier (e.g. content path for files)
-	 * @param      string 	$type		Attachment type
-	 * @return     object or FALSE
+	 * @param   integer  $vid         pub version id
+	 * @param   string   $identifier  Attached object identifier (e.g. content path for files)
+	 * @param   string   $type        Attachment type
+	 * @return  mixed    object or FALSE
 	 */
-	public function loadAttachment( $vid = NULL, $identifier = NULL, $type = 'file' )
+	public function loadAttachment($vid = null, $identifier = null, $type = 'file')
 	{
 		if (!$vid)
 		{
@@ -528,14 +540,14 @@ class Attachment extends \JTable
 
 		$query .= " AND " . $prop . "=" . $this->_db->quote($identifier);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -543,29 +555,33 @@ class Attachment extends \JTable
 	/**
 	 * Copy entry
 	 *
-	 * @return     object or FALSE
+	 * @param   object   $att
+	 * @param   integer  $vid
+	 * @param   integer  $elementId
+	 * @param   integer  $uid
+	 * @return  object   object or FALSE
 	 */
-	public function copyAttachment( $att = NULL, $vid = NULL, $elementId = NULL, $uid = 0 )
+	public function copyAttachment($att = null, $vid = null, $elementId = null, $uid = 0)
 	{
-		$pAttach = new self( $this->_db );
-		$pAttach->publication_id 		= $att->publication_id;
-		$pAttach->title 				= $att->title;
-		$pAttach->role 					= $att->role;
-		$pAttach->element_id 			= $elementId;
-		$pAttach->path 					= $att->path;
-		$pAttach->vcs_hash 				= $att->vcs_hash;
-		$pAttach->vcs_revision 			= $att->vcs_revision;
-		$pAttach->object_id 			= $att->object_id;
-		$pAttach->object_name 			= $att->object_name;
-		$pAttach->object_instance 		= $att->object_instance;
-		$pAttach->object_revision 		= $att->object_revision;
-		$pAttach->type 					= $att->type;
-		$pAttach->params 				= $att->params;
-		$pAttach->attribs 				= $att->attribs;
-		$pAttach->ordering 				= $att->ordering;
-		$pAttach->publication_version_id= $vid;
-		$pAttach->created_by 			= $uid;
-		$pAttach->created 				= Date::toSql();
+		$pAttach = new self($this->_db);
+		$pAttach->publication_id         = $att->publication_id;
+		$pAttach->title                  = $att->title;
+		$pAttach->role                   = $att->role;
+		$pAttach->element_id             = $elementId;
+		$pAttach->path                   = $att->path;
+		$pAttach->vcs_hash               = $att->vcs_hash;
+		$pAttach->vcs_revision           = $att->vcs_revision;
+		$pAttach->object_id              = $att->object_id;
+		$pAttach->object_name            = $att->object_name;
+		$pAttach->object_instance        = $att->object_instance;
+		$pAttach->object_revision        = $att->object_revision;
+		$pAttach->type                   = $att->type;
+		$pAttach->params                 = $att->params;
+		$pAttach->attribs                = $att->attribs;
+		$pAttach->ordering               = $att->ordering;
+		$pAttach->publication_version_id = $vid;
+		$pAttach->created_by             = $uid;
+		$pAttach->created                = \Date::toSql();
 		if ($pAttach->store())
 		{
 			return $this->bind($pAttach);
@@ -576,11 +592,11 @@ class Attachment extends \JTable
 	/**
 	 * Load entry by version and path
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      string 	$identifier	content path or object id/name
-	 * @return     boolean
+	 * @param   integer  $vid         pub version id
+	 * @param   string   $identifier  content path or object id/name
+	 * @return  boolean
 	 */
-	public function deleteAttachment( $vid = NULL, $identifier = NULL, $type = 'file' )
+	public function deleteAttachment($vid = null, $identifier = null, $type = 'file')
 	{
 		if (!$vid)
 		{
@@ -602,10 +618,10 @@ class Attachment extends \JTable
 		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 		$query .= " AND " . $prop . "=" . $this->_db->quote($identifier);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -614,10 +630,10 @@ class Attachment extends \JTable
 	/**
 	 * Load entries by pub version
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @return     boolean
+	 * @param   integer  $vid  pub version id
+	 * @return  boolean
 	 */
-	public function deleteAttachments( $vid = NULL )
+	public function deleteAttachments($vid = null)
 	{
 		if (!$vid)
 		{
@@ -629,10 +645,10 @@ class Attachment extends \JTable
 		}
 
 		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -641,12 +657,12 @@ class Attachment extends \JTable
 	/**
 	 * Check version duplicate
 	 *
-	 * @param      integer 	$pid
-	 * @param      integer 	$vid
-	 * @param      string 	$base
-	 * @return     mixed
+	 * @param   integer  $pid
+	 * @param   integer  $vid
+	 * @param   string   $base
+	 * @return  mixed
 	 */
-	public function getVersionAttachments ( $pid = NULL, $vid = NULL )
+	public function getVersionAttachments ($pid = null, $vid = null)
 	{
 		if (!intval($pid) || !intval($vid))
 		{
@@ -660,20 +676,20 @@ class Attachment extends \JTable
 		$query.= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
 		$query.= " ORDER BY A.ordering";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get pub association
 	 *
-	 * @param      integer 	$projectid
-	 * @param      string	$path
-	 * @param      string 	$hash
-	 * @param      integer 	$primary
-	 * @return     array
+	 * @param   integer  $projectid
+	 * @param   string   $path
+	 * @param   string   $hash
+	 * @param   integer  $primary
+	 * @return  mixed    array or false
 	 */
-	public function getPubAssociation ( $projectid = 0, $path = '', $hash = '', $primary = 1 )
+	public function getPubAssociation($projectid = 0, $path = '', $hash = '', $primary = 1)
 	{
 		if (!$projectid || (!$hash && !$path))
 		{
@@ -687,7 +703,7 @@ class Attachment extends \JTable
 		$query.= $hash ? " AND a.vcs_hash=" . $this->_db->quote($hash) : " AND a.path=" . $this->_db->quote($path);
 		$query.= $primary ? " AND a.role=1 " : "";
 		$query.= " ORDER BY v.id DESC LIMIT 1";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
 		if ($result)
@@ -704,14 +720,14 @@ class Attachment extends \JTable
 	/**
 	 * Get pub associations
 	 *
-	 * @param      integer 	$projectid
-	 * @param      string	$type
-	 * @param      integer 	$primary
-	 * @return     array
+	 * @param   integer  $projectid
+	 * @param   string   $type
+	 * @param   integer  $primary
+	 * @return  mixed    array or false
 	 */
-	public function getPubAssociations ( $projectid = 0, $type = 'file', $primary = 1)
+	public function getPubAssociations($projectid = 0, $type = 'file', $primary = 1)
 	{
-		if (!$projectid )
+		if (!$projectid)
 		{
 			return false;
 		}
@@ -726,7 +742,7 @@ class Attachment extends \JTable
 		$query.= $primary ? " AND a.role=1 " : "";
 		$query.= " GROUP BY a.path ";
 		$query.= " ORDER BY v.id DESC ";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
 		if ($result)
