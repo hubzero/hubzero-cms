@@ -37,8 +37,6 @@ $pubParams = $this->publication->params;
 <ul class="pub-selector" id="pub-selector">
 	<?php foreach ($this->selections as $item)
 	{
-		$selected = $this->publication->get('license_type') && $this->publication->get('license_type') == $item->id ? true : false;
-
 		// Select license if
 		//   (1) license type matches item id, or
 		//   (2) there is no license type yet and this item is the default license
