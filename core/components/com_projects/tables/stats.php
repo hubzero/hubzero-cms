@@ -32,10 +32,14 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+use Request;
+use Date;
+
 /**
  * Table class for project log history
  */
-class Stats extends \JTable
+class Stats extends Table
 {
 	/**
 	 * Constructor

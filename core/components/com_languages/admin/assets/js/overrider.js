@@ -26,7 +26,7 @@ Joomla.overrider = {
 Joomla.overrider.refreshCache = function()
 {
 	$.ajax({
-		url: 'index.php?option=com_languages&task=strings.refresh&format=json',
+		url: 'index.php?option=com_languages&controller=overrides&task=refresh&format=json',
 		type: 'POST',
 		dataType: 'json',
 		beforeSend: function() {
@@ -78,9 +78,9 @@ Joomla.overrider.searchStrings = function(more)
 	// was used to start the search (that will be the case if 'more' is null)
 	if (!more)
 	{
-		Joomla.overrider.states.searchstring = $('#jform_searchstring').val();
+		Joomla.overrider.states.searchstring = $('#fields_searchstring').val();
 		Joomla.overrider.states.searchtype   = 'value';
-		if ($('#jform_searchtype0').attr('checked'))
+		if ($('#fields_searchtype0').attr('checked'))
 		{
 			Joomla.overrider.states.searchtype = 'constant';
 		}
@@ -96,7 +96,7 @@ Joomla.overrider.searchStrings = function(more)
 	$.ajax({
 		dataType: 'json',
 		type: 'POST',
-		url: 'index.php?option=com_languages&task=strings.search&format=json&searchstring=' + Joomla.overrider.states.searchstring + '&searchtype=' + Joomla.overrider.states.searchtype + '&more=' + more,
+		url: 'index.php?option=com_languages&controller=overrides&task=search&format=json&searchstring=' + Joomla.overrider.states.searchstring + '&searchtype=' + Joomla.overrider.states.searchtype + '&more=' + more,
 		beforeSend: function()
 		{
 			if (more)
@@ -229,7 +229,7 @@ Joomla.overrider.insertResults = function(results)
  */
 Joomla.overrider.selectString = function(id)
 {
-	$('#jform_key').val($('#override_key' + id).html());
-	$('#jform_override').val($('#override_string' + id).html());
+	$('#field-key').val($('#override_key' + id).html());
+	$('#field-override').val($('#override_string' + id).html());
 	//new Fx.Scroll(window).toTop();
 };

@@ -78,7 +78,7 @@ class Version extends Model
 		// Create database object
 		$this->_db = \App::get('db');
 
-		// Create page cateogry jtable object
+		// Create page cateogry table object
 		$this->_tbl = new $this->_tbl_name($this->_db);
 
 		// Load object

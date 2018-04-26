@@ -202,7 +202,7 @@ class Comment extends Relational
 		{
 			$article = Article::oneOrFail($this->get('entry_id'));
 
-			$this->set('category', $article->category()->get('alias'));
+			$this->set('category', $article->parentCategory()->get('alias'));
 			$this->set('article', $article->get('alias'));
 		}
 		$link .= '&section=' . $this->get('section');

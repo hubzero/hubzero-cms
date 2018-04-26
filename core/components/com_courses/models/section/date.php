@@ -43,7 +43,7 @@ require_once(dirname(__DIR__) . DS . 'base.php');
 class Date extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
@@ -56,4 +56,3 @@ class Date extends Base
 	 */
 	protected $_scope = 'section_date';
 }
-

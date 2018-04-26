@@ -47,7 +47,7 @@ require_once(__DIR__ . DS . 'base.php');
 class Announcement extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

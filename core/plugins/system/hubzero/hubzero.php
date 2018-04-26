@@ -167,18 +167,18 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 		}
 
 		// All page loads set apache log data
-		if (strpos(php_sapi_name(),'apache') !== false)
+		if (strpos(php_sapi_name(), 'apache') !== false && function_exists('apache_note'))
 		{
 			apache_note('session', $session->getId());
 
 			if (User::get('id') != 0)
 			{
-				apache_note('auth','session');
+				apache_note('auth', 'session');
 				apache_note('userid', User::get('id'));
 			}
 			else if (!empty($tracker['user_id']))
 			{
-				apache_note('auth','cookie');
+				apache_note('auth', 'cookie');
 				apache_note('userid', $tracker['user_id']);
 				apache_note('tracker', $tracker['rsid']);
 			}
@@ -197,9 +197,9 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			->logger('auth')
 			->info((isset($_POST['username']) ? $_POST['username'] : '[unknown]') . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
 
-		if (strpos(php_sapi_name(),'apache') !== false)
+		if (strpos(php_sapi_name(), 'apache') !== false && function_exists('apache_note'))
 		{
-			apache_note('auth','invalid');
+			apache_note('auth', 'invalid');
 		}
 	}
 }

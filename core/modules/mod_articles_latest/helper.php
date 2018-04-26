@@ -34,11 +34,13 @@ namespace Modules\ArticlesLatest;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Arr;
+use Components\Content\Models\Article;
 use ContentHelperRoute;
 use Component;
-use JModelLegacy;
 use Route;
+use Date;
 use User;
+use App;
 
 /**
  * Module class for displaying latest articles
@@ -69,86 +71,83 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once Component::path('com_content') . '/helpers/route.php';
-
-		JModelLegacy::addIncludePath(Component::path('com_content') . '/models', 'ContentModel');
-
-		// Get the dbo
-		$db = App::get('db');
+		require_once Component::path('com_content') . '/site/helpers/route.php';
+		require_once Component::path('com_content') . '/models/article.php';
 
 		// Get an instance of the generic articles model
-		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
-
-		// Set application parameters in model
-		$appParams = App::has('params') ? App::get('params') : new \Hubzero\Config\Registry('');
-		$model->setState('params', $appParams);
+		$query = Article::all();
 
 		// Set the filters based on the module params
-		$model->setState('list.start', 0);
-		$model->setState('list.limit', (int) $params->get('count', 5));
-		$model->setState('filter.published', 1);
+		$query->whereEquals('state', Article::STATE_PUBLISHED);
+		$query->start(0);
+		$query->limit((int) $params->get('count', 5));
 
 		// Access filter
 		$access = !Component::params('com_content')->get('show_noauth');
 		$authorised = User::getAuthorisedViewLevels();
-		$model->setState('filter.access', $access);
 
 		// Category filter
-		$model->setState('filter.category_id', $params->get('catid', array()));
+		$catids = $params->get('catid', array());
+		if (!empty($catids))
+		{
+			$query->whereIn('catid', $catids);
+		}
 
 		// User filter
 		$userId = User::get('id');
 		switch ($params->get('user_id'))
 		{
 			case 'by_me':
-				$model->setState('filter.author_id', (int) $userId);
+				$query->whereEquals('created_by', (int) $userId);
 				break;
 			case 'not_me':
-				$model->setState('filter.author_id', $userId);
-				$model->setState('filter.author_id.include', false);
+				$query->where('created_by', '!=', (int) $userId);
 				break;
-
 			case '0':
 				break;
-
 			default:
-				$model->setState('filter.author_id', (int) $params->get('user_id'));
+				$query->whereEquals('created_by', (int) $userId);
 				break;
 		}
 
 		// Filter by language
-		$model->setState('filter.language', \App::get('language.filter'));
+		$query->whereEquals('language', App::get('language.filter'));
 
 		//  Featured switch
 		switch ($params->get('show_featured'))
 		{
 			case '1':
-				$model->setState('filter.featured', 'only');
+				$query->whereEquals('featured', 1);
 				break;
 			case '0':
-				$model->setState('filter.featured', 'hide');
+				$query->whereEquals('featured', 0);
 				break;
 			default:
-				$model->setState('filter.featured', 'show');
 				break;
 		}
 
 		// Set ordering
-		$order_map = array(
-			'm_dsc' => 'a.modified DESC, a.created',
-			'mc_dsc' => 'CASE WHEN (a.modified = ' . $db->quote($db->getNullDate()) . ') THEN a.created ELSE a.modified END',
-			'c_dsc' => 'a.created',
-			'p_dsc' => 'a.publish_up',
-		);
-		$ordering = Arr::getValue($order_map, $params->get('ordering'), 'a.publish_up');
-		$dir = 'DESC';
+		switch ($params->get('ordering'))
+		{
+			case 'm_dsc':
+				$query->order('modified', 'desc')
+					->order('created', 'asc');
+			break;
+			case 'mc_dsc':
+				$query->order('CASE WHEN (modified = ' . $db->quote(Date::toSql()) . ') THEN created ELSE modified END', 'desc');
+			break;
+			case 'c_dsc':
+				$query->order('created', 'desc');
+			break;
+			case 'p_dsc':
+			default:
+				$query->order('publish_up', 'desc');
+			break;
+		}
 
-		$model->setState('list.ordering', $ordering);
-		$model->setState('list.direction', $dir);
+		$items = $query->rows();
 
-		$items = $model->getItems();
-
-		foreach ($items as &$item)
+		foreach ($items as $item)
 		{
 			$item->slug    = $item->id . ':' . $item->alias;
 			$item->catslug = $item->catid . ':' . $item->category_alias;

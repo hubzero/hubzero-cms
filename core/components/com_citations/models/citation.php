@@ -449,7 +449,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 			if (!isset($groupCitations[$year]))
 			{
-				$groupCitations[$year] = array();
+				$groupCitations[$year] = $affiliations;
 			}
 
 			// Set count for affliation
@@ -863,13 +863,18 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					$auth = html_entity_decode($this->$k);
 					$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
 
-					// prefer the use of the relational table 
-					if ($this->relatedAuthors->count() > 0)
+					// prefer the use of the relational table
+					$authors = $this->relatedAuthors()
+						->order('ordering', 'asc')
+						->order('id', 'asc')
+						->rows();
+					$authorCount = $authors->count();
+					if ($authorCount > 0)
 					{
-						$authors = $this->relatedAuthors;
-						$authorCount = $this->relatedAuthors->count();
+						//$authors = $this->relatedAuthors;
+						//$authorCount = $this->relatedAuthors->count();
 					}
-					elseif ($auth != '' && $this->relatedAuthors->count() == 0)
+					elseif ($auth != '' && $authorCount == 0)
 					{
 						$author_string = $auth;
 						$authors = explode(';', $author_string);

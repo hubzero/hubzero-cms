@@ -577,3 +577,8 @@
 		display: none;
 	}
 }
+
+p.entry-member-photo.anonymous {
+	background-image: url("/core/assets/images/user.svg");
+	opacity: 0.3;
+}

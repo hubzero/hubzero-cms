@@ -93,6 +93,10 @@
 			<option value="0">Only project creator</option>
 			<option value="1">Group managers (if owned by a group)</option>
 		</field>
+		<field name="sync_behavior" type="list" default="1" label="Members - Group syncing" description="This determines if group-owned projects default to auto-syncing all membership with the group or default to selective membership.">
+			<option value="0">Selective membership</option>
+			<option value="1">Sync with group</option>
+		</field>
 		<field name="privacylink" type="text" menu="hide" default="/legal/privacy" label="URL to Privacy Terms" description="URL to Privacy Terms" />
 		<field name="HIPAAlink" type="text" menu="hide" default="/legal/privacy" label="URL to HIPAA information" description="URL to to HIPAA information" />
 		<field name="FERPAlink" type="text" menu="hide" default="/legal/privacy" label="URL to FERPA information" description="URL to to FERPA information" />

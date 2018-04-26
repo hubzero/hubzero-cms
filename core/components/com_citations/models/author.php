@@ -68,6 +68,38 @@ class Author extends Relational
 	);
 
 	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'ordering'
+	);
+
+	/**
+	 * Generates automatic ordering field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->whereEquals('cid', (int)$data['cid'])
+				->order('ordering', 'desc')
+				->order('id', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
+
+	/**
 	 * Defines the inverse relationship between a record and a task
 	 *
 	 * @return \Hubzero\Database\Relationship\belongsToOne

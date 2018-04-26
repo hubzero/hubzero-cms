@@ -52,7 +52,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 	 */
 	public function onImportAcceptedFiles()
 	{
-		// Return '.txt <small>(' . Lang::txt('PLG_CITATION_DEFAULT_FILE') . ')</small>';
+		//return '.txt <small>(' . Lang::txt('PLG_CITATION_DEFAULT_FILE') . ')</small>';
 	}
 
 	/**
@@ -63,7 +63,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 	 * @param   integer  $scope_id
 	 * @return  array
 	 */
-	public function onImport($file, $scope = NULL, $scope_id = NULL)
+	public function onImport($file, $scope = null, $scope_id = null)
 	{
 		// Array of acceptable file types
 		$acceptable = array('txt');
@@ -91,7 +91,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 				'size'     => $file->getClientSize()
 			);
 
-			$return = event::trigger('citation.onImport' , array($new_file), $scope, $scope_id);
+			$return = Event::trigger('citation.onImport', array($new_file), $scope, $scope_id);
 			return $return[0];
 		}
 	}

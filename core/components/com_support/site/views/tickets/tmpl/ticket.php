@@ -431,7 +431,7 @@ $cc = array();
 				<?php if ($this->row->access('update', 'tickets') > 0) { ?>
 					<legend><span><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS'); ?></span></legend>
 
-					<label>
+					<label for="tags">
 						<?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
 						<?php
 						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string', null))));
@@ -445,7 +445,7 @@ $cc = array();
 
 					<div class="grid">
 						<div class="col span6">
-							<label>
+							<label for="acgroup">
 								<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
 								<?php
 								$group = '';
@@ -580,7 +580,7 @@ $cc = array();
 						<?php echo implode("\n", $hi); ?>
 					<?php } // ACL can create comment (admin) ?>
 					<?php if ($this->row->access('create', 'private_comments')) { ?>
-						<label>
+						<label for="make-private">
 							<input class="option" type="checkbox" name="access" id="make-private" value="1" />
 							<?php echo Lang::txt('COM_SUPPORT_COMMENT_PRIVATE'); ?>
 						</label>
@@ -612,7 +612,7 @@ $cc = array();
 						<noscript>
 							<label for="upload">
 								<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
-								<input type="file" name="upload" id="upload" />
+								<input type="file" name="upload[]" id="upload" multiple="multiple" />
 							</label>
 
 							<label for="field-description">
@@ -652,7 +652,7 @@ $cc = array();
 						</div>
 					</div>
 
-					<label>
+					<label for="acmembers">
 						<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
 						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
 						if (count($mc) > 0) {

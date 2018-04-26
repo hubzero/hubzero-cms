@@ -32,19 +32,20 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
 use Date;
 use User;
 
 /**
  * Table class for publications
  */
-class Publication extends \Hubzero\Database\Table
+class Publication extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{

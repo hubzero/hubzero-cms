@@ -34,7 +34,7 @@ namespace Components\Wishlist\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Wishlist\Models\Wishlist;
 use Components\Wishlist\Models\Wish;
-use Components\Wishlist\Models\Wish\Plan;
+use Components\Wishlist\Models\Plan;
 use Components\Wishlist\Models\Owner;
 use Components\Wishlist\Models\OwnerGroup;
 use Components\Wishlist\Models\Tags;
@@ -338,6 +338,11 @@ class Wishes extends AdminController
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
+		// Keep tags for saving
+		$tags = $fields['tags'];
+		// Remove tags from the fields
+		unset($fields['tags']);
+
 		// Initiate extended database class
 		$row = Wish::oneOrNew($fields['id'])->set($fields);
 
@@ -363,7 +368,7 @@ class Wishes extends AdminController
 		}
 
 		// Set tags
-		$row->tag($fields['tags'], User::get('id'));
+		$row->tag($tags, User::get('id'));
 
 		$plan = Request::getVar('plan', array(), 'post', 'none', 2);
 		$plan['wishid'] = ($plan['wishid'] ? $plan['wishid'] : $row->get('id'));

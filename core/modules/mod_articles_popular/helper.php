@@ -33,11 +33,12 @@
 namespace Modules\ArticlesPopular;
 
 use Hubzero\Module\Module;
+use Components\Content\Models\Article;
 use ContentHelperRoute;
 use Component;
-use JModelLegacy;
 use Route;
 use User;
+use App;
 
 /**
  * Module class for displaying popular articles
@@ -69,37 +70,45 @@ class Helper extends Module
 	public static function getList(&$params)
 	{
 		require_once Component::path('com_content') . '/helpers/route.php';
+		require_once Component::path('com_content') . '/models/article.php';
 
 		// Get an instance of the generic articles model
-		JModelLegacy::addIncludePath(Component::path('com_content') . '/models', 'ContentModel');
-		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
+		$query = Article::all();
 
 		// Set application parameters in model
 		$appParams = App::has('params') ? App::get('params') : new \Hubzero\Config\Registry('');
-		$model->setState('params', $appParams);
 
 		// Set the filters based on the module params
-		$model->setState('list.start', 0);
-		$model->setState('list.limit', (int) $params->get('count', 5));
-		$model->setState('filter.published', 1);
-		$model->setState('filter.featured', $params->get('show_front', 1) == 1 ? 'show' : 'hide');
+		$query->whereEquals('state', Article::STATE_PUBLISHED);
+
+		if ($params->get('show_front', 1) == 1)
+		{
+			$query->whereEquals('featured', 1);
+		}
+
+		$query->start(0)
+			->limit((int) $params->get('count', 5));
 
 		// Access filter
-		$access = !Component::params('com_content')->get('show_noauth');
-		$authorised = User::getAuthorisedViewLevels();
-		$model->setState('filter.access', $access);
+		if (!Component::params('com_content')->get('show_noauth'))
+		{
+			$query->whereIn('access', User::getAuthorisedViewLevels());
+		}
 
 		// Category filter
-		$model->setState('filter.category_id', $params->get('catid', array()));
+		$catid = $params->get('catid', array());
+		if (!empty($catid))
+		{
+			$query->whereEquals('catid', $catid);
+		}
 
 		// Filter by language
-		$model->setState('filter.language', \App::get('language.filter'));
+		$query->whereEquals('language', App::get('language.filter'));
 
 		// Ordering
-		$model->setState('list.ordering', 'a.hits');
-		$model->setState('list.direction', 'DESC');
+		$query->order('hits', 'desc');
 
-		$items = $model->getItems();
+		$items = $query->rows();
 
 		foreach ($items as &$item)
 		{

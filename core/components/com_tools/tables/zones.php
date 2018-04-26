@@ -32,18 +32,19 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Middleware zones table class
  */
-class Zones extends \JTable
+class Zones extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -53,7 +54,7 @@ class Zones extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean False if invalid data, true on success
+	 * @return  boolean  False if invalid data, true on success
 	 */
 	public function check()
 	{
@@ -91,8 +92,8 @@ class Zones extends \JTable
 	/**
 	 * Delete a record and any associated records in the #__zone_locations table
 	 *
-	 * @param      integer $oid Record ID
-	 * @return     boolean True if successful otherwise returns and error message
+	 * @param   integer  $oid  Record ID
+	 * @return  boolean  True if successful otherwise returns and error message
 	 */
 	public function delete($oid=null)
 	{
@@ -115,8 +116,8 @@ class Zones extends \JTable
 	/**
 	 * Construct an SQL statement based on the array of filters passed
 	 *
-	 * @param      array $filters Filters to build SQL from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build SQL from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -215,9 +216,9 @@ class Zones extends \JTable
 	/**
 	 * Get a list of records
 	 *
-	 * @param      string $what    Data to return
-	 * @param      array  $filters Filters to build SQL from
-	 * @return     mixed
+	 * @param   string  $what     Data to return
+	 * @param   array   $filters  Filters to build SQL from
+	 * @return  mixed
 	 */
 	public function find($what='list', $filters=array())
 	{

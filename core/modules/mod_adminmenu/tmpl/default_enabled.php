@@ -199,10 +199,10 @@ if (User::authorise('core.manage', 'com_members'))
 		$menu->getParent();
 	}
 
-	/*$menu->addSeparator();
+	$menu->addSeparator();
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_MASS_MAIL_USERS'), 'index.php?option=com_users&view=mail', 'class:massmail')
-	);*/
+		new Node(Lang::txt('MOD_MENU_MASS_MAIL_USERS'), 'index.php?option=com_members&controller=mail', 'class:massmail')
+	);
 
 	$menu->getParent();
 }

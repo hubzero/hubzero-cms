@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/groups/calendar.xml
+@file           plugins/citation/default.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -38,8 +38,4 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename plugin="default">default.php</filename>
 	</files>
-	<languages>
-	</languages>
-	<config>
-	</config>
 </extension>

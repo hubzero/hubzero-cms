@@ -37,7 +37,7 @@ use Components\Groups\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 
-// include needed jtables
+// include needed tables
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'page.category.php';
 
 /**
@@ -84,7 +84,7 @@ class Category extends Model
 		// create database object
 		$this->_db = \App::get('db');
 
-		// create page cateogry jtable object
+		// create page cateogry table object
 		$this->_tbl = new $this->_tbl_name($this->_db);
 
 		// load object
@@ -107,7 +107,7 @@ class Category extends Model
 	 */
 	public function getPages($rtrn = 'list', $clear = false)
 	{
-		// create page jtable
+		// create page table
 		$tbl = new Tables\Page($this->_db);
 
 		// build array of filters

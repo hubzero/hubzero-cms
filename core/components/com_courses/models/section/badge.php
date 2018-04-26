@@ -46,7 +46,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.badge.cri
 class Badge extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

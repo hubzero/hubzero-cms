@@ -32,16 +32,19 @@
 
 namespace Components\Events\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Events table class for category
  */
-class Category extends \JTable
+class Category extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +54,7 @@ class Category extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -67,12 +70,12 @@ class Category extends \JTable
 	/**
 	 * Update the count of an entry
 	 *
-	 * @param      integer $oid Category ID
-	 * @return     void
+	 * @param   integer  $oid  Category ID
+	 * @return  void
 	 */
-	public function updateCount($oid=NULL)
+	public function updateCount($oid=null)
 	{
-		if ($oid == NULL)
+		if ($oid == null)
 		{
 			$oid = $this->id;
 		}
@@ -83,12 +86,12 @@ class Category extends \JTable
 	/**
 	 * Set en entry to unpublished
 	 *
-	 * @param      integer  $oid Category ID
-	 * @param      integer  $state
-	 * @param      integer  $userId
-	 * @return     void
+	 * @param   integer  $oid     Category ID
+	 * @param   integer  $state
+	 * @param   integer  $userId
+	 * @return  void
 	 */
-	public function publish($oid = NULL, $state = 1, $userId = 0)
+	public function publish($oid = null, $state = 1, $userId = 0)
 	{
 		if (!$oid)
 		{
@@ -101,10 +104,10 @@ class Category extends \JTable
 	/**
 	 * Set an entry to published
 	 *
-	 * @param      integer $oid Category ID
-	 * @return     void
+	 * @param   integer  $oid  Category ID
+	 * @return  void
 	 */
-	public function unpublish($oid=NULL)
+	public function unpublish($oid=null)
 	{
 		if (!$oid)
 		{
@@ -117,10 +120,10 @@ class Category extends \JTable
 	/**
 	 * Get a count of categories in a section
 	 *
-	 * @param      integer $section Section ID
-	 * @return     integer
+	 * @param   integer  $section  Section ID
+	 * @return  integer
 	 */
-	public function getCategoryCount($section=NULL)
+	public function getCategoryCount($section=null)
 	{
 		if (!$section)
 		{
@@ -130,4 +133,3 @@ class Category extends \JTable
 		return $this->_db->loadResult();
 	}
 }
-

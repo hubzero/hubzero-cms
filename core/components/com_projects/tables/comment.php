@@ -32,10 +32,12 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for project comments
  */
-class Comment extends \JTable
+class Comment extends Table
 {
 	/**
 	 * Constructor

@@ -32,12 +32,13 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Members quota classes db table class
  */
-class SessionClass extends \JTable
+class SessionClass extends Table
 {
 	/**
 	 * Constructor

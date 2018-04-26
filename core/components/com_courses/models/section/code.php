@@ -45,7 +45,7 @@ require_once(dirname(__DIR__) . DS . 'base.php');
 class Code extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
@@ -63,7 +63,7 @@ class Code extends Base
 	 *
 	 * @var object
 	 */
-	private $_redeemer = NULL;
+	private $_redeemer = null;
 
 	/**
 	 * Constructor
@@ -221,4 +221,3 @@ class Code extends Base
 		return $this->store();
 	}
 }
-

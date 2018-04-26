@@ -32,16 +32,20 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+use User;
+use Lang;
+
 /**
  * Table class for project tools
  */
-class Tool extends \JTable
+class Tool extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +55,7 @@ class Tool extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -67,14 +71,13 @@ class Tool extends \JTable
 	/**
 	 * Load item
 	 *
-	 *
-	 * @param      string 	$identifier
-	 * @param      int 		$projectid
-	 * @return     boolean False or object
+	 * @param   string  $identifier
+	 * @param   int     $projectid
+	 * @return  boolean False or object
 	 */
-	public function loadTool($identifier = NULL, $projectid = 0 )
+	public function loadTool($identifier = null, $projectid = 0)
 	{
-		if ($identifier === NULL)
+		if ($identifier === null)
 		{
 			return false;
 		}
@@ -98,10 +101,10 @@ class Tool extends \JTable
 	/**
 	 * Build query
 	 *
-	 * @param      array 	$filters
-	 * @param      boolean 	$admin
-	 * @param      integer 	$count
-	 * @return     string
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @param   integer  $count
+	 * @return  string
 	 */
 	public function buildQuery($filters, $admin, $count = 0)
 	{
@@ -115,9 +118,15 @@ class Tool extends \JTable
 
 		switch ($filterby)
 		{
-			case 'mine':      $filter .= " AND f.created_by='" . User::get('id') . "' "; 			break;
-			case 'published': $filter .= " AND f.published='1' ";                  					break;
-			case 'dev':       $filter .= " AND f.published='0' "; 									break;
+			case 'mine':
+				$filter .= " AND f.created_by='" . User::get('id') . "' ";
+				break;
+			case 'published':
+				$filter .= " AND f.published='1' ";
+				break;
+			case 'dev':
+				$filter .= " AND f.published='0' ";
+				break;
 			case 'all':
 			default:
 				$filter .= " ";
@@ -209,13 +218,11 @@ class Tool extends \JTable
 	/**
 	 * Check for unique name
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $name 	Name
-	 * @param      string $id 		App id
-	 * @return     integer or False
+	 * @param   string  $name  Name
+	 * @param   string  $id    App id
+	 * @return  mixed   integer or False
 	 */
-	public function checkUniqueName($name = NULL, $id = NULL)
+	public function checkUniqueName($name = null, $id = null)
 	{
 		$sql = "SELECT count(*) FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
 		if ($id)
@@ -230,10 +237,10 @@ class Tool extends \JTable
 	/**
 	 * Get item count
 	 *
-	 * @param      array 	$filters
-	 * @param      boolean 	$admin
-	 * @param      integer 	$count
-	 * @return     integer
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @param   integer  $count
+	 * @return  integer
 	 */
 	public function getRecordCount($filters = array(), $admin=false, $count = 1)
 	{
@@ -246,9 +253,9 @@ class Tool extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array 	$filters
-	 * @param      boolean 	$admin
-	 * @return     object list
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  array    list
 	 */
 	public function getRecords($filters = array(), $admin = false)
 	{
@@ -268,13 +275,14 @@ class Tool extends \JTable
 	/**
 	 * Get full record
 	 *
-	 * @param      string 	$identifier
-	 * @param      int 		$projectid
-	 * @return     object
+	 * @param   string   $identifier
+	 * @param   integer  $projectid
+	 * @param   integer  $instanceId
+	 * @return  object
 	 */
-	public function getFullRecord($identifier = NULL, $projectid = 0, $instanceId = 0)
+	public function getFullRecord($identifier = null, $projectid = 0, $instanceId = 0)
 	{
-		if ($identifier === NULL)
+		if ($identifier === null)
 		{
 			return false;
 		}
@@ -313,38 +321,36 @@ class Tool extends \JTable
 
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
-		return $result ? $result[0] : NULL;
+		return $result ? $result[0] : null;
 	}
 
 	/**
 	 * Get ID
 	 *
-	 * @param      string $name
-	 * @return     integer
+	 * @param   string  $name
+	 * @return  integer
 	 */
-	public function getId($name = NULL)
+	public function getId($name = null)
 	{
-		if ($name=== NULL)
+		if ($name === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT id FROM #__project_tool WHERE name=" . $this->_db->quote($name) . " LIMIT 1");
+		$this->_db->setQuery("SELECT id FROM `#__project_tool` WHERE name=" . $this->_db->quote($name) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Update status
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $id
-	 * @param      string $status
-	 * @param      string $by
-	 * @return     boolean true on success
+	 * @param   string   $id
+	 * @param   string   $status
+	 * @param   string   $by
+	 * @return  boolean  true on success
 	 */
-	public function updateStatus($id = NULL, $status = NULL, $by = NULL)
+	public function updateStatus($id = null, $status = null, $by = null)
 	{
-		if ($id=== NULL)
+		if ($id === null)
 		{
 			return false;
 		}

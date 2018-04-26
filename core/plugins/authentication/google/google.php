@@ -136,7 +136,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$client->setRedirectUri(self::getRedirectUri('google'));
 
 		// If we have a code comeing back, the user has authorized our app, and we can authenticate
-		if ($code = Request::getVar('code', NULL))
+		if ($code = Request::getVar('code', null))
 		{
 			// Authenticate the user
 			$client->authenticate($code);
@@ -212,7 +212,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 
 		// Check if there's an active token in the session
 		$jsession = App::get('session');
-		if ($jsession->get('google.token', NULL))
+		if ($jsession->get('google.token', null))
 		{
 			$client->setAccessToken($jsession->get('google.token'));
 		}
@@ -308,7 +308,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$oauth2 = new Google_Service_Oauth2($client);
 
 		// If we have this code, we know we have a successful return from google
-		if ($code = Request::getVar('code', NULL))
+		if ($code = Request::getVar('code', null))
 		{
 			// Authenticate the user
 			$client->authenticate($code);

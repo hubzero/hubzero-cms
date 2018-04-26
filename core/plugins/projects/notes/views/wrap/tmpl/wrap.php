@@ -86,7 +86,7 @@ if ($this->task != 'view' && in_array($this->task, $tasks))
 
 // Is note public?
 $publicStamp = $this->params->get('enable_publinks')
-	? $this->note->getPublicStamp($page->get('id')) : NULL;
+	? $this->note->getPublicStamp($page->get('id')) : null;
 
 $listed = $publicStamp ? $publicStamp->listed : false;
 

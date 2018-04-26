@@ -32,15 +32,17 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Course certificate table class
  */
-class Certificate extends \JTable
+class Certificate extends Table
 {
 	/**
 	 * Constructor
 	 * 
-	 * @param      object &$db JDatabase
+	 * @param      object &$db Database
 	 * @return     void
 	 */
 	public function __construct(&$db)

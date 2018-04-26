@@ -51,7 +51,7 @@ class Base extends Model
 	 *
 	 * @var  object
 	 */
-	protected $_creator = NULL;
+	protected $_creator = null;
 
 	/**
 	 * Return a formatted timestamp

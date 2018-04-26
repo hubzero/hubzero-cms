@@ -92,7 +92,7 @@ if (!$this->config->get('email_terse'))
 			}
 		}
 	}
-	$message .= $this->comment->get('comment');
+	$message .= preg_replace("/<br\s?\/>/i", '', $this->comment->get('comment'));
 	if ($this->comment->attachments->count() > 0)
 	{
 		$message .= "\n\n";

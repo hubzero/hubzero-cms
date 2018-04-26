@@ -32,15 +32,16 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Course asset associations table class
  */
-class AssetAssociation extends \JTable
+class AssetAssociation extends Table
 {
 	/**
-	 * Contructor method for JTable class
+	 * Contructor method for Table class
 	 *
 	 * @param  database object
 	 * @return void
@@ -96,9 +97,9 @@ class AssetAssociation extends \JTable
 	 * @param      string  $scope    Scope
 	 * @return     boolean True on success
 	 */
-	public function loadByAssetScope($asset_id=NULL, $scope_id=NULL, $scope=NULL)
+	public function loadByAssetScope($asset_id=null, $scope_id=null, $scope=null)
 	{
-		if ($asset_id === NULL || $scope_id === NULL || $scope === NULL)
+		if ($asset_id === null || $scope_id === null || $scope === null)
 		{
 			return false;
 		}

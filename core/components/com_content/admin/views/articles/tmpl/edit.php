@@ -1,15 +1,39 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
 
 $canDo = Components\Content\Admin\Helpers\Permissions::getActions('article', $this->item->get('id'));
+
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
@@ -20,18 +44,17 @@ if ($canDo->get('core.edit')
 	|| ($canDo->get('core.edit.own') && User::getInstance()->get('id') == $this->item->get('created_by'))
 	|| ($canDo->get('core.create')))
 {
-    Toolbar::apply();
-    Toolbar::save();
+	Toolbar::apply();
+	Toolbar::save();
 	Toolbar::save2copy();
 	Toolbar::save2new();
-    Toolbar::spacer();
+	Toolbar::spacer();
 }
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('article');
 
-
-	$params = $this->item->attribs->toArray();
+$params = $this->item->attribs->toArray();
 
 // This checks if the config options have ever been saved. If they haven't they will fall back to the original settings.
 $editoroptions = isset($params['show_publishing_options']);
@@ -42,8 +65,6 @@ if (!$editoroptions):
 	$params['show_urls_images_backend'] = '0';
 	$params['show_urls_images_frontend'] = '0';
 endif;
-
-
 ?>
 
 <script type="text/javascript">
@@ -57,7 +78,7 @@ endif;
 	}
 </script>
 
-<form action="<?php echo Route::url('index.php?option=com_content&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -95,7 +116,7 @@ endif;
 									$selected = 'selected="selected"';
 								}
 							?>
-							<option value="<?php echo $category->id;?>" <?php echo $selected;?>><?php echo $category->nestedTitle();?></option>
+							<option value="<?php echo $category->id; ?>" <?php echo $selected;?>><?php echo $category->nestedTitle(); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -158,7 +179,7 @@ endif;
 						<td><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_BY_LABEL'); ?></td>
 						<td>
 							<?php echo User::getInstance($this->item->createdBy)->get('name'); ?>
-							<input type="hidden" name="fields[created_by]" value="<?php echo $this->item->createdBy;?>" />
+							<input type="hidden" name="fields[created_by]" value="<?php echo $this->item->createdBy; ?>" />
 						</td> 
 					</tr>
 					<tr>
@@ -172,7 +193,7 @@ endif;
 						<td><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIER_LABEL'); ?></td>
 						<td>
 							<?php echo User::getInstance($this->item->modifiedBy)->get('name'); ?>
-							<input type="hidden" name="fields[modified_by]" value="<?php echo $this->item->modifiedBy;?>" />
+							<input type="hidden" name="fields[modified_by]" value="<?php echo $this->item->modifiedBy; ?>" />
 						</td> 
 					</tr>
 					<tr>
@@ -184,7 +205,7 @@ endif;
 					<?php endif; ?>
 				</tbody>
 			</table>
-			<?php echo Html::sliders('start', 'content-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+			<?php echo Html::sliders('start', 'content-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 			<?php // Do not show the publishing options if the edit form is configured not to. ?>
 			<?php  if ($params['show_publishing_options'] || ( $params['show_publishing_options'] = '' && !empty($editoroptions)) ): ?>
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>
@@ -301,6 +322,7 @@ endif;
 			<?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
 				<fieldset class="panelform">
 					<?php echo $this->loadTemplate('metadata'); ?>
+				</fieldset>
 
 			<?php echo Html::sliders('end'); ?>
 		</div>
@@ -319,8 +341,9 @@ endif;
 		</div>
 	<?php endif; ?>
 
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="return" value="<?php echo Request::getCmd('return');?>" />
+	<input type="hidden" name="return" value="<?php echo Request::getCmd('return'); ?>" />
 	<?php echo Html::input('token'); ?>
-
 </form>

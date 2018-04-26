@@ -31,16 +31,19 @@
 
 namespace Components\Events\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for event pages
  */
-class Page extends \JTable
+class Page extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -50,7 +53,7 @@ class Page extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -66,21 +69,21 @@ class Page extends \JTable
 	/**
 	 * Load the first page by alias and bind to $this
 	 *
-	 * @param      string  $alias    Page alias
-	 * @param      integer $event_id Event ID
-	 * @return     boolean True on success, false if errors
+	 * @param   string   $alias     Page alias
+	 * @param   integer  $event_id  Event ID
+	 * @return  boolean  True on success, false if errors
 	 */
-	public function loadFromAlias($alias=NULL, $event_id=NULL)
+	public function loadFromAlias($alias=null, $event_id=null)
 	{
-		if ($alias === NULL)
+		if ($alias === null)
 		{
 			return false;
 		}
-		if ($event_id === NULL)
+		if ($event_id === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " AND event_id=" . intval($event_id));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " AND event_id=" . $this->_db->quote(intval($event_id)));
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -95,16 +98,16 @@ class Page extends \JTable
 	/**
 	 * Load the first page associated with an event and bind to $this
 	 *
-	 * @param      integer $event_id Event ID
-	 * @return     boolean True on success, false if errors
+	 * @param   integer  $event_id  Event ID
+	 * @return  boolean  True on success, false if errors
 	 */
-	public function loadFromEvent($event_id=NULL)
+	public function loadFromEvent($event_id=null)
 	{
-		if ($event_id === NULL)
+		if ($event_id === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE event_id=" . intval($event_id) . " ORDER BY ordering ASC LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -119,28 +122,28 @@ class Page extends \JTable
 	/**
 	 * Get all pages for an event
 	 *
-	 * @param      integer $event_id Event ID
-	 * @return     array
+	 * @param   integer  $event_id  Event ID
+	 * @return  array
 	 */
-	public function loadPages($event_id=NULL)
+	public function loadPages($event_id=null)
 	{
-		if ($event_id === NULL)
+		if ($event_id === null)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT title, alias, id FROM $this->_tbl WHERE event_id=" . intval($event_id) . " ORDER BY ordering ASC");
+		$this->_db->setQuery("SELECT title, alias, id FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Delete all pages for an event
 	 *
-	 * @param      integer $event_id Event ID
-	 * @return     boolean True on success, false if errors
+	 * @param   integer  $event_id  Event ID
+	 * @return  boolean  True on success, false if errors
 	 */
-	public function deletePages($event_id=NULL)
+	public function deletePages($event_id=null)
 	{
-		if ($event_id === NULL)
+		if ($event_id === null)
 		{
 			return false;
 		}
@@ -156,8 +159,8 @@ class Page extends \JTable
 	/**
 	 * Get the next entry in the ordering
 	 *
-	 * @param      string $move Direction to look for neighbor
-	 * @return     boolean True on success, false if errors
+	 * @param   string   $move  Direction to look for neighbor
+	 * @return  boolean  True on success, false if errors
 	 */
 	public function getNeighbor($move)
 	{
@@ -188,14 +191,14 @@ class Page extends \JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters)
 	{
 		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			$query = "SELECT t.*, NULL as position";
+			$query = "SELECT t.*, null as position";
 		}
 		else
 		{
@@ -204,7 +207,7 @@ class Page extends \JTable
 		$query .= " FROM $this->_tbl AS t";
 		if (isset($filters['event_id']) && $filters['event_id'] != '')
 		{
-			$query .= " WHERE t.event_id='" . intval($filters['event_id']) . "'";
+			$query .= " WHERE t.event_id=" . $this->_db->quote(intval($filters['event_id']));
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -229,8 +232,8 @@ class Page extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -243,8 +246,8 @@ class Page extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -252,4 +255,3 @@ class Page extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

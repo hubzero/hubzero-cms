@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Models;
 
+use Hubzero\Database\Table;
 use ImagickException;
 use Imagick;
 use Lang;
@@ -45,7 +46,7 @@ require_once(__DIR__ . DS . 'base.php');
 class Certificate extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 * 
 	 * @var string
 	 */
@@ -87,12 +88,12 @@ class Certificate extends Base
 			$cls = $this->_tbl_name;
 			$this->_tbl = new $cls($this->_db);
 
-			if (!($this->_tbl instanceof \JTable))
+			if (!($this->_tbl instanceof Table))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of Hubzero\\Database\\Table.')
 				);
-				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of Hubzero\\Database\\Table.'));
 			}
 
 			if ($course_id)
@@ -385,7 +386,7 @@ class Certificate extends Base
 			$pdf->SetFont('Arial', '', 30); //($element->h * $size['h']));
 
 			$pdf->setXY($element->x * $size['w'], $element->y * $size['h']); //  - ($element->h * $size['h'])
-			$pdf->Cell($element->w * $size['w'], ($element->h * $size['h']), $val,'',1, 'C');
+			$pdf->Cell($element->w * $size['w'], ($element->h * $size['h']), $val, '', 1, 'C');
 		}
 
 		if (!$path)

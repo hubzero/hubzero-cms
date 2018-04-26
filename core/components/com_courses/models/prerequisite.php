@@ -45,7 +45,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'prerequisite.php');
 class Prerequisite extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */

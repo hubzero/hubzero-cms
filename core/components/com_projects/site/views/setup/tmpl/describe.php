@@ -88,12 +88,12 @@ $this->view('_title')
 				?>
 				<input type="hidden" id="extended" name="extended" value="0" />
 				<input type="hidden" name="verified" id="verified" value="0" />
-				<label for="field-title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?> <span class="required"><?php echo Lang::txt('REQUIRED'); ?></span>
+				<label for="field-title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<span class="verification"></span>
 					<input name="title" maxlength="250" id="field-title" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="verifyme" />
 				</label>
 				<p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?></p>
-				<label for="field-alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?> <span class="required"><?php echo Lang::txt('REQUIRED'); ?></span>
+				<label for="field-alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<span class="verification"></span>
 					<input name="name" maxlength="30" id="field-alias" type="text" value="<?php echo $this->model->get('alias'); ?>" <?php echo $this->model->get('id') ? ' disabled="disabled"' : ''; ?> class="verifyme" />
 				</label>

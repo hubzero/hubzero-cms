@@ -41,6 +41,7 @@ use Exception;
 use Request;
 use Route;
 use User;
+use Date;
 use Lang;
 use App;
 
@@ -303,7 +304,7 @@ class Setup extends Base
 			else
 			{
 				// Set group syncing to "undecided" state
-				$this->model->set('sync_group', -1);
+				$this->model->set('sync_group', $this->config->get('sync_behavior', -1));
 			}
 		}
 
@@ -723,34 +724,65 @@ class Setup extends Base
 					$project = ProjectORM::one($this->model->get('id'));
 
 					$old = Description::collect($project->descriptions);
+					$oldKeys = array_fill_keys(array_keys($old), '');
+					$newInfo = array_merge($oldKeys, $newInfo);
 					$formFields = array_merge($old, $newInfo);
 					$knownFields = Field::all()->rows()->toObject();
-
 					foreach ($knownFields as $kField)
 					{
-						$existingField = Description::all()->whereEquals('project_id', $this->model->get('id'))
+						$existingFields = Description::all()->whereEquals('project_id', $this->model->get('id'))
 							->whereEquals('description_key', $kField->name)
-							->limit(1)
-							->row();
-
-						if ($existingField->id != null)
+							->rows();
+						$kFieldValue = !empty($formFields[$kField->name]) ? $formFields[$kField->name] : array();
+						$destroyKeyValues = array();
+						if (is_array($kFieldValue))
 						{
-							$existingField->set('description_value', $formFields[$kField->name]);
-							$existingField->set('ordering', $kField->ordering);
-							$existingField->save();
+							$otherSelection = array_search('', $kFieldValue);
+							if ($otherSelection !== false)
+							{
+								$otherKey = $kField->name . '_other';
+								if (isset($formFields[$otherKey]))
+								{
+									$kFieldValue[$otherSelection] = $formFields[$otherKey];
+								}
+							}
+							$existingFieldKeys = $existingFields->fieldsbyKey('description_value');
+							$destroyKeyValues = array_diff($existingFieldKeys, $kFieldValue);
+							$addKeyValues = array_diff($kFieldValue, $existingFieldKeys);
+							foreach ($addKeyValues as $description)
+							{
+								$newDescription = Description::blank();
+								$newDescription->set('description_value', $description);
+								$existingFields->push($newDescription);
+							}
 						}
 						else
 						{
-							// Create a new field
-							$newField = new Description;
+							$row = $existingFields->first();
+							if ($row)
+							{
+								$row->set('description_value', $kFieldValue);
+							}
+							else
+							{
+								$row = Description::blank();
+								$row->set('description_value', $kFieldValue);
+								$existingFields->push($row);
+							}
+						}
 
-							$newField
+						foreach ($existingFields as $existingField)
+						{
+							$existingField
 								->set('description_key', $kField->name)
-								->set('description_value', $formFields[$kField->name])
-								->set('project_id', $this->model->get('id'))
-								->set('ordering', $kField->ordering);
-
-							if (!$newField->save())
+								->set('ordering', $kField->ordering)
+								->set('project_id', $this->model->get('id'));
+							$descriptionValue = $existingField->get('description_value');
+							if (in_array($descriptionValue, $destroyKeyValues))
+							{
+								$existingField->destroy();
+							}
+							else if (!$existingField->save())
 							{
 								$this->setError($newField->getError());
 							}

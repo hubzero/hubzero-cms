@@ -49,7 +49,7 @@ require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 class Unit extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
@@ -67,35 +67,35 @@ class Unit extends Base
 	 *
 	 * @var object
 	 */
-	public $group = NULL;
+	public $group = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	public $assetgroups = NULL;
+	public $assetgroups = null;
 
 	/**
 	 * \Components\Courses\Models\Asset
 	 *
 	 * @var object
 	 */
-	private $_asset = NULL;
+	private $_asset = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_assets = NULL;
+	private $_assets = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_siblings = NULL;
+	private $_siblings = null;
 
 	/**
 	 * Constructor
@@ -157,7 +157,7 @@ class Unit extends Base
 	 * @param     string $property The name of the property
 	 * @param     mixed  $default  The default value
 	 * @return    mixed  The value of the property
- 	 */
+	 */
 	public function get($property, $default=null)
 	{
 		if (isset($this->_tbl->$property))
@@ -637,4 +637,3 @@ class Unit extends Base
 		return true;
 	}
 }
-

@@ -81,10 +81,10 @@ if ($this->contributors)
 		{
 			$name = $contributor->xname;
 		}
-		if (!$contributor->org)
+		/*if (!$contributor->org)
 		{
 			$contributor->org = $contributor->xorg;
-		}
+		}*/
 
 		$name = $this->escape(stripslashes($name));
 
@@ -121,20 +121,20 @@ if ($this->contributors)
 				}
 			}
 
-			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
+			if (trim($contributor->organization) != '' && !in_array(trim($contributor->organization), $orgs))
 			{
-				$orgs[$i-1] = trim($contributor->org);
-				$orgsln    .= $i . '. ' . trim($contributor->org) . ' ';
-				$orgsln_s  .= trim($contributor->org).' ';
+				$orgs[$i-1] = trim($contributor->organization);
+				$orgsln    .= $i . '. ' . trim($contributor->organization) . ' ';
+				$orgsln_s  .= trim($contributor->organization).' ';
 				$k = $i;
 				$i++;
 			}
 			else
 			{
-				$k = array_search(trim($contributor->org), $orgs) + 1;
+				$k = array_search(trim($contributor->organization), $orgs) + 1;
 			}
 			$link_s = $link;
-			if (trim($contributor->org) != '')
+			if (trim($contributor->organization) != '')
 			{
 				$link .= '<sup>' . $k . '</sup>';
 			}
@@ -142,7 +142,7 @@ if ($this->contributors)
 		/*}
 		else
 		{
-			$orgs[trim($contributor->org)][] = $link;
+			$orgs[trim($contributor->organization)][] = $link;
 		}*/
 
 		$names[] = $link;

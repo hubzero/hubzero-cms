@@ -89,7 +89,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_VIEWS'); ?></h4>
 				<p class="total">
 					<strong class="usage-value" id="publication-views"><?php echo number_format($current->page_views); ?></strong>
-					<span id="publication-views-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal('M Y'); ?></time></span></span>
+					<span id="publication-views-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
 				</p>
 			</div>
 			<div class="col span9 omega usage-stat">
@@ -120,7 +120,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_DOWNLOADS'); ?></h4>
 				<p class="total">
 					<strong class="usage-value" id="publication-downloads"><?php echo number_format($current->primary_accesses); ?></strong>
-					<span id="publication-downloads-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal('M Y'); ?></time></span></span>
+					<span id="publication-downloads-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
 				</p>
 			</div>
 			<div class="col span9 omega usage-stat">
@@ -192,10 +192,10 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 					}
 
 					$('#publication-views').text(dataset_views[0].data[item.dataIndex][1]);
-					$('#publication-views-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
+					$('#publication-views-date').text(month_short[item.series.data[item.dataIndex][0].getUTCMonth()] + ' ' + yyyy);
 
 					$('#publication-downloads').text(dataset_downloads[0].data[item.dataIndex][1]);
-					$('#publication-downloads-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
+					$('#publication-downloads-date').text(month_short[item.series.data[item.dataIndex][0].getUTCMonth()] + ' ' + yyyy);
 				};
 
 				var views = $('#chart-views');

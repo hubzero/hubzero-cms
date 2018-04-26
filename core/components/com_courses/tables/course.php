@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Date;
 use Lang;
@@ -39,7 +40,7 @@ use Lang;
 /**
  * Courses table
  */
-class Course extends \JTable
+class Course extends Table
 {
 	/**
 	 * Constructor
@@ -78,7 +79,7 @@ class Course extends \JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   object   $table  A Table object for the asset parent.
 	 * @param   integer  $id     The id for the asset
 	 * @return  integer  The id of the asset's parent
 	 */
@@ -187,7 +188,7 @@ class Course extends \JTable
 	 * @param   mixed    $reset  Reset object
 	 * @return  boolean  True on success
 	 */
-	public function load($keys = NULL, $reset = true)
+	public function load($keys = null, $reset = true)
 	{
 		if (empty($keys))
 		{
@@ -442,4 +443,3 @@ class Course extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

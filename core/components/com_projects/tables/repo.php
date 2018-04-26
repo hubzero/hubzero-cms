@@ -32,28 +32,31 @@
 
 namespace Components\Projects\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for project repos
  */
-class Repo extends \JTable
+class Repo extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__project_repos', 'id', $db );
+		parent::__construct('#__project_repos', 'id', $db);
 	}
 
 	/**
 	 * Get repos
 	 *
-	 * @return     object or NULL
+	 * @param   integer  $projectid
+	 * @return  mixed    object or null
 	 */
-	public function getRepos ($projectid)
+	public function getRepos($projectid)
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid));
 		return $this->_db->loadObjectList();
@@ -62,13 +65,13 @@ class Repo extends \JTable
 	/**
 	 * Load project repo
 	 *
-	 * @param      integer $projectid
-	 * @param      string  $name
-	 * @return     object or false
+	 * @param   integer  $projectid
+	 * @param   string   $name
+	 * @return  mixed    object or false
 	 */
-	public function loadRepo($projectid = NULL, $name = NULL)
+	public function loadRepo($projectid = null, $name = null)
 	{
-		if ($projectid === NULL || $name === NULL)
+		if ($projectid === null || $name === null)
 		{
 			return false;
 		}

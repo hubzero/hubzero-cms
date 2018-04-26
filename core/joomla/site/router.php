@@ -81,7 +81,7 @@ class JRouterSite extends JRouter
 		$path = str_replace('index.php', '', $path);
 
 		//Set the route
-		$uri->setPath(trim($path , '/'));
+		$uri->setPath(trim($path, '/'));
 
 		$vars += parent::parse($uri);
 
@@ -108,7 +108,9 @@ class JRouterSite extends JRouter
 				if ($vars['option'] == 'com_users')
 				{
 					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
+					{
 						return $vars;
+					}
 				}
 
 				if ($vars['option'] == 'com_members'
@@ -183,7 +185,9 @@ class JRouterSite extends JRouter
 				if ($vars['option'] == 'com_users')
 				{
 					if ((isset($vars['view']) && $vars['view'] == 'logout') || (isset($vars['task']) && $vars['task'] == 'logout'))
+					{
 						return $vars;
+					}
 				}
 				else if ($uri->getPath() == 'legal/terms')
 				{
@@ -192,8 +196,12 @@ class JRouterSite extends JRouter
 				else if ($vars['option'] == 'com_members' && ((isset($vars['controller']) && $vars['controller'] == 'register') || (isset($vars['view']) && $vars['view'] == 'register')))
 				{
 					if (!empty($vars['task']))
-						if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
-						return $vars;
+					{
+						if (($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm'))
+						{
+							return $vars;
+						}
+					}
 				}
 				// allow picture to show if not confirmed
 				else if ($vars['option'] == 'com_members'
@@ -247,19 +255,23 @@ class JRouterSite extends JRouter
 				return $vars;
 			}
 
-			$badpassword = $session->get('badpassword',false);
-			$expiredpassword = $session->get('expiredpassword',false);
+			$badpassword = $session->get('badpassword', false);
+			$expiredpassword = $session->get('expiredpassword', false);
 
-			if ($badpassword || $expiredpassword) {
-				if ($vars['option'] == 'com_members' && isset($vars['task']) && $vars['task'] == 'changepassword') {
+			if ($badpassword || $expiredpassword)
+			{
+				if ($vars['option'] == 'com_members' && isset($vars['task']) && $vars['task'] == 'changepassword')
+				{
 					return $vars;
 				}
 
-				if ($vars['option'] == 'com_users' && ($vars['view'] == 'logout' || $vars['task'] == 'logout' || JRequest::getWord('task') == 'logout')) {
+				if ($vars['option'] == 'com_users' && ($vars['view'] == 'logout' || $vars['task'] == 'logout' || JRequest::getWord('task') == 'logout'))
+				{
 					return $vars;
 				}
 
-				if ($vars['option'] == 'com_support' && $vars['task'] == 'save') {
+				if ($vars['option'] == 'com_support' && $vars['task'] == 'save')
+				{
 					return $vars;
 				}
 
@@ -277,11 +289,13 @@ class JRouterSite extends JRouter
 				$vars['option'] = 'com_members';
 				$vars['task'] = 'changepassword';
 
-				if ($badpassword) {
+				if ($badpassword)
+				{
 					$vars['message'] = "Your password does not meet current site requirements. Please change your password now.";
 				}
 
-				if ($expiredpassword) {
+				if ($expiredpassword)
+				{
 					$vars['message'] = "Your password has expired. Please change your password now.";
 				}
 
@@ -320,17 +334,21 @@ class JRouterSite extends JRouter
 		$route = $uri->getPath();
 
 		//Add the suffix to the uri
-		if ($this->_mode == JROUTER_MODE_SEF && $route) {
+		if ($this->_mode == JROUTER_MODE_SEF && $route)
+		{
 			$app = JApplication::getInstance('site');
 
-			if ($app->getCfg('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/')) {
-				if ($format = $uri->getVar('format', 'html')) {
+			if ($app->getCfg('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/'))
+			{
+				if ($format = $uri->getVar('format', 'html'))
+				{
 					$route .= '.'.$format;
 					$uri->delVar('format');
 				}
 			}
 
-			if ($app->getCfg('sef_rewrite')) {
+			if ($app->getCfg('sef_rewrite'))
+			{
 				//Transform the route
 				if ($route == 'index.php')
 				{
@@ -351,7 +369,7 @@ class JRouterSite extends JRouter
 		{
 			if (stripos($uri->toString(), $_SERVER['REWROTE_TO']->getPath()) !== false)
 			{
-				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(),'',$uri->getPath()));
+				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(), '', $uri->getPath()));
 				$uri->setHost($_SERVER['REWROTE_FROM']->getHost());
 				$uri->setScheme($_SERVER['REWROTE_FROM']->getScheme());
 			}
@@ -368,9 +386,11 @@ class JRouterSite extends JRouter
 		$menu	= $app->getMenu(true);
 
 		//Handle an empty URL (special case)
-		if (!$uri->getVar('Itemid') && !$uri->getVar('option')) {
+		if (!$uri->getVar('Itemid') && !$uri->getVar('option'))
+		{
 			$item = $menu->getDefault(JFactory::getLanguage()->getTag());
-			if (!is_object($item)) {
+			if (!is_object($item))
+			{
 				// No default item set
 				return $vars;
 			}
@@ -394,10 +414,11 @@ class JRouterSite extends JRouter
 		$this->setVar('Itemid', JRequest::getInt('Itemid', null));
 
 		// Only an Itemid  OR if filter language plugin set? Get the full information from the itemid
-		if (count($this->getVars()) == 1 || ( $app->getLanguageFilter() && count( $this->getVars()) == 2 )) {
-
+		if (count($this->getVars()) == 1 || ( $app->getLanguageFilter() && count( $this->getVars()) == 2 ))
+		{
 			$item = $menu->getItem($this->getVar('Itemid'));
-			if ($item !== NULL && is_array($item->query)) {
+			if ($item !== null && is_array($item->query))
+			{
 				$vars = $vars + $item->query;
 			}
 		}
@@ -410,8 +431,8 @@ class JRouterSite extends JRouter
 
 	protected function _parseSefRoute(&$uri)
 	{
-		$vars	= array();
-		$app	= JApplication::getInstance('site');
+		$vars = array();
+		$app  = JApplication::getInstance('site');
 
 		// Call System plugin to before parsing sef route
 		JDispatcher::getInstance()->trigger('onBeforeParseSefRoute', array($uri));
@@ -421,7 +442,7 @@ class JRouterSite extends JRouter
 
 		if ($app->getCfg('sef_groups'))
 		{
-			$servername = rtrim(JURI::base(),'/');
+			$servername = rtrim(JURI::base(), '/');
 
 			$serveruri = JURI::getInstance($servername);
 			$sfqdn = $serveruri->getHost();
@@ -432,7 +453,7 @@ class JRouterSite extends JRouter
 				list($rhostname, $rdomainname) = explode('.', $rfqdn, 2);
 				list($shostname, $sdomainname) = explode('.', $sfqdn, 2);
 
-				if ( ($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
+				if (($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
 				{
 					$suri = JURI::getInstance();
 					$group = \Hubzero\User\Group::getInstance($rhostname);
@@ -446,12 +467,12 @@ class JRouterSite extends JRouter
 						$suri->setPath('/groups/'.$rhostname.'/'.$suri->getPath());
 						$_SERVER['HTTP_HOST'] = $suri->getHost();
 						$_SERVER['SERVER_NAME'] = $suri->getHost();
-						$_SERVER['SCRIPT_URI'] = $suri->toString(array('scheme','host','port','path'));
-						$_SERVER['REDIRECT_SCRIPT_URI'] = $suri->toString(array('scheme','host','port','path'));
+						$_SERVER['SCRIPT_URI'] = $suri->toString(array('scheme', 'host', 'port', 'path'));
+						$_SERVER['REDIRECT_SCRIPT_URI'] = $suri->toString(array('scheme', 'host', 'port', 'path'));
 						$_SERVER['REDIRECT_SCRIPT_URL'] = $suri->getPath();
 						$_SERVER['REDIRECT_URL'] = $suri->getPath();
 						$_SERVER['SCRIPT_URL'] = $suri->getPath();
-						$_SERVER['REQUEST_URI'] = $suri->toString(array('path','query','fragment'));
+						$_SERVER['REQUEST_URI'] = $suri->toString(array('path', 'query', 'fragment'));
 						$suri->setPath('/groups/'.$rhostname);
 						$_SERVER['REWROTE_TO'] = clone($suri);
 					}
@@ -479,15 +500,18 @@ class JRouterSite extends JRouter
 		$vars = $uri->getQuery(true);
 
 		// Handle an empty URL (special case)
-		if (empty($route) && (JRequest::getVar('option','','post') == '')) {
+		if (empty($route) && (JRequest::getVar('option', '', 'post') == ''))
+		{
 			// If route is empty AND option is set in the query, assume it's non-sef url, and parse apropriately
-			if (isset($vars['option']) || isset($vars['Itemid'])) {
+			if (isset($vars['option']) || isset($vars['Itemid']))
+			{
 				return $this->_parseRawRoute($uri);
 			}
 
 			$item = $menu->getDefault(JFactory::getLanguage()->getTag());
 			// if user not allowed to see default menu item then avoid notices
-			if (is_object($item)) {
+			if (is_object($item))
+			{
 				//Set the information in the request
 				$vars = $item->query;
 
@@ -519,29 +543,35 @@ class JRouterSite extends JRouter
 			$route_lowercase 	= JString::strtolower($route);
 			$lang_tag 			= JFactory::getLanguage()->getTag();
 
-			foreach ($items as $item) {
+			foreach ($items as $item)
+			{
 				//sqlsrv  change
-				if (isset($item->language)){
+				if (isset($item->language))
+				{
 					$item->language = trim($item->language);
 				}
-				$depth = substr_count(trim($item->route,'/'),'/') + 1; // HUBzero: keep searching for better matches with higher depth
+				$depth = substr_count(trim($item->route, '/'), '/') + 1; // HUBzero: keep searching for better matches with higher depth
 				$length = strlen($item->route); //get the length of the route
-				if ($length > 0 && JString::strpos($route_lowercase.'/', $item->route.'/') === 0 && $item->type != 'alias' && (!$app->getLanguageFilter() || $item->language == '*' || $item->language == $lang_tag)) {
+				if ($length > 0 && JString::strpos($route_lowercase.'/', $item->route.'/') === 0 && $item->type != 'alias' && (!$app->getLanguageFilter() || $item->language == '*' || $item->language == $lang_tag))
+				{
 					/* START: HUBzero Extension to handle external url menu items differently */
-					if ($item->type == 'url') {
-
+					if ($item->type == 'url')
+					{
 						// If menu route exactly matches url route,
 						// redirect (if necessary) to menu link
-						if (trim($item->route,"/") == trim($route,"/")) {
-							if (trim($item->route,"/") != trim($item->link,"/")
-							 && trim($uri->base(true) . '/' . $item->route,"/") != trim($item->link,"/") // Added because it would cause redirect loop for instals not in top-level webroot
-							 && trim($uri->base(true) . '/index.php/' . $item->route,"/") != trim($item->link,"/")) { // Added because it would cause redirect loop for instals not in top-level webroot
+						if (trim($item->route, "/") == trim($route, "/"))
+						{
+							if (trim($item->route, "/") != trim($item->link, "/")
+							 && trim($uri->base(true) . '/' . $item->route, "/") != trim($item->link, "/") // Added because it would cause redirect loop for instals not in top-level webroot
+							 && trim($uri->base(true) . '/index.php/' . $item->route, "/") != trim($item->link, "/"))
+							 { // Added because it would cause redirect loop for instals not in top-level webroot
 								$app->redirect($item->link);
 							}
 						}
 
 						/* START: HUBzero extension to pass local URLs through, but record Itemid (we want the content parser to handle this) */
-						if (strpos($item->route, "://") === false) {
+						if (strpos($item->route, "://") === false)
+						{
 							$vars['Itemid'] = $item->id;
 							break;
 						}
@@ -550,25 +580,30 @@ class JRouterSite extends JRouter
 					/* END: HUBzero Extension to handle external url menu items differently */
 
 					// We have exact item for this language
-					if ($item->language == $lang_tag) {
+					if ($item->language == $lang_tag)
+					{
 						$found = $item;
 						$foundDepth = $depth; // HUBzero: track depth so we can replace with a better match later
 						break;
 					}
 					// Or let's remember an item for all languages
-					elseif (!$found || ($depth>=$foundDepth)) { // HUBzero: deeper or equal depth matches later on are prefered
+					elseif (!$found || ($depth>=$foundDepth))
+					{
+						// HUBzero: deeper or equal depth matches later on are prefered
 						$found = $item;
 						$foundDepth = $depth; // HUBzero: track depth so we can replace with a better match later
 					}
 				}
 			}
 
-			if (!$found) {
+			if (!$found)
+			{
 				$found = $menu->getDefault($lang_tag);
 			}
 			else {
 				$route = substr($route, strlen($found->route));
-				if ($route) {
+				if ($route)
+				{
 					$route = substr($route, 1);
 				}
 
@@ -585,10 +620,12 @@ class JRouterSite extends JRouter
 		}
 
 		/* START: HUBzero Extension to parse com_content component specially */
-		if (empty($vars['option'])) {
+		if (empty($vars['option']))
+		{
 			//$bits = explode('/',ltrim($route,"/"));
 			$vars = $this->_parseContentRoute($segments);
-			if (!empty($vars['option'])) {
+			if (!empty($vars['option']))
+			{
 				$route = false;
 			}
 		}
@@ -599,11 +636,14 @@ class JRouterSite extends JRouter
 		{
 			$segments	= explode('/', $route);
 
-			if ($segments[0] == 'search') {   // @FIXME: search component should probably be configurable
-				$plugin = JPluginHelper::getPlugin( 'system', 'hubzero' );
-				$param = new JParameter( $plugin->params );
-				$search = $param->get('search','search');
-				if (empty($search)) {
+			if ($segments[0] == 'search')
+			{
+				// @FIXME: search component should probably be configurable
+				$plugin = JPluginHelper::getPlugin('system', 'hubzero');
+				$param = new JParameter($plugin->params);
+				$search = $param->get('search', 'search');
+				if (empty($search))
+				{
 					$search = 'search';
 				}
 				$segments[0] = $search;
@@ -624,7 +664,8 @@ class JRouterSite extends JRouter
 			{
 				$vars['option'] = 'com_'.$segments[0];
 
-				if (!isset($vars['Itemid'])) {
+				if (!isset($vars['Itemid']))
+				{
 					$vars['Itemid'] = null;
 				}
 
@@ -634,8 +675,9 @@ class JRouterSite extends JRouter
 		/* END: HUBzero Extension to route based on unprefixed component name (if other routing fails to match) */
 
 		// Set the active menu item
-		if (isset($vars['Itemid'])) {
-			$menu->setActive( $vars['Itemid']);
+		if (isset($vars['Itemid']))
+		{
+			$menu->setActive($vars['Itemid']);
 		}
 
 		// @FIXME: START FROM HUBZERO J1.5, NOT SURE WHAT TO DO WITH IT
@@ -652,9 +694,11 @@ class JRouterSite extends JRouter
 		/*
 		 * Parse the component route
 		 */
-		if (!empty($route) && isset($this->_vars['option'])) {
+		if (!empty($route) && isset($this->_vars['option']))
+		{
 			$segments = explode('/', $route);
-			if (empty($segments[0])) {
+			if (empty($segments[0]))
+			{
 				array_shift($segments);
 			}
 
@@ -665,21 +709,28 @@ class JRouterSite extends JRouter
 			$path = JPATH_SITE . '/components/' . $component . '/router.php';
 			$path2 = JPATH_SITE . '/components/' . $component . '/site/router.php';
 
-			if ((file_exists($path) || file_exists($path2)) && count($segments)) {
-				if ($component != "com_search") { // Cheap fix on searches
+			if ((file_exists($path) || file_exists($path2)) && count($segments))
+			{
+				if ($component != "com_search")
+				{
+					// Cheap fix on searches
 					//decode the route segments
 					/* START: HUBzero Extension: don't do : to - conversion except in com_content */
 					/*
 					$segments = $this->_decodeSegments($segments);
 					 */
-					if ($component == "com_content") {
+					if ($component == "com_content")
+					{
 						$segments = $this->_decodeSegments($segments);
 					}
 					/* END: HUBzero Extension: don't do : to - conversion except in com_content */
-				} else {
+				}
+				else
+				{
 					// fix up search for URL
 					$total = count($segments);
-					for ($i=0; $i<$total; $i++) {
+					for ($i=0; $i<$total; $i++)
+					{
 						// urldecode twice because it is encoded twice
 						$segments[$i] = urldecode(urldecode(stripcslashes($segments[$i])));
 					}
@@ -694,9 +745,12 @@ class JRouterSite extends JRouter
 
 				$this->setVars($vars);
 			}
-		} else {
+		}
+		else
+		{
 			/* START: HUBzero Extension to check redirection table if otherwise unable to match URL to content */
-			if (!isset($vars['option'])) {
+			if (!isset($vars['option']))
+			{
 				jimport('joomla.juri');
 				$db = JFactory::getDBO();
 				$db->setQuery("SELECT * FROM `#__redirect_links` WHERE `old_url`=" . $db->Quote($uri->current()));
@@ -707,7 +761,8 @@ class JRouterSite extends JRouter
 					$myuri = JURI::getInstance($row->new_url);
 					$vars = $myuri->getQuery(true);
 
-					if (isset($vars['Itemid'])) {
+					if (isset($vars['Itemid']))
+					{
 						$menu->setActive($vars['Itemid']);
 					}
 				}
@@ -715,7 +770,8 @@ class JRouterSite extends JRouter
 			/* END: HUBzero Extension to check redirection table if otherwise unable to match URL to content */
 			//Set active menu item
 
-			if ($item = $menu->getActive()) {
+			if ($item = $menu->getActive())
+			{
 				$vars = $item->query;
 			}
 		}
@@ -724,16 +780,29 @@ class JRouterSite extends JRouter
 		JDispatcher::getInstance()->trigger('onAfterParseSefRoute', array($vars));
 
 		/* START: HUBzero Extension to pass common query parameters to apache (for logging) */
-		if (!empty($vars['option']))
-			apache_note('component',$vars['option']);
-		if (!empty($vars['view']))
-			apache_note('view',$vars['view']);
-		if (!empty($vars['task']))
-			apache_note('task',$vars['task']);
-		if (!empty($vars['action']))
-			apache_note('action',$vars['action']);
-		if (!empty($vars['id']))
-			apache_note('action',$vars['id']);
+		if (function_exists('apache_note'))
+		{
+			if (!empty($vars['option']))
+			{
+				apache_note('component', $vars['option']);
+			}
+			if (!empty($vars['view']))
+			{
+				apache_note('view', $vars['view']);
+			}
+			if (!empty($vars['task']))
+			{
+				apache_note('task', $vars['task']);
+			}
+			if (!empty($vars['action']))
+			{
+				apache_note('action', $vars['action']);
+			}
+			if (!empty($vars['id']))
+			{
+				apache_note('action', $vars['id']);
+			}
+		}
 		/* END: HUBzero Extension to pass common query parameters to apache (for logging) */
 
 		return $vars;
@@ -754,11 +823,13 @@ class JRouterSite extends JRouter
 		// Get the query data
 		$query = $uri->getQuery(true);
 
-		if (!isset($query['option']) || (isset($query['option']) && $query['option'] == 'com_content' && isset($query['task']) && $query['task'] == 'view')) {
+		if (!isset($query['option']) || (isset($query['option']) && $query['option'] == 'com_content' && isset($query['task']) && $query['task'] == 'view'))
+		{
 			/* START: HUBzero Extension to handle section, category, alias routing of com_content pages */
 			$parts = $this->_buildContentRoute($query);
 
-			if (empty($parts)) {
+			if (empty($parts))
+			{
 				return;
 			}
 
@@ -794,7 +865,8 @@ class JRouterSite extends JRouter
 		$path2 = JPATH_SITE . '/components/' . $component . '/site/router.php';
 
 		// Use the custom routing handler if it exists
-		if ((file_exists($path) || file_exists($path2)) && !empty($query)) {
+		if ((file_exists($path) || file_exists($path2)) && !empty($query))
+		{
 			/*require_once $path;
 			$function	= substr($component, 4).'BuildRoute';
 			$function   = str_replace(array("-", "."), "", $function);
@@ -804,17 +876,21 @@ class JRouterSite extends JRouter
 			$parts = $routes->build($query);
 
 			// encode the route segments
-			if ($component != 'com_search') {
+			if ($component != 'com_search')
+			{
 				// Cheep fix on searches
 				/* START: HUBzero Extension to fix joomla break ':' in urls in com_wiki/com_topics (others?) */
 				/*
 				$parts = $this->_encodeSegments($parts);
 				 */
-				if ($component == 'com_content') {
+				if ($component == 'com_content')
+				{
 					$parts = $this->_encodeSegments($parts);
 				}
 				/* END: HUBzero Extension to fix joomla break ':' in urls in com_wiki/com_topics (others?) */
-			} else {
+			}
+			else
+			{
 				// fix up search for URL
 				$total = count($parts);
 				for ($i = 0; $i < $total; $i++)
@@ -832,9 +908,11 @@ class JRouterSite extends JRouter
 		 * Build the application route
 		 */
 		$built = false;
-		if (isset($query['Itemid']) && !empty($query['Itemid'])) {
+		if (isset($query['Itemid']) && !empty($query['Itemid']))
+		{
 			$item = $menu->getItem($query['Itemid']);
-			if (is_object($item) && $query['option'] == $item->component) {
+			if (is_object($item) && $query['option'] == $item->component)
+			{
 				// @FIXME: START FROM HUBZERO J1.5, NOT SURE WHAT TO DO WITH IT
 				/* START: HUBzero Extension to fix ???? */
 				/*
@@ -843,14 +921,16 @@ class JRouterSite extends JRouter
 				//$tmp = $item->route.$tmp;
 				/* END: HUBzero Extension to fix ???? */
 				// @FIXME: END FROM HUBZERO J1.5, NOT SURE WHAT TO DO WITH IT
-				if (!$item->home || $item->language!='*') {
+				if (!$item->home || $item->language!='*')
+				{
 					$tmp = !empty($tmp) ? $item->route.'/'.$tmp : $item->route;
 				}
 				$built = true;
 			}
 		}
 
-		if (!$built) {
+		if (!$built)
+		{
 			/* START: HUBzero Extension to strip 'component' from url */
 			/*
 			$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
@@ -858,15 +938,18 @@ class JRouterSite extends JRouter
 			$tmp = (isset($query['option'])) ? substr($query['option'], 4).'/'.$tmp : $tmp;
 		}
 
-		if ($tmp) {
+		if ($tmp)
+		{
 			$route .= '/'.$tmp;
 		}
-		elseif ($route=='index.php') {
+		elseif ($route=='index.php')
+		{
 			$route = '';
 		}
 
 		// Unset unneeded query information
-		if (isset($item) && $query['option'] == $item->component) {
+		if (isset($item) && $query['option'] == $item->component)
+		{
 			unset($query['Itemid']);
 		}
 		unset($query['option']);
@@ -885,10 +968,12 @@ class JRouterSite extends JRouter
 		$vars = parent::_processParseRules($uri);
 
 		// Process the pagination support
-		if ($this->_mode == JROUTER_MODE_SEF) {
+		if ($this->_mode == JROUTER_MODE_SEF)
+		{
 			$app = JApplication::getInstance('site');
 
-			if ($start = $uri->getVar('start')) {
+			if ($start = $uri->getVar('start'))
+			{
 				$uri->delVar('start');
 				$vars['limitstart'] = $start;
 			}
@@ -900,8 +985,8 @@ class JRouterSite extends JRouter
 	protected function _processBuildRules(&$uri)
 	{
 		// Make sure any menu vars are used if no others are specified
-		if (($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2) {
-
+		if (($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2)
+		{
 			$app	= JApplication::getInstance('site');
 			$menu	= $app->getMenu();
 
@@ -909,7 +994,8 @@ class JRouterSite extends JRouter
 			$itemid = $uri->getVar('Itemid');
 			$item = $menu->getItem($itemid);
 
-			if ($item) {
+			if ($item)
+			{
 				$uri->setQuery($item->query);
 			}
 			$uri->setVar('Itemid', $itemid);
@@ -921,10 +1007,12 @@ class JRouterSite extends JRouter
 		// Get the path data
 		$route = $uri->getPath();
 
-		if ($this->_mode == JROUTER_MODE_SEF && $route) {
+		if ($this->_mode == JROUTER_MODE_SEF && $route)
+		{
 			$app = JApplication::getInstance('site');
 
-			if ($limitstart = $uri->getVar('limitstart')) {
+			if ($limitstart = $uri->getVar('limitstart'))
+			{
 				$uri->setVar('start', (int) $limitstart);
 				$uri->delVar('limitstart');
 			}
@@ -945,24 +1033,35 @@ class JRouterSite extends JRouter
 		// Get the itemid form the URI
 		$itemid = $uri->getVar('Itemid');
 
-		if (is_null($itemid)) {
-			if ($option = $uri->getVar('option')) {
+		if (is_null($itemid))
+		{
+			if ($option = $uri->getVar('option'))
+			{
 				$item  = $menu->getItem($this->getVar('Itemid'));
-				if (isset($item) && $item->component == $option) {
+				if (isset($item) && $item->component == $option)
+				{
 					$uri->setVar('Itemid', $item->id);
 				}
-			} else {
-				if ($option = $this->getVar('option')) {
+			}
+			else
+			{
+				if ($option = $this->getVar('option'))
+				{
 					$uri->setVar('option', $option);
 				}
 
-				if ($itemid = $this->getVar('Itemid')) {
+				if ($itemid = $this->getVar('Itemid'))
+				{
 					$uri->setVar('Itemid', $itemid);
 				}
 			}
-		} else {
-			if (!$uri->getVar('option')) {
-				if ($item = $menu->getItem($itemid)) {
+		}
+		else
+		{
+			if (!$uri->getVar('option'))
+			{
+				if ($item = $menu->getItem($itemid))
+				{
 					$uri->setVar('option', $item->component);
 				}
 			}

@@ -108,7 +108,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					$html .= "\t\t\t" . '<th colspan="2" class="numerical-data">' . $row->name . '</th>' . "\n";
 					$html .= "\t\t\t" . '<th class="numerical-data">' . $value . '</th>' . "\n";
 					if ($total)
+					{
 						$vl = number_format((($row->value/$total)*100), 2);
+					}
 					$html .= "\t\t\t" . '<th class="numerical-data">' . $vl . '%</th>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 					$html .= "\t" . '</tfoot>' . "\n";
@@ -116,7 +118,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$name = preg_split('/ ~ /',$row->name);
+					$name = preg_split('/ ~ /', $row->name);
 					if ($s_top == "6" || $s_top == "7" || $s_top == "8")
 					{
 						$value = $this->time_units($row->value);
@@ -137,7 +139,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.Route::url('index.php?option=com_resources&id=' . $name[0] . '&active=usage') . '">' . $name[1] . '</a></td>' . "\n";
 					$html .= "\t\t\t" . '<td>' . $value . '</td>' . "\n";
 					if ($total)
+					{
 						$vl = number_format((($row->value/$total)*100), 2);
+					}
 					$html .= "\t\t\t" . '<td>' . $vl . '%</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
@@ -180,7 +184,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 
-		if ($results) {
+		if ($results)
+		{
 			$cls = 'even';
 			$html .= "\t" . '<thead>' . "\n";
 			$html .= "\t\t" . '<tr>' . "\n";
@@ -193,14 +198,15 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
-				$ranking = round($row->ranking,2);
+				$ranking = round($row->ranking, 2);
 
 				if ($ranking == 0)
 				{
 					continue;
 				}
 
-				if ($row->published == "1") {
+				if ($row->published == "1")
+				{
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
 					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . $row->title . '</a></td>' . "\n";
@@ -349,7 +355,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 			"01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
 			"07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"
 			);
-		$monthsReverse = array_reverse($months, TRUE);
+		$monthsReverse = array_reverse($months, true);
 		$cur_year = floor(date("Y"));
 		$cur_month = floor(date("n"));
 		$year_data_start = 2000;
@@ -409,18 +415,34 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 							$html .= '>';
 							switch ($i)
 							{
-								case 3:  $html .= 'Jan'; break;
-								case 6:  $html .= 'Apr'; break;
-								case 9:  $html .= 'Jul'; break;
-								default: $html .= 'Oct'; break;
+								case 3:
+									$html .= 'Jan';
+									break;
+								case 6:
+									$html .= 'Apr';
+									break;
+								case 9:
+									$html .= 'Jul';
+									break;
+								default:
+									$html .= 'Oct';
+									break;
 							}
 							$html .= ' ' . $j . ' - ';
 							switch ($i)
 							{
-								case 3:  $html .= 'Mar'; break;
-								case 6:  $html .= 'Jun'; break;
-								case 9:  $html .= 'Sep'; break;
-								default: $html .= 'Dec'; break;
+								case 3:
+									$html .= 'Mar';
+									break;
+								case 6:
+									$html .= 'Jun';
+									break;
+								case 9:
+									$html .= 'Sep';
+									break;
+								default:
+									$html .= 'Dec';
+									break;
 							}
 							$html .= ' ' . $j . '</option>' . "\n";
 						}
@@ -565,8 +587,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Returns TRUE if there is data in the database
-	 * for the date passed to it, FALSE otherwise.
+	 * Returns true if there is data in the database
+	 * for the date passed to it, false otherwise.
 	 *
 	 * @param   string $yearmonth  YYYY-MM
 	 * @param   string $period     Time period
@@ -669,7 +691,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'stats_tops';
-		if (!in_array($table,$tables))
+		if (!in_array($table, $tables))
 		{
 			return '<p class="error">' . Lang::txt('Error: Required database table not found . ') . '</p>';
 		}
@@ -680,10 +702,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$period = Request::getVar('period', '12');
-		$dthis  = Request::getVar('dthis', date('Y') . '-'.date('m'));
+		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
 		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
 		{
-			$dthis = date('Y') . '-'.date('m');
+			$dthis = date('Y') . '-' . date('m');
 		}
 		$s_top  = Request::getInt('top', '2');
 

@@ -37,8 +37,7 @@ if (!\User::authorise('core.manage', 'com_groups'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'group.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'group.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'group.php';
 
 // Include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'reason.php';

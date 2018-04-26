@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $this->css()
      ->js();
-
+$this->js('import');
 //declare vars
 $citations_require_attention = $this->citations_require_attention;
 $citations_require_no_attention = $this->citations_require_no_attention;

@@ -32,6 +32,7 @@
 
 namespace Components\Courses\Tables;
 
+use Hubzero\Database\Table;
 use User;
 use Date;
 use Lang;
@@ -39,7 +40,7 @@ use Lang;
 /**
  * Courses table class for section coupon codes
  */
-class SectionCode extends \JTable
+class SectionCode extends Table
 {
 	/**
 	 * Constructor
@@ -92,7 +93,7 @@ class SectionCode extends \JTable
 	 * @param   integer  $section_id  Unique section ID
 	 * @return  boolean  True on success
 	 */
-	public function load($oid=NULL, $section_id=NULL)
+	public function load($oid=null, $section_id=null)
 	{
 		if (empty($oid))
 		{
@@ -202,4 +203,3 @@ class SectionCode extends \JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

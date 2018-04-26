@@ -56,7 +56,7 @@ require_once(__DIR__ . DS . 'gradebook.php');
 class Offering extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
@@ -74,126 +74,126 @@ class Offering extends Base
 	 *
 	 * @var object
 	 */
-	private $_units = NULL;
+	private $_units = null;
 
 	/**
 	 * \Components\Courses\Models\Unit
 	 *
 	 * @var object
 	 */
-	private $_unit = NULL;
+	private $_unit = null;
 
 	/**
 	 * Page
 	 *
 	 * @var object
 	 */
-	private $_page = NULL;
+	private $_page = null;
 
 	/**
 	 * Iterator
 	 *
 	 * @var object
 	 */
-	private $_pages = NULL;
+	private $_pages = null;
 
 	/**
 	 * Iterator
 	 *
 	 * @var object
 	 */
-	private $_announcements = NULL;
+	private $_announcements = null;
 
 	/**
 	 * Iterator
 	 *
 	 * @var object
 	 */
-	private $_roles = NULL;
+	private $_roles = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_members = NULL;
+	private $_members = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_member = NULL;
+	private $_member = null;
 
 	/**
 	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
-	private $_manager = NULL;
+	private $_manager = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_managers = NULL;
+	private $_managers = null;
 
 	/**
 	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
-	private $_student = NULL;
+	private $_student = null;
 
 	/**
 	 * \Components\Courses\Models\Gradebook
 	 *
 	 * @var object
 	 */
-	private $_gradebook = NULL;
+	private $_gradebook = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_sections = NULL;
+	private $_sections = null;
 
 	/**
 	 * \Components\Courses\Models\Section
 	 *
 	 * @var object
 	 */
-	private $_section = NULL;
+	private $_section = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 **/
-	private $_assets = NULL;
+	private $_assets = null;
 
 	/**
 	 * \Components\Courses\Models\Permissions
 	 *
 	 * @var object
 	 */
-	private $_permissions = NULL;
+	private $_permissions = null;
 
 	/**
 	 * URL to this object
 	 *
 	 * @var string
 	 */
-	private $_link = NULL;
+	private $_link = null;
 
 	/**
 	 * Registry
 	 *
 	 * @var object
 	 */
-	private $_params = NULL;
+	private $_params = null;
 
 	/**
 	 * Constructor
@@ -620,7 +620,7 @@ class Offering extends Base
 			{
 				foreach ($this->_members as $member)
 				{
-					if ($member->get('user_id') == $user_id && $member->get('section_id') == $this->section()->get('id') && $member->get('student') )
+					if ($member->get('user_id') == $user_id && $member->get('section_id') == $this->section()->get('id') && $member->get('student'))
 					{
 						$this->_student = $member;
 						break;
@@ -1552,4 +1552,3 @@ class Offering extends Base
 		return '';
 	}
 }
-

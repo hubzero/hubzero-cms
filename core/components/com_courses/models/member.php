@@ -46,7 +46,7 @@ require_once(__DIR__ . DS . 'prerequisite.php');
 class Member extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
@@ -64,7 +64,7 @@ class Member extends Base
 	 *
 	 * @var object
 	 */
-	private $_badge = NULL;
+	private $_badge = null;
 
 	/**
 	 * \Components\Courses\Models\Prerequisites
@@ -218,10 +218,10 @@ class Member extends Base
 	 */
 	public function generateToken()
 	{
-		$chars = array(0,1,2,3,4,5,6,7,8,9); //,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+		$chars = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9); //,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 		$sn = '';
 		$max = count($chars)-1;
-		for ($i=0;$i<20;$i++)
+		for ($i=0; $i<20; $i++)
 		{
 			$sn .= (!($i % 5) && $i ? '-' : '') . $chars[rand(0, $max)];
 		}
@@ -234,4 +234,3 @@ class Member extends Base
 		return $sn;
 	}
 }
-

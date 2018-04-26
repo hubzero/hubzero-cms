@@ -1,13 +1,37 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
 defined('_HZEXEC_') or die();
+
 $canAdmin = User::authorise('core.admin', 'com_content');
 $canCreate = User::authorise('core.create', 'com_content');
 $canEdit = User::authorise('core.edit', 'com_content');
@@ -19,14 +43,12 @@ Toolbar::title(Lang::txt('COM_CONTENT_ARTICLES_TITLE'), 'content');
 
 if ($canCreate)
 {
-    Toolbar::addNew();
+	Toolbar::addNew();
 }
-
 if ($canEdit)
 {
-    Toolbar::editList();
+	Toolbar::editList();
 }
-
 Toolbar::spacer();
 if ($canChangeState)
 {
@@ -40,14 +62,14 @@ if ($canDelete)
 {
 	Toolbar::deleteList('', 'trash');
 }
-
 if ($canAdmin)
 {
 	Toolbar::spacer();
-    Toolbar::preferences($this->option, '550');
+	Toolbar::preferences($this->option, '550');
 }
 Toolbar::spacer();
 Toolbar::help('articles');
+
 Html::behavior('tooltip');
 
 $userId    = User::get('id');
@@ -72,27 +94,27 @@ $saveOrder = $listOrder == 'ordering';
 
 			<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-				<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']);?>
+				<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']); ?>
 			</select>
 
 			<select name="filter_level" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
-				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']);?>
+				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']); ?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']);?>
+				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 
 			<select name="filter_author_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_AUTHOR');?></option>
-				<?php echo Html::select('options', $this->authors, 'value', 'text', $this->filters['author_id']);?>
+				<?php echo Html::select('options', $this->authors, 'value', 'text', $this->filters['author_id']); ?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']);?>
+				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
 			</select>
 		</div>
 	</fieldset>
@@ -153,11 +175,11 @@ $saveOrder = $listOrder == 'ordering';
 		<?php foreach ($this->items as $i => $item) :
 			$item->max_ordering = 0; //??
 			$ordering   = ($listOrder == 'ordering');
-			$canCreate  = User::authorise('core.create',     'com_content.category.'.$item->catid);
-			$canEdit    = User::authorise('core.edit',       'com_content.article.'.$item->id);
-			$canCheckin = User::authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-			$canEditOwn = User::authorise('core.edit.own',   'com_content.article.'.$item->id) && $item->created_by == $userId;
-			$canChange  = User::authorise('core.edit.state', 'com_content.article.'.$item->id) && $canCheckin;
+			$canCreate  = User::authorise('core.create', 'com_content.category.' . $item->catid);
+			$canEdit    = User::authorise('core.edit', 'com_content.article.' . $item->id);
+			$canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+			$canEditOwn = User::authorise('core.edit.own', 'com_content.article.' . $item->id) && $item->created_by == $userId;
+			$canChange  = User::authorise('core.edit.state', 'com_content.article.' . $item->id) && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -174,13 +196,11 @@ $saveOrder = $listOrder == 'ordering';
 						<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
 					<p class="smallsub">
-						<?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?></p>
+						<?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+					</p>
 				</td>
 				<td class="center">
-					<?php echo Html::grid(
-						'published', $item->get('state'), 
-						$i, 'articles.', 
-						$canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+					<?php echo Html::grid('published', $item->get('state'), $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
 				<?php /*<td class="priority-4 center">
 					<?php echo Html::contentadministrator('featured', $item->featured, $i, $canChange); ?>

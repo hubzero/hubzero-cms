@@ -193,6 +193,25 @@ foreach ($profiles as $profile)
 							}
 						}
 					}
+					else
+					{
+						if (strstr($value, '{'))
+						{
+							$v = json_decode((string)$value, true);
+
+							if (!$v || json_last_error() !== JSON_ERROR_NONE)
+							{
+								$v = array($value);
+							}
+
+							foreach ($v as $nm => $vl)
+							{
+								$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+							}
+
+							$value = implode('<br />', $v);
+						}
+					}
 
 					if (empty($value))
 					{
