@@ -40,7 +40,7 @@ $required = $this->pub->curation('blocks', $this->step, 'required');
 $move = ($this->showControls) ? 'continue' : '';
 
 $title 	 = $move && $this->manifest->draftHeading ? $this->manifest->draftHeading : $this->manifest->title;
-$tagline = isset($this->manifest->draftTagline) ? $this->manifest->draftTagline : NULL;
+$tagline = isset($this->manifest->draftTagline) ? $this->manifest->draftTagline : null;
 
 $activeEl = isset($this->master->props['showElement'])
 			? $this->master->props['showElement'] : 0;
