@@ -31,32 +31,35 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+use Lang;
+
 /**
  * Table class for publication screenshot
  */
-class Screenshot extends \JTable
+class Screenshot extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_screenshots', 'id', $db );
+		parent::__construct('#__publication_screenshots', 'id', $db);
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->filename ) == '')
+		if (trim($this->filename) == '')
 		{
-			$this->setError( Lang::txt('Missing filename'));
+			$this->setError(Lang::txt('Missing filename'));
 			return false;
 		}
 
@@ -66,19 +69,19 @@ class Screenshot extends \JTable
 	/**
 	 * Load record
 	 *
-	 * @param      string	$filename	File name
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version number or name
-	 * @return     mixed False if error, Object on success
+	 * @param   string   $filename   File name
+	 * @param   integer  $versionid  Pub version ID
+	 * @param   integer  $pid        Pub ID
+	 * @param   string   $version    Version number or name
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function loadFromFilename( $filename, $versionid = null, $pid = null, $version = 'default')
+	public function loadFromFilename($filename, $versionid = null, $pid = null, $version = 'default')
 	{
-		if ($filename === NULL)
+		if ($filename === null)
 		{
 			return false;
 		}
-		if ($versionid === NULL && $pid === NULL)
+		if ($versionid === null && $pid === null)
 		{
 			return false;
 		}
@@ -114,14 +117,14 @@ class Screenshot extends \JTable
 
 		$query.= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -129,19 +132,19 @@ class Screenshot extends \JTable
 	/**
 	 * Get record
 	 *
-	 * @param      string	$filename	File name
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version number or name
-	 * @return     mixed False if error, Object on success
+	 * @param   string   $filename   File name
+	 * @param   integer  $versionid  Pub version ID
+	 * @param   integer  $pid        Pub ID
+	 * @param   string   $version    Version number or name
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getScreenshot( $filename, $versionid = null, $pid = null, $version = 'default')
+	public function getScreenshot($filename, $versionid = null, $pid = null, $version = 'default')
 	{
-		if ($filename === NULL)
+		if ($filename === null)
 		{
 			return false;
 		}
-		if ($versionid === NULL && $pid === NULL)
+		if ($versionid === null && $pid === null)
 		{
 			return false;
 		}
@@ -177,7 +180,7 @@ class Screenshot extends \JTable
 
 		$query.= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : null;
 	}
@@ -185,14 +188,14 @@ class Screenshot extends \JTable
 	/**
 	 * Get last ordering
 	 *
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version number or name
-	 * @return     integer
+	 * @param   integer  $versionid  Pub version ID
+	 * @param   integer  $pid        Pub ID
+	 * @param   string   $version    Version number or name
+	 * @return  integer
 	 */
 	public function getLastOrdering($versionid = null, $pid = null, $version = 'default')
 	{
-		if ($versionid === NULL && $pid === NULL)
+		if ($versionid === null && $pid === null)
 		{
 			return false;
 		}
@@ -226,33 +229,33 @@ class Screenshot extends \JTable
 		}
 		$query.= " ORDER BY s.ordering DESC LIMIT 1";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Save record
 	 *
-	 * @param      string	$filename	File name
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @param      integer  $pid 		Pub ID
-	 * @param      integer  $ordering 	Ordering
-	 * @param      boolean  $new 		New record?
-	 * @return     boolean
+	 * @param   string   $filename   File name
+	 * @param   integer  $versionid  Pub version ID
+	 * @param   integer  $pid        Pub ID
+	 * @param   integer  $ordering   Ordering
+	 * @param   boolean  $new        New record?
+	 * @return  boolean
 	 */
-	public function saveScreenshot( $filename, $versionid = null, $pid = null, $ordering = 0, $new = false )
+	public function saveScreenshot($filename, $versionid = null, $pid = null, $ordering = 0, $new = false)
 	{
-		if ($filename === NULL)
+		if ($filename === null)
 		{
 			return false;
 		}
-		if ($versionid === NULL or $pid === NULL)
+		if ($versionid === null or $pid === null)
 		{
 			return false;
 		}
 		if (!$new)
 		{
-			$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=" . $this->_db->quote($ordering) . "
+			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->quote($ordering) . "
 				WHERE filename=" . $this->_db->quote($filename) . " AND publication_id="
 				. $this->_db->quote($pid) . " AND publication_version_id=" . $this->_db->quote($versionid));
 			if ($this->_db->query())
@@ -270,11 +273,11 @@ class Screenshot extends \JTable
 			$this->publication_id         = $pid;
 			$this->publication_version_id = $versionid;
 			$this->filename               = $this->_db->quote($filename);
-			$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
 		if (!$ret)
 		{
-			$this->setError( strtolower(get_class( $this )) . '::store failed <br />' . $this->_db->getErrorMsg() );
+			$this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
 		}
 		else
@@ -286,17 +289,17 @@ class Screenshot extends \JTable
 	/**
 	 * Delete record
 	 *
-	 * @param      string	$filename	File name
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @return     void
+	 * @param   string   $filename   File name
+	 * @param   integer  $versionid  Pub version ID
+	 * @return  mixed
 	 */
-	public function deleteScreenshot( $filename, $versionid = null )
+	public function deleteScreenshot($filename, $versionid = null)
 	{
-		if ($filename === NULL)
+		if ($filename === null)
 		{
 			return false;
 		}
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			return false;
 		}
@@ -304,29 +307,29 @@ class Screenshot extends \JTable
 		$query = "DELETE FROM $this->_tbl ";
 		$query.= " WHERE publication_version_id=" . $this->_db->quote($versionid);
 		$query.= " AND filename=" . $this->_db->quote($filename);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$this->_db->query();
 	}
 
 	/**
 	 * Delete records
 	 *
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @return     boolean
+	 * @param   integer  $versionid  Pub version ID
+	 * @return  boolean
 	 */
-	public function deleteScreenshots( $versionid = null )
+	public function deleteScreenshots($versionid = null)
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			return false;
 		}
 
 		$query = "DELETE FROM $this->_tbl ";
 		$query.= " WHERE publication_version_id=" . $this->_db->quote($versionid);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -335,12 +338,12 @@ class Screenshot extends \JTable
 	/**
 	 * Get array of screenshots
 	 *
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @return     object
+	 * @param   integer  $versionid  Pub version ID
+	 * @return  object
 	 */
-	public function getScreenshotArray( $versionid = null)
+	public function getScreenshotArray($versionid = null)
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			return false;
 		}
@@ -362,14 +365,14 @@ class Screenshot extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version name or number
-	 * @return     object
+	 * @param   integer  $versionid  Pub version ID
+	 * @param   integer  $pid        Pub ID
+	 * @param   string   $version    Version name or number
+	 * @return  object
 	 */
-	public function getScreenshots( $versionid = null, $pid = null, $version = 'default' )
+	public function getScreenshots($versionid = null, $pid = null, $version = 'default')
 	{
-		if ($versionid === NULL && $pid === NULL)
+		if ($versionid === null && $pid === null)
 		{
 			return false;
 		}
@@ -404,21 +407,21 @@ class Screenshot extends \JTable
 		}
 		$query.= " ORDER BY s.ordering ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get files
 	 *
-	 * @param      integer 	$versionid 	Pub version ID
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version name or number
-	 * @return     array
+	 * @param   integer  $versionid  Pub version ID
+	 * @param   integer  $pid        Pub ID
+	 * @param   string   $version    Version name or number
+	 * @return  array
 	 */
-	public function getFiles( $versionid = null, $pid = null, $version = 'default' )
+	public function getFiles($versionid = null, $pid = null, $version = 'default')
 	{
-		if ($versionid === NULL && $pid === NULL)
+		if ($versionid === null && $pid === null)
 		{
 			return false;
 		}
@@ -453,7 +456,7 @@ class Screenshot extends \JTable
 		}
 		$query.= "ORDER BY s.ordering ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

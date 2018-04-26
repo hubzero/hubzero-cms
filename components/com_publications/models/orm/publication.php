@@ -255,7 +255,7 @@ class Publication extends Relational implements \Hubzero\Search\Searchable
 	{
 		$link = 'index.php?option=com_publications';
 		$link .= $this->get('alias') ? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
-		$link .= $this->_base . '&v=' . $this->getActiveVersion()->id;
+		$link .= $this->_base . '&v=' . $this->getActiveVersion()->version_number;
 		return $link;
 	}
 

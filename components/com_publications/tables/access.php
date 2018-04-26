@@ -32,30 +32,32 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication access
  */
-class Access extends \JTable
+class Access extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_access', 'publication_version_id', $db );
+		parent::__construct('#__publication_access', 'publication_version_id', $db);
 	}
 
 	/**
 	 * Load entry
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      integer 	$group_id	group id
-	 * @return     object or FALSE
+	 * @param   integer  $vid       pub version id
+	 * @param   integer  $group_id  group id
+	 * @return  object or FALSE
 	 */
-	public function loadEntry( $vid = NULL, $group_id = NULL )
+	public function loadEntry($vid = null, $group_id = null)
 	{
 		if (!$vid)
 		{
@@ -75,11 +77,11 @@ class Access extends \JTable
 	/**
 	 * Check record existence
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      integer 	$group_id	group id
-	 * @return     integer or NULL
+	 * @param   integer  $vid       pub version id
+	 * @param   integer  $group_id  group id
+	 * @return  mixed    integer or null
 	 */
-	public function existsEntry( $vid = NULL, $group_id = NULL )
+	public function existsEntry($vid = null, $group_id = null)
 	{
 		if (!$vid)
 		{
@@ -90,7 +92,7 @@ class Access extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT publication_version_id FROM $this->_tbl
+		$this->_db->setQuery("SELECT publication_version_id FROM $this->_tbl
 			WHERE publication_version_id=" . $this->_db->quote($vid) . "
 			AND group_id=" . $this->_db->quote($group_id));
 		return $this->_db->loadResult();
@@ -99,13 +101,13 @@ class Access extends \JTable
 	/**
 	 * Get groups
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      integer 	$pid		pub id
-	 * @param      string 	$version	version name or number
-	 * @param      string 	$sysgroup	name of system group
-	 * @return     object
+	 * @param   integer  $vid       pub version id
+	 * @param   integer  $pid       pub id
+	 * @param   string   $version   version name or number
+	 * @param   string   $sysgroup  name of system group
+	 * @return  object
 	 */
-	public function getGroups ( $vid = null, $pid = null, $version = 'default', $sysgroup = '' )
+	public function getGroups($vid = null, $pid = null, $version = 'default', $sysgroup = '')
 	{
 		if (!$vid)
 		{
@@ -149,25 +151,25 @@ class Access extends \JTable
 			$query.= " AND X.cn !=" . $this->_db->quote($sysgroup);
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Save groups
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      array 	$groups
-	 * @param      string 	$sysgroup	name of system group
-	 * @return     integer
+	 * @param   integer  $vid       pub version id
+	 * @param   array    $groups
+	 * @param   string   $sysgroup  name of system group
+	 * @return  integer
 	 */
-	public function saveGroups ( $vid = null, $groups = '', $sysgroup = 0 )
+	public function saveGroups($vid = null, $groups = '', $sysgroup = 0)
 	{
 		if (!$vid)
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid )
+		if (!$vid)
 		{
 			return false;
 		}
@@ -179,7 +181,7 @@ class Access extends \JTable
 		$saved = 0;
 		if ($groups)
 		{
-			$add = explode(',',$groups);
+			$add = explode(',', $groups);
 		}
 		if ($sysgroup)
 		{
@@ -194,7 +196,7 @@ class Access extends \JTable
 				continue;
 			}
 
-			$group = \Hubzero\User\Group::getInstance( $a);
+			$group = \Hubzero\User\Group::getInstance($a);
 			$gid = $group ? $group->get('gidNumber') : 0;
 
 			if (!$gid or $this->existsEntry($vid, $gid))
@@ -205,7 +207,7 @@ class Access extends \JTable
 			{
 				$query = "INSERT INTO $this->_tbl (publication_version_id,group_id)
 				          VALUES($this->_db->quote($vid), $this->_db->quote($gid))";
-				$this->_db->setQuery( $query );
+				$this->_db->setQuery($query);
 				if ($this->_db->query())
 				{
 					$saved++;
@@ -220,27 +222,27 @@ class Access extends \JTable
 	/**
 	 * Delete groups
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      string 	$sysgroup	name of system group
-	 * @return     boolean
+	 * @param   integer  $vid       pub version id
+	 * @param   string   $sysgroup  name of system group
+	 * @return  boolean
 	 */
-	public function deleteGroups ( $vid = null, $sysgroup = 0 )
+	public function deleteGroups($vid = null, $sysgroup = 0)
 	{
 		if (!$vid)
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid )
+		if (!$vid)
 		{
 			return false;
 		}
 
 		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 		$query.= $sysgroup ? " AND group_id !=" . $this->_db->quote($sysgroup) : "";
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
