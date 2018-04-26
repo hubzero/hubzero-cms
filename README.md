@@ -45,3 +45,65 @@ git subtree pull --prefix=app origin app
 ```
 
 Note that this is essentially the reverse workflow of working on the vagrant box.
+
+# Monthly updates
+
+On the Thursday or Friday before QA push, do the following:
+
+```
+git pull upstream 2.2
+```
+
+This will pull in the new code into `/core`.  For the extensions that have overrides, perform the following in order (they may or may not work).
+
+## 1. Update app
+
+You first want to make sure your local `app` branch is up-to-date.  From the local `master` branch:
+
+```
+// Pushes app to GitHub
+git subtree push --prefix=app origin app
+
+// Switch to app branch
+git checkout app
+
+// Pull in changes from GitHub
+git pull --rebase origin app
+```
+
+For the extensions in question, go to `hubzero/hubzero-cms` and see what changes were made.  Then, grab the commit of interest and perform a cherry pick:
+
+```
+git cherry-pick <commit hash>
+```
+
+This may or may not work!  If you run into trouble, try the next thing.
+
+## 2. Subtree a subtree?
+
+From the `app` branch, perform the following:
+
+```
+git subtree split -P <extension> -b <extension>
+git checkout <extension>
+git cherry-pick <commit hash>
+```
+
+If this works, then you can merge the changes back into the `app` branch:
+
+```
+git checkout app
+git merge -Xsubtree=<extension> <extension>
+```
+
+If THIS works, then you want to update the `app` branch on GitHub and pull in the changes to `master`:
+
+```
+git push origin app
+git checkout master
+git subtree pull --prefix=app origin app
+```
+
+## 3. Template overrides
+
+Be careful, as there are cases where we have overrides of php files in `app/templates/bmc/html`.  In this case, do manual checks.  Using FileMerge can be helpful here.
