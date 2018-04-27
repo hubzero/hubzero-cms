@@ -180,7 +180,7 @@ class JApi extends JApplication
 	 */
 	public function fix_http_headers()
 	{
-		if (function_exists('apache_request_headers'))
+		if (strpos(php_sapi_name(),'apache') !== false)
 		{
 			$headers = apache_request_headers();
 
@@ -536,7 +536,15 @@ class JApi extends JApplication
 			// use request headers as backup method to post vars
 			if (!$toolSessionId && !$toolSessionToken)
 			{
-				$headers          = apache_request_headers();
+				if (strpos(php_sapi_name(),'apache') !== false)
+				{
+					$headers = apache_request_headers();
+				}
+				else
+				{
+					/* @TODO: this is probably a failure condition */
+					$headers = array();
+				}
 				$toolSessionId    = (isset($headers['sessionnum'])) ? $headers['sessionnum'] : null;
 				$toolSessionToken = (isset($headers['sessiontoken'])) ? $headers['sessiontoken'] : null;
 			}

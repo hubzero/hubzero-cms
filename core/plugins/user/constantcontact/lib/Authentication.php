@@ -802,7 +802,8 @@ class OAuthUtil
 	// helper to try to sort out headers for people who aren't running apache
 	public static function get_headers()
 	{
-		if (function_exists('apache_request_headers')) {
+		if (strpos(php_sapi_name(),'apache') !== false)
+		{
 			// we need this to get the actual Authorization: header
 			// because apache tends to tell us it doesn't exist
 			$headers = apache_request_headers();
