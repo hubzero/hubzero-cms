@@ -116,7 +116,10 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		Log::auth($xuser->get('id') . ' [' . $xuser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
 
 		// correct apache log data
-		apache_note('auth','login');
+		if (strpos(php_sapi_name(),'apache') !== false)
+		{
+			apache_note('auth','login');
+		}
 
 		// Log attempt to the database
 		Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
@@ -698,7 +701,10 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	{
 		Log::auth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 
-		apache_note('auth','logout');
+		if (strpos(php_sapi_name(),'apache') !== false)
+		{
+			apache_note('auth','logout');
+		}
 
 		// If this is a temporary user created during the auth_link process (ex: username is a negative number)
 		// and they're logging out (i.e. they didn't finish the process to create a full account),

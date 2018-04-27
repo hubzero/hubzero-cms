@@ -1060,8 +1060,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!is_object($user) || $user->id == '' || $user->id == 0)
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth', 'invalid');
-
+			if (strpos(php_sapi_name(),'apache') !== false)
+			{
+				apache_note('auth', 'invalid');
+			}
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="' . $realm . '"');
 			die(Lang::txt('You must enter a valid username and password.'));
@@ -1071,8 +1073,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!\Hubzero\User\Password::comparePasswords($user->passhash, $httpBasicPassword))
 		{
 			App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
-			apache_note('auth', 'invalid');
-
+			if (strpos(php_sapi_name(),'apache') !== false)
+			{
+				apache_note('auth', 'invalid');
+			}
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="' . $realm . '"');
 			die(Lang::txt('You must enter a valid username and password.'));
