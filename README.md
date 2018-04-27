@@ -109,3 +109,24 @@ git subtree pull --prefix=app origin app
 ## 3. Template overrides
 
 Be careful, as there are cases where we have overrides of php files in `app/templates/bmc/html`.  In this case, do manual checks.  Using FileMerge can be helpful here.
+
+# Fixing core issues
+
+Checkout a clone of `upstream/2.2`:
+
+```
+git checkout --track -b fix-core-bug upstream/2.2
+```
+
+Code the fix and then push the new branch to origin:
+
+```
+git push -u origin fix-core-bug
+```
+
+Then, do a pull request!  If you don't want to keep the local and/or remote branch:
+
+```
+git branch -D fix-core-bug // Delete locally
+git push -d origin fix-core-bug // Delete remotely (I would wait to delete the remote branch until AFTER pull has occurred)
+```
