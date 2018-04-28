@@ -43,22 +43,54 @@
   align-self: center;
 }
 
-.service-header .intro .link {
-  text-transform: uppercase;
-}
-
 .service-header .intro .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-.service-header .intro .link a:active {
-  color: #fff;
+.service-header .intro .link a::before, .service-header .intro .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.service-header .intro .link a:visited {
-  color: #fff;
+.service-header .intro .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.service-header .intro .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.service-header .intro .link a:hover {
+  color: #cca231;
+}
+
+.service-header .intro .link a:hover::before, .service-header .intro .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.service-header .intro .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.service-header .intro .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @media only screen and (min-width: 901px) {
@@ -136,26 +168,55 @@
   color: #fff;
 }
 
-#one .community .link {
+#one .community .link a {
   text-transform: uppercase;
-}
-
-#one .community .link a {
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
-}
-
-#one .community .link a:active {
-  color: #fff;
-}
-
-#one .community .link a:visited {
-  color: #fff;
-}
-
-#one .community .link a {
   display: block;
+}
+
+#one .community .link a::before, #one .community .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#one .community .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+#one .community .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+#one .community .link a:hover {
+  color: #222b37;
+}
+
+#one .community .link a:hover::before, #one .community .link a:hover::after {
+  border-color: #222b37;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+#one .community .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+#one .community .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @media only screen and (min-width: 670px) {
@@ -308,20 +369,52 @@
   margin: 0 auto;
 }
 
-#five .contact-qubes .link {
-  text-transform: uppercase;
-}
-
 #five .contact-qubes .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #6E9C39;
+  color: #6E9C39;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #84bf41;
-  color: #84bf41 !important;
 }
 
-#five .contact-qubes .link a:active {
-  color: #84bf41;
+#five .contact-qubes .link a::before, #five .contact-qubes .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-#five .contact-qubes .link a:visited {
-  color: #84bf41;
+#five .contact-qubes .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+#five .contact-qubes .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+#five .contact-qubes .link a:hover {
+  color: #cca231;
+}
+
+#five .contact-qubes .link a:hover::before, #five .contact-qubes .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+#five .contact-qubes .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+#five .contact-qubes .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }

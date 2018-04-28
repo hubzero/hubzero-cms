@@ -48,9 +48,7 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 	</h3>
 	<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url($this->publication->link('edit')); ?>">
 		<fieldset>
-			<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
 			<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 			<input type="hidden" id="p" name="p" value="<?php echo $this->props; ?>" />
 			<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
@@ -64,9 +62,14 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 
 			<input type="hidden" name="move" value="continue" />
 			<?php if ($this->project->isProvisioned()) { ?>
+				<input type="hidden" name="id" value="<?php echo $this->publication->get('id'); ?>" />
 				<input type="hidden" name="task" value="submit" />
+				<input type="hidden" name="option" value="com_publications" />
 				<input type="hidden" name="ajax" value="0" />
-			<?php }  ?>
+			<?php } else { ?>
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
+			<?php } ?>
 		</fieldset>
 
 		<?php
@@ -75,8 +78,8 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 			$task = 'apply';
 
 			// Get selections
-			$selections = NULL;
-			$selected   = NULL;
+			$selections = null;
+			$selected   = null;
 
 			$objL = new \Components\Publications\Tables\License($this->database);
 			$selected   = $objL->getPubLicense($this->publication->get('version_id'));
@@ -100,9 +103,9 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 					// Show selection
 					$view = new \Hubzero\Plugin\View(
 						array(
-							'folder'  =>'projects',
-							'element' =>'publications',
-							'name'    =>'selector',
+							'folder'  => 'projects',
+							'element' => 'publications',
+							'name'    => 'selector',
 							'layout'  => $this->block
 						)
 					);
@@ -135,9 +138,9 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 			// Show selection
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  =>'projects',
-					'element' =>'publications',
-					'name'    =>'selector',
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => 'selector',
 					'layout'  => $this->block
 				)
 			);

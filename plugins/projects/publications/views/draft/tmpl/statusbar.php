@@ -35,7 +35,7 @@ $versionLabel 	= $this->pub->get('version_label', '1.0');
 $versionAlias 	= $this->pub->versionAlias();
 $status 	  	= $this->pub->getStatusName();
 $active 		= $this->active ? $this->active : 'status';
-$activenum 		= $this->activenum ? $this->activenum : NULL;
+$activenum 		= $this->activenum ? $this->activenum : null;
 
 // Are we in draft flow?
 $move = ($this->pub->isDev() || $this->pub->isReady()) ? '&move=continue' : '';
@@ -66,7 +66,7 @@ $i = 1;
 			$blockname = $block->name;
 			$status    = $block->review && $block->review->status != 2
 						? $block->review->status : $block->status->status;
-			$updated   = $block->review && $this->pub->state != 1 ? $block->review->lastupdate : NULL;
+			$updated   = $block->review && $this->pub->state != 1 ? $block->review->lastupdate : null;
 
 			if ($updated && $block->review->status != 2)
 			{

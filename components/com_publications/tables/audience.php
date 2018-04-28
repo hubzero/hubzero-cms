@@ -31,31 +31,33 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication audience
  */
-class Audience extends \JTable
+class Audience extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_audience', 'id', $db );
+		parent::__construct('#__publication_audience', 'id', $db);
 	}
 
 	/**
 	 * Load the audience for a publication by version id
 	 *
-	 * @param      integer $versionid Pub version ID
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $versionid  Pub version ID
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function loadByVersion( $versionid = NULL)
+	public function loadByVersion($versionid = null)
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			return false;
 		}
@@ -68,15 +70,15 @@ class Audience extends \JTable
 	/**
 	 * Get the audience for a publication
 	 *
-	 * @param      integer $pid       Pub ID
-	 * @param      integer $versionid Pub version ID
-	 * @param      integer $getlabels Get labels or not (1 = yes, 0 = no)
-	 * @param      integer $numlevels Number of levels to return
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $pid        Pub ID
+	 * @param   integer  $versionid  Pub version ID
+	 * @param   integer  $getlabels  Get labels or not (1 = yes, 0 = no)
+	 * @param   integer  $numlevels  Number of levels to return
+	 * @return  mixed    False if error, Object on success
 	 */
-	public function getAudience( $pid = NULL, $versionid = 0, $getlabels = 1, $numlevels = 5)
+	public function getAudience($pid = null, $versionid = 0, $getlabels = 1, $numlevels = 5)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -107,29 +109,29 @@ class Audience extends \JTable
 		$sql .= $versionid ? " AND  a.publication_version_id=" . $this->_db->quote($versionid) : "";
 		$sql .= " LIMIT 1 ";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Delete audience for a publication
 	 *
-	 * @param      integer $versionid Pub version ID
-	 * @return     boolean
+	 * @param   integer  $versionid  Pub version ID
+	 * @return  boolean
 	 */
-	public function deleteAudience( $versionid = null )
+	public function deleteAudience($versionid = null)
 	{
-		if ($versionid === NULL)
+		if ($versionid === null)
 		{
 			return false;
 		}
 
 		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($versionid);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 
 		if (!$this->_db->query())
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;

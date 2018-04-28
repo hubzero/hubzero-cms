@@ -83,6 +83,9 @@
         a {
           text-decoration: underline;
           color: $white;
+          &:hover {
+            color: $orange;
+          }
         }
       }
     }
@@ -111,6 +114,8 @@
   .link {
     margin-top: 4em;
     text-align: center;
-    @include buttons($teal);
+    a {
+      @include btn-border-drawing($teal, $orange, 2px, bottom, right);
+    }
   }
 }

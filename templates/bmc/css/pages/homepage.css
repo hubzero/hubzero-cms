@@ -139,22 +139,57 @@ h3 {
 }
 
 .resources .oer .link {
-  text-transform: uppercase;
   padding-top: 2em;
 }
 
-.resources .oer .link a, .resources .oer .link .software .software-logos h6 a:active, .software .software-logos h6 .resources .oer .link a:active, .resources .oer .link .software .software-logos h6 a:visited, .software .software-logos h6 .resources .oer .link a:visited, .resources .oer .link .software .software-logos h6 a:hover, .software .software-logos h6 .resources .oer .link a:hover {
+.resources .oer .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-.resources .oer .link a:active {
-  color: #fff;
+.resources .oer .link a::before, .resources .oer .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.resources .oer .link a:visited {
-  color: #fff;
+.resources .oer .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.resources .oer .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.resources .oer .link a:hover {
+  color: #cca231;
+}
+
+.resources .oer .link a:hover::before, .resources .oer .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.resources .oer .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.resources .oer .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @media only screen and (min-width: 901px) {
@@ -284,22 +319,57 @@ h3 {
 }
 
 .software .left .link, .software .network .right .link, .network .software .right .link {
-  text-transform: uppercase;
   padding-top: 2em;
 }
 
-.software .left .link a, .software .network .right .link a, .network .software .right .link a, .software .left .link .software-logos h6 a:active, .software .software-logos h6 .left .link a:active, .software .left .link .software-logos h6 a:visited, .software .software-logos h6 .left .link a:visited, .software .left .link .software-logos h6 a:hover, .software .software-logos h6 .left .link a:hover {
+.software .left .link a, .software .network .right .link a, .network .software .right .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #fff;
+  color: #fff;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #fff;
-  color: #fff !important;
 }
 
-.software .left .link a:active, .software .network .right .link a:active, .network .software .right .link a:active {
-  color: #fff;
+.software .left .link a::before, .software .network .right .link a::before, .network .software .right .link a::before, .software .left .link a::after, .software .network .right .link a::after, .network .software .right .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.software .left .link a:visited, .software .network .right .link a:visited, .network .software .right .link a:visited {
-  color: #fff;
+.software .left .link a::before, .software .network .right .link a::before, .network .software .right .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.software .left .link a::after, .software .network .right .link a::after, .network .software .right .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.software .left .link a:hover, .software .network .right .link a:hover, .network .software .right .link a:hover {
+  color: #cca231;
+}
+
+.software .left .link a:hover::before, .software .network .right .link a:hover::before, .network .software .right .link a:hover::before, .software .left .link a:hover::after, .software .network .right .link a:hover::after, .network .software .right .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.software .left .link a:hover::before, .software .network .right .link a:hover::before, .network .software .right .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.software .left .link a:hover::after, .software .network .right .link a:hover::after, .network .software .right .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @media only screen and (min-width: 901px) {
@@ -331,12 +401,28 @@ h3 {
 .software .software-logos .logo-wrap {
   width: 9rem;
   height: 8rem;
+  transition: all 0.3s ease-in-out;
+}
+
+@supports (display: grid) {
+  .software .software-logos .logo-wrap {
+    width: auto;
+    height: auto;
+  }
 }
 
 .software .software-logos .logo-wrap img {
   height: 65%;
   width: 100px;
   object-fit: scale-down;
+}
+
+.software .software-logos .logo-wrap:hover {
+  transform: scale(1.1);
+}
+
+.software .software-logos .logo-wrap:hover a {
+  color: #cca231;
 }
 
 .software .software-logos h6 {
@@ -346,7 +432,7 @@ h3 {
   color: #F1F2F2;
 }
 
-.software .software-logos h6 a, .software .software-logos h6 a:active, .software .software-logos h6 a:visited, .software .software-logos h6 a:hover {
+.software .software-logos h6 a {
   color: #F1F2F2;
 }
 
@@ -446,22 +532,57 @@ h3 {
 }
 
 .network .link {
-  text-transform: uppercase;
   padding-top: 2em;
 }
 
-.network .link a, .network .link .software .software-logos h6 a:active, .software .software-logos h6 .network .link a:active, .network .link .software .software-logos h6 a:visited, .software .software-logos h6 .network .link a:visited, .network .link .software .software-logos h6 a:hover, .software .software-logos h6 .network .link a:hover {
+.network .link a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #6E9C39;
+  color: #6E9C39;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #84bf41;
-  color: #84bf41 !important;
 }
 
-.network .link a:active, .network .link .software .software-logos h6 a:active, .software .software-logos h6 .network .link a:active {
-  color: #84bf41;
+.network .link a::before, .network .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.network .link a:visited, .network .link .software .software-logos h6 a:visited, .software .software-logos h6 .network .link a:visited {
-  color: #84bf41;
+.network .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.network .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.network .link a:hover {
+  color: #cca231;
+}
+
+.network .link a:hover::before, .network .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.network .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.network .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 .community {
@@ -522,23 +643,58 @@ h3 {
 
 .community .left .button, .community .network .right .button, .network .community .right .button {
   grid-row: 3;
-  text-transform: uppercase;
   margin: 1em 0;
   text-align: center;
 }
 
-.community .left .button a, .community .network .right .button a, .network .community .right .button a, .community .left .button .software .software-logos h6 a:active, .software .software-logos h6 .community .left .button a:active, .community .left .button .software .software-logos h6 a:visited, .software .software-logos h6 .community .left .button a:visited, .community .left .button .software .software-logos h6 a:hover, .software .software-logos h6 .community .left .button a:hover {
+.community .left .button a, .community .network .right .button a, .network .community .right .button a {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #6E9C39;
+  color: #6E9C39;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #84bf41;
-  color: #84bf41 !important;
 }
 
-.community .left .button a:active, .community .network .right .button a:active, .network .community .right .button a:active {
-  color: #84bf41;
+.community .left .button a::before, .community .network .right .button a::before, .network .community .right .button a::before, .community .left .button a::after, .community .network .right .button a::after, .network .community .right .button a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.community .left .button a:visited, .community .network .right .button a:visited, .network .community .right .button a:visited {
-  color: #84bf41;
+.community .left .button a::before, .community .network .right .button a::before, .network .community .right .button a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.community .left .button a::after, .community .network .right .button a::after, .network .community .right .button a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.community .left .button a:hover, .community .network .right .button a:hover, .network .community .right .button a:hover {
+  color: #cca231;
+}
+
+.community .left .button a:hover::before, .community .network .right .button a:hover::before, .network .community .right .button a:hover::before, .community .left .button a:hover::after, .community .network .right .button a:hover::after, .network .community .right .button a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.community .left .button a:hover::before, .community .network .right .button a:hover::before, .network .community .right .button a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.community .left .button a:hover::after, .community .network .right .button a:hover::after, .network .community .right .button a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @media only screen and (min-width: 620px) {
@@ -736,7 +892,7 @@ h3 {
   background-color: #84bf41;
 }
 
-.community .module-right .partner-tag a, .community .module-right .partner-tag .software .software-logos h6 a:active, .software .software-logos h6 .community .module-right .partner-tag a:active, .community .module-right .partner-tag .software .software-logos h6 a:visited, .software .software-logos h6 .community .module-right .partner-tag a:visited, .community .module-right .partner-tag .software .software-logos h6 a:hover, .software .software-logos h6 .community .module-right .partner-tag a:hover {
+.community .module-right .partner-tag a {
   color: #fff;
 }
 
@@ -746,7 +902,7 @@ h3 {
   padding: 10px;
 }
 
-.community .module-right .partner-title a, .community .module-right .partner-title .software .software-logos h6 a:active, .software .software-logos h6 .community .module-right .partner-title a:active, .community .module-right .partner-title .software .software-logos h6 a:visited, .software .software-logos h6 .community .module-right .partner-title a:visited, .community .module-right .partner-title .software .software-logos h6 a:hover, .software .software-logos h6 .community .module-right .partner-title a:hover {
+.community .module-right .partner-title a {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
@@ -876,22 +1032,54 @@ h3 {
   bottom: .5rem;
 }
 
-.three .service .link {
+.three .service .link a {
   text-transform: uppercase;
-}
-
-.three .service .link a, .three .service .link .software .software-logos h6 a:active, .software .software-logos h6 .three .service .link a:active, .three .service .link .software .software-logos h6 a:visited, .software .software-logos h6 .three .service .link a:visited, .three .service .link .software .software-logos h6 a:hover, .software .software-logos h6 .three .service .link a:hover {
+  box-shadow: inset 0 0 0 2px #6E9C39;
+  color: #6E9C39;
+  transition: color 0.25s 0.08333s;
+  position: relative;
   padding: .25em .75em;
-  border: 1px solid #84bf41;
-  color: #84bf41 !important;
 }
 
-.three .service .link a:active {
-  color: #84bf41;
+.three .service .link a::before, .three .service .link a::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.three .service .link a:visited {
-  color: #84bf41;
+.three .service .link a::before {
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.three .service .link a::after {
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.three .service .link a:hover {
+  color: #cca231;
+}
+
+.three .service .link a:hover::before, .three .service .link a:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.three .service .link a:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.three .service .link a:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
 }
 
 @supports (display: grid) {

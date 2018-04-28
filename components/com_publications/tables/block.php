@@ -31,29 +31,31 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication building blocks
  */
-class Block extends \JTable
+class Block extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__publication_blocks', 'id', $db );
+		parent::__construct('#__publication_blocks', 'id', $db);
 	}
 
 	/**
 	 * Get record by name
 	 *
-	 * @param      string 		$name
-	 * @return     object or false
+	 * @param   string  $name
+	 * @return  mixed   object or false
 	 */
-	public function getBlock( $name = '' )
+	public function getBlock($name = '')
 	{
 		if (!$name)
 		{
@@ -67,10 +69,10 @@ class Block extends \JTable
 	/**
 	 * Get record id by name
 	 *
-	 * @param      string 		$name
-	 * @return     integer
+	 * @param   string   $name
+	 * @return  integer
 	 */
-	public function getBlockId( $name='' )
+	public function getBlockId($name='')
 	{
 		if (!$name)
 		{
@@ -83,10 +85,12 @@ class Block extends \JTable
 	/**
 	 * Get available blocks
 	 *
-	 * @param      string  $select 				Select query
-	 * @return     array
+	 * @param   string  $select  Select query
+	 * @param   string  $where
+	 * @param   string  $order
+	 * @return  array
 	 */
-	public function getBlocks( $select = '*', $where = '', $order = '')
+	public function getBlocks($select = '*', $where = '', $order = '')
 	{
 		$query  = "SELECT $select FROM $this->_tbl " . $where;
 		$query .= $order ? $order : " ORDER BY id ";
@@ -111,13 +115,12 @@ class Block extends \JTable
 	/**
 	 * Load default block manifest
 	 *
-	 * @param      string 	$name 	Block name
-	 *
-	 * @return     mixed False if error, Object on success
+	 * @param   string  $name  Block name
+	 * @return  mixed   False if error, Object on success
 	 */
-	public function getManifest( $name = NULL )
+	public function getManifest($name = null)
 	{
-		if ($name === NULL)
+		if ($name === null)
 		{
 			return false;
 		}

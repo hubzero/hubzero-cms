@@ -31,16 +31,18 @@
 
 namespace Components\Publications\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for publication version
  */
-class Version extends \JTable
+class Version extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -50,17 +52,17 @@ class Version extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version number or name
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $pid      Pub ID
+	 * @param   string   $version  Version number or name
+	 * @return  mixed False if error, Object on success
 	 */
-	public function loadVersion($pid = NULL, $version = 'dev')
+	public function loadVersion($pid = null, $version = 'dev')
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -101,20 +103,20 @@ class Version extends \JTable
 	/**
 	 * Update record
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $update		Column name
-	 * @param      string   $new 		Update to
-	 * @param      string   $where 		Where
-	 * @param      string   $version 	Version number or name
-	 * @return     void
+	 * @param   integer  $pid      Pub ID
+	 * @param   string   $update   Column name
+	 * @param   string   $new      Update to
+	 * @param   string   $where    Where
+	 * @param   string   $version  Version number or name
+	 * @return  void
 	 */
-	public function updateVersion($pid = NULL, $update = '', $new = '', $where = '', $version = 'dev')
+	public function updateVersion($pid = null, $update = '', $new = '', $where = '', $version = 'dev')
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -123,7 +125,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET $update = '".$new."' WHERE publication_id=" . $this->_db->quote($pid);
+		$query  = "UPDATE $this->_tbl SET $update = " . $this->_db->quote($new) . " WHERE publication_id=" . $this->_db->quote($pid);
 		$query .= $where ? " AND ".$where : "";
 		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
@@ -150,17 +152,17 @@ class Version extends \JTable
 	/**
 	 * Get used labels
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $exclude 	Version number or name
-	 * @return     array
+	 * @param   integer  $pid      Pub ID
+	 * @param   string   $exclude  Version number or name
+	 * @return  array
 	 */
-	public function getUsedLabels($pid = NULL, $exclude = 'dev')
+	public function getUsedLabels($pid = null, $exclude = 'dev')
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -198,18 +200,18 @@ class Version extends \JTable
 	/**
 	 * Get attribute
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version number or name
-	 * @param      string   $select		Select query
-	 * @return     string
+	 * @param   integer  $pid      Pub ID
+	 * @param   string   $version  Version number or name
+	 * @param   string   $select   Select query
+	 * @return  string
 	 */
-	public function getAttribute($pid = NULL, $version = 'dev', $select = '')
+	public function getAttribute($pid = null, $version = 'dev', $select = '')
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -246,17 +248,17 @@ class Version extends \JTable
 	/**
 	 * Get records
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @param      array   $filters 	Query filters
-	 * @return     object
+	 * @param   integer  $pid     Pub ID
+	 * @param   array    $filters  Query filters
+	 * @return  object
 	 */
 	public function getVersions($pid, $filters = array())
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -281,13 +283,13 @@ class Version extends \JTable
 	/**
 	 * Check version
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version number or name
-	 * @return     boolean
+	 * @param   integer  $pid      Pub ID
+	 * @param   string   $version  Version number or name
+	 * @return  boolean
 	 */
-	public function checkVersion($pid = NULL, $version = NULL)
+	public function checkVersion($pid = null, $version = null)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -316,12 +318,12 @@ class Version extends \JTable
 	/**
 	 * Get pub id
 	 *
-	 * @param      integer  $vid 		Pub version ID
-	 * @return     integer
+	 * @param   integer  $vid  Pub version ID
+	 * @return  integer
 	 */
-	public function getPubId($vid = NULL)
+	public function getPubId($vid = null)
 	{
-		if ($vid === NULL)
+		if ($vid === null)
 		{
 			return false;
 		}
@@ -333,12 +335,12 @@ class Version extends \JTable
 	/**
 	 * Get ID of main version
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @return     integer
+	 * @param   integer  $pid  Pub ID
+	 * @return  integer
 	 */
-	public function getMainVersionId($pid = NULL)
+	public function getMainVersionId($pid = null)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -350,12 +352,12 @@ class Version extends \JTable
 	/**
 	 * Get published version number
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @return     integer
+	 * @param   integer  $pid  Pub ID
+	 * @return  integer
 	 */
-	public function getPublishedVersionNumber($pid = NULL)
+	public function getPublishedVersionNumber($pid = null)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -367,12 +369,12 @@ class Version extends \JTable
 	/**
 	 * Get published version count
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @return     integer
+	 * @param   integer  $pid  Pub ID
+	 * @return  integer
 	 */
-	public function getPublishedCount($pid = NULL)
+	public function getPublishedCount($pid = null)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -384,12 +386,12 @@ class Version extends \JTable
 	/**
 	 * Get version count
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @return     integer
+	 * @param   integer  $pid  Pub ID
+	 * @return  integer
 	 */
-	public function getCount($pid = NULL)
+	public function getCount($pid = null)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -401,12 +403,12 @@ class Version extends \JTable
 	/**
 	 * Get last public release
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @return     object
+	 * @param   integer  $pid  Pub ID
+	 * @return  object
 	 */
-	public function getLastPubRelease($pid = NULL)
+	public function getLastPubRelease($pid = null)
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -419,13 +421,13 @@ class Version extends \JTable
 	/**
 	 * Remove main flag
 	 *
-	 * @param      integer   $vid 		Pub version ID
-	 * @param      boolean   $unpublish
-	 * @return     void
+	 * @param   integer  $vid       Pub version ID
+	 * @param   boolean  $unpublish
+	 * @return  void
 	 */
-	public function removeMainFlag($vid = NULL, $unpublish = 0)
+	public function removeMainFlag($vid = null, $unpublish = 0)
 	{
-		if ($vid === NULL || !is_numeric($vid) || intval($vid) == 0)
+		if ($vid === null || !is_numeric($vid) || intval($vid) == 0)
 		{
 			return false;
 		}
@@ -443,9 +445,9 @@ class Version extends \JTable
 	/**
 	 * Get title for new draft
 	 *
-	 * @param      integer   $projectid  Project ID
-	 * @param      string    $title
-	 * @return     void
+	 * @param   integer  $projectid  Project ID
+	 * @param   string   $title
+	 * @return  void
 	 */
 	public function getDefaultTitle($projectid = 0, $title = '')
 	{
@@ -456,7 +458,7 @@ class Version extends \JTable
 		$query  = "SELECT COUNT(*)";
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		$query.= " WHERE v.main=1 AND v.title LIKE '" . $title . "%' AND p.project_id = " . $this->_db->quote($projectid). " AND v.state != 2";
+		$query.= " WHERE v.main=1 AND v.title LIKE " . $this->_db->quote($title . '%') . " AND p.project_id = " . $this->_db->quote($projectid). " AND v.state != 2";
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadResult();
@@ -470,12 +472,12 @@ class Version extends \JTable
 	/**
 	 * Create new version
 	 *
-	 * @param      object   $dev 				Version to duplicate
-	 * @param      integer  $state				New version status
-	 * @param      string   $secret 			New version secret
-	 * @param      integer  $version_number 	New version number
-	 * @param      integer   $main				Default?
-	 * @return     integer or False
+	 * @param   object   $dev             Version to duplicate
+	 * @param   integer  $state           New version status
+	 * @param   string   $secret          New version secret
+	 * @param   integer  $version_number  New version number
+	 * @param   integer  $main            Default?
+	 * @return  mixed    integer or False
 	 */
 	public function createNewVersion($dev, $state = 1, $secret = '', $version_number = 1, $main = 1)
 	{
@@ -501,17 +503,17 @@ class Version extends \JTable
 	/**
 	 * Get record
 	 *
-	 * @param      integer  $pid 		Pub ID
-	 * @param      string   $version 	Version number or name
-	 * @return     object or False
+	 * @param   integer  $pid      Pub ID
+	 * @param   string   $version  Version number or name
+	 * @return  mixed    object or False
 	 */
 	public function getVersion($pid, $version = 'dev')
 	{
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL)
+		if ($pid === null)
 		{
 			return false;
 		}
@@ -547,14 +549,14 @@ class Version extends \JTable
 	/**
 	 * Save version parameter
 	 *
-	 * @param      integer $id
-	 * @param      string  $param
-	 * @param      string  $value
-	 * @return     void
+	 * @param   integer  $id
+	 * @param   string   $param
+	 * @param   string   $value
+	 * @return  void
 	 */
-	public function saveParam($id = NULL, $param = '', $value = 0)
+	public function saveParam($id = null, $param = '', $value = 0)
 	{
-		if ($id === NULL)
+		if ($id === null)
 		{
 			$id = $this->id;
 		}
@@ -616,15 +618,15 @@ class Version extends \JTable
 	/**
 	 * Get top-level publication version stats
 	 *
-	 * @param      array 	$validProjects
-	 * @param      string 	$get
-	 * @return     mixed
+	 * @param   array   $validProjects
+	 * @param   string  $get
+	 * @return  mixed
 	 */
 	public function getPubStats($validProjects = array(), $get = 'total')
 	{
 		if (empty($validProjects))
 		{
-			return NULL;
+			return null;
 		}
 
 		$query  = " SELECT COUNT(v.id) as versions ";
@@ -641,7 +643,7 @@ class Version extends \JTable
 			{
 				$tquery .= "'".$v."',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery.") ";
 		}
 

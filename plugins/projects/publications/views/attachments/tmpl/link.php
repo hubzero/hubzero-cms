@@ -31,11 +31,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$data 		= $this->data;
-$row  		= $this->data->row;
-$title 		= $row->title ? $row->title : $row->path;
-$details 	= $row->title ? $row->path : NULL;
-$viewer 	= $this->data->viewer;
+$data    = $this->data;
+$row     = $this->data->row;
+$title   = $row->title ? $row->title : $row->path;
+$details = $row->title ? $row->path : null;
+$viewer  = $this->data->viewer;
 
 ?>
 	<li>
