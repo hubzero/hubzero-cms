@@ -44,8 +44,29 @@ if (User::authorise('core.delete', 'com_media'))
 	Toolbar::spacer();
 }
 Toolbar::help('media');
+
+$base = COM_MEDIA_BASE;
+if (DIRECTORY_SEPARATOR == '\\')
+{
+	$base = str_replace(DIRECTORY_SEPARATOR, "\\\\", COM_MEDIA_BASE);
+}
+$style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
+
+Html::behavior('framework', true);
+//Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
+//Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
+
+$this->js("
+	var basepath = '" . $base . "';
+	var viewstyle = '" . $style . "';
+");
+$this->css('jquery.treeview.css', 'system');
+$this->css('mediamanager.css');
+$this->js('jquery.treeview.js', 'system');
+$this->js('mediamanager.js');
 ?>
 <script type="text/javascript">
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {

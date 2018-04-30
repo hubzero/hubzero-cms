@@ -26,18 +26,18 @@
 	bottom: 0;
 }
 
-#folderForm {
+/*#folderForm {
 	display: inline-block;
 	width: 50%;
-}
+}*/
 
 #folderForm legend {
-	display: inline-block;
+	/*display: inline-block;*/
 	font-weight: bold;
 }
 
 #folderForm div {
-	display: inline-block;
+	/*display: inline-block;*/
 	padding: 0 20px 0 5px;
 }
 
