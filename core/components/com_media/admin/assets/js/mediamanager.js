@@ -15,14 +15,14 @@
 
 		initialize: function()
 		{
-			this.folderframe	= $('#folderframe');
-			this.folderpath		= $('#folderpath');
+			this.folderframe = $('#folderframe');
+			this.folderpath  = $('#folderpath');
 
-			this.updatepaths	= $('input.update-folder');
+			this.updatepaths = $('input.update-folder');
 
-			this.frame		= window.frames['folderframe'];
-			this.frameurl	= this.frame.location.href;
-			//this.frameurl   = window.frames['folderframe'].location.href;
+			this.frame    = window.frames['folderframe'];
+			this.frameurl = this.frame.location.href;
+			//this.frameurl = window.frames['folderframe'].location.href;
 
 			var self = this;
 			$('#media-tree').find('a').on('click', function(e){
@@ -38,20 +38,7 @@
 					window.frames[target].location.href = node.attr('href');
 				}
 			});
-			/*this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../core/assets/images/mootree.gif', onClick:
-					function(node){
-						target = node.data.target != null ? node.data.target : '_self';
 
-						// Get the current URL.
-						uri = this._getUriObject(this.frameurl);
-						current = uri.file+'?'+uri.query;
-
-						if (current != 'undefined?undefined' && current != encodeURI(node.data.url)) {
-							window.frames[target].location.href = node.data.url;
-						}
-					}.bind(this)
-				},{ text: '', open: true, data: { url: 'index.php?option=com_media&view=mediaList&tmpl=component', target: 'folderframe'}});
-			this.tree.adopt('media-tree');*/
 			this.tree = $('#media-tree').treeview({
 				collapsed: true
 			});
@@ -74,7 +61,7 @@
 			this.frameurl = this.frame.location.href;
 
 			var folder = this.getFolder();
-			var basepath = "/var/www/hub/app/site/media";
+
 			if (folder) {
 				this.updatepaths.each(function(i, path){ path.value =folder; });
 				this.folderpath.value = basepath+'/'+folder;
@@ -92,8 +79,8 @@
 
 			//$(viewstyle).addClass('active');
 
-//console.log($('#uploadForm[action]'));
-//			a = this._getUriObject($('#uploadForm[action]'));
+			//console.log($('#uploadForm[action]'));
+			//a = this._getUriObject($('#uploadForm[action]'));
 			/*q = new Hash(this._getQueryObject(a.query));
 			q.set('folder', folder);
 			var query = [];
@@ -101,8 +88,8 @@
 				if (v != null) {
 					this.push(k+'='+v);
 				}
-			}, query);*/
-/*
+			}, query);
+
 			q = this._getQueryObject(a.query);
 			q.folder = folder;
 			var query = [];
@@ -118,7 +105,7 @@
 			} else {
 				$('#uploadForm').attr('action', a.scheme+'://'+a.domain+a.path+'?'+a.query);
 			}
-*/
+			*/
 		},
 
 		oncreatefolder: function()

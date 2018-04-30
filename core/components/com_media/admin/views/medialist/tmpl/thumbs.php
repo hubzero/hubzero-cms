@@ -34,6 +34,7 @@ defined('_HZEXEC_') or die();
 
 ?>
 <script type="text/javascript">
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {

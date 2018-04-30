@@ -81,11 +81,11 @@ class Media extends AdminController
 
 		MediaHelper::createPath($folders, COM_MEDIA_BASE);
 
-		Html::behavior('framework', true);
+		/*Html::behavior('framework', true);
 		\Hubzero\Document\Assets::addComponentScript('com_media', 'mediamanager.js');
 		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager.css');
 		Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
-		Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
+		Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);*/
 
 		$this->view
 			->set('require_ftp', true)
