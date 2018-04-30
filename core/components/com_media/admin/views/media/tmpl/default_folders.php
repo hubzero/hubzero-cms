@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- : @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
@@ -33,15 +33,22 @@
 defined('_HZEXEC_') or die();
 ?>
 <ul <?php echo $this->folders_id; ?>>
-	<?php foreach ($this->folderTree as $folder) { ?>
-		<li id="<?php echo $folder['name']; ?>">
-			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>" target="folderframe"><?php echo $folder['name']; ?></a>
-			<?php if (isset($folder['children']) && count($folder['children'])) {
+	<?php foreach ($this->folderTree as $folder) : ?>
+		<li id="<?php echo $this->escape($folder['name']); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>" target="folderframe">
+				<?php echo $this->escape($folder['name']); ?>
+			</a>
+			<?php
+			if (isset($folder['children']) && count($folder['children'])) :
 				$temp = $this->folderTree;
+
 				$this->folderTree = $folder['children'];
+
 				echo $this->loadTemplate('folders');
+
 				$this->folderTree = $temp;
-			} ?>
+			endif;
+			?>
 		</li>
-	<?php } ?>
+	<?php endforeach; ?>
 </ul>

@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- : @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
@@ -33,6 +33,7 @@
 defined('_HZEXEC_') or die();
 
 $params = new \Hubzero\Config\Registry;
+
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
 		<div class="imgOutline">
@@ -46,7 +47,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 			<div class="imginfoBorder" title="<?php echo $this->currentDoc['name']; ?>" >
 				<?php if (User::authorise('core.delete', 'com_media')):?>
 					<input type="checkbox" name="rm[]" value="<?php echo $this->currentDoc['name']; ?>" />
-				<?php endif;?>
+				<?php endif; ?>
 				<?php echo $this->currentDoc['name']; ?>
 			</div>
 		</div>

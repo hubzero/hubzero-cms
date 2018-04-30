@@ -33,21 +33,21 @@
 defined('_HZEXEC_') or die();
 
 $params = new \Hubzero\Config\Registry;
-use Components\Media\Admin\Helpers\MediaHelper; // Move to controller
+
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div class="imgBorder center">
 					<a class="img-preview" href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>" style="display: block; width: 100%; height: 100%">
-						<img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], MediaHelper::parseSize($this->currentImg['size'])); ?>" width="<?php echo '60'; //echo $this->_tmp_img->width_60; ?>" height="<?php echo '60'; //echo $this->_tmp_img->height_60; ?>" />
+						<img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="60" height="60" />
 					</a>
 				</div>
 			</div>
 			<div class="imginfoBorder">
-			<?php if (User::authorise('core.delete', 'com_media')):?>
-				<input type="checkbox" name="rm[]" value="<?php echo $this->currentImg['name']; ?>" />
-			<?php endif;?>
+				<?php if (User::authorise('core.delete', 'com_media')):?>
+					<input type="checkbox" name="rm[]" value="<?php echo $this->currentImg['name']; ?>" />
+				<?php endif; ?>
 				<a title="<?php echo $this->currentImg['name']; ?>" class="preview">
 					<?php echo $this->escape(substr($this->currentImg['name'], 0, 10) . (strlen($this->currentImg['name']) > 10 ? '...' : '')); ?>
 				</a>

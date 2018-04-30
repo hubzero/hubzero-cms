@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- : @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
@@ -33,10 +33,16 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_MEDIA'));
-Toolbar::preferences($this->option, '550');
-Toolbar::spacer();
-Toolbar::deleteList('', 'delete');
-Toolbar::spacer();
+if (User::authorise('core.admin', 'com_media'))
+{
+	Toolbar::preferences($this->option, 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
+	Toolbar::spacer();
+}
+if (User::authorise('core.delete', 'com_media'))
+{
+	Toolbar::deleteList('', 'delete');
+	Toolbar::spacer();
+}
 Toolbar::help('media');
 ?>
 <script type="text/javascript">
@@ -55,7 +61,7 @@ Toolbar::help('media');
 			<fieldset id="treeview">
 				<legend><?php echo Lang::txt('COM_MEDIA_FOLDERS'); ?></legend>
 				<div id="media-tree_tree">
-				<?php echo $this->loadTemplate('folders'); ?>
+					<?php echo $this->loadTemplate('folders'); ?>
 				</div>
 			</fieldset>
 		</td>
@@ -76,16 +82,19 @@ Toolbar::help('media');
 
 			<form action="<?php echo Route::url('index.php?option=com_media&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="token" value="<?php echo \App::get('session')->getFormToken(); ?>" />
+				<input type="hidden" name="token" value="<?php echo Session::getFormToken(); ?>" />
 				<input type="hidden" name="folder" id="folder" value="<?php echo $this->folder; ?>" />
 			</form>
-			<legend><?php echo Lang::txt('COM_MEDIA_FILES'); ?></legend>
-			<fieldset id="folderview">
-				<div class="view">
-					<iframe src="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->folder); ?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
-				</div>
-			</fieldset>
+
+			<form action="<?php echo Route::url('index.php?option=com_media&task=folder.create&tmpl=' . Request::getCmd('tmpl', 'index'));?>" name="folderForm" id="folderForm" method="post">
+				<fieldset id="folderview">
+					<legend><?php echo Lang::txt('COM_MEDIA_FILES'); ?></legend>
+					<div class="view">
+						<iframe src="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->folder); ?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
+					</div>
+				</fieldset>
+			</form>
 		</td>
 	</tr>
-	<?php echo Html::input('token'); ?>
 </table>
+<?php echo Html::input('token'); ?>

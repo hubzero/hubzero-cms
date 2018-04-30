@@ -35,24 +35,27 @@ namespace Components\Media\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Media\Models\Files;
 use Components\Media\Admin\Helpers\MediaHelper;
-use App;
+use Filesystem;
 use Request;
 use User;
-use Filesystem;
+use App;
 
+/**
+ * Media list controller
+ */
 class Medialist extends AdminController
 {
-	public function execute()
-	{
-		parent::execute();
-	}
-
+	/**
+	 * Display a list of files
+	 *
+	 * @return  void
+	 */
 	public function displayTask()
 	{
 		$filters = array();
 
-		$tmpl = \Request::getCmd('tmpl');
-		$folder = \Request::getVar('folder', '', '', 'path');
+		$tmpl = Request::getCmd('tmpl');
+		$folder = Request::getVar('folder', '', '', 'path');
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
 		if ($tmpl == 'component')
@@ -61,24 +64,25 @@ class Medialist extends AdminController
 		}
 		$this->setRedirect($redirect);
 
-                $session = \App::get('session');
-                $state = \User::getState('folder');
-                $folders = \Filesystem::directoryTree(COM_MEDIA_BASE);
+		$session = App::get('session');
+		$state = User::getState('folder');
+		$folders = Filesystem::directoryTree(COM_MEDIA_BASE);
 		$folderTree = MediaHelper::_buildFolderTree($folders);
 
 		$children = MediaHelper::getChildren(COM_MEDIA_BASE, $folder);
 		$parent = MediaHelper::getParent($folder);
 
-		$style = \Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
+		$style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'medialist-'.$style.'.css');
-\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager.css');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager.css');
+
 		$this->setView('medialist', 'thumbs');
-                $this->view
+		$this->view
 			->set('folderTree', $folderTree)
 			->set('folders', $folders)
 			->set('folder', $folder)
 			->set('children', $children)
 			->set('parent', $parent)
-                        ->display();
+			->display();
 	}
 }
