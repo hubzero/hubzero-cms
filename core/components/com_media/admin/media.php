@@ -33,13 +33,23 @@ namespace Components\Media\Admin;
 
 if (!\User::authorise('core.manage', 'com_media'))
 {
-	return \App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-$params = Component::params('com_media');
+$path = 'file_path';
+$popup_upload = \Request::getCmd('pop_up', null);
+$view = \Request::getCmd('view');
+if (substr(strtolower($view), 0, 6) == 'images' || $popup_upload == 1)
+{
+	$path = 'image_path';
+}
+
+$params = \Component::params('com_media');
+
 define('COM_MEDIA_BASE', PATH_APP . '/' . $params->get($path, 'site/media'));
-//define('COM_MEDIA_BASEURL', rtrim(Request::root(), '/') . substr(PATH_APP, strlen(PATH_ROOT)) . '/' . $params->get($path, 'site/media'));
-define('COM_MEDIA_BASEURL', '/' . $params->get($path, 'app/site/media'));
+define('COM_MEDIA_BASEURL', rtrim(\Request::root(), '/') . substr(PATH_APP, strlen(PATH_ROOT)) . '/' . $params->get($path, 'site/media'));
+//define('COM_MEDIA_BASEURL', '/' . $params->get($path, 'app/site/media'));
+
 require_once __DIR__ . DS . 'helpers' . DS . 'media.php';
 
 $controllerName = \Request::getCmd('controller', 'media_test');

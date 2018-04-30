@@ -41,9 +41,9 @@ defined('_HZEXEC_') or die();
 				</div>
 			</div>
 			<div class="imginfoBorder">
-			<?php if (User::authorise('core.delete', 'com_media')):?>
-				<input type="checkbox" name="rm[]" value="<?php echo $this->currentFolder['name']; ?>" />
-			<?php endif;?>
+				<?php if (User::authorise('core.delete', 'com_media')):?>
+					<input type="checkbox" name="rm[]" value="<?php echo $this->currentFolder['name']; ?>" />
+				<?php endif; ?>
 				<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->currentFolder['path']); ?>" target="folderframe"><?php echo substr($this->currentFolder['name'], 0, 10) . (strlen($this->currentFolder['name']) > 10 ? '...' : ''); ?></a>
 			</div>
 		</div>

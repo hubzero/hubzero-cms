@@ -25,7 +25,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- : @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
@@ -68,7 +68,7 @@ defined('_HZEXEC_') or die();
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="username" value="" />
 		<input type="hidden" name="password" value="" />
-		<input type="hidden" name="token" value="<?php echo \App::get('session')->getFormToken(); ?>" />
+		<input type="hidden" name="token" value="<?php echo Session::getFormToken(); ?>" />
 		<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
 	</div>
 </form>
