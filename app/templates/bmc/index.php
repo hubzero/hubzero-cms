@@ -37,8 +37,6 @@ Html::behavior('framework', true);
 Html::behavior('modal');
 
 $this->addStylesheet($this->baseurl . '/templates/' . $this->template . '/css/site.css');
-$this->addScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js");
-$this->addScript("https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.js");
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/vendor/hammer.js');
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 
@@ -101,6 +99,8 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.js"></script>
 		<jdoc:include type="head" />
 
 		<!--[if lt IE 9]><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script><![endif]-->
