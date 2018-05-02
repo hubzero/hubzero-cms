@@ -146,7 +146,7 @@ class Pages
 	private static function getCurrentPathSegments()
 	{
 		// get group
-		$cn = Request::getVar('cn','');
+		$cn = Request::getVar('cn', '');
 		$group = \Hubzero\User\Group::getInstance($cn);
 
 		// use Route so in case the hub is /members/groups/... instead of top level /groups
@@ -329,7 +329,7 @@ class Pages
 			'name'   => 'emails',
 			'layout' => $type . '_plain'
 		));
-		$eview->option     = Request::getCmd('option', 'com_groups');;
+		$eview->option     = Request::getCmd('option', 'com_groups');
 		$eview->controller = Request::getCmd('controller', 'groups');
 		$eview->group      = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
 		$eview->object     = $object;
@@ -404,7 +404,7 @@ class Pages
 			'layout'    => $type
 		));
 
-		$eview->option     = Request::getCmd('option', 'com_groups');;
+		$eview->option     = Request::getCmd('option', 'com_groups');
 		$eview->controller = Request::getCmd('controller', 'groups');
 		$eview->group      = $group;
 		$eview->object     = $object;
@@ -812,7 +812,6 @@ class Pages
 			$eval = function() use ($document)
 			{
 				ob_start();
-				unset($this);
 				eval("?>$document<?php ");
 				$document = ob_get_clean();
 				return $document;
@@ -879,7 +878,6 @@ class Pages
 			$eval = function() use ($content)
 			{
 				ob_start();
-				unset($this);
 				eval("?>$content<?php ");
 				$content = ob_get_clean();
 				return $content;
