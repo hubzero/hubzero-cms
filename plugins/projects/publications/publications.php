@@ -2378,7 +2378,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Notify curators by email
-			$curatorMessage = ($pub->version->get('state') == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . rtrim(Request::base(), DS) . DS . 'publications/curation' : $message;
+      $curationPubLink = rtrim(Request::base(), DS) . DS . 'publications/curation/' . $pub->get('id') . '?vid=' . $pub->get('version_id');
+			$curatorMessage = ($pub->version->get('state') == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . $curationPubLink : $message;
 
 			$curatorgroups = array($pub->masterType()->curatorgroup);
 			if ($this->_pubconfig->get('curatorgroup', ''))
