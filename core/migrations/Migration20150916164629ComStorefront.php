@@ -81,7 +81,7 @@ class Migration20150916164629ComStorefront extends Base
 			}
 		}
 
-                $protectedStorefrontFolder = DS . 'site' . DS . 'protected';
+                $protectedStorefrontFolder = DS . 'site' . DS . 'protected' . DS . 'storefront';
 
 		if (!is_dir(PATH_APP . DS . trim($protectedStorefrontFolder, DS)))
 		{
