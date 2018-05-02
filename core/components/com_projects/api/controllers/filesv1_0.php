@@ -170,7 +170,7 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid) //connection specific listing
 		{
-			$dir = Entity::fromPath(Request::getVar('subdir', '', 'post'), $this->ormconn->adapter());
+			$dir = Entity::fromPath(Request::getVar('subdir', ''), $this->ormconn->adapter());
 			try
 			{
 				$files = $dir->listContents();
@@ -185,10 +185,10 @@ class Filesv1_0 extends ApiController
 		else
 		{
 			$files = $this->model->repo()->filelist(array(
-				'subdir'           => Request::getVar('subdir', '', 'post'),
-				'filter'           => Request::getVar('filter', '', 'post'),
-				'limit'            => Request::getInt('limit', 0, 'post'),
-				'start'            => Request::getInt('limitstart', 0, 'post'),
+				'subdir'           => Request::getVar('subdir', ''),
+				'filter'           => Request::getVar('filter', ''),
+				'limit'            => Request::getInt('limit', 0),
+				'start'            => Request::getInt('limitstart', 0),
 				'sortby'           => 'localpath',
 				'showFullMetadata' => true,
 				'getParents'       => true,
