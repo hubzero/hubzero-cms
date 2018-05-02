@@ -1,22 +1,89 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
 
+Toolbar::title(Lang::txt('COM_MEDIA'));
+if (User::authorise('core.admin', 'com_media'))
+{
+	Toolbar::preferences($this->option, 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
+	Toolbar::spacer();
+}
+if (User::authorise('core.delete', 'com_media'))
+{
+	Toolbar::deleteList('', 'delete');
+	Toolbar::spacer();
+}
+Toolbar::help('media');
+
+$base = COM_MEDIA_BASE;
+if (DIRECTORY_SEPARATOR == '\\')
+{
+	$base = str_replace(DIRECTORY_SEPARATOR, "\\\\", COM_MEDIA_BASE);
+}
+$style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
+
+Html::behavior('framework', true);
+//Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
+//Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
+
+$this->js("
+	var basepath = '" . $base . "';
+	var viewstyle = '" . $style . "';
+");
+$this->css('jquery.treeview.css', 'system');
+$this->css('mediamanager.css');
+$this->js('jquery.treeview.js', 'system');
+$this->js('mediamanager.js');
 ?>
+<script type="text/javascript">
+function submitbutton(pressbutton)
+{
+	var form = document.adminForm;
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
+		return;
+	}
+	submitform(pressbutton);
+}
+</script>
 <table width="100%">
 	<tr valign="top">
 		<td class="media-tree">
 			<fieldset id="treeview">
 				<legend><?php echo Lang::txt('COM_MEDIA_FOLDERS'); ?></legend>
-				<div id="media-tree_tree"></div>
-				<?php echo $this->loadTemplate('folders'); ?>
+				<div id="media-tree_tree">
+					<?php echo $this->loadTemplate('folders'); ?>
+				</div>
 			</fieldset>
 		</td>
 		<td class="media-browser">
@@ -34,51 +101,21 @@ defined('_HZEXEC_') or die();
 				</form>
 			<?php endif; ?>
 
-			<form action="<?php echo Route::url('index.php?option=com_media'); ?>" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data" >
+			<form action="<?php echo Route::url('index.php?option=com_media&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="cb1" id="cb1" value="0" />
-				<input class="update-folder" type="hidden" name="folder" id="folder" value="<?php echo $this->state->folder; ?>" />
+				<input type="hidden" name="token" value="<?php echo Session::getFormToken(); ?>" />
+				<input type="hidden" name="folder" id="folder" value="<?php echo $this->folder; ?>" />
 			</form>
 
 			<form action="<?php echo Route::url('index.php?option=com_media&task=folder.create&tmpl=' . Request::getCmd('tmpl', 'index'));?>" name="folderForm" id="folderForm" method="post">
 				<fieldset id="folderview">
-					<div class="view">
-						<iframe src="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->folder); ?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
-					</div>
 					<legend><?php echo Lang::txt('COM_MEDIA_FILES'); ?></legend>
-					<div class="path">
-					<?php if (User::authorise('core.create', 'com_media')): ?>
-						<input class="inputbox" type="text" id="folderpath" readonly="readonly" placeholder="<?php echo Lang::txt('COM_MEDIA_FOLDER_PATH'); ?>" />
-						<input class="inputbox" type="text" id="foldername" name="foldername" placeholder="<?php echo Lang::txt('COM_MEDIA_FOLDER_NAME'); ?>" />
-						<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="<?php echo $this->state->folder; ?>" />
-						<button type="submit"><?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?></button>
-					<?php endif; ?>
+					<div class="view">
+						<iframe src="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->folder); ?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
 					</div>
-					<?php echo Html::input('token'); ?>
 				</fieldset>
 			</form>
-
-			<?php if (User::authorise('core.create', 'com_media')):?>
-			<!-- File Upload Form -->
-			<form action="<?php echo Route::url('index.php?option=com_media&task=file.upload&tmpl=component&' . $this->session->getName().'='.$this->session->getId() . '&' . Session::getFormToken() . '=1', true, true); ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
-				<fieldset id="uploadform">
-					<legend><?php echo $this->config->get('upload_maxsize')=='0' ? Lang::txt('COM_MEDIA_UPLOAD_FILES_NOLIMIT') : Lang::txt('COM_MEDIA_UPLOAD_FILES', $this->config->get('upload_maxsize')); ?></legend>
-					<fieldset id="upload-noflash" class="actions">
-						<label for="upload-file" class="hidelabeltxt"><?php echo Lang::txt('COM_MEDIA_UPLOAD_FILE'); ?></label>
-						<div class="input-modal">
-							<span class="input-cell">
-								<input type="file" id="upload-file" name="Filedata[]" multiple="multiple" />
-							</span>
-							<span class="input-cell">
-								<label for="upload-submit" class="hidelabeltxt"><?php echo Lang::txt('COM_MEDIA_START_UPLOAD'); ?></label>
-								<input type="submit" id="upload-submit" value="<?php echo Lang::txt('COM_MEDIA_START_UPLOAD'); ?>"/>
-							</span>
-						</div>
-					</fieldset>
-					<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_media'); ?>" />
-				</fieldset>
-			</form>
-			<?php endif;?>
 		</td>
 	</tr>
 </table>
+<?php echo Html::input('token'); ?>

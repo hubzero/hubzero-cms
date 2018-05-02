@@ -60,19 +60,21 @@ class Geodb extends AdminController
 	 */
 	public function importHubconfigTask()
 	{
-		if (file_exists(PATH_APP . DS . 'hubconfiguration.php'))
+		if (file_exists(PATH_ROOT . DS . 'hubconfiguration.php'))
 		{
-			include_once(PATH_APP . DS . 'hubconfiguration.php');
+			include_once PATH_ROOT . DS . 'hubconfiguration.php';
 		}
-
-		$table = new \JTableExtension($this->database);
-		$table->load($table->find(array(
-			'element' => $this->_option,
-			'type'    => 'component'
-		)));
+		elseif (file_exists(PATH_APP . DS . 'hubconfiguration.php'))
+		{
+			include_once PATH_APP . DS . 'hubconfiguration.php';
+		}
 
 		if (class_exists('HubConfig'))
 		{
+			$db = App::get('db');
+			$db->setQuery("SELECT * FROM `#__extensions` WHERE `type`='component' AND `element`=" . $db->quote($this->_option));
+			$table = $db->loadObject();
+
 			$hub_config = new \HubConfig();
 
 			$this->config->set('geodb_driver', $hub_config->ipDBDriver);
@@ -82,15 +84,13 @@ class Geodb extends AdminController
 			$this->config->set('geodb_password', $hub_config->ipDBPassword);
 			$this->config->set('geodb_database', $hub_config->ipDBDatabase);
 			$this->config->set('geodb_prefix', $hub_config->ipDBPrefix);
+
+			$db->setQuery("UPDATE `#__extensions` SET `params`=" . $db->quote($this->config->toString()) . " WHERE `extension_id`=" . $db->quote($table->extension_id));
+			$db->query();
+
+			Notify::success(Lang::txt('COM_SYSTEM_GEO_IMPORT_COMPLETE'));
 		}
 
-		$table->params = $this->config->toString();
-
-		$table->store();
-
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_SYSTEM_GEO_IMPORT_COMPLETE')
-		);
+		$this->cancelTask();
 	}
 }

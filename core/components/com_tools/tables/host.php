@@ -32,18 +32,19 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Middleware host table class
  */
-class Host extends \JTable
+class Host extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db  Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -53,7 +54,7 @@ class Host extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean False if invalid data, true on success
+	 * @return  boolean  False if invalid data, true on success
 	 */
 	public function check()
 	{
@@ -76,10 +77,10 @@ class Host extends \JTable
 	/**
 	 * Inserts a new row if id is zero or updates an existing row in the database table
 	 *
-	 * @param     boolean $insert      If true, forces an insert
-	 * @param     boolean $kv          If false, null object variables are not updated
-	 * @param     boolean $updateNulls If false, null object variables are not updated
-	 * @return    mixed null|string null if successful otherwise returns and error message
+	 * @param   boolean  $insert       If true, forces an insert
+	 * @param   boolean  $kv           If false, null object variables are not updated
+	 * @param   boolean  $updateNulls  If false, null object variables are not updated
+	 * @return  mixed    null|string null if successful otherwise returns and error message
 	 */
 	public function store($insert=null, $kv=null, $updateNulls=false)
 	{
@@ -98,7 +99,7 @@ class Host extends \JTable
 				$tmp = array();
 				foreach (get_object_vars($this) as $ky => $v)
 				{
-					if (is_array($v) or is_object($v) or $ky[0] == '_' )
+					if (is_array($v) or is_object($v) or $ky[0] == '_')
 					{ // internal or NA field
 						continue;
 					}
@@ -114,7 +115,7 @@ class Host extends \JTable
 					else
 					{
 						//$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
-						$val = $this->_db->quote($v); 
+						$val = $this->_db->quote($v);
 					}
 					$tmp[] = $this->_db->quoteName($ky) . '=' . $val;
 				}
@@ -140,8 +141,8 @@ class Host extends \JTable
 	/**
 	 * Default delete method
 	 *
-	 * @param      integer $oid Record ID
-	 * @return     boolean True if successful otherwise returns and error message
+	 * @param   integer  $oid  Record ID
+	 * @return  boolean  True if successful otherwise returns and error message
 	 */
 	public function delete($oid=null)
 	{
@@ -169,8 +170,8 @@ class Host extends \JTable
 	/**
 	 * Construct an SQL statement based on the array of filters passed
 	 *
-	 * @param      array $filters Filters to build SQL from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build SQL from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -216,8 +217,8 @@ class Host extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build SQL from
-	 * @return     integer
+	 * @param   array   $filters  Filters to build SQL from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -232,8 +233,8 @@ class Host extends \JTable
 	/**
 	 * Get a list of records
 	 *
-	 * @param      array $filters Filters to build SQL from
-	 * @return     array
+	 * @param   array  $filters  Filters to build SQL from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{

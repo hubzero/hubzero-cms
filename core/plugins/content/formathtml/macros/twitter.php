@@ -85,7 +85,7 @@ class Twitter extends Macro
 		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? $matches[1] : 500;
 
 		//make sure we have a user name
-		if ($screenName == '' && $widgetId == '' || strpos($screenName, '#') !== FALSE)
+		if ($screenName == '' && $widgetId == '' || strpos($screenName, '#') !== false)
 		{
 			return '(Please enter a valid Twitter Username/ID or Widget ID)';
 		}

@@ -33,8 +33,8 @@
 namespace Modules\ArticlesCategories;
 
 use Hubzero\Module\Module;
+use Components\Categories\Models\Category;
 use Component;
-use JCategories;
 
 /**
  * Module class for displaying a list of categories
@@ -54,10 +54,10 @@ class Helper extends Module
 
 		$list = self::getList($params);
 
-		if (!empty($list))
+		if ($list->count())
 		{
 			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
-			$startLevel      = reset($list)->getParent()->level;
+			$startLevel = Category::oneOrNew($list->first()->parent_id)->level;
 			require $this->getLayoutPath($params->get('layout', 'default'));
 		}
 	}
@@ -70,10 +70,20 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once Component::path('com_content') . '/helpers/route.php';
+		require_once Component::path('com_content') . '/site/helpers/route.php';
+		require_once Component::path('com_categories') . '/models/category.php';
 
-		$categories = JCategories::getInstance('Content');
-		$category   = $categories->get($params->get('parent', 'root'));
+		$parent = $params->get('parent', 'root');
+		if ($parent == 'root')
+		{
+			$category = Category::all()
+				->whereEquals('alias', 'root')
+				->row();
+		}
+		else
+		{
+			$category = Category::one($parent);
+		}
 
 		if ($category != null)
 		{

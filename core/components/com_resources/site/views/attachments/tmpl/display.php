@@ -88,25 +88,31 @@ $hideform = Request::getInt('hideform', 0);
 			foreach ($this->children as $child)
 			{
 				$k++;
-
-				// figure ou the URL to the file
-				switch ($child->get('type'))
+				if ($child->get('standalone') == 1)
 				{
-					case 12:
-						if ($child->path)
-						{
-							// internal link, not a resource
+					$url = rtrim(Request::base(), '/') . Route::url($child->link());
+				}
+				else
+				{
+					// figure ou the URL to the file
+					switch ($child->get('type'))
+					{
+						case 12:
+							if ($child->path)
+							{
+								// internal link, not a resource
+								$url = $child->path;
+							}
+							else
+							{
+								// internal link but a resource
+								$url = '/index.php?option=com_resources&id=' . $child->id;
+							}
+							break;
+						default:
 							$url = $child->path;
-						}
-						else
-						{
-							// internal link but a resource
-							$url = '/index.php?option=com_resources&id=' . $child->id;
-						}
-						break;
-					default:
-						$url = $child->path;
-						break;
+							break;
+					}
 				}
 
 				// figure out the file type so we can give it the appropriate CSS class
@@ -117,7 +123,7 @@ $hideform = Request::getInt('hideform', 0);
 				}
 
 				$isFile = true;
-				if (($child->get('type') == 12 || $child->get('type') == 11)
+				if (($child->get('standalone') == 1) || ($child->get('type') == 12 || $child->get('type') == 11)
 				 || in_array($type, array('html', 'htm', 'php', 'asp', 'shtml'))
 				 || strstr($url, '?'))
 				{

@@ -152,7 +152,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		$options['return'] = $b64dreturn;
 
 		// Check to make sure they didn't deny our application permissions
-		if (Request::getVar('error', NULL))
+		if (Request::getVar('error', null))
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
@@ -226,10 +226,9 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 				$id       = $user_profile->getId();
 				$fullname = $user_profile->getName();
 				$email    = $user_profile->getEmail();
-				
+
 				// Version 5 of the Facebook SDK no longer allows retrival of username
 				// $username = $user_profile->getField('username');
-
 			}
 			catch (\Facebook\Exceptions\FacebookResponseException $e)
 			{

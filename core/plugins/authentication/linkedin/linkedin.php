@@ -132,7 +132,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!Request::getVar('oauth_verifier', NULL))
+		if (!Request::getVar('oauth_verifier', null))
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
@@ -150,13 +150,13 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$request['oauth_token_secret'],
 			Request::getVar('oauth_verifier')
 		);
-		if ($reply['success'] === TRUE)
+		if ($reply['success'] === true)
 		{
 			// The request went through without an error, gather user's 'access' tokens
 			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference
-			$jsession->set('linkedin.oauth.authorized', TRUE);
+			$jsession->set('linkedin.oauth.authorized', true);
 		}
 		else
 		{
@@ -167,10 +167,9 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	/**
 	 * Method to setup linkedin params and redirect to linkedin auth URL
 	 *
-	 * @access	public
-	 * @param   object	$view	view object
-	 * @param 	object	$tpl	template object
-	 * @return	void
+	 * @param   object  $view  view object
+	 * @param   object  $tpl   template object
+	 * @return  void
 	 */
 	public function display($view, $tpl)
 	{
@@ -195,7 +194,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			// LinkedIn hasn't sent us a response, the user is initiating the connection
 			// Send a request for a LinkedIn access token
 			$reply = $client->retrieveTokenRequest();
-			if ($reply['success'] === TRUE)
+			if ($reply['success'] === true)
 			{
 				// Store the request token
 				App::get('session')->set('linkedin.oauth.request', $reply['linkedin']);
@@ -236,7 +235,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		// Make sure we have authorization
 		$jsession = App::get('session');
 
-		if ($jsession->get('linkedin.oauth.authorized') == TRUE)
+		if ($jsession->get('linkedin.oauth.authorized') == true)
 		{
 			// User initiated LinkedIn connection, set up config
 			$config = array(
@@ -342,7 +341,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!Request::getVar('oauth_verifier', NULL))
+		if (!Request::getVar('oauth_verifier', null))
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
@@ -360,20 +359,20 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$request['oauth_token_secret'],
 			Request::getVar('oauth_verifier')
 		);
-		if ($reply['success'] === TRUE)
+		if ($reply['success'] === true)
 		{
 			// The request went through without an error, gather user's 'access' tokens
 			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference
-			$jsession->set('linkedin.oauth.authorized', TRUE);
+			$jsession->set('linkedin.oauth.authorized', true);
 		}
 		else
 		{
 			return new Exception(Lang::txt('Access token retrieval failed'), 500);
 		}
 
-		if ($jsession->get('linkedin.oauth.authorized') == TRUE)
+		if ($jsession->get('linkedin.oauth.authorized') == true)
 		{
 			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
 

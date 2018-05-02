@@ -53,14 +53,14 @@ class Session extends Base
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = '\\Components\\Tools\\Tables\\Session';
 
 	/**
 	 * \Hubzero\ItemList
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_cache = array(
 		'shared.count' => null,
@@ -70,9 +70,9 @@ class Session extends Base
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed  $oid        Integer (ID), string (alias), object or array
-	 * @param      string $authorized Authorization level
-	 * @return     void
+	 * @param   mixed   $oid         Integer (ID), string (alias), object or array
+	 * @param   string  $authorized  Authorization level
+	 * @return  void
 	 */
 	public function __construct($oid=null, $authorized=null)
 	{
@@ -83,12 +83,12 @@ class Session extends Base
 			$cls = $this->_tbl_name;
 			$this->_tbl = new $cls($this->_db);
 
-			if (!($this->_tbl instanceof \JTable))
+			if (!($this->_tbl instanceof \Hubzero\Database\Table))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
 				);
-				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))
@@ -114,9 +114,9 @@ class Session extends Base
 	/**
 	 * Returns a reference to an session model
 	 *
-	 * @param      mixed  $oid        Session ID or object
-	 * @param      string $authorized Authorization level
-	 * @return     object
+	 * @param   mixed   $oid         Session ID or object
+	 * @param   string  $authorized  Authorization level
+	 * @return  object
 	 */
 	static function &getInstance($oid=null, $authorized=null)
 	{
@@ -151,7 +151,7 @@ class Session extends Base
 	/**
 	 * Check if the entry exists (i.e., has a database record)
 	 *
-	 * @return     boolean True if record exists, False if not
+	 * @return  boolean  True if record exists, False if not
 	 */
 	public function exists()
 	{
@@ -165,10 +165,10 @@ class Session extends Base
 	/**
 	 * Get a list of shared views
 	 *
-	 * @param      string  $rtrn    Data type to return [count, list]
-	 * @param      array   $filters Filters to apply to query
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed Returns an integer or array depending upon format chosen
+	 * @param   string   $rtrn     Data type to return [count, list]
+	 * @param   array    $filters  Filters to apply to query
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed    Returns an integer or array depending upon format chosen
 	 */
 	public function shared($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -215,10 +215,10 @@ class Session extends Base
 	/**
 	 * Share a session
 	 *
-	 * @param      string $with     List of users
-	 * @param      string $group    Group to share with
-	 * @param      string $readonly More to share with
-	 * @return     boolean
+	 * @param   string  $with      List of users
+	 * @param   string  $group     Group to share with
+	 * @param   string  $readonly  More to share with
+	 * @return  boolean
 	 */
 	public function share($with=null, $group=null, $readonly='Yes')
 	{
@@ -324,8 +324,8 @@ class Session extends Base
 	/**
 	 * Stop sharing a session with a specified user
 	 *
-	 * @param      string $with Username
-	 * @return     boolean
+	 * @param   string   $with  Username
+	 * @return  boolean
 	 */
 	public function unshare($with=null)
 	{
@@ -341,8 +341,8 @@ class Session extends Base
 	/**
 	 * Get associated tool information
 	 *
-	 * @param      string $what What data to return
-	 * @return     boolean
+	 * @param   string   $what  What data to return
+	 * @return  boolean
 	 */
 	public function app($what=null)
 	{
@@ -380,7 +380,7 @@ class Session extends Base
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function delete()
 	{
@@ -404,4 +404,3 @@ class Session extends Base
 		return parent::delete();
 	}
 }
-

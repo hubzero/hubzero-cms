@@ -326,6 +326,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$view->no_html = Request::getInt('no_html', 0);
 				$view->params = $this->params;
 
+				if ($view->limit > 9223372036854775807 || $view->start > 9223372036854775807)
+				{
+					App::abort(404, Lang::txt('Pagination value beyond the bounds of supported integer values.'));
+				}
+				if (intval($view->limit) < 0 || intval($view->start) < 0)
+				{
+					App::abort(404, Lang::txt('Invalid pagination value.'));
+				}
+
 				if ($this->getError())
 				{
 					$view->setError($this->getError());

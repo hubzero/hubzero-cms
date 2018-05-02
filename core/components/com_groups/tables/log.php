@@ -32,16 +32,18 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Table class for logging group actions
  */
-class Log extends \JTable
+class Log extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -51,7 +53,7 @@ class Log extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -67,8 +69,8 @@ class Log extends \JTable
 	/**
 	 * Find all logs matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters = array())
 	{
@@ -82,8 +84,8 @@ class Log extends \JTable
 	/**
 	 * Build query string for getting list or count of pages
 	 *
-	 * @param      array   $filters
-	 * @return     string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters = array())
 	{

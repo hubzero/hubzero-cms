@@ -147,9 +147,9 @@ else
 				<form id="hubForm" class="full" method="post" action="<?php echo Route::url($this->model->link() . '&task=save'); ?>">
 					<div>
 						<input type="hidden" id="pid" name="id" value="<?php echo $this->model->get('id'); ?>" />
-						<input type="hidden"  name="task" value="save" />
-						<input type="hidden"  name="active" value="<?php echo $this->section; ?>" />
-						<input type="hidden"  name="name" value="<?php echo $this->model->get('alias'); ?>" />
+						<input type="hidden" name="task" value="save" />
+						<input type="hidden" name="active" value="<?php echo $this->section; ?>" />
+						<input type="hidden" name="name" value="<?php echo $this->model->get('alias'); ?>" />
 						<?php echo Html::input('token'); ?>
 						<?php echo Html::input('honeypot'); ?>
 						<?php
@@ -187,7 +187,7 @@ else
 										<input name="title" id="field-title" maxlength="250" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="long" />
 									</label>
 
-									<label for="field-title">
+									<label for="field-about">
 										<?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></td>
 										<?php echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'about', array('class' => 'minimal no-footer')); ?>
 									</label>

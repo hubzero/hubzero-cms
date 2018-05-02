@@ -42,7 +42,7 @@ $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
 $mconfig = Component::params('com_members');
 $pPath   = trim($mconfig->get('webpath'), DS);
-$profileThumb = NULL;
+$profileThumb = null;
 
 $append = '?from=' . $this->user->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));

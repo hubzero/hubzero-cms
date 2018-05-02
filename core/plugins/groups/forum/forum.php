@@ -827,6 +827,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			break;
 		}
 
+		if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+
 		$section = Section::all()
 			->whereEquals('alias', $filters['section'])
 			->whereEquals('scope', $this->forum->get('scope'))
@@ -903,6 +908,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if (!$filters['search'])
 		{
 			return $this->sections();
+		}
+
+		if (!in_array($filters['orderDir'], array('ASC', 'DESC')))
+		{
+			$filters['orderDir'] = 'DESC';
 		}
 
 		if (!User::isGuest())
@@ -1685,6 +1695,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		);
 	}
 
+	/**
+	 * Get email recipient IDs
+	 *
+	 * @param   object  $category
+	 * @return  array
+	 */
 	protected function _getEmailRecipientIds($category)
 	{
 		$userIDsToEmail = array();

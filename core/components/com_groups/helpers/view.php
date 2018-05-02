@@ -299,7 +299,7 @@ class View
 		$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
 
 		$out = '';
-		if (sizeof($pageArray) > 0)
+		if (count($pageArray) > 0)
 		{
 			$out = '<ul>';
 			foreach ($pageArray as $key => $page)
@@ -680,7 +680,7 @@ class View
 		ob_start();
 		$template = new Template();
 		$template->set('group', \Hubzero\User\Group::getInstance(Request::getVar('cn', '')))
-			     ->set('tab', Request::getVar('active','overview'))
+			     ->set('tab', Request::getCmd('active', 'overview'))
 			     ->set('error', $lerror)
 			     ->parse()
 			     ->render();
@@ -831,7 +831,21 @@ class View
 
 		// get URI path
 		$path = Request::path();
-		$path = trim(str_replace('groups' . DS . $group->get('cn'), '', $path), DS);
+		// Find portion of URI after /group-cn/...
+		$temp = explode('/', $path);
+		$cnKey = array_search($group->get('cn'), $temp);
+		if ($cnKey == false)
+		{
+			// group cn was not found, assume overview
+			$path = 'overview';
+		}
+		else
+		{
+			// we found the group cn, take the remainder of the url
+			// Using index+1 because we already know the group cn
+			$temp = array_slice($temp, $cnKey+1);
+			$path = implode('/', $temp);
+		}
 
 		// make sure we have a path. if no path means were attempting to access the home page
 		if ($path == '')

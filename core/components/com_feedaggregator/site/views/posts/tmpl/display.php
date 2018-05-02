@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if (isset($this->filters['filterby']) != TRUE)
+if (isset($this->filters['filterby']) != true)
 {
 	$this->filters['filterby'] = 'all';
 }
@@ -83,90 +83,89 @@ $this->js('posts')
 					</ul>
 				</nav>
 
-		<?php if ($this->posts->count() > 0):?>
-				<table class="ideas entries feedtable">
-					<caption><?php echo Lang::txt('COM_FEEDAGGREGATOR_SHOWING_POSTS', $this->filters['filterby']); ?></caption>
-					<tbody>
-					<?php foreach ($this->posts as $post): ?>
-						<?php 
-							$post->created = Date::of($post->created)->toLocal();
-							$post->description = wordwrap($post->description, 100, "<br />\n");
-							$post->title = wordwrap($post->title, 65, "<br />\n");
-							$post->status = $post->getStatus();
-						?>
-						<tr id="row-<?php echo $post->id; ?>">
-							<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo (string) html_entity_decode(strip_tags($post->shortTitle())); ?></a></td>
-							<td><?php echo $post->created; ?></td>
-							<td><?php echo $post->name;?></td>
-							<td id="status-<?php echo $post->id; ?>">
-								<?php if ($post->status == "under review")
-								{
-									echo '<div class="review-status">';
-									echo $post->status;
-									echo '</div>';
-								}
-								else if ($post->status == "approved")
-								{
-									echo '<div class="approve-status">';
-									echo $post->status;
-									echo '</div>';
-								}
-								else if ($post->status == "new")
-								{
-									echo '<b>';
-									echo $post->status;
-									echo '</b>';
-								}
-								else if ($post->status == "removed")
-								{
-									echo '<div class="remove-status">';
-									echo $post->status;
-									echo '</div>';
-								}
-								?>
-							</td>
-							<td>
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="btn-success btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == 'approved' ? 'disabled' : ''); ?> />
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="btn-review btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == 'under review' ? 'disabled' : ''); ?> />
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="btn-danger btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == 'removed' ? 'disabled' : ''); ?> />
-								<div class="postpreview-container">
-									<div class="postpreview" id="content-fancybox<?php echo $post->id; ?>">
-										<h1><?php echo (string) html_entity_decode(strip_tags($post->title)); ?></h1>
-										<p class="description"><?php echo (string) html_entity_decode(strip_tags($post->description)); ?></p>
-										<p><a target="_blank" href="<?php echo urldecode($post->url); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_LINK_ORIGINAL_POST'); ?></a></p>
-										<div class="button-container">
-											<hr />
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="btn-success btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'approved' ? 'disabled' : ''); ?> />
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="btn-review btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'under review' ? 'disabled' : ''); ?> />
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="btn-danger btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'removed' ? 'disabled' : ''); ?> />
+				<?php if ($this->posts->count() > 0):?>
+					<table class="ideas entries feedtable">
+						<caption><?php echo Lang::txt('COM_FEEDAGGREGATOR_SHOWING_POSTS', $this->filters['filterby']); ?></caption>
+						<tbody>
+						<?php foreach ($this->posts as $post): ?>
+							<?php 
+								$post->created = Date::of($post->created)->toLocal();
+								$post->description = wordwrap($post->description, 100, "<br />\n");
+								$post->title = wordwrap($post->title, 65, "<br />\n");
+								$post->status = $post->getStatus();
+							?>
+							<tr id="row-<?php echo $post->id; ?>">
+								<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo (string) html_entity_decode(strip_tags($post->shortTitle())); ?></a></td>
+								<td><?php echo $post->created; ?></td>
+								<td><?php echo $post->name;?></td>
+								<td id="status-<?php echo $post->id; ?>">
+									<?php if ($post->status == "under review")
+									{
+										echo '<div class="review-status">';
+										echo $post->status;
+										echo '</div>';
+									}
+									else if ($post->status == "approved")
+									{
+										echo '<div class="approve-status">';
+										echo $post->status;
+										echo '</div>';
+									}
+									else if ($post->status == "new")
+									{
+										echo '<b>';
+										echo $post->status;
+										echo '</b>';
+									}
+									else if ($post->status == "removed")
+									{
+										echo '<div class="remove-status">';
+										echo $post->status;
+										echo '</div>';
+									}
+									?>
+								</td>
+								<td>
+									<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="btn-success btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == 'approved' ? 'disabled' : ''); ?> />
+									<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="btn-review btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == 'under review' ? 'disabled' : ''); ?> />
+									<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="btn-danger btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == 'removed' ? 'disabled' : ''); ?> />
+									<div class="postpreview-container">
+										<div class="postpreview" id="content-fancybox<?php echo $post->id; ?>">
+											<h1><?php echo (string) html_entity_decode(strip_tags($post->title)); ?></h1>
+											<p class="description"><?php echo (string) html_entity_decode(strip_tags($post->description)); ?></p>
+											<p><a target="_blank" href="<?php echo urldecode($post->url); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_LINK_ORIGINAL_POST'); ?></a></p>
+											<div class="button-container">
+												<hr />
+												<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="btn-success btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'approved' ? 'disabled' : ''); ?> />
+												<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="btn-review btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'under review' ? 'disabled' : ''); ?> />
+												<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="btn-danger btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'removed' ? 'disabled' : ''); ?> />
+											</div>
 										</div>
 									</div>
-								</div>
-							</td>
-						</tr>
-						<?php //endif; ?>
-					<?php endforeach; //end foreach ?>
-					</tbody>
-				</table>
+								</td>
+							</tr>
+							<?php //endif; ?>
+						<?php endforeach; //end foreach ?>
+						</tbody>
+					</table>
 
-			<?php
-			if ($this->fromfeed != TRUE)
-			{
-				?>
-				<input type="hidden" name="filterby" value="<?php echo $this->filters['filterby'];?>"/>
-				<?php
-				// Initiate paging
-				echo $this->posts->pagination->setAdditionalUrlParam('filterby', $this->filters['filterby'])->render();
-
-			}
-			?>
-		<?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
-			<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_NO_POSTS'); ?></p>
-			<p><a class="icon-add add btn" href="<?php echo Route::url('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_GET_NEW_POSTS'); ?></a></p>
-		<?php else: ?>
-			<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_NEED_TO_REVIEW_POSTS'); ?></p>
-			<p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_NEW_POSTS'); ?></a></p>
-		<?php endif; ?>
+					<?php
+					if ($this->fromfeed != true)
+					{
+						?>
+						<input type="hidden" name="filterby" value="<?php echo $this->filters['filterby'];?>"/>
+						<?php
+						// Initiate paging
+						echo $this->posts->pagination->setAdditionalUrlParam('filterby', $this->filters['filterby'])->render();
+					}
+					?>
+				<?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
+					<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_NO_POSTS'); ?></p>
+					<p><a class="icon-add add btn" href="<?php echo Route::url('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_GET_NEW_POSTS'); ?></a></p>
+				<?php else: ?>
+					<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_NEED_TO_REVIEW_POSTS'); ?></p>
+					<p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_NEW_POSTS'); ?></a></p>
+				<?php endif; ?>
 			</div> <!--  / .container  -->
 
 			<!--  Generate Feed -->

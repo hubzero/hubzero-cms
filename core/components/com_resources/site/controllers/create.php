@@ -38,6 +38,8 @@ use Components\Resources\Models\Type;
 use Components\Resources\Models\Elements;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Html;
+use Components\Tags\Models\Objct;
+use Components\Tags\Models\Tag;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Str;
 use Pathway;
@@ -1173,19 +1175,112 @@ class Create extends SiteController
 			}
 		}
 
-		$tags = array();
-		foreach ($push as $tag)
-		{
-			$tags[] = $tag[0];
-		}
-		$tags = implode(', ', $tags);
+		$resourceTagsDiff = $this->_diffResourceTags($id, $push);
 
-		$rt = new Tags($id);
-		$this->database->setQuery('DELETE FROM `#__tags_object` WHERE tbl = \'resources\' AND objectid = ' . $id);
-		$this->database->execute();
-		foreach ($push as $tag)
+		$this->_destroyRemovedTags($resourceTagsDiff['removed']);
+		$this->_addNewTags($id, $resourceTagsDiff['added']);
+	}
+
+	/*
+	 * Calculate which tag associations need to be created & destroyed for a resource
+	 *
+	 * @param    integer   $resourceId        Resource record ID
+	 * @param    array     $associationData   Tag association data
+	 * @return   array
+	 */
+	protected function _diffResourceTags($resourceId, $associationData)
+	{
+		$diff = [];
+
+		$normalizedTagNames = array_map(function ($tag) {
+			return $tag[1];
+		}, $associationData);
+
+		$diff['removed'] = $this->_calculateRemovedTagAssociations($resourceId, $normalizedTagNames);
+		$diff['added'] = $this->_calculateNewTagAssociations($resourceId, $normalizedTagNames, $associationData);
+
+		return $diff;
+	}
+
+	/*
+	 * Determine which tags have been disassociated from a given resource based on list of tag names
+	 *
+	 * @param   integer   $resourceId   Resource record ID
+	 * @param   array     $tagNames     Normalized tag names
+	 * @return  HUBzero\Rows
+	 */
+	protected function _calculateRemovedTagAssociations($resourceId, $tagNames)
+	{
+		$tagNamesString = "'" . implode("','", $tagNames) . "'";
+
+		$removedTagAssociations = Objct::all()
+			->select('#__tags_object.*')
+			->join('#__tags', 'tagid', '#__tags.id')
+			->whereEquals('tbl', 'resources')
+			->whereEquals('objectid', $resourceId)
+			->where('#__tags_object.label', '!=', 'badge')
+			->whereRaw("#__tags.tag NOT IN ($tagNamesString)")
+			->rows();
+
+		return $removedTagAssociations;
+	}
+
+	/*
+	 * Determines which data should be used to create new tag associations
+	 *
+	 * @param   integer   $resourceId        Resource record ID
+	 * @param   array     $tagNames          Normalized tag names
+	 * @param   array     $associationData   Tag association data
+	 * @return  array
+	 */
+	protected function _calculateNewTagAssociations($resourceId, $tagNames, $associationData)
+	{
+		$newTags = [];
+		$currentTagNames = Objct::all()
+			->select('#__tags.tag')
+			->join('#__tags', 'tagid', '#__tags.id')
+			->whereEquals('tbl', 'resources')
+			->whereEquals('objectid', $resourceId)
+			->where('#__tags_object.label', '!=', 'badge')
+			->rows()->toArray();
+
+		foreach($tagNames as $i => $tagName)
 		{
-			$rt->add($tag[0], User::get('id'), 0, 1, ($tag[2] ? $tag[2] : ''));
+			if (!in_array($tagName, $currentTagNames))
+			{
+				$newTags[] = $associationData[$i];
+			}
+		}
+
+		return $newTags;
+	}
+
+	/*
+	 * Destroy tag associations removed from a resource's list of tags
+	 *
+	 * @param    HUBzero\Rows  $removedTagAssociations   Removed tag association records
+	 * @return   void
+	 */
+	protected function _destroyRemovedTags($removedTagAssociations)
+	{
+		$removedTagAssociations->destroyAll();
+	}
+
+	/*
+	 * Create tag associations for tags added to a resource's list of tags
+	 *
+	 * @param    integer   $resourceId   Resource record ID
+	 * @param    array     $newTags      Data for new tag associations
+	 * @return   void
+	 */
+	protected function _addNewTags($resourceId, $newTags)
+	{
+		$currentUserId = User::get('id');
+		$tagHelper = new Tags($resourceId);
+
+		foreach ($newTags as $tag)
+		{
+			$tagHelper->add($tag[0], $currentUserId, 0, 1, ($tag[2] ? $tag[2] : ''));
 		}
 	}
 

@@ -91,7 +91,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 					$xuser_order = $i;
 				}
 
-				if ($plugin->name == 'joomla')
+				if ($plugin->name == 'joomla' || $plugin->name == 'hubzero')
 				{
 					$joomla_order = $i;
 				}
@@ -116,7 +116,10 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		Log::auth($xuser->get('id') . ' [' . $xuser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
 
 		// correct apache log data
-		apache_note('auth', 'login');
+		if (function_exists('apache_note'))
+		{
+			apache_note('auth', 'login');
+		}
 
 		// Log attempt to the database
 		Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
@@ -692,7 +695,10 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	{
 		Log::auth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 
-		apache_note('auth', 'logout');
+		if (function_exists('apache_note'))
+		{
+			apache_note('auth', 'logout');
+		}
 
 		// If this is a temporary user created during the auth_link process (ex: username is a negative number)
 		// and they're logging out (i.e. they didn't finish the process to create a full account),
@@ -715,7 +721,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Hook for login failure
 	 *
-	 * @param   unknown  $response
+	 * @param   array    $response
 	 * @return  boolean
 	 */
 	public function onUserLoginFailure($response)

@@ -736,6 +736,8 @@ class Tickets extends SiteController
 				->whereEquals('open', ($filters['show'] == -1 ? 1 : 0))
 				->whereIn('id', $watching)
 				->order('created', 'desc')
+				->start($filters['start'])
+				->limit($filters['limit'])
 				->rows();
 		}
 
@@ -871,6 +873,7 @@ class Tickets extends SiteController
 		// Incoming
 		$no_html  = Request::getInt('no_html', 0);
 		$verified = Request::getInt('verified', 0);
+		$verified = ($verified > 0 ? 1 : 0);
 		if (!isset($_POST['reporter']) || !isset($_POST['problem']))
 		{
 			// This really, REALLY shouldn't happen.
@@ -1022,8 +1025,6 @@ class Tickets extends SiteController
 		$row->set('report', $problem['long']);
 		$row->set('email', $reporter['email']);
 		$row->set('name', $reporter['name']);
-		$row->set('os', $problem['os'] . ' ' . $problem['osver']);
-		$row->set('browser', $problem['browser'] . ' ' . $problem['browserver']);
 		$row->set('ip', $ip);
 		$row->set('hostname', $hostname);
 		$row->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
@@ -1032,6 +1033,11 @@ class Tickets extends SiteController
 		$row->set('instances', 1);
 		$row->set('section', 1);
 		$row->set('group_id', (int)$group);
+
+		$browser = new Detector();
+
+		$row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
+		$row->set('browser', $browser->name() . ' ' . $browser->version());
 
 		if (isset($incoming['target_date']))
 		{
@@ -2415,7 +2421,7 @@ class Tickets extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', array(), 'files', 'array');
 		if (!isset($file['name']) || !$file['name'])
 		{
 			//$this->setError(Lang::txt('SUPPORT_NO_FILE'));
@@ -2435,62 +2441,68 @@ class Tickets extends SiteController
 			}
 		}
 
-		// Make the filename safe
-		$file['name'] = Filesystem::clean($file['name']);
-		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(Filesystem::extension($file['name']));
-
-		//make sure that file is acceptable type
-		if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
+		foreach ($file['name'] as $i => $name)
 		{
-			$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
-			return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
-		}
+			// Make the filename safe
+			$name = Filesystem::clean($name);
+			$name = str_replace(' ', '_', $name);
+			$ext = strtolower(Filesystem::extension($name));
 
-		$filename = Filesystem::name($file['name']);
-		while (file_exists($path . DS . $filename . '.' . $ext))
-		{
-			$filename .= rand(10, 99);
-		}
-
-		$finalfile = $path . DS . $filename . '.' . $ext;
-
-		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $finalfile))
-		{
-			$this->setError(Lang::txt('COM_SUPPORT_ERROR_UPLOADING'));
-			return '';
-		}
-		else
-		{
-			// Scan for viruses
-			if (!Filesystem::isSafe($finalfile))
+			//make sure that file is acceptable type
+			if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
 			{
-				if (Filesystem::delete($finalfile))
+				$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+				//return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
+			}
+
+			$filename = Filesystem::name($name);
+			while (file_exists($path . DS . $filename . '.' . $ext))
+			{
+				$filename .= rand(10, 99);
+			}
+
+			$finalfile = $path . DS . $filename . '.' . $ext;
+
+			// Perform the upload
+			if (!Filesystem::upload($file['tmp_name'][$i], $finalfile))
+			{
+				$this->setError(Lang::txt('COM_SUPPORT_ERROR_UPLOADING'));
+				//return '';
+			}
+			else
+			{
+				// Scan for viruses
+				if (!Filesystem::isSafe($finalfile))
 				{
-					$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN'));
-					return Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN');
+					if (Filesystem::delete($finalfile))
+					{
+						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN'));
+						//return Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN');
+					}
 				}
+
+				// File was uploaded
+				// Create database entry
+				$description = htmlspecialchars($description);
+
+				$row = Attachment::blank();
+				$row->set(array(
+					'id'          => 0,
+					'ticket'      => $listdir,
+					'comment_id'  => $comment_id,
+					'filename'    => $filename . '.' . $ext,
+					'description' => $description
+				));
+				if (!$row->save())
+				{
+					$this->setError($row->getError());
+				}
+
+				//return '{attachment#' . $row->get('id') . '}';
 			}
-
-			// File was uploaded
-			// Create database entry
-			$description = htmlspecialchars($description);
-
-			$row->set(array(
-				'id'          => 0,
-				'ticket'      => $listdir,
-				'comment_id'  => $comment_id,
-				'filename'    => $filename . '.' . $ext,
-				'description' => $description
-			));
-			if (!$row->save())
-			{
-				$this->setError($row->getError());
-			}
-
-			return '{attachment#' . $row->get('id') . '}';
 		}
+
+		return '';
 	}
 
 	/**

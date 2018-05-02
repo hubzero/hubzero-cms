@@ -101,6 +101,11 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 				<?php echo $this->escape($errorText); ?>
 			</p>
 		<?php endif; ?>
+		<?php if ($this->description) : ?>
+			<p>
+				<?php echo $this->escape($this->description); ?>
+			</p>
+		<?php endif; ?>
 <?php if ($this->totalauths) : ?>
 	<?php if ($primary && $primary != 'hubzero') : ?>
 		<a class="primary" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $primary . $this->returnQueryString); ?>">

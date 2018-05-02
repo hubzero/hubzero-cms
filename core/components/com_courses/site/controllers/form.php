@@ -268,7 +268,7 @@ class Form extends SiteController
 	 *
 	 * @return  void
 	 */
-	public function deployTask($dep=NULL)
+	public function deployTask($dep=null)
 	{
 		// Check authorization
 		$this->authorize();
@@ -352,7 +352,7 @@ class Form extends SiteController
 		$pdf = $this->assertExistentForm();
 		$dep = PdfFormDeployment::fromFormData($pdf->getId(), $deployment);
 
-		if ($dep->hasErrors(NULL, TRUE))
+		if ($dep->hasErrors(null, true))
 		{
 			$this->setView('form', 'showDeployment');
 			$dep->setId($deploymentId);
@@ -376,7 +376,7 @@ class Form extends SiteController
 	 *
 	 * @return  void
 	 */
-	public function showDeploymentTask($dep=NULL)
+	public function showDeploymentTask($dep=null)
 	{
 		if (!$id = Request::getInt('id', false))
 		{
@@ -600,7 +600,13 @@ class Form extends SiteController
 		{
 			$this->setView('form', 'complete');
 			$this->_task = 'complete';
-			$this->view->incomplete = array_filter($answers, function($ans) { return is_null($ans[0]); });
+			$this->view->incomplete = array_filter(
+				$answers,
+				function($ans)
+				{
+					return is_null($ans[0]);
+				}
+			);
 			$this->completeTask();
 		}
 	}

@@ -44,21 +44,21 @@ class Group extends Base
 	 *
 	 * @var  object
 	 */
-	private $_obj = NULL;
+	private $_obj = null;
 
 	/**
 	 * File path
 	 *
 	 * @var  string
 	 */
-	private $_image = NULL;
+	private $_image = null;
 
 	/**
 	 * URL
 	 *
 	 * @var string
 	 */
-	private $_baselink = NULL;
+	private $_baselink = null;
 
 	/**
 	 * Constructor

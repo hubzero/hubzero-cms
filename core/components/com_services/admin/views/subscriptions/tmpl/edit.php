@@ -36,7 +36,7 @@ Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUCSCR
 Toolbar::save();
 Toolbar::cancel();
 
-$added   = (intval($this->subscription->added) <> 0)   ? Date::of($this->subscription->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))   : NULL;
+$added   = (intval($this->subscription->added) <> 0) ? Date::of($this->subscription->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : null;
 $updated = (intval($this->subscription->updated) <> 0) ? Date::of($this->subscription->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 $expires = (intval($this->subscription->expires) <> 0) ? Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 

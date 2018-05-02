@@ -1,9 +1,32 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -11,29 +34,21 @@ defined('_HZEXEC_') or die();
 
 $params = new \Hubzero\Config\Registry;
 
-$this->_tmp_doc->name  = ltrim($this->_tmp_doc->name, DS);
-$this->_tmp_doc->title = ltrim($this->_tmp_doc->title, DS);
-
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div class="imgBorder">
-					<a class="doc-item <?php echo Filesystem::extension($this->_tmp_doc->name); ?>" title="<?php echo $this->_tmp_doc->name; ?>" >
-						<?php echo $this->_tmp_doc->title; ?>
+					<a class="doc-item <?php echo Filesystem::extension($this->currentDoc['name']); ?>" title="<?php echo $this->currentDoc['name']; ?>" >
+						<?php echo $this->currentDoc['name']; ?>
 					</a>
 				</div>
 			</div>
-			<div class="controls">
-			<?php if (User::authorise('core.delete', 'com_media')):?>
-				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_doc->name); ?>" rel="<?php echo $this->_tmp_doc->name; ?>">
-					<?php echo Lang::txt('JACTION_DELETE'); ?>
-				</a>
-				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_doc->name; ?>" />
-			<?php endif;?>
-			</div>
-			<div class="imginfoBorder" title="<?php echo $this->_tmp_doc->name; ?>" >
-				<?php echo $this->_tmp_doc->title; ?>
+			<div class="imginfoBorder" title="<?php echo $this->currentDoc['name']; ?>" >
+				<?php if (User::authorise('core.delete', 'com_media')):?>
+					<input type="checkbox" name="rm[]" value="<?php echo $this->currentDoc['name']; ?>" />
+				<?php endif; ?>
+				<?php echo $this->currentDoc['name']; ?>
 			</div>
 		</div>
 <?php

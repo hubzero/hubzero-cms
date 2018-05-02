@@ -61,9 +61,11 @@ class UsersViewLogin extends JViewLegacy
 		$this->prepareDocument();
 
 		$defaultReturn = Route::url('index.php?option=com_members&task=myaccount');
+		$description = '';
 		if (isset($active->params) && is_object($active->params))
 		{
 			$defaultReturn = $active->params->get('login_redirect_url', $defaultReturn);
+			$description = $active->params->get('login_description');
 		}
 		$defaultReturn = base64_encode($defaultReturn);
 
@@ -164,6 +166,7 @@ class UsersViewLogin extends JViewLegacy
 		$this->authenticators      = $authenticators;
 		$this->totalauths          = count($plugins);
 		$this->remember_me_default = $remember_me_default;
+		$this->description         = $description;
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
 		$authenticator = Request::getVar('authenticator', '', 'method');

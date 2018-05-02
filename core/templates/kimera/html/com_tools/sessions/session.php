@@ -48,7 +48,7 @@ foreach ($this->shares as $share)
 	}
 }
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+include_once Component::path('com_tools') . DS . 'tables' . DS . 'preferences.php';
 
 $database = App::get('db');
 $preferences = new \Components\Tools\Tables\Preferences($database);
@@ -143,7 +143,10 @@ if (!$this->app->sess) {
 							</label>
 							<select name="viewer" id="app-viewer">
 								<?php foreach ($plugins as $plugin) {
-									if ($viewer == $plugin->name) continue;
+									if ($viewer == $plugin->name)
+									{
+										continue;
+									}
 								?>
 									<option value="<?php echo $plugin->name; ?>"<?php if ($viewer == $plugin->name) { echo ' selected="selected"'; } ?>><?php echo $plugin->title; ?></option>
 								<?php } ?>
@@ -189,7 +192,7 @@ if (!$this->app->sess) {
 				$this->view('diskusage', 'storage')
 				     ->set('option', $this->option)
 				     ->set('amt', $this->app->percent)
-				     ->set('du', NULL)
+				     ->set('du', null)
 				     ->set('percent', 0)
 				     ->set('msgs', 0)
 				     ->set('ajax', 0)

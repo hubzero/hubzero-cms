@@ -32,6 +32,7 @@ use Hubzero\Utility\Composer as ComposerHelper;
 use Components\Installer\Admin\Helpers\Cli;
 use Request;
 use Config;
+use Notify;
 use Route;
 use App;
 
@@ -65,7 +66,16 @@ class Packages extends AdminController
 			)
 		);
 
-		$packages = ComposerHelper::getLocalPackages();
+		try
+		{
+			$packages = ComposerHelper::getLocalPackages();
+		}
+		catch (\Exception $e)
+		{
+			Notify::error($e->getMessage());
+			$packages = array();
+		}
+
 		// Output the HTML
 		$this->view
 			->set('filters', $filters)
@@ -79,8 +89,7 @@ class Packages extends AdminController
 	 * 
 	 * @return void
 	 */
-
-	function editTask()
+	public function editTask()
 	{
 		if (!User::authorise('core.edit', $this->_option)
 		&& !User::authorise('core.create', $this->_option))
@@ -148,6 +157,7 @@ class Packages extends AdminController
 		{
 			Cli::removePackage($package);
 		}
+
 		$this->cancelTask();
 	}
 }

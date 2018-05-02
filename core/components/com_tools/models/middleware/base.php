@@ -44,15 +44,15 @@ class Base extends Model
 	/**
 	 * Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_config = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
+	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
@@ -63,12 +63,12 @@ class Base extends Model
 			$cls = $this->_tbl_name;
 			$this->_tbl = new $cls($this->_db);
 
-			if (!($this->_tbl instanceof \JTable))
+			if (!($this->_tbl instanceof \Hubzero\Database\Table))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
 				);
-				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))
@@ -90,9 +90,9 @@ class Base extends Model
 	/**
 	 * Get a config value
 	 *
-	 * @param	   string $key     Property to return
-	 * @param	   mixed  $default Default value
-	 * @return     mixed
+	 * @param   string  $key      Property to return
+	 * @param   mixed   $default  Default value
+	 * @return  mixed
 	 */
 	public function config($key='', $default=null)
 	{
@@ -108,4 +108,3 @@ class Base extends Model
 		return $this->_config;
 	}
 }
-

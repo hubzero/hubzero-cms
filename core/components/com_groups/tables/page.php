@@ -31,18 +31,19 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 
 /**
  * Table class for group page
  */
-Class Page extends \JTable
+class Page extends Table
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -80,12 +81,11 @@ Class Page extends \JTable
 		return true;
 	}
 
-
 	/**
 	 * Find all pages matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters = array())
 	{
@@ -104,12 +104,11 @@ Class Page extends \JTable
 		}
 	}
 
-
 	/**
 	 * Get count of pages matching filters
 	 *
-	 * @param      array   $filters
-	 * @return     int
+	 * @param   array   $filters
+	 * @return  int
 	 */
 	public function count($filters = array())
 	{
@@ -120,12 +119,11 @@ Class Page extends \JTable
 		return $this->_db->loadResult();
 	}
 
-
 	/**
 	 * Build query string for getting list or count of pages
 	 *
-	 * @param      array   $filters
-	 * @return     string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters = array())
 	{

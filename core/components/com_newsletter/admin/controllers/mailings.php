@@ -56,14 +56,35 @@ class Mailings extends AdminController
 	 */
 	public function displayTask()
 	{
+		$filters = array(
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'subject'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+
 		$mailings = Mailing::all()
-			->including(['newsletter', function ($newsletter){
+			->including(['newsletter', function ($newsletter) {
 				$newsletter->select('*');
 			}])
-			->whereEquals('deleted', 0)
-			->order('id', 'desc')
-			->paginated('limitstart', 'limit')
-			->rows();
+			->whereEquals('deleted', 0);
+
+		if ($filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
+			$mailings->whereLike('subject', $filters['search']);
+		}
 
 		// Add the number sent
 		foreach ($mailings as $mailing)
@@ -81,10 +102,16 @@ class Mailings extends AdminController
 			$mailing->set('emails_total', $emails_total);
 		}
 
+		$rows = $mailings
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		// Output the HTML
 		$this->view
 			->setLayout('display')
-			->set('mailings', $mailings)
+			->set('mailings', $rows)
+			->set('filters', $filters)
 			->display();
 	}
 

@@ -32,6 +32,7 @@
 
 namespace Components\Tools\Tables;
 
+use Hubzero\Database\Table;
 use Lang;
 use Date;
 use Log;
@@ -39,7 +40,7 @@ use Log;
 /**
  * Table class for a tool version
  */
-class Version extends \JTable
+class Version extends Table
 {
 	/**
 	 * Constructor
@@ -468,7 +469,7 @@ class Version extends \JTable
 	public function getVersionInfo($id, $version='', $toolname='', $instance='')
 	{
 		// data comes from mysql
-		$query  = "SELECT v.*, d.* ";
+		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi ";
 		$query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)
 		{
@@ -548,11 +549,11 @@ class Version extends \JTable
 			$resource->revision      = ($thistool) ? $thistool->revision : 1;
 			$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
 			$revision                = $resource->revision;
-			$resource->versionid     = ($revision && $thistool) ? $thistool->id  : 0;
-			$resource->version       = ($revision && $thistool) ? $thistool->version  : 1;
+			$resource->versionid     = ($revision && $thistool) ? $thistool->id : 0;
+			$resource->version       = ($revision && $thistool) ? $thistool->version : 1;
 			$resource->tool          = ($revision && $thistool) ? $thistool->instance : $resource->alias.'_r'.$revision;
-			$resource->toolpublished = ($revision && $thistool) ? $thistool->state    : 1;
-			$resource->license       = ($revision && $thistool) ? $thistool->license  : '';
+			$resource->toolpublished = ($revision && $thistool) ? $thistool->state : 1;
+			$resource->license       = ($revision && $thistool) ? $thistool->license : '';
 			$resource->title         = ($revision && $thistool) ? stripslashes($thistool->title) : $resource->title;
 			$resource->introtext     = ($revision && $thistool && isset($thistool->description)) ? stripslashes($thistool->description) : $resource->introtext;
 			$resource->fulltxt       = ($revision && $thistool && isset($thistool->fulltxt)) ? $thistool->fulltxt : $resource->fulltxt;

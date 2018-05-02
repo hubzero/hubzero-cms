@@ -1,9 +1,32 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -11,30 +34,22 @@ defined('_HZEXEC_') or die();
 
 $params = new \Hubzero\Config\Registry;
 
-$this->_tmp_img->name = ltrim($this->_tmp_img->name, DS);
-$this->_tmp_img->title = ltrim($this->_tmp_img->title, DS);
-
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div class="imgBorder center">
-					<a class="img-preview" href="<?php echo COM_MEDIA_BASEURL.'/'.$this->_tmp_img->path_relative; ?>" title="<?php echo $this->_tmp_img->name; ?>" style="display: block; width: 100%; height: 100%">
-						<img src="<?php echo COM_MEDIA_BASEURL.'/'.$this->_tmp_img->path_relative; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->_tmp_img->title, MediaHelper::parseSize($this->_tmp_img->size)); ?>" width="<?php echo $this->_tmp_img->width_60; ?>" height="<?php echo $this->_tmp_img->height_60; ?>" />
+					<a class="img-preview" href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>" style="display: block; width: 100%; height: 100%">
+						<img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="60" height="60" />
 					</a>
 				</div>
 			</div>
-			<div class="controls">
-			<?php if (User::authorise('core.delete', 'com_media')):?>
-				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_img->name); ?>" rel="<?php echo $this->_tmp_img->name; ?>">
-					<?php echo Lang::txt('JACTION_DELETE'); ?>
-				</a>
-				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_img->name; ?>" />
-			<?php endif;?>
-			</div>
 			<div class="imginfoBorder">
-				<a href="<?php echo COM_MEDIA_BASEURL.'/'.$this->_tmp_img->path_relative; ?>" title="<?php echo $this->_tmp_img->name; ?>" class="preview">
-					<?php echo $this->escape(substr($this->_tmp_img->title, 0, 10) . (strlen($this->_tmp_img->title) > 10 ? '...' : '')); ?>
+				<?php if (User::authorise('core.delete', 'com_media')):?>
+					<input type="checkbox" name="rm[]" value="<?php echo $this->currentImg['name']; ?>" />
+				<?php endif; ?>
+				<a title="<?php echo $this->currentImg['name']; ?>" class="preview">
+					<?php echo $this->escape(substr($this->currentImg['name'], 0, 10) . (strlen($this->currentImg['name']) > 10 ? '...' : '')); ?>
 				</a>
 			</div>
 		</div>

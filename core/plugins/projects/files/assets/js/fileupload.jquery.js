@@ -223,57 +223,57 @@ HUB.ProjectFilesFileUpload = {
 
 	_acknowledgePossibleIssues: function(files)
 	{
-		let acknowledged
-		const unrecognizedFiles = this._reviewFiles(files)
+		var acknowledged;
+		var unrecognizedFiles = this._reviewFiles(files);
 
 		if (unrecognizedFiles.length > 0) {
-			const message = this._generatePossibleIssuesMessage(unrecognizedFiles)
-			acknowledged = confirm(message)
+			var message = this._generatePossibleIssuesMessage(unrecognizedFiles);
+			acknowledged = confirm(message);
 		} else {
-			acknowledged = true
+			acknowledged = true;
 		}
 
-		return acknowledged
+		return acknowledged;
 	},
 
 	_reviewFiles: function(files)
 	{
-		const unrecognizedFiles = []
+		var unrecognizedFiles = [];
 
-		files.forEach((file) => {
-			if (file.type === '' && !this._formatIsAccepted(file)) {
-				unrecognizedFiles.push(file)
+		files.forEach(function(file){
+			if (file.type === '' && !HUB.ProjectFilesFileUpload._formatIsAccepted(file)) {
+				unrecognizedFiles.push(file);
 			}
-		})
+		});
 
-		return unrecognizedFiles
+		return unrecognizedFiles;
 	},
 
 	_formatIsAccepted: function(file)
 	{
-		HUB.ProjectFilesFileUpload.acceptedFormats = HUB.ProjectFilesFileUpload.acceptedFormats || {}
-		const match = file.name.match(/\.(.*$)/)
-		let format = match ? match[1] : '';
-		format = format.toLowerCase()
+		HUB.ProjectFilesFileUpload.acceptedFormats = HUB.ProjectFilesFileUpload.acceptedFormats || {};
+		var match = file.name.match(/\.(.*$)/);
+		var format = match ? match[1] : '';
+		format = format.toLowerCase();
 		// define an object of the form { <file type>: true }
 		// currently loaded via views/upload/tmpl/default.php L91
 		// <script src="...assets/js/acceptedFormats.js" ...>
-		const isAccepted = !!HUB.ProjectFilesFileUpload.acceptedFormats[format]
+		var isAccepted = !!HUB.ProjectFilesFileUpload.acceptedFormats[format];
 
-		return isAccepted
+		return isAccepted;
 	},
 
 	_generatePossibleIssuesMessage: function(unrecognizedFiles)
 	{
-		let message = HUB.ProjectFilesFileUpload.acceptedFormatsMessageStart
+		var message = HUB.ProjectFilesFileUpload.acceptedFormatsMessageStart || "The following file(s) may not be uploaded because the format is not recognized: \n\n";
 
-		unrecognizedFiles.forEach((file) => {
-			message += `• ${file.name}\n`
-		})
+		unrecognizedFiles.forEach(function(file){
+			message += "• " + file.name + '\n';
+		});
 
-		message += HUB.ProjectFilesFileUpload.acceptedFormatsMessageEnd
+		message += HUB.ProjectFilesFileUpload.acceptedFormatsMessageEnd || "\nYou may \"Cancel\" and remove the files or attempt to upload by selecting \"OK\".";
 
-		return message
+		return message;
 	}
 };
 

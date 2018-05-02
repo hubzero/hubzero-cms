@@ -38,8 +38,7 @@ use Config;
 use Route;
 use User;
 use Lang;
-use JLanguageHelper;
-use JLoader;
+use App;
 
 /**
  * Module class for displaying a menu
@@ -75,10 +74,10 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		JLoader::register('MenusHelper', \Component::path('com_menus') . '/helpers/menus.php');
+		require_once \Component::path('com_menus') . '/helpers/menus.php';
 
 		$lang = Lang::getRoot();
-		$menu = \App::get('menu');
+		$menu = App::get('menu');
 
 		// Get menu home items
 		$homes = array();
@@ -102,7 +101,7 @@ class Helper extends Module
 		}
 
 		$levels    = User::getAuthorisedViewLevels();
-		$languages = JLanguageHelper::getLanguages();
+		$languages = Lang::available();
 
 		// Filter allowed languages
 		foreach ($languages as $i => &$language)
@@ -125,12 +124,12 @@ class Helper extends Module
 			else
 			{
 				$language->active = $language->lang_code == $lang->getTag();
-				if (\App::get('language.filter'))
+				if (App::get('language.filter'))
 				{
 					if (isset($associations[$language->lang_code]) && $menu->getItem($associations[$language->lang_code]))
 					{
 						$itemid = $associations[$language->lang_code];
-						if (Config::get('sef')=='1')
+						if (Config::get('sef'))
 						{
 							$language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
 						}
@@ -141,7 +140,7 @@ class Helper extends Module
 					}
 					else
 					{
-						if (Config::get('sef') == '1')
+						if (Config::get('sef'))
 						{
 							$itemid = isset($homes[$language->lang_code]) ? $homes[$language->lang_code]->id : $homes['*']->id;
 							$language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);

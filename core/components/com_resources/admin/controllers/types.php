@@ -183,6 +183,7 @@ class Types extends AdminController
 
 		// Update contributable in the row
 		isset($type['contributable']) ? $row->set('contributable', 1) : $row->set('contributable', 0);
+		isset($type['collection']) ? $row->set('collection', 1) : $row->set('collection', 0);
 
 		// Get the custom fields
 		$fields = Request::getVar('fields', array(), 'post');

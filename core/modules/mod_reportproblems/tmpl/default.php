@@ -117,7 +117,7 @@ defined('_HZEXEC_') or die();
 
 					<label for="trUpload">
 						<?php echo Lang::txt('MOD_REPORTPROBLEMS_LABEL_ATTACH'); ?>: <span class="optional"><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
-						<input type="file" name="upload" id="trUpload" />
+						<input type="file" name="upload[]" id="trUpload" multiple="multiple" />
 						<span class="filetypes">(.<?php echo str_replace(',', ', .', $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>)</span>
 						<script type="text/javascript">
 							var _validFileExtensions = ['.<?php echo str_replace(',', "','.", $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>'];
@@ -129,9 +129,7 @@ defined('_HZEXEC_') or die();
 					<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->referrer); ?>" />
 					<input type="hidden" name="problem[tool]" value="" />
 					<input type="hidden" name="problem[os]" value="<?php echo $this->escape($this->os); ?>" />
-					<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->os_version); ?>" />
 					<input type="hidden" name="problem[browser]" value="<?php echo $this->escape($this->browser); ?>" />
-					<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->browser_ver); ?>" />
 					<input type="hidden" name="verified" value="<?php echo $this->verified; ?>" />
 					<input type="hidden" name="reporter[org]" value="<?php echo (!User::isGuest()) ? $this->escape(User::get('org')) : ''; ?>" />
 					<input type="hidden" name="option" value="com_support" />

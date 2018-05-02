@@ -1,0 +1,27 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/collections/assets/css/collections.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.fancybox-wrap #collectionForm {
+	min-width:300px;
+}
+.fancybox-wrap #collectionForm .grid {
+	padding: 10px;
+}
+
+.fancybox-wrap #collectionForm .grid label {
+	padding: 0px;
+}
+
+.fancybox-wrap #collectionForm .grid .or {
+	margin: 10px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#add-collection {
+	width: 100%;
+}

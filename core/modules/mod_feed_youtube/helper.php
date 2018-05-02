@@ -33,6 +33,7 @@
 namespace Modules\FeedYoutube;
 
 use Hubzero\Module\Module;
+use SimplePie;
 use stdclass;
 use Lang;
 
@@ -63,7 +64,11 @@ class Helper extends Module
 			return;
 		}
 
-		$rssDoc = \JFactory::getXMLparser('RSS', $options);
+		$rssDoc = new SimplePie(null, null, 0);
+		$rssDoc->enable_cache(false);
+		$rssDoc->set_feed_url($this->params->get('rssurl', ''));
+		$rssDoc->force_feed(true);
+		$rssDoc->init();
 
 		$this->feed = new stdclass();
 

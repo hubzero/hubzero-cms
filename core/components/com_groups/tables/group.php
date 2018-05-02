@@ -32,10 +32,12 @@
 
 namespace Components\Groups\Tables;
 
+use Hubzero\Database\Table;
+
 /**
  * Groups table
  */
-class Group extends \JTable
+class Group extends Table
 {
 	/**
 	 * Constructor
@@ -74,7 +76,7 @@ class Group extends \JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   object   $table  A JTable object for the asset parent.
+	 * @param   object   $table  A Table object for the asset parent.
 	 * @param   integer  $id     The id for the asset
 	 * @return  integer  The id of the asset's parent
 	 */
@@ -143,6 +145,7 @@ class Group extends \JTable
 	/**
 	 * Insert or Update the object
 	 *
+	 * @param   boolean  $updateNulls
 	 * @return  boolean
 	 */
 	public function store($updateNulls = false)
@@ -156,6 +159,7 @@ class Group extends \JTable
 	 * Accepts either an alias or an ID
 	 *
 	 * @param   mixed    $oid  Unique ID or alias of object to retrieve
+	 * @param   boolean  $reset
 	 * @return  boolean  True on success
 	 */
 	public function load($oid = null, $reset = true)

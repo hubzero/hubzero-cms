@@ -75,11 +75,11 @@ if ($this->contributors)
 			$name = Lang::txt('(unknown)');
 		}
 
-		if (!$contributor->org)
+		/*if (!$contributor->organization)
 		{
 			$contributor->org = $contributor->xorg;
-		}
-		$contributor->org = $this->escape(stripslashes(trim($contributor->org)));
+		}*/
+		$contributor->organization = $this->escape(stripslashes(trim($contributor->organization)));
 
 		if (!isset($contributor->authorid) && isset($contributor->uid))
 		{
@@ -98,20 +98,20 @@ if ($this->contributors)
 
 		$link .= ($contributor->role) ? ' (' . $contributor->role . ')' : '';
 
-		if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
+		if (trim($contributor->organization) != '' && !in_array(trim($contributor->organization), $orgs))
 		{
-			$orgs[$i-1] = trim($contributor->org);
-			$orgsln    .= $i . '. ' . trim($contributor->org) . ' ';
-			$orgsln_s  .= trim($contributor->org).' ';
+			$orgs[$i-1] = trim($contributor->organization);
+			$orgsln    .= $i . '. ' . trim($contributor->organization) . ' ';
+			$orgsln_s  .= trim($contributor->organization).' ';
 			$k = $i;
 			$i++;
 		}
 		else
 		{
-			$k = array_search(trim($contributor->org), $orgs) + 1;
+			$k = array_search(trim($contributor->organization), $orgs) + 1;
 		}
 		$link_s = $link;
-		if (trim($contributor->org) != '')
+		if (trim($contributor->organization) != '')
 		{
 			$link .= '<sup>' . $k . '</sup>';
 		}

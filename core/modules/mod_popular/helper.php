@@ -33,6 +33,9 @@
 namespace Modules\Popular;
 
 use Hubzero\Module\Module;
+use Components\Content\Models\Article;
+use Components\Categories\Models\Category;
+use Component;
 use Exception;
 use Route;
 use Lang;
@@ -55,7 +58,7 @@ class Helper extends Module
 			return;
 		}
 
-		\JModelLegacy::addIncludePath(Component::path('com_content') . '/admin/models', 'ContentModel');
+		require_once Component::path('com_content') . '/models/article.php';
 
 		// [!] Legacy compatibility
 		$params = $this->params;
@@ -76,20 +79,13 @@ class Helper extends Module
 	public static function getList($params)
 	{
 		// Get an instance of the generic articles model
-		$model = \JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
-
-		// Set List SELECT
-		$model->setState('list.select', 'a.id, a.title, a.checked_out, a.checked_out_time, a.created, a.hits');
-
-		// Set Ordering filter
-		$model->setState('list.ordering', 'a.hits');
-		$model->setState('list.direction', 'DESC');
+		$query = Article::all();
 
 		// Set Category Filter
 		$categoryId = $params->get('catid');
 		if (is_numeric($categoryId))
 		{
-			$model->setState('filter.category_id', $categoryId);
+			$query->whereEquals('catid', $categoryId);
 		}
 
 		// Set User Filter.
@@ -97,26 +93,20 @@ class Helper extends Module
 		switch ($params->get('user_id'))
 		{
 			case 'by_me':
-				$model->setState('filter.author_id', $userId);
+				$query->whereEquals('created_by', $userId);
 			break;
 
 			case 'not_me':
-				$model->setState('filter.author_id', $userId);
-				$model->setState('filter.author_id.include', false);
+				$query->where('created_by', '!=', $userId);
 			break;
 		}
 
 		// Set the Start and Limit
-		$model->setState('list.start', 0);
-		$model->setState('list.limit', $params->get('count', 5));
+		$query->start(0)
+			->limit($params->get('count', 5))
+			->order('hits', 'desc');
 
-		$items = $model->getItems();
-
-		if ($error = $model->getError())
-		{
-			throw new Exception($error, 500);
-			return false;
-		}
+		$items = $query->rows();
 
 		// Set the links
 		foreach ($items as &$item)
@@ -147,7 +137,9 @@ class Helper extends Module
 
 		if ($catid)
 		{
-			$category = \JCategories::getInstance('Content')->get($catid);
+			require_once Component::path('com_categories') . '/models/category.php';
+
+			$category = Category::one($catid);
 			if ($category)
 			{
 				$title = $category->title;

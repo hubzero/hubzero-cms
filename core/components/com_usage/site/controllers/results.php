@@ -83,7 +83,7 @@ class Results extends SiteController
 			'11' => 'Nov',
 			'12' => 'Dec'
 		);
-		$monthsReverse = array_reverse($months, TRUE);
+		$monthsReverse = array_reverse($months, true);
 
 		// Incoming
 		$enddate = Request::getVar('selectedPeriod', 0, 'post');
@@ -145,14 +145,9 @@ class Results extends SiteController
 		Document::setTitle($this->view->title);
 
 		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		$this->view
 			->setLayout('default')
+			->setErrors($this->getErrors())
 			->display();
 	}
 }
-

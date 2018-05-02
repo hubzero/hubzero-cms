@@ -89,7 +89,7 @@ class Page extends Model
 		// create needed objects
 		$this->_db = \App::get('db');
 
-		// load page jtable
+		// load page table
 		$this->_tbl = new $this->_tbl_name($this->_db);
 
 		// load object

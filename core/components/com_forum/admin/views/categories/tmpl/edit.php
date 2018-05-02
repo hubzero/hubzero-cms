@@ -46,7 +46,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('category');
 
-$create_date = NULL;
+$create_date = null;
 if (intval($this->row->created_time) <> 0)
 {
 	$create_date = Date::of($this->row->created_time)->toSql();

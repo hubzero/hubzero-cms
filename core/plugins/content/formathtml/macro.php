@@ -46,7 +46,7 @@ class Macro
 	 *
 	 * @var  string
 	 */
-	protected $_name = NULL;
+	protected $_name = null;
 
 	/**
 	 * Container for internal data
@@ -60,48 +60,48 @@ class Macro
 	 *
 	 * @var  object
 	 */
-	protected $_db = NULL;
+	protected $_db = null;
 
 	/**
 	 * Container for errors
 	 *
 	 * @var  string
 	 */
-	protected $_error = NULL;
+	protected $_error = null;
 
 	/**
 	 * Container for errors
 	 *
 	 * @var  array
 	 */
-	protected $_arguments = NULL;
+	protected $_arguments = null;
 
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $allowPartial = false;
 
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $linkLog = array();
 
 	/**
 	 * Instance of a macro
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	static protected $thisInstance = NULL;
+	static protected $thisInstance = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      array $config Configuration options
-	 * @return     void
+	 * @param   array  $config  Configuration options
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
@@ -142,9 +142,9 @@ class Macro
 	/**
 	 * Set a property
 	 *
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
+	 * @param   string  $property  Name of property to set
+	 * @param   mixed   $value     Value to set property to
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -158,8 +158,8 @@ class Macro
 	/**
 	 * Get a property
 	 *
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
+	 * @param   string  $property  Name of property to retrieve
+	 * @return  mixed
 	 */
 	public function __get($property)
 	{
@@ -172,10 +172,10 @@ class Macro
 	/**
 	 * Get an instance of this macro, creating it if not found
 	 *
-	 * @param      array $config Configuration parameters
-	 * @return     object
+	 * @param   array  $config  Configuration parameters
+	 * @return  object
 	 */
-	static public function getInstance($config=array())
+	public static function getInstance($config=array())
 	{
 		if (self::$thisInstance == null)
 		{
@@ -334,4 +334,3 @@ class Macro
 		return isset($arguments[$key]);
 	}
 }
-

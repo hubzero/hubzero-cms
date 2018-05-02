@@ -306,17 +306,17 @@ $maintext = $this->model->description;
 			</div>
 		<?php } ?>
 
-		<?php if ($this->model->params->get('show_assocs')) { ?>
-			<?php
-			$tagger = new \Components\Resources\Helpers\Tags($this->model->id);
-			if ($tags = $tagger->render('cloud', ($this->model->access('edit') ? array() : array('admin' => 0)))) { ?>
+		<?php if ($this->model->params->get('show_assocs')): ?>
+			<?php if ($this->tagNames): ?>
 				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">
-					<?php
-					echo $tags;
-					?>
+					<ol>
+						<?php foreach ($this->tagNames as $tagName): ?>
+							<li><?php echo $tagName; ?></li>
+						<?php endforeach; ?>
+					</ol>
 				</div>
-			<?php } ?>
-		<?php } ?>
+			<?php endif; ?>
+		<?php endif; ?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->

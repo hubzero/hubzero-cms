@@ -44,6 +44,7 @@ $this->css()
 	$user = $this->wish->proposer;
 
 	$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+	$memberImage = '';
 	if (!$this->wish->get('anonymous'))
 	{
 		$name = $this->escape(stripslashes($this->wish->proposer->get('name', $name)));
@@ -51,6 +52,9 @@ $this->css()
 		{
 			$name = '<a href="' . Route::url($this->wish->proposer->link()) . '">' . $name . '</a>';
 		}
+
+		$memberImage = $this->wish->proposer->picture();
+		$memberImage = '<img src="'  .$memberImage . '" alt="<' . Lang::txt('COM_WISHLIST_MEMBER_PICTURE') . '" />';
 	}
 
 	// && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
@@ -133,8 +137,8 @@ $this->css()
 	</section><!-- / .main section -->
 		<?php } else { ?>
 			<div class="entry wish" id="w<?php echo $this->wish->get('id'); ?>">
-				<p class="entry-member-photo">
-					<img src="<?php echo $this->wish->proposer->picture(); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
+				<p class="entry-member-photo <?=($this->wish->get('anonymous')) ? 'anonymous' : '' ?>">
+					<?php echo $memberImage; ?>
 				</p><!-- / .wish-member-photo -->
 
 				<div class="entry-content">

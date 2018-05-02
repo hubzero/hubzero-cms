@@ -84,7 +84,12 @@ class Register extends SiteController
 	{
 		if (User::isGuest())
 		{
-			return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_GUEST_SESSION_EDITING'));
+			Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
+
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
+			);
+			//return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
 
 		$xprofile = User::getInstance();
@@ -328,7 +333,12 @@ class Register extends SiteController
 		// Check if the user is logged in
 		if (User::isGuest())
 		{
-			return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_SESSION_EXPIRED'));
+			Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
+
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
+			);
+			//return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_SESSION_EXPIRED'));
 		}
 
 		$force = false;

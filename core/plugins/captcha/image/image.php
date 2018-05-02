@@ -217,7 +217,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 				$this->keystring = '';
 				for ($i=0; $i<$length; $i++)
 				{
-					$this->keystring .= $allowed_symbols{mt_rand(0,strlen($allowed_symbols)-1)};
+					$this->keystring .= $allowed_symbols{mt_rand(0, strlen($allowed_symbols)-1)};
 				}
 				if (!preg_match('/cp|cb|ck|c6|c9|rn|rm|mm|co|do|cl|db|qp|qb|dp|ww/', $this->keystring))
 				{
@@ -290,7 +290,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 									{
 										break;
 									}
-									for ($px=min($left,$width-1); $px>$left-12 && $px>=0; $px-=1)
+									for ($px=min($left, $width-1); $px>$left-12 && $px>=0; $px-=1)
 									{
 										$color = imagecolorat($img, $px, $py) & 0xff;
 										if ($color+$opacity < 190)
@@ -308,7 +308,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 						}
 						if ($shift == 10000)
 						{
-							$shift = mt_rand(4,6);
+							$shift = mt_rand(4, 6);
 						}
 
 					}
@@ -332,18 +332,18 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		imagefilledrectangle($img2, 0, $height, $width-1, $height+12, $foreground);
 
 		// periods
-		$rand1 = mt_rand(750000,1200000)/10000000;
-		$rand2 = mt_rand(750000,1200000)/10000000;
-		$rand3 = mt_rand(750000,1200000)/10000000;
-		$rand4 = mt_rand(750000,1200000)/10000000;
+		$rand1 = mt_rand(750000, 1200000)/10000000;
+		$rand2 = mt_rand(750000, 1200000)/10000000;
+		$rand3 = mt_rand(750000, 1200000)/10000000;
+		$rand4 = mt_rand(750000, 1200000)/10000000;
 		// phases
-		$rand5 = mt_rand(0,31415926)/10000000;
-		$rand6 = mt_rand(0,31415926)/10000000;
-		$rand7 = mt_rand(0,31415926)/10000000;
-		$rand8 = mt_rand(0,31415926)/10000000;
+		$rand5 = mt_rand(0, 31415926)/10000000;
+		$rand6 = mt_rand(0, 31415926)/10000000;
+		$rand7 = mt_rand(0, 31415926)/10000000;
+		$rand8 = mt_rand(0, 31415926)/10000000;
 		// amplitudes
-		$rand9 = mt_rand(330,420)/110;
-		$rand10 = mt_rand(330,450)/110;
+		$rand9 = mt_rand(330, 420)/110;
+		$rand10 = mt_rand(330, 450)/110;
 
 		// wave distortion
 		for ($x=0; $x<$width; $x++)
@@ -408,7 +408,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		ob_clean();
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Cache-Control: no-store, no-cache, must-revalidate');
-		header('Cache-Control: post-check=0, pre-check=0', FALSE);
+		header('Cache-Control: post-check=0, pre-check=0', false);
 		header('Pragma: no-cache');
 
 		if (function_exists('imagejpeg'))
@@ -442,10 +442,10 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 	private function _createImagePlain()
 	{
 		// Let's generate a totally random string using md5
-		$md5_hash = md5(rand(0,999));
+		$md5_hash = md5(rand(0, 999));
 
 		// We don't need a 32 character long string so we trim it down to 5
-		$security_code = str_replace(array("0","O","o"), array("p"), substr($md5_hash, 15, 5));
+		$security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5));
 
 		// Set the session to store the security code
 		App::get('session')->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
@@ -470,7 +470,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		$x = 20;
 		for ($i=0; $i<strlen($security_code); $i++)
 		{
-			$angle = rand(-45,45);
+			$angle = rand(-45, 45);
 			$y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
 
 			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);

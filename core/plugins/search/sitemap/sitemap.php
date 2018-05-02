@@ -34,19 +34,14 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Short description for 'plgSearchSiteMap'
- *
- * Long description (if any) ...
+ * Search plugin for site map
  */
 class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 {
-
 	/**
-	 * Short description for 'getName'
+	 * Get the plugin name
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public static function getName()
 	{
@@ -54,13 +49,11 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'onYSearch'
+	 * On search
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $request Parameter description (if any) ...
-	 * @param      object &$results Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $request
+	 * @param   object  &$results
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results)
 	{
@@ -81,25 +74,23 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 			"SELECT
 				title, description, link, $weight as weight
 			FROM
-				#__ysearch_site_map s
+				`#__ysearch_site_map` s
 			WHERE $weight > 0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		));
 	}
 
 	/**
-	 * Short description for 'onYSearchAdministrate'
+	 * Show administrative options
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $context Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   array  $context
+	 * @return  array
 	 */
 	public static function onSearchAdministrate($context)
 	{
 		$dbh = App::get('db');
-		$dbh->setQuery('SELECT id, title, link, description FROM #__ysearch_site_map ORDER BY title');
+		$dbh->setQuery('SELECT id, title, link, description FROM `#__ysearch_site_map` ORDER BY title');
 		$map = $dbh->loadAssocList();
-		$edit = NULL;
+		$edit = null;
 		if (array_key_exists('sitemap', $context)
 		 && array_key_exists('edit_id', $context['sitemap'])
 		 && (!array_key_exists('save_id', $context['sitemap']) || $context['sitemap']['save_id'] != $context['sitemap']['edit_id']))
@@ -158,12 +149,10 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'save_entry_from_post'
+	 * Save an entry from POST data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      boolean $update Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   boolean  $update
+	 * @return  array
 	 */
 	private static function save_entry_from_post($update = false)
 	{
@@ -186,15 +175,15 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$id = NULL;
+		$id = null;
 		if ($update)
 		{
-			$dbh->execute('UPDATE #__ysearch_site_map SET title = ' . $dbh->quote($_POST['sm-title']) . ', description = ' . $dbh->quote($_POST['sm-description']) . ', link = ' . $dbh->quote($_POST['sm-link']) . ' WHERE id = ' . (int)$_POST['sm-id']);
+			$dbh->execute('UPDATE `#__ysearch_site_map` SET title = ' . $dbh->quote($_POST['sm-title']) . ', description = ' . $dbh->quote($_POST['sm-description']) . ', link = ' . $dbh->quote($_POST['sm-link']) . ' WHERE id = ' . (int)$_POST['sm-id']);
 			$id = (int)$_POST['sm-id'];
 		}
 		else
 		{
-			$dbh->execute('INSERT INTO #__ysearch_site_map(title, description, link) VALUES (' . $dbh->quote($_POST['new-sm-title']) . ', ' . $dbh->quote($_POST['new-sm-description']) . ', ' . $dbh->quote($_POST['new-sm-link']) . ')');
+			$dbh->execute('INSERT INTO `#__ysearch_site_map` (title, description, link) VALUES (' . $dbh->quote($_POST['new-sm-title']) . ', ' . $dbh->quote($_POST['new-sm-description']) . ', ' . $dbh->quote($_POST['new-sm-link']) . ')');
 			unset($_POST['new-sm-title']);
 			unset($_POST['new-sm-description']);
 			unset($_POST['new-sm-link']);
@@ -204,11 +193,9 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'onYSearchTaskSiteMapEdit'
+	 * Edit site map
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return  array
 	 */
 	public static function onSearchTaskSiteMapEdit()
 	{
@@ -227,7 +214,7 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$dbh = App::get('db');
-					$dbh->execute('DELETE FROM #__ysearch_site_map WHERE id = ' . (int)$id[2]);
+					$dbh->execute('DELETE FROM `#__ysearch_site_map` WHERE id = ' . (int)$id[2]);
 					return array('sitemap', '<p class="success">' . Lang::txt('COM_SEARCH_ENTRY_DELETED') . '</p>', array());
 				}
 			}
@@ -236,11 +223,9 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'onYSearchTaskSiteMapSaveEdit'
+	 * Save edit
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return  mixed
 	 */
 	public static function onSearchTaskSiteMapSaveEdit()
 	{
@@ -252,4 +237,3 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 		return self::save_entry_from_post(true);
 	}
 }
-
