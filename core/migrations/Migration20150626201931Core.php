@@ -43,6 +43,15 @@ class Migration20150626201931Core extends Base
 				$this->setError('Unable to create new site directory (there was no old site directory).', 'warning');
 				return false;
 			}
+
+			chmod($new, 0775);
+			if (posix_getuid() == 0)
+			{
+				chown($new, fileowner(PATH_ROOT));
+				chgrp($new, filegroup(PATH_ROOT));
+			}
+
+
 		}
 		else if (is_dir($old) && is_dir($new))
 		{
@@ -90,6 +99,13 @@ class Migration20150626201931Core extends Base
 			{
 				$this->setError('Unable to create new site directory (there was no old site directory).', 'warning');
 				return false;
+			}
+
+			chmod($new, 0775);
+			if (posix_getuid() == 0)
+			{
+				chown($new, fileowner(PATH_ROOT));
+				chgrp($new, filegroup(PATH_ROOT));
 			}
 		}
 		else if (is_dir($old) && is_dir($new))

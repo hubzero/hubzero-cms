@@ -24,12 +24,24 @@ class Migration20140325093000ComResources extends Base
 		if (!is_dir($const . DS . trim($upload, DS)))
 		{
 			mkdir($const . DS . trim($upload, DS), 0775, true);
+			chmod($const . DS . trim($upload, DS), 0775);
+			if (posix_getuid() == 0)
+			{
+				chown($const . DS . trim($upload, DS), fileowner($const));
+				chgrp($const . DS . trim($upload, DS), filegroup($const));
+			}
 		}
 
 		$path = $const . DS . trim($upload, DS) . DS . 'import' . DS;
 		if (!is_dir($path))
 		{
 			mkdir($path);
+			chmod($path, 0755);
+			if (posix_getuid() == 0)
+			{
+				chown($path, fileowner($const));
+				chgrp($path, filegroup($const));
+			}
 		}
 
 		$found = false;

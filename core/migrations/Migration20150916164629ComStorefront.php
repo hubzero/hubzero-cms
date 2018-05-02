@@ -58,16 +58,35 @@ class Migration20150916164629ComStorefront extends Base
 		if (!is_dir(PATH_APP . DS . trim($downloadFolder, DS)))
 		{
 			mkdir(PATH_APP . DS . trim($downloadFolder, DS), 0775, true);
+			chmod(PATH_APP . DS . trim($downloadFolder, DS), 0775);
+			if (posix_getuid() == 0)
+			{
+				chown(PATH_APP . DS . trim($downloadFolder, DS), fileowner(PATH_APP));
+				chgrp(PATH_APP . DS . trim($downloadFolder, DS), filegroup(PATH_APP));
+			}
+
 		}
 
 		if (!is_dir(PATH_APP . DS . trim($imagesFolder, DS)))
 		{
 			mkdir(PATH_APP . DS . trim($imagesFolder, DS), 0775, true);
+			chmod(PATH_APP . DS . trim($imagesFolder, DS), 0775);
+			if (posix_getuid() == 0)
+			{
+				chown(PATH_APP . DS . trim($imagesFolder, DS), fileowner(PATH_APP));
+				chgrp(PATH_APP . DS . trim($imagesFolder, DS), filegroup(PATH_APP));
+			}
 		}
 
 		if (!is_dir(PATH_APP . DS . trim($collectionsImagesFolder, DS)))
 		{
 			mkdir(PATH_APP . DS . trim($collectionsImagesFolder, DS), 0775, true);
+			chmod(PATH_APP . DS . trim($collectionsImagesFolder, DS), 0775);
+			if (posix_getuid() == 0)
+			{
+				chown(PATH_APP . DS . trim($collectionsImagesFolder, DS), fileowner(PATH_APP));
+				chgrp(PATH_APP . DS . trim($collectionsImagesFolder, DS), filegroup(PATH_APP));
+			}
 		}
 
 		$this->saveParams('com_storefront', $params);
