@@ -55,6 +55,46 @@ class Migration20150916164629ComStorefront extends Base
 
 		$params->set('collectionsImagesFolder', $collectionsImagesFolder);
 
+                $storefrontFolder = DS . 'site' . DS . 'storefront';
+
+		if (!is_dir(PATH_APP . DS . trim($storefrontFolder, DS)))
+		{
+			mkdir(PATH_APP . DS . trim($storefrontFolder, DS), 0775, true);
+			chmod(PATH_APP . DS . trim($storefrontFolder, DS), 0775);
+			if (posix_getuid() == 0)
+			{
+				chown(PATH_APP . DS . trim($storefrontFolder, DS), fileowner(PATH_APP));
+				chgrp(PATH_APP . DS . trim($storefrontFolder, DS), filegroup(PATH_APP));
+			}
+		}
+
+                $protectedFolder = DS . 'site' . DS . 'protected';
+
+		if (!is_dir(PATH_APP . DS . trim($protectedFolder, DS)))
+		{
+			mkdir(PATH_APP . DS . trim($protectedFolder, DS), 0775, true);
+			chmod(PATH_APP . DS . trim($protectedFolder, DS), 0775);
+			if (posix_getuid() == 0)
+			{
+				chown(PATH_APP . DS . trim($protectedFolder, DS), fileowner(PATH_APP));
+				chgrp(PATH_APP . DS . trim($protectedFolder, DS), filegroup(PATH_APP));
+			}
+		}
+
+                $protectedStorefrontFolder = DS . 'site' . DS . 'protected';
+
+		if (!is_dir(PATH_APP . DS . trim($protectedStorefrontFolder, DS)))
+		{
+			mkdir(PATH_APP . DS . trim($protectedStorefrontFolder, DS), 0775, true);
+			chmod(PATH_APP . DS . trim($protectedStorefrontFolder, DS), 0775);
+			if (posix_getuid() == 0)
+			{
+				chown(PATH_APP . DS . trim($protectedStorefrontFolder, DS), fileowner(PATH_APP));
+				chgrp(PATH_APP . DS . trim($protectedStorefrontFolder, DS), filegroup(PATH_APP));
+			}
+
+		}
+
 		if (!is_dir(PATH_APP . DS . trim($downloadFolder, DS)))
 		{
 			mkdir(PATH_APP . DS . trim($downloadFolder, DS), 0775, true);
