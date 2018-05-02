@@ -787,8 +787,8 @@ class Curation extends SiteController
 
 		// Start message
 		$sef     = 'publications' . DS . $pub->id . DS . $pub->version_number;
-		$link    = rtrim(Request::base(), DS) . DS . trim($pub->link('version'), DS);
-		$manage  = rtrim(Request::base(), DS) . DS . trim($pub->link('editversion'), DS);
+		$link    = rtrim(Request::base(), DS) . DS . trim(Route::url($pub->link('version')), DS);
+		$manage  = rtrim(Request::base(), DS) . DS . trim(Route::url($pub->link('editversion')), DS);
 		$message = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
 		if ($status != 1)
