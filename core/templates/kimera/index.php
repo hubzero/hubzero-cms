@@ -38,20 +38,16 @@ $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?
 
 // Load theme
 $color1   = str_replace('#', '', $this->params->get('colorPrimary', '2f8dc9')); // 2f8dc9  171a1f
-$opacity1 = $this->params->get('colorPrimaryOpacity', '');
+$opacity  = $this->params->get('colorPrimaryOpacity', '');
 $color2   = str_replace('#', '', $this->params->get('colorSecondary', '2f8dc9'));
 $opacity2 = $this->params->get('colorSecondaryOpacity', '');
 $bground  = $this->params->get('backgroundImage', $this->params->get('background', 'delauney'));
 
-$hash = md5($color1 . $bground . $color2);
-$p = substr(PATH_APP, strlen(PATH_ROOT));
-$path = '/templates/' . $this->template . '/css/theme.php?path=' . urlencode($p) . '&c1=' . urlencode($color1) . '&c2=' . urlencode($color2) . '&bg=' . urlencode($bground) . ($opacity1 ? '&o1=' . $opacity1 : '') . ($opacity2 ? '&o2=' . $opacity2 : '');
-if (file_exists(PATH_APP . '/cache/site/' . $hash . '.css'))
+$styles = include_once __DIR__ . '/css/theme.php';
+if ($styles)
 {
-	$path = '/cache/site/' . $hash . '.css';
+	$this->addStyleDeclaration($styles);
 }
-
-$this->addStyleSheet($this->baseurl . $path);
 
 // Get browser info to set some classes
 $menu = App::get('menu');
