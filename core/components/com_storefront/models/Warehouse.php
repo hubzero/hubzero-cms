@@ -696,7 +696,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
 			if ($return == 'count')
 			{
-				return(sizeOf($allProducts));
+				return(count($allProducts));
 			}
 
 			return $allProducts;
@@ -867,7 +867,7 @@ class Warehouse extends \Hubzero\Base\Obj
 				}
 			}
 
-			if (sizeof($res) < 1)
+			if (count($res) < 1)
 			{
 				$returnObject->status = 'error';
 				$returnObject->msg = 'out of stock';

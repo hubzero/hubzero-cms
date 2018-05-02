@@ -102,7 +102,7 @@ class Course extends SingleSkuProduct
 	 * @param  string		action (optional)
 	 * @return bool			true on success
 	 */
-	public function verify($action = NULL)
+	public function verify($action = null)
 	{
 		// If action is 'add', make sure that course id/alias is unique
 		if ($action == 'add')

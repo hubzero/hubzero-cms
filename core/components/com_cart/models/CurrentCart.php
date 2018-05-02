@@ -1010,7 +1010,7 @@ class CurrentCart extends Cart
 		// No item match, check if there is a way to map to a single SKU for this coupon and add this SKU to cart
 
 		// Only one object may be defined to map to a single SKU
-		if (sizeof($coupon->objects) == 1)
+		if (count($coupon->objects) == 1)
 		{
 			$couponObject = $coupon->objects[0];
 
@@ -1029,7 +1029,7 @@ class CurrentCart extends Cart
 				$productOptions = $productOptions->options;
 
 				// See if the product has only one SKU, then add this SKU to cart (There is no way do decide what SKU to add if there are several of them)
-				if (sizeof($productOptions->skus) == 1)
+				if (count($productOptions->skus) == 1)
 				{
 					// Get product's SKU
 					$sId = array_shift($productOptions->skus);
