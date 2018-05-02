@@ -127,7 +127,7 @@ class Manage extends Extension
 			$table = \JTable::getInstance('Extension');
 			\JTable::addIncludePath(PATH_CORE . '/components/com_templates/admin/tables');
 			// Enable the extension in the table and store it in the database
-			foreach ($eid as $i=>$id)
+			foreach ($eid as $i => $id)
 			{
 				$table->load($id);
 				if ($table->type == 'template')
