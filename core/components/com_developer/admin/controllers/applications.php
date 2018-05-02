@@ -112,7 +112,7 @@ class Applications extends AdminController
 
 		// This is a flag to disable the main menu. This makes sure the user
 		// doesn't navigate away while int he middle of editing an entry.
-		// To leave the form, one must explicitely call the "cancel" task.
+		// To leave the form, one must explicitly call the "cancel" task.
 		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))

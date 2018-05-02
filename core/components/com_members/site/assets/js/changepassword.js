@@ -112,7 +112,7 @@ HUB.MembersChangePassword = {
 				},
 				error: function(xhr, status, error)
 				{
-					console.log("An error occured while trying to save your password.");
+					console.log("An error occurred while trying to save your password.");
 					// Try reloading the page for good measure
 					window.location.reload();
 				}

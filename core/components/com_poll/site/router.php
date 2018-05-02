@@ -73,7 +73,7 @@ class Router extends Base
 			{
 				$itemid = (int) $query['Itemid'];
 			}
-			// Search for a specific link based on the critera given.
+			// Search for a specific link based on the criteria given.
 			if (!$itemid)
 			{
 				foreach ($items as $item)

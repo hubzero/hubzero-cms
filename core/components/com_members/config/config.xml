@@ -303,7 +303,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field name="orcid_user_institution_name" type="text" menu="hide" default="Purdue University" label="Insitution name of ORCID user" description="The field for setting the insitution name." />
+		<field name="orcid_user_institution_name" type="text" menu="hide" default="Purdue University" label="Institution name of ORCID user" description="The field for setting the institution name." />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="defaultpic" type="text" menu="hide" default="/core/components/com_members/site/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<field name="picture" type="list" default="" label="Picture Handler" description="Select a handler for user pictures">

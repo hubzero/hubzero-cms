@@ -120,7 +120,7 @@ class Router extends Base
 					{
 						$vars['id'] = $segments[2];
 
-						// handle third segment whcih can either be
+						// handle third segment which can either be
 						// section or task
 						$vars['task'] = 'view';
 						$vars['active'] = 'details';

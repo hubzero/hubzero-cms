@@ -1318,7 +1318,7 @@ class Repo extends Obj
 		$extracted = Filesystem::files($extractPath, '.', true, true,
 			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));
 
-		// check for viruses - scans the directory for efficency
+		// check for viruses - scans the directory for efficiency
 		$command = "clamscan -i --no-summary --block-encrypted -r " . $extractPath;
 		exec($command, $output, $virus_status);
 		$virusChecked = false;

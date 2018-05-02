@@ -372,7 +372,7 @@ class Feedback extends SiteController
 	}
 
 	/**
-	 * Takes recieved files and saves them to a temporary directory specific
+	 * Takes received files and saves them to a temporary directory specific
 	 * directory then returns a json object with those file names.
 	 *
 	 * @return  void

@@ -247,7 +247,7 @@ HUB.Events = {
 					if (hrs*1 == 0) hrs = 12;
 					time = hrs + ':' + mins;
 
-					// sucessful field edit.  update the old field value with the new one
+					// successful field edit.  update the old field value with the new one
 					myField.oldValue = myField.value;
 					myField.value = time;
 					return true;

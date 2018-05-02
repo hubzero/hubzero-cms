@@ -101,7 +101,7 @@ HUB.Presenter = {
 			HUB.Presenter.noFlash();
 		}  
 		
-		//set the volume to 3/4 initally
+		//set the volume to 3/4 initially
 		HUB.Presenter.setVolume(0.75);
 		
 		//Nav bar
@@ -155,7 +155,7 @@ HUB.Presenter = {
 					HUB.Presenter.replay();
 				},
 				error: function(e) {
-					throw "An error occured while trying to load the media.";
+					throw "An error occurred while trying to load the media.";
 				},
 				stalled: function(e) {
 					throw "For some reason the player stalled while trying to load the media. Verify the media location.";

@@ -213,7 +213,7 @@ class Economy extends Obj
 			}
 			else
 			{
-				// Best A owner gets remaining thrid
+				// Best A owner gets remaining third
 				$BA_owner_share += $share;
 			}
 		}
@@ -229,7 +229,7 @@ class Economy extends Obj
 		{
 			$BTL_Q = new Teller($q_user->get('id'));
 			//$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
-			// Separate comission and reward payment
+			// Separate commission and reward payment
 			// Remove credit
 			$credit = $BTL_Q->credit_summary();
 			$adjusted = $credit - $reward;

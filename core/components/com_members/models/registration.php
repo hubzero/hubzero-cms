@@ -323,7 +323,7 @@ class Registration
 	}
 
 	/**
-	 * Retrieve a registraion value
+	 * Retrieve a registration value
 	 *
 	 * @param   string  $key
 	 * @return  mixed
@@ -339,7 +339,7 @@ class Registration
 	}
 
 	/**
-	 * Set a registraion value
+	 * Set a registration value
 	 *
 	 * @param   string  $key
 	 * @param   mixed   $value
@@ -1031,7 +1031,7 @@ class Registration
 			return $login;
 		}
 
-		// generate username by simply appending a sequential number to local part of an address until there is an avilable username available
+		// generate username by simply appending a sequential number to local part of an address until there is an available username available
 		for ($i = 1; true; $i++)
 		{
 			// Make sure login username is no longer than max allowed by DB

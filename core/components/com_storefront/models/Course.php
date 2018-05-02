@@ -65,7 +65,7 @@ class Course extends SingleSkuProduct
 	 * Set the course ID associated with product
 	 *
 	 * @param  string		courseId (alias)
-	 * @return bool			true on sucess
+	 * @return bool			true on success
 	 */
 	public function setCourseId($courseId)
 	{
@@ -77,7 +77,7 @@ class Course extends SingleSkuProduct
 	 * Set the course ID associated with product
 	 *
 	 * @param  string		offeringId (alias)
-	 * @return bool			true on sucess
+	 * @return bool			true on success
 	 */
 	public function setOfferingId($offeringId)
 	{
@@ -100,7 +100,7 @@ class Course extends SingleSkuProduct
 	 * Verify course
 	 *
 	 * @param  string		action (optional)
-	 * @return bool			true on sucess
+	 * @return bool			true on success
 	 */
 	public function verify($action = NULL)
 	{

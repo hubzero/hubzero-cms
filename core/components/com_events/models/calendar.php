@@ -183,7 +183,7 @@ class Calendar extends Model
 							// get the repeating & pass start date
 							$rule = new \Recurr\Rule($result->repeating_rule, $start);
 
-							// create transformmer & generate occurances
+							// create transformmer & generate occurences
 							$transformer = new \Recurr\Transformer\ArrayTransformer();
 							$occurrences = $transformer->transform($rule, null);
 

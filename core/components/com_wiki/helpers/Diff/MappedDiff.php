@@ -46,7 +46,7 @@ class MappedDiff extends Diff
 	 * Computes diff between sequences of strings.
 	 *
 	 * This can be used to compute things like
-	 * case-insensitve diffs, or diffs which ignore
+	 * case-insensitive diffs, or diffs which ignore
 	 * changes in white-space.
 	 *
 	 * @param   array  $from_lines          An array of strings. (Typically these are lines from a file.)

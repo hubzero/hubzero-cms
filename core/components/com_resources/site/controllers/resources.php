@@ -806,7 +806,7 @@ class Resources extends SiteController
 		// we must have a folder
 		if (!\Filesystem::exists(PATH_ROOT . DS . $path))
 		{
-			$this->setError(Lang::txt('Folder containing assets does nto exist.'));
+			$this->setError(Lang::txt('Folder containing assets does not exist.'));
 
 			$return = array();
 			$return['errors'] = $this->getErrors();
