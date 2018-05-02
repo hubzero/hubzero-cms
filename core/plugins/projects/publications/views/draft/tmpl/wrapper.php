@@ -113,7 +113,7 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
 		<form id="notice-form" name="noticeForm" action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post">
 		 <fieldset>
 			<input type="hidden" name="pid" value="<?php echo $this->pub->get('id'); ?>" />
-			<input type="hidden" name="version" value="<?php echo $this->pub->get('version_id'); ?>" />
+			<input type="hidden" name="version" value="<?php echo $this->pub->version->get('version_number'); ?>" />
 			<input type="hidden" name="p" id="props" value="" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="dispute" />
