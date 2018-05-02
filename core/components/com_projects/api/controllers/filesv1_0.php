@@ -971,7 +971,6 @@ class Filesv1_0 extends ApiController
 						$metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
 						if (empty($fields))
 						{
-							error_log('metadata returned to API : '.print_r($metadata, true));
 							$response->metadata[$file] = $metadata[0];
 						}
 						else
