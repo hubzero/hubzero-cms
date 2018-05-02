@@ -151,4 +151,3 @@ class Orders extends ComponentController
 		return;
 	}
 }
-
