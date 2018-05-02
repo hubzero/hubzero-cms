@@ -2,42 +2,33 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-function request($name, $default = '')
-{
-	$var = isset($_GET[$name]) ? urldecode($_GET[$name]) : $default;
-	$var = str_replace('#', '', $var);
-	$var = preg_replace('/[^a-zA-Z0-9\.\/_\-]/', '', $var);
-
-	return $var;
-}
+defined('_HZEXEC_') or die();
 
 function hex2rgb($hex)
 {
@@ -60,10 +51,6 @@ function hex2rgb($hex)
 	return implode(',', $rgb);
 }
 
-$color1  = request('c1', '000000');
-$color2  = request('c2', '000000');
-$bground = request('bg', 'delauney');
-
 $tmpl = dirname(__DIR__);
 $base = dirname(dirname(dirname($tmpl)));
 $tmpl = substr($tmpl, strlen($_SERVER['DOCUMENT_ROOT']));
@@ -72,7 +59,7 @@ $styles = '';
 switch ($bground)
 {
 	case 'delauney':
-		$opacity = request('o1', '0.75');
+		$opacity = $opacity ?: '0.75';
 		$styles .= '
 		#outer-wrap {
 			background: transparent url("' . $tmpl . '/img/delauney.svg") 0 0 no-repeat;
@@ -88,7 +75,7 @@ switch ($bground)
 	break;
 
 	case 'triangles':
-		$opacity = request('o1', '0.75');
+		$opacity = $opacity ?: '0.75';
 		$styles .= '
 		#outer-wrap {
 			background: #c1c1c1 url("' . $tmpl . '/img/triangles.svg") 0 0;
@@ -103,7 +90,7 @@ switch ($bground)
 	break;
 
 	case 'plaid':
-		$opacity = request('o1', '0.9');
+		$opacity = $opacity ?: '0.9';
 		$styles .='
 		#outer-wrap {
 			background: -webkit-repeating-linear-gradient(45deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 120px, rgba(10,35,45,0.498039) 120px, rgba(10,35,45,0.498039) 140px), -webkit-repeating-linear-gradient(-45deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 140px, rgba(10,35,45,0.498039) 140px, rgba(10,35,45,0.498039) 160px), rgb(234, 213, 185);
@@ -126,7 +113,7 @@ switch ($bground)
 	break;
 
 	case 'picnic':
-		$opacity = request('o1', '0.75');
+		$opacity = $opacity ?: '0.75';
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), rgb(153, 153, 153);
@@ -147,7 +134,7 @@ switch ($bground)
 	break;
 
 	case 'blueprint':
-		$opacity = request('o1', '0.9');
+		$opacity = $opacity ?: '0.9';
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(90deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -webkit-linear-gradient(0deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -webkit-linear-gradient(90deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), -webkit-linear-gradient(0deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), rgb(153, 153, 153);
@@ -168,7 +155,7 @@ switch ($bground)
 	break;
 
 	case 'checkered':
-		$opacity = request('o1', '0.9');
+		$opacity = $opacity ?: '0.9';
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), -webkit-linear-gradient(45deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(140,140,140,0) 25%, rgba(255,255,255,0) 100%), -webkit-linear-gradient(135deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 100%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), rgb(255, 255, 255);
@@ -189,7 +176,7 @@ switch ($bground)
 	break;
 
 	case 'stripes':
-		$opacity = request('o1', '0.9');
+		$opacity = $opacity ?: '0.9';
 		$styles .='
 		#outer-wrap {
 			background: -webkit-linear-gradient(45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(153, 153, 153,1);
@@ -210,7 +197,6 @@ switch ($bground)
 	break;
 
 	case 'hubbub2015':
-		$opacity = request('o1', '0');
 		$styles .='
 		#outer-wrap {
 			background-color: #f7b82b;
@@ -231,7 +217,7 @@ switch ($bground)
 	break;
 
 	case 'bokeh':
-		$opacity = request('o1', '0.7');
+		$opacity = $opacity ?: '0.7';
 		$styles .='
 		#outer-wrap {
 			background-color: transparent;
@@ -337,10 +323,9 @@ switch ($bground)
 	break;
 
 	default:
-		$opacity = request('o1', '1');
 		if ($bground && $bground != 'none')
 		{
-			$opacity = request('o1', '0');
+			$opacity = $opacity ?: '0';
 			$styles .= '
 			#outer-wrap {
 				background-image: url(' . $bground . ');
@@ -356,10 +341,12 @@ switch ($bground)
 			}
 			';
 		}
+		else
+		{
+			$opacity = $opacity ?: '1';
+		}
 	break;
 }
-
-$opacity2 = request('o2');
 
 $styles .= '
 	a,
@@ -395,15 +382,18 @@ $replacements = array(
 );
 $styles = preg_replace($patterns, $replacements, $styles);
 
-$hash = md5($color1 . $bground . $color2);
-$path = $base . '/' . request('path', 'app') . '/cache/site/' . $hash . '.css';
+/*$hash = md5($color1 . $bground . $color2);
+$path = '/cache/site/' . $hash . '.css';
 
-if (!file_exists($path))
+if (!file_exists(PATH_APP . $path))
 {
-	//@file_put_contents($path, $styles);
-}
+	@file_put_contents(PATH_APP . $path, $styles);
 
-header("Content-Type: text/css");
-header("X-Content-Type-Options: nosniff");
+	if (file_exists(PATH_APP . $path))
+	{
+		$this->addStyleSheet($this->baseurl . $path);
+		return '';
+	}
+}*/
 
-echo $styles;
+return $styles;
