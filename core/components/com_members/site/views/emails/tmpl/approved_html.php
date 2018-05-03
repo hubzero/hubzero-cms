@@ -48,7 +48,7 @@ defined('_HZEXEC_') or die();
 					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
 				</td>
 				<td width="10%" align="right" valign="bottom" nowrap="nowrap" class="component">
-					Accounts
+					Members
 				</td>
 			</tr>
 		</tbody>
