@@ -80,7 +80,8 @@ class Utils
 			}
 			else
 			{
-				$instance = \JDatabase::getInstance($options);
+				$options['driver'] = ($options['driver'] == 'mysql') ? 'pdo' : $options['driver'];
+				$instance = \Hubzero\Database\Driver::getInstance($options);
 				if ($instance instanceof Exception)
 				{
 					$instance = \App::get('db');
