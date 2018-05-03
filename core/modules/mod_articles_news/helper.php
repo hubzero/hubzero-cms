@@ -90,6 +90,7 @@ class Helper extends Module
 		$catids = $params->get('catid', array());
 		if (!empty($catids))
 		{
+			$catids = is_array($catids) ?: array($catids);
 			$query->whereIn('catid', $catids);
 		}
 
