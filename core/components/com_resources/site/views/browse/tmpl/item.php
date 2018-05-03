@@ -63,6 +63,8 @@ if ($params->get('supportedtag') && isset($this->supported))
 		$cls .= ' supported';
 	}
 }
+
+$extras = Event::trigger('resources.onResourcesList', array($this->line));
 ?>
 
 <li class="<?php echo $cls; ?>">
@@ -71,6 +73,10 @@ if ($params->get('supportedtag') && isset($this->supported))
 			<?php echo $this->escape(stripslashes($this->line->title)); ?>
 		</a>
 	</p>
+
+	<?php if (!empty($extras)) { ?>
+		<?php echo implode("\n", $extras); ?>
+	<?php } ?>
 
 	<?php if ($params->get('show_ranking')) { ?>
 		<div class="metadata">
