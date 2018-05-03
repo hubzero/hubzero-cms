@@ -78,7 +78,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 	$primary = null;
 }
 
-$current  = Hubzero\Utility\Uri::getInstance()->toString();
+$current  = $uri->toString(); //Hubzero\Utility\Uri::getInstance()->toString();
 $current .= (strstr($current, '?') ? '&' : '?');
 ?>
 <div class="hz_user">

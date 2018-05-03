@@ -141,27 +141,48 @@ class Helper extends Module
 		$this->js('placeholder', 'system');
 
 		$type    = self::getType();
-		$return	 = Request::getVar('return', null);
-		$freturn = base64_encode($_SERVER['REQUEST_URI']);
+		$return  = Request::getVar('return', null);
+
+		$uri = \Hubzero\Utility\Uri::getInstance();
+		if ($rtrn = $uri->getVar('return'))
+		{
+			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $rtrn))
+			{
+				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
+				$uri->setVar('return', base64_encode($uri->toString(array('path'))));
+			}
+		}
+		$freturn = base64_encode($uri->toString());
+
+		//$freturn = base64_encode($_SERVER['REQUEST_URI']);
 
 		// If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
 		if ($areturn = Request::getVar('return', null))
 		{
-			$areturn = base64_decode($areturn);
-			$query   = parse_url($areturn);
-			if (is_array($query) && isset($query['query']))
+			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{
-				$query  = $query['query'];
-				$query  = explode('&', $query);
-				$auth   = '';
-				foreach ($query as $q)
+				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
+				$return = null;
+				Request::setVar('return', null);
+			}
+			else
+			{
+				$areturn = base64_decode($areturn);
+				$query   = parse_url($areturn);
+				if (is_array($query) && isset($query['query']))
 				{
-					$n = explode('=', $q);
-					if ($n[0] == 'authenticator')
+					$query  = $query['query'];
+					$query  = explode('&', $query);
+					$auth   = '';
+					foreach ($query as $q)
 					{
-						$auth = $n[1];
+						$n = explode('=', $q);
+						if ($n[0] == 'authenticator')
+						{
+							$auth = $n[1];
+						}
 					}
 				}
 			}
