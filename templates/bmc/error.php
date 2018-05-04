@@ -89,7 +89,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 								<nav class="nav-secondary">
 									<ul>
 										<li><a href="#">About</a></li>
-										<li><a href="#">News & Activities</a></li>
+										<li><a href="#">News &amp; Activities</a></li>
 									</ul>
 								</nav>
 								<nav class="buttons">
@@ -174,14 +174,14 @@ Lang::load('tpl_' . $this->template, __DIR__);
 												switch ($this->error->getCode())
 												{
 													case 404:
-														$message = Lang::txt('TPL_CH_404_HEADER');
+														$message = Lang::txt('TPL_BMC_404_HEADER');
 														break;
 													case 403:
-														$message = Lang::txt('TPL_CH_403_HEADER');
+														$message = Lang::txt('TPL_BMC_403_HEADER');
 														break;
 													case 500:
 													default:
-														$message = Lang::txt('TPL_CH_500_HEADER');
+														$message = Lang::txt('TPL_BMC_500_HEADER');
 														break;
 												}
 											}
