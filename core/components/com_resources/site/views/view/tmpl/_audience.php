@@ -37,7 +37,7 @@ $labels   = array();
 $selected = array();
 $txtlabel = '';
 
-if ($this->audience) { ?>
+if ($this->audience && !$this->audience->isNew()) { ?>
 	<div class="usagescale">
 		<div class="showscale">
 			<ul class="audiencelevel">
