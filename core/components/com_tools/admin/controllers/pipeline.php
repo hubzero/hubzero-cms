@@ -314,8 +314,12 @@ class Pipeline extends AdminController
 				}
 				else
 				{
-					$o  = print_r($objDOI->getError(), true) . '<br />';
-					$o .= print_r($metadata, true) . '<br />';
+					$o = $objDOI->getError() . '<br />';
+					foreach ($metadata as $key => $val)
+					{
+						$o .= $key . ': ' . $val . '<br />';
+					}
+
 					echo $o;
 				}
 
