@@ -216,6 +216,7 @@ a.btn.icon-delete:hover{
 	width: 16px;
 	height: 16px;
 	position: relative;
+	cursor: move;
 }
 .citation-author .author-handle:after {
 	display: inline-block;
@@ -232,9 +233,9 @@ a.btn.icon-delete:hover{
 }
 .citation-author:hover .author-handle,
 .citation-author:hover .author-handle:after,
+.citation-author .author-handle:hover,
 .citation-author .author-handle:hover:after,
 .citation-author .author-handle:after:hover {
-	cursor: move;
 	color: #333;
 }
 .citation-author span.author-description {
