@@ -65,6 +65,10 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 			if ($searchModel === false)
 			{
 				$searchModel = $searchComponent->getSearchableModel();
+				if (!$searchModel)
+				{
+					return false;
+				}
 				$searchModelBlank = new $searchModel;
 				$searchModelTable = $searchModelBlank->getTableName();
 				if ($table != $searchModelTable)
