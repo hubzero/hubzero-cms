@@ -292,9 +292,9 @@ if ($label == 'none') {
 					<strong><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
 					<p><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
-					<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('COM_CITATIONS_ENDNOTE'); ?>" />
+					<input type="submit" name="download" class="download" value="<?php echo Lang::txt('COM_CITATIONS_ENDNOTE'); ?>" />
 					|
-					<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('COM_CITATIONS_BIBTEX'); ?>" />
+					<input type="submit" name="download" class="download" value="<?php echo Lang::txt('COM_CITATIONS_BIBTEX'); ?>" />
 				</fieldset>
 			<?php endif; ?>
 

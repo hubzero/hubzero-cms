@@ -94,10 +94,7 @@ jQuery(document).ready(function (jq){
 		if ((download == 'bibtex' || download == 'endnote') && markers.length > 0)
 		{
 			var url = 'index.php?option=com_citations&task=downloadbatch&download=' + download + '&idlist=' + citationString;
-			$('#download-frame').attr({
-				src: url,
-				style: "display:none"
-				});
+			window.location.href = url;
 		}
 	});
 
