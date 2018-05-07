@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\ArticlesCategory;
+namespace Modules\Latest;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Str;
@@ -337,6 +337,8 @@ class Helper extends Module
 		{
 			$active_article_id = 0;
 		}
+
+		$access = !Component::params('com_content')->get('show_noauth');
 
 		// Prepare data for display using display options
 		foreach ($items as $item)
