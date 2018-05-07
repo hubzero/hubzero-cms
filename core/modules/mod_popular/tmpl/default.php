@@ -51,7 +51,7 @@
 		<tr>
 			<th scope="row">
 				<?php if ($item->checked_out) : ?>
-					<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time); ?>
+					<?php echo Html::grid('checkedout', $i, $item->editor->get('name'), $item->checked_out_time); ?>
 				<?php endif; ?>
 
 				<?php if ($item->link) :?>

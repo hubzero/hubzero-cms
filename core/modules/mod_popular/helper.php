@@ -109,7 +109,7 @@ class Helper extends Module
 		$items = $query->rows();
 
 		// Set the links
-		foreach ($items as &$item)
+		foreach ($items as $item)
 		{
 			if (User::authorise('core.edit', 'com_content.article.' . $item->id))
 			{
