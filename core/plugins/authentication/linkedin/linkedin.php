@@ -280,7 +280,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $full_name;
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id);
 
@@ -292,7 +292,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			{
 				$response->username = '-'.$hzal->id;
 				$response->email    = $response->username . '@invalid';
-
+die('here');
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', (string) $profile->{'email-address'}, 2);
 				$tmp_username = $sub_email[0];

@@ -181,7 +181,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 				$response->fullname = ucfirst($matches[2]) . ' ' . ucfirst($matches[3]) . ' ' . ucfirst($matches[1]);
 			}
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id);
 
