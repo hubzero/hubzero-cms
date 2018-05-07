@@ -76,7 +76,7 @@ $this->css()
 									{
 										if (!$mylist->confirmed)
 										{
-											echo ' - <span title="' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED_TOOLTIP') . '" class="unconfirmed tooltips">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED') . '</span> <span class="unconfirmed-link">(<a href="'.Route::url('index.php?option=com_newsletter&task=resendconfirmation&mid='.$mylist->id).'" class="">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRMLINK_TEXT') . '</a>)</span>';
+											echo ' - <span title="' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED_TOOLTIP') . '" class="unconfirmed tooltips">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED') . '</span> <span class="unconfirmed-link">(<a href="'.Route::url('index.php?option=com_newsletter&task=resendconfirmation&mid='.$mylist->id.'&e='.urlencode($this->email)).'" class="">' . Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRMLINK_TEXT') . '</a>)</span>';
 										}
 									}
 									else if ($mylist->status == 'unsubscribed')
@@ -120,6 +120,7 @@ $this->css()
 					<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_NONE'); ?>
 				</p>
 			<?php endif; ?>
+			<input type="hidden" name="e" value="<?php echo urlencode($this->email); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="domultisubscribe" />
