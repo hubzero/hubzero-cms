@@ -1,25 +1,48 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
+namespace Components\Media\Site\Helpers;
 
 /**
- * @package		Joomla.Site
- * @subpackage	com_media
+ * Media helper
  */
-class MediaHelper
+class Media
 {
 	/**
 	 * Checks if the file is an image
-	 * @param string The filename
-	 * @return boolean
+	 *
+	 * @param   string   $fileName  The filename
+	 * @return  boolean
 	 */
-	function isImage($fileName)
+	public static function isImage($fileName)
 	{
 		static $imageTypes = 'xcf|odg|gif|jpg|png|bmp';
 
@@ -28,10 +51,11 @@ class MediaHelper
 
 	/**
 	 * Checks if the file is an image
-	 * @param string The filename
-	 * @return boolean
+	 *
+	 * @param   string   $fileName  The filename
+	 * @return  boolean
 	 */
-	function getTypeIcon($fileName)
+	public static function getTypeIcon($fileName)
 	{
 		// Get file extension
 		return strtolower(substr($fileName, strrpos($fileName, '.') + 1));
@@ -39,11 +63,12 @@ class MediaHelper
 
 	/**
 	 * Checks if the file can be uploaded
-	 * @param array File information
-	 * @param string An error message to be returned
-	 * @return boolean
+	 *
+	 * @param   array    $file  File information
+	 * @param   string   $err   An error message to be returned
+	 * @return  boolean
 	 */
-	function canUpload($file, &$err)
+	public static function canUpload($file, &$err)
 	{
 		$params = Component::params('com_media');
 
@@ -69,6 +94,12 @@ class MediaHelper
 		return true;
 	}
 
+	/**
+	 * Return file size in human readable format
+	 *
+	 * @param   integer  $size
+	 * @return  string
+	 */
 	public static function parseSize($size)
 	{
 		if ($size < 1024)
@@ -85,28 +116,44 @@ class MediaHelper
 		}
 	}
 
-	function imageResize($width, $height, $target)
+	/**
+	 * Resize an image
+	 *
+	 * @param   integer  $width
+	 * @param   integer  $height
+	 * @param   integer  $target
+	 * @return  string
+	 */
+	public static function imageResize($width, $height, $target)
 	{
-		//takes the larger size of the width and height and applies the
-		//formula accordingly...this is so this script will work
-		//dynamically with any size image
-		if ($width > $height) {
+		// takes the larger size of the width and height and applies the
+		// formula accordingly...this is so this script will work
+		// dynamically with any size image
+		if ($width > $height)
+		{
 			$percentage = ($target / $width);
 		}
-		else {
+		else
+		{
 			$percentage = ($target / $height);
 		}
 
-		//gets the new value and applies the percentage, then rounds the value
-		$width = round($width * $percentage);
+		// gets the new value and applies the percentage, then rounds the value
+		$width  = round($width * $percentage);
 		$height = round($height * $percentage);
 
-		//returns the new sizes in html image tag format...this is so you
-		//can plug this function inside an image tag and just get the
+		// returns the new sizes in html image tag format...this is so you
+		// can plug this function inside an image tag and just get the
 		return "width=\"$width\" height=\"$height\"";
 	}
 
-	function countFiles($dir)
+	/**
+	 * Count files in a directory
+	 *
+	 * @param   string   $dir
+	 * @return  array
+	 */
+	public static function countFiles($dir)
 	{
 		$total_file = 0;
 		$total_dir = 0;
@@ -117,12 +164,16 @@ class MediaHelper
 
 			while (false !== ($entry = $d->read()))
 			{
-				if (substr($entry, 0, 1) != '.' && is_file($dir . DIRECTORY_SEPARATOR . $entry) && strpos($entry, '.html') === false && strpos($entry, '.php') === false)
+				if (substr($entry, 0, 1) != '.'
+				 && is_file($dir . DIRECTORY_SEPARATOR . $entry)
+				 && strpos($entry, '.html') === false
+				 && strpos($entry, '.php') === false)
 				{
 					$total_file++;
 				}
 
-				if (substr($entry, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $entry))
+				if (substr($entry, 0, 1) != '.'
+				 && is_dir($dir . DIRECTORY_SEPARATOR . $entry))
 				{
 					$total_dir++;
 				}
@@ -131,6 +182,6 @@ class MediaHelper
 			$d->close();
 		}
 
-		return array ($total_file, $total_dir);
+		return array($total_file, $total_dir);
 	}
 }
