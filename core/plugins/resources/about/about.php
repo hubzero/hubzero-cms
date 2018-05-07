@@ -110,7 +110,7 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 
 			if (!$model->access('edit'))
 			{
-				$tagNames->whereEqual('#__tags.admin', 0);
+				$tagNames->whereEquals('#__tags.admin', 0);
 			}
 
 			$tagNames = array_map(function ($tag) {
