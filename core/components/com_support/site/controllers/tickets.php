@@ -2443,6 +2443,11 @@ class Tickets extends SiteController
 
 		foreach ($file['name'] as $i => $name)
 		{
+			if (!trim($name))
+			{
+				continue;
+			}
+
 			// Make the filename safe
 			$name = Filesystem::clean($name);
 			$name = str_replace(' ', '_', $name);
