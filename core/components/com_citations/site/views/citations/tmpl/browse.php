@@ -229,11 +229,11 @@ if ($label == 'none') {
 												echo $cite->citationDetails($this->openurl);
 											}
 											?>
-											<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+											<?php if ($this->config->get("citation_show_badges", "no") == "yes") : ?>
 												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>
 											<?php endif; ?>
 
-											<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+											<?php if ($this->config->get("citation_show_tags", "no") == "yes") : ?>
 												<?php echo \Components\Citations\Helpers\Format::citationTags($cite); ?>
 											<?php endif; ?>
 										</div>
