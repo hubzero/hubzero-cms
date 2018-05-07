@@ -566,7 +566,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			$response->status = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname = isset($options['shibboleth']['displayName']) ? ucwords(strtolower($options['shibboleth']['displayName'])) : $options['shibboleth']['username'];
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id); // Bring this in line with the rest of the system
 
