@@ -346,7 +346,7 @@ class Helper extends Module
 			$item->slug    = $item->id . ':' . $item->alias;
 			$item->catslug = $item->catid ? $item->catid . ':' . $item->category_alias : $item->catid;
 
-			if ($access || in_array($item->access, $authorised))
+			if ($access || in_array($item->access, User::getAuthorisedViewLevels()))
 			{
 				// We know that user has the privilege to view the article
 				$item->link = Route::url(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
