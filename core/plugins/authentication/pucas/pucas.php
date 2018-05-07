@@ -247,7 +247,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 				$response->fullname = ucwords(strtolower($name));
 			}
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id); // Bring this in line with the rest of the system
 
