@@ -32,6 +32,7 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Date;
 
 /**
  * Projects activity model
@@ -77,4 +78,45 @@ class Activity extends Relational
 		'projectid' => 'positive|nonzero',
 		'activity'  => 'notempty'
 	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'recorded'
+	);
+
+	/**
+	 * Generates automatic created field value
+	 *
+	 * @param   array   $data  The data being saved
+	 * @return  string
+	 * @since   2.0.0
+	 **/
+	public function automaticRecorded($data)
+	{
+		return (isset($data['recorded']) && $data['recorded'] ? $data['recorded'] : Date::toSql());
+	}
+
+	/**
+	 * Get parent project
+	 *
+	 * @return  object
+	 */
+	public function project()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Project', 'projectid');
+	}
+
+	/**
+	 * Get parent user
+	 *
+	 * @return  object
+	 */
+	public function user()
+	{
+		return $this->belongsToOne('Hubzero\\User\\User', 'userid');
+	}
 }

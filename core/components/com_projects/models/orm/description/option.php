@@ -127,7 +127,7 @@ class Option extends Relational
 	 */
 	public function field()
 	{
-		return $this->belongsToOne('Field', 'field_id');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Field', 'field_id');
 	}
 
 	/**
