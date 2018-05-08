@@ -64,11 +64,31 @@ class Connection extends Relational
 	/**
 	 * Defines a belongs to one relationship between connections and connection providers
 	 *
-	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 **/
 	public function provider()
 	{
 		return $this->belongsToOne(__NAMESPACE__ . '\\Provider', 'provider_id');
+	}
+
+	/**
+	 * Defines a belongs to one relationship between connections and projects
+	 *
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 **/
+	public function project()
+	{
+		return $this->belongsToOne(__NAMESPACE__ . '\\Project', 'project_id');
+	}
+
+	/**
+	 * Get owner
+	 *
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 */
+	public function owner()
+	{
+		return $this->belongsToOne('Hubzero\\User\\User', 'owner_id');
 	}
 
 	/**
