@@ -401,9 +401,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 						{
 							$cons[$k]->name = $cons[$k]->xname;
 						}
-						if (trim($cons[$k]->org) == '')
+						if (trim($cons[$k]->organization) == '')
 						{
-							$cons[$k]->org = $cons[$k]->xorg;
+							$cons[$k]->organization = $cons[$k]->xorg;
 						}
 					}
 					$contributors = $cons;
