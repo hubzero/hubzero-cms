@@ -33,6 +33,9 @@
 namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
+use Component;
+use User;
+use Lang;
 
 /**
  * Projects Git helper class

@@ -31,18 +31,18 @@
 namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
+use User;
 
 /**
  * Projects Access helper class
  */
 class AccessHelper extends Obj
 {
-
-	/*
+	/**
 	 * Determines if a directory is open to public access
 	 *
-	 * @param string $subdir
-	 * @return bool
+	 * @param   string  $subdir
+	 * @return  bool
 	 */
 	public static function allowPublicAccess($subdir)
 	{
@@ -51,5 +51,4 @@ class AccessHelper extends Obj
 
 		return $allowPublicAccess;
 	}
-
 }

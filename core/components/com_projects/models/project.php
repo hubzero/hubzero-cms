@@ -46,6 +46,7 @@ require_once(__DIR__ . DS . 'tags.php');
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
+use Component;
 use Date;
 use Lang;
 use User;
