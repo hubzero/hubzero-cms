@@ -242,7 +242,10 @@ function submitbutton(pressbutton)
 					<?php } ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
+					<?php
+					$name = stripslashes($row->creator->get('name'));
+					$name = $name ? $name : Lang::txt('COM_BLOG_UNKNOWN') . ' (' . $row->get('created_by') . ')';
+					echo $this->escape($name); ?>
 				</td>
 				<td class="priority-1">
 					<span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
