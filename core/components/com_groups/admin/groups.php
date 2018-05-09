@@ -63,6 +63,20 @@ if (!file_exists(__DIR__. DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'manage';
 }
 
+\Submenu::addEntry(
+	\Lang::txt('COM_GROUPS_MENU_GROUPS'),
+	\Route::url('index.php?option=com_groups'),
+	($controllerName != 'imports' && $controllerName != 'importhooks')
+);
+if (\User::authorise('core.admin', 'com_groups'))
+{
+	\Submenu::addEntry(
+		\Lang::txt('COM_GROUPS_MENU_IMPORT'),
+		\Route::url('index.php?option=com_groups&controller=imports'),
+		($controllerName == 'imports' || $controllerName == 'importhooks')
+	);
+}
+
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 

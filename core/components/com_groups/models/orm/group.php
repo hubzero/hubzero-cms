@@ -33,9 +33,11 @@ namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Content\Moderator;
+use Hubzero\Utility\Validate;
+use stdClass;
+use Event;
 use Lang;
 use Date;
-use stdClass;
 
 require_once __DIR__ . DS . 'invitee.php';
 require_once __DIR__ . DS . 'applicant.php';
@@ -51,6 +53,27 @@ require_once __DIR__ . DS . 'log.php';
  */
 class Group extends Relational implements \Hubzero\Search\Searchable
 {
+	/**
+	 * Group types
+	 *
+	 * @var  integer
+	 **/
+	const TYPE_SYSTEM  = 0;
+	const TYPE_HUB     = 1;
+	const TYPE_PROJECT = 2;
+	const TYPE_SUPER   = 3;
+	const TYPE_COURSE  = 4;
+
+	/**
+	 * Group join policies
+	 *
+	 * @var  integer
+	 **/
+	const JOIN_POLICY_OPEN       = 0;
+	const JOIN_POLICY_RESTRICTED = 1;
+	const JOIN_POLICY_INVITE     = 2;
+	const JOIN_POLICY_CLOSED     = 3;
+
 	/**
 	 * The table to which the class pertains
 	 *
@@ -110,6 +133,16 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	);
 
 	/**
+	 * Fields to be parsed
+	 *
+	 * @var array
+	 */
+	protected $parsed = array(
+		'public_desc',
+		'private_desc'
+	);
+
+	/**
 	 * Gets an attribute by key
 	 *
 	 * This will not retrieve properties directly attached to the model,
@@ -133,6 +166,13 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 		if ($key == 'gidNumber' && is_null($default))
 		{
 			$default = 0;
+		}
+
+		if (in_array($key, array('applicants', 'invitees', 'members', 'managers')))
+		{
+			return $this->$key()
+				->rows()
+				->fieldsByKey('uidNumber');
 		}
 
 		return parent::get($key, $default);
@@ -281,17 +321,282 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function isUnique()
 	{
-		$entries = self::all()
+		$query = self::all()
 			->whereEquals('cn', $this->get('cn'));
 
 		if (!$this->isNew())
 		{
-			$entries->where('gidNumber', '!=', $this->get('id'));
+			$query->where('gidNumber', '!=', $this->get('gidNumber'));
 		}
 
-		$row = $entries->row();
+		$row = $query->row();
 
 		return ($row->get('gidNumber') <= 0);
+	}
+
+	/**
+	 * Is a group a super group?
+	 *
+	 * @return  bool
+	 */
+	public function isSuperGroup()
+	{
+		return ($this->get('type') == self::TYPE_SUPER);
+	}
+
+	/**
+	 * Check if the user is a member of a given table
+	 *
+	 * @param   string   $table  Table to check
+	 * @param   integer  $uid    User ID
+	 * @return  boolean
+	 */
+	public function is_member_of($table, $uid)
+	{
+		if (!in_array($table, array('applicants', 'members', 'managers', 'invitees')))
+		{
+			return false;
+		}
+
+		if (!is_numeric($uid))
+		{
+			$uid = User::oneByUsername($uid)->get('id');
+		}
+
+		return in_array($uid, $this->get($table));
+	}
+
+	/**
+	 * Is user a member of the group?
+	 *
+	 * @param   integer  $uid
+	 * @return  bool
+	 */
+	public function isMember($uid)
+	{
+		return $this->is_member_of('members', $uid);
+	}
+
+	/**
+	 * Is user an applicant of the group?
+	 *
+	 * @param   integer  $uid
+	 * @return  bool
+	 */
+	public function isApplicant($uid)
+	{
+		return $this->is_member_of('applicants', $uid);
+	}
+
+	/**
+	 * Is user a manager of the group?
+	 *
+	 * @param   integer  $uid
+	 * @return  bool
+	 */
+	public function isManager($uid)
+	{
+		return $this->is_member_of('managers', $uid);
+	}
+
+	/**
+	 * Is user an invitee of the group?
+	 *
+	 * @param   integer  $uid
+	 * @return  bool
+	 */
+	public function isInvitee($uid)
+	{
+		return $this->is_member_of('invitees', $uid);
+	}
+
+	/**
+	 * Add users to the group
+	 *
+	 * @return  bool
+	 **/
+	public function add($role, $users = array())
+	{
+		$users = $this->normalizeUserIds($users);
+
+		$existing = $this->$role()
+			->rows()
+			->fieldsByKey('uidNumber');
+
+		//$ids = array_merge($existing, $users);
+		$ids = array_diff($users, $existing);
+
+		foreach ($ids as $id)
+		{
+			$model = rtrim($role, 's');
+			$model = __NAMESPACE__ . '\\' . ucfirst($model);
+
+			$row = new $model;
+			$row->set(array(
+				'uidNumber' => $id,
+				'gidNumber' => $this->get('gidNumber')
+			));
+			if (!$row->save())
+			{
+				$this->addError($row->getError());
+				continue;
+			}
+
+			// Managers are a special case in that they
+			// need an entry in both the members and
+			// managers tables
+			if ($role == 'managers')
+			{
+				$row = new Member;
+				$row->set(array(
+					'uidNumber' => $id,
+					'gidNumber' => $this->get('gidNumber')
+				));
+				$row->save();
+			}
+		}
+
+		if (in_array($role, array('members', 'managers')))
+		{
+			foreach ($ids as $userid)
+			{
+				Event::trigger('groups.onGroupUserEnrollment', array($this->get('gidNumber'), $userid));
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Remove users form the group
+	 *
+	 * @return  bool
+	 **/
+	public function remove($role, $users = array())
+	{
+		$users = $this->normalizeUserIds($users);
+
+		foreach ($users as $id)
+		{
+			$model = rtrim($role, 's');
+			$model = __NAMESPACE__ . '\\' . ucfirst($model);
+
+			$row = $model::oneByGroupAndUser($this->get('gidNumber'), $id);
+			if ($row)
+			{
+				if (!$row->destroy())
+				{
+					$this->addError($row->getError());
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get a list of user IDs from a string, list, or list of usernames
+	 *
+	 * @param   array  $users
+	 * @return  mixed
+	 */
+	private function normalizeUserIds($users)
+	{
+		$usernames = array();
+		$userids = array();
+
+		if (!is_array($users))
+		{
+			$users = array($users);
+		}
+
+		foreach ($users as $u)
+		{
+			if (is_numeric($u))
+			{
+				$userids[] = $u;
+			}
+			else
+			{
+				$usernames[] = $u;
+			}
+		}
+
+		if (empty($usernames))
+		{
+			return $userids;
+		}
+
+		$result = \Hubzero\User\User::all()
+			->select('id')
+			->whereIn('username', $usernames)
+			->rows()
+			->fieldsByKey('id');
+
+		if (empty($result))
+		{
+			$result = array();
+		}
+
+		$result = array_merge($result, $userids);
+
+		return $result;
+	}
+
+	/**
+	 * Read a record
+	 *
+	 * @param   mixed    $name
+	 * @return  boolean
+	 */
+	public function read($name = null)
+	{
+		if (!is_null($name))
+		{
+			if (Validate::positiveInteger($name))
+			{
+				$this->set('gidNumber', $name);
+			}
+			else
+			{
+				$this->set('cn', $name);
+			}
+		}
+
+		if ($id = $this->get('gidNumber'))
+		{
+			$row = self::oneOrNew($id);
+		}
+		else
+		{
+			$row = self::oneByCn($this->get('cn'));
+		}
+
+		if (!$row || !$row->get('gidNumber'))
+		{
+			return false;
+		}
+
+		$this->set($row->toArray());
+
+		return true;
+	}
+
+	/**
+	 * Saves the current model to the database
+	 *
+	 * @return  bool
+	 **/
+	public function save()
+	{
+		$result = parent::save();
+
+		if ($result)
+		{
+			Event::trigger('user.onAfterStoreGroup', array($this));
+		}
+
+		return $result;
 	}
 
 	/**
@@ -372,7 +677,14 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		// Attempt to delete the record
-		return parent::destroy();
+		$result = parent::destroy();
+
+		if ($result)
+		{
+			Event::trigger('user.onAfterStoreGroup', array($this));
+		}
+
+		return $result;
 	}
 
 	/**
@@ -386,6 +698,57 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 		return self::all()
 			->whereEquals('cn', (string)$cn)
 			->row();
+	}
+
+	/**
+	 * Returns a reference to a group object
+	 *
+	 * @param   mixed  $group  A string (cn) or integer (ID)
+	 * @return  mixed  Object if instance found, false if not
+	 */
+	public static function getInstance($group)
+	{
+		static $instances;
+
+		// Set instances array
+		if (!isset($instances))
+		{
+			$instances = array();
+		}
+
+		// Do we have a matching instance?
+		if (!isset($instances[$group]))
+		{
+			// If an ID is passed, check for a match in existing instances
+			if (is_numeric($group))
+			{
+				foreach ($instances as $instance)
+				{
+					if ($instance && $instance->get('gidNumber') == $group)
+					{
+						// Match found
+						return $instance;
+						break;
+					}
+				}
+			}
+
+			// No matches
+			// Create group object
+			$hzg = new self();
+
+			if ($hzg->read($group) === false)
+			{
+				$instances[$group] = false;
+			}
+			else
+			{
+				$instances[$group] = $hzg;
+			}
+		}
+
+		// Return instance
+		return $instances[$group];
 	}
 
 	/**
@@ -457,7 +820,158 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Get total number of records that will be indexed by Solr.
+	 * Find groups
+	 *
+	 * @param   array  $filters
+	 * @return  mixed
+	 */
+	public static function find($filters = array())
+	{
+		$gTypes = array('all', 'system', 'hub', 'project', 'super', 'course', '0', '1', '2', '3', '4');
+
+		$types = !empty($filters['type']) ? $filters['type'] : array('all');
+
+		foreach ($types as $type)
+		{
+			if (!in_array($type, $gTypes))
+			{
+				return false;
+			}
+		}
+
+		$query = self::all();
+
+		if (!in_array('all', $types))
+		{
+			foreach ($types as $i => $type)
+			{
+				switch ($type)
+				{
+					case 'system':
+						$types[$i] = self::TYPE_SYSTEM;
+					break;
+
+					case 'hub':
+						$types[$i] = self::TYPE_HUB;
+					break;
+
+					case 'project':
+						$types[$i] = self::TYPE_PROJECT;
+					break;
+
+					case 'super':
+						$types[$i] = self::TYPE_SUPER;
+					break;
+
+					default:
+						$types[$i] = intval($type);
+					break;
+				}
+			}
+
+			$query->whereIn('type', $types);
+		}
+
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			if (is_numeric($filters['search']))
+			{
+				$query->whereEquals('gidNumber', (int)$filters['search']);
+			}
+			else
+			{
+				$query->whereLike('description', $filters['search'], 1)
+					->orWhereLike('cn', $filters['search'], 1)
+					->resetDepth();
+			}
+		}
+
+		if (isset($filters['authorized']) && $filters['authorized'] === 'admin')
+		{
+			if (isset($filters['discoverability']))
+			{
+				$query->whereEquals('discoverability', $filters['discoverability']);
+			}
+		}
+		else
+		{
+			$query->whereEquals('discoverability', 0);
+		}
+
+		if (isset($filters['policy']) && $filters['policy'])
+		{
+			switch ($filters['policy'])
+			{
+				case 'closed':
+					$query->whereEquals('join_policy', self::JOIN_POLICY_CLOSED);
+				break;
+				case 'invite':
+					$query->whereEquals('join_policy', self::JOIN_POLICY_INVITE);
+				break;
+				case 'restricted':
+					$query->whereEquals('join_policy', self::JOIN_POLICY_RESTRICTED);
+				break;
+				case 'open':
+				default:
+					$query->whereEquals('join_policy', self::JOIN_POLICY_OPEN);
+				break;
+			}
+		}
+
+		if (isset($filters['published']))
+		{
+			$query->whereEquals('published', (int)$filters['published']);
+		}
+
+		if (isset($filters['approved']))
+		{
+			$query->whereEquals('approved', (int)$filters['approved']);
+		}
+
+		if (isset($filters['created']) && $filters['created'] != '')
+		{
+			if ($filters['created'] == 'pastday')
+			{
+				$pastDay = gmdate("Y-m-d H:i:s", strtotime('-1 DAY'));
+				$query->where('created', '>=', $pastDay);
+			}
+		}
+
+		if (isset($filters['sortby']) && $filters['sortby'] != '')
+		{
+			$filters['sortdir'] = 'asc';
+
+			if ($filters['sortby'] == 'alias')
+			{
+				$filters['sortby'] = 'cn';
+			}
+
+			if ($filters['sortby'] == 'title')
+			{
+				$filters['sortby'] = 'description';
+			}
+
+			$query->order($filters['sortby'], $filters['sortdir']);
+		}
+
+		if (isset($filters['limit']) && $filters['limit'] != 'all')
+		{
+			$query->start($filters['start'])
+				->limit($filters['limit']);
+		}
+
+		$result = $query->rows();
+
+		if (!$result)
+		{
+			return false;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get total number of records that will be indexed by search.
 	 *
 	 * @return integer
 	 */
@@ -468,7 +982,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Get records to be included in solr index
+	 * Get records to be included in search index
 	 *
 	 * @param   integer  $limit
 	 * @param   integer  $offset
@@ -480,18 +994,17 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Namespace used for solr Search
+	 * Namespace used for Search
 	 *
 	 * @return  string
 	 */
 	public function searchNamespace()
 	{
-		$searchNamespace = 'group';
-		return $searchNamespace;
+		return 'group';
 	}
 
 	/**
-	 * Generate solr search Id
+	 * Generate search Id
 	 *
 	 * @return  string
 	 */
@@ -502,7 +1015,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Generate search document for Solr
+	 * Generate search document for search
 	 *
 	 * @return  array
 	 */
@@ -523,7 +1036,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 			$access_level = 'private';
 		}
 
-		$group->url = Request::root() . 'groups/' . $this->cn;
+		$group->url = \Request::root() . 'groups/' . $this->cn;
 		$group->access_level = $access_level;
 		$group->owner_type = 'group';
 		$group->owner = $this->get('id');
@@ -531,6 +1044,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 		$group->title = $this->description;
 		$group->hubtype = $this->searchNamespace();
 		$group->description = \Hubzero\Utility\Sanitize::stripAll($this->public_desc);
+
 		return $group;
 	}
 }
