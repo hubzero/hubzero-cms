@@ -328,7 +328,7 @@ endif;
 		</div>
 	</div>
 
-	<?php if (User::authorise('core.admin')): ?>
+	<?php if (User::authorise('core.manage')): ?>
 		<div class="width-100">
 			<?php //echo Html::sliders('start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
