@@ -34,9 +34,10 @@ namespace Components\Projects\Models\Adapters;
 
 use Components\Projects\Models;
 use Components\Projects\Helpers;
+use Component;
+use Filesystem;
 
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'nogithelper.php';
-
 
 /**
  * Projects Git adapter class

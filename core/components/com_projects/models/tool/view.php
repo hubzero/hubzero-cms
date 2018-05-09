@@ -43,23 +43,24 @@ class View extends Model
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolView';
 
 	/**
 	 * Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	public $config = NULL;
+	public $config = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @param   mixed  $oid  view ID
+	 * @return  void
 	 */
-	public function __construct($oid = NULL)
+	public function __construct($oid = null)
 	{
 		$this->_db = \App::get('db');
 
@@ -74,10 +75,10 @@ class View extends Model
 	/**
 	 * Returns a reference to the model
 	 *
-	 * @param      mixed $oid view ID
-	 * @return     object Todo
+	 * @param   mixed  $oid  view ID
+	 * @return  object
 	 */
-	static function &getInstance($oid=null)
+	public static function &getInstance($oid=null)
 	{
 		static $instances;
 
@@ -110,11 +111,11 @@ class View extends Model
 	/**
 	 * Check if page was viewed recently
 	 *
-	 * @param      integer $toolid 	Project tool id
-	 * @param      integer $userid	User id
-	 * @return     mixed Return string or NULL
+	 * @param   integer  $toolid  Project tool id
+	 * @param   integer  $userid  User id
+	 * @return  mixed    Return string or NULL
 	 */
-	public function lastView( $toolid = 0, $userid = 0)
+	public function lastView($toolid = 0, $userid = 0)
 	{
 		return $this->_tbl->checkView($toolid, $userid);
 	}

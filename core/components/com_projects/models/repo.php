@@ -36,6 +36,11 @@ use Hubzero\Base\Obj;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
+use Filesystem;
+use Exception;
+use Request;
+use Plugin;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'repo.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php');
@@ -526,15 +531,15 @@ class Repo extends Obj
 		// Check that we directory name is not reserved for other purposes
 		if (dirname($localDirPath) == '.' && in_array(strtolower($newDir), $reserved))
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME') );
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME'));
 			return false;
 		}
 
 		// Directory already exists ?
 		if ($this->dirExists($localDirPath))
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". '
-			. Lang::txt('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS') );
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". '
+			. Lang::txt('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS'));
 			return false;
 		}
 
@@ -550,7 +555,7 @@ class Repo extends Obj
 		else
 		{
 			// Failed to create directory
-			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') );
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE'));
 			return false;
 		}
 	}
@@ -902,7 +907,7 @@ class Repo extends Obj
 		else
 		{
 			// Failed
-			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME') );
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME'));
 			return false;
 		}
 	}
@@ -910,6 +915,7 @@ class Repo extends Obj
 	/**
 	 * Update file in the repo
 	 *
+	 * @param   array    $params
 	 * @return  boolean
 	 */
 	public function update($params = array())
@@ -922,6 +928,7 @@ class Repo extends Obj
 	/**
 	 * Insert file into the repo
 	 *
+	 * @param   array    $params
 	 * @return  boolean
 	 */
 	public function insert($params = array())
@@ -1011,7 +1018,7 @@ class Repo extends Obj
 		else
 		{
 			// Regular upload
-			$upload = Request::getVar( 'upload', '', 'files', 'array' );
+			$upload = Request::getVar('upload', '', 'files', 'array');
 
 			if (empty($upload['name']) or $upload['name'][0] == '')
 			{
@@ -1167,7 +1174,7 @@ class Repo extends Obj
 		// Success - check in change
 		$this->call('checkin', $params);
 
-		return array('localPath' => $localPath, 'replace' => $exists );
+		return array('localPath' => $localPath, 'replace' => $exists);
 	}
 
 	/**
@@ -1226,7 +1233,7 @@ class Repo extends Obj
 			$this->call('checkin', $params);
 		}
 
-		return array('localPath' => $localPath, 'replace' => $exists );
+		return array('localPath' => $localPath, 'replace' => $exists);
 	}
 
 	/**
@@ -1266,7 +1273,7 @@ class Repo extends Obj
 			try
 			{
 				chdir($tempPath);
-				exec('tar zxvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out );
+				exec('tar zxvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out);
 			}
 			catch (Exception $e)
 			{
@@ -1316,7 +1323,7 @@ class Repo extends Obj
 		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 
 		$extracted = Filesystem::files($extractPath, '.', true, true,
-			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));
+			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX'));
 
 		// check for viruses - scans the directory for efficiency
 		$command = "clamscan -i --no-summary --block-encrypted -r " . $extractPath;
@@ -1380,9 +1387,9 @@ class Repo extends Obj
 			$exists = is_file($where) ? true : false;
 
 			// Provision directory
-			if ($safe_dir && !$skipDir && !is_dir($target . DS . $safe_dir ))
+			if ($safe_dir && !$skipDir && !is_dir($target . DS . $safe_dir))
 			{
-				if (Filesystem::makeDirectory( $target . DS . $safe_dir, 0755, true, true ))
+				if (Filesystem::makeDirectory($target . DS . $safe_dir, 0755, true, true))
 				{
 					// File object
 					$localDirPath = $dirPath ? $dirPath . DS . $safe_dir : $safe_dir;
@@ -1431,16 +1438,16 @@ class Repo extends Obj
 	{
 		if (!isset($this->_sizeLimit))
 		{
-			$pParams = Plugin::params( 'projects', 'files' );
+			$pParams = Plugin::params('projects', 'files');
 			$this->_sizeLimit = $pParams->get('maxUpload', '104857600');
 		}
 
 		// Check against upload size limit
 		if (intval($this->_sizeLimit) && $size > intval($this->_sizeLimit))
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
 				. \Hubzero\Utility\Number::formatBytes($this->_sizeLimit) . '. '
-				. Lang::txt('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
+				. Lang::txt('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD'));
 			return false;
 		}
 
@@ -1456,8 +1463,8 @@ class Repo extends Obj
 		{
 			if (Helpers\Html::virusCheck($tmp_name))
 			{
-					$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
-					return false;
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
+				return false;
 			}
 		}
 
@@ -1478,7 +1485,7 @@ class Repo extends Obj
 		{
 			if (!Filesystem::makeDirectory($this->get('path'), 0755, true, true))
 			{
-				$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH') );
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH'));
 				return false;
 			}
 		}
@@ -1503,10 +1510,9 @@ class Repo extends Obj
 	/**
 	 * Get files stats for all projects
 	 *
-	 * @param      array	$aliases	Project aliases for which to compute stats
-	 * @param      string		$get
-	 *
-	 * @return     mixed
+	 * @param   array   $aliases  Project aliases for which to compute stats
+	 * @param   string  $get
+	 * @return  mixed
 	 */
 	public function getStats($aliases = array(), $get = 'total')
 	{
@@ -1524,7 +1530,7 @@ class Repo extends Obj
 		if ($get == 'pubspace')
 		{
 			// Load publications component configs
-			$pubconfig = Component::params( 'com_publications' );
+			$pubconfig = Component::params('com_publications');
 			$base_path = DS . trim($pubconfig->get('webpath'), DS);
 
 			chdir(PATH_APP . $base_path);
@@ -1575,7 +1581,7 @@ class Repo extends Obj
 						$nf = $git->callGit('ls-files --full-name ');
 						if ($nf && substr($nf[0], 0, 5) != 'fatal')
 						{
-							$out = $git->callGit('log | grep "^commit" | wc -l' );
+							$out = $git->callGit('log | grep "^commit" | wc -l');
 							if (is_array($out))
 							{
 								$c =  end($out);
@@ -1630,10 +1636,10 @@ class Repo extends Obj
 	/**
 	 * Parse status for each file revision
 	 *
-	 * @param      array	$versions	Array of file version data
-	 * @return     array
+	 * @param   array  $versions  Array of file version data
+	 * @return  array
 	 */
-	protected function _getVersionStatus( $versions = array())
+	protected function _getVersionStatus($versions = array())
 	{
 		if (count($versions) == 0)
 		{
@@ -1643,9 +1649,9 @@ class Repo extends Obj
 		// Go through versions in reverse (from oldest to newest)
 		for ($k = (count($versions) - 1); $k >= 0; $k--)
 		{
-			$current	= $versions[$k];
-			$previous		= ($k - 1) >= 0 ? $versions[$k - 1] : null;
-			$next			= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : null;
+			$current  = $versions[$k];
+			$previous = ($k - 1) >= 0 ? $versions[$k - 1] : null;
+			$next     = ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : null;
 
 			if (!$current['commitStatus'])
 			{
@@ -1731,9 +1737,8 @@ class Repo extends Obj
 	/**
 	 * Get file content and write to specified location
 	 *
-	 * @param      array	$params
-	 *
-	 * @return     array
+	 * @param   array  $params
+	 * @return  array
 	 */
 	public function getFileContent($params = array())
 	{
@@ -1743,6 +1748,7 @@ class Repo extends Obj
 	/**
 	 * Is file zip?
 	 *
+	 * @param   string   $file
 	 * @return  boolean
 	 */
 	protected function _isZip($file)
@@ -1754,6 +1760,7 @@ class Repo extends Obj
 	/**
 	 * Is tar zip?
 	 *
+	 * @param   string   $file
 	 * @return  boolean
 	 */
 	protected function _isTar($file)
@@ -1769,7 +1776,7 @@ class Repo extends Obj
 	 */
 	public function getAvailableDiskSpace()
 	{
-		$pParams = Plugin::params( 'projects', 'files' );
+		$pParams = Plugin::params('projects', 'files');
 		$projectParams = $this->get('project')->params;
 		$quota = $this->get('project')->config()->get('defaultQuota', '1');
 
@@ -1786,7 +1793,7 @@ class Repo extends Obj
 		{
 			$this->_quota = $projectParams->get('quota')
 						? $projectParams->get('quota')
-						: Helpers\Html::convertSize( floatval($quota), 'GB', 'b');
+						: Helpers\Html::convertSize(floatval($quota), 'GB', 'b');
 		}
 
 		return $this->_quota - $diskUsage;

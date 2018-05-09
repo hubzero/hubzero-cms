@@ -129,8 +129,8 @@ class Entry extends Model
 	/**
 	 * Returns a reference to a todo entry model
 	 *
-	 * @param   mixed    $oid   ID (int) or alias (string)
-	 * @return  object   Entry
+	 * @param   mixed   $oid   ID (int) or alias (string)
+	 * @return  object  Entry
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -165,6 +165,7 @@ class Entry extends Model
 	/**
 	 * Get the home project of this entry
 	 *
+	 * @param   string  $get
 	 * @return  object  Models\Project
 	 */
 	public function project($get = null)
@@ -172,7 +173,7 @@ class Entry extends Model
 		if (empty($this->_project))
 		{
 			$this->_project = new \Components\Projects\Models\Project($this->get('projectid'));
-			$this->_project->_params = new \Hubzero\Config\Registry( $this->_project->params );
+			$this->_project->_params = new \Hubzero\Config\Registry($this->_project->params);
 		}
 
 		return $get ? $this->_project->get($get) : $this->_project;
@@ -307,8 +308,8 @@ class Entry extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param   string $property What data to return
-	 * @param   mixed  $default  Default value
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
 	 * @return  mixed
 	 */
 	public function owner($property=null, $default=null)
@@ -335,8 +336,8 @@ class Entry extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param   string $property What data to return
-	 * @param   mixed  $default  Default value
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
 	 * @return  mixed
 	 */
 	public function closer($property=null, $default=null)
@@ -359,9 +360,9 @@ class Entry extends Model
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear = false)

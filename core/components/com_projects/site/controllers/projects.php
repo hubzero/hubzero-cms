@@ -41,6 +41,13 @@ use Components\Projects\Models\Orm\Description;
 use Components\Projects\Models\Orm\Description\Field;
 use Exception;
 use stdClass;
+use Request;
+use Route;
+use Event;
+use User;
+use Date;
+use Lang;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
@@ -55,7 +62,7 @@ class Projects extends Base
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -121,7 +128,7 @@ class Projects extends Base
 	/**
 	 * Allow user to request membership to a public project.
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function requestAccessTask()
 	{

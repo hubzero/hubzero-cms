@@ -33,6 +33,10 @@
 namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
+use Filesystem;
+use Component;
+use User;
+use Lang;
 
 /**
  * Projects Git helper class
@@ -566,11 +570,11 @@ class Git extends Obj
 				$data = explode("||", $line);
 
 				$entry = array();
-				$entry['date']  	= $data[0];
-				$entry['author'] 	= $data[1];
-				$entry['email'] 	= $data[2];
-				$entry['hash'] 		= $data[3];
-				$entry['message'] 	= substr($data[4], 0, 100);
+				$entry['date']    = $data[0];
+				$entry['author']  = $data[1];
+				$entry['email']   = $data[2];
+				$entry['hash']    = $data[3];
+				$entry['message'] = substr($data[4], 0, 100);
 			}
 			elseif ($line != '' && !isset($collector[$line]))
 			{
