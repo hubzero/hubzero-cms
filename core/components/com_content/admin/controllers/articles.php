@@ -451,6 +451,8 @@ class Articles extends AdminController
 			}
 		}
 
+		Request::setVar('hidemainmenu', 1);
+
 		$newTasks = array('save2new', 'save2copy');
 		$task = in_array($this->_task, $newTasks) ? 'add' : $this->_task;
 
@@ -473,7 +475,7 @@ class Articles extends AdminController
 		Request::checkToken();
 
 		// Incoming data
-		$items = Request::getVar('fields', array());
+		$items = Request::getVar('fields', array(), 'post');
 
 		$articleId = Request::getInt('id');
 
