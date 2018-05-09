@@ -29,10 +29,18 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Mailto\Site;
+// no direct access
+defined('_HZEXEC_') or die();
+?>
+<div style="padding: 10px;">
+	<div style="text-align:right">
+		<a href="javascript: void window.close()">
+			<?php echo Lang::txt('COM_MAILTO_CLOSE_WINDOW'); ?>
+			<img src="<?php echo $this->img('close-x.png'); ?>" alt="" />
+		</a>
+	</div>
 
-require_once __DIR__ . '/helpers/mailto.php';
-require_once __DIR__ . '/controllers/mailings.php';
-
-$controller = new Controllers\Mailings();
-$controller->execute();
+	<h2>
+		<?php echo Lang::txt('COM_MAILTO_EMAIL_SENT'); ?>
+	</h2>
+</div>
