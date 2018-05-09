@@ -111,16 +111,22 @@ function submitbutton(pressbutton)
 								<?php
 									switch ($hook->get('event'))
 									{
-										case 'postconvert': echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTCONVERT'); break;
-										case 'postmap':     echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTMAP');     break;
+										case 'postconvert':
+											echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTCONVERT');
+											break;
+										case 'postmap':
+											echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTMAP');
+											break;
 										case 'postparse':
-										default:            echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTPARSE');   break;
+										default:
+											echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTPARSE');
+											break;
 									}
 								?>
 							</td>
 							<td>
 								<?php echo $hook->get('file'); ?> &mdash;
-								<a target="_blank" href="<?php echo Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id=' . $hook->get('id')); ?>">
+								<a target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id=' . $hook->get('id')); ?>">
 									<?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FILE_VIEWRAW'); ?>
 								</a>
 							</td>
