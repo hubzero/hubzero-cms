@@ -103,7 +103,7 @@ abstract class Mailto
 			$past = time() - $lifetime;
 			$session = App::get('session');
 			$mailto_links = $session->get('com_mailto.links', array());
-			foreach ($mailto_links as $index=>$link)
+			foreach ($mailto_links as $index => $link)
 			{
 				if ($link->expiry < $past)
 				{
@@ -116,7 +116,7 @@ abstract class Mailto
 		}
 	}
 
-		/**
+	/**
 	 * Cleans any injected headers from the email body.
 	 *
 	 * @param   string  $body  email body string.
