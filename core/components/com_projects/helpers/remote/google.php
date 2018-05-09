@@ -932,10 +932,6 @@ class Google extends Obj
 
 			/*
 			$data = $apiService->files->listFiles($parameters);
-			if (\User::get('username') == 'zooley')
-			{
-				var_dump($data->getFiles()); die();
-			}
 			if (!empty($data['items']))
 			{
 				$lpath = $path ? $path : '';
@@ -979,20 +975,16 @@ class Google extends Obj
 	 */
 	public static function getParentID($parents = array())
 	{
-		if (\User::get('username') == 'zooley')
+		if (!empty($parents))
 		{
-			if (!empty($parents))
+			if (is_object($parents[0]))
 			{
 				return $parents[0]->getId();
 			}
-		}
-		else
-		{
-		if (!empty($parents))
-		{
+
 			return $parents[0]['id'];
 		}
-	}
+
 		return null;
 	}
 
