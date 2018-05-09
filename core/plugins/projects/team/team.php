@@ -538,6 +538,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$uids      = array(); // ids/emails of added people
 		$names     = array(); // names/emails of added people
 		$invalid   = array(); // collector for invalid names
+		$sent      = array();
 
 		// Setup stage?
 		$setup = $this->model->inSetup();
@@ -627,6 +628,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 										if (!$setup && $this->_config->get('messaging') == 1)
 										{
 											$this->sendInviteEmail(0, $cid, $code, $role);
+											$sent[] = $cid;
 										}
 									}
 								}
@@ -643,6 +645,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 										if (!$setup && $this->_config->get('messaging') == 1)
 										{
 											$this->sendInviteEmail(0, $cid, $objO->invited_code, $objO->role);
+											$sent[] = $cid;
 										}
 									}
 								}
@@ -741,7 +744,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				{
 					foreach ($uids as $user)
 					{
+						if (in_array($user, $sent))
+						{
+							continue;
+						}
 						$this->sendInviteEmail($user, '', '', $role);
+						$sent[] = $user;
 					}
 				}
 			}
@@ -1306,7 +1314,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	public function sendInviteEmail($uid = 0, $email = '', $code = '', $role = 0, $model = '', $option = 'com_projects')
 	{
 		$uid   = $uid ? $uid : 0;
-		$email = $email ? $email : User::get('email');
+		if (!$email && $uid)
+		{
+			$email = User::getInstance($uid)->get('email');
+		}
+		//$email = $email ? $email : User::get('email');
 
 		if (!$email || (!$uid && !$code))
 		{
