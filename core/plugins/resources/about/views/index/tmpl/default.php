@@ -307,14 +307,19 @@ $maintext = $this->model->description;
 		<?php } ?>
 
 		<?php if ($this->model->params->get('show_assocs')): ?>
-			<?php if ($this->tagNames): ?>
+			<?php if ($this->tags->count()): ?>
 				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">
-					<ol>
-						<?php foreach ($this->tagNames as $tagName): ?>
-							<li><?php echo $tagName; ?></li>
-						<?php endforeach; ?>
-					</ol>
+					<?php
+					$view = new Hubzero\Component\View(array(
+						'base_path' => Component::path('com_tags') . '/site',
+						'name'      => 'tags',
+						'layout'    => '_cloud'
+					));
+					$view->set('config', Component::params('com_tags'));
+					$view->set('tags', $this->tags);
+					$view->display();
+					?>
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
