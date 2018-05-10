@@ -73,7 +73,6 @@ class Course extends SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @param   array  $course_pages  List of roup pages
 	 * @return  void
 	 */
 	protected function _buildPathway()
@@ -130,17 +129,18 @@ class Course extends SiteController
 	/**
 	 * Redirect to login page
 	 *
+	 * @param   string  $message
 	 * @return  void
 	 */
 	public function loginTask($message = '')
 	{
 		$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
+
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 			$message,
 			'warning'
 		);
-		return;
 	}
 
 	/**
@@ -152,12 +152,12 @@ class Course extends SiteController
 	{
 		if (!$this->course->isPublished() && !$this->course->isDraft())
 		{
-			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		if (!$this->course->access('view'))
 		{
-			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// Build the title
@@ -213,6 +213,7 @@ class Course extends SiteController
 	/**
 	 * Show a form for editing a course
 	 *
+	 * @param   object  $model
 	 * @return  void
 	 */
 	public function editTask($model=null)
@@ -220,8 +221,7 @@ class Course extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
 		// Build the title
@@ -240,13 +240,13 @@ class Course extends SiteController
 			// Ensure we found the course info
 			if (!$this->course->exists())
 			{
-				return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+				App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 			}
 
 			// Check authorization
 			if (!$this->course->access('edit'))
 			{
-				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+				App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 			}
 
 			$this->view->title = Lang::txt('COM_COURSES_EDIT_COURSE') . ': ' . $this->course->get('title');
@@ -284,7 +284,7 @@ class Course extends SiteController
 	/**
 	 * Save a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -294,8 +294,7 @@ class Course extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
 		// Incoming
@@ -313,7 +312,7 @@ class Course extends SiteController
 		// Check authorization
 		if (!$isNew && !$course->access('edit', 'course'))
 		{
-			return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 		}
 
 		// Push back into edit mode if any errors
@@ -322,8 +321,7 @@ class Course extends SiteController
 			$this->tags = $tags;
 
 			Notify::error($course->getError(), 'courses');
-			$this->newTask($course);
-			return;
+			return $this->newTask($course);
 		}
 
 		// Force into draft state
@@ -338,8 +336,7 @@ class Course extends SiteController
 			$this->tags = $tags;
 
 			Notify::error($course->getError(), 'courses');
-			$this->editTask($course);
-			return;
+			return $this->editTask($course);
 		}
 
 		if (isset($_POST['tags']))
@@ -352,8 +349,8 @@ class Course extends SiteController
 		if ($isNew)
 		{
 			// Set the creator as a manager
-			$role_id = 0;
-			if ($roles = $course->roles())
+			$role_id = 2;
+			/*if ($roles = $course->roles())
 			{
 				foreach ($roles as $role)
 				{
@@ -363,7 +360,7 @@ class Course extends SiteController
 						break;
 					}
 				}
-			}
+			}*/
 			$course->add(User::get('id'), $role_id);
 		}
 
@@ -385,24 +382,63 @@ class Course extends SiteController
 	}
 
 	/**
+	 * Publish a course
+	 *
+	 * @return  void
+	 */
+	public function publishTask()
+	{
+		// Incoming
+		$id = Request::getCmd('gid', '');
+
+		$course = Models\Course::getInstance($id);
+
+		// Is this a new entry or updating?
+		if (!$course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NOT_FOUND'));
+		}
+
+		// Check authorization
+		if (!$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+		}
+
+		$course->set('state', 1);
+
+		if ($course->store())
+		{
+			Notify::success(Lang::txt('COM_COURSES_COURSE_PUBLISHED', $course->get('title')));
+		}
+		else
+		{
+			Notify::error($course->getError());
+		}
+
+		// Redirect back to the course page
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias'))
+		);
+	}
+
+	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function instructorsTask()
 	{
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
-		$this->view->no_tml = Request::getInt('no_html', 0);
-
-		$this->view->course = $this->course;
-
-		$this->view->display();
+		$this->view
+			->set('no_html', Request::getInt('no_html', 0))
+			->set('course', $this->course)
+			->display();
 	}
 
 	/**
@@ -415,8 +451,7 @@ class Course extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
 		$this->view->no_html = Request::getInt('no_html', 0);
@@ -451,8 +486,7 @@ class Course extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
 		$data    = Request::getVar('offering', array(), 'post', 'none', 2);
@@ -524,7 +558,7 @@ class Course extends SiteController
 	 * This method initially displays a form for confirming deletion
 	 * then deletes course and associated information upon POST
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -537,20 +571,19 @@ class Course extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
 		// Ensure we found the course info
 		if (!$this->course->exists())
 		{
-			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// Check authorization
 		if (!$this->course->access('delete'))
 		{
-			return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 		}
 
 		// Get number of course members
@@ -662,10 +695,10 @@ class Course extends SiteController
 	/**
 	 * Change the status of an item
 	 *
-	 * @param      string $type   Item being changed
-	 * @param      string $status Status to set
-	 * @param      string $id     Item ID
-	 * @return     void
+	 * @param   string  $type    Item being changed
+	 * @param   string  $status  Status to set
+	 * @param   string  $id      Item ID
+	 * @return  void
 	 */
 	public function savepageTask()
 	{
@@ -675,8 +708,7 @@ class Course extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
-			return;
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
 		// Incoming
@@ -724,15 +756,14 @@ class Course extends SiteController
 	/**
 	 * Change the status of an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletepageTask()
 	{
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->loginTask('COM_COURSES_NOT_LOGGEDIN');
-			return;
+			return $this->loginTask('COM_COURSES_NOT_LOGGEDIN');
 		}
 
 		if (!$this->course->exists())
@@ -776,8 +807,8 @@ class Course extends SiteController
 	/**
 	 * Check if a course alias is valid
 	 *
-	 * @param      integer $gid Course alias
-	 * @return     boolean True if valid, false if not
+	 * @param   integer  $gid  Course alias
+	 * @return  boolean  True if valid, false if not
 	 */
 	private function _validCn($gid)
 	{
@@ -799,8 +830,8 @@ class Course extends SiteController
 	/**
 	 * Generate a random string
 	 *
-	 * @param      integer $length Length of string
-	 * @return     string
+	 * @param   integer  $length  Length of string
+	 * @return  string
 	 */
 	private function randomString($length)
 	{
@@ -818,8 +849,8 @@ class Course extends SiteController
 	/**
 	 * Get a course's availability
 	 *
-	 * @param      object $course CoursesCourse
-	 * @return     string
+	 * @param   object  $course  CoursesCourse
+	 * @return  string
 	 */
 	private function courseAvailability($course = null)
 	{
@@ -848,10 +879,8 @@ class Course extends SiteController
 			echo json_encode(array('available' => $availability));
 			return;
 		}
-		else
-		{
-			return $availability;
-		}
+
+		return $availability;
 	}
 
 	/**
@@ -872,25 +901,23 @@ class Course extends SiteController
 		if (!$server->serve())
 		{
 			// Should only get here on error
-			throw new Exception(Lang::txt('COM_COURSES_SERVER_ERROR'), 404);
+			App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 
 	/**
 	 * Download a wiki file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
 		// Get some needed libraries
 		if (!$this->course->access('view'))
 		{
-			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// Get the scope of the parent page the file is attached to
@@ -930,7 +957,7 @@ class Course extends SiteController
 		// Ensure the file exist
 		if (!file_exists($filepath))
 		{
-			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
+			App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
 		}
 
 		// Initiate a new content server and serve up the file
@@ -942,12 +969,9 @@ class Course extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			throw new Exception(Lang::txt('COM_COURSES_SERVER_ERROR'), 500);
+			App::abort(500, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
-		else
-		{
-			exit;
-		}
-		return;
+
+		exit;
 	}
 }

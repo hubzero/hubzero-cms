@@ -49,7 +49,7 @@ class Courses extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -77,8 +77,8 @@ class Courses extends SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @param      array $course_pages List of roup pages
-	 * @return     void
+	 * @param   array  $course_pages  List of roup pages
+	 * @return  void
 	 */
 	public function _buildPathway($course_pages = array())
 	{
@@ -101,7 +101,7 @@ class Courses extends SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _buildTitle()
 	{
@@ -151,7 +151,7 @@ class Courses extends SiteController
 	/**
 	 * Display a list of courses on the site and options for filtering/browsing them
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function browseTask()
 	{
@@ -225,7 +225,7 @@ class Courses extends SiteController
 	/**
 	 * Public url for badge info
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function badgeTask()
 	{
@@ -256,7 +256,9 @@ class Courses extends SiteController
 	/**
 	 * Set access permissions for a user
 	 *
-	 * @return     void
+	 * @param   string   $assetType
+	 * @param   integer  $assetId
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -280,7 +282,7 @@ class Courses extends SiteController
 			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
 			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
-			//$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+			$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
 			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
 			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
 			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
@@ -288,4 +290,3 @@ class Courses extends SiteController
 		}
 	}
 }
-

@@ -591,6 +591,11 @@ class Permissions extends Obj
 			$this->_calculate();
 		}
 
+		if (User::authorise('core.admin', 'com_courses'))
+		{
+			return true;
+		}
+
 		return $this->config()->get('access-' . strtolower($action) . '-' . $item);
 	}
 }

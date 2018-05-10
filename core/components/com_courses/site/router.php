@@ -191,6 +191,7 @@ class Router extends Base
 
 				case 'logo':
 				case 'edit':
+				case 'publish':
 				case 'newoffering':
 				case 'saveoffering':
 				case 'deletepage':
