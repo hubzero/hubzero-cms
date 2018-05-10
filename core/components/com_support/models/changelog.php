@@ -475,12 +475,26 @@ class Changelog extends Obj
 				$after->get('resolved', Lang::txt('COM_SUPPORT_UNRESOLVED'))
 			);
 		}*/
-		if (intval($after->get('status')) != intval($before->get('status')))
+		if (intval($after->get('status')) != intval($before->get('status'))
+		 || intval($after->get('open')) != intval($before->get('open')))
 		{
+			$bstatus = $before->status;
+			$astatus = $after->status;
+			if ($before->get('open') && !$bstatus->get('id'))
+			{
+				$bstatus->set('open', 1);
+				$bstatus->set('title', Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'));
+			}
+			if (!$after->get('open') && !$astatus->get('id'))
+			{
+				$astatus->set('open', 0);
+				$astatus->set('title', Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'));
+			}
+
 			$this->changed(
 				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
-				$before->status->get('title'),
-				$after->status->get('title')
+				$bstatus->get('title'),
+				$astatus->get('title')
 			);
 		}
 		if ($after->get('category') != $before->get('category'))
