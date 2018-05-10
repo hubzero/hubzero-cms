@@ -34,6 +34,7 @@
 defined('_HZEXEC_') or die();
 
 use Components\Tags\Models\Tag;
+use Components\Tags\Models\Objct;
 
 /**
  * Resources Plugin class for about tab
@@ -101,21 +102,23 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$tagNames = Tag::all()
-				->select('#__tags.raw_tag')
-				->join('#__tags_object', '#__tags.id', 'tagid')
-				->where('#__tags_object.label', '!=', 'badge')
-				->whereEquals('#__tags_object.tbl', 'resources')
-				->whereEquals('#__tags_object.objectid', $model->get('id'));
+			$query = Tag::all();
+
+			$t = $query->getTableName();
+			$o = Objct::blank()->getTableName();
+
+			$query->select($t . '.*')
+				->join($o, $t . '.id', $o . '.tagid')
+				->where($o . '.label', '!=', 'badge')
+				->whereEquals($o . '.tbl', 'resources')
+				->whereEquals($o . '.objectid', $model->get('id'));
 
 			if (!$model->access('edit'))
 			{
-				$tagNames->whereEquals('#__tags.admin', 0);
+				$query->whereEquals($t . '.admin', 0);
 			}
 
-			$tagNames = array_map(function ($tag) {
-				return $tag['raw_tag'];
-			}, $tagNames->rows()->toArray());
+			$tags = $query->rows();
 
 			// Instantiate a view
 			$view = $this->view('default', 'index');
@@ -123,7 +126,7 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 			$view->model    = $model;
 			$view->database = App::get('db');
 			$view->plugin   = $this->params;
-			$view->tagNames = $tagNames;
+			$view->tags     = $tags;
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
