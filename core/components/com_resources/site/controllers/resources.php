@@ -1481,7 +1481,6 @@ class Resources extends SiteController
 			$view->config      = $this->config;
 			$view->tconfig     = $tconfig;
 			$view->resource    = $this->model;
-			$view->helper      = $helper;
 			$view->resid       = $this->resid;
 			$view->activechild = $activechild;
 			$view->no_html     = 0;
