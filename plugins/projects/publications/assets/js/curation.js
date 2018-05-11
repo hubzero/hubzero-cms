@@ -953,29 +953,31 @@ HUB.ProjectPublicationsDraft = {
 
 		var all_depths_met = true;
 		$('.focus-areas').children().each(function(ifa, fa) {
-			var depth_met = false;
+			var depth_met = ($(fa).has('.required').length === 0);
 			var max_depth = 0;
 			var item_depth = 0;
 
-			$(fa).find('input[id*="tagfa"]:checked').each(function(itag, tag) {
-				// Only count items with parent also checked
-				if ($(tag).parent().hasClass('top-level') ||
-			    	$(tag).parent().siblings("input").is(":checked")) {
-							selected = selected ? selected + ',' + $(tag).next('label').html() : $(tag).next('label').html();
-						} else {
-							$(tag).prop('checked', false);
-							return false;
-						}
+			if (!depth_met) {
+				$(fa).find('input[id*="tagfa"]:checked').each(function(itag, tag) {
+					// Only count items with parent also checked
+					if ($(tag).parent().hasClass('top-level') ||
+				    	$(tag).parent().siblings("input").is(":checked")) {
+								selected = selected ? selected + ',' + $(tag).next('label').html() : $(tag).next('label').html();
+							} else {
+								$(tag).prop('checked', false);
+								return false;
+							}
 
-				// Check for correct depth - note that this will only work when there is only ONE
-				//   focus area per master type
-				item_depth = $(tag).parentsUntil('fieldset').length;
-				max_depth = Math.max(item_depth, max_depth);
-				if (item_depth >= $(tag).closest('fieldset').attr('value'))
-				{
-					depth_met = true;
-				}
-			});
+					// Check for correct depth - note that this will only work when there is only ONE
+					//   focus area per master type
+					item_depth = $(tag).parentsUntil('fieldset').length;
+					max_depth = Math.max(item_depth, max_depth);
+					if (item_depth >= $(tag).closest('fieldset').attr('value'))
+					{
+						depth_met = true;
+					}
+				});
+			}
 
 			// Trigger incomplete block by removing all selected tags (right now, only trigger for
 			//   incomplete block is zero tags)
