@@ -721,7 +721,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public static function allByFilters($filters = array())
 	{
-		$query = self::all()
+		$query = self::all();
+
+		$query
 			->select('a.id')
 			->select('a.title')
 			->select('a.alias')
@@ -750,7 +752,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			->select('a.featured')
 			->select('a.xreference')
 			->select('a.fulltext', 'readmore')
-			->from($this->getTableName(), 'a');
+			->from($query->getTableName(), 'a');
 
 		// Process an Archived Article layout
 		if (isset($filters['published']) && in_array(2, $filters['published']))
@@ -918,7 +920,11 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
 				if ($includeSubcategories)
 				{
-					$levels = (int) $this->getState('filter.max_category_levels', '1');
+					if (!isset($filters['max_category_levels']))
+					{
+						$filters['max_category_levels'] = 1;
+					}
+					$levels = (int) $filters['max_category_levels'];
 
 					// Create a subquery for the subcategory list
 					$subQuery = \App::get('db')->getQuery();
@@ -1173,7 +1179,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public static function oneByFilters($filters = array())
 	{
-		$query = self::all()
+		$query = self::all();
+
+		$query
 			->select('a.id')
 			->select('a.asset_id')
 			->select('a.title')
@@ -1207,7 +1215,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			->select('a.featured')
 			->select('a.language')
 			->select('a.xreference')
-			->from($this->getTableName(), 'a');
+			->from($query->getTableName(), 'a');
 
 		// Join on category table.
 		$query->select('c.title', 'category_title')
