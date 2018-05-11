@@ -34,9 +34,9 @@ namespace Components\Content\Models;
 use Hubzero\Database\Relational;
 
 /**
- * Model class for a featured entry
+ * Model class for a frontpage entry
  */
-class Featured extends Relational
+class Frontpage extends Relational
 {
 	/**
 	 * The table namespace
