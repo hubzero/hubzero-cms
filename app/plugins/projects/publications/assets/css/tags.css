@@ -2,6 +2,24 @@
   margin-left: 2em;
 }
 
+.fa input:first-child:not(:nth-last-child(2)):before {
+  position: relative;
+  content: '\203A';
+  font-family: 'Fontcons';
+  font-size: 12px;
+  left: -12px;
+  top: -5px;
+}
+
+.fa input:first-child:not(:nth-last-child(2)):checked:before {
+  position: relative;
+  content: '\2304';
+  font-family: 'Fontcons';
+  font-size: 12px;
+  left: -14px;
+  top: -5px;
+}
+
 #tagsPick fieldset fieldset {
     margin: 1.5em 0em;
     padding: 0 0 1.5em 0;
