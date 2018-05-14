@@ -79,7 +79,7 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 					switch ($this->action)
 					{
 						case 'assigned':
-							echo 'The following wish has been assigned to ' . $this->escape(stripslashes($this->wish->owner->get('name'))) . '.';
+							echo 'The following wish has been assigned to ' . $this->escape(stripslashes($this->wish->assignee->get('name'))) . '.';
 						break;
 
 						case 'created':
