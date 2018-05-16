@@ -154,6 +154,17 @@ class Mailinglists extends SiteController
 				->display();
 		}
 
+		else if (User::isGuest() && count(User::oneByEmail($email)->toArray()) > 0)
+		{
+			//build return url and redirect url
+			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
+			$redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
+
+			//redirect
+			App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
+			return;
+		}
+
 		else
 		{
 			//get mailing lists user belongs to
