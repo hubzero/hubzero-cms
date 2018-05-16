@@ -86,8 +86,13 @@ class Mailings extends AdminController
 			$mailings->whereLike('subject', $filters['search']);
 		}
 
+		$rows = $mailings
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
 		// Add the number sent
-		foreach ($mailings as $mailing)
+		foreach ($rows as $mailing)
 		{
 			$emails_sent = $mailing
 				->recipients()
@@ -101,11 +106,6 @@ class Mailings extends AdminController
 			$mailing->set('emails_sent', $emails_sent);
 			$mailing->set('emails_total', $emails_total);
 		}
-
-		$rows = $mailings
-			->order($filters['sort'], $filters['sort_Dir'])
-			->paginated('limitstart', 'limit')
-			->rows();
 
 		// Output the HTML
 		$this->view
