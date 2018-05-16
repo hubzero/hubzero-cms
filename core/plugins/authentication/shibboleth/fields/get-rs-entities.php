@@ -35,7 +35,7 @@ if (PHP_SAPI !== 'cli') {
 	exit();
 }
 
-$mdSource = 'https://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml';
+$mdSource = 'https://md.incommon.org/InCommon/InCommon-metadata.xml';
 $cache = '/www/tmp/incommon-rs-entities.json';
 
 /**
