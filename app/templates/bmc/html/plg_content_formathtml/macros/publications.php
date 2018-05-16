@@ -149,46 +149,46 @@ class Publications extends Macro
 
 			// Thumbnail
 			$html .= '  <div class="thumbnail">';
-        	$html .= '    <div class="resource-img">';
-        	$html .= '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
-        	$html .= '    </div>';
-      		$html .= '  </div>';
+      $html .= '    <div class="resource-img">';
+      $html .= '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
+      $html .= '    </div>';
+      $html .= '  </div>';
 
-      		// Content
-      		$html .= '  <div class="demo-two-content">';
+      // Content
+      $html .= '  <div class="demo-two-content">';
 
-      		// Focus Tags
-      		if ($focusTags) {
-      			// http://colorbrewer2.org/#type=qualitative&scheme=Dark2
-      			// Dark2 has a maximum of 8 colors
-      			$ncolors = count($focusTags);
-      			foreach ($pub->getTags() as $tag) {
-      				if (!$tag->admin && (($ind = array_search($tag->raw_tag, $focusTags)) !== false)) {
-      					$html .= '    <div class="categories">';
-      					$html .= '      <a href="' . $tag->link() . '"><span class="primary cat Dark2 q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span></a>';
-      					$html .= '    </div>';
-      				}
-      			}
-      		}
+  		// Focus Tags
+  		if ($focusTags) {
+  			// http://colorbrewer2.org/#type=qualitative&scheme=Dark2
+  			// Dark2 has a maximum of 8 colors
+  			$ncolors = count($focusTags);
+  			foreach ($pub->getTags() as $tag) {
+  				if (!$tag->admin && (($ind = array_search($tag->raw_tag, $focusTags)) !== false)) {
+  					$html .= '    <div class="categories">';
+  					$html .= '      <a href="' . $tag->link() . '"><span class="primary cat Dark2 q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span></a>';
+  					$html .= '    </div>';
+  				}
+  			}
+  		}
 
-      		// Post
-      		$html .= '	  <div class="demo-two-post">';
-      		$html .= '      <div class="demo-two-title">';
-      		$html .= '        <a href="' . $pub->link() . '">' . $pub->get('title') . '</a>';
-      		$html .= '      </div>';
+  		// Post
+  		$html .= '	  <div class="demo-two-post">';
+  		$html .= '      <div class="demo-two-title">';
+  		$html .= '        <a href="' . $pub->link() . '">' . $pub->get('title') . '</a>';
+  		$html .= '      </div>';
 
 			// Fork
 			$html .= '      <div class="fork">';
 
-      		// Forked from?
-      		if ($v = $pub->forked_from) {
-      			// Get forked ancestor
-      			// Code pulled from: com_publications/site/views/view/tmpl/default.php
+  		// Forked from?
+  		if ($v = $pub->forked_from) {
+  			// Get forked ancestor
+  			// Code pulled from: com_publications/site/views/view/tmpl/default.php
 				$this->_db->setQuery("SELECT publication_id FROM `#__publication_versions` WHERE `id`=" . $this->_db->quote($v));
 				$p = $this->_db->loadResult();
 				$ancestor = new \Components\Publications\Models\Publication($p, 'default', $v);
 
-      			$html .= '        <span><i class="item-fork" aria-hidden="true"></i>';
+      	$html .= '        <span><i class="item-fork" aria-hidden="true"></i>';
 				if ($ancestor->version->get('state') == 1 &&
 					($ancestor->version->get('published_up') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_up') != '0000-00-00 00:00:00' && $ancestor->version->get('published_up') <= Date::toSql())) &&
 					($ancestor->version->get('published_down') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_down') != '0000-00-00 00:00:00' && $ancestor->version->get('published_down') > Date::toSql())))
@@ -200,65 +200,65 @@ class Publications extends Macro
 					$from = '           Forked from: ' . $ancestor->version->get('title') . ' <span class="publication-status">' . Lang::txt('(unpublished)') . '</span>';
 				}
 				$html .= '        </span>';
-      		}
-				$html .= '      </div>';
+      }
+			$html .= '      </div>';
 
-      		// First author
-      		$html .= '      <div class="author">';
-      		$html .= '        <span>' . $pub->authors()[0]->name . '</span>';
-      		if (!empty($pub->authors()[0]->organization))
-      		{
-      			$html .= '        <br><span class="italic">' . $pub->authors()[0]->organization . '</span>';
-      		}
-      		if (count($pub->authors()) > 1)
-      		{
-      			$html .= '        <span class="more-info"><a href="' . $pub->link() . '"> ...et. al</a></span>';
-      		}
-      		$html .= '      </div>';
+  		// First author
+  		$html .= '      <div class="author">';
+  		$html .= '        <span>' . $pub->authors()[0]->name . '</span>';
+  		if (!empty($pub->authors()[0]->organization))
+  		{
+  			$html .= '        <br><span class="italic">' . $pub->authors()[0]->organization . '</span>';
+  		}
+  		if (count($pub->authors()) > 1)
+  		{
+  			$html .= '        <span class="more-info"><a href="' . $pub->link() . '"> ...et. al</a></span>';
+  		}
+  		$html .= '      </div>';
 
-      		// Description
-      		$html .= '      <div class="description">';
-      		$html .= '        <div class="abstract">' . $pub->get('abstract') . '</div>';
+  		// Description
+  		$html .= '      <div class="description">';
+  		$html .= '        <div class="abstract">' . $pub->get('abstract') . '</div>';
 
-      		// Version info
-      		$html .= '        <div class="resource-meta">';
-      		$html .= '          <a href="' . $pub->link('version') . '">Version ' . $pub->version->get('version_number') . ' - published on ' . Date::of($pub->version->get('published_up'))->toLocal('M d, Y') . '</a>'; // Could use version_label
-      		$html .= '        </div>';
+  		// Version info
+  		$html .= '        <div class="resource-meta">';
+  		$html .= '          <a href="' . $pub->link('version') . '">Version ' . $pub->version->get('version_number') . ' - published on ' . Date::of($pub->version->get('published_up'))->toLocal('M d, Y') . '</a>'; // Could use version_label
+  		$html .= '        </div>';
 
-      		// Tags
-      		$html .= '        <div class="secondary-tags">';
-      		foreach($pub->getTags() as $tag) {
-      			if (!$tag->admin) {
-      				$html .= '           <a href="' . $tag->link() . '"><span class="secondary-tag">' . $tag->raw_tag . '</span></a>';
-      			}
-   			}
-      		$html .= '        </div>';
-      		$html .= '        <a href="' . $pub->link() . '" class="show-more">...view record</a>';
+  		// Tags
+  		$html .= '        <div class="secondary-tags">';
+  		foreach($pub->getTags() as $tag) {
+  			if (!$tag->admin) {
+  				$html .= '           <a href="' . $tag->link() . '"><span class="secondary-tag">' . $tag->raw_tag . '</span></a>';
+  			}
+			}
+  		$html .= '        </div>';
+  		$html .= '        <a href="' . $pub->link() . '" class="show-more">...view record</a>';
 
-      		$html .= '      </div>'; // .description
+  		$html .= '      </div>'; // .description
 
-      		$html .= '    </div>'; // .demo-two-post
-      		$html .= '  </div>'; // .demo-two-content
+  		$html .= '    </div>'; // .demo-two-post
+  		$html .= '  </div>'; // .demo-two-content
 
-      		$html .= '  <div class="meta-alt">';
+  		$html .= '  <div class="meta-alt">';
 
-      		// Likes
-        	// $html .= '    <i class="heart tooltips fa fa-heart-o" title="Like"></i>25';
+  		// Likes
+    	// $html .= '    <i class="heart tooltips fa fa-heart-o" title="Like"></i>25';
 
-        	// Download information
-        	// Code pulled from: plugins/publications/usage/usage.php (onPublication)
-        	$this->_db->setQuery(
+    	// Download information
+    	// Code pulled from: plugins/publications/usage/usage.php (onPublication)
+    	$this->_db->setQuery(
 				"SELECT SUM(primary_accesses)
 				FROM `#__publication_logs`
 				WHERE `publication_id`=" . $this->_db->quote($pub->id) . " AND `publication_version_id`=" . $this->_db->quote($pub->version->id) . "
 				ORDER BY `year` ASC, `month` ASC"
 			);
 			$downloads = (int) $this->_db->loadResult();
-        	$html .= '    <a href="' . $pub->link('serve') . '?render=archive"><i class="downloads tooltips icon-download" title="Download" aria-hidden="true"></i></a><a href="' . $pub->link() . '/usage?v=' . $pub->version->version_number . '">' . $downloads . ' downloads</a>';
+    	$html .= '    <a href="' . $pub->link('serve') . '?render=archive"><i class="downloads tooltips icon-download" title="Download" aria-hidden="true"></i></a><a href="' . $pub->link() . '/usage?v=' . $pub->version->version_number . '">' . $downloads . ' downloads</a>';
 
-        	// Comments
-        	// $html .= '    <a href="#"><i class="comments tooltips fa fa-comment-o" title="Comment" aria-hidden="true"></i></a><a href="#">0 comments</a>';
-      		$html .= '  </div>';
+    	// Comments
+    	// $html .= '    <a href="#"><i class="comments tooltips fa fa-comment-o" title="Comment" aria-hidden="true"></i></a><a href="#">0 comments</a>';
+  		$html .= '  </div>';
 
 			$html .= '</div>';
 		}
