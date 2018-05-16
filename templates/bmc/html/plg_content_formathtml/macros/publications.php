@@ -330,7 +330,7 @@ class Publications extends Macro
 	 * @param   string   $default  Default focus area
 	 * @return  array    $children Child tags of focus area
 	 */
-	private function _getFocusTags(&$args, $default='resourcesqubes')
+	private function _getFocusTags(&$args)
 	{
 		foreach ($args as $k => $arg)
 		{
@@ -344,8 +344,9 @@ class Publications extends Macro
 			}
 		}
 
-		$children = $this->_getChildTags($default);
-		return $children;
+		// $children = $this->_getChildTags($default);
+		// return $children;
+		return false;
 	}
 
 	private function _getChildTags($parent_label)
