@@ -263,16 +263,20 @@ class Mailinglists extends AdminController
 		$filters = array(
 			'status' => Request::getWord('status', 'active'),
 			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
+				$this->_option . '.' . $this->_controller . '.' . $this->_task . '.sort',
 				'filter_order',
-				'id'
+				'email'
 			),
 			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
+				$this->_option . '.' . $this->_controller . '.' . $this->_task . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			)
 		);
+		if (!in_array($filters['sort'], array('id', 'email', 'date_added', 'date_confirmed')))
+		{
+			$filters['sort'] = 'email';
+		}
 
 		// Load mailing list
 		$list = Mailinglist::oneOrFail($id);
