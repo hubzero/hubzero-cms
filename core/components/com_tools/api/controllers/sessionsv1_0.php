@@ -1421,7 +1421,7 @@ class Sessionsv1_0 extends ApiController
 			2 => array("pipe", "w")   // stderr is a pipe that the child with write to
 		);
 
-		$process = proc_open($command, $descriptorspec, $pipes, "/", NULL);
+		$process = proc_open($command, $descriptorspec, $pipes, "/", null);
 
 		if (is_resource($process))
 		{
@@ -1464,9 +1464,9 @@ class Sessionsv1_0 extends ApiController
 				'session'        => $sessionid,
 				'ipsec_ip1'      => $public_ip,
 				'ipsec_ip2'      => $private_ip,
-				'ipsec_password' => NULL,
+				'ipsec_password' => null,
 				'smb_username'   => 'smb-' . $sessionid,
-				'smb_password'   => NULL
+				'smb_password'   => null
 			);
 		}
 		$this->send($object);
