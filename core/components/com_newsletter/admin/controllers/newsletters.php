@@ -623,6 +623,7 @@ class Newsletters extends AdminController
 		// get newsletter mailing lists
 		$mailinglists = Mailinglist::all()
 			->whereEquals('deleted', 0)
+			->whereEquals('guest', 0)
 			->ordered()
 			->rows();
 
@@ -695,15 +696,6 @@ class Newsletters extends AdminController
 			$sendingTest = false
 		);
 
-		// array of filters
-		$filters = array(
-			'lid'    => $mailinglistId,
-			'status' => 'active',
-			'limit'  => 10000,
-			'start'  => 0,
-			'select' => 'email'
-		);
-
 		// get count of emails
 		if (isset($mailinglist))
 		{
@@ -711,6 +703,8 @@ class Newsletters extends AdminController
 				->emails()
 				->whereEquals('status', 'active')
 				->total();
+
+			$totalcount = $count;
 		}
 		else
 		{
@@ -720,17 +714,36 @@ class Newsletters extends AdminController
 				->where('approved', '!=', 0)
 				->where('activation', '>', 0)
 				->total();
+
+			$guestmailinglist = Mailinglist::all()
+				->whereEquals('guest', '1')
+				->row();
+			$count2 = $guestmailinglist
+				->emails()
+				->whereEquals('status', 'active')
+				->total();
+
+			$totalcount = $count + $count2;
 		}
-		$left = $count;
 
 		// make sure we have emails
-		if ($count < 1)
+		if ($totalcount < 1)
 		{
 			Notify::error(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MISSING_RECIPIENTS'));
 			return $this->cancelTask();
 		}
 
 		// add recipients at 10000 at a time
+
+		// array of filters
+		$filters = array(
+			'lid'    => $mailinglistId,
+			'status' => 'active',
+			'limit'  => 10000,
+			'start'  => 0,
+			'select' => 'email'
+		);
+		$left = $count;
 		while ($left >= 0)
 		{
 			// get emails
@@ -767,6 +780,43 @@ class Newsletters extends AdminController
 			$left -= $filters['limit'];
 		}
 
+		// handle guest users for the default list
+		if (!isset($mailinglist))
+		{
+			// array of filters
+			$filters = array(
+				'lid'    => $mailinglistId,
+				'status' => 'active',
+				'limit'  => 10000,
+				'start'  => 0,
+				'select' => 'email'
+			);
+			$left = $count2;
+			while ($left >= 0)
+			{
+				// get emails
+				$emails = $guestmailinglist->emails()->whereEquals('status', 'active');
+				$emails = $emails
+					->limit($filters['limit'])
+					->start($filters['start'])
+					->rows()
+					->toArray();
+				// add recipeients
+
+				$this->_sendTo($mailing, $emails);
+
+				// nullify vars
+				$emails = null;
+				unset($emails);
+
+				//adjust our start
+				$filters['start'] += $filters['limit'];
+
+				// remove from what we have left to get
+				$left -= $filters['limit'];
+			}
+		}
+
 		// Mark campaign as sent
 		$newsletter->set('sent', 1);
 
@@ -776,7 +826,7 @@ class Newsletters extends AdminController
 		}
 		else
 		{
-			Notify::success(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_TO', $newsletter->name, number_format($count)));
+			Notify::success(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_TO', $newsletter->name, number_format($totalcount)));
 		}
 
 		$this->cancelTask();
