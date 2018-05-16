@@ -182,9 +182,19 @@ class Mailinglists extends SiteController
 				->rows();
 
 			//get all lists
-			$alllists = Mailinglist::all()
-				->whereEquals('private', 0)
-				->rows();
+			if (User::isGuest())
+			{
+				$alllists = Mailinglist::all()
+					->whereEquals('private', 0)
+					->rows();
+			}
+			else
+			{
+				$alllists = Mailinglist::all()
+					->whereEquals('private', 0)
+					->whereEquals('guest', 0)
+					->rows();
+			}
 
 			//build title
 			$this->_buildTitle();
