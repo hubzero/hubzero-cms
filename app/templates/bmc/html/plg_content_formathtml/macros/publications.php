@@ -62,9 +62,9 @@ class Publications extends Macro
 							<ul>
 								<li><code>[[Publications()]]</code> - Shows all publications.</li>
 								<li><code>[[Publications(limit=5)]]</code> - Show the 5 most recent publications.</li>
-								<li><code>[[Publications(sponsor=mygroup)]]</code> - Display a sponsor ribbon with each publication, linking to Group "mygroup" (multiple sponsors are allowed if separated by a semicolon).</li>
+								<li><code>[[Publications(sponsor=mygroup, sponsorbgcol=cb48b7)]]</code> - Display a sponsor ribbon with each publication, linking to Group "mygroup" (multiple sponsors are allowed if separated by a semicolon).  Background color of ribbon is given in hexidecimal without # (default is cb48b7).</li>
 								<li><code>[[Publications(group=mygroup1;mygroup2, project=myproject, id=2;6;8)]]</code> - Display all publications from Groups "mygroup1" and "mygroup2", Project "myproject", and Publications with ids 2, 6, and 8.</li>
-								<li><code>[[Publications(group=mygroup, focusarea=myfa)]]</code> - Display all publications from Group "mygroup", using the children tags of the "myfa" tag as the primary categories.  Color scheme used is <a href="http://colorbrewer2.org/#type=qualitative&scheme=Dark2">Dark2 from http://colorbrewer2.org</a>.</li>
+								<li><code>[[Publications(group=mygroup, focusarea=myfa, fascheme=Dark2)]]</code> - Display all publications from Group "mygroup", using the children tags of the "myfa" tag as the primary categories.  Color scheme used is <a href="http://colorbrewer2.org/#type=qualitative&scheme=Dark2">Dark2 (default) from http://colorbrewer2.org</a>.</li>
 							</ul>';
 		return $txt['html'];
 	}
@@ -99,6 +99,8 @@ class Publications extends Macro
 		$project = $this->_getProject($args);
 		$pubid = $this->_getId($args);
 		$focusTags = $this->_getFocusTags($args);
+		$fascheme = $this->_getFaScheme($args);
+		$sponsorbgcol = $this->_getSponsorBGCol($args);
 
 		// 2.2 should take care of not needed to import?  i.e. the "use" command above should handle this
 		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
@@ -112,7 +114,28 @@ class Publications extends Macro
 		\Document::addStyleSheet($base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'colorbrewer.css');
 		\Document::addScript($base . DS . 'assets' . DS . 'publications' . DS . 'js' . DS . 'pubcards.js');
 
-		$html = '<div class="card-container">';
+		function sass_darken($hex, $percent) {
+			preg_match('/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i', $hex, $primary_colors);
+			str_replace('%', '', $percent);
+			$color = "#";
+			for($i = 1; $i <= 3; $i++) {
+				$primary_colors[$i] = hexdec($primary_colors[$i]);
+				$primary_colors[$i] = round($primary_colors[$i] * (100-($percent*2))/100);
+				$color .= str_pad(dechex($primary_colors[$i]), 2, '0', STR_PAD_LEFT);
+			}
+			return $color;
+		}
+
+		$html = '<style>';
+		$html .= '  .ribbon-alt {';
+		$html .= '    background-color: ' . $sponsorbgcol . ';';
+		$html .= '  }';
+		$html .= '  .ribbon-alt:before {';
+		$html .= '    border-color: transparent ' . sass_darken($sponsorbgcol, 20) . ' transparent transparent;';
+		$html .= '  }';
+		$html .= '</style>';
+
+		$html .= '<div class="card-container">';
 		foreach ($items as $pub)
 		{
 			$html .= '<div class="demo-two-card">';
@@ -165,7 +188,7 @@ class Publications extends Macro
   			foreach ($pub->getTags() as $tag) {
   				if (!$tag->admin && (($ind = array_search($tag->raw_tag, $focusTags)) !== false)) {
   					$html .= '    <div class="categories">';
-  					$html .= '      <a href="' . $tag->link() . '"><span class="primary cat Dark2 q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span></a>';
+  					$html .= '      <a href="' . $tag->link() . '"><span class="primary cat ' . $fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span></a>';
   					$html .= '    </div>';
   				}
   			}
@@ -349,6 +372,22 @@ class Publications extends Macro
 		return false;
 	}
 
+	private function _getFaScheme(&$args, $default = "Dark2")
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/fascheme=([\w;]*)/', $arg, $matches))
+			{
+
+				$scheme = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $scheme;
+			}
+		}
+
+		return $default;
+	}
+
 	private function _getChildTags($parent_label)
 	{
 		// First get tag id
@@ -409,6 +448,21 @@ class Publications extends Macro
 		}
 
 		return false;
+	}
+
+	private function _getSponsorBGCol(&$args, $default = "#cb48b7")
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/sponsorbgcol=([\w;]*)/', $arg, $matches))
+			{
+				$sponsorbgcol = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return '#' . $sponsorbgcol;
+			}
+		}
+
+		return $default;
 	}
 
 	/**
