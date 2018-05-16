@@ -373,6 +373,49 @@ class Sessionsv1_0 extends ApiController
 		exit();
 	}
 
+	/**
+	 * Method to get the Rappture definition file for a tool
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{tool}/definition
+	 * @apiParameter {
+	 * 		"name":          "xpath",
+	 * 		"description":   "Traversal selecting desired area(s) of the document",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @return    void
+	 */
+	public function definitionTask()
+	{
+		$tool = preg_replace('/[^-_a-z0-9]/', '', explode('/', $_SERVER['SCRIPT_URL'])[3]);
+		$path = DS . 'apps' . DS . $tool . DS . 'current' . DS . 'rappture' . DS . 'tool.xml';
+		if (!file_exists($path)) {
+			throw new Exception(Lang::txt('Unable to find tool.xml.'), 404);
+		}
+
+		$xml = file_get_contents($path);
+		$xpath = Request::getVar('xpath', '');
+
+		header('Content-type: text/xml');
+		if (!$xpath) {
+			echo $xml;
+		}
+		else {
+			$xml = new \SimpleXMLElement($xml);
+			$matches = $xml->xpath($xpath);
+			if (count($matches) === 0) {
+				throw new Exception(Lang::txt('Path not found.'), 404);
+			}
+			echo '<matches>';
+			foreach ($matches as $fragment) {
+				echo '<match>' . $fragment->asXML(). '</match>';
+			}
+			echo '</matches>';
+		}
+		exit();
+	}
 
 	/**
 	 * Method to invoke new tools session
