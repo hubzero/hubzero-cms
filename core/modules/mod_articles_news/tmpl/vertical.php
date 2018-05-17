@@ -32,10 +32,11 @@
 
 // no direct access
 defined('_HZEXEC_') or die;
+$i = 0;
+$n = $list->count();
 ?>
 <ul class="newsflash-vert<?php echo $params->get('moduleclass_sfx'); ?>">
-	<?php for ($i = 0, $n = count($list); $i < $n; $i ++) :
-		$item = $list[$i]; ?>
+	<?php foreach ($list as $item) : ?>
 		<li class="newsflash-item">
 			<?php require $this->getLayoutPath('_item');
 
@@ -43,5 +44,7 @@ defined('_HZEXEC_') or die;
 				<span class="article-separator">&#160;</span>
 			<?php endif; ?>
 		</li>
-	<?php endfor; ?>
+	<?php
+		$i++;
+	endforeach; ?>
 </ul>
