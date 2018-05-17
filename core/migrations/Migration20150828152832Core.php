@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for removing embedded default passwords and excess escaping
  **/
-class Migration201508281528321Core extends Base
+class Migration20150828152832Core extends Base
 {
 	/**
 	 * Up
