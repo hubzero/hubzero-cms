@@ -1,0 +1,702 @@
+section {
+  padding: 7em 0;
+}
+
+#about, #post-docs, #contact {
+  text-align: center;
+}
+
+.aside .menu {
+  position: fixed;
+  top: 10em;
+  left: 3em;
+}
+
+.content-header {
+  display: none;
+}
+
+#mission h2 {
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.mission-statement {
+  max-width: 54rem;
+  margin: 0 auto;
+}
+
+.mission-statement h4 {
+  font-family: 'Martel', serif;
+  text-align: center;
+  margin: 0 auto;
+}
+
+#about p {
+  max-width: 70rem;
+  margin: 1em auto;
+}
+
+.header {
+  text-align: center;
+}
+
+.header a {
+  margin: 1em;
+  transition: all 0.3s;
+}
+
+.header .btn-teal {
+  background-color: #fff;
+  color: #007991;
+  border: 2px solid #007991;
+}
+
+.header .btn-teal:hover {
+  background-color: #007991;
+  color: #fff;
+}
+
+.header .btn-teal.focus {
+  background-color: #007991;
+  color: #fff;
+}
+
+.header .btn-green {
+  background-color: #fff;
+  color: #84bf41;
+  border: 2px solid #84bf41;
+}
+
+.header .btn-green:hover {
+  background-color: #84bf41;
+  color: #fff;
+}
+
+.header .btn-green.focus {
+  background-color: #84bf41;
+  color: #fff;
+}
+
+.header .btn-dark-blue {
+  background-color: #fff;
+  color: #222b37;
+  border: 2px solid #222b37;
+}
+
+.header .btn-dark-blue:hover {
+  background-color: #222b37;
+  color: #fff;
+}
+
+.header .btn-dark-blue.focus {
+  background-color: #222b37;
+  color: #fff;
+}
+
+.header .btn-blue {
+  background-color: #fff;
+  color: #5f5980;
+  border: 2px solid #5f5980;
+}
+
+.header .btn-blue:hover {
+  background-color: #5f5980;
+  color: #fff;
+}
+
+.header .btn-blue.focus {
+  background-color: #5f5980;
+  color: #fff;
+}
+
+.header .btn-pink {
+  background-color: #fff;
+  color: #cb48b7;
+  border: 2px solid #cb48b7;
+}
+
+.header .btn-pink:hover {
+  background-color: #cb48b7;
+  color: #fff;
+}
+
+.header .btn-pink.focus {
+  background-color: #cb48b7;
+  color: #fff;
+}
+
+.header .aof-description-wrapper {
+  position: relative;
+  height: 10rem;
+}
+
+.header .aof-description {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  visibility: hidden;
+}
+
+.header .aof-description.focus {
+  visibility: visible !important;
+}
+
+.team-wrapper, .wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  grid-gap: 50px;
+  grid-auto-rows: 350px;
+  justify-content: center;
+}
+
+.icon-spinner {
+  -webkit-animation: spin-animation .2s infinite linear;
+  animation: spin-animation .2s infinite linear;
+  display: inline-block;
+}
+
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.card {
+  position: relative;
+  height: 0;
+  padding-bottom: calc(100% - 16px);
+  margin-bottom: 6.6em;
+}
+
+.card h2 {
+  position: absolute;
+  top: calc(100% - 16px);
+  left: 0;
+  width: 100%;
+  padding: 10px 16px;
+  color: #fff;
+  font-size: 1.4em;
+  line-height: 1.6em;
+  margin: 0;
+  z-index: 10;
+  transition: all 0.3s;
+}
+
+.card h2 span {
+  display: block;
+}
+
+.card h2 strong {
+  font-weight: 400;
+  display: block;
+  font-size: .8em;
+}
+
+.card h2:before, .card h2:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -16px;
+  width: 0;
+  border: 8px solid;
+  transition: all 0.3s;
+}
+
+.card h2:after {
+  top: auto;
+  bottom: 0;
+}
+
+@media only screen and (min-width: 767px) {
+  .card.active {
+    padding-bottom: 0;
+    height: auto;
+  }
+}
+
+.card.active h2 {
+  top: 0;
+  padding: 10px 16px 10px 90px;
+}
+
+.card.active h2:before {
+  top: 0;
+}
+
+.card.active h2:after {
+  bottom: -16px;
+}
+
+.card.focus {
+  transition: all 0.5s;
+}
+
+.card.unfocus {
+  transform: scale(0.9);
+  opacity: .4;
+  transition: all 0.5s;
+}
+
+.card .card-content {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 16px;
+  left: 16px;
+  height: 350px;
+  transition: all 0.3s;
+}
+
+.card .btn-action {
+  position: absolute;
+  right: 16px;
+  top: 15px;
+  border-radius: 50%;
+  border: 5px solid;
+  width: 54px;
+  height: 54px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  z-index: 20;
+  transition: 0.3s;
+}
+
+.card.active .btn-action {
+  top: 62px;
+}
+
+.card .description {
+  position: absolute;
+  top: 100%;
+  right: 30px;
+  left: 30px;
+  bottom: 54px;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 1.2s;
+}
+
+.card .menu:before {
+  font-family: 'Fontcons';
+  content: '\f039';
+  font-style: normal;
+}
+
+.card .arrow-left:before {
+  font-family: 'Fontcons';
+  content: '\2190';
+  font-style: normal;
+}
+
+.card .profile:before {
+  font-family: 'Fontcons';
+  content: '\f007';
+  font-style: normal;
+  padding: 0 13.5px;
+}
+
+.card .contact:before {
+  font-family: 'Fontcons';
+  content: '\2709';
+  font-style: normal;
+  padding: 0 13.5px;
+}
+
+.card .card-footer {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.card .card-footer a {
+  display: block;
+  float: left;
+  position: relative;
+  width: 52px;
+  height: 53px;
+  margin-left: 5px;
+  margin-bottom: 15px;
+  font-size: 28px;
+  color: #fff;
+  line-height: 52px;
+  text-decoration: none;
+  top: 200px;
+}
+
+.card .card-footer a:nth-child(1) {
+  transition: all .5s;
+}
+
+.card .card-footer a:nth-child(2) {
+  transition: all .6s;
+}
+
+.card .img-container {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  transition: all 0.3s;
+}
+
+.card .team-member {
+  width: 100%;
+  object-fit: cover;
+}
+
+.card.active .img-container {
+  border-radius: 50%;
+  left: 0;
+  top: 12px;
+  width: 60px;
+  height: 60px;
+  z-index: 20;
+}
+
+.card.active .card-content {
+  padding-top: 5.6em;
+}
+
+@media only screen and (min-width: 767px) {
+  .card.active .card-content {
+    position: relative;
+    margin-right: 16px;
+  }
+}
+
+.card.active .description {
+  top: 50px;
+  padding-top: 3.5em;
+  opacity: 1;
+}
+
+.card.active .card-footer {
+  overflow: visible;
+  position: absolute;
+  top: calc(100% - -16px);
+  left: 16px;
+  right: 0;
+  height: 82px;
+  padding-top: 15px;
+  padding-left: 25px;
+}
+
+.card.active .card-footer a {
+  top: 0;
+}
+
+.green h2 {
+  background-color: #84bf41;
+}
+
+.green h2:after {
+  border-top-color: #84bf41;
+  border-right-color: #84bf41;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.green h2:before {
+  border-top-color: transparent;
+  border-right-color: #354d1a;
+  border-bottom-color: #354d1a;
+  border-left-color: transparent;
+}
+
+.green.active h2:before {
+  border-top-color: transparent;
+  border-right-color: #84bf41;
+  border-bottom-color: #84bf41;
+  border-left-color: transparent;
+}
+
+.green.active h2:after {
+  border-top-color: #354d1a;
+  border-right-color: #354d1a;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.green .btn-action {
+  background-color: #84bf41;
+}
+
+.green .btn-action:hover {
+  background-color: #4f7327;
+}
+
+.green .card-footer h4 {
+  color: #354d1a;
+}
+
+.green .card-footer a {
+  background-color: #4f7327;
+  color: #fff;
+}
+
+.green .card-footer a:hover {
+  background-color: #010100;
+}
+
+.green.active .card-content {
+  background-color: #e7f2da;
+}
+
+.green.active .card-footer {
+  background-color: #9dcc67;
+}
+
+.blue h2 {
+  background-color: #5f5980;
+}
+
+.blue h2:after {
+  border-top-color: #5f5980;
+  border-right-color: #5f5980;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.blue h2:before {
+  border-top-color: transparent;
+  border-right-color: #1c1a26;
+  border-bottom-color: #1c1a26;
+  border-left-color: transparent;
+}
+
+.blue.active h2:before {
+  border-top-color: transparent;
+  border-right-color: #5f5980;
+  border-bottom-color: #5f5980;
+  border-left-color: transparent;
+}
+
+.blue.active h2:after {
+  border-top-color: #1c1a26;
+  border-right-color: #1c1a26;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.blue .btn-action {
+  background-color: #5f5980;
+}
+
+.blue .btn-action:hover {
+  background-color: #322f44;
+}
+
+.blue .card-footer h4 {
+  color: #1c1a26;
+}
+
+.blue .card-footer a {
+  background-color: #322f44;
+  color: #fff;
+}
+
+.blue .card-footer a:hover {
+  background-color: black;
+}
+
+.blue.active .card-content {
+  background-color: #cdcbda;
+}
+
+.blue.active .card-footer {
+  background-color: #77709c;
+}
+
+.teal h2 {
+  background-color: #007991;
+}
+
+.teal h2:after {
+  border-top-color: #007991;
+  border-right-color: #007991;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.teal h2:before {
+  border-top-color: transparent;
+  border-right-color: black;
+  border-bottom-color: black;
+  border-left-color: transparent;
+}
+
+.teal.active h2:before {
+  border-top-color: transparent;
+  border-right-color: #007991;
+  border-bottom-color: #007991;
+  border-left-color: transparent;
+}
+
+.teal.active h2:after {
+  border-top-color: black;
+  border-right-color: black;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.teal .btn-action {
+  background-color: #007991;
+}
+
+.teal .btn-action:hover {
+  background-color: #00242b;
+}
+
+.teal .card-footer h4 {
+  color: black;
+}
+
+.teal .card-footer a {
+  background-color: #00242b;
+  color: #fff;
+}
+
+.teal .card-footer a:hover {
+  background-color: black;
+}
+
+.teal.active .card-content {
+  background-color: #5ee4ff;
+}
+
+.teal.active .card-footer {
+  background-color: #00a4c4;
+}
+
+.pink h2 {
+  background-color: #cb48b7;
+}
+
+.pink h2:after {
+  border-top-color: #cb48b7;
+  border-right-color: #cb48b7;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.pink h2:before {
+  border-top-color: transparent;
+  border-right-color: #5f1b55;
+  border-bottom-color: #5f1b55;
+  border-left-color: transparent;
+}
+
+.pink.active h2:before {
+  border-top-color: transparent;
+  border-right-color: #cb48b7;
+  border-bottom-color: #cb48b7;
+  border-left-color: transparent;
+}
+
+.pink.active h2:after {
+  border-top-color: #5f1b55;
+  border-right-color: #5f1b55;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.pink .btn-action {
+  background-color: #cb48b7;
+}
+
+.pink .btn-action:hover {
+  background-color: #872678;
+}
+
+.pink .card-footer h4 {
+  color: #5f1b55;
+}
+
+.pink .card-footer a {
+  background-color: #872678;
+  color: #fff;
+}
+
+.pink .card-footer a:hover {
+  background-color: #10040e;
+}
+
+.pink.active .card-content {
+  background-color: #f8e7f6;
+}
+
+.pink.active .card-footer {
+  background-color: #d670c7;
+}
+
+.dark-blue h2 {
+  background-color: #222b37;
+}
+
+.dark-blue h2:after {
+  border-top-color: #222b37;
+  border-right-color: #222b37;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.dark-blue h2:before {
+  border-top-color: transparent;
+  border-right-color: black;
+  border-bottom-color: black;
+  border-left-color: transparent;
+}
+
+.dark-blue.active h2:before {
+  border-top-color: transparent;
+  border-right-color: #222b37;
+  border-bottom-color: #222b37;
+  border-left-color: transparent;
+}
+
+.dark-blue.active h2:after {
+  border-top-color: black;
+  border-right-color: black;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.dark-blue .btn-action {
+  background-color: #222b37;
+}
+
+.dark-blue .btn-action:hover {
+  background-color: black;
+}
+
+.dark-blue .card-footer h4 {
+  color: black;
+}
+
+.dark-blue .card-footer a {
+  background-color: black;
+  color: #fff;
+}
+
+.dark-blue .card-footer a:hover {
+  background-color: black;
+}
+
+.dark-blue.active .card-content {
+  background-color: #798fac;
+}
+
+.dark-blue.active .card-footer {
+  background-color: #354457;
+}

@@ -1,0 +1,419 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+
+//Mixin for AoF Buttons
+@mixin aof-btn($color) {
+  background-color: $white;
+  color: $color;
+  border: 2px solid $color;
+  &:hover {
+    background-color: $color;
+    color: $white;
+  }
+  &.focus {
+    background-color: $color;
+    color: $white;
+  }
+}
+
+section {
+  padding: 7em 0;
+}
+#about, #post-docs, #contact {
+  text-align: center;
+}
+.aside {
+  .menu {
+    position: fixed;
+    top: 10em;
+    left: 3em;
+  }
+}
+.content-header {
+  display: none;
+}
+//Mission Statement
+#mission {
+  h2 {
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 2em;
+  }
+}
+.mission-statement {
+  max-width: 54rem;
+  margin: 0 auto;
+  h4 {
+    font-family: 'Martel', serif;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
+
+//About
+#about {
+  p {
+    max-width: 70rem;
+    margin: 1em auto;
+  }
+}
+
+
+//Meet the Team and Board of Advisors
+.header {
+  text-align: center;
+  a {
+    margin: 1em;
+    transition: all 0.3s;
+  }
+  .btn-teal {
+    @include aof-btn($teal);
+  }
+  .btn-green {
+    @include aof-btn($green);
+  }
+  .btn-dark-blue {
+    @include aof-btn($dark-blue);
+  }
+  .btn-blue {
+    @include aof-btn($med-blue);
+  }
+  .btn-pink {
+    @include aof-btn($pink);
+  }
+  .aof-description-wrapper {
+    position: relative;
+    height: 10rem;
+  }
+  .aof-description {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    visibility: hidden;
+    &.focus {
+      visibility: visible !important;
+    }
+  }
+}
+
+.team-wrapper, .wrapper {
+  @include grid-template(repeat(3, 300px), null, 50px);
+  grid-auto-rows: 350px;
+  justify-content: center;
+}
+
+//Cards
+.icon-spinner {
+    -webkit-animation: spin-animation .2s infinite linear;
+    animation: spin-animation .2s infinite linear;
+    display: inline-block;
+}
+
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.card {
+  position: relative;
+  height: 0;
+  padding-bottom: calc(100% - 16px);
+  margin-bottom: 6.6em;
+
+  h2 {
+    position: absolute;
+    top: calc(100% - 16px);
+    left: 0;
+    width: 100%;
+    padding: 10px 16px;
+    color: $white;
+    font-size: 1.4em;
+    line-height: 1.6em;
+    margin: 0;
+    z-index: 10;
+    transition: all 0.3s;
+    span {
+      display: block;
+    }
+    strong {
+      font-weight: 400;
+      display: block;
+      font-size: .8em;
+    }
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: -16px;
+      width: 0;
+      border: 8px solid;
+      transition: all 0.3s;
+    }
+    &:after {
+      top: auto;
+      bottom: 0;
+    }
+  }
+
+  &.active {
+    @include respond-at(767px) {
+      padding-bottom: 0;
+      height: auto;
+    }
+    h2 {
+      top: 0;
+      padding: 10px 16px 10px 90px;
+      &:before {
+        top: 0;
+      }
+      &:after {
+        bottom: -16px;
+      }
+    }
+  }
+
+  &.focus {
+    // transform: scale(1.1);
+    transition: all 0.5s;
+  }
+
+  &.unfocus {
+    transform: scale(0.9);
+    opacity: .4;
+    transition: all 0.5s;
+  }
+
+  .card-content {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 16px;
+    left: 16px;
+    height: 350px;
+    transition: all 0.3s;
+  }
+
+  .btn-action {
+    position: absolute;
+    right: 16px;
+    top: 15px;
+    border-radius: 50%;
+    border: 5px solid;
+    width: 54px;
+    height: 54px;
+    line-height: 44px;
+    text-align: center;
+    color: $white;
+    z-index: 20;
+    transition: 0.3s;
+  }
+
+  &.active .btn-action {
+    top: 62px;
+  }
+
+  .description {
+    position: absolute;
+    top: 100%;
+    right: 30px;
+    left: 30px;
+    bottom: 54px;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 1.2s;
+  }
+
+  .menu:before {
+    font-family: 'Fontcons';
+    content: '\f039';
+    font-style: normal;
+  }
+
+  .arrow-left:before {
+    font-family: 'Fontcons';
+    content: '\2190';
+    font-style: normal;
+  }
+
+  .profile:before {
+    font-family: 'Fontcons';
+    content: '\f007';
+    font-style: normal;
+    padding: 0 13.5px;
+  }
+
+  .contact:before {
+    font-family: 'Fontcons';
+    content: '\2709';
+    font-style: normal;
+    padding: 0 13.5px;
+  }
+
+  .card-footer {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+    a {
+      display: block;
+      float: left;
+      position: relative;
+      width: 52px;
+      height: 53px;
+      margin-left: 5px;
+      margin-bottom: 15px;
+      font-size: 28px;
+      color: $white;
+      line-height: 52px;
+      text-decoration: none;
+      top: 200px;
+      &:nth-child(1) {
+        transition: all .5s;
+      }
+      &:nth-child(2) {
+        transition: all .6s;
+      }
+    }
+  }
+  .img-container {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    transition: all 0.3s;
+  }
+  .team-member {
+    // height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  &.active {
+    .img-container {
+      border-radius: 50%;
+      left: 0;
+      top: 12px;
+      width: 60px;
+      height: 60px;
+      z-index: 20;
+    }
+    .card-content {
+      padding-top: 5.6em;
+      @include respond-at(767px) {
+        position: relative;
+        margin-right: 16px;
+      }
+    }
+    .description {
+      top: 50px;
+      padding-top: 3.5em;
+      opacity: 1;
+      // @include respond-at(767px) {
+      //   position: relative;
+      //   top: auto;
+      //   right: auto;
+      //   left: auto;
+      //   padding: 30px 30px 70px 30px;
+      //   bottom: 0;
+      // }
+    }
+    .card-footer {
+      overflow: visible;
+      position: absolute;
+      top: calc(100% - -16px);
+      left: 16px;
+      right: 0;
+      height: 82px;
+      padding-top: 15px;
+      padding-left: 25px;
+      a {
+        top: 0;
+      }
+    }
+  }
+}
+
+//Mixin for color pallete of cards
+@mixin card-color($color) {
+  h2 {
+    background-color: $color;
+    &:after {
+      border-top-color: $color;
+      border-right-color: $color;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+    }
+    &:before {
+      border-top-color: transparent;
+      border-right-color: darken($color, 30%);
+      border-bottom-color: darken($color, 30%);
+      border-left-color: transparent;
+    }
+  }
+  &.active {
+    h2 {
+      &:before {
+        border-top-color: transparent;
+        border-right-color: $color;
+        border-bottom-color: $color;
+        border-left-color: transparent;
+      }
+      &:after {
+        border-top-color: darken($color, 30%);
+        border-right-color: darken($color, 30%);
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+      }
+    }
+  }
+  .btn-action {
+    background-color: $color;
+    &:hover {
+      background-color: darken($color, 20%);
+    }
+  }
+  .card-footer {
+    h4 {
+      color: darken($color, 30%);
+    }
+    a {
+      background-color: darken($color, 20%);
+      color: $white;
+      &:hover {
+        background-color: darken($color, 50%);
+      }
+    }
+  }
+  &.active {
+    .card-content {
+      background-color: lighten($color, 40%);
+    }
+    .card-footer {
+      background-color: lighten($color, 10%);
+    }
+  }
+}
+
+.green {
+  @include card-color($green);
+}
+
+.blue {
+  @include card-color($med-blue);
+}
+.teal {
+  @include card-color($teal);
+}
+.pink {
+  @include card-color($pink);
+}
+.dark-blue {
+  @include card-color($dark-blue);
+}
