@@ -1465,6 +1465,9 @@ body.group-page-preview {
 	float: right;
 	width: auto;
 }
+#hubForm .field-wrap ul {
+	list-style-type: none;
+}
 .hide-left {
 	position: absolute;
 	left: -555em;
@@ -1495,6 +1498,7 @@ body.group-page-preview {
 }
 .group-page-manager #hubForm ul {
 	margin: auto;
+	list-style-type: none;
 }
 .group-page-manager #hubForm p {
 	margin: auto;
@@ -2263,10 +2267,12 @@ fieldset.assignment label {
 .com_groups #hubForm .grid {
 	margin: 0;
 }
+
 .com_groups #hubForm .grid label {
 	padding-left: 2em;
 	padding-right: 2em;
 }
+
 
 /* Table styles on group page */
 .group-page table,

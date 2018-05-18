@@ -1,0 +1,243 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_applications/applications.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_register CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Password rules styles */
+	#hubForm .submit .col {
+		text-align: left;
+	}
+	#hubForm .submit .omega {
+		text-align: right;
+	}
+
+	#hubForm label#botcheck-label {
+		display: none;
+	}
+
+	#hubForm .radio {
+		margin-top: 0.2em;
+	}
+	#hubForm .radio ul {
+		list-style: none;
+		margin: 0;
+	}
+	#hubForm .radio li {
+		margin: 0;
+		padding: 0.4em 0;
+	}
+	#hubForm .radio li label,
+	#hubForm .radio li input[type=radio],
+	#hubForm .radio li input[type=checkbox] {
+		width: auto;
+		display: inline;
+		margin-right: 0.5em;
+	}
+
+	#hubForm .scale {
+		margin-top: 0.2em;
+		padding: 0;
+	}
+	#hubForm .scale ul {
+		margin: 0;
+		padding: 0;
+	}
+	#hubForm .scale li {
+		margin: 0;
+		padding: 1em 0;
+		display: block;
+		float: left;
+		width: 20%;
+		background-color: rgba(0, 0, 0, 0.05);
+		text-align: center;
+	}
+	#hubForm .scale li:hover {
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+	#hubForm .scale li:last-child .input-wrap {
+	}
+	#hubForm .scale li label {
+		display: block;
+	}
+	#hubForm .skills-wrap {
+		max-height: 20em;
+		overflow: auto;
+	}
+	#hubForm .skills-wrap input,
+	#hubForm .skills-wrap label {
+		display: inline-block;
+	}
+	#hubForm .skills-wrap input {
+		margin-right: 1em;
+	}
+	.com_careerplans .add,
+	.com_careerplans .delete {
+		display: inline-block;
+		line-height: 1;
+		margin: 0;
+		padding: 0.4em 0.5em 0.5em 0.6em;
+		vertical-align: bottom;
+		white-space: nowrap;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		border-radius: 0.25em;
+		color: #eee;
+		color: rgba(0, 0, 0, 0.4);
+	}
+	.com_careerplans .add,
+	.com_careerplans .delete {
+		font-size: 1.2em;
+		overflow: hidden;
+		width: 2em;
+		height: 1.9em;
+	}
+	.com_careerplans .add:before,
+	.com_careerplans .delete:before {
+		margin-right: 1em;
+	}
+	.com_careerplans .add {
+		border-color: #e7f2ff;
+		background-color: #e7f2ff;
+		color: #5da6fb;
+	}
+	.com_careerplans .add:hover {
+		border-color: #5da6fb;
+		background-color: #5da6fb;
+		color: #fff;
+	}
+	.com_careerplans .delete {
+		border-color: #f9e4e4;
+		background-color: #f9e4e4;
+		color: #dd5555;
+	}
+	.com_careerplans .delete:hover {
+		border-color: #dd5555;
+		background-color: #dd5555;
+		color: #fff;
+	}
+	.com_careerplans .btn-wrap {
+		text-align: right;
+		/*border: 1px solid rgba(0, 0, 0, 0.1);
+		padding: 0.2em;
+		border-radius: 0.25em;*/
+	}
+	.com_careerplans .grid {
+		position: relative;
+	}
+	.com_careerplans .grid .add,
+	.com_careerplans .grid .delete {
+		position: absolute;
+		right: 0;
+		bottom: 0.3em;
+	}
+
+	.goals-field-wrap {
+		position: relative;
+		/*padding: 0 0 1em 0;
+		margin: 0 0 1em 0;
+		border-bottom: 1px solid #eee;*/
+	}
+	.goals-add {
+		text-align: center;
+	}
+	.goals-remove {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	.button-wrap {
+		text-align: center;
+	}
+
+	.errer-message,
+	.success-message {
+		font-size: 3.5em;
+		text-align: center;
+		color: #ccc;
+		margin: 0;
+		padding: 0;
+		line-height: 1;
+		font-weight: normal;
+	}
+	.success-message:after {
+		content: "\f058";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 3em;
+	}
+	.error-message:after {
+		content: "\2757";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 3em;
+	}
+
+	.graph {
+		position: relative;
+		background-color: #f1f1f1;
+		padding: 0;
+		margin: 0.3em 0;
+	}
+	.graph .bar {
+		display: block;
+		position: relative;
+		color: #333;
+		padding: 0.2em 0;
+		/*height: 0.5em;
+		line-height: 0.5em;*/
+	}
+	.graph .bar.low {
+		background-color: #DDC0C0;
+	}
+	.graph .bar.med {
+		background-color: #EDDBBA;
+	}
+	.graph .bar.hi {
+		background-color: #CFD7C0;
+	}
+	.graph .bar span {
+		/*position: absolute;
+		top: 0;
+		left: -2em;
+		display: none;*/
+		margin: 0 1em;
+	}
+
+	/* Status
+	.application-status {
+		margin: 0;
+		padding: 0;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-size: 1.2em;
+		text-align: center;
+		background-color: #fff0db;
+		color: #ffa44c;
+	}
+	.application-status p {
+		margin: 0;
+		padding: 1em;
+	}
+	.application-status.submitted {
+		background-color: #f9e4e4;
+		color: #dd5555;
+	}
+	.application-status.accepted {
+		background-color: #e7f2ff;
+		color: #5da6fb;
+	}*/
+
+	p img {
+		margin: 0 1em 1em 0;
+		float: left;
+	}

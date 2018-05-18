@@ -139,19 +139,12 @@ else
 						<span class="hint"><?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_TAGS_HINT'); ?></span>
 					</label>
 
-					<label for="public_desc">
-						<?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_PUBLIC'); ?> <span class="optional"><?php echo Lang::txt('COM_GROUPS_OPTIONAL'); ?></span>
-
-						<?php
-							echo $this->editor('public_desc', $this->escape($this->group->getDescription('raw', 0, 'public')), 35, 8, 'public_desc', array('class' => 'minimal no-footer images macros'));
-						?>
-					</label>
-					<label for="private_desc">
-						<?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_PRIVATE'); ?> <span class="optional"><?php echo Lang::txt('COM_GROUPS_OPTIONAL'); ?></span>
-						<?php
-							echo $this->editor('private_desc', $this->escape($this->group->getDescription('raw', 0, 'private')), 35, 8, 'private_desc', array('class' => 'minimal no-footer images macros'));
-						?>
-					</label>
+					<?php 
+						$this->view('_customfields')
+							->set('customFields', $this->customFields)
+							->set('customAnswers', $this->customAnswers)
+							->display();
+					?>
 				</fieldset>
 
 				<?php if ($this->task != 'new') : ?>
