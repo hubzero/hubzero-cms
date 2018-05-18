@@ -63,32 +63,66 @@ if ($displaySystemUsers == 'no')
 
 //are we a group member
 $isMember = (in_array(User::get('id'), $this->group->get('members'))) ? true : false;
-
+$accessLevel = 0;
+if ($isMember)
+{
+	$accessLevel = 2;
+}
+else
+{
+	$accessLevel = (!User::isGuest()) ? 1 : 0;
+}
 //get the members plugin access for this group
 $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'members');
 ?>
 
 <div class="group-content-header">
 	<h3><?php echo Lang::txt('COM_GROUPS_OVERVIEW_ABOUT_HEADING'); ?></h3>
-	<?php if ($isMember && $this->privateDesc != '') : ?>
-		<div class="group-content-header-extra">
-			<a id="toggle_description" class="hide" href="#"><?php echo Lang::txt('COM_GROUPS_SHOW_PUBLIC_DESCRIPTION'); ?></a>
-		</div>
-	<?php endif; ?>
-</div>
-<div id="description">
-	<?php if ($isMember && $this->privateDesc != '') : ?>
-		<div id="private">
-			<?php echo $this->privateDesc; ?>
-		</div>
-		<div id="public" class="hide">
-			<?php echo $this->publicDesc; ?>
-		</div>
-	<?php else : ?>
-		<div id="public">
-			<?php echo $this->publicDesc; ?>
-		</div>
-	<?php endif; ?>
+	<?php
+	foreach ($this->fields as $field)
+	{
+		if ($field->get('access') > $accessLevel)
+		{
+			continue;
+		}
+		$answers = $field->answers->toArray();
+		$answers = array_column($answers, 'value');
+		if (!$value = $field->renderValue($answers))
+		{
+			continue;
+		}
+
+		if ($value)
+		{
+			// If the type is a block of text, parse for macros
+			if ($field->get('type') == 'textarea')
+			{
+				$value = Html::content('prepare', $value);
+			}
+			// IF the type is a URL, link it
+			if ($field->get('type') == 'url')
+			{
+				$parsed = parse_url($value);
+				if (empty($parsed['scheme']))
+				{
+					$value = 'http://' . ltrim($value, '/');
+				}
+				$value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
+			}
+		}
+
+		if (is_array($value))
+		{
+			$value = implode('<br />', $value);
+		}
+		echo '<div class="input-wrap" id="input-' . $field->get('name') . '">';
+		echo '<h4>' . $field->get('label') . '</h4>';
+		echo '<div class="input-value">';
+		echo $value;
+		echo '</div>';
+		echo '</div>';
+	}
+	?>
 </div>
 
 <?php if ($memberAccess == 'anyone' || ($memberAccess == 'registered' && !User::isGuest()) || ($memberAccess == 'members' && $isMember)) : ?>

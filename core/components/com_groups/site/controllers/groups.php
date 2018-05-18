@@ -40,6 +40,7 @@ use Components\Groups\Helpers;
 use Components\Groups\Models\Tags;
 use Components\Groups\Models\Log;
 use Components\Groups\Models\Recent;
+use Components\Groups\Models\Orm\Field;
 use Filesystem;
 use Request;
 use Config;
@@ -556,7 +557,14 @@ class Groups extends Base
 
 		// Get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
-
+		$this->view->customFields = Field::all()->ordered('ordering');
+		$customAnswers = array();
+		foreach ($this->view->customFields as $field)
+		{
+			$fieldName = $field->get('name');
+			$customAnswers[$fieldName] = $field->collectGroupAnswers($this->view->group->get('gidNumber'));
+		}
+		$this->view->customAnswers = $customAnswers;
 		// Display view
 		$this->view->display();
 	}
@@ -579,7 +587,6 @@ class Groups extends Base
 		// Incoming
 		$g_gidNumber = Request::getInt('gidNumber', 0, 'post');
 		$c_gidNumber = Request::getVar('gidNumber', 0, 'post');
-
 		if ((string) $g_gidNumber !== (string) $c_gidNumber)
 		{
 			App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
@@ -689,6 +696,16 @@ class Groups extends Base
 			}
 		}
 
+		$customFields = Field::all()->rows();
+		$customFieldForm = Request::getVar('customfields', array());
+		foreach ($customFields as $field)
+		{
+			$field->setFormAnswers($customFieldForm);
+			if (!$field->validate())
+			{
+				$this->setNotification($field->getError(), 'error');
+			}
+		}
 		// Push back into edit mode if any errors
 		if ($this->getNotifications())
 		{
@@ -752,6 +769,13 @@ class Groups extends Base
 		$group->set('params', $gParams->toString());
 		$group->update();
 
+		if (isset($customFields))
+		{
+			foreach($customFields as $field)
+			{
+				$field->saveGroupAnswers($group->get('gidNumber'));
+			}
+		}
 		// Process tags
 		$gt = new Tags($group->get('gidNumber'));
 		$gt->setTags($tags, User::get('id'));

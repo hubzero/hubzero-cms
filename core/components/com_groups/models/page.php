@@ -154,6 +154,8 @@ class Page extends Model
 			}
 		}
 
+		print_r($version);
+		exit();
 		//return version
 		return $version;
 	}

@@ -1,0 +1,110 @@
+.ui-tabs {
+	position: relative;/* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+	padding: 0;
+}
+.ui-tabs .ui-tabs-nav {
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+.ui-tabs .ui-tabs-nav:before,
+.ui-tabs .ui-tabs-nav:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+.ui-tabs .ui-tabs-nav:after {
+	clear: both;
+}
+.ui-tabs .ui-tabs-nav li {
+	list-style: none;
+	float: left;
+	display: block;
+	position: relative;
+	top: 0;
+	margin: 0 0 -1px 0;
+	padding: 0;
+	white-space: nowrap;
+}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+	display: block;
+	padding: .61803399em 1em;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-bottom: none;
+	margin: 0;
+	-webkit-border-radius: .25em .25em 0 0;
+	-moz-border-radius: .25em .25em 0 0;
+	border-radius: .25em .25em 0 0
+}
+/*.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+	margin-bottom: -1px;
+	padding-bottom: 1px;
+}*/
+.ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+	color: #424242;
+	font-weight: bold;
+	background: #f9f9f9;
+	border-color: #d6d6d6;
+	border-color: rgba(0, 0, 0, 0.25);
+	border-bottom: none
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+	cursor: text;
+}
+.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+	cursor: pointer;
+}
+.ui-tabs .ui-tabs-panel {
+	display: block;
+	border-width: 0;
+	padding: 1.4em 0;
+	background: none;
+}
+
+.form-page-header {
+	background-color: #e7f2ff;
+	position: relative;
+}
+.form-page-header .input-wrap {
+	padding: 12px;
+}
+.form-page-header .fieldset-actions {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.form-page-header .fieldset-actions a:hover {
+	cursor: pointer;
+}
+
+#item-form .form-wrap.form-builder .frmb li {
+	padding: 12px;
+}
+#item-form .form-wrap.form-builder .frmb li .close-field {
+	bottom: 12px;
+}
+#item-form .form-wrap.form-builder .delete:before {
+	content: "";
+}
+#toolbar-box [class^=icon-]:before {
+	margin-left: 0;
+}
+#item-form .form-wrap.form-builder .frmb .scale-values li {
+	padding: 12px 0;
+	display: block;
+	float: left;
+	background-color: rgba(0, 0, 0, 0.05);
+	text-align: center;
+	clear: none;
+}
+#item-form .form-wrap.form-builder .frmb .scale-values li label {
+	display: block;
+}
+#item-form .form-wrap.form-builder .goals-strategies {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 0.25em;
+	padding: 1em;
+}

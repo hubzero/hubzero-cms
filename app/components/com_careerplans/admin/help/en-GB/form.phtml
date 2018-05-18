@@ -1,0 +1,67 @@
+<article>
+	<h1><span>Application</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#details">Details</a></li>
+		<li><a href="#dependents">Dependent Fields</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>The edit/creation form for a blog entry.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Save changes and return to the edit form.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Discard any changes made and return to the listing of entries.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="dependents">
+		<h2><span>Dependent Fields</span></h2>
+
+		<p>Sometimes, you may wish to show fields only after the user has selected a specific option. This is possible by filling in the "Dependent fields" box of a Radio, Checkbox, or Select option. We'll use the following example:</p>
+
+		<ol>
+			<li>Question 1
+				<ul>
+					<li><input type="radio" /> A</li>
+					<li><input type="radio" /> B</li>
+				</ul>
+			</li>
+			<li>Question A1 (name = questiona1)
+				<ul>
+					<li><input type="radio" /> Foo 1</li>
+					<li><input type="radio" /> Bar 1</li>
+				</ul>
+			</li>
+			<li>Question A2 (name = questiona2)
+				<ul>
+					<li><input type="radio" /> Foo 2</li>
+					<li><input type="radio" /> Bar 2</li>
+				</ul>
+			</li>
+			<li>Question B (name = questionb)
+				<ul>
+					<li><input type="radio" /> Thing</li>
+					<li><input type="radio" /> Stuff</li>
+				</ul>
+			</li>
+		</ol>
+
+		<p>In the above scenario, we want Question A to only display when the user has chosen option "A" under Question 1. Similarly, we want Question B to only display when the user selects option "B" under Question 1.</p>
+		<p>First, we add all the questions to the form that we intend to use.</p>
+		<p>Next, we return to "Question 1" and edit it. Each option should have a box called "Dependent fields". In this box, you add a comma-separated list of field names that you want to appear when this option is selected. So, for option "A", the dependent fields would be "questiona1, questiona2". For option "B", the dependent fields would be "questionb".</p>
+	</section>
+</article>

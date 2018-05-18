@@ -34,6 +34,7 @@ namespace Components\Groups\Helpers;
 
 use Components\Groups\Models\Page;
 use Components\Groups\Tables\PageHit;
+use Components\Groups\Models\Orm\Field;
 use Component;
 use Request;
 use Config;
@@ -107,11 +108,12 @@ class Pages
 			'name'   => 'pages',
 			'layout' => '_view_default'
 		));
-
+		$groupConfig = Component::params('com_groups');
+		$customFields = $groupConfig->get('custom_fields');
 		// pass vars to view
 		$view->user  = User::getInstance();
 		$view->group = $group;
-
+		$view->fields = Field::getAllGroupFields($group->get('gidNumber')); 
 		// get group desc
 		$view->publicDesc  = $view->group->getDescription('parsed', 0, 'public');
 		$view->privateDesc = $view->group->getDescription('parsed', 0, 'private');
