@@ -173,7 +173,15 @@ class Publications extends Macro
 				'publication',
 				User::get('id')
 			);
-			// $html .= '    <span class="watch tooltips" title="Watch this publication to be notified when a new version is released"><i class="fa fa-eye"></i></span>';
+			// Subscribe link
+			// echo \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe<br>';
+			$html .= '    <span class="watch">';
+			if ($watching) {
+				$html .= '      <a href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe"><i class="tooltips icon-watch watching" title="Click to unsubscribe from this publication\'s notifications" aria-hidden="true"></i></a>';
+			} else {
+				$html .= '      <a href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe"><i class="tooltips icon-watch" title="Click to watch this publication and receive notifications when a new version is released" aria-hidden="true"></i></a>';
+			}
+			$html .= '    </span>';
 
 			// Share
 			// $html .= '    <span title="Share" class="share-alt tooltips"><i class="fa fa-share-alt"></i></span>';
