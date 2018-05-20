@@ -126,9 +126,19 @@ class Publications extends Macro
 			return $color;
 		}
 
+		// Calculating Color Contrast, by Brian Suda:  https://24ways.org/2010/calculating-color-contrast/
+		function getContrastYIQ($hexcolor){
+			$r = hexdec(substr($hexcolor,0,2))/1000;
+			$g = hexdec(substr($hexcolor,2,2))/1000;
+			$b = hexdec(substr($hexcolor,4,2))/1000;
+			$yiq = 1 - (($r*299)+($g*587)+($b*114))/255;
+			return ($yiq < 0.5) ? 'black' : 'white';
+		}
+
 		$html = '<style>';
 		$html .= '  .ribbon-alt {';
-		$html .= '    background-color: ' . $sponsorbgcol . ';';
+		$html .= '    background-color: #' . $sponsorbgcol . ';';
+		$html .= '    color: ' . getContrastYIQ($sponsorbgcol) . ';';
 		$html .= '  }';
 		$html .= '  .ribbon-alt:before {';
 		$html .= '    border-color: transparent ' . sass_darken($sponsorbgcol, 20) . ' transparent transparent;';
@@ -188,7 +198,9 @@ class Publications extends Macro
   			foreach ($pub->getTags() as $tag) {
   				if (!$tag->admin && (($ind = array_search($tag->raw_tag, $focusTags)) !== false)) {
   					$html .= '    <div class="categories">';
-  					$html .= '      <a href="' . $tag->link() . '"><span class="primary cat ' . $fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span></a>';
+  					$html .= '      <a href="' . $tag->link() . '">';
+						$html .= '        <span class="primary cat ' . $fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span>';
+						$html .= '      </a>';
   					$html .= '    </div>';
   				}
   			}
@@ -450,7 +462,7 @@ class Publications extends Macro
 		return false;
 	}
 
-	private function _getSponsorBGCol(&$args, $default = "#cb48b7")
+	private function _getSponsorBGCol(&$args, $default = "cb48b7")
 	{
 		foreach ($args as $k => $arg)
 		{
@@ -458,7 +470,7 @@ class Publications extends Macro
 			{
 				$sponsorbgcol = (isset($matches[1]) ? $matches[1] : '');
 				unset($args[$k]);
-				return '#' . $sponsorbgcol;
+				return $sponsorbgcol;
 			}
 		}
 
