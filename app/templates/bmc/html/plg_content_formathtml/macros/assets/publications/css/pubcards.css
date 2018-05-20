@@ -96,8 +96,29 @@ img {
   z-index: 1;
 }
 
-.favorites-alt .fa {
+.favorites-alt .fc {
   margin: 0 10px;
+}
+
+.favorites-alt .icon-watch {
+  font-size: 18px !important;
+  font-style: normal;
+  margin: 0 5px;
+}
+
+.favorites-alt .icon-watch:before {
+  content: '\f06e';
+  font-family: 'Fontcons';
+}
+
+.favorites-alt .icon-watch.watching:before {
+  opacity: 1;
+  content: '\f070';
+  font-family: 'Fontcons';
+}
+
+.favorites-alt a > i {
+  color: #fff;
 }
 
 .share {

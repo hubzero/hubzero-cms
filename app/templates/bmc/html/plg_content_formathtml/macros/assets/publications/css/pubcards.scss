@@ -82,8 +82,25 @@ img {
   color: $white;
   opacity: .6;
   z-index: 1;
-  .fa {
+  .fc {
     margin: 0 10px;
+  }
+  .icon-watch {
+    font-size: 18px !important;
+    font-style: normal;
+    margin: 0 5px;
+    &:before {
+      content: '\f06e';
+      font-family: 'Fontcons';
+    }
+    &.watching:before {
+      opacity: 1;
+      content: '\f070';
+      font-family: 'Fontcons';
+    }
+  }
+  a>i {
+    color: #fff;
   }
 }
 .share {
