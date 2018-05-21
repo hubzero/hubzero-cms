@@ -200,7 +200,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzal->email = $email;
+			$hzal->set('email', $email);
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -298,8 +298,8 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'cilogon', null, $id);
-				$hzal->user_id = User::get('id');
-				$hzal->email   = $email;
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', $email);
 				$hzal->update();
 			}
 		}

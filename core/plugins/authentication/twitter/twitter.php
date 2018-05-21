@@ -295,7 +295,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'twitter', null, $username);
-				$hzal->user_id = User::get('id');
+				$hzal->set('user_id', User::get('id'));
 				$hzal->update();
 			}
 		}

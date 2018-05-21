@@ -201,7 +201,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 					return;
 				}
 
-				$hzal->email = $account->email;
+				$hzal->set('email', $account->email);
 
 				// Set response variables
 				$response->auth_link = $hzal;
@@ -328,7 +328,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'scistarter', null, $username);
-				$hzal->user_id = User::get('id');
+				$hzal->set('user_id', User::get('id'));
 				$hzal->update();
 			}
 		}
