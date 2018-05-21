@@ -435,7 +435,7 @@ class Sessionsv1_0 extends ApiController
 			// replace all the <example> with one <examples>. each child of this is a
 			// <run source="relative_path.xml"> containing that document
 
-			// (the DOM API is compatible with SimpleXML has a better API for
+			// (the DOM API is compatible with SimpleXML & has a better API for
 			// combining documents)
 			$examples = new \DOMElement('examples');
 			$domLoader = dom_import_simplexml($loader);
@@ -444,19 +444,20 @@ class Sessionsv1_0 extends ApiController
 				$subDoc = new \DOMDocument();
 				$subDoc->loadXML(file_get_contents($file));
 				// select top level element
-				$run = $subDoc->getElementsByTagName('run')[0];
+				$run = $subDoc->getElementsByTagName('run');
 				// non-conforming, skip it
-				if (!$run) {
+				if (count($run) === 0) {
 					continue;
 				}
 				// note filename for benefit of xpathers
-				$run->setAttribute('source', str_replace($path . 'examples' . DS, '', $file));
+				$run[0]->setAttribute('source', str_replace($path . 'examples' . DS, '', $file));
 				// add back into the original document
-				$examples->appendChild($examples->ownerDocument->importNode($run, true));
+				$examples->appendChild($examples->ownerDocument->importNode($run[0], true));
 			}
 		}
 
-		header('Content-type: text/xml');
+		header('Content-Type: text/xml');
+		header('Access-Control-Allow-Origin: *');
 		if (!$xpath) {
 			echo $xml->asXML();
 		}
