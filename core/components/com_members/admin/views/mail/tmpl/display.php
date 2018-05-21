@@ -63,6 +63,7 @@ Joomla.submitbutton = function(pressbutton) {
 }
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" method="post" id="item-form">
+	<p class="warning"><?php echo Lang::txt('COM_MEMBERS_MAIL_DO_NOT_USE_FOR_COMMERCIAL_USE'); ?></p>
 	<div class="grid">
 		<div class="col span5">
 			<fieldset class="adminform">
