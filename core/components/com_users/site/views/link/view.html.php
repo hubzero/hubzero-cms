@@ -64,23 +64,23 @@ class UsersViewLink extends JViewLegacy
 
 		// Look up a few things
 		$hzal    = \Hubzero\Auth\Link::find_by_id($user->get("auth_link_id"));
-		$hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
+		$hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->get('auth_domain_id'));
 		$plugins = Plugin::byType('authentication');
 
 		// Get the display name for the current plugin being used
-		Plugin::import('authentication', $hzad->authenticator);
-		$plugin       = Plugin::byType('authentication', $hzad->authenticator);
+		Plugin::import('authentication', $hzad->get('authenticator'));
+		$plugin       = Plugin::byType('authentication', $hzad->get('authenticator'));
 		$pparams      = new \Hubzero\Config\Registry($plugin->params);
 		$refl         = new ReflectionClass("plgAuthentication{$plugin->name}");
 		$display_name = $pparams->get('display_name', $refl->hasMethod('onGetLinkDescription') ? $refl->getMethod('onGetLinkDescription')->invoke(NULL) : ucfirst($plugin->name));
 
 		// Look for conflicts - first check in the hub accounts
 		$profile_conflicts = \Hubzero\User\User::all()
-			->whereEquals('email', $hzal->email)
+			->whereEquals('email', $hzal->get('email'))
 			->rows();
 
 		// Now check the auth_link table
-		$link_conflicts = \Hubzero\Auth\Link::find_by_email($hzal->email, array($hzad->id));
+		$link_conflicts = \Hubzero\Auth\Link::find_by_email($hzal->get('email'), array($hzad->get('id')));
 
 		$conflict = array();
 		if ($profile_conflicts)

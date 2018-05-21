@@ -377,12 +377,12 @@ class Register extends SiteController
 
 			if ($username[0] == '-' && is_object($hzal))
 			{
-				$sub_email    = explode('@', (string) $hzal->email, 2);
+				$sub_email    = explode('@', (string) $hzal->get('email'), 2);
 				$tmp_username = Session::get('auth_link.tmp_username', $sub_email[0]);
 				$xregistration->set('login', $tmp_username);
 				$xregistration->set('orcid', Session::get('auth_link.tmp_orcid', ''));
-				$xregistration->set('email', $hzal->email);
-				$xregistration->set('confirmEmail', $hzal->email);
+				$xregistration->set('email', $hzal->get('email'));
+				$xregistration->set('confirmEmail', $hzal->get('email'));
 
 				if ($simpleRegistration)
 				{
@@ -453,7 +453,7 @@ class Register extends SiteController
 
 			if ($xregistration->get('email') != $xprofile->get('email'))
 			{
-				if (is_object($hzal) && $xregistration->get('email') == $hzal->email)
+				if (is_object($hzal) && $xregistration->get('email') == $hzal->get('email'))
 				{
 					$xprofile->set('activation', 3);
 				}
@@ -768,7 +768,7 @@ class Register extends SiteController
 
 				if (is_object($hzal))
 				{
-					if ($user->get('email') == $hzal->email)
+					if ($user->get('email') == $hzal->get('email'))
 					{
 						$user->set('activation', 3);
 					}
@@ -855,7 +855,7 @@ class Register extends SiteController
 					{
 						$hzal->set('user_id', $user->get('id'));
 
-						if ($hzal->user_id > 0)
+						if ($hzal->get('user_id') > 0)
 						{
 							$hzal->update();
 						}
@@ -882,9 +882,9 @@ class Register extends SiteController
 				$email = $xregistration->get('email');
 				if (is_object($hzal))
 				{
-					$xregistration->set('login', $hzal->username);
-					$xregistration->set('email', $hzal->email);
-					$xregistration->set('confirmEmail', $hzal->email);
+					$xregistration->set('login', $hzal->get('username'));
+					$xregistration->set('email', $hzal->get('email'));
+					$xregistration->set('confirmEmail', $hzal->get('email'));
 				}
 			}
 		}
