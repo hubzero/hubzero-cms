@@ -853,7 +853,7 @@ class Register extends SiteController
 
 					if (is_object($hzal))
 					{
-						$hzal->user_id = $user->get('id');
+						$hzal->set('user_id', $user->get('id'));
 
 						if ($hzal->user_id > 0)
 						{
