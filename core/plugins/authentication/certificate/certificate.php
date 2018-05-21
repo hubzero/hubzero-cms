@@ -168,7 +168,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
-			$hzal->email = $_SERVER['SSL_CLIENT_S_DN_Email'];
+			$hzal->set('email', $_SERVER['SSL_CLIENT_S_DN_Email']);
 
 			$response->auth_link = $hzal;
 			$response->type      = 'certificate';
@@ -252,8 +252,8 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'certificate', $domain, $username);
-				$hzal->user_id = User::get('id');
-				$hzal->email   = $_SERVER['SSL_CLIENT_S_DN_Email'];
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', $_SERVER['SSL_CLIENT_S_DN_Email']);
 				$hzal->update();
 			}
 		}

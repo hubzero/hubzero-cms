@@ -637,8 +637,8 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
-				$hzal->user_id = User::get('id');
-				$hzal->email   = $status['email'];
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', $status['email']);
 				self::log('setting link', $hzal);
 				$hzal->update();
 			}
