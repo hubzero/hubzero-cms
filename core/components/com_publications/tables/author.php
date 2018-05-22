@@ -36,6 +36,8 @@ use Lang;
 use Date;
 use User;
 
+require_once Component::path('com_members') . '/models/member.php';
+
 /**
  * Table class for publication author
  */
@@ -202,7 +204,7 @@ class Author extends Table
 	 * @param   boolean  $incSubmitter
 	 * @return  mixed    Object or array
 	 */
-	public function getAuthors($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
+	public function _getAuthors($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
 	{
 		if (!$vid)
 		{
@@ -241,6 +243,91 @@ class Author extends Table
 		$query .= " ORDER BY A.ordering ASC ";
 		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();
+
+		if ($return_uid_array)
+		{
+			$uids = array();
+			if ($results)
+			{
+				foreach ($results as $entry)
+				{
+					if ($get_uids == 1)
+					{
+						if ($entry->user_id)
+						{
+							$uids[] = $entry->user_id;
+						}
+					}
+					else
+					{
+						$uids[] = $entry->project_owner_id;
+					}
+				}
+			}
+			return $uids;
+		}
+		return $results;
+	}
+
+	public function getAuthors($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
+	{
+		if (!$vid)
+		{
+			$vid = $this->publication_version_id;
+		}
+		if (!$vid)
+		{
+			return false;
+		}
+
+		$query  = "SELECT ";
+		$query .= $get_uids == 1
+			? "A.user_id"
+			: "A.*, PO.invited_name, PO.invited_email ";
+		if ($get_uids == 2)
+		{
+			$query  = "SELECT A.project_owner_id";
+		}
+		$query .= " FROM $this->_tbl as A ";
+
+		if (!$get_uids)
+		{
+			$query .= " JOIN #__project_owners as PO ON PO.id=A.project_owner_id ";
+		}
+
+		$query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
+		$query .= $active ? " AND A.status=1" : "";
+
+		if ($incSubmitter == false)
+		{
+			$query .= " AND (A.role != 'submitter' || A.role IS NULL)";
+		}
+
+		$query .= " ORDER BY A.ordering ASC ";
+		$this->_db->setQuery($query);
+		$results = $this->_db->loadObjectList();
+
+		if (!$get_uids)
+		{
+			foreach ($results as $res)
+			{
+				$resId = $res->user_id;
+				$user = \Components\Members\Models\Member::oneOrFail($resId);
+				
+				if ($user)
+				{
+					$res->p_name = $user->get('name');
+					$res->username = $user->get('username');
+					$res->p_organization = $user->get('organization');
+					$res->open = $user->get('access');
+					$res->picture = $user->picture(0, false);
+					$res->givenName = $user->get('givenName');
+					$res->middleName = $user->get('middleName');
+					$res->surname = $user->get('surname');
+					$res->orcid = $user->get('orcid');
+				}
+			}
+		}
 
 		if ($return_uid_array)
 		{
