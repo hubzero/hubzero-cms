@@ -239,7 +239,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 				if ($hzal)
 				{
-					$hzal->user_id = $xuser->get('id');
+					$hzal->set('user_id', $xuser->get('id'));
 					$hzal->update();
 				}
 			}
