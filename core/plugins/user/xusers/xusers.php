@@ -227,7 +227,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				if ($hzal)
 				{
 					$xuser->set('username', 'guest;' . $username);
-					$xuser->set('email', $hzal->email);
+					$xuser->set('email', $hzal->get('email'));
 				}
 			}
 		}
@@ -247,7 +247,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		if ($hzal)
 		{
-			$xuser->set('auth_link_id', $hzal->id);
+			$xuser->set('auth_link_id', $hzal->get('id'));
 			$session->set('linkaccount', true);
 		}
 

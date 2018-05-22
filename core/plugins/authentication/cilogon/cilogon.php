@@ -163,6 +163,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			}
 			Session::clear('state', 'cilogon');
 			$token = $this->cilogon()->getAccessToken('authorization_code', array('code' => Request::getVar('code')));
+			
 		}
 		catch (\Exception $e)
 		{
@@ -171,6 +172,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			return;
 		}
 		// Make sure we have a user_id (gc returns 0 for a non-logged in user)
+		
 		if ((isset($user_id) && $user_id > 0) || (isset($token) && $token))
 		{
 			try
@@ -190,9 +192,11 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				$response->error_message = Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage());
 				return;
 			}
+			
 			// Create the hubzero auth link
 			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'cilogon', null, $id);
+			
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
@@ -200,7 +204,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzal->set('email', $email);
+			$hzal->set('email',$email);
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -208,25 +212,24 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $fullname;
 
-			if ($hzal->user_id)
+			if ($hzal->get('user_id'))
 			{
-				$user = User::getInstance($hzal->user_id);
-
+				$user = User::getInstance($hzal->get('user_id'));
 				$response->username = $user->username;
 				$response->email    = $user->email;
 				$response->fullname = $user->name;
 			}
 			else
 			{
-				$response->username = '-' . $hzal->id;
+				$response->username = '-' . $hzal->get('id');
 				$response->email    = $response->username . '@invalid';
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $email, 2);
 				$tmp_username = $sub_email[0];
 				App::get('session')->set('auth_link.tmp_username', $tmp_username);
 			}
+			
 			$hzal->update();
-
 
 			// If we have a real user, drop the authenticator cookie
 			if (isset($user) && is_object($user))
