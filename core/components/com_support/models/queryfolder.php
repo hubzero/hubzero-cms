@@ -211,6 +211,8 @@ class QueryFolder extends Relational
 
 		if (count($folders) <= 0)
 		{
+			$folders = array();
+
 			$defaults = array(
 				1 => array('Common', 'Mine', 'Custom'),
 				2 => array('Common', 'Mine'),
@@ -300,7 +302,7 @@ class QueryFolder extends Relational
 
 		if ($fid)
 		{
-			$folds = self::all()
+			$folds = Query::all()
 				->whereEquals('user_id', $user_id)
 				->whereEquals('iscore', 0)
 				->whereEquals('folder_id', 0)

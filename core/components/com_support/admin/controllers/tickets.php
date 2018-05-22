@@ -37,6 +37,7 @@ use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Comment;
 use Components\Support\Models\Tags;
+use Components\Support\Models\Query;
 use Components\Support\Models\QueryFolder;
 use Components\Support\Models\Attachment;
 use Components\Support\Models\Watching;
