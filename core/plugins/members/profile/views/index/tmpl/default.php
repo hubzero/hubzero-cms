@@ -339,27 +339,61 @@ $legacy = array(
 			</li>
 		<?php endif; ?>
 
-		<?php if (!Plugin::isEnabled('members', 'account')) : ?>
-			<?php if ($isUser) : ?>
+		<?php if ($isUser) : ?>
+			<?php
+			// Determine what type of password change the user needs
+			$hzup = \Hubzero\User\Password::getInstance($this->profile->get('id'));
+			if ($hzup && !empty($hzup->passhash))
+			{
+				// A password has already been set, now check if they're logged in with a linked account
+				if (array_key_exists('auth_link_id', User::toArray()))
+				{
+					// Logged in with linked account
+					$passtype = 'changelocal';
+				}
+				else
+				{
+					// Logged in with hub
+					$passtype = 'changehub';
+				}
+			}
+			else
+			{
+				// No password has been set...
+				$passtype = 'set';
+			}
+			?>
+			<?php if (!Plugin::isEnabled('members', 'account')) : ?>
 				<li class="profile-password section hidden">
 					<div class="section-content">
 						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD'); ?></div>
-						<div class="value">***************</div>
+						<div class="value">
+							<?php
+							// Determine what type of password change the user needs
+							if ($passtype == 'changelocal' || $passtype == 'changehub')
+							{
+								echo '***************';
+							}
+							else
+							{
+								// No password has been set...
+								echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_NOT_SET');
+							}
+							?>
+						</div>
 						<br class="clear" />
 						<div class="section-edit-container">
-							<?php /*
-							<div class="edit-profile-title"><h2>Change Password</h2></div>
-							<a href="#" class="edit-profile-close">&times;</a>
-							*/ ?>
 							<div class="section-edit-content">
 								<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registation="password" data-section-profile="password">
 									<span class="section-edit-errors"></span>
-									<div class="input-wrap">
-										<label for="password">
-											<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
-											<input type="password" name="oldpass" id="password" class="input-text" />
-										</label>
-									</div>
+									<?php if ($passtype == 'changelocal' || $passtype == 'changehub'): ?>
+										<div class="input-wrap">
+											<label for="password">
+												<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
+												<input type="password" name="oldpass" id="password" class="input-text" />
+											</label>
+										</div>
+									<?php endif; ?>
 									<div class="input-wrap">
 										<label for="newpass" class="side-by-side">
 											<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_NEW'); ?>
@@ -385,6 +419,31 @@ $legacy = array(
 					</div>
 					<div class="section-edit">
 						<a class="edit-profile-section" href="#">
+							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
+						</a>
+					</div>
+				</li>
+			<?php else: ?>
+				<li class="profile-password section hidden">
+					<div class="section-content">
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD'); ?></div>
+						<div class="value">
+							<?php
+							// Determine what type of password change the user needs
+							if ($passtype == 'changelocal' || $passtype == 'changehub')
+							{
+								echo '***************';
+							}
+							else
+							{
+								// No password has been set...
+								echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_NOT_SET');
+							}
+							?>
+						</div>
+					</div>
+					<div class="section-edit">
+						<a href="<?php echo Route::url($this->profile->link() . '&active=account'); ?>">
 							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 					</div>
