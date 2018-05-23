@@ -38,6 +38,9 @@ use Hubzero\Database\Rows;
 use Hubzero\Utility\Str;
 use Components\Tags\Models\Tag;
 use stdClass;
+use Request;
+use Route;
+use User;
 
 require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'author.php';
@@ -527,7 +530,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		$ownerIds = array_filter($ownerIds);
 		if (!isset($userId))
 		{
-			$userId = User::getInstance()->get('id');
+			$userId = User::get('id');
 		}
 
 		if (in_array($userId, $ownerIds))
@@ -626,7 +629,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			{
 				$newTag->save();
 			}
-			$newTag->addTo('citations', $this->get('id'), User::getInstance()->get('id'), $strength, $label);
+			$newTag->addTo('citations', $this->get('id'), User::get('id'), $strength, $label);
 		}
 
 		foreach ($currentTags as $tag)
@@ -708,7 +711,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		}
 		//get hub specific details
 		$hub_name = \Config::get('sitename');
-		$hub_url  = rtrim(\Request::base(), '/');
+		$hub_url  = rtrim(Request::base(), '/');
 
 		//get scope specific details
 		$coins_only = isset($config['coins_only']) ? $config['coins_only'] : "no";
@@ -899,10 +902,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 									$id = trim($matches[1]);
 									if (is_numeric($id))
 									{
-										$user = \User::getInstance($id);
+										$user = User::getInstance($id);
 										if (is_object($user))
 										{
-											$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+											$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
 										}
 										else
 										{
@@ -922,7 +925,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 							{
 								if ($author->uidNumber > 0)
 								{
-									$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
+									$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
 								}
 								else
 								{
@@ -998,7 +1001,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 					if ($singleCitationView && isset($this->id))
 					{
-						$title = '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $this->id) . '">' . $t . '</a>';
+						$title = '<a href="' . Route::url('index.php?option=com_citations&task=view&id=' . $this->id) . '">' . $t . '</a>';
 					}
 
 					//send back title to replace title placeholder ({TITLE})
@@ -1149,9 +1152,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		$details  = '';
 
 		// are we allowing downloading
-		$details .= '<a class="icon-download bibtex" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
+		$details .= '<a class="icon-download bibtex" rel="nofollow" href="' . Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
 		$details .= '<span class="separator"> | </span>';
-		$details .= '<a class="icon-download endnote" rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
+		$details .= '<a class="icon-download endnote" rel="nofollow" href="' . Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
 
 		// if we have an open url link and we want to use open urls
 		if ($openurl['link'])
@@ -1190,7 +1193,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			$resourceCount = count($this->resources);
 			if ($resourceCount > 0)
 			{
-				$config = Component::params('com_citations');
+				$config = \Component::params('com_citations');
 				$internallyCitedImage = $config->get('citation_cited', 0);
 				$internallyCitedImageSingle = $config->get('citation_cited_single', '');
 				$internallyCitedImageMultiple = $config->get('citation_cited_multiple', '');
@@ -1263,7 +1266,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 		if ($this->tags()->count() > 0)
 		{
-			$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
+			$isAdmin = (User::authorise('core.manage', 'com_citations') ? true : false);
 
 			$html  = '<ol class="tags">';
 			foreach ($tags as $tag)
@@ -1273,7 +1276,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					//display tag if not admin tag or if admin tag and user is administrator
 					if (!$tag->tag->admin || ($tag->tag->admin && $isAdmin))
 					{
-						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag->tag) . '">' . stripslashes($tag->tag->raw_tag) . '</a></li>';
+						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->tag->tag) . '">' . stripslashes($tag->tag->raw_tag) . '</a></li>';
 					}
 				}
 			}
@@ -1408,6 +1411,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		{
 			return false;
 		}
+
 		// Loop through the relationships and save
 		// Both rows and models know how to save, so it doesn't matter
 		// which of the two the particular relationship returned
@@ -1420,6 +1424,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -1475,38 +1480,55 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		{
 			$this->set('id', $this->tempId);
 		}
-		$authors = $this->relatedAuthors()->order('ordering', 'ASC')->rows();
-		$convertedAuthors = array();
-		foreach ($authors as $author)
+
+		$authors = $this->relatedAuthors()
+			->order('ordering', 'ASC')
+			->rows();
+
+		if ($authors->count())
 		{
-			$lastName = $author->get('surname', '');
-			$firstName = $author->get('givenName', '');
-			$middleName = $author->get('middleName', '');
-			$memberId = $author->get('uidNumber', '');
-			$authorText = $lastName;
-			$authorText .= ', ' . $firstName;
-			$authorText .= !empty($firstName) && !empty($middleName) ? ' ' . $middleName : '';
-			if ($includeMemberId)
+			$convertedAuthors = array();
+			foreach ($authors as $author)
 			{
-				$authorText .= !empty($memberId) ? '{{' . $memberId . '}}' : '';
+				$lastName   = $author->get('surname', '');
+				$firstName  = $author->get('givenName', '');
+				$middleName = $author->get('middleName', '');
+				$memberId   = $author->get('uidNumber', '');
+
+				$authorText  = $lastName;
+				$authorText .= ', ' . $firstName;
+				$authorText .= !empty($firstName) && !empty($middleName) ? ' ' . $middleName : '';
+
+				if ($includeMemberId)
+				{
+					$authorText .= !empty($memberId) ? '{{' . $memberId . '}}' : '';
+				}
+
+				if (empty(trim($authorText)))
+				{
+					continue;
+				}
+
+				$convertedAuthors[] = $authorText;
 			}
-			if (empty(trim($authorText)))
+
+			if ($this->isNew() && !empty($this->tempId))
 			{
-				continue;
+				$this->removeAttribute('id');
 			}
-			$convertedAuthors[] = $authorText;
+
+			$str = implode(';', $convertedAuthors);
+		}
+		else
+		{
+			$str = $this->get('author');
 		}
 
-		if ($this->isNew() && !empty($this->tempId))
-		{
-			$this->removeAttribute('id');
-		}
-
-		return implode(';', $convertedAuthors);
+		return $str;
 	}
 
 	/**
-	 * Namespace used for solr Search
+	 * Namespace used for search
 	 *
 	 * @return  string
 	 */
@@ -1517,7 +1539,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Generate solr search Id
+	 * Generate search Id
 	 *
 	 * @return  string
 	 */
@@ -1528,7 +1550,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Generate search document for Solr
+	 * Generate search document for search
 	 *
 	 * @return  array
 	 */
@@ -1626,7 +1648,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Get total number of records that will be indexed by Solr.
+	 * Get total number of records that will be indexed by search.
 	 *
 	 * @return integer
 	 */
@@ -1637,7 +1659,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Get records to be included in solr index
+	 * Get records to be included in search index
 	 *
 	 * @param   integer  $limit
 	 * @param   integer  $offset
