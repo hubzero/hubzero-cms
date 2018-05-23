@@ -36,7 +36,7 @@ use Lang;
 use Date;
 use User;
 
-require_once Component::path('com_members') . '/models/member.php';
+require_once \Component::path('com_members') . '/models/member.php';
 
 /**
  * Table class for publication author
@@ -269,6 +269,16 @@ class Author extends Table
 		return $results;
 	}
 
+	/**
+	 * Get authors
+	 *
+	 * @param   integer  $vid
+	 * @param   integer  $get_uids
+	 * @param   integer  $active
+	 * @param   boolean  $return_uid_array
+	 * @param   boolean  $incSubmitter
+	 * @return  mixed    False if error, Array on success
+	 */
 	public function getAuthors($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
 	{
 		if (!$vid)
@@ -313,7 +323,7 @@ class Author extends Table
 			{
 				$resId = $res->user_id;
 				$user = \Components\Members\Models\Member::oneOrFail($resId);
-				
+
 				if ($user)
 				{
 					$res->p_name = $user->get('name');
@@ -465,7 +475,7 @@ class Author extends Table
 	 * @param   integer  $active  Get only active records
 	 * @return  mixed    False if error, Object on success
 	 */
-	public function getAuthorByUid ($vid = null, $uid = 0, $active = 0)
+	public function getAuthorByUid($vid = null, $uid = 0, $active = 0)
 	{
 		if (!$vid)
 		{
@@ -507,7 +517,7 @@ class Author extends Table
 	 * @param   integer  $owner_id  Owner ID
 	 * @return  mixed    False if error, Object on success
 	 */
-	public function getAuthorByOwnerId ($vid = null, $owner_id = 0)
+	public function getAuthorByOwnerId($vid = null, $owner_id = 0)
 	{
 		if (!$vid)
 		{
@@ -750,7 +760,7 @@ class Author extends Table
 	 * Get record count
 	 *
 	 * @param   integer  $vid    Pub version ID
-	 * @return  mixed    integer or NULL
+	 * @return  mixed    integer or null
 	 */
 	public function getCount($vid = null)
 	{
@@ -770,7 +780,7 @@ class Author extends Table
 	 * Get last order
 	 *
 	 * @param   integer  $vid  Pub version ID
-	 * @return  mixed    integer or NULL
+	 * @return  mixed    integer or null
 	 */
 	public function getLastOrder($vid = null)
 	{
