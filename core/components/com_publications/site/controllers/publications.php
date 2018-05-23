@@ -1862,7 +1862,7 @@ class Publications extends SiteController
 				{
 					Filesystem::makeDirectory($toProj, 0755, true, true);
 
-					if ($pid)
+					if ($pid && $project->params->get('versionTracking'))
 					{
 						// Commit to GIT
 						$fileObj = new \Components\Projects\Models\File(
