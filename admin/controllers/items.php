@@ -1356,7 +1356,7 @@ class Items extends AdminController
 					$objP->deleteExistence($id);
 
 					// Delete related publishing activity from feed
-					$activities = Hubzero\Activity\Log::all()
+					$activities = \Hubzero\Activity\Log::all()
 						->whereEquals('scope', 'publication')
 						->whereEquals('scope_id', $id)
 						->whereEquals('state', 1)
@@ -1369,7 +1369,7 @@ class Items extends AdminController
 						$logs[] = $activity['id'];
 					}
 
-					$past = Hubzero\Activity\Recipient::all()
+					$past = \Hubzero\Activity\Recipient::all()
 						->whereIn('log_id', $logs)
 						->whereEquals('state', 1)
 						->rows();
