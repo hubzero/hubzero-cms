@@ -1780,7 +1780,9 @@ class Publications extends SiteController
 				App::abort(500, $attachment->getError());
 			}
 
-			$sub = 'publication_' . $vid . '_' . $version->get('id');
+			// For publications forked into an existing project, we will store all files
+			// in a sub directory to avoid any conflicts.
+			$sub = ($pid ? 'publication_' . $vid . '_' . $version->get('id') : '');
 
 			if ($attachment->get('type') == 'file')
 			{
