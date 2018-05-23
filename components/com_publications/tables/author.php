@@ -322,7 +322,7 @@ class Author extends Table
 			foreach ($results as $res)
 			{
 				$resId = $res->user_id;
-				$user = \Components\Members\Models\Member::oneOrFail($resId);
+				$user = \Components\Members\Models\Member::oneOrNew($resId);
 
 				if ($user)
 				{
