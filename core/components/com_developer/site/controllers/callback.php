@@ -228,7 +228,7 @@ class Callback extends SiteController
 		if ($new_connection)
 		{
 			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
-			$connection_params = json_decode($pparams);
+			$connection_params = new \StdClass;
 			$connection_params->app_token = $accessToken;
 			$connection->set('params', json_encode($connection_params));
 			$connection->save();
