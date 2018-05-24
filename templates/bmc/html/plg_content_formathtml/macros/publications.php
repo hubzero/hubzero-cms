@@ -101,12 +101,13 @@ class Publications extends Macro
 		$focusTags = $this->_getFocusTags($args);
 		$fascheme = $this->_getFaScheme($args);
 		$sponsorbgcol = $this->_getSponsorBGCol($args);
+		$mastertype = $this->_getMasterType($args);
 
 		// 2.2 should take care of not needed to import?  i.e. the "use" command above should handle this
 		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 		// Get publications
-		$items = $this->_getPublications($group, $project, $pubid, $limit);
+		$items = $this->_getPublications($mastertype, $group, $project, $pubid, $limit);
 
 		$base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
 
@@ -310,7 +311,7 @@ class Publications extends Macro
 		return $html;
 	}
 
-	private function _getPublications($group, $project, $id, $limit)
+	private function _getPublications($mastertype, $group, $project, $id, $limit)
 	{
 		// Get publication model
 		//
@@ -327,6 +328,11 @@ class Publications extends Macro
 		$items = $pubmodel->entries('list', $filters);*/
 
 		$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=C.group_owner) AS group_cn, (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=PP.owned_by_group) AS project_group_cn, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3) AS versions FROM #__publication_versions as V, #__projects as PP, #__publication_master_types AS MT, #__publications AS C LEFT JOIN #__publication_categories AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM #__publication_versions AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
+
+		// Add master type
+		if ($mastertype) {
+			$sql .= ' AND (MT.alias = ' . $mastertype . ')';
+		}
 
 		$args = array();
 		if ($group)
@@ -470,6 +476,12 @@ class Publications extends Macro
 		return false;
 	}
 
+	/**
+	 * Get sponsor ribbon background color
+	 *
+	 * @param 	$args Macro Arguments
+	 * @return  mixed
+	 */
 	private function _getSponsorBGCol(&$args, $default = "cb48b7")
 	{
 		foreach ($args as $k => $arg)
@@ -483,6 +495,21 @@ class Publications extends Macro
 		}
 
 		return $default;
+	}
+
+	private function _getMasterType(&$args)
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/pubtype=([\w;]*)/', $arg, $matches))
+			{
+				$mastertype = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $this->_db->quote($mastertype);
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -542,6 +569,22 @@ class Publications extends Macro
 				$pid = str_replace(';',',',(isset($matches[1])) ? $matches[1] : '');
 				unset($args[$k]);
 				return $pid;
+			}
+		}
+
+		return false;
+	}
+
+	// (C.id IN (SELECT DISTINCT(objectid) FROM jos_tags_object O WHERE O.tagid IN (SELECT T.id FROM jos_tags T WHERE T.tag IN ('plantecology', 'carbon')) AND O.tbl='publications'))
+	private function _getTags(&$args)
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/tags=([\w;]*)/', $arg, $matches))
+			{
+				$tags = implode(',', array_map(array($this->_db, 'quote'), explode(';', (isset($matches[1])) ? $matches[1] : '')));
+				unset($args[$k]);
+				return $tags;
 			}
 		}
 
