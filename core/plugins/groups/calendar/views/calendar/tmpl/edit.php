@@ -193,7 +193,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						''        => '- None &mdash;',
 						'daily'   => 'Daily',
 						'weekly'  => 'Weekly',
-						'monthly' => 'Monthy',
+						'monthly' => 'Monthly',
 						'yearly'  => 'Yearly'
 					);
 				?>

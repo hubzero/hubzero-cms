@@ -39,11 +39,9 @@ use DateTime;
 use Route;
 use Lang;
 use Date;
-
 // include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
-require_once \Component::path('com_events') . DS . 'models' . DS . 'eventdate.php';
-
+require_once Component::path('com_events') . DS . 'models' . DS . 'eventdate.php';
 /**
  * Event model
  */
@@ -66,15 +64,15 @@ class Event extends Model
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed  Object Id
-	 * @return  void
+	 * @param      mixed     Object Id
+	 * @return     void
 	 */
 	public function __construct($oid = null)
 	{
 		// create needed objects
 		$this->_db = \App::get('db');
 
-		// load page table
+		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
 
 		// load object
@@ -91,8 +89,7 @@ class Event extends Model
 	/**
 	 * Get Instance this Model
 	 *
-	 * @param   integer  $key  Instance Key
-	 * @return  object
+	 * @param   $key   Instance Key
 	 */
 	static function &getInstance($key=null)
 	{
@@ -114,7 +111,7 @@ class Event extends Model
 	/**
 	 * Return link to event
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	public function link()
 	{
@@ -125,7 +122,7 @@ class Event extends Model
 	/**
 	 * Returns calendar for event
 	 *
-	 * @return  object
+	 * @return object
 	 */
 	public function calendar()
 	{
@@ -135,7 +132,7 @@ class Event extends Model
 	/**
 	 * Parses the Events Repeating Rule
 	 *
-	 * @return  array
+	 * @return array
 	 */
 	public function parseRepeatingRule()
 	{
@@ -192,7 +189,7 @@ class Event extends Model
 	/**
 	 * Generate Human Readable Repeating Info
 	 *
-	 * @return  string
+	 * @return [type] [description]
 	 */
 	public function humanReadableRepeatingRule()
 	{
@@ -205,6 +202,11 @@ class Event extends Model
 		// interval type type
 		if ($rule['interval'] > 1)
 		{
+			// Change the "daily" to avoid the incorrect str_replace below
+			if ($rule['freq'] == 'daily')
+			{
+				$rule['freq'] = 'days';
+			}
 			$readable .= Lang::txt('COM_EVENTS_REPEATS_EVERY', $rule['interval'], ucfirst(str_replace('ly', 's', $rule['freq'])));
 		}
 		else
@@ -229,7 +231,7 @@ class Event extends Model
 	/**
 	 * Export Event in iCal Format
 	 *
-	 * @return  void
+	 * @return [type] [description]
 	 */
 	public function export()
 	{
@@ -260,7 +262,7 @@ class Event extends Model
 		$created  = gmdate('Ymd', strtotime($this->get('created'))) . 'T' . gmdate('His', strtotime($this->get('created'))) . 'Z';
 		$modified = gmdate('Ymd', strtotime($this->get('modified'))) . 'T' . gmdate('His', strtotime($this->get('modified'))) . 'Z';
 
-		//create output
+		//create ouput
 		$output  = "BEGIN:VCALENDAR\r\n";
 		$output .= "VERSION:2.0\r\n";
 		$output .= "PRODID:PHP\r\n";
@@ -294,7 +296,7 @@ class Event extends Model
 		$output .= "END:STANDARD\r\n";
 		$output .= "END:VTIMEZONE\r\n";
 
-		// output event info
+		// ouput event info
 		$output .= "BEGIN:VEVENT\r\n";
 		$output .= "UID:{$id}\r\n";
 		$output .= "DTSTAMP:{$now}\r\n";
