@@ -65,6 +65,7 @@ class Publications extends Macro
 								<li><code>[[Publications(sponsor=mygroup, sponsorbgcol=cb48b7)]]</code> - Display a sponsor ribbon with each publication, linking to Group "mygroup" (multiple sponsors are allowed if separated by a semicolon).  Background color of ribbon is given in hexidecimal without # (default is cb48b7).</li>
 								<li><code>[[Publications(group=mygroup1;mygroup2, project=myproject, id=2;6;8)]]</code> - Display all publications from Groups "mygroup1" and "mygroup2", Project "myproject", and Publications with ids 2, 6, and 8.</li>
 								<li><code>[[Publications(group=mygroup, focusarea=myfa, fascheme=Dark2)]]</code> - Display all publications from Group "mygroup", using the children tags of the "myfa" tag as the primary categories.  Color scheme used is <a href="http://colorbrewer2.org/#type=qualitative&scheme=Dark2">Dark2 (default) from http://colorbrewer2.org</a>.</li>
+								<li><code>[[Publications(pubtype=qubesresource, tags=ecology;genetics)]]</code> - Display all QUBES publications that are tagged "ecology" <i>or</i> "genetics".</li>
 							</ul>';
 		return $txt['html'];
 	}
@@ -102,12 +103,13 @@ class Publications extends Macro
 		$fascheme = $this->_getFaScheme($args);
 		$sponsorbgcol = $this->_getSponsorBGCol($args);
 		$mastertype = $this->_getMasterType($args);
+		$tags = $this->_getTags($args);
 
 		// 2.2 should take care of not needed to import?  i.e. the "use" command above should handle this
 		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 		// Get publications
-		$items = $this->_getPublications($mastertype, $group, $project, $pubid, $limit);
+		$items = $this->_getPublications($mastertype, $group, $project, $pubid, $tags, $limit);
 
 		$base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
 
@@ -311,7 +313,7 @@ class Publications extends Macro
 		return $html;
 	}
 
-	private function _getPublications($mastertype, $group, $project, $id, $limit)
+	private function _getPublications($mastertype, $group, $project, $id, $tags, $limit)
 	{
 		// Get publication model
 		//
@@ -350,6 +352,10 @@ class Publications extends Macro
 		if ($nargs = count($args)) {
 			$sql_args = implode(' OR ', $args);
 			$sql .= ' AND ' . ($nargs == 1 ? $sql_args : '(' . $sql_args . ')');
+		}
+
+		if ($tags) {
+			$sql .= ' AND (C.id IN (SELECT DISTINCT(objectid) FROM #__tags_object O WHERE O.tagid IN (SELECT T.id FROM #__tags T WHERE T.tag IN (' . $tags . ')) AND O.tbl="publications"))';
 		}
 
 		$sql .= ' AND V.state != 2 GROUP BY C.id ORDER BY V.published_up DESC';
@@ -575,7 +581,12 @@ class Publications extends Macro
 		return false;
 	}
 
-	// (C.id IN (SELECT DISTINCT(objectid) FROM jos_tags_object O WHERE O.tagid IN (SELECT T.id FROM jos_tags T WHERE T.tag IN ('plantecology', 'carbon')) AND O.tbl='publications'))
+	/**
+	 * Get publications by tag (uses OR for multiple tags)
+	 *
+	 * @param  	$args Macro Arguments
+	 * @return 	mixed
+	 */
 	private function _getTags(&$args)
 	{
 		foreach ($args as $k => $arg)
