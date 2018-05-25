@@ -49,38 +49,9 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$request = App::get('request');
-
-		// Community menu
-    if (in_array($segment = $request->segment(1), array('groups', 'projects', 'members', 'partners')))
-    {
-        $uri = str_replace('/' . $segment, '/community/' . $segment, $request->current(true));
-        App::redirect($uri);
-    }
-
-		// Resources menu
-		if (in_array($segment = $request->segment(1), array('publications', 'collections')))
-		{
-				$uri = str_replace('/' . $segment, '/qubesresources/' . $segment, $request->current(true));
-				App::redirect($uri);
-		}
-
-		// News menu
-		if (in_array($segment = $request->segment(1), array('blog', 'newsletter', 'events')))
-		{
-				$uri = str_replace('/' . $segment, '/news/' . $segment, $request->current(true));
-				App::redirect($uri);
-		}
-
-		// About menu
-		if (in_array($segment = $request->segment(1), array('citations', 'usage')))
-		{
-				$uri = str_replace('/' . $segment, '/about/' . $segment, $request->current(true));
-				App::redirect($uri);
-		}
-
+		// Append a build rule
+		// This is called whenever Route::url() is used
 		$router = App::get('router');
-
 		$router->rules('build')->append('menurouter', function ($uri)
 		{
 			$route = $uri->getPath();
@@ -101,7 +72,6 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 					// echo '<pre>' . var_dump($menu->getItems('id', $m->parent_id)) . '</pre><br>';
 					// echo '<pre>' . var_dump($m) . '</pre><br>';
 				// }
-				// die();
 
 				array_unshift($segments, 'community');
 
@@ -136,7 +106,8 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 				$active = true;
 			}
 
-			if ($active) {
+			if ($active)
+			{
 				$found = false;
 				$items = App::get('pathway')->items();
 				foreach ($items as $item)
@@ -165,6 +136,47 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 
 			return $uri;
 		});
+
+		// Check the request for a URL missing
+		// the desired prefix. Fix, and redirect.
+		$request = App::get('request');
+
+		// NOTE: We only want to do this if the
+		// request method is GET.
+		if ($request->method() != 'GET')
+		{
+			return false;
+		}
+
+		$segment = $request->segment(1);
+
+		// Community menu
+		if (in_array($segment, array('groups', 'projects', 'members', 'partners')))
+		{
+			$uri = str_replace('/' . $segment, '/community/' . $segment, $request->current(true));
+			App::redirect($uri);
+		}
+
+		// Resources menu
+		if (in_array($segment, array('publications', 'collections')))
+		{
+			$uri = str_replace('/' . $segment, '/qubesresources/' . $segment, $request->current(true));
+			App::redirect($uri);
+		}
+
+		// News menu
+		if (in_array($segment, array('blog', 'newsletter', 'events')))
+		{
+			$uri = str_replace('/' . $segment, '/news/' . $segment, $request->current(true));
+			App::redirect($uri);
+		}
+
+		// About menu
+		if (in_array($segment, array('citations', 'usage')))
+		{
+			$uri = str_replace('/' . $segment, '/about/' . $segment, $request->current(true));
+			App::redirect($uri);
+		}
 
 		return true;
 	}
