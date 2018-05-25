@@ -448,7 +448,7 @@ class Doi extends Obj
 		$input = $this->startInput($status);
 		if (!$input)
 		{
-			// Cannot procees if any required fields are missing
+			// Cannot process if any required fields are missing
 			return false;
 		}
 
@@ -518,7 +518,7 @@ class Doi extends Obj
 		$input = $this->startInput($status);
 		if (!$input)
 		{
-			// Cannot procees if any required fields are missing
+			// Cannot process if any required fields are missing
 			return false;
 		}
 
