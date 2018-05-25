@@ -944,7 +944,7 @@ class Items extends AdminController
 					break;
 
 				case 'revert':
-					// What is this? This sets it to the state it's alreayd in.
+					// What is this? This sets it to the state it's already in.
 					//$this->model->version->state = $state ? $state : 4;
 					$this->model->version->state = 3;
 					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_REVERTED');
@@ -1356,7 +1356,11 @@ class Items extends AdminController
 					$objP->deleteExistence($id);
 
 					// Delete related publishing activity from feed
+<<<<<<< HEAD
 					$activities = Hubzero\Activity\Log::all()
+=======
+					$activities = \Hubzero\Activity\Log::all()
+>>>>>>> components/com_publications
 						->whereEquals('scope', 'publication')
 						->whereEquals('scope_id', $id)
 						->whereEquals('state', 1)
@@ -1369,7 +1373,11 @@ class Items extends AdminController
 						$logs[] = $activity['id'];
 					}
 
+<<<<<<< HEAD
 					$past = Hubzero\Activity\Recipient::all()
+=======
+					$past = \Hubzero\Activity\Recipient::all()
+>>>>>>> components/com_publications
 						->whereIn('log_id', $logs)
 						->whereEquals('state', 1)
 						->rows();
