@@ -55,7 +55,7 @@ class plgResourcesCollections extends \Hubzero\Plugin\Plugin
 	 */
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
-		if (!$resource->type->params->get('plg_collections', 0) || User::isGuest())
+		if (!$resource->type->params->get('plg_collections', 0))
 		{
 			return;
 		}
@@ -79,7 +79,7 @@ class plgResourcesCollections extends \Hubzero\Plugin\Plugin
 		{
 			$resources->where('id', 'NOT IN', $parentIds);
 		}
-		if (User::authorize('core.admin', $option))
+		if (!User::authorize('core.admin', $option))
 		{
 			$resources->whereEquals('created_by', User::get('id'), 1);
 			// Get the groups the user has access to

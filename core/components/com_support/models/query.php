@@ -89,8 +89,31 @@ class Query extends Relational
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
+		'created_by',
+		'ordering'
 	);
+
+	/**
+	 * Generates automatic ordering field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->whereEquals('user_id', $data['user_id'])
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = $last->ordering + 1;
+		}
+
+		return $data['ordering'];
+	}
 
 	/**
 	 * Defines a belongs to one relationship between comment and user

@@ -34,6 +34,7 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 use Event;
 use User;
+use Lang;
 use stdClass;
 
 include_once __DIR__ . '/owner.php';
@@ -56,6 +57,15 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	 **/
 	const STATE_ARCHIVED = 3;
 	const STATE_PENDING  = 5;
+
+	/**
+	 * Privacy constants
+	 *
+	 * @var  integer
+	 **/
+	const PRIVACY_PRIVATE = 1;
+	const PRIVACY_PUBLIC  = 0;
+	const PRIVACY_OPEN    = -1;
 
 	/**
 	 * Default order by for model
@@ -220,18 +230,48 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Check if the project is private
+	 *
+	 * @return  boolean
+	 */
+	public function isPrivate()
+	{
+		return ($this->get('private') == self::PRIVACY_PRIVATE);
+	}
+
+	/**
 	 * Check if the project is public
 	 *
 	 * @return  boolean
 	 */
 	public function isPublic()
 	{
-		if (!$this->get('id'))
+		if ($this->isNew())
 		{
 			return false;
 		}
 
-		if ($this->get('private') == 1)
+		if ($this->get('private') == self::PRIVACY_PRIVATE)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if the project is open
+	 *
+	 * @return  boolean
+	 */
+	public function isOpen()
+	{
+		if ($this->isNew())
+		{
+			return false;
+		}
+
+		if ($this->get('private') != self::PRIVACY_OPEN)
 		{
 			return false;
 		}
@@ -498,9 +538,9 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Get total number of records that will be indexed by Solr.
+	 * Get total number of records that will be indexed for search
 	 *
-	 * @return integer
+	 * @return  integer
 	 */
 	public static function searchTotal()
 	{
@@ -509,7 +549,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Get records to be included in solr index
+	 * Get records to be included in search index
 	 *
 	 * @param   integer  $limit
 	 * @param   integer  $offset
@@ -521,14 +561,13 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Namespace used for solr Search
+	 * Namespace used for Search
 	 *
 	 * @return  string
 	 */
 	public function searchNamespace()
 	{
-		$searchNamespace = 'project';
-		return $searchNamespace;
+		return 'project';
 	}
 
 	/**
@@ -545,16 +584,17 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	/**
 	 * Generate search document for Solr
 	 *
-	 * @return  array
+	 * @return  object
 	 */
 	public function searchResult()
 	{
-		if ($this->get('state') != 1)
+		if ($this->get('state') != self::STATE_PUBLISHED)
 		{
 			return false;
 		}
 		$page = new stdClass;
-		if ($this->get('state') == 1 && $this->get('private') < 1)
+
+		if ($this->get('state') == self::STATE_PUBLISHED && $this->isOpen())
 		{
 			$access_level = 'public';
 		}
@@ -567,18 +607,22 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 		$page->access_level = $access_level;
 		$page->owner_type = 'user';
 		$team = array();
-		$team = array_map(function($member){
+		$team = array_map(
+			function($member)
+			{
 				if ($member['status'] == 1 && !empty($member['userid']) && $member['userid'] > 0)
 				{
 					return $member['userid'];
 				}
-			}, $this->team->toArray());
+			},
+			$this->team->toArray()
+		);
 		$page->owner = $team;
 		$page->id = $this->searchId();
 		$page->title = $this->title;
 		$page->hubtype = $this->searchNamespace();
 		$page->description = \Hubzero\Utility\Sanitize::stripAll($this->about);
+
 		return $page;
 	}
-
 }

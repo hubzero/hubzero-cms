@@ -34,7 +34,10 @@ namespace Components\Projects\Models;
 
 use Hubzero\Base\Obj;
 use Components\Projects\Helpers;
+use Filesystem;
 use stdClass;
+use Route;
+use Date;
 
 /**
  * Project File model

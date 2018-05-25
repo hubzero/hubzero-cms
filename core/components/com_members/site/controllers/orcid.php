@@ -256,7 +256,7 @@ class Orcid extends SiteController
 	 *
 	 * @param   string  $fname  First name
 	 * @param   string  $lname  Last name
-	 * @param   string  $iname  Insitution name
+	 * @param   string  $iname  Institution name
 	 * @return  string
 	 */
 	private function _fetchXml($fname, $lname, $iname)
@@ -717,8 +717,6 @@ class Orcid extends SiteController
 		curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "client_id=" . $client_id . "&client_secret=" . $client_secret . "&grant_type=client_credentials&scope=/orcid-profile/create");
 		$curl_response = curl_exec($initedCurl);
 		curl_close($initedCurl);
-
-		print_r($curl_response);
 	}
 	/*
 	 * Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.

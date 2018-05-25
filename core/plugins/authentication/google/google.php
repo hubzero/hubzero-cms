@@ -238,7 +238,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzal->email = $user_profile['email'];
+			$hzal->set('email', $user_profile['email']);
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -246,7 +246,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $user_profile['name'];
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id);
 
@@ -339,8 +339,8 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			{
 				// Create the hubzero auth link
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'google', null, $username);
-				$hzal->user_id = User::get('id');
-				$hzal->email   = $user_profile['email'];
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', $user_profile['email']);
 				$hzal->update();
 			}
 		}

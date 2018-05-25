@@ -45,6 +45,9 @@ require_once(__DIR__ . DS . 'tool' . DS . 'view.php');
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
+use Component;
+use Date;
+use Lang;
 
 /**
  * Project Tool model
@@ -77,14 +80,17 @@ class Tool extends Model
 	 *
 	 * @var object
 	 */
-	public $config = NULL;
+	public $config = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @param   mixed    $oid
+	 * @param   integer  $projectid
+	 * @param   object   $instance
+	 * @return  void
 	 */
-	public function __construct($oid = NULL, $projectid = NULL, $instance = NULL)
+	public function __construct($oid = null, $projectid = null, $instance = null)
 	{
 		$this->_db = \App::get('db');
 
@@ -108,10 +114,12 @@ class Tool extends Model
 	/**
 	 * Returns a reference to a tool model
 	 *
-	 * @param      mixed $oid TODO ID
-	 * @return     object Todo
+	 * @param   mixed    $oid
+	 * @param   integer  $projectid
+	 * @param   object   $instance
+	 * @return  object
 	 */
-	static function &getInstance($oid=null, $projectid = NULL, $instance = NULL)
+	public static function &getInstance($oid=null, $projectid = null, $instance = null)
 	{
 		static $instances;
 
@@ -131,10 +139,10 @@ class Tool extends Model
 	/**
 	 * Returns a reference to a tool model
 	 *
-	 * @param      mixed $oid TODO ID
-	 * @return     object Todo
+	 * @param   object  $result
+	 * @return  object
 	 */
-	static function mapInstance($result)
+	public static function mapInstance($result)
 	{
 		if (!is_object($result))
 		{
@@ -164,9 +172,11 @@ class Tool extends Model
 	/**
 	 * Load a specific instance
 	 *
-	 * @return     void
+	 * @param   integer  $id
+	 * @param   integer  $parent
+	 * @return  object
 	 */
-	public function version($id=null, $parent = NULL)
+	public function version($id=null, $parent = null)
 	{
 		if (!isset($this->_version)
 		 || ($id !== null && (int) $this->_version->get('id') != $id))
@@ -180,7 +190,8 @@ class Tool extends Model
 	/**
 	 * Get specific instance property
 	 *
-	 * @return     void
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function instance($property)
 	{
@@ -194,9 +205,11 @@ class Tool extends Model
 	/**
 	 * Get a log model
 	 *
-	 * @return     void
+	 * @param   integer  $parent_id
+	 * @param   string   $parent_name
+	 * @return  object
 	 */
-	public function log($parent_id = NULL, $parent_name = NULL)
+	public function log($parent_id = null, $parent_name = null)
 	{
 		if (!isset($this->_log))
 		{
@@ -216,17 +229,19 @@ class Tool extends Model
 	/**
 	 * Get last status change
 	 *
-	 * @return     boolean
+	 * @param   string   $property
+	 * @param   string   $as
+	 * @return  boolean
 	 */
-	public function lastStatusChange($property = NULL, $as = NULL)
+	public function lastStatusChange($property = null, $as = null)
 	{
 		return $this->lastUpdate($property, $as, true);
-
 	}
 
 	/**
 	 * Get history
 	 *
+	 * @param   array  $filters
 	 * @return  array
 	 */
 	public function history($filters = array())
@@ -240,9 +255,12 @@ class Tool extends Model
 	/**
 	 * Get last update
 	 *
-	 * @return     boolean
+	 * @param   string   $property
+	 * @param   string   $as
+	 * @param   boolean  $statusChange
+	 * @return  boolean
 	 */
-	public function lastUpdate($property = NULL, $as = NULL, $statusChange = false)
+	public function lastUpdate($property = null, $as = null, $statusChange = false)
 	{
 		// Get log model
 		$log = $this->log($this->get('id'), $this->get('name'));
@@ -269,7 +287,7 @@ class Tool extends Model
 					return $this->_actor->get($as);
 				}
 			}
-			return isset($this->_lastUpdate->$property) ? $this->_lastUpdate->$property : NULL;
+			return isset($this->_lastUpdate->$property) ? $this->_lastUpdate->$property : null;
 		}
 		return $this->_lastUpdate;
 	}
@@ -277,9 +295,11 @@ class Tool extends Model
 	/**
 	 * Get a status model
 	 *
-	 * @return     void
+	 * @param   string   $property
+	 * @param   string   $statusModel
+	 * @return  object
 	 */
-	public function status($property = NULL, $statusModel = NULL)
+	public function status($property = null, $statusModel = null)
 	{
 		if (!empty($statusModel) && ($statusModel instanceof Tool\Status))
 		{
@@ -302,7 +322,8 @@ class Tool extends Model
 	/**
 	 * Get status css
 	 *
-	 * @return     void
+	 * @param   boolean  $admin
+	 * @return  string
 	 */
 	public function getStatusCss($admin = false)
 	{
@@ -323,8 +344,8 @@ class Tool extends Model
 	/**
 	 * Return a formatted created timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -334,8 +355,8 @@ class Tool extends Model
 	/**
 	 * Return a formatted created timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function statusChanged($as='')
 	{
@@ -345,8 +366,8 @@ class Tool extends Model
 	/**
 	 * Return a formatted created timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function lastView($as='')
 	{
@@ -364,15 +385,15 @@ class Tool extends Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $key Field to return
-	 * @param      string $as  What data to return
-	 * @return     string
+	 * @param   string  $key  Field to return
+	 * @param   string  $as   What data to return
+	 * @return  string
 	 */
 	protected function _date($key, $as='')
 	{
 		if ($this->get($key) == $this->_db->getNullDate())
 		{
-			return NULL;
+			return null;
 		}
 		switch (strtolower($as))
 		{
@@ -404,8 +425,10 @@ class Tool extends Model
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   string   $rtrn
+	 * @param   array    $filters
+	 * @param   boolean  $admin
+	 * @return  array
 	 */
 	public function entries($rtrn='list', $filters=array(), $admin = false)
 	{
@@ -446,8 +469,8 @@ class Tool extends Model
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
 	 *
-	 * @param      string $key Config property to retrieve
-	 * @return     mixed
+	 * @param   string  $key  Config property to retrieve
+	 * @return  mixed
 	 */
 	public function config($key=null)
 	{
@@ -465,7 +488,7 @@ class Tool extends Model
 	/**
 	 * Verify data before saving
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function verify()
 	{
@@ -477,7 +500,7 @@ class Tool extends Model
 		if (trim($this->get('title')) == '')
 		{
 			// Title check
-			$this->setError( Lang::txt('PLG_PROJECTS_TOOLS_ERROR_MISSING_TITLE') );
+			$this->setError(Lang::txt('PLG_PROJECTS_TOOLS_ERROR_MISSING_TITLE'));
 			return false;
 		}
 
@@ -487,8 +510,9 @@ class Tool extends Model
 	/**
 	 * Check tool name
 	 *
-	 * @param     string $name Alias name
-	 * @return    boolean False if error, True on success
+	 * @param   string   $name  Alias name
+	 * @param   integer  $ajax
+	 * @return  boolean  False if error, True on success
 	 */
 	public function check($name = '', $ajax = 0)
 	{
@@ -562,7 +586,8 @@ class Tool extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function creator($property=null)
 	{
@@ -584,7 +609,8 @@ class Tool extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function statusChanger($property=null)
 	{
@@ -594,7 +620,7 @@ class Tool extends Model
 		}
 		if ($property)
 		{
-			return is_object($this->_statusChanger) ? $this->_statusChanger->get($property) : NULL;
+			return is_object($this->_statusChanger) ? $this->_statusChanger->get($property) : null;
 		}
 		return $this->_statusChanger;
 	}
@@ -602,7 +628,7 @@ class Tool extends Model
 	/**
 	 * Is sandbox open?
 	 *
-	 * @return     boolean
+	 * @return  bboolean
 	 */
 	public function isOpenDev()
 	{
@@ -616,7 +642,7 @@ class Tool extends Model
 	/**
 	 * Is source open?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isOpenSource()
 	{
@@ -628,9 +654,9 @@ class Tool extends Model
 	}
 
 	/**
-	 * Is source open?
+	 * Is published?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isPublished()
 	{
@@ -644,7 +670,7 @@ class Tool extends Model
 	/**
 	 * Tool repo exists
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function repoExists()
 	{
@@ -658,7 +684,7 @@ class Tool extends Model
 	/**
 	 * Tool publication
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function publication()
 	{
@@ -668,9 +694,10 @@ class Tool extends Model
 	/**
 	 * Is tool in particular status
 	 *
-	 * @return     boolean
+	 * @param   string  $status
+	 * @return  boolean
 	 */
-	public function inStatus($status = NULL)
+	public function inStatus($status = null)
 	{
 		switch ($status)
 		{
@@ -695,7 +722,8 @@ class Tool extends Model
 	/**
 	 * Is action required?
 	 *
-	 * @return     boolean
+	 * @param   string  $type
+	 * @return  boolean
 	 */
 	public function actionRequired($type = 'user')
 	{

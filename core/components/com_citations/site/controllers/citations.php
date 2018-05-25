@@ -905,9 +905,12 @@ class Citations extends SiteController
 		$doc = '';
 		$citations = Citation::all()->whereIn('id', $citationIds);
 
-		// for each citation we want to downlaod
+		// for each citation we want to download
 		foreach ($citations as $citation)
 		{
+			// Get authors
+			$authorsString = $citation->getAuthorString(false);
+			$citation->set('author', $authorsString);
 			//get the badges
 			$citation->set('badges', Format::citationBadges($citation, false));
 			$cd = new Download();

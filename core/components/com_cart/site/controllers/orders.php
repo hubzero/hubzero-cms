@@ -96,7 +96,7 @@ class Orders extends ComponentController
 			{
 				$transactionInfo = Cart::getTransactionInfo($transaction->tId);
 
-				// Figure out if the items int the transactions are still avaialble
+				// Figure out if the items int the transactions are still available
 				$tItems = unserialize($transactionInfo->tiItems);
 
 				foreach ($tItems as $item)
@@ -151,4 +151,3 @@ class Orders extends ComponentController
 		return;
 	}
 }
-

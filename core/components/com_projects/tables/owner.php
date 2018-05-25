@@ -35,6 +35,7 @@ namespace Components\Projects\Tables;
 use Hubzero\Session\Helper as SessionHelper;
 use Hubzero\Database\Table;
 use Lang;
+use Date;
 
 /**
  * Table class for project owners (team members)

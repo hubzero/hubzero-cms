@@ -373,6 +373,107 @@ class Sessionsv1_0 extends ApiController
 		exit();
 	}
 
+	/**
+	 * Method to get the Rappture definition file for a tool
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{tool}/rappturexml
+	 * @apiParameter {
+	 * 		"name":          "xpath",
+	 * 		"description":   "Traversal selecting desired area(s) of the document",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @return    void
+	 */
+	public function rapptureXMLTask()
+	{
+		$tool = preg_replace('/[^-_a-z0-9]/', '', explode('/', $_SERVER['SCRIPT_URL'])[3]);
+		$path = DS . 'apps' . DS . $tool . DS . 'current' . DS . 'rappture' . DS;
+		if (!file_exists($path)) {
+			throw new Exception(Lang::txt('Unable to find tool.xml.'), 404);
+		}
+
+		$xml = new \SimpleXMLElement(file_get_contents($path . 'tool.xml'));
+		$xpath = Request::getVar('xpath', '');
+
+		// replace loader > example references to external files with the file
+		// contents
+		// these are needed to generate complete interfaces
+		foreach ($xml->xpath('//loader') as $loader) {
+			$match = [];
+			// the text of the <example> either refers to a specific filename or
+			// more likely a glob (*.xml)
+			// there can be any number of these
+			foreach ($loader->xpath('//example') as $example) {
+				$match[] = "$example";
+				// this removes the node from <loader>
+				unset($example[0]);
+			}
+			if (count($match) === 0) {
+				continue;
+			}
+
+			// find the files that match any given expression
+			$include = [];
+			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path . 'examples')) as $file) {
+				// redundant in conforming files, but just in case restrict to .xml
+				if (fnmatch('*.xml', $file)) {
+					foreach ($match as $expr) {
+						if (fnmatch($expr, $file)) {
+							$include[] = "$file";
+							break;
+						}
+					}
+				}
+			}
+			if (!count($include)) {
+				continue;
+			}
+
+			// replace all the <example> with one <examples>. each child of this is a
+			// <run source="relative_path.xml"> containing that document
+
+			// (the DOM API is compatible with SimpleXML & has a better API for
+			// combining documents)
+			$examples = new \DOMElement('examples');
+			$domLoader = dom_import_simplexml($loader);
+			$domLoader->appendChild($examples);
+			foreach ($include as $file) {
+				$subDoc = new \DOMDocument();
+				$subDoc->loadXML(file_get_contents($file));
+				// select top level element
+				$run = $subDoc->getElementsByTagName('run');
+				// non-conforming, skip it
+				if (count($run) === 0) {
+					continue;
+				}
+				// note filename for benefit of xpathers
+				$run[0]->setAttribute('source', str_replace($path . 'examples' . DS, '', $file));
+				// add back into the original document
+				$examples->appendChild($examples->ownerDocument->importNode($run[0], true));
+			}
+		}
+
+		header('Content-Type: text/xml');
+		header('Access-Control-Allow-Origin: *');
+		if (!$xpath) {
+			echo $xml->asXML();
+		}
+		else {
+			$matches = $xml->xpath($xpath);
+			if (count($matches) === 0) {
+				throw new Exception(Lang::txt('Path not found.'), 404);
+			}
+			echo '<matches>';
+			foreach ($matches as $fragment) {
+				echo '<match>' . $fragment->asXML(). '</match>';
+			}
+			echo '</matches>';
+		}
+		exit();
+	}
 
 	/**
 	 * Method to invoke new tools session
@@ -1378,7 +1479,7 @@ class Sessionsv1_0 extends ApiController
 			2 => array("pipe", "w")   // stderr is a pipe that the child with write to
 		);
 
-		$process = proc_open($command, $descriptorspec, $pipes, "/", NULL);
+		$process = proc_open($command, $descriptorspec, $pipes, "/", null);
 
 		if (is_resource($process))
 		{
@@ -1421,9 +1522,9 @@ class Sessionsv1_0 extends ApiController
 				'session'        => $sessionid,
 				'ipsec_ip1'      => $public_ip,
 				'ipsec_ip2'      => $private_ip,
-				'ipsec_password' => NULL,
+				'ipsec_password' => null,
 				'smb_username'   => 'smb-' . $sessionid,
-				'smb_password'   => NULL
+				'smb_password'   => null
 			);
 		}
 		$this->send($object);

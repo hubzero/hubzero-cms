@@ -49,7 +49,7 @@ if ($fallback && intval($fallback) <= time())
 	$fallback = null;
 }
 
-// Are we explicitely forcing the engine?
+// Are we explicitly forcing the engine?
 if ($force = \Request::getCmd('engine'))
 {
 	$fallback = null;

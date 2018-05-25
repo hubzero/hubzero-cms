@@ -184,7 +184,7 @@ class Commentsv2_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "cc",
-	 * 		"description": "Comma seperated list of email addresses to email updates to",
+	 * 		"description": "Comma separated list of email addresses to email updates to",
 	 * 		"type":        "string",
 	 * 		"required":    false,
 	 * 		"default":		 submitter,owner
@@ -315,11 +315,11 @@ class Commentsv2_0 extends ApiController
 		$comment->set('changelog', json_encode($changelog));
 		if (!$comment->save())
 		{
-			throw new Exception(print_r($comment->getErrors(), 1), 500);
+			throw new Exception($comment->getErrors(), 500);
 		}
 		if (!$ticket->save())
 		{
-			throw new Exception(print_r($ticket->getErrors(), 1), 500);
+			throw new Exception($ticket->getErrors(), 500);
 		}
 
 		// There's now a ticket and a comment, lets add attachments

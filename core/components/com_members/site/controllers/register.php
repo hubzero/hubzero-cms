@@ -365,7 +365,7 @@ class Register extends SiteController
 		if ($method == 'POST')
 		{
 			// Load POSTed data
-			$xregistration->loadPOST();
+			$xregistration->loadPost();
 		}
 		else
 		{
@@ -397,6 +397,64 @@ class Register extends SiteController
 		}
 
 		$check = $xregistration->check('update');
+
+		// Incoming profile edits
+		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+
+		// Compile profile data
+		foreach ($profile as $key => $data)
+		{
+			if (isset($profile[$key]) && is_array($profile[$key]))
+			{
+				$profile[$key] = array_filter($profile[$key]);
+			}
+			if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
+			{
+				if (is_array($profile[$key]))
+				{
+					$profile[$key][] = $profile[$key . '_other'];
+				}
+				else
+				{
+					$profile[$key] = $profile[$key . '_other'];
+				}
+
+				unset($profile[$key . '_other']);
+			}
+		}
+
+		// Validate profile data
+		$fields = \Components\Members\Models\Profile\Field::all()
+			->including(['options', function ($option){
+				$option
+					->select('*');
+			}])
+			->where('action_create', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			->ordered()
+			->rows();
+
+		// Validate profile fields
+		if ($fields->count())
+		{
+			$form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+			$form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'create', $profile));
+			$form->bind(new \Hubzero\Config\Registry($profile));
+
+			if (!$form->validate($profile))
+			{
+				$check = false;
+
+				foreach ($form->getErrors() as $key => $error)
+				{
+					if ($error instanceof \Hubzero\Form\Exception\MissingData)
+					{
+						$xregistration->_missing[$key] = $error;
+					}
+
+					$xregistration->_invalid[$key] = $error;
+				}
+			}
+		}
 
 		if (!$force && $check && $method == 'GET')
 		{
@@ -480,7 +538,27 @@ class Register extends SiteController
 			}
 			$xprofile->set('username', $xregistration->get('login'));
 
-			$xprofile->save();
+			if ($xprofile->save())
+			{
+				$access = array();
+				foreach ($fields as $field)
+				{
+					$access[$field->get('name')] = $field->get('access');
+				}
+
+				$profile = $xregistration->_registration['_profile'];
+
+				// Save profile data
+				$member = Member::oneOrNew($xprofile->get('id'));
+				if (!$member->saveProfile($profile, $access))
+				{
+					\Notify::error($member->getError());
+					// Don't stop the registration process!
+					// At this point, the account was successfully created.
+					// The profile info, however, may have issues. But, it's not crucial.
+					//$result = false;
+				}
+			}
 
 			// Update current session if appropriate
 			// TODO: update all session of this user
@@ -853,7 +931,7 @@ class Register extends SiteController
 
 					if (is_object($hzal))
 					{
-						$hzal->user_id = $user->get('id');
+						$hzal->set('user_id', $user->get('id'));
 
 						if ($hzal->user_id > 0)
 						{

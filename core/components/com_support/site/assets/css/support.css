@@ -939,6 +939,9 @@
 	.ticket .entry-content {
 		margin-bottom: 0;
 	}
+	.ticket .entry-body {
+		word-wrap: break-word;
+	}
 	.ticket .entry-details {
 		margin: 0 0 1em 70px;
 		padding: 0;

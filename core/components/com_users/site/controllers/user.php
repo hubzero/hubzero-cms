@@ -547,7 +547,7 @@ class UsersControllerUser extends UsersController
 				}
 				else
 				{
-					// No Link method is availble
+					// No Link method is available
 					App::redirect(
 						Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
 						'Linked accounts are not currently available for this provider.',

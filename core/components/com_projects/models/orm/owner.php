@@ -73,7 +73,7 @@ class Owner extends Relational
 	 *
 	 * @var  object
 	 */
-	protected $params = null;
+	protected $paramsRegistry = null;
 
 	/**
 	 * Defines a belongs to one relationship between owner and project
@@ -126,6 +126,12 @@ class Owner extends Relational
 			->row();
 	}
 
+	/**
+	 * Get managers for a project
+	 *
+	 * @param   integer  $projectid
+	 * @return  object
+	 */
 	public static function getProjectManagers($projectid)
 	{
 		return self::all()
@@ -182,11 +188,11 @@ class Owner extends Relational
 	 */
 	public function transformParams()
 	{
-		if (!is_object($this->params))
+		if (!is_object($this->paramsRegistry))
 		{
-			$this->params = new Registry($this->get('params'));
+			$this->paramsRegistry = new Registry($this->get('params'));
 		}
 
-		return $this->params;
+		return $this->paramsRegistry;
 	}
 }

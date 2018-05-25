@@ -43,23 +43,24 @@ class Status extends Model
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolStatus';
 
 	/**
 	 * Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	public $config = NULL;
+	public $config = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @param   integer  $oid
+	 * @return  void
 	 */
-	public function __construct($oid = NULL)
+	public function __construct($oid = null)
 	{
 		$this->_db = \App::get('db');
 
@@ -93,8 +94,8 @@ class Status extends Model
 	/**
 	 * Returns a reference to the model
 	 *
-	 * @param      mixed $oid status ID
-	 * @return     object Todo
+	 * @param   mixed  $oid  status ID
+	 * @return  void
 	 */
 	public function getStatus($oid=null)
 	{
@@ -107,8 +108,8 @@ class Status extends Model
 	/**
 	 * Returns a reference to the model
 	 *
-	 * @param      mixed $oid status ID
-	 * @return     object Todo
+	 * @param   mixed  $oid  status ID
+	 * @return  object
 	 */
 	static function &getInstance($oid=null)
 	{

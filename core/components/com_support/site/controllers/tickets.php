@@ -638,6 +638,8 @@ class Tickets extends SiteController
 		$filters['sort']    = 'id';
 		$filters['sortdir'] = 'DESC';
 
+		$matchQuery = false;
+
 		foreach ($folders as $folder)
 		{
 			foreach ($folder->queries->sort('ordering') as $query)
@@ -651,6 +653,7 @@ class Tickets extends SiteController
 
 				if ($query->get('id') == $filters['show'])
 				{
+					$matchQuery = true;
 					if ($search)
 					{
 						$filters['search'] = $search;
@@ -679,7 +682,20 @@ class Tickets extends SiteController
 
 		$filters['search'] = $search;
 
-		if (!$filters['show'])
+		if ($filters['show'] < 0)
+		{
+			$total = $watch[($filters['show'] == -1 ? 'open' : 'closed')];
+
+			$tickets = Ticket::all()
+				->whereEquals('open', ($filters['show'] == -1 ? 1 : 0))
+				->whereIn('id', $watching)
+				->order('created', 'desc')
+				->start($filters['start'])
+				->limit($filters['limit'])
+				->rows();
+		}
+
+		if (!$filters['show'] || ($filters['show'] > 0 && !$matchQuery))
 		{
 			// Jump back to the beginning of the folders list
 			// and try to find the first query available
@@ -694,6 +710,7 @@ class Tickets extends SiteController
 				}
 				else
 				{	// for no custom queries.
+					// TODO - not sure this works, pretty edge case though
 					$query = Query::blank();
 					$query->set('count', 0);
 				}
@@ -727,19 +744,6 @@ class Tickets extends SiteController
 			'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
 			'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
 		);
-
-		if ($filters['show'] < 0)
-		{
-			$total = $watch[($filters['show'] == -1 ? 'open' : 'closed')];
-
-			$tickets = Ticket::all()
-				->whereEquals('open', ($filters['show'] == -1 ? 1 : 0))
-				->whereIn('id', $watching)
-				->order('created', 'desc')
-				->start($filters['start'])
-				->limit($filters['limit'])
-				->rows();
-		}
 
 		// Set the page title
 		$this->_buildTitle();
@@ -1443,7 +1447,7 @@ class Tickets extends SiteController
 			$badwords = array();
 		}
 
-		// Build an array of patterns to check againts
+		// Build an array of patterns to check against
 		$patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
 		foreach ($badwords as $badword)
 		{
@@ -1709,7 +1713,7 @@ class Tickets extends SiteController
 		$rowc = Comment::blank();
 		$rowc->set('ticket', $id);
 
-		// Check if changes were made inbetween the time the comment was started and posted
+		// Check if changes were made within the time the comment was started and posted
 		$started = Request::getVar('started', Date::toSql(), 'post');
 
 		$lastcomment = $row->comments()
@@ -2443,6 +2447,11 @@ class Tickets extends SiteController
 
 		foreach ($file['name'] as $i => $name)
 		{
+			if (!trim($name))
+			{
+				continue;
+			}
+
 			// Make the filename safe
 			$name = Filesystem::clean($name);
 			$name = str_replace(' ', '_', $name);

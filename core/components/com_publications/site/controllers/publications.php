@@ -1695,6 +1695,10 @@ class Publications extends SiteController
 		// Get manifest from either version record (published) or master type
 		$manifest = $version->get('curation', $publication->type->get('curation'));
 		$curation = json_decode($manifest, true);
+		if (!$curation || json_last_error() !== JSON_ERROR_NONE)
+		{
+			$curation = json_decode($publication->type->get('curation'), true);
+		}
 		$fileParams = array(
 			'directory'    => '',
 			'dirHierarchy' => 1
@@ -1780,6 +1784,8 @@ class Publications extends SiteController
 				App::abort(500, $attachment->getError());
 			}
 
+			// For publications forked into an existing project, we will store all files
+			// in a sub directory to avoid any conflicts.
 			$sub = 'publication_' . $vid . '_' . $version->get('id');
 
 			if ($attachment->get('type') == 'file')
@@ -1862,7 +1868,7 @@ class Publications extends SiteController
 				{
 					Filesystem::makeDirectory($toProj, 0755, true, true);
 
-					if ($pid)
+					if ($pid && $project->params->get('versionTracking'))
 					{
 						// Commit to GIT
 						$fileObj = new \Components\Projects\Models\File(
@@ -1906,7 +1912,7 @@ class Publications extends SiteController
 							App::abort(500, Lang::txt('Failed to copy file "' . $from . $filename . '" to "' . $toProj . $orig . '"'));
 						}
 
-						if ($pid)
+						if ($pid && $project->params->get('versionTracking'))
 						{
 							// Commit to GIT
 							$fileObj = new \Components\Projects\Models\File(

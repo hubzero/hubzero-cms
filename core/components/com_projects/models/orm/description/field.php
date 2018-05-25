@@ -139,7 +139,7 @@ class Field extends Relational
 	 */
 	public function options()
 	{
-		return $this->oneToMany('Option', 'field_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Option', 'field_id');
 	}
 
 	/**
@@ -149,7 +149,7 @@ class Field extends Relational
 	 */
 	public function children()
 	{
-		return $this->oneToMany('Field', 'parent');
+		return $this->oneToMany(__NAMESPACE__ . '\\Field', 'parent');
 	}
 
 	/**
@@ -159,7 +159,7 @@ class Field extends Relational
 	 */
 	public function parent()
 	{
-		return $this->belongsToOne('Field', 'parent');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Field', 'parent');
 	}
 
 	/**
@@ -225,14 +225,24 @@ class Field extends Relational
 		switch ($task)
 		{
 			case 'register':
-			case 'create': $index = 0; break;
-			case 'proxy':  $index = 1; break;
-			case 'update': $index = 2; break;
-			case 'edit':   $index = 3; break;
-			default:       $index = 0; break;
+			case 'create':
+				$index = 0;
+			break;
+			case 'proxy':
+				$index = 1;
+			break;
+			case 'update':
+				$index = 2;
+			break;
+			case 'edit':
+				$index = 3;
+			break;
+			default:
+				$index = 0;
+			break;
 		}
 
-		$configured = Component::params('com_members')->get($name);
+		$configured = Component::params('com_projects')->get($name);
 
 		$default = str_pad($default, 4, '-');
 
@@ -252,12 +262,20 @@ class Field extends Relational
 
 		switch ($key)
 		{
-			case 'R': $val = self::STATE_REQUIRED; break;
-			case 'O': $val = self::STATE_OPTIONAL; break;
-			case 'U': $val = self::STATE_READONLY; break;
+			case 'R':
+				$val = self::STATE_REQUIRED;
+			break;
+			case 'O':
+				$val = self::STATE_OPTIONAL;
+			break;
+			case 'U':
+				$val = self::STATE_READONLY;
+			break;
 			case 'H':
 			case '-':
-			default : $val = self::STATE_HIDDEN; break;
+			default :
+				$val = self::STATE_HIDDEN;
+			break;
 		}
 
 		return $val;

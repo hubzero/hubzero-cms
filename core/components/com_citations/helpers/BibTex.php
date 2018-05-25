@@ -306,7 +306,7 @@ class Structures_BibTex
 	}
 
 	/**
-	 * Parses what is stored in content and clears the content if the parsing is successfull.
+	 * Parses what is stored in content and clears the content if the parsing is successful.
 	 *
 	 * @access public
 	 * @return boolean true on success and Exception if there was a problem
@@ -406,10 +406,10 @@ class Structures_BibTex
 				$cites[] = $entry['cite'];
 			}
 			$unique = array_unique($cites);
-			if (sizeof($cites) != sizeof($unique))
+			if (count($cites) != count($unique))
 			{ //Some values have not been unique!
 				$notuniques = array();
-				for ($i = 0; $i < sizeof($cites); $i++)
+				for ($i = 0; $i < count($cites); $i++)
 				{
 					if (isset($unique[$i]) && '' == $unique[$i])
 					{
@@ -774,7 +774,7 @@ class Structures_BibTex
 		$authorarray = array();
 		$authorarray = preg_split('# and #', $entry);
 
-		for ($i = 0; $i < sizeof($authorarray); $i++)
+		for ($i = 0; $i < count($authorarray); $i++)
 		{
 			$author = trim($authorarray[$i]);
 			/*The first version of how an author could be written (First von Last)
@@ -788,7 +788,7 @@ class Structures_BibTex
 				$tmparray = array();
 				//$tmparray = explode(' ', $author);
 				$tmparray = preg_split('# |~#', $author);
-				$size     = sizeof($tmparray);
+				$size     = count($tmparray);
 				if (1 == $size)
 				{ //There is only a last
 					$last = $tmparray[0];
@@ -882,7 +882,7 @@ class Structures_BibTex
 				//The first entry must contain von and last
 				$vonlastarray = array();
 				$vonlastarray = explode(' ', $tmparray[0]);
-				$size         = sizeof($vonlastarray);
+				$size         = count($vonlastarray);
 				if (1==$size)
 				{ //Only one entry->got to be the last
 					$last = $vonlastarray[0];
@@ -933,12 +933,12 @@ class Structures_BibTex
 					$last .= ' '.$vonlastarray[$size-1];
 				}
 				//Now we check if it is version three (three entries in the array (two commas)
-				if (3==sizeof($tmparray))
+				if (3 == count($tmparray))
 				{
 					$jr = $tmparray[1];
 				}
 				//Everything in the last entry is first
-				$first = $tmparray[sizeof($tmparray)-1];
+				$first = $tmparray[count($tmparray)-1];
 			}
 			$authorarray[$i] = array('first'=>trim($first), 'von'=>trim($von), 'last'=>trim($last), 'jr'=>trim($jr));
 		}
@@ -1124,7 +1124,7 @@ class Structures_BibTex
 	 */
 	public function hasWarning()
 	{
-		if (sizeof($this->warnings) > 0)
+		if (count($this->warnings) > 0)
 		{
 			return true;
 		}
@@ -1142,7 +1142,7 @@ class Structures_BibTex
 	 */
 	public function amount()
 	{
-		return sizeof($this->data);
+		return count($this->data);
 	}
 
 	/**
@@ -1351,7 +1351,7 @@ class Structures_BibTex
 			}
 			else
 			{
-				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry, 1));
+				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', $entry);
 			}
 		}
 		$ret .= '}';
@@ -1461,7 +1461,7 @@ class Structures_BibTex
 			}
 			else
 			{
-				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', print_r($entry, 1));
+				$this->_generateWarning('WARNING_LINE_WAS_NOT_CONVERTED', '', $entry);
 			}
 		}
 		$ret  .= "</table>";

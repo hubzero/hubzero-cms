@@ -761,8 +761,10 @@ class Attachments extends SiteController
 		{
 			$association = Association::oneByRelationship($pid, $id);
 			$association->destroy();
-			return $this->displayTask($pid);	
+
+			return $this->displayTask($pid);
 		}
+
 		// Check for stored file
 		if ($resource->get('path') != '')
 		{

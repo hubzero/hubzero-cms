@@ -758,7 +758,7 @@ class Item extends Base
 		{
 			if (!isset($collectibles))
 			{
-				// Include the avilable collectibles
+				// Include the available collectibles
 				foreach (glob(__DIR__ . DS . 'item' . DS . '*.php') as $collectible)
 				{
 					require_once $collectible;

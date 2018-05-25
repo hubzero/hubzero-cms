@@ -37,6 +37,7 @@ use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Comment;
 use Components\Support\Models\Tags;
+use Components\Support\Models\Query;
 use Components\Support\Models\QueryFolder;
 use Components\Support\Models\Attachment;
 use Components\Support\Models\Watching;
@@ -405,7 +406,7 @@ class Tickets extends AdminController
 		$comment = Comment::blank();
 		$comment->set('ticket', $id);
 
-		// Check if changes were made inbetween the time the comment was started and posted
+		// Check if changes were made wthin the time the comment was started and posted
 		if ($id)
 		{
 			$started = Request::getVar('started', Date::toSql(), 'post');

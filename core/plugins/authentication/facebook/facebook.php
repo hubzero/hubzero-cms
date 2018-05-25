@@ -249,7 +249,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzal->email = $email;
+			$hzal->set('email', $email);
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -257,7 +257,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $fullname;
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id);
 
@@ -361,8 +361,8 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $id);
-				$hzal->user_id = User::get('id');
-				$hzal->email   = $email;
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', $email);
 				$hzal->update();
 			}
 		}

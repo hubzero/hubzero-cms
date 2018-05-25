@@ -151,7 +151,7 @@ class Oauth extends SiteController
 	}
 
 	/**
-	 * Retreive Token Info
+	 * Retrieve Token Info
 	 * 
 	 * @return  void
 	 */

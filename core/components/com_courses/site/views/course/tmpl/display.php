@@ -73,6 +73,15 @@ $this->css('course.css')
 	</div>
 </header>
 
+<?php if ($this->course->access('edit', 'course') && $this->course->get('state') != 1) { ?>
+	<div class="manager-options draft">
+		<a class="icon-edit btn btn-secondary btn-success" href="<?php echo Route::url($this->course->link() . '&task=publish'); ?>">
+			<?php echo Lang::txt('COM_COURSES_PUBLISH'); ?>
+		</a>
+		<span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_STATE_DRAFT'); ?></strong></span>
+	</div>
+<?php } ?>
+
 <section class="course section intro<?php echo ($this->course->get('logo')) ? ' with-identity' : ''; ?>">
 	<div class="section-inner">
 		<div class="subject">

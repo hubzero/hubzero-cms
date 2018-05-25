@@ -34,6 +34,7 @@ namespace Components\Projects\Models\Tool;
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
+use Lang;
 
 /**
  * Project Tool Log model
@@ -43,21 +44,21 @@ class Log extends Model
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolLog';
 
 	/**
 	 * Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	public $config = NULL;
+	public $config = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -69,10 +70,10 @@ class Log extends Model
 	/**
 	 * Returns a reference to a log model
 	 *
-	 * @param      mixed $oid object ID
-	 * @return     object Todo
+	 * @param   mixed  $oid  object ID
+	 * @return  object
 	 */
-	static function &getInstance($oid=null)
+	public static function &getInstance($oid=null)
 	{
 		static $instances;
 
@@ -105,9 +106,9 @@ class Log extends Model
 	/**
 	 * Update Parent Name
 	 *
-	 * @param      integer $id
-	 * @param      string $name
-	 * @return     boolean
+	 * @param   integer  $id
+	 * @param   string   $name
+	 * @return  boolean
 	 */
 	public function updateParentName($id=null, $name=null)
 	{
@@ -121,8 +122,8 @@ class Log extends Model
 	/**
 	 * getLastUpdate
 	 *
-	 * @param      string $name
-	 * @return     object
+	 * @param   boolean  $statusChange
+	 * @return  object
 	 */
 	public function getLastUpdate($statusChange = false)
 	{
@@ -138,8 +139,8 @@ class Log extends Model
 	 * Get item history
 	 *
 	 *
-	 * @param      array $filters
-	 * @return     object list
+	 * @param   array   $filters
+	 * @return  object  list
 	 */
 	public function getHistory($filters = array())
 	{
@@ -154,9 +155,9 @@ class Log extends Model
 	/**
 	 * Determine changes
 	 *
-	 * @param      object $old  Tool model
-	 * @param      object $new  Tool model
-	 * @return     string
+	 * @param   object  $old  Tool model
+	 * @param   object  $new  Tool model
+	 * @return  string
 	 */
 	public function whatChanged($old, $new)
 	{
@@ -208,7 +209,8 @@ class Log extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function actor($property=null)
 	{
@@ -223,4 +225,3 @@ class Log extends Model
 		return $this->_actor;
 	}
 }
-

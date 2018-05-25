@@ -276,7 +276,7 @@ endif;
 			</fieldset>
 
 			<?php // We need to make a separate space for the configuration
-			      // so that those fields always show to those wih permissions ?>
+			      // so that those fields always show to those with permissions ?>
 			<?php if ( User::authorise('core.admin')   ):  ?>
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'), 'configure-sliders'); ?>
 				<fieldset class="panelform">
@@ -328,7 +328,7 @@ endif;
 		</div>
 	</div>
 
-	<?php if (User::authorise('core.admin')): ?>
+	<?php if (User::authorise('core.manage')): ?>
 		<div class="width-100">
 			<?php //echo Html::sliders('start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 

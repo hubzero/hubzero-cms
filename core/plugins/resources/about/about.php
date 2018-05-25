@@ -33,6 +33,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Tags\Models\Tag;
+use Components\Tags\Models\Objct;
+
 /**
  * Resources Plugin class for about tab
  */
@@ -99,12 +102,31 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
+			$query = Tag::all();
+
+			$t = $query->getTableName();
+			$o = Objct::blank()->getTableName();
+
+			$query->select($t . '.*')
+				->join($o, $t . '.id', $o . '.tagid')
+				->where($o . '.label', '!=', 'badge')
+				->whereEquals($o . '.tbl', 'resources')
+				->whereEquals($o . '.objectid', $model->get('id'));
+
+			if (!$model->access('edit'))
+			{
+				$query->whereEquals($t . '.admin', 0);
+			}
+
+			$tags = $query->rows();
+
 			// Instantiate a view
 			$view = $this->view('default', 'index');
 			$view->option   = $option;
 			$view->model    = $model;
 			$view->database = App::get('db');
 			$view->plugin   = $this->params;
+			$view->tags     = $tags;
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();

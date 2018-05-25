@@ -15,14 +15,14 @@
 
 		initialize: function()
 		{
-			this.folderframe	= $('#folderframe');
-			this.folderpath		= $('#folderpath');
+			this.folderframe = $('#folderframe');
+			this.folderpath  = $('#folderpath');
 
-			this.updatepaths	= $('input.update-folder');
+			this.updatepaths = $('input.update-folder');
 
-			this.frame		= window.frames['folderframe'];
-			this.frameurl	= this.frame.location.href;
-			//this.frameurl   = window.frames['folderframe'].location.href;
+			this.frame    = window.frames['folderframe'];
+			this.frameurl = this.frame.location.href;
+			//this.frameurl = window.frames['folderframe'].location.href;
 
 			var self = this;
 			$('#media-tree').find('a').on('click', function(e){
@@ -38,20 +38,7 @@
 					window.frames[target].location.href = node.attr('href');
 				}
 			});
-			/*this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../core/assets/images/mootree.gif', onClick:
-					function(node){
-						target = node.data.target != null ? node.data.target : '_self';
 
-						// Get the current URL.
-						uri = this._getUriObject(this.frameurl);
-						current = uri.file+'?'+uri.query;
-
-						if (current != 'undefined?undefined' && current != encodeURI(node.data.url)) {
-							window.frames[target].location.href = node.data.url;
-						}
-					}.bind(this)
-				},{ text: '', open: true, data: { url: 'index.php?option=com_media&view=mediaList&tmpl=component', target: 'folderframe'}});
-			this.tree.adopt('media-tree');*/
 			this.tree = $('#media-tree').treeview({
 				collapsed: true
 			});
@@ -74,6 +61,7 @@
 			this.frameurl = this.frame.location.href;
 
 			var folder = this.getFolder();
+
 			if (folder) {
 				this.updatepaths.each(function(i, path){ path.value =folder; });
 				this.folderpath.value = basepath+'/'+folder;
@@ -89,9 +77,10 @@
 				this.tree.select(node, true);
 			}
 
-			$(viewstyle).addClass('active');
+			//$(viewstyle).addClass('active');
 
-			a = this._getUriObject($('#uploadForm').attr('action'));
+			//console.log($('#uploadForm[action]'));
+			//a = this._getUriObject($('#uploadForm[action]'));
 			/*q = new Hash(this._getQueryObject(a.query));
 			q.set('folder', folder);
 			var query = [];
@@ -99,7 +88,8 @@
 				if (v != null) {
 					this.push(k+'='+v);
 				}
-			}, query);*/
+			}, query);
+
 			q = this._getQueryObject(a.query);
 			q.folder = folder;
 			var query = [];
@@ -115,6 +105,7 @@
 			} else {
 				$('#uploadForm').attr('action', a.scheme+'://'+a.domain+a.path+'?'+a.query);
 			}
+			*/
 		},
 
 		oncreatefolder: function()
@@ -193,7 +184,7 @@
 			return rs;
 		},
 
-		_getUriObject: function(u){
+		_getUriObject: function(u) {
 			var bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
 			var barts = null;
 			if (bits) {
@@ -207,6 +198,34 @@
 			return (barts)
 				? barts //.associate(['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'])
 				: null;
+		},
+
+		delete: function()
+		{
+			var self = this;
+			$("#toolbar-delete").click(function() {
+				$("#folderframe").contents().find(".manager input[name=folder]").each(function() {
+					$("form[name=adminForm] input[name=folder]").val($(this).val());
+					return;
+				});
+				var clicked = [];
+				$("#folderframe").contents().find(".imginfoBorder input[type=checkbox]").each(function() {
+					if ($(this).is(":checked")) {
+						clicked.push($(this).attr("value"));
+					}
+					return;
+				});
+				var count = 0;
+				var input = $("form[name=adminForm] input[name=task]");
+				clicked.forEach(function(element) {
+					var cb = $("<input type='hidden' name='rm[]' id='cb" + count + "' value='" + clicked[count] + "' />");
+					input.append(cb);
+					count++;
+					return;
+				});
+				Joomla.submitbutton('delete');
+			});
+			return;
 		}
 	};
 })($);
@@ -217,4 +236,5 @@ jQuery(document).ready(function($){
 	MediaManager.trace = 'start';
 	document.updateUploader = function() { MediaManager.onloadframe(); };
 	MediaManager.onloadframe();
+	MediaManager.delete();
 });

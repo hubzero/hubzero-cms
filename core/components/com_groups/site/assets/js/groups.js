@@ -36,7 +36,7 @@ HUB.Groups = {
 
 	general: function()
 	{
-		// group availablity checker
+		// group availability checker
 		HUB.Groups.groupIdAvailability();
 
 		// group menu alert fixer
@@ -415,7 +415,7 @@ HUB.Groups = {
 			}
 		}
 
-		// jquery case insensitve search
+		// jquery case insensitive search
 		jQuery.expr[':'].caseInsensitiveContains = function(a,i,m) {
 			return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
 		};

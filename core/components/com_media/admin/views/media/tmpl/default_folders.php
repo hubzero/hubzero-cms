@@ -1,16 +1,54 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
 ?>
 <ul <?php echo $this->folders_id; ?>>
-	<?php foreach ($this->folders['children'] as $folder) : ?>
-		<li id="<?php echo $folder['data']->relative; ?>"><a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $folder['data']->relative); ?>" target="folderframe"><?php echo $folder['data']->name; ?></a><?php echo $this->getFolderLevel($folder); ?></li>
+	<?php foreach ($this->folderTree as $folder) : ?>
+		<li id="<?php echo $this->escape($folder['name']); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>" target="folderframe">
+				<?php echo $this->escape($folder['name']); ?>
+			</a>
+			<?php
+			if (isset($folder['children']) && count($folder['children'])) :
+				$temp = $this->folderTree;
+
+				$this->folderTree = $folder['children'];
+
+				echo $this->loadTemplate('folders');
+
+				$this->folderTree = $temp;
+			endif;
+			?>
+		</li>
 	<?php endforeach; ?>
 </ul>

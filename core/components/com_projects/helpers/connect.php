@@ -38,6 +38,12 @@ use Google_Service_Drive_Permission;
 use Google_Service_Oauth2;
 use Google_Http_Request;
 use Hubzero\Base\Obj;
+use Request;
+use Plugin;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once __DIR__ . DS . 'remote' . DS . 'google.php';
 
@@ -888,7 +894,7 @@ class Connect extends Obj
 			$dir = dirname($fpath) != '.' ? dirname($fpath) : '';
 			$name = basename($fpath);
 
-			// Get file extention
+			// Get file extension
 			$parts = explode('.', $name);
 			$ext   = count($parts) > 1 ? array_pop($parts) : '';
 

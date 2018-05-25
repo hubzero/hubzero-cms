@@ -835,7 +835,7 @@ class Profiles extends SiteController
 		{
 			App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 
-			// Offer explaination and eternal redemption to the user, instead of leaving them high and dry
+			// Offer explanation and eternal redemption to the user, instead of leaving them high and dry
 			/*
 			$this->view
 				->set('title', Lang::txt('COM_MEMBERS_REGISTER_UNCONFIRMED'))
@@ -1054,7 +1054,12 @@ class Profiles extends SiteController
 
 		$passrules = false;
 
-		if (!\Hubzero\User\Password::passwordMatches($profile->get('id'), $oldpass, true))
+		// Check if they have a previously set pass
+		// If not, then they created an account via a 3rd-party
+		// authenticator and are setting a new local password
+		$hzup = \Hubzero\User\Password::getInstance($profile->get('id'));
+
+		if (($hzup && !empty($hzup->passhash)) && !\Hubzero\User\Password::passwordMatches($profile->get('id'), $oldpass, true))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_PASS_INCORRECT'));
 		}
@@ -1066,7 +1071,7 @@ class Profiles extends SiteController
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
 		}
-		elseif ($oldpass == $newpass)
+		elseif (($hzup && !empty($hzup->passhash)) && $oldpass == $newpass)
 		{
 			// make sure the current password and new password are not the same
 			// this should really be done in the password rules validation step
@@ -1479,7 +1484,7 @@ class Profiles extends SiteController
 			->ordered()
 			->rows();
 
-		// Ouput HTML
+		// Output HTML
 		$this->view
 			->set('title', $title)
 			->set('profile', $profile)

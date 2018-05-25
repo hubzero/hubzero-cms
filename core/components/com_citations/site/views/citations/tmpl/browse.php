@@ -229,11 +229,11 @@ if ($label == 'none') {
 												echo $cite->citationDetails($this->openurl);
 											}
 											?>
-											<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+											<?php if ($this->config->get("citation_show_badges", "no") == "yes") : ?>
 												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>
 											<?php endif; ?>
 
-											<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+											<?php if ($this->config->get("citation_show_tags", "no") == "yes") : ?>
 												<?php echo \Components\Citations\Helpers\Format::citationTags($cite); ?>
 											<?php endif; ?>
 										</div>
@@ -292,9 +292,9 @@ if ($label == 'none') {
 					<strong><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
 					<p><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
-					<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('COM_CITATIONS_ENDNOTE'); ?>" />
+					<input type="submit" name="download" class="download" value="<?php echo Lang::txt('COM_CITATIONS_ENDNOTE'); ?>" />
 					|
-					<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('COM_CITATIONS_BIBTEX'); ?>" />
+					<input type="submit" name="download" class="download" value="<?php echo Lang::txt('COM_CITATIONS_BIBTEX'); ?>" />
 				</fieldset>
 			<?php endif; ?>
 

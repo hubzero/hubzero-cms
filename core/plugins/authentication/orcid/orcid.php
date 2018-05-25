@@ -168,7 +168,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzal->email = $orcid->email() ? $orcid->email() : null;
+			$hzal->set('email', $orcid->email() ? $orcid->email() : null);
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -176,7 +176,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $orcid->fullName();
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id);
 
@@ -271,8 +271,8 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			{
 				// Create the hubzero auth link
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'orcid', null, $username);
-				$hzal->user_id = User::get('id');
-				$hzal->email   = $orcid->email();
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', $orcid->email());
 				$hzal->update();
 			}
 		}

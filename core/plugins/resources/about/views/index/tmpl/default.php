@@ -306,17 +306,22 @@ $maintext = $this->model->description;
 			</div>
 		<?php } ?>
 
-		<?php if ($this->model->params->get('show_assocs')) { ?>
-			<?php
-			$tagger = new \Components\Resources\Helpers\Tags($this->model->id);
-			if ($tags = $tagger->render('cloud', ($this->model->access('edit') ? array() : array('admin' => 0)))) { ?>
+		<?php if ($this->model->params->get('show_assocs')): ?>
+			<?php if ($this->tags->count()): ?>
 				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">
 					<?php
-					echo $tags;
+					$view = new Hubzero\Component\View(array(
+						'base_path' => Component::path('com_tags') . '/site',
+						'name'      => 'tags',
+						'layout'    => '_cloud'
+					));
+					$view->set('config', Component::params('com_tags'));
+					$view->set('tags', $this->tags);
+					$view->display();
 					?>
 				</div>
-			<?php } ?>
-		<?php } ?>
+			<?php endif; ?>
+		<?php endif; ?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->

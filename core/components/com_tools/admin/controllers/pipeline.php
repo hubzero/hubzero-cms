@@ -68,7 +68,7 @@ class Pipeline extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
+		$filters = array(
 			// Get filters
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
@@ -112,19 +112,23 @@ class Pipeline extends AdminController
 			)
 		);
 
-		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+		$filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
 		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
 
 		// Get a record count
-		$this->view->total = Tool::getToolCount($this->view->filters, true);
+		$total = Tool::getToolCount($filters, true);
 
 		// Get records
-		$this->view->rows = Tool::getToolSummaries($this->view->filters, true);
+		$rows = Tool::getToolSummaries($filters, true);
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('total', $total)
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -174,12 +178,8 @@ class Pipeline extends AdminController
 		// Do we have an ID?
 		if (!$fields['id'])
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_TOOLS_ERROR_MISSING_ID'),
-				'error'
-			);
-			return;
+			Notify::warning(Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));
+			return $this->cancelTask();
 		}
 
 		$row = Tool::getInstance(intval($fields['id']));
@@ -192,10 +192,12 @@ class Pipeline extends AdminController
 		}
 
 		$row->title = trim($fields['title']);
+		$row->ticketid = intval($fields['ticketid']);
+		$row->state = intval($fields['state']);
 
 		if (!$row->title)
 		{
-			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'), 'error');
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'));
 			return $this->editTask($row);
 		}
 
@@ -205,15 +207,10 @@ class Pipeline extends AdminController
 
 		if ($this->getTask() == 'apply')
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false)
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
+		$this->cancelTask();
 	}
 
 	/**
@@ -247,7 +244,7 @@ class Pipeline extends AdminController
 		$config = \Component::params($this->_option);
 
 		// Get all tool publications without new DOI
-		$this->database->setQuery("SELECT * FROM `#__doi_mapping` WHERE doi='' OR doi IS NULL ");
+		$this->database->setQuery("SELECT * FROM `#__doi_mapping` WHERE doi='' OR doi IS NULL");
 		$rows = $this->database->loadObjectList();
 
 		if ($rows)
@@ -317,10 +314,13 @@ class Pipeline extends AdminController
 				}
 				else
 				{
-					print_r($objDOI->getError());
-					echo '<br />';
-					print_r($metadata);
-					echo '<br />';
+					$o = $objDOI->getError() . '<br />';
+					foreach ($metadata as $key => $val)
+					{
+						$o .= $key . ': ' . $val . '<br />';
+					}
+
+					echo $o;
 				}
 
 				$i++;
@@ -336,36 +336,5 @@ class Pipeline extends AdminController
 			}
 		}
 		echo '<p>' . Lang::txt('COM_TOOLS_REGISTERED_DOIS', count($created), count($failed)) . '</p>';
-		return;
-	}
-
-	/**
-	 * Temp function to ensure #__doi_mapping table is updated
-	 *
-	 * @return  boolean
-	 */
-	public function setupdoiTask()
-	{
-		$fields = $this->database->getTableFields(Config::get('dbprefix') . 'doi_mapping');
-
-		if (!array_key_exists('versionid', $fields[Config::get('dbprefix') . 'doi_mapping']))
-		{
-			$this->database->setQuery("ALTER TABLE `#__doi_mapping` ADD `versionid` int(11) default '0'");
-			if (!$this->database->query())
-			{
-				echo $this->database->getErrorMsg();
-				return false;
-			}
-		}
-		if (!array_key_exists('doi', $fields[Config::get('dbprefix') . 'doi_mapping']))
-		{
-			$this->database->setQuery("ALTER TABLE `#__doi_mapping` ADD `doi` varchar(50) default NULL");
-			if (!$this->database->query())
-			{
-				echo $this->database->getErrorMsg();
-				return false;
-			}
-		}
-		return true;
 	}
 }

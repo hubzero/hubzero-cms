@@ -708,7 +708,7 @@ class Google extends Obj
 					{
 						$title = Filesystem::clean($doc['title']);
 
-						// Get file extention
+						// Get file extension
 						$ext = Filesystem::extension($title);
 
 						if ($converted)
@@ -932,10 +932,6 @@ class Google extends Obj
 
 			/*
 			$data = $apiService->files->listFiles($parameters);
-			if (\User::get('username') == 'zooley')
-			{
-				var_dump($data->getFiles()); die();
-			}
 			if (!empty($data['items']))
 			{
 				$lpath = $path ? $path : '';
@@ -979,20 +975,16 @@ class Google extends Obj
 	 */
 	public static function getParentID($parents = array())
 	{
-		if (\User::get('username') == 'zooley')
+		if (!empty($parents))
 		{
-			if (!empty($parents))
+			if (is_object($parents[0]))
 			{
 				return $parents[0]->getId();
 			}
-		}
-		else
-		{
-		if (!empty($parents))
-		{
+
 			return $parents[0]['id'];
 		}
-	}
+
 		return null;
 	}
 
@@ -1383,7 +1375,7 @@ class Google extends Obj
 	 */
 	public static function getImportFilename($name = '', $importExt = '')
 	{
-		// Get file extention
+		// Get file extension
 		$parts = explode('.', $name);
 		$ext   = count($parts) > 1 ? array_pop($parts) : '';
 
@@ -1406,7 +1398,7 @@ class Google extends Obj
 	{
 		$ext = '';
 
-		// Get file extention
+		// Get file extension
 		$parts = explode('.', $file);
 		$ext   = count($parts) > 1 ? array_pop($parts) : '';
 

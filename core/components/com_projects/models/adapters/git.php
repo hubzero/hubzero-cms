@@ -34,6 +34,9 @@ namespace Components\Projects\Models\Adapters;
 
 use Components\Projects\Models;
 use Components\Projects\Helpers;
+use Component;
+use Filesystem;
+use Lang;
 
 // Get git helper
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'githelper.php';

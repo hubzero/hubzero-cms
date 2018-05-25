@@ -511,7 +511,7 @@ class Warehouse extends \Hubzero\Base\Obj
 	 * Check if coupon exists
 	 *
 	 * @param  	string		coupon code
-	 * @return 	int 		coupon ID on sucess, null if no match found
+	 * @return 	int 		coupon ID on success, null if no match found
 	 */
 	public function couponExists($code)
 	{
@@ -696,7 +696,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
 			if ($return == 'count')
 			{
-				return(sizeOf($allProducts));
+				return(count($allProducts));
 			}
 
 			return $allProducts;
@@ -867,7 +867,7 @@ class Warehouse extends \Hubzero\Base\Obj
 				}
 			}
 
-			if (sizeof($res) < 1)
+			if (count($res) < 1)
 			{
 				$returnObject->status = 'error';
 				$returnObject->msg = 'out of stock';

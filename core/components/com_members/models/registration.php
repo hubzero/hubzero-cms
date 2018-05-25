@@ -323,7 +323,7 @@ class Registration
 	}
 
 	/**
-	 * Retrieve a registraion value
+	 * Retrieve a registration value
 	 *
 	 * @param   string  $key
 	 * @return  mixed
@@ -339,7 +339,7 @@ class Registration
 	}
 
 	/**
-	 * Set a registraion value
+	 * Set a registration value
 	 *
 	 * @param   string  $key
 	 * @param   mixed   $value
@@ -458,15 +458,15 @@ class Registration
 		$this->_missing = array();
 		$this->_invalid = array();
 
-		$registrationUsername = $this->registrationField('registrationUsername','RROO',$task);
-		$registrationPassword = $this->registrationField('registrationPassword','RRHH',$task);
-		$registrationConfirmPassword = $this->registrationField('registrationConfirmPassword','RRHH',$task);
-		$registrationFullname = $this->registrationField('registrationFullname','RRRR',$task);
-		$registrationEmail = $this->registrationField('registrationEmail','RRRR',$task);
-		$registrationConfirmEmail = $this->registrationField('registrationConfirmEmail','RRRR',$task);
-		$registrationOptIn = $this->registrationField('registrationOptIn','HHHH',$task);
-		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA','HHHH',$task);
-		$registrationTOU = $this->registrationField('registrationTOU','HHHH',$task);
+		$registrationUsername = $this->registrationField('registrationUsername', 'RROO', $task);
+		$registrationPassword = $this->registrationField('registrationPassword', 'RRHH', $task);
+		$registrationConfirmPassword = $this->registrationField('registrationConfirmPassword', 'RRHH', $task);
+		$registrationFullname = $this->registrationField('registrationFullname', 'RRRR', $task);
+		$registrationEmail = $this->registrationField('registrationEmail', 'RRRR', $task);
+		$registrationConfirmEmail = $this->registrationField('registrationConfirmEmail', 'RRRR', $task);
+		$registrationOptIn = $this->registrationField('registrationOptIn', 'HHHH', $task);
+		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA', 'HHHH', $task);
+		$registrationTOU = $this->registrationField('registrationTOU', 'HHHH', $task);
 
 		if ($task == 'update')
 		{
@@ -646,7 +646,7 @@ class Registration
 					}
 					if (count($bits) >= 1)
 					{
-						$middleName = implode(' ',$bits);
+						$middleName = implode(' ', $bits);
 					}
 				}
 
@@ -765,7 +765,7 @@ class Registration
 
 		if ($registrationCAPTCHA == REG_REQUIRED)
 		{
-			$botcheck = Request::getVar('botcheck','');
+			$botcheck = Request::getVar('botcheck', '');
 			if ($botcheck)
 			{
 				$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
@@ -1031,7 +1031,7 @@ class Registration
 			return $login;
 		}
 
-		// generate username by simply appending a sequential number to local part of an address until there is an avilable username available
+		// generate username by simply appending a sequential number to local part of an address until there is an available username available
 		for ($i = 1; true; $i++)
 		{
 			// Make sure login username is no longer than max allowed by DB

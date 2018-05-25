@@ -33,6 +33,8 @@ namespace Components\Projects\Models;
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'comment.php';
 
 use Hubzero\Base\Model;
+use Date;
+use Lang;
 
 /**
  * Comments model class for a project

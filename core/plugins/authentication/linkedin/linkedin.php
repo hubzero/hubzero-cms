@@ -272,7 +272,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzal->email = (string) $profile->{'email-address'};
+			$hzal->set('email', (string) $profile->{'email-address'});
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -280,7 +280,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $full_name;
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id);
 
@@ -402,8 +402,8 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'linkedin', null, $username);
-				$hzal->user_id = User::get('id');
-				$hzal->email = (string) $profile->{'email-address'};
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', (string) $profile->{'email-address'});
 				$hzal->update();
 			}
 		}

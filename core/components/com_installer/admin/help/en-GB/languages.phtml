@@ -1,3 +1,7 @@
+<?php
+// No direct access.
+defined('_HZEXEC_') or die();
+?>
 <article>
 	<h1>Extension Manager: Languages</h1>
 
@@ -15,9 +19,9 @@
 		<h2><span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
 		<ul>
 			<li><b>Checkbox</b>. Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
-			<li><b>Name.</b> The name of the Langauge.</li>
-			<li><b>Version.</b> The version of the Langauge file. This is the HUBzero version it was built for followed by a fullstop and then the subversion of the language pack for that HUBzero version (starting at 1). For example a French translation for 2.5.9 would be: 2.5.9.1</li>
-			<li><b>Name.</b> The name of the Langauge.</li>
+			<li><b>Name.</b> The name of the Language.</li>
+			<li><b>Version.</b> The version of the Language file. This is the HUBzero version it was built for followed by a fullstop and then the subversion of the language pack for that HUBzero version (starting at 1). For example a French translation for 2.5.9 would be: 2.5.9.1</li>
+			<li><b>Name.</b> The name of the Language.</li>
 			<li><b>Type.</b> The extension type. This should always be package.</li>
 			<li><b>Details URL.</b> The update URL for the package.</li>
 			<li><b>ID</b>. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
@@ -64,7 +68,7 @@
 			<li><b>Discover.</b> Links to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Discover'); ?>" title="Help25:Extensions Extension Manager Discover">Discover Screen</a>.</li>
 			<li><b>Database.</b> Links to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Database'); ?>" title="Help25:Extensions Extension Manager Database">Database Screen</a>.</li>
 			<li><b>Warnings.</b> Links to the <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Extensions_Extension_Manager_Warnings'); ?>" title="Help25:Extensions Extension Manager Warnings">Warnings Screen</a>.</li>
-			<li><b>Install Langauges.</b> Links to the <strong class="selflink">Languages Screen</strong>.</li>
+			<li><b>Install Languages.</b> Links to the <strong class="selflink">Languages Screen</strong>.</li>
 		</ul>
 	</section>
 </article>

@@ -226,7 +226,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	{
 		$redirect = Request::current();
 
-		// do we have tmpl=componet in url?
+		// do we have tmpl=component in url?
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
 		if (Request::getVar('tmpl', '') == 'component')
 		{

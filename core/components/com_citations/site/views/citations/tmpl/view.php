@@ -45,7 +45,7 @@ $citation = $this->citation;
 $profile = User::getInstance($citation->uid);
 
 //get citation type
-$type = $this->type;
+$type = $this->citationType;
 
 //get citation sponsors
 $sponsors = $this->sponsors;
@@ -666,7 +666,7 @@ $area = Request::getVar('area', 'about');
 	$hubUrl = rtrim(Request::base(), '/');
 
 	//get the type of resource for coins
-	switch (strtolower($type[0]['type_title']))
+	switch (strtolower($type->type_title))
 	{
 		case 'book':
 		case 'book section':

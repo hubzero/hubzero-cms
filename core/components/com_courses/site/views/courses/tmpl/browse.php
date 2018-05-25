@@ -37,11 +37,11 @@ $this->css('browse.css');
 	<h2><?php echo $this->title; ?></h2>
 
 	<?php if ($this->config->get('access-create-course')) { ?>
-	<div id="content-header-extra">
-		<p>
-			<a class="add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo Lang::txt('COM_COURSES_CREATE_COURSE'); ?></a>
-		</p>
-	</div><!-- / #content-header-extra -->
+		<div id="content-header-extra">
+			<p>
+				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo Lang::txt('COM_COURSES_CREATE_COURSE'); ?></a>
+			</p>
+		</div><!-- / #content-header-extra -->
 	<?php } ?>
 </header>
 

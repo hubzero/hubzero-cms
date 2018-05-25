@@ -81,7 +81,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 			$plugins = Plugin::byType('user');
 			$xuser_order = false;
-			$joomla_order = false;
+			$hubzero_order = false;
 			$i = 0;
 
 			foreach ($plugins as $plugin)
@@ -93,23 +93,23 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 				if ($plugin->name == 'joomla' || $plugin->name == 'hubzero')
 				{
-					$joomla_order = $i;
+					$hubzero_order = $i;
 				}
 
 				$i++;
 			}
 
-			if ($joomla_order === false)
+			if ($hubzero_order === false)
 			{
-				return new Exception(Lang::txt('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'), 500);
+				throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
 			}
 
-			if ($xuser_order <= $joomla_order)
+			if ($xuser_order <= $hubzero_order)
 			{
-				return new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
+				throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
 			}
 
-			return new Exception(Lang::txt('E_JOOMLA_USER_PLUGIN_FAILED'), 500);
+			throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_FAILED'), 500);
 		}
 
 		// log login to auth log
@@ -239,7 +239,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 				if ($hzal)
 				{
-					$hzal->user_id = $xuser->get('id');
+					$hzal->set('user_id', $xuser->get('id'));
 					$hzal->update();
 				}
 			}

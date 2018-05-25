@@ -5,7 +5,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for setting access value on accounts that have invalid values (0)
  **/
-class Migration201609151104002ComMembers extends Base
+class Migration20160915110400ComMembers extends Base
 {
 	/**
 	 * Up

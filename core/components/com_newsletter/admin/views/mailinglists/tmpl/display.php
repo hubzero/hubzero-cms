@@ -57,7 +57,15 @@ if ($canDo->get('core.admin'))
 	Toolbar::preferences($this->option, '550');
 }
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+
+		<input type="submit" value="<?php echo Lang::txt('COM_NEWSLETTER_GO'); ?>" />
+		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+	</fieldset>
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -101,9 +109,11 @@ if ($canDo->get('core.admin'))
 							<?php echo $list->emails()->total(); ?>
 						</td>
 					</tr>
-				<?php $k++;
-					} ?>
-			<?php } else { ?>
+					<?php
+					$k++;
+				}
+				?>
+			<?php } else if (!$this->filters['search']) { ?>
 				<tr>
 					<td colspan="5">
 						<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_LISTS', "javascript:submitbutton('add');"); ?>
@@ -115,8 +125,10 @@ if ($canDo->get('core.admin'))
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="add" autocomplete="off" />
+	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

@@ -228,7 +228,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzal->email = $username . '@purdue.edu';
+			$hzal->set('email', $username . '@purdue.edu');
 
 			$response->auth_link = $hzal;
 			$response->type = 'pucas';
@@ -247,7 +247,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 				$response->fullname = ucwords(strtolower($name));
 			}
 
-			if (!empty($hzal->user_id))
+			if ($hzal->user_id)
 			{
 				$user = User::getInstance($hzal->user_id); // Bring this in line with the rest of the system
 
@@ -351,8 +351,8 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
-				$hzal->user_id = User::get('id');
-				$hzal->email   = phpCAS::getAttribute('email');
+				$hzal->set('user_id', User::get('id'));
+				$hzal->set('email', phpCAS::getAttribute('email'));
 				$hzal->update();
 			}
 		}

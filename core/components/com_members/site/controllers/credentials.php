@@ -180,7 +180,7 @@ class Credentials extends SiteController
 	}
 
 	/**
-	 * Processes intial reset password request
+	 * Processes initial reset password request
 	 *
 	 * @return  void
 	 */
@@ -484,7 +484,7 @@ class Credentials extends SiteController
 
 		// Get the token and user id from the verification process
 		$token   = User::getState('com_users.reset.token', null);
-		$id      = User::getState('com_users.reset.user',  null);
+		$id      = User::getState('com_users.reset.user', null);
 		$no_html = Request::getInt('no_html', 0);
 
 		// Check the token and user id
