@@ -87,6 +87,15 @@
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
   }
+  .btn {
+    text-transform: uppercase;
+    background-color: $white;
+    border: 2px solid $link-color;
+    color: $link-color;
+    &:hover {
+      border: 2px solid $link-hover;
+    }
+  }
   @include respond-at(800px) {
     @include grid-template(null, repeat(2, auto));
   }

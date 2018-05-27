@@ -152,6 +152,17 @@
   font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
 }
 
+.discover .btn {
+  text-transform: uppercase;
+  background-color: #fff;
+  border: 2px solid #6E9C39;
+  color: #6E9C39;
+}
+
+.discover .btn:hover {
+  border: 2px solid #393c3d;
+}
+
 @media only screen and (min-width: 800px) {
   .discover {
     display: grid;
