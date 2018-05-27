@@ -7,11 +7,13 @@
   color: $color;
   border: 2px solid $color;
   &:hover {
-    background-color: $color;
+    background-color: $link-hover;
+    border: 2px solid $link-hover;
     color: $white;
   }
   &.focus {
-    background-color: $color;
+    background-color: $link-hover;
+    border: 2px solid $link-hover;
     color: $white;
   }
 }
@@ -34,56 +36,105 @@ section {
 }
 //Mission Statement
 #mission {
+  @include bcg-img("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
+  // background-image: linear-gradient(to bottom, rgba(34, 43, 55, 0.8) 0%,rgba(34, 43, 55, 0.8) 100%), url("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
   h2 {
+    font-size: 1.5rem;
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 2em;
+    color: $white;
   }
 }
 .mission-statement {
   max-width: 54rem;
   margin: 0 auto;
+  border: 2px solid $white;
   h4 {
     font-family: 'Martel', serif;
     text-align: center;
     margin: 0 auto;
+    padding: 3em;
+    color: $white;
   }
 }
 
 //About
 #about {
+  h2 {
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: $link-color;
+  }
   p {
     max-width: 70rem;
     margin: 1em auto;
   }
 }
 
+//Postdoc and Contact Us
+#post-docs, #contact {
+  h2 {
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: $link-color;
+  }
+  h4 {
+    font-family: 'Martel', serif;
+    margin: 0 auto;
+    max-width: 55rem;
+    font-size: 1.3rem;
+    padding: 2em;
+  }
+}
 
 //Meet the Team and Board of Advisors
+#advisors {
+  .header {
+    margin-bottom: 3em;
+  }
+}
 .header {
   text-align: center;
+  h2 {
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: $link-color;
+  }
+  h4 {
+    font-family: 'Martel', serif;
+    margin: 0 auto;
+    max-width: 55rem;
+    font-size: 1.3rem;
+    padding: 2em;
+  }
   a {
     margin: 1em;
     transition: all 0.3s;
   }
-  .btn-teal {
-    @include aof-btn($teal);
-  }
-  .btn-green {
-    @include aof-btn($green);
-  }
-  .btn-dark-blue {
-    @include aof-btn($dark-blue);
-  }
-  .btn-blue {
-    @include aof-btn($med-blue);
-  }
-  .btn-pink {
-    @include aof-btn($pink);
+  // .btn-teal {
+  //   @include aof-btn($teal);
+  // }
+  // .btn-green {
+  //   @include aof-btn($green);
+  // }
+  // .btn-dark-blue {
+  //   @include aof-btn($dark-blue);
+  // }
+  // .btn-blue {
+  //   @include aof-btn($med-blue);
+  // }
+  // .btn-pink {
+  //   @include aof-btn($pink);
+  // }
+  .aof-btn {
+    @include aof-btn($link-color);
   }
   .aof-description-wrapper {
     position: relative;
     height: 10rem;
+    h4 {
+      padding: 0;
+    }
   }
   .aof-description {
     position: absolute;
@@ -142,9 +193,10 @@ section {
       display: block;
     }
     strong {
+      font-family: 'Martel', serif;
       font-weight: 400;
       display: block;
-      font-size: .8em;
+      font-size: 1.03rem;
     }
     &:before, &:after {
       content: '';
@@ -393,7 +445,8 @@ section {
   }
   &.active {
     .card-content {
-      background-color: lighten($color, 40%);
+      // background-color: lighten($color, 40%);
+      background-color: lighten($color, 55%);
     }
     .card-footer {
       background-color: lighten($color, 10%);
@@ -402,7 +455,7 @@ section {
 }
 
 .green {
-  @include card-color($green);
+  @include card-color($link-color);
 }
 
 .blue {

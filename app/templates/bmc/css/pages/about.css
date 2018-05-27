@@ -16,21 +16,39 @@ section {
   display: none;
 }
 
+#mission {
+  background: url("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 #mission h2 {
+  font-size: 1.5rem;
   text-transform: uppercase;
   text-align: center;
-  margin-bottom: 2em;
+  color: #fff;
 }
 
 .mission-statement {
   max-width: 54rem;
   margin: 0 auto;
+  border: 2px solid #fff;
 }
 
 .mission-statement h4 {
   font-family: 'Martel', serif;
   text-align: center;
   margin: 0 auto;
+  padding: 3em;
+  color: #fff;
+}
+
+#about h2 {
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  color: #6E9C39;
 }
 
 #about p {
@@ -38,8 +56,40 @@ section {
   margin: 1em auto;
 }
 
+#post-docs h2, #contact h2 {
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  color: #6E9C39;
+}
+
+#post-docs h4, #contact h4 {
+  font-family: 'Martel', serif;
+  margin: 0 auto;
+  max-width: 55rem;
+  font-size: 1.3rem;
+  padding: 2em;
+}
+
+#advisors .header {
+  margin-bottom: 3em;
+}
+
 .header {
   text-align: center;
+}
+
+.header h2 {
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  color: #6E9C39;
+}
+
+.header h4 {
+  font-family: 'Martel', serif;
+  margin: 0 auto;
+  max-width: 55rem;
+  font-size: 1.3rem;
+  padding: 2em;
 }
 
 .header a {
@@ -47,89 +97,31 @@ section {
   transition: all 0.3s;
 }
 
-.header .btn-teal {
+.header .aof-btn {
   background-color: #fff;
-  color: #007991;
-  border: 2px solid #007991;
+  color: #6E9C39;
+  border: 2px solid #6E9C39;
 }
 
-.header .btn-teal:hover {
-  background-color: #007991;
+.header .aof-btn:hover {
+  background-color: #393c3d;
+  border: 2px solid #393c3d;
   color: #fff;
 }
 
-.header .btn-teal.focus {
-  background-color: #007991;
-  color: #fff;
-}
-
-.header .btn-green {
-  background-color: #fff;
-  color: #84bf41;
-  border: 2px solid #84bf41;
-}
-
-.header .btn-green:hover {
-  background-color: #84bf41;
-  color: #fff;
-}
-
-.header .btn-green.focus {
-  background-color: #84bf41;
-  color: #fff;
-}
-
-.header .btn-dark-blue {
-  background-color: #fff;
-  color: #222b37;
-  border: 2px solid #222b37;
-}
-
-.header .btn-dark-blue:hover {
-  background-color: #222b37;
-  color: #fff;
-}
-
-.header .btn-dark-blue.focus {
-  background-color: #222b37;
-  color: #fff;
-}
-
-.header .btn-blue {
-  background-color: #fff;
-  color: #5f5980;
-  border: 2px solid #5f5980;
-}
-
-.header .btn-blue:hover {
-  background-color: #5f5980;
-  color: #fff;
-}
-
-.header .btn-blue.focus {
-  background-color: #5f5980;
-  color: #fff;
-}
-
-.header .btn-pink {
-  background-color: #fff;
-  color: #cb48b7;
-  border: 2px solid #cb48b7;
-}
-
-.header .btn-pink:hover {
-  background-color: #cb48b7;
-  color: #fff;
-}
-
-.header .btn-pink.focus {
-  background-color: #cb48b7;
+.header .aof-btn.focus {
+  background-color: #393c3d;
+  border: 2px solid #393c3d;
   color: #fff;
 }
 
 .header .aof-description-wrapper {
   position: relative;
   height: 10rem;
+}
+
+.header .aof-description-wrapper h4 {
+  padding: 0;
 }
 
 .header .aof-description {
@@ -194,9 +186,10 @@ section {
 }
 
 .card h2 strong {
+  font-family: 'Martel', serif;
   font-weight: 400;
   display: block;
-  font-size: .8em;
+  font-size: 1.03rem;
 }
 
 .card h2:before, .card h2:after {
@@ -397,64 +390,64 @@ section {
 }
 
 .green h2 {
-  background-color: #84bf41;
+  background-color: #6E9C39;
 }
 
 .green h2:after {
-  border-top-color: #84bf41;
-  border-right-color: #84bf41;
+  border-top-color: #6E9C39;
+  border-right-color: #6E9C39;
   border-bottom-color: transparent;
   border-left-color: transparent;
 }
 
 .green h2:before {
   border-top-color: transparent;
-  border-right-color: #354d1a;
-  border-bottom-color: #354d1a;
+  border-right-color: #1f2c10;
+  border-bottom-color: #1f2c10;
   border-left-color: transparent;
 }
 
 .green.active h2:before {
   border-top-color: transparent;
-  border-right-color: #84bf41;
-  border-bottom-color: #84bf41;
+  border-right-color: #6E9C39;
+  border-bottom-color: #6E9C39;
   border-left-color: transparent;
 }
 
 .green.active h2:after {
-  border-top-color: #354d1a;
-  border-right-color: #354d1a;
+  border-top-color: #1f2c10;
+  border-right-color: #1f2c10;
   border-bottom-color: transparent;
   border-left-color: transparent;
 }
 
 .green .btn-action {
-  background-color: #84bf41;
+  background-color: #6E9C39;
 }
 
 .green .btn-action:hover {
-  background-color: #4f7327;
+  background-color: #39511e;
 }
 
 .green .card-footer h4 {
-  color: #354d1a;
+  color: #1f2c10;
 }
 
 .green .card-footer a {
-  background-color: #4f7327;
+  background-color: #39511e;
   color: #fff;
 }
 
 .green .card-footer a:hover {
-  background-color: #010100;
+  background-color: black;
 }
 
 .green.active .card-content {
-  background-color: #e7f2da;
+  background-color: #f7fbf3;
 }
 
 .green.active .card-footer {
-  background-color: #9dcc67;
+  background-color: #88bd4b;
 }
 
 .blue h2 {
@@ -511,7 +504,7 @@ section {
 }
 
 .blue.active .card-content {
-  background-color: #cdcbda;
+  background-color: #f8f8fa;
 }
 
 .blue.active .card-footer {
@@ -572,7 +565,7 @@ section {
 }
 
 .teal.active .card-content {
-  background-color: #5ee4ff;
+  background-color: #abf1ff;
 }
 
 .teal.active .card-footer {
@@ -633,7 +626,7 @@ section {
 }
 
 .pink.active .card-content {
-  background-color: #f8e7f6;
+  background-color: white;
 }
 
 .pink.active .card-footer {
@@ -694,7 +687,7 @@ section {
 }
 
 .dark-blue.active .card-content {
-  background-color: #798fac;
+  background-color: #a8b6c9;
 }
 
 .dark-blue.active .card-footer {

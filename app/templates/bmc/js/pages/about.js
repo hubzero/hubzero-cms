@@ -60,10 +60,10 @@ $(document).ready(function() {
 
     if($btn.hasClass('team')) {
       $aofTeam.addClass('focus');
-      $('p').not($aofTeam).removeClass('focus');
+      $('div').not($aofTeam).removeClass('focus');
 
       if($card.hasClass('unfocus')) {
-        $card.removeClass('unfocus').addClass('focus');
+        $card.removeClass('green').removeClass('unfocus').addClass('dark-blue').addClass('focus');
       } else {
         //Do nothing
       }
@@ -71,65 +71,72 @@ $(document).ready(function() {
 
     if($btn.hasClass('pm')) {
       $aofBusiness.addClass('focus');
-      $('p').not($aofBusiness).removeClass('focus');
+      $('div').not($aofBusiness).removeClass('focus');
 
       if($business.hasClass('unfocus')) {
-        $business.removeClass('unfocus').addClass('focus');
-        $card.not($business).removeClass('focus').addClass('unfocus');
+        $business.removeClass('green').removeClass('unfocus').addClass('dark-blue').addClass('focus');
+        $card.not($business).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       } else {
-        $card.not($business).removeClass('focus').addClass('unfocus');
+        $card.not($business).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       }
     }
 
     if($btn.hasClass('ps')) {
       $aofPartners.addClass('focus');
-      $('p').not($aofPartners).removeClass('focus');
+      $('div').not($aofPartners).removeClass('focus');
 
       if($partners.hasClass('unfocus')) {
-        $partners.removeClass('unfocus').addClass('focus');
-        $card.not($partners).removeClass('focus').addClass('unfocus');
+        $partners.removeClass('green').removeClass('unfocus').addClass('dark-blue').addClass('focus');
+        $card.not($partners).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       } else {
-        $card.not($partners).removeClass('focus').addClass('unfocus');
+        $card.not($partners).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       }
     }
 
     if($btn.hasClass('pd')) {
       $aofFmn.addClass('focus');
-      $('p').not($aofFmn).removeClass('focus');
+      $('div').not($aofFmn).removeClass('focus');
 
       if($fmn.hasClass('unfocus')) {
-        $fmn.removeClass('unfocus').addClass('focus');
-        $card.not($fmn).removeClass('focus').addClass('unfocus');
+        $fmn.removeClass('green').removeClass('unfocus').addClass('dark-blue').addClass('focus');
+        $card.not($fmn).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       } else {
-        $card.not($fmn).removeClass('focus').addClass('unfocus');
+        $card.not($fmn).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       }
     }
 
     if($btn.hasClass('ci')) {
       $aofSite.addClass('focus');
-      $('p').not($aofSite).removeClass('focus');
+      $('div').not($aofSite).removeClass('focus');
 
       if($site.hasClass('unfocus')) {
-        $site.removeClass('unfocus').addClass('focus');
-        $card.not($site).removeClass('focus').addClass('unfocus');
+        $site.removeClass('green').removeClass('unfocus').addClass('dark-blue').addClass('focus');
+        $card.not($site).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       } else {
-        $card.not($site).removeClass('focus').addClass('unfocus');
+        $card.not($site).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       }
     }
 
     if($btn.hasClass('et')) {
       $aofEvaluation.addClass('focus');
-      $('p').not($aofEvaluation).removeClass('focus');
+      $('div').not($aofEvaluation).removeClass('focus');
 
       if($evaluation.hasClass('unfocus')) {
-        $evaluation.removeClass('unfocus').addClass('focus');
-        $card.not($evaluation).removeClass('focus').addClass('unfocus');
+        $evaluation.removeClass('green').removeClass('unfocus').addClass('dark-blue').addClass('focus');
+        $card.not($evaluation).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       } else {
-        $card.not($evaluation).removeClass('focus').addClass('unfocus');
+        $card.not($evaluation).removeClass('dark-blue').removeClass('focus').addClass('green').addClass('unfocus');
       }
     }
-
-
   });
+
+  //Init ScrollMagic
+  var controller = new ScrollMagic.Controller();
+
+  //build a Scene
+  var ourScene = new ScrollMagic.Scene({
+
+  })
+  .setClassToggle('#mission', '.fade-in') //add class to #mission
 
 });
