@@ -1,9 +1,9 @@
-.resources .module-left .resource-img, .community .module-right .billboard-image, .community .module-right .resource-img {
+.feature .billboard-image, .resources .module-left .resource-img, .community .module-right .billboard-image, .community .module-right .resource-img {
   width: 100%;
   height: 100%;
 }
 
-.resources .module-left .resource-img img, .community .module-right .billboard-image img, .community .module-right .resource-img img {
+.feature .billboard-image img, .resources .module-left .resource-img img, .community .module-right .billboard-image img, .community .module-right .resource-img img {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -22,7 +22,7 @@
   transform: translateY(-50%);
 }
 
-.resources .module-left .resource-img::after, .community .module-right .billboard-image::after, .community .module-right .resource-img::after, .community .module-right .partner-img::after, .community .module-right .group .group-img::after {
+.feature .billboard-image::after, .resources .module-left .resource-img::after, .community .module-right .billboard-image::after, .community .module-right .resource-img::after, .community .module-right .partner-img::after, .community .module-right .group .group-img::after {
   content: '';
   display: block;
   position: absolute;
@@ -45,6 +45,7 @@
   grid-row: row;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, auto);
   background: url("/app/site/media/images/pexels-photo-355988.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/pexels-photo-355988.jpg");
   background-size: cover;
@@ -52,7 +53,15 @@
   background-repeat: no-repeat;
   background-color: #000;
   color: #fff;
-  height: 25rem;
+  min-height: 25rem;
+}
+
+@media only screen and (min-width: 901px) {
+  .intro-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 35rem;
+  }
 }
 
 @supports (display: grid) {
@@ -63,6 +72,7 @@
 
 .intro {
   grid-column: 1/span 4;
+  grid-row: 1;
   width: 100%;
   align-self: center;
   padding: 2.5em;
@@ -83,6 +93,89 @@
   .intro {
     width: auto;
   }
+}
+
+.feature {
+  grid-column: 1/span 4;
+  grid-row: 2;
+  position: relative;
+  margin: 2em;
+  padding: 2em;
+  border: 2px solid #6E9C39;
+}
+
+.feature h2, .feature .one h3, .one .feature h3 {
+  position: absolute;
+  top: -1.6rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: #6E9C39;
+}
+
+.feature h5 {
+  color: #fff;
+}
+
+@media only screen and (min-width: 901px) {
+  .feature {
+    grid-column: 3/span 2;
+    grid-row: 1;
+    align-self: center;
+  }
+}
+
+.feature .billboard-image {
+  transition: all 3s ease-in-out;
+  overflow: hidden;
+}
+
+.feature .billboard-image img {
+  transition: all 3s ease-in-out;
+}
+
+.feature .billboard-image:hover img {
+  transform: scale(1.1);
+}
+
+.feature .billboard {
+  position: relative;
+  height: 20rem;
+}
+
+.feature .billboard .billboard-tag {
+  position: absolute;
+  bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 5px 10px;
+  background-color: #84bf41;
+}
+
+.feature .billboard .billboard-tag a {
+  color: #fff;
+}
+
+.feature .billboard .billboard-header {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+.feature .billboard .billboard-header a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
 }
 
 .one {
