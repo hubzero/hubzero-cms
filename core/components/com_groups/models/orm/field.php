@@ -205,6 +205,16 @@ class Field extends Relational
 	{
 		$fieldName = $this->get('name');
 		$formAnswers = !empty($answers[$fieldName]) ? $answers[$fieldName] : '';
+		if ($this->get('option_other'))
+		{
+			$otherName = $fieldName . '_other';
+			if (!empty($answers[$otherName]))
+			{
+				$otherValue = array_pop($formAnswers);
+				$otherValue = empty($otherValue) ? $answers[$otherName] : $otherValue;
+				array_push($formAnswers, $otherValue);
+			}
+		}
 		$this->set('formAnswers', $formAnswers);
 		$this->setAnswersRule();
 	}
