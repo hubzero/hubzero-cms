@@ -115,6 +115,7 @@ class CustomFields extends AdminController
 
 		// Posted data is coming in 
 		$form = json_decode(Request::getVar('questions', '[]', 'post', 'none', 2), true);
+
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
 			App::abort(500, 'JSON decode error: ' . json_last_error());
@@ -148,6 +149,7 @@ class CustomFields extends AdminController
 		$currentFields = array_reduce($form, function($currentFields, $field) use ($defaultValues){
 			$subTypes = array('address', 'facultyadvisor');
 			$field['default_value'] = isset($field['value']) ? $field['value'] : '';
+			$field['option_other'] = isset($field['other']) ? $field['other'] : ''; 
 			$type = $field['type'];
 			$type = isset($field['subtype']) && in_array($field['subtype'], $subTypes) ? $field['subtype'] : $type;
 			switch ($type)
