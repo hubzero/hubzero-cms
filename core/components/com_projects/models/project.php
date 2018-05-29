@@ -1221,16 +1221,19 @@ class Project extends Model
 					{
 						$action = 'uploaded';
 						$scope = 'project.file';
+						$refid = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('updated file')) == 'updated file')
 					{
 						$action = 'updated';
 						$scope = 'project.file';
+						$refid = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('restored deleted file')) == 'restored deleted file')
 					{
 						$action = 'updated';
 						$scope = 'project.file';
+						$refid = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('created database')) == 'created database')
 					{
