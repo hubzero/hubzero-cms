@@ -30,7 +30,6 @@
  */
 
 namespace Components\Groups\Admin\Controllers;
-require_once Component::path('com_groups') . '/models/orm/field.php';
 
 use Hubzero\Component\AdminController;
 use Components\Groups\Models\Orm\Field;
@@ -43,6 +42,8 @@ use User;
 use Lang;
 use Date;
 use App;
+
+require_once \Component::path('com_groups') . '/models/orm/field.php';
 
 /**
  * Applications controller class for forms
@@ -131,7 +132,7 @@ class CustomFields extends AdminController
 			->ordered()
 			->rows();
 
-		$defaultValues = array( 
+		$defaultValues = array(
 			'label' => '',
 			'name' => '',
 			'description' => '',
@@ -149,7 +150,7 @@ class CustomFields extends AdminController
 		$currentFields = array_reduce($form, function($currentFields, $field) use ($defaultValues){
 			$subTypes = array('address', 'facultyadvisor');
 			$field['default_value'] = isset($field['value']) ? $field['value'] : '';
-			$field['option_other'] = isset($field['other']) ? $field['other'] : ''; 
+			$field['option_other'] = isset($field['other']) ? $field['other'] : '';
 			$type = $field['type'];
 			$type = isset($field['subtype']) && in_array($field['subtype'], $subTypes) ? $field['subtype'] : $type;
 			switch ($type)
@@ -215,7 +216,7 @@ class CustomFields extends AdminController
 					{
 						$option = Option::blank();
 					}
-					
+
 					$dependents = array();
 					if (isset($opt['dependents']))
 					{
@@ -233,7 +234,7 @@ class CustomFields extends AdminController
 					$option->set(array(
 						'field_id'   => $field->get('id'),
 						'label'      => (string) $opt['label'],
-						'value'      => (isset($opt['value'])   ? (string) $opt['value'] : ''),
+						'value'      => (isset($opt['value']) ? (string) $opt['value'] : ''),
 						'checked'    => (isset($opt['selected']) ? (int) $opt['selected'] : 0),
 						'ordering'   => $j + 1,
 						'dependents' => json_encode($dependents)
