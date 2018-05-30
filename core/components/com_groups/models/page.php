@@ -81,8 +81,8 @@ class Page extends Model
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed $oid Object Id
-	 * @return  oid
+	 * @param   mixed  $oid  Object Id
+	 * @return  void
 	 */
 	public function __construct($oid = null)
 	{
@@ -114,7 +114,7 @@ class Page extends Model
 	/**
 	 * Get Page Versions
 	 *
-	 * @return  object \Hubzero\Base\ItemList
+	 * @return  object  \Hubzero\Base\ItemList
 	 */
 	public function versions()
 	{
@@ -132,8 +132,8 @@ class Page extends Model
 	/**
 	 * Load Page Version
 	 *
-	 * @param   mixed  $vid Version Id
-	 * @return  object \Components\Groups\Models\Page\Version
+	 * @param   mixed   $vid  Version Id
+	 * @return  object  \Components\Groups\Models\Page\Version
 	 */
 	public function version($vid = null)
 	{
@@ -154,16 +154,14 @@ class Page extends Model
 			}
 		}
 
-		print_r($version);
-		exit();
-		//return version
+		// return version
 		return $version;
 	}
 
 	/**
 	 * Load Page Category
 	 *
-	 * @return  object \Components\Groups\Models\Page\Category
+	 * @return  object  \Components\Groups\Models\Page\Category
 	 */
 	public function category()
 	{
@@ -177,7 +175,7 @@ class Page extends Model
 	/**
 	 * Load Approved Page version
 	 *
-	 * @return  object \Components\Groups\Models\Page\Version
+	 * @return  object  \Components\Groups\Models\Page\Version
 	 */
 	public function approvedVersion()
 	{
@@ -187,7 +185,7 @@ class Page extends Model
 	/**
 	 * Check to see if group owns page
 	 *
-	 * @param   object  $group \Hubzero\User\Group
+	 * @param   object  $group  \Hubzero\User\Group
 	 * @return  boolean
 	 */
 	public function belongsToGroup($group)
@@ -262,7 +260,7 @@ class Page extends Model
 	/**
 	 * Get the next page order
 	 *
-	 * @param   integer $gidNumber Group ID
+	 * @param   integer  $gidNumber  Group ID
 	 * @return  integer
 	 */
 	public function getNextOrder($gidNumber)
@@ -275,8 +273,8 @@ class Page extends Model
 	/**
 	 * Reorder page
 	 *
-	 * @param   string  $move      Direction and Magnitude
-	 * @param   integer $gidNumber Group ID
+	 * @param   string   $move       Direction and Magnitude
+	 * @param   integer  $gidNumber  Group ID
 	 * @return  void
 	 */
 	public function move($move, $gidNumber)
@@ -302,6 +300,7 @@ class Page extends Model
 	/**
 	 * Method to build url to page
 	 *
+	 * @param   boolean  $includeBase
 	 * @return  string
 	 */
 	public function url($includeBase = true)
@@ -350,7 +349,7 @@ class Page extends Model
 	/**
 	 * Get Parent Parent
 	 *
-	 * @return object  \Components\Groups\Models\Page Object
+	 * @return  object  \Components\Groups\Models\Page Object
 	 */
 	public function getParent()
 	{
@@ -360,7 +359,7 @@ class Page extends Model
 	/**
 	 * Get Page Children
 	 *
-	 * @return
+	 * @return  array
 	 */
 	public function getChildren()
 	{
@@ -379,9 +378,9 @@ class Page extends Model
 	/**
 	 * Get Parents Recursively
 	 *
-	 * @param  [type] $page      [description]
-	 * @param  string $direction [description]
-	 * @return [type]            [description]
+	 * @param   object  $page
+	 * @param   string  $direction
+	 * @return  array
 	 */
 	public function getRecursiveParents($page, $sort = 'ASC')
 	{
@@ -404,8 +403,8 @@ class Page extends Model
 	/**
 	 * Display indicator of Hierarchy
 	 *
-	 * @param  [type] $hierarchyIndicator [description]
-	 * @return [type]                     [description]
+	 * @param   string  $hierarchyIndicator
+	 * @return  string
 	 */
 	public function heirarchyIndicator($hierarchyIndicator = ' &mdash; ')
 	{

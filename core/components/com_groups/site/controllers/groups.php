@@ -771,7 +771,7 @@ class Groups extends Base
 
 		if (isset($customFields))
 		{
-			foreach($customFields as $field)
+			foreach ($customFields as $field)
 			{
 				$field->saveGroupAnswers($group->get('gidNumber'));
 			}

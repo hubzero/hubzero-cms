@@ -113,7 +113,7 @@ class Pages
 		// pass vars to view
 		$view->user  = User::getInstance();
 		$view->group = $group;
-		$view->fields = Field::getAllGroupFields($group->get('gidNumber')); 
+		$view->fields = Field::getAllGroupFields($group->get('gidNumber'));
 		// get group desc
 		$view->publicDesc  = $view->group->getDescription('parsed', 0, 'public');
 		$view->privateDesc = $view->group->getDescription('parsed', 0, 'private');
