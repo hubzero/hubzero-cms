@@ -62,6 +62,12 @@ class Groups extends AdminController
 			return $this->displayTask($id);
 		}
 
+		if (!User::authorise('core.admin', 'com_groups')
+		 && !User::authorise('core.manage', 'com_groups'))
+		{
+			return $this->displayTask($id);
+		}
+
 		// Incoming group table
 		$tbl = Request::getVar('tbl', '');
 		if (!$tbl)
@@ -124,6 +130,12 @@ class Groups extends AdminController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->displayTask($id);
+		}
+
+		if (!User::authorise('core.admin', 'com_groups')
+		 && !User::authorise('core.manage', 'com_groups'))
+		{
 			return $this->displayTask($id);
 		}
 

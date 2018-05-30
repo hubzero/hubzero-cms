@@ -53,6 +53,12 @@ class Hosts extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->displayTask();
+		}
+
 		// Incoming member ID
 		$id = Request::getInt('id', 0);
 		if (!$id)
@@ -95,6 +101,12 @@ class Hosts extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken('get');
+
+		if (!User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->displayTask();
+		}
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

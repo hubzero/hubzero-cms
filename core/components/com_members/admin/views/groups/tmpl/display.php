@@ -31,47 +31,51 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.manage', 'com_groups'));
 ?>
 <div id="groups">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
-		<table>
-			<tbody>
-				<tr>
-					<td>
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-						<input type="hidden" name="tmpl" value="component" />
-						<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
-						<input type="hidden" name="task" value="add" />
-						<?php echo Html::input('token'); ?>
 
-						<select name="gid" style="max-width: 15em;">
-							<option value=""><?php echo Lang::txt('COM_MEMBERS_SELECT'); ?></option>
-							<?php
-							foreach ($this->rows as $row)
-							{
-								echo '<option value="' . $row->gidNumber . '">' . $row->description . ' (' . $row->cn . ')</option>' . "\n";
-							}
-							?>
-						</select>
-						<select name="tbl">
-							<option value="invitees"><?php echo Lang::txt('COM_MEMBERS_GROUPS_INVITEES'); ?></option>
-							<option value="applicants"><?php echo Lang::txt('COM_MEMBERS_GROUPS_APPLICANTS'); ?></option>
-							<option value="members" selected="selected"><?php echo Lang::txt('COM_MEMBERS_GROUPS_MEMBERS'); ?></option>
-							<option value="managers"><?php echo Lang::txt('COM_MEMBERS_GROUPS_MANAGERS'); ?></option>
-						</select>
+	<?php if ($canDo) { ?>
+		<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+							<input type="hidden" name="tmpl" value="component" />
+							<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+							<input type="hidden" name="task" value="add" />
+							<?php echo Html::input('token'); ?>
 
-						<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GROUPS_ADD'); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</form>
+							<select name="gid" style="max-width: 15em;">
+								<option value=""><?php echo Lang::txt('COM_MEMBERS_SELECT'); ?></option>
+								<?php
+								foreach ($this->rows as $row)
+								{
+									echo '<option value="' . $row->gidNumber . '">' . $row->description . ' (' . $row->cn . ')</option>' . "\n";
+								}
+								?>
+							</select>
+							<select name="tbl">
+								<option value="invitees"><?php echo Lang::txt('COM_MEMBERS_GROUPS_INVITEES'); ?></option>
+								<option value="applicants"><?php echo Lang::txt('COM_MEMBERS_GROUPS_APPLICANTS'); ?></option>
+								<option value="members" selected="selected"><?php echo Lang::txt('COM_MEMBERS_GROUPS_MEMBERS'); ?></option>
+								<option value="managers"><?php echo Lang::txt('COM_MEMBERS_GROUPS_MANAGERS'); ?></option>
+							</select>
 
-	<br />
+							<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GROUPS_ADD'); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+	<?php } ?>
 
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -117,9 +121,13 @@ defined('_HZEXEC_') or die();
 						?>
 						<tr>
 							<td>
-								<a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn); ?>" target="_parent">
+								<?php if ($canDo && User::authorise('core.edit', 'com_groups')) { ?>
+									<a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn); ?>" target="_parent">
+										<?php echo $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')'; ?>
+									</a>
+								<?php } else { ?>
 									<?php echo $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')'; ?>
-								</a>
+								<?php } ?>
 								<?php
 								$db->setQuery("SELECT * FROM `#__xgroups_memberoption` WHERE userid=" . $db->quote($this->id) . " AND gidNumber=" . $db->quote($group->gidNumber));
 								$options = $db->loadObjectList();
@@ -162,9 +170,11 @@ defined('_HZEXEC_') or die();
 								?>
 							</td>
 							<td>
-								<a class="state trash icon-trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&' . Session::getFormToken() . '=1'); ?>">
-									<span><?php echo Lang::txt('COM_MEMBERS_GROUPS_REMOVE'); ?></span>
-								</a>
+								<?php if ($canDo) { ?>
+									<a class="state trash icon-trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&' . Session::getFormToken() . '=1'); ?>">
+										<span><?php echo Lang::txt('COM_MEMBERS_GROUPS_REMOVE'); ?></span>
+									</a>
+								<?php } ?>
 							</td>
 						</tr>
 						<?php
