@@ -3,6 +3,5 @@ app/logs/**
 app/config/**
 app/site/**
 app/tmp/**
-app/plugins/groups/publications
 core/vendor/**
 *.sublime-*
