@@ -191,6 +191,8 @@ class Pipeline extends AdminController
 			return $this->editTask();
 		}
 
+		$oldstate = $row->state;
+
 		$row->title = trim($fields['title']);
 		$row->ticketid = intval($fields['ticketid']);
 		$row->state = intval($fields['state']);
@@ -202,6 +204,36 @@ class Pipeline extends AdminController
 		}
 
 		$row->update();
+
+		// If the tool state was changed...
+		if ($oldstate != $row->state && file_exists(\Component::path('com_resources') . '/models/entry.php'))
+		{
+			// Trash the associated resource page
+			require_once \Component::path('com_resources') . '/models/entry.php';
+
+			$resource = Entry::oneByAlias($row->toolname);
+
+			if ($resource && $resource->get('id'))
+			{
+				if ($row->state == 7 || $row->state == 8) // published
+				{
+					$resource->set('published', Entry::STATE_PUBLISHED);
+				}
+				else if ($row->state == 9) // abandoned
+				{
+					$resource->set('published', Entry::STATE_TRASHED);
+				}
+				else
+				{
+					$resource->set('published', Entry::STATE_UNPUBLISHED);
+				}
+
+				if (!$resource->save())
+				{
+					Notify::error($resource->getError());
+				}
+			}
+		}
 
 		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
