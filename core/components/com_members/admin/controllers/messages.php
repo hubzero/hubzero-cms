@@ -335,6 +335,12 @@ class Messages extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->settingsTask();
+		}
+
 		$id = Request::getInt('id', 0);
 
 		$member = User::getInstance($id);
