@@ -297,7 +297,7 @@ class Messages extends AdminController
 		}
 
 		// Fill in any settings that weren't set.
-		foreach ($settings as $key=>$val)
+		foreach ($settings as $key => $val)
 		{
 			if (count($val) <= 0)
 			{
@@ -479,4 +479,3 @@ class Messages extends AdminController
 		return $out;
 	}
 }
-
