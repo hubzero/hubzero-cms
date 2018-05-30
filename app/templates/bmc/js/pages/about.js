@@ -133,10 +133,67 @@ $(document).ready(function() {
   //Init ScrollMagic
   var controller = new ScrollMagic.Controller();
 
-  //build a Scene
+  //Scene to fade in intro
+
+
   var ourScene = new ScrollMagic.Scene({
-
+    triggerElement: '#mission'
   })
-  .setClassToggle('#mission', '.fade-in') //add class to #mission
+  .setClassToggle('#mission', 'fade-in') //add class to #mission
+  .addIndicators({
+    colorTrigger: '#007991',
+    colorStart: '#cb48b7'
+  })
+  .addTo(controller);
 
+  //Parallax for intro
+  var introParallax = new ScrollMagic.Scene({
+    triggerElement: '#mission',
+    triggerHook: 1,
+    duration: '140%'
+  })
+  .setTween(TweenMax.from('.bcg-mission', 1, {y:'-40%', ease:Power0.easeNone}))
+  .addTo(controller);
+
+  //Scene About Us
+  var ourScene2 = new ScrollMagic.Scene({
+    triggerElement: '.content1',
+    triggerHook: .8
+  })
+  .setClassToggle('.content1', 'fade-up')
+  .addIndicators()
+  .addTo(controller);
+
+
+  var $img1 = $('.pane-2 .img-container'),
+      $content1 = $('.pane-2 p'),
+      tlScene3 = new TimelineMax();
+  tlScene3
+    .from($img1, 0.8, {autoAlpha: 0, ease:Power0.easeNone})
+    .fromTo($img1, 0.8, {y: '+=150'}, {y: '-=300', ease:Power0.easeNone}, '-=0.8')
+    .from($content1, 1, {autoAlpha: 0, ease:Power0.easeNone});
+
+  var ourScene3 = new ScrollMagic.Scene({
+    triggerElement: '.pane-2',
+    triggerHook: .8
+  })
+  .setTween(tlScene3)
+  .addIndicators()
+  .addTo(controller);
+
+  var $img2 = $('.pane-3 .img-container'),
+      $content2 = $('.pane-3 p'),
+      tlScene4 = new TimelineMax();
+  tlScene4
+    .from($img2, 0.8, {autoAlpha: 0, ease:Power0.easeNone})
+    .fromTo($img2, 0.8, {y: '+=150'}, {y: '-=300', ease:Power0.easeNone}, '-=0.8')
+    .from($content2, 1, {autoAlpha: 0, ease:Power0.easeNone});
+
+  var ourScene4 = new ScrollMagic.Scene({
+    triggerElement: '.pane-3',
+    triggerHook: .8
+  })
+  .setTween(tlScene4)
+  .addIndicators()
+  .addTo(controller);
 });

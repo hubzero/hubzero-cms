@@ -1,5 +1,9 @@
-section {
-  padding: 7em 0;
+html {
+  overflow-y: hidden;
+}
+
+.btn {
+  font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif !important;
 }
 
 #about, #post-docs, #contact {
@@ -17,11 +21,26 @@ section {
 }
 
 #mission {
+  position: relative;
+  padding: 7em;
+  color: #fff;
+  opacity: 0;
+  transition: all 1s ease-out;
+  overflow: hidden;
+}
+
+#mission .bcg-mission {
   background: url("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 140%;
+  z-index: -1;
 }
 
 #mission h2 {
@@ -31,10 +50,15 @@ section {
   color: #fff;
 }
 
+.fade-in {
+  opacity: 1 !important;
+}
+
 .mission-statement {
   max-width: 54rem;
   margin: 0 auto;
   border: 2px solid #fff;
+  z-index: 2;
 }
 
 .mission-statement h4 {
@@ -43,17 +67,62 @@ section {
   margin: 0 auto;
   padding: 3em;
   color: #fff;
+  z-index: 3;
 }
 
-#about h2 {
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  color: #6E9C39;
+#about {
+  background-color: #F1F2F2;
 }
 
-#about p {
-  max-width: 70rem;
-  margin: 1em auto;
+#about .pane-1 {
+  padding: 7em;
+}
+
+#about .pane-1 .content1 {
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+
+#about .pane-1 h6 {
+  font-family: 'Martel', serif;
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 3em;
+}
+
+#about .pane-1 img {
+  height: 5rem;
+  width: 5rem;
+}
+
+#about .pane-2, #about .pane-3 {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 7em 3em;
+}
+
+#about .pane-2 .img-container, #about .pane-3 .img-container {
+  padding: 0 4em;
+}
+
+#about .pane-2 p, #about .pane-3 p {
+  padding: 0 2em;
+  margin-left: 5em;
+  width: 23rem;
+  align-self: center;
+}
+
+.fade-up {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+}
+
+#post-docs, #contact {
+  padding: 7em 0;
 }
 
 #post-docs h2, #contact h2 {
@@ -68,6 +137,14 @@ section {
   max-width: 55rem;
   font-size: 1.3rem;
   padding: 2em;
+}
+
+#team {
+  padding-top: 7em;
+}
+
+#advisors {
+  padding-bottom: 7em;
 }
 
 #advisors .header {
@@ -692,4 +769,8 @@ section {
 
 .dark-blue.active .card-footer {
   background-color: #354457;
+}
+
+#contact {
+  background-color: #F1F2F2;
 }
