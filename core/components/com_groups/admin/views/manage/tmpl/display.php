@@ -32,9 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Groups\Helpers\Permissions::getActions('group');
+$canDo = \Components\Groups\Helpers\Permissions::getActions();
 
-Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
+Toolbar::title(Lang::txt('COM_GROUPS'), 'groups');
 
 if ($canDo->get('core.admin'))
 {
