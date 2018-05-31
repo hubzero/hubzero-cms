@@ -36,13 +36,12 @@ require_once Component::path('com_publications') . '/helpers/zipHelper.php';
 
 use Components\Publications\Models\Publication;
 use Components\Publications\Helpers\ZipHelper;
-use Hubzero\Database\Relational;
 use Hubzero\Utility\Arr;
 
 /*
  * Bundle model
  */
-class Bundle extends Relational
+class Bundle
 {
 	/*
 	 * Contents of archive
@@ -52,46 +51,14 @@ class Bundle extends Relational
 	protected $contents = null;
 
 	/*
-	 * Table namespace
+	 * Instance constructor
 	 *
-	 * @var   string
+	 * @param		array		$args		Instantiation data
 	 */
-	protected $table = '#__publication_versions_bundles';
-
-	/*
-	 * Field validation criteria
-	 *
-	 * @var   array
-	 */
-	protected $rules = [
-		'publication_id'  => 'notempty',
-		'publication_version_id'  => 'notempty'
-	];
-
-	/*
-	 * Fields to populate every time a record is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = ['created'];
-
-	/*
-	 * Retrieves a bundle based on given attributes-value pairs
-	 *
-	 * @param   array     $criteria   Criteria to retrieve bundle record
-	 * @return  \Bundle
-	 */
-	public static function oneBy($criteria)
+	public function __construct($args)
 	{
-		$instance = self::blank();
-
-		foreach ($criteria as $attribute => $value)
-		{
-			$instance->whereEquals($attribute, $value);
-		}
-		$instance = $instance->row();
-
-		return $instance;
+		$this->publication_id = $args['publication_id'];
+		$this->publication_version_id  = $args['publication_version_id'];
 	}
 
 	/*
@@ -226,7 +193,7 @@ class Bundle extends Relational
 	{
 		if (!isset($this->publication))
 		{
-			$this->publication = new Publication($this->get('publication_id'));
+			$this->publication = new Publication($this->publication_id);
 		}
 
 		return $this->publication;

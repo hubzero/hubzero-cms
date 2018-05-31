@@ -661,7 +661,7 @@ class Publications extends SiteController
 		if ($tab == 'about')
 		{
 			$publicationVersionId = $this->model->get('version_id');
-			$bundle = Bundle::oneBy([
+			$bundle = new Bundle([
 				'publication_id' => $this->model->get('id'),
 				'publication_version_id' => $publicationVersionId
 			]);
