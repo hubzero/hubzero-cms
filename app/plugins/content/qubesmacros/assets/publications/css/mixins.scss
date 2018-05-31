@@ -1,0 +1,198 @@
+// !compileOnSave
+// compileOnSave: false
+//The above is to disable sass-autocompile plugin from compiling on save for Atom.io text editor
+
+@import 'variables.scss';
+
+//Grid and Flexbox
+@mixin grid-template($columns, $rows, $gap: null) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  grid-gap: $gap;
+}
+@mixin grid($column, $row) {
+  grid-column: $column;
+  grid-row: $row;
+}
+@mixin flexbox($wrap: nowrap) {
+  display: flex;
+  flex-wrap: $wrap;
+}
+
+//Media Queries and Grid Support(resets)
+@mixin respond-at($media) {
+    @media only screen and (min-width: $media){
+      @content;
+  }
+}
+@mixin grid-support {
+  @supports (display:grid) {
+    @content;
+  }
+}
+
+//Background Image & Color
+@mixin bcg-img($url) {
+  background: url($url);
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.7) 100%), url($url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@mixin bcg-plain-img($url) {
+  background: url($url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@mixin bcg($color, $text-color) {
+  background-color: $color;
+  color: $text-color;
+}
+
+//Buttons
+@mixin buttons($color) {
+  text-transform: uppercase;
+  a {
+    padding: .25em .75em;
+    border: 1px solid $color;
+    color: $color !important;
+    &:active {
+      color: $color;
+    }
+    &:visited {
+      color: $color;
+    }
+  }
+}
+
+@mixin btn-border-drawing($color: #ccc, $hover: black, $width: 2px, $vertical: top, $horizontal: left, $duration: 0.25s) {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 $width $color;
+  color: $color;
+  transition: color $duration $duration/3;
+  position: relative;
+  padding: .25em .75em;
+
+  &::before,
+  &::after {
+    border: 0 solid transparent;
+    box-sizing: border-box;
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    width: 0; height: 0;
+
+    #{$vertical}: 0;
+    #{$horizontal}: 0;
+  }
+
+  &::before {
+    $h-side: if($horizontal == 'left', 'right', 'left');
+
+    border-#{$vertical}-width: $width;
+    border-#{$h-side}-width: $width;
+  }
+
+  &::after {
+    $v-side: if($vertical == 'top', 'bottom', 'top');
+
+    border-#{$v-side}-width: $width;
+    border-#{$horizontal}-width: $width;
+  }
+
+  &:hover {
+    color: $hover;
+
+    &::before,
+    &::after {
+      border-color: $hover;
+      transition: border-color 0s, width $duration, height $duration;
+      width: 100%;
+      height: 100%;
+    }
+
+    &::before { transition-delay: 0s, 0s, $duration; }
+
+    &::after { transition-delay: 0s, $duration, 0s; }
+  }
+}
+
+//Truncate
+@mixin truncate($font-size, $line-height, $lines-to-show) {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+//Showcase Module
+@mixin showcase-header($font-size, $line-height, $lines-to-show) {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $white;
+}
+@mixin showcase-tag($background-color, $link-color) {
+  position: absolute;
+  bottom: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 5px 10px;
+  background-color: $background-color;
+  a {
+    color: $link-color;
+  }
+}
+
+//Extends for showcase module
+%showcase-img {
+  width: 100%;
+  height: 100%;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  &::after {
+    @extend %image-gradient;
+  }
+}
+%showcase-group {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  img {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &::after {
+    @extend %image-gradient;
+  }
+}
+%image-gradient {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);
+  height: 100%;
+  width: 100%;
+}

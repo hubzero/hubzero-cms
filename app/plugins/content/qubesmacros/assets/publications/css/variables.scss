@@ -1,0 +1,18 @@
+// !compileOnSave
+// compileOnSave: false
+//The above is to disable sass-autocompile plugin from compiling on save for Atom.io text editor
+
+//Color variables
+$green: #84bf41;
+$dark-blue: #222b37;
+$link-color: #6E9C39;
+$teal: #007991;
+$pink: #cb48b7;
+$med-blue: #5f5980;
+$light-gray: #F1F2F2;
+$orange: #cca231;
+$black: #000;
+$white: #fff;
+$light-green: mix($green, $white, 65%);
+$med-gray: mix($light-gray, $dark-blue, 70%);
+$dark-green: #337357;

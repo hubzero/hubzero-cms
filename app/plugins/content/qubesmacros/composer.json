@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/plg_content_qubesmacros",
+	"description": "QUBES HTML content macros.",
+	"type": "hubzero-plugin",
+  	"extra": {
+	    "install-directory": "/plugins/content/qubesmacros"
+	}
+}
