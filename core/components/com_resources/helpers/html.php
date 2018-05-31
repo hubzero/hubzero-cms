@@ -1044,7 +1044,7 @@ class Html
 
 						// Check if the user is apart of the group that owns the resource
 						// or if they have any groups in common
-						if (!in_array($resource->group_owner, $usersgroups) || count($common) <= 0)
+						if (!in_array($resource->get('group_owner'), $usersgroups) || count($common) <= 0)
 						{
 							$html .= '<p class="warning">';
 							if (User::isGuest())
