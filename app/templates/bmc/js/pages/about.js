@@ -134,12 +134,17 @@ $(document).ready(function() {
   var controller = new ScrollMagic.Controller();
 
   //Scene to fade in intro
-
+  var $bcg = $('.bcg-mission'),
+      $mission = $('.mission-statement'),
+      tlIntro = new TimelineMax();
+  tlIntro
+    .from($bcg, 1, {autoAlpha: 0, ease:Power0.easeNone})
+    .from($mission, 1, {autoAlpha: 0, ease:Power0.easeNone});
 
   var ourScene = new ScrollMagic.Scene({
     triggerElement: '#mission'
   })
-  .setClassToggle('#mission', 'fade-in') //add class to #mission
+  .setTween(tlIntro) //add timeline
   .addIndicators({
     colorTrigger: '#007991',
     colorStart: '#cb48b7'

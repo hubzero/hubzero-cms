@@ -24,7 +24,6 @@ html {
   position: relative;
   padding: 7em;
   color: #fff;
-  opacity: 0;
   transition: all 1s ease-out;
   overflow: hidden;
 }
@@ -48,10 +47,6 @@ html {
   text-transform: uppercase;
   text-align: center;
   color: #fff;
-}
-
-.fade-in {
-  opacity: 1 !important;
 }
 
 .mission-statement {

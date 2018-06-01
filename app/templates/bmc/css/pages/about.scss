@@ -44,7 +44,6 @@ html {
   position: relative;
   padding: 7em;
   color: $white;
-  opacity: 0;
   transition: all 1s ease-out;
   overflow: hidden;
   .bcg-mission {
@@ -63,9 +62,6 @@ html {
     text-align: center;
     color: $white;
   }
-}
-.fade-in {
-  opacity: 1 !important;
 }
 .mission-statement {
   max-width: 54rem;
