@@ -48,7 +48,7 @@ class Download extends ComponentController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -70,8 +70,7 @@ class Download extends ComponentController
 	/**
 	 * Serve the file
 	 *
-	 * @param		$pId
-	 * @return     	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -228,6 +227,13 @@ class Download extends ComponentController
 		exit;
 	}
 
+	/**
+	 * Display landing page
+	 *
+	 * @param   integer  $tId
+	 * @param   integer  $sId
+	 * @return  void
+	 */
 	public function landingTask($tId, $sId)
 	{
 		$this->setView('download', 'landing');
@@ -236,6 +242,12 @@ class Download extends ComponentController
 		$this->view->display();
 	}
 
+	/**
+	 * Display a message
+	 *
+	 * @param   array  $notifications
+	 * @return  void
+	 */
 	public function messageTask($notifications)
 	{
 		$this->setView('download', 'message');
@@ -246,7 +258,8 @@ class Download extends ComponentController
 	/**
 	 * Redirect to login page
 	 *
-	 * @return void
+	 * @param   string  $message
+	 * @return  void
 	 */
 	private function login($message = '')
 	{
@@ -259,4 +272,3 @@ class Download extends ComponentController
 		return;
 	}
 }
-
