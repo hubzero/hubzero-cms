@@ -43,7 +43,7 @@ require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models
 /**
  * Product viewing controller class
  */
-class Download extends \Hubzero\Component\SiteController
+class Download extends ComponentController
 {
 	/**
 	 * Execute a task
@@ -251,7 +251,7 @@ class Download extends \Hubzero\Component\SiteController
 	private function login($message = '')
 	{
 		$return = base64_encode($_SERVER['REQUEST_URI']);
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return),
 			$message,
 			'warning'
