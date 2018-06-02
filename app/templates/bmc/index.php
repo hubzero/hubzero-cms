@@ -185,6 +185,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								<span>&nbsp;</span>
 							</button>
 						</div>
+						<jdoc:include type="modules" name="notices" />
 						<jdoc:include type="modules" name="helppane" />
 						<div class="search-panel">
 							<div class="text-field">
