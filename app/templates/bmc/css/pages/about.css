@@ -32,7 +32,6 @@ html {
   background: url("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/mikael-kristenson-242070-unsplash.jpg");
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
