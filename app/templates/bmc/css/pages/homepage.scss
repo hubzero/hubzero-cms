@@ -9,16 +9,19 @@
 .intro-container {
   @include flexbox;
   @include grid(col / span 4, row);
-  @include grid-template(repeat(4, 1fr), null);
+  @include grid-template(repeat(4, 1fr), repeat(2, auto));
   @include bcg-img('/app/site/media/images/pexels-photo-355988.jpg');
   @include bcg($black, $white);
-  height: 25rem;
+  min-height: 25rem;
+  @include respond-at(901px) {
+    @include grid-template(repeat(4, 1fr), 35rem);
+  }
   @include grid-support {
     height: auto;
   }
 }
 .intro {
-  @include grid(1 / span 4, null);
+  @include grid(1 / span 4, 1);
   width: 100%;
   align-self: center;
   padding: 2.5em;
@@ -31,6 +34,55 @@
   }
   @include grid-support {
     width: auto;
+  }
+}
+.feature {
+  @include grid(1 / span 4, 2);
+  position: relative;
+  margin: 2em;
+  padding: 2em;
+  border: 2px solid $link-color;
+  h2 {
+    position: absolute;
+    top: -1.6rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: $link-color;
+  }
+  h5 {
+    color: $white;
+  }
+  @include respond-at(901px) {
+    @include grid(3 / span 2, 1);
+    align-self: center;
+  }
+  .billboard-image {
+    @extend %showcase-img;
+    transition: all 3s ease-in-out;
+    overflow: hidden;
+    img {
+      transition: all 3s ease-in-out;
+    }
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+    }
+  }
+  .billboard {
+    position: relative;
+    height: 20rem;
+    .billboard-tag {
+      @include showcase-tag($green, $white);
+    }
+    .billboard-header {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+      a {
+        @include showcase-header(1em, 1, 2);
+      }
+    }
   }
 }
 
