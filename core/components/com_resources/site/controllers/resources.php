@@ -729,7 +729,7 @@ class Resources extends SiteController
 				->set('config', $this->config)
 				->set('resource', $resource)
 				->set('activechild', $activechild)
-				->set('no_html', $no_tml)
+				->set('no_html', $no_html)
 				->setErrors($this->getErrors())
 				->setLayout('play')
 				->setName('view')
