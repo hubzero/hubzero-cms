@@ -73,7 +73,7 @@ function query_gen(&$dd)
 		$sql = "SELECT DB_column_name, Column_info FROM Columns_Info WHERE Table_name='" . $dd['table'] . "'";
 		$result = mysqli_query($link, $sql);
 		$col_info = array();
-		if ($result && mysqli_stmt_num_rows($result) > 0) {
+		if ($result) { // && mysqli_stmt_num_rows($result) > 0) {
 			while ($rec = mysqli_fetch_assoc($result)) {
 				$col_info[$rec['DB_column_name']] = json_decode($rec['Column_info'], true);
 			}
@@ -109,7 +109,7 @@ function query_gen(&$dd)
 		$result = mysqli_query($link, $sql);
 
 		$col_info = array();
-		if ($result && mysqli_stmt_num_rows($result) > 0) {
+		if ($result) { // && mysqli_stmt_num_rows($result) > 0) {
 			while ($rec = mysqli_fetch_assoc($result)) {
 				$col_info[$rec['col']] = json_decode($rec['Column_info'], true);
 			}
@@ -149,7 +149,7 @@ function query_gen(&$dd)
 		$result = mysqli_query($link, $sql);
 
 		$col_info = array();
-		if ($result && mysqli_stmt_num_rows($result) > 0) {
+		if ($result) { // && mysqli_stmt_num_rows($result) > 0) {
 			while ($rec = mysqli_fetch_assoc($result)) {
 				$col_info[$rec['col']] = json_decode($rec['Column_info'], true);
 			}
