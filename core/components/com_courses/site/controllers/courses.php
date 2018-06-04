@@ -273,7 +273,7 @@ class Courses extends SiteController
 			}
 
 			$at = '';
-			if ($assetType != 'component')
+			if ($assetType != 'component' && $assetId)
 			{
 				$at .= '.' . $assetType;
 			}
