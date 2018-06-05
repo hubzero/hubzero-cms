@@ -46,8 +46,8 @@ use User;
 use Date;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 
 /**
  * Controller class for member registration
@@ -366,6 +366,31 @@ class Register extends SiteController
 		{
 			// Load POSTed data
 			$xregistration->loadPost();
+
+			// Incoming profile edits
+			$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+
+			// Compile profile data
+			foreach ($profile as $key => $data)
+			{
+				if (isset($profile[$key]) && is_array($profile[$key]))
+				{
+					$profile[$key] = array_filter($profile[$key]);
+				}
+				if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
+				{
+					if (is_array($profile[$key]))
+					{
+						$profile[$key][] = $profile[$key . '_other'];
+					}
+					else
+					{
+						$profile[$key] = $profile[$key . '_other'];
+					}
+
+					unset($profile[$key . '_other']);
+				}
+			}
 		}
 		else
 		{
@@ -394,34 +419,29 @@ class Register extends SiteController
 					$force = true;
 				}
 			}
+
+			// Profile info
+			$member = Member::oneOrNew(User::get('id'));
+			$entries = $member->profiles();
+
+			$p = $entries->getTableName();
+			$f = \Components\Members\Models\Profile\Field::blank()->getTableName();
+			$o = \Components\Members\Models\Profile\Option::blank()->getTableName();
+
+			$profiles = $entries
+				->select($p . '.*,' . $o . '.label')
+				->join($f, $f . '.name', $p . '.profile_key', 'inner')
+				->joinRaw($o, $o . '.field_id=' . $f . '.id AND ' . $o . '.value=' . $p . '.profile_value', 'left')
+				->ordered()
+				->rows();
+
+			// Gather data to pass to the form processor
+			$profile = \Components\Members\Models\Profile::collect($profiles);
+
+			$xregistration->_registration['_profile'] = $profile;
 		}
 
 		$check = $xregistration->check('update');
-
-		// Incoming profile edits
-		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
-
-		// Compile profile data
-		foreach ($profile as $key => $data)
-		{
-			if (isset($profile[$key]) && is_array($profile[$key]))
-			{
-				$profile[$key] = array_filter($profile[$key]);
-			}
-			if (isset($profile[$key . '_other']) && trim($profile[$key . '_other']))
-			{
-				if (is_array($profile[$key]))
-				{
-					$profile[$key][] = $profile[$key . '_other'];
-				}
-				else
-				{
-					$profile[$key] = $profile[$key . '_other'];
-				}
-
-				unset($profile[$key . '_other']);
-			}
-		}
 
 		// Validate profile data
 		$fields = \Components\Members\Models\Profile\Field::all()
@@ -468,7 +488,7 @@ class Register extends SiteController
 			{
 				App::redirect($_SERVER['REQUEST_URI']);
 			}
-			return(true);
+			return true;
 		}
 
 		if (!$force && $check && $method == 'POST')
@@ -1053,7 +1073,7 @@ class Register extends SiteController
 					->select('*')
 					->ordered();
 			}])
-			->where('action_' . $task, '!=', Field::STATE_HIDDEN)
+			->where('action_' . ($task == 'update' ? 'create' : $task), '!=', Field::STATE_HIDDEN)
 			->ordered()
 			->rows();
 
