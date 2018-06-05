@@ -58,6 +58,57 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Copy editor content to form field.
+	 *
+	 * Not applicable in this editor.
+	 *
+	 * @return  void
+	 */
+	public function onSave()
+	{
+	}
+
+	/**
+	 * Get the editor content.
+	 * 
+	 * Not applicable in this editor
+	 *
+	 * @param   string $id The id of the editor field.
+	 * @return  string
+	 */
+	public function onGetContent($id)
+	{
+		return "";
+	}
+
+	/**
+	 * Set the editor content.
+	 * 
+	 * Not applicable in this editor
+	 *
+	 * @param   string $id   The id of the editor field.
+	 * @param   string $html The content to set.
+	 * @return  string
+	 */
+	public function onSetContent($id, $html)
+	{
+		return "";
+	}
+
+	/**
+	 * Inserts text
+	 * 
+	 * Not applicable in this editor
+	 *
+	 * @param	string	$id
+	 * @return	string
+	 */
+	public function onGetInsertMethod($id)
+	{
+		return "";
+	}
+
+	/**
 	 * Display the editor area.
 	 *
 	 * @param   string   $name     The control name.
