@@ -103,7 +103,7 @@ class Doi extends Obj
 			$configs->userpw    = $params->get('doi_userpw');
 			$configs->publisher = $params->get('doi_publisher', Config::get('sitename'));
 			$configs->livesite  = trim(Request::root(), DS);
-			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd'), DS);
+			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'), DS);
 
 			$this->_configs = $configs;
 		}
@@ -598,7 +598,7 @@ class Doi extends Obj
 		}
 
 		// Start XML
-		$xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns="http://datacite.org/schema/kernel-4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.1/metadata.xsd">';
+		$xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd">';
 		$xmlfile .='<identifier identifierType="DOI">' . $doi . '</identifier>';
 		$xmlfile .='<creators>';
 
@@ -662,7 +662,7 @@ class Doi extends Obj
 		}
 		if ($this->get('license'))
 		{
-			$xmlfile.='<rights>' . htmlspecialchars($this->get('license')) . '</rights>';
+			$xmlfile.='<rightsList><rights>' . htmlspecialchars($this->get('license')) . '</rights></rightsList>';
 		}
 		$xmlfile .='<descriptions>
 			<description descriptionType="Abstract">';
