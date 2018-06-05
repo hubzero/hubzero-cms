@@ -172,6 +172,9 @@
 
 .resources {
   grid-column: span 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   padding: 10px;
 }
@@ -190,6 +193,10 @@
   position: absolute;
   right: 0;
   bottom: -1px;
+}
+
+.resources a.btn {
+  align-self: baseline;
 }
 
 @media only screen and (min-width: 800px) {
@@ -214,7 +221,6 @@
   background: url("/app/site/media/images/pexels-photo-590493.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/pexels-photo-590493.jpg");
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
 }
 

@@ -102,6 +102,9 @@
 }
 .resources {
   @include grid(span 3, null);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   padding: 10px;
   h4 {
@@ -117,6 +120,9 @@
       right: 0;
       bottom: -1px;
     }
+  }
+  a.btn {
+    align-self: baseline;
   }
   @include respond-at(800px) {
     @include grid(span 1, null);

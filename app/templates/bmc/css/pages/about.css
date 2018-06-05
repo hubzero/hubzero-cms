@@ -99,8 +99,8 @@ html {
   padding: 7em 3em;
 }
 
-#about .pane-2 .img-container, #about .pane-3 .img-container {
-  padding: 0 4em;
+#about .pane-2 .img-container img, #about .pane-3 .img-container img {
+  width: 90%;
 }
 
 #about .pane-2 p, #about .pane-3 p {
@@ -108,6 +108,10 @@ html {
   margin-left: 5em;
   width: 23rem;
   align-self: center;
+}
+
+#about .pane-3 img {
+  padding: 0 4em;
 }
 
 .fade-up {
@@ -415,6 +419,7 @@ html {
 }
 
 .card .team-member {
+  min-height: 284px;
   width: 100%;
   object-fit: cover;
 }
