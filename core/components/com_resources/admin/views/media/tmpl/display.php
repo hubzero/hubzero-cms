@@ -42,7 +42,7 @@ function dirup()
 	var urlquery = frames['imgManager'].location.search.substring(1);
 	var curdir = urlquery.substring(urlquery.indexOf('listdir=')+8);
 	var listdir = curdir.substring(0,curdir.lastIndexOf('/'));
-	frames['imgManager'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=');?>" + listdir;
+	frames['imgManager'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=', false);?>" + listdir;
 }
 
 function goUpDir()
@@ -50,7 +50,7 @@ function goUpDir()
 	var listdir = document.getElementById('listdir');
 	var selection = document.forms[0].dirPath;
 	var dir = selection.options[selection.selectedIndex].value;
-	frames['imgManager'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=');?>" + listdir.value + '&subdir=' + dir;
+	frames['imgManager'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=', false);?>" + listdir.value + '&subdir=' + dir;
 }
 </script>
 
