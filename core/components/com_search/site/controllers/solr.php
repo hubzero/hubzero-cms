@@ -78,8 +78,14 @@ class Solr extends SiteController
 		$tags = null;
 		if ($tagString)
 		{
-			$tags = explode(",", $tagString);
-			$tags = Tag::all()->whereIn('tag', $tags)->rows();
+			$tagsquery = Tag::all();
+			$tags = explode(',', $tagString);
+			foreach ($tags as $k => $t)
+			{
+				$tags[$k] = $tagsquery->normalize($t);
+			}
+			$tagString = implode(',', $tags);
+			$tags = $tagsquery->whereIn('tag', $tags)->rows();
 		}
 		// Map coordinates
 		if ($section == 'map')
