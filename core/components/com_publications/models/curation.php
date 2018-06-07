@@ -499,6 +499,58 @@ class Curation extends Obj
 	}
 
 	/**
+	 * Get element manifest for a dataselector
+	 *
+	 * @param	integer	$elementId	Element ID
+	 * @param	string	$type		Attachment type
+	 * @param	integer $role		Attachment role
+	 * @return	mixed	object or boolean false
+	 */
+	public function getManifestByElementTypeRole($elementId = 0, $type = 'file', $role = 1)
+	{
+		// If there's no element ID sent, stop
+		if (!$elementId)
+		{
+			return false;
+		}
+
+		// We'll need block information from the block containing our manifest
+		if (!$this->_blocks)
+		{
+			return false;
+		}
+
+		// Get blocks model
+		$blocksModel = new Blocks($this->_db);
+
+		foreach ($this->_blocks as $blockId => $block)
+		{
+			foreach ($block->elements as $elId => $element)
+			{
+				if ($element->name == 'dataselector')
+				{
+					// Check the list for one matching our element ID
+					if ($elId == $elementId)
+					{
+						// Take the first one matching our role and type
+						// It's technically possible to have more than one match, but no way of
+						// telling which one is correct at that point as fas as I can tell
+						if ($role == $element->params->role && $type == $element->params->type)
+						{
+							$output = new stdClass;
+							$output->block   = $block;
+							$output->blockId = $blockId;
+							$output->element = $element;
+							return $output;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Parse block
 	 *
 	 * @param   string   $name     Who is viewing block content?
