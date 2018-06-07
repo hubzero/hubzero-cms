@@ -59,16 +59,16 @@ $this->css()
 		}
 	?>
 	<div class="subscribe">
-		<form action="index.php" method="post" id="hubForm">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_UNSUBSCRIBE'); ?></legend>
 				<p><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_UNSUBSCRIBE_DESC'); ?></p>
 
 				<p>
-					<strong><?php echo $this->mailinglist->name; ?></strong><br />
-					<span><?php echo $this->mailinglist->description; ?></span>
-					<input type="hidden" name="t" value="<?php echo Request::getVar('t', '') ?>" />
-					<input type="hidden" name="e" value="<?php echo Request::getVar('e', ''); ?>" />
+					<strong><?php echo $this->escape($this->mailinglist->name); ?></strong><br />
+					<span><?php echo $this->escape($this->mailinglist->description); ?></span>
+					<input type="hidden" name="t" value="<?php echo $this->escape(Request::getVar('t', '')); ?>" />
+					<input type="hidden" name="e" value="<?php echo $this->escape(Request::getVar('e', '')); ?>" />
 				</p>
 
 				<?php if ($this->mailinglist->id == '-1' && User::get('guest') == 1) : ?>

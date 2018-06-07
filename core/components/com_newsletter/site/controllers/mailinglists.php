@@ -37,6 +37,7 @@ use Components\Newsletter\Models\Mailinglist\Email;
 use Components\Newsletter\Models\Mailinglist;
 use Components\Newsletter\Models\Mailing;
 use Hubzero\Component\SiteController;
+use Hubzero\Utility\Validate;
 use stdClass;
 use Pathway;
 use Route;
@@ -134,7 +135,7 @@ class Mailinglists extends SiteController
 		}
 
 		//must be logged in or have entered email
-		if ($email === '')
+		if (!$email || !Validate::email($email))
 		{
 			//build return url and redirect url
 			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
@@ -153,7 +154,6 @@ class Mailinglists extends SiteController
 				->setLayout('enter_email')
 				->display();
 		}
-
 		else if (User::isGuest() && count(User::oneByEmail($email)->toArray()) > 0)
 		{
 			//build return url and redirect url
@@ -164,7 +164,6 @@ class Mailinglists extends SiteController
 			App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
 			return;
 		}
-
 		else
 		{
 			//get mailing lists user belongs to
@@ -233,7 +232,7 @@ class Mailinglists extends SiteController
 		//check to make sure our honey pot is good
 		if ($hp1 != '')
 		{
-			die(Lang::txt('COM_NEWSLETTER_HP_ERROR'));
+			App::abort(403, Lang::txt('COM_NEWSLETTER_HP_ERROR'));
 		}
 
 		//validate email

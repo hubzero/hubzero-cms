@@ -61,16 +61,16 @@ $this->css()
 		}
 	?>
 	<div class="subscribe">
-		<form action="index.php" method="post" id="hubForm">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 			<?php if (count($this->mylists) > 0) : ?>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_MYLISTS'); ?></legend>
 					<?php foreach ($this->mylists as $mylist) : ?>
 						<?php $mylistIds[] = $mylist->id; ?>
 						<?php if ($mylist->status != 'removed') : ?>
-							<label>
-								<input type="checkbox" name="lists[]" value="<?php echo $mylist->id; ?>" <?php echo ($mylist->status == 'active' || $mylist->status == 'inactive') ? 'checked="checked"' : ''; ?> />
-								<strong><?php echo $mylist->name; ?></strong>
+							<label for="newsletterlist<?php echo $mylist->id; ?>">
+								<input type="checkbox" name="lists[]" id="newsletterlist<?php echo $mylist->id; ?>" value="<?php echo $mylist->id; ?>" <?php echo ($mylist->status == 'active' || $mylist->status == 'inactive') ? 'checked="checked"' : ''; ?> />
+								<strong><?php echo $this->escape($mylist->name); ?></strong>
 								<?php
 									if ($mylist->status == 'active' || $mylist->status == 'inactive')
 									{
@@ -85,7 +85,7 @@ $this->css()
 									}
 								?>
 								<span class="desc">
-									<?php echo ($mylist->description) ? nl2br($mylist->description) : Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION'); ?>
+									<?php echo ($mylist->description ? nl2br($mylist->description) : Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION')); ?>
 								</span>
 							</label>
 						<?php endif; ?>
@@ -103,9 +103,9 @@ $this->css()
 							continue;
 						}
 						?>
-						<label>
-							<input type="checkbox" name="lists[]" value="<?php echo $list->id; ?>" />
-							<strong><?php echo $list->name; ?></strong>
+						<label for="newsletterlist<?php echo $list->id; ?>">
+							<input type="checkbox" name="lists[]" id="newsletterlist<?php echo $list->id; ?>" value="<?php echo $list->id; ?>" />
+							<strong><?php echo $this->escape($list->name); ?></strong>
 							<span class="desc"><?php echo ($list->description) ? nl2br($list->description) : Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION'); ?></span>
 						</label>
 					<?php endforeach; ?>
