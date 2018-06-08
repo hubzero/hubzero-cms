@@ -2043,6 +2043,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$requireDoi = isset($pub->_curationModel->_manifest->params->require_doi)
 					? $pub->_curationModel->_manifest->params->require_doi : 0;
 
+		// Auto-approve?
+		$autoApprove = isset($pub->_curationModel->_manifest->params->auto_approve)
+					? $pub->_curationModel->_manifest->params->auto_approve : 0;
+
 		// Make sure the publication belongs to the project
 		if (!$pub->belongsToProject($this->model->get('id')))
 		{
@@ -2153,7 +2157,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$state = 4; // No approval needed
 		}
-		elseif ($this->_task == 'republish')
+		elseif ($this->_task == 'republish' || $autoApprove)
 		{
 			$state = 1; // No approval needed
 		}
