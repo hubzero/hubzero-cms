@@ -37,6 +37,7 @@ use Hubzero\Image\Mozify;
 use Request;
 use Config;
 use Notify;
+use Lang;
 
 /**
  * Newsletter tools Controller
@@ -85,9 +86,8 @@ class Tools extends AdminController
 		//make sure we have a valid url if we passed one
 		if ($imageUrl != '' && !preg_match("/$UrlPtn/", $imageUrl))
 		{
-			$this->setError('Image Url is not valid.');
-			$this->displayTask();
-			return;
+			Notify::error(Lang::txt('Image Url is not valid.'));
+			return $this->displayTask();
 		}
 
 		//do we have a file upload or just an image url
@@ -97,9 +97,8 @@ class Tools extends AdminController
 			$info = pathinfo($imageFile['name']);
 			if (!in_array($info['extension'], array('png','jpg','jpeg','bmp','gif', 'tiff')))
 			{
-				$this->setError(Lang::txt('COM_NEWSLETTER_TOOLS_NOT_VALID_IMAGE'));
-				$this->displayTask();
-				return;
+				Notify::error(Lang::txt('COM_NEWSLETTER_TOOLS_NOT_VALID_IMAGE'));
+				return $this->displayTask();
 			}
 
 			//create path if doesnt exist
