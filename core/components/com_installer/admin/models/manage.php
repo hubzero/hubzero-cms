@@ -28,6 +28,7 @@
 
 namespace Components\Installer\Admin\Models;
 
+use Components\Installer\Admin\Models\Orm\Extension as ExtensionOrm;
 use Request;
 use Notify;
 use Lang;
@@ -35,6 +36,7 @@ use App;
 
 // Import library dependencies
 require_once __DIR__ . DS . 'extension.php';
+require_once __DIR__ . '/orm/extension.php';
 
 /**
  * Installer Manage Model
@@ -215,40 +217,15 @@ class Manage extends Extension
 			{
 				$eid = array($eid => 0);
 			}
-
-			// Get a database connector
-			$db = \App::get('db');
-
-			// Get an installer object for the extension type
-			$installer = \JInstaller::getInstance();
-			$row = \JTable::getInstance('extension');
-
-			// Uninstall the chosen extensions
-			foreach ($eid as $id)
+			$extensions = ExtensionOrm::whereIn('extension_id', $eid);
+			$rowtype = '';
+			foreach($extensions as $extension)
 			{
-				$id = trim($id);
-				$row->load($id);
-				if ($row->type)
+				$rowtype = $extension->type;
+				if(!$extension->destroy())
 				{
-					$result = $installer->uninstall($row->type, $id);
-
-					// Build an array of extensions that failed to uninstall
-					if ($result === false)
-					{
-						$failed[] = $id;
-					}
+					$failed[] = $extension->name;
 				}
-				else
-				{
-					$failed[] = $id;
-				}
-			}
-
-			$langstring = 'COM_INSTALLER_TYPE_TYPE_' . strtoupper($row->type);
-			$rowtype = Lang::txt($langstring);
-			if (strpos($rowtype, $langstring) !== false)
-			{
-				$rowtype = $row->type;
 			}
 
 			if (count($failed))
@@ -263,12 +240,6 @@ class Manage extends Extension
 				Notify::success(Lang::txt('COM_INSTALLER_UNINSTALL_SUCCESS', $rowtype));
 				$result = true;
 			}
-
-			$this->setState('action', 'remove');
-			$this->setState('name', $installer->get('name'));
-
-			User::setState('com_installer.message', $installer->message);
-			User::setState('com_installer.extension_message', $installer->get('extension_message'));
 
 			return $result;
 		}
