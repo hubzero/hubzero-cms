@@ -241,7 +241,7 @@ $this->css()
 											<?php echo $row->status->get('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 										</span>
 										<?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
-											<span class="ticket-target_date tooltips" title="<?php echo Lang::txt('Target date: %s', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
+											<span class="ticket-target_date tooltips" title="<?php echo Lang::txt('COM_SUPPORT_TARGET_DATE', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
 												<time datetime="<?php echo Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 											</span>
 										<?php } ?>

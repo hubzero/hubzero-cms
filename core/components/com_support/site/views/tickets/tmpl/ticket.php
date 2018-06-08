@@ -168,22 +168,22 @@ $cc = array();
 								{
 									if ($attachment->width() > 400)
 									{
-										$img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+										$img = '<p><a href="' . Route::url($attachment->link()) . '" rel="lightbox"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
 									}
 									else
 									{
-										$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+										$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
 									}
 									echo $img;
 								}
 								else
 								{
 									?>
-									<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $attachment->get('description'); ?>">
+									<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
 										<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
 										<p class="attachment-meta">
 											<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-											<span class="attachment-action"><?php echo Lang::txt('Click to download'); ?></span>
+											<span class="attachment-action"><?php echo Lang::txt('COM_SUPPORT_CLICK_TO_DOWNLOAD'); ?></span>
 										</p>
 									</a>
 									<?php
@@ -342,22 +342,22 @@ $cc = array();
 							{
 								if ($attachment->width() > 400)
 								{
-									$img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+									$img = '<p><a href="' . Route::url($attachment->link()) . '" rel="lightbox"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
 								}
 								else
 								{
-									$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+									$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
 								}
 								echo $img;
 							}
 							else
 							{
 								?>
-								<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $attachment->get('description'); ?>">
+								<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
 									<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
 									<p class="attachment-meta">
 										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-										<span class="attachment-action"><?php echo Lang::txt('Click to download'); ?></span>
+										<span class="attachment-action"><?php echo Lang::txt('COM_SUPPORT_CLICK_TO_DOWNLOAD'); ?></span>
 									</p>
 								</a>
 								<?php
