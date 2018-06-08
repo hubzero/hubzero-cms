@@ -94,7 +94,7 @@ defined('_HZEXEC_') or die();
 					{
 						if ($attachment->width() > 400)
 						{
-							$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							$html = '<p><a href="' . Route::url($link) . '" rel="external"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
 						}
 						else
 						{
@@ -103,12 +103,11 @@ defined('_HZEXEC_') or die();
 					}
 					else
 					{
-						//$html = '<p class="attachment"><a href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">' . $attachment->get('description') . '</a></p>';
 						$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
 						$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
 						$html .= '<p class="attachment-meta">';
 						$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-						$html .= '<span class="attachment-action">' . Lang::txt('Click to download') . '</span>';
+						$html .= '<span class="attachment-action">' . Lang::txt('COM_FORUM_CLICK_TO_DOWNLOAD') . '</span>';
 						$html .= '</p>';
 						$html .= '</a>';
 					}
