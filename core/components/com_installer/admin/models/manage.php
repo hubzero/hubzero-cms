@@ -219,10 +219,10 @@ class Manage extends Extension
 			}
 			$extensions = ExtensionOrm::whereIn('extension_id', $eid);
 			$rowtype = '';
-			foreach($extensions as $extension)
+			foreach ($extensions as $extension)
 			{
 				$rowtype = $extension->type;
-				if(!$extension->destroy())
+				if (!$extension->destroy())
 				{
 					$failed[] = $extension->name;
 				}
