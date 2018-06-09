@@ -59,6 +59,7 @@
 .service {
   flex: 1 1 20rem;
   padding: 10px;
+  transition: all .3s ease-in-out;
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
     position: relative;
@@ -73,6 +74,12 @@
       right: 0;
       bottom: -1px;
     }
+  }
+  &:hover {
+    transform: scale(1.025);
+    -webkit-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
   }
 }
 

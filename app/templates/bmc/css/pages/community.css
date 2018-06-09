@@ -320,6 +320,7 @@
 .communities {
   width: 20rem;
   padding: 10px;
+  transition: all .3s ease-in-out;
 }
 
 .communities h4 {
@@ -336,6 +337,13 @@
   position: absolute;
   right: 0;
   bottom: -1px;
+}
+
+.communities:hover {
+  transform: scale(1.025);
+  -webkit-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
 }
 
 @supports (display: grid) {
@@ -854,7 +862,6 @@
   background: url("/app/site/media/images/stefan-stefancik-257625.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/stefan-stefancik-257625.jpg");
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
   background-color: #222b37;
   color: #fff;

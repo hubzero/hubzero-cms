@@ -30,7 +30,6 @@
   background: url("/app/site/media/images/jeff-sheldon-3231.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/jeff-sheldon-3231.jpg");
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
   background-color: #000;
   color: #fff;
@@ -126,6 +125,7 @@
 .service {
   flex: 1 1 20rem;
   padding: 10px;
+  transition: all .3s ease-in-out;
 }
 
 .service h4 {
@@ -143,6 +143,13 @@
   position: absolute;
   right: 0;
   bottom: -1px;
+}
+
+.service:hover {
+  transform: scale(1.025);
+  -webkit-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
 }
 
 #one {
