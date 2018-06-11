@@ -4,27 +4,27 @@ All extensions of the `app` directory are subtrees (effectively).
 
 ## Components
 
- * [com_partners](https://github.com/qubesub/com_partners): Partners component
- * [com_publications](https://github.com/qubesub/com_publications): **Override** of HubZero publications component.
- * [com_tags](https://github.com/qubesub/com_tags): **Override** of HubZero tags component.
+ * [com_partners](https://github.com/qubeshub/com_partners): Partners component
+ * [com_publications](https://github.com/qubeshub/com_publications): **Override** of HubZero publications component.
+ * [com_tags](https://github.com/qubeshub/com_tags): **Override** of HubZero tags component.
 
 ## Modules
 
- * [mod_partners](https://github.com/qubesub/mod_partners): Shows partners in grid format.
- * [mod_qubes_events](https://github.com/qubesub/mod_qubes_events): Displays QUBES Happening events, consisting mainly of faculty mentoring networks.
- * [mod_qubes_tools](https://github.com/qubesub/mod_qubes_tools): Displays QUBES Tools in grid format (_in development_).
- * [mod_showcase](https://github.com/qubesub/mod_showcase): Displays static and dynamic billboards in grid format.
- * [mod_slider](https://github.com/qubesub/mod_slider): Displays billboards in slider format (_not live on QUBES_)
+ * [mod_partners](https://github.com/qubeshub/mod_partners): Shows partners in grid format.
+ * [mod_qubes_events](https://github.com/qubeshub/mod_qubes_events): Displays QUBES Happening events, consisting mainly of faculty mentoring networks.
+ * [mod_qubes_tools](https://github.com/qubeshub/mod_qubes_tools): Displays QUBES Tools in grid format (_in development_).
+ * [mod_showcase](https://github.com/qubeshub/mod_showcase): Displays static and dynamic billboards in grid format.
+ * [mod_slider](https://github.com/qubeshub/mod_slider): Displays billboards in slider format (_not live on QUBES_)
 
 ## Plugins
- * [plg_content_qubesmacros](https://github.com/qubesub/plg_content_qubesmacros): Content plugin that contains QUBES macros.
- * [plg_projects_publications](https://github.com/qubesub/plg_projects_publications): **Override** of HubZero project publications plugin.
- * [plg_system_menurouter](https://github.com/qubesub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately.
- * [plg_system_subnav](https://github.com/qubesub/plg_system_subnav): Component/URL to subnavigation mapping
+ * [plg_content_qubesmacros](https://github.com/qubeshub/plg_content_qubesmacros): Content plugin that contains QUBES macros.
+ * [plg_projects_publications](https://github.com/qubeshub/plg_projects_publications): **Override** of HubZero project publications plugin.
+ * [plg_system_menurouter](https://github.com/qubeshub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately.
+ * [plg_system_subnav](https://github.com/qubeshub/plg_system_subnav): Component/URL to subnavigation mapping
 
 ## Templates
 
- * [tpl_bmc](https://github.com/qubesub/tpl_bmc): QUBES 2018 template
+ * [tpl_bmc](https://github.com/qubeshub/tpl_bmc): QUBES 2018 template
 
 # Development Workflow
 
