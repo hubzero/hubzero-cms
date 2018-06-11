@@ -1988,6 +1988,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version   = Request::getVar('version', 'dev');
 		$agree     = Request::getInt('agree', 0);
 		$pubdate   = Request::getVar('publish_date', '', 'post');
+		$review    = Request::getVar('request_review', 0);
 		$submitter = Request::getInt('submitter', $this->_uid, 'post');
 		$notify    = 1;
 
@@ -2157,7 +2158,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$state = 4; // No approval needed
 		}
-		elseif ($this->_task == 'republish' || $autoApprove)
+		elseif ($this->_task == 'republish')
 		{
 			$state = 1; // No approval needed
 		}
@@ -2169,7 +2170,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pa = new \Components\Publications\Tables\Author($this->_database);
 			$pa->saveSubmitter($pub->version->id, $submitter, $this->model->get('id'));
 
-			if ($this->_pubconfig->get('autoapprove') == 1)
+			if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
 			{
 				$state = 1;
 			}
