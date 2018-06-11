@@ -40,7 +40,38 @@ Make sure before you push, though, to pull in changes first:
 git pull --rebase origin master
 ```
 
-Interesting stuff happens only when you want to update the code on the servers.  The following
+Interesting stuff happens only when you want to update the code on the servers.
+
+Note that in the commands below, while we are referring to "subtrees", we are not using the "subtree" scripts bundled with git.  This is due to (1) the complete clusterfudge that occurs with history when using subtrees, and (2) the occurrence of the [subtree-cache directory](https://github.com/dflydev/git-subsplit/issues/14) which gets HUGE and is never cleaned.  Also, going the manual route forces a deeper understanding of git, which overall HAS to be a good thing, right?
+
+**Reference for manual subtree commands**:  [Mastering Git subtrees](https://medium.com/@porteneuve/mastering-git-subtrees-943d29a798ec) by [Christophe Porteneuve](https://medium.com/@porteneuve?source=post_header_lockup).
+
+## Adding remote extension as a subtree to this repository
+
+First, add the remote repository and fetch the repo:
+
+```
+[master]$ git remote add <extension> https://github.com/qubeshub/<extension>
+[master]$ git fetch <extension>
+```
+
+Now, pull in the extension repository and put it into the correct subdirectory of `app`.
+
+```
+[master]$ git read-tree --prefix=app/<extension dir> -u <extension>/master
+```
+
+`<extension dir>` can be
+ * `app/components/<extension>`,
+ * `app/modules/<extension>`,
+ * `app/plugins/<extension>`,
+ * `app/templates/<extension>`
+
+The previous `read-tree` command will not commit the result - we'll have to do that ourselves.
+
+```
+[master]$ git commit -m "Added <extension> as subtree"
+```
 
 ## Updating remote extensions
 
