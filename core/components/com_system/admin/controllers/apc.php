@@ -60,7 +60,7 @@ class Apc extends AdminController
 		// Read optional configuration file (if it exists)
 		if (file_exists(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'apc.conf.php'))
 		{
-			include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'apc.conf.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'apc.conf.php';
 		}
 
 		// Set some defaults
@@ -210,14 +210,14 @@ class Apc extends AdminController
 			apc_delete($MYREQUEST['DU']);
 		}
 
-		if (!function_exists('apc_cache_info') || !($this->cache = @apc_cache_info($cache_mode)))
+		if (!function_exists('apc_cache_info') || !($cache = @apc_cache_info($cache_mode)))
 		{
 			$this->setError(Lang::txt('No cache info available. APC does not appear to be running.'));
 			Request::setVar('task', 'error');
 			return parent::execute();
 		}
 
-		if (!$this->cache || !is_array($this->cache))
+		if (!$cache || !is_array($cache))
 		{
 			$this->setError(Lang::txt('No cache info available. APC does not appear to be running.'));
 			Request::setVar('task', 'error');
@@ -225,13 +225,14 @@ class Apc extends AdminController
 		}
 
 		// Avoid division by 0 errors on a cache clear
-		if (!$this->cache['num_hits'])
+		if (!$cache['num_hits'])
 		{
-			$this->cache['num_hits'] = 1;
+			$cache['num_hits'] = 1;
 			$this->time++;
 		}
 
 		// Make a few things available to everyone
+		$this->cache      = $cache;
 		$this->MYREQUEST  = $MYREQUEST;
 		$this->cache_user = apc_cache_info('user', 1);
 		$this->mem        = apc_sma_info();
@@ -268,6 +269,15 @@ class Apc extends AdminController
 		$mem        = $this->mem;
 		$time       = $this->time;
 
+		if (!isset($cache['expunges']))
+		{
+			$cache['expunges'] = '?';
+		}
+		if (!isset($cache_user['expunges']))
+		{
+			$cache_user['expunges'] = '?';
+		}
+
 		// A few variables for the view
 		$this->view->mem_size         = $mem['num_seg']*$mem['seg_size'];
 		$this->view->mem_avail        = $mem['avail_mem'];
@@ -291,8 +301,8 @@ class Apc extends AdminController
 		$this->view->size_vars        = $this->_bsize($cache_user['mem_size']);
 		$this->view->host             = $this->host;
 		$this->view->duration         = $this->_duration($cache['start_time']);
-		$this->view->cache            = $this->cache;
-		$this->view->cache_user       = $this->cache_user;
+		$this->view->cache            = $cache;
+		$this->view->cache_user       = $cache_user;
 		$this->view->mem              = $this->mem;
 		$this->view->graphics_avail   = $this->graphics_avail();
 		$this->view->time             = $this->time;
