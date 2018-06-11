@@ -166,6 +166,13 @@ function submitbutton(pressbutton)
 							<option value="1" <?php echo (isset($curParams->auto_approve) && $curParams->auto_approve == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
 						</select>
 					</div>
+					<div class="input-wrap">
+						<label for="field-requestreview"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REQUEST_REVIEW'); ?>:</label>
+						<select name="curation[params][request_review]" id="field-requestreview">
+							<option value="0" <?php echo (!isset($curParams->request_review) || $curParams->request_review == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
+							<option value="1" <?php echo (isset($curParams->request_review) && $curParams->request_review == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
+						</select>
+					</div>
 				<?php } else {
 					echo '<p class="warning">' . Lang::txt('COM_PUBLICATIONS_CURATION_SAVE_NEW') . '</p>';
 				} ?>
