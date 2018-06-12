@@ -113,9 +113,9 @@ class Publications extends Macro
 
 		$base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
 
-		\Document::addStyleSheet($base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'pubcards.css');
-		\Document::addStyleSheet($base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'colorbrewer.css');
-		\Document::addScript($base . DS . 'assets' . DS . 'publications' . DS . 'js' . DS . 'pubcards.js');
+		\Document::addStyleSheet($base . DS . 'assets' . DS . 'css' . DS . 'pubcards.css');
+		\Document::addStyleSheet($base . DS . 'assets' . DS . 'css' . DS . 'colorbrewer.css');
+		\Document::addScript($base . DS . 'assets' . DS . 'js' . DS . 'pubcards.js');
 
 		$html = '<style>';
 		$html .= '  .ribbon-alt {';
