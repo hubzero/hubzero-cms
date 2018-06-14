@@ -71,8 +71,8 @@ class Helper extends Module
 		// Check the events component
 		if (file_exists(\Component::path('com_events') . DS . 'helpers' . DS . 'html.php'))
 		{
-			include_once(\Component::path('com_events') . DS . 'helpers' . DS . 'html.php');
-			include_once(\Component::path('com_events') . DS . 'helpers' . DS . 'date.php');
+			include_once \Component::path('com_events') . DS . 'helpers' . DS . 'html.php';
+			include_once \Component::path('com_events') . DS . 'helpers' . DS . 'date.php';
 		}
 		else
 		{
@@ -135,7 +135,7 @@ class Helper extends Module
 		}
 
 		// Get the time with offset
-		$timeWithOffset = time() + (Config::get('offset')*60*60);
+		$timeWithOffset = time() + (intval(Config::get('offset'))*60*60);
 
 		// Get the start day
 		$startday = $this->params->get('start_day');
