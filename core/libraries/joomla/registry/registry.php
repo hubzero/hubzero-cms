@@ -339,7 +339,7 @@ class JRegistry
 			}
 
 			// Get the old value if exists so we can return it
-			$result = $node->$nodes[$i] = $value;
+			$result = $node->{$nodes[$i]} = $value;
 		}
 
 		return $result;
