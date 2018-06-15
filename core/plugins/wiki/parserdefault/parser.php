@@ -1362,8 +1362,8 @@ class WikiParser
 
 		if (is_file($path . DS . 'formula.php'))
 		{
-			include_once($path . DS . 'formula.php');
-			include_once($path . DS . 'math' . DS . 'mathrenderer.php');
+			include_once $path . DS . 'formula.php';
+			include_once $path . DS . 'math' . DS . 'mathrenderer.php';
 		}
 		else
 		{
@@ -1482,7 +1482,7 @@ class WikiParser
 		if (is_file($path . DS . 'macro.php'))
 		{
 			// Include abstract macro class
-			include_once($path . DS . 'macro.php');
+			include_once $path . DS . 'macro.php';
 		}
 		else
 		{
@@ -1541,7 +1541,7 @@ class WikiParser
 
 				if (is_file($macropath))
 				{
-					include_once($macropath);
+					include_once $macropath;
 				}
 				else
 				{
@@ -1552,7 +1552,7 @@ class WikiParser
 
 					if (is_file($macropath))
 					{
-						include_once($macropath);
+						include_once $macropath;
 					}
 					else
 					{
@@ -2764,7 +2764,7 @@ class WikiParser
 				}
 				else if (!$inBlockElem && !$this->mInPre)
 				{
-					if (' ' == $t{0} and ($this->mLastSection == 'pre' or trim($t) != ''))
+					if (isset($t{0}) && ' ' == $t{0} and ($this->mLastSection == 'pre' or trim($t) != ''))
 					{
 						// pre
 						if ($this->mLastSection != 'pre')
