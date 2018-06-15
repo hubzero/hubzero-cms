@@ -5,6 +5,8 @@
 }
 
 .one {
+  display: flex;
+  flex-wrap: wrap;
   grid-column: col/span 3;
   grid-row: row;
   display: grid;
@@ -16,6 +18,7 @@
 .one .postdoc-intro {
   grid-column: 1/span 3;
   grid-row: 1;
+  padding: 0 10px;
 }
 
 @media only screen and (min-width: 801px) {
@@ -27,6 +30,7 @@
 .one .current-postdocs {
   grid-column: 1/span 3;
   grid-row: 2;
+  padding: 0 10px;
 }
 
 @media only screen and (min-width: 801px) {
@@ -38,6 +42,8 @@
 
 @media only screen and (min-width: 801px) {
   .one {
+    display: flex;
+    flex-wrap: nowrap;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
@@ -46,6 +52,8 @@
 }
 
 .two {
+  display: flex;
+  flex-wrap: wrap;
   grid-column: col/span 3;
   grid-row: row 2;
   display: grid;
@@ -76,6 +84,7 @@
 .two .img-container {
   grid-column: 1/span 3;
   grid-row: 3;
+  margin: 0 auto;
 }
 
 .two .img-container img {
@@ -88,11 +97,20 @@
   .two .img-container {
     grid-column: 3/span 1;
     grid-row: 2;
+    width: 50%;
+  }
+}
+
+@supports (display: grid) {
+  .two .img-container {
+    width: auto;
   }
 }
 
 @media only screen and (min-width: 801px) {
   .two {
+    display: flex;
+    flex-wrap: nowrap;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
@@ -101,6 +119,8 @@
 }
 
 .three {
+  display: flex;
+  flex-wrap: wrap;
   grid-column: col/span 3;
   grid-row: row 3;
   display: grid;
@@ -113,6 +133,7 @@
 .three .img-container {
   grid-column: 1/span 3;
   grid-row: 2;
+  padding: 0 10px;
 }
 
 @media only screen and (min-width: 801px) {
@@ -123,18 +144,23 @@
 }
 
 .three .postdoc-activities {
+  order: -1;
   grid-column: 1/span 3;
   align-self: center;
+  padding: 0 10px;
 }
 
 @media only screen and (min-width: 801px) {
   .three .postdoc-activities {
+    order: 1;
     grid-column: 2/span 2;
   }
 }
 
 @media only screen and (min-width: 801px) {
   .three {
+    display: flex;
+    flex-wrap: nowrap;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
@@ -142,6 +168,8 @@
 }
 
 .four {
+  display: flex;
+  flex-wrap: wrap;
   grid-column: col/span 3;
   grid-row: row 4;
   display: grid;
@@ -156,6 +184,7 @@
   grid-column: 1/span 3;
   grid-row: 1;
   align-self: center;
+  padding: 0 10px;
 }
 
 @media only screen and (min-width: 701px) {
@@ -167,17 +196,20 @@
 .four .img-container {
   grid-column: 1/span 3;
   grid-row: 2;
+  padding: 0 10px;
 }
 
-@media only screen and (min-width: 701px) {
+@media only screen and (min-width: 801px) {
   .four .img-container {
     grid-column: 3/span 1;
     grid-row: 1;
   }
 }
 
-@media only screen and (min-width: 701px) {
+@media only screen and (min-width: 801px) {
   .four {
+    display: flex;
+    flex-wrap: nowrap;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;

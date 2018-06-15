@@ -5,27 +5,32 @@
 	@include grid-template(repeat(3, [col] 1fr), repeat(5, [row] auto));
 }
 .one {
+	@include flexbox(wrap);
 	@include grid(col / span 3, row);
 	@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
 	.postdoc-intro {
 		@include grid(1 / span 3, 1);
+		padding: 0 10px;
 		@include respond-at(801px) {
 			@include grid(1 / span 2, null);
 		}
 	}
 	.current-postdocs {
 		@include grid(1 / span 3, 2);
+		padding: 0 10px;
 		@include respond-at(801px) {
 			@include grid(3 / span 1, 1);
 		}
 	}
 	@include respond-at(801px) {
+		@include flexbox;
 		@include grid-template(repeat(3, 1fr), null, 1rem);
 		padding: 2.5em;
 	}
 }
 
 .two {
+	@include flexbox(wrap);
 	@include grid(col / span 3, row 2);
 	@include grid-template(repeat(3, 1fr), repeat(3, auto), 1rem);
 	background-color: $light-gray;
@@ -41,6 +46,7 @@
 	}
 	.img-container {
 		@include grid(1 / span 3, 3);
+		margin: 0 auto;
 		img {
 			position: relative;
 			top: 50%;
@@ -48,36 +54,48 @@
 		}
 		@include respond-at(801px) {
 			@include grid(3 / span 1, 2);
+			width: 50%;
+		}
+		@include grid-support {
+			width: auto;
 		}
 	}
 	@include respond-at(801px) {
+		@include flexbox;
 		@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
 	}
 }
 
 .three {
+	@include flexbox(wrap);
 	@include grid(col / span 3, row 3);
 	@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
 	padding: 2.5em;
 	.img-container {
 		@include grid(1 / span 3, 2);
+		padding: 0 10px;
 		@include respond-at(801px) {
 			@include grid(1 / span 1, 1);
 		}
 	}
 	.postdoc-activities {
+		order: -1;
 		@include grid(1 / span 3, null);
 		align-self: center;
+		padding: 0 10px;
 		@include respond-at(801px) {
+			order: 1;
 			@include grid(2 / span 2, null);
 		}
 	}
 	@include respond-at(801px) {
+		@include flexbox;
 		@include grid-template(repeat(3, 1fr), null, 1rem);
 	}
 }
 
 .four {
+	@include flexbox(wrap);
 	@include grid(col / span 3, row 4);
 	@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
 	background-color: $light-gray;
@@ -85,17 +103,20 @@
 	.postdoc-activities {
 		@include grid(1 / span 3, 1);
 		align-self: center;
+		padding: 0 10px;
 		@include respond-at(701px) {
 			@include grid(1 / span 2, null);
 		}
 	}
 	.img-container {
 		@include grid(1 / span 3, 2);
-		@include respond-at(701px) {
+		padding: 0 10px;
+		@include respond-at(801px) {
 			@include grid(3 / span 1, 1);
 		}
 	}
-	@include respond-at(701px) {
+	@include respond-at(801px) {
+		@include flexbox;
 		@include grid-template(repeat(3, 1fr), null, 1rem);
 	}
 }
