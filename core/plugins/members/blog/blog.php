@@ -88,7 +88,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';

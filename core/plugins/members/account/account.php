@@ -98,8 +98,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html' => '',
+			'metadata' => array()
 		);
 
 		// Initialize a few things (needed for view and metadata)
