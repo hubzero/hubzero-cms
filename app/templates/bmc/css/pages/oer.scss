@@ -1,0 +1,152 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+
+.wrapper {
+  @include grid-template(repeat(4, [col] 1fr), repeat(5, [row] minmax(22rem, auto)));
+}
+.link-anchor {
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+  &:visited {
+    color: inherit;
+  }
+}
+.link {
+  margin-top: 3em;
+}
+
+//Header
+.oer-header {
+  @include flexbox;
+  @include grid(col / span 4, row);
+  @include grid-template(repeat(4, 1fr), null);
+  @include bcg-img('/app/site/media/images/pexels-photo-590493.jpg');
+  background-color: $black;
+  color: $white;
+  text-align: center;
+  .intro {
+    @include grid(1 / span 4, null);
+    padding: 2.5em;
+    align-self: center;
+    .link {
+      a {
+        @include btn-border-drawing($white, $orange, 2px, bottom, right);
+      }
+    }
+    @include respond-at(901px) {
+      @include grid(2 / span 2, null);
+    }
+  }
+  h2 {
+    color: $white;
+  }
+}
+
+//Services
+.learn {
+  @include grid(col / span 4, row 2);
+  padding: 2.5em;
+}
+.oer-wrapper {
+  @include flexbox(wrap);
+  @include grid-template(repeat(auto-fit, minmax(20rem, 1fr)), null, 10px);
+  @include respond-at(901px) {
+    padding: 2.5em;
+  }
+}
+.oer {
+  flex: 1 1 20rem;
+  padding: 10px;
+  transition: all .3s ease-in-out;
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+    position: relative;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $dark-blue;
+    &:after {
+      content: '';
+      width: 65%;
+      height: 1.1px;
+      background-color: $white;
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+    }
+  }
+  &:hover {
+    transform: scale(1.025);
+    -webkit-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
+  }
+}
+
+//Sharing on QUBES
+#one {
+  @include flexbox;
+  @include grid(col / span 4, row 3);
+  @include grid-template(repeat(3, 1fr), 1fr);
+  .sharing {
+    width: 100%;
+    @include grid(1 / span 3, null);
+    background-color: $light-gray;
+    text-align: center;
+    padding: 2.5em;
+    ul {
+      text-align: left;
+    }
+    .link {
+      a {
+        @include btn-border-drawing($white, $dark-blue, 2px, bottom, right);
+        display: block;
+        @include respond-at(670px) {
+          display: initial;
+        }
+      }
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+}
+
+//Examples
+#two {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 4);
+  @include grid-template(repeat(2, 1fr), repeat(2, 1fr));
+  .examples {
+    @include grid(span 2, 1);
+    width: 100%;
+    padding: 2.5em;
+    align-self: center;
+    @include respond-at(901px) {
+      @include grid(2 / span 1, 1);
+      width: 50%;
+    }
+    @include grid-support {
+      width: auto;
+    }
+  }
+  @include respond-at(901px) {
+    @include grid-template(null, 1fr);
+  }
+}
+
+//OER Culture
+#three {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 5);
+  @include grid-template(repeat(2, 1fr), repeat(2, 1fr));
+  .culture {
+    @extend .examples;
+    padding: 2.5em;
+    order: -1;
+    @include respond-at(901px) {
+      @include grid(1 / span 1, 1);
+      order: 1;
+    }
+  }
+}

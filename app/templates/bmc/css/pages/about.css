@@ -2,18 +2,12 @@ html {
   overflow-y: hidden;
 }
 
-.btn {
-  font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif !important;
-}
-
 #about, #post-docs, #contact {
   text-align: center;
 }
 
-.aside .menu {
-  position: fixed;
-  top: 10em;
-  left: 3em;
+#about .btn, #post-docs .btn, #contact .btn {
+  font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif !important;
 }
 
 .content-header {
@@ -22,7 +16,7 @@ html {
 
 #mission {
   position: relative;
-  padding: 7em;
+  padding: 1em;
   color: #fff;
   transition: all 1s ease-out;
   overflow: hidden;
@@ -48,6 +42,12 @@ html {
   color: #fff;
 }
 
+@media only screen and (min-width: 701px) {
+  #mission {
+    padding: 7em;
+  }
+}
+
 .mission-statement {
   max-width: 54rem;
   margin: 0 auto;
@@ -59,9 +59,15 @@ html {
   font-family: 'Martel', serif;
   text-align: center;
   margin: 0 auto;
-  padding: 3em;
+  padding: 1em;
   color: #fff;
   z-index: 3;
+}
+
+@media only screen and (min-width: 701px) {
+  .mission-statement h4 {
+    padding: 3em;
+  }
 }
 
 #about {
@@ -69,7 +75,7 @@ html {
 }
 
 #about .pane-1 {
-  padding: 7em;
+  padding: 1em;
 }
 
 #about .pane-1 .content1 {
@@ -84,7 +90,13 @@ html {
   text-align: center;
   max-width: 36rem;
   margin: 0 auto;
-  padding: 3em;
+  padding: 1em;
+}
+
+@media only screen and (min-width: 701px) {
+  #about .pane-1 h6 {
+    padding: 3em;
+  }
 }
 
 #about .pane-1 img {
@@ -92,26 +104,70 @@ html {
   width: 5rem;
 }
 
+@media only screen and (min-width: 701px) {
+  #about .pane-1 {
+    padding: 7em;
+  }
+}
+
 #about .pane-2, #about .pane-3 {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   padding: 7em 3em;
+}
+
+#about .pane-2 .img-container, #about .pane-3 .img-container {
+  transform: translateY(130px);
 }
 
 #about .pane-2 .img-container img, #about .pane-3 .img-container img {
   width: 90%;
 }
 
+@media only screen and (min-width: 701px) {
+  #about .pane-2 .img-container, #about .pane-3 .img-container {
+    transform: translateY(0);
+  }
+}
+
 #about .pane-2 p, #about .pane-3 p {
-  padding: 0 2em;
-  margin-left: 5em;
-  width: 23rem;
   align-self: center;
 }
 
-#about .pane-3 img {
-  padding: 0 4em;
+@media only screen and (min-width: 1001px) {
+  #about .pane-2 p, #about .pane-3 p {
+    width: 23rem;
+    padding: 0 2em;
+    margin-left: 5em;
+  }
+}
+
+@media only screen and (min-width: 1001px) {
+  #about .pane-2, #about .pane-3 {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+}
+
+#about .pane-3 {
+  padding: 0 3em;
+}
+
+#about .pane-3 .img-container {
+  order: -1;
+}
+
+@media only screen and (min-width: 1001px) {
+  #about .pane-3 .img-container {
+    order: 1;
+  }
+}
+
+@media only screen and (min-width: 701px) {
+  #about .pane-3 {
+    padding: 7em 3em;
+  }
 }
 
 .fade-up {
@@ -137,8 +193,18 @@ html {
   padding: 2em;
 }
 
+#post-docs p, #contact p {
+  margin: 0 auto;
+  max-width: 55rem;
+  padding: 2em;
+}
+
 #team {
   padding-top: 7em;
+}
+
+#team .btn {
+  font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif !important;
 }
 
 #advisors {
@@ -214,10 +280,26 @@ html {
 
 .team-wrapper, .wrapper {
   display: grid;
-  grid-template-columns: repeat(3, 300px);
+  grid-template-columns: 300px;
   grid-gap: 50px;
   grid-auto-rows: 350px;
   justify-content: center;
+}
+
+@media only screen and (min-width: 680px) {
+  .team-wrapper, .wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 300px);
+    grid-gap: 50px;
+  }
+}
+
+@media only screen and (min-width: 1310px) {
+  .team-wrapper, .wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    grid-gap: 50px;
+  }
 }
 
 .icon-spinner {
@@ -416,12 +498,6 @@ html {
   height: 100%;
   z-index: 3;
   transition: all 0.3s;
-}
-
-.card .team-member {
-  min-height: 284px;
-  width: 100%;
-  object-fit: cover;
 }
 
 .card.active .img-container {

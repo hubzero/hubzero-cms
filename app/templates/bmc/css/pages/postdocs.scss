@@ -1,0 +1,249 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+
+.wrapper {
+	@include grid-template(repeat(3, [col] 1fr), repeat(5, [row] auto));
+}
+.one {
+	@include grid(col / span 3, row);
+	@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
+	.postdoc-intro {
+		@include grid(1 / span 3, 1);
+		@include respond-at(801px) {
+			@include grid(1 / span 2, null);
+		}
+	}
+	.current-postdocs {
+		@include grid(1 / span 3, 2);
+		@include respond-at(801px) {
+			@include grid(3 / span 1, 1);
+		}
+	}
+	@include respond-at(801px) {
+		@include grid-template(repeat(3, 1fr), null, 1rem);
+		padding: 2.5em;
+	}
+}
+
+.two {
+	@include grid(col / span 3, row 2);
+	@include grid-template(repeat(3, 1fr), repeat(3, auto), 1rem);
+	background-color: $light-gray;
+	padding: 2.5em;
+	h2 {
+		@include grid(1 / span 3, 1);
+	}
+	.postdoc-activities {
+		@include grid(1 / span 3, 2);
+		@include respond-at(801px) {
+			@include grid(1 / span 2, 2);
+		}
+	}
+	.img-container {
+		@include grid(1 / span 3, 3);
+		img {
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		@include respond-at(801px) {
+			@include grid(3 / span 1, 2);
+		}
+	}
+	@include respond-at(801px) {
+		@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
+	}
+}
+
+.three {
+	@include grid(col / span 3, row 3);
+	@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
+	padding: 2.5em;
+	.img-container {
+		@include grid(1 / span 3, 2);
+		@include respond-at(801px) {
+			@include grid(1 / span 1, 1);
+		}
+	}
+	.postdoc-activities {
+		@include grid(1 / span 3, null);
+		align-self: center;
+		@include respond-at(801px) {
+			@include grid(2 / span 2, null);
+		}
+	}
+	@include respond-at(801px) {
+		@include grid-template(repeat(3, 1fr), null, 1rem);
+	}
+}
+
+.four {
+	@include grid(col / span 3, row 4);
+	@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
+	background-color: $light-gray;
+	padding: 2.5em;
+	.postdoc-activities {
+		@include grid(1 / span 3, 1);
+		align-self: center;
+		@include respond-at(701px) {
+			@include grid(1 / span 2, null);
+		}
+	}
+	.img-container {
+		@include grid(1 / span 3, 2);
+		@include respond-at(701px) {
+			@include grid(3 / span 1, 1);
+		}
+	}
+	@include respond-at(701px) {
+		@include grid-template(repeat(3, 1fr), null, 1rem);
+	}
+}
+
+.five {
+	@include grid(col / span 3, row 5);
+	@include respond-at(801px) {
+		padding: 2.5em;
+	}
+}
+
+a {
+	border: none;
+}
+
+
+ul.postdoc-list {
+	list-style: none;
+}
+#postdoc-pos1 {
+	display: none;
+	padding: 15px;
+}
+.postdoc-title {
+	text-align: center;
+	clear: left;
+	color: $link-color;
+}
+.postdoc-link {
+	display: block;
+	clear: left;
+}
+.type-em {
+	font-size: 1.2rem;
+	font-style: italic;
+	line-height: 1em;
+}
+
+.open-positions {
+  position: relative;
+  border: 1px solid #eb6546;
+	padding: 10px;
+}
+.past-postdocs {
+	text-align: center;
+	margin: 0 auto;
+}
+.past {
+	display: inline-block;
+}
+.card .past {
+	margin: 0 10px;
+}
+.ribbon {
+  position: absolute;
+  right: -5px; top: -5px;
+  z-index: 1;
+  overflow: hidden;
+  width: 75px; height: 75px;
+  text-align: right;
+}
+.ribbon span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  width: 100px;
+  display: block;
+  background: #79A70A;
+  background: linear-gradient(#F70505 0%, #8F0808 100%);
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px; right: -21px;
+}
+.ribbon span::before {
+  content: "";
+  position: absolute; left: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid #8F0808;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #8F0808;
+}
+.ribbon span::after {
+  content: "";
+  position: absolute; right: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid #8F0808;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #8F0808;
+}
+
+.card {
+	position: relative;
+	box-shadow: 5px 4px 8px 0 rgba(0,0,0,0.2);
+	transition: 0.3s;
+	width: 22.5rem;
+	height: 9.375rem;
+	overflow: hidden;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	h2 {
+		font-size: 1.5rem;
+		text-align: left;
+		overflow-wrap: break-word;
+	}
+	p {
+		font-family: 'martel', serif;
+		font-size: 1.2rem;
+	}
+	@include respond-at (481px) {
+		width: 25rem;
+		height: 9.375rem;
+	}
+}
+.card:hover {
+    box-shadow: 10px 8px 16px 0 rgba(0,0,0,0.2);
+}
+.card-container {
+    padding: 2px 2px;
+		background-color: $white;
+		width: 100%;
+ 	 	height: 100%;
+		border: 1px solid $light-gray;
+}
+.card-container p {
+	text-align: left;
+}
+.card-img {
+	float: left;
+	width: 35%;
+	height: 100%;
+	padding-right: 10px;
+	img {
+		object-fit: cover;
+	}
+}
+.card-action {
+	position: absolute;
+	bottom: 0;
+	left: 35%;
+	text-align: left !important;
+	border-top: 1px solid #efefef;
+	padding: 5px;
+}
