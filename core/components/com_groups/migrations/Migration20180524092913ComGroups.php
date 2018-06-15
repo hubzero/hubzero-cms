@@ -1,11 +1,11 @@
 <?php
-require_once Component::path('com_groups') . '/models/orm/group.php';
-require_once Component::path('com_groups') . '/models/orm/field.php';
-
 use Hubzero\Content\Migration\Base;
 use Components\Groups\Models\Orm\Field;
 use Components\Groups\Models\Orm\Answer;
 use Components\Groups\Models\Orm\Group;
+
+require_once \Component::path('com_groups') . '/models/orm/group.php';
+require_once \Component::path('com_groups') . '/models/orm/field.php';
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -22,7 +22,7 @@ class Migration20180524092913ComGroups extends Base
 	{
 		if (!$this->db->tableExists('#__xgroups_description_fields'))
 		{
-			$query = "CREATE TABLE `jos_xgroups_description_fields` (
+			$query = "CREATE TABLE `#__xgroups_description_fields` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `type` varchar(255) NOT NULL,
 			  `name` varchar(255) NOT NULL DEFAULT '',
@@ -51,14 +51,14 @@ class Migration20180524092913ComGroups extends Base
 			  PRIMARY KEY (`id`),
 			  KEY `idx_type` (`type`),
 			  KEY `idx_access` (`access`)
-			) ENGINE=MyISAM AUTO_INCREMENT=116 DEFAULT CHARSET=utf8;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
 		if (!$this->db->tableExists('#__xgroups_description_options'))
 		{
-			$query = "CREATE TABLE `jos_xgroups_description_options` (
+			$query = "CREATE TABLE `#__xgroups_description_options` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `field_id` int(11) NOT NULL DEFAULT '0',
 			  `value` varchar(255) NOT NULL DEFAULT '',
@@ -68,16 +68,16 @@ class Migration20180524092913ComGroups extends Base
 			  `dependents` tinytext,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_field_id` (`field_id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
 		if (!$this->db->tableExists('#__xgroups_description_answers'))
 		{
-			$query = "CREATE TABLE `jos_xgroups_description_answers` (
+			$query = "CREATE TABLE `#__xgroups_description_answers` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `group_id` int(11) NOT NULL,
+			  `group_id` int(11) NOT NULL DEFAULT '0',
 			  `field_id` int(11) NOT NULL DEFAULT '0',
 			  `value` text NOT NULL,
 			  `ordering` int(11) NOT NULL DEFAULT '0',
@@ -88,15 +88,25 @@ class Migration20180524092913ComGroups extends Base
 			  PRIMARY KEY (`id`),
 			  KEY `idx_group_id` (`group_id`),
 			  KEY `idx_field_id` (`field_id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		$groups = Group::all()->where('public_desc', '!=', '', 'or')->where('private_desc', '!=', '', 'or')->rows();
+
+		$groups = Group::all()
+			->where('public_desc', '!=', '', 'or')
+			->where('private_desc', '!=', '', 'or')
+			->rows();
+
 		$publicDescriptionAnswers = array();
 		$privateDescriptionAnswers = array();
+
 		foreach ($groups as $group)
 		{
+			if (!$group->get('gidNumber'))
+			{
+				continue;
+			}
 			if ($group->get('public_desc'))
 			{
 				$publicDescriptionAnswers[] = array(
@@ -126,7 +136,10 @@ class Migration20180524092913ComGroups extends Base
 			);
 		if ($publicDescField->save())
 		{
-			$publicDescField->answers()->save($publicDescriptionAnswers);
+			if (!empty($publicDescriptionAnswers))
+			{
+				$publicDescField->answers()->save($publicDescriptionAnswers);
+			}
 		}
 		$privateDescField = Field::blank()
 			->set(
@@ -141,7 +154,10 @@ class Migration20180524092913ComGroups extends Base
 			);
 		if ($privateDescField->save())
 		{
-			$privateDescField->answers()->save($privateDescriptionAnswers);
+			if (!empty($privateDescriptionAnswers))
+			{
+				$privateDescField->answers()->save($privateDescriptionAnswers);
+			}
 		}
 	}
 
@@ -170,6 +186,5 @@ class Migration20180524092913ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-
 	}
 }
