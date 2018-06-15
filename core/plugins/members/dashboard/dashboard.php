@@ -127,7 +127,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html' => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		// Build the final HTML

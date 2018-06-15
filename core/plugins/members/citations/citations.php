@@ -105,7 +105,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		$this->database = App::get('db');

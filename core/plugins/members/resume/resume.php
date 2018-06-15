@@ -60,17 +60,17 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$path = Component::path('com_jobs');
 
-		include_once($path . DS . 'tables' . DS . 'admin.php');
-		include_once($path . DS . 'tables' . DS . 'application.php');
-		include_once($path . DS . 'tables' . DS . 'category.php');
-		include_once($path . DS . 'tables' . DS . 'employer.php');
-		include_once($path . DS . 'tables' . DS . 'job.php');
-		include_once($path . DS . 'tables' . DS . 'prefs.php');
-		include_once($path . DS . 'tables' . DS . 'resume.php');
-		include_once($path . DS . 'tables' . DS . 'seeker.php');
-		include_once($path . DS . 'tables' . DS . 'shortlist.php');
-		include_once($path . DS . 'tables' . DS . 'stats.php');
-		include_once($path . DS . 'tables' . DS . 'type.php');
+		include_once $path . DS . 'tables' . DS . 'admin.php';
+		include_once $path . DS . 'tables' . DS . 'application.php';
+		include_once $path . DS . 'tables' . DS . 'category.php';
+		include_once $path . DS . 'tables' . DS . 'employer.php';
+		include_once $path . DS . 'tables' . DS . 'job.php';
+		include_once $path . DS . 'tables' . DS . 'prefs.php';
+		include_once $path . DS . 'tables' . DS . 'resume.php';
+		include_once $path . DS . 'tables' . DS . 'seeker.php';
+		include_once $path . DS . 'tables' . DS . 'shortlist.php';
+		include_once $path . DS . 'tables' . DS . 'stats.php';
+		include_once $path . DS . 'tables' . DS . 'type.php';
 
 		$this->config = Component::params('com_jobs');
 	}
@@ -200,7 +200,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// The output array we're returning
 		$arr = array(
 			'html' => '',
-			'metadata' => '',
+			'metadata' => array(),
 			'searchresult' => ''
 		);
 
