@@ -17,7 +17,7 @@ All extensions of the `app` directory are subtrees (effectively).
  * [mod_slider](https://github.com/qubeshub/mod_slider): Displays billboards in slider format (_not live on QUBES_)
 
 ## Plugins
- * [plg_content_qubesmacros](https://github.com/qubeshub/plg_content_qubesmacros): Content plugin that contains QUBES macros.
+ * [plg_content_qubesmacros](https://github.com/qubeshub/plg_content_qubesmacros): Content plugin that contains QUBES macros. **dev** :white_check_mark: **prod** :x:
  * [plg_projects_publications](https://github.com/qubeshub/plg_projects_publications): **Override** of HubZero project publications plugin.
  * [plg_system_menurouter](https://github.com/qubeshub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately.
  * [plg_system_subnav](https://github.com/qubeshub/plg_system_subnav): Component/URL to subnavigation mapping
