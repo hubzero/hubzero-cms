@@ -1,0 +1,10 @@
+#page-1 .filter-value {
+	padding: .5em;
+}
+#page-1 .toggle-state {
+	margin-left: .5em;
+}
+#page-1 .options-list {
+	list-style-type: none;
+	clear: both;
+}

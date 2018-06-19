@@ -680,6 +680,16 @@ class Tickets extends SiteController
 			}
 		}
 
+		$watching = Watching::all()
+			->whereEquals('user_id', User::get('id'))
+			->rows()
+			->fieldsByKey('ticket_id');
+
+		$watch = array(
+			'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
+			'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
+		);
+
 		$filters['search'] = $search;
 
 		if ($filters['show'] < 0)
@@ -734,16 +744,6 @@ class Tickets extends SiteController
 			// Get the records
 			$tickets = Ticket::allWithQuery($query, $filters);
 		}
-
-		$watching = Watching::all()
-			->whereEquals('user_id', User::get('id'))
-			->rows()
-			->fieldsByKey('ticket_id');
-
-		$watch = array(
-			'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
-			'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
-		);
 
 		// Set the page title
 		$this->_buildTitle();
