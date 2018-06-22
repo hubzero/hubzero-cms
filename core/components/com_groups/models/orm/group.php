@@ -998,7 +998,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	 *
 	 * @return  string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		return 'group';
 	}
@@ -1010,7 +1010,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = $this->searchNamespace() . '-' . $this->get('id');
+		$searchId = self::searchNamespace() . '-' . $this->get('id');
 		return $searchId;
 	}
 
@@ -1042,7 +1042,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 		$group->owner = $this->get('id');
 		$group->id = $this->searchId();
 		$group->title = $this->description;
-		$group->hubtype = $this->searchNamespace();
+		$group->hubtype = self::searchNamespace();
 		$group->description = \Hubzero\Utility\Sanitize::stripAll($this->public_desc);
 
 		return $group;

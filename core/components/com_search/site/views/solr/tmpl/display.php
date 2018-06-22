@@ -32,9 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('search-enhanced');
-$this->js('suggest');
-$this->js('solr');
+$this->css('search-enhanced')
+	->css('jquery.datetimepicker.css', 'system');
+$this->js('suggest')
+	->js('solr')
+	->js('jquery.datetimepicker', 'system');
 
 $terms = isset($this->terms) ? $this->terms : '';
 $noResult = count($this->results) > 0 ? false : true;
@@ -54,8 +56,8 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 	<h2>Search</h2>
 </header><!-- / #content-header -->
 
-<section class="options section">
-	<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="container data-entry">
+<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="container data-entry">
+	<section class="options section">
 		<input class="entry-search-submit" type="submit" value="Search" />
 		<fieldset class="entry-search">
 			<legend>Search site</legend>
@@ -88,82 +90,86 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 				<input type="hidden" name="maxlon" id="maxlon" value="<?php if (isset($this->maxlon)) { echo $this->maxlon; } ?>" />
 			</fieldset>
 		<?php } // end if ?>
-	</form>
-</section>
+	</section>
 
-<section class="main section">
-	<?php if ($noResult) {
-		if (!empty($terms))
-		{ ?>
-			<div class="info">
-				<?php if (isset($this->spellSuggestions)) { ?>
-					<h3><?php echo Lang::txt('COM_SEARCH_DIDYOUMEAN'); ?></h3>
-					<?php foreach ($this->spellSuggestions as $suggestion) { ?>
-						<?php foreach ($suggestion->getWords() as $word) { ?>
-							<a href="<?php echo Route::url('search?terms=' . $word['word'] . '&section=content'); ?>"><?php echo $word['word']; ?></a>
+	<section class="main section">
+		<?php if ($noResult) {
+			if (!empty($terms))
+			{ ?>
+				<div class="info">
+					<?php if (isset($this->spellSuggestions)) { ?>
+						<h3><?php echo Lang::txt('COM_SEARCH_DIDYOUMEAN'); ?></h3>
+						<?php foreach ($this->spellSuggestions as $suggestion) { ?>
+							<?php foreach ($suggestion->getWords() as $word) { ?>
+								<a href="<?php echo Route::url('search?terms=' . $word['word'] . '&section=content'); ?>"><?php echo $word['word']; ?></a>
+							<?php } ?>
 						<?php } ?>
+					<?php } else { ?>
+						<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
 					<?php } ?>
-				<?php } else { ?>
-					<p><?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?></p>
-				<?php } ?>
-			</div>
-		<?php }
-	} else { ?>
-		<div class="section-inner">
-			<nav class="aside">
-				<div class="container facet">
-					<h3>Category</h3>
-					<ul>
-						<li>
-							<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>">All Categories <span class="item-count"><?php echo $this->total; ?></span></a>
-						</li>
-						<?php foreach ($this->facets as $facet): ?>
-							<?php echo $facet->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString); ?>
-						<?php endforeach; ?>
-					</ul>
-				</div><!-- / .container -->
-			</nav><!-- / .aside -->
-			<div class="subject">
-				<div class="container">
-					<div class="results list"><!-- add "tiled" to class for tiled view -->
-						<?php foreach ($this->results as $result): ?>
-							<?php 
-								$hubType = isset($result['hubtype']) ? strtolower($result['hubtype']) : '';
-								$templateOverride = '';
-								if (!empty($this->viewOverrides[$hubType]))
-								{
-									$overrideView = new \Hubzero\View\View($this->viewOverrides[$hubType]);
-									$overrideView->set('result', $result)
-										->set('terms', $this->terms)
-										->set('tagSearch', $tagSearch)
-										->display();
-								}
-								else
-								{
-									$this->setLayout('_result')
-										->set('result', $result)
-										->set('terms', $terms)
-										->set('tagSearch', $tagSearch)
-										->display();
-								}
-							?>
-						<?php endforeach; ?>
-					</div><!-- / .results list -->
-
-					<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
+				</div>
+			<?php }
+		} else { ?>
+			<div class="section-inner">
+				<nav class="aside">
+					<div class="container facet">
+						<h3>Category</h3>
+						<?php if ($this->type == ''): ?>
+							<ul>
+								<li>
+									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>">All Categories <span class="item-count">
+										<?php echo $this->total; ?></span>
+									</a>
+								</li>
+								<?php foreach ($this->facets as $facet): ?>
+									<?php echo $facet->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString); ?>
+								<?php endforeach; ?>
+							</ul>
+						<?php else: ?>
+							<ul>
+								<li>
+									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"> &lt; Back</a>
+								</li>
+								<?php echo $this->searchComponent->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString, $this->filters);?>
+							</ul>
+						<?php endif; ?>
+					</div><!-- / .container -->
+				</nav><!-- / .aside -->
+				<div class="subject">
+					<div class="container">
+						<div class="results list"><!-- add "tiled" to class for tiled view -->
+							<?php foreach ($this->results as $result): ?>
+								<?php 
+									$hubType = isset($result['hubtype']) ? strtolower($result['hubtype']) : '';
+									$templateOverride = '';
+									if (!empty($this->viewOverrides[$hubType]))
+									{
+										$overrideView = new \Hubzero\View\View($this->viewOverrides[$hubType]);
+										$overrideView->set('result', $result)
+											->set('terms', $this->terms)
+											->set('tagSearch', $tagSearch)
+											->display();
+									}
+									else
+									{
+										$this->setLayout('_result')
+											->setName('solr')
+											->set('result', $result)
+											->set('terms', $terms)
+											->set('tagSearch', $tagSearch)
+											->display();
+									}
+								?>
+							<?php endforeach; ?>
+						</div><!-- / .results list -->
 						<nav class="pagination">
 							<?php echo $this->pagination->render(); ?>
 						</nav>
 						<div class="clearfix"></div>
-						<input type="hidden" name="terms" value="<?php echo htmlspecialchars($terms); ?>" />
-						<?php if (!empty($this->tags)): ?>
-							<input type="hidden" name="tags" value="<?php echo $this->escape($this->tags); ?>" />
-						<?php endif; ?>
-						<input type="hidden" name="type" value="<?php echo $this->escape($this->type); ?>" />
-					</form>
-				</div><!-- / .container -->
-			</div><!-- / .subject -->
-		</div><!-- / .section-inner -->
-	<?php } // end if ?>
-</section><!-- / .main section -->
+					</div><!-- / .container -->
+				</div><!-- / .subject -->
+			</div><!-- / .section-inner -->
+		<?php } // end if ?>
+	</section><!-- / .main section -->
+</form>
 <!-- end component output -->

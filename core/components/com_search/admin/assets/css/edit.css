@@ -1,0 +1,28 @@
+#page-1 .filter-value {
+	padding: .5em;
+}
+#page-1 .toggle-state {
+	margin-left: .5em;
+}
+#page-1 .options-list {
+	list-style-type: none;
+	clear: both;
+}
+#page-1 article {
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin-bottom: 1.3em;
+	border: .5px solid black;
+	padding: 2em 1em 1em 1em;
+	border-radius: .5em;
+	position: relative;
+	top: 0;
+}
+#page-1 article .remove-filter {
+	position: absolute;
+	right: 5px;
+	top: 0;
+}
+#page-1 article .filter-label {
+	padding-top: 0em;
+}

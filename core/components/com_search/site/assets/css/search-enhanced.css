@@ -267,3 +267,25 @@
 	.ui-state-focus {
 		background-color: #BDB8B8;
 	}
+
+	.data-entry fieldset.search-filters{
+		width: 100%;
+	}
+
+	.data-entry fieldset.search-filters label, .data-entry fieldset.search-filters legend{
+		display: block;
+	}
+
+	.data-entry fieldset.search-filters legend{
+		font-size: 1.2em;
+	}
+
+	.data-entry fieldset.search-filters ul li{
+		position: relative;
+		top: 0;
+	}
+
+	.data-entry fieldset.search-filters input{
+		width: auto;
+		margin-right: 1em;
+	}

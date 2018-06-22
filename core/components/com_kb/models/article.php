@@ -665,7 +665,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 *
 	 * @return  string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		$searchNamespace = 'kb-article';
 		return $searchNamespace;
@@ -678,7 +678,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = $this->searchNamespace() . '-' . $this->id;
+		$searchId = self::searchNamespace() . '-' . $this->id;
 		return $searchId;
 	}
 
@@ -715,7 +715,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		$article->owner_type = 'user';
 		$article->owner = $this->created_by;
 		$article->id = $this->searchId();
-		$article->hubtype = $this->searchNamespace();
+		$article->hubtype = self::searchNamespace();
 		$article->description = \Hubzero\Utility\Sanitize::stripAll($this->fulltxt);
 		return $article;
 	}

@@ -39,6 +39,7 @@ use \Solarium\Exception\HttpException;
 use Component;
 
 require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
+require_once Component::path('com_search') . '/models/solr/filters/filter.php';
 
 /**
  * Database model for search components
@@ -63,6 +64,7 @@ class SearchComponent extends Relational
 		'created'
 	);
 
+
 	/**
 	 * Hubzero\Search\Adapters\SolrIndexAdapter
 	 *
@@ -82,7 +84,9 @@ class SearchComponent extends Relational
 		$newComponents = new Rows();
 		foreach ($components as $component)
 		{
-			$newItem = self::blank()->set('name', $component);
+			$newItem = self::blank()
+				->set('name', $component)
+				->set('title', ucfirst($component));
 			$newComponents->push($newItem);
 		}
 		return $newComponents;
@@ -153,17 +157,49 @@ class SearchComponent extends Relational
 		return false;
 	}
 
+	public function getSearchableFields()
+	{
+		$model = $this->getSearchableModel();
+		$modelResults = $model::searchResults(1);
+		$firstResult = $modelResults->first()->searchResult();
+		if (is_array($firstResult))
+		{
+			$searchFields = array_keys($firstResult);
+		}
+		elseif (is_object($firstResult))
+		{
+			$searchFields = array_keys(get_object_vars($firstResult));
+		}
+		else
+		{
+			$searchFields = array();
+		}
+		return $searchFields; 
+	}
+
 	/**
 	 * Get total record count of component
 	 *
-	 * @return  int  number of batches to retrieve
+	 * @return  int  total number of searchable records
 	 */
 	public function getSearchCount()
 	{
 		$model = $this->getSearchableModel();
+		$total = $model::searchTotal();
+		return $total;
+	}
+
+	/**
+	 * Get total number of batches to index
+	 *
+	 * @return  int  number of batches to retrieve
+	 */
+	public function getBatchSize()
+	{
+		$searchCount = $this->getSearchCount();
 		$params = Component::params('com_search');
 		$batchSize = $params->get('solr_batchsize');
-		$batches = ceil($model::searchTotal() / $batchSize);
+		$batches = ceil($searchCount / $batchSize);
 		return $batches;
 	}
 
@@ -177,6 +213,74 @@ class SearchComponent extends Relational
 		$componentName = $this->get('name');
 		$model = DiscoveryHelper::getSearchableModel($componentName);
 		return $model;
+	}
+
+	/**
+	 * Get filters that help sort solr resuls found for this component
+	 *
+	 * @return	object	
+	 */
+	public function filters()
+	{
+		return $this->oneToMany('Filters\Filter', 'component_id');	
+	}
+
+	/**
+	 * Convert facet name to solr query safe name
+	 *
+	 * @return  string  name of query
+	 */
+	public function getQueryName()
+	{
+		$title = str_replace(' ', '_', $this->title);
+		return $title;
+	}
+
+	/**
+	 * Build HTML list of current item and its nested children
+	 *
+	 * @param   array   $counts      prefetched solr array of counts of all facets
+	 * @param   int     $activeType  id of currently selected facet
+	 * @param   string  $terms       search terms currently applied ot the search
+	 * @param   string  $childTerms  any currently applied filters
+	 * @return  string  HTML list with links to apply a facet with currently selected searchTerms
+	 */
+	public function formatWithCounts($counts, $activeType = null, $terms = null, $childTerms = null, $selectedOptions = array())
+	{
+		$countIndex = $this->getQueryName();
+		$count = isset($counts[$countIndex]) ? $counts[$countIndex] : 0;
+		$html = '';
+
+		if ($count > 0)
+		{
+			$class = ($activeType == $this->id) ? 'class="active"' : '';
+			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . $this->id . $childTerms);
+			$html .= '<li><a ' . $class . ' href="' . $link . '" data-type=' . $this->id . '>';
+			$html .= $this->name . '<span class="item-count">' . $count . '</span></a>';
+			if ($activeType && $this->filters->count() > 0)
+			{
+				foreach ($this->filters()->order('ordering', 'ASC') as $filter)
+				{
+					$filterSelectedOptions = isset($selectedOptions[$filter->get('field')]) ? $selectedOptions[$filter->get('field')] : array();
+					$filterHtml = $filter->renderHtml($counts, $filterSelectedOptions);
+					$html .= $filterHtml;
+				}
+				$html .= '<button>Apply Filters</button>';
+			}
+			$html .= '</li>';
+		}
+		return $html;
+	}
+
+	/**
+	 * get namespace of object provided to solr
+	 *
+	 *	@return string
+	 */
+	public function getSearchNamespace()
+	{
+		$searchModel = $this->getSearchableModel();
+		return $searchModel::searchNamespace();
 	}
 
 	/**
