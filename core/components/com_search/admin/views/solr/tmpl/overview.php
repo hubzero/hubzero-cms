@@ -33,6 +33,8 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('Solr Search: Overview'));
+Toolbar::custom('optimize', 'save', 'optimize', 'COM_SEARCH_SOLR_OPTIMIZE', false);
+Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
@@ -41,10 +43,6 @@ Submenu::addEntry(
 	Lang::txt('Overview'),
 	'index.php?option='.$option.'&task=configure',
 	true
-);
-Submenu::addEntry(
-	Lang::txt('Search Index'),
-	'index.php?option='.$option.'&task=searchindex'
 );
 Submenu::addEntry(
 	Lang::txt('Searchable Components'),
@@ -82,6 +80,12 @@ Submenu::addEntry(
 			</div><!-- /.content -->
 		</div><!-- /.inner -->
 	</div>
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+		<input type="hidden" name="option" value="com_search" />
+		<input type="hidden" name="controller" value="solr" />
+		<input type="hidden" name="task" value="searchIndex" autocomplete="" />
+		<?php echo Html::input('token'); ?>
+	</form>
 
 	<!-- @TODO: Make view -->
 	<?php if (isset($this->queueStats) && false): ?>

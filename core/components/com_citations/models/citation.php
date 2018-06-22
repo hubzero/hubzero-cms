@@ -1540,7 +1540,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	 *
 	 * @return  string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		$searchNamespace = 'citation';
 		return $searchNamespace;
@@ -1553,7 +1553,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = $this->searchNamespace() . '-' . $this->id;
+		$searchId = self::searchNamespace() . '-' . $this->id;
 		return $searchId;
 	}
 
@@ -1566,7 +1566,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	{
 		$citation = new stdClass;
 		$citation->title = $this->title;
-		$citation->hubtype = $this->searchNamespace();
+		$citation->hubtype = self::searchNamespace();
 		$citation->id = $this->searchId();
 		$citation->description = $this->abstract;
 		$citation->doi = $this->doi;

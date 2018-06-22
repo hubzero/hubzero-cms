@@ -75,6 +75,7 @@ class Solr extends SiteController
 		$type = Request::getInt('type', null);
 		$section = Request::getString('section', 'content');
 		$tagString = Request::getString('tags', '');
+		$filters = Request::getArray('filters', '');
 		$tags = null;
 		if ($tagString)
 		{
@@ -101,19 +102,20 @@ class Solr extends SiteController
 			}
 		}
 
+		$searchComponents = SearchComponent::all()
+			->whereEquals('state', 1);
 		// Add categories for Facet functions (mainly counting the different categories)
 		$multifacet = $query->adapter->getFacetMultiQuery('hubtypes');
 		$allFacets = Facet::all()
 			->whereEquals('state', 1)
 			->including('parentFacet')
 			->rows();
-		foreach ($allFacets as $facet)
+		foreach ($searchComponents as $searchComponent)
 		{
-			$facetString = !User::authorise('core.admin') ? $facet->facet . ' AND (' . $query->adapter->getAccessString() . ')' : $facet->facet;
-			$multifacet->createQuery($facet->getQueryName(), $facetString, array('exclude' => 'root_type', 'include' => 'child_type'));
+			$hubType = 'hubtype:' . $searchComponent->getSearchNamespace();
+			$multifacet->createQuery($searchComponent->getQueryName(), $hubType, array('exclude' => 'filter_type', 'include' => 'child_type'));
 		}
 
-		$filters = Request::getArray('filters', array());
 		$queryTerms = $terms;
 		if ($tags && $tags->count() > 0)
 		{
@@ -129,40 +131,47 @@ class Solr extends SiteController
 			$tagParams = '&tags=' . $tagString;
 		}
 		$urlQuery = '?terms=' . $terms . $tagParams;
-		$rootFacets = Facet::all()
-			->including('children')
-			->including('parentFacet')
-			->whereEquals('state', 1)
-			->whereEquals('parent_id', 0)
-			->rows();
-
+		
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
 		{
 			$query = $query->sortBy($sortBy, $sortDir);
 		}
-
+		$typeComponent = null;
 		if ($type != null)
 		{
-			$facet = Facet::one($type);
-			$query->addFilter('Type', $facet->facet, 'root_type');
+			$typeComponent = SearchComponent::one($type);
+			foreach ($typeComponent->filters as $filter)
+			{
+				if (method_exists($filter, 'addCounts'))
+				{
+					$filter->addCounts($multifacet);
+				}
 
+				if (method_exists($filter, 'applyFilters') && !empty(array_filter($filters)))
+				{
+					$filter->applyFilters($query, $filters);
+				}
+			}
+			$hubType = 'hubtype:' . $typeComponent->getSearchNamespace();
+			$query->addFilter('Type', $hubType, 'root_type');
 			// Add a type
 			$urlQuery .= '&type=' . $type;
 		}
 		else
 		{
-			$allfacets = array();
-			foreach ($rootFacets as $facet)
+			$hubTypes = array();
+			foreach ($searchComponents as $component)
 			{
-				$allfacets[] = $facet->facet;
+				$hubTypes[] = $component->getSearchNamespace();
 			}
 
-			if (!empty($allfacets))
+			if (!empty($hubTypes))
 			{
-				$query->addFilter('Type', '(' . implode(' OR ', $allfacets) . ')', 'root_type');
+				$query->addFilter('Type', '(hubtype:(' . implode(' OR ', $hubTypes) . '))', 'root_type');
 			}
 		}
+
 
 		$query->query($queryTerms)->limit($limit)->start($start);
 		$childFilter = '[child parentFilter=hubtype:*';
@@ -229,7 +238,7 @@ class Solr extends SiteController
 		{
 			$this->view->query = $terms;
 			$this->view->results = $results;
-			$this->view->facets = $rootFacets;
+			$this->view->facets = $searchComponents;
 			$this->view->facetCounts = $facetCounts;
 			$this->view->total = 0;
 			foreach ($this->view->facets as $facet)
@@ -252,9 +261,8 @@ class Solr extends SiteController
 
 		// Set the document title
 		\Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
-		$components = SearchComponent::all()->whereEquals('state', '1')->rows();
 		$viewOverrides = array();
-		foreach ($components as $component)
+		foreach ($searchComponents as $component)
 		{
 			if (!$viewOverride = $component->getViewOverride())
 			{
@@ -269,6 +277,8 @@ class Solr extends SiteController
 		$this->view->childTerms = $childTerms;
 		$this->view->childTermsString =  $tagParams;
 		$this->view->type = $type;
+		$this->view->filters = $filters;
+		$this->view->searchComponent = $typeComponent;
 		$this->view->viewOverrides = $viewOverrides;
 		$this->view->section = $section;
 		$this->view->setLayout('display');
