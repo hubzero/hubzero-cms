@@ -235,7 +235,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
 	 *
 	 * @return  string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		$searchNamespace = 'collection';
 		return $searchNamespace;
@@ -248,7 +248,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = $this->searchNamespace() . '-' . $this->id;
+		$searchId = self::searchNamespace() . '-' . $this->id;
 		return $searchId;
 	}
 
@@ -270,7 +270,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
 		$post->access_level = $this->getAccessLevel();
 		$post->author[] = $this->creator->name;
 		$post->owner = $this->collection->object_id;
-		$post->hubtype = $this->searchNamespace();
+		$post->hubtype = self::searchNamespace();
 		$post->id = $this->searchId();
 		$post->description = $this->description;
 		$post->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());

@@ -75,12 +75,7 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
 				<?php
 				$fullCitation = '';
 				$fullCitation .= !empty($this->result['authorString']) ? $this->result['authorString'] : '';
-				$year = !empty($this->result['yearofpublication_s']) ? $this->result['yearofpublication_s'] : '';
-				$year = empty($year) && !empty($this->result['publicationdate_s']) ? $this->result['publicationdate_s'] : $year;
-				if (empty($year) && isset($this->result['publish_up']))
-				{
-					$year = Date::of($this->result['publish_up'])->year;
-				}
+				$year = !empty($this->result['yearofpublication_s']) ? Date::of($this->result['yearofpublication_s'])->year : '';
 				$fullCitation .= !empty($year) ? ' ('. $year . '). ' : '. ';
 				$title = !empty($this->result['title']) ? $this->result['title'] : '';
 				$title = in_array(substr(trim($title), -1), array('.', '?', '!')) ? $title : $title . '.';

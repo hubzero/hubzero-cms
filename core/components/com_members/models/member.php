@@ -597,7 +597,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 	 * Namespace used for solr Search
 	 * @return string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		$searchNamespace = 'member';
 		return $searchNamespace;
@@ -609,7 +609,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = $this->searchNamespace() . '-' . $this->id;
+		$searchId = self::searchNamespace() . '-' . $this->id;
 		return $searchId;
 	}
 
@@ -625,7 +625,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 			return false;
 		}
 		$obj = new stdClass;
-		$obj->hubtype = $this->searchNamespace();
+		$obj->hubtype = self::searchNamespace();
 		$obj->id      = $this->searchId();
 		$obj->title   = $this->get('name');
 

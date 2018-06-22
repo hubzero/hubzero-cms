@@ -39,11 +39,11 @@ $this->css('solr');
 
 Submenu::addEntry(
 	Lang::txt('Overview'),
-	'index.php?option='.$this->option.'&task=configure'
+	'index.php?option=' . $this->option . '&task=configure'
 );
 Submenu::addEntry(
-	Lang::txt('Search Index'),
-	'index.php?option='.$this->option.'&task=searchindex',
+	Lang::txt('Searchable Components'),
+	'index.php?option=' . $this->option . '&task=display&controller=searchable',
 	true
 );
 Submenu::addEntry(

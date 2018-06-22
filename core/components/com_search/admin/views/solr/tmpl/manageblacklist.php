@@ -42,10 +42,6 @@ Submenu::addEntry(
 	'index.php?option='.$option.'&task=configure'
 );
 Submenu::addEntry(
-	Lang::txt('Search Index'),
-	'index.php?option='.$option.'&task=searchindex'
-);
-Submenu::addEntry(
 	Lang::txt('Searchable Components'),
 	'index.php?option='.$option.'&task=display&controller=searchable'
 );
