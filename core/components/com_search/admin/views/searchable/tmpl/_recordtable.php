@@ -96,8 +96,7 @@ $this->css('
 				</td>
 				<td>
 					<?php if (!in_array($document['id'], $this->blacklist)): ?>
-						<a class="button" href="<?php echo Route::url('index.php?option='.$this->option.'&task=addToBlackList&controller='.
-						$this->controller
+						<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addToBlackList' 
 						. '&id=' . $document['id']
 						. '&facet=' . $this->facet
 						. '&limit=' . $this->pagination->limit
