@@ -173,16 +173,32 @@ class Questions extends SiteController
 
 		// ---
 
-		$authorid = $question->get('created_by');
+		$notify = array();
+		// Notify the original question creator
+		$notify[] = $question->get('created_by');
+		// Notify anyone the reply is to
+		if ($row->get('parent'))
+		{
+			$notify[] = $row->parent()->get('created_by');
+		}
+		else
+		{
+			$response = Response::oneOrFail($row->get('item_id'));
+			$notify[] = $response->get('created_by');
+		}
+		$notify = array_unique($notify);
 
 		$receivers = $this->recipients();
 
 		// send the response, unless the author is also in the admin list.
-		if (!in_array($authorid, $receivers) && $question->get('email'))
+		foreach ($notify as $authorid)
 		{
-			if (!Event::trigger('xmessage.onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option)))
+			if (!in_array($authorid, $receivers) && $question->get('email'))
 			{
-				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
+				if (!Event::trigger('xmessage.onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option)))
+				{
+					$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
+				}
 			}
 		}
 
