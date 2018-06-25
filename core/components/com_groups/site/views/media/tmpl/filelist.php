@@ -117,7 +117,7 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 				</div>
 			</li>
 		<?php endforeach; ?>
-
+		<?php $mimeTypes = \Hubzero\Filesystem\Util\MimeType::getExtensionToMimeTypeMap(); ?>
 		<?php foreach ($this->files as $file) : ?>
 			<?php
 				$file = ltrim($file, DS);
@@ -133,7 +133,19 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 				$modified   = @filemtime($filePath);
 
 				// formatted results
-				$extension           = $fileInfo['extension'];
+				if (isset($fileinfo['extension']))
+				{
+
+					$extension = $fileInfo['extension'];
+				}
+				else
+				{
+	
+					$fileContent = file_get_contents($filePath);
+					$mimeType = \Hubzero\Filesystem\Util\MimeType::detectByContent($fileContent);
+					$extension = array_search($mimeType, $mimeTypes);
+				}
+
 				$formattedFilesize   = \Hubzero\Utility\Number::formatBytes($filesize);
 				$formattedDimensions = $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px';
 				$formattedModified   = Date::of($modified)->toLocal('m/d/Y g:ia');
