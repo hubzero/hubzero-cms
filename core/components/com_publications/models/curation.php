@@ -621,7 +621,7 @@ class Curation extends Obj
 	 * @param   integer  $elementId  Element ID
 	 * @return  boolean
 	 */
-	public function addItem ($actor = 0, $elementId = 0)
+	public function addItem($actor = 0, $elementId = 0)
 	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
@@ -2054,16 +2054,32 @@ class Curation extends Obj
 	/**
 	 * Get bundle package name
 	 *
+	 * @param	boolean	$includeVersionNum
 	 * @return  mixed  False on error, string on success
 	 */
-	public function getBundleName()
+	public function getBundleName($includeVersionNum = false)
 	{
 		if (empty($this->_pub))
 		{
 			return false;
 		}
+		$doi = $this->_pub->version->get('doi');
+		if ($doi != '')
+		{
+			$doi = str_replace('.', '_', $doi);
+			$doi = str_replace('/', '_', $doi);
+			$bundleName = $doi;
+		}
+		else
+		{
+			$bundleName = Lang::txt('Publication') . '_' . $this->_pub->id;
+			if ($includeVersionNum)
+			{
+				$bundleName .= '_' . $this->_pub->version->get('version_number');
+			}
+		}
 
-		return Lang::txt('Publication') . '_' . $this->_pub->id . '.zip';
+		return $bundleName . '.zip';
 	}
 
 	/**
@@ -2079,19 +2095,9 @@ class Curation extends Obj
 		}
 
 		$bundle = $this->_pub->path('base', true) . DS . $this->getBundleName();
-		$doi = $this->_pub->version->get('doi');
 
-		if ($doi != '')
-		{
-			$doi = str_replace('.', '_', $doi);
-			$doi = str_replace('/', '_', $doi);
-			$serveas = $doi . '.zip';
-		}
-		else
-		{
-			// Already contains a '.zip' on the end.
-			$serveas = $this->getBundleName();
-		}
+		// Already contains a '.zip' on the end.
+		$serveas = $this->getBundleName();
 
 		if (!is_file($bundle))
 		{
@@ -2112,6 +2118,46 @@ class Curation extends Obj
 		}
 
 		exit;
+	}
+
+	/**
+	 * Generate symbolic link for publication package
+	 *
+	 * @return boolean
+	 */
+	public function createSymLink()
+	{
+		$tarname = $this->getBundleName();
+		$tarpath = $this->_pub->path('base', true) . DS . $tarname;
+		$symLink = $this->_symLinkPath();
+		if (empty($this->_pub) || $symLink == false || !is_file($tarpath))
+		{
+			return false;
+		}
+		if (!is_file($symLink))
+		{
+			if (!symlink($tarpath, $symLink))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Remove symbolic link for publication package
+	 *
+	 * @return boolean
+	 */
+	public function removeSymLink()
+	{
+		$symLink = $this->_symLinkPath();
+		if ($symLink == false)
+		{
+			return false;
+		}
+		unlink($symLink);
+		return true;
 	}
 
 	/**
@@ -2146,18 +2192,7 @@ class Curation extends Obj
 			return false;
 		}
 
-		// Use DOI if available
-		$doi = $this->_pub->version->get('doi');
-		if ($doi != '')
-		{
-			$doi = str_replace('.', '_', $doi);
-			$doi = str_replace('/', '_', $doi);
-			$bundleName = $doi;
-		}
-		else
-		{
-			$bundleName = rtrim($this->getBundleName(), '.zip');
-		}
+		$bundleName = rtrim($this->getBundleName(), '.zip');
 
 		// Set archival properties
 		$bundleDir  = $bundleName;
@@ -2282,7 +2317,6 @@ class Curation extends Obj
 		{
 			return false;
 		}
-
 		return true;
 	}
 
@@ -2598,5 +2632,21 @@ class Curation extends Obj
 		}
 
 		return $current->id;
+	}
+
+	/**
+	 * Get path to symbolic link used for downloading package via SFTP
+	 *
+	 * @return 	mixed 	string if sftp path provided, false if not
+	 */
+	private function _symLinkPath()
+	{
+		$sftpPath = PATH_APP . Component::params('com_publications')->get('sftppath');
+		if (!is_dir($sftpPath))
+		{
+			return false;
+		}
+		$symLink = $sftpPath . '/' . $this->getBundleName(true);
+		return $symLink;
 	}
 }
