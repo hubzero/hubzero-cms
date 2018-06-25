@@ -43,6 +43,7 @@
 		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/site/assets/img/gallery_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB_DESC" />
 		<field name="masterimage" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE_DESC" />
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="COM_PUBLICATIONS_CONFIG_FILE_PATH" description="COM_PUBLICATIONS_CONFIG_FILE_PATH_DESC" />
+		<field name="sftppath" type="text" menu="hide" default="/site/publications/ftp" label="COM_PUBLICATIONS_CONFIG_SFTP_PATH" description="COM_PUBLICATIONS_CONFIG_SFTP_PATH_DESC" />
 		<field name="documentation" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH" description="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH_DESC" />
 		<field name="deposit_terms" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_TERMS_URL" description="COM_PUBLICATIONS_CONFIG_TERMS_URL_DESC" />
 	</fieldset>

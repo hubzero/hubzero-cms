@@ -2432,6 +2432,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pub->_curationModel->package(true);
 		}
 
+		if ($pub->version->get('state') == 1)
+		{
+			$pub->_curationModel->createSymLink();
+		}
+		else
+		{
+			$pub->_curationModel->removeSymLink();
+		}
+
 		// Pass error or success message
 		if ($this->getError())
 		{
