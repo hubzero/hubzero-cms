@@ -989,6 +989,15 @@ class Items extends AdminController
 			}
 			elseif ($action)
 			{
+				if ($this->model->version->state != 1)
+				{
+					$this->model->_curationModel->removeSymLink();
+				}
+				elseif ($action == 'republish' || $action == 'publish')
+				{
+					$this->model->_curationModel->createSymLink();
+				}
+
 				// Add activity
 				$activity .= ' ' . strtolower(Lang::txt('version'))
 						  . ' ' . $this->model->version->version_label .' '
