@@ -157,6 +157,11 @@ var UI = {
 			// Set the wrap's dimensions
 			wrapper.style.width  = w + 'px';
 			wrapper.style.height = h + 'px';
+			// Set the parent's dimensions
+			var appwrap = $D('app-wrap');
+			if (typeof appwrap !== 'undefined') {
+				appwrap.style.width  = w + 'px';
+			}
 			// If the resize button exists...
 			if ($D('app-size')) {
 				$D('app-size').innerHTML = w.toString() + ' x ' + h.toString();
