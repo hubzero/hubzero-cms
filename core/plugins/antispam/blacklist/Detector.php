@@ -37,7 +37,7 @@ use Hubzero\Spam\Detector\DetectorInterface;
 use Hubzero\Database\Relational;
 use Exception;
 
-include_once(__DIR__ . DS . 'models' . DS . 'word.php');
+include_once __DIR__ . DS . 'models' . DS . 'word.php';
 
 /**
  * Spam detector for black listed words
@@ -198,7 +198,7 @@ class Detector implements DetectorInterface
 
 			$blackLists = array_merge($this->blackLists, $dbList);
 
-			$this->regex = sprintf('~%s~', implode('|', array_map(function ($value)
+			$this->regex = sprintf('~\b(%s)\b~', implode('|', array_map(function ($value)
 			{
 				if (isset($value[0]) && $value[0] == '[')
 				{
