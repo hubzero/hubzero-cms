@@ -210,6 +210,15 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			$records->resetDepth();
 		}
 
+		if (!empty($filters['year_start']))
+		{
+			$records->where('year', '>=', (int)$filters['year_start']);
+		}
+		if (!empty($filters['year_end']))
+		{
+			$records->where('year', '<=', (int)$filters['year_end']);
+		}
+
 		$authorFields = array_intersect_key($filters, array('author' => null, 'geo' => '', 'aff' => ''));
 		$maxOptions = array('geo' => 4, 'aff' => 3);
 		$authorFields = array_filter($authorFields);
