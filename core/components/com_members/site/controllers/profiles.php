@@ -51,9 +51,9 @@ use User;
 use Date;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php';
 
 /**
  * Members controller class for profiles
@@ -1720,6 +1720,7 @@ class Profiles extends SiteController
 			if ($member->get('email') != $user->get('email'))
 			{
 				$user->set('email', $member->get('email'));
+				$user->set('activation', $confirm);
 
 				// Add item to session to mark that the user changed emails
 				// this way we can serve profile images for these users but not all
@@ -1778,6 +1779,7 @@ class Profiles extends SiteController
 		$eview->set('option', $this->_option)
 			->set('sitename', Config::get('sitename'))
 			->set('login', $login)
+			->set('email', $email)
 			->set('confirm', $confirm)
 			->set('baseURL', Request::base());
 
