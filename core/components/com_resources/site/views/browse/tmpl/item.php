@@ -116,7 +116,7 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 	<?php } elseif ($params->get('show_rating')) { ?>
 		<div class="metadata">
 			<p class="rating">
-				<span title="<?php echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')); ?>" class="avgrating<?php echo $this->line->rating; ?>">
+				<span title="<?php echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')); ?>" class="avgrating <?php echo $this->line->rating; ?>">
 					<span><?php echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')); ?></span>&nbsp;
 				</span>
 			</p>
