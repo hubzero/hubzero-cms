@@ -117,7 +117,8 @@ $this->css();
 								$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $name . '</a>';
 							}
 							?>
-							<?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FORKED_BY', $name); ?>
+							<span class="publication-creator"><?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FORKED_BY', $name); ?></span><br />
+							<span class="publication-source"><?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FROM', '<a href="' . Route::url('index.php?option=com_publications&id=' . $this->publication->get('id') . '&v=' . $publication->get('forked_version')) . '">' . $publication->get('forked_from') . '</a>'); ?></span>
 						</div>
 					</div>
 					<?php if ($isPublished) { ?>

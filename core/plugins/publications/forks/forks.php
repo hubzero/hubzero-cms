@@ -56,7 +56,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($publication->_category->_params->get('plg_forks') && $extended)
+		if ($publication->_category->_params->get('plg_forks'))
 		{
 			$areas['forks'] = Lang::txt('PLG_PUBLICATIONS_FORKS');
 		}
@@ -92,7 +92,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$publication->_category->_params->get('plg_forks') || !$extended)
+		if (!$publication->_category->_params->get('plg_forks'))
 		{
 			return $arr;
 		}
@@ -159,7 +159,17 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 		}
 
 		$db = App::get('db');
-		$db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from`=" . $db->quote($publication->version->get('id')));
+
+		$objV = new \Components\Publications\Tables\Version($db);
+		$versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
+
+		$sources = array();
+		foreach ($versions as $version)
+		{
+			$sources[] = $version->id;
+		}
+
+		$db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" . implode(',', $sources) . ")");
 
 		$forks = $db->loadResult();
 
@@ -196,14 +206,26 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 			->rows();
 		*/
 
+		// Get a list of all published versions
 		$db = App::get('db');
-		$db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" . $db->quote($publication->version->get('id')) . " ORDER BY `created` DESC");
 
-		$forks = $db->loadObjectList();
+		$objV = new \Components\Publications\Tables\Version($db);
+		$versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
 
-		foreach ($forks as $i => $fork)
+		$forks = array();
+		foreach ($versions as $version)
 		{
-			$forks[$i] = new Components\Publications\Models\Publication($fork->publication_id, 'default', $fork->id);
+			// Now find all the forks for each version
+			$db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" . $db->quote($version->id) . " ORDER BY `created` DESC");
+
+			$forked = $db->loadObjectList();
+
+			foreach ($forked as $i => $fork)
+			{
+				$forks[$i] = new Components\Publications\Models\Publication($fork->publication_id, 'default', $fork->id);
+				$forks[$i]->set('forked_from', $version->version_label);
+				$forks[$i]->set('forked_version', $version->version_number);
+			}
 		}
 
 		// Instantiate a view
