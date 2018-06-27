@@ -140,10 +140,10 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 					{
 						$def = $emailAddress;
 					}
-					
+
 					$mail->setTo(array($def));
 					if (!$mail->send())
-					{	
+					{
 						// TODO: Probably should raise a plugin error but this event is not error checked.
 						Log::error(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR', $emailAddress));
 					}
