@@ -844,11 +844,19 @@ class Publications extends SiteController
 		}
 
 		$this->model->attachments();
+		$dbo = \App::get('db');
+		$attachmentTable = new \Components\Publications\Tables\Attachment($dbo);
+
+		$type = '';
+		$role = 1;
 
 		// Individual attachment is requested? Find element ID
 		if ($aid)
 		{
-			$elementId = $this->model->_curationModel->getElementIdByAttachment($aid);
+			$attachment = $attachmentTable->load($aid);
+			$elementId = $attachmentTable->element_id;
+			$type = $attachmentTable->type;
+			$role = $attachmentTable->role;
 		}
 
 		// We do need attachments
@@ -860,7 +868,7 @@ class Publications extends SiteController
 		}
 
 		// Get element manifest to deliver content as intended
-		$curation = $this->model->_curationModel->getElementManifest($elementId);
+		$curation = $this->model->_curationModel->getManifestByElementTypeRole($elementId, $type, $role);
 
 		// We do need manifest!
 		if (!$curation || !isset($curation->element) || !$curation->element)
