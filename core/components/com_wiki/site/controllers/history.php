@@ -276,7 +276,7 @@ class History extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
@@ -373,7 +373,7 @@ class History extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);

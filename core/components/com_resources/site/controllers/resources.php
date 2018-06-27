@@ -95,9 +95,9 @@ class Resources extends SiteController
 	 */
 	public function execute()
 	{
-		$task = Request::getVar('task', '');
+		$task = Request::getCmd('task', '');
 		$this->_id    = Request::getInt('id', 0);
-		$this->_alias = Request::getVar('alias', '');
+		$this->_alias = Request::getString('alias', '');
 		$this->_resid = Request::getInt('resid', 0);
 
 		if ($this->_resid && !$task)
@@ -230,12 +230,12 @@ class Resources extends SiteController
 
 		// Incoming
 		$filters = array(
-			'type'   => Request::getVar('type', ''),
+			'type'   => Request::getString('type', ''),
 			'sortby' => Request::getCmd('sortby', $default_sort),
 			'limit'  => Request::getInt('limit', Config::get('list_limit')),
 			'start'  => Request::getInt('limitstart', 0),
-			'search' => Request::getVar('search', ''),
-			'tag'    => trim(Request::getVar('tag', '', 'request', 'none', 2)),
+			'search' => Request::getString('search', ''),
+			'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
 			'tag_ignored' => array()
 		);
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
@@ -413,9 +413,9 @@ class Resources extends SiteController
 		}
 
 		// Incoming
-		$tag  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('tag', '')));
-		$tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('with', '')));
-		$type = strtolower(Request::getVar('type', 'tools'));
+		$tag  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('tag', '')));
+		$tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('with', '')));
+		$type = strtolower(Request::getString('type', 'tools'));
 
 		// default tag in tag browser is config var
 		$supportedtag = $this->config->get('supportedtag');
@@ -556,8 +556,8 @@ class Resources extends SiteController
 				// Incoming
 				$bits['type'] = Request::getInt('type', 7);
 				$bits['id']   = Request::getInt('id', 0);
-				$bits['tg']   = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input', '')));
-				$bits['tg2']  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input2', '')));
+				$bits['tg']   = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input', '')));
+				$bits['tg2']  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input2', '')));
 
 				$rt = new Tags($bits['id']);
 
@@ -571,8 +571,8 @@ class Resources extends SiteController
 				// Incoming
 				$bits['type']    = Request::getInt('type', 7);
 				$bits['id']      = Request::getInt('id', 0);
-				$bits['tag']     = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input', '')));
-				$bits['tag2']    = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getVar('input2', '')));
+				$bits['tag']     = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input', '')));
+				$bits['tag2']    = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input2', '')));
 				$bits['sortby']  = Request::getWord('sortby', 'title');
 				$bits['filter']  = Request::getVar('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
 				$bits['ranking'] = $this->config->get('show_ranking');
@@ -748,7 +748,7 @@ class Resources extends SiteController
 	 */
 	protected function selectPresentation()
 	{
-		$presentation = Request::getVar('presentation', 0);
+		$presentation = Request::getInt('presentation', 0);
 
 		$firstchild = Entry::oneOrFail($presentation)
 			->whereEquals('published', Entry::STATE_PUBLISHED)
@@ -779,8 +779,8 @@ class Resources extends SiteController
 		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'hubpresenter.php';
 
 		//get the presentation id
-		//$id = Request::getVar('id', '');
-		$resid = Request::getVar('resid', '');
+		//$id = Request::getInt('id', '');
+		$resid = Request::getInt('resid', '');
 		if (!$resid)
 		{
 			$this->setError(Lang::txt('Unable to find presentation.'));
@@ -919,7 +919,7 @@ class Resources extends SiteController
 	public function watchTask()
 	{
 		$parent = $this->_id;
-		$child = Request::getVar('resid', '');
+		$child = Request::getInt('resid', '');
 
 		//media tracking object
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
@@ -928,13 +928,13 @@ class Resources extends SiteController
 		$tracking = MediaTracking::oneByUserAndResource(User::get('id'), $child);
 
 		//check to see if we already have a time query param
-		$hasTime = (Request::getVar('time', '') != '') ? true : false;
+		$hasTime = (Request::getString('time', '') != '') ? true : false;
 
 		//do we want to redirect user with time added to url
 		if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 		{
 			$redirect = 'index.php?option=com_resources&task=watch&id='.$parent.'&resid='.$child;
-			if (Request::getVar('tmpl', '') == 'component')
+			if (Request::getCmd('tmpl', '') == 'component')
 			{
 				$redirect .= '&tmpl=component';
 			}
@@ -947,7 +947,7 @@ class Resources extends SiteController
 		}
 
 		//do we have javascript?
-		$js = Request::getVar('tmpl', '');
+		$js = Request::getCmd('tmpl', '');
 		if ($js != '')
 		{
 			$pre = $this->preWatch();
@@ -1012,7 +1012,7 @@ class Resources extends SiteController
 	{
 		//get the request vars
 		$parent = Request::getInt('id', 0);
-		$child  = Request::getVar('resid', '');
+		$child  = Request::getInt('resid', '');
 
 		if (!$parent || !$child)
 		{
@@ -1037,7 +1037,7 @@ class Resources extends SiteController
 		// Is the visitor authorized to view this resource?
 		if (User::isGuest() && ($model->access == 1 || $model->access == 4))
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url($model->link(), false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url($model->link(), false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -1081,13 +1081,13 @@ class Resources extends SiteController
 		$tracking = MediaTracking::oneByUserAndResource(User::get('id'), $activechild->id);
 
 		// Check to see if we already have a time query param
-		$hasTime = (Request::getVar('time', '') != '') ? true : false;
+		$hasTime = (Request::getString('time', '') != '') ? true : false;
 
 		// Do we want to redirect user with time added to url
 		if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 		{
 			$redirect = 'index.php?option=com_resources&task=video&id=' . $parent . '&resid=' . $child;
-			if (Request::getVar('tmpl', '') == 'component')
+			if (Request::getCmd('tmpl', '') == 'component')
 			{
 				$redirect .= '&tmpl=component';
 			}
@@ -1277,13 +1277,13 @@ class Resources extends SiteController
 	{
 		// Incoming
 		$id       = Request::getInt('id', 0);            // Rsource ID (primary method of identifying a resource)
-		$alias    = Request::getVar('alias', '');        // Alternate method of identifying a resource
-		$fsize    = Request::getVar('fsize', '');        // A parameter to see file size without formatting
+		$alias    = Request::getString('alias', '');        // Alternate method of identifying a resource
+		$fsize    = Request::getString('fsize', '');        // A parameter to see file size without formatting
 
 		// XSS fix. Revision gets pumped all over and dumped in URLs via plugins, easier to fix at the input instead of risking missing an output. See ticket 1416
-		$revision = htmlentities(Request::getVar('rev', ''));          // Get svk revision of a tool
+		$revision = htmlentities(Request::getString('rev', ''));          // Get svk revision of a tool
 
-		$tab      = Request::getVar('active', 'about');  // The active tab (section)
+		$tab      = Request::getCmd('active', 'about');  // The active tab (section)
 
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias)
@@ -1312,7 +1312,7 @@ class Resources extends SiteController
 		// Is the visitor authorized to view this resource?
 		if (User::isGuest() && ($this->model->get('access') == 1 || $this->model->get('access') == 4))
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url($this->model->link(), false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url($this->model->link(), false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -1538,7 +1538,7 @@ class Resources extends SiteController
 				$view->set('manifest', $manifest);
 				$view->set('content_folder', $content_folder);
 				$view->set('pid', $id);
-				$view->set('resid', Request::getVar('resid', ''));
+				$view->set('resid', Request::getInt('resid', ''));
 				$view->set('doc', Document::getRoot());
 
 				// Output HTML
@@ -1634,7 +1634,7 @@ class Resources extends SiteController
 
 		// Incoming
 		$id    = Request::getInt('id', 0);
-		$alias = Request::getVar('alias', '');
+		$alias = Request::getString('alias', '');
 
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias)
@@ -1678,18 +1678,18 @@ class Resources extends SiteController
 		$filters = array();
 		if ($resource->get('type') == 2)
 		{
-			$filters['sortby'] = Request::getVar('sortby', 'ordering');
+			$filters['sortby'] = Request::getString('sortby', 'ordering');
 		}
 		else
 		{
-			$filters['sortby'] = Request::getVar('sortby', 'ranking');
+			$filters['sortby'] = Request::getString('sortby', 'ranking');
 		}
 		$filters['limit'] = Request::getInt('limit', 100);
 		$filters['start'] = Request::getInt('limitstart', 0);
 		$filters['year']  = Request::getInt('year', 0);
 		$filters['id']    = $resource->get('id');
 
-		$feedtype = Request::getVar('content', 'audio');
+		$feedtype = Request::getString('content', 'audio');
 
 		$rows = $resource->children()
 			->whereEquals('published', Entry::STATE_PUBLISHED)
@@ -2111,7 +2111,7 @@ class Resources extends SiteController
 	public function pluginTask()
 	{
 		// Incoming
-		$trigger = trim(Request::getVar('trigger', ''));
+		$trigger = trim(Request::getString('trigger', ''));
 
 		// Ensure we have a trigger
 		if (!$trigger)
@@ -2146,8 +2146,8 @@ class Resources extends SiteController
 	{
 		// Incoming
 		$id    = Request::getInt('id', 0);
-		$alias = Request::getVar('alias', '');
-		$d     = Request::getVar('d', 'inline');
+		$alias = Request::getString('alias', '');
+		$d     = Request::getString('d', 'inline');
 
 		//make sure we have a proper disposition
 		if ($d != "inline" && $d != "attachment")
@@ -2193,7 +2193,7 @@ class Resources extends SiteController
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
-		if (($token = Request::getVar('token', '', 'get')))
+		if (($token = Request::getString('token', '', 'get')))
 		{
 			$token = base64_decode($token);
 
@@ -2230,7 +2230,7 @@ class Resources extends SiteController
 		if ($accessLevel == 1 && $user->isGuest())
 		{
 			//App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -2244,7 +2244,7 @@ class Resources extends SiteController
 		{
 			if ($user->isGuest())
 			{
-				$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+				$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 					Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -2259,7 +2259,7 @@ class Resources extends SiteController
 
 		if ($resource->get('standalone') && !$resource->get('path'))
 		{
-			$resource->set('path', $resource->filespace() . DS . 'media' . DS . Request::getVar('file'));
+			$resource->set('path', $resource->filespace() . DS . 'media' . DS . Request::getString('file'));
 		}
 
 		$path = trim($resource->get('path'));
@@ -2318,7 +2318,7 @@ class Resources extends SiteController
 	public function sourcecodeTask()
 	{
 		// Get tool instance
-		$tool = Request::getVar('tool', 0);
+		$tool = Request::getString('tool', 0);
 
 		// Ensure we have a tool
 		if (!$tool)
@@ -2385,7 +2385,7 @@ class Resources extends SiteController
 	{
 		// Get tool instance
 		$resource = Request::getInt('resource', 0);
-		$tool     = Request::getVar('tool', '');
+		$tool     = Request::getString('tool', '');
 
 		// Ensure we have a tool to work with
 		if (!$tool && !$resource)
@@ -2427,7 +2427,7 @@ class Resources extends SiteController
 			->set('row', $row)
 			->set('tool', $tool)
 			->set('config', $this->config)
-			->set('no_html', Request::getVar('no_html', 0))
+			->set('no_html', Request::getInt('no_html', 0))
 			->setName('license')
 			->setLayout('default')
 			->display();
@@ -2448,10 +2448,10 @@ class Resources extends SiteController
 
 		// Incoming
 		$id = Request::getInt('id', 0);
-		$format = Request::getVar('citationFormat', 'bibtex');
+		$format = Request::getString('citationFormat', 'bibtex');
 
 		// Append DOI handle
-		$revision = Request::getVar('rev', 0);
+		$revision = Request::getString('rev', 0);
 		$handle = '';
 		if ($revision)
 		{
