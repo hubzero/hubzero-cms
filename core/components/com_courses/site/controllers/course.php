@@ -341,7 +341,7 @@ class Course extends SiteController
 
 		if (isset($_POST['tags']))
 		{
-			$tags = trim(Request::getVar('tags', ''));
+			$tags = trim(Request::getString('tags', ''));
 			$course->tag($tags, User::get('id'));
 		}
 
@@ -590,9 +590,9 @@ class Course extends SiteController
 		$managers = $this->course->get('managers');
 
 		// Incoming
-		$process = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
-		$msg = trim(Request::getVar('msg', '', 'post'));
+		$process = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
+		$msg = trim(Request::getString('msg', '', 'post'));
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)

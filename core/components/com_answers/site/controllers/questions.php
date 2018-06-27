@@ -81,7 +81,7 @@ class Questions extends SiteController
 	 */
 	public function loginTask()
 	{
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
+		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
@@ -108,7 +108,7 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$questionID = Request::getVar('rid');
+		$questionID = Request::getInt('rid');
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// clean input
@@ -284,8 +284,8 @@ class Questions extends SiteController
 
 		// Incoming
 		$id   = Request::getInt('id', 0);
-		$type = Request::getVar('category', '');
-		$vote = Request::getVar('vote', '');
+		$type = Request::getString('category', '');
+		$vote = Request::getString('vote', '');
 		$ip   = Request::ip();
 
 		// Check for reference ID
@@ -419,16 +419,16 @@ class Questions extends SiteController
 		$filters = array(
 			'limit'    => Request::getInt('limit', Config::get('list_limit')),
 			'start'    => Request::getInt('limitstart', 0),
-			'tag'      => Request::getVar('tags', ''),
-			'search'   => Request::getVar('q', ''),
+			'tag'      => Request::getString('tags', ''),
+			'search'   => Request::getString('q', ''),
 			'filterby' => Request::getWord('filterby', ''),
 			'sortby'   => Request::getWord('sortby', 'date'),
 			'sort_Dir' => strtolower(Request::getWord('sortdir', 'desc')),
-			'area'     => Request::getVar('area', '')
+			'area'     => Request::getString('area', '')
 		);
 
 		// Validate inputs
-		$filters['tag'] = ($filters['tag'] ? $filters['tag'] : Request::getVar('tag', ''));
+		$filters['tag'] = ($filters['tag'] ? $filters['tag'] : Request::getString('tag', ''));
 
 		if ($filters['filterby']
 		 && !in_array($filters['filterby'], array('open', 'closed')))
@@ -671,7 +671,7 @@ class Questions extends SiteController
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
-		$tags   = Request::getVar('tags', '');
+		$tags   = Request::getString('tags', '');
 		if (!isset($fields['reward']))
 		{
 			$fields['reward'] = 0;
