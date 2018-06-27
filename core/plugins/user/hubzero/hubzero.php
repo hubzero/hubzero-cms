@@ -85,10 +85,12 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
 		// Initialise variables.
 		$config = App::get('config');
+		// Get any set emails that should be notified
+		$defs = explode(',', $this->params->get('emails', ''));
 
 		if (App::isSite())
 		{
-			if ($this->params->get('mail_to_admin', 1))
+			if ($defs[0])
 			{
 				$lang = App::get('language');
 				$lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'site') ||
@@ -122,18 +124,32 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 						$emailAddress,
 						Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN', $config->get('sitename'))
 					)
-					->addTo($emailAddress)
 					->addHeader('X-Component', Request::getCmd('option', 'com_members'))
 					->addHeader('X-Component-Object', 'user_creation_admin_notification')
 					->setSubject(Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNT_CREATION', $config->get('sitename')))
 					->addPart($plain, 'text/plain')
 					->addPart($html, 'text/html');
 
-				if (!$mail->send())
+				// Loop through the addresses
+				foreach ($defs as $def)
 				{
-					// TODO: Probably should raise a plugin error but this event is not error checked.
-					Log::error(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR', $emailAddress));
+					$def = trim($def);
+
+					// Check if the address should come from Joomla config
+					if ($def == '{config.mailfrom}')
+					{
+						$def = $emailAddress;
+					}
+					
+					$mail->setTo(array($def));
+					if (!$mail->send())
+					{	
+						// TODO: Probably should raise a plugin error but this event is not error checked.
+						Log::error(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR', $emailAddress));
+					}
+
 				}
+
 			}
 		}
 
