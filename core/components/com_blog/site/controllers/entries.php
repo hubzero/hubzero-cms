@@ -90,7 +90,7 @@ class Entries extends SiteController
 			'month'      => Request::getInt('month', 0),
 			'scope'      => $this->config->get('show_from', 'site'),
 			'scope_id'   => 0,
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -134,7 +134,7 @@ class Entries extends SiteController
 	 */
 	public function entryTask()
 	{
-		$alias = Request::getVar('alias', '');
+		$alias = Request::getString('alias', '');
 
 		if (!$alias)
 		{
@@ -182,7 +182,8 @@ class Entries extends SiteController
 		}
 
 		// Check session if this is a newly submitted entry. Trigger a proper event if so.
-		if (Session::get('newsubmission.blog')) {
+		if (Session::get('newsubmission.blog'))
+		{
 			// Unset the new submission session flag
 			Session::set('newsubmission.blog');
 			Event::trigger('content.onAfterContentSubmission', array('Blog'));
@@ -208,7 +209,7 @@ class Entries extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -259,7 +260,7 @@ class Entries extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -361,7 +362,7 @@ class Entries extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option, false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option, false, true), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -384,8 +385,8 @@ class Entries extends SiteController
 			return $this->displayTask();
 		}
 
-		$process    = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
+		$process    = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
 
 		// Initiate a blog entry object
 		$entry = Entry::oneOrFail($id);
@@ -473,7 +474,7 @@ class Entries extends SiteController
 			'month'      => Request::getInt('month', 0),
 			'scope'      => $this->config->get('show_from', 'site'),
 			'scope_id'   => 0,
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -556,7 +557,7 @@ class Entries extends SiteController
 		// Ensure the user is logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -642,9 +643,9 @@ class Entries extends SiteController
 
 		// Incoming
 		$id    = Request::getInt('comment', 0);
-		$year  = Request::getVar('year', '');
-		$month = Request::getVar('month', '');
-		$alias = Request::getVar('alias', '');
+		$year  = Request::getString('year', '');
+		$month = Request::getString('month', '');
+		$alias = Request::getString('alias', '');
 
 		if (!$id)
 		{
@@ -721,7 +722,7 @@ class Entries extends SiteController
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
-		$alias = Request::getVar('alias', '');
+		$alias = Request::getString('alias', '');
 		if (!$alias)
 		{
 			throw new Exception(Lang::txt('Feed not found.'), 404);

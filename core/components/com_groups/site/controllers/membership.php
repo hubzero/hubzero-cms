@@ -58,7 +58,7 @@ class Membership extends Base
 	public function execute()
 	{
 		//get the cname
-		$this->cn = Request::getVar('cn', '');
+		$this->cn = Request::getString('cn', '');
 
 		parent::execute();
 	}
@@ -188,8 +188,8 @@ class Membership extends Base
 		}
 
 		//get request vars
-		$logins = trim(Request::getVar('logins', ''));
-		$msg    = trim(Request::getVar('msg', ''));
+		$logins = trim(Request::getString('logins', ''));
+		$msg    = trim(Request::getString('msg', ''));
 
 		if (!$logins)
 		{
@@ -559,7 +559,7 @@ class Membership extends Base
 	public function acceptTask()
 	{
 		//get invite token
-		$token = Request::getVar('token', '', 'get');
+		$token = Request::getString('token', '', 'get');
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -624,7 +624,7 @@ class Membership extends Base
 		}
 
 		//get request vars
-		$return = strtolower(trim(Request::getVar('return', '', 'get')));
+		$return = strtolower(trim(Request::getString('return', '', 'get')));
 
 		//check to make sure weve been invited
 		if ($token)
@@ -796,7 +796,7 @@ class Membership extends Base
 		}
 
 		//get request vars
-		$return = strtolower(trim(Request::getVar('return', '', 'get')));
+		$return = strtolower(trim(Request::getString('return', '', 'get')));
 
 		// Remove the user from the group
 		$this->view->group->remove('managers', User::get('id'));
@@ -1083,7 +1083,7 @@ class Membership extends Base
 		$row = new Reason($this->database);
 		$row->uidNumber = User::get('id');
 		$row->gidNumber = $this->view->group->get('gidNumber');
-		$row->reason    = Request::getVar('reason', Lang::txt('GROUPS_NO_REASON_GIVEN'), 'post');
+		$row->reason    = Request::getString('reason', Lang::txt('GROUPS_NO_REASON_GIVEN'), 'post');
 		$row->reason    = \Hubzero\Utility\Sanitize::stripAll($row->reason);
 		$row->date      = Date::toSql();
 

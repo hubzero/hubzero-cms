@@ -337,7 +337,7 @@ class Threads extends SiteController
 		Request::checkToken();
 
 		// Incoming
-		$section = Request::getVar('section', '');
+		$section = Request::getString('section', '');
 		$fields  = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields  = array_map('trim', $fields);
 
@@ -412,7 +412,7 @@ class Threads extends SiteController
 		}
 
 		// Save tags
-		$post->tag(Request::getVar('tags', '', 'post'), User::get('id'));
+		$post->tag(Request::getString('tags', '', 'post'), User::get('id'));
 
 		// Determine message
 		if (!$fields['id'])
@@ -495,8 +495,8 @@ class Threads extends SiteController
 	 */
 	public function deleteTask()
 	{
-		$section  = Request::getVar('section', '');
-		$category = Request::getVar('category', '');
+		$section  = Request::getString('section', '');
+		$category = Request::getString('category', '');
 
 		// Is the user logged in?
 		if (User::isGuest())
@@ -602,8 +602,8 @@ class Threads extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$section   = Request::getVar('section', '');
-		$category  = Request::getVar('category', '');
+		$section   = Request::getString('section', '');
+		$category  = Request::getString('category', '');
 		$thread_id = Request::getInt('thread', 0);
 		$post_id   = Request::getInt('post', 0);
 		$file      = Request::getVar('file', '');
@@ -628,7 +628,7 @@ class Threads extends SiteController
 
 		if (!$post->get('id') || $post->get('state') == $post::STATE_DELETED)
 		{
-			App::abort(404, ang::txt('COM_FORUM_POST_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_FORUM_POST_NOT_FOUND'));
 		}
 
 		// Check logged in status
@@ -697,7 +697,7 @@ class Threads extends SiteController
 
 		// Instantiate an attachment record
 		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
-		$attachment->set('description', trim(Request::getVar('description', '')));
+		$attachment->set('description', trim(Request::getString('description', '')));
 		$attachment->set('parent', $thread_id);
 		$attachment->set('post_id', $post_id);
 		if ($attachment->isNew())

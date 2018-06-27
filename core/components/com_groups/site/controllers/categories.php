@@ -53,9 +53,9 @@ class Categories extends Base
 	public function execute()
 	{
 		//get the cname, active tab, and action for plugins
-		$this->cn     = Request::getVar('cn', '');
-		$this->active = Request::getVar('active', '');
-		$this->action = Request::getVar('action', '');
+		$this->cn     = Request::getString('cn', '');
+		$this->active = Request::getCmd('active', '');
+		$this->action = Request::getCmd('action', '');
 
 		// Check if they're logged in
 		if (User::isGuest())

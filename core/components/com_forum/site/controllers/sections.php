@@ -85,7 +85,7 @@ class Sections extends SiteController
 		$edit = null;
 		if ($this->getTask() == 'edit' && $this->config->get('access-edit-section'))
 		{
-			$edit = Request::getVar('section', '');
+			$edit = Request::getString('section', '');
 		}
 
 		$sections = $forum->sections($filters);
@@ -223,7 +223,7 @@ class Sections extends SiteController
 
 		// Load the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section'))
+			->whereEquals('alias', Request::getString('section'))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->where('state', '!=', Section::STATE_DELETED)

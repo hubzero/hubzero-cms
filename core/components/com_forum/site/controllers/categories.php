@@ -125,9 +125,9 @@ class Categories extends SiteController
 	{
 		// Incoming
 		$filters = array(
-			'section'    => Request::getVar('section', ''),
+			'section'    => Request::getString('section', ''),
 			'category'   => Request::getCmd('category', ''),
-			'search'     => Request::getVar('q', ''),
+			'search'     => Request::getString('q', ''),
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => Category::STATE_PUBLISHED,
@@ -140,23 +140,23 @@ class Categories extends SiteController
 		{
 			case 'title':
 				$filters['sort'] = 'sticky` DESC, `title';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
 				$filters['sort'] = 'sticky` DESC, `rgt';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'created':
 				$filters['sort'] = 'sticky` DESC, `created';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
 				$filters['sort'] = 'sticky` DESC, `activity';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 		}
 
@@ -326,7 +326,7 @@ class Categories extends SiteController
 
 		// Get the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('alias', Request::getString('section', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->where('state', '!=', Section::STATE_DELETED)
@@ -340,7 +340,7 @@ class Categories extends SiteController
 		if (!is_object($category))
 		{
 			$category = Category::all()
-				->whereEquals('alias', Request::getVar('category', ''))
+				->whereEquals('alias', Request::getString('category', ''))
 				->whereEquals('scope', $this->forum->get('scope'))
 				->whereEquals('scope_id', $this->forum->get('scope_id'))
 				->whereEquals('section_id', $section->get('id'))
@@ -471,7 +471,7 @@ class Categories extends SiteController
 
 		// Load the category
 		$category = Category::all()
-			->whereEquals('alias', Request::getVar('category', ''))
+			->whereEquals('alias', Request::getString('category', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->where('state', '!=', Category::STATE_DELETED)

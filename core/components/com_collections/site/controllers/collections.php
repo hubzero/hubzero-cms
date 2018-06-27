@@ -31,7 +31,9 @@
  */
 
 namespace Components\Collections\Site\Controllers;
+
 require_once Component::path('com_collections') . '/models/orm/post.php';
+
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Orm\Post;
 use Components\Collections\Models\Archive;
@@ -50,7 +52,7 @@ class Collections extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -76,7 +78,7 @@ class Collections extends SiteController
 		$this->view->filters = array(
 			'limit'   => Request::getInt('limit', 25),
 			'start'   => Request::getInt('limitstart', 0),
-			'search'  => Request::getVar('search', ''),
+			'search'  => Request::getString('search', ''),
 			'id'      => Request::getInt('id', 0),
 			'user_id' => User::get('id'),
 			'sort'    => 'p.created',
@@ -125,7 +127,7 @@ class Collections extends SiteController
 		$this->view->filters = array(
 			'limit'   => Request::getInt('limit', 25),
 			'start'   => Request::getInt('limitstart', 0),
-			'search'  => Request::getVar('search', ''),
+			'search'  => Request::getString('search', ''),
 			'id'      => Request::getInt('id', 0),
 			'state'   => 1,
 			'access'  => (!User::isGuest() ? array(0, 1) : 0)
@@ -166,7 +168,7 @@ class Collections extends SiteController
 		// Filters for returning results
 		$this->view->filters = array(
 			'id'      => Request::getInt('id', 0),
-			'search'  => Request::getVar('search', ''),
+			'search'  => Request::getString('search', ''),
 			'sort'    => 'p.created',
 			'state'   => 1,
 			'access'  => (!User::isGuest() ? array(0, 1) : 0)
@@ -237,7 +239,7 @@ class Collections extends SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
@@ -260,7 +262,7 @@ class Collections extends SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{

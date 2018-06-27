@@ -83,7 +83,7 @@ $router->rules('parse')->append('prep', function ($uri)
 	$path = str_replace('index.php', '', $path);
 
 	// Set the route
-	$uri->setPath(trim($path , '/'));
+	$uri->setPath(trim($path, '/'));
 
 	return null;
 });
@@ -98,6 +98,10 @@ $router->rules('parse')->append('prep', function ($uri)
 $router->rules('parse')->append('component', function ($uri)
 {
 	$option = $uri->getVar('option');
+	if (is_array($option))
+	{
+		$option = implode('', $option);
+	}
 
 	if (\User::isGuest() || !\User::authorise('core.login.admin'))
 	{
