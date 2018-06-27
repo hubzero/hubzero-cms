@@ -305,39 +305,39 @@ if ($label == 'none') {
 						<option value=""><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></option>
 						<?php foreach ($this->types as $t) : ?>
 							<?php $sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : ""; ?>
-							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
+							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $this->escape($t['type_title']); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</label>
 				<label for="actags">
 					<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
 					<?php
-						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
+						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->escape($this->filters['tag']))));  // type, field name, field id, class, value
 						if (count($tf) > 0) : ?>
 							<?php echo $tf[0]; ?>
 						<?php else: ?>
-							<input type="text" name="tag" id="actags" value="<?php echo $this->filters['tag']; ?>" />
+							<input type="text" name="tag" id="actags" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 						<?php endif; ?>
 				</label>
 				<label for="author">
 					<?php echo Lang::txt('COM_CITATIONS_AUTHORED_BY'); ?>
-					<input type="text" name="author" id="author" value="<?php echo $this->filters['author']; ?>" />
+					<input type="text" name="author" id="author" value="<?php echo $this->escape($this->filters['author']); ?>" />
 				</label>
 				<label for="publishedin">
 					<?php echo Lang::txt('COM_CITATIONS_PUBLISHED_IN'); ?>
-					<input type="text" name="publishedin" id="publishedin" value="<?php echo $this->filters['publishedin']; ?>" />
+					<input type="text" name="publishedin" id="publishedin" value="<?php echo $this->escape($this->filters['publishedin']); ?>" />
 				</label>
 				<div class="grid">
 					<div class="col span6">
 						<label for="year_start">
 							<?php echo Lang::txt('COM_CITATIONS_YEAR'); ?> (from)
-							<input type="text" name="year_start" id="year_start" value="<?php echo $this->filters['year_start']; ?>" />
+							<input type="text" name="year_start" id="year_start" value="<?php echo $this->escape($this->filters['year_start']); ?>" />
 						</label>
 					</div>
 					<div class="col span6 omega">
 						<label for="year_end">
 							<?php echo Lang::txt('COM_CITATIONS_YEAR'); ?> (to)
-							<input type="text" name="year_end" id="year_end" value="<?php echo $this->filters['year_end']; ?>" />
+							<input type="text" name="year_end" id="year_end" value="<?php echo $this->escape($this->filters['year_end']); ?>" />
 						</label>
 					</div>
 				</div>
@@ -345,12 +345,12 @@ if ($label == 'none') {
 					<fieldset>
 						<label for="startuploaddate">
 							<?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN'); ?>
-							<input type="text" name="startuploaddate" id="startuploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
+							<input type="text" name="startuploaddate" id="startuploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->escape($this->filters['startuploaddate'])); ?>" />
 							<div class="hint"><?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 						</label>
 						<label for="enduploaddate">
 							<?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
-							<input type="text" name="enduploaddate" id="enduploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
+							<input type="text" name="enduploaddate" id="enduploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->escape($this->filters['enduploaddate'])); ?>" />
 							<div class="hint"><?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 						</label>
 					</fieldset>
@@ -426,7 +426,7 @@ if ($label == 'none') {
 					</label>
 				</fieldset>
 
-				<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
+				<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
 
 				<p class="submit">
 					<input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_FILTER'); ?>" />

@@ -309,9 +309,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				}
 			});
 
-			if (count($filters['reftype']) < 4)
+			if (!empty($filters['reftype']) && count($filters['reftype']) < 4)
 			{
-
 				$refKeys = array_keys($filters['reftype']);
 				$firstQuery = $refKeys[0];
 				$query = '(';
