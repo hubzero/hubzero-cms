@@ -272,7 +272,7 @@ class Pages extends SiteController
 		$this->page->set('event', $event);
 
 		// Output view
-		if (Request::getVar('format') == 'raw')
+		if (Request::getWord('format') == 'raw')
 		{
 			$this->view->setLayout('display_raw');
 		}
@@ -308,7 +308,7 @@ class Pages extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
@@ -374,8 +374,8 @@ class Pages extends SiteController
 			}
 		}
 
-		$tags = trim(Request::getVar('tags', $this->page->tags('string'), 'post'));
-		//$authors = trim(Request::getVar('authors', $this->page->authors('string'), 'post'));
+		$tags = trim(Request::getString('tags', $this->page->tags('string'), 'post'));
+		//$authors = trim(Request::getString('authors', $this->page->authors('string'), 'post'));
 
 		// Set the page's <title> tag
 		if ($this->page->get('scope') == 'site')
@@ -475,7 +475,7 @@ class Pages extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
@@ -497,7 +497,7 @@ class Pages extends SiteController
 
 		$this->page = Page::oneOrNew(intval($revision->get('page_id')));
 		$this->page->set($page);
-		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'post')));
+		$this->page->set('pagename', trim(Request::getString('pagename', '', 'post')));
 
 		// Get parameters
 		$p = Request::getVar('params', array(), 'post');
@@ -530,7 +530,7 @@ class Pages extends SiteController
 		}
 
 		// Was the preview button pushed?
-		$this->preview = trim(Request::getVar('preview', ''));
+		$this->preview = trim(Request::getString('preview', ''));
 
 		if ($this->preview)
 		{
@@ -576,7 +576,7 @@ class Pages extends SiteController
 		}
 
 		// Get allowed authors
-		if (!Author::setForPage(Request::getVar('authors', '', 'post'), $this->page->get('id')))
+		if (!Author::setForPage(Request::getString('authors', '', 'post'), $this->page->get('id')))
 		{
 			$this->setError(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'));
 			return $this->editTask($revision);
@@ -663,7 +663,7 @@ class Pages extends SiteController
 		}
 
 		// Process tags
-		$this->page->tag(Request::getVar('tags', ''));
+		$this->page->tag(Request::getString('tags', ''));
 
 		// Trigger after save event
 		Event::trigger('wiki.onWikiAfterSave', array(&$this->page, $isNew));
@@ -712,7 +712,7 @@ class Pages extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
@@ -850,7 +850,7 @@ class Pages extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
@@ -931,15 +931,15 @@ class Pages extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 		}
 
 		// Incoming
-		$oldpagename = trim(Request::getVar('oldpagename', '', 'post'));
-		$newpagename = trim(Request::getVar('newpagename', '', 'post'));
+		$oldpagename = trim(Request::getString('oldpagename', '', 'post'));
+		$newpagename = trim(Request::getString('newpagename', '', 'post'));
 
 		// Load the page
 		$this->page = Page::oneByPath($oldpagename, $this->book->get('scope'), $this->book->get('scope_id'));

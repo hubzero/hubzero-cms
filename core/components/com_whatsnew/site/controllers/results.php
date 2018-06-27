@@ -77,7 +77,7 @@ class Results extends SiteController
 		$menu->param = new \Hubzero\Config\Registry($menu->params);
 
 		// Incoming
-		$period = Request::getVar('period', $menu->param->get('period', 'month'));
+		$period = Request::getString('period', $menu->param->get('period', 'month'));
 
 		// Paging variables
 		$start = Request::getInt('limitstart', 0);
@@ -289,7 +289,7 @@ class Results extends SiteController
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
-		$period = Request::getVar('period', 'month');
+		$period = Request::getString('period', 'month');
 
 		// Paging variables
 		$start = Request::getInt('limitstart', 0);

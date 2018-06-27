@@ -76,14 +76,14 @@ class Attachments extends SiteController
 	{
 		// Push through to a different method if
 		// being created via AJAX
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
 		}
 
 		// Ensure we have an ID to work with
 		$pid = Request::getInt('pid', 0, 'post');
-		$resourceTitle = Request::getVar('resource-title');
+		$resourceTitle = Request::getString('resource-title');
 		$parentResource = null;
 		if (!$pid && !empty($resourceTitle))
 		{
@@ -162,7 +162,7 @@ class Attachments extends SiteController
 	{
 		// Ensure we have an ID to work with
 		$pid = strtolower(Request::getInt('pid', 0));
-		$resourceTitle = Request::getVar('resource-title');
+		$resourceTitle = Request::getString('resource-title');
 		header('Content-Type: application/json');
 		if (!$pid && !empty($resourceTitle))
 		{
@@ -209,7 +209,7 @@ class Attachments extends SiteController
 				'publish_down' => '0000-00-00 00:00:00',
 				'standalone'   => 0,
 				'access'       => 0,
-				'path'         => Request::getVar('url', 'http://'),
+				'path'         => Request::getString('url', 'http://'),
 				'type'         => 11
 			));
 
@@ -493,7 +493,7 @@ class Attachments extends SiteController
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
-		$move = Request::getVar('move', 'down');
+		$move = Request::getWord('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -541,7 +541,7 @@ class Attachments extends SiteController
 	{
 		// Incoming
 		$id   = Request::getInt('id', 0);
-		$name = Request::getVar('name', '');
+		$name = Request::getString('name', '');
 
 		// Ensure we have everything we need
 		if ($id && $name)
@@ -562,7 +562,7 @@ class Attachments extends SiteController
 	 */
 	public function saveTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
