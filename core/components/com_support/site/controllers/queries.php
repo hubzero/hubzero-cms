@@ -120,7 +120,7 @@ class Queries extends SiteController
 		// Incoming
 		$fields  = Request::getVar('fields', array(), 'post');
 		$no_html = Request::getInt('no_html', 0);
-		$tmpl    = Request::getVar('component', '');
+		$tmpl    = Request::getCmd('component', '');
 
 		$row = Query::oneOrNew($fields['id'])->set($fields);
 
@@ -162,7 +162,7 @@ class Queries extends SiteController
 		// Incoming
 		$id      = Request::getInt('id', 0);
 		$no_html = Request::getInt('no_html', 0);
-		$tmpl    = Request::getVar('component', '');
+		$tmpl    = Request::getCmd('component', '');
 
 		// Check for an ID
 		if (!$id)
@@ -289,7 +289,7 @@ class Queries extends SiteController
 		// Incoming
 		$fields  = Request::getVar('fields', array());
 		$no_html = Request::getInt('no_html', 0);
-		$tmpl    = Request::getVar('component', '');
+		$tmpl    = Request::getString('component', '');
 
 		$response = new stdClass;
 		$response->success = 1;

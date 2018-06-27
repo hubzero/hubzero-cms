@@ -187,7 +187,7 @@ class Media extends SiteController
 			'ticket'      => $ticket,
 			'comment_id'  => $comment,
 			'filename'    => $filename . '.' . $ext,
-			'description' => Request::getVar('description', '')
+			'description' => Request::getString('description', '')
 		));
 		if (!$asset->save())
 		{
@@ -264,7 +264,7 @@ class Media extends SiteController
 			return;
 		}*/
 
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -347,7 +347,7 @@ class Media extends SiteController
 				'ticket'      => $ticket,
 				'comment_id'  => $comment,
 				'filename'    => $filename,
-				'description' => Request::getVar('description', '')
+				'description' => Request::getString('description', '')
 			));
 
 			if (!$asset->save())
@@ -367,7 +367,7 @@ class Media extends SiteController
 	 */
 	public function deleteTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}
