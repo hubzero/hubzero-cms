@@ -42,9 +42,9 @@ use User;
 use Log;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
 
 /**
  * Controller class for contributing a tool
@@ -141,7 +141,7 @@ class Admin extends SiteController
 		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = Request::getVar('app', '')))
+		if (($alias = Request::getString('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
@@ -215,7 +215,7 @@ class Admin extends SiteController
 		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = Request::getVar('app', '')))
+		if (($alias = Request::getString('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
@@ -324,7 +324,7 @@ class Admin extends SiteController
 		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = Request::getVar('app', '')))
+		if (($alias = Request::getString('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
@@ -399,7 +399,7 @@ class Admin extends SiteController
 		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = Request::getVar('app', '')))
+		if (($alias = Request::getString('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
@@ -698,7 +698,7 @@ class Admin extends SiteController
 				// transfer screenshots
 				if ($devid && $currentid)
 				{
-					include_once(__DIR__ . DS . 'screenshots.php');
+					include_once __DIR__ . DS . 'screenshots.php';
 
 					$screenshots = new Screenshots();
 					if ($screenshots->transfer($devid, $currentid, $status['resourceid']))
@@ -711,7 +711,7 @@ class Admin extends SiteController
 					}
 				}
 
-				include_once(__DIR__ . DS . 'resources.php');
+				include_once __DIR__ . DS . 'resources.php';
 
 				$resource = new Resources();
 				// update and publish resource page

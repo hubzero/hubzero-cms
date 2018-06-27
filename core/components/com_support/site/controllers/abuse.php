@@ -96,7 +96,7 @@ class Abuse extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
@@ -106,7 +106,7 @@ class Abuse extends SiteController
 		// Incoming
 		$refid    = Request::getInt('id', 0);
 		$parentid = Request::getInt('parent', 0);
-		$cat      = Request::getVar('category', '');
+		$cat      = Request::getString('category', '');
 
 		// Check for a reference ID
 		if (!$refid)
@@ -176,9 +176,9 @@ class Abuse extends SiteController
 		Request::checkToken();
 
 		// Incoming
-		$cat = Request::getVar('category', '');
+		$cat = Request::getString('category', '');
 		$refid = Request::getInt('referenceid', 0);
-		$returnlink = Request::getVar('link', '');
+		$returnlink = Request::getString('link', '');
 		$no_html = Request::getInt('no_html', 0);
 
 		// Trim and addslashes all posted items
