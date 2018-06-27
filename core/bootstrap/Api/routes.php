@@ -258,6 +258,10 @@ $router->rules('parse')->append('crud', function ($uri)
 $router->rules('parse')->append('component', function ($uri)
 {
 	$component = $uri->getVar('option');
+	if (is_array($component))
+	{
+		$component = implode('', $component);
+	}
 	$segments  = explode('/', $uri->getPath());
 
 	if (!$component)

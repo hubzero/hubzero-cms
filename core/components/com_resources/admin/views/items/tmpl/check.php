@@ -72,18 +72,25 @@ Html::behavior('tooltip');
 					<table>
 						<thead>
 							<tr>
-								<th><?php echo Lang::txt('COM_RESOURCES_AUDIT_ID'); ?></th>
-								<th><?php echo Lang::txt('COM_RESOURCES_AUDIT_ENTRY'); ?></th>
-								<th><?php echo Lang::txt('COM_RESOURCES_AUDIT_STATUS'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_RESOURCES_AUDIT_ID'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_RESOURCES_AUDIT_PARENT_ID'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_RESOURCES_AUDIT_ENTRY'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_RESOURCES_AUDIT_STATUS'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 							switch ($this->status)
 							{
-								case 'failed': $status = -1; break;
-								case 'skipped': $status = 0; break;
-								case 'passed': $status = 1; break;
+								case 'failed':
+									$status = -1;
+									break;
+								case 'skipped':
+									$status = 0;
+									break;
+								case 'passed':
+									$status = 1;
+									break;
 							}
 							$results = \Hubzero\Content\Auditor\Result::all()
 								->whereEquals('scope', 'resource')
@@ -93,20 +100,39 @@ Html::behavior('tooltip');
 								->rows();
 							foreach ($results as $result) { ?>
 								<tr>
-									<th><?php echo $result->get('scope_id'); ?></th>
-									<td><a href="<?php echo Route::url('index.php?option=com_resources&task=edit&id=' . $result->get('scope_id')); ?>">
+									<th>
+										<?php echo $result->get('scope_id'); ?>
+									</th>
+									<td>
 										<?php
-										if ($notes = $result->get('notes'))
+										$parents = Components\Resources\Models\Association::all()
+											->whereEquals('child_id', $result->get('scope_id'))
+											->rows()
+											->fieldsByKey('parent_id');
+
+										if (!empty($parents))
 										{
-											$notes = json_decode($notes);
-											if (isset($notes->field))
-											{
-												$result->set('title', $notes->field);
-											}
+											echo implode(', ', $parents);
 										}
-										echo $result->get('title', Lang::txt('COM_RESOURCES_UNKNOWN')); ?>
-									</a></td>
-									<td><?php echo '<span class="test-status ' . $result->status() . '">' . $result->status() . '</span>'; ?></td>
+										?>
+									</td>
+									<td>
+										<a href="<?php echo Route::url('index.php?option=com_resources&task=edit&id=' . $result->get('scope_id')); ?>">
+											<?php
+											if ($notes = $result->get('notes'))
+											{
+												$notes = json_decode($notes);
+												if (isset($notes->field))
+												{
+													$result->set('title', $notes->field);
+												}
+											}
+											echo $result->get('title', Lang::txt('COM_RESOURCES_UNKNOWN')); ?>
+										</a>
+									</td>
+									<td>
+										<?php echo '<span class="test-status ' . $result->status() . '">' . $result->status() . '</span>'; ?>
+									</td>
 								</tr>
 							<?php } ?>
 						</tbody>

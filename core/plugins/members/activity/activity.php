@@ -81,7 +81,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		// Check if our area is in the array of areas we want to return results for

@@ -37,7 +37,7 @@ $this->css();
 
 // parse the custom fields out of the resource
 $resourceFields = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->resource->fulltxt, $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0)
 {
 	foreach ($matches as $match)
@@ -82,7 +82,7 @@ if (count($matches) > 0)
 						// add field data to local library link
 						$fields   = array('doi','isbn','issn');
 						$linkData = array(
-							'title' => $this->model->resource->title
+							'title' => $this->model->title
 						);
 						foreach ($fields as $field)
 						{
@@ -114,7 +114,7 @@ if (count($matches) > 0)
 					}
 					elseif ($this->model->resource->title)
 					{
-						$query .= $this->model->resource->title;
+						$query .= $this->model->title;
 					}
 					?>
 				<a rel="external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
@@ -130,7 +130,7 @@ if (count($matches) > 0)
 				<ul>
 					<li>
 						<?php
-							$url = 'http://www.deepdyve.com/search?query=' . str_replace(' ', '+',  $this->model->resource->title);
+							$url = 'http://www.deepdyve.com/search?query=' . str_replace(' ', '+',  $this->model->title);
 							echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_SOURCES_DEEPDYVE', $url);
 						?>
 					</li>

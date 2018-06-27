@@ -95,7 +95,7 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		// Include models

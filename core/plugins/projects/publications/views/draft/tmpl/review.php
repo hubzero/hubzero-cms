@@ -73,6 +73,10 @@ $pubdate = Request::getVar('publish_date');
 // Get configs
 $termsUrl = $this->pub->config()->get('deposit_terms', '');
 
+$autoApprove = isset($this->pub->_curationModel->_manifest->params->auto_approve)
+			? $this->pub->_curationModel->_manifest->params->auto_approve : 0;
+$requestReview = isset($this->pub->_curationModel->_manifest->params->request_review)
+			? $this->pub->_curationModel->_manifest->params->request_review : 0;
 ?>
 
 <!-- Load content selection browser //-->
@@ -215,7 +219,7 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT'); ?></h5>
 				<div class="element-instructions">
 					<label><span class="optional"><?php echo Lang::txt('Optional'); ?></span>
-					<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DESC_COMMENT'); ?>	
+					<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DESC_COMMENT'); ?>
 						<textarea name="comment" cols="10" rows="5"></textarea>
 					</label>
 				</div>
@@ -239,6 +243,26 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 			</div>
 		</div>
 	 </div>
+
+	<?php
+		// Request Review
+		if ($autoApprove && $requestReview):
+	?>
+		<div class="blockelement" id="request-review">
+			<div class="element_editing">
+				<div class="pane-wrapper">
+					<span class="checker">&nbsp;</span>
+					<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_REVIEW'); ?></h5>
+					<div class="element-instructions">
+						<label>
+							<input class="option" name="request_review" type="checkbox" value="1" />
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_REVIEW'); ?>
+						</label>
+					</div>
+				</div>
+			</div>
+		 </div>
+	<?php endif; ?>
 
 	<?php // Submission ?>
 	<div class="submitarea" id="submit-area">

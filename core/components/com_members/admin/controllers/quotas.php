@@ -371,8 +371,9 @@ class Quotas extends AdminController
 		}
 
 		$user_count = Quota::all()
+			->select('*', 'user_count', true)
 			->whereEquals('class_id', $row->get('id'))
-			->count();
+			->row()->user_count;
 
 		/*$groups = array();
 		$qcGroups = Group::all()

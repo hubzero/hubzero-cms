@@ -120,7 +120,7 @@ class Courses extends SiteController
 	/**
 	 * Display component main page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function introTask()
 	{
@@ -158,9 +158,9 @@ class Courses extends SiteController
 		// Filters
 		$this->view->filters = array(
 			'state'  => 1,
-			'search' => Request::getVar('search', ''),
+			'search' => Request::getString('search', ''),
 			'sortby' => strtolower(Request::getWord('sortby', 'title')),
-			'group'  => Request::getVar('group', '')
+			'group'  => Request::getString('group', '')
 		);
 		if ($this->view->filters['group'])
 		{
@@ -196,7 +196,7 @@ class Courses extends SiteController
 		{
 			$this->view->filters['index'] = '';
 		}
-		$this->view->filters['tag'] = Request::getVar('tag', '');
+		$this->view->filters['tag'] = Request::getString('tag', '');
 
 		$model = Models\Courses::getInstance();
 
@@ -242,7 +242,7 @@ class Courses extends SiteController
 				$this->view->badge  = $badge;
 				$this->view->config = $this->config;
 				$this->view->action = Request::getWord('action', 'default');
-				$this->view->token  = Request::getVar('validation_token', false);
+				$this->view->token  = Request::getString('validation_token', false);
 			}
 		}
 		else
@@ -273,7 +273,7 @@ class Courses extends SiteController
 			}
 
 			$at = '';
-			if ($assetType != 'component')
+			if ($assetType != 'component' && $assetId)
 			{
 				$at .= '.' . $assetType;
 			}

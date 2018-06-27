@@ -531,7 +531,7 @@ class Items extends AdminController
 				$doiService->set('authors', $authors);
 
 				// Update DOI
-				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi->doi))
+				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi))
 				{
 					$doiService->update($model->version->doi, true);
 				}

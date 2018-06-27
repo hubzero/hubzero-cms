@@ -43,12 +43,12 @@ require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models
 /**
  * Product viewing controller class
  */
-class Download extends \Hubzero\Component\SiteController
+class Download extends ComponentController
 {
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -70,8 +70,7 @@ class Download extends \Hubzero\Component\SiteController
 	/**
 	 * Serve the file
 	 *
-	 * @param		$pId
-	 * @return     	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -228,6 +227,13 @@ class Download extends \Hubzero\Component\SiteController
 		exit;
 	}
 
+	/**
+	 * Display landing page
+	 *
+	 * @param   integer  $tId
+	 * @param   integer  $sId
+	 * @return  void
+	 */
 	public function landingTask($tId, $sId)
 	{
 		$this->setView('download', 'landing');
@@ -236,6 +242,12 @@ class Download extends \Hubzero\Component\SiteController
 		$this->view->display();
 	}
 
+	/**
+	 * Display a message
+	 *
+	 * @param   array  $notifications
+	 * @return  void
+	 */
 	public function messageTask($notifications)
 	{
 		$this->setView('download', 'message');
@@ -246,12 +258,13 @@ class Download extends \Hubzero\Component\SiteController
 	/**
 	 * Redirect to login page
 	 *
-	 * @return void
+	 * @param   string  $message
+	 * @return  void
 	 */
 	private function login($message = '')
 	{
 		$return = base64_encode($_SERVER['REQUEST_URI']);
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return),
 			$message,
 			'warning'
@@ -259,4 +272,3 @@ class Download extends \Hubzero\Component\SiteController
 		return;
 	}
 }
-

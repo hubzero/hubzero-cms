@@ -297,7 +297,7 @@ class Messages extends AdminController
 		}
 
 		// Fill in any settings that weren't set.
-		foreach ($settings as $key=>$val)
+		foreach ($settings as $key => $val)
 		{
 			if (count($val) <= 0)
 			{
@@ -334,6 +334,12 @@ class Messages extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit', $this->_option))
+		{
+			return $this->settingsTask();
+		}
 
 		$id = Request::getInt('id', 0);
 
@@ -473,4 +479,3 @@ class Messages extends AdminController
 		return $out;
 	}
 }
-

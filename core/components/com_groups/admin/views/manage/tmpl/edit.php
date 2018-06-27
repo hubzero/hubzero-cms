@@ -34,9 +34,9 @@ defined('_HZEXEC_') or die();
 
 $text = ($this->group->get('gidNumber') ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
 
-$canDo = \Components\Groups\Helpers\Permissions::getActions('group');
+$canDo = \Components\Groups\Helpers\Permissions::getActions('group', $this->group->get('gidNumber'));
 
-Toolbar::title(Lang::txt('COM_GROUPS').': ' . $text, 'groups.png');
+Toolbar::title(Lang::txt('COM_GROUPS').': ' . $text, 'groups');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();

@@ -94,7 +94,7 @@ jQuery(document).ready(function($){
 						<td>
 							<?php echo "{$this->mem['num_seg']} Segment(s) with {$this->seg_size}
 								<br />
-							({$this->cache['memory_type']} memory, {$this->cache['locking_type']} locking)"; ?>
+							({$this->cache['memory_type']} memory, " . (isset($this->cache['locking_type']) ? $this->cache['locking_type'] : '[unknown]') . " locking)"; ?>
 						</td>
 					</tr>
 					<tr class="row1">
@@ -128,7 +128,7 @@ jQuery(document).ready(function($){
 					<tr class="row0"><th scope="row">Hit Rate</th><td><?php echo "$this->hit_rate cache requests/second"; ?></td></tr>
 					<tr class="row1"><th scope="row">Miss Rate</th><td><?php echo "$this->miss_rate cache requests/second"; ?></td></tr>
 					<tr class="row0"><th scope="row">Insert Rate</th><td><?php echo "$this->insert_rate cache requests/second"; ?></td></tr>
-					<tr class="row1"><th scope="row">Cache full count</th><td><?php echo "{$this->cache['expunges']}"; ?></td></tr>
+					<tr class="row1"><th scope="row">Cache full count</th><td><?php echo "{$this->cache_user['expunges']}"; ?></td></tr>
 				</tbody>
 			</table>
 

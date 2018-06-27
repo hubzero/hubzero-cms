@@ -138,22 +138,22 @@ class Citations extends SiteController
 		$this->view->filters = array(
 			// Search/filtering params
 			'id'              => Request::getInt('id', 0),
-			'tag'             => Request::getVar('tag', '', 'request', 'none', 2),
+			'tag'             => Request::getString('tag', '', 'request', 'none', 2),
 			'limit'           => Request::getInt('limit', 50, 'request'),
 			'limitstart'      => Request::getInt('limitstart', 0, 'get'),
-			'search'          => Request::getVar('search', ''),
-			'type'            => Request::getVar('type', ''),
-			'author'          => Request::getVar('author', ''),
-			'publishedin'     => Request::getVar('publishedin', ''),
+			'search'          => Request::getString('search', ''),
+			'type'            => Request::getString('type', ''),
+			'author'          => Request::getString('author', ''),
+			'publishedin'     => Request::getString('publishedin', ''),
 			'year_start'      => Request::getInt('year_start', $earliest_year),
 			'year_end'        => Request::getInt('year_end', gmdate("Y")),
 			'filter'          => Request::getVar('filter', ''),
-			'sort'            => Request::getVar('sort', 'created DESC'),
+			'sort'            => Request::getString('sort', 'created DESC'),
 			'reftype'         => Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
 			'geo'             => Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1)),
 			'aff'             => Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
-			'startuploaddate' => Request::getVar('startuploaddate', '0000-00-00'),
-			'enduploaddate'   => Request::getVar('enduploaddate', '0000-00-00'),
+			'startuploaddate' => Request::getString('startuploaddate', '0000-00-00'),
+			'enduploaddate'   => Request::getString('enduploaddate', '0000-00-00'),
 			'scope'           => 'hub'
 		);
 
@@ -211,9 +211,15 @@ class Citations extends SiteController
 		}
 
 		// Convert upload dates to correct time format
+		if (!is_string($this->view->filters['startuploaddate'])
+		 || !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $this->view->filters['startuploaddate'])
+		 || !preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $this->view->filters['startuploaddate']))
+		{
+			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
+		}
 		if ($this->view->filters['startuploaddate'] == '0000-00-00'
-			|| $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00'
-			|| $this->view->filters['startuploaddate'] == '')
+		 || $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00'
+		 || $this->view->filters['startuploaddate'] == '')
 		{
 			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
 		}
@@ -221,9 +227,16 @@ class Citations extends SiteController
 		{
 			$this->view->filters['startuploaddate'] = Date::of($this->view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
 		}
+
+		if (!is_string($this->view->filters['enduploaddate'])
+		 || !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $this->view->filters['enduploaddate'])
+		 || !preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $this->view->filters['enduploaddate']))
+		{
+			$this->view->filters['enduploaddate'] = '';
+		}
 		if ($this->view->filters['enduploaddate'] == '0000-00-00'
-			|| $this->view->filters['enduploaddate'] == '0000-00-00 00:00:00'
-			|| $this->view->filters['enduploaddate'] == '')
+		 || $this->view->filters['enduploaddate'] == '0000-00-00 00:00:00'
+		 || $this->view->filters['enduploaddate'] == '')
 		{
 			$this->view->filters['enduploaddate'] = Date::of('now')->modify('+1 DAY')->format('Y-m-d 00:00:00');
 		}

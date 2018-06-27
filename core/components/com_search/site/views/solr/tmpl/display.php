@@ -64,28 +64,28 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 			<input type="hidden" name="section" value="<?php echo $this->escape($this->section); ?>" />
 			<input type="hidden" name="type" value="<?php echo !empty($this->type) ? $this->type : ''; ?>" />
 		</fieldset>
-		<?php	
-			if ($tagSearch)
-			{
-				$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
-									array(
-										array('tags', 'tags', 'actags', '', $this->tags)
-										)	
-								);
+		<?php
+		if ($tagSearch)
+		{
+			$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
+				array(
+					array('tags', 'tags', 'actags', '', $this->tags)
+				)
+			);
 
-				if (count($tags_list) > 0) {
-					echo $tags_list[0];
-				} else {
-					echo '<input type="text" name="tags" value="' . $tags . '" />';
-				}
+			if (count($tags_list) > 0) {
+				echo $tags_list[0];
+			} else {
+				echo '<input type="text" name="tags" value="' . $this->escape($this->tags) . '" />';
 			}
+		}
 		?>
 		<?php if ($this->section == 'map' && 0) { ?>
 			<fieldset class="map-search">
-				<input type="hidden" name="minlat" id="minlat" value="<?php if (isset($this->minlat)) echo $this->minlat; ?>" />
-				<input type="hidden" name="minlon" id="minlon" value="<?php if (isset($this->minlon)) echo $this->minlon; ?>" />
-				<input type="hidden" name="maxlat" id="maxlat" value="<?php if (isset($this->maxlat)) echo $this->maxlat; ?>" />
-				<input type="hidden" name="maxlon" id="maxlon" value="<?php if (isset($this->maxlon)) echo $this->maxlon; ?>" />
+				<input type="hidden" name="minlat" id="minlat" value="<?php if (isset($this->minlat)) { echo $this->minlat; } ?>" />
+				<input type="hidden" name="minlon" id="minlon" value="<?php if (isset($this->minlon)) { echo $this->minlon; } ?>" />
+				<input type="hidden" name="maxlat" id="maxlat" value="<?php if (isset($this->maxlat)) { echo $this->maxlat; } ?>" />
+				<input type="hidden" name="maxlon" id="maxlon" value="<?php if (isset($this->maxlon)) { echo $this->maxlon; } ?>" />
 			</fieldset>
 		<?php } // end if ?>
 	</form>
@@ -99,7 +99,7 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 				<?php if (isset($this->spellSuggestions)) { ?>
 					<h3><?php echo Lang::txt('COM_SEARCH_DIDYOUMEAN'); ?></h3>
 					<?php foreach ($this->spellSuggestions as $suggestion) { ?>
-						<?php foreach($suggestion->getWords() as $word) { ?>
+						<?php foreach ($suggestion->getWords() as $word) { ?>
 							<a href="<?php echo Route::url('search?terms=' . $word['word'] . '&section=content'); ?>"><?php echo $word['word']; ?></a>
 						<?php } ?>
 					<?php } ?>
@@ -155,11 +155,11 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 							<?php echo $this->pagination->render(); ?>
 						</nav>
 						<div class="clearfix"></div>
-						<input type="hidden" name="terms" value="<?php echo $terms; ?>" />
-						<?php if (!empty($this->tags)):?>
-							<input type="hidden" name="tags" value="<?php echo $this->tags; ?>" />
+						<input type="hidden" name="terms" value="<?php echo htmlspecialchars($terms); ?>" />
+						<?php if (!empty($this->tags)): ?>
+							<input type="hidden" name="tags" value="<?php echo $this->escape($this->tags); ?>" />
 						<?php endif; ?>
-						<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
+						<input type="hidden" name="type" value="<?php echo $this->escape($this->type); ?>" />
 					</form>
 				</div><!-- / .container -->
 			</div><!-- / .subject -->

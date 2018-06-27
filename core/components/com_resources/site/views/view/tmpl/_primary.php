@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if ($this->disabled) { ?>
+if (isset($this->disabled) && $this->disabled) { ?>
 	<p id="primary-document">
 		<span class="btn disabled <?php echo $this->class; ?>"><?php echo $this->msg; ?></span>
 	</p>

@@ -78,4 +78,28 @@ class Action extends Relational
 	{
 		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mailingid');
 	}
+
+	/**
+	 * Load a record by mailing ID, email, and action
+	 *
+	 * @param   integer  $mailingid
+	 * @param   string   $email
+	 * @param   string   $action
+	 * @return  object
+	 */
+	public static function oneForMailingAndEmail($mailingid, $email, $action)
+	{
+		$row = self::all()
+			->whereEquals('mailingid', $mailingid)
+			->whereEquals('email', $email)
+			->whereEquals('action', $action)
+			->row();
+
+		if (!$row)
+		{
+			$row = self::blank();
+		}
+
+		return $row;
+	}
 }

@@ -122,6 +122,49 @@ class Post extends Relational
 	protected $adapter = null;
 
 	/**
+	 * Sets up additional custom rules
+	 *
+	 * @return  void
+	 */
+	public function setup()
+	{
+		$this->addRule('comment', function($data)
+		{
+			if (!isset($data['comment']) || !trim($data['comment']))
+			{
+				return Lang::txt('comment cannot be empty');
+			}
+
+			if (!isset($data['created_by']) || !$data['created_by'])
+			{
+				$data['created_by'] = User::get('id');
+			}
+
+			if (!isset($data['id']) || !$data['id'])
+			{
+				$id = self::all()
+					->whereEquals('thread', $data['thread'])
+					->whereEquals('created_by', $data['created_by'])
+					->whereEquals('comment', $data['comment'])
+					->whereEquals('state', self::STATE_PUBLISHED)
+					//->where('created', '>', Date::of('now')->subtract('1 hour')->toSql())
+					//->whereEquals('category_id', $data['category_id'])
+					//->whereEquals('scope', $data['category_id'])
+					//->whereEquals('scope_id', $data['scope_id'])
+					->row()
+					->get('id');
+
+				if ($id)
+				{
+					return Lang::txt('A post with the same content, from the same user, on the same thread seems to already exist.');
+				}
+			}
+
+			return false;
+		});
+	}
+
+	/**
 	 * Generates automatic scope value
 	 *
 	 * @param   array   $data  the data being saved
@@ -328,6 +371,11 @@ class Post extends Relational
 	 */
 	public function thread()
 	{
+		if (!$this->get('thread') && !$this->get('parent'))
+		{
+			$this->set('thread', $this->get('id'));
+		}
+
 		return self::all()
 			->including(['creator', function ($creator){
 				$creator->select('*');

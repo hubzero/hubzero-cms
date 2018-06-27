@@ -31,17 +31,17 @@
 
 namespace Components\Projects\Models;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'activity.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'microblog.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'owner.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'todo.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'project.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'activity.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'microblog.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'comment.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'owner.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'type.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'todo.php';
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
 
-require_once(__DIR__ . DS . 'tags.php');
+require_once __DIR__ . DS . 'tags.php';
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
@@ -183,7 +183,7 @@ class Project extends Model
 	 */
 	public function repo()
 	{
-		require_once(__DIR__ . DS . 'repo.php');
+		require_once __DIR__ . DS . 'repo.php';
 		if (!isset($this->_repo))
 		{
 			$this->_repo = new Repo($this, 'local');
@@ -1221,16 +1221,19 @@ class Project extends Model
 					{
 						$action = 'uploaded';
 						$scope = 'project.file';
+						$refid = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('updated file')) == 'updated file')
 					{
 						$action = 'updated';
 						$scope = 'project.file';
+						$refid = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('restored deleted file')) == 'restored deleted file')
 					{
 						$action = 'updated';
 						$scope = 'project.file';
+						$refid = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('created database')) == 'created database')
 					{
@@ -1251,7 +1254,8 @@ class Project extends Model
 					}
 					// Publications
 					if (substr($activity, 0, strlen('started a new publication')) == 'started a new publication'
-					 || substr($activity, 0, strlen('started draft')) == 'started draft')
+					 || substr($activity, 0, strlen('started draft')) == 'started draft'
+					 || substr($activity, 0, strlen('started a new')) == 'started a new')
 					{
 						$action = 'created';
 						$scope = 'publication';
@@ -1296,6 +1300,16 @@ class Project extends Model
 					if (substr($activity, 0, strlen('unpublished')) == 'unpublished')
 					{
 						$action = 'unpublished';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('posted version')) == 'posted version')
+					{
+						$action = 'published';
+						$scope = 'publication';
+					}
+					if (substr($activity, 0, strlen('has been updated by administrator')) == 'has been updated by administrator')
+					{
+						$action = 'updated';
 						$scope = 'publication';
 					}
 					// Notes

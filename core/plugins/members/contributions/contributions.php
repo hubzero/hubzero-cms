@@ -88,7 +88,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html' => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		$database = App::get('db');

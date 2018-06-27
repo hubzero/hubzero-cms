@@ -78,7 +78,9 @@ function submitbutton(pressbutton)
 					<ul id="submenu" class="member-nav">
 						<li><a href="#page-account" onclick="return false;" id="account" class="active"><?php echo Lang::txt('COM_MEMBERS_SECTION_ACCOUNT'); ?></a></li>
 						<li><a href="#page-profile" onclick="return false;" id="profile"><?php echo Lang::txt('COM_MEMBERS_SECTION_PROFILE'); ?></a></li>
-						<li><a href="#page-password" onclick="return false;" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
+						<?php if (User::authorise('core.admin', $this->option) || User::authorise('core.edit', $this->option)): ?>
+							<li><a href="#page-password" onclick="return false;" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
+						<?php endif; ?>
 						<?php if (!$this->profile->isNew()): ?>
 							<li><a href="#page-groups" onclick="return false;" id="groups"><?php echo Lang::txt('COM_MEMBERS_SECTION_GROUPS'); ?></a></li>
 							<li><a href="#page-hosts" onclick="return false;" id="hosts"><?php echo Lang::txt('COM_MEMBERS_SECTION_HOSTS'); ?></a></li>
@@ -115,9 +117,11 @@ function submitbutton(pressbutton)
 			<?php echo $this->loadTemplate('profile'); ?>
 		</div>
 
-		<div id="page-password" class="tab">
-			<?php echo $this->loadTemplate('password'); ?>
-		</div>
+		<?php if (User::authorise('core.admin', $this->option) || User::authorise('core.edit', $this->option)): ?>
+			<div id="page-password" class="tab">
+				<?php echo $this->loadTemplate('password'); ?>
+			</div>
+		<?php endif; ?>
 
 		<?php if (!$this->profile->isNew()): ?>
 			<div id="page-groups" class="tab">

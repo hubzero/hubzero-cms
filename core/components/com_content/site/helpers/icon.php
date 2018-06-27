@@ -19,13 +19,13 @@ defined('_HZEXEC_') or die();
  */
 class JHtmlIcon
 {
-	static function create($category, $params)
+	public static function create($category, $params)
 	{
 		$url = 'index.php?option=com_content&task=article.add&return='.base64_encode(urlencode(Request::current(true))).'&a_id=0&catid=' . $category->id;
 
 		/*if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'new.png', Lang::txt('JNEW'), NULL, true);
+			$text = Html::asset('image', 'new.png', Lang::txt('JNEW'), null, true);
 		}
 		else
 		{
@@ -38,20 +38,20 @@ class JHtmlIcon
 		return $output;
 	}
 
-	static function email($article, $params, $attribs = array())
+	public static function email($article, $params, $attribs = array())
 	{
 		require_once PATH_CORE . '/components/com_mailto/site/helpers/mailto.php';
 
 		$base     = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
 		$template = App::get('template')->template;
-		$link     = $base . Route::url(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language) , false);
-		$url      = 'index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($link);
+		$link     = $base . Route::url(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language), false);
+		$url      = 'index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.\Components\Mailto\Site\Helpers\Mailto::addLink($link);
 
 		$status = 'width=400,height=350,menubar=yes,resizable=yes';
 
 		/*if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'emailButton.png', Lang::txt('JGLOBAL_EMAIL'), NULL, true);
+			$text = Html::asset('image', 'emailButton.png', Lang::txt('JGLOBAL_EMAIL'), null, true);
 		}
 		else
 		{
@@ -78,7 +78,7 @@ class JHtmlIcon
 	 * @return	string	The HTML for the article edit icon.
 	 * @since	1.6
 	 */
-	static function edit($article, $params, $attribs = array())
+	public static function edit($article, $params, $attribs = array())
 	{
 		// Initialise variables.
 		$userId = User::get('id');
@@ -101,7 +101,7 @@ class JHtmlIcon
 		if (property_exists($article, 'checked_out') && property_exists($article, 'checked_out_time') && $article->checked_out > 0 && $article->checked_out != User::get('id'))
 		{
 			$checkoutUser = User::getInstance($article->checked_out);
-			$button  = Html::asset('image', 'checked_out.png', NULL, NULL, true);
+			$button  = Html::asset('image', 'checked_out.png', null, null, true);
 			$date    = Date::of($article->checked_out_time)->toLocal();
 			$tooltip = Lang::txt('JLIB_HTML_CHECKED_OUT').' :: '.Lang::txt('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name).' <br /> '.$date;
 			return '<span class="hasTip" title="'.htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8').'">'.$button.'</span>';
@@ -113,7 +113,7 @@ class JHtmlIcon
 		{
 			$icon = 'edit_unpublished.png';
 		}
-		$text = Lang::txt('JGLOBAL_EDIT'); //Html::asset('image', $icon, Lang::txt('JGLOBAL_EDIT'), NULL, true);
+		$text = Lang::txt('JGLOBAL_EDIT'); //Html::asset('image', $icon, Lang::txt('JGLOBAL_EDIT'), null, true);
 
 		if ($article->state == 0)
 		{
@@ -138,7 +138,7 @@ class JHtmlIcon
 		return $output;
 	}
 
-	static function print_popup($article, $params, $attribs = array())
+	public static function print_popup($article, $params, $attribs = array())
 	{
 		$url  = ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language);
 		$url .= '&tmpl=component&print=1&layout=default&page='. @ $request->limitstart;
@@ -148,7 +148,7 @@ class JHtmlIcon
 		// checks template image directory for image, if non found default are loaded
 		/*if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
+			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), null, true);
 		}
 		else
 		{*/
@@ -162,12 +162,12 @@ class JHtmlIcon
 		return '<a href="' . Route::url($url) . '" ' . \Hubzero\Utility\Arr::toString($attribs) . '>' . $text . '</a>';
 	}
 
-	static function print_screen($article, $params, $attribs = array())
+	public static function print_screen($article, $params, $attribs = array())
 	{
 		// checks template image directory for image, if non found default are loaded
 		/*if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
+			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), null, true);
 		}
 		else
 		{*/

@@ -95,7 +95,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		$applicants = array();

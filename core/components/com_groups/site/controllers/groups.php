@@ -40,6 +40,7 @@ use Components\Groups\Helpers;
 use Components\Groups\Models\Tags;
 use Components\Groups\Models\Log;
 use Components\Groups\Models\Recent;
+use Components\Groups\Models\Orm\Field;
 use Filesystem;
 use Request;
 use Config;
@@ -63,10 +64,10 @@ class Groups extends Base
 	public function execute()
 	{
 		// Get the cname, active tab, and action for plugins
-		$this->cn     = Request::getVar('cn', '');
-		$this->active = Request::getVar('active', '');
-		$this->action = Request::getVar('action', '');
-		$this->task   = Request::getVar('task', '');
+		$this->cn     = Request::getString('cn', '');
+		$this->active = Request::getCmd('active', '');
+		$this->action = Request::getCmd('action', '');
+		$this->task   = Request::getCmd('task', '');
 
 		// Handles misrouted request 
 		if ($this->task == 'pages')
@@ -180,10 +181,10 @@ class Groups extends Base
 			'published' => Request::getInt('published', 1),
 			'limit'     => 'all',
 			'fields'    => array('COUNT(*)'),
-			'search'    => Request::getVar('search', ''),
+			'search'    => Request::getString('search', ''),
 			'sortby'    => strtolower(Request::getWord('sortby', 'title')),
 			'policy'    => strtolower(Request::getWord('policy', '')),
-			'index'     => htmlentities(Request::getVar('index', ''))
+			'index'     => htmlentities(Request::getString('index', ''))
 		);
 
 		if (!in_array($filters['published'], array(1, 2)))
@@ -377,7 +378,8 @@ class Groups extends Base
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		// Check session if this is a newly submitted entry. Trigger a proper event if so.
-		if (Session::get('newsubmission.group')) {
+		if (Session::get('newsubmission.group'))
+		{
 			// Unset the new submission session flag
 			Session::set('newsubmission.group');
 			Event::trigger('content.onAfterContentSubmission', array('Group'));
@@ -461,7 +463,7 @@ class Groups extends Base
 			$this->view->group = new Group();
 
 			// set some group vars for view
-			$this->view->group->set('cn', Request::getVar('suggested_cn', ''));
+			$this->view->group->set('cn', Request::getString('suggested_cn', ''));
 			$this->view->group->set('join_policy', $this->config->get('join_policy'));
 			$this->view->group->set('discoverability', $this->config->get('discoverability', 0));
 			$this->view->group->set('discussion_email_autosubscribe', null);
@@ -556,7 +558,14 @@ class Groups extends Base
 
 		// Get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
-
+		$this->view->customFields = Field::all()->ordered('ordering');
+		$customAnswers = array();
+		foreach ($this->view->customFields as $field)
+		{
+			$fieldName = $field->get('name');
+			$customAnswers[$fieldName] = $field->collectGroupAnswers($this->view->group->get('gidNumber'));
+		}
+		$this->view->customAnswers = $customAnswers;
 		// Display view
 		$this->view->display();
 	}
@@ -579,7 +588,6 @@ class Groups extends Base
 		// Incoming
 		$g_gidNumber = Request::getInt('gidNumber', 0, 'post');
 		$c_gidNumber = Request::getVar('gidNumber', 0, 'post');
-
 		if ((string) $g_gidNumber !== (string) $c_gidNumber)
 		{
 			App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
@@ -595,14 +603,14 @@ class Groups extends Base
 			);
 		}
 
-		$g_cn              = trim(Request::getVar('cn', '', 'post'));
-		$g_description     = preg_replace('/\s+/', ' ', trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
+		$g_cn              = trim(Request::getString('cn', '', 'post'));
+		$g_description     = preg_replace('/\s+/', ' ', trim(Request::getString('description', Lang::txt('NONE'), 'post')));
 		$g_discoverability = Request::getInt('discoverability', 0, 'post');
-		$g_public_desc     = Sanitize::clean(trim(Request::getVar('public_desc', '', 'post', 'none', 2)));
-		$g_private_desc    = Sanitize::clean(trim(Request::getVar('private_desc', '', 'post', 'none', 2)));
-		$g_restrict_msg    = Sanitize::clean(trim(Request::getVar('restrict_msg', '', 'post', 'none', 2)));
+		$g_public_desc     = Sanitize::clean(trim(Request::getString('public_desc', '', 'post', 'none', 2)));
+		$g_private_desc    = Sanitize::clean(trim(Request::getString('private_desc', '', 'post', 'none', 2)));
+		$g_restrict_msg    = Sanitize::clean(trim(Request::getString('restrict_msg', '', 'post', 'none', 2)));
 		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
-		$tags              = trim(Request::getVar('tags', ''));
+		$tags              = trim(Request::getString('tags', ''));
 		$lid               = Request::getInt('lid', 0, 'post');
 		$customization     = Request::getVar('group', '', 'POST', 'none', 2);
 		$plugins           = Request::getVar('group_plugin', '', 'POST');
@@ -689,6 +697,16 @@ class Groups extends Base
 			}
 		}
 
+		$customFields = Field::all()->rows();
+		$customFieldForm = Request::getVar('customfields', array());
+		foreach ($customFields as $field)
+		{
+			$field->setFormAnswers($customFieldForm);
+			if (!$field->validate())
+			{
+				$this->setNotification($field->getError(), 'error');
+			}
+		}
 		// Push back into edit mode if any errors
 		if ($this->getNotifications())
 		{
@@ -752,6 +770,13 @@ class Groups extends Base
 		$group->set('params', $gParams->toString());
 		$group->update();
 
+		if (isset($customFields))
+		{
+			foreach ($customFields as $field)
+			{
+				$field->saveGroupAnswers($group->get('gidNumber'));
+			}
+		}
 		// Process tags
 		$gt = new Tags($group->get('gidNumber'));
 		$gt->setTags($tags, User::get('id'));
@@ -1007,7 +1032,7 @@ class Groups extends Base
 
 		// Set some vars for view
 		$this->view->title = Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');
-		$this->view->msg = Request::getVar('msg', '');
+		$this->view->msg = Request::getString('msg', '');
 
 		// Display view
 		$this->view->display();
@@ -1049,7 +1074,7 @@ class Groups extends Base
 
 		// Get request vars
 		$confirm_delete = Request::getInt('confirmdel', '');
-		$message = trim(Request::getVar('msg', '', 'post'));
+		$message = trim(Request::getString('msg', '', 'post'));
 
 		// Check to make sure we have confirmed
 		if (!$confirm_delete)
@@ -1331,7 +1356,7 @@ class Groups extends Base
 	public function groupavailabilityTask($group = null)
 	{
 		//get the group
-		$group = (!is_null($group)) ? $group : Request::getVar('group', '');
+		$group = (!is_null($group)) ? $group : Request::getString('group', '');
 		$group = trim($group);
 
 		if ($group == '')
@@ -1349,7 +1374,7 @@ class Groups extends Base
 			$availability = true;
 		}
 
-		if (Request::getVar('no_html', 0) == 1)
+		if (Request::getInt('no_html', 0) == 1)
 		{
 			echo json_encode(array('available' => $availability));
 			return;
@@ -1417,8 +1442,8 @@ class Groups extends Base
 			require_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 			$page = new \Components\Wiki\Models\Page();
 
-			$pagename = Request::getVar('pagename');
-			$scope = Request::getVar('scope', $group->get('cn') . DS . 'wiki');
+			$pagename = Request::getString('pagename');
+			$scope = Request::getString('scope', $group->get('cn') . DS . 'wiki');
 			if ($scope)
 			{
 				$parts = explode('/', $scope);

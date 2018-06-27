@@ -37,6 +37,7 @@ use Components\Newsletter\Models\Mailinglist\Email;
 use Components\Newsletter\Models\Mailinglist;
 use Components\Newsletter\Models\Mailing;
 use Hubzero\Component\SiteController;
+use Hubzero\Utility\Validate;
 use stdClass;
 use Pathway;
 use Route;
@@ -123,8 +124,37 @@ class Mailinglists extends SiteController
 	 */
 	public function subscribeTask()
 	{
-		//must be logged in
+		//get email
 		if (User::isGuest())
+		{
+			$email = (string)urldecode(Request::getVar('e', ''));
+		}
+		else
+		{
+			$email = (string)User::get('email');
+		}
+
+		//must be logged in or have entered email
+		if (!$email || !Validate::email($email))
+		{
+			//build return url and redirect url
+			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
+			$redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
+
+			//build title
+			$this->_buildTitle();
+
+			//build pathway
+			$this->_buildPathway();
+
+			//output
+			$this->view
+				->set('title', $this->_title)
+				->set('redirect', $redirect)
+				->setLayout('enter_email')
+				->display();
+		}
+		else if (User::isGuest() && count(User::oneByEmail($email)->toArray()) > 0)
 		{
 			//build return url and redirect url
 			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
@@ -134,39 +164,52 @@ class Mailinglists extends SiteController
 			App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
 			return;
 		}
+		else
+		{
+			//get mailing lists user belongs to
+			$e = Email::blank()->getTableName();
+			$m = Mailinglist::blank()->getTableName();
 
-		//get mailing lists user belongs to
-		$e = Email::blank()->getTableName();
-		$m = Mailinglist::blank()->getTableName();
+			$mylists = Mailinglist::all()
+				->select($m . '.*')
+				->select($e . '.status')
+				->select($e . '.confirmed')
+				->select($e . '.id', 'emailid')
+				->join($e, $e . '.mid', $m . '.id', 'inner')
+				->whereEquals($e . '.email', $email)
+				->whereEquals('deleted', 0)
+				->rows();
 
-		$mylists = Mailinglist::all()
-			->select($m . '.*')
-			->select($e . '.status')
-			->select($e . '.confirmed')
-			->select($e . '.id', 'emailid')
-			->join($e, $e . '.mid', $m . '.id', 'inner')
-			->whereEquals($e . '.email', User::get('email'))
-			->whereEquals('deleted', 0)
-			->rows();
+			//get all lists
+			if (User::isGuest())
+			{
+				$alllists = Mailinglist::all()
+					->whereEquals('private', 0)
+					->rows();
+			}
+			else
+			{
+				$alllists = Mailinglist::all()
+					->whereEquals('private', 0)
+					->whereEquals('guest', 0)
+					->rows();
+			}
 
-		//get all lists
-		$alllists = Mailinglist::all()
-			->whereEquals('private', 0)
-			->rows();
+			//build title
+			$this->_buildTitle();
 
-		//build title
-		$this->_buildTitle();
+			//build pathway
+			$this->_buildPathway();
 
-		//build pathway
-		$this->_buildPathway();
-
-		//output
-		$this->view
-			->set('title', $this->_title)
-			->set('mylists', $mylists)
-			->set('alllists', $alllists)
-			->setLayout('subscribe')
-			->display();
+			//output
+			$this->view
+				->set('title', $this->_title)
+				->set('mylists', $mylists)
+				->set('alllists', $alllists)
+				->set('email', $email)
+				->setLayout('subscribe')
+				->display();
+		}
 	}
 
 	/**
@@ -189,7 +232,7 @@ class Mailinglists extends SiteController
 		//check to make sure our honey pot is good
 		if ($hp1 != '')
 		{
-			die(Lang::txt('COM_NEWSLETTER_HP_ERROR'));
+			App::abort(403, Lang::txt('COM_NEWSLETTER_HP_ERROR'));
 		}
 
 		//validate email
@@ -254,7 +297,16 @@ class Mailinglists extends SiteController
 	{
 		//get request vars
 		$lists = Request::getVar('lists', array(), 'post');
-		$email = User::get('email');
+
+		//get email
+		if (User::isGuest())
+		{
+			$email = (string)urldecode(Request::getVar('e', '', 'post'));
+		}
+		else
+		{
+			$email = (string)User::get('email');
+		}
 
 		//get mailing lists user belongs to
 		$e = Email::blank()->getTableName();
@@ -344,7 +396,7 @@ class Mailinglists extends SiteController
 
 		//inform user and redirect
 		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe'),
+			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email)),
 			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_SAVE_SUCCESS')
 		);
 	}
@@ -528,7 +580,7 @@ class Mailinglists extends SiteController
 			else
 			{
 				//build return url and redirect url
-				$return = Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token);
+				$return = Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . urlencode($email) . '&t=' . $token);
 
 				//inform user and redirect
 				App::redirect(
@@ -553,7 +605,7 @@ class Mailinglists extends SiteController
 		if (!$this->database->query())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token),
+				Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . urlencode($email) . '&t=' . $token),
 				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR'),
 				'error'
 			);
@@ -621,17 +673,8 @@ class Mailinglists extends SiteController
 		//inform user
 		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS'));
 
-		//if were not logged in go back to newsletter page
-		if (User::isGuest())
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter')
-			);
-			return;
-		}
-
 		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe')
+			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email))
 		);
 	}
 
@@ -671,10 +714,9 @@ class Mailinglists extends SiteController
 		$model->save();
 
 		//inform user
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_REMOVED_SUCCESS'));
 		App::redirect(
-			Route::url('index.php?option=com_newsletter'),
-			Lang::txt('COM_NEWSLETTER_MAILINGLIST_REMOVED_SUCCESS'),
-			'success'
+			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email))
 		);
 	}
 
@@ -685,6 +727,16 @@ class Mailinglists extends SiteController
 	 */
 	public function resendConfirmationTask()
 	{
+		//get email
+		if (User::isGuest())
+		{
+			$email = (string)urldecode(Request::getVar('e', ''));
+		}
+		else
+		{
+			$email = (string)User::get('email');
+		}
+
 		//get request vars
 		$mid = Request::getInt('mid', 0);
 
@@ -692,12 +744,12 @@ class Mailinglists extends SiteController
 		$mailinglist = Mailinglist::oneOrFail($mid);
 
 		//send confirmation email
-		Helper::sendMailinglistConfirmationEmail(User::get('email'), $mailinglist, false);
+		Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false);
 
 		//inform user and redirect
 		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe'),
-			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', User::get('email'))
+			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email)),
+			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', $email)
 		);
 	}
 }

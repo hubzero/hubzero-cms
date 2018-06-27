@@ -269,7 +269,15 @@ class Migration20151001185523ComKb extends Base
 			$tbl->set('language', '*');
 			$tbl->set('level', $category->level);
 			$tbl->set('path', $category->path);
+			$tbl->set('note', '');
+			$tbl->set('metakey', '');
+			$tbl->set('metadesc', '');
+			$tbl->set('metadata', '');
 			$tbl->set('params', '');
+
+			$tbl->assetRules = new \Hubzero\Access\Rules(array());
+			$tbl->setNameSpace('com_kb');
+
 			$tbl->save();
 
 			$id = $tbl->get('id');

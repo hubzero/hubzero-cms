@@ -758,7 +758,9 @@ class File extends Obj
 	 */
 	public function getDirLevel($dirPath = '')
 	{
-		if (!trim($dirPath))
+		$dirPath = trim($dirPath);
+		$dirPath = trim($dirPath, '/');
+		if (!$dirPath)
 		{
 			return 0;
 		}
