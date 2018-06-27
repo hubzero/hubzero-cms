@@ -1988,6 +1988,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version   = Request::getVar('version', 'dev');
 		$agree     = Request::getInt('agree', 0);
 		$pubdate   = Request::getVar('publish_date', '', 'post');
+		$review    = Request::getVar('request_review', 0);
 		$submitter = Request::getInt('submitter', $this->_uid, 'post');
 		$notify    = 1;
 
@@ -2042,6 +2043,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Require DOI?
 		$requireDoi = isset($pub->_curationModel->_manifest->params->require_doi)
 					? $pub->_curationModel->_manifest->params->require_doi : 0;
+
+		// Auto-approve?
+		$autoApprove = isset($pub->_curationModel->_manifest->params->auto_approve)
+					? $pub->_curationModel->_manifest->params->auto_approve : 0;
 
 		// Make sure the publication belongs to the project
 		if (!$pub->belongsToProject($this->model->get('id')))
@@ -2165,7 +2170,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pa = new \Components\Publications\Tables\Author($this->_database);
 			$pa->saveSubmitter($pub->version->id, $submitter, $this->model->get('id'));
 
-			if ($this->_pubconfig->get('autoapprove') == 1)
+			if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
 			{
 				$state = 1;
 			}
