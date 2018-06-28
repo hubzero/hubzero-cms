@@ -43,8 +43,8 @@ use Lang;
 use User;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'vnc.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'vnc.php';
 
 /**
  * Tools controller class for simulation sessions
@@ -54,7 +54,7 @@ class Sessions extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -68,8 +68,8 @@ class Sessions extends SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @param      integer $session Session ID
-	 * @return     void
+	 * @param   integer  $session  Session ID
+	 * @return  void
 	 */
 	protected function _buildPathway($session=null)
 	{
@@ -123,8 +123,8 @@ class Sessions extends SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @param      integer $session Session ID
-	 * @return     void
+	 * @param   integer  $session  Session ID
+	 * @return  void
 	 */
 	protected function _buildTitle($session=null)
 	{
@@ -154,7 +154,7 @@ class Sessions extends SiteController
 	{
 		if (!$rtrn)
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		}
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
@@ -165,7 +165,7 @@ class Sessions extends SiteController
 	/**
 	 * Show an Access Denied error
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessdeniedTask()
 	{
@@ -220,7 +220,7 @@ class Sessions extends SiteController
 	/**
 	 * Show a quota exceeded warning and list of sessions
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function quotaexceededTask()
 	{
@@ -271,7 +271,7 @@ class Sessions extends SiteController
 		{
 			$this->view->allsessions = $ms->getRecords(User::get('username'), '', $this->config->get('access-manage-session'));
 		}
-		$this->view->active = Request::getVar('active', '');
+		$this->view->active = Request::getString('active', '');
 		$this->view->config = $this->config;
 
 		foreach ($this->getErrors() as $error)
@@ -285,8 +285,8 @@ class Sessions extends SiteController
 	/**
 	 * Normalize a path
 	 *
-	 * @param   string  $path
-	 * @param   boolean $isFile
+	 * @param   string   $path
+	 * @param   boolean  $isFile
 	 * @return  string
 	 */
 	private function normalize_path($path, $isFile = false)
@@ -331,7 +331,7 @@ class Sessions extends SiteController
 	/**
 	 * Invoke a tool session
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function invokeTask()
 	{
@@ -478,9 +478,9 @@ class Sessions extends SiteController
 
 		// Incoming
 		$app = new stdClass;
-		$app->name    = trim(str_replace(':', '-', Request::getVar('app', '')));
+		$app->name    = trim(str_replace(':', '-', Request::getString('app', '')));
 		//$app->number  = 0;
-		$app->version = Request::getVar('version', 'default');
+		$app->version = Request::getString('version', 'default');
 
 		// Get the user's IP address
 		$app->ip      = Request::ip();
@@ -495,7 +495,7 @@ class Sessions extends SiteController
 		}
 
 		// Get the parent toolname (appname without any revision number "_r423")
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 		$tv = new \Components\Tools\Tables\Version($this->database);
 
 		switch ($app->version)
@@ -572,13 +572,13 @@ class Sessions extends SiteController
 		$jobs = $ms->getCount(User::get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
 
 		$preferences = new \Components\Tools\Tables\Preferences($this->database);
 		$preferences->loadByUser(User::get('id'));
 		if (!$preferences || !$preferences->id)
 		{
-			include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
 			$scls = new \Components\Tools\Tables\SessionClass($this->database);
 			$default = $scls->find('one', array('alias' => 'default'));
 			$preferences->user_id  = User::get('id');
@@ -701,7 +701,7 @@ class Sessions extends SiteController
 			App::abort(500, $ms->getError());
 		}
 
-		$rtrn = Request::getVar('return', '');
+		$rtrn = Request::getString('return', '');
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : '');
 
@@ -730,7 +730,7 @@ class Sessions extends SiteController
 	/**
 	 * Invoke a tool session
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reinvokeTask()
 	{
@@ -818,7 +818,7 @@ class Sessions extends SiteController
 		}
 
 		// Redirect to the new session view
-		$rtrn = Request::getVar('return', '');
+		$rtrn = Request::getString('return', '');
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $session->app() . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''), false)
@@ -828,7 +828,7 @@ class Sessions extends SiteController
 	/**
 	 * Share a session
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function shareTask()
 	{
@@ -842,10 +842,10 @@ class Sessions extends SiteController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Incoming
-		$sess     = Request::getVar('sess', '');
-		$username = trim(Request::getVar('username', ''));
+		$sess     = Request::getString('sess', '');
+		$username = trim(Request::getString('username', ''));
 		$group    = Request::getInt('group', 0);
-		$readonly = Request::getVar('readonly', '');
+		$readonly = Request::getString('readonly', '');
 		$no_html  = Request::getInt('no_html', 0);
 
 		$users = array();
@@ -996,7 +996,7 @@ class Sessions extends SiteController
 	/**
 	 * Stop sharing a session
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unshareTask()
 	{
@@ -1011,9 +1011,9 @@ class Sessions extends SiteController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Incoming
-		$sess = Request::getVar('sess', '');
-		$user = Request::getVar('username', '');
-		$app  = Request::getVar('app', '');
+		$sess = Request::getString('sess', '');
+		$user = Request::getString('username', '');
+		$app  = Request::getString('app', '');
 
 		// If a username is given, check that the user owns this session.
 		if ($user != '')
@@ -1072,7 +1072,7 @@ class Sessions extends SiteController
 	/**
 	 * View a session
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function viewTask()
 	{
@@ -1098,10 +1098,10 @@ class Sessions extends SiteController
 			return;
 		}
 
-		$this->view->rtrn = Request::getVar('return', '');
+		$this->view->rtrn = Request::getString('return', '');
 
 		// Get the user's IP address
-		$app->ip = Request::ip(); //Request::getVar('REMOTE_ADDR', '', 'server');
+		$app->ip = Request::ip(); //Request::getString('REMOTE_ADDR', '', 'server');
 
 		// Double-check that the user can view this session.
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -1118,7 +1118,7 @@ class Sessions extends SiteController
 		$this->view->middleware = new \Components\Tools\Models\Middleware();
 		//$session = $this->view->middleware->session($app->sess);
 
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 		$tv = new \Components\Tools\Tables\Version($this->database);
 		$tv->loadFromInstance($row->appname);
 		$this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
@@ -1445,7 +1445,7 @@ class Sessions extends SiteController
 	/**
 	 * Stops a session and redirects upon success
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function stopTask()
 	{
@@ -1457,8 +1457,8 @@ class Sessions extends SiteController
 		}
 
 		// Incoming
-		$sess = Request::getVar('sess', '');
-		$rtrn = base64_decode(Request::getVar('return', '', 'method', 'base64'));
+		$sess = Request::getString('sess', '');
+		$rtrn = base64_decode(Request::getString('return', '', 'method', 'base64'));
 
 		$rediect = $this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount');
 
@@ -1622,7 +1622,7 @@ class Sessions extends SiteController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		$id = Request::getInt('id', 0);
-		$name = trim(Request::getVar('name', ''));
+		$name = trim(Request::getString('name', ''));
 
 		if ($id && $name)
 		{
@@ -1639,13 +1639,13 @@ class Sessions extends SiteController
 	 * Records the event of the current tool having been used
 	 * This is used for the favorites list of the My Tools module
 	 *
-	 * @param      string  $app Name of app called
-	 * @param      integer $uid User ID
-	 * @return     void
+	 * @param   string   $app  Name of app called
+	 * @param   integer  $uid  User ID
+	 * @return  void
 	 */
 	private function _recordUsage($app, $uid)
 	{
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 
 		$tool = new \Components\Tools\Tables\Version($this->database);
 		$tool->loadFromName($app);
@@ -1653,7 +1653,7 @@ class Sessions extends SiteController
 		$created = Date::toSql();
 
 		// Get a list of all their recent tools
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'recent.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'recent.php';
 
 		$rt = new \Components\Tools\Tables\Recent($this->database);
 		$rows = $rt->getRecords($uid);
@@ -1709,9 +1709,9 @@ class Sessions extends SiteController
 	/**
 	 * Invoke the Python script to do real work.
 	 *
-	 * @param      string  $comm Parameter description (if any) ...
-	 * @param      array   &$output Parameter description (if any) ...
-	 * @return     integer Session ID
+	 * @param   string   $comm
+	 * @param   array    &$output
+	 * @return  integer  Session ID
 	 */
 	public function middleware($comm, &$output)
 	{
@@ -1802,9 +1802,9 @@ class Sessions extends SiteController
 	/**
 	 * Authorization checks
 	 *
-	 * @param      string $assetType Asset type
-	 * @param      string $assetId   Asset id to check against
-	 * @return     void
+	 * @param   string  $assetType  Asset type
+	 * @param   string  $assetId    Asset id to check against
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -1840,8 +1840,8 @@ class Sessions extends SiteController
 	 * Check export controls
 	 * Is the user in a country that has access to this tool?
 	 *
-	 * @param      string $exportcontrol Control [us, d1, pu]
-	 * @return     boolean False if user does NOT have access
+	 * @param   string   $exportcontrol  Control [us, d1, pu]
+	 * @return  boolean  False if user does NOT have access
 	 */
 	private function _getToolExportControl($exportcontrol)
 	{
@@ -1901,15 +1901,15 @@ class Sessions extends SiteController
 	/**
 	 * Get the access level for this user and tool
 	 *
-	 * @param      string $tool  Tool name
-	 * @param      string $login Username
-	 * @return     boolean True if the user has access
+	 * @param   string   $tool   Tool name
+	 * @param   string   $login  Username
+	 * @return  boolean  True if the user has access
 	 */
 	private function _getToolAccess($tool, $login='')
 	{
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php');
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 
 		// Ensure we have a tool
 		if (!$tool)
@@ -2013,7 +2013,8 @@ class Sessions extends SiteController
 		}
 		else if ($tisPublished)
 		{
-			if ($tisGroupControlled) {
+			if ($tisGroupControlled)
+			{
 				if ($ingroup)
 				{
 					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");

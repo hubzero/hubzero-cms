@@ -46,10 +46,10 @@ use App;
 /**
  * Tool classes
  */
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
 
 /**
  * Resource classes
@@ -85,8 +85,8 @@ class Resources extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$alias   = Request::getVar('app', '');
-		$version = Request::getVar('editversion', 'dev');
+		$alias   = Request::getString('app', '');
+		$version = Request::getString('editversion', 'dev');
 		$step    = Request::getInt('step', 1);
 
 		// Load the tool
@@ -149,7 +149,7 @@ class Resources extends SiteController
 			else
 			{
 				// Wiki format will be used
-				$status['fulltxt'] = Request::getVar('fulltxt', $status['fulltxt'], 'post');
+				$status['fulltxt'] = Request::getString('fulltxt', $status['fulltxt'], 'post');
 			}
 
 			// Get custom areas, add wrapper tags, and compile into fulltxt
@@ -217,8 +217,8 @@ class Resources extends SiteController
 			}
 
 			$hztv->fulltxt     = $objV->fulltxt     = $status['fulltxt'];
-			$hztv->description = $objV->description = \Hubzero\Utility\Str::truncate(Request::getVar('description', $status['description'], 'post'), 500);
-			$hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(preg_replace('/\s+/', ' ', Request::getVar('title', $status['title'], 'post')), 500);
+			$hztv->description = $objV->description = \Hubzero\Utility\Str::truncate(Request::getString('description', $status['description'], 'post'), 500);
+			$hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(preg_replace('/\s+/', ' ', Request::getString('title', $status['title'], 'post')), 500);
 
 			if (!$hztv->update())
 			{
@@ -248,8 +248,8 @@ class Resources extends SiteController
 		$authors = ($version == 'current') ? $objA->getToolAuthors($version, $row->id, $status['toolname']) : array();
 
 		// Tags
-		$tags  = Request::getVar('tags', '', 'post');
-		$tagfa = Request::getVar('tagfa', '', 'post');
+		$tags  = Request::getString('tags', '', 'post');
+		$tagfa = Request::getString('tagfa', '', 'post');
 
 		// Get any HUB focus areas
 		// These are used where any resource is required to have one of these tags
@@ -497,8 +497,8 @@ class Resources extends SiteController
 	public function previewTask()
 	{
 		// Incoming
-		$alias   = Request::getVar('app', '');
-		$version = Request::getVar('editversion', 'dev');
+		$alias   = Request::getString('app', '');
+		$version = Request::getString('editversion', 'dev');
 		$rid     = Request::getInt('rid', 0);
 
 		// Load the tool
@@ -525,8 +525,8 @@ class Resources extends SiteController
 
 		// Instantiate our tag object
 		$tagcloud = new \Components\Resources\Helpers\Tags($rid);
-		$tags  = Request::getVar('tags', '', 'post');
-		$tagfa = Request::getVar('tagfa', '', 'post');
+		$tags  = Request::getString('tags', '', 'post');
+		$tagfa = Request::getString('tagfa', '', 'post');
 		// Process new tags
 		$newtags = '';
 		if ($tagfa)

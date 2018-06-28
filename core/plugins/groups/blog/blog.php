@@ -384,7 +384,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -457,7 +457,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'created_by' => Request::getInt('author', 0),
 			'state'      => 'public'
 		);
@@ -792,7 +792,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Process tags
-		if (!$row->tag(Request::getVar('tags', '')))
+		if (!$row->tag(Request::getString('tags', '')))
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
@@ -856,8 +856,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		$process    = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
+		$process    = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
 
 		// Initiate a blog entry object
 		$entry = Components\Blog\Models\Entry::oneOrFail($id);

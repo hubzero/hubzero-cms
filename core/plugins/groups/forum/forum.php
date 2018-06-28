@@ -158,7 +158,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true), 'server'));
+				$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true), 'server'));
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)),
@@ -282,7 +282,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					$action = 'download';
 				}
 			}
-			$action = Request::getVar('action', $action, 'post');
+			$action = Request::getCmd('action', $action, 'post');
 
 			switch ($action)
 			{
@@ -526,7 +526,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
-			'search'     => Request::getVar('q', ''),
+			'search'     => Request::getString('q', ''),
 			'state'      => Section::STATE_PUBLISHED,
 			'access'     => array(1),
 			'sort'       => 'ordering',
@@ -543,7 +543,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$filters['access'][] = 5; // Private
 		}
 
-		$edit = Request::getVar('section', '');
+		$edit = Request::getString('section', '');
 
 		$sections = $this->forum->sections($filters)
 			->ordered()
@@ -590,7 +590,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$recvEmailOptionValue = 0;
 		if (file_exists(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php'))
 		{
-			include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
+			include_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php';
 
 			$recvEmailOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
 				$this->group->get('gidNumber'),
@@ -707,11 +707,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}*/
 
 		// Incoming
-		$alias = Request::getVar('section', '');
+		$alias = Request::getString('section', '');
 
 		// Load the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section'))
+			->whereEquals('alias', Request::getString('section'))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->where('state', '!=', Section::STATE_DELETED)
@@ -783,9 +783,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'section'    => Request::getVar('section', ''),
+			'section'    => Request::getString('section', ''),
 			'category'   => Request::getCmd('category', ''),
-			'search'     => Request::getVar('q', ''),
+			'search'     => Request::getString('q', ''),
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => 1,
@@ -807,23 +807,23 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			case 'title':
 				$filters['sort'] = 'sticky` DESC, `title';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
 				$filters['sort'] = 'sticky` DESC, `rgt';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'created':
 				$filters['sort'] = 'sticky` DESC, `created';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
 				$filters['sort'] = 'sticky` DESC, `activity';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 		}
 
@@ -897,9 +897,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('q', ''),
-			'orderBy'    => Request::getVar('orderBy', 'created'),
-			'orderDir'   => Request::getVar('orderDir', 'DESC'),
+			'search'     => Request::getString('q', ''),
+			'orderBy'    => Request::getString('orderBy', 'created'),
+			'orderDir'   => Request::getString('orderDir', 'DESC'),
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => 1,
@@ -951,7 +951,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$categories[$category->get('id')] = $category;
 		}
 
-		$filters['search'] = Request::getVar('q', '');
+		$filters['search'] = Request::getString('q', '');
 
 		//get authorization
 		$this->_authorize('category');
@@ -989,7 +989,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Get the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('alias', Request::getString('section', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->where('state', '!=', Section::STATE_DELETED)
@@ -1003,7 +1003,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if (!is_object($category))
 		{
 			$category = Category::all()
-				->whereEquals('alias', Request::getVar('category', ''))
+				->whereEquals('alias', Request::getString('category', ''))
 				->whereEquals('scope', $this->forum->get('scope'))
 				->whereEquals('scope_id', $this->forum->get('scope_id'))
 				->whereEquals('section_id', $section->get('id'))
@@ -1137,7 +1137,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Load the category
 		$category = Category::all()
-			->whereEquals('alias', Request::getVar('category', ''))
+			->whereEquals('alias', Request::getString('category', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->where('state', '!=', Category::STATE_DELETED)
@@ -1216,7 +1216,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'limit'    => (int)Request::getState('groups.forum.thread', 'limit', Config::get('list_limit'), 'int'),
 			'start'    => (int)Request::getState('groups.forum.thread.' . Request::getInt('thread', 0), 'limitstart', 0, 'int'),
-			'section'  => Request::getVar('section', ''),
+			'section'  => Request::getString('section', ''),
 			'category' => Request::getCmd('category', ''),
 			'thread'   => Request::getInt('thread', 0),
 			'scope'    => $this->forum->get('scope'),
@@ -1334,8 +1334,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	public function editthread($post=null)
 	{
 		$id       = Request::getInt('thread', 0);
-		$category = Request::getVar('category', '');
-		$section  = Request::getVar('section', '');
+		$category = Request::getString('category', '');
+		$section  = Request::getString('section', '');
 
 		// Login check is handled in the onGroup() method
 		/*if (User::isGuest())
@@ -1424,7 +1424,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$section = Request::getVar('section', '');
+		$section = Request::getString('section', '');
 		$fields  = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields  = array_map('trim', $fields);
 
@@ -1517,7 +1517,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Save tags
-		$post->tag(Request::getVar('tags', '', 'post'), User::get('id'));
+		$post->tag(Request::getString('tags', '', 'post'), User::get('id'));
 
 		// Set message
 		if (!$fields['id'])
@@ -1734,7 +1734,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		if (file_exists(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php'))
 		{
-			include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
+			include_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php';
 			$memberoptions = true;
 		}
 
@@ -1810,8 +1810,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function deletethread()
 	{
-		$section  = Request::getVar('section', '');
-		$category = Request::getVar('category', '');
+		$section  = Request::getString('section', '');
+		$category = Request::getString('category', '');
 
 		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category);
 
@@ -1924,7 +1924,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Instantiate an attachment record
 		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
-		$attachment->set('description', trim(Request::getVar('description', '')));
+		$attachment->set('description', trim(Request::getString('description', '')));
 		$attachment->set('parent', $thread_id);
 		$attachment->set('post_id', $post_id);
 		if ($attachment->isNew())
@@ -1971,11 +1971,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	public function download()
 	{
 		// Incoming
-		$section  = Request::getVar('section', '');
-		$category = Request::getVar('category', '');
+		$section  = Request::getString('section', '');
+		$category = Request::getString('category', '');
 		$thread   = Request::getInt('thread', 0);
 		$post     = Request::getInt('post', 0);
-		$file     = Request::getVar('file', '');
+		$file     = Request::getString('file', '');
 
 		// Check logged in status
 		// Login check is handled in the onGroup() method
@@ -2171,7 +2171,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$row = \Hubzero\Plugin\Params::blank()->set($settings);
 
 		// Get parameters
-		$p = new \Hubzero\Config\Registry(Request::getVar('params', '', 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getString('params', '', 'post'));
 
 		$row->set('params', $p->toString());
 
@@ -2248,7 +2248,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// neede member option lib
-		include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php');
+		include_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php';
 
 		// Find the user's group settings, do they want to get email (0 or 1)?
 		$groupMemberOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
@@ -2322,7 +2322,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Get the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('alias', Request::getString('section', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->row();

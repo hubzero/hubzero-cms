@@ -43,12 +43,12 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php';
 
 include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
 include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
@@ -64,14 +64,14 @@ class Pipeline extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		// Check logged in status
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option='
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option='
 				. $this->_option . '&controller=' . $this->_controller . '&task='
 				. Request::getWord('task', ''), false, true), 'server'));
 
@@ -97,7 +97,7 @@ class Pipeline extends SiteController
 	/**
 	 * Tool Development Pipeline
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function pipelineTask()
 	{
@@ -107,15 +107,15 @@ class Pipeline extends SiteController
 
 		// Filters
 		$this->view->filters = array();
-		$this->view->filters['filterby'] = trim(Request::getVar('filterby', 'all'));
-		$this->view->filters['search'] = trim(urldecode(Request::getVar('search', '')));
+		$this->view->filters['filterby'] = trim(Request::getString('filterby', 'all'));
+		$this->view->filters['search'] = trim(urldecode(Request::getString('search', '')));
 		if (!$this->config->get('access-admin-component'))
 		{
-			$this->view->filters['sortby'] = trim(trim(Request::getVar('sortby', 'f.state, f.registered')));
+			$this->view->filters['sortby'] = trim(trim(Request::getString('sortby', 'f.state, f.registered')));
 		}
 		else
 		{
-			$this->view->filters['sortby'] = trim(trim(Request::getVar('sortby', 'f.state_changed DESC')));
+			$this->view->filters['sortby'] = trim(trim(Request::getString('sortby', 'f.state_changed DESC')));
 		}
 
 		// Paging vars
@@ -158,7 +158,7 @@ class Pipeline extends SiteController
 	/**
 	 * Display the status of the current app
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function statusTask()
 	{
@@ -175,7 +175,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -196,7 +196,7 @@ class Pipeline extends SiteController
 		}
 		if (!$this->_msg)
 		{
-			$this->_msg = Request::getVar('msg', '', 'post');
+			$this->_msg = Request::getString('msg', '', 'post');
 		}
 
 		// check access rights
@@ -252,7 +252,7 @@ class Pipeline extends SiteController
 	/**
 	 * Display a list of versions for a tool
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function versionsTask()
 	{
@@ -269,7 +269,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -287,11 +287,11 @@ class Pipeline extends SiteController
 		// get vars
 		if (!$this->_action)
 		{
-			$this->_action = Request::getVar('action', 'dev');
+			$this->_action = Request::getString('action', 'dev');
 		}
 		if (!$this->_error)
 		{
-			$this->_error = Request::getVar('error', '');
+			$this->_error = Request::getString('error', '');
 		}
 
 		// check access rights
@@ -362,7 +362,7 @@ class Pipeline extends SiteController
 	/**
 	 * Finalize the version
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function finalizeTask()
 	{
@@ -379,7 +379,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -396,7 +396,7 @@ class Pipeline extends SiteController
 
 		if (!$this->_error)
 		{
-			$this->_error = Request::getVar('error', '');
+			$this->_error = Request::getString('error', '');
 		}
 
 		// check access rights
@@ -445,7 +445,7 @@ class Pipeline extends SiteController
 	/**
 	 * Show a form to apply a license
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function licenseTask()
 	{
@@ -463,7 +463,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -471,11 +471,11 @@ class Pipeline extends SiteController
 
 		if (!$this->_action)
 		{
-			$this->_action = Request::getVar('action', 'dev');
+			$this->_action = Request::getString('action', 'dev');
 		}
 		if (!$this->_error)
 		{
-			$this->_error = Request::getVar('error', '');
+			$this->_error = Request::getString('error', '');
 		}
 
 		// check access rights
@@ -556,7 +556,7 @@ class Pipeline extends SiteController
 	/**
 	 * Apply a license
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savelicenseTask()
 	{
@@ -573,18 +573,18 @@ class Pipeline extends SiteController
 		$hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($id);
 
 		$this->license_choice = array(
-			'text'      => Request::getVar('license', ''),
-			'template'  => Request::getVar('templates', 'c1'),
+			'text'      => Request::getString('license', ''),
+			'template'  => Request::getString('templates', 'c1'),
 			'authorize' => Request::getInt('authorize', 0)
 		);
 
-		$hztv->codeaccess = Request::getVar('t_code', '@OPEN');
+		$hztv->codeaccess = Request::getString('t_code', '@OPEN');
 		$action = Request::getWord('action', 'dev');
 
 		// Closed source
 		if ($hztv->codeaccess == '@DEV')
 		{
-			$reason = Request::getVar('reason', '');
+			$reason = Request::getString('reason', '');
 
 			if (!$reason)
 			{
@@ -656,7 +656,7 @@ class Pipeline extends SiteController
 		}
 		else
 		{
-			$this->view->code			= $hztv->codeaccess;
+			$this->view->code           = $hztv->codeaccess;
 			$this->view->license_choice = $this->license_choice;
 
 			// display license page with error
@@ -686,7 +686,7 @@ class Pipeline extends SiteController
 	/**
 	 * Show a form for a new entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function createTask()
 	{
@@ -768,13 +768,13 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
-		$this->view->editversion = Request::getVar('editversion', '');
+		$this->view->editversion = Request::getString('editversion', '');
 		$this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev'; // do not allow to edit all versions just yet, will default to dev
 
 		// check access rights
@@ -833,10 +833,10 @@ class Pipeline extends SiteController
 	/**
 	 * Set the access for TRAC
 	 *
-	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      string $codeaccess Parameter description (if any) ...
-	 * @param      string $wikiaccess Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $toolname
+	 * @param   string   $codeaccess
+	 * @param   string   $wikiaccess
+	 * @return  boolean
 	 */
 	protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
 	{
@@ -887,7 +887,7 @@ class Pipeline extends SiteController
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -919,9 +919,9 @@ class Pipeline extends SiteController
 
 		// pass data from forms
 		$id             = Request::getInt('toolid', 0);
-		$this->_action  = Request::getVar('action', '');
-		$comment        = Request::getVar('comment', '');
-		$editversion    = Request::getVar('editversion', 'dev', 'post');
+		$this->_action  = Request::getString('action', '');
+		$comment        = Request::getString('comment', '');
+		$editversion    = Request::getString('editversion', 'dev', 'post');
 		//$toolname     = strtolower($tool['toolname']);
 		$oldstatus      = array();
 
@@ -1179,7 +1179,7 @@ class Pipeline extends SiteController
 
 		if (empty($rid))
 		{
-			include_once(__DIR__ . DS . 'resources.php');
+			include_once __DIR__ . DS . 'resources.php';
 
 			$resource = new Resources();
 
@@ -1189,7 +1189,7 @@ class Pipeline extends SiteController
 			//if (!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname']); }
 			if (!$id)
 			{
-				require_once(__DIR__ . DS . 'authors.php');
+				require_once __DIR__ . DS . 'authors.php';
 
 				$controller = new Authors();
 				$controller->saveTask(0, $rid, $tool['developers']);
@@ -1229,9 +1229,9 @@ class Pipeline extends SiteController
 	/**
 	 * Add repo
 	 *
-	 * @param      array &$output  Messages to be returned
-	 * @param      array $toolinfo Tool information
-	 * @return     boolean False if errors, True on success
+	 * @param   array    &$output   Messages to be returned
+	 * @param   array    $toolinfo  Tool information
+	 * @return  boolean  False if errors, True on success
 	 */
 	protected function _addRepo(&$output, $toolinfo = array())
 	{
@@ -1274,7 +1274,7 @@ class Pipeline extends SiteController
 	/**
 	 * Save a version
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveversionTask()
 	{
@@ -1290,7 +1290,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -1303,18 +1303,18 @@ class Pipeline extends SiteController
 			return;
 		}
 
-		$newstate    = Request::getVar('newstate', '');
-		$priority    = Request::getVar('priority', 3);
+		$newstate    = Request::getString('newstate', '');
+		$priority    = Request::getInt('priority', 3);
 		$access      = Request::getInt('access', 0);
-		$newversion  = Request::getVar('newversion', '');
-		$editversion = Request::getVar('editversion', 'dev');
+		$newversion  = Request::getString('newversion', '');
+		$editversion = Request::getString('editversion', 'dev');
 		if (!$this->_action)
 		{
-			$this->_action = Request::getVar('action', 'dev');
+			$this->_action = Request::getString('action', 'dev');
 		}
 		if (!$this->_error)
 		{
-			$this->_error = Request::getVar('error', '');
+			$this->_error = Request::getString('error', '');
 		}
 		$error = '';
 
@@ -1369,7 +1369,7 @@ class Pipeline extends SiteController
 	/**
 	 * Save notes
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savenotesTask()
 	{
@@ -1385,7 +1385,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -1398,7 +1398,7 @@ class Pipeline extends SiteController
 			return;
 		}
 
-		$action = Request::getVar('action', '');
+		$action = Request::getString('action', '');
 
 		if ($action != 'confirm')
 		{
@@ -1417,7 +1417,7 @@ class Pipeline extends SiteController
 	/**
 	 * Finalize a tool version
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function finalizeversionTask()
 	{
@@ -1433,7 +1433,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -1446,11 +1446,11 @@ class Pipeline extends SiteController
 			return;
 		}
 
-		$newstate    = Request::getVar('newstate', '');
-		//$priority    = Request::getVar('priority', 3);
+		$newstate    = Request::getString('newstate', '');
+		//$priority    = Request::getInt('priority', 3);
 		//$access      = Request::getInt('access', 0);
-		//$newversion  = Request::getVar('newversion', '');
-		$editversion = Request::getVar('editversion', 'dev');
+		//$newversion  = Request::getString('newversion', '');
+		$editversion = Request::getString('editversion', 'dev');
 
 		$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
@@ -1483,7 +1483,7 @@ class Pipeline extends SiteController
 	/**
 	 * Update a tool version
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateTask()
 	{
@@ -1499,14 +1499,14 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 		if (!$this->_error)
 		{
-			$this->_error = Request::getVar('error', '');
+			$this->_error = Request::getString('error', '');
 		}
 		$error = '';
 		//$id = $this->_toolid;
@@ -1518,12 +1518,12 @@ class Pipeline extends SiteController
 			return;
 		}
 
-		$newstate    = Request::getVar('newstate', '');
-		$priority    = Request::getVar('priority', 3);
-		$comment     = Request::getVar('comment', '');
+		$newstate    = Request::getString('newstate', '');
+		$priority    = Request::getInt('priority', 3);
+		$comment     = Request::getString('comment', '');
 		$access      = Request::getInt('access', 0);
-		$newversion  = Request::getVar('newversion', '');
-		$editversion = Request::getVar('editversion', 'dev');
+		$newversion  = Request::getString('newversion', '');
+		$editversion = Request::getString('editversion', 'dev');
 
 		$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
@@ -1585,7 +1585,7 @@ class Pipeline extends SiteController
 				Log::debug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
 				if ($to && $from)
 				{
-					require_once(__DIR__ . DS . 'screenshots.php');
+					require_once __DIR__ . DS . 'screenshots.php';
 
 					$ss = new Screenshots();
 					$ss->transfer($from, $to, $rid);
@@ -1595,7 +1595,7 @@ class Pipeline extends SiteController
 			// If the tool was cancelled ...
 			if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned'))
 			{
-				include_once(__DIR__ . DS . 'resources.php');
+				include_once __DIR__ . DS . 'resources.php';
 
 				$r = \Components\Resources\Models\Entry::oneByAlias($hzt->toolname);
 
@@ -1646,7 +1646,7 @@ class Pipeline extends SiteController
 	/**
 	 * Set ticket update
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function messageTask()
 	{
@@ -1659,7 +1659,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				// Create a Tool object
 				$obj = new \Components\Tools\Tables\Tool($this->database);
@@ -1674,9 +1674,9 @@ class Pipeline extends SiteController
 			return;
 		}
 
-		$newstate = Request::getVar('newstate', '');
+		$newstate = Request::getString('newstate', '');
 		$access   = Request::getInt('access', 0);
-		$comment  = Request::getVar('comment', '', 'post', 'none', 2);
+		$comment  = Request::getString('comment', '', 'post', 'none', 2);
 
 		if ($newstate && !intval($newstate))
 		{
@@ -1697,13 +1697,13 @@ class Pipeline extends SiteController
 	/**
 	 * Send an email to one or more users
 	 *
-	 * @param      string $toolid   Tool ID
-	 * @param      string $summary  Message subject
-	 * @param      string $comment  Message
-	 * @param      unknown $access  Parameter description (if any) ...
-	 * @param      string $action   Parameter description (if any) ...
-	 * @param      array  $toolinfo Array of tool information
-	 * @return     void
+	 * @param   string  $toolid    Tool ID
+	 * @param   string  $summary   Message subject
+	 * @param   string  $comment   Message
+	 * @param   string  $access
+	 * @param   string  $action
+	 * @param   array   $toolinfo  Array of tool information
+	 * @return  void
 	 */
 	protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
 	{
@@ -1834,15 +1834,15 @@ class Pipeline extends SiteController
 	/**
 	 * Add an update of changes to a support ticket
 	 *
-	 * @param      integer $toolid    Tool ID
-	 * @param      integer $ticketid  Ticket ID
-	 * @param      array   $oldstuff  Information before any changes
-	 * @param      array   $newstuff  Information after changes
-	 * @param      string  $comment   Comments to add
-	 * @param      integer $access    Parameter description (if any) ...
-	 * @param      integer $email     Parameter description (if any) ...
-	 * @param      integer $action    Parameter description (if any) ...
-	 * @return     boolean False if errors, True on success
+	 * @param   integer  $toolid    Tool ID
+	 * @param   integer  $ticketid  Ticket ID
+	 * @param   array    $oldstuff  Information before any changes
+	 * @param   array    $newstuff  Information after changes
+	 * @param   string   $comment   Comments to add
+	 * @param   integer  $access
+	 * @param   integer  $email
+	 * @param   integer  $action
+	 * @return  boolean  False if errors, True on success
 	 */
 	protected function _newUpdateTicket($toolid, $ticketid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1)
 	{
@@ -2037,14 +2037,14 @@ class Pipeline extends SiteController
 	/**
 	 * Update a support ticket
 	 *
-	 * @param      integer $toolid    Tool ID
-	 * @param      array   $oldstuff  Information before any changes
-	 * @param      array   $newstuff  Information after changes
-	 * @param      string  $comment   Comments to add
-	 * @param      integer $access    Parameter description (if any) ...
-	 * @param      integer $email     Parameter description (if any) ...
-	 * @param      integer $action    Parameter description (if any) ...
-	 * @return     boolean False if errors, True on success
+	 * @param   integer  $toolid    Tool ID
+	 * @param   array    $oldstuff  Information before any changes
+	 * @param   array    $newstuff  Information after changes
+	 * @param   string   $comment   Comments to add
+	 * @param   integer  $access
+	 * @param   integer  $email
+	 * @param   integer  $action
+	 * @return  boolean  False if errors, True on success
 	 */
 	protected function _updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $toolinfo=array())
 	{
@@ -2221,9 +2221,9 @@ class Pipeline extends SiteController
 	/**
 	 * Creates a support ticket for a tool
 	 *
-	 * @param      integer $toolid Tool ID
-	 * @param      array   $tool   Array of tool info
-	 * @return     mixed False if errors, integer on success
+	 * @param   integer  $toolid  Tool ID
+	 * @param   array    $tool    Array of tool info
+	 * @return  mixed    False if errors, integer on success
 	 */
 	private function _createTicket($toolid, $tool)
 	{
@@ -2274,7 +2274,7 @@ class Pipeline extends SiteController
 	/**
 	 * Cancel a tool contribution
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -2290,7 +2290,7 @@ class Pipeline extends SiteController
 		// do we have an alias?
 		if ($this->_toolid == 0)
 		{
-			if (($alias = Request::getVar('app', '')))
+			if (($alias = Request::getString('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -2323,7 +2323,7 @@ class Pipeline extends SiteController
 		}
 
 		// unpublish resource page
-		include_once(__DIR__ . DS . 'resources.php');
+		include_once __DIR__ . DS . 'resources.php';
 
 		$resource = new Resources();
 		$resource->updatePage($status['resourceid'], $status, '4');
@@ -2344,8 +2344,8 @@ class Pipeline extends SiteController
 	/**
 	 * Set the license for a tool
 	 *
-	 * @param      string $toolname Tool name
-	 * @return     void
+	 * @param   string  $toolname  Tool name
+	 * @return  void
 	 */
 	public function licenseTool($toolname)
 	{
@@ -2374,11 +2374,11 @@ class Pipeline extends SiteController
 	/**
 	 * Execute a script
 	 *
-	 * @param      string  $command    Command to execute
-	 * @param      string  $successmsg Message to set upon success
-	 * @param      array   &$output    Output data
-	 * @param      integer $success    Was the exec successful?
-	 * @return     boolean True if no errors
+	 * @param   string   $command     Command to execute
+	 * @param   string   $successmsg  Message to set upon success
+	 * @param   array    &$output     Output data
+	 * @param   integer  $success     Was the exec successful?
+	 * @return  boolean  True if no errors
 	 */
 	protected function _invokescript($command, $successmsg, &$output, $success = 1)
 	{
@@ -2413,10 +2413,10 @@ class Pipeline extends SiteController
 	/**
 	 * Check if the current user has access to this tool
 	 *
-	 * @param      integer $toolid       Tool ID
-	 * @param      integer $allowAdmins  Allow admins access?
-	 * @param      boolean $allowAuthors Allow authors access?
-	 * @return     boolean True if they have access
+	 * @param   integer  $toolid        Tool ID
+	 * @param   integer  $allowAdmins   Allow admins access?
+	 * @param   boolean  $allowAuthors  Allow authors access?
+	 * @return  boolean  True if they have access
 	 */
 	private function _checkAccess($toolid, $allowAdmins=1, $allowAuthors=false)
 	{
@@ -2453,9 +2453,9 @@ class Pipeline extends SiteController
 	/**
 	 * Authorization checks
 	 *
-	 * @param      string $assetType Asset type
-	 * @param      string $assetId   Asset id to check against
-	 * @return     void
+	 * @param   string  $assetType  Asset type
+	 * @param   string  $assetId    Asset id to check against
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{

@@ -44,9 +44,9 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
@@ -57,7 +57,7 @@ class Screenshots extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -79,7 +79,7 @@ class Screenshots extends SiteController
 	{
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 
 		if (!$pid)
 		{
@@ -108,9 +108,9 @@ class Screenshots extends SiteController
 		}
 
 		// Incoming
-		$file_toleft   = Request::getVar('fl', '');
+		$file_toleft   = Request::getString('fl', '');
 		$order_toleft  = Request::getInt('ol', 1);
-		$file_toright  = Request::getVar('fr', '');
+		$file_toright  = Request::getString('fr', '');
 		$order_toright = Request::getInt('or', 0);
 
 		$neworder_toleft  = ($order_toleft != 0) ? $order_toleft - 1 : 0;
@@ -154,7 +154,7 @@ class Screenshots extends SiteController
 	{
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
@@ -162,7 +162,7 @@ class Screenshots extends SiteController
 		}
 
 		// Incoming child ID
-		$this->view->file = Request::getVar('filename', '');
+		$this->view->file = Request::getString('filename', '');
 		if (!$this->view->file)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
@@ -220,7 +220,7 @@ class Screenshots extends SiteController
 	{
 		// Incoming parent ID
 		$pid     = Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 		$vid     = Request::getInt('vid', 0);
 		if (!$pid)
 		{
@@ -229,8 +229,8 @@ class Screenshots extends SiteController
 		}
 
 		// Incoming
-		$file = Request::getVar('filename', '');
-		$title = preg_replace('/\s+/', ' ', Request::getVar('title', ''));
+		$file = Request::getString('filename', '');
+		$title = preg_replace('/\s+/', ' ', Request::getString('title', ''));
 
 		// Instantiate a new screenshot object
 		$shot = Screenshot::oneByFilename($file, $pid, $vid);
@@ -263,7 +263,7 @@ class Screenshots extends SiteController
 	{
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
@@ -272,7 +272,7 @@ class Screenshots extends SiteController
 		}
 
 		// Incoming child ID
-		$file = Request::getVar('filename', '');
+		$file = Request::getString('filename', '');
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
@@ -353,8 +353,8 @@ class Screenshots extends SiteController
 			return $this->displayTask($pid, $version);
 		}
 
-		$version = Request::getVar('version', 'dev');
-		$title = preg_replace('/\s+/', ' ', Request::getVar('title', ''));
+		$version = Request::getString('version', 'dev');
+		$title = preg_replace('/\s+/', ' ', Request::getString('title', ''));
 		$allowed = array('.gif', '.jpg', '.png', '.bmp');
 		$changing_version = Request::getInt('changing_version', 0);
 		if ($changing_version)
@@ -591,7 +591,7 @@ class Screenshots extends SiteController
 	 */
 	public function copyTask()
 	{
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 		$rid     = Request::getInt('rid', 0);
 		$from    = $version == 'dev' ? 'current' : 'dev';
 
@@ -632,7 +632,7 @@ class Screenshots extends SiteController
 		$from    = Request::getInt('from', 0);
 		$to      = Request::getInt('to', 0);
 		$rid     = Request::getInt('rid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 
 		// get admin priviliges
 		$this->_authorize();
@@ -760,7 +760,7 @@ class Screenshots extends SiteController
 		}
 		if (!$version)
 		{
-			$version = Request::getVar('version', 'dev');
+			$version = Request::getString('version', 'dev');
 		}
 
 		// Ensure we have an ID to work with

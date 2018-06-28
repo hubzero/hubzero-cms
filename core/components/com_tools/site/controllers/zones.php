@@ -39,7 +39,7 @@ use Lang;
 use User;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php';
 
 /**
  * Controller class for tools (default)
@@ -49,7 +49,7 @@ class Zones extends SiteController
 	/**
 	 * Page Not found
 	 *
-	 * @return    exit
+	 * @return  exit
 	 */
 	public function notFoundTask()
 	{
@@ -63,9 +63,9 @@ class Zones extends SiteController
 	/**
 	 * Normalize a path
 	 *
-	 * @param     string  $path
-	 * @param     boolean $isFile
-	 * @return    mixed
+	 * @param   string   $path
+	 * @param   boolean  $isFile
+	 * @return  mixed
 	 */
 	private static function normalize_path($path, $isFile = false)
 	{
@@ -109,23 +109,21 @@ class Zones extends SiteController
 	/**
 	 * Asset delivery function.
 	 *
-	 * @return    exit
+	 * @return  exit
 	 */
 	public function assetsTask()
 	{
-		$file = Request::getVar('file');
+		$file = Request::getString('file');
 		$file = self::normalize_path('/' . trim($file, '/'), true);
 
 		if (empty($file))
 		{
-			echo 'file:' . $file; die();
 			return $this->notFoundTask();
 		}
 
 		$zone = new \Components\Tools\Models\Middleware\Zone(Request::getInt('id', 0));
 		if (!$zone->exists())
 		{
-			echo 'zone: ' . $zone->get('id'); die();
 			return $this->notFoundTask();
 		}
 
@@ -149,4 +147,3 @@ class Zones extends SiteController
 		exit;
 	}
 }
-
