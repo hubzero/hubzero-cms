@@ -144,9 +144,32 @@ class Module extends Relational
 	public function loadLanguage($system = false)
 	{
 		$file = $this->get('module') . ($system ? '.sys' : '');
+
+		$paths = array();
+
+		if (substr($this->get('module'), 0, 4) == 'mod_')
+		{
+			$path = '/modules/' . substr($this->get('module'), 4);
+
+			$paths[] = PATH_APP . $path;
+			$paths[] = PATH_CORE . $path;
+		}
+
 		$path = '/modules/' . $this->get('module');
 
-		return (Lang::load($file, PATH_APP . $path, null, false, true) || Lang::load($file, PATH_CORE . $path, null, false, true));
+		$paths[] = PATH_APP . $path;
+		$paths[] = PATH_CORE . $path;
+
+		foreach ($paths as $p)
+		{
+			if (Lang::load($file, $p, null, false, true))
+			{
+				return true;
+			}
+		}
+
+		//return (Lang::load($file, PATH_APP . $path, null, false, true) || Lang::load($file, PATH_CORE . $path, null, false, true));
+		return false;
 	}
 
 	/**
@@ -182,12 +205,20 @@ class Module extends Relational
 			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
+		$paths = array();
+
+		if (substr($this->get('module'), 0, 4) == 'mod_')
+		{
+			$path = '/modules/' . substr($this->get('module'), 4) . '/' . substr($this->get('module'), 4) . '.xml';
+
+			$paths[] = PATH_APP . $path;
+			$paths[] = PATH_CORE . $path;
+		}
+
 		$path = '/modules/' . $this->get('module') . '/' . $this->get('module') . '.xml';
 
-		$paths = array(
-			PATH_APP . $path,
-			PATH_CORE . $path
-		);
+		$paths[] = PATH_APP . $path;
+		$paths[] = PATH_CORE . $path;
 
 		foreach ($paths as $file)
 		{
