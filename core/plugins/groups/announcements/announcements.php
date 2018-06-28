@@ -282,7 +282,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		//build array of filters
 		$filters = array(
-			'search'   => strtolower(Request::getVar('q', '')),
+			'search'   => strtolower(Request::getString('q', '')),
 			'scope'    => 'group',
 			'scope_id' => $this->group->get('gidNumber'),
 			'state'    => 1
@@ -683,7 +683,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		// Build array of filters
 		$filters = array(
-			'search'   => strtolower(Request::getVar('q', '')),
+			'search'   => strtolower(Request::getString('q', '')),
 			'scope'    => 'group',
 			'scope_id' => $group->get('gidNumber'),
 			'state'    => Hubzero\Item\Announcement::STATE_PUBLISHED
@@ -745,8 +745,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			'scope_id'     => $group->get('gidNumber'),
 			'sticky'       => Request::getInt('sticky', 0, 'post'),
 			'priority'     => Request::getInt('priority', 0, 'post'),
-			'publish_up'   => Request::getVar('publish_up', '', 'post'),
-			'publish_down' => Request::getVar('publish_down', '', 'post'),
+			'publish_up'   => Request::getString('publish_up', '', 'post'),
+			'publish_down' => Request::getString('publish_down', '', 'post'),
 		);
 
 		// Format publish up
@@ -837,9 +837,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			'scope_id'     => $group->get('gidNumber'),
 			'sticky'       => Request::getInt('sticky', $model->get('sticky', 0), 'post'),
 			'priority'     => Request::getInt('priority', $model->get('priority', 0), 'post'),
-			'publish_up'   => Request::getVar('publish_up', $model->get('publish_up'), 'post'),
-			'publish_down' => Request::getVar('publish_down', $model->get('publish_down'), 'post'),
-			'created'      => Request::getVar('created', $model->get('created'), 'post'),
+			'publish_up'   => Request::getString('publish_up', $model->get('publish_up'), 'post'),
+			'publish_down' => Request::getString('publish_down', $model->get('publish_down'), 'post'),
+			'created'      => Request::getString('created', $model->get('created'), 'post'),
 			'created_by'   => Request::getInt('created_by', $model->get('created_by'), 'post'),
 		);
 

@@ -49,14 +49,14 @@ class Tools extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		$this->_authorize();
 
 		// Get the task
-		$task = Request::getVar('task', 'display');
+		$task = Request::getCmd('task', 'display');
 
 		// Check if middleware is enabled
 		if ($task != 'image'
@@ -77,7 +77,8 @@ class Tools extends SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return	void
+	 * @param   string  $title
+	 * @return  void
 	 */
 	protected function _buildTitle($title=null)
 	{
@@ -92,7 +93,7 @@ class Tools extends SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
@@ -115,11 +116,11 @@ class Tools extends SiteController
 	/**
 	 * Display the landing page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tools.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tools.php';
 		$model = new \Components\Tools\Models\Tools();
 
 		// Get the tool list
@@ -131,7 +132,7 @@ class Tools extends SiteController
 		// Get some vars to fill in text
 		$this->view->title = $this->_title;
 
-		$live_site = rtrim(Request::base(),'/');
+		$live_site = rtrim(Request::base(), '/');
 		$slive_site = preg_replace('/^http:\/\//', 'https://', $live_site, 1);
 
 		$this->view->forgeName = Config::get('sitename') . ' FORGE';
@@ -152,14 +153,14 @@ class Tools extends SiteController
 
 	/**
 	 * Tool asset delivery function.
- 	 * Original purpose was to deliver a template overrideable css file for the filexfer package
+	 * Original purpose was to deliver a template overrideable css file for the filexfer package
 	 *
-	 * @return    exit
+	 * @return  exit
 	 */
 	public function assetsTask()
 	{
-		$type = Request::getVar('type', 'css');
-		$file = Request::getVar('file', '');
+		$type = Request::getString('type', 'css');
+		$file = Request::getString('file', '');
 
 		if (($type != 'css') || empty($file))
 		{
@@ -257,9 +258,9 @@ class Tools extends SiteController
 	/**
 	 * Authorization checks
 	 *
-	 * @param      string $assetType Asset type
-	 * @param      string $assetId   Asset id to check against
-	 * @return     void
+	 * @param   string  $assetType  Asset type
+	 * @param   string  $assetId    Asset id to check against
+	 * @return  void
 	 */
 	public function _authorize($assetType='component', $assetId=null)
 	{
@@ -291,4 +292,3 @@ class Tools extends SiteController
 		}
 	}
 }
-

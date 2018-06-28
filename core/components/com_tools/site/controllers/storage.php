@@ -50,7 +50,7 @@ class Storage extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -64,7 +64,7 @@ class Storage extends SiteController
 		}
 
 		// Get the task
-		$this->_task = Request::getVar('task', '');
+		$this->_task = Request::getCmd('task', '');
 		$this->exceeded = false;
 
 		// Check if middleware is enabled
@@ -88,7 +88,7 @@ class Storage extends SiteController
 	/**
 	 * Build the document path (breadcrumbs)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
@@ -112,7 +112,7 @@ class Storage extends SiteController
 	/**
 	 * Build the document title
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
@@ -126,13 +126,13 @@ class Storage extends SiteController
 	/**
 	 * Show a login form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _login($rtrn)
 	{
 		if (!$rtrn)
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		}
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
@@ -144,7 +144,7 @@ class Storage extends SiteController
 	 * Display a warning message that the user has exceeded their allowed space
 	 * then display a file list and options for managing disk usage
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function storageexceededTask()
 	{
@@ -154,8 +154,8 @@ class Storage extends SiteController
 	/**
 	 * Display a file list and options for managing disk usage
 	 *
-	 * @param      boolean $exceeded Exceeded allowed space?
-	 * @return     void
+	 * @param   boolean  $exceeded  Exceeded allowed space?
+	 * @return  void
 	 */
 	public function displayTask($exceeded=false)
 	{
@@ -214,7 +214,7 @@ class Storage extends SiteController
 	/**
 	 * Purge old session data
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function purgeTask()
 	{
@@ -235,7 +235,7 @@ class Storage extends SiteController
 
 		Request::checkToken();
 
-		$degree = Request::getVar('degree', 'default');
+		$degree = Request::getString('degree', 'default');
 
 		$info = array();
 		$msg = '';
@@ -273,8 +273,8 @@ class Storage extends SiteController
 	/**
 	 * Determine the amount of disk usage
 	 *
-	 * @param      string $type Type [hard, soft]
-	 * @return     void
+	 * @param   string  $type  Type [hard, soft]
+	 * @return  void
 	 */
 	private function getDiskUsage($type='soft')
 	{
@@ -329,7 +329,7 @@ class Storage extends SiteController
 	/**
 	 * Display how much disk usage is being used
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function diskusageTask()
 	{
@@ -377,9 +377,9 @@ class Storage extends SiteController
 	/**
 	 * Construct the path to be used for file management
 	 *
-	 * @param      string $listdir Base directory
-	 * @param      string $subdir  Sub-directory
-	 * @return     string
+	 * @param   string  $listdir  Base directory
+	 * @param   string  $subdir   Sub-directory
+	 * @return  string
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
@@ -412,7 +412,7 @@ class Storage extends SiteController
 	/**
 	 * Delete a folder
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefolderTask()
 	{
@@ -424,7 +424,7 @@ class Storage extends SiteController
 		}
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = urldecode(Request::getVar('listdir', ''));
+		$listdir = urldecode(Request::getString('listdir', ''));
 		/*if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
@@ -436,7 +436,7 @@ class Storage extends SiteController
 		$path = $this->_buildUploadPath($listdir);
 
 		// Incoming directory to delete
-		if (!($folder = urldecode(Request::getVar('delFolder', ''))))
+		if (!($folder = urldecode(Request::getString('delFolder', ''))))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 			$this->filelistTask();
@@ -466,7 +466,7 @@ class Storage extends SiteController
 	/**
 	 * Delete a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefileTask()
 	{
@@ -478,13 +478,13 @@ class Storage extends SiteController
 		}
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = urldecode(Request::getVar('listdir', ''));
+		$listdir = urldecode(Request::getString('listdir', ''));
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir);
 
 		// Incoming file to delete
-		if (!($file = urldecode(Request::getVar('file', ''))))
+		if (!($file = urldecode(Request::getString('file', ''))))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
 			$this->filelistTask();
@@ -512,13 +512,13 @@ class Storage extends SiteController
 	/**
 	 * Show a file list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function filelistTask()
 	{
 		$this->view->setLayout('filelist');
 
-		$listdir = Request::getVar('listdir', '');
+		$listdir = Request::getString('listdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir);
@@ -590,9 +590,9 @@ class Storage extends SiteController
 	/**
 	 * Authorization checks
 	 *
-	 * @param      string $assetType Asset type
-	 * @param      string $assetId   Asset id to check against
-	 * @return     void
+	 * @param   string  $assetType  Asset type
+	 * @param   string  $assetId    Asset id to check against
+	 * @return  void
 	 */
 	public function _authorize($assetType='component', $assetId=null)
 	{
@@ -624,4 +624,3 @@ class Storage extends SiteController
 		}
 	}
 }
-
