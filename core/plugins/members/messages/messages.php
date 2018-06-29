@@ -103,10 +103,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			$task = Request::getVar('action', '');
+			$task = Request::getCmd('action', '');
 			if (!$task)
 			{
-				$task = Request::getVar('inaction', '');
+				$task = Request::getCmd('inaction', '');
 			}
 
 			$mid = Request::getInt('msg', 0);
@@ -251,7 +251,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				'int'
 			),
 			'state'  => 0,
-			'filter' => Request::getVar('filter', '')
+			'filter' => Request::getString('filter', '')
 		);
 
 		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -302,7 +302,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				'int'
 			),
 			'state'  => 1,
-			'filter' => Request::getVar('filter', '')
+			'filter' => Request::getString('filter', '')
 		);
 
 		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -353,7 +353,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				'int'
 			),
 			'state'  => 2,
-			'filter' => Request::getVar('filter', '')
+			'filter' => Request::getString('filter', '')
 		);
 
 		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -1030,8 +1030,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming message and subject
-		$subject = Request::getVar('subject', Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'));
-		$message = Request::getVar('message', '');
+		$subject = Request::getString('subject', Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'));
+		$message = Request::getString('message', '');
 		$no_html = Request::getInt('no_html', 0);
 
 		if (!$subject || !$message)

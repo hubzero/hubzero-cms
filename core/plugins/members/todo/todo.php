@@ -140,7 +140,7 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_MEMBERS_TODO'));
 
 			// Get and determine task
-			$this->task = Request::getVar('action', '');
+			$this->task = Request::getCmd('action', '');
 
 			switch ($this->task)
 			{
@@ -241,9 +241,9 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$content   = Request::getVar('content', '');
+		$content   = Request::getString('content', '');
 		$projectid = Request::getInt('projectid', 0);
-		$due       = trim(Request::getVar('due', ''));
+		$due       = trim(Request::getString('due', ''));
 
 		$model = new \Components\Projects\Models\Project($projectid);
 

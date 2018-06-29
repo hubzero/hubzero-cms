@@ -179,7 +179,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 		// Incoming filters
 		$filters = array(
 			'filter' => Request::getWord('filter'),
-			'search' => Request::getVar('q'),
+			'search' => Request::getString('q'),
 			'scope'  => Request::getWord('scope'),
 			'created_by' => Request::getWord('created_by'),
 			'limit'  => Request::getInt('limit', Config::get('list_limit')),
@@ -426,7 +426,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 
 		$id      = Request::getInt('activity', 0);
 		$no_html = Request::getInt('no_html', 0);
-		$action  = Request::getVar('action', 'star');
+		$action  = Request::getString('action', 'star');
 
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
 		$entry->set('starred', ($action == 'star' ? 1 : 0));

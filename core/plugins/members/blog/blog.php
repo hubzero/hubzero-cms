@@ -116,9 +116,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_MEMBERS_BLOG'));
 
 			// Get and determine task
-			$this->task = Request::getVar('action', '');
+			$this->task = Request::getCmd('action', '');
 
-			if (!($task = Request::getVar('action', '', 'post')))
+			if (!($task = Request::getCmd('action', '', 'post')))
 			{
 				$bits = $this->_parseUrl();
 				if ($this->task != 'deletecomment')
@@ -294,7 +294,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('id'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -356,7 +356,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('id'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			//'created_by' => $this->member->get('id')
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -627,7 +627,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Process tags
-		if (!$row->tag(Request::getVar('tags', '')))
+		if (!$row->tag(Request::getString('tags', '')))
 		{
 			$this->setError($row->getError());
 
@@ -679,8 +679,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		$process    = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
+		$process    = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
 
 		// Initiate a blog entry object
 		$entry = \Components\Blog\Models\Entry::oneOrFail($id);
