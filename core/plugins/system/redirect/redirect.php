@@ -61,7 +61,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 	 * @param   Exception  &$error  The Exception object to be handled.
 	 * @return  void
 	 */
-	public static function handleError(&$error)
+	public static function handleError($error)
 	{
 		$renderer = new \Hubzero\Error\Renderer\Page(
 			App::get('document'),
