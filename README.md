@@ -4,31 +4,31 @@ All extensions of the `app` directory are subtrees (effectively).
 
 ## Components
 
- * [com_partners](https://github.com/qubeshub/com_partners): Partners component **dev** :white_check_mark: **prod** :x:
- * [com_publications](https://github.com/qubeshub/com_publications): **Override** of HubZero publications component. **dev** :white_check_mark: **prod** :x:
- * [com_tags](https://github.com/qubeshub/com_tags): **Override** of HubZero tags component. **dev** :white_check_mark: **prod** :x:
+ * [com_partners](https://github.com/qubeshub/com_partners): Partners component **dev** :white_check_mark: **prod** :white_check_mark:
+ * [com_publications](https://github.com/qubeshub/com_publications): **Override** of HubZero publications component. **dev** :white_check_mark: **prod** :white_check_mark:
+ * [com_tags](https://github.com/qubeshub/com_tags): **Override** of HubZero tags component. **dev** :white_check_mark: **prod** :white_check_mark:
 
 ## Modules
 
 Note:  Needed to include extra installation directory instructions in the `composer.json` files so that they install in the `mod_` prefix directories.
 
- * [mod_partners](https://github.com/qubeshub/mod_partners): Shows partners in grid format. **dev** :white_check_mark: **prod** :x:
- * [mod_qubes_events](https://github.com/qubeshub/mod_qubes_events): Displays QUBES Happening events, consisting mainly of faculty mentoring networks. **dev** :white_check_mark: **prod** :x:
+ * [mod_partners](https://github.com/qubeshub/mod_partners): Shows partners in grid format. **dev** :white_check_mark: **prod** :white_check_mark:
+ * [mod_qubes_events](https://github.com/qubeshub/mod_qubes_events): Displays QUBES Happening events, consisting mainly of faculty mentoring networks. **dev** :white_check_mark: **prod** :white_check_mark:
  * [mod_qubes_tools](https://github.com/qubeshub/mod_qubes_tools): Displays QUBES Tools in grid format (_in development_). **dev** :x: **prod** :x:
- * [mod_showcase](https://github.com/qubeshub/mod_showcase): Displays static and dynamic billboards in grid format. **dev** :white_check_mark: **prod** :x:
- * [mod_slider](https://github.com/qubeshub/mod_slider): Displays billboards in slider format (_not live on QUBES_) **dev** :white_check_mark: **prod** :x:
+ * [mod_showcase](https://github.com/qubeshub/mod_showcase): Displays static and dynamic billboards in grid format. **dev** :white_check_mark: **prod** :white_check_mark:
+ * [mod_slider](https://github.com/qubeshub/mod_slider): Displays billboards in slider format (_not live on QUBES_) **dev** :white_check_mark: **prod** :white_check_mark:
 
 ## Plugins
  * [plg_content_qubesmacros](https://github.com/qubeshub/plg_content_qubesmacros): Content plugin that contains QUBES macros. **dev** :white_check_mark: **prod** :white_check_mark:
- * [plg_projects_publications](https://github.com/qubeshub/plg_projects_publications): **Override** of HubZero project publications plugin. **dev** :white_check_mark: **prod** :x:
+ * [plg_projects_publications](https://github.com/qubeshub/plg_projects_publications): **Override** of HubZero project publications plugin. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_groups_publications](https://github.com/qubeshub/plg_groups_publications): Publication plugin for groups component. **dev** :white_check_mark: **prod** :x:
- * [plg_system_menurouter](https://github.com/qubeshub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately. **dev** :white_check_mark: **prod** :x:
- * [plg_system_subnav](https://github.com/qubeshub/plg_system_subnav): Component/URL to subnavigation mapping **dev** :white_check_mark: **prod** :x:
+ * [plg_system_menurouter](https://github.com/qubeshub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately. **dev** :white_check_mark: **prod** :white_check_mark:
+ * [plg_system_subnav](https://github.com/qubeshub/plg_system_subnav): Component/URL to subnavigation mapping **dev** :white_check_mark: **prod** :white_check_mark:
 
 ## Templates
 
- * [tpl_bmc](https://github.com/qubeshub/tpl_bmc): QUBES 2018 template **dev** :white_check_mark: **prod** :x:
- * [tpl_qubes](https://github.com/qubeshub/tpl_qubes): QUBES 2015 template **dev** :white_check_mark: **prod** :x:
+ * [tpl_bmc](https://github.com/qubeshub/tpl_bmc): QUBES 2018 template **dev** :white_check_mark: **prod** :white_check_mark:
+ * [tpl_qubes](https://github.com/qubeshub/tpl_qubes): QUBES 2015 template **dev** :white_check_mark: **prod** :white_check_mark:
 
 # Development Workflow
 
