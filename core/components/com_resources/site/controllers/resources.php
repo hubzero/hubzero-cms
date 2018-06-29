@@ -1863,7 +1863,7 @@ class Resources extends SiteController
 				{
 					foreach ($grandchildren as $grandchild)
 					{
-						if (isset($relevant_logical_types_by_id[(int)$grandchild->get('logicaltype')]))
+						if (isset($relevant_logical_types_by_id[(int)$grandchild->get('logical_type')]))
 						{
 							if (stripslashes($grandchild->introtext) != '')
 							{
