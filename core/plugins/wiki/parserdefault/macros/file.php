@@ -418,7 +418,7 @@ class FileMacro extends WikiMacro
 	{
 		if (substr($file, 0, 1) == DS)
 		{
-			$path = PATH_APP . $file;
+			$path = PATH_ROOT . $file;
 		}
 		else
 		{
