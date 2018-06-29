@@ -145,7 +145,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	public function onCheckAnswer($code = null)
 	{
 		// get request params
-		$response = Request::getVar('g-recaptcha-response', null);
+		$response = Request::getString('g-recaptcha-response', null);
 		$remoteIp = Request::ip();
 
 		// Discard empty solution submissions

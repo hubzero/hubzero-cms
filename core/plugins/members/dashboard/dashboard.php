@@ -149,7 +149,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			$this->params   = $this->params;
 			$this->database = App::get('db');
 			$this->option   = $option;
-			$this->action   = Request::getVar('action', 'display');
+			$this->action   = Request::getCmd('action', 'display');
 
 			// build the action
 			$doAction = strtolower($this->action) . 'Action';

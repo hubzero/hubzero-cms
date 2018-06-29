@@ -103,7 +103,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$this->areas  = $areas;
 
 			//get task
-			$this->task = Request::getVar('action', 'view');
+			$this->task = Request::getCmd('action', 'view');
 			switch ($this->task)
 			{
 				case 'addaddress':

@@ -124,9 +124,9 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 			'mine'     => 1,
 			'updates'  => 1,
 			'getowner' => 1,
-			'sortby'   => Request::getVar('sortby', 'title'),
-			'sortdir'  => Request::getVar('sortdir', 'ASC'),
-			'filterby' => Request::getVar('filterby', 'active'),
+			'sortby'   => Request::getString('sortby', 'title'),
+			'sortdir'  => Request::getString('sortdir', 'ASC'),
+			'filterby' => Request::getString('filterby', 'active'),
 			'uid'      => $member->get('id')
 		);
 		if (!in_array($this->_filters['filterby'], array('active', 'archived')))
@@ -152,7 +152,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Which view
-			$task = Request::getVar('action', '');
+			$task = Request::getCmd('action', '');
 
 			if ($user->get('id') != $member->get('id'))
 			{
@@ -268,7 +268,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
 
 		$view->filters = array(
-			'limit' => Request::getVar('limit', 25, 'request')
+			'limit' => Request::getInt('limit', 25, 'request')
 		);
 
 		// Get shared updates feed from blog plugin
