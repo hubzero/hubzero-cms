@@ -76,12 +76,12 @@ class Base extends SiteController
 
 		// Incoming project identifier
 		$id    = Request::getInt('id', 0);
-		$alias = Request::getVar('alias', '');
+		$alias = Request::getString('alias', '');
 		$this->_identifier = $id ? $id : $alias;
 
 		// Incoming
-		$this->_task = strtolower(Request::getWord('task', ''));
-		$this->_gid  = Request::getVar('gid', 0);
+		$this->_task = strtolower(Request::getCmd('task', ''));
+		$this->_gid  = Request::getInt('gid', 0);
 
 		// Model
 		$this->model = new Models\Project($this->_identifier);
@@ -173,7 +173,7 @@ class Base extends SiteController
 			? $this->_msg
 			: Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task), 'server');
+		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -232,7 +232,7 @@ class Base extends SiteController
 		switch ($this->_task)
 		{
 			case 'browse':
-				$reviewer = Request::getVar('reviewer', '');
+				$reviewer = Request::getString('reviewer', '');
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$this->title = $reviewer == 'sponsored'
@@ -458,7 +458,7 @@ class Base extends SiteController
 		$objLog->layout      = $layout ? $layout : $this->_task;
 		$objLog->action      = $action ? $action : 'view';
 		$objLog->time        = Date::toSql();
-		$objLog->request_uri = Request::getVar('REQUEST_URI', Request::base(), 'server');
+		$objLog->request_uri = Request::getString('REQUEST_URI', Request::base(), 'server');
 		$objLog->ajax        = $ajax;
 		$objLog->store();
 	}
