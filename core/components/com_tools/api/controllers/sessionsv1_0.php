@@ -41,8 +41,10 @@ use Request;
 use Lang;
 use User;
 
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tool.php';
+$componentPath = Component::path('com_tools');
+
+include_once "$componentPath/helpers/utils.php";
+include_once "$componentPath/models/tool.php";
 
 /**
  * API controller class for tool sessions
@@ -899,7 +901,7 @@ class Sessionsv1_0 extends ApiController
 	 * 		"description":   "a valid hub tool session number",
 	 * 		"type":          "string",
 	 * 		"required":      true,
-	 *  	"default":       0 
+	 *  	"default":       0
 	 * }
 	 * @return void
 	 **/
@@ -985,7 +987,7 @@ class Sessionsv1_0 extends ApiController
 	 * 		"description":   "a valid hub tool session number",
 	 * 		"type":          "string",
 	 * 		"required":      true,
-	 *  	"default":       0 
+	 *  	"default":       0
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "run_file",
@@ -1322,7 +1324,6 @@ class Sessionsv1_0 extends ApiController
 		$this->send($object);
 	}
 
-
 	/**
 	 * Method to purge users storage
 	 *
@@ -1529,4 +1530,5 @@ class Sessionsv1_0 extends ApiController
 		}
 		$this->send($object);
 	}
+
 }
