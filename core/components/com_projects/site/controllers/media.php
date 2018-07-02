@@ -314,7 +314,7 @@ class Media extends Base
 		}
 
 		// Incoming file
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 		$file = $file ? $file : $this->model->get('picture');
 		if (!$file)
 		{
@@ -423,7 +423,7 @@ class Media extends Base
 	public function mediaTask()
 	{
 		// Incoming
-		$media    = trim(Request::getVar('media', 'thumb'));
+		$media    = trim(Request::getString('media', 'thumb'));
 		$source   = null;
 		$redirect = false;
 		$dir      = 'preview';
@@ -433,7 +433,7 @@ class Media extends Base
 			return false;
 		}
 
-		$uri = Request::getVar('SCRIPT_URL', '', 'server');
+		$uri = Request::getString('SCRIPT_URL', '', 'server');
 		if (strstr($uri, 'Compiled:'))
 		{
 			$media = str_replace('Compiled:', '', strstr($uri, 'Compiled:'));

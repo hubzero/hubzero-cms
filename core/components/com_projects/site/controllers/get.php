@@ -50,7 +50,7 @@ class Get extends SiteController
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'publicstamp.php';
 
 		// Incoming
-		$stamp = Request::getVar('s', '');
+		$stamp = Request::getString('s', '');
 
 		// Clean up stamp value (only numbers and letters)
 		$regex  = array('/[^a-zA-Z0-9]/');
