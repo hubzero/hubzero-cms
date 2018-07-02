@@ -45,9 +45,6 @@ $componentPath = Component::path('com_tools');
 
 include_once "$componentPath/helpers/utils.php";
 include_once "$componentPath/models/tool.php";
-require_once "$componentPath/models/submitSession.php";
-
-use Components\Tools\Models\SubmitSession;
 
 /**
  * API controller class for tool sessions
@@ -1533,46 +1530,6 @@ class Sessionsv1_0 extends ApiController
 			);
 		}
 		$this->send($object);
-	}
-
-	/**
-	 * Records a tool session's status
-	 *
-	 * @apiMethod POST
-	 * @apiUri    /tools/submitstatus
-	 * @return    void
-	 */
-	public function submitStatusTask()
-	{
-		// retrieve posted data
-		$deedsSession = Request::getInt('deeds-session');
-		$submitStatus = Request::getInt('submit-status');
-
-		// retrieve or instantiate a record for the session
-		$submitSession = SubmitSession::oneByDeedsOrNew($deedsSession);
-
-		// update record
-		$submitSession->set([
-			'deeds_session' => $deedsSession,
-			'submit_status' => $submitStatus
-		]);
-
-		// save record and generate result to send requestor
-		$result = [];
-
-		if ($submitSession->save())
-		{
-			$result['status'] = 'success';
-			$result['record'] = $submitSession->toArray();
-		}
-		else
-		{
-			$result['status'] = 'error';
-			$result['errors'] = $submitSession->getErrors();
-		}
-
-		// send result
-		$this->send($result);
 	}
 
 }
