@@ -138,7 +138,7 @@ class Projects extends Base
 			App::abort(404, 'Invalid request');
 		}
 
-		$project = Request::getVar('alias');
+		$project = Request::getString('alias');
 		$task = $this->_task;
 		$return = Route::url('index.php?option=com_projects&alias=' . $project, false);
 		if (User::isGuest())
@@ -195,7 +195,7 @@ class Projects extends Base
 		$this->_task = 'intro';
 
 		// Incoming
-		$action  = Request::getVar('action', '');
+		$action  = Request::getCmd('action', '');
 
 		// When logging in
 		if (User::isGuest() && $action == 'login')
@@ -276,7 +276,7 @@ class Projects extends Base
 	{
 		// Incoming
 		$reviewer = Request::getWord('reviewer', '');
-		$action   = Request::getVar('action', '');
+		$action   = Request::getCmd('action', '');
 
 		// Set the pathway
 		$this->_task = 'browse';
@@ -312,7 +312,7 @@ class Projects extends Base
 		);
 		$this->view->filters['start']    = Request::getInt('limitstart', 0, 'get');
 		$this->view->filters['sortby']   = strtolower(Request::getWord('sortby', 'title'));
-		$this->view->filters['search']   = Request::getVar('search', '');
+		$this->view->filters['search']   = Request::getString('search', '');
 		$this->view->filters['sortdir']  = strtoupper(Request::getWord('sortdir', 'ASC'));
 		$this->view->filters['reviewer'] = $reviewer;
 		$this->view->filters['filterby'] = Request::getWord('filterby', 'all');
@@ -378,12 +378,12 @@ class Projects extends Base
 	{
 		// Incoming
 		$preview      = Request::getInt('preview', 0);
-		$this->active = Request::getVar('active', '');
+		$this->active = Request::getCmd('active', '');
 		$ajax         = Request::getInt('ajax', 0);
-		$action       = Request::getVar('action', '');
-		$confirmcode  = Request::getVar('confirm', '');
-		$email        = Request::getVar('email', '');
-		$subdir       = Request::getVar('subdir');
+		$action       = Request::getCmd('action', '');
+		$confirmcode  = Request::getString('confirm', '');
+		$email        = Request::getString('email', '');
+		$subdir       = Request::getString('subdir');
 		$sync         = false;
 
 		// Stop ajax action if user got logged out
@@ -794,8 +794,8 @@ class Projects extends Base
 		}
 
 		// Incoming
-		$name    = trim(Request::getVar('new-alias', '', 'post'));
-		$title   = trim(Request::getVar('title', '', 'post'));
+		$name    = trim(Request::getString('new-alias', '', 'post'));
+		$title   = trim(Request::getString('title', '', 'post'));
 		$confirm = trim(Request::getInt('confirm', 0, 'post'));
 
 		$name = preg_replace('/ /', '', $name);
@@ -1033,10 +1033,10 @@ class Projects extends Base
 	public function authTask()
 	{
 		// Incoming
-		$error = Request::getVar('error', '', 'get');
-		$code  = Request::getVar('code', '', 'get');
+		$error = Request::getString('error', '', 'get');
+		$code  = Request::getString('code', '', 'get');
 
-		$state = Request::getVar('state', '', 'get');
+		$state = Request::getString('state', '', 'get');
 		$json  = base64_decode($state);
 		$json  = json_decode($json);
 
@@ -1083,11 +1083,11 @@ class Projects extends Base
 	{
 		// Incoming
 		$reviewer = Request::getWord('reviewer', '');
-		$action   = Request::getVar('action', '');
-		$comment  = Request::getVar('comment', '');
+		$action   = Request::getCmd('action', '');
+		$comment  = Request::getString('comment', '');
 		$approve  = Request::getInt('approve', 0);
-		$filterby = Request::getVar('filterby', 'pending');
-		$notify   = Request::getVar('notify', 0, 'post');
+		$filterby = Request::getString('filterby', 'pending');
+		$notify   = Request::getString('notify', 0, 'post');
 
 		// Cannot proceed without project id/alias
 		if (!$this->model->exists() || $this->model->isDeleted())
@@ -1126,12 +1126,12 @@ class Projects extends Base
 			}
 			elseif ($reviewer == 'sponsored')
 			{
-				$grant_agency   = Request::getVar('grant_agency', '');
-				$grant_title    = Request::getVar('grant_title', '');
-				$grant_PI       = Request::getVar('grant_PI', '');
-				$grant_budget   = Request::getVar('grant_budget', '');
-				$grant_approval = Request::getVar('grant_approval', '');
-				$rejected       = Request::getVar('rejected', 0);
+				$grant_agency   = Request::getString('grant_agency', '');
+				$grant_title    = Request::getString('grant_title', '');
+				$grant_PI       = Request::getString('grant_PI', '');
+				$grant_budget   = Request::getString('grant_budget', '');
+				$grant_approval = Request::getString('grant_approval', '');
+				$rejected       = Request::getInt('rejected', 0);
 
 				// New approval
 				if (trim($params->get('grant_approval')) == '' && trim($grant_approval) != ''
