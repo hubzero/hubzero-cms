@@ -494,6 +494,10 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 				}
 			}
 		}
+		elseif (is_file($path . DS . 'master.png') && $size != 'original')
+		{
+			$src = $path . DS . 'master.png';
+		}
 		else
 		{
 			// Get the picture if set
