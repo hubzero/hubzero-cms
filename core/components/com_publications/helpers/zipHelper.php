@@ -37,27 +37,25 @@ namespace Components\Publications\Helpers;
  */
 class ZipHelper
 {
-
-
-	/*
+	/**
 	 * Builds a hierarchical array of archive contents
 	 *
-	 * @param    string   $path
-	 * @return   array
+	 * @param   string  $path
+	 * @return  array
 	 */
 	public static function getArchiveContents($path)
 	{
-		$archive = self::getArchive($path);
+		$archive  = self::getArchive($path);
 		$contents = self::parseArchiveContents($archive);
 
 		return $contents;
 	}
 
-	/*
+	/**
 	 * Load bundle archive
 	 *
-	 * @param    string           $path
-	 * @return   PHP\ZipArchive
+	 * @param    string  $path
+	 * @return   object  \ZipArchive
 	 */
 	protected static function getArchive($path)
 	{
@@ -72,11 +70,11 @@ class ZipHelper
 		return $archive;
 	}
 
-	/*
+	/**
 	 * Builds a hierarchical array of archive contents
 	 *
-	 * @param    \ZipArchive   $archive
-	 * @return   array
+	 * @param   object  $archive  \ZipArchive
+	 * @return  array
 	 */
 	protected static function parseArchiveContents($archive)
 	{
@@ -91,30 +89,33 @@ class ZipHelper
 		return $parsedContents;
 	}
 
-	/*
+	/**
 	 * Reads contents of a ZipArchive
 	 *
-	 * @param    \ZipArchive   $archive
-	 * @return   array
+	 * @param   object  $archive  \ZipArchive
+	 * @return  array
 	 */
 	protected static function readArchive($archive)
 	{
 		$contents = [];
 
-		for ($i = 0; $i < $archive->numFiles; $i++)
+		if ($archive instanceof \ZipArchive)
 		{
-			$contents[] = $archive->statIndex($i);
+			for ($i = 0; $i < $archive->numFiles; $i++)
+			{
+				$contents[] = $archive->statIndex($i);
+			}
 		}
 
 		return $contents;
 	}
 
-	/*
+	/**
 	 * Adds an entry to representational array
 	 *
-	 * @param    array   $entry
-	 * @param    array   $contents
-	 * @return   void
+	 * @param   array  $entry
+	 * @param   array  $contents
+	 * @return  void
 	 */
 	protected static function addEntryToContents($entry, &$contents)
 	{
@@ -141,11 +142,11 @@ class ZipHelper
 		}
 	}
 
-	/*
+	/**
 	 * Gets archive entry's directory
 	 *
-	 * @param    array   $entry
-	 * @return   string
+	 * @param   array   $entry
+	 * @return  string
 	 */
 	protected static function getEntryDirectory($entry)
 	{
@@ -158,11 +159,11 @@ class ZipHelper
 		return $directory;
 	}
 
-	/*
+	/**
 	 * Removes path from entry's name
 	 *
-	 * @param    string   $name
-	 * @return   string
+	 * @param   string  $name
+	 * @return  string
 	 */
 	protected static function parseName($name)
 	{
@@ -172,5 +173,4 @@ class ZipHelper
 
 		return $name;
 	}
-
 }
