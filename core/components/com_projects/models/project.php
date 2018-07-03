@@ -1575,6 +1575,10 @@ class Project extends Model
 				}
 			}
 		}
+		elseif (is_file($path . DS . 'master.png') && $size != 'original')
+		{
+			$src = $path . DS . 'master.png';
+		}
 		else
 		{
 			// Get the picture if set
