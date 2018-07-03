@@ -42,6 +42,7 @@ use Config;
 use Event;
 use Lang;
 use Date;
+use Plugin;
 
 /**
  * Html helper class
@@ -1055,18 +1056,24 @@ class Html extends Obj
 		}
 
 		// Todo items
-		$suggestions[] = array(
-			'class' => 's-todo',
-			'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_TODO'),
-			'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo')
-		);
+		if (Plugin::isEnabled('projects', 'todo'))
+		{
+			$suggestions[] = array(
+				'class' => 's-todo',
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_TODO'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo')
+			);
+		}
 
 		// Notes
-		$suggestions[] = array(
-			'class' => 's-notes',
-			'text'  => Lang::txt('COM_PROJECTS_WELCOME_START_NOTE'),
-			'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes')
-		);
+		if (Plugin::isEnabled('projects', 'notes'))
+		{
+			$suggestions[] = array(
+				'class' => 's-notes',
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_START_NOTE'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes')
+			);
+		}
 
 		return $suggestions;
 	}
