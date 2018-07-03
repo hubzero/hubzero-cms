@@ -33,6 +33,9 @@
 defined('_HZEXEC_') or die();
 
 // Push some styles to the template
+Html::behavior('framework');
+Html::behavior('switcher', 'submenu');
+
 Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace.css');
 Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace.js');
 Hubzero\Document\Assets::addPluginScript('projects', 'files');
@@ -138,32 +141,49 @@ function submitbutton(pressbutton)
 }
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+
+	<nav role="navigation" class="sub-navigation">
+		<div id="submenu-box">
+			<div class="submenu-box">
+				<div class="submenu-pad">
+					<ul id="submenu" class="coursesection">
+						<li><a href="#page-details" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+						<li><a href="#page-images" onclick="return false;" id="images"><?php echo Lang::txt('COM_PROJECTS_IMAGE'); ?></a></li>
+					</ul>
+					<div class="clr"></div>
+				</div>
+			</div>
+			<div class="clr"></div>
+		</div>
+	</nav><!-- / .sub-navigation -->
+
+	<div id="section-document">
+		<div id="page-details" class="tab">
+
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_PROJECTS_BASIC_INFO'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>:</label>
+					<label for="title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 					<input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?>:</label>
-					<span><?php echo stripslashes($this->model->get('alias')); ?></span>
+					<input type="text" name="alias" id="alias" size="60" maxlength="250" value="<?php echo $this->escape($this->model->get('alias')); ?>" readonly="readonly" disabled="disabled" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="about"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?>:</label>
-					<?php 
-						echo $this->editor('about', $this->model->about('raw'), 35, 25, 'about');
-					?>
+					<?php echo $this->editor('about', $this->model->about('raw'), 35, 25, 'about'); ?>
 				</div>
 
 				<div class="input-wrap">
 					<label for="tags"><?php echo Lang::txt('COM_PROJECTS_TAGS'); ?>:</label>
 					<?php
-					$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
+					$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)));
 
 					if (count($tf) > 0) {
 						echo $tf[0];
@@ -199,6 +219,7 @@ function submitbutton(pressbutton)
 						</select>
 					</label>
 				</div>
+
 				<?php if (!empty($groups)) {
 					$used = array();
 					?>
@@ -462,8 +483,109 @@ function submitbutton(pressbutton)
 
 	<p class="notice"><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a> <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
 
+		</div>
+		<div id="page-images" class="tab">
+			<?php if ($this->model->get('picture')) { ?>
+				<fieldset class="adminform">
+					<legend><?php echo Lang::txt('COM_PROJECTS_IMAGE_THUMB'); ?></legend>
+					<?php
+					$width  = 50;
+					$height = 50;
+					$size = 0;
+					$path = $this->model->picture('thumb', true);
+					if (file_exists($path))
+					{
+						list($width, $height) = getimagesize($path);
+						$size = filesize($path);
+					}
+					?>
+					<p><img src="<?php echo $this->model->picture('thumb'); ?>" width="50" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_THUMB'); ?>" /></p>
+					<table>
+						<tbody>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_WIDTH'); ?>:</th>
+								<td><?php echo $width; ?> px</td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_HEIGHT'); ?>:</th>
+								<td><?php echo $height; ?> px</td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
+								<td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+				<fieldset class="adminform">
+					<legend><?php echo Lang::txt('COM_PROJECTS_IMAGE_MASTER'); ?></legend>
+					<?php
+					$width  = 200;
+					$height = 200;
+					$size = 0;
+					$path = $this->model->picture('master', true);
+					if (file_exists($path))
+					{
+						list($width, $height) = getimagesize($path);
+						$size = filesize($path);
+					}
+					?>
+					<p><img src="<?php echo $this->model->picture('master'); ?>" width="200" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_MASTER'); ?>" /></p>
+					<table>
+						<tbody>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_WIDTH'); ?>:</th>
+								<td><?php echo $width; ?> px</td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_HEIGHT'); ?>:</th>
+								<td><?php echo $height; ?> px</td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
+								<td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+				<fieldset class="adminform">
+					<legend><?php echo Lang::txt('COM_PROJECTS_IMAGE_ORIGINAL'); ?></legend>
+					<?php
+					$width  = 200;
+					$height = 200;
+					$size = 0;
+					$path = $this->model->picture('original', true);
+					if (file_exists($path))
+					{
+						list($width, $height) = getimagesize($path);
+						$size = filesize($path);
+					}
+					?>
+					<p><img src="<?php echo $this->model->picture('original'); ?>" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_ORIGINAL'); ?>" /></p>
+					<table>
+						<tbody>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_WIDTH'); ?>:</th>
+								<td><?php echo $width; ?> px</td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_HEIGHT'); ?>:</th>
+								<td><?php echo $height; ?> px</td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
+								<td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+			<?php } ?>
+		</div>
+	</div>
+
 	<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="apply" />
 
 	<?php echo Html::input('token'); ?>
