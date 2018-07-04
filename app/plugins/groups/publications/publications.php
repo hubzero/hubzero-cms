@@ -328,66 +328,60 @@ class plgGroupsPublications extends \Hubzero\Plugin\Plugin
 				// If we have a specific ID and we're a supergroup, serve a publication page inside supergroup template
 				if (Request::getVar('id', Request::getVar('alias', null)) && $this->group->type == 3)
 				{
-
 					//Uncomment this section below for the not working yet-trying to just replicate the component method
 					// //Load neccesities for com_publications controller
-					// $lang = App::get('language');
-					// $lang->load('com_publications', Component::path('com_publications') . DS . 'site');
-					// require_once Component::path('com_publications') . DS .'models' . DS . 'publication.php';
-					// require_once Component::path('com_publications') . DS .'site' . DS . 'controllers' . DS . 'publications.php';
+					$lang = App::get('language');
+					$lang->load('com_publications', \Component::path('com_publications') . DS . 'site');
+					require_once \Component::path('com_publications') . DS .'models' . DS . 'publication.php'; // Mirrors com_resources/models/entry.php
+					require_once \Component::path('com_publications') . DS .'site' . DS . 'controllers' . DS . 'publications.php'; // Mirrors com_resources/site/controllers/resources.php
+					require_once \Component::path('com_publications') . DS .'helpers' . DS . 'html.php'; // Mirrors com_resources/helpers/html.php
 					// //require_once Component::path('com_publications') . DS .'helpers' . DS . 'utilities.php';//replaced helper.php with utilities.php
-					// require_once Component::path('com_publications') . DS .'helpers' . DS . 'html.php';
 					// require_once Component::path('com_publications') . DS .'helpers' . DS . 'tags.php';
-					// require_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
-					// require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
-					// require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
 
-					// // Set the request up to make it look like a user made the request to the controller
-					// Request::setVar('task', 'view');
-					// Request::setVar('option', 'com_publications');
-					// Request::setVar('active', Request::get('tab_active', 'about'));
-					// // Add some extra variables to let the tab view know we need a different base url
-					// Request::setVar('tab_active_key', 'tab_active');
-					// Request::setVar('tab_base_url', 'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=publications');
-					// // Added a noview variable to indicate to the controller that we do not want it to try to display the view, simply build it
-					// Request::setVar('noview', 1);
+					// Set the request up to make it look like a user made the request to the controller
+					Request::setVar('task', 'page');
+					Request::setVar('option', 'com_publications');
+					Request::setVar('active', Request::get('tab_active', 'about'));
+					// Add some extra variables to let the tab view know we need a different base url
+					Request::setVar('tab_active_key', 'tab_active');
+					Request::setVar('tab_base_url', 'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=publications');
+					// Added a noview variable to indicate to the controller that we do not want it to try to display the view, simply build it
+					Request::setVar('noview', 1);
 
-					// // Instantiate the controller and have it execute
-					// $newtest = new \Components\Publications\Site\Controllers\Publications(array('base_path'=>Component::path('com_publications') . DS . 'site'));
-					// $newtest->execute();
+					// Instantiate the controller and have it execute
+					$newtest = new \Components\Publications\Site\Controllers\Publications(array('base_path'=>\Component::path('com_publications') . DS . 'site'));
+					$newtest->execute(); // This is leaving the group
 
-					// // Set up the return for the plugin 'view'
-					// $arr['html'] = $newtest->view->loadTemplate();
-					// $arr['metadata']['count'] = $total;
+					$arr['html'] = $newtest->view->loadTemplate();
+					$arr['metadata']['count'] = $total;
 
-					$view = $this->view('result','results');
-					$view->option = $option;
-					$view->group = $group;
-					foreach ($results as $category){
-						$amt = count($category);
-						if ($amt > 0)
-						{
-							foreach ($category as $row)
-							{
-								if ($row->id ==Request::getVar('id', Request::getVar('alias', null))){
-									$view->row=$row;
-								}
-						}
-
-					}
-					}
-					$view->selectedpub= Request::getVar('id', Request::getVar('alias', null)) ;
-					$view->sort = $sort;
-					$view->authorized = $authorized;
-					$view->access = $access;
-
-					foreach ($this->getErrors() as $error)
-					{
-						$view->setError($error);
-					}
-				    //$arr['html'] = $newtest->view->loadTemplate();
-					$arr['metadata']['count'] = count($results[0]); // We need to clean this up - was $total, which should work
-					$arr['html'] = $view->loadTemplate();
+					// $view = $this->view('result','results');
+					// $view->option = $option;
+					// $view->group = $group;
+					// foreach ($results as $category){
+					// 	$amt = count($category);
+					// 	if ($amt > 0)
+					// 	{
+					// 		foreach ($category as $row)
+					// 		{
+					// 			if ($row->id ==Request::getVar('id', Request::getVar('alias', null))) {
+					// 				$view->row=$row;
+					// 			}
+					// 		}
+					// 	}
+					// }
+					// $view->selectedpub= Request::getVar('id', Request::getVar('alias', null)) ;
+					// $view->sort = $sort;
+					// $view->authorized = $authorized;
+					// $view->access = $access;
+					//
+					// foreach ($this->getErrors() as $error)
+					// {
+					// 	$view->setError($error);
+					// }
+					//
+					// $arr['metadata']['count'] = count($results[0]); // We need to clean this up - was $total, which should work
+					// $arr['html'] = $view->loadTemplate();
 
 				}
 				else
