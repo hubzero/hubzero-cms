@@ -69,7 +69,7 @@ class Groups extends Base
 		$this->action = Request::getCmd('action', '');
 		$this->task   = Request::getCmd('task', '');
 
-		// Handles misrouted request 
+		// Handles misrouted request
 		if ($this->task == 'pages')
 		{
 			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn='. $this->cn . '&controller=pages'));
@@ -1563,9 +1563,16 @@ class Groups extends Base
 		$contentServer->acceptranges(false);
 
 		// Do we need to manually set mime type?
-		if ($extension == 'css')
+		switch ($extension)
 		{
-			$contentServer->setContentType('text/css');
+			case 'css':
+				$contentServer->setContentType('text/css');
+				break;
+			case 'js':
+				$contentServer->setContentType('application/javascript');
+				break;
+			default:
+				break;
 		}
 
 		// Serve up the file
