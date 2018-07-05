@@ -219,8 +219,31 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		{
 			try
 			{
+				// Fields we need
+				$retrieve = array(
+					'email',
+					'name'
+				);
+				// Extra fields we might want to collect
+				$fields = array(
+					'age_range',
+					'gender',
+					'locale',
+					'link',
+					'timezone',
+					'verified',
+					'updated_time'
+				);
+				foreach ($fields as $field)
+				{
+					if ($this->params->get('profile_' . $field))
+					{
+						$retrieve[] = $field;
+					}
+				}
+
 				$this->facebook()->setDefaultAccessToken($session);
-				$facebookResponse = $this->facebook()->get('/me?fields=email,name');
+				$facebookResponse = $this->facebook()->get('/me?fields=' . implode(',', $retrieve));
 				$user_profile = $facebookResponse->getGraphUser();
 
 				$id       = $user_profile->getId();
@@ -278,6 +301,22 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 			$hzal->update();
 
+			// Save extra data
+			foreach ($fields as $key)
+			{
+				$val = $user_profile->getField($key);
+
+				if (in_array($key, $retrieve) && $val)
+				{
+					$datum = Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, $key);
+					$datum->set(array(
+						'link_id'      => $hzal->id,
+						'domain_key'   => (string)$key,
+						'domain_value' => (string)$val
+					));
+					$datum->save();
+				}
+			}
 
 			// If we have a real user, drop the authenticator cookie
 			if (isset($user) && is_object($user))
