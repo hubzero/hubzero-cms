@@ -127,5 +127,45 @@ $fields = $form->getFieldset('basic');
 				<p class="warning"><?php echo Lang::txt('COM_MEMBERS_PICTURE_ADDED_LATER'); ?></p>
 			<?php endif; ?>
 		</fieldset>
+
+		<?php
+		if ($lnks = Hubzero\Auth\Link::find_by_user_id($this->profile->get('id')))
+		{
+			?>
+			<fieldset class="adminform">
+				<legend><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR_DATA'); ?></legend>
+				<?php
+				foreach ($lnks as $lnk)
+				{
+					$extrafields = Hubzero\Auth\Link\Data::all()
+						->whereEquals('link_id', $lnk['id'])
+						->rows();
+
+					if ($extrafields->count() > 0)
+					{
+						?>
+						<fieldset class="radio authenticators">
+							<legend><?php echo $this->escape($lnk['auth_domain_name']); ?></legend>
+
+							<?php
+							foreach ($extrafields as $extrafield)
+							{
+								?>
+								<div class="input-wrap">
+									<label for="<?php echo $extrafield->get('link_id') . '_' . $extrafield->get('domain_key') . '_' . $extrafield->get('id'); ?>"><?php echo $this->escape($extrafield->get('domain_key')); ?></label>
+									<input type="text" name="<?php echo $extrafield->get('link_id') . '_' . $extrafield->get('domain_key') . '_' . $extrafield->get('id'); ?>" value="<?php echo $this->escape($extrafield->get('domain_value')); ?>" readonly="readonly" />
+								</div>
+								<?php
+							}
+							?>
+						</fieldset>
+						<?php
+					}
+				}
+				?>
+			</fieldset>
+			<?php
+		}
+		?>
 	</div>
 </div>
