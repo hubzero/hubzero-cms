@@ -56,6 +56,36 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">JYes</option>
 				</field>
 			</fieldset>
+			<fieldset name="profile">
+				<field name="profile_num-connections" type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_NUMCONNECTIONS_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_PROFILE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="profile_summary" type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_SUMMARY_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_PROFILE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="profile_specialties" type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_SPECIALTIES_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_PROFILE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="profile_public-profile-url" type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_PUBLICPROFILEURL_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_PROFILE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="profile_industry" type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_INDUSTRY_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_PROFILE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="profile_location" type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_LOCATION_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_PROFILE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="profile_positions" type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_POSITIONS_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_PROFILE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+			</fieldset>
 		</fields>
 	</config>
 </extension>
