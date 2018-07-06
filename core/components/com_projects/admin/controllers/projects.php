@@ -65,6 +65,8 @@ class Projects extends AdminController
 		$this->registerTask('applydescription', 'savedescription');
 		$this->registerTask('accesspublic', 'access');
 		$this->registerTask('accessprivate', 'access');
+		$this->registerTask('feature', 'featured');
+		$this->registerTask('unfeature', 'featured');
 
 		// Publishing enabled?
 		$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
@@ -836,6 +838,62 @@ class Projects extends AdminController
 			{
 				Notify::success(Lang::txt('COM_PROJCTS_SUCCESS_UNARCHIVED', $i));
 			}
+		}
+
+		$this->cancelTask();
+	}
+
+	/**
+	 * Set featured state of project(s)
+	 *
+	 * @return  void
+	 */
+	public function featuredTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$i = 0;
+
+		//foreach group id passed in
+		foreach ($ids as $id)
+		{
+			// Update record(s)
+			$model = new Models\Project($id);
+
+			if (!$model->exists())
+			{
+				Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+				continue;
+			}
+
+			$model->set('featured', $this->getTask() == 'feature' ? 1 : 0);
+
+			if (!$model->store())
+			{
+				Notify::error($model->getError());
+				continue;
+			}
+
+			// Allow plugins to respond to changes
+			Event::trigger('projects.onProjectAfterSave', array($model));
+
+			$i++;
+		}
+
+		// Output messsage and redirect
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_PROJCTS_SUCCESS_' . $this->getTask(), $i));
 		}
 
 		$this->cancelTask();
