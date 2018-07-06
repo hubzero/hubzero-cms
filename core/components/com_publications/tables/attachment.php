@@ -51,9 +51,25 @@ class Attachment extends Table
 	}
 
 	/**
+	 * Validate data
+	 *
+	 * @return  boolean  True if data is valid
+	 */
+	public function check()
+	{
+		if (!$this->id)
+		{
+			$this->ordering = (intval($this->getLastOrder()) + 1);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get array of file attachments
 	 *
 	 * @param   integer  $versionid  Pub version ID
+	 * @param   string   $role
 	 * @return  mixed    object or false
 	 */
 	public function getAttachmentsArray($versionid = null, $role = '')
@@ -120,7 +136,7 @@ class Attachment extends Table
 	 * @param   string  $value
 	 * @return  void
 	 */
-	public function saveParam ($record = null, $param = '', $value = 0)
+	public function saveParam($record = null, $param = '', $value = 0)
 	{
 		if (!is_object($record))
 		{
@@ -174,8 +190,11 @@ class Attachment extends Table
 	/**
 	 * Update records for all publications in a project
 	 *
-	 * @param      integer 	$projectid		project id
-	 * @return     void
+	 * @param   integer  $projectid  project id
+	 * @param   string   $field
+	 * @param   string   $from
+	 * @param   string   $to
+	 * @return  bool
 	 */
 	public function updateRecords($projectid, $field, $from, $to)
 	{
@@ -196,8 +215,8 @@ class Attachment extends Table
 	/**
 	 * Get attachments
 	 *
-	 * @param      integer 	$versionid		pub version id
-	 * @return     object
+	 * @param   integer  $versionid  pub version id
+	 * @return  mixed    Array or bool
 	 */
 	public function sortAttachments($versionid)
 	{
@@ -211,10 +230,10 @@ class Attachment extends Table
 			return false;
 		}
 
-		$query = "SELECT a.*";
-		$query.= " FROM $this->_tbl AS a";
-		$query.= " WHERE a.publication_version_id=" . $this->_db->quote($versionid);
-		$query.= " ORDER BY a.ordering ASC";
+		$query  = "SELECT a.*";
+		$query .= " FROM $this->_tbl AS a";
+		$query .= " WHERE a.publication_version_id=" . $this->_db->quote($versionid);
+		$query .= " ORDER BY a.ordering ASC";
 
 		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();
@@ -222,10 +241,10 @@ class Attachment extends Table
 		if ($results)
 		{
 			$attachments = array(
-				'1' 		=> array(),
-				'2' 		=> array(),
-				'3' 		=> array(),
-				'elements' 	=> array()
+				'1'        => array(),
+				'2'        => array(),
+				'3'        => array(),
+				'elements' => array()
 			);
 
 			foreach ($results as $result)
@@ -259,17 +278,16 @@ class Attachment extends Table
 		}
 
 		return false;
-
 	}
 
 	/**
 	 * Get connections
 	 *
-	 * @param      integer 	$vid		pub version id
-	 * @param      array 	$find
-	 * @return     object
+	 * @param   integer  $vid   pub version id
+	 * @param   array    $find
+	 * @return  object
 	 */
-	public function getConnections ($vid = null, $find = array())
+	public function getConnections($vid = null, $find = array())
 	{
 		if (!$vid)
 		{
@@ -662,19 +680,19 @@ class Attachment extends Table
 	 * @param   string   $base
 	 * @return  mixed
 	 */
-	public function getVersionAttachments ($pid = null, $vid = null)
+	public function getVersionAttachments($pid = null, $vid = null)
 	{
 		if (!intval($pid) || !intval($vid))
 		{
 			return false;
 		}
 
-		$query = "SELECT A.*, V.version_label, V.version_number FROM $this->_tbl AS A ";
-		$query.= " JOIN #__publication_versions AS V ON A.publication_version_id = V.id ";
-		$query.= " WHERE A.publication_id = " . $this->_db->quote($pid)
+		$query  = "SELECT A.*, V.version_label, V.version_number FROM $this->_tbl AS A ";
+		$query .= " JOIN #__publication_versions AS V ON A.publication_version_id = V.id ";
+		$query .= " WHERE A.publication_id = " . $this->_db->quote($pid)
 				. " AND A.publication_version_id !=" . $this->_db->quote($vid);
-		$query.= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
-		$query.= " ORDER BY A.ordering";
+		$query .= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
+		$query .= " ORDER BY A.ordering";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -695,14 +713,22 @@ class Attachment extends Table
 		{
 			return false;
 		}
-		$pub   = array('id'=> '', 'title' => '', 'version' => 'default', 'version_label' => '');
-		$query = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
-		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
-		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
-		$query.= " WHERE P.project_id=" . $this->_db->quote($projectid);
-		$query.= $hash ? " AND a.vcs_hash=" . $this->_db->quote($hash) : " AND a.path=" . $this->_db->quote($path);
-		$query.= $primary ? " AND a.role=1 " : "";
-		$query.= " ORDER BY v.id DESC LIMIT 1";
+
+		$pub = array(
+			'id'=> '',
+			'title' => '',
+			'version' => 'default',
+			'version_label' => ''
+		);
+
+		$query  = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
+		$query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
+		$query .= "JOIN #__publications AS P ON P.id=v.publication_id  ";
+		$query .= " WHERE P.project_id=" . $this->_db->quote($projectid);
+		$query .= $hash ? " AND a.vcs_hash=" . $this->_db->quote($hash) : " AND a.path=" . $this->_db->quote($path);
+		$query .= $primary ? " AND a.role=1 " : "";
+		$query .= " ORDER BY v.id DESC LIMIT 1";
+
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
@@ -734,14 +760,14 @@ class Attachment extends Table
 
 		$assoc = array();
 
-		$query = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
-		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
-		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
-		$query.= " WHERE P.project_id=" . $this->_db->quote($projectid)
-				. " AND a.type=" . $this->_db->quote($type);
-		$query.= $primary ? " AND a.role=1 " : "";
-		$query.= " GROUP BY a.path ";
-		$query.= " ORDER BY v.id DESC ";
+		$query  = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
+		$query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id ";
+		$query .= "JOIN #__publications AS P ON P.id=v.publication_id ";
+		$query .= " WHERE P.project_id=" . $this->_db->quote($projectid) . " AND a.type=" . $this->_db->quote($type);
+		$query .= $primary ? " AND a.role=1 " : "";
+		$query .= " GROUP BY a.path ";
+		$query .= " ORDER BY v.id DESC ";
+
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
@@ -800,6 +826,9 @@ class Attachment extends Table
 			$neighbor->store();
 		}
 
+		// Rebuild the ordering
+		$this->rebuild();
+
 		return true;
 	}
 
@@ -830,5 +859,45 @@ class Attachment extends Table
 		}
 
 		return $neighbor;
+	}
+
+	/**
+	 * Get the last number in an ordering
+	 *
+	 * @return  integer
+	 */
+	public function getLastOrder()
+	{
+		$this->_db->setQuery("SELECT `ordering` FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " ORDER BY ordering DESC LIMIT 1");
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Rebuild the ordering values
+	 *
+	 * @return  boolean  True on success
+	 */
+	public function rebuild()
+	{
+		$sql = "SELECT id FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " ORDER BY ordering ASC, id ASC";
+
+		$this->_db->setQuery($sql);
+		$rows = $this->_db->loadObjectList();
+
+		if ($rows)
+		{
+			foreach ($rows as $i => $row)
+			{
+				$sql = "UPDATE `$this->_tbl` SET `ordering`=" . ($i + 1) . " WHERE id=" . $this->_db->quote($row->id);
+				$this->_db->setQuery($sql);
+				if (!$this->_db->query())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 }
