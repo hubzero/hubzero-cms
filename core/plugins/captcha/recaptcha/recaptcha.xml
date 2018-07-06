@@ -30,18 +30,18 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="text" name="public" default="" label="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY"  description="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY_DESC" />
-				<field type="text" name="private" default="" label="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY" description="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY_DESC" />
+				<field type="text" name="public" default="" label="PLG_CAPTCHA_RECAPTCHA_PUBLIC_KEY"  description="PLG_CAPTCHA_RECAPTCHA_PUBLIC_KEY_DESC" />
+				<field type="text" name="private" default="" label="PLG_CAPTCHA_RECAPTCHA_PRIVATE_KEY" description="PLG_CAPTCHA_RECAPTCHA_PRIVATE_KEY_DESC" />
 				<field name="@spacer" type="spacer" />
-				<field type="list" name="theme" default="light" label="PLG_HUBZERO_RECAPTCHA_THEME" description="PLG_HUBZERO_RECAPTCHA_THEME_DESC">
-					<option value="light">PLG_HUBZERO_RECAPTCHA_THEME_LIGHT</option>
-					<option value="dark">PLG_HUBZERO_RECAPTCHA_THEME_DARK</option>
+				<field type="list" name="theme" default="light" label="PLG_CAPTCHA_RECAPTCHA_THEME" description="PLG_CAPTCHA_RECAPTCHA_THEME_DESC">
+					<option value="light">PLG_CAPTCHA_RECAPTCHA_THEME_LIGHT</option>
+					<option value="dark">PLG_CAPTCHA_RECAPTCHA_THEME_DARK</option>
 				</field>
-				<field type="list" name="type" default="image" label="PLG_HUBZERO_RECAPTCHA_TYPE" description="PLG_HUBZERO_RECAPTCHA_TYPE_DESC">
-					<option value="image">PLG_HUBZERO_RECAPTCHA_TYPE_IMAGE</option>
-					<option value="audio">PLG_HUBZERO_RECAPTCHA_TYPE_AUDIO</option>
+				<field type="list" name="type" default="image" label="PLG_CAPTCHA_RECAPTCHA_TYPE" description="PLG_CAPTCHA_RECAPTCHA_TYPE_DESC">
+					<option value="image">PLG_CAPTCHA_RECAPTCHA_TYPE_IMAGE</option>
+					<option value="audio">PLG_CAPTCHA_RECAPTCHA_TYPE_AUDIO</option>
 				</field>
-				<field type="text" name="language" default="en" label="PLG_HUBZERO_RECAPTCHA_LANGUAGE_CODE" description="PLG_HUBZERO_RECAPTCHA_LANGUAGE_CODE_DESC" />
+				<field type="text" name="language" default="en" label="PLG_CAPTCHA_RECAPTCHA_LANGUAGE_CODE" description="PLG_CAPTCHA_RECAPTCHA_LANGUAGE_CODE_DESC" />
 			</fieldset>
 		</fields>
 	</config>
