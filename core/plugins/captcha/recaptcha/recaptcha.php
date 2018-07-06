@@ -81,7 +81,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->params->get('public') || !$this->params->get('private'))
 		{
-			throw new Exception(Lang::txt('PLG_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
+			throw new Exception(Lang::txt('PLG_CAPTCHA_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
 		}
 
 		return true;
