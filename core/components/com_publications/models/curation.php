@@ -535,7 +535,7 @@ class Curation extends Obj
 						// Take the first one matching our role and type
 						// It's technically possible to have more than one match, but no way of
 						// telling which one is correct at that point as fas as I can tell
-						if ($role == $element->params->role && $type == $element->params->type)
+						if ($role == $element->params->role && (!$type || ($type && $type == $element->params->type)))
 						{
 							$output = new stdClass;
 							$output->block   = $block;
