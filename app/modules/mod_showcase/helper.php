@@ -86,14 +86,14 @@ class Helper extends Module
 			//query to get publications
 			$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3) AS versions FROM #__publication_versions as V, #__projects as PP, #__publication_master_types AS MT, #__publications AS C LEFT JOIN #__publication_categories AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM #__publication_versions AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
 
-			$this->db->setQuery($sql . ' AND V.state != 2 GROUP BY C.id ORDER BY V.published_up DESC');
+			$this->db->setQuery($sql . ' AND V.state = 1 GROUP BY C.id ORDER BY V.published_up DESC');
 			if (!$this->db->getError())
 			{
 				$this->pubs = $this->db->loadObjectList('id');
 			}
 
 			// Get featured publications
-			$this->db->setQuery($sql . ' AND C.featured = 1 AND V.state != 2 GROUP BY C.id ORDER BY V.published_up DESC');
+			$this->db->setQuery($sql . ' AND C.featured = 1 AND V.state = 1 GROUP BY C.id ORDER BY V.published_up DESC');
 			if (!$this->db->getError())
 			{
 				$this->featured["pubs"] = $this->db->loadObjectList('id');
