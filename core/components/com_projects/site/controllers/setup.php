@@ -918,8 +918,20 @@ class Setup extends Base
 					// Are we syncing group membership?
 					if ($this->model->get('sync_group'))
 					{
+						$syncRole = Request::getInt('syncRole', 0);
+
 						$objO = $this->model->table('Owner');
-						$objO->saveOwners($this->model->get('id'), User::get('id'), 0, $this->_gid, 0, 1, 1, '', $split_group_roles = 0);
+						$objO->saveOwners(
+							$this->model->get('id'),
+							User::get('id'),
+							0,
+							$this->_gid,
+							$syncRole,
+							1,
+							1,
+							'',
+							$split_group_roles = 0
+						);
 					}
 				}
 
