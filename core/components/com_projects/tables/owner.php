@@ -1186,6 +1186,20 @@ class Owner extends Table
 							$added[] = $owner;
 						}
 					}
+					elseif ($found == 1 && !in_array($owner, $managers))
+					{
+						// update sync role
+						$query  = "UPDATE $this->_tbl"
+							. " set role=" . $role
+							. " WHERE groupid=" . $gidNumber
+							. " AND projectid=" . $projectid
+							. " AND userid=" . $owner . ";";
+						$this->_db->setQuery($query);
+						if ($this->_db->query())
+						{
+							$added[] = $owner;
+						}
+					}
 				}
 			}
 			else

@@ -240,3 +240,8 @@
 	#abox-content {
 		text-align: left;
 	}
+
+/* Group members syncing fields */
+	#sync-role-selector {
+		max-width: 10%;
+	}
