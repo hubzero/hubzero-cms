@@ -329,9 +329,20 @@ HUB.ProjectTeam = {
 jQuery(document).ready(function($){
 	HUB.ProjectTeam.initialize();
 
+	const $syncMembersRadio = $('#membership_sync')
+	const membersSynced = $syncMembersRadio.prop('checked')
+	const $syncRoleSelector = $('#sync-role-selector')
+
+	if (membersSynced) {
+		$syncRoleSelector.show()
+	}
+
 	var go = $('.group-options');
 	if (go.length) {
 		go.on('click', 'input[type=radio]', function(e) {
+			$(this).closest('form').submit();
+		});
+		go.on('change', '#sync-role-selector', function(e) {
 			$(this).closest('form').submit();
 		});
 	}
