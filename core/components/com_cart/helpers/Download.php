@@ -228,7 +228,7 @@ class CartDownload
 
 			// ditch scope_id to match old output
 			unset($meta['scope_id']);
-			
+
 			// if the download record has no metadata yet, add it
 			if (!isset($res[$dId]->meta))
 			{
