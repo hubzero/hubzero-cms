@@ -33,19 +33,20 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Hubzero\Utility\Number;
-
 $directory = $this->directory;
-
 ?>
-
 <li>
-	<span class="directory">&#xf07b;</span> <?php echo $directory['name']; ?>
-	<ul style="list-style:none">
-		<?php
-			$this->view('_bundle_contents')
-				->set('contents', $directory['contents'])
-				->display();
-		?>
-	</ul>
+	<span class="item-icon">
+		<span class="item-extension _<?php echo (Filesystem::extension($directory['name']) == 'zip' ? 'zip' : 'dir'); ?>"></span>
+	</span>
+	<span class="item-title"><?php echo $this->escape($directory['name']); ?></span>
+	<?php if (isset($directory['contents']) && $directory['contents']): ?>
+		<ul>
+			<?php
+				$this->view('_bundle_contents')
+					->set('contents', $directory['contents'])
+					->display();
+			?>
+		</ul>
+	<?php endif; ?>
 </li>

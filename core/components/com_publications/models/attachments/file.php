@@ -307,14 +307,20 @@ class File extends Base
 		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
 			$title = $configs->bundleTitle ? $configs->bundleTitle : 'Bundle';
-			$list .= '<li>' . \Components\Projects\Models\File::drawIcon('zip') . ' ' . $title . '</li>';
+			$list .= '<li>';
+			$list .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('zip') . '</span>';
+			$list .= '<span class="item-title">' . $title . '</span>';
+			$list .= '</li>';
 		}
 		// Draw directories
 		if (($configs->multiZip == 2 && $configs->subdir) || $configs->bundleDirectory)
 		{
 			// Bundle name
 			$name  = $configs->bundleDirectory ? $configs->bundleDirectory : $configs->subdir;
-			$list .= '<li>' . \Components\Projects\Models\File::drawIcon('folder') . ' ' . $name . '</li>';
+			$list .= '<li>';
+			$list .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('folder') . '</span>';
+			$list .= '<span class="item-title">' . $name . '</span>';
+			$list .= '</li>';
 			$class = 'level2';
 		}
 		// List individual
@@ -349,8 +355,10 @@ class File extends Base
 				$file = new \Components\Projects\Models\File($filePath);
 
 				$list .= '<li class="' . $class . '">';
-				$list .= '<span class="item-title" id="file-' . $attach->id . '">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span>';
-				$list .= '<span class="item-details">' . $attach->path . '</span>';
+				$list .= '<span class="item-icon">' . $file::drawIcon($file->get('ext')). '</span>';
+				$list .= '<span class="item-title" id="file-' . $attach->id . '">' . trim($where, DS) . '</span>';
+				//$list .= '<span class="item-details">' . $attach->path . '</span>';
+				$list .= '<span class="item-details">' . trim(\Hubzero\Utility\Number::formatBytes(filesize($filePath))) . '</span>';
 				$list .= '</li>';
 			}
 		}
@@ -541,6 +549,8 @@ class File extends Base
 		// Primary button
 		if ($role == 1)
 		{
+			$options = array();
+
 			if (count($attachments) > 1)
 			{
 				$fpath = $this->bundle($attachments, $configs, false);
@@ -571,19 +581,26 @@ class File extends Base
 					$url = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
 					$label .= ' ' . Lang::txt('Bundle');
 					$title = $pub->title . ' ' . Lang::txt('Bundle');
+
+					$show = new \stdClass;
+					$show->href = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=showcontents');
+					$show->class = 'showBundle';
+					$show->title = Lang::txt('Show bundle contents');
+
+					$options[] = $show;
 				}
 				else
 				{
 					// Get ext
 					$parts  = explode('.', $fpath);
-					$ext 	= count($parts) > 1 ? array_pop($parts) : null;
-					$ext	= strtolower($ext);
-					$label.= $ext ?  ' <span class="caption">(' . strtoupper($ext) . ')</span>' : '';
+					$ext    = count($parts) > 1 ? array_pop($parts) : null;
+					$ext    = strtolower($ext);
+					$label .= $ext ? ' <span class="caption">(' . strtoupper($ext) . ')</span>' : '';
 				}
-				$class = 'btn btn-primary active icon-next';
+				$class = 'btn btn-primary active'; //icon-next
 				$class .= $disabled ? ' link_disabled' : '';
 
-				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop);
+				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop, $options);
 			}
 		}
 		elseif ($role == 2 && $attachments)
