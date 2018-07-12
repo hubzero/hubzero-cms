@@ -61,7 +61,7 @@ $gidNumber = $this->page->get('gidNumber', '');
 $category  = $this->page->get('category', '');
 $alias     = $this->page->get('alias', '');
 $title     = $this->page->get('title', '');
-$content   = $this->version->get('content', '');
+$content   = stripslashes($this->version->get('content', ''));
 $version   = $this->version->get('version', 0);
 $ordering  = $this->page->get('ordering', null);
 $state     = $this->page->get('state', 1);
@@ -173,7 +173,7 @@ if ($this->page->get('id'))
 
 							// display with ckeditor
 							$editor = App::get('editor'); //new \Hubzero\Html\Editor('ckeditor');
-							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
+							echo $editor->display('pageversion[content]', $this->escape($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
 						?>
 
 					</label>
