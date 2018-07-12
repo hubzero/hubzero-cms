@@ -32,7 +32,7 @@
 
 namespace Components\Publications\Models;
 
-require_once Component::path('com_publications') . '/helpers/zipHelper.php';
+require_once \Component::path('com_publications') . '/helpers/zipHelper.php';
 
 use Components\Publications\Models\Publication;
 use Components\Publications\Helpers\ZipHelper;
@@ -43,17 +43,18 @@ use Hubzero\Utility\Arr;
  */
 class Bundle
 {
-	/*
+	/**
 	 * Contents of archive
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $contents = null;
 
-	/*
+	/**
 	 * Instance constructor
 	 *
-	 * @param		array		$args		Instantiation data
+	 * @param   array  $args  Instantiation data
+	 * @return  void
 	 */
 	public function __construct($args)
 	{
@@ -61,10 +62,10 @@ class Bundle
 		$this->publication_version_id  = $args['publication_version_id'];
 	}
 
-	/*
+	/**
 	 * Gets size of corresponding bundle in bytes
 	 *
-	 * @return   integer
+	 * @return  integer
 	 */
 	public function getSize()
 	{
@@ -79,10 +80,10 @@ class Bundle
 		return $size;
 	}
 
-	/*
+	/**
 	 * Gets checksum of corresponding bundle
 	 *
-	 * @return   string
+	 * @return  string
 	 */
 	public function getMd5()
 	{
@@ -97,10 +98,10 @@ class Bundle
 		return $checksum;
 	}
 
-	/*
+	/**
 	 * Builds a hierarchical array of bundle's contents
 	 *
-	 * @return   array
+	 * @return  array
 	 */
 	public function getContents()
 	{
@@ -114,10 +115,10 @@ class Bundle
 		return $this->contents;
 	}
 
-	/*
+	/**
 	 * Getter for path to bundle
 	 *
-	 * @return   string
+	 * @return  string
 	 */
 	protected function getWrapperPath()
 	{
@@ -126,11 +127,11 @@ class Bundle
 		return $path;
 	}
 
-	/*
+	/**
 	 * Replace bundle element w/ hierarchical array of contents
 	 *
-	 * @param    array   $contents
-	 * @return   void
+	 * @param   array   $contents
+	 * @return  void
 	 */
 	protected function expandBundleFile(&$contents)
 	{
@@ -143,14 +144,17 @@ class Bundle
 		$bundleContents['contents'] = ZipHelper::getArchiveContents($bundlePath);
 
 		unset($contents[$bundleIndex]);
-		$contents['bundle'] = $bundleContents;
+		if ($bundleContents['contents'])
+		{
+			$contents['bundle'] = $bundleContents;
+		}
 	}
 
-	/*
+	/**
 	 * Gets index of bundle element
 	 *
-	 * @param    array     $contents
-	 * @return   integer
+	 * @param   array     $contents
+	 * @return  integer
 	 */
 	protected static function getBundleIndex($contents)
 	{
@@ -168,10 +172,10 @@ class Bundle
 		return $bundleIndex;
 	}
 
-	/*
+	/**
 	 * Builds path to bundle.zip archive
 	 *
-	 * @return   string
+	 * @return  string
 	 */
 	protected function getBundlePath()
 	{
@@ -184,10 +188,10 @@ class Bundle
 		return $bundlePath;
 	}
 
-	/*
+	/**
 	 * Getter for associated publication
 	 *
-	 * @return \Publication
+	 * @return  object  \Publication
 	 */
 	public function publication()
 	{
@@ -198,5 +202,4 @@ class Bundle
 
 		return $this->publication;
 	}
-
 }

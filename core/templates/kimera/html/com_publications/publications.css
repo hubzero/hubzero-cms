@@ -40,7 +40,7 @@
 		color: #666;
 	}
 	.com_publications #content-header .span8 a,
-	.com_publications #content-header .span4 a,
+	.com_publications #content-header .span4 p a,
 	.com_publications #content-header .aside a {
 		color: #fff;
 	}
@@ -326,7 +326,7 @@
 	p.wip {
 		font-size: 85%;
 		color: #333333;
-		margin-top: -1em;
+		/*margin-top: -1em;*/
 	}
 	p.devversion span {
 		display: block;
@@ -557,9 +557,15 @@
 		padding: 2em;
 	}
 
-	#primary-document .btn {
+	#primary-document {
 		width: 100%;
 		text-align: left;
+	}
+	#primary-document .btn:first-child {
+		width: calc(100% - (1.5em + 8px));
+	}
+	#primary-document .dropdown-menu {
+		width: 100%;
 	}
 	#primary-document_pop {
 		display: none;

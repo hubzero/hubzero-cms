@@ -17,7 +17,16 @@ jQuery(document).ready(function($){
 		width: 800,
 		height: 'auto',
 		autoSize: false,
-		fitToView: false
+		fitToView: false,
+		beforeLoad: function() {
+			href = $(this).attr('href');
+			if (href.indexOf('?') == -1) {
+				href += '?';
+			} else {
+				href += '&';
+			}
+			$(this).attr('href', href + 'tmpl=component');
+		}
 	});
 
 	$('a.play').fancybox({

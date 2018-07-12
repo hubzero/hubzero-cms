@@ -2033,7 +2033,29 @@ class Curation extends Obj
 
 		// Get attachment type model
 		$attModel = new Attachments($this->_db);
-		$contents = '<ul class="filelist">';
+
+		$bundle = $this->_pub->bundlePath();
+
+		$contents = '<div class="bundle-data">';
+		if (file_exists($bundle))
+		{
+			$contents .= '<div class="grid bundle-meta">
+				<div class="col span4">
+					<ul class="bundle-info">
+						<li>' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CONTENT') . '</li>
+						<li><span class="bundle-size">' . \Hubzero\Utility\Number::formatBytes(filesize($bundle)) . '</span></li>
+					</ul>
+				</div>
+				<div class="col span8 omega">
+					<div class="bundle-checksum">
+						<span class="bundle-checksum-value">md5:' . md5_file($bundle) . '</span>
+						<span class="bundle-checksum-help icon-help tooltips" title="' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '</span>
+					</div>
+				</div>
+			</div>';
+		}
+		$contents .= '<div class="bundle-files">';
+		$contents .= '<ul class="filelist">';
 
 		$contents .= $attModel->showPackagedItems(
 			$elements,
@@ -2043,10 +2065,18 @@ class Curation extends Obj
 		// Custom license to be included in LICENSE.txt
 		if ($this->_pub->license_text)
 		{
-			$contents .= '<li>' . \Components\Projects\Models\File::drawIcon('txt') . ' LICENSE.txt</li>';
+			$contents .= '<li>';
+			$contents .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('txt') . '</span>';
+			$contents .= '<span class="item-title">LICENSE.txt</span>';
+			$contents .= '</li>';
 		}
-		$contents .= '<li>' . \Components\Projects\Models\File::drawIcon('txt') . ' README.txt</li>';
+		$contents .= '<li>';
+		$contents .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('txt') . '</span>';
+		$contents .= '<span class="item-title">README.txt</span>';
+		$contents .= '</li>';
 		$contents .= '</ul>';
+
+		$contents .= '</div></div>';
 
 		return $contents;
 	}
