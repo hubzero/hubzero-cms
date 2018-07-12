@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.0">
+	<name>Faculty Mentoring Networks</name>
+	<author>QUBEShub</author>
+	<creationDate>July 2018</creationDate>
+	<version>0.0.999</version>
+	<copyright>Copyright 2018 QUBEShub.org</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>QUBES Faculty Mentoring Networks component</description>
+  <languages>
+    <language tag="en-GB">en-GB.com_fmns.ini</language>
+  </languages>
+	<administration>
+		<menu>Faculty Mentoring Networks</menu>
+    <languages folder="admin">
+			<language tag="en-GB">en-GB.com_fmns.ini</language>
+      <language tag="en-GB">en-GB.com_fmns.sys.ini</language>
+      <language tag="en-GB">en-GB.com_fmns.menu.ini</language>
+		</languages>
+	</administration>
+</extension>
