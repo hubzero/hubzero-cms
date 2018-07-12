@@ -33,14 +33,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Hubzero\Utility\Number;
-
 $file = $this->file;
-
 ?>
-
 <li>
-	<span class="file">&#xf016;</span> <?php echo $file['name']; ?>
-	(<?php echo Number::formatBytes($file['size']); ?>)
+	<span class="item-icon">
+		<span class="item-extension _<?php echo $this->escape(strtolower(Filesystem::extension($file['name']))); ?>"></span>
+	</span>
+	<span class="item-title"><?php echo $this->escape($file['name']); ?></span>
+	<span class="item-details"><?php echo trim(Hubzero\Utility\Number::formatBytes($file['size'])); ?></span>
 </li>
-
