@@ -29,33 +29,47 @@ class Migration20180627111315ComPublications extends Base
 	{
 		if ($this->db->tableExists('#__extensions'))
 		{
-			$query = "SELECT * FROM `#__extensions` WHERE `element` = 'com_publications';";
+			$query = "SELECT `params` FROM `#__extensions` WHERE `element` = 'com_publications';";
 			$this->db->setQuery($query);
-			$obj = $this->db->loadObject();
-			$pubParams = new \Hubzero\Config\Registry($obj->params);
-			$addParams = array(
-				'sftppath' => '/site/publications/ftp'
-			);
-			$pubParams->merge($addParams);
-
-			$query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($pubParams->toString()) . " WHERE `element`='com_publications'";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		$versionCount = Version::all()->whereEquals('state', 1)->total();
-		$offset = 0;
-		while ($offset < $versionCount)
-		{
-			$publications = Version::all()->whereEquals('state', 1)->limit($this->limit)->start($offset);
-			foreach ($publications as $publication)
+			$params = $this->db->loadResult();
+			if ($params)
 			{
-				$pubId = $publication->get('publication_id');
-				$versionId = $publication->get('id');
-				$pubModel = new Publication($pubId, null, $versionId);
-				$pubModel->setCuration();
-				$pubModel->_curationModel->createSymLink();
+				$pubParams = new \Hubzero\Config\Registry($params);
+				$addParams = array(
+					'sftppath' => '/site/publications/ftp'
+				);
+				$pubParams->merge($addParams);
+
+				$query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($pubParams->toString()) . " WHERE `element`='com_publications'";
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
-			$offset += $this->limit;
+		}
+
+		if (is_dir(PATH_APP . '/site/publications/ftp'))
+		{
+			$versionCount = Version::all()->whereEquals('state', 1)->total();
+			$offset = 0;
+			while ($offset < $versionCount)
+			{
+				$publications = Version::all()
+					->whereEquals('state', 1)
+					->limit($this->limit)
+					->start($offset)
+					->rows();
+
+				foreach ($publications as $publication)
+				{
+					$pubId = $publication->get('publication_id');
+					$versionId = $publication->get('id');
+
+					$pubModel = new Publication($pubId, null, $versionId);
+					$pubModel->setCuration();
+					$pubModel->_curationModel->createSymLink();
+				}
+
+				$offset += $this->limit;
+			}
 		}
 	}
 
@@ -66,17 +80,25 @@ class Migration20180627111315ComPublications extends Base
 	{
 		$versionCount = Version::all()->whereEquals('state', 1)->total();
 		$offset = 0;
+
 		while ($offset < $versionCount)
 		{
-			$publications = Version::all()->whereEquals('state', 1)->limit($this->limit)->start($offset);
+			$publications = Version::all()
+				->whereEquals('state', 1)
+				->limit($this->limit)
+				->start($offset)
+				->rows();
+
 			foreach ($publications as $publication)
 			{
 				$pubId = $publication->get('publication_id');
 				$versionId = $publication->get('id');
+
 				$pubModel = new Publication($pubId, null, $versionId);
 				$pubModel->setCuration();
 				$pubModel->_curationModel->removeSymLink();
 			}
+
 			$offset += $this->limit;
 		}
 	}
