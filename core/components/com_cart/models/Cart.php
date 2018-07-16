@@ -1085,6 +1085,30 @@ abstract class Cart
 		//echo $db->toString(); die;
 		$db->query();
 
+		// Need to recalculate the transaction total
+		//print_r(self::getTransactionItems($tId)); die;
+		//print_r($currerntTransactionInfo); die;
+
+		// Subtotal
+		$transactionItems = self::getTransactionItems($tId);
+		$subtotal = 0;
+
+		foreach ($transactionItems as $transactionItem)
+		{
+			$transactionItemInfo = $transactionItem['transactionInfo'];
+			$subtotal += $transactionItemInfo->qty * $transactionItemInfo->tiPrice;
+		}
+
+		$tiTotal = $subtotal + $currerntTransactionInfo->tiTax + $currerntTransactionInfo->tiShipping - $currerntTransactionInfo->tiShippingDiscount - $currerntTransactionInfo->tiDiscounts;
+
+		$sql = "UPDATE `#__cart_transaction_info` SET
+				`tiTotal` = " . $db->quote($tiTotal) . ",
+				`tiSubtotal` = " . $db->quote($subtotal) . "
+				WHERE `tId` = " . $db->quote($tId);
+
+		$db->setQuery($sql);
+		$db->query();
+
 		if ($returnChanges)
 		{
 			return $transactionChanges;
