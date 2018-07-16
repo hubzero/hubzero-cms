@@ -131,7 +131,7 @@ class Orders extends AdminController
 		{
 			$tInfo = Cart::getTransactionInfo($r->tId);
 			$r->tiTotal = $tInfo->tiTotal;
-			$tiItemsQty = sizeof(unserialize($tInfo->tiItems));
+			$tiItemsQty = count(unserialize($tInfo->tiItems));
 			$r->tiItemsQty = $tiItemsQty;
 		}
 
