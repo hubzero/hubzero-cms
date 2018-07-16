@@ -320,7 +320,7 @@ class Ticketsv1_0 extends ApiController
 		// Get a list of all statuses
 		$statuses = \Components\Support\Models\Status::all()->rows();
 
-		$tickets = Ticket::all();
+		$tickets = \Components\Support\Models\Ticket::all();
 
 		if ($filters['owner'])
 		{
