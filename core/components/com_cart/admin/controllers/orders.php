@@ -217,6 +217,10 @@ class Orders extends AdminController
 						{
 							$msg .= ' <strong>quantity</strong>';
 						}
+						elseif ($item->key == 'tiPrice')
+						{
+							$msg .= ' <strong>price</strong>';
+						}
 
 						$msg .= ' value was updated';
 					}
@@ -317,6 +321,9 @@ class Orders extends AdminController
 		// get the transaction items' QTYs
 		$tiQty = Request::getVar('tiQty', array());
 
+		// get the transaction items' prices
+		$tiPrice = Request::getVar('tiPrice', array());
+
 		// get the transaction items' checkoutNotes
 		$tiCheckoutNotes = Request::getVar('checkoutNotes', array());
 
@@ -339,6 +346,16 @@ class Orders extends AdminController
 			$tiInfo->$sId->tiQty = $qty;
 		}
 
+		// populate the prices
+		foreach ($tiPrice as $sId => $price)
+		{
+			if (empty($tiInfo->$sId))
+			{
+				$tiInfo->$sId = new \stdClass();
+			}
+			$tiInfo->$sId->tiPrice = $price;
+		}
+
 		// populate the notes
 		foreach ($tiCheckoutNotes as $sId => $notes)
 		{
@@ -353,13 +370,11 @@ class Orders extends AdminController
 			$tiInfo->$sId->meta->checkoutNotes = $notes;
 		}
 
+		// Log the changes
 		$itemsChanges = Cart::updateTransactionItems($id, $tiInfo);
 		$transactionChanges = Cart::updateTransactionInfo($id, $transactionInfo);
-
-		// Log the changes
 		//print_r($itemsChanges);
 		//print_r($transactionChanges); //die;
-
 		$orderChanges = array_merge($itemsChanges, $transactionChanges);
 		//print_r($orderChanges); die;
 
