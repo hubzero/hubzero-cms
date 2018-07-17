@@ -2741,7 +2741,7 @@ class Tickets extends SiteController
 						foreach ($members as $member)
 						{
 							$u = User::getInstance($member);
-							if (!(is_object($u) && $u->get('block') == 0))
+							if (!(is_object($u) && $u->get('block') == '0'))
 							{
 								continue;
 							}
@@ -2769,7 +2769,7 @@ class Tickets extends SiteController
 				foreach ($members as $member)
 				{
 					$u = User::getInstance($member);
-					if (!(is_object($u) && $u->get('block') == 0))
+					if (!(is_object($u) && $u->get('block') == '0'))
 					{
 						continue;
 					}
