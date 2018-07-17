@@ -71,7 +71,7 @@ if (count($this->activities) > 0)
 					->set('option', 'com_projects')
 					->display();
 
-				$li = 'li_' . $activity->log->get('id');
+				$li = 'tail_' . $activity->log->get('id');
 				$i++;
 			} // end foreach
 			?>
@@ -83,12 +83,13 @@ if (count($this->activities) > 0)
 
 <div class="nav_pager more-updates">
 	<?php
-	if ($this->total > $this->filters['limit'])
+	if ($this->filters['start'] + $this->filters['limit'] < $this->total)
 	{
-		//$limit = $this->filters['limit'] + $this->filters['start'];
+		$start = $this->filters['start'] + $this->filters['limit'] - 1;
+
 		$option = Request::getCmd('option', 'com_members');
 		?>
-		<p><a href="<?php echo Route::url('index.php?option=' . $option . '&' . ($option == 'com_groups' ? 'cn=' . Request::getCmd('cn') : 'id=' . $this->uid) . '&active=projects&action=updates&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start'] . '#' . $li);  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
+		<p><a href="<?php echo Route::url('index.php?option=' . $option . '&' . ($option == 'com_groups' ? 'cn=' . Request::getCmd('cn') : 'id=' . $this->uid) . '&active=projects&action=updates&limit=' .  $this->filters['limit'] . '&start=' . $start . '#' . $li);  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
 	<?php } else if ($this->filters['limit'] != $this->limit) { ?>
 		<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 		<?php
