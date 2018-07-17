@@ -52,9 +52,9 @@ if ($group)
 	$managers = $group->get('managers');
 }
 $roles = [
-	'Collaborators' => 0,
-	'Managers' => 1,
-	'Reviewers' => 5
+	'COLLABORATORS' => 0,
+	'MANAGERS' => 1,
+	'REVIEWERS' => 5
 ];
 ?>
 
@@ -78,9 +78,11 @@ $roles = [
 
 			<select id="sync-role-selector" name="syncRole" hidden>
 				<?php foreach ($roles as $description => $value): ?>
-					<option value="" selected disabled hidden>Sync members as...</option>
+					<option value="" selected disabled hidden>
+						<?php echo Lang::txt('PLG_PROJECTS_TEAM_SYNCING_DEFAULT'); ?>
+					</option>
 					<option value="<?php echo $value; ?>">
-						<?php echo $description; ?>
+						<?php echo Lang::txt("PLG_PROJECTS_TEAM_SYNCING_$description"); ?>
 					</option>
 				<?php endforeach; ?>
 			</select>
