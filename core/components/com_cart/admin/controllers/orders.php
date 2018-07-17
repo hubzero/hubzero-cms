@@ -232,6 +232,10 @@ class Orders extends AdminController
 						{
 							$msg .= ' <strong>notes</strong>';
 						}
+						elseif ($item->key == 'tiPaymentDetails')
+						{
+							$msg .= ' <strong>payment details</strong>';
+						}
 
 						$msg .= ' value was updated';
 					}
@@ -331,6 +335,10 @@ class Orders extends AdminController
 		$tiNotes = Request::getVar('tiNotes', '');
 		$transactionInfo = array('tiNotes' => $tiNotes);
 
+		// get the payment details
+		$tiPaymentDetails = Request::getVar('tiPaymentDetails', '');
+		$transactionInfo['tiPaymentDetails'] = $tiPaymentDetails;
+
 		//print_r($tiCheckoutNotes); die;
 
 		// Create transaction items' info object
@@ -369,6 +377,8 @@ class Orders extends AdminController
 			}
 			$tiInfo->$sId->meta->checkoutNotes = $notes;
 		}
+
+		//print_r($transactionInfo); die;
 
 		// Log the changes
 		$itemsChanges = Cart::updateTransactionItems($id, $tiInfo);
