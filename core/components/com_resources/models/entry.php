@@ -184,7 +184,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$data['alias'] = '';
 		}
 		$alias = str_replace(' ', '-', $data['alias']);
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+		return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($alias));
 	}
 
 	/**
