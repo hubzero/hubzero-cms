@@ -155,12 +155,18 @@ function submitbutton(pressbutton)
 
 				<p>Payment method: <?php echo $this->tInfo->tiPayment; ?></p>
 
+
+
 				<?php
 				if (!empty($this->tInfo->tiPaymentDetails))
 				{
-					echo '<p>' . $this->tInfo->tiPaymentDetails . '</p>';
+				?>
+					<p>
+						<strong>Payment details:</strong><br>
+						<input type="text" name="tiPaymentDetails" style="width: 100%" value="<?php echo $this->tInfo->tiPaymentDetails; ?>" />
+					</p>
+				<?php
 				}
-
 				?>
 
 			</fieldset>
