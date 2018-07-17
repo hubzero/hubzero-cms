@@ -114,17 +114,20 @@ class Page extends Model
 	/**
 	 * Get Page Versions
 	 *
+	 * @param   array   $opt
 	 * @return  object  \Hubzero\Base\ItemList
 	 */
-	public function versions()
+	public function versions($opt = array())
 	{
 		if (!isset($this->_versions))
 		{
-			$pageVersionArchive = new Page\Version\Archive();
-			$this->_versions = $pageVersionArchive->versions('list', array(
+			$options = array_merge(array(
 				'pageid'  => $this->get('id', -1),
 				'orderby' => 'version DESC',
-			));
+			), $opt);
+
+			$pageVersionArchive = new Page\Version\Archive();
+			$this->_versions = $pageVersionArchive->versions('list', $options);
 		}
 		return $this->_versions;
 	}
