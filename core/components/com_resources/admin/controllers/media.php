@@ -307,7 +307,7 @@ class Media extends AdminController
 	public function displayTask()
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', '');
+		$listdir = Request::getString('listdir', '');
 		if (!$listdir)
 		{
 			echo '<p class="error">' . Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR') . '</p>';
@@ -322,7 +322,7 @@ class Media extends AdminController
 		}
 
 		// Build the path
-		$path = Utilities::buildUploadPath($listdir, $subdir);
+		$path = Utilities::buildUploadPath($listdir);//, $subdir);
 
 		// Get list of directories
 		$dirs = $this->_recursiveListDir($path);

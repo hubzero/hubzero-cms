@@ -55,7 +55,7 @@ function goUpDir()
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
-	<p><?php echo Lang::txt('COM_RESOURCES_MEDIA_PATH', $this->path); ?></p>
+	<p><?php echo Lang::txt('COM_RESOURCES_MEDIA_PATH', str_replace(PATH_ROOT, 'ROOT', $this->path)); ?></p>
 
 	<fieldset>
 		<label>

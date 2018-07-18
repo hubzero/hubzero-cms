@@ -55,10 +55,10 @@ defined('_HZEXEC_') or die();
 	}
 	function deleteFolder(folder, numFiles)
 	{
-		if (numFiles > 0) {
+		/*if (numFiles > 0) {
 			alert('<?php echo Lang::txt('COM_RESOURCES_MEDIA_DIRECTORY_NOT_EMPTY');?> '+numFiles);
 			return false;
-		}
+		}*/
 
 		if (confirm('<?php echo Lang::txt('COM_RESOURCES_MEDIA_DELETE_DIRECTORY'); ?> "'+folder+'"')) {
 			return true;
@@ -105,15 +105,19 @@ defined('_HZEXEC_') or die();
 					{
 						$subdir = '';
 					}
+
+					$p = strpos($folderName, $this->listdir);
+					$p = intval($p) + strlen($this->listdir);
+					$name = substr($folderName, $p);
 					?>
 					<tr>
 						<td>
 							<span class="icon folder">
-								<span><?php echo $folderName; ?></span>
+								<span><?php echo $name; ?></span>
 							</span>
 						</td>
 						<td width="100%">
-							<?php echo $folderName; ?>
+							<?php //echo $folderName; ?>
 						</td>
 						<td>
 							<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $subdir . '&' . Session::getFormToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
