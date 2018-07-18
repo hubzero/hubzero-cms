@@ -40,7 +40,7 @@ include_once __DIR__ . DS . 'option.php';
 include_once __DIR__ . DS . 'answer.php';
 
 /**
- * Careerplan field model
+ * Group description field model
  */
 class Field extends Relational
 {
@@ -51,7 +51,13 @@ class Field extends Relational
 	 */
 	protected $namespace = 'xgroups_description';
 
+	/**
+	 * Field values for a group
+	 *
+	 * @var  array
+	 */
 	public $groupAnswers;
+
 	/**
 	 * Default order by for model
 	 *
@@ -114,7 +120,7 @@ class Field extends Relational
 	}
 
 	/**
-	 * Generates automatic created field value
+	 * Generates automatic modified field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -125,8 +131,9 @@ class Field extends Relational
 	}
 
 	/**
-	 * Generates automatic created by field value
+	 * Generates automatic modified by field value
 	 *
+	 * @param   array  $data  the data being saved
 	 * @return  int
 	 */
 	public function automaticModifiedBy($data)
@@ -146,8 +153,9 @@ class Field extends Relational
 
 	/**
 	 * Get answers provided for specific group
-	 * @param integer $group_id
-	 * @return object
+	 *
+	 * @param   integer  $group_id
+	 * @return  object
 	 */
 	public function getGroupAnswers($group_id)
 	{
@@ -156,21 +164,24 @@ class Field extends Relational
 
 	/**
 	 * Get fields for group, including answers provided.
-	 * @param intenger $group_id
-	 * @return object Hubzero\Database\Rows
+	 *
+	 * @param   intenger  $group_id
+	 * @return  object    Hubzero\Database\Rows
 	 */
 	public static function getAllGroupFields($group_id)
 	{
 		$fields = self::all()->including(['answers', function($answer) use ($group_id){
 			return $answer->whereEquals('group_id', $group_id)->ordered();
 		}])->ordered();
+
 		return $fields;
 	}
 
 	/**
 	 * Convert group answers to string or array if multiple values
-	 * @param 	integer	$group_id
-	 * @return 	mixed
+	 *
+	 * @param   integer  $group_id
+	 * @return  mixed
 	 */
 	public function collectGroupAnswers($group_id)
 	{
@@ -198,8 +209,9 @@ class Field extends Relational
 
 	/**
 	 * Push answers provided via the for to the attributes property
-	 * @param	mixed	$answers
-	 * @return	void
+	 *
+	 * @param   mixed  $answers
+	 * @return  void
 	 */
 	public function setFormAnswers($answers)
 	{
@@ -221,12 +233,14 @@ class Field extends Relational
 
 	/**
 	 * save all custom fields provided for the group
-	 * @param	integer	$group_id
-	 * @return 	void
+	 *
+	 * @param   integer  $group_id
+	 * @return  void
 	 */
 	public function saveGroupAnswers($group_id)
 	{
 		$this->setAnswersRule();
+
 		if (!$this->validate())
 		{
 			return false;
@@ -235,6 +249,7 @@ class Field extends Relational
 		$groupAnswers = $this->getGroupAnswers($group_id);
 		$formAnswers = $this->get('formAnswers');
 		$formAnswers = !is_array($formAnswers) ? array($formAnswers) : $formAnswers;
+
 		foreach ($groupAnswers as $answer)
 		{
 			$answerValue = $answer->get('value');
@@ -248,6 +263,7 @@ class Field extends Relational
 				$answer->destroy();
 			}
 		}
+
 		foreach ($formAnswers as $value)
 		{
 			$answerObj = Answer::blank()
@@ -256,12 +272,15 @@ class Field extends Relational
 				->set('field_id', $this->get('id'));
 			$groupAnswers->push($answerObj);
 		}
+
 		$groupAnswers->save();
+
 		return true;
 	}
 
 	/**
 	 * Sets rule requiring formAnswers if required is set to true
+	 *
 	 * @return 	void
 	 */
 	protected function setAnswersRule()
@@ -270,7 +289,9 @@ class Field extends Relational
 		{
 			$this->set('formAnswers', '');
 		}
+
 		$currentRules = $this->getRules();
+
 		if (!isset($currentRules['formAnswers']))
 		{
 			$this->addRule('formAnswers', function($data){

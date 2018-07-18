@@ -33,6 +33,7 @@
 namespace Components\Groups\Models\Import;
 
 use Components\Groups\Models\Orm\Group;
+use Components\Groups\Models\Orm\Field;
 use Hubzero\Utility\Validate;
 use Exception;
 use stdClass;
@@ -44,6 +45,7 @@ use User;
 use Date;
 
 include_once dirname(__DIR__) . '/orm/group.php';
+include_once dirname(__DIR__) . '/orm/field.php';
 include_once dirname(__DIR__) . '/tags.php';
 
 /**
@@ -133,7 +135,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			return $this;
 		}
 
-		/*$keys = array();
+		$keys = array();
 		if ($this->_mode == 'PATCH')
 		{
 			foreach ($this->_description as $k => $p)
@@ -152,34 +154,23 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			}
 		}
 
-		// Validate profile data
-		$f = \Components\Groups\Models\Description\Field::all()
-			->including(['options', function ($option){
-				$option
-					->select('*');
-			}])
-			->where('action_edit', '!=', \Components\Groups\Models\Description\Field::STATE_HIDDEN);
-
-		if (!empty($keys))
+		// Validate description data
+		if (!empty($this->_description))
 		{
-			$f->whereIn('name', $keys);
-		}
-
-		$fields = $f
-			->ordered()
-			->rows();
-
-		$form = new \Hubzero\Form\Form('groups', array('control' => 'group'));
-		$form->load(\Components\Groups\Models\Description\Field::toXml($fields, 'edit'));
-		$form->bind(new \Hubzero\Config\Registry($this->_description));
-
-		if (!$form->validate($this->_description))
-		{
-			foreach ($form->getErrors() as $key => $error)
+			foreach ($this->_description as $key => $val)
 			{
-				array_push($this->record->errors, (string)$error);
+				$field = Field::oneByName($key);
+
+				if ($field->get('id'))
+				{
+					$field->setFormAnswers($this->_description);
+					if (!$field->validate())
+					{
+						array_push($this->record->errors, (string)$field->getError());
+					}
+				}
 			}
-		}*/
+		}
 
 		return $this;
 	}
@@ -322,6 +313,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			if (isset($columns[$key]))
 			{
 				$this->record->entry->set($key, $val);
+				if (in_array($key, array('public_desc', 'private_desc')))
+				{
+					$this->_description[$key] = $val;
+				}
 			}
 			else
 			{
@@ -444,9 +439,18 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if (!empty($this->_description))
 		{
-			if (!$this->record->entry->saveDescription($this->_description))
+			foreach ($this->_description as $key => $val)
 			{
-				throw new Exception($this->record->entry->getError());
+				$field = Field::oneByName($key);
+
+				if ($field->get('id'))
+				{
+					$field->setFormAnswers($this->_description);
+					if (!$field->saveGroupAnswers($this->record->entry->get('gidNumber')))
+					{
+						throw new Exception($field->getError());
+					}
+				}
 			}
 		}
 	}
