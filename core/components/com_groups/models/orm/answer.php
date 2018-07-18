@@ -77,6 +77,7 @@ class Answer extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
+		'ordering',
 		'created',
 		'created_by'
 	);
@@ -99,7 +100,7 @@ class Answer extends Relational
 	private $valuesLoaded = false;
 
 	/**
-	 * Generates automatic created field value
+	 * Generates automatic modified field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -110,13 +111,35 @@ class Answer extends Relational
 	}
 
 	/**
-	 * Generates automatic created by field value
+	 * Generates automatic modified by field value
 	 *
 	 * @return  int
 	 */
 	public function automaticModifiedBy($data)
 	{
 		return (isset($data['id']) && $data['id'] ? User::get('id') : 0);
+	}
+
+	/**
+	 * Generates automatic ordering field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOrdering($data)
+	{
+		if (!isset($data['ordering']))
+		{
+			$last = self::all()
+				->select('ordering')
+				->whereEquals('group_id', $this->get('group_id'))
+				->order('ordering', 'desc')
+				->row();
+
+			$data['ordering'] = (int)$last->get('ordering') + 1;
+		}
+
+		return $data['ordering'];
 	}
 
 	/**
@@ -140,7 +163,7 @@ class Answer extends Relational
 	}
 
 	/**
-	 * Get parent application
+	 * Get parent group
 	 *
 	 * @return  object
 	 */

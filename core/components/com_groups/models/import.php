@@ -33,6 +33,7 @@
 namespace Components\Groups\Models;
 
 use Components\Groups\Models\Import\Record;
+use Components\Groups\Models\Orm\Field;
 use Hubzero\Content\Import\Model\Import as Base;
 use Hubzero\Content\Importer;
 use Hubzero\Utility\Sanitize;
@@ -89,7 +90,7 @@ class Import extends Base
 			'approve',
 			'allowed',
 		),
-		'public_desc' => array(
+		/*'public_desc' => array(
 			'public_desc',
 			'publicdesc',
 			'publicdescription',
@@ -105,7 +106,7 @@ class Import extends Base
 			'privatetext',
 			'privateinfo',
 			'private',
-		),
+		),*/
 		'restrict_msg' => array(
 			'restrict_msg',
 			'restrictmsg',
@@ -350,9 +351,9 @@ class Import extends Base
 	 */
 	public function fieldMap()
 	{
-		/*if (!$this->mapped)
+		if (!$this->mapped)
 		{
-			include_once __DIR__ . DS . 'description' . DS . 'field.php';
+			include_once __DIR__ . DS . 'orm' . DS . 'field.php';
 
 			$fields = Field::all()
 				->ordered()
@@ -371,7 +372,7 @@ class Import extends Base
 					preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name'))
 				);
 			}
-		}*/
+		}
 
 		return $this->_fieldMap;
 	}

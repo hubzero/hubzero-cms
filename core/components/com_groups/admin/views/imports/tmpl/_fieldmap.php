@@ -64,8 +64,8 @@ if ($this->import->get('id')) { ?>
 								'description',
 								'published',
 								'approved',
-								'public_desc',
-								'private_desc',
+								//'public_desc',
+								//'private_desc',
 								'restrict_msg',
 								'join_policy',
 								'discoverability',
@@ -84,22 +84,22 @@ if ($this->import->get('id')) { ?>
 									<option value="<?php echo $column; ?>" <?php if ($mapping['field'] == $column) { echo 'selected="selected"'; } ?>><?php echo $column; ?></option>
 								<?php endforeach; ?>
 							</optgroup>
-							<?php /*<optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DESCRIPTION'); ?>">
+							<optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DESCRIPTION'); ?>">
 								<?php
-								include_once Component::path('com_groups') . DS . 'models' . DS . 'profile' . DS . 'field.php';
+								include_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'field.php';
 
-								$fields = Components\Members\Models\Profile\Field::all()
+								$fields = Components\Groups\Models\Orm\Field::all()
 									->ordered()
 									->rows();
 
 								foreach ($fields as $field)
 								{
 									?>
-									<option value="<?php echo $field->get('name'); ?>" <?php if ($mapping['field'] == $field->get('name')) { echo 'selected="selected"'; } ?>><?php echo $field->get('name'); ?></option>
+									<option value="<?php echo $this->escape($field->get('name')); ?>" <?php if ($mapping['field'] == $field->get('name')) { echo 'selected="selected"'; } ?>><?php echo $this->escape($field->get('name')); ?></option>
 									<?php
 								}
 								?>
-							</optgroup>*/ ?>
+							</optgroup>
 						</select>
 					</td>
 				</tr>
