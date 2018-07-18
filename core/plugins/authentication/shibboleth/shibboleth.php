@@ -446,7 +446,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// entityID. See below for more info
 		if (array_key_exists('wayf', $_GET))
 		{
-			if (isset($_GET['return']) && isset($_COOKIE['shib-entity-id']))
+			if (isset($_GET['return']) && isset($_COOKIE['shib-entity-id']) && strpos($_GET['return'], 'https://'.$_SERVER['HTTP_HOST'].'/Shibboleth.sso/') === 0)
 			{
 				self::log('wayf passthru', $_COOKIE['shib-entity-id']);
 				App::redirect($_GET['return'].'&entityID='.$_COOKIE['shib-entity-id']);
