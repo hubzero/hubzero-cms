@@ -193,7 +193,7 @@ class Overrides extends AdminController
 				'language' => $language
 			));
 
-			$row = $model->one(Request::getVar('id'));
+			$row = $model->one(Request::getInt('id'));
 		}
 
 		// Output the HTML
@@ -220,7 +220,7 @@ class Overrides extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$model = new Override(array(
@@ -269,7 +269,7 @@ class Overrides extends AdminController
 		Request::checkToken();
 
 		// Get items to dlete from the request
-		$cid = Request::getVar('cid', array(), '', 'array');
+		$cid = Request::getArray('cid', array(), '', 'array');
 
 		if (!is_array($cid) || count($cid) < 1)
 		{

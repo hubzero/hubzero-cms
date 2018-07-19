@@ -134,7 +134,7 @@ class Quotes extends AdminController
 
 		if (!$row->get('id'))
 		{
-			if ($username = Request::getVar('username', ''))
+			if ($username = Request::getString('username', ''))
 			{
 				$profile = Member::oneByUsername($username);
 

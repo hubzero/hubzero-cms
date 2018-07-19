@@ -78,7 +78,7 @@ class Login extends AdminController
 
 				if (method_exists($className, 'display'))
 				{
-					$this->view->return = Request::getVar('return', null, 'method', 'base64');
+					$this->view->return = Request::getString('return', null);
 
 					$result = $myplugin->display($this->view, null);
 
@@ -123,7 +123,7 @@ class Login extends AdminController
 		$return      = $model->getState('return');
 
 		// If a specific authenticator is specified try to call the login method for that plugin
-		if ($authenticator = Request::getVar('authenticator', false, 'method'))
+		if ($authenticator = Request::getString('authenticator', false, 'method'))
 		{
 			Plugin::import('authentication');
 
@@ -225,7 +225,7 @@ class Login extends AdminController
 	{
 		Session::set('user_consent', true);
 
-		App::redirect(base64_decode(Request::getVar('return')));
+		App::redirect(base64_decode(Request::getString('return')));
 	}
 
 	/**

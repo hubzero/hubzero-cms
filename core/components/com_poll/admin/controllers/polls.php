@@ -157,7 +157,7 @@ class Polls extends AdminController
 		Request::setVar('hidemainmenu', 1);
 		Request::setVar('tmpl', 'component');
 
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		if (is_array($id) && !empty($id))
 		{
 			$id = $id[0];
@@ -193,7 +193,7 @@ class Polls extends AdminController
 
 		if (!is_object($poll))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -248,7 +248,7 @@ class Polls extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Save the poll parent information
 		$row = Poll::oneOrNew($fields['id'])->set($fields);
@@ -262,7 +262,7 @@ class Polls extends AdminController
 		$row->checkin();
 
 		// Save the poll options
-		$options = Request::getVar('polloption', array(), 'post');
+		$options = Request::getArray('polloption', array(), 'post');
 
 		foreach ($options as $i => $text)
 		{
@@ -307,7 +307,7 @@ class Polls extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		Arr::toInteger($ids);
 
 		foreach ($ids as $id)
@@ -338,10 +338,10 @@ class Polls extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$state = (Request::getVar('task') == 'publish' ? 1 : 0);
+		$state = (Request::getCmd('task') == 'publish' ? 1 : 0);
 
 		if (empty($ids))
 		{
@@ -387,7 +387,7 @@ class Polls extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$publish = ($this->getTask() == 'open' ? Poll::STATE_PUBLISHED : Poll::STATE_UNPUBLISHED);
@@ -428,7 +428,7 @@ class Polls extends AdminController
 	 */
 	public function cancelTask()
 	{
-		if ($id = Request::getVar('id', 0, '', 'int'))
+		if ($id = Request::getInt('id', 0, '', 'int'))
 		{
 			if (is_int($id))
 			{

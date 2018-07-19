@@ -164,7 +164,7 @@ class Languages extends AdminController
 		// Incoming
 		if (!is_object($row))
 		{
-			$id = Request::getVar('lang_id', array(0));
+			$id = Request::getArray('lang_id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -197,7 +197,7 @@ class Languages extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -242,7 +242,7 @@ class Languages extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -292,7 +292,7 @@ class Languages extends AdminController
 		// Incoming
 		$section = Request::getInt('section_id', 0);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$state = ($this->getTask() == 'publish' ? Language::STATE_PUBLISHED : Language::STATE_UNPUBLISHED);

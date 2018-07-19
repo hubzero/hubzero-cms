@@ -43,7 +43,7 @@ use Lang;
 use Html;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'poll.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'poll.php';
 
 /**
  * Poll controller
@@ -303,17 +303,17 @@ class Polls extends SiteController
 	}
 
 	/**
- 	 * Add a vote to an option
- 	 *
- 	 * @return  void
- 	 */
+	 * Add a vote to an option
+	 *
+	 * @return  void
+	 */
 	public function voteTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
-		$poll_id   = Request::getVar('id', 0, '', 'int');
-		$option_id = Request::getVar('voteid', 0, 'post', 'int');
+		$poll_id   = Request::getInt('id', 0, '', 'int');
+		$option_id = Request::getInt('voteid', 0, 'post', 'int');
 
 		$poll = Poll::oneOrFail($poll_id);
 
@@ -325,7 +325,7 @@ class Polls extends SiteController
 		$cookieName = App::hash(App::get('client')->name . 'poll' . $poll_id);
 
 		// ToDo - may be adding those information to the session?
-		$voted = Request::getVar($cookieName, '0', 'COOKIE', 'INT');
+		$voted = Request::getString($cookieName, '0', 'COOKIE', 'INT');
 
 		if ($voted || !$option_id)
 		{

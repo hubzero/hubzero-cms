@@ -38,7 +38,7 @@ use stdClass;
 use Request;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'inspector.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'inspector.php';
 
 /**
  * API controller class for checkin
@@ -113,7 +113,7 @@ class Checkinv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$ids = Request::getVar('table', array());
+		$ids = Request::getArray('table', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

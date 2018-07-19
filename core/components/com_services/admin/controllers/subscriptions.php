@@ -195,9 +195,9 @@ class Subscriptions extends AdminController
 		}
 
 		$author    = User::getInstance($subscription->uid);
-		$subscription->notes = rtrim(stripslashes(Request::getVar('notes', '')));
-		$action    = Request::getVar('action', '');
-		$message   = Request::getVar('message', '');
+		$subscription->notes = rtrim(stripslashes(Request::getString('notes', '')));
+		$action    = Request::getString('action', '');
+		$message   = Request::getString('message', '');
 		$statusmsg = '';
 		$email     = 0;
 

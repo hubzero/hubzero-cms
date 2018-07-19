@@ -84,7 +84,7 @@ class Api extends SiteController
 		// build pathway
 		$this->_buildPathway();
 
-		$active = Request::getVar('active', '');
+		$active = Request::getString('active', '');
 
 		// generate documentation
 		$generator = new Generator(!Config::get('debug'));
