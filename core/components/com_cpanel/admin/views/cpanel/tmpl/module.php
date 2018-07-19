@@ -28,7 +28,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$name = Request::getVar('module');
+$name = Request::getString('module');
 
 if ($name && !User::isGuest())
 {

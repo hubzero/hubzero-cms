@@ -32,8 +32,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-//$base = Request::getVar('REQUEST_URI', rtrim(Request::base(true), '/'), 'server');
-$base = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITIZE_URL);
+$base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITIZE_URL);
 
 ?>
 <?php if ($this->params->get('button', 0) == 1) { ?>
@@ -76,7 +75,7 @@ $base = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANIT
 							<?php
 							if (!trim($quote->get('short_quote')))
 							{
-								$quote->set('short_quote', \Hubzero\Utility\Str::truncate($quote->get('quote'), 250));
+								$quote->set('short_quote', Hubzero\Utility\Str::truncate($quote->get('quote'), 250));
 							}
 							$quote->set('short_quote', html_entity_decode(stripslashes($quote->get('short_quote'))));
 							$quote->set('short_quote', strip_tags($quote->get('short_quote')));

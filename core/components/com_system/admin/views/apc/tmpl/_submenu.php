@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$task = Request::getVar('task');
+$task = Request::getCmd('task');
 ?>
 
 <div role="navigation" class="sub sub-navigation">

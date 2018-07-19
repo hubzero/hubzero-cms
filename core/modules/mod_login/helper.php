@@ -141,7 +141,7 @@ class Helper extends Module
 		$this->js('placeholder', 'system');
 
 		$type    = self::getType();
-		$return  = Request::getVar('return', null);
+		$return  = Request::getString('return', null);
 
 		$uri = \Hubzero\Utility\Uri::getInstance();
 		if ($rtrn = $uri->getVar('return'))
@@ -159,7 +159,7 @@ class Helper extends Module
 		// If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
-		if ($areturn = Request::getVar('return', null))
+		if ($areturn = Request::getString('return', null))
 		{
 			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{

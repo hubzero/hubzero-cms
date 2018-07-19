@@ -39,7 +39,7 @@ use Request;
 use Event;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'period.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'period.php';
 
 /**
  * API controller class for What's New
@@ -92,12 +92,12 @@ class Entriesv1_0 extends ApiController
 	public function listTask()
 	{
 		// get the request vars
-		$period     = Request::getVar('period', 'year');
-		$category   = Request::getVar('category', 'all');
+		$period     = Request::getString('period', 'year');
+		$category   = Request::getString('category', 'all');
 		$limit      = Request::getInt('limit', 25);
 		$limitstart = Request::getInt('limitstart', 0);
-		$content    = Request::getVar('content', 0);
-		$order      = Request::getVar('sort_Dir', 'desc');
+		$content    = Request::getString('content', 0);
+		$order      = Request::getString('sort_Dir', 'desc');
 
 		// get the search areas
 		$areas = array();
@@ -148,9 +148,15 @@ class Entriesv1_0 extends ApiController
 				$item['date']  = @$result->created;
 				switch ($result->section)
 				{
-					case "resources": $item['section'] = stripslashes($result->area);    break;
-					case "content":   $item['section'] = "content articles";             break;
-					default:          $item['section'] = stripslashes($result->section); break;
+					case "resources":
+						$item['section'] = stripslashes($result->area);
+						break;
+					case "content":
+						$item['section'] = "content articles";
+						break;
+					default:
+						$item['section'] = stripslashes($result->section);
+						break;
 				}
 				if ($content)
 				{

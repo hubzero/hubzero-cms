@@ -321,7 +321,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	{
 		$id      = Request::getInt('activity', 0);
 		$no_html = Request::getInt('no_html', 0);
-		$action  = Request::getVar('action', 'star');
+		$action  = Request::getWord('action', 'star');
 
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
 		$entry->set('starred', ($action == 'star' ? 1 : 0));

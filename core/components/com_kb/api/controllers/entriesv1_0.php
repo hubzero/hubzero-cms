@@ -69,8 +69,8 @@ class Entriesv1_0 extends ApiController
 	{
 		// Incoming
 		$filters = array(
-			'limit'  => Request::getVar('limit', Config::get('list_limit')),
-			'start'  => Request::getVar('limitstart', 0),
+			'limit'  => Request::getInt('limit', Config::get('list_limit')),
+			'start'  => Request::getInt('limitstart', 0),
 		);
 
 		$filters['limit'] = \Hubzero\Utility\Sanitize::paranoid($filters['limit']);
@@ -79,19 +79,18 @@ class Entriesv1_0 extends ApiController
 		if (User::authorise('core.admin', 'com_content'))
 		{
 			$db = App::get('db');
-			$totalQuery = 'SELECT COUNT(*) FROM #__kb_articles;';
+			$totalQuery = 'SELECT COUNT(*) FROM `#__kb_articles`;';
 			$db->setQuery($totalQuery);
 			$total = $db->loadResult();
 
-			$query = 'SELECT * FROM #__kb_articles LIMIT ' . $filters['start'] . ', ' . $filters['limit'] . ';';
+			$query = 'SELECT * FROM `#__kb_articles` LIMIT ' . $filters['start'] . ', ' . $filters['limit'] . ';';
 			$db->setQuery($query);
 			$pages = $db->loadObjectList();
 
 			foreach ($pages as &$page)
 			{
-
 				// Build the path
-				$sql1 = "SELECT path FROM #__categories WHERE id={$page->category};";
+				$sql1 = "SELECT `path` FROM `#__categories` WHERE id={$page->category};";
 				$path = $db->setQuery($sql1)->query()->loadResult();
 
 				if (strpos($path, 'uncategorized') === false)
