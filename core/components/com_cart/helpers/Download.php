@@ -216,26 +216,31 @@ class CartDownload
 		$res = $db->loadObjectList('dId');
 		$dids = implode(',', array_keys($res));
 
-		// Get the meta for all returned objects
-		// Build a (potentially) long SQL statement to get metadata
-		$sql = "SELECT `scope_id`, `mtKey`, `mtValue` FROM `#__cart_meta` WHERE `scope` = 'download' AND `scope_id` IN ({$dids})";
-		$db->setQuery($sql);
-		$db->execute();
-		$metas = $db->loadAssocList();
-		foreach ($metas as $meta)
+		if (!empty($dids))
 		{
-			$dId = $meta['scope_id'];
 
-			// ditch scope_id to match old output
-			unset($meta['scope_id']);
-
-			// if the download record has no metadata yet, add it
-			if (!isset($res[$dId]->meta))
+			// Get the meta for all returned objects
+			// Build a (potentially) long SQL statement to get metadata
+			$sql = "SELECT `scope_id`, `mtKey`, `mtValue` FROM `#__cart_meta` WHERE `scope` = 'download' AND `scope_id` IN ({$dids})";
+			$db->setQuery($sql);
+			$db->execute();
+			$metas = $db->loadAssocList();
+			foreach ($metas as $meta)
 			{
-				$res[$dId]->meta = array();
+				$dId = $meta['scope_id'];
+
+				// ditch scope_id to match old output
+				unset($meta['scope_id']);
+
+				// if the download record has no metadata yet, add it
+				if (!isset($res[$dId]->meta))
+				{
+					$res[$dId]->meta = array();
+				}
+				$res[$dId]->meta[$meta['mtKey']] = $meta;
 			}
-			$res[$dId]->meta[$meta['mtKey']] = $meta;
 		}
+
 
 		return $res;
 	}
