@@ -50,7 +50,7 @@ defined('_HZEXEC_') or die();
 			<input type="hidden" name="task" value="doauthorize" />
 			<input type="hidden" name="client_id" value="<?php echo $this->application->get('client_id'); ?>" />
 			<input type="hidden" name="response_type" value="<?php echo $this->escape(Request::getWord('response_type', '')); ?>" />
-			<input type="hidden" name="redirect_uri" value="<?php echo $this->escape(Request::getVar('redirect_uri', '')); ?>" />
+			<input type="hidden" name="redirect_uri" value="<?php echo $this->escape(Request::getString('redirect_uri', '')); ?>" />
 			<input type="hidden" name="state" value="<?php echo $this->escape(Request::getCmd('state', '')); ?>" />
 		</form>
 	</div>

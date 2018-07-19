@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$tags = $this->wish->tags('string') ? $this->wish->tags('string') : Request::getVar('tag', '');
+$tags = $this->wish->tags('string') ? $this->wish->tags('string') : Request::getString('tag', '');
 
 if ($this->wishlist->get('id'))
 {

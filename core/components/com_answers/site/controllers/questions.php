@@ -640,7 +640,7 @@ class Questions extends SiteController
 			->set('question', $question)
 			->set('config', $this->config)
 			->set('funds', $funds)
-			->set('tag', Request::getVar('tag', ''))
+			->set('tag', Request::getString('tag', ''))
 			->setLayout('new')
 			->display();
 	}

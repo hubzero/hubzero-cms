@@ -65,7 +65,7 @@ class Systemv1_0 extends ApiController
 	 */
 	public function infoTask()
 	{
-		$values = Request::getVar('values', 'all');
+		$values = Request::getString('values', 'all');
 
 		$response = new stdClass;
 

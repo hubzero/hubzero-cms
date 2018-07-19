@@ -55,7 +55,7 @@ class Helper extends Module
 		$database = \App::get('db');
 
 		$where = "";
-		if ($start = Request::getVar('start', ''))
+		if ($start = Request::getString('start', ''))
 		{
 			$where = "WHERE a.created > " . $database->quote($start);
 		}

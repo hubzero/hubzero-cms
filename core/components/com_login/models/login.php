@@ -124,13 +124,13 @@ class Login extends Obj
 	protected function populateState()
 	{
 		$credentials = array(
-			'username' => Request::getVar('username', '', 'method', 'username'),
-			'password' => Request::getVar('passwd', '', 'post', 'string', JREQUEST_ALLOWRAW)
+			'username' => Request::getString('username', '', 'method', 'username'),
+			'password' => Request::getString('passwd', '', 'post', 'string', JREQUEST_ALLOWRAW)
 		);
 		$this->setState('credentials', $credentials);
 
 		// Check for return URL from the request first
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', '', 'method', 'base64'))
 		{
 			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{

@@ -111,7 +111,7 @@ class Entriesv1_0 extends ApiController
 		$filters = array(
 			'scope'      => Request::getCmd('scope'),
 			'scope_id'   => Request::getInt('scope_id', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'action'     => Request::getCmd('action'),
 			'created_by' => Request::getInt('created_by', 0)
 		);
@@ -244,11 +244,11 @@ class Entriesv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'scope'          => Request::getVar('scope', '', 'post'),
+			'scope'          => Request::getString('scope', '', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
-			'action'         => Request::getVar('action', null, 'post', 'none', 2),
-			'description'    => Request::getVar('description', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'action'         => Request::getString('action', null, 'post', 'none', 2),
+			'description'    => Request::getString('description', null, 'post', 'none', 2),
+			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', User::get('id'), 'post'),
 			'anonymous'      => Request::getInt('anonymous', 0, 'post'),
 			'parent'         => Request::getInt('parent', 0, 'post')
@@ -276,7 +276,7 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_SAVING_DATA'), 500);
 		}
 
-		if ($recipients = Request::getVar('recipients'))
+		if ($recipients = Request::getString('recipients'))
 		{
 			// Process a string of recipients
 			//
@@ -503,11 +503,11 @@ class Entriesv1_0 extends ApiController
 		}
 
 		$fields = array(
-			'scope'          => Request::getVar('scope', $row->get('scope')),
+			'scope'          => Request::getString('scope', $row->get('scope')),
 			'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
-			'action'         => Request::getVar('action', $row->get('action')),
-			'description'    => Request::getVar('description', $row->get('description')),
-			'created'        => Request::getVar('created', $row->get('created')),
+			'action'         => Request::getString('action', $row->get('action')),
+			'description'    => Request::getString('description', $row->get('description')),
+			'created'        => Request::getString('created', $row->get('created')),
 			'created_by'     => Request::getInt('created_by', $row->get('created_by')),
 			'anonymous'      => Request::getInt('anonymous', $row->get('anonymous')),
 			'parent'         => Request::getInt('parent', $row->get('parent'))
@@ -523,7 +523,7 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_SAVING_DATA'), 500);
 		}
 
-		if ($recipients = Request::getVar('recipients'))
+		if ($recipients = Request::getString('recipients'))
 		{
 			// Process a string of recipients
 			//
@@ -634,7 +634,7 @@ class Entriesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

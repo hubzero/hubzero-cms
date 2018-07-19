@@ -245,7 +245,7 @@ class Articles extends AdminController
 
 		// Save the tags
 		$row->tag(
-			Request::getVar('tags', '', 'post'),
+			Request::getString('tags', '', 'post'),
 			User::get('id')
 		);
 

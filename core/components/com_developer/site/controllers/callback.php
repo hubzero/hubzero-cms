@@ -97,11 +97,11 @@ class Callback extends SiteController
 		$pparams = \Plugin::params('filesystem', 'github');
 		$new_connection = Session::get('github.connection_to_set_up', false);
 
-		if (!$code = Request::getVar('code'))
+		if (!$code = Request::getString('code'))
 		{
 			throw new \Exception("No code found", 400);
 		}
-		if (!$state = Request::getVar('state'))
+		if (!$state = Request::getString('state'))
 		{
 			throw new \Exception("No state found", 400);
 		}
@@ -160,13 +160,13 @@ class Callback extends SiteController
 	{
 		$params = \Plugin::params('filesystem', 'globus');
 
-		if (!$code = Request::getVar('code'))
+		if (!$code = Request::getString('code'))
 		{
 			throw new \Exception("No code found", 400);
 		}
 
 		// Check state
-		if (!$state = Request::getVar('state'))
+		if (!$state = Request::getString('state'))
 		{
 			throw new \Exception("No state found", 400);
 		}

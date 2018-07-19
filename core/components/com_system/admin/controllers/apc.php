@@ -52,7 +52,7 @@ class Apc extends AdminController
 	public function execute()
 	{
 		// Get the task
-		$this->_task = Request::getVar('task', '');
+		$this->_task = Request::getCmd('task', '');
 
 		// Set the version id
 		$this->VERSION = '$Id: apc.php 271315 2008-12-16 07:15:07Z shire $';

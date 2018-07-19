@@ -86,7 +86,7 @@ class Checkin extends AdminController
 		Request::checkToken();
 
 		// Initialise variables.
-		$ids = Request::getVar('cid', array(), '', 'array');
+		$ids = Request::getArray('cid', array(), '', 'array');
 
 		$msg = null;
 		$cls = null;

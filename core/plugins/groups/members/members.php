@@ -244,13 +244,13 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$view->authorized = $authorized;
 				$this->database = App::get('db');
 
-				$view->q = Request::getVar('q', '');
-				$view->filter = Request::getVar('filter', '');
+				$view->q = Request::getString('q', '');
+				$view->filter = Request::getWord('filter', '');
 				if (!in_array($view->filter, array('members', 'managers', 'invitees', 'pending')))
 				{
 					$view->filter = '';
 				}
-				$view->role_filter = Request::getVar('role_filter', '');
+				$view->role_filter = Request::getString('role_filter', '');
 
 				if ($view->authorized != 'manager' && $view->authorized != 'admin')
 				{
@@ -661,9 +661,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'comments'  => $users
 		));
 
-		$start  = Request::getVar('limitstart', 0);
-		$limit  = Request::getVar('limit', 25);
-		$filter = Request::getVar('filter', 'members');
+		$start  = Request::getInt('limitstart', 0);
+		$limit  = Request::getInt('limit', 25);
+		$filter = Request::getWord('filter', 'members');
 
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start)
@@ -775,9 +775,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'comments'  => $users
 		));
 
-		$start  = Request::getVar("limitstart", 0);
-		$limit  = Request::getVar("limit", 25);
-		$filter = Request::getVar("filter", "members");
+		$start  = Request::getInt("limitstart", 0);
+		$limit  = Request::getInt("limit", 25);
+		$filter = Request::getWord("filter", "members");
 
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start)
@@ -1439,7 +1439,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid = Request::getVar('uid', '');
+		$uid = Request::getInt('uid', '');
 		if (!$uid)
 		{
 			return false;
@@ -1482,8 +1482,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid     = Request::getVar('uid', '', 'post');
-		$role    = Request::getVar('role', '', 'post');
+		$uid     = Request::getInt('uid', 0, 'post');
+		$role    = Request::getInt('role', 0, 'post');
 		$no_html = Request::getInt('no_html', 0, 'post');
 
 		if (!$uid || !$role)
@@ -1519,8 +1519,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid  = Request::getVar('uid', '');
-		$role = Request::getVar('role', '');
+		$uid  = Request::getInt('uid', 0);
+		$role = Request::getInt('role', 0);
 
 		if (!$uid || !$role)
 		{
@@ -1575,7 +1575,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 			case 'confirmdeny':
 				// Incoming
-				$reason = Request::getVar('reason', '', 'post');
+				$reason = Request::getString('reason', '', 'post');
 
 				// Subject
 				$subject .= Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_DENIED');
@@ -1594,7 +1594,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 			case 'confirmremove':
 				// Incoming
-				$reason = Request::getVar('reason', '', 'post');
+				$reason = Request::getString('reason', '', 'post');
 
 				// Subject
 				$subject .= Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_CANCELLED');
@@ -1611,7 +1611,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 			case 'confirmcancel':
 				// Incoming
-				$reason = Request::getVar('reason', '', 'post');
+				$reason = Request::getString('reason', '', 'post');
 
 				// Subject
 				$subject .= Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_INVITATION_CANCELLED');
@@ -1660,7 +1660,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$sef = ltrim($sef, '/');
 
 		//get the reason
-		$reason = Request::getVar('reason', '', 'post');
+		$reason = Request::getString('reason', '', 'post');
 
 		// Build the "from" info for e-mails
 		$from = array(

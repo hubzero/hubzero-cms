@@ -226,9 +226,9 @@ class Helper extends Module
 
 			$expires = $now + 60*60*24*$this->days_left;
 
-			$hide = Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
+			$hide = Request::getString($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
 
-			if (!$hide && Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'get'))
+			if (!$hide && Request::getString($this->params->get('moduleid', 'sitenotice'), '', 'get'))
 			{
 				setcookie($this->params->get('moduleid', 'sitenotice'), 'closed', $expires);
 			}

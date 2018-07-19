@@ -62,9 +62,9 @@ class Mediav1_0 extends ApiController
 		$session  = App::get('session');
 
 		// Get request vars
-		$time       = Request::getVar('time', 0);
-		$duration   = Request::getVar('duration', 0);
-		$event      = Request::getVar('event', 'update');
+		$time       = Request::getInt('time', 0);
+		$duration   = Request::getInt('duration', 0);
+		$event      = Request::getString('event', 'update');
 		$entityId   = Request::getInt('entity_id', 0);
 		$entityType = Request::getWord('entity_type', 'resource');
 		$detailedId = Request::getInt('detailed_tracking_id', 0);
