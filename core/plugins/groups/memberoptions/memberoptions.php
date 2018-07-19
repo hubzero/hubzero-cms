@@ -91,7 +91,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		$recvEmailOptionID    = Request::getInt('memberoptionid', 0);
 		$recvEmailOptionValue = Request::getInt('recvpostemail', 0);
 
-		include_once(__DIR__ . DS . 'models' . DS . 'memberoption.php');
+		include_once __DIR__ . DS . 'models' . DS . 'memberoption.php';
 
 		switch ($action)
 		{
@@ -151,7 +151,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	 */
 	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
-		$postSaveRedirect = Request::getVar('postsaveredirect', '');
+		$postSaveRedirect = Request::getString('postsaveredirect', '');
 
 		// Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
 		$row = Plugins\Groups\Memberoptions\Models\Memberoption::blank()->set(array(
@@ -182,7 +182,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
 		App::redirect(
 			$postSaveRedirect,
-			Lang::txt('You have successfully updated your email settings')
+			Lang::txt('GROUP_MEMBEROPTIONS_UPDATED')
 		);
 	}
 
@@ -196,7 +196,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	public function onGroupUserEnrollment($gidNumber, $userid)
 	{
 		// get group
-		$group = \Hubzero\User\Group::getInstance($gidNumber);
+		$group = Hubzero\User\Group::getInstance($gidNumber);
 
 		// is auto-subscribe on for discussion forum
 		$autosubscribe = $group->get('discussion_email_autosubscribe');
@@ -210,7 +210,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		include_once(__DIR__ . DS . 'models' . DS . 'memberoption.php');
+		include_once __DIR__ . DS . 'models' . DS . 'memberoption.php';
 
 		// see if they've already got something, they shouldn't, but you never know
 		$row = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(

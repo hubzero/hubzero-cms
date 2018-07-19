@@ -258,8 +258,8 @@ class Helper extends Module
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests
-		$this->fav     = Request::getVar('fav', '');
-		$this->no_html = Request::getVar('no_html', 0);
+		$this->fav     = Request::getString('fav', '');
+		$this->no_html = Request::getInt('no_html', 0);
 
 		$rconfig = Component::params('com_resources');
 		$this->supportedtag = $rconfig->get('supportedtag');

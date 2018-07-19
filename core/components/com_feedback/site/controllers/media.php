@@ -111,7 +111,7 @@ class Media extends SiteController
 		else
 		{
 			// Do we have an old file we're replacing?
-			$curfile = Request::getVar('currentfile', '');
+			$curfile = Request::getString('currentfile', '');
 
 			if ($curfile != '' && file_exists($path . DS . $curfile))
 			{
@@ -156,7 +156,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		if (!($file = Request::getVar('file', '')))
+		if (!($file = Request::getString('file', '')))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_FILE'));
 			return $this->displayTask($file, $id);
@@ -204,7 +204,7 @@ class Media extends SiteController
 		$dir = Str::pad($id);
 
 		// Do we have a file or do we need to get one?
-		$file = $file ?: Request::getVar('file', '');
+		$file = $file ?: Request::getString('file', '');
 
 		// Build the directory path
 		$path = $this->path . DS . $dir;

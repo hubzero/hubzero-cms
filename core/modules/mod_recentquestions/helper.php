@@ -53,19 +53,25 @@ class Helper extends Module
 		$this->cssId    = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
 
-		$this->tag   = Request::getVar('tag', '', 'get');
-		$this->style = Request::getVar('style', '', 'get');
+		$this->tag   = Request::getString('tag', '', 'get');
+		$this->style = Request::getString('style', '', 'get');
 
-		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
+		require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
 		$records = Question::all();
 
 		switch ($this->params->get('state', 'open'))
 		{
-			case 'open':   $records->whereEquals('state', 0); break;
-			case 'closed': $records->whereEquals('state', 1); break;
+			case 'open':
+				$records->whereEquals('state', 0);
+				break;
+			case 'closed':
+				$records->whereEquals('state', 1);
+				break;
 			case 'both':
-			default:       $records->where('state', '<', 2); break;
+			default:
+				$records->where('state', '<', 2);
+				break;
 		}
 
 		if ($this->tag)

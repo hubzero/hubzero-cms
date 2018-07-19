@@ -72,7 +72,7 @@ $this->css('overrider.css')
 	jQuery(document).ready(function($){
 		$('#jform_searchstring').on('focus', function() {
 			if (!Joomla.overrider.states.refreshed) {
-				<?php if (Request::getVar('cache_expired')): ?>
+				<?php if (Request::getString('cache_expired')): ?>
 				Joomla.overrider.refreshCache();
 				Joomla.overrider.states.refreshed = true;
 				<?php endif; ?>

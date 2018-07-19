@@ -50,7 +50,7 @@ $versions = $this->documentation['versions']['available'];
 $versions = array_reverse($versions);
 
 // either the request var or the first version (newest)
-$activeVersion = Request::getVar('version', reset($versions));
+$activeVersion = Request::getString('version', reset($versions));
 ?>
 
 <header id="content-header">

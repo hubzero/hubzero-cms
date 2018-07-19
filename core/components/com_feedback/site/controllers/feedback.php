@@ -180,8 +180,8 @@ class Feedback extends SiteController
 
 		// Incoming
 		$quote = array(
-			'long'  => Request::getVar('quote', '', 'post'),
-			'short' => Request::getVar('short_quote', '', 'post')
+			'long'  => Request::getString('quote', '', 'post'),
+			'short' => Request::getString('short_quote', '', 'post')
 		);
 
 		// Set page title
