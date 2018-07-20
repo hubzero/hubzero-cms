@@ -39,18 +39,18 @@ $this->css()
      ->js('new.js');
 
 // are we remotely loading ticket form
-$tmpl = (Request::getVar('tmpl', '')) ? '&tmpl=component' : '';
+$tmpl = (Request::getString('tmpl', '')) ? '&tmpl=component' : '';
 
 // are we trying to assign a group
-$group = Request::getVar('group', '');
+$group = Request::getString('group', '');
 
 // Populate the row for users that are not logged and have issues with the page
 if (User::isGuest())
 {
-	$this->row->submitter->set('username', Request::getVar('reporter[login]', null, 'post'));
-	$this->row->set('report', Request::getVar('problem[long]', null, 'post'));
-	$this->row->set('name', Request::getVar('reporter[name]', null, 'post'));
-	$this->row->set('email', Request::getVar('reporter[email]', null, 'post'));
+	$this->row->submitter->set('username', Request::getString('reporter[login]', null, 'post'));
+	$this->row->set('report', Request::getString('problem[long]', null, 'post'));
+	$this->row->set('name', Request::getString('reporter[name]', null, 'post'));
+	$this->row->set('email', Request::getString('reporter[email]', null, 'post'));
 }
 ?>
 <header id="content-header">

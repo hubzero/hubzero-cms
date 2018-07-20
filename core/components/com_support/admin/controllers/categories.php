@@ -112,7 +112,7 @@ class Categories extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
@@ -146,7 +146,7 @@ class Categories extends AdminController
 		}
 
 		// Trim and addslashes all posted items
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
 		$row = Category::oneOrNew($fields['id'])->set($fields);
@@ -185,7 +185,7 @@ class Categories extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		if (!is_array($ids))
 		{
 			$ids = array(0);

@@ -708,7 +708,7 @@ class Create extends SiteController
 	public function step_compose_process()
 	{
 		// Initiate extended database class
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
@@ -748,7 +748,7 @@ class Create extends SiteController
 
 		$fulltxt = $row->get('fulltxt');
 
-		$nbtag = Request::getVar('nbtag', array(), 'post');
+		$nbtag = Request::getArray('nbtag', array(), 'post');
 		$found = array();
 		foreach ($nbtag as $tagname => $tagcontent)
 		{

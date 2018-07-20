@@ -329,7 +329,7 @@ class Utilities
 	}
 
 	/**
-	 * CAdd attachments
+	 * Add attachments
 	 *
 	 * @param   integer  $ticketid
 	 * @param   itneger  $commentid
@@ -337,7 +337,7 @@ class Utilities
 	 */
 	public static function addAttachments($ticketid, $commentid=0)
 	{
-		$attachments = Request::getVar('attachments', null, 'files', 'array');
+		$attachments = Request::getArray('attachments', null, 'files');
 
 		if (is_array($attachments) && count($attachments) > 0 && is_array($attachments['name']))
 		{
@@ -350,7 +350,7 @@ class Utilities
 
 				if (!$attachment->save())
 				{
-					throw new \Exception(print_r($attachment->getError(), 1), 500);
+					throw new \Exception($attachment->getError(), 500);
 				}
 			}
 		}

@@ -73,7 +73,7 @@ function view($dd = false)
 
 
 	// Get the list of IDs if any
-	$rec_ids = Request::getVar('id', '');
+	$rec_ids = Request::getString('id', '');
 	if ($rec_ids != '') {
 		$dv_conf['settings']['data_url'] .= '&id=' . htmlentities($rec_ids);
 		$dv_conf['settings']['view_url'] .= '?id=' . htmlentities($rec_ids);
@@ -92,13 +92,13 @@ function view($dd = false)
 		$dv_conf['settings']['show_filter_options'] = isset($dd['filter_options'])? $dd['filter_options']: true;
 
 		$custom_field_url = '';
-		$custom_field = Request::getVar('custom_field', false);
+		$custom_field = Request::getString('custom_field', false);
 		if ($custom_field) {
 			$custom_field_url = '&custom_field=' . $custom_field;
 		}
 
 		// Custom views
-		$custom_view = Request::getVar('custom_view', false);
+		$custom_view = Request::getString('custom_view', false);
 		$custom_view_url = '';
 		if ($custom_field) {
 			$custom_view_url = '&custom_view=' . $custom_field;
@@ -173,7 +173,7 @@ function view($dd = false)
 		}
 
 		// Filtered Views
-		$filter = Request::getVar('filter', false);
+		$filter = Request::getString('filter', false);
 		$filted_view = array();
 		$filted_view_str = '';
 		if ($filter !== false) {
@@ -189,7 +189,7 @@ function view($dd = false)
 	<a name="dv_top"></a>
 	<div id="dv-spreadsheet">
 
-	<?php if (!Request::getVar('show_table_only', false)): ?>
+	<?php if (!Request::getString('show_table_only', false)): ?>
 
 		<div id="dv_title" style="margin: 0;">
 			<h2 class="ui-corner-all" style="display: inline-block;">
@@ -471,7 +471,7 @@ function view($dd = false)
 		}
 
 		//Legacy support
-		if (Request::getVar('show_filters', 'false') === 'true') {
+		if (Request::getString('show_filters', 'false') === 'true') {
 			$dv_show_filters = 'true';
 		}
 
@@ -502,4 +502,3 @@ function view($dd = false)
 	<?php
 	}
 }
-?>

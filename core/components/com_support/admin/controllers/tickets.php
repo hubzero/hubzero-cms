@@ -291,10 +291,10 @@ class Tickets extends AdminController
 			$ticket->set('os', $browser->platform() . ' ' . $browser->platformVersion());
 			$ticket->set('browser', $browser->name() . ' ' . $browser->version());
 
-			$ticket->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
+			$ticket->set('uas', Request::getString('HTTP_USER_AGENT', '', 'server'));
 
 			$ticket->set('ip', Request::ip());
-			$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
+			$ticket->set('hostname', gethostbyaddr(Request::getString('REMOTE_ADDR', '', 'server')));
 			$ticket->set('section', 1);
 		}
 
@@ -390,7 +390,7 @@ class Tickets extends AdminController
 		$old->set('tags', $old->tags('string'));
 
 		// Initiate class and bind posted items to database fields
-		$data = Request::getVar('ticket', array(), 'post', 'none', 2);
+		$data = Request::getArray('ticket', array(), 'post');
 		$ticket = Ticket::oneOrNew($id)->set($data);
 
 		if ($ticket->get('target_date') && $ticket->get('target_date') != '0000-00-00 00:00:00')
@@ -402,14 +402,14 @@ class Tickets extends AdminController
 			$ticket->set('target_date', '0000-00-00 00:00:00');
 		}
 
-		$text = Request::getVar('comment', '', 'post', 'none', 2);
+		$text = Request::getArray('comment', '', 'post', 'none', 2);
 		$comment = Comment::blank();
 		$comment->set('ticket', $id);
 
 		// Check if changes were made wthin the time the comment was started and posted
 		if ($id)
 		{
-			$started = Request::getVar('started', Date::toSql(), 'post');
+			$started = Request::getString('started', Date::toSql(), 'post');
 
 			$lastcomment = $ticket->comments()
 				->order('created', 'DESC')
@@ -454,7 +454,7 @@ class Tickets extends AdminController
 		}
 
 		// Save the tags
-		$ticket->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
+		$ticket->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
 		$ticket->set('tags', $ticket->tags('string'));
 
 		$base = Request::base();
@@ -589,7 +589,7 @@ class Tickets extends AdminController
 		// Compare fields to find out what has changed for this ticket and build a changelog
 		$comment->changelog()->diff($old, $ticket);
 
-		$comment->changelog()->cced(Request::getVar('cc', ''));
+		$comment->changelog()->cced(Request::getString('cc', ''));
 
 		// Save the data
 		if (!$comment->save())
@@ -834,7 +834,7 @@ class Tickets extends AdminController
 		// output messsage and redirect
 		if ($this->getTask() != 'apply')
 		{
-			$filters = Request::getVar('filters', '');
+			$filters = Request::getString('filters', '');
 			$filters = str_replace('&amp;', '&', $filters);
 
 			// Redirect
@@ -858,8 +858,8 @@ class Tickets extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$ids  = Request::getVar('id', array());
-		$tmpl = Request::getVar('tmpl', '');
+		$ids  = Request::getArray('id', array());
+		$tmpl = Request::getString('tmpl', '');
 
 		$filters = Utilities::getFilters();
 		$lists = array();
@@ -889,16 +889,16 @@ class Tickets extends AdminController
 	public function processTask()
 	{
 		// Incoming
-		$tmpl    = Request::getVar('tmpl');
+		$tmpl    = Request::getString('tmpl');
 
-		$ids     = Request::getVar('id', array());
-		$fields  = Request::getVar('fields', array());
-		$tags    = Request::getVar('tags', '');
+		$ids     = Request::getArray('id', array());
+		$fields  = Request::getArray('fields', array());
+		$tags    = Request::getString('tags', '');
 		$access  = 1;
 
-		$fields['owner'] = Request::getVar('owner', '');
-		/*$text = nl2br(Request::getVar('comment', '', 'post', 'none', 2));
-		$cc      = Request::getVar('cc', '');
+		$fields['owner'] = Request::getString('owner', '');
+		/*$text = nl2br(Request::getString('comment', '', 'post', 'none', 2));
+		$cc      = Request::getString('cc', '');
 		$access  = Request::getInt('access', 0);
 		$email_submitter = Request::getInt('email_submitter', 0);
 		$email_owner = Request::getInt('email_owner', 0);
@@ -1150,7 +1150,7 @@ class Tickets extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -1389,7 +1389,7 @@ class Tickets extends AdminController
 	public function uploadTask($ticket_id, $comment_id = 0)
 	{
 		// Incoming
-		$description = Request::getVar('description', '');
+		$description = Request::getString('description', '');
 
 		if (!$ticket_id)
 		{
@@ -1398,7 +1398,7 @@ class Tickets extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!is_array($file) || !isset($file['name']) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_NO_FILE'));

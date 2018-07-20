@@ -718,7 +718,7 @@ class Setup extends Base
 				// Save custom description
 				if ($this->section == 'info_custom')
 				{
-					$newInfo = Request::getVar('description', array());
+					$newInfo = Request::getArray('description', array());
 
 					$projectID = $this->model->get('id');
 					$project = ProjectORM::one($this->model->get('id'));
@@ -842,7 +842,7 @@ class Setup extends Base
 						}
 					}
 					// Save params
-					$incoming   = Request::getVar('params', array());
+					$incoming   = Request::getArray('params', array());
 					if (!empty($incoming))
 					{
 						foreach ($incoming as $key => $value)
@@ -971,7 +971,7 @@ class Setup extends Base
 				}
 
 				// Save params
-				$incoming   = Request::getVar('params', array());
+				$incoming   = Request::getArray('params', array());
 				if (!empty($incoming))
 				{
 					foreach ($incoming as $key => $value)

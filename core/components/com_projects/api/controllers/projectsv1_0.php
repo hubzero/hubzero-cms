@@ -41,7 +41,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 
 /**
  * API controller for the projects component
@@ -131,8 +131,7 @@ class Projectsv1_0 extends ApiController
 				$obj->owner         = $entry->owner('name');
 				$obj->created       = $entry->get('created');
 				$obj->userRole      = $entry->member()->role;
-				$obj->thumbUrl      = str_replace('/api', '', $base . '/'
-									. ltrim(Route::url($entry->link('thumb')), '/'));
+				$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 				$obj->privacy       = $entry->get('private');
 				$obj->provisioned   = $entry->isProvisioned();
 				$obj->groupOwnerId  = $entry->groupOwner('id');
@@ -209,7 +208,7 @@ class Projectsv1_0 extends ApiController
 	public function getTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', '');
+		$id = Request::getString('id', '');
 
 		$this->model = new Project($id);
 
@@ -237,10 +236,8 @@ class Projectsv1_0 extends ApiController
 		$obj->created       = $this->model->get('created');
 		$obj->groupOwnerId  = $this->model->groupOwner('id');
 		$obj->userOwnerId   = $this->model->owner('id');
-		$obj->uri           = str_replace('/api', '', $base . '/'
-							. ltrim(Route::url($this->model->link()), '/'));
-		$obj->thumbUrl      = str_replace('/api', '', $base . '/'
-							. ltrim(Route::url($this->model->link('thumb')), '/'));
+		$obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($this->model->link()), '/'));
+		$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($this->model->link('thumb')), '/'));
 
 		if ($this->model->access('member'))
 		{

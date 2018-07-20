@@ -92,7 +92,7 @@ class Authors extends SiteController
 		}
 
 		// Incoming host
-		$m = Request::getVar('author', '');
+		$m = Request::getString('author', '');
 
 		$mbrs = explode(',', $m);
 		$mbrs = array_map('trim', $mbrs);
@@ -169,7 +169,7 @@ class Authors extends SiteController
 			return $this->displayTask();
 		}
 
-		$mbrs = Request::getVar('author', array());
+		$mbrs = Request::getArray('author', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $i => $mbr)
@@ -203,7 +203,7 @@ class Authors extends SiteController
 		}
 
 
-		$mbrs = Request::getVar('author', array());
+		$mbrs = Request::getArray('author', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 		$authors = Author::all()->whereIn('id', $mbrs)->rows();
 

@@ -132,7 +132,7 @@ class Mailinglists extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			$row = Mailinglist::oneOrNew($id);
@@ -162,7 +162,7 @@ class Mailinglists extends AdminController
 		}
 
 		// Incoming data
-		$fields = Request::getVar('field', array(), 'post', 'array', 2);
+		$fields = Request::getArray('field', array(), 'post');
 
 		// Initiate model
 		$row = Mailinglist::oneOrNew($fields['id'])->set($fields);
@@ -202,7 +202,7 @@ class Mailinglists extends AdminController
 		}
 
 		// get the request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// make sure we have ids
 		$success = 0;
@@ -251,7 +251,7 @@ class Mailinglists extends AdminController
 		}
 
 		//get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : 0;
 
 		if (!$id)
@@ -326,7 +326,7 @@ class Mailinglists extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get request vars
-		$mailinglistId = Request::getVar('id', Request::getVar('mid', 0));
+		$mailinglistId = Request::getInt('id', Request::getInt('mid', 0));
 		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : 0;
 
 		// load mailing list
@@ -365,10 +365,10 @@ class Mailinglists extends AdminController
 
 		// get request vars
 		$this->mid               = Request::getInt('mid', 0);
-		$this->emailFile         = Request::getVar('email_file', array(), 'files');
+		$this->emailFile         = Request::getArray('email_file', array(), 'files');
 		$this->emailGroup        = Request::getInt('email_group', 0);
-		$this->emailBox          = Request::getVar('email_box', '');
-		$this->emailConfirmation = Request::getVar('email_confirmation', '-1');
+		$this->emailBox          = Request::getString('email_box', '');
+		$this->emailConfirmation = Request::getString('email_confirmation', '-1');
 
 		// make sure we have selected whether or not to send confirmation emails
 		if ($this->emailConfirmation == '-1')
@@ -553,7 +553,7 @@ class Mailinglists extends AdminController
 		Request::checkToken();
 
 		// Incoming data
-		$fields = Request::getVar('fields', array(), 'post', 'array', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate model
 		$row = Email::oneOrNew($fields['id'])->set($fields);
@@ -588,8 +588,8 @@ class Mailinglists extends AdminController
 		Request::checkToken();
 
 		// get request vars
-		$ids = Request::getVar('email_id', array());
-		$mailinglistId = Request::getVar('id', array());
+		$ids = Request::getArray('email_id', array());
+		$mailinglistId = Request::getArray('id', array());
 		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : 0;
 
 		// make sure we have ids
@@ -696,7 +696,7 @@ class Mailinglists extends AdminController
 	public function exportTask()
 	{
 		// get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		// instantiate mailing list object
@@ -735,7 +735,7 @@ class Mailinglists extends AdminController
 	 */
 	public function cancelemailTask()
 	{
-		$email = Request::getVar('fields', array(), 'post');
+		$email = Request::getArray('fields', array(), 'post');
 
 		$mid = (isset($email['mid']) ? $email['mid'] : Request::getInt('mid', 0));
 

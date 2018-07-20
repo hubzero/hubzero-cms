@@ -39,7 +39,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'item.php');
+require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for an item
@@ -80,7 +80,7 @@ class Wiki extends GenericItem
 			return false;
 		}
 
-		if (!Request::getVar('pagename', ''))
+		if (!Request::getString('pagename', ''))
 		{
 			return false;
 		}
@@ -109,7 +109,7 @@ class Wiki extends GenericItem
 			$scope = 'site';
 			$scope_id = 0;
 
-			if ($group = Request::getVar('cn', ''))
+			if ($group = Request::getString('cn', ''))
 			{
 				$group = Group::getInstance($group);
 

@@ -124,19 +124,19 @@ class Commentsv1_0 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'sort'       => Request::getWord('sort', 'created'),
 			'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'DESC')),
-			'group'      => Request::getVar('group', ''),
-			'reportedby' => Request::getVar('reporter', ''),
-			'owner'      => Request::getVar('owner', ''),
+			'group'      => Request::getString('group', ''),
+			'reportedby' => Request::getString('reporter', ''),
+			'owner'      => Request::getString('owner', ''),
 			'type'       => Request::getInt('type', 0),
 			'status'     => strtolower(Request::getWord('status', '')),
 			'tag'        => Request::getWord('tag', ''),
 		);
 
-		$filters['opened'] = $this->_toTimestamp(Request::getVar('opened', ''));
-		$filters['closed'] = $this->_toTimestamp(Request::getVar('closed', ''));
+		$filters['opened'] = $this->_toTimestamp(Request::getString('opened', ''));
+		$filters['closed'] = $this->_toTimestamp(Request::getString('closed', ''));
 
 		$response = new stdClass;
 		$response->success  = true;
@@ -217,9 +217,9 @@ class Commentsv1_0 extends ApiController
 		$ticket->set('status', Request::getInt('status', $ticket->get('status'), 'post'));
 		$ticket->set('open', Request::getInt('open', $ticket->get('open'), 'post'));
 		$ticket->set('category', Request::getInt('category', $ticket->get('category'), 'post'));
-		$ticket->set('severity', Request::getVar('severity', $ticket->get('severity'), 'post'));
-		$ticket->set('owner', Request::getVar('owner', $ticket->get('owner'), 'post'));
-		$ticket->set('group', Request::getVar('group', $ticket->get('group'), 'post'));
+		$ticket->set('severity', Request::getString('severity', $ticket->get('severity'), 'post'));
+		$ticket->set('owner', Request::getInt('owner', $ticket->get('owner'), 'post'));
+		$ticket->set('group', Request::getInt('group', $ticket->get('group'), 'post'));
 
 		// If an existing ticket AND closed AND previously open
 		if ($ticket_id && !$ticket->get('open') && $ticket->get('open') != $old->get('open'))
@@ -229,7 +229,7 @@ class Commentsv1_0 extends ApiController
 		}
 
 		// Any tags?
-		if ($tags = trim(Request::getVar('tags', '', 'post')))
+		if ($tags = trim(Request::getString('tags', '', 'post')))
 		{
 			$ticket->tag($tags, $user->get('uidNumber'));
 			$ticket->set('tags', $ticket->tags('string'));
@@ -245,7 +245,7 @@ class Commentsv1_0 extends ApiController
 		// Create a new comment
 		$comment = new \Components\Support\Models\Comment();
 		$comment->set('ticket', $ticket->get('id'));
-		$comment->set('comment', nl2br(Request::getVar('comment', '', 'post', 'none', 2)));
+		$comment->set('comment', nl2br(Request::getString('comment', '', 'post', 'none', 2)));
 		if ($comment->get('comment'))
 		{
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
@@ -261,7 +261,7 @@ class Commentsv1_0 extends ApiController
 		// Compare fields to find out what has changed for this ticket and build a changelog
 		$comment->changelog()->diff($old, $ticket);
 
-		$comment->changelog()->cced(Request::getVar('cc', '', 'post'));
+		$comment->changelog()->cced(Request::getString('cc', '', 'post'));
 
 		// Store new content
 		if (!$comment->store())
@@ -399,7 +399,7 @@ class Commentsv1_0 extends ApiController
 		$msg->comment  = $comment->get('id');
 		$msg->notified = $comment->changelog()->get('notifications');
 
-		$this->setMessageType(Request::getVar('format', 'json'));
+		$this->setMessageType(Request::getString('format', 'json'));
 		$this->send($msg, 200, 'OK');
 	}
 

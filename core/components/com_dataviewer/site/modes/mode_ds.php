@@ -42,7 +42,7 @@ function get_dd($db_id)
 	$dv_id = Request::getVar('dv');
 
 	if ($db_id['extra']) {
-		$sql = "SELECT * FROM #__datastore_tables WHERE datastore_id = " . $db_id['name'] . " AND id = " . $db->quote($dv_id);
+		$sql = "SELECT * FROM `#__datastore_tables` WHERE datastore_id = " . $db_id['name'] . " AND id = " . $db->quote($dv_id);
 		$db->setQuery($sql);
 		$r = $db->loadAssoc();
 
@@ -223,14 +223,14 @@ function get_dd($db_id)
 
 function _dd_post($dd)
 {
-	$id = Request::getVar('id', false);
+	$id = Request::getString('id', false);
 
 	if ($id) {
 		$dd['where'][] = array('field'=>$dd['pk'], 'value'=>$id);
 		$dd['single'] = true;
 	}
 
-	$custom_field =  Request::getVar('custom_field', false);
+	$custom_field =  Request::getString('custom_field', false);
 	if ($custom_field) {
 		$custom_field = explode('|', $custom_field);
 		$dd['where'][] = array('field'=>$custom_field[0], 'value'=>$custom_field[1]);
@@ -238,7 +238,7 @@ function _dd_post($dd)
 	}
 
 	// Data for Custom Views
-	$custom_view = Request::getVar('custom_view', '');
+	$custom_view = Request::getString('custom_view', '');
 
 	if ($custom_view != '') {
 		$custom_view = explode(',', $custom_view);
@@ -297,4 +297,3 @@ function pathway($dd)
 
 	Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
 }
-?>

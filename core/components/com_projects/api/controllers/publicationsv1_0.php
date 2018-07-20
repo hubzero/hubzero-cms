@@ -42,7 +42,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 /**
@@ -58,14 +58,14 @@ class Publicationsv1_0 extends ApiController
 	public function execute()
 	{
 		$this->registerTask('publications', 'list');
-		$this->_task = Request::getWord('task', 'list');
+		$this->_task = Request::getCmd('task', 'list');
 
 		// Load language files
 		Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');
 		Lang::load('plg_projects_publications', PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'publications');
 
 		// Incoming
-		$id = Request::getVar('id', '');
+		$id = Request::getString('id', '');
 
 		$this->model = new Project($id);
 
