@@ -159,7 +159,7 @@ class Collections extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id))
 			{
@@ -199,7 +199,7 @@ class Collections extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate extended database class
 		$row = Collection::oneOrNew($fields['id'])->set($fields);
@@ -238,7 +238,7 @@ class Collections extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 		$i = 0;
 
@@ -367,7 +367,7 @@ class Collections extends AdminController
 		// Incoming
 		$state = $this->getTask() == 'publish' ? Collection::STATE_PUBLISHED : Collection::STATE_UNPUBLISHED;
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource

@@ -42,7 +42,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 
 /**
  * API controller for the project team
@@ -63,7 +63,7 @@ class Teamv1_0 extends ApiController
 		Lang::load('com_projects') || Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');
 
 		// Incoming
-		$id = Request::getVar('id', '');
+		$id = Request::getString('id', '');
 
 		$this->model = new Project($id);
 
@@ -132,8 +132,8 @@ class Teamv1_0 extends ApiController
 		$filters = array(
 			'limit'   => Request::getInt('limit', 0, 'post'),
 			'start'   => Request::getInt('limitstart', 0, 'post'),
-			'sortby'  => Request::getVar( 'sortby', 'name', 'post'),
-			'sortdir' => Request::getVar( 'sortdir', 'ASC', 'post'),
+			'sortby'  => Request::getString( 'sortby', 'name', 'post'),
+			'sortdir' => Request::getString( 'sortdir', 'ASC', 'post'),
 			'status'  => 'active'
 		);
 		$response->count   = count($this->model->team());

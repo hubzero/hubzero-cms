@@ -58,7 +58,7 @@ class Respondents extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$id = $ids[0];
 
 		if (!$id)
@@ -198,7 +198,7 @@ class Respondents extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('rid', array());
+		$ids = Request::getArray('rid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;

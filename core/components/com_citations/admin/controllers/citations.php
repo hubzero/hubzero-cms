@@ -133,7 +133,7 @@ class Citations extends AdminController
 		if (!($row instanceof Citation))
 		{
 			// Get request vars - expecting an array id[]=4232
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -227,7 +227,7 @@ class Citations extends AdminController
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
@@ -275,7 +275,7 @@ class Citations extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
@@ -320,7 +320,7 @@ class Citations extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
@@ -386,12 +386,12 @@ class Citations extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$citation = array_map('trim', Request::getVar('citation', array(), 'post'));
-		$exclude  = Request::getVar('exclude', '', 'post');
+		$citation = array_map('trim', Request::getArray('citation', array(), 'post'));
+		$exclude  = Request::getString('exclude', '', 'post');
 		$rollover = Request::getInt("rollover", 0);
-		$this->tags = Request::getVar('tags', '');
-		$this->badges = Request::getVar('badges', '');
-		$this->sponsors = array_filter(Request::getVar('sponsors', array(), 'post'));
+		$this->tags = Request::getString('tags', '');
+		$this->badges = Request::getString('badges', '');
+		$this->sponsors = array_filter(Request::getArray('sponsors', array(), 'post'));
 		$citationId = !empty($citation['id']) ? $citation['id'] : null;
 		unset($citation['id']);
 
@@ -417,7 +417,7 @@ class Citations extends AdminController
 		$row->set('params', $cparams->toString());
 
 		// Incoming associations
-		$assocParams = Request::getVar('assocs', array(), 'post');
+		$assocParams = Request::getArray('assocs', array(), 'post');
 		$associations = array();
 		foreach ($assocParams as $assoc)
 		{
@@ -475,7 +475,7 @@ class Citations extends AdminController
 		}
 
 		// Incoming (we're expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;

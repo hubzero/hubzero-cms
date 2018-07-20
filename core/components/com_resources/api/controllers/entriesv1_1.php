@@ -98,11 +98,11 @@ class Entriesv1_1 extends ApiController
 	{
 		// Incoming
 		$filters = array(
-			'type'   => Request::getVar('type', ''),
+			'type'   => Request::getString('type', ''),
 			'sortby' => Request::getCmd('sortby', 'date'),
 			'limit'  => Request::getInt('limit', Config::get('list_limit')),
 			'start'  => Request::getInt('limitstart', 0),
-			'search' => Request::getVar('search', '')
+			'search' => Request::getString('search', '')
 		);
 
 		$admin = false;
@@ -110,7 +110,7 @@ class Entriesv1_1 extends ApiController
 		{
 			$admin = true;
 			$filters['tag'] = '';
-			$searchable = Request::getVar('searchable', false);
+			$searchable = Request::getBool('searchable', false);
 
 			require_once Component::path('com_tags') . '/models/cloud.php';
 		}
@@ -364,9 +364,9 @@ class Entriesv1_1 extends ApiController
 	 */
 	public function whatsnewTask()
 	{
-		$limit    = Request::getVar('limit', 25);
-		$period   = Request::getVar('period', 'month');
-		$category = Request::getVar('category', 'resources');
+		$limit    = Request::getInt('limit', 25);
+		$period   = Request::getString('period', 'month');
+		$category = Request::getString('category', 'resources');
 
 		require_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'finder.php';
 
@@ -409,8 +409,8 @@ class Entriesv1_1 extends ApiController
 	 */
 	public function autocompleteTask()
 	{
-		$limit    = Request::getVar('limit', 25);
-		$search   = Request::getVar('search', '');
+		$limit    = Request::getInt('limit', 25);
+		$search   = Request::getString('search', '');
 		$existingCids = Request::getArray('existingCids');
 
 		require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
@@ -458,7 +458,7 @@ class Entriesv1_1 extends ApiController
 	 */
 	public function renderlatexTask()
 	{
-		$expression = Request::getVar('expression', '');
+		$expression = Request::getString('expression', '');
 
 		$dir = PATH_APP . DS . 'cache' . DS . 'ckeditor' . DS . 'hubzeroequation' . DS;
 		$filename = uniqid('equation_');

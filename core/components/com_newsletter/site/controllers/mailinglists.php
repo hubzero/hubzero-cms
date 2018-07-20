@@ -127,7 +127,7 @@ class Mailinglists extends SiteController
 		//get email
 		if (User::isGuest())
 		{
-			$email = (string)urldecode(Request::getVar('e', ''));
+			$email = (string)urldecode(Request::getString('e', ''));
 		}
 		else
 		{
@@ -224,10 +224,10 @@ class Mailinglists extends SiteController
 
 		//get request vars
 		$list   = Request::getInt('list_' . \Session::getFormToken(), '', 'post');
-		$email  = Request::getVar('email_' . \Session::getFormToken(), User::get('email'), 'post');
+		$email  = Request::getString('email_' . \Session::getFormToken(), User::get('email'), 'post');
 		$sid    = Request::getInt('subscriptionid', 0);
-		$hp1    = Request::getVar('hp1', '', 'post');
-		$return = base64_decode(Request::getVar('return', '/', 'post'));
+		$hp1    = Request::getString('hp1', '', 'post');
+		$return = base64_decode(Request::getString('return', '/', 'post'));
 
 		//check to make sure our honey pot is good
 		if ($hp1 != '')
@@ -296,12 +296,12 @@ class Mailinglists extends SiteController
 	public function doMultiSubscribeTask()
 	{
 		//get request vars
-		$lists = Request::getVar('lists', array(), 'post');
+		$lists = Request::getArray('lists', array(), 'post');
 
 		//get email
 		if (User::isGuest())
 		{
-			$email = (string)urldecode(Request::getVar('e', '', 'post'));
+			$email = (string)urldecode(Request::getString('e', '', 'post'));
 		}
 		else
 		{
@@ -409,8 +409,8 @@ class Mailinglists extends SiteController
 	public function unsubscribeTask()
 	{
 		//get request vars
-		$email = urldecode(Request::getVar('e', ''));
-		$token = Request::getVar('t', '');
+		$email = urldecode(Request::getString('e', ''));
+		$token = Request::getString('t', '');
 
 		//parse token
 		$recipient = Helper::parseMailingToken($token);
@@ -530,10 +530,10 @@ class Mailinglists extends SiteController
 	public function doUnsubscribeTask()
 	{
 		//get request vars
-		$email      = urldecode(Request::getVar('e', ''));
-		$token      = Request::getVar('t', '');
-		$reason     = Request::getVar('reason', '');
-		$reason_alt = Request::getVar('reason-alt', '');
+		$email      = urldecode(Request::getString('e', ''));
+		$token      = Request::getString('t', '');
+		$reason     = Request::getString('reason', '');
+		$reason_alt = Request::getString('reason-alt', '');
 
 		//grab the reason explaination if user selected other
 		if ($reason == 'Other')
@@ -642,8 +642,8 @@ class Mailinglists extends SiteController
 	public function confirmTask()
 	{
 		//get request vars
-		$email = urldecode(Request::getVar('e', ''));
-		$token = Request::getVar('t', '');
+		$email = urldecode(Request::getString('e', ''));
+		$token = Request::getString('t', '');
 
 		//make sure we have an email
 		$mailinglistEmail = Helper::parseConfirmationToken($token);
@@ -686,8 +686,8 @@ class Mailinglists extends SiteController
 	public function removeTask()
 	{
 		//get request vars
-		$email = urldecode(Request::getVar('e', ''));
-		$token = Request::getVar('t', '');
+		$email = urldecode(Request::getString('e', ''));
+		$token = Request::getString('t', '');
 
 		//make sure we have an email
 		$mailinglistEmail = Helper::parseConfirmationToken($token);
@@ -730,7 +730,7 @@ class Mailinglists extends SiteController
 		//get email
 		if (User::isGuest())
 		{
-			$email = (string)urldecode(Request::getVar('e', ''));
+			$email = (string)urldecode(Request::getString('e', ''));
 		}
 		else
 		{

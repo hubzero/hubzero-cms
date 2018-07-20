@@ -884,8 +884,8 @@ class Tickets extends SiteController
 			// This really, REALLY shouldn't happen.
 			App::abort(400, Lang::txt('COM_SUPPORT_ERROR_MISSING_DATA'));
 		}
-		$reporter = Request::getVar('reporter', array(), 'post', 'none', 2);
-		$problem  = Request::getVar('problem', array(), 'post', 'none', 2);
+		$reporter = Request::getArray('reporter', array(), 'post', 'none', 2);
+		$problem  = Request::getArray('problem', array(), 'post', 'none', 2);
 
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 
@@ -1689,7 +1689,7 @@ class Tickets extends SiteController
 		}
 
 		$comment  = Request::getString('comment', '', 'post', 'none', 2);
-		$incoming = Request::getVar('ticket', array(), 'post');
+		$incoming = Request::getArray('ticket', array(), 'post');
 		$incoming = array_map('trim', $incoming);
 
 		if (isset($incoming['target_date']))
@@ -2426,7 +2426,7 @@ class Tickets extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', array(), 'files', 'array');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!isset($file['name']) || !$file['name'])
 		{
 			//$this->setError(Lang::txt('SUPPORT_NO_FILE'));

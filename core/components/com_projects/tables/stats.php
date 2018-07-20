@@ -174,7 +174,7 @@ class Stats extends Table
 	public function getStats($model, $cron = false, $publishing = false, $period = 'alltime', $limit = 3)
 	{
 		// Incoming
-		$period = Request::getVar('period', $period);
+		$period = Request::getString('period', $period);
 		$limit  = Request::getInt('limit', $limit);
 
 		if ($cron == true)

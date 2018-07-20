@@ -39,7 +39,7 @@ $this->css('conditions.css')
      ->js('json2.js')
      ->js('condition.builder.js');
 
-$tmpl = Request::getVar('tmpl', '');
+$tmpl = Request::getString('tmpl', '');
 
 if (!$tmpl)
 {

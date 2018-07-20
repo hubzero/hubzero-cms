@@ -55,7 +55,7 @@ class Media extends AdminController
 	 */
 	public function downloadTask()
 	{
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 		$item = Request::getInt('post', 0);
 
 		$post = Post::oneOrFail($item);
@@ -110,7 +110,7 @@ class Media extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
 		}
@@ -143,7 +143,7 @@ class Media extends AdminController
 		$asset = Asset::blank();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', Request::getVar('description', '', 'post'));
+		$asset->set('description', Request::getString('description', '', 'post'));
 		$asset->set('state', $asset::STATE_PUBLISHED);
 		$asset->set('type', 'link');
 
@@ -163,7 +163,7 @@ class Media extends AdminController
 	public function ajaxCreateTask()
 	{
 		// Ensure we have an ID to work with
-		$listdir = strtolower(Request::getVar('dir', ''));
+		$listdir = strtolower(Request::getString('dir', ''));
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
@@ -197,7 +197,7 @@ class Media extends AdminController
 		$asset = Asset::blank();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', Request::getVar('description', '', 'post'));
+		$asset->set('description', Request::getString('description', '', 'post'));
 		$asset->set('state', $asset::STATE_PUBLISHED);
 		$asset->set('type', 'link');
 
@@ -349,7 +349,7 @@ class Media extends AdminController
 		// Create database entry
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', $filename . '.' . $ext);
-		$asset->set('description', Request::getVar('description', '', 'post'));
+		$asset->set('description', Request::getString('description', '', 'post'));
 		$asset->set('state', $asset::STATE_PUBLISHED);
 		$asset->set('type', 'file');
 
@@ -394,7 +394,7 @@ class Media extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -409,7 +409,7 @@ class Media extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_FILE'));
@@ -448,7 +448,7 @@ class Media extends AdminController
 			// Create database entry
 			$asset->set('item_id', intval($listdir));
 			$asset->set('filename', $file['name']);
-			$asset->set('description', Request::getVar('description', '', 'post'));
+			$asset->set('description', Request::getString('description', '', 'post'));
 			$asset->set('state', $asset::STATE_PUBLISHED);
 			$asset->set('type', 'file');
 
@@ -474,7 +474,7 @@ class Media extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}

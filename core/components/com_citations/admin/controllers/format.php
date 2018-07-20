@@ -91,7 +91,7 @@ class Format extends AdminController
 		Request::checkToken();
 
 		//get format
-		$format = Request::getVar('citationFormat', array());
+		$format = Request::getArray('citationFormat', array());
 
 		// create or update custom format
 		$model = CitationFormat::oneOrNew($format['id']);

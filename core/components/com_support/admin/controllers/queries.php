@@ -135,7 +135,7 @@ class Queries extends AdminController
 
 		if (!is_object($row))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
@@ -185,9 +185,9 @@ class Queries extends AdminController
 		}
 
 		// Incoming
-		$fields  = Request::getVar('fields', array(), 'post');
+		$fields  = Request::getArray('fields', array(), 'post');
 		$no_html = Request::getInt('no_html', 0);
-		$tmpl    = Request::getVar('component', '');
+		$tmpl    = Request::getString('component', '');
 
 		$row = Query::oneOrNew($fields['id'])->set($fields);
 
@@ -251,11 +251,11 @@ class Queries extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$no_html = Request::getInt('no_html', 0);
-		$tmpl    = Request::getVar('component', '');
+		$tmpl    = Request::getString('component', '');
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -317,7 +317,7 @@ class Queries extends AdminController
 
 		if (!is_object($row))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -350,9 +350,9 @@ class Queries extends AdminController
 		}
 
 		// Incoming
-		$fields  = Request::getVar('fields', array());
+		$fields  = Request::getArray('fields', array());
 		$no_html = Request::getInt('no_html', 0);
-		$tmpl    = Request::getVar('component', '');
+		$tmpl    = Request::getString('component', '');
 
 		$response = new stdClass;
 		$response->success = 1;
@@ -403,7 +403,7 @@ class Queries extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (is_array($ids) ?: array($ids));
 
 		$no_html = Request::getInt('no_html', 0);
@@ -447,8 +447,8 @@ class Queries extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$folders = Request::getVar('folder', array());
-		$queries = Request::getVar('queries', array());
+		$folders = Request::getArray('folder', array());
+		$queries = Request::getArray('queries', array());
 
 		if (is_array($folders))
 		{

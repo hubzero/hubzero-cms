@@ -127,7 +127,7 @@ class Roles extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
@@ -174,7 +174,7 @@ class Roles extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -187,7 +187,7 @@ class Roles extends AdminController
 			return $this->editTask($row);
 		}
 
-		$types = Request::getVar('types', array(), 'post');
+		$types = Request::getArray('types', array(), 'post');
 		$types = array_map('trim', $types);
 
 		if (!$row->setTypes($types))
@@ -223,7 +223,7 @@ class Roles extends AdminController
 		}
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

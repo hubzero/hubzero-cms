@@ -574,7 +574,7 @@ class Resources extends SiteController
 				$bits['tag']     = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input', '')));
 				$bits['tag2']    = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input2', '')));
 				$bits['sortby']  = Request::getWord('sortby', 'title');
-				$bits['filter']  = Request::getVar('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
+				$bits['filter']  = Request::getArray('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
 				$bits['ranking'] = $this->config->get('show_ranking');
 
 				if ($bits['tag'] == $bits['tag2'])

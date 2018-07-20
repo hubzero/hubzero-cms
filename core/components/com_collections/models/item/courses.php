@@ -38,7 +38,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'item.php');
+require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for a course
@@ -79,7 +79,7 @@ class Courses extends GenericItem
 			return false;
 		}
 
-		if (!Request::getVar('gid'))
+		if (!Request::getString('gid'))
 		{
 			return false;
 		}
@@ -107,7 +107,7 @@ class Courses extends GenericItem
 
 		if (!$id)
 		{
-			$course = \Components\Courses\Models\Course::getInstance(Request::getVar('gid', ''));
+			$course = \Components\Courses\Models\Course::getInstance(Request::getString('gid', ''));
 
 			$id = $course->get('id');
 		}

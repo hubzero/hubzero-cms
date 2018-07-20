@@ -110,8 +110,8 @@ class Tags extends AdminController
 
 		// Incoming
 		$id       = Request::getInt('id', 0);
-		$entered  = Request::getVar('tags', '');
-		$selected = Request::getVar('tgs', array(0));
+		$entered  = Request::getString('tags', '');
+		$selected = Request::getArray('tgs', array(0));
 
 		// Process tags
 		$tagging = new TagCloud($id);

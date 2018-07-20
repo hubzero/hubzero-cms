@@ -38,7 +38,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'item.php');
+require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for an item
@@ -123,7 +123,7 @@ class Content extends GenericItem
 		$text = str_replace(array("\n", "\r", "\t"), ' ', $text);
 		$text = preg_replace('/\s+/', ' ', $text);
 
-		$url = Request::getVar('REQUEST_URI', '', 'server');
+		$url = Request::getString('REQUEST_URI', '', 'server');
 		$url = ($url ?: Route::url('index.php?option=com_content&id=' . $article->alias));
 		$url = str_replace('?tryto=collect', '', $url);
 		$url = str_replace('no_html=1', '', $url);

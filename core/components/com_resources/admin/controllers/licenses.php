@@ -127,7 +127,7 @@ class Licenses extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
@@ -166,7 +166,7 @@ class Licenses extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -206,7 +206,7 @@ class Licenses extends AdminController
 		}
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -255,7 +255,7 @@ class Licenses extends AdminController
 		$dir = $this->getTask() == 'orderup' ? -1 : 1;
 
 		// Incoming
-		$id = Request::getVar('id', array(0), '', 'array');
+		$id = Request::getArray('id', array(0), '');
 
 		// Load row
 		$row = License::oneOrFail((int) $id[0]);

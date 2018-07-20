@@ -57,7 +57,7 @@ class Media extends SiteController
 	 */
 	public function downloadTask()
 	{
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 		$item = Request::getInt('post', 0);
 		$size = Request::getWord('size', '');
 
@@ -118,10 +118,8 @@ class Media extends SiteController
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_COLLECTIONS_SERVER_ERROR'), 500);
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 
 	/**
@@ -131,7 +129,7 @@ class Media extends SiteController
 	 */
 	public function createTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
 		}
@@ -172,7 +170,7 @@ class Media extends SiteController
 		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', Request::getVar('description', '', 'post'));
+		$asset->set('description', Request::getString('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
@@ -199,7 +197,7 @@ class Media extends SiteController
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = strtolower(Request::getVar('dir', ''));
+		$listdir = strtolower(Request::getString('dir', ''));
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
@@ -234,7 +232,7 @@ class Media extends SiteController
 		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', Request::getVar('description', '', 'post'));
+		$asset->set('description', Request::getString('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
@@ -273,7 +271,7 @@ class Media extends SiteController
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = strtolower(Request::getVar('dir', ''));
+		$listdir = strtolower(Request::getString('dir', ''));
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
@@ -379,7 +377,7 @@ class Media extends SiteController
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -401,7 +399,7 @@ class Media extends SiteController
 				$hi->save();
 			}
 		}
-		$asset->set('description', Request::getVar('description', '', 'post'));
+		$asset->set('description', Request::getString('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'file');
 
@@ -429,7 +427,7 @@ class Media extends SiteController
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(PATH_APP, '', $path),
 			'id'        => $listdir,
-			'html'      => str_replace('>', '&gt;',  $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
+			'html'      => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
 		));
 	}
 
@@ -447,7 +445,7 @@ class Media extends SiteController
 			return;
 		}
 
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -462,7 +460,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_FILE'));
@@ -510,7 +508,7 @@ class Media extends SiteController
 					$hi->save();
 				}
 			}
-			$asset->set('description', Request::getVar('description', '', 'post'));
+			$asset->set('description', Request::getString('description', '', 'post'));
 			$asset->set('state', 1);
 			$asset->set('type', 'file');
 
@@ -531,7 +529,7 @@ class Media extends SiteController
 	 */
 	public function deleteTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}
@@ -651,4 +649,3 @@ class Media extends SiteController
 		$this->view->display();
 	}
 }
-
