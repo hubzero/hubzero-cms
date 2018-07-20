@@ -180,7 +180,7 @@ class Media extends AdminController
 			'ticket'      => $ticket,
 			'comment_id'  => $comment,
 			'filename'    => $filename . '.' . $ext,
-			'description' => Request::getVar('description', '')
+			'description' => Request::getString('description', '')
 		));
 		if (!$asset->save())
 		{
@@ -218,7 +218,7 @@ class Media extends AdminController
 	 */
 	public function uploadTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -233,7 +233,7 @@ class Media extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_NO_FILE'));
@@ -301,7 +301,7 @@ class Media extends AdminController
 				'ticket'      => $ticket,
 				'comment_id'  => $comment,
 				'filename'    => $filename,
-				'description' => Request::getVar('description', '')
+				'description' => Request::getString('description', '')
 			));
 
 			if (!$asset->save())
@@ -321,7 +321,7 @@ class Media extends AdminController
 	 */
 	public function deleteTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}

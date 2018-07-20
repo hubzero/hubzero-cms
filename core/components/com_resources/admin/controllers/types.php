@@ -129,7 +129,7 @@ class Types extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -176,7 +176,7 @@ class Types extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$type = Request::getVar('type', array(), 'post');
+		$type = Request::getArray('type', array(), 'post');
 
 		// Initiate extended database class
 		$row = Type::oneOrNew($type['id'])->set($type);
@@ -186,7 +186,7 @@ class Types extends AdminController
 		isset($type['collection']) ? $row->set('collection', 1) : $row->set('collection', 0);
 
 		// Get the custom fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		if (is_array($fields))
 		{
 			$elements = new stdClass();
@@ -238,7 +238,7 @@ class Types extends AdminController
 		}
 
 		// Get parameters
-		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 
 		$row->set('params', $p->toString());
 
@@ -293,7 +293,7 @@ class Types extends AdminController
 		}
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -365,7 +365,7 @@ class Types extends AdminController
 		$state = $this->getTask() == 'publish' ? Type::STATE_PUBLISHED : Type::STATE_UNPUBLISHED;
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
@@ -419,20 +419,20 @@ class Types extends AdminController
 	 */
 	public function elementTask()
 	{
-		$ctrl = Request::getVar('ctrl', 'fields');
+		$ctrl = Request::getString('ctrl', 'fields');
 
 		$option = new stdClass;
 		$option->label = '';
 		$option->value = '';
 
 		$field = new stdClass;
-		$field->label       = Request::getVar('name', 0);
+		$field->label       = Request::getString('name', 0);
 		$field->element     = '';
 		$field->description = '';
 		$field->text        = $field->label;
 		$field->name        = $field->label;
 		$field->default     = '';
-		$field->type        = Request::getVar('type', '');
+		$field->type        = Request::getString('type', '');
 		$field->options     = array(
 			$option,
 			$option

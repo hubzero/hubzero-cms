@@ -30,7 +30,7 @@ function controller_exec()
 
 
 	// Get the task
-	$task = Request::getVar('task', 'list');
+	$task = Request::getCmd('task', 'list');
 
 	$task_file = __DIR__ . DS . 'tasks' . DS . $task . '.php';
 	if (require_once($task_file)) {
@@ -66,4 +66,3 @@ function authorized()
 
 	return false;
 }
-?>

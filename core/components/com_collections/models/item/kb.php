@@ -38,7 +38,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'item.php');
+require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for a Knowledge base article
@@ -108,7 +108,7 @@ class Kb extends GenericItem
 		if (!$id)
 		{
 			$category = Category::all()
-				->whereEquals('alias', Request::getVar('category'))
+				->whereEquals('alias', Request::getString('category'))
 				->limit(1)
 				->row();
 
@@ -118,7 +118,7 @@ class Kb extends GenericItem
 			}
 
 			$article = Article::all()
-				->whereEquals('alias', Request::getVar('alias', ''))
+				->whereEquals('alias', Request::getString('alias', ''))
 				->whereEquals('category', $category->get('id'))
 				->limit(1)
 				->row();

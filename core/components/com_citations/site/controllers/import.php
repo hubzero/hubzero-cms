@@ -49,7 +49,7 @@ use Date;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'importer.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'importer.php';
 
 /**
  * Citations controller class for importing citation entries
@@ -95,7 +95,7 @@ class Import extends SiteController
 	 */
 	public function displayTask()
 	{
-		$gid = Request::getVar('group');
+		$gid = Request::getString('group');
 		if (isset($gid) && $gid != '')
 		{
 			$this->view->gid = $gid;
@@ -225,7 +225,7 @@ class Import extends SiteController
 		}
 
 		//get group ID
-		$group = Request::getVar('group');
+		$group = Request::getString('group');
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=import_review' . ($group ? '&group=' . $group : ''))
@@ -242,7 +242,7 @@ class Import extends SiteController
 		$citations_require_attention    = $this->importer->readRequiresAttention();
 		$citations_require_no_attention = $this->importer->readRequiresNoAttention();
 
-		$group = Request::getVar('group');
+		$group = Request::getString('group');
 
 		// make sure we have some citations
 		if (!$citations_require_attention && !$citations_require_no_attention)
@@ -298,10 +298,10 @@ class Import extends SiteController
 		$cites_require_no_attention = $this->importer->readRequiresNoAttention();
 
 		// action for citations needing attention
-		$citations_action_attention = Request::getVar('citation_action_attention', array());
+		$citations_action_attention = Request::getArray('citation_action_attention', array());
 
 		// action for citations needing no attention
-		$citations_action_no_attention = Request::getVar('citation_action_no_attention', array());
+		$citations_action_no_attention = Request::getArray('citation_action_no_attention', array());
 
 		// check to make sure we have citations
 		if (!$cites_require_attention && !$cites_require_no_attention)
@@ -319,7 +319,7 @@ class Import extends SiteController
 		$allow_badges = $this->config->get('citation_allow_badges', 'no');
 
 		$this->importer->set('user', User::get('id'));
-		if ($group = Request::getVar('group'))
+		if ($group = Request::getString('group'))
 		{
 			$this->importer->set('scope', 'group');
 			$this->importer->set('scope_id', $group);
@@ -458,7 +458,7 @@ class Import extends SiteController
 	 */
 	public function getformatTask()
 	{
-		echo 'format' . Request::getVar('format', 'apa');
+		echo 'format' . Request::getString('format', 'apa');
 	}
 
 	/**

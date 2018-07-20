@@ -76,7 +76,7 @@ class Configure extends AdminController
 	public function saveTask()
 	{
 		// Get the configuration
-		$config = Request::getVar('config', array(), 'post');
+		$config = Request::getArray('config', array(), 'post');
 		foreach ($config as $n => $v)
 		{
 			$box = array(
@@ -102,7 +102,7 @@ class Configure extends AdminController
 		}
 
 		// Get the custom fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$box = array();
 		$box['param'] = 'fields';
@@ -151,4 +151,3 @@ class Configure extends AdminController
 		);
 	}
 }
-

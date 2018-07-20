@@ -37,9 +37,9 @@ if (!\User::authorise('core.manage', 'com_citations'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
-require_once(dirname(__DIR__) . DS . 'models'  . DS . 'format.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'format.php';
+require_once dirname(__DIR__) . DS . 'models'  . DS . 'format.php';
 
 $controllerName = \Request::getCmd('controller', 'citations');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -50,12 +50,12 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 \Submenu::addEntry(
 	\Lang::txt('CITATIONS'),
 	\Route::url('index.php?option=com_citations&controller=citations'),
-	($controllerName == 'citations' && \Request::getVar('task', '') != 'stats')
+	($controllerName == 'citations' && \Request::getCmd('task', '') != 'stats')
 );
 \Submenu::addEntry(
 	\Lang::txt('CITATION_STATS'),
 	\Route::url('index.php?option=com_citations&controller=citations&task=stats'),
-	($controllerName == 'citations' && \Request::getVar('task', '') == 'stats')
+	($controllerName == 'citations' && \Request::getCmd('task', '') == 'stats')
 );
 \Submenu::addEntry(
 	\Lang::txt('CITATION_TYPES'),

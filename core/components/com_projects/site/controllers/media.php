@@ -321,7 +321,7 @@ class Media extends Base
 		}
 
 		// Incoming file
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 		$file = $file ? $file : $this->model->get('picture');
 		if (!$file)
 		{

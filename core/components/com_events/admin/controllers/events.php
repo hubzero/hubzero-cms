@@ -112,8 +112,8 @@ class Events extends AdminController
 			'search',
 			''
 		));
-		$this->view->filters['catid']    = Request::getVar('catid', 0, '', 'int');
-		$this->view->filters['scope_id'] = Request::getVar('group_id', 0, '', 'int');
+		$this->view->filters['catid']    = Request::getInt('catid', 0, '', 'int');
+		$this->view->filters['scope_id'] = Request::getInt('group_id', 0, '', 'int');
 
 		$ee = new Event($this->database);
 
@@ -157,7 +157,7 @@ class Events extends AdminController
 	 */
 	public function addpageTask()
 	{
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=pages&task=add&id[]=' . $ids[0], false)
@@ -171,7 +171,7 @@ class Events extends AdminController
 	 */
 	public function respondentsTask()
 	{
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=respondents&id[]=' . $ids[0], false)
@@ -212,7 +212,7 @@ class Events extends AdminController
 		}
 
 		// Incoming
-		$id = Request::getVar('id', array(), 'request');
+		$id = Request::getArray('id', array(), 'request');
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : 0;
@@ -462,12 +462,12 @@ class Events extends AdminController
 
 		//$row->title = $this->view->escape($row->title);
 
-		//$row->content = Request::getVar('econtent', '', 'post');
+		//$row->content = Request::getString('econtent', '', 'post');
 		$row->content = $_POST['econtent'];
 		$row->content = $this->_clean($row->content);
 
 		// Get the custom fields defined in the events configuration
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 		// Wrap up the content of the field and attach it to the event content
 		$fs = $this->config->fields;
@@ -522,7 +522,7 @@ class Events extends AdminController
 		}
 
 		// Get parameters
-		$params = Request::getVar('params', '', 'post');
+		$params = Request::getArray('params', '', 'post');
 		if (is_array($params))
 		{
 			//email is reaquired
@@ -550,7 +550,7 @@ class Events extends AdminController
 		$row->checkin();
 
 		// Incoming tags
-		$tags = Request::getVar('tags', '', 'post');
+		$tags = Request::getString('tags', '', 'post');
 
 		// Save the tags
 		$rt = new Tags($row->id);
@@ -616,7 +616,7 @@ class Events extends AdminController
 	public function publishTask()
 	{
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -655,7 +655,7 @@ class Events extends AdminController
 	public function unpublishTask()
 	{
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -694,7 +694,7 @@ class Events extends AdminController
 	public function settypeTask()
 	{
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -709,7 +709,7 @@ class Events extends AdminController
 			return;
 		}
 
-		switch (strtolower(Request::getVar('type', 'event')))
+		switch (strtolower(Request::getString('type', 'event')))
 		{
 			case 'announcement':
 				$v = 1;
@@ -748,7 +748,7 @@ class Events extends AdminController
 	public function removeTask()
 	{
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();

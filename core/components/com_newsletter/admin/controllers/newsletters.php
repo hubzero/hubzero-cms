@@ -209,7 +209,7 @@ class Newsletters extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			$row = Newsletter::oneOrNew($id);
@@ -255,13 +255,13 @@ class Newsletters extends AdminController
 		}
 
 		// Incoming data
-		$fields = Request::getVar('newsletter', array(), 'post', 'array', 2);
+		$fields = Request::getArray('newsletter', array(), 'post');
 
 		// Initiate model
 		$row = Newsletter::oneOrNew($fields['id'])->set($fields);
 
 		// did we have params
-		$p = Request::getVar('params', array(), 'post');
+		$p = Request::getArray('params', array(), 'post');
 
 		if (!empty($p))
 		{
@@ -332,7 +332,7 @@ class Newsletters extends AdminController
 		}
 
 		// Get the request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Make sure we have ids
 		$success = 0;
@@ -380,7 +380,7 @@ class Newsletters extends AdminController
 		}
 
 		// Get the request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Make sure we have ids
 		$success = 0;
@@ -433,7 +433,7 @@ class Newsletters extends AdminController
 		$publish = $this->getTask() == 'publish' ? Newsletter::STATE_PUBLISHED : Newsletter::STATE_UNPUBLISHED;
 
 		// Get the request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have ids
@@ -508,7 +508,7 @@ class Newsletters extends AdminController
 	public function sendTestTask()
 	{
 		// Get the request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : 0;
 
 		// Make sure we have an id
@@ -541,7 +541,7 @@ class Newsletters extends AdminController
 		$badEmails  = array();
 
 		// Get request vars
-		$emails       = Request::getVar('emails', '');
+		$emails       = Request::getString('emails', '');
 		$newsletterId = Request::getInt('nid', 0);
 
 		// Parse emails
@@ -607,7 +607,7 @@ class Newsletters extends AdminController
 	public function sendNewsletterTask()
 	{
 		// get the request vars
-		$ids = Request::getVar("id", array());
+		$ids = Request::getArray("id", array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		// make sure we have an id
@@ -969,10 +969,10 @@ class Newsletters extends AdminController
 		}
 		else
 		{
-			$schedulerDate     = Request::getVar('scheduler_date', '');
-			$schedulerHour     = Request::getVar('scheduler_date_hour', '00');
-			$schedulerMinute   = Request::getVar('scheduler_date_minute', '00');
-			$schedulerMeridian = Request::getVar('scheduler_date_meridian', 'AM');
+			$schedulerDate     = Request::getString('scheduler_date', '');
+			$schedulerHour     = Request::getString('scheduler_date_hour', '00');
+			$schedulerMinute   = Request::getString('scheduler_date_minute', '00');
+			$schedulerMeridian = Request::getString('scheduler_date_meridian', 'AM');
 
 			// Make sure we have at least the date or we use now
 			if (!$schedulerDate)

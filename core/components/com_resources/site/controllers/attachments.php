@@ -297,7 +297,7 @@ class Attachments extends SiteController
 		}
 		elseif (isset($_FILES['qqfile']))
 		{
-			//$files = Request::getVar('qqfile', '', 'files', 'array');
+			//$files = Request::getArray('qqfile', '', 'files');
 
 			$stream = false;
 			$file = $_FILES['qqfile']['name'];
@@ -576,7 +576,7 @@ class Attachments extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('CONTRIBUTE_NO_FILE'));

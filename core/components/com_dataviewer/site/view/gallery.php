@@ -112,4 +112,3 @@ function view($hash)
 <?php
 	exit(0);
 }
-?>

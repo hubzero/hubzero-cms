@@ -41,7 +41,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 
 /**
  * API controller for the projects component
@@ -114,7 +114,7 @@ class Projectsv1_1 extends ApiController
 		$admin = false;
 		if (User::authorise('core.admin', 'com_projects'))
 		{
-			$searchable = Request::getVar('searchable', false);
+			$searchable = Request::getBool('searchable', false);
 			unset($filters['mine']);
 			$admin = true;
 		}
@@ -132,11 +132,11 @@ class Projectsv1_1 extends ApiController
 				if (isset($searchable))
 				{
 					$obj = new stdClass;
-					$obj->id            = 'project-' . $entry->get('id');
-					$obj->hubtype				= 'project';
-					$obj->title         = $entry->get('title');
-					$obj->description   = $entry->get('about');
-					$obj->url 					= str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));
+					$obj->id          = 'project-' . $entry->get('id');
+					$obj->hubtype     = 'project';
+					$obj->title       = $entry->get('title');
+					$obj->description = $entry->get('about');
+					$obj->url         = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));
 
 					$obj->owner_type = 'user';
 					foreach ($entry->team() as $member)
@@ -244,7 +244,7 @@ class Projectsv1_1 extends ApiController
 	public function getTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', '');
+		$id = Request::getString('id', '');
 
 		$this->model = new Project($id);
 
@@ -272,10 +272,8 @@ class Projectsv1_1 extends ApiController
 		$obj->created       = $this->model->get('created');
 		$obj->groupOwnerId  = $this->model->groupOwner('id');
 		$obj->userOwnerId   = $this->model->owner('id');
-		$obj->uri           = str_replace('/api', '', $base . '/'
-							. ltrim(Route::url($this->model->link()), '/'));
-		$obj->thumbUrl      = str_replace('/api', '', $base . '/'
-							. ltrim(Route::url($this->model->link('thumb')), '/'));
+		$obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($this->model->link()), '/'));
+		$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($this->model->link('thumb')), '/'));
 
 		if ($this->model->access('member'))
 		{

@@ -57,8 +57,8 @@ class Plugins extends AdminController
 	 */
 	public function execute()
 	{
-		$task   = Request::getVar('task', '');
-		$plugin = Request::getVar('plugin', '');
+		$task   = Request::getCmd('task', '');
+		$plugin = Request::getString('plugin', '');
 
 		if ($plugin && $task && $task != 'manage')
 		{
@@ -215,7 +215,7 @@ class Plugins extends AdminController
 	public function manageTask()
 	{
 		// Incoming (expecting an array)
-		$plugin = Request::getVar('plugin', '');
+		$plugin = Request::getString('plugin', '');
 
 		if (!$plugin)
 		{
@@ -230,7 +230,7 @@ class Plugins extends AdminController
 			array(
 				$this->_option,
 				$this->_controller,
-				Request::getVar('action', 'default')
+				Request::getString('action', 'default')
 			)
 		);
 
@@ -262,7 +262,7 @@ class Plugins extends AdminController
 		Request::checkToken(['post', 'get']);
 
 		// Get items to publish from the request.
-		$cid   = Request::getVar('id', array(), '', 'array');
+		$cid   = Request::getArray('id', array());
 		$data  = array(
 			'publish'   => 1,
 			'unpublish' => 0,
@@ -333,7 +333,7 @@ class Plugins extends AdminController
 		Request::checkToken(['post', 'get']);
 
 		// Initialise variables.
-		$ids = Request::getVar('id', null, 'post', 'array');
+		$ids = Request::getArray('id', null, 'post');
 		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
 		$success = 0;
@@ -375,8 +375,8 @@ class Plugins extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['post', 'get']);
 
-		$pks   = Request::getVar('id', array(0), 'post', 'array');
-		$order = Request::getVar('order', array(0), 'post', 'array');
+		$pks   = Request::getArray('id', array(0), 'post');
+		$order = Request::getArray('order', array(0), 'post');
 
 		// Sanitize the input
 		Arr::toInteger($pks);

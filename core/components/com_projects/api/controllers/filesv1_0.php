@@ -44,10 +44,10 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'connection.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'provider.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'provider.php';
 
 /**
  * API controller for the projects files
@@ -70,7 +70,7 @@ class Filesv1_0 extends ApiController
 		Lang::load('com_projects') || Lang::load('com_projects', dirname(dirname(__DIR__)) . DS . 'site');
 
 		// Incoming
-		$id = Request::getVar('id', '');
+		$id = Request::getString('id', '');
 
 		$this->model = new Project($id);
 
@@ -94,7 +94,7 @@ class Filesv1_0 extends ApiController
 		}
 
 		//connection ID
-		$this->cid = Request::getVar('cid', '');
+		$this->cid = Request::getString('cid', '');
 
 		if ((in_array($this->_task, $connectionTasks)) && !$this->cid)
 		{
@@ -170,7 +170,7 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid) //connection specific listing
 		{
-			$dir = Entity::fromPath(Request::getVar('subdir', ''), $this->ormconn->adapter());
+			$dir = Entity::fromPath(Request::getString('subdir', ''), $this->ormconn->adapter());
 			try
 			{
 				$files = $dir->listContents();
@@ -185,8 +185,8 @@ class Filesv1_0 extends ApiController
 		else
 		{
 			$files = $this->model->repo()->filelist(array(
-				'subdir'           => Request::getVar('subdir', ''),
-				'filter'           => Request::getVar('filter', ''),
+				'subdir'           => Request::getString('subdir', ''),
+				'filter'           => Request::getString('filter', ''),
 				'limit'            => Request::getInt('limit', 0),
 				'start'            => Request::getInt('limitstart', 0),
 				'sortby'           => 'localpath',
@@ -240,7 +240,7 @@ class Filesv1_0 extends ApiController
 	public function getTask()
 	{
 		// Incoming
-		$files = Request::getVar('asset', array());
+		$files = Request::getArray('asset', array());
 
 		if (empty($files))
 		{
@@ -256,7 +256,7 @@ class Filesv1_0 extends ApiController
 			{
 				try
 				{
-					$entities[] = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
+					$entities[] = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
 				}
 				catch (Exception $e)
 				{
@@ -268,7 +268,7 @@ class Filesv1_0 extends ApiController
 		else
 		{
 			$files = $this->model->repo()->filelist(array(
-				'subdir'           => Request::getVar('subdir', '', 'post'),
+				'subdir'           => Request::getString('subdir', '', 'post'),
 				'files'            => $files,
 				'showFullMetadata' => true,
 				'getParents'       => true,
@@ -310,7 +310,7 @@ class Filesv1_0 extends ApiController
 	 */
 	public function makedirectoryTask()
 	{
-		$directory = trim(Request::getVar('directory', ''));
+		$directory = trim(Request::getString('directory', ''));
 
 		if (empty($directory))
 		{
@@ -320,7 +320,7 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid) //connection specific operation
 		{
-			$entity  = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $directory, $this->ormconn->adapter());
+			$entity  = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $directory, $this->ormconn->adapter());
 			if (!$entity->create())
 			{
 				$response->error = Lang::txt('Error creating directory');
@@ -334,7 +334,7 @@ class Filesv1_0 extends ApiController
 		{
 			// Set params
 			$params = array(
-				'subdir' => Request::getVar('subdir', '', 'post'),
+				'subdir' => Request::getString('subdir', '', 'post'),
 				'newDir' => urldecode($directory)
 			);
 
@@ -416,7 +416,7 @@ class Filesv1_0 extends ApiController
 
 			if ($this->cid) //connection specific operation
 			{
-				$entity  = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $item, $this->ormconn->adapter());
+				$entity  = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $item, $this->ormconn->adapter());
 				try
 				{
 					if ($entity->delete())
@@ -434,7 +434,7 @@ class Filesv1_0 extends ApiController
 				$params = array(
 					'type'   => $type,
 					'item'   => $item,
-					'subdir' => Request::getVar('subdir', '', 'post')
+					'subdir' => Request::getString('subdir', '', 'post')
 				);
 
 				if ($this->model->repo()->deleteItem($params))
@@ -501,7 +501,7 @@ class Filesv1_0 extends ApiController
 		}
 
 		// Incoming
-		$target = trim(urldecode(Request::getVar('target', '')), DS);
+		$target = trim(urldecode(Request::getString('target', '')), DS);
 
 		$response = new stdClass;
 		$moved  = 0;
@@ -614,10 +614,10 @@ class Filesv1_0 extends ApiController
 
 		if ($this->cid)
 		{
-			$entity = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . Request::getVar('from', ''), $this->ormconn->adapter());
+			$entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . Request::getString('from', ''), $this->ormconn->adapter());
 			try
 			{
-				if ($entity->rename(Request::getVar('to', '')))
+				if ($entity->rename(Request::getString('to', '')))
 				{
 					$response->success = 1;
 				}
@@ -631,10 +631,10 @@ class Filesv1_0 extends ApiController
 		{
 			// Set params
 			$params = array(
-				'subdir'  => Request::getVar('subdir', ''),
-				'from'    => Request::getVar('from', ''),
-				'to'      => Request::getVar('to', ''),
-				'type'    => Request::getVar('type', 'file')
+				'subdir'  => Request::getString('subdir', ''),
+				'from'    => Request::getString('from', ''),
+				'to'      => Request::getString('to', ''),
+				'type'    => Request::getString('type', 'file')
 			);
 
 			if ($this->model->repo()->rename($params))
@@ -697,7 +697,7 @@ class Filesv1_0 extends ApiController
 			if (is_uploaded_file($_FILES["file"]["tmp_name"]))
 			{
 				$updateType = 'uploaded';
-				$file  = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
+				$file  = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
 				if ($file->exists())
 				{
 					$updateType = 'updated';
@@ -845,7 +845,7 @@ class Filesv1_0 extends ApiController
 	public function saveTask()
 	{
 		// Incoming
-		$dataPath = Request::getVar('data_path', '', 'POST');
+		$dataPath = Request::getString('data_path', '', 'POST');
 
 		if (empty($dataPath))
 		{
@@ -859,7 +859,7 @@ class Filesv1_0 extends ApiController
 				'dataPath'    => $dataPath,
 				'allowReplace'=> $this->_task == 'insert' ? false : true,
 				'update'      => $this->_task == 'insert' ? false : true,
-				'subdir'      => Request::getVar('subdir', '')
+				'subdir'      => Request::getString('subdir', '')
 			)
 		);
 
@@ -954,15 +954,15 @@ class Filesv1_0 extends ApiController
 		$response = new stdClass;
 		$response->success = 0;
 
-		$files = Request::getVar('asset', array());
-		$fields   = Request::getVar('fields', array());
+		$files = Request::getArray('asset', array());
+		$fields   = Request::getArray('fields', array());
 		$response->metadata = array();
 
 		if (is_array($files))
 		{
 			foreach ($files as $file)
 			{
-				$entity = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
+				$entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
 
 				if ($entity->exists())
 				{
@@ -1048,8 +1048,8 @@ class Filesv1_0 extends ApiController
 		$response = new stdClass;
 		$response->success = 0;
 
-		$files = Request::getVar('asset', array());
-		$metadata = Request::getVar('metadata', array());
+		$files = Request::getArray('asset', array());
+		$metadata = Request::getArray('metadata', array());
 
 		if (is_array($files))
 		{
@@ -1057,7 +1057,7 @@ class Filesv1_0 extends ApiController
 			{
 				foreach ($files as $file)
 				{
-					$entity = Entity::fromPath(Request::getVar('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
+					$entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
 
 					if ($entity->exists())
 					{
@@ -1175,8 +1175,8 @@ class Filesv1_0 extends ApiController
 	protected function _getCollection()
 	{
 		// Incoming
-		$files       = $this->_prune((array) Request::getVar('asset', []));
-		$directories = $this->_prune((array) Request::getVar('folder', []));
+		$files       = $this->_prune((array) Request::getArray('asset', []));
+		$directories = $this->_prune((array) Request::getArray('folder', []));
 		$collection  = new Collection;
 
 		$entities = array_merge($files, $directories);
@@ -1185,7 +1185,7 @@ class Filesv1_0 extends ApiController
 		{
 			foreach ($entities as $entity)
 			{
-				$path = trim(Request::getVar('subdir', ''), '/') . '/' . urldecode($entity);
+				$path = trim(Request::getString('subdir', ''), '/') . '/' . urldecode($entity);
 				$collection->add(Entity::fromPath($path, $this->ormconn->adapter()));
 			}
 		}
@@ -1224,8 +1224,8 @@ class Filesv1_0 extends ApiController
 	protected function _sortIncoming()
 	{
 		// Incoming
-		$checked = Request::getVar('asset', array());
-		$folders = Request::getVar('folder', array());
+		$checked = Request::getArray('asset', array());
+		$folders = Request::getArray('folder', array());
 
 		$combined = array();
 		if (!empty($checked) && is_array($checked))
@@ -1238,7 +1238,7 @@ class Filesv1_0 extends ApiController
 				}
 			}
 		}
-		elseif ($file = Request::getVar('asset', ''))
+		elseif ($file = Request::getString('asset', ''))
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
@@ -1253,7 +1253,7 @@ class Filesv1_0 extends ApiController
 				}
 			}
 		}
-		elseif ($folder = Request::getVar('folder', ''))
+		elseif ($folder = Request::getString('folder', ''))
 		{
 			$combined[] = array('folder' => urldecode($folder));
 		}

@@ -92,7 +92,7 @@ class Reports extends Base
 	public function generateTask()
 	{
 		// Incoming
-		$data   = Request::getVar('data', array(), 'post', 'array');
+		$data   = Request::getArray('data', array(), 'post');
 		$from   = Request::getString('fromdate', Date::of('-1 month')->toLocal('Y-m'));
 		$to     = Request::getString('todate', Date::of('now')->toLocal('Y-m'));
 		$filter = Request::getString('searchterm', '');

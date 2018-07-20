@@ -53,9 +53,9 @@ class Stats extends AdminController
 	{
 		// Instantiate a new view
 		$filters = array(
-			'type'  => Request::getVar('type', 'submitted'),
-			'group' => Request::getVar('group', ''),
-			'sort'  => Request::getVar('sort', 'name'),
+			'type'  => Request::getString('type', 'submitted'),
+			'group' => Request::getString('group', ''),
+			'sort'  => Request::getString('sort', 'name'),
 			'year'  => Request::getInt('year', Date::of('now')->format('Y')),
 			'month' => Date::of('now')->format('m')
 		);

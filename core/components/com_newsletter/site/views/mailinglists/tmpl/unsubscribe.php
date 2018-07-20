@@ -67,8 +67,8 @@ $this->css()
 				<p>
 					<strong><?php echo $this->escape($this->mailinglist->name); ?></strong><br />
 					<span><?php echo $this->escape($this->mailinglist->description); ?></span>
-					<input type="hidden" name="t" value="<?php echo $this->escape(Request::getVar('t', '')); ?>" />
-					<input type="hidden" name="e" value="<?php echo $this->escape(Request::getVar('e', '')); ?>" />
+					<input type="hidden" name="t" value="<?php echo $this->escape(Request::getString('t', '')); ?>" />
+					<input type="hidden" name="e" value="<?php echo $this->escape(Request::getString('e', '')); ?>" />
 				</p>
 
 				<?php if ($this->mailinglist->id == '-1' && User::get('guest') == 1) : ?>
