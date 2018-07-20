@@ -211,7 +211,7 @@ class Posts extends SiteController
 		}
 
 		// Incoming
-		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Get model
 		$row = new Item();
@@ -303,7 +303,7 @@ class Posts extends SiteController
 		}
 
 		// Incoming
-		$comment = Request::getArray('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = Comment::blank()->set($comment);
