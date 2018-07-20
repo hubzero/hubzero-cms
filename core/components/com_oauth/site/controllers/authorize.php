@@ -60,7 +60,7 @@ class Authorize extends SiteController
 	 */
 	public function authorizeTask()
 	{
-		$oauth_token = Request::getVar('oauth_token');
+		$oauth_token = Request::getString('oauth_token');
 
 		if (empty($oauth_token))
 		{
@@ -91,7 +91,7 @@ class Authorize extends SiteController
 
 		if (Request::method() == 'POST')
 		{
-			$token = Request::getVar('token', '', 'post');
+			$token = Request::getString('token', '', 'post');
 
 			if ($token != sha1($this->verifier))
 			{

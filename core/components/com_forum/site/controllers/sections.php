@@ -154,7 +154,7 @@ class Sections extends SiteController
 		Request::checkToken();
 
 		// Incoming posted data
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a new table row and bind the incoming data

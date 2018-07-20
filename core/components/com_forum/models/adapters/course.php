@@ -35,7 +35,7 @@ namespace Components\Forum\Models\Adapters;
 use Hubzero\Utility\Str;
 use Request;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for a forum post link for course forum
@@ -69,7 +69,7 @@ class Course extends Base
 		$this->_segments['gid']      = $course->get('alias');
 		$this->_segments['offering'] = $offering->alias();
 		$this->_segments['active']   = 'discussions';
-		if (Request::getVar('active') == 'outline')
+		if (Request::getWord('active') == 'outline')
 		{
 			$this->_segments['active']   = 'outline';
 		}

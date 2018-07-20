@@ -41,11 +41,11 @@ $database = App::get('db');
 
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
-$term  = Request::getVar('q', '');
+$term  = Request::getString('q', '');
 
 $filters = array('state' => array(0, 1));
 
-if ($space = Request::getVar('namespace', ''))
+if ($space = Request::getString('namespace', ''))
 {
 	$filters['namespace'] = urldecode($space);
 }
@@ -73,12 +73,6 @@ $rows = $this->book->pages($filters)
 			<legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
 			<label for="entry-search-field"><?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?></label>
 			<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($term); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
-			<!--
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="page" />
-			<input type="hidden" name="pagename" value="Special:Search" />
-			<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
-			-->
 		</fieldset>
 	</div><!-- / .container -->
 

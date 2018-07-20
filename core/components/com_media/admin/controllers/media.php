@@ -73,7 +73,7 @@ class Media extends AdminController
 	{
 		$filters = array();
 
-		$folder = Request::getVar('folder', '', '', 'path');
+		$folder = Request::getString('folder', '');
 		$session = App::get('session');
 		$state = User::getState('folder');
 		$folders = Filesystem::directoryTree(COM_MEDIA_BASE);
@@ -112,8 +112,8 @@ class Media extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		$folder      = Request::getCmd('foldername', '');
-		$folderCheck = Request::getVar('foldername', null, '', 'string');
-		$parent      = Request::getVar('parent', '', '', 'path');
+		$folderCheck = Request::getString('foldername', null);
+		$parent      = Request::getString('parent', '');
 
 		$rtrn = Route::url('index.php?option=com_media&controller=medialist&folder=' . $parent);
 
@@ -178,10 +178,10 @@ class Media extends AdminController
 		$params = Component::params('com_media');
 
 		// Get some data from the request
-		$files  = Request::getVar('Filedata', '', 'files', 'array');
-		$return = Request::getVar('return-url', null, 'post', 'base64');
-		$this->folder = Request::getVar('folder', '', '', '');
-		$parent = Request::getVar('parent', '', '', '');
+		$files  = Request::getArray('Filedata', '', 'files');
+		$return = Request::getString('return-url', null, 'post');
+		$this->folder = Request::getString('folder', '');
+		$parent = Request::getString('parent', '');
 		// Set the redirect
 		if ($return)
 		{
@@ -191,14 +191,12 @@ class Media extends AdminController
 		// Authorize the user
 		//if (!$this->authoriseUser('create'))
 		//{
-		//        return false;
+		//	return false;
 		//}
-		if (
-			$_SERVER['CONTENT_LENGTH']>($params->get('upload_maxsize', 0) * 1024 * 1024) ||
+		if ($_SERVER['CONTENT_LENGTH']>($params->get('upload_maxsize', 0) * 1024 * 1024) ||
 			$_SERVER['CONTENT_LENGTH']>(int)(ini_get('upload_max_filesize'))* 1024 * 1024 ||
 			$_SERVER['CONTENT_LENGTH']>(int)(ini_get('post_max_size'))* 1024 * 1024 ||
-			(($_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1))
-		)
+			(($_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1)))
 		{
 			Notify::warning(Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 			return false;
@@ -274,15 +272,20 @@ class Media extends AdminController
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=medialist&tmpl=component&folder=' . $parent, false));
 	}
 
+	/**
+	 * Delete a file
+	 *
+	 * @return  void
+	 */
 	public function deleteTask()
 	{
 		Request::checkToken(['get', 'post']);
 
 		// Get some data from the request
 		$tmpl   = Request::getCmd('tmpl');
-		$paths  = Request::getVar('rm', array(), '', 'array');
-		$folder = Request::getVar('folder', '', '', 'path');
-		$rm     = Request::getVar('rm', array());
+		$paths  = Request::getArray('rm', array(), '', 'array');
+		$folder = Request::getString('folder', '');
+		$rm     = Request::getArray('rm', array());
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
 		if ($tmpl == 'component')

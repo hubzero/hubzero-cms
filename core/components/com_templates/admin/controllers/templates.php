@@ -146,7 +146,7 @@ class Templates extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 
 		if (is_array($id) && !empty($id))
 		{

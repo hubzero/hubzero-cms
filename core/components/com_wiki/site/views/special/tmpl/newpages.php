@@ -38,12 +38,12 @@ Pathway::append(
 	$this->page->link()
 );
 
-$sort = strtolower(Request::getVar('sort', 'created'));
+$sort = strtolower(Request::getString('sort', 'created'));
 if (!in_array($sort, array('created', 'title', 'summary', 'created_by')))
 {
 	$sort = 'created';
 }
-$dir = strtoupper(Request::getVar('dir', 'DESC'));
+$dir = strtoupper(Request::getString('dir', 'DESC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'DESC';
@@ -54,7 +54,7 @@ $start = Request::getInt('limitstart', 0);
 
 $filters = array('state' => array(0, 1));
 
-if ($space = Request::getVar('namespace', ''))
+if ($space = Request::getString('namespace', ''))
 {
 	$filters['namespace'] = urldecode($space);
 }

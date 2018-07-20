@@ -99,7 +99,7 @@ class BillBoards extends AdminController
 		if (!isset($billboard) || !is_object($billboard))
 		{
 			// Incoming - expecting an array
-			$cid = Request::getVar('cid', array(0));
+			$cid = Request::getArray('cid', array(0));
 			if (!is_array($cid))
 			{
 				$cid = array($cid);
@@ -147,7 +147,7 @@ class BillBoards extends AdminController
 		}
 
 		// Incoming, make sure to allow HTML to pass through
-		$data = Request::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
+		$data = Request::getArray('billboard', array(), 'post');
 
 		// Create object
 		$billboard = Billboard::oneOrNew($data['id'])->set($data);
@@ -172,7 +172,7 @@ class BillBoards extends AdminController
 		}
 
 		// See if we have an image coming in as well
-		$billboard_image = Request::getVar('billboard-image', false, 'files', 'array');
+		$billboard_image = Request::getArray('billboard-image', false, 'files');
 
 		// If so, proceed with saving the image
 		if (isset($billboard_image['name']) && $billboard_image['name'])
@@ -247,8 +247,8 @@ class BillBoards extends AdminController
 		}
 
 		// Initialize variables
-		$cid   = Request::getVar('cid', array(), 'post', 'array');
-		$order = Request::getVar('order', array(), 'post', 'array');
+		$cid   = Request::getArray('cid', array(), 'post');
+		$order = Request::getArray('order', array(), 'post');
 
 		// Make sure we have something to work with
 		if (empty($cid))
@@ -297,7 +297,7 @@ class BillBoards extends AdminController
 		}
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('cid', array());
+		$ids = Request::getArray('cid', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
@@ -342,7 +342,7 @@ class BillBoards extends AdminController
 	public function cancelTask()
 	{
 		// Incoming - we need an id so that we can check it back in
-		/*$fields = Request::getVar('billboard', array(), 'post');
+		/*$fields = Request::getArray('billboard', array(), 'post');
 
 		// Check the billboard back in
 		if (isset($fields['id']) && $fields['id'])
@@ -374,7 +374,7 @@ class BillBoards extends AdminController
 		}
 
 		// Incoming (we're expecting an array)
-		$ids = Request::getVar('cid', array());
+		$ids = Request::getArray('cid', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);

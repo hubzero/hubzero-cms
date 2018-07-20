@@ -95,7 +95,7 @@ class Collections extends AdminController
 		if (!isset($collection) || !is_object($collection))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (!is_array($id))
 			{
 				$id = array($id);
@@ -130,7 +130,7 @@ class Collections extends AdminController
 
 		// Create object
 		$collection = Collection::oneOrNew(Request::getInt('id'))->set(array(
-			'name' => Request::getVar('name')
+			'name' => Request::getString('name')
 		));
 
 		if (!$collection->save())
@@ -166,7 +166,7 @@ class Collections extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);

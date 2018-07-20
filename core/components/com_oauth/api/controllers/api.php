@@ -132,7 +132,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		$callback_url = Request::getVar('oauth_callback', '');
+		$callback_url = Request::getString('oauth_callback', '');
 
 		$token = sha1(OAuthProvider::generateToken(20, false));
 		$token_secret = sha1(OAuthProvider::generateToken(20, false));
@@ -182,7 +182,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function authorize()
 	{
-		$oauth_token = Request::getVar('oauth_token');
+		$oauth_token = Request::getString('oauth_token');
 
 		if (empty($oauth_token))
 		{
@@ -286,9 +286,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			|| isset($_POST['x_auth_mode'])
 			|| isset($_POST['x_auth_username'])
 			|| isset($_POST['x_auth_password'])
-			|| (strpos($header,'x_auth_mode') !== false)
-			|| (strpos($header,'x_auth_username') !== false)
-			|| (strpos($header,'x_auth_mode') !== false))
+			|| (strpos($header, 'x_auth_mode') !== false)
+			|| (strpos($header, 'x_auth_username') !== false)
+			|| (strpos($header, 'x_auth_mode') !== false))
 		{
 			$xauth_request = true;
 		}
@@ -321,7 +321,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				$x_auth_mode = $_GET['x_auth_mode'];
 			}
 			else
+			{
 				$x_auth_mode = '';
+			}
 
 			if (isset($this->_provider->x_auth_username))
 			{
@@ -336,7 +338,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				$x_auth_username = $_GET['x_auth_username'];
 			}
 			else
+			{
 				$x_auth_username = '';
+			}
 
 			if (isset($this->_provider->x_auth_password))
 			{
@@ -351,7 +355,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				$x_auth_password = $_GET['x_auth_password'];
 			}
 			else
+			{
 				$x_auth_password = '';
+			}
 
 			if ($x_auth_mode != 'client_auth')
 			{

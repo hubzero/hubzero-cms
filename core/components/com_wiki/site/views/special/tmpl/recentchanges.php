@@ -37,7 +37,7 @@ Pathway::append(
 	$this->page->link()
 );
 
-$dir = strtoupper(Request::getVar('dir', 'DESC'));
+$dir = strtoupper(Request::getString('dir', 'DESC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'DESC';
@@ -45,7 +45,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 
 $filters = array('state' => array(0, 1));
 
-if ($space = Request::getVar('namespace', ''))
+if ($space = Request::getString('namespace', ''))
 {
 	$filters['namespace'] = urldecode($space);
 }
