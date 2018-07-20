@@ -884,8 +884,8 @@ class Tickets extends SiteController
 			// This really, REALLY shouldn't happen.
 			App::abort(400, Lang::txt('COM_SUPPORT_ERROR_MISSING_DATA'));
 		}
-		$reporter = Request::getArray('reporter', array(), 'post', 'none', 2);
-		$problem  = Request::getArray('problem', array(), 'post', 'none', 2);
+		$reporter = Request::getArray('reporter', array(), 'post');
+		$problem  = Request::getArray('problem', array(), 'post');
 
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 
@@ -1688,7 +1688,7 @@ class Tickets extends SiteController
 			App::abort(500, Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'));
 		}
 
-		$comment  = Request::getString('comment', '', 'post', 'none', 2);
+		$comment  = Request::getString('comment', '', 'post');
 		$incoming = Request::getArray('ticket', array(), 'post');
 		$incoming = array_map('trim', $incoming);
 
