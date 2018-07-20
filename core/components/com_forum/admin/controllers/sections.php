@@ -182,7 +182,7 @@ class Sections extends AdminController
 
 		if (!is_object($row))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -233,14 +233,14 @@ class Sections extends AdminController
 		User::setState('com_forum.edit.section.data', null);
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
 		$section = Section::oneOrNew($fields['id'])->set($fields);
 
 		// Bind the rules.
-		$data = Request::getVar('data', array(), 'post');
+		$data = Request::getArray('data', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
 			$form = $section->getForm($data);
@@ -286,7 +286,7 @@ class Sections extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -331,7 +331,7 @@ class Sections extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$state = ($this->getTask() == 'publish' ? Section::STATE_PUBLISHED : Section::STATE_UNPUBLISHED);
@@ -397,7 +397,7 @@ class Sections extends AdminController
 
 		// Incoming
 		$state = Request::getInt('access', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID

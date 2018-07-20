@@ -237,7 +237,7 @@ class ContentControllerArticle extends JControllerForm
 	 */
 	protected function getReturnPage()
 	{
-		$return = Request::getVar('return', null, 'default', 'base64');
+		$return = Request::getString('return', null);
 
 		if (empty($return) || !JUri::isInternal(urldecode(base64_decode($return))))
 		{

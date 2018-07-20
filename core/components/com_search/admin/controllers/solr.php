@@ -32,16 +32,23 @@
 namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Access\Group as Accessgroup;
+use Hubzero\Search\Query;
+use Hubzero\Search\Index;
 use Components\Search\Models\Solr\Blacklist;
 use Components\Search\Models\Solr\Facet;
 use Components\Search\Models\Solr\SearchComponent;
-use \Hubzero\Search\Query;
-use \Hubzero\Search\Index;
 use Components\Search\Helpers\SolrHelper;
 use Components\Search\Helpers\DiscoveryHelper;
 use Components\Developer\Models\Application;
-use Hubzero\Access\Group as Accessgroup;
 use stdClass;
+use Component;
+use Request;
+use Notify;
+use Date;
+use User;
+use Lang;
+use App;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
@@ -54,9 +61,15 @@ require_once Component::path('com_developer') . DS . 'models' . DS . 'applicatio
  */
 class Solr extends AdminController
 {
+	/**
+	 * Determine task and execute it
+	 * 
+	 * @return void
+	 */
 	public function execute()
 	{
 		$solrUser = User::oneByUsername('hubzerosolrworker')->get('id');
+
 		if (file_exists(PATH_APP . '/config/solr.json') && $solrUser >= 0)
 		{
 			parent::execute();
@@ -70,8 +83,7 @@ class Solr extends AdminController
 	/**
 	 * configure - Adds solr index user and creates json file 
 	 * 
-	 * @access private
-	 * @return void
+	 * @return  void
 	 */
 	private function configure()
 	{
@@ -120,7 +132,7 @@ class Solr extends AdminController
 
 				if (!$result)
 				{
-					\Notify::error($result->getError());
+					Notify::error($result->getError());
 				}
 
 				// Make an application
@@ -129,7 +141,7 @@ class Solr extends AdminController
 				$application->set('description', 'DO NOT DELETE! Application used by Solr indexer.');
 				if (!$application->save())
 				{
-					\Notify::error($application->getError());
+					Notify::error($application->getError());
 				}
 
 				$comConfig = Component::params('com_search');
@@ -148,17 +160,19 @@ class Solr extends AdminController
 			}
 			else
 			{
-				\Notify::error($user->getError());
+				Notify::error($user->getError());
 			}
 		}
 
-		\Notify::success(Lang::txt('COM_SEARCH_SOLR_CONFIGURATION_MADE'));
+		Notify::success(Lang::txt('COM_SEARCH_SOLR_CONFIGURATION_MADE'));
 
 		return $this->displayTask();
 	}
 
 	/**
 	 * Display the overview
+	 *
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -206,13 +220,20 @@ class Solr extends AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * Optimize
+	 *
+	 * @return  void
+	 */
 	public function optimizeTask()
 	{
 		$config = Component::params('com_search');
 		$index = new \Hubzero\Search\Index($config);
+
 		try
 		{
 			$result = $index->optimize();
+
 			if ($result->getStatus() == 0)
 			{
 				Notify::success('Successfully Optimized');
@@ -221,6 +242,7 @@ class Solr extends AdminController
 			{
 				Notify::error('Optimization failed');
 			}
+
 			App::redirect(
 				Route::url('index.php?option=com_search&task=display', false)
 			);
@@ -233,15 +255,14 @@ class Solr extends AdminController
 	}
 
 	/**
-	 * documentByTypeTask - view a type's records
+	 * View a type's records
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function documentListingTask()
 	{
-		$facet = Request::getVar('facet', '');
-		$filter = Request::getVar('filter', '');
+		$facet = Request::getString('facet', '');
+		$filter = Request::getString('filter', '');
 		$limitstart = Request::getInt('limitstart', 0);
 		$limit = Request::getInt('limit', 10);
 
@@ -305,10 +326,9 @@ class Solr extends AdminController
 	}
 
 	/**
-	 * manageBlacklistTask 
+	 * Manage blacklist
 	 * 
-	 * @access public
-	 * @return Hubzero\View\View 
+	 * @return  void
 	 */
 	public function manageBlacklistTask()
 	{
@@ -317,16 +337,15 @@ class Solr extends AdminController
 	}
 
 	/**
-	 * addToBlacklistTask - Makes a database entry and removes from index
+	 * Makes a database entry and removes from index
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function addToBlacklistTask()
 	{
-		$id = Request::getVar('id', '');
-		$facet = Request::getVar('facet', '');
-		$filter = Request::getVar('filter', '');
+		$id = Request::getString('id', '');
+		$facet = Request::getString('facet', '');
+		$filter = Request::getString('filter', '');
 		$limitstart = Request::getInt('limitstart', 0);
 		$limit = Request::getInt('limit', 10);
 
@@ -361,10 +380,9 @@ class Solr extends AdminController
 	}
 
 	/**
-	 * removeBlacklistEntryTask 
+	 * Remove a blacklist entry
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function removeBlacklistEntryTask()
 	{
@@ -429,16 +447,15 @@ class Solr extends AdminController
 	}
 
 	/**
-	 * saveFacetTask 
+	 * Save a facet
 	 * 
-	 * @access public
 	 * @return void
 	 */
 	public function saveFacetTask()
 	{
 		Request::checkToken(["post", "get"]);
 
-		$fields = Request::getVar('fields', array());
+		$fields = Request::getArray('fields', array());
 		$action = Request::getCmd('action', '');
 		$id     = Request::getInt('id', 0);
 

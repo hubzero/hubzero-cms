@@ -39,7 +39,7 @@ use Component;
 use Request;
 use Lang;
 
-require_once(__DIR__ . DS . 'page.php');
+require_once __DIR__ . DS . 'page.php';
 
 /**
  * Wiki model for a book
@@ -256,7 +256,7 @@ class Book extends Obj
 	{
 		if (!isset($this->page) && $id === null)
 		{
-			$pagename = trim(Request::getVar('pagename', '', 'default', 'none', 2));
+			$pagename = trim(Request::getString('pagename', ''));
 
 			// Clean the path. Since path is built of a chain of pagenames
 			// the wiki normalize() should strip any nasty stuff out

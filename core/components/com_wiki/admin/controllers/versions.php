@@ -150,7 +150,7 @@ class Versions extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -198,7 +198,7 @@ class Versions extends AdminController
 		}
 
 		// Incoming
-		$revision = Request::getVar('revision', array(), 'post', 'none', 2);
+		$revision = Request::getArray('revision', array(), 'post');
 		$revision = array_map('trim', $revision);
 
 		// Initiate extended database class
@@ -296,7 +296,7 @@ class Versions extends AdminController
 
 		$pageid = Request::getInt('pageid', 0);
 
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

@@ -42,7 +42,7 @@ class MenusControllerMenu extends JControllerForm
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$data     = Request::getVar('jform', array(), 'post', 'array');
+		$data     = Request::getArray('jform', array(), 'post');
 		$context  = 'com_menus.edit.menu';
 		$task     = $this->getTask();
 		$recordId = Request::getInt('id');

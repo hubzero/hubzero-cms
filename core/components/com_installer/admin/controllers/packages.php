@@ -99,7 +99,7 @@ class Packages extends AdminController
 
 		Request::setVar('hidemainmenu', 1);
 
-		$packageName = Request::getVar('packageName', '');
+		$packageName = Request::getString('packageName', '');
 		$versions = ComposerHelper::findRemotePackages($packageName, '*');
 		$installedPackage = ComposerHelper::findLocalPackage($packageName);
 
@@ -120,8 +120,8 @@ class Packages extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$packageName    = Request::getVar('packageName', null);
-		$packageVersion = Request::getVar('packageVersion', null);
+		$packageName    = Request::getString('packageName', null);
+		$packageVersion = Request::getString('packageVersion', null);
 
 		Cli::installPackage($packageName, $packageVersion);
 
@@ -151,7 +151,7 @@ class Packages extends AdminController
 	{
 		Request::checkToken();
 
-		$packages = Request::getVar('packages', array());
+		$packages = Request::getArray('packages', array());
 
 		foreach ($packages as $package)
 		{

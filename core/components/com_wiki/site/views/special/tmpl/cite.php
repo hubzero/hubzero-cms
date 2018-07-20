@@ -34,8 +34,8 @@
 defined('_HZEXEC_') or die();
 
 $page = $this->book->pages()
-	->whereEquals('pagename', Request::getVar('page', ''))
-	->whereEquals('path', Request::getVar('scope', ''))
+	->whereEquals('pagename', Request::getString('page', ''))
+	->whereEquals('path', Request::getString('scope', ''))
 	->row();
 
 if ($v = Request::getInt('version', 0))

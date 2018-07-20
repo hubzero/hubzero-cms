@@ -37,7 +37,7 @@ Pathway::append(
 	$this->page->link()
 );
 
-$dir = strtoupper(Request::getVar('dir', 'ASC'));
+$dir = strtoupper(Request::getString('dir', 'ASC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'ASC';
@@ -45,7 +45,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 
 $filters = array('state' => \Components\Wiki\Models\Page::STATE_PUBLISHED);
 
-$namespace = urldecode(Request::getVar('namespace', ''));
+$namespace = urldecode(Request::getString('namespace', ''));
 if ($namespace)
 {
 	$filters['namespace'] = $namespace;
@@ -106,9 +106,15 @@ $namespaces = \Components\Wiki\Models\Page::all()
 			{
 				switch ($i)
 				{
-					case 0: $cls = ''; break;
-					case 1: $cls = ''; break;
-					case 2: $cls = 'omega'; break;
+					case 0:
+						$cls = '';
+						break;
+					case 1:
+						$cls = '';
+						break;
+					case 2:
+						$cls = 'omega';
+						break;
 				}
 				?>
 					<div class="col span4 <?php echo $cls; ?>">

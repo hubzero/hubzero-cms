@@ -224,7 +224,7 @@ class Comments extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -266,7 +266,7 @@ class Comments extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -321,7 +321,7 @@ class Comments extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
@@ -374,7 +374,7 @@ class Comments extends AdminController
 		$state = $this->getTask() == 'unpublish' ? Comment::STATE_UNPUBLISHED : Comment::STATE_PUBLISHED;
 
 		// Incoming
-		$ids    = Request::getVar('id', array());
+		$ids    = Request::getArray('id', array());
 		$ids    = (!is_array($ids) ? array($ids) : $ids);
 		$pageid = Request::getInt('page_id', 0);
 

@@ -36,7 +36,7 @@ use Lang;
 use Html;
 use App;
 
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'manage.php');
+include_once dirname(__DIR__) . DS . 'models' . DS . 'manage.php';
 
 /**
  * Controller for managing extensions
@@ -110,7 +110,7 @@ class Manage extends AdminController
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids    = Request::getVar('cid', array(), '', 'array');
+		$ids    = Request::getArray('cid', array(), '');
 		$values = array('publish' => 1, 'unpublish' => 0);
 		$task   = $this->getTask();
 		$value  = \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
@@ -157,7 +157,7 @@ class Manage extends AdminController
 		// Check for request forgeries
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
-		$eid   = Request::getVar('cid', array(), '', 'array');
+		$eid   = Request::getArray('cid', array(), '');
 		$model = new Models\Manage();
 
 		\Hubzero\Utility\Arr::toInteger($eid, array());
@@ -177,7 +177,7 @@ class Manage extends AdminController
 		// Check for request forgeries
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
-		$uid   = Request::getVar('cid', array(), '', 'array');
+		$uid   = Request::getArray('cid', array(), '');
 		$model = new Models\Manage();
 
 		\Hubzero\Utility\Arr::toInteger($uid, array());

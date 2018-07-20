@@ -311,7 +311,7 @@ class Categories extends AdminController
 	{
 		Request::checkToken();
 
-		$items      = Request::getVar('fields', array());
+		$items      = Request::getArray('fields', array());
 		$extension  = Request::getCmd('extension');
 		$categoryId = Request::getInt('id');
 
@@ -487,7 +487,7 @@ class Categories extends AdminController
 		}
 
 		// Initialise variables.
-		$ids = Request::getVar('cid', null, 'post', 'array');
+		$ids = Request::getArray('cid', null, 'post');
 		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
 		$success = 0;
@@ -555,7 +555,7 @@ class Categories extends AdminController
 	{
 		Request::checkToken();
 
-		$ordering  = Request::getVar('order', array());
+		$ordering  = Request::getArray('order', array());
 		$extension = Request::getState($this->_option . '.' . $this->_controller . '.extension', 'extension');
 
 		if (!Category::saveorder($ordering, $extension))

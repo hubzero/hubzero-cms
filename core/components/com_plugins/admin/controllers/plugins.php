@@ -242,7 +242,7 @@ class Plugins extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -296,13 +296,13 @@ class Plugins extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$model = Plugin::oneOrNew($fields['extension_id'])->set($fields);
 
 		// Get parameters
-		$params = Request::getVar('params', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 
 		$p = $model->params;
 
@@ -375,7 +375,7 @@ class Plugins extends AdminController
 
 		// Incoming
 		$cid = Request::getInt('cid', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
@@ -431,7 +431,7 @@ class Plugins extends AdminController
 		}
 
 		// Get items to publish from the request.
-		$cid   = Request::getVar('cid', array(), '', 'array');
+		$cid   = Request::getArray('cid', array(), '', 'array');
 		$data  = array(
 			'publish'   => 1,
 			'unpublish' => 0,
@@ -507,7 +507,7 @@ class Plugins extends AdminController
 		}
 
 		// Initialise variables.
-		$ids = Request::getVar('cid', null, 'post', 'array');
+		$ids = Request::getArray('cid', array(), 'post');
 		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
 		$success = 0;
@@ -555,8 +555,8 @@ class Plugins extends AdminController
 		}
 
 		// Get the input
-		$pks   = Request::getVar('cid', null, 'post', 'array');
-		$order = Request::getVar('order', null, 'post', 'array');
+		$pks   = Request::getArray('cid', array(), 'post');
+		$order = Request::getArray('order', array(), 'post');
 
 		// Sanitize the input
 		Arr::toInteger($pks);
@@ -599,7 +599,7 @@ class Plugins extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('cid', null, 'post', 'array');
+		$ids = Request::getArray('cid', array(), 'post');
 
 		foreach ($ids as $id)
 		{
@@ -641,7 +641,7 @@ class Plugins extends AdminController
 			}
 		}
 
-		if ($component = Request::getVar('component', ''))
+		if ($component = Request::getString('component', ''))
 		{
 			// Redirect to the list screen.
 			App::redirect(

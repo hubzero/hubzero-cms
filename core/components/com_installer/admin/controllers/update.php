@@ -37,7 +37,7 @@ use Lang;
 use Html;
 use App;
 
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'update.php');
+include_once dirname(__DIR__) . DS . 'models' . DS . 'update.php';
 
 /**
  * Update Installer Controller
@@ -85,7 +85,7 @@ class Update extends AdminController
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$model = new Models\Update();
-		$uid   = Request::getVar('cid', array(), '', 'array');
+		$uid   = Request::getArray('cid', array(), '');
 
 		\Hubzero\Utility\Arr::toInteger($uid, array());
 		if ($model->update($uid))
@@ -165,7 +165,7 @@ class Update extends AdminController
 		// change, making it impossible for AJAX to work.
 
 		$eid  = Request::getInt('eid', 0);
-		$skip = Request::getVar('skip', array(), 'default', 'array');
+		$skip = Request::getArray('skip', array());
 
 		$cache_timeout = Request::getInt('cache_timeout', 0);
 		if ($cache_timeout == 0)
@@ -192,7 +192,10 @@ class Update extends AdminController
 
 			foreach ($unfiltered_updates as $update)
 			{
-				if (!in_array($update->extension_id, $skip)) $updates[] = $update;
+				if (!in_array($update->extension_id, $skip))
+				{
+					$updates[] = $update;
+				}
 			}
 		}
 

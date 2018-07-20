@@ -171,7 +171,7 @@ class Entries extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -212,7 +212,7 @@ class Entries extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
@@ -244,7 +244,7 @@ class Entries extends AdminController
 		}
 
 		// Process tags
-		$row->tag(trim(Request::getVar('tags', '')));
+		$row->tag(trim(Request::getString('tags', '')));
 
 		// Trigger after save event
 		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
@@ -277,7 +277,7 @@ class Entries extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;
@@ -326,7 +326,7 @@ class Entries extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
@@ -392,7 +392,7 @@ class Entries extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 		$state = Request::getInt('state', 0);
 

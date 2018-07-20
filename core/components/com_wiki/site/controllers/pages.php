@@ -484,12 +484,12 @@ class Pages extends SiteController
 		// Incoming revision
 		$revision = $this->page->version;
 		$revision->set('version', $revision->get('version') + 1);
-		$revision->set(Request::getVar('revision', array(), 'post', 'none', 2));
+		$revision->set(Request::getArray('revision', array(), 'post'));
 		$revision->set('created', Date::toSql());
 		$revision->set('id', 0);
 
 		// Incoming page
-		$page = Request::getVar('page', array(), 'post', 'none', 2);
+		$page = Request::getArray('page', array(), 'post');
 		if (!isset($page['protected']) || !$page['protected'])
 		{
 			$page['protected'] = 0;
@@ -500,7 +500,7 @@ class Pages extends SiteController
 		$this->page->set('pagename', trim(Request::getString('pagename', '', 'post')));
 
 		// Get parameters
-		$p = Request::getVar('params', array(), 'post');
+		$p = Request::getArray('params', array(), 'post');
 
 		$params = new \Hubzero\Config\Registry($this->page->get('params', ''));
 		$params->merge($p);
