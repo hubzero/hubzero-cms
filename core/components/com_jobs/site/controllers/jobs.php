@@ -115,8 +115,8 @@ class Jobs extends SiteController
 		$this->_masterAdmin = $this->_admin && !$this->_emp ? 1 : 0;
 
 		// Incoming
-		$this->_task    = Request::getVar('task', '');
-		$this->_jobCode = Request::getVar('code', '');
+		$this->_task    = Request::getCmd('task', '');
+		$this->_jobCode = Request::getString('code', '');
 
 		$this->registerTask('addjob', 'editjob');
 		$this->registerTask('confirmjob', 'savejob');
@@ -249,7 +249,7 @@ class Jobs extends SiteController
 	 */
 	public function login()
 	{
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
@@ -265,7 +265,7 @@ class Jobs extends SiteController
 	public function pluginTask()
 	{
 		// Incoming
-		$trigger = trim(Request::getVar('trigger', ''));
+		$trigger = trim(Request::getString('trigger', ''));
 
 		// Ensure we have a trigger
 		if (!$trigger)
@@ -300,7 +300,7 @@ class Jobs extends SiteController
 
 		// Go back to the page
 		App::redirect(
-			Request::getVar('HTTP_REFERER', null, 'server')  // What page they came from
+			Request::getString('HTTP_REFERER', null, 'server')  // What page they came from
 		);
 	}
 
@@ -312,8 +312,8 @@ class Jobs extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$subscriptionCode = Request::getVar('employer', '');
-		$action = Request::getVar('action', '');
+		$subscriptionCode = Request::getString('employer', '');
+		$action = Request::getString('action', '');
 
 		// Push some styles to the template
 		$this->css('introduction.css', 'system');
@@ -690,9 +690,9 @@ class Jobs extends SiteController
 
 		$subid = $employer->subscriptionid ? $employer->subscriptionid : $subid;
 
-		$employer->companyName     = Request::getVar('companyName', $profile->get('organization'));
-		$employer->companyLocation = Request::getVar('companyLocation', $profile->get('countryresident'));
-		$employer->companyWebsite  = Request::getVar('companyWebsite', $profile->get('url'));
+		$employer->companyName     = Request::getString('companyName', $profile->get('organization'));
+		$employer->companyLocation = Request::getString('companyLocation', $profile->get('countryresident'));
+		$employer->companyWebsite  = Request::getString('companyWebsite', $profile->get('url'));
 
 		if (!$employer->companyName || !$employer->companyLocation)
 		{
@@ -719,7 +719,7 @@ class Jobs extends SiteController
 		}
 
 		$units      = Request::getInt('units_' . $serviceid, 0);
-		$contact    = Request::getVar('contact', '');
+		$contact    = Request::getString('contact', '');
 		$total      = $service->unitprice * $units;
 		$now        = Date::toSql();
 		$new        = 0;
@@ -930,7 +930,7 @@ class Jobs extends SiteController
 		}
 
 		// Incoming message
-		$this->_msg_passed = $this->_msg_passed ? $this->_msg_passed : Request::getVar('msg', '');
+		$this->_msg_passed = $this->_msg_passed ? $this->_msg_passed : Request::getString('msg', '');
 
 		$uid = Request::getInt('uid', User::get('id'));
 		if ($uid && User::get('id') != $uid && !$this->_admin)
@@ -1072,7 +1072,7 @@ class Jobs extends SiteController
 	public function applyTask()
 	{
 		// Incoming
-		$code = Request::getVar('code', '');
+		$code = Request::getString('code', '');
 
 		// Set page title
 		$this->_buildTitle();
@@ -1173,7 +1173,7 @@ class Jobs extends SiteController
 	public function saveappTask()
 	{
 		// Incoming job id
-		$code  = Request::getVar('code', '');
+		$code  = Request::getString('code', '');
 		$appid = Request::getInt('appid', 0, 'post');
 
 		if (!$code)
@@ -1217,7 +1217,7 @@ class Jobs extends SiteController
 			{
 				$ja->withdrawn = $now;
 				$ja->status    = 2;
-				$ja->reason    = Request::getVar('reason', '');
+				$ja->reason    = Request::getString('reason', '');
 			}
 			else
 			{
@@ -1261,7 +1261,7 @@ class Jobs extends SiteController
 	public function jobTask()
 	{
 		// Incoming
-		$code = Request::getVar('code', '');
+		$code = Request::getString('code', '');
 		$code = !$code && $this->_jobCode ? $this->_jobCode : $code;
 
 		$obj = new Job($this->database);
@@ -1400,7 +1400,7 @@ class Jobs extends SiteController
 				or $this->_task == 'unpublish'
 				or $this->_task == 'reopen'
 				or $this->_task == 'remove') ? 1 : 0;
-		$code = $this->_jobCode ? $this->_jobCode : Request::getVar('code', '');
+		$code = $this->_jobCode ? $this->_jobCode : Request::getString('code', '');
 
 		// Login required
 		if (User::isGuest())
@@ -1473,7 +1473,7 @@ class Jobs extends SiteController
 			$job->companyName     = rtrim(stripslashes($_POST['companyName']));
 			$job->companyLocation = rtrim(stripslashes($_POST['companyLocation']));
 			$applyInternal        = Request::getInt('applyInternal', 0);
-			$applyExternalUrl     = Request::getVar('applyExternalUrl', '');
+			$applyExternalUrl     = Request::getString('applyExternalUrl', '');
 
 			// missing required information
 			if (!$job->description or !$job->title or !$job->companyName or !$job->companyLocation)
@@ -1498,7 +1498,7 @@ class Jobs extends SiteController
 			$job->companyName      = rtrim(stripslashes($_POST['companyName']));
 			$job->companyLocation  = rtrim(stripslashes($_POST['companyLocation']));
 			$job->applyInternal    = Request::getInt('applyInternal', 0);
-			$job->applyExternalUrl = Request::getVar('applyExternalUrl', '');
+			$job->applyExternalUrl = Request::getString('applyExternalUrl', '');
 
 		}
 		else if ($job->status==4 && $this->_task == 'confirmjob')
@@ -1600,7 +1600,7 @@ class Jobs extends SiteController
 		$live_site = rtrim(Request::base(), '/');
 
 		// Incoming
-		$code  = Request::getVar('code', '');
+		$code  = Request::getString('code', '');
 		$empid = $this->_admin ? 1 : User::get('id');
 		$code  = !$code && $this->_jobCode ? $this->_jobCode : $code;
 
@@ -1854,7 +1854,7 @@ class Jobs extends SiteController
 		$filters = $this->_getFilters (0, 0, 0);
 		if ($category == 'job')
 		{
-			$filters['sortby'] = trim(Request::getVar('sortby', 'title'));
+			$filters['sortby'] = trim(Request::getWord('sortby', 'title'));
 		}
 
 		$text = 'filterby=' . $filters['filterby'] . '&amp;match=1&amp;search='
@@ -1958,22 +1958,22 @@ class Jobs extends SiteController
 		if ($jobs)
 		{
 			$filters['sortby']   = $this->getVar('sortby') && $checkstored
-								 ? $this->getVar('sortby', 'title') : trim(Request::getVar('sortby', 'title'));
+								 ? $this->getVar('sortby', 'title') : trim(Request::getWord('sortby', 'title'));
 			$filters['category'] = $this->getVar('category') && $checkstored
 								 ? $this->getVar('category') : Request::getInt('category', 'all');
 		}
 		else
 		{
 			$filters['sortby']   = $this->getVar('sortby') && $checkstored
-								 ? $this->getVar('sortby') : trim(Request::getVar('sortby', 'lastupdate'));
+								 ? $this->getVar('sortby') : trim(Request::getString('sortby', 'lastupdate'));
 			$filters['category'] = $this->getVar('category') && $checkstored
 								 ? $this->getVar('category') : Request::getInt('category', 0);
 		}
 
 		$filters['type']     = $this->getVar('type') && $checkstored ? $this->getVar('type') : Request::getInt('type', 0);
-		$filters['search']   = $this->getVar('search') && $checkstored ? $this->getVar('search') : trim(Request::getVar('q', ''));
-		$filters['filterby'] = trim(Request::getVar('filterby', 'all'));
-		$filters['sortdir']  = Request::getVar('sortdir', 'ASC');
+		$filters['search']   = $this->getVar('search') && $checkstored ? $this->getVar('search') : trim(Request::getString('q', ''));
+		$filters['filterby'] = trim(Request::getString('filterby', 'all'));
+		$filters['sortdir']  = Request::getString('sortdir', 'ASC');
 
 		// did we get stored prefs?
 		$filters['match']    = $this->getVar('match') && $checkstored ? $this->getVar("match") : Request::getInt('match', 0);
@@ -2014,7 +2014,7 @@ class Jobs extends SiteController
 		}
 
 		// Incoming
-		$pile = Request::getVar('pile', 'all');
+		$pile = Request::getString('pile', 'all');
 
 		// Zip the requested resumes
 		$archive = $this->_archiveResumes($pile);

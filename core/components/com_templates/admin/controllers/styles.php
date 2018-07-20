@@ -209,7 +209,7 @@ class Styles extends AdminController
 		if (!($style instanceof Style))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -276,7 +276,7 @@ class Styles extends AdminController
 			App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
 		}
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$style = Style::oneOrNew(intval($fields['id']))->set($fields);
 
@@ -306,7 +306,7 @@ class Styles extends AdminController
 
 		if (User::authorise('core.edit', 'com_menus') && $style->get('client_id') == 0)
 		{
-			$assigned = Request::getVar('assigned', array(), 'post');
+			$assigned = Request::getArray('assigned', array(), 'post');
 
 			$n  = 0;
 			$db = App::get('db');
@@ -385,7 +385,7 @@ class Styles extends AdminController
 			App::abort(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 		}
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -427,7 +427,7 @@ class Styles extends AdminController
 	 */
 	public function setDefaultTask()
 	{
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		$id = is_array($id) ? $id[0] : $id;
 
 		if ($id)
@@ -463,7 +463,7 @@ class Styles extends AdminController
 			App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
 		}
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;

@@ -114,13 +114,10 @@ class Component extends AdminController
 		// Check for request forgeries.
 		Request::checkToken();
 
-		// Set FTP credentials, if given.
-		//\JClientHelper::setCredentialsFromRequest('ftp');
-
 		// Initialise variables.
 		$model  = new Models\Component();
 		$form   = $model->getForm();
-		$data   = Request::getVar('hzform', array(), 'post', 'array');
+		$data   = Request::getArray('hzform', array(), 'post');
 		$id     = Request::getInt('id');
 		$option = Request::getCmd('component');
 

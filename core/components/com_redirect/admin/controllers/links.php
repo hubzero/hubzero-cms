@@ -41,8 +41,8 @@ use User;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'redirect.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'link.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'redirect.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'link.php';
 
 /**
  * Redirect link list controller class.
@@ -193,7 +193,7 @@ class Links extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -228,7 +228,7 @@ class Links extends AdminController
 		}
 
 		// Initialise variables.
-		$fields = Request::getVar('fields', array(), 'post', 'array');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// The save2copy task needs to be handled slightly differently.
 		if ($this->getTask() == 'save2copy')
@@ -276,7 +276,7 @@ class Links extends AdminController
 		}
 
 		// Initialise variables.
-		$ids     = Request::getVar('id', array(), '', 'array');
+		$ids     = Request::getArray('id', array(), '');
 		$newUrl  = Request::getString('new_url');
 		$comment = Request::getString('comment');
 
@@ -331,7 +331,7 @@ class Links extends AdminController
 		}
 
 		// Get items to publish from the request.
-		$ids = Request::getVar('id', array(), '', 'array');
+		$ids = Request::getArray('id', array(), '');
 		$data = array(
 			'publish'   => 1,
 			'unpublish' => 0,
@@ -403,7 +403,7 @@ class Links extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$ids = Request::getVar('id', array(), '', 'array');
+		$ids = Request::getArray('id', array(), '');
 
 		if (empty($ids))
 		{

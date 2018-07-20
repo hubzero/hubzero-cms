@@ -109,7 +109,7 @@ class Repositories extends AdminController
 
 		Request::setVar('hidemainmenu', 1);
 
-		$alias = Request::getVar('alias', null);
+		$alias = Request::getString('alias', null);
 
 		// If no alias is given, assume we came in via addTask
 		$isNew = false;
@@ -137,13 +137,13 @@ class Repositories extends AdminController
 		Request::checkToken();
 
 		$temp = new StdClass;
-		$alias             = Request::getVar('alias', null);
-		$oldAlias          = Request::getVar('oldAlias', null);
-		$isNew             = Request::getVar('isNew', null);
-		$temp->name        = Request::getVar('name', null);
-		$temp->description = Request::getVar('description', null);
-		$temp->url         = Request::getVar('url', null);
-		$temp->type        = Request::getVar('type', null);
+		$alias             = Request::getString('alias', null);
+		$oldAlias          = Request::getString('oldAlias', null);
+		$isNew             = Request::getString('isNew', null);
+		$temp->name        = Request::getString('name', null);
+		$temp->description = Request::getString('description', null);
+		$temp->url         = Request::getString('url', null);
+		$temp->type        = Request::getString('type', null);
 
 		$json = json_encode($temp);
 
@@ -169,7 +169,7 @@ class Repositories extends AdminController
 	 */
 	public function removeTask()
 	{
-		$alias = Request::getVar('alias', null);
+		$alias = Request::getString('alias', null);
 
 		ComposerHelper::removeRepository($alias);
 

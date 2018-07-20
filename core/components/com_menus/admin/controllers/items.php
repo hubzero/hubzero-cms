@@ -66,7 +66,7 @@ class MenusControllerItems extends JControllerAdmin
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$order = Request::getVar('order', null, 'post', 'array');
+		$order = Request::getArray('order', null, 'post');
 		$originalOrder = explode(',', Request::getString('original_order_values'));
 
 		// Make sure something has changed
@@ -93,7 +93,7 @@ class MenusControllerItems extends JControllerAdmin
 		Session::checkToken('request') or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$cid   = Request::getVar('cid', array(), '', 'array');
+		$cid   = Request::getArray('cid', array(), '');
 		$data  = array('setDefault' => 1, 'unsetDefault' => 0);
 		$task  = $this->getTask();
 		$value = \Hubzero\Utility\Arr::getValue($data, $task, 0, 'int');

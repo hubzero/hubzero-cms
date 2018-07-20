@@ -279,7 +279,7 @@ class Entries extends SiteController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('entry', array(), 'post', 'none', 2);
+		$fields = Request::getArray('entry', array(), 'post', 'none', 2);
 
 		// Make sure we don't want to turn off comments
 		//$fields['allow_comments'] = (isset($fields['allow_comments'])) ? 1 : 0;
@@ -315,7 +315,7 @@ class Entries extends SiteController
 		}
 
 		// Process tags
-		if (!$row->tag(Request::getVar('tags', '')))
+		if (!$row->tag(Request::getString('tags', '')))
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
@@ -570,7 +570,7 @@ class Entries extends SiteController
 		Request::checkToken();
 
 		// Incoming
-		$data = Request::getVar('comment', array(), 'post', 'none', 2);
+		$data = Request::getArray('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
 		$comment = Comment::oneOrNew($data['id'])->set($data);

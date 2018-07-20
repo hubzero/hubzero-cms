@@ -67,14 +67,14 @@ class Solr extends SiteController
 		$query = new \Hubzero\Search\Query($config);
 
 		$childTerms = Request::getArray('childTerms', array());
-		$terms = Request::getVar('terms', '');
+		$terms = Request::getString('terms', '');
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('start', 0);
-		$sortBy = Request::getVar('sortBy', '');
-		$sortDir = Request::getVar('sortDir', '');
+		$sortBy = Request::getString('sortBy', '');
+		$sortDir = Request::getString('sortDir', '');
 		$type = Request::getInt('type', null);
-		$section = Request::getVar('section', 'content');
-		$tagString = Request::getVar('tags', '');
+		$section = Request::getString('section', 'content');
+		$tagString = Request::getString('tags', '');
 		$tags = null;
 		if ($tagString)
 		{
@@ -90,10 +90,10 @@ class Solr extends SiteController
 		// Map coordinates
 		if ($section == 'map')
 		{
-			$minLon = Request::getVar('minlon', false);
-			$maxLon = Request::getVar('maxlon', false);
-			$minLat = Request::getVar('minlat', false);
-			$maxLat = Request::getVar('maxlat', false);
+			$minLon = Request::getString('minlon', false);
+			$maxLon = Request::getString('maxlon', false);
+			$minLat = Request::getString('minlat', false);
+			$maxLat = Request::getString('maxlat', false);
 
 			if ($minLon && $maxLon && $minLat && $maxLat)
 			{
@@ -113,7 +113,7 @@ class Solr extends SiteController
 			$multifacet->createQuery($facet->getQueryName(), $facetString, array('exclude' => 'root_type', 'include' => 'child_type'));
 		}
 
-		$filters = Request::getVar('filters', array());
+		$filters = Request::getArray('filters', array());
 		$queryTerms = $terms;
 		if ($tags && $tags->count() > 0)
 		{

@@ -103,7 +103,7 @@ class Categories extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$order = Request::getVar('order', array(), 'post', 'array');
+		$order = Request::getArray('order', array(), 'post');
 		Arr::toInteger($order);
 
 		// Instantiate an object
@@ -147,7 +147,7 @@ class Categories extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = (is_array($id)) ? $id[0] : $id;
 
 			// Load the object
@@ -206,7 +206,7 @@ class Categories extends AdminController
 		Request::checkToken();
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -235,4 +235,3 @@ class Categories extends AdminController
 		);
 	}
 }
-

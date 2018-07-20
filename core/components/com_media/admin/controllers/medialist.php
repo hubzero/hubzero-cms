@@ -55,7 +55,7 @@ class Medialist extends AdminController
 		$filters = array();
 
 		$tmpl = Request::getCmd('tmpl');
-		$folder = Request::getVar('folder', '', '', 'path');
+		$folder = Request::getString('folder', '');
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
 		if ($tmpl == 'component')

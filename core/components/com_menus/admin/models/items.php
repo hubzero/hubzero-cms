@@ -81,7 +81,7 @@ class MenusModelItems extends JModelList
 		$level = $this->getUserStateFromRequest($this->context.'.filter.level', 'filter_level', 0, 'int');
 		$this->setState('filter.level', $level);
 
-		$menuType = Request::getVar('menutype', null);
+		$menuType = Request::getString('menutype', null);
 		if ($menuType) {
 			if ($menuType != $app->getUserState($this->context.'.filter.menutype')) {
 				$app->setUserState($this->context.'.filter.menutype', $menuType);

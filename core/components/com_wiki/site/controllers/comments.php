@@ -260,7 +260,7 @@ class Comments extends SiteController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('comment', array(), 'post');
+		$fields = Request::getArray('comment', array(), 'post');
 
 		// Bind the form data to our object
 		$comment = Comment::oneOrNew($fields['id'])->set($fields);

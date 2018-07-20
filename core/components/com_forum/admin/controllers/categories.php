@@ -225,7 +225,7 @@ class Categories extends AdminController
 
 		if (!is_object($category))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -297,14 +297,14 @@ class Categories extends AdminController
 		User::setState('com_forum.edit.category.data', null);
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
 		$category = Category::oneOrNew($fields['id'])->set($fields);
 
 		// Bind the rules.
-		$data = Request::getVar('jform', array(), 'post');
+		$data = Request::getArray('jform', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
 			$form = $category->getForm($data);
@@ -366,7 +366,7 @@ class Categories extends AdminController
 		// Incoming
 		$section = Request::getInt('section_id', 0);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -413,7 +413,7 @@ class Categories extends AdminController
 		// Incoming
 		$section = Request::getInt('section_id', 0);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$state = ($this->getTask() == 'publish' ? Category::STATE_PUBLISHED : Category::STATE_UNPUBLISHED);
@@ -479,7 +479,7 @@ class Categories extends AdminController
 
 		// Incoming
 		$state   = Request::getInt('access', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -522,7 +522,7 @@ class Categories extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$fields = Request::getVar('fields', array('section_id' => 0));
+		$fields = Request::getArray('fields', array('section_id' => 0));
 		if (!isset($fields['section_id']) || !$fields['section_id'])
 		{
 			$fields['section_id'] = Request::getInt('section_id', 0);

@@ -38,7 +38,7 @@ class ContentModelForm extends ContentModelArticle
 
 		$this->setState('article.catid', Request::getInt('catid'));
 
-		$return = Request::getVar('return', null, 'default', 'base64');
+		$return = Request::getString('return', null);
 		$this->setState('return_page', urldecode(base64_decode($return)));
 
 		// Load the parameters.

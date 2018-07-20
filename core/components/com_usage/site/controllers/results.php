@@ -41,7 +41,7 @@ use Request;
 use Event;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
 
 /**
  * Usage controller class for results
@@ -86,7 +86,7 @@ class Results extends SiteController
 		$monthsReverse = array_reverse($months, true);
 
 		// Incoming
-		$enddate = Request::getVar('selectedPeriod', 0, 'post');
+		$enddate = Request::getInt('selectedPeriod', 0, 'post');
 
 		// Establish a connection to the usage database
 		$udb = Helper::getUDBO();
@@ -95,7 +95,7 @@ class Results extends SiteController
 			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
 		}
 
-		$this->view->no_html = Request::getVar('no_html', 0);
+		$this->view->no_html = Request::getInt('no_html', 0);
 
 		// Trigger the functions that return the areas we'll be using
 		$this->view->cats = Event::trigger('usage.onUsageAreas');

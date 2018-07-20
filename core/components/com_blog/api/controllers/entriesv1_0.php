@@ -114,9 +114,9 @@ class Entriesv1_0 extends ApiController
 		$model = new Archive('site');
 
 		$filters = array(
-			'scope'      => Request::getVar('scope', 'site'),
+			'scope'      => Request::getString('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -260,18 +260,18 @@ class Entriesv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'scope'          => Request::getVar('scope', '', 'post'),
+			'scope'          => Request::getString('scope', '', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'alias'          => Request::getVar('alias', null, 'post'),
-			'content'        => Request::getVar('content', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'title'          => Request::getString('title', null, 'post', 'none', 2),
+			'alias'          => Request::getString('alias', null, 'post'),
+			'content'        => Request::getString('content', null, 'post', 'none', 2),
+			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', User::get('id'), 'post'),
 			'state'          => Request::getInt('state', 1, 'post'),
 			'access'         => Request::getInt('access', 1, 'post'),
 			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
-			'publish_up'     => Request::getVar('publish_up', with(new Date('now'))->toSql(), 'post'),
-			'publish_down'   => Request::getVar('publish_down', null, 'post'),
+			'publish_up'     => Request::getString('publish_up', with(new Date('now'))->toSql(), 'post'),
+			'publish_down'   => Request::getString('publish_down', null, 'post'),
 		);
 
 		$row = new Entry();
@@ -297,7 +297,7 @@ class Entriesv1_0 extends ApiController
 
 		$tags = Request::getVar('tags', null, 'post');
 
-		if (isset($tags))
+		if (!is_null($tags) && is_string($tags))
 		{
 			if (!$row->tag($tags, $fields['created_by']))
 			{
@@ -500,18 +500,18 @@ class Entriesv1_0 extends ApiController
 		}
 
 		$fields = array(
-			'scope'          => Request::getVar('scope', $row->get('scope')),
+			'scope'          => Request::getString('scope', $row->get('scope')),
 			'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
-			'title'          => Request::getVar('title', $row->get('title')),
-			'alias'          => Request::getVar('alias', $row->get('alias')),
-			'content'        => Request::getVar('content', $row->get('content')),
-			'created'        => Request::getVar('created', $row->get('created')),
+			'title'          => Request::getString('title', $row->get('title')),
+			'alias'          => Request::getString('alias', $row->get('alias')),
+			'content'        => Request::getString('content', $row->get('content')),
+			'created'        => Request::getString('created', $row->get('created')),
 			'created_by'     => Request::getInt('created_by', $row->get('created_by')),
 			'state'          => Request::getInt('state', $row->get('state')),
 			'access'         => Request::getInt('access', $row->get('access')),
 			'allow_comments' => Request::getInt('allow_comments', $row->get('allow_comments')),
-			'publish_up'     => Request::getVar('publish_up', $row->get('publish_up')),
-			'publish_down'   => Request::getVar('publish_down', $row->get('publish_down')),
+			'publish_up'     => Request::getString('publish_up', $row->get('publish_up')),
+			'publish_down'   => Request::getString('publish_down', $row->get('publish_down')),
 			'hits'           => Request::getInt('hits', $row->get('hits'))
 		);
 
@@ -536,7 +536,7 @@ class Entriesv1_0 extends ApiController
 
 		$tags = Request::getVar('tags', null);
 
-		if (isset($tags))
+		if (!is_null($tags) && is_string($tags))
 		{
 			if (!$row->tag($tags, $fields['created_by']))
 			{
@@ -595,7 +595,7 @@ class Entriesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
