@@ -46,8 +46,8 @@ use User;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feed.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'post.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feed.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'post.php';
 
 /**
  *  Feed Aggregator controller class
@@ -64,7 +64,7 @@ class Posts extends SiteController
 	{
 		if (User::isGuest()) // have person login
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
@@ -160,8 +160,8 @@ class Posts extends SiteController
 	 */
 	public function updateStatusTask()
 	{
-		$id     = Request::getVar('id', '');
-		$action = Request::getVar('action', '');
+		$id     = Request::getInt('id', 0);
+		$action = Request::getString('action', '');
 
 		switch ($action)
 		{

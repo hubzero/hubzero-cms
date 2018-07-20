@@ -338,7 +338,7 @@ class Threads extends SiteController
 
 		// Incoming
 		$section = Request::getString('section', '');
-		$fields  = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields  = Request::getArray('fields', array(), 'post', 'none', 2);
 		$fields  = array_map('trim', $fields);
 
 		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
@@ -606,7 +606,7 @@ class Threads extends SiteController
 		$category  = Request::getString('category', '');
 		$thread_id = Request::getInt('thread', 0);
 		$post_id   = Request::getInt('post', 0);
-		$file      = Request::getVar('file', '');
+		$file      = Request::getString('file', '');
 
 		// Instantiate an attachment object
 		if (!$post_id)
@@ -706,7 +706,7 @@ class Threads extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))

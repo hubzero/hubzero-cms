@@ -133,10 +133,10 @@ class Entriesv1_0 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'scope'      => Request::getWord('scope', ''),
 			'scope_id'   => Request::getInt('scope_id', 0),
-			'taggerid'   => Request::getVar('tagger', ''),
+			'taggerid'   => Request::getInt('tagger', 0),
 			'sort'       => Request::getWord('sort', 'raw_tag'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC'))
 		);
@@ -222,11 +222,11 @@ class Entriesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$tag   = Request::getVar('tag', null, 'post');
-		$raw   = Request::getVar('raw_tag', null, 'post');
-		$desc  = Request::getVar('description', null, 'post');
+		$tag   = Request::getString('tag', null, 'post');
+		$raw   = Request::getString('raw_tag', null, 'post');
+		$desc  = Request::getString('description', null, 'post');
 		$admin = Request::getInt('admin', 0, 'post');
-		$subs  = Request::getVar('substitutes', null, 'post');
+		$subs  = Request::getString('substitutes', null, 'post');
 
 		if (!$tag && !$raw)
 		{
@@ -375,9 +375,9 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_TAGS_ERROR_MISSING_DATA'), 500);
 		}
 
-		$tag   = Request::getVar('tag', $record->get('tag'));
-		$raw   = Request::getVar('raw_tag', $record->get('raw_tag'));
-		$desc  = Request::getVar('description', $record->get('description'));
+		$tag   = Request::getString('tag', $record->get('tag'));
+		$raw   = Request::getString('raw_tag', $record->get('raw_tag'));
+		$desc  = Request::getString('description', $record->get('description'));
 		$admin = Request::getInt('admin', $record->get('admin'));
 
 		$record->set('admin', ($admin ? 1 : 0));
@@ -400,7 +400,7 @@ class Entriesv1_0 extends ApiController
 			throw new Exception($record->getError(), 500);
 		}
 
-		$subs = Request::getVar('substitutes', null);
+		$subs = Request::getString('substitutes', null);
 
 		if ($subs)
 		{

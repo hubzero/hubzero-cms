@@ -130,7 +130,7 @@ class Articles extends AdminController
 	 */
 	public function displayTask()
 	{
-		if ($layout = Request::getVar('layout'))
+		if ($layout = Request::getString('layout'))
 		{
 			$this->context .= '.' . $layout;
 		}
@@ -257,7 +257,7 @@ class Articles extends AdminController
 	 */
 	public function featuredTask()
 	{
-		if ($layout = Request::getVar('layout'))
+		if ($layout = Request::getString('layout'))
 		{
 			$this->context .= '.' . $layout;
 		}
@@ -475,7 +475,7 @@ class Articles extends AdminController
 		Request::checkToken();
 
 		// Incoming data
-		$items = Request::getVar('fields', array(), 'post');
+		$items = Request::getArray('fields', array(), 'post');
 
 		$articleId = Request::getInt('id');
 
@@ -547,7 +547,7 @@ class Articles extends AdminController
 		}
 
 		// Initialise variables.
-		$ids = Request::getVar('cid', null, 'post', 'array');
+		$ids = Request::getArray('cid', null, 'post');
 		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
 		$success = 0;
@@ -586,7 +586,7 @@ class Articles extends AdminController
 	{
 		Request::checkToken();
 
-		$ordering = Request::getVar('order', array());
+		$ordering = Request::getArray('order', array());
 
 		if (!Article::saveorder($ordering))
 		{

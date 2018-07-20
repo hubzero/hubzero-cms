@@ -332,7 +332,7 @@ class Modules extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -349,7 +349,7 @@ class Modules extends AdminController
 			return $this->cancelTask();
 		}
 
-		if ($eid = Request::getVar('eid', 0))
+		if ($eid = Request::getInt('eid', 0))
 		{
 			$db = App::get('db');
 			$query = $db->getQuery()
@@ -406,7 +406,7 @@ class Modules extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		if (!isset($fields['id']))
 		{
 			$fields['id'] = 0;
@@ -416,7 +416,7 @@ class Modules extends AdminController
 		$model = Module::oneOrNew($fields['id'])->set($fields);
 
 		// Get parameters
-		$params = Request::getVar('params', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 
 		$p = $model->params;
 
@@ -446,7 +446,7 @@ class Modules extends AdminController
 		}
 
 		// Update menu assignments
-		$menu = Request::getVar('menu', array(), 'post');
+		$menu = Request::getArray('menu', array(), 'post');
 		$assignment = (isset($menu['assignment']) ? $menu['assignment'] : 0);
 		$assigned   = (isset($menu['assigned']) ? $menu['assigned'] : array());
 
@@ -749,7 +749,7 @@ class Modules extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('cid', array());
+		$ids = Request::getArray('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
@@ -798,7 +798,7 @@ class Modules extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('cid', array());
+		$ids = Request::getArray('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
@@ -853,7 +853,7 @@ class Modules extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('cid', array());
+		$ids = Request::getArray('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
@@ -903,7 +903,7 @@ class Modules extends AdminController
 		}
 
 		// Get items to publish from the request.
-		$cid   = Request::getVar('cid', array(), '', 'array');
+		$cid   = Request::getArray('cid', array());
 		$data  = array(
 			'publish'   => 1,
 			'unpublish' => 0,
@@ -979,7 +979,7 @@ class Modules extends AdminController
 		}
 
 		// Initialise variables.
-		$ids = Request::getVar('cid', null, 'post', 'array');
+		$ids = Request::getArray('cid', null, 'post');
 		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
 		$success = 0;
@@ -1027,8 +1027,8 @@ class Modules extends AdminController
 		}
 
 		// Get the input
-		$pks   = Request::getVar('cid', null, 'post', 'array');
-		$order = Request::getVar('order', null, 'post', 'array');
+		$pks   = Request::getArray('cid', null, 'post');
+		$order = Request::getArray('order', null, 'post');
 
 		// Sanitize the input
 		Arr::toInteger($pks);
@@ -1071,7 +1071,7 @@ class Modules extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('cid', null, 'post', 'array');
+		$ids = Request::getArray('cid', null, 'post');
 
 		foreach ($ids as $id)
 		{
@@ -1184,7 +1184,7 @@ class Modules extends AdminController
 	 */
 	public function batchTask()
 	{
-		$commands = Request::getVar('batch', array(), 'post', 'array');
+		$commands = Request::getArray('batch', array(), 'post');
 
 		// Sanitize user ids.
 		$pks = array_unique($pks);

@@ -38,7 +38,7 @@ use stdClass;
 use Request;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php';
 
 /**
  * API controller class for cache manager
@@ -120,7 +120,7 @@ class Cachev1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$ids = Request::getVar('group', array());
+		$ids = Request::getArray('group', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

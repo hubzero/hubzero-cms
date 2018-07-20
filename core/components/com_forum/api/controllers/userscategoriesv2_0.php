@@ -35,12 +35,12 @@ namespace Components\Forum\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\Forum\Models\UsersCategory;
 use Request;
+use User;
 
-require_once Component::path('com_forum') . '/models/usersCategory.php';
+require_once dirname(dirname(__DIR__)) . '/models/usersCategory.php';
 
 class UsersCategoriesv2_0 extends ApiController
 {
-
 	/**
 	 * Create user's categories
 	 *
@@ -60,14 +60,14 @@ class UsersCategoriesv2_0 extends ApiController
 	 * }
 	 * @return    TODO
 	 */
-	function createTask()
+	public function createTask()
 	{
-		$userId = Request::getVar('userId');
+		$userId = Request::getInt('userId');
 		$currentUserId = User::get('id');
 
 		$this->_requiresMatchingUser($currentUserId, $userId);
 
-		$categoriesIds = Request::getVar('categoriesIds');
+		$categoriesIds = Request::getArray('categoriesIds');
 
 		$usersCategories = $this->_instantiateUsersCategories($categoriesIds, $currentUserId);
 
@@ -84,10 +84,16 @@ class UsersCategoriesv2_0 extends ApiController
 
 		$result['status'] = empty($errors) ? 'success' : 'error';
 
-		echo json_encode($result);
-		exit();
+		$this->send($result);
 	}
 
+	/**
+	 * Instantiate user's categories
+	 *
+	 * @param   array    $categoriesIds
+	 * @param   integer  $currentUserId
+	 * @return  array
+	 */
 	protected function _instantiateUsersCategories($categoriesIds, $currentUserId)
 	{
 		$usersCategories = array_map(function($categoryId) use ($currentUserId) {
@@ -102,6 +108,12 @@ class UsersCategoriesv2_0 extends ApiController
 		return $usersCategories;
 	}
 
+	/**
+	 * Save user's categories
+	 *
+	 * @param   array  $usersCategories
+	 * @return  array
+	 */
 	protected function _saveUsersCategories($usersCategories)
 	{
 		$errors = array();
@@ -164,6 +176,12 @@ class UsersCategoriesv2_0 extends ApiController
 		$this->send($result);
 	}
 
+	/**
+	 * Destroy user's categories
+	 *
+	 * @param   array  $usersCategories
+	 * @return  array
+	 */
 	protected function _destroyUsersCategories($usersCategories)
 	{
 		$errors = array();
@@ -180,6 +198,13 @@ class UsersCategoriesv2_0 extends ApiController
 		return $errors;
 	}
 
+	/**
+	 * Check user's id
+	 *
+	 * @param   integer  $currentUserId
+	 * @param   integer  $userId
+	 * @return  void
+	 */
 	protected function _requiresMatchingUser($currentUserId, $userId)
 	{
 		if ($currentUserId !== $userId)
@@ -192,5 +217,4 @@ class UsersCategoriesv2_0 extends ApiController
 			$this->send($result);
 		}
 	}
-
 }

@@ -125,7 +125,7 @@ class Entriesv1_0 extends ApiController
 		$model = Plugin::all();
 
 		$filters = array(
-			'folder'   => Request::getVar('folder', ''),
+			'folder'   => Request::getString('folder', ''),
 			'enabled'  => Request::getInt('enabled', 0),
 			'access'   => Request::getInt('access', 1)
 		);
@@ -220,14 +220,14 @@ class Entriesv1_0 extends ApiController
 
 		$fields = array(
 			'type'           => 'plugin',
-			'name'           => Request::getVar('name', null, 'post'),
-			'element'        => Request::getVar('element', null, 'post'),
-			'folder'         => Request::getVar('folder', null, 'post'),
+			'name'           => Request::getString('name', null, 'post'),
+			'element'        => Request::getString('element', null, 'post'),
+			'folder'         => Request::getString('folder', null, 'post'),
 			'client_id'      => Request::getInt('client_id', 0, 'post'),
 			'enabled'        => Request::getInt('enabled', 0, 'post'),
 			'access'         => Request::getInt('access', 1, 'post'),
 			'protected'      => 0,
-			'params'         => Request::getVar('params', null, 'post', 'none')
+			'params'         => Request::getString('params', null, 'post', 'none')
 		);
 
 		$row = Plugin::blank();
@@ -347,25 +347,25 @@ class Entriesv1_0 extends ApiController
 			App::abort(403, 'Not Authorized');
 		}
 
-		$fields = array(
-			'extension_id' => Request::getInt('extension_id', 0, 'post'),
-			'type'         => 'plugin',
-			'name'         => Request::getVar('name', null, 'post'),
-			'element'      => Request::getVar('element', null, 'post'),
-			'folder'       => Request::getVar('folder', null, 'post'),
-			'client_id'    => Request::getInt('client_id', 0, 'post'),
-			'enabled'      => Request::getInt('enabled', 0, 'post'),
-			'access'       => Request::getInt('access', 1, 'post'),
-			'protected'    => 0,
-			'params'       => Request::getVar('params', '', 'post', 'none')
-		);
-
-		$row = Plugin::oneOrFail($fields['extension_id']);
+		$row = Plugin::oneOrFail(Request::getInt('extension_id', 0));
 
 		if ($row->isNew())
 		{
 			App::abort(404, Lang::txt('COM_PLUGINS_ERROR_MISSING_RECORD'));
 		}
+
+		$fields = array(
+			'extension_id' => $row->get('extension_id'),
+			'type'         => 'plugin',
+			'name'         => Request::getString('name', $row->get('name')),
+			'element'      => Request::getString('element', $row->get('element')),
+			'folder'       => Request::getString('folder', $row->get('folder')),
+			'client_id'    => Request::getInt('client_id', $row->get('client_id')),
+			'enabled'      => Request::getInt('enabled', $row->get('enabled')),
+			'access'       => Request::getInt('access', $row->get('access')),
+			'protected'    => $row->get('protected'),
+			'params'       => Request::getString('params', $row->get('params'))
+		);
 
 		if (!$row->set($fields))
 		{
@@ -404,7 +404,7 @@ class Entriesv1_0 extends ApiController
 			App::abort(403, 'Not Authorized');
 		}
 
-		$ids = Request::getVar('extension_id', array());
+		$ids = Request::getArray('extension_id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
@@ -460,8 +460,8 @@ class Entriesv1_0 extends ApiController
 	{
 		//$this->requiresAuthentication();
 
-		$event  = Request::getVar('event', '');
-		$folder = Request::getVar('folder', '');
+		$event  = Request::getString('event', '');
+		$folder = Request::getString('folder', '');
 
 		if (!$event)
 		{

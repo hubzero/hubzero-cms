@@ -131,7 +131,7 @@ class Application extends AdminController
 		// Initialise variables.
 		$model = new Models\Application();
 		$form  = $model->getForm();
-		$data  = Request::getVar('hzform', array(), 'post', 'array');
+		$data  = Request::getArray('hzform', array(), 'post');
 
 		// Validate the posted data.
 		$return = $model->validate($form, $data);
@@ -165,24 +165,9 @@ class Application extends AdminController
 			return false;
 		}
 
-		try
-		{
-			// Attempt to save the configuration.
-			$data   = $return;
-			$return = $model->save($data);
-		}
-		catch (\Hubzero\Config\Exception\FileNotFoundException $e)
-		{
-			$message = $e->getMessage();
-			if (strpos($message, 'No configuration file found and no installation code available.') !== false)
-			{
-				error_log($message);
-			}
-			else
-			{
-				throw new Exception($message, 500);
-			}
-		}
+		// Attempt to save the configuration.
+		$data   = $return;
+		$return = $model->save($data);
 
 		// Check the return value.
 		if ($return === false)

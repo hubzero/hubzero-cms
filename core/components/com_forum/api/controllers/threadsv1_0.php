@@ -48,7 +48,7 @@ use Route;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php';
 
 /**
  * API controller class for forum posts
@@ -201,7 +201,7 @@ class Threadsv1_0 extends ApiController
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'section_id' => Request::getInt('section', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'scope'      => Request::getWord('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0),
 			'state'      => Category::STATE_PUBLISHED,
@@ -412,8 +412,8 @@ class Threadsv1_0 extends ApiController
 			'category_id' => Request::getInt('category', 0),
 			'parent'      => Request::getInt('parent', 0),
 			'thread'      => Request::getInt('thread', 0),
-			'threads'     => Request::getVar('threads_only', false),
-			'search'      => Request::getVar('search', ''),
+			'threads'     => Request::getBool('threads_only', false),
+			'search'      => Request::getString('search', ''),
 			'scope'       => Request::getWord('scope', 'site'),
 			'scope_id'    => Request::getInt('scope_id', 0),
 			'state'       => Post::STATE_PUBLISHED,
@@ -691,14 +691,14 @@ class Threadsv1_0 extends ApiController
 
 		$fields = array(
 			'category_id'    => Request::getInt('category_id', 0, 'post'),
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'comment'        => Request::getVar('comment', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'title'          => Request::getString('title', null, 'post', 'none', 2),
+			'comment'        => Request::getString('comment', null, 'post', 'none', 2),
+			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', 0, 'post'),
 			'state'          => Request::getInt('state', Post::STATE_PUBLISHED, 'post'),
 			'sticky'         => Request::getInt('sticky', 0, 'post'),
 			'parent'         => Request::getInt('parent', 0, 'post'),
-			'scope'          => Request::getVar('scope', 'site', 'post'),
+			'scope'          => Request::getString('scope', 'site', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
 			'access'         => Request::getInt('access', Post::ACCESS_PUBLIC, 'post'),
 			'anonymous'      => Request::getInt('anonymous', 0, 'post'),
@@ -744,7 +744,7 @@ class Threadsv1_0 extends ApiController
 			$row->save();
 		}
 
-		if ($tags = Request::getVar('tags', null, 'post'))
+		if ($tags = Request::getString('tags', null, 'post'))
 		{
 			if (!$row->tag($tags, User::get('id')))
 			{
@@ -934,7 +934,7 @@ class Threadsv1_0 extends ApiController
 			'scope_sub_id' => Request::getInt('scope_sub_id', 0),
 			'object_id'    => Request::getInt('object_id', 0),
 			'start_id'     => Request::getInt('start_id', 0),
-			'start_at'     => Request::getVar('start_at', ''),
+			'start_at'     => Request::getString('start_at', ''),
 			'sticky'       => false
 		);
 
@@ -945,7 +945,7 @@ class Threadsv1_0 extends ApiController
 			$filters['thread'] = $thread;
 		}
 
-		$sort = Request::getVar('sort', 'newest');
+		$sort = Request::getWord('sort', 'newest');
 		switch ($sort)
 		{
 			case 'oldest':
@@ -985,10 +985,10 @@ class Threadsv1_0 extends ApiController
 				->row();
 			if ($post->get('id'))
 			{
-				$threadsstart = Request::getVar('threads_start', '');
+				$threadsstart = Request::getString('threads_start', '');
 				if ($threadsstart && $threadsstart != 'undefined')
 				{
-					$filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['start_at'] = Request::getString('threads_start', '');
 				}
 				$filters['parent']   = 0;
 			}

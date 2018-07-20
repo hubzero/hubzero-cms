@@ -61,7 +61,7 @@ class Relationships extends AdminController
 			$this->view->setError($error);
 		}
 
-		$tag = Request::getVar('tag', null);
+		$tag = Request::getString('tag', null);
 		if ($tag && (int) $tag == $tag)
 		{
 			$this->database->setQuery('SELECT tag FROM `#__tags` WHERE id = ' . $tag);
@@ -454,7 +454,7 @@ class Relationships extends AdminController
 		// rebuilding from the form data is easier than finding and resolving differences
 		$this->database->setQuery('TRUNCATE TABLE #__focus_area_resource_type_rel');
 		$this->database->execute();
-		error_log(var_export($_POST, 1));
+
 		foreach ($existing as $id => $fa)
 		{
 			// no form field == deleted

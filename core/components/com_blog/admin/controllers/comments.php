@@ -223,7 +223,7 @@ class Comments extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -265,7 +265,7 @@ class Comments extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = Comment::oneOrNew($fields['id'])->set($fields);
@@ -320,7 +320,7 @@ class Comments extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;

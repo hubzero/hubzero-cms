@@ -107,13 +107,13 @@ class Searchv1_0 extends ApiController
 		$config = Component::params('com_search');
 		$query = new Query($config);
 
-		$terms   = Request::getVar('terms', '*:*');
+		$terms   = Request::getString('terms', '*:*');
 		$limit   = Request::getInt('limit', 10);
 		$start   = Request::getInt('start', 0);
-		$sortBy  = Request::getVar('sortBy', '');
-		$sortDir = Request::getVar('sortDir', '');
-		$type    = Request::getVar('type', '');
-		$filters = Request::getVar('filters', array());
+		$sortBy  = Request::getString('sortBy', '');
+		$sortDir = Request::getString('sortDir', '');
+		$type    = Request::getString('type', '');
+		$filters = Request::getArray('filters', array());
 
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
@@ -204,7 +204,7 @@ class Searchv1_0 extends ApiController
 	 */
 	public function suggestTask()
 	{
-		$terms = Request::getVar('terms', '');
+		$terms = Request::getString('terms', '');
 		$suggest = array();
 
 		if ($terms != '')
@@ -237,7 +237,7 @@ class Searchv1_0 extends ApiController
 	 */
 	public function typeSuggestionsTask()
 	{
-		$terms = Request::getVar('terms', '');
+		$terms = Request::getString('terms', '');
 		$suggestedWords = array();
 
 		if ($terms != '')
@@ -284,8 +284,8 @@ class Searchv1_0 extends ApiController
 		$config = Component::params('com_search');
 		$query = new Query($config);
 
-		$terms = Request::getVar('terms', '*:*');
-		$type  = Request::getVar('type', '');
+		$terms = Request::getString('terms', '*:*');
+		$type  = Request::getString('type', '');
 		$limit = 0;
 		$start = 0;
 

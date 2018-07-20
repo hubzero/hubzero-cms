@@ -135,7 +135,7 @@ class Migrations extends AdminController
 		// Check for request forgeries
 		Request::checkToken('get');
 
-		$file     = Request::getVar('file', null);
+		$file = Request::getString('file', null);
 
 		$response = Cli::migration(false, true, $file);
 		$response = json_decode($response);
@@ -161,7 +161,7 @@ class Migrations extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$migrations = Request::getVar('migration', array());
+		$migrations = Request::getArray('migration', array());
 
 		// Migrations are listed newest to oldest
 		// When running UP, we need to make sure everything is run oldest to newest
@@ -194,7 +194,7 @@ class Migrations extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$migrations = Request::getVar('migration', array());
+		$migrations = Request::getArray('migration', array());
 
 		foreach ($migrations as $migration)
 		{

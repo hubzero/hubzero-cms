@@ -86,7 +86,7 @@ class Source extends AdminController
 
 		if (!$file)
 		{
-			$recordId = base64_decode(Request::getVar('id'));
+			$recordId = base64_decode(Request::getString('id'));
 			$context  = 'com_templates.edit.source';
 
 			if (preg_match('#\.\.#', $recordId))
@@ -126,7 +126,7 @@ class Source extends AdminController
 			App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
 		}
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$file = new File($fields['filename'], $fields['extension_id']);
 
