@@ -97,10 +97,10 @@ class Ticketsv1_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$type = Request::getVar('type', 'submitted');
+		$type = Request::getString('type', 'submitted');
 		$type = ($type == 'automatic') ? 1 : 0;
 
-		$group = Request::getVar('group', '');
+		$group = Request::getString('group', '');
 
 		// Set up some dates
 		$this->offset = Config::get('offset');
@@ -298,19 +298,19 @@ class Ticketsv1_0 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'sort'       => Request::getWord('sort', 'created'),
 			'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'DESC')),
-			'group'      => Request::getVar('group', ''),
-			'reportedby' => Request::getVar('reporter', ''),
-			'owner'      => Request::getVar('owner', ''),
+			'group'      => Request::getString('group', ''),
+			'reportedby' => Request::getString('reporter', ''),
+			'owner'      => Request::getString('owner', ''),
 			'type'       => Request::getInt('type', 0),
 			'status'     => strtolower(Request::getWord('status', '')),
 			'tag'        => Request::getWord('tag', ''),
 		);
 
-		$filters['opened'] = $this->_toTimestamp(Request::getVar('opened', ''));
-		$filters['closed'] = $this->_toTimestamp(Request::getVar('closed', ''));
+		$filters['opened'] = $this->_toTimestamp(Request::getString('opened', ''));
+		$filters['closed'] = $this->_toTimestamp(Request::getString('closed', ''));
 
 		$response = new stdClass;
 		$response->success = true;
@@ -455,14 +455,14 @@ class Ticketsv1_0 extends ApiController
 		$ticket->set('created', Date::toSql());
 
 		// Incoming
-		$ticket->set('report', Request::getVar('report', '', 'post', 'none', 2));
+		$ticket->set('report', Request::getString('report', '', 'post'));
 		if (!$ticket->get('report'))
 		{
 			throw new Exception(Lang::txt('Error: Report contains no text.'), 500);
 		}
-		$ticket->set('os', Request::getVar('os', 'unknown', 'post'));
-		$ticket->set('browser', Request::getVar('browser', 'unknown', 'post'));
-		$ticket->set('severity', Request::getVar('severity', 'normal', 'post'));
+		$ticket->set('os', Request::getString('os', 'unknown', 'post'));
+		$ticket->set('browser', Request::getString('browser', 'unknown', 'post'));
+		$ticket->set('severity', Request::getString('severity', 'normal', 'post'));
 
 		// Cut suggestion at 70 characters
 		$summary = substr($ticket->get('report'), 0, 70);
@@ -484,7 +484,7 @@ class Ticketsv1_0 extends ApiController
 		$ticket->set('status', 0);
 
 		$ticket->set('ip', Request::ip());
-		$ticket->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server')));
+		$ticket->set('hostname', gethostbyaddr(Request::getString('REMOTE_ADDR', '', 'server')));
 
 		// Save the data
 		if (!$ticket->save())
@@ -493,7 +493,7 @@ class Ticketsv1_0 extends ApiController
 		}
 
 		// Any tags?
-		if ($tags = trim(Request::getVar('tags', '', 'post')))
+		if ($tags = trim(Request::getString('tags', '', 'post')))
 		{
 			$ticket->tag($tags, $result->get('id'));
 		}

@@ -34,8 +34,8 @@ function view()
 {
 	global $html_path, $com_name, $dv_conf;
 
-	$hash = Request::getVar('hash');
-	$hash_list = Request::getVar('hash_list');
+	$hash = Request::getString('hash');
+	$hash_list = Request::getString('hash_list');
 
 	if ($hash != '')
 	{
@@ -105,4 +105,3 @@ function view()
 
 	exit;
 }
-?>

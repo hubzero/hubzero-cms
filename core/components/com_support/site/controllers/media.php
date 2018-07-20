@@ -279,7 +279,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_NO_FILE'));

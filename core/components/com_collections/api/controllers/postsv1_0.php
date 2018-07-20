@@ -44,7 +44,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 
 /**
  * API controller class for collection posts
@@ -121,9 +121,9 @@ class Postsv1_0 extends ApiController
 		$filters = array(
 			'limit'         => Request::getInt('limit', 25),
 			'start'         => Request::getInt('limitstart', 0),
-			'search'        => Request::getVar('search', ''),
+			'search'        => Request::getString('search', ''),
 			'state'         => 1,
-			'sort'          => Request::getVar('sort', 'created'),
+			'sort'          => Request::getString('sort', 'created'),
 			'sort_Dir'      => strtoupper(Request::getWord('sortDir', 'DESC')),
 			'is_default'    => 0,
 			'access'        => 0,
@@ -274,14 +274,14 @@ class Postsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'description'    => Request::getVar('description', null, 'post', 'none', 2),
-			'url'            => Request::getVar('url', null, 'post'),
-			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'title'          => Request::getString('title', null, 'post', 'none', 2),
+			'description'    => Request::getString('description', null, 'post', 'none', 2),
+			'url'            => Request::getString('url', null, 'post'),
+			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', 0, 'post'),
 			'state'          => Request::getInt('state', 1, 'post'),
 			'access'         => Request::getInt('access', 0, 'post'),
-			'type'           => Request::getVar('type', 'file', 'post'),
+			'type'           => Request::getString('type', 'file', 'post'),
 			'object_id'      => Request::getInt('object_id', 0, 'post'),
 			'collection_id'  => Request::getInt('collection_id', 0, 'post')
 		);
@@ -527,14 +527,14 @@ class Postsv1_0 extends ApiController
 
 		$fields = array(
 			'id'             => Request::getInt('id', 0, 'put'),
-			'title'          => Request::getVar('title', null, 'put', 'none', 2),
-			'description'    => Request::getVar('description', null, 'put', 'none', 2),
-			'url'            => Request::getVar('url', null, 'put'),
-			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'put'),
+			'title'          => Request::getString('title', null, 'put'),
+			'description'    => Request::getString('description', null, 'put'),
+			'url'            => Request::getString('url', null, 'put'),
+			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'put'),
 			'created_by'     => Request::getInt('created_by', 0, 'put'),
 			'state'          => Request::getInt('state', 1, 'put'),
 			'access'         => Request::getInt('access', 0, 'put'),
-			'type'           => Request::getVar('type', 'file', 'put'),
+			'type'           => Request::getString('type', 'file', 'put'),
 			'object_id'      => Request::getInt('object_id', 0, 'put'),
 			'collection_id'  => Request::getInt('collection_id', 0, 'put')
 		);
@@ -624,7 +624,7 @@ class Postsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

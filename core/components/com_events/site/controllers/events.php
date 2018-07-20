@@ -820,7 +820,7 @@ class Events extends SiteController
 		);
 
 		// Incoming
-		$alias = Request::getVar('page', '');
+		$alias = Request::getString('page', '');
 
 		// Load the current page
 		$page = new Page($this->database);
@@ -842,7 +842,7 @@ class Events extends SiteController
 
 		// Build the HTML
 		$this->view->setLayout('default')->setName('details');
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			$this->view->setLayout('modal');
 		}
@@ -1002,7 +1002,7 @@ class Events extends SiteController
 			// Is the registration restricted?
 			if ($event->restricted)
 			{
-				$passwrd = Request::getVar('passwrd', '', 'post');
+				$passwrd = Request::getString('passwrd', '', 'post');
 
 				if ($event->restricted == $passwrd)
 				{
@@ -1143,14 +1143,14 @@ class Events extends SiteController
 		);
 
 		// Incoming
-		$register   = Request::getVar('register', null, 'post');
-		$arrival    = Request::getVar('arrival', null, 'post');
-		$departure  = Request::getVar('departure', null, 'post');
-		$dietary    = Request::getVar('dietary', null, 'post');
-		$bos        = Request::getVar('bos', null, 'post');
-		$dinner     = Request::getVar('dinner', null, 'post');
-		$disability = Request::getVar('disability', null, 'post');
-		$race       = Request::getVar('race', null, 'post');
+		$register   = Request::getArray('register', null, 'post');
+		$arrival    = Request::getArray('arrival', null, 'post');
+		$departure  = Request::getArray('departure', null, 'post');
+		$dietary    = Request::getArray('dietary', null, 'post');
+		$bos        = Request::getString('bos', null, 'post');
+		$dinner     = Request::getString('dinner', null, 'post');
+		$disability = Request::getArray('disability', null, 'post');
+		$race       = Request::getArray('race', null, 'post');
 
 		if ($register)
 		{
@@ -1255,7 +1255,7 @@ class Events extends SiteController
 	private function _log($reg)
 	{
 		$this->database->setQuery(
-			'INSERT INTO #__events_respondents(
+			'INSERT INTO `#__events_respondents`(
 				event_id,
 				first_name, last_name, affiliation, title, city, state, zip, country, telephone, fax, email,
 				website, position_description, highest_degree, gender, arrival, departure, disability_needs,
@@ -1271,7 +1271,7 @@ class Events extends SiteController
 			')'
 		);
 		$this->database->query();
-		$races = Request::getVar('race', null, 'post');
+		$races = Request::getArray('race', null, 'post');
 		if (!is_null($races) && (!isset($races['refused']) || !$races['refused']))
 		{
 			$resp_id = $this->database->insertid();
@@ -1280,7 +1280,7 @@ class Events extends SiteController
 				if (array_key_exists($race, $races) && $races[$race])
 				{
 					$this->database->execute(
-						'INSERT INTO #__events_respondent_race_rel(respondent_id, race, tribal_affiliation)
+						'INSERT INTO `#__events_respondent_race_rel`(respondent_id, race, tribal_affiliation)
 						VALUES (' . $resp_id . ', \'' . $race . '\', ' . ($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'null') . ')'
 					);
 				}
@@ -1318,21 +1318,21 @@ class Events extends SiteController
 						: 'null';
 				break;
 				case 'dinner':
-					$dinner = Request::getVar('dinner', null, 'post');
+					$dinner = Request::getString('dinner', null, 'post');
 					$rv[] = is_null($dinner) ? 'null' : $dinner ? '1' : '0';
 				break;
 				case 'dietary':
-					$rv[] = (($dietary = Request::getVar('dietary', null, 'post')))
+					$rv[] = (($dietary = Request::getArray('dietary', null, 'post')))
 						? $this->database->quote($dietary['specific'])
 						: 'null';
 				break;
 				case 'arrival': case 'departure':
-					$rv[] = ($date = Request::getVar($val, null, 'post'))
+					$rv[] = ($date = Request::getArray($val, null, 'post'))
 						? $this->database->quote($date['day'] . ' ' . $date['time'])
 						: 'null';
 				break;
 				case 'disability':
-					$disability = Request::getVar('disability', null, 'post');
+					$disability = Request::getString('disability', null, 'post');
 					$rv[] = ($disability) ? '1' : '0';
 				break;
 				default:
@@ -1349,7 +1349,7 @@ class Events extends SiteController
 	 */
 	public function loginTask()
 	{
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			Lang::txt('EVENTS_LOGIN_NOTICE'),
@@ -1776,14 +1776,14 @@ class Events extends SiteController
 		$offset = $this->offset;
 
 		// Incoming
-		$start_time = Request::getVar('start_time', '08:00', 'post');
+		$start_time = Request::getString('start_time', '08:00', 'post');
 		$start_time = ($start_time) ? $start_time : '08:00';
 		$start_pm   = Request::getInt('start_pm', 0, 'post');
-		$end_time   = Request::getVar('end_time', '17:00', 'post');
+		$end_time   = Request::getString('end_time', '17:00', 'post');
 		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = Request::getInt('end_pm', 0, 'post');
-		$time_zone  = Request::getVar('time_zone', -5, 'post');
-		$tags       = Request::getVar('tags', '', 'post');
+		$time_zone  = Request::getString('time_zone', -5, 'post');
+		$tags       = Request::getString('tags', '', 'post');
 
 		// Bind the posted data to an event object
 		$row = new Event($this->database);
@@ -2095,10 +2095,10 @@ class Events extends SiteController
 
 			if (mail($email, $subject, $message, $headers, $args))
 			{
-				return(1);
+				return 1;
 			}
 		}
-		return(0);
+		return 0;
 	}
 
 	/**
@@ -2111,10 +2111,10 @@ class Events extends SiteController
 	{
 		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $email))
 		{
-			return(1);
+			return 1;
 		}
 
-		return(0);
+		return 0;
 	}
 
 	/**

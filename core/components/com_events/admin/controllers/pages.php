@@ -138,7 +138,7 @@ class Pages extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -179,7 +179,7 @@ class Pages extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields['event_id'] = Request::getInt('event_id');
 
 		// Bind incoming data to object
@@ -232,7 +232,7 @@ class Pages extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;
@@ -295,7 +295,7 @@ class Pages extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		$id = $id[0];
 		$pid = Request::getInt('event', 0);
 

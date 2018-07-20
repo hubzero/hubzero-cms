@@ -97,11 +97,11 @@ class Entriesv1_0 extends ApiController
 	{
 		// Incoming
 		$filters = array(
-			'type'   => Request::getVar('type', ''),
+			'type'   => Request::getString('type', ''),
 			'sortby' => Request::getCmd('sortby', 'date'),
 			'limit'  => Request::getInt('limit', \Config::get('list_limit')),
 			'start'  => Request::getInt('limitstart', 0),
-			'search' => Request::getVar('search', '')
+			'search' => Request::getString('search', '')
 		);
 
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
@@ -249,9 +249,9 @@ class Entriesv1_0 extends ApiController
 	 */
 	public function whatsnewTask()
 	{
-		$limit    = Request::getVar('limit', 25);
-		$period   = Request::getVar('period', 'month');
-		$category = Request::getVar('category', 'resources');
+		$limit    = Request::getInt('limit', 25);
+		$period   = Request::getString('period', 'month');
+		$category = Request::getString('category', 'resources');
 
 		require_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'finder.php';
 
@@ -280,7 +280,7 @@ class Entriesv1_0 extends ApiController
 	 */
 	public function renderlatexTask()
 	{
-		$expression = Request::getVar('expression', '');
+		$expression = Request::getString('expression', '');
 
 		$dir = PATH_APP . DS . 'cache' . DS . 'ckeditor' . DS . 'hubzeroequation' . DS;
 		$filename = uniqid('equation_');

@@ -79,7 +79,7 @@ class Acl extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		$id     = Request::getInt('id', 0);
-		$action = Request::getVar('action', '');
+		$action = Request::getString('action', '');
 		$value  = Request::getInt('value', 0);
 
 		$row = Map::oneOrFail($id);
@@ -123,7 +123,7 @@ class Acl extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		$removed = 0;
 		foreach ($ids as $id)
@@ -159,7 +159,7 @@ class Acl extends AdminController
 		Request::checkToken();
 
 		// Trim and addslashes all posted items
-		$aro = Request::getVar('aro', array(), 'post');
+		$aro = Request::getArray('aro', array(), 'post');
 		$aro = array_map('trim', $aro);
 
 		// Initiate class and bind posted items to database fields
@@ -198,7 +198,7 @@ class Acl extends AdminController
 		}
 
 		// Trim and addslashes all posted items
-		$map = Request::getVar('map', array(), 'post');
+		$map = Request::getArray('map', array(), 'post');
 
 		foreach ($map as $k => $v)
 		{

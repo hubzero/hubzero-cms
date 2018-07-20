@@ -123,7 +123,7 @@ class Authors extends AdminController
 		if (!is_array($rows))
 		{
 			// Incoming
-			$authorid = Request::getVar('id', array(0));
+			$authorid = Request::getArray('id', array(0));
 			if (is_array($authorid))
 			{
 				$authorid = (!empty($authorid) ? $authorid[0] : 0);
@@ -164,9 +164,9 @@ class Authors extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields   = Request::getVar('fields', array(), 'post');
-		$authorid = Request::getVar('authorid', 0);
-		$id       = Request::getVar('id', 0);
+		$fields   = Request::getArray('fields', array(), 'post');
+		$authorid = Request::getInt('authorid', 0);
+		$id       = Request::getInt('id', 0);
 
 		if (!$authorid)
 		{

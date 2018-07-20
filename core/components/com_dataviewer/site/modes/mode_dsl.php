@@ -33,7 +33,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 	if (!$dv_id)
 	{
-		$dv_id = Request::getVar('dv');
+		$dv_id = Request::getString('dv');
 	}
 
 	if (!$version)
@@ -50,7 +50,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 	if (!$version)
 	{
-		$sql = 'SELECT data_definition FROM #__project_databases WHERE `database_name` = ' . $db->quote($name);
+		$sql = 'SELECT data_definition FROM `#__project_databases` WHERE `database_name` = ' . $db->quote($name);
 		$db->setQuery($sql);
 		$database = $db->loadAssoc();
 		$dd = json_decode($database['data_definition'], true);
@@ -166,7 +166,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 function _dd_post($dd)
 {
-	$id = Request::getVar('id', false);
+	$id = Request::getString('id', false);
 
 	if ($id)
 	{
@@ -174,7 +174,7 @@ function _dd_post($dd)
 		$dd['single'] = true;
 	}
 
-	$custom_field =  Request::getVar('custom_field', false);
+	$custom_field =  Request::getString('custom_field', false);
 	if ($custom_field)
 	{
 		$custom_field = explode('|', $custom_field);
@@ -183,7 +183,7 @@ function _dd_post($dd)
 	}
 
 	// Data for Custom Views
-	$custom_view = Request::getVar('custom_view', array());
+	$custom_view = Request::getArray('custom_view', array());
 	if (count($custom_view) > 0)
 	{
 		unset($dd['customizer']);

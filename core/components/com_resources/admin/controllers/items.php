@@ -400,8 +400,8 @@ class Items extends AdminController
 	{
 		// Incoming
 		$pid  = Request::getInt('pid', 0);
-		$id   = Request::getVar('id', array(0));
-		$step = Request::getVar('step', 1);
+		$id   = Request::getArray('id', array(0));
+		$step = Request::getInt('step', 1);
 
 		if (!empty($id) && !$pid)
 		{
@@ -437,7 +437,7 @@ class Items extends AdminController
 
 			case 2:
 				// Get the creation method
-				$method = Request::getVar('method', '');
+				$method = Request::getString('method', '');
 
 				if ($method == 'create')
 				{
@@ -555,7 +555,7 @@ class Items extends AdminController
 	public function removechildTask()
 	{
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$pid = Request::getInt('pid', 0);
 
 		// Make sure we have a parent ID
@@ -629,7 +629,7 @@ class Items extends AdminController
 		$this->css('resources.css');
 
 		// Incoming resource ID
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		if (is_array($id))
 		{
 			$id = (!empty($id) ? $id[0] : 0);
@@ -640,9 +640,9 @@ class Items extends AdminController
 
 		// Grab some filters for returning to place after editing
 		$return = array();
-		$return['type']   = Request::getVar('type', '');
-		$return['sort']   = Request::getVar('sort', '');
-		$return['status'] = Request::getVar('status', '');
+		$return['type']   = Request::getString('type', '');
+		$return['sort']   = Request::getString('sort', '');
+		$return['status'] = Request::getString('status', '');
 
 		// Instantiate our resource object
 		$row = Entry::oneOrNew($id);
@@ -806,7 +806,7 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate extended database class
 		$row = Entry::oneOrNew(Request::getInt('id', 0, 'post'));
@@ -855,7 +855,7 @@ class Items extends AdminController
 		}
 
 		// Get parameters
-		$params = Request::getVar('params', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 		if (is_array($params))
 		{
 			$txt = new \Hubzero\Config\Registry('');
@@ -867,7 +867,7 @@ class Items extends AdminController
 		}
 
 		// Get attributes
-		$attribs = Request::getVar('attrib', array(), 'post');
+		$attribs = Request::getArray('attrib', array(), 'post');
 		if (is_array($attribs))
 		{
 			$txta = new \Hubzero\Config\Registry('');
@@ -890,7 +890,7 @@ class Items extends AdminController
 		}
 
 		// Get custom areas, add wrappers, and compile into fulltxt
-		$nbtag = Request::getVar('nbtag', array(), 'post');
+		$nbtag = Request::getArray('nbtag', array(), 'post');
 		if (!empty($nbtag))
 		{
 			$type = $row->type;
@@ -996,14 +996,14 @@ class Items extends AdminController
 		}
 
 		// Incoming tags
-		$tags = Request::getVar('tags', '', 'post');
+		$tags = Request::getString('tags', '', 'post');
 
 		// Save the tags
 		$rt = new Tags($row->get('id'));
 		$rt->setTags($tags, User::get('id'), 1, 1);
 
 		// Incoming badges
-		$badgeString = Request::getVar('badges', '', 'post');
+		$badgeString = Request::getString('badges', '', 'post');
 
 		// Save the badges
 		$badges = new Badges([
@@ -1015,8 +1015,8 @@ class Items extends AdminController
 		// Incoming authors
 		if (!$row->isTool())
 		{
-			$authorsOldstr = Request::getVar('old_authors', '', 'post');
-			$authorsNewstr = Request::getVar('new_authors', '', 'post');
+			$authorsOldstr = Request::getString('old_authors', '', 'post');
+			$authorsNewstr = Request::getString('new_authors', '', 'post');
 			if (!$authorsNewstr)
 			{
 				$authorsNewstr = $authorsOldstr;
@@ -1064,9 +1064,9 @@ class Items extends AdminController
 					$rc->set('subid', $row->get('id'));
 					$rc->set('authorid', $authorid);
 					$rc->set('ordering', $i);
-					$rc->set('role', trim(Request::getVar($authorsNew[$i] . '_role', '')));
-					$rc->set('name', trim(Request::getVar($authorsNew[$i] . '_name', '')));
-					$rc->set('organization', trim(Request::getVar($authorsNew[$i] . '_organization', '')));
+					$rc->set('role', trim(Request::getString($authorsNew[$i] . '_role', '')));
+					$rc->set('name', trim(Request::getString($authorsNew[$i] . '_name', '')));
+					$rc->set('organization', trim(Request::getString($authorsNew[$i] . '_organization', '')));
 					$rc->save();
 
 					$authorsNew[$i] = $rc->get('authorid');
@@ -1205,7 +1205,7 @@ class Items extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1)
@@ -1323,7 +1323,7 @@ class Items extends AdminController
 
 		// Incoming
 		$pid = Request::getInt('pid', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
@@ -1593,7 +1593,7 @@ class Items extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 
 		// Loop through the IDs
 		foreach ($ids as $id)
@@ -1623,7 +1623,7 @@ class Items extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$id  = Request::getVar('id', array());
+		$id  = Request::getArray('id', array());
 		$id  = $id[0];
 		$pid = Request::getInt('pid', 0);
 
@@ -1735,8 +1735,8 @@ class Items extends AdminController
 	 */
 	public function authorTask()
 	{
-		$id   = Request::getVar('u', '');
-		$role = Request::getVar('role', '');
+		$id   = Request::getString('u', '');
+		$role = Request::getString('role', '');
 		$rid  = Request::getInt('rid', 0);
 
 		// Get the member's info
@@ -1805,8 +1805,8 @@ class Items extends AdminController
 		$auditor = new \Hubzero\Content\Auditor('resource');
 		$auditor->registerTest(new \Components\Resources\Helpers\Tests\Links);
 
-		$test   = Request::getVar('test');
-		$status = Request::getVar('status', 'failed');
+		$test   = Request::getString('test');
+		$status = Request::getString('status', 'failed');
 
 		if (!in_array($status, array('skipped', 'passed', 'failed')))
 		{

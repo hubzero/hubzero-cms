@@ -36,7 +36,7 @@ $this->css()
 
 $html  = '';
 
-$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
+$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
 
 ?>
 <div id="project-wrap">

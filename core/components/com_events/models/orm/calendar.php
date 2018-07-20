@@ -86,7 +86,7 @@ class Calendar extends Relational
 	public static function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)
 	{
 		// get request varse
-		$calendarIds = \Request::getVar('calendar_id', '', 'get');
+		$calendarIds = \Request::getString('calendar_id', '', 'get');
 		$calendarIds = array_map("intval", explode(',', $calendarIds));
 
 		// array to hold events

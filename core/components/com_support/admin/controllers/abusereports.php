@@ -109,7 +109,7 @@ class Abusereports extends AdminController
 
 		// Incoming
 		$id   = Request::getInt('id', 0);
-		$cat = Request::getVar('cat', '');
+		$cat = Request::getString('cat', '');
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -271,7 +271,7 @@ class Abusereports extends AdminController
 
 		$report->set('reviewed', Date::toSql());
 		$report->set('reviewed_by', User::get('id'));
-		$report->set('note', Request::getVar('note', ''));
+		$report->set('note', Request::getString('note', ''));
 
 		// Get the reported item
 		$results = Event::trigger('support.getReportedItem', array(
@@ -419,7 +419,7 @@ class Abusereports extends AdminController
 		$results = null;
 		$sample  = '';
 
-		if ($sample = Request::getVar('sample', '', 'post', 'none', 2))
+		if ($sample = Request::getString('sample', '', 'post'))
 		{
 			$service = new \Hubzero\Spam\Checker();
 
