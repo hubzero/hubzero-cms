@@ -52,18 +52,30 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 	<div id="page_views">
 
 		<div id="page_views_heading">
-			<h3>Group Page Views</h3>
+			<h3>Group & Page Visits</h3>
 			<div id="page_view_settings">
 				<form name="page_selector" action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=usage'); ?>" method="get">
-					<select name="pid" id="page_view_selector">
-						<option value=""<?php if ($this->pid == '') { echo "selected"; } ?>>All Group Page Views</option>
-						<?php foreach ($this->pages as $page) : ?>
-							<?php $sel = ($this->pid == $page['id']) ? "selected" : ""; ?>
-							<option <?php echo $sel; ?> value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
-						<?php endforeach; ?>
-					</select>
+					<span class="pagepicker">
+						<label>Count</label>
+						<select name="pid" id="page_view_selector">
+							<option value=""<?php if ($this->pid == '') { echo "selected"; } ?>>Group Visits</option>
+							<?php foreach ($this->pages as $page) : ?>
+								<?php $sel = ($this->pid == $page['id']) ? "selected" : ""; ?>
+								<option <?php echo $sel; ?> value="<?php echo $page['id']; ?>"><?php echo $page['title'] . ' Visits'; ?></option>
+							<?php endforeach; ?>
+						</select>
+					<span>
+					<span class="windowpicker">
+						<label>by</label>
+					  <select name="window" id="window_selector">
+						  <option value="day" <?php echo $this->window == "day" ? "selected" : ""; ?>>Day</option>
+						  <option value="week" <?php echo $this->window == "week" ? "selected" : ""; ?>>Week</option>
+						  <option value="month" <?php echo $this->window == "month" ? "selected" : ""; ?>>Month</option>
+					  </select>
+				  </span>
 					<span class="datepickers">
-						<input type="text" name="start" id="date_start" class="datepicker" value="<?php echo date("m/d/Y", strtotime($this->start)); ?>" />&nbsp;-&nbsp;
+						<label>from</label>
+						<input type="text" name="start" id="date_start" class="datepicker" value="<?php echo date("m/d/Y", strtotime($this->start)); ?>" />&nbsp;to&nbsp;
 						<input type="text" name="end" id="date_end" class="datepicker" value="<?php echo date("m/d/Y", strtotime($this->end)); ?>" />
 					</span>
 					<input type="submit" id="submit" value="Go" />

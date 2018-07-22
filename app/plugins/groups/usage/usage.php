@@ -191,31 +191,22 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$pid = Request::getVar('pid', '');
 
 			//get start and end dates
-			$start = Request::getVar('start', gmdate("Y-m-d 00:00:00", strtotime('-30 DAYS')));
-			$end   = Request::getVar('end', gmdate("Y-m-d 23:59:59"));
+			$start = Request::getVar('start', gmdate("Y-m-d", strtotime('-30 DAYS')));
+			$end   = Request::getVar('end', gmdate("Y-m-d"));
 			if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $start))
 			{
-				$start = Date::of($start)->format('Y-m-d') . ' 00:00:00';
+				$start = Date::of($start)->format('Y-m-d');
 			}
 			if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $end))
 			{
-				$end = Date::of($end)->format('Y-m-d') . ' 00:00:00';
+				$end = Date::of($end)->format('Y-m-d');
 			}
 
-			//make sure start date is a full php datetime
-			if (strlen($start) != 19)
-			{
-				$start .= " 00:00:00";
-			}
-
-			//make sure end date is a full php datetime
-			if (strlen($end) != 19)
-			{
-				$end .= " 23:59:59";
-			}
+			//get window
+			$window = Request::getVar('window', 'day');
 
 			//generate script to draw chart and push to the page
-			$script = $this->drawChart($pid, $start, $end);
+			$script = $this->drawChart($pid, $start, $end, $window);
 			Document::addScriptDeclaration($script);
 
 			//import and create view
@@ -234,6 +225,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$view->pid = $pid;
 			$view->start = $start;
 			$view->end = $end;
+			$view->window = $window;
 
 			foreach ($this->getErrors() as $error)
 			{
@@ -380,85 +372,148 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get a list of all page views over a time period
+	 * Get a list of all page visit information over a time window
+	 * See https://en.wikipedia.org/wiki/Unique_user
 	 *
 	 * @param      string  $gid     Group ID
 	 * @param      string  $pageid  Page ID
 	 * @param      string  $start   Start date
 	 * @param      string  $end     End date
+	 * @param 		 string  $window	Count window (day, week, month)
 	 * @return     array
 	 */
-	public function getGroupPageViews($gid, $pageid = null, $start, $end)
+	public function getGroupPageVisits($gid, $pageid = null, $start, $end, $window)
 	{
 		$database = App::get('db');
 
-		if ($pageid != '')
-		{
-			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " AND `pageid`=" . $database->quote($pageid) . " GROUP BY ip ORDER BY `date` ASC";
+		// See https://stackoverflow.com/a/50918062.  This expression is insane
+		//   to make sure days with zero views are included.  Could do this in PHP,
+		//   but SQL has a lot of good date/time stuff.  It does a LEFT JOIN with
+		//   a constructed table of days.  LEFT JOINs create NULL, so replace with 0
+		//	 Consider creating a separate cal_dates table to store all dates.
+		if ($window == 'day') {
+			$query = "SELECT IF(u.visits is NULL, 0, u.visits) AS visits,
+											 IF(u.visitors IS NULL, 0, u.visitors) AS visitors,
+											 CONCAT(monthname(b.Days), ' ', dayofmonth(b.Days), ', ', year(b.Days)) as `date`
+								FROM
+									(SELECT a.Days
+								  FROM (
+										SELECT " . $database->quote($end) . " - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a)) DAY AS Days
+	  			 				  FROM       (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+	  			 				  CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS b
+	  			 				  CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS c
+	  			 				  CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS d
+						 		  ) a
+								  WHERE a.Days >= " . $database->quote($start) . " AND a.Days <= " . $database->quote($end) . ") b
+								LEFT JOIN (SELECT count(*) AS visits,
+																  count(distinct ip) AS visitors,
+																	date(date) AS caldate
+													 FROM #__xgroups_pages_hits
+													 WHERE gidNumber=" . $database->quote($gid) . "
+													   AND date(date) >= " . $database->quote($start) . "
+														 AND date(date) <= " . $database->quote($end) .
+														 ($pageid != '' ? " AND pageid=" . $pageid : "") . "
+														 GROUP BY caldate
+														 ORDER BY caldate ASC) u
+								  ON u.caldate = b.Days
+								ORDER BY b.Days ASC";
+		} elseif ($window == 'week') {
+			$query = "SELECT IF(u.visits is NULL, 0, u.visits) AS visits,
+	   									 IF(u.visitors IS NULL, 0, u.visitors) AS visitors,
+       				 				 CONCAT('w.', b.week, ', ', b.year) as `date`
+								FROM
+									(SELECT DATE(a.Days - INTERVAL (DAYOFWEEK(a.Days) - 1) DAY) as day,
+									        week(a.Days,2) AS week,
+													year(a.Days) AS year
+    							FROM (
+        			 	    SELECT " . $database->quote($end) . " - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a)) DAY AS Days
+        						FROM       (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+        						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS b
+        						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS c
+        						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS d
+    							) a
+    							WHERE a.Days >= " . $database->quote($start) . " AND a.Days <= " . $database->quote($end) . "
+    							GROUP BY year, week) b
+								LEFT JOIN (SELECT count(*) AS visits,
+								                  count(distinct ip) AS visitors,
+																	DATE(date - INTERVAL (DAYOFWEEK(date) - 1) DAY) as day,
+																	week(date,2) as week,
+																	year(date) as year
+													 FROM #__xgroups_pages_hits
+													 WHERE gidNumber=" . $database->quote($gid) . "
+													   AND date(date) >= " . $database->quote($start) . "
+														 AND date(date) <= " . $database->quote($end) .
+														 ($pageid != '' ? " AND pageid=" . $pageid : "") . "
+														 GROUP BY year, week(date,2)
+														 ORDER BY year, week(date,2) ASC) u
+								ON u.day = b.day
+							ORDER BY b.day ASC";
+		} elseif ($window == 'month') {
+			$query = "SELECT IF(u.visits is NULL, 0, u.visits) AS visits,
+	   									 IF(u.visitors IS NULL, 0, u.visitors) AS visitors,
+       				 				 CONCAT(b.month, ', ', b.year) as `date`
+								FROM
+									(SELECT last_day(a.Days) AS day,
+													monthname(a.Days) AS month,
+													year(a.Days) AS year
+    							FROM (
+        			 	    SELECT " . $database->quote($end) . " - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a)) DAY AS Days
+        						FROM       (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+        						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS b
+        						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS c
+        						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS d
+    							) a
+    							WHERE a.Days >= " . $database->quote($start) . " AND a.Days <= " . $database->quote($end) . "
+    							GROUP BY year, month) b
+								LEFT JOIN (SELECT count(*) AS visits,
+								                  count(distinct ip) AS visitors,
+																	last_day(date) AS day,
+																	monthname(date) AS month,
+																	year(date) as year
+													 FROM #__xgroups_pages_hits
+													 WHERE gidNumber=" . $database->quote($gid) . "
+													   AND date(date) >= " . $database->quote($start) . "
+														 AND date(date) <= " . $database->quote($end) .
+														 ($pageid != '' ? " AND pageid=" . $pageid : "") . "
+														 GROUP BY year, monthname(date)
+														 ORDER BY year, monthname(date) ASC) u
+								ON u.day = b.day
+							ORDER BY b.day ASC";
 		}
-		else
-		{
-			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " GROUP BY ip ORDER BY `date` ASC";
-		}
+
 		$database->setQuery($query);
-		$views = $database->loadAssocList();
-		if (!$views)
+		$visits = $database->loadAssocList('date');
+		if (!$visits)
 		{
-			$views = array();
+			$visits = array();
 		}
 
-		$s = strtotime($start);
-		$e = strtotime($end);
-		$diff = round(($e-$s)/60/60/24);
-
-		$page_views = array();
-
-		for ($i=0; $i < $diff; $i++)
-		{
-			$count = 0;
-			$date = date("M d, Y", strtotime("-{$i} DAYS", strtotime($end)));
-
-			$day_s = date("Y-m-d 00:00:00", strtotime("-{$i} DAYS", strtotime($end)));
-			$day_e = date("Y-m-d 23:59:59", strtotime("-{$i} DAYS", strtotime($end)));
-
-			foreach ($views as $view)
-			{
-				$t = $view['date'];
-
-				if ($t >= $day_s && $t <= $day_e)
-				{
-					$count++;
-				}
-			}
-
-			$page_views[$date] = $count;
-		}
-
-		return array_reverse($page_views);
+		return $visits;
 	}
 
 	/**
-	 * Draw a chart of page views over time for a specific page
+	 * Draw a chart of page visits over time for a group or specific page
 	 *
 	 * @param   integer  $pid    Page ID
 	 * @param   string   $start  Start date
 	 * @param   string   $end    End date
+	 * @param   string 	 $window Accumulation window (day, week, month)
 	 * @return  string
 	 */
-	public function drawChart($pid, $start, $end)
+	public function drawChart($pid, $start, $end, $window)
 	{
 		//vars used
 		$jsObj = '';
 		$script = '';
 
 		//num pages views
-		$page_views = $this->getGroupPageViews($this->group->get('gidNumber'), $pid, $start, $end);
-		$total = count($page_views);
+		$page_visits = $this->getGroupPageVisits($this->group->get('gidNumber'), $pid, $start, $end, $window);
+		$total = count($page_visits);
 		$count = 0;
-		foreach ($page_views as $d => $c)
+		foreach ($page_visits as $d => $c)
 		{
 			$count++;
-			$jsObj .= "[\"{$d}\", {$c}]";
+			$jsObj .= "[\"{$d}\", {$c['visits']}, {$c['visitors']}]";
 			if ($count < $total)
 			{
 				$jsObj .= ", \n \t\t\t\t";
@@ -475,18 +530,20 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			function drawChart() {
 				var data = new google.visualization.DataTable();
 				data.addColumn('string', 'Day');
-				data.addColumn('number', 'Views');
+				data.addColumn('number', 'Visits');
+				data.addColumn('number', 'Visitors');
 				data.addRows([
 					{$jsObj}
 				]);
 
 				var options = {
 					height: 240,
-					legend: 'none',
+					focusTarget: 'category',
+					legend: {position: 'top'},
 					pointSize: 4,
 					axisTitlesPosition: 'none',
 					hAxis: {
-						textPosition:'out',
+						textPosition: 'out',
 						slantedText: false,
 						slantedTextAngle: 0,
 						showTextEvery: 2,
@@ -495,7 +552,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 						}
 					},
 					vAxis: {
-						minValue: 10,
+						minValue: 5,
 						textPosition: 'out'
 					},
 					chartArea: {
@@ -503,7 +560,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-				var chart = new google.visualization.AreaChart(document.getElementById('page_views_chart'));
+				var chart = new google.visualization.LineChart(document.getElementById('page_views_chart'));
 				chart.draw(data, options);
 			}";
 
