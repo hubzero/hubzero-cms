@@ -73,11 +73,11 @@ class Toolsv1_0 extends ApiController
 		}
 
 		// Include middleware utilities
-		include_once(Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'session.php');
+		include_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
 
 		// Get db connection
-		$db = \App::get('db');
+		$db = App::get('db');
 
 		// Get Middleware DB connection
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -92,8 +92,8 @@ class Toolsv1_0 extends ApiController
 		}
 
 		// Get request vars
-		$format = Request::getVar('format', 'json');
-		$order  = Request::getVar('order', 'id_asc' );
+		$format = Request::getWord('format', 'json');
+		$order  = Request::getString('order', 'id_asc');
 
 		// Get my sessions
 		$ms = new \Components\Tools\Tables\Session($mwdb);
@@ -226,14 +226,14 @@ class Toolsv1_0 extends ApiController
 		}
 
 		// Load database object
-		$database = \App::get('db');
+		$database = App::get('db');
 
 		// Get the supported tag
 		$rconfig = Component::params('com_resources');
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		// Get supportedtag usage
-		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
 		$this->rt = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 

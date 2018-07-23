@@ -53,6 +53,7 @@ use App;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
+include_once \Component::path('members') . '/models/registration.php';
 
 /**
  * Manage site members
@@ -321,7 +322,7 @@ class Members extends AdminController
 		if (!$user)
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -379,7 +380,7 @@ class Members extends AdminController
 		}
 
 		// Incoming profile edits
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the profile
 		$user = Member::oneOrNew($fields['id']);
@@ -523,8 +524,8 @@ class Members extends AdminController
 		}
 
 		// Save profile data
-		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
-		$access  = Request::getVar('profileaccess', array(), 'post', 'none', 2);
+		$profile = Request::getArray('profile', array(), 'post');
+		$access  = Request::getArray('profileaccess', array(), 'post');
 
 		foreach ($profile as $key => $data)
 		{
@@ -554,7 +555,7 @@ class Members extends AdminController
 		}
 
 		// Do we have a new pass?
-		$newpass = trim(Request::getVar('newpass', '', 'post'));
+		$newpass = trim(Request::getString('newpass', '', 'post'));
 
 		if ($newpass)
 		{
@@ -586,7 +587,7 @@ class Members extends AdminController
 			// Do we have shadow info to change?
 			$shadowMax     = Request::getInt('shadowMax', false, 'post');
 			$shadowWarning = Request::getInt('shadowWarning', false, 'post');
-			$shadowExpire  = Request::getVar('shadowExpire', '', 'post');
+			$shadowExpire  = Request::getString('shadowExpire', '', 'post');
 
 			if ($shadowMax || $shadowWarning || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
 			{
@@ -676,7 +677,7 @@ class Members extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -748,7 +749,7 @@ class Members extends AdminController
 		$state = ($this->getTask() == 'confirm' ? 1 : 0);
 
 		// Incoming user ID
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have an ID?
@@ -811,7 +812,7 @@ class Members extends AdminController
 		$state = ($this->getTask() == 'approve' ? 2 : 0);
 
 		// Incoming user ID
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have an ID?
@@ -930,7 +931,7 @@ class Members extends AdminController
 		$state = ($this->getTask() == 'block' ? 1 : 0);
 
 		// Incoming user ID
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have an ID?
@@ -1084,7 +1085,7 @@ class Members extends AdminController
 
 		$file  = DS . trim($this->config->get('webpath', '/site/members'), DS);
 		$file .= DS . Profile\Helper::niceidformat($member->get('uidNumber'));
-		$file .= DS . Request::getVar('image', $member->get('picture'));
+		$file .= DS . Request::getString('image', $member->get('picture'));
 
 		// Ensure the file exist
 		if (!file_exists(PATH_APP . DS . $file))
@@ -1288,7 +1289,7 @@ class Members extends AdminController
 		}
 
 		// Incoming data
-		$profile = json_decode(Request::getVar('profile', '{}', 'post', 'none', 2));
+		$profile = json_decode(Request::getString('profile', '{}', 'post'));
 
 		// Get the old schema
 		$fields = Field::all()
@@ -1483,7 +1484,7 @@ class Members extends AdminController
 		}
 
 		// Get the password
-		$pw = Request::getVar('password1', null, 'post');
+		$pw = Request::getString('password1', null, 'post');
 
 		// Validate the password
 		if (!empty($pw))

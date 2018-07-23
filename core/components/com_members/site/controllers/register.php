@@ -95,7 +95,7 @@ class Register extends SiteController
 		$xprofile = User::getInstance();
 
 		// Get the return URL
-		$return = base64_decode(Request::getVar('return', '', 'method', 'base64'));
+		$return = base64_decode(Request::getString('return', ''));
 		if (!$return)
 		{
 			$return = Session::get('session.return');
@@ -106,7 +106,7 @@ class Register extends SiteController
 			}
 		}
 
-		$username = Request::getVar('username', $xprofile->get('username'), 'get');
+		$username = Request::getString('username', $xprofile->get('username'), 'get');
 
 		$admin = User::authorise('core.manage', $this->_option);
 		$self  = ($xprofile->get('username') == $username);
@@ -125,7 +125,7 @@ class Register extends SiteController
 		// Instantiate a new registration object
 		$xregistration = new \Components\Members\Models\Registration();
 
-		if (Request::getVar('edit', '', 'post'))
+		if (Request::getString('edit', '', 'post'))
 		{
 			// Load POSTed data
 			$xregistration->loadPOST();
@@ -162,14 +162,14 @@ class Register extends SiteController
 
 		if ($xprofile->get('regIP') == '')
 		{
-			$xprofile->set('regIP', Request::getVar('REMOTE_ADDR', '', 'server'));
+			$xprofile->set('regIP', Request::getString('REMOTE_ADDR', '', 'server'));
 		}
 
 		if ($xprofile->get('regHost') == '')
 		{
 			if (isset($_SERVER['REMOTE_HOST']))
 			{
-				$xprofile->set('regHost', Request::getVar('REMOTE_HOST', '', 'server'));
+				$xprofile->set('regHost', Request::getString('REMOTE_HOST', '', 'server'));
 			}
 		}
 
@@ -368,7 +368,7 @@ class Register extends SiteController
 			$xregistration->loadPost();
 
 			// Incoming profile edits
-			$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+			$profile = Request::getArray('profile', array(), 'post');
 
 			// Compile profile data
 			foreach ($profile as $key => $data)
@@ -521,7 +521,7 @@ class Register extends SiteController
 
 			if ($xprofile->get('registerIP') == '')
 			{
-				$xprofile->set('registerIP', Request::getVar('REMOTE_ADDR', '', 'server'));
+				$xprofile->set('registerIP', Request::getString('REMOTE_ADDR', '', 'server'));
 			}
 
 			if ($xprofile->get('registerDate') == '')
@@ -630,7 +630,7 @@ class Register extends SiteController
 
 			if (!$updateEmail)
 			{
-				$suri = Request::getVar('REQUEST_URI', '/', 'server');
+				$suri = Request::getString('REQUEST_URI', '/', 'server');
 
 				if ($suri == '/register/update' || $suri == '/members/update' || $suri == '/members/register/update')
 				{
@@ -711,7 +711,7 @@ class Register extends SiteController
 			$result = $xregistration->check('create');
 
 			// Incoming profile edits
-			$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+			$profile = Request::getArray('profile', array(), 'post');
 
 			// Compile profile data
 			foreach ($profile as $key => $data)
@@ -880,7 +880,7 @@ class Register extends SiteController
 				$user->set('password', \Hubzero\User\Password::getPasshash($xregistration->get('password')));
 
 				// Do we have a return URL?
-				$regReturn = Request::getVar('return', '');
+				$regReturn = Request::getString('return', '');
 
 				if ($regReturn)
 				{
@@ -1005,7 +1005,7 @@ class Register extends SiteController
 	 */
 	private function _show_registration_form(&$xregistration=null, $task='create')
 	{
-		$username = Request::getVar('username', User::get('username'), 'get');
+		$username = Request::getString('username', User::get('username'), 'get');
 		$isSelf = (User::get('username') == $username);
 
 		// Get the registration object
@@ -1103,8 +1103,8 @@ class Register extends SiteController
 	{
 		// Incoming
 		$no_html  = Request::getInt('no_html', 0);
-		$password = Request::getVar('pass', '', 'post');
-		$username = Request::getVar('user', '', 'post');
+		$password = Request::getString('pass', '', 'post');
+		$username = Request::getString('user', '', 'post');
 
 		// Instantiate a new registration object
 		$xregistration = new \Components\Members\Models\Registration();
@@ -1154,7 +1154,7 @@ class Register extends SiteController
 	public function checkusernameTask()
 	{
 		// Incoming
-		$username = Request::getVar('userlogin', '', 'get');
+		$username = Request::getString('userlogin', '', 'get');
 
 		// Instantiate a new registration object
 		$xregistration = new \Components\Members\Models\Registration();
@@ -1190,7 +1190,7 @@ class Register extends SiteController
 		$email_confirmed = $xprofile->get('activation');
 
 		// Incoming
-		$return = urldecode(Request::getVar('return', '/'));
+		$return = urldecode(Request::getString('return', '/'));
 
 		// If already confirmed?
 		if ($email_confirmed == 1 || $email_confirmed == 3)
@@ -1285,11 +1285,11 @@ class Register extends SiteController
 		$success = false;
 
 		// Incoming
-		$return = urldecode(Request::getVar('return', '/'));
+		$return = urldecode(Request::getString('return', '/'));
 
 		// Check if a new email was submitted
-		$pemail = Request::getVar('email', '', 'post');
-		$update = Request::getVar('update', '', 'post');
+		$pemail = Request::getString('email', '', 'post');
+		$update = Request::getString('update', '', 'post');
 
 		if ($update)
 		{
@@ -1416,21 +1416,21 @@ class Register extends SiteController
 	public function confirmTask()
 	{
 		// Incoming, some versions of the code used 'code' some use 'confirm'
-		$code = Request::getVar('confirm', false);
+		$code = Request::getString('confirm', false);
 		if (!$code)
 		{
-			$code = Request::getVar('code', false);
+			$code = Request::getString('code', false);
 		}
 
 		// Get the return value if it was requested
-		$return = Request::getVar('return', false);
+		$return = Request::getString('return', false);
 
 		// Check if the user is logged in
 		if (User::isGuest())
 		{
 			// See if they've provided an email address as well
 			// perhaps we can log them in with that and their token
-			$email = Request::getVar('email', false);
+			$email = Request::getString('email', false);
 
 			if ($email != false && Plugin::isEnabled('authentication', 'emailtoken'))
 			{
@@ -1591,7 +1591,7 @@ class Register extends SiteController
 		$email_confirmed = $xprofile->get('activation');
 
 		// Incoming
-		$return = Request::getVar('return', urlencode('/'));
+		$return = Request::getString('return', urlencode('/'));
 
 		// Check if the email has been confirmed
 		if ($email_confirmed == 1 || $email_confirmed == 3)

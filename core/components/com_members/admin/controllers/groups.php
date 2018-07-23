@@ -69,7 +69,7 @@ class Groups extends AdminController
 		}
 
 		// Incoming group table
-		$tbl = Request::getVar('tbl', '');
+		$tbl = Request::getString('tbl', '');
 		if (!$tbl)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_TABLE'));
@@ -140,7 +140,7 @@ class Groups extends AdminController
 		}
 
 		// Incoming group ID
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 		if (!$gid)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_ID'));
@@ -173,7 +173,7 @@ class Groups extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$options = Request::getVar('memberoption', array());
+		$options = Request::getArray('memberoption', array());
 
 		// User ID
 		$id = Request::getInt('id', 0);

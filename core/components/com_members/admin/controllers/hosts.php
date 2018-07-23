@@ -72,7 +72,7 @@ class Hosts extends AdminController
 		$profile->disableCaching();
 
 		// Incoming host
-		$host = Request::getVar('host', '');
+		$host = Request::getString('host', '');
 
 		if (!$host)
 		{
@@ -120,7 +120,7 @@ class Hosts extends AdminController
 		$profile = Member::oneOrFail($id);
 
 		// Incoming host
-		$host = Request::getVar('host', '');
+		$host = Request::getString('host', '');
 		if (!$host)
 		{
 			$this->setError(Lang::txt('MEMBERS_NO_HOST'));
