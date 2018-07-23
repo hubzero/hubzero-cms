@@ -40,7 +40,7 @@ use Route;
 use Lang;
 use App;
 
-require_once Component::path('com_members') . DS . 'helpers' . DS . 'permissions.php';
+require_once \Component::path('com_members') . DS . 'helpers' . DS . 'permissions.php';
 
 /**
  * Import PREMIS redistration dump files
@@ -73,7 +73,7 @@ class Premis extends AdminController
 	 */
 	public function saveTask()
 	{
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('Check the file please.'));
@@ -136,11 +136,11 @@ class Premis extends AdminController
 			$ok = 0;
 			$fail = 0;
 
-			include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Premis.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Premis.php';
 
-			if (($handle = fopen($filename, "r")) !== FALSE)
+			if (($handle = fopen($filename, "r")) !== false)
 			{
-				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
+				while (($data = fgetcsv($handle, 1000, ",")) !== false)
 				{
 					$line = array();
 

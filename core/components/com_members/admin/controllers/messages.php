@@ -129,7 +129,7 @@ class Messages extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -176,7 +176,7 @@ class Messages extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the record
 		$row = Message\Component::blank()->set($fields);
@@ -211,7 +211,7 @@ class Messages extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -353,8 +353,8 @@ class Messages extends AdminController
 		$database = App::get('db');
 
 		// Incoming
-		$settings = Request::getVar('settings', array());
-		$ids = Request::getVar('ids', array());
+		$settings = Request::getArray('settings', array());
+		$ids = Request::getArray('ids', array());
 
 		// Ensure we have data to work with
 		if ($settings && count($settings) > 0)

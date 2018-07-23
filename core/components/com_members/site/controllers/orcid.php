@@ -410,8 +410,8 @@ class Orcid extends SiteController
 	 */
 	public function fetchTask($is_return = false)
 	{
-		$first_name  = Request::getVar('fname', '');
-		$last_name   = Request::getVar('lname', '');
+		$first_name  = Request::getString('fname', '');
+		$last_name   = Request::getString('lname', '');
 		$returnOrcid = Request::getInt('return', 0);
 		$isRegister  = $returnOrcid == 1;
 		$records = array();
@@ -580,7 +580,7 @@ class Orcid extends SiteController
 			return;
 		}
 
-		$orcid = Request::getVar('orcid', '');
+		$orcid = Request::getString('orcid', '');
 
 		$state = $this->_save($orcid);
 
@@ -614,9 +614,9 @@ class Orcid extends SiteController
 			exit();
 		}
 
-		$first_name  = Request::getVar('fname', '');
-		$last_name   = Request::getVar('lname', '');
-		$email       = Request::getVar('email', '');
+		$first_name  = Request::getString('fname', '');
+		$last_name   = Request::getString('lname', '');
+		$email       = Request::getStringr('email', '');
 		$returnOrcid = Request::getInt('return', 0);
 
 		if (!$first_name || !$last_name || !$email)
@@ -701,8 +701,8 @@ class Orcid extends SiteController
 
 		$url = 'https://' . $this->_services[$srv] . '/oauth/token';
 
-		$client_id     = Request::getVar('client_id');
-		$client_secret = Request::getVar('client_secret');
+		$client_id     = Request::getString('client_id');
+		$client_secret = Request::getString('client_secret');
 
 		if (!$client_id && !$client_secret)
 		{
@@ -733,10 +733,10 @@ class Orcid extends SiteController
 		$clientSecret = $this->config->get('orcid_' . $srv . '_token');
 		$oauthToken = $this->_oauthToken[$srv];
 
-		if (Request::getVar('code'))
+		if (Request::getString('code'))
 		{
 			//Build request parameter string
-			$params = "client_id=" . $clientID . "&client_secret=" . $clientSecret. "&grant_type=authorization_code&code=" . Request::getVar('code', '');
+			$params = "client_id=" . $clientID . "&client_secret=" . $clientSecret. "&grant_type=authorization_code&code=" . Request::getString('code', '');
 			//Initialize cURL session
 			$ch = curl_init();
 			//Set cURL options
@@ -757,7 +757,7 @@ class Orcid extends SiteController
 			//Close cURL session
 			curl_close($ch);
 		}
-		else if (Request::getVar('error') && Request::getVar('error_description'))
+		else if (Request::getString('error') && Request::getString('error_description'))
 		{
 			//If user clicks on the deny button, it does nothing.
 		}
@@ -797,7 +797,7 @@ class Orcid extends SiteController
 	{
 		$this->excAuth();
 		// It means when ORCID posts authorization code back
-		if (Request::getVar('code'))
+		if (Request::getString('code'))
 		{
 			/*
 			* Check if there is such user's id in database. If there is, then save the orcid in #__user_profiles. 

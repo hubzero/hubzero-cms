@@ -152,7 +152,7 @@ class Exports extends AdminController
 		}
 
 		// Get request vars
-		$delimiter = Request::getVar('delimiter', ',');
+		$delimiter = Request::getString('delimiter', ',');
 
 		$path = Config::get('tmp_path') . DS . 'members.csv';
 		$file = fopen($path, 'w');
@@ -160,16 +160,16 @@ class Exports extends AdminController
 
 		// Get filters
 		$filters = array(
-			'search'       => urldecode(Request::getVar('search', '')),
+			'search'       => urldecode(Request::getString('search', '')),
 			'sort'         => Request::getWord('filter_order', 'registerDate'),
 			'sort_Dir'     => Request::getWord('filter_order_Dir', 'DESC'),
-			'registerDate' => Request::getVar('registerDate', ''),
+			'registerDate' => Request::getString('registerDate', ''),
 			'activation'   => Request::getInt('activation', 0),
-			'state'        => Request::getVar('state', '*'),
+			'state'        => Request::getString('state', '*'),
 			'access'       => Request::getInt('access', 0),
-			'approved'     => Request::getVar('approved', '*'),
+			'approved'     => Request::getString('approved', '*'),
 			'group_id'     => Request::getInt('group_id', 0),
-			'range'        => Request::getVar('range', '')
+			'range'        => Request::getString('range', '')
 		);
 
 		$a = $members->getTableName();

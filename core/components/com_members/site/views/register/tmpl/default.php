@@ -40,7 +40,7 @@ $this->css('register')
 
 // get return url
 $form_redirect = '';
-if ($form_redirect = Request::getVar('return', '', 'get'))
+if ($form_redirect = Request::getString('return', '', 'get'))
 {
 	// urldecode is due to round trip XSS protection added to this field, see ticket 1411
 	$form_redirect = urldecode($form_redirect);
@@ -66,7 +66,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 				<?php
 			}
 
-			if (!Request::getVar('update', false, 'post'))
+			if (!Request::getBool('update', false, 'post'))
 			{
 				$this->showMissing = false;
 			}
