@@ -415,9 +415,18 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$events = array();
 
 		// get request params
-		$start      = Request::getVar('start');
-		$end        = Request::getVar('end');
-		$calendarId = Request::getInt('calendar_id', null);
+		$start      = Request::getString('start');
+		$end        = Request::getString('end');
+		$calendarId = Request::getInt('calendar_id', 0);
+
+		if ($start && !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $start))
+		{
+			$start = '';
+		}
+		if ($end && !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $end))
+		{
+			$end = '';
+		}
 
 		// format date/times
 		$start = Date::of($start . ' 00:00:00');
@@ -649,11 +658,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		//get request vars
-		$event              = Request::getVar('event', array(), 'post');
-		$event['time_zone'] = Request::getVar('time_zone', null);
-		$event['params']    = Request::getVar('params', array());
-		$event['content']   = Request::getVar('content', '', 'post', 'STRING', JREQUEST_ALLOWRAW);
-		$registration       = Request::getVar('include-registration', 0);
+		$event              = Request::getArray('event', array(), 'post');
+		$event['time_zone'] = Request::getString('time_zone', null);
+		$event['params']    = Request::getArray('params', array());
+		$event['content']   = Request::getString('content', '', 'post');
+		$registration       = Request::getInt('include-registration', 0);
 
 		//set vars for saving
 		$event['catid']       = '-1';
@@ -830,7 +839,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function delete()
 	{
 		//get the passed in event id
-		$eventId = Request::getVar('event_id', '', 'get');
+		$eventId = Request::getInt('event_id', 0, 'get');
 
 		//load event data
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
@@ -897,7 +906,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('details', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id', '', 'get');
+		$eventId = Request::getInt('event_id', 0, 'get');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
@@ -946,7 +955,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function export()
 	{
 		// get request varse
-		$eventId = Request::getVar('event_id', '', 'get');
+		$eventId = Request::getInt('event_id', 0, 'get');
 
 		// load & export event
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
@@ -1081,7 +1090,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		require_once __DIR__ . DS . 'icalparser.php';
 
 		//get incoming
-		$file = Request::getVar('import', array(), 'files');
+		$file = Request::getArray('import', array(), 'files');
 
 		// parse file & get first event
 		$icalparser = new IcalParser($file['tmp_name']);
@@ -1133,7 +1142,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('register', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id', '');
+		$eventId = Request::getInt('event_id', 0);
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
@@ -1160,7 +1169,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($registerby >= $now)
 		{
 			//get the password
-			$password = Request::getVar('passwrd', '', 'post');
+			$password = Request::getString('passwrd', '', 'post');
 
 			//is the event restricted
 			if ($view->event->get('restricted') != '' && $view->event->get('restricted') != $password && !isset($this->register))
@@ -1227,13 +1236,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function doRegister()
 	{
 		//get request vars
-		$register   = Request::getVar('register', null, 'post');
-		$arrival    = Request::getVar('arrival', null, 'post');
-		$departure  = Request::getVar('departure', null, 'post');
-		$dietary    = Request::getVar('dietary', null, 'post');
-		$dinner     = Request::getVar('dinner', null, 'post');
-		$disability = Request::getVar('disability', null, 'post');
-		$race       = Request::getVar('race', null, 'post');
+		$register   = Request::getArray('register', null, 'post');
+		$arrival    = Request::getArray('arrival', null, 'post');
+		$departure  = Request::getArray('departure', null, 'post');
+		$dietary    = Request::getArray('dietary', null, 'post');
+		$dinner     = Request::getString('dinner', null, 'post');
+		$disability = Request::getArray('disability', null, 'post');
+		$race       = Request::getArray('race', null, 'post');
 		$event_id   = Request::getInt('event_id', null, 'post');
 
 		//load event data
@@ -1428,7 +1437,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('registrants', 'calendar');
 
 		//get request varse
-		$eventId = Request::getVar('event_id', '', 'get');
+		$eventId = Request::getInt('event_id', 0, 'get');
 
 		//load event data
 		$view->event = new \Components\Events\Tables\Event($this->database);
@@ -1464,7 +1473,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function download()
 	{
 		//get request varse
-		$eventId = Request::getVar('event_id', '', 'get');
+		$eventId = Request::getInt('event_id', 0, 'get');
 
 		//get registrants count
 		$eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
@@ -1618,7 +1627,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function editCalendar()
 	{
 		//get request vars
-		$calendarId = Request::getVar('calendar_id', '');
+		$calendarId = Request::getInt('calendar_id', 0);
 
 		//create the view
 		$view = $this->view('edit', 'calendars');
@@ -1654,7 +1663,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		//get request vars
-		$calendarInput = Request::getVar('calendar', array());
+		$calendarInput = Request::getArray('calendar', array());
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarInput['id']);
@@ -1720,8 +1729,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function deleteCalendar()
 	{
 		//get the passed in event id
-		$calendarId   = Request::getVar('calendar_id', '');
-		$events       = Request::getVar('events', 'delete');
+		$calendarId   = Request::getInt('calendar_id', 0);
+		$events       = Request::getWord('events', 'delete');
 		$deleteEvents = ($events == 'delete') ? true : false;
 
 		// get the calendar
@@ -1746,7 +1755,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function refreshCalendar()
 	{
 		//get the passed in event id
-		$calendarId = Request::getVar('calendar_id', '');
+		$calendarId = Request::getInt('calendar_id', 0);
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
@@ -1812,7 +1821,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$rules = array();
 
 		// get reccurrance
-		$reccurance = Request::getVar('reccurance', array(), 'post');
+		$reccurance = Request::getArray('reccurance', array(), 'post');
 
 		// valid frequencies
 		$validFreq = array('daily', 'weekly', 'monthly', 'yearly');
@@ -1858,7 +1867,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				// create date object in local timezone
 				$until = (isset($reccurance['ends']['until'])) ? $reccurance['ends']['until'] : 1;
-				$endTime = Request::getVar('event[publish_down_time]', '11:59 pm', 'post');
+				$endTime = Request::getString('event[publish_down_time]', '11:59 pm', 'post');
 
 				// create date time object where timezoen is configured value
 				// let php convert to UTC when formatting
