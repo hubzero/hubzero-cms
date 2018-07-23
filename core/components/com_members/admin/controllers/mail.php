@@ -109,7 +109,7 @@ class Mail extends AdminController
 		Request::checkToken();
 
 		// Initialise variables.
-		$data = Request::getVar('fields', array(), 'post', 'array');
+		$data = Request::getArray('fields', array(), 'post');
 		$db   = App::get('db');
 
 		$mode     = array_key_exists('mode', $data) ? intval($data['mode']) : 0;

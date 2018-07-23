@@ -156,7 +156,7 @@ class Quotas extends AdminController
 		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -211,7 +211,7 @@ class Quotas extends AdminController
 		Request::checkToken();
 
 		// Incoming fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the profile
 		$row = Quota::oneOrNew($fields['id']);
@@ -271,7 +271,7 @@ class Quotas extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -358,7 +358,7 @@ class Quotas extends AdminController
 		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -417,7 +417,7 @@ class Quotas extends AdminController
 		Request::checkToken();
 
 		// Incoming fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$groups = array();
 		if (isset($fields['groups']))
@@ -466,7 +466,7 @@ class Quotas extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -653,7 +653,7 @@ class Quotas extends AdminController
 	public function processImportTask()
 	{
 		// Import quotas
-		$qfile     = Request::getVar('conf_text');
+		$qfile     = Request::getString('conf_text');
 		$overwrite = Request::getInt('overwrite_existing', 0);
 
 		if (empty($qfile))
