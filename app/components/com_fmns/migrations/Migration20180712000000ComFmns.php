@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for adding Showcase module
+ * Migration script for adding com_fmns component
  **/
 class Migration20180712000000ComFmns extends Base
 {
