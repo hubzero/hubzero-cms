@@ -124,7 +124,7 @@ class Accessgroups extends AdminController
 		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -173,7 +173,7 @@ class Accessgroups extends AdminController
 		Request::checkToken();
 
 		// Incoming password blacklist edits
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the record
 		$row = Accessgroup::oneOrNew($fields['id'])->set($fields);
@@ -277,7 +277,7 @@ class Accessgroups extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('cid', array());
+		$ids = Request::getArray('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;

@@ -129,7 +129,7 @@ class PasswordRules extends AdminController
 		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -170,7 +170,7 @@ class PasswordRules extends AdminController
 		}
 
 		// Incoming password rule edits
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the record
 		$row = Rule::oneOrNew($fields['id'])->set($fields);
@@ -211,7 +211,7 @@ class PasswordRules extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$cid = Request::getVar('id', array(0), 'post', 'array');
+		$cid = Request::getArray('id', array(0), 'post');
 		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		$id  = $cid[0];
@@ -244,12 +244,12 @@ class PasswordRules extends AdminController
 		}
 
 		// Get the id's
-		$cid = Request::getVar('id', array(0), 'post', 'array');
+		$cid = Request::getArray('id', array(0), 'post');
 		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		// Get total and order values
 		$total = count($cid);
-		$order = Request::getVar('order', array(0), 'post', 'array');
+		$order = Request::getArray('order', array(0), 'post');
 		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
 		// Update ordering values
@@ -292,7 +292,7 @@ class PasswordRules extends AdminController
 		}
 
 		// Incoming (we're expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
@@ -362,7 +362,7 @@ class PasswordRules extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
@@ -413,15 +413,15 @@ class PasswordRules extends AdminController
 	public function rulesList($current_rule='')
 	{
 		$rules   = array();
-		$rules[] = Html::select('option', 'minClassCharacters',  'minClassCharacters',  'value', 'text');
-		$rules[] = Html::select('option', 'minPasswordLength',   'minPasswordLength',   'value', 'text');
-		$rules[] = Html::select('option', 'maxPasswordLength',   'maxPasswordLength',   'value', 'text');
+		$rules[] = Html::select('option', 'minClassCharacters', 'minClassCharacters', 'value', 'text');
+		$rules[] = Html::select('option', 'minPasswordLength', 'minPasswordLength', 'value', 'text');
+		$rules[] = Html::select('option', 'maxPasswordLength', 'maxPasswordLength', 'value', 'text');
 		$rules[] = Html::select('option', 'minUniqueCharacters', 'minUniqueCharacters', 'value', 'text');
-		$rules[] = Html::select('option', 'notBlacklisted',      'notBlacklisted',      'value', 'text');
-		$rules[] = Html::select('option', 'notNameBased',        'notNameBased',        'value', 'text');
-		$rules[] = Html::select('option', 'notUsernameBased',    'notUsernameBased',    'value', 'text');
-		$rules[] = Html::select('option', 'notReused',           'notReused',           'value', 'text');
-		$rules[] = Html::select('option', 'notStale',            'notStale',            'value', 'text');
+		$rules[] = Html::select('option', 'notBlacklisted', 'notBlacklisted', 'value', 'text');
+		$rules[] = Html::select('option', 'notNameBased', 'notNameBased', 'value', 'text');
+		$rules[] = Html::select('option', 'notUsernameBased', 'notUsernameBased', 'value', 'text');
+		$rules[] = Html::select('option', 'notReused', 'notReused', 'value', 'text');
+		$rules[] = Html::select('option', 'notStale', 'notStale', 'value', 'text');
 
 		$rselected = $current_rule;
 

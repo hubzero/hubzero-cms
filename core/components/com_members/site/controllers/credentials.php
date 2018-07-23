@@ -84,7 +84,7 @@ class Credentials extends SiteController
 		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the email address
-		if (!$email = trim(Request::getVar('email', false)))
+		if (!$email = trim(Request::getString('email', false)))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
@@ -190,7 +190,7 @@ class Credentials extends SiteController
 		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Grab the incoming username
-		if (!$username = trim(Request::getVar('username', false)))
+		if (!$username = trim(Request::getString('username', false)))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
@@ -368,7 +368,7 @@ class Credentials extends SiteController
 		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Grab the token (not to be confused with the CSRF token above!)
-		if (!$token = trim(Request::getVar('token', false)))
+		if (!$token = trim(Request::getString('token', false)))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
@@ -527,8 +527,8 @@ class Credentials extends SiteController
 					->whereEquals('enabled', 1)
 					->rows();
 
-		$password1 = trim(Request::getVar('password1', null));
-		$password2 = trim(Request::getVar('password2', null));
+		$password1 = trim(Request::getString('password1', null));
+		$password2 = trim(Request::getString('password2', null));
 
 		if (!empty($password1))
 		{

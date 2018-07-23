@@ -275,7 +275,7 @@ class Points extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$account = Request::getVar('account', array(), 'post');
+		$account = Request::getArray('account', array(), 'post');
 
 		$row = \Hubzero\Bank\Account::blank()->set($account);
 
@@ -283,7 +283,7 @@ class Points extends AdminController
 		$row->set('balance', intval($row->get('balance')));
 		$row->set('earnings', intval($row->get('earnings')));
 
-		$data = Request::getVar('transaction', array(), 'post');
+		$data = Request::getArray('transaction', array(), 'post');
 
 		if (isset($data['amount']) && intval($data['amount']) > 0)
 		{
@@ -371,9 +371,9 @@ class Points extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$points = Request::getVar('points', array());
-		$descriptions = Request::getVar('description', array());
-		$aliases = Request::getVar('alias', array());
+		$points = Request::getArray('points', array());
+		$descriptions = Request::getArray('description', array());
+		$aliases = Request::getArray('alias', array());
 
 		$this->database->setQuery('DELETE FROM `#__users_points_config`');
 		$this->database->query();
@@ -427,13 +427,13 @@ class Points extends AdminController
 
 		$duplicate = 0;
 
-		$log = Request::getVar('log', array());
+		$log = Request::getArray('log', array());
 		$log = array_map('trim', $log);
 		$log['category'] = (isset($log['category']) && $log['category']) ? $log['category'] : 'general';
-		$log['action']   = (isset($log['action']) && $log['action'])     ? $log['action']   : 'batch';
-		$log['ref']      = (isset($log['ref']) && $log['ref'])           ? $log['ref']      : '';
+		$log['action']   = (isset($log['action']) && $log['action']) ? $log['action'] : 'batch';
+		$log['ref']      = (isset($log['ref']) && $log['ref']) ? $log['ref'] : '';
 
-		$data = Request::getVar('transaction', array());
+		$data = Request::getArray('transaction', array());
 		$data = array_map('trim', $data);
 
 		$when = Date::toSql();

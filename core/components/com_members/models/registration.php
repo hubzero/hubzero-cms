@@ -39,8 +39,8 @@ use Request;
 use User;
 use App;
 
-include_once(__DIR__ . DS . 'profile' . DS . 'field.php');
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php');
+include_once __DIR__ . DS . 'profile' . DS . 'field.php';
+include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php';
 
 /**
  * Description for ''REG_HIDE''
@@ -185,7 +185,7 @@ class Registration
 		//
 		// TODO: more cleanup
 
-		$name = Request::getVar('name', array(), 'post');
+		$name = Request::getArray('name', array(), 'post');
 		if (!is_array($name))
 		{
 			$name = array();
@@ -204,13 +204,13 @@ class Registration
 			$this->_registration['surname'] = $name['last'];
 		}
 
-		$this->_registration['login'] = strtolower(Request::getVar('login', null, 'post'));
-		$this->_registration['email'] = Request::getVar('email', null, 'post');
-		$this->_registration['confirmEmail'] = Request::getVar('email2', null, 'post');
-		$this->_registration['password'] = Request::getVar('password', null, 'post');
-		$this->_registration['confirmPassword'] = Request::getVar('password2', null, 'post');
-		$this->_registration['usageAgreement'] = Request::getVar('usageAgreement', null, 'post');
-		$this->_registration['sendEmail'] = Request::getVar('sendEmail', null, 'post');
+		$this->_registration['login'] = strtolower(Request::getString('login', null, 'post'));
+		$this->_registration['email'] = Request::getString('email', null, 'post');
+		$this->_registration['confirmEmail'] = Request::getString('email2', null, 'post');
+		$this->_registration['password'] = Request::getString('password', null, 'post');
+		$this->_registration['confirmPassword'] = Request::getString('password2', null, 'post');
+		$this->_registration['usageAgreement'] = Request::getString('usageAgreement', null, 'post');
+		$this->_registration['sendEmail'] = Request::getString('sendEmail', null, 'post');
 
 		if ($this->_registration['usageAgreement'] !== null)
 		{
@@ -218,7 +218,7 @@ class Registration
 		}
 
 		// Incoming profile edits
-		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
+		$profile = Request::getArray('profile', array(), 'post', 'none', 2);
 
 		// Compile profile data
 		foreach ($profile as $key => $data)
@@ -412,12 +412,18 @@ class Registration
 
 		switch ($value)
 		{
-			case 'R': return(REG_REQUIRED);
-			case 'O': return(REG_OPTIONAL);
-			case 'H': return(REG_HIDE);
-			case '-': return(REG_HIDE);
-			case 'U': return(REG_READONLY);
-			default : return(REG_HIDE);
+			case 'R':
+				return REG_REQUIRED;
+			case 'O':
+				return REG_OPTIONAL;
+			case 'H':
+				return REG_HIDE;
+			case '-':
+				return REG_HIDE;
+			case 'U':
+				return REG_READONLY;
+			default :
+				return REG_HIDE;
 		}
 	}
 
@@ -765,7 +771,7 @@ class Registration
 
 		if ($registrationCAPTCHA == REG_REQUIRED)
 		{
-			$botcheck = Request::getVar('botcheck', '');
+			$botcheck = Request::getString('botcheck', '');
 			if ($botcheck)
 			{
 				$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';

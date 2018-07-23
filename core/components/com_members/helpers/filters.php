@@ -50,10 +50,10 @@ class Filters
 	public static function getFilters($namespace)
 	{
 		// Process query filters
-		$q = (array)Request::getVar('q', array());
+		$q = (array)Request::getArray('q', array());
 
 		// Turn search into array of results, if not already
-		$search = Request::getVar('search', '');
+		$search = Request::getString('search', '');
 
 		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
 		if ($search) // && !is_array($search))
@@ -74,7 +74,7 @@ class Filters
 		// Translate operators and augment query filters with human-friendly text
 		$query = self::filtersMap($q);
 
-		$tags = Request::getVar('tags', '');
+		$tags = Request::getString('tags', '');
 
 		return array(
 			'search' => $search,

@@ -68,10 +68,10 @@ class Profiles extends SiteController
 	public function execute()
 	{
 		// Get the view
-		$this->_view = strtolower(Request::getVar('view', 'members'));
+		$this->_view = strtolower(Request::getCmd('view', 'members'));
 
 		// Get The task
-		$task = strtolower(Request::getVar('task', ''));
+		$task = strtolower(Request::getCmd('task', ''));
 
 		$id = Request::getInt('id', 0);
 		if ($id && !$task)
@@ -125,7 +125,7 @@ class Profiles extends SiteController
 
 		$restrict = '';
 
-		$referrer = Request::getVar('HTTP_REFERER', null, 'server');
+		$referrer = Request::getString('HTTP_REFERER', null, 'server');
 		if ($referrer && preg_match('/members\/\d+\/messages/i', $referrer))
 		{
 			if (!User::authorise('core.admin', $this->_option)
@@ -302,12 +302,12 @@ class Profiles extends SiteController
 			->ordered()
 			->rows();
 
-		$q = (array)Request::getVar('q', array());
+		$q = (array)Request::getArray('q', array());
 
 		$filters = array(
-			'search'   => Request::getVar('search', ''),
+			'search'   => Request::getString('search', ''),
 			'q'        => array(),
-			'tags'     => Request::getVar('tags', ''),
+			'tags'     => Request::getString('tags', ''),
 			'sort'     => strtolower(Request::getWord('sort', 'name')),
 			'sort_Dir' => strtolower(Request::getWord('sort_Dir', 'asc'))
 		);
@@ -662,7 +662,7 @@ class Profiles extends SiteController
 	 */
 	public function fieldValuesTask()
 	{
-		$name = Request::getVar('field', '');
+		$name = Request::getString('field', '');
 
 		$field = Field::all()
 			->whereEquals('name', $name)
@@ -775,8 +775,8 @@ class Profiles extends SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$id  = Request::getVar('id', 0);
-		$tab = Request::getVar('active');  // The active tab (section)
+		$id  = Request::getInt('id', 0);
+		$tab = Request::getString('active');  // The active tab (section)
 
 		// Get the member's info
 		if (is_numeric($id))
@@ -818,7 +818,7 @@ class Profiles extends SiteController
 			// Check if they're logged in
 			if (User::isGuest())
 			{
-				$rtrn = Request::getVar('REQUEST_URI', Route::url($profile->link()), 'server');
+				$rtrn = Request::getString('REQUEST_URI', Route::url($profile->link()), 'server');
 
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
@@ -939,7 +939,7 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true), 'server');
 
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
@@ -1001,11 +1001,11 @@ class Profiles extends SiteController
 		}
 
 		// Incoming data
-		$change   = Request::getVar('change', '', 'post');
-		$oldpass  = Request::getVar('oldpass', '', 'post');
-		$newpass  = Request::getVar('newpass', '', 'post');
-		$newpass2 = Request::getVar('newpass2', '', 'post');
-		$message  = Request::getVar('message', '');
+		$change   = Request::getString('change', '', 'post');
+		$oldpass  = Request::getString('oldpass', '', 'post');
+		$newpass  = Request::getString('newpass', '', 'post');
+		$newpass2 = Request::getString('newpass2', '', 'post');
+		$message  = Request::getString('message', '');
 
 		if (!empty($message))
 		{
@@ -1128,7 +1128,7 @@ class Profiles extends SiteController
 		}
 
 		// Redirect user back to main account page
-		$return = base64_decode(Request::getVar('return', '', 'method', 'base64'));
+		$return = base64_decode(Request::getString('return', '', 'method', 'base64'));
 		$this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
 		$session = App::get('session');
 
@@ -1164,7 +1164,7 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true), 'server');
 
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
@@ -1213,8 +1213,8 @@ class Profiles extends SiteController
 		);
 
 		// Incoming
-		$request = Request::getVar('request', null, 'post');
-		$raiselimit = Request::getVar('raiselimit', null, 'post');
+		$request = Request::getString('request', null, 'post');
+		$raiselimit = Request::getString('raiselimit', null, 'post');
 
 		if ($raiselimit)
 		{
@@ -1411,7 +1411,7 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
@@ -1509,7 +1509,7 @@ class Profiles extends SiteController
 
 		Request::checkToken(array('get', 'post'));
 
-		$no_html = Request::getVar('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		// Incoming user ID
 		$id = Request::getInt('id', 0, 'post');
@@ -1524,7 +1524,7 @@ class Profiles extends SiteController
 		$member = Member::oneOrFail($id);
 
 		// Name changed?
-		$name = Request::getVar('name', array(), 'post');
+		$name = Request::getArray('name', array(), 'post');
 
 		if ($name && !empty($name))
 		{
@@ -1582,7 +1582,7 @@ class Profiles extends SiteController
 
 		// Are we declining the terms of use?
 		// If yes we want to set the usage agreement to 0 and profile to private
-		$declineTOU = Request::getVar('declinetou', 0);
+		$declineTOU = Request::getInt('declinetou', 0);
 
 		if ($declineTOU)
 		{
@@ -1590,9 +1590,9 @@ class Profiles extends SiteController
 			$member->set('usageAgreement', 0);
 		}
 
-		$access  = Request::getVar('access', array(), 'post');
+		$access  = Request::getArray('access', array(), 'post');
 
-		if (is_array($access))
+		if (is_array($access) && !empty($access))
 		{
 			foreach ($access as $k => $v)
 			{
@@ -1614,8 +1614,8 @@ class Profiles extends SiteController
 		}
 
 		// Incoming profile edits
-		$profile = Request::getVar('profile', array(), 'post', 'none', 2);
-		$field_to_check = Request::getVar('field_to_check', array());
+		$profile = Request::getArray('profile', array(), 'post');
+		$field_to_check = Request::getArray('field_to_check', array());
 
 		$old = Profile::collect($member->profiles);
 		$profile = array_merge($old, $profile);
@@ -1835,7 +1835,7 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);

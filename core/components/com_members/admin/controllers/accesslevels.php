@@ -120,7 +120,7 @@ class Accesslevels extends AdminController
 		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -157,7 +157,7 @@ class Accesslevels extends AdminController
 		Request::checkToken();
 
 		// Incoming password blacklist edits
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		if (isset($fields['rules']) && is_array($fields['rules']))
 		{
@@ -212,7 +212,7 @@ class Accesslevels extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('cid', array());
+		$ids = Request::getArray('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;

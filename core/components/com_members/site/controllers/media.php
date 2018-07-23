@@ -41,7 +41,7 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 
 /**
  * Members controller class for media
@@ -131,7 +131,7 @@ class Media extends SiteController
 		}
 
 		//get the id and load profile
-		$id = Request::getVar('id', 0);
+		$id = Request::getInt('id', 0);
 		$profile = Member::oneOrFail($id);
 
 		if (!$profile->get('id'))
@@ -272,7 +272,7 @@ class Media extends SiteController
 		}
 
 		//update the user pic
-		$p = Request::getVar('profile', array());
+		$p = Request::getArray('profile', array());
 		$profile->set('picture', $p['picture']);
 
 		//save
@@ -293,8 +293,8 @@ class Media extends SiteController
 	 */
 	public function getfileattsTask()
 	{
-		$file = Request::getVar('file', '');
-		$dir  = Request::getVar('dir', '');
+		$file = Request::getString('file', '');
+		$dir  = Request::getString('dir', '');
 
 		if (!$file || !$dir)
 		{
@@ -346,7 +346,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('MEMBERS_NO_FILE'));
@@ -371,7 +371,7 @@ class Media extends SiteController
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Do we have an old file we're replacing?
-		$curfile = Request::getVar('currentfile', '');
+		$curfile = Request::getString('currentfile', '');
 
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
@@ -518,7 +518,7 @@ class Media extends SiteController
 
 		if (!$file)
 		{
-			$file = Request::getVar('file', '', 'get');
+			$file = Request::getString('file', '', 'get');
 		}
 
 		// Build the file path
@@ -594,7 +594,7 @@ class Media extends SiteController
 
 		//get the file name
 		// make sure to leave out any query params (ex. ?v={timestamp})
-		$uri = Request::getVar('SCRIPT_URL', '', 'server');
+		$uri = Request::getString('SCRIPT_URL', '', 'server');
 		if (strstr($uri, 'Image:'))
 		{
 			$file = str_replace('Image:', '', strstr($uri, 'Image:'));
@@ -611,7 +611,7 @@ class Media extends SiteController
 		$base_path = $this->filespace() . DS . \Hubzero\Utility\Str::pad($member->get('id'), 5);
 
 		//if we are on the blog
-		if (Request::getVar('active', 'profile') == 'blog')
+		if (Request::getString('active', 'profile') == 'blog')
 		{
 			// @FIXME Check still needs to occur for non-public entries
 			//authorize checks
