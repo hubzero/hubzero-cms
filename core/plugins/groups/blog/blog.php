@@ -639,6 +639,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$filters['authorized'] = false;
 		}
 
+		Event::trigger('blog.onBlogView', array($row));
+
 		$view = $this->view('default', 'entry')
 			->set('option', $this->option)
 			->set('group', $this->group)

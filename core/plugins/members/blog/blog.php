@@ -489,6 +489,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$filters['access'] = User::getAuthorisedViewLevels();
 		}
 
+		Event::trigger('blog.onBlogView', array($row));
+
 		$view = $this->view('default', 'entry')
 			->set('option', $this->option)
 			->set('member', $this->member)
