@@ -140,14 +140,14 @@ class Assetgroupv1_0 extends base
 			$assetGroup->set('state', $state);
 		}
 
-		$assetGroup->set('description', Request::getVar('description', $assetGroup->get('description')));
+		$assetGroup->set('description', Request::getString('description', $assetGroup->get('description')));
 
 		// When creating a new asset group
 		if (!$id)
 		{
-			$assetGroup->set('unit_id',    Request::getInt('unit_id', 0));
-			$assetGroup->set('parent',     Request::getInt('parent', 0));
-			$assetGroup->set('created',    Date::toSql());
+			$assetGroup->set('unit_id', Request::getInt('unit_id', 0));
+			$assetGroup->set('parent', Request::getInt('parent', 0));
+			$assetGroup->set('created', Date::toSql());
 			$assetGroup->set('created_by', App::get('authn')['user_id']);
 		}
 
@@ -223,7 +223,7 @@ class Assetgroupv1_0 extends base
 	 */
 	public function reorderTask()
 	{
-		$groups = Request::getVar('assetgroupitem', []);
+		$groups = Request::getArray('assetgroupitem', []);
 
 		$order = 1;
 

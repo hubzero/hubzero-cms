@@ -82,9 +82,9 @@ class Passportv1_0 extends base
 		// Require authentication and authorization
 		$this->authorizeOrFail();
 
-		$action     = Request::getVar('action', '');
-		$badge_id   = Request::getVar('badge_id', '');
-		$user_email = Request::getVar('user_email', '');
+		$action     = Request::getString('action', '');
+		$badge_id   = Request::getString('badge_id', '');
+		$user_email = Request::getString('user_email', '');
 
 		if (empty($action))
 		{
@@ -156,7 +156,7 @@ class Passportv1_0 extends base
 	 */
 	private function authorize_call()
 	{
-		$consumerKey = Request::getVar('oauth_consumer_key', null, 'post');
+		$consumerKey = Request::getString('oauth_consumer_key', null, 'post');
 
 		//get the userid and attempt to load user profile
 		$userid = App::get('authn')['user_id'];
@@ -164,10 +164,7 @@ class Passportv1_0 extends base
 		//make sure we have a user
 		if ($user === false)
 		{
-			/*
-			$this->errorMessage(401, 'You don\'t have permission to do this');
-			return;
-			*/
+			//App::abort(401, 'You don\'t have permission to do this');
 		}
 
 		// Get the requested path
