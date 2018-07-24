@@ -137,7 +137,7 @@ $this->view('_edit_script')->display();
 				<label for="field-reg_status"><?php echo Lang::txt('COM_FMNS_FIELD_STATUS'); ?>:</label><br />
 				<select name="fields[reg_status]" id="field-reg_status">
 					<option value="0"<?php if ($this->row->get('reg_status') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FMNS_FIELD_STATUS_CLOSED'); ?></option>
-					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FMNS_FIELD_STATUS_OPEN'); ?></option>
+					<option value="1"<?php if ($this->row->get('reg_status') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_FMNS_FIELD_STATUS_OPEN'); ?></option>
 				</select>
 			</div>
 
