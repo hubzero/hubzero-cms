@@ -89,7 +89,7 @@ class Membersv1_0 extends ApiController
 		$applicants = $group->get('applicants');
 
 		// get what the user wants back
-		$list = Request::getVar('list', 'members, managers, invitees, applicants');
+		$list = Request::getString('list', 'members, managers, invitees, applicants');
 
 		// split by comma
 		if (is_string($list))

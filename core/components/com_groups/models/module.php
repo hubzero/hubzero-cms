@@ -298,7 +298,7 @@ class Module extends Model
 				if ($content == null)
 				{
 					// get group
-					$group = \Hubzero\User\Group::getInstance(Request::getVar('cn', Request::getVar('gid', '')));
+					$group = \Hubzero\User\Group::getInstance(Request::getString('cn', Request::getString('gid', '')));
 
 					// get base path 
 					$basePath = \Component::params('com_groups')->get('uploadpath');

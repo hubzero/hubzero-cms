@@ -112,10 +112,10 @@ class CustomFields extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$fs = Request::getVar('questions', array(), 'post', 'none', 2);
+		$fs = Request::getArray('questions', array(), 'post');
 
 		// Posted data is coming in 
-		$form = json_decode(Request::getVar('questions', '[]', 'post', 'none', 2), true);
+		$form = json_decode(Request::getString('questions', '[]', 'post'), true);
 
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{

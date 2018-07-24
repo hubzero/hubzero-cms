@@ -50,7 +50,7 @@ $baseURI .= $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn')
 
 //get request vars
 $type          = Request::getWord('type', '', 'get');
-$ckeditor      = Request::getVar('CKEditor', '', 'get');
+$ckeditor      = Request::getString('CKEditor', '', 'get');
 $ckeditorFunc  = Request::getInt('CKEditorFuncNum', 0, 'get');
 $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' . $ckeditorFunc;
 ?>

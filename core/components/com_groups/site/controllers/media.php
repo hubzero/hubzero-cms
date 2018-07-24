@@ -57,7 +57,7 @@ class Media extends Base
 		$this->disableDefaultTask();
 
 		//get request vars
-		$this->cn = Request::getVar('cn', '');
+		$this->cn = Request::getString('cn', '');
 
 		//check to make sure we have  cname
 		if (!$this->cn)
@@ -126,7 +126,7 @@ class Media extends Base
 		$this->view->setLayout('filebrowser');
 
 		//get rel path to start
-		$this->view->activeFolder = Request::getVar('path', '/');
+		$this->view->activeFolder = Request::getString('path', '/');
 
 		// make sure we have an active folder
 		if ($this->view->activeFolder == '')
@@ -330,7 +330,7 @@ class Media extends Base
 		$this->view->folders = array();
 		$this->view->files   = array();
 		$this->view->type    = \Hubzero\Utility\Sanitize::paranoid(Request::getWord('type', ''));
-		$this->view->relpath = Request::getVar('path', '/');
+		$this->view->relpath = Request::getString('path', '/');
 
 		// make sure we default to uploads folder for non-super groups
 		if ($this->group->get('type') != 3 && (!$this->view->relpath || $this->view->relpath == '/'))
@@ -453,8 +453,8 @@ class Media extends Base
 		$message = '';
 
 		// get request vars
-		$ckeditor     = Request::getVar('CKEditor', '', 'get');
-		$ckeditorFunc = Request::getVar('CKEditorFuncNum', '', 'get');
+		$ckeditor     = Request::getString('CKEditor', '', 'get');
+		$ckeditorFunc = Request::getString('CKEditorFuncNum', '', 'get');
 
 		// if dont have a message we are good to go
 		if ($message == '')
@@ -518,7 +518,7 @@ class Media extends Base
 		}
 
 		// get request vars
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 
 		// make sure we have file
 		if (!$file['name'] || $file['size'] == 0)
@@ -666,7 +666,7 @@ class Media extends Base
 		}
 
 		//get folder
-		$folder = Request::getVar('folder', '');
+		$folder = Request::getString('folder', '');
 
 		// make sure we have an active folder
 		if ($folder == '')
@@ -794,7 +794,7 @@ class Media extends Base
 		$this->view->setLayout('movefile');
 
 		// get request vars
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 
 		// default folder to have open
 		$this->view->activeFolder = '/uploads';
@@ -838,8 +838,8 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$file   = Request::getVar('file', '');
-		$folder = Request::getVar('folder', '');
+		$file   = Request::getString('file', '');
+		$folder = Request::getString('folder', '');
 
 		// build source and destination folder
 		$source      = $this->path . $file;
@@ -877,7 +877,7 @@ class Media extends Base
 	public function renameFileTask()
 	{
 		// get request vars
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 
 		// pass vars to view
 		$this->view->group = $this->group;
@@ -901,8 +901,8 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$file = Request::getVar('file', '');
-		$name = Request::getVar('name', '');
+		$file = Request::getString('file', '');
+		$name = Request::getString('name', '');
 
 		// get parts of original file
 		$fileInfo = pathinfo($file);
@@ -944,7 +944,7 @@ class Media extends Base
 	public function extractFileTask()
 	{
 		// Incoming file
-		$file = trim(Request::getVar('file', '', 'get'));
+		$file = trim(Request::getString('file', '', 'get'));
 		$file = $this->path . $file;
 
 		// get base path
@@ -977,7 +977,7 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// Incoming file
-		$file = trim(Request::getVar('file', '', 'get'));
+		$file = trim(Request::getString('file', '', 'get'));
 		$file = $this->path . $file;
 
 		// get folder to output to
@@ -991,9 +991,9 @@ class Media extends Base
 		}
 
 		//are we deleting through ckeditor
-		$ckeditor     = Request::getVar('CKEditor', '', 'get');
+		$ckeditor     = Request::getString('CKEditor', '', 'get');
 		$ckeditorFunc = Request::getInt('CKEditorFuncNum', 0, 'get');
-		$type         = Request::getVar('type', 'image', 'get');
+		$type         = Request::getString('type', 'image', 'get');
 
 		if (isset($ckeditor) && $ckeditor != '')
 		{
@@ -1066,7 +1066,7 @@ class Media extends Base
 
 		//get request vars
 		$name   = Request::getCmd('name', '');
-		$folder = Request::getVar('folder', '');
+		$folder = Request::getString('folder', '');
 
 		//create return folder
 		$returnFolder = $folder;
@@ -1108,7 +1108,7 @@ class Media extends Base
 	public function renameFolderTask()
 	{
 		// get request vars
-		$folder = Request::getVar('folder', '');
+		$folder = Request::getString('folder', '');
 
 		// pass vars to view
 		$this->view->group  = $this->group;
@@ -1132,7 +1132,7 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$folder = Request::getVar('folder', '');
+		$folder = Request::getString('folder', '');
 		$name   = Request::getCmd('name', '');
 
 		//get path info
@@ -1186,7 +1186,7 @@ class Media extends Base
 	public function moveFolderTask()
 	{
 		// get request vars
-		$folder = Request::getVar('folder', '');
+		$folder = Request::getString('folder', '');
 
 		// default folder to have open
 		$this->view->activeFolder = '/uploads';
@@ -1232,8 +1232,8 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$current = Request::getVar('current', '');
-		$folder  = Request::getVar('folder', '');
+		$current = Request::getString('current', '');
+		$folder  = Request::getString('folder', '');
 
 		// return path
 		$returnFolder = $this->path . $folder;
@@ -1277,7 +1277,7 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		//get request vars
-		$folder = Request::getVar('folder', '');
+		$folder = Request::getString('folder', '');
 
 		// define where to return to
 		$returnFolder = dirname($folder);

@@ -176,8 +176,8 @@ class Modules extends Base
 	public function saveTask()
 	{
 		// get request vars
-		$module = Request::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
-		$menu   = Request::getVar('menu', array(), 'post');
+		$module = Request::getArray('module', array(), 'post');
+		$menu   = Request::getArray('menu', array(), 'post');
 
 		// set gid number
 		$module['gidNumber'] = $this->group->get('gidNumber');
@@ -336,7 +336,7 @@ class Modules extends Base
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
 
 		App::redirect($url);
-		if ($return = Request::getVar('return', '', 'post'))
+		if ($return = Request::getString('return', '', 'post'))
 		{
 			App::redirect(base64_decode($return));
 		}

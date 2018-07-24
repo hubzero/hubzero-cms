@@ -153,7 +153,7 @@ class Version extends Model
 				if ($content == null)
 				{
 					// Get group
-					$group = \Hubzero\User\Group::getInstance(Request::getVar('cn', Request::getVar('gid', '')));
+					$group = \Hubzero\User\Group::getInstance(Request::getString('cn', Request::getString('gid', '')));
 
 					// Get base path
 					$basePath = \Component::params( 'com_groups' )->get('uploadpath');
