@@ -577,6 +577,17 @@ class Members extends AdminController
 			{
 				// Save password
 				\Hubzero\User\Password::changePassword($user->get('username'), $newpass);
+
+				// Remove login failures
+				$failures = \Hubzero\User\Log\Auth::all()
+					->whereEquals('username', $user->get('username'))
+					->whereEquals('status', 'failure')
+					->rows();
+
+				foreach ($failures as $failure)
+				{
+					$failure->destroy();
+				}
 			}
 		}
 
