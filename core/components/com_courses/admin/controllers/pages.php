@@ -43,7 +43,7 @@ use Html;
 use App;
 
 // Course model pulls in other classes we need
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Courses controller class for managing course pages
@@ -163,7 +163,7 @@ class Pages extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -215,7 +215,7 @@ class Pages extends AdminController
 		Request::checkToken();
 
 		// load the request vars
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// instatiate course page object for saving
 		$row = new \Components\Courses\Models\Page($fields['id']);
@@ -256,7 +256,7 @@ class Pages extends AdminController
 		Request::checkToken();
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0) . '&offering=' . Request::getInt('offering', 0), false);
@@ -348,10 +348,10 @@ class Pages extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Ensure we have an ID to work with
-		$listdir = Request::getVar('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
@@ -435,7 +435,7 @@ class Pages extends AdminController
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -469,7 +469,7 @@ class Pages extends AdminController
 	 */
 	public function uploadTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -478,7 +478,7 @@ class Pages extends AdminController
 		Request::checkToken();
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', 0, 'post');
+		$listdir = Request::getInt('listdir', 0, 'post');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COURSES_NO_LISTDIR'));
@@ -487,13 +487,13 @@ class Pages extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '', 'post');
+		$subdir = Request::getString('subdir', '', 'post');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
 		// Are we creating a new folder?
-		$foldername = Request::getVar('foldername', '', 'post');
+		$foldername = Request::getString('foldername', '', 'post');
 		if ($foldername != '')
 		{
 			// Make sure the name is valid
@@ -531,7 +531,7 @@ class Pages extends AdminController
 			}
 
 			// Incoming file
-			$file = Request::getVar('upload', '', 'files', 'array');
+			$file = Request::getArray('upload', '', 'files');
 			if (!$file['name'])
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
@@ -584,7 +584,7 @@ class Pages extends AdminController
 		$this->view->setLayout('display');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
@@ -593,13 +593,13 @@ class Pages extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
 		// Incoming directory to delete
-		$folder = trim(Request::getVar('delFolder', ''), DS);
+		$folder = trim(Request::getString('delFolder', ''), DS);
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COURSES_NO_DIRECTORY'));
@@ -637,16 +637,16 @@ class Pages extends AdminController
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$course_id = Request::getInt('course', 0);
-		$listdir = Request::getVar('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
 		// Incoming file to delete
-		$file = Request::getVar('delFile', '');
+		$file = Request::getString('delFile', '');
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
@@ -681,10 +681,10 @@ class Pages extends AdminController
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->course_id = Request::getInt('course', 0);
-		$this->view->listdir   = Request::getVar('listdir', 0);
+		$this->view->listdir   = Request::getInt('listdir', 0);
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
+		$this->view->subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$this->view->path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
@@ -737,10 +737,10 @@ class Pages extends AdminController
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->course_id = Request::getInt('course', 0);
-		$this->view->listdir   = Request::getVar('listdir', 0);
+		$this->view->listdir   = Request::getInt('listdir', 0);
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
+		$this->view->subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
@@ -833,7 +833,7 @@ class Pages extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$id = Request::getVar('id', array(0), 'post', 'array');
+		$id = Request::getArray('id', array(0), 'post');
 		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$uid = $id[0];
@@ -860,7 +860,7 @@ class Pages extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?

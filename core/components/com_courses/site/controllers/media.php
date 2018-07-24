@@ -65,11 +65,11 @@ class Media extends SiteController
 		$session  = \App::get('session');
 
 		// Get request vars
-		$time       = Request::getVar('time', 0);
-		$duration   = Request::getVar('duration', 0);
-		$event      = Request::getVar('event', 'update');
-		$resourceid = Request::getVar('resourceid', 0);
-		$detailedId = Request::getVar('detailedTrackingId', 0);
+		$time       = Request::getInt('time', 0);
+		$duration   = Request::getInt('duration', 0);
+		$event      = Request::getString('event', 'update');
+		$resourceid = Request::getInt('resourceid', 0);
+		$detailedId = Request::getInt('detailedTrackingId', 0);
 		$ipAddress  = $_SERVER['REMOTE_ADDR'];
 
 		// Check for asset id
@@ -225,7 +225,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
@@ -414,7 +414,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$folder = trim(Request::getVar('folder', '', 'get'));
+		$folder = trim(Request::getString('folder', '', 'get'));
 		if (!$folder)
 		{
 			Notify::error(Lang::txt('COURSES_NO_DIRECTORY'), 'courses');
@@ -467,7 +467,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = trim(Request::getVar('file', '', 'get'));
+		$file = trim(Request::getString('file', '', 'get'));
 		if (!$file)
 		{
 			Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
@@ -636,8 +636,8 @@ class Media extends SiteController
 			}
 
 			//load wiki page from db
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
-			$page = \Components\Wiki\Models\Page::oneByPath(Request::getVar('pagename'), 'course', $course->get('id'));
+			require_once PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php';
+			$page = \Components\Wiki\Models\Page::oneByPath(Request::getString('pagename'), 'course', $course->get('id'));
 
 			//check specific wiki page access
 			if ($page->get('access') == 1 && !in_array(User::get('id'), $course->get('members')) && $authorized != 'admin')

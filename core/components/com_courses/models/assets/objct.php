@@ -61,7 +61,7 @@ class Objct extends Content
 	 **/
 	public function create()
 	{
-		$object = Request::getVar('content', '', 'post', 'string', JREQUEST_ALLOWRAW);
+		$object = Request::getString('content', '', 'post');
 
 		// Check if valid youtube or kaltura video
 		// @FIXME: we need a safer way!

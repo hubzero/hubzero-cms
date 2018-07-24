@@ -39,7 +39,7 @@ use Config;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php';
 
 /**
  * Courses controller class for managing membership and course info
@@ -142,7 +142,7 @@ class Courses extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -183,7 +183,7 @@ class Courses extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -203,7 +203,7 @@ class Courses extends AdminController
 			return;
 		}
 
-		$tags = Request::getVar('tags', '', 'post');
+		$tags = Request::getString('tags', '', 'post');
 		$row->tag($tags, User::get('id'));
 
 		if ($this->_task == 'apply')
@@ -226,7 +226,7 @@ class Courses extends AdminController
 	public function copyTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Get the single ID we're working with
 		if (is_array($id))
@@ -274,7 +274,7 @@ class Courses extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$num = 0;
@@ -336,7 +336,7 @@ class Courses extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?

@@ -41,10 +41,10 @@ use Route;
 use Date;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section' . DS . 'badge.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section' . DS . 'badge.php';
 
 /**
  * Courses controller class for managing sections
@@ -159,7 +159,7 @@ class Sections extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -223,7 +223,7 @@ class Sections extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Instantiate a Course object
 		$model = \Components\Courses\Models\Section::getInstance($fields['id']);
@@ -235,7 +235,7 @@ class Sections extends AdminController
 			return;
 		}
 
-		$p = new \Hubzero\Config\Registry(Request::getVar('params', '', 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getArray('params', '', 'post'));
 
 		// Make sure the logo gets carried over
 		$op = new \Hubzero\Config\Registry($model->get('params'));
@@ -250,7 +250,7 @@ class Sections extends AdminController
 			return;
 		}
 
-		$dates = Request::getVar('dates', array(), 'post');
+		$dates = Request::getArray('dates', array(), 'post');
 
 		//$i=0;
 		//$unit_up = '';
@@ -444,7 +444,7 @@ class Sections extends AdminController
 		}
 
 		// Process badge info
-		$badge = Request::getVar('badge', array(), 'post', 'array', JREQUEST_ALLOWHTML);
+		$badge = Request::getArray('badge', array(), 'post');
 		if (isset($badge['published']) && $badge['published'])
 		{
 			// Get courses config
@@ -457,7 +457,7 @@ class Sections extends AdminController
 			$badgeObj->store();
 
 			// See if we have an image coming in as well
-			$badge_image = Request::getVar('badge_image', false, 'files', 'array');
+			$badge_image = Request::getArray('badge_image', false, 'files');
 
 			// If so, proceed with saving the image
 			if (isset($badge_image['name']) && $badge_image['name'])
@@ -620,7 +620,7 @@ class Sections extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 		$offering_id = Request::getInt('offering', 0);
 
@@ -694,7 +694,7 @@ class Sections extends AdminController
 	public function makedefaultTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', 0);
+		$id = Request::getArray('id', 0);
 
 		// Get the single ID we're working with
 		if (is_array($id))
@@ -724,7 +724,7 @@ class Sections extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?

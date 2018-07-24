@@ -59,7 +59,7 @@ class Url extends Content
 	 **/
 	public function create()
 	{
-		$url = Request::getVar('content');
+		$url = Request::getString('content');
 
 		// Allow for multiple entries at once
 		if (strstr($url, ','))
@@ -93,7 +93,7 @@ class Url extends Content
 		{
 			if (!preg_match('/^(http[s]*\:\/\/)?([0-9A-Za-z\.\/\-\=\:\?\_\&\%\~]+)$/', $url, $matches))
 			{
-				return array('error'=>'Content did not match the pre-defined filter');
+				return array('error' => 'Content did not match the pre-defined filter');
 			}
 
 			// Try to help users out by being a little smarter about url provided
@@ -131,16 +131,16 @@ class Url extends Content
 				$content .= '<iframe width="560" height="315" src="https://www.youtube.com/embed/';
 				$content .= $matches[2];
 				$content .= '?rel=0" frameborder="0" allowfullscreen></iframe>';
-				return array('type'=>'content', 'value'=>$content);
+				return array('type' => 'content', 'value' => $content);
 			}
 			else
 			{
-				return array('type'=>'default');
+				return array('type' => 'default');
 			}
 		}
 		else
 		{
-			return array('type'=>'default');
+			return array('type' => 'default');
 		}
 	}
 }

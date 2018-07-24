@@ -219,7 +219,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	$tracking = \Components\Resources\Models\MediaTracking::oneByUserAndResource(User::get('id'), $this->asset->id, 'course');
 
 	// Check to see if we already have a time query param
-	$hasTime = (Request::getVar('time', '') != '') ? true : false;
+	$hasTime = (Request::getString('time', '') != '') ? true : false;
 
 	// Do we want to redirect user with time added to url
 	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration && !Request::getInt('no_html', 0))
@@ -228,7 +228,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 
 		// do we have tmpl=component in url?
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
-		if (Request::getVar('tmpl', '') == 'component')
+		if (Request::getString('tmpl', '') == 'component')
 		{
 			$redirect .= $delimeter . 'tmpl=component';
 		}

@@ -76,8 +76,8 @@ class Coursesv1_0 extends base
 	public function listTask()
 	{
 		$filters = array(
-			'limit' => Request::getVar('limit', 25),
-			'start' => Request::getVar('limitstart', 0)
+			'limit' => Request::getInt('limit', 25),
+			'start' => Request::getInt('limitstart', 0)
 		);
 
 		// Search API hooks
@@ -85,7 +85,7 @@ class Coursesv1_0 extends base
 		if (User::authorise('core.admin', 'com_users'))
 		{
 			$admin = true;
-			$searchable = Request::getVar('searchable', false);
+			$searchable = Request::getBool('searchable', false);
 		}
 
 		$db = App::get('db');

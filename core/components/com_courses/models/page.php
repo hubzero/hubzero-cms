@@ -38,8 +38,8 @@ use Filesystem;
 use Request;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
-require_once(__DIR__ . DS . 'base.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Courses model class for a course
@@ -87,7 +87,7 @@ class Page extends Base
 				{
 					$config = array(
 						'option'   => Request::getCmd('option', 'com_courses'),
-						'scope'    => Request::getVar('gid', ''),
+						'scope'    => Request::getString('gid', ''),
 						'pagename' => $this->get('url'),
 						'pageid'   => '',
 						'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : ''),

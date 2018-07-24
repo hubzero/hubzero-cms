@@ -45,10 +45,10 @@ use Date;
 use App;
 
 // Include required forms models
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'form.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'form.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formRespondent.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formDeployment.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'form.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'form.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formRespondent.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formDeployment.php';
 
 /**
  * Courses form controller class
@@ -243,7 +243,7 @@ class Form extends SiteController
 
 		$pdf = $this->assertExistentForm();
 
-		if (Request::getVar('title', false))
+		if (Request::getString('title', false))
 		{
 			$pdf->setTitle($_POST['title']);
 		}
@@ -293,7 +293,7 @@ class Form extends SiteController
 	 */
 	public function createDeploymentTask()
 	{
-		if (!$deployment = Request::getVar('deployment'))
+		if (!$deployment = Request::getString('deployment'))
 		{
 			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
@@ -339,7 +339,7 @@ class Form extends SiteController
 	 */
 	public function updateDeploymentTask()
 	{
-		if (!$deployment = Request::getVar('deployment'))
+		if (!$deployment = Request::getString('deployment'))
 		{
 			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
@@ -404,13 +404,13 @@ class Form extends SiteController
 	 */
 	public function completeTask()
 	{
-		if (!$crumb = Request::getVar('crumb', false))
+		if (!$crumb = Request::getString('crumb', false))
 		{
 			App::abort(422);
 		}
 
 		$dep = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
-		$dbg = Request::getVar('dbg', false);
+		$dbg = Request::getString('dbg', false);
 
 		switch ($dep->getState())
 		{
@@ -500,7 +500,7 @@ class Form extends SiteController
 	 */
 	public function startWorkTask()
 	{
-		if (!$crumb = Request::getVar('crumb', false))
+		if (!$crumb = Request::getString('crumb', false))
 		{
 			App::abort(422);
 		}
@@ -551,7 +551,7 @@ class Form extends SiteController
 	 */
 	public function submitTask()
 	{
-		if (!$crumb = Request::getVar('crumb', false))
+		if (!$crumb = Request::getString('crumb', false))
 		{
 			App::abort(422);
 		}
@@ -689,9 +689,9 @@ class Form extends SiteController
 	 */
 	public function getCourseInfo()
 	{
-		$gid      = Request::getVar('gid');
-		$offering = Request::getVar('offering');
-		$section  = Request::getVar('section');
+		$gid      = Request::getString('gid');
+		$offering = Request::getString('offering');
+		$section  = Request::getString('section');
 
 		$this->course = new Course($gid);
 		$this->course->offering($offering);

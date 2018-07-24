@@ -38,7 +38,7 @@ use Request;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Manage logo for a course
@@ -153,7 +153,7 @@ class Logo extends AdminController
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -172,7 +172,7 @@ class Logo extends AdminController
 		}
 
 		// Do we have an old file we're replacing?
-		if (($curfile = Request::getVar('currentfile', '')))
+		if (($curfile = Request::getString('currentfile', '')))
 		{
 			// Remove old image
 			if (file_exists($path . DS . $curfile))
@@ -240,7 +240,7 @@ class Logo extends AdminController
 	 */
 	public function uploadTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -268,14 +268,14 @@ class Logo extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COURSES_NO_FILE'));
 			$this->displayTask('', $id);
 			return;
 		}
-		$curfile = Request::getVar('curfile', '');
+		$curfile = Request::getString('curfile', '');
 
 		if (!is_dir($path))
 		{
@@ -309,7 +309,7 @@ class Logo extends AdminController
 			}
 
 			// Do we have an old file we're replacing?
-			if (($curfile = Request::getVar('currentfile', '')))
+			if (($curfile = Request::getString('currentfile', '')))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
@@ -456,7 +456,7 @@ class Logo extends AdminController
 	 */
 	public function removeTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxRemoveTask();
 		}
@@ -474,7 +474,7 @@ class Logo extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
@@ -634,4 +634,3 @@ class Logo extends AdminController
 			->display();
 	}
 }
-

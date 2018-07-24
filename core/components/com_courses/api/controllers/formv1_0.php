@@ -83,7 +83,7 @@ class formv1_0 extends base
 	{
 		$id       = Request::getInt('id', 0);
 		$version  = Request::getInt('form_version', 0);
-		$filename = Request::getVar('file', '');
+		$filename = Request::getString('file', '');
 		$filename = urldecode($filename);
 		$filename = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . (($version) ? $version . DS : '') . ltrim($filename, DS);
 
