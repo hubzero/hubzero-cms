@@ -189,6 +189,8 @@ class Entries extends SiteController
 			Event::trigger('content.onAfterContentSubmission', array('Blog'));
 		}
 
+		Event::trigger('blog.onBlogView', array($row));
+
 		// Output HTML
 		$this->view
 			->set('archive', $this->model)
