@@ -38,6 +38,7 @@ require_once dirname(__DIR__) . DS . 'tables' . DS . 'comment.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'owner.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'type.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'todo.php';
+require_once Component::path('com_projects') . '/models/orm/owner.php';
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
 
