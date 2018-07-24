@@ -146,7 +146,7 @@ class ImportHooks extends AdminController
 		if (!($row instanceof Hook))
 		{
 			// get request vars
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (isset($id[0]) ? $id[0] : 0);
@@ -179,8 +179,8 @@ class ImportHooks extends AdminController
 		Request::checkToken();
 
 		// get request vars
-		$fields = Request::getVar('hook', array(), 'post');
-		$file   = Request::getVar('file', array(), 'FILES');
+		$fields = Request::getArray('hook', array(), 'post');
+		$file   = Request::getArray('file', array(), 'FILES');
 
 		// Create hook model object
 		$hook = Hook::blank()->set($fields);
@@ -240,7 +240,7 @@ class ImportHooks extends AdminController
 	public function rawTask()
 	{
 		// get request vars
-		$id = Request::getVar('id', array());
+		$id = Request::getArray('id', array());
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : null;
@@ -278,7 +278,7 @@ class ImportHooks extends AdminController
 		Request::checkToken();
 
 		// get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted

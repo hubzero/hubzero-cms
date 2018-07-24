@@ -303,7 +303,7 @@ class Groups extends Base
 
 		// Get active tab
 		$this->view->tab     = Helpers\View::getTab($this->view->group);
-		$this->view->trueTab = strtolower(Request::getVar('active', 'overview'));
+		$this->view->trueTab = strtolower(Request::getString('active', 'overview'));
 		if ($this->view->group->get('approved') != 1 && $this->view->trueTab != 'overview')
 		{
 			return $this->unapprovedGroupTask();
@@ -587,7 +587,7 @@ class Groups extends Base
 
 		// Incoming
 		$g_gidNumber = Request::getInt('gidNumber', 0, 'post');
-		$c_gidNumber = Request::getVar('gidNumber', 0, 'post');
+		$c_gidNumber = Request::getString('gidNumber', 0, 'post');
 		if ((string) $g_gidNumber !== (string) $c_gidNumber)
 		{
 			App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
@@ -612,9 +612,9 @@ class Groups extends Base
 		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
 		$tags              = trim(Request::getString('tags', ''));
 		$lid               = Request::getInt('lid', 0, 'post');
-		$customization     = Request::getVar('group', '', 'POST', 'none', 2);
-		$plugins           = Request::getVar('group_plugin', '', 'POST');
-		$params            = Request::getVar('params', array(), 'POST');
+		$customization     = Request::getString('group', '', 'POST');
+		$plugins           = Request::getArray('group_plugin', '', 'POST');
+		$params            = Request::getArray('params', array(), 'POST');
 
 		$g_discussion_email_autosubscribe = Request::getInt('discussion_email_autosubscribe', 0, 'post');
 
@@ -698,7 +698,7 @@ class Groups extends Base
 		}
 
 		$customFields = Field::all()->rows();
-		$customFieldForm = Request::getVar('customfields', array());
+		$customFieldForm = Request::getArray('customfields', array());
 		foreach ($customFields as $field)
 		{
 			$field->setFormAnswers($customFieldForm);

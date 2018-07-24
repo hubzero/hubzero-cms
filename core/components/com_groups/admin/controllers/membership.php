@@ -43,7 +43,7 @@ use Lang;
 use User;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
 
 /**
  * Groups controller class for managing membership and group info
@@ -189,7 +189,7 @@ class Membership extends AdminController
 	 */
 	public function newTask()
 	{
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->view->group = new Group();
@@ -215,7 +215,7 @@ class Membership extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->group = new Group();
@@ -224,7 +224,7 @@ class Membership extends AdminController
 		// Set a flag for emailing any changes made
 		$users = array();
 
-		$tbl = Request::getVar('tbl', '', 'post');
+		$tbl = Request::getString('tbl', '', 'post');
 
 		// Get all invitees of this group
 		$invitees = $this->group->get('invitees');
@@ -239,7 +239,7 @@ class Membership extends AdminController
 		$managers = $this->group->get('managers');
 
 		// Incoming array of users to add
-		$m = Request::getVar('usernames', '', 'post');
+		$m = Request::getString('usernames', '', 'post');
 		$mbrs = preg_split("/[,;]/", $m);
 
 		foreach ($mbrs as $mbr)
@@ -311,7 +311,7 @@ class Membership extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->group = new Group();
@@ -324,7 +324,7 @@ class Membership extends AdminController
 		$members = $this->group->get('members');
 
 		// Incoming array of users to promote
-		$mbrs = Request::getVar('id', array());
+		$mbrs = Request::getArray('id', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
@@ -392,7 +392,7 @@ class Membership extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->group = new Group();
@@ -404,7 +404,7 @@ class Membership extends AdminController
 		$managers = $this->group->get('managers');
 
 		// Incoming array of users to promote
-		$mbrs = Request::getVar('id', array());
+		$mbrs = Request::getArray('id', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
@@ -465,7 +465,7 @@ class Membership extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->group = new Group();
@@ -491,7 +491,7 @@ class Membership extends AdminController
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('id', array());
+		$mbrs = Request::getArray('id', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
@@ -554,7 +554,7 @@ class Membership extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->group = new Group();
@@ -570,7 +570,7 @@ class Membership extends AdminController
 		$users_man = array();
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('id', array());
+		$mbrs = Request::getArray('id', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
@@ -648,7 +648,7 @@ class Membership extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->group = new Group();
@@ -663,7 +663,7 @@ class Membership extends AdminController
 		$invitees = $this->group->get('invitees');
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('id', array());
+		$mbrs = Request::getArray('id', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
@@ -733,7 +733,7 @@ class Membership extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Load the group page
 		$this->group = new Group();
@@ -743,7 +743,7 @@ class Membership extends AdminController
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('id', array());
+		$mbrs = Request::getArray('id', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)

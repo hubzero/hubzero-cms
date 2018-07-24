@@ -60,7 +60,7 @@ class Modules extends AdminController
 	public function execute()
 	{
 		// Incoming
-		$this->gid = Request::getVar('gid', '');
+		$this->gid = Request::getString('gid', '');
 
 		// Ensure we have a group ID
 		if (!$this->gid)
@@ -155,7 +155,7 @@ class Modules extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get request vars
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		if (is_array($id) && !empty($id))
 		{
 			$id = $id[0];
@@ -210,8 +210,8 @@ class Modules extends AdminController
 	public function saveTask()
 	{
 		// get request vars
-		$module = Request::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
-		$menu   = Request::getVar('menu', array(), 'post');
+		$module = Request::getArray('module', array(), 'post');
+		$menu   = Request::getArray('menu', array(), 'post');
 
 		// set gid number
 		$module['gidNumber'] = $this->group->get('gidNumber');
@@ -256,8 +256,8 @@ class Modules extends AdminController
 			strpos($this->module->get('content'), '<script') !== false)
 		{
 			$this->module->set('approved', 0);
-			$this->module->set('approved_on', NULL);
-			$this->module->set('approved_by', NULL);
+			$this->module->set('approved_on', null);
+			$this->module->set('approved_by', null);
 			$this->module->set('checked_errors', 0);
 			$this->module->set('scanned', 0);
 		}
@@ -324,7 +324,7 @@ class Modules extends AdminController
 	public function deleteTask()
 	{
 		// get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// delete each module
 		foreach ($ids as $moduleid)
@@ -625,7 +625,7 @@ class Modules extends AdminController
 		}
 
 		//get request vars
-		$module = Request::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$module = Request::getArray('module', array(), 'post');
 
 		// load page
 		$groupModule = new Module($module['id']);
@@ -748,7 +748,7 @@ class Modules extends AdminController
 		}
 
 		//get request vars
-		$module = Request::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$module = Request::getArray('module', array(), 'post');
 
 		// load module
 		$groupModule = new Module($module['id']);
@@ -787,7 +787,7 @@ class Modules extends AdminController
 		}
 
 		// get request vars
-		$module = Request::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$module = Request::getArray('module', array(), 'post');
 
 		// load page
 		$groupModule = new Module($module['id']);
@@ -880,7 +880,7 @@ class Modules extends AdminController
 	public function cancelTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getVar('gid', ''), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false)
 		);
 	}
 
@@ -892,7 +892,7 @@ class Modules extends AdminController
 	public function manageTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id[]=' . Request::getVar('gid', ''), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id[]=' . Request::getString('gid', ''), false)
 		);
 	}
 }

@@ -60,7 +60,7 @@ class Pages extends AdminController
 	public function execute()
 	{
 		// Incoming
-		$this->gid = Request::getVar('gid', '');
+		$this->gid = Request::getString('gid', '');
 
 		// Ensure we have a group ID
 		if (!$this->gid)
@@ -143,7 +143,7 @@ class Pages extends AdminController
 	public function editTask()
 	{
 		// get request vars
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		$id = (is_array($id) ? $id[0] : $id);
 
 		// get the page & version objects
@@ -192,8 +192,8 @@ class Pages extends AdminController
 	public function saveTask()
 	{
 		// Get the page vars being posted
-		$page    = Request::getVar('page', array(), 'post');
-		$version = Request::getVar('pageversion', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$page    = Request::getArray('page', array(), 'post');
+		$version = Request::getArray('pageversion', array(), 'post');
 
 		// are we updating or creating a new page
 		$task = ($page['id']) ? 'update' : 'create';
@@ -351,7 +351,7 @@ class Pages extends AdminController
 	public function deleteTask()
 	{
 		// get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// delete each module
 		foreach ($ids as $pageid)
@@ -612,7 +612,7 @@ class Pages extends AdminController
 		}
 
 		//get request vars
-		$page = Request::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$page = Request::getArray('page', array(), 'post');
 
 		// load page
 		$groupPage = new Page($page['id']);
@@ -661,7 +661,7 @@ class Pages extends AdminController
 		}
 
 		//get request vars
-		$page = Request::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$page = Request::getArray('page', array(), 'post');
 
 		// load page
 		$groupPage = new Page($page['id']);
@@ -701,7 +701,7 @@ class Pages extends AdminController
 		}
 
 		//get request vars
-		$page = Request::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$page = Request::getArray('page', array(), 'post');
 
 		// load page
 		$groupPage = new Page( $page['id'] );
@@ -898,7 +898,7 @@ class Pages extends AdminController
 	public function cancelTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getVar('gid', ''), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false)
 		);
 	}
 
@@ -910,7 +910,7 @@ class Pages extends AdminController
 	public function manageTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getVar('gid', ''), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getString('gid', ''), false)
 		);
 	}
 }

@@ -120,9 +120,9 @@ class Manage extends AdminController
 				'filter_order_Dir',
 				'ASC'
 			),
-			'approved'   => Request::getVar('approved'),
+			'approved'   => Request::getString('approved'),
 			//'published'  => Request::getVar('published', 1),
-			'created'    => Request::getVar('created', '')
+			'created'    => Request::getString('created', '')
 		);
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
@@ -203,7 +203,7 @@ class Manage extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = Request::getVar('id', array());
+		$id = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (is_array($id))
@@ -261,7 +261,7 @@ class Manage extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$g = Request::getVar('group', array(), 'post', 'none', 2);
+		$g = Request::getArray('group', array(), 'post');
 		$g = $this->_multiArrayMap('trim', $g);
 
 		// Instantiate a Group object
@@ -728,7 +728,7 @@ class Manage extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -877,7 +877,7 @@ class Manage extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -1012,7 +1012,7 @@ class Manage extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -1117,7 +1117,7 @@ class Manage extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -1211,7 +1211,7 @@ class Manage extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -1280,7 +1280,7 @@ class Manage extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (!is_array($ids))

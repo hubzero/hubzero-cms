@@ -32,13 +32,13 @@
 Submenu::addEntry(
 	Lang::txt('COM_GROUPS_PAGES'),
 	Route::url('index.php?option=com_groups&controller=pages&gid=' . $this->group->get('cn')),
-	Request::getVar('controller', 'pages') == 'pages'
+	Request::getCmd('controller', 'pages') == 'pages'
 );
 
 Submenu::addEntry(
 	Lang::txt('COM_GROUPS_PAGES_CATEGORIES'),
 	Route::url('index.php?option=com_groups&controller=categories&gid=' . $this->group->get('cn')),
-	Request::getVar('controller', 'pages') == 'categories'
+	Request::getCmd('controller', 'pages') == 'categories'
 );
 
 // load group params
@@ -50,6 +50,6 @@ if ($this->group->isSuperGroup() || $config->get('page_modules', 0))
 	Submenu::addEntry(
 		Lang::txt('COM_GROUPS_PAGES_MODULES'),
 		Route::url('index.php?option=com_groups&controller=modules&gid=' . $this->group->get('cn')),
-		Request::getVar('controller', 'pages') == 'modules'
+		Request::getCmd('controller', 'pages') == 'modules'
 	);
 }

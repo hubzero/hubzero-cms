@@ -148,7 +148,7 @@ class Pages
 	private static function getCurrentPathSegments()
 	{
 		// get group
-		$cn = Request::getVar('cn', '');
+		$cn = Request::getString('cn', '');
 		$group = \Hubzero\User\Group::getInstance($cn);
 
 		// use Route so in case the hub is /members/groups/... instead of top level /groups
@@ -702,7 +702,7 @@ class Pages
 			// create path
 			$path = Component::params('com_groups')->get('uploadpath');
 
-			include_once(Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php');
+			include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
 			// build wiki config
 			$wikiConfig = array(
