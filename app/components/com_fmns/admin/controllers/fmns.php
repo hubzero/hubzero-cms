@@ -49,7 +49,7 @@ class Fmns extends AdminController
 		$this->registerTask('apply', 'save');
 		$this->registerTask('publish', 'state');
 		$this->registerTask('unpublish', 'state');
-    $this->registerTask('open', 'status'); // MDL: Check later with this status/reg_status business.
+    $this->registerTask('open', 'status');
     $this->registerTask('close', 'status');
 		$this->registerTask('feature', 'featured');
 		$this->registerTask('unfeature', 'featured');
@@ -92,7 +92,7 @@ class Fmns extends AdminController
 			)),
 			'status' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.status',
-				'status', // MDL: Check later with this status/reg_status business.
+				'status',
 				-1
 			)),
 			// Get sorting variables

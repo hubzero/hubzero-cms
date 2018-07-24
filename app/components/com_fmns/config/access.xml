@@ -7,9 +7,9 @@
 		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
-		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
-		<action name="core.edit.featured" title="JACTION_EDITFEATURED" description="JACTION_EDITFEATURED_COMPONENT_DESC" />
-		<action name="core.edit.status" title="JACTION_EDITSTATUS" description="JACTION_EDITSTATUS_COMPONENT_DESC" />
+		<action name="core.edit.state" title="COM_FMNS_ACTION_EDITSTATE" description="COM_FMNS_ACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.featured" title="COM_FMNS_ACTION_EDITFEATURED" description="COM_FMNS_ACTION_EDITFEATURED_COMPONENT_DESC" />
+		<action name="core.edit.status" title="COM_FMNS_ACTION_EDITSTATUS" description="COM_FMNS_ACTION_EDITSTATUS_COMPONENT_DESC" />
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
 	</section>
 
@@ -17,8 +17,8 @@
 		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
-		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
-		<action name="core.edit.featured" title="JACTION_EDITFEATURED" description="JACTION_EDITFEATURED_COMPONENT_DESC" />
-		<action name="core.edit.status" title="JACTION_EDITSTATUS" description="JACTION_EDITSTATUS_COMPONENT_DESC" />
+		<action name="core.edit.state" title="COM_FMNS_ACTION_EDITSTATE" description="COM_FMNS_ACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.featured" title="COM_FMNS_ACTION_EDITFEATURED" description="COM_FMNS_ACTION_EDITFEATURED_COMPONENT_DESC" />
+		<action name="core.edit.status" title="COM_FMNS_ACTION_EDITSTATUS" description="COM_FMNS_ACTION_EDITSTATUS_COMPONENT_DESC" />
 	</section>
 </access>

@@ -49,7 +49,7 @@ if ($canDo->get('core.delete'))
 	Toolbar::deleteList();
 }
 Toolbar::spacer();
-// Toolbar::help('partners');
+// Toolbar::help('fmns');
 
 // This line makes sure we're including the javascript framework
 Html::behavior('framework');

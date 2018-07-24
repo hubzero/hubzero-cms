@@ -1,0 +1,8 @@
+table input[type=button] {
+  float: right;
+  margin: 0px 2px;
+}
+
+#regform hr {
+  margin: 1em 1em;
+}
