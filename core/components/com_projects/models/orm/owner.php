@@ -46,9 +46,9 @@ class Owner extends Relational
 	 *
 	 * @var  int
 	 **/
-	const ROLE_INVITEE      = 0;
+	const ROLE_COLLABORATOR = 0;
 	const ROLE_MANAGER      = 1;
-	const ROLE_COLLABORATOR = 2;
+	const ROLE_INVITEE      = 2;
 	const ROLE_AUTHOR       = 3;
 	const ROLE_REVIEWER     = 5;
 
