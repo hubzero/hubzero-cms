@@ -116,7 +116,7 @@ class Unitv1_0 extends base
 			App::abort(500, 'Failed to instantiate a unit object');
 		}
 
-		if ($section_id = Request::getInt('section_id', false))
+		if ($section_id = Request::getInt('section_id', 0))
 		{
 			$unit->set('section_id', $section_id);
 		}
@@ -132,11 +132,11 @@ class Unitv1_0 extends base
 		$offset = Config::get('offset');
 
 		// If we have dates coming in, save those
-		if ($publish_up = Request::getVar('publish_up', false))
+		if ($publish_up = Request::getString('publish_up', ''))
 		{
 			$unit->set('publish_up', Date::of($publish_up, $offset)->toSql());
 		}
-		if ($publish_down = Request::getVar('publish_down', false))
+		if ($publish_down = Request::getString('publish_down', ''))
 		{
 			$unit->set('publish_down', Date::of($publish_down, $offset)->toSql());
 		}

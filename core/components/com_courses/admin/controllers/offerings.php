@@ -35,8 +35,8 @@ namespace Components\Courses\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Exception;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
 
 /**
  * Courses controller class for managing membership and course info
@@ -150,7 +150,7 @@ class Offerings extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -194,7 +194,7 @@ class Offerings extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Instantiate a Course object
 		$model = \Components\Courses\Models\Offering::getInstance($fields['id']);
@@ -207,7 +207,7 @@ class Offerings extends AdminController
 		}
 
 		$p = new \Hubzero\Config\Registry('');
-		$p->parse(Request::getVar('params', '', 'post'));
+		$p->parse(Request::getArray('params', '', 'post'));
 
 		// Make sure the logo gets carried over
 		$op = new \Hubzero\Config\Registry($model->get('params'));
@@ -242,7 +242,7 @@ class Offerings extends AdminController
 	public function copyTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Get the single ID we're working with
 		if (is_array($id))
@@ -290,7 +290,7 @@ class Offerings extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$num = 0;
@@ -339,7 +339,7 @@ class Offerings extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?

@@ -34,7 +34,7 @@ namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
 
 /**
  * Manage a course's manager entries
@@ -66,7 +66,7 @@ class Enrollment extends AdminController
 		$managers = $course->get('managers');
 
 		// Incoming host
-		$m = Request::getVar('usernames', '', 'post');
+		$m = Request::getString('usernames', '', 'post');
 		$mbrs = explode(',', $m);
 
 		foreach ($mbrs as $mbr)
@@ -137,7 +137,7 @@ class Enrollment extends AdminController
 
 		$managers = $course->get('managers');
 
-		$mbrs = Request::getVar('users', array(0), 'post');
+		$mbrs = Request::getArray('users', array(0), 'post');
 
 		$users = array();
 		foreach ($mbrs as $mbr)
@@ -211,4 +211,3 @@ class Enrollment extends AdminController
 			->display();
 	}
 }
-

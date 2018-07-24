@@ -56,8 +56,8 @@ class Certificate extends SiteController
 	 */
 	public function displayTask()
 	{
-		$course   = Course::getInstance(Request::getVar('course', ''));
-		$offering = $course->offering(Request::getVar('offering', ''));
+		$course   = Course::getInstance(Request::getString('course', ''));
+		$offering = $course->offering(Request::getString('offering', ''));
 
 		// Ensure the course exists
 		if (!$course->exists() || !$offering->exists())

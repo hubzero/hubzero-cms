@@ -36,7 +36,7 @@ use Hubzero\Component\AdminController;
 use PHPQRCode\QRcode;
 use Exception;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Courses controller class for membership codes
@@ -136,7 +136,7 @@ class Codes extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -179,7 +179,7 @@ class Codes extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Instantiate a Course object
 		$model = new \Components\Courses\Models\Section\Code($fields['id']);
@@ -216,7 +216,7 @@ class Codes extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -270,7 +270,7 @@ class Codes extends AdminController
 		$section = Request::getInt('section', 0);
 		$num = Request::getInt('num', 1);
 
-		$expires = Request::getVar('expires', array());
+		$expires = Request::getArray('expires', array());
 		$expires = implode('-', $expires) . ' 12:00:00';
 
 		if ($num > 0)
@@ -310,7 +310,7 @@ class Codes extends AdminController
 	public function qrcodeTask()
 	{
 		$no_html = Request::getInt('no_html', 0);
-		$code = Request::getVar('code');
+		$code = Request::getString('code');
 
 		if (!$code)
 		{
@@ -431,7 +431,7 @@ class Codes extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (is_array($ids) ? $ids : array($ids));
 
 		// Do we have any IDs?

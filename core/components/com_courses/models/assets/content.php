@@ -67,7 +67,7 @@ class Content extends Handler
 		$asset = new \Components\Courses\Models\Asset();
 
 		// Grab the incoming content
-		$content = Request::getVar('content', '', 'default', 'none', 2);
+		$content = Request::getString('content', '', 'default');
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
@@ -99,7 +99,7 @@ class Content extends Handler
 		// If we're saving progress calculation var
 		if ($progress = Request::getInt('progress_factors', false))
 		{
-			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>Request::getInt('section_id', 0)));
+			$asset->set('progress_factors', array('asset_id' => $asset->get('id'), 'section_id' => Request::getInt('section_id', 0)));
 			$asset->store();
 		}
 
@@ -167,7 +167,7 @@ class Content extends Handler
 		$asset = new \Components\Courses\Models\Asset($id);
 
 		// Grab the incoming content
-		$content = Request::getVar('content', '', 'default', 'none', 2);
+		$content = Request::getString('content', '');
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
