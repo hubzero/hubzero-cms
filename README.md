@@ -4,7 +4,7 @@ All extensions of the `app` directory are subtrees (effectively).
 
 ## Components
 
- * [com_fmns](https://github.com/qubeshub/com_fmns): Faculty Mentoring Networks component (_in development_). **dev** :x: **prod** :x:
+ * [com_fmns](https://github.com/qubeshub/com_fmns): Faculty Mentoring Networks component (_in development_). **dev** :white_check_mark: **prod** :x:
  * [com_partners](https://github.com/qubeshub/com_partners): Partners component **dev** :white_check_mark: **prod** :white_check_mark:
  * [com_publications](https://github.com/qubeshub/com_publications): **Override** of HubZero publications component. **dev** :white_check_mark: **prod** :white_check_mark:
  * [com_tags](https://github.com/qubeshub/com_tags): **Override** of HubZero tags component. **dev** :white_check_mark: **prod** :white_check_mark:
@@ -23,6 +23,7 @@ Note:  Needed to include extra installation directory instructions in the `compo
  * [plg_content_qubesmacros](https://github.com/qubeshub/plg_content_qubesmacros): Content plugin that contains QUBES macros. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_projects_publications](https://github.com/qubeshub/plg_projects_publications): **Override** of HubZero project publications plugin. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_groups_publications](https://github.com/qubeshub/plg_groups_publications): Publication plugin for groups component. **dev** :white_check_mark: **prod** :x:
+ * [plg_groups_usage](https://github.com/qubeshub/plg_groups_usage): **Override** of HubZero usage plugin for groups. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_system_menurouter](https://github.com/qubeshub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_system_subnav](https://github.com/qubeshub/plg_system_subnav): Component/URL to subnavigation mapping **dev** :white_check_mark: **prod** :white_check_mark:
 
