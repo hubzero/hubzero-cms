@@ -102,12 +102,12 @@ class Groupsv1_1 extends ApiController
 	public function listTask()
 	{
 		$filters = array(
-			'limit'      => Request::getVar('limit', 25),
+			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'sortby'     => Request::getWord('sort', 'description'),
 			'sort_Dir'   => strtoupper(Request::getWord('sort_Dir', 'DESC')),
-			'fields'     => Request::getVar('fields', 'gidNumber,cn,description,created,created_by'),
+			'fields'     => Request::getString('fields', 'gidNumber,cn,description,created,created_by'),
 			'policy'     => strtolower(Request::getWord('policy', '')),
 			'type'       => array(1, 3),
 			'published'  => 1
@@ -194,10 +194,10 @@ class Groupsv1_1 extends ApiController
 		$this->requiresAuthentication();
 
 		$cn              = Request::getWord('cn', '');
-		$title           = Request::getVar('title', '');
-		$tags            = Request::getVar('tags', '');
-		$publicDesc      = Request::getVar('public_description', '');
-		$privateDesc     = Request::getVar('private_description', '');
+		$title           = Request::getString('title', '');
+		$tags            = Request::getString('tags', '');
+		$publicDesc      = Request::getString('public_description', '');
+		$privateDesc     = Request::getString('private_description', '');
 		$joinPolicy      = strtolower(Request::getWord('join_policy', 'open'));
 		$discoverability = Request::getWord('discoverability', 'visible');
 
@@ -333,7 +333,7 @@ class Groupsv1_1 extends ApiController
 	public function readTask()
 	{
 		$id     = Request::getInt('id', 0);
-		$fields = Request::getVar('fields', 'gidNumber,description,public_desc,logo,created,created_by,plugins');
+		$fields = Request::getString('fields', 'gidNumber,description,public_desc,logo,created,created_by,plugins');
 		$record = \Hubzero\User\Group::getInstance($id);
 
 		if (!$record)
@@ -432,7 +432,7 @@ class Groupsv1_1 extends ApiController
 		$group['sections'] = $sections;
 
 		// Format for search indexing
-		$searchFormat = Request::getVar('searchable', 'false');
+		$searchFormat = Request::getWord('searchable', 'false');
 		if ($searchFormat == 'true')
 		{
 			$group['title'] = $group['description'];
@@ -526,12 +526,12 @@ class Groupsv1_1 extends ApiController
 		}
 
 		// get request params
-		$title           = Request::getVar('title', $group->get('description'));
-		$tags            = Request::getVar('tags', '');
-		$publicDesc      = Request::getVar('public_description', $group->get('public_desc'));
-		$privateDesc     = Request::getVar('private_description', $group->get('private_desc'));
-		$joinPolicy      = strtolower(Request::getVar('join_policy', $group->get('join_policy')));
-		$discoverability = strtolower(Request::getVar('discoverability', $group->get('discoverability')));
+		$title           = Request::getString('title', $group->get('description'));
+		$tags            = Request::getString('tags', '');
+		$publicDesc      = Request::getString('public_description', $group->get('public_desc'));
+		$privateDesc     = Request::getString('private_description', $group->get('private_desc'));
+		$joinPolicy      = strtolower(Request::getString('join_policy', $group->get('join_policy')));
+		$discoverability = strtolower(Request::getString('discoverability', $group->get('discoverability')));
 
 		// var to hold errors
 		$errors = array();

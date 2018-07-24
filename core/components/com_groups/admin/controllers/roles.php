@@ -42,7 +42,7 @@ use Lang;
 use User;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'role.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'role.php';
 
 /**
  * Groups controller class for managing membership roles
@@ -151,7 +151,7 @@ class Roles extends AdminController
 	 * @param   object  $model
 	 * @return  void
 	 */
-	public function editTask($model=NULL)
+	public function editTask($model=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
@@ -159,7 +159,7 @@ class Roles extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -168,7 +168,7 @@ class Roles extends AdminController
 			$model = Role::oneOrNew(intval($id));
 		}
 
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		$group = new Group();
 		$group->read($gid);
@@ -191,7 +191,7 @@ class Roles extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$row = Role::oneOrNew(intval($fields['id']))->set($fields);
 
@@ -232,7 +232,7 @@ class Roles extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID
@@ -275,9 +275,9 @@ class Roles extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 		$roleid = Request::getInt('roleid', 0);
 
 		if (!$gid)
@@ -300,7 +300,7 @@ class Roles extends AdminController
 			}
 		}
 
-		if ($rtrn = Request::getVar('return'))
+		if ($rtrn = Request::getString('return'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $rtrn . '&gid=' . $gid, false)
@@ -320,9 +320,9 @@ class Roles extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		if (!$gid)
 		{
@@ -358,9 +358,9 @@ class Roles extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 		$roleid = Request::getInt('roleid', 0);
 
 		if (!$gid)
@@ -396,8 +396,8 @@ class Roles extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$gid  = Request::getVar('gid', '');
-		$tmpl = Request::getVar('tmpl', '');
+		$gid  = Request::getString('gid', '');
+		$tmpl = Request::getString('tmpl', '');
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid . ($tmpl ? '&tmpl=' . $tmpl : ''), false)
 		);

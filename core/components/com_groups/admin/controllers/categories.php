@@ -42,7 +42,7 @@ use Route;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . '/models/orm/page/category.php');
+require_once dirname(dirname(__DIR__)) . '/models/orm/page/category.php';
 
 /**
  * Groups controller class for page categories
@@ -57,7 +57,7 @@ class Categories extends AdminController
 	public function execute()
 	{
 		// Incoming
-		$gid = Request::getVar('gid', '');
+		$gid = Request::getString('gid', '');
 
 		// Ensure we have a group ID
 		if (!$gid)
@@ -139,7 +139,7 @@ class Categories extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -180,7 +180,7 @@ class Categories extends AdminController
 		}
 
 		// Get request vars
-		$fields = Request::getVar('category', array(), 'post');
+		$fields = Request::getArray('category', array(), 'post');
 
 		// Add group id to category
 		$fields['gidNumber'] = $this->group->get('gidNumber');
@@ -235,7 +235,7 @@ class Categories extends AdminController
 		}
 
 		// Get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$deleted = array();
 
 		// Delete each category
@@ -284,7 +284,7 @@ class Categories extends AdminController
 	public function cancelTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getVar('gid', ''), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false)
 		);
 	}
 
@@ -296,7 +296,7 @@ class Categories extends AdminController
 	public function manageTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getVar('gid', ''), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getString('gid', ''), false)
 		);
 	}
 }

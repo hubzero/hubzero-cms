@@ -82,7 +82,7 @@ class Archive extends Obj
 	public function __construct()
 	{
 		$this->_db    = \App::get('db');
-		$this->_group = \Hubzero\User\Group::getInstance(\Request::getVar('cn', ''));
+		$this->_group = \Hubzero\User\Group::getInstance(\Request::getString('cn', ''));
 	}
 
 	/**

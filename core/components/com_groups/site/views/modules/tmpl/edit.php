@@ -195,7 +195,7 @@ foreach ($menus as $menu)
 		<input type="hidden" name="module[id]" value="<?php echo $this->module->get('id'); ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="modules" />
-		<input type="hidden" name="return" value="<?php echo Request::getVar('return', '','get'); ?>" />
+		<input type="hidden" name="return" value="<?php echo $this->escape(Request::getString('return', '','get')); ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
 </section>

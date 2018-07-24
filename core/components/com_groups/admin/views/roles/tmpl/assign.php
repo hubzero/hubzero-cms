@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$tmpl = Request::getVar('tmpl', '');
+$tmpl = Request::getCmd('tmpl', '');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
 
@@ -40,7 +40,7 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 if ($tmpl != 'component')
 {
-	Toolbar::title(Lang::txt('COM_GROUPS').': ' . $text, 'groups.png');
+	Toolbar::title(Lang::txt('COM_GROUPS').': ' . $text, 'groups');
 	if ($canDo->get('core.edit'))
 	{
 		Toolbar::save();

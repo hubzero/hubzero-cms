@@ -77,7 +77,7 @@ class View
 		if (!isset(self::$_tab))
 		{
 			//get request vars
-			$tab = Request::getVar('active', 'overview');
+			$tab = Request::getString('active', 'overview');
 
 			//get group plugin access
 			$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($group);
@@ -165,7 +165,7 @@ class View
 			$tab = self::getTab($group);
 
 			//get reqest vars
-			$action = Request::getVar('action', '');
+			$action = Request::getString('action', '');
 			$limit  = Request::getInt('limit', 15);
 			$start  = Request::getInt('limitstart', 0);
 
@@ -216,7 +216,7 @@ class View
 		$tab = self::getTab($group);
 
 		// If a sub-page of the overview tab
-		$active = strtolower(Request::getVar('active', 'overview'));
+		$active = strtolower(Request::getString('active', 'overview'));
 		if ($tab == 'overview' && $tab != $active)
 		{
 			$pageArchive = Archive::getInstance();
@@ -399,7 +399,7 @@ class View
 		}
 
 		//get true tab
-		$trueTab = Request::getVar('active', 'overview');
+		$trueTab = Request::getString('active', 'overview');
 
 		// do overview page checks
 		if ($tab == 'overview' && $trueTab != 'login')
@@ -679,7 +679,7 @@ class View
 		// method that called handleSuperGroupError with call_user_func
 		ob_start();
 		$template = new Template();
-		$template->set('group', \Hubzero\User\Group::getInstance(Request::getVar('cn', '')))
+		$template->set('group', \Hubzero\User\Group::getInstance(Request::getString('cn', '')))
 			     ->set('tab', Request::getCmd('active', 'overview'))
 			     ->set('error', $lerror)
 			     ->parse()
