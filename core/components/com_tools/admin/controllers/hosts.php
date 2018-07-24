@@ -144,7 +144,7 @@ class Hosts extends AdminController
 	public function statusTask()
 	{
 		// Incoming
-		$hostname = Request::getVar('hostname', '', 'get');
+		$hostname = Request::getString('hostname', '', 'get');
 
 		// $hostname is eventually used in a string passed to an exec call, we gotta
 		// clean at least some of it. See RFC 1034 for valid character set info
@@ -222,7 +222,7 @@ class Hosts extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$hostname = Request::getVar('hostname', '', 'get');
+			$hostname = Request::getString('hostname', '', 'get');
 
 			// $hostname is eventually used in a string passed to an exec call, we gotta
 			// clean at least some of it. See RFC 1034 for valid character set info
@@ -279,7 +279,7 @@ class Hosts extends AdminController
 		$mwdb = Utils::getMWDBO();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$row = new Host($mwdb);
 
@@ -301,7 +301,7 @@ class Hosts extends AdminController
 		}
 
 		// Figure out the hosttype stuff.
-		$hosttype = Request::getVar('hosttype', array(), 'post');
+		$hosttype = Request::getArray('hosttype', array(), 'post');
 		$harr = array();
 		foreach ($hosttype as $name => $value)
 		{
@@ -361,8 +361,8 @@ class Hosts extends AdminController
 	public function toggleTask()
 	{
 		// Incoming
-		$hostname = Request::getVar('hostname', '', 'get');
-		$item = Request::getVar('item', '', 'get');
+		$hostname = Request::getString('hostname', '', 'get');
+		$item = Request::getString('item', '', 'get');
 		// $hostname is eventually used in a string passed to an exec call, we gotta
 		// clean at least some of it. See RFC 1034 for valid character set info
 		$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
@@ -399,7 +399,7 @@ class Hosts extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		$removed = 0;
 
