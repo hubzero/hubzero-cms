@@ -61,7 +61,7 @@ class Form extends Content
 	public function create()
 	{
 		// Include needed files
-		require_once(dirname(__DIR__) . DS . 'form.php');
+		require_once dirname(__DIR__) . DS . 'form.php';
 
 		// Check to make sure a file was provided
 		if (isset($_FILES['files']))
@@ -88,7 +88,7 @@ class Form extends Content
 		}
 		else
 		{
-			return array('error'=>$pdf->getErrors());
+			return array('error' => $pdf->getErrors());
 		}
 
 		// Grab the newly created form id
@@ -126,8 +126,8 @@ class Form extends Content
 			// Set the asset id on the form
 			$pdf->setAssetId($return['assets']['asset_id']);
 
-			$gid = Request::getVar('course_id');
-			$oid = Request::getVar('offering');
+			$gid = Request::getString('course_id');
+			$oid = Request::getString('offering');
 
 			// Build our JavaScript to return to the view to be executed
 			$js =
@@ -207,7 +207,7 @@ class Form extends Content
 	public function preview($asset)
 	{
 		// Get form object
-		require_once(dirname(__DIR__) . DS . 'form.php');
+		require_once dirname(__DIR__) . DS . 'form.php';
 		$form = PdfForm::loadByAssetId($asset->get('id'));
 
 		// Make sure we got a proper object
@@ -216,8 +216,8 @@ class Form extends Content
 			return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
 		}
 
-		$gid = Request::getVar('course_id');
-		$oid = Request::getVar('offering');
+		$gid = Request::getString('course_id');
+		$oid = Request::getString('offering');
 
 		// Compile our return var
 		$js =
@@ -246,6 +246,6 @@ class Form extends Content
 				}
 			});";
 
-		return array('type'=>'js', 'value'=>$js);
+		return array('type' => 'js', 'value' => $js);
 	}
 }

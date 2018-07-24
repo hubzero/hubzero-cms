@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Incoming
-$d = Request::getVar('d', 'inline');
+$d = Request::getString('d', 'inline');
 
 //make sure we have a proper disposition
 if ($d != "inline" && $d != "attachment")

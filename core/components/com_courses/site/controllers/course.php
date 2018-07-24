@@ -63,7 +63,7 @@ class Course extends SiteController
 	public function execute()
 	{
 		// Load the course page
-		$this->course = Models\Course::getInstance(Request::getVar('gid', ''));
+		$this->course = Models\Course::getInstance(Request::getString('gid', ''));
 
 		$this->registerTask('edit', 'display');
 
@@ -166,7 +166,7 @@ class Course extends SiteController
 		// Build pathway
 		$this->_buildPathway();
 
-		$this->view->active = Request::getVar('active', 'overview');
+		$this->view->active = Request::getString('active', 'overview');
 
 		$this->view->plugins = Event::trigger(
 			'courses.onCourseView',
@@ -298,7 +298,7 @@ class Course extends SiteController
 		}
 
 		// Incoming
-		$data = Request::getVar('course', array(), 'post', 'none', 2);
+		$data = Request::getArray('course', array(), 'post');
 
 		$course = Models\Course::getInstance($data['id']);
 
@@ -489,7 +489,7 @@ class Course extends SiteController
 			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 		}
 
-		$data    = Request::getVar('offering', array(), 'post', 'none', 2);
+		$data    = Request::getArray('offering', array(), 'post');
 		$no_html = Request::getInt('no_html', 0);
 
 		$course   = Models\Course::getInstance($data['course_id']);
@@ -712,7 +712,7 @@ class Course extends SiteController
 		}
 
 		// Incoming
-		$page = Request::getVar('page', array(), 'post', 'none', 2);
+		$page = Request::getArray('page', array(), 'post');
 
 		$course = Models\Course::getInstance($page['course_id']);
 		if (!$course->exists())
@@ -782,7 +782,7 @@ class Course extends SiteController
 			return;
 		}
 
-		$model = $this->course->page(Request::getVar('active', ''));
+		$model = $this->course->page(Request::getString('active', ''));
 
 		$msg = null;
 
@@ -855,7 +855,7 @@ class Course extends SiteController
 	private function courseAvailability($course = null)
 	{
 		//get the course
-		$course = (!is_null($course)) ? $course : Request::getVar('course', '');
+		$course = (!is_null($course)) ? $course : Request::getString('course', '');
 		$course = strtolower(trim($course));
 
 		if ($course == '')
@@ -874,7 +874,7 @@ class Course extends SiteController
 			$availability = true;
 		}
 
-		if (Request::getVar('no_html', 0) == 1)
+		if (Request::getInt('no_html', 0) == 1)
 		{
 			echo json_encode(array('available' => $availability));
 			return;
@@ -921,7 +921,7 @@ class Course extends SiteController
 		}
 
 		// Get the scope of the parent page the file is attached to
-		$filename = Request::getVar('file', '');
+		$filename = Request::getString('file', '');
 		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
 			$filename = substr($filename, strlen('image:'));

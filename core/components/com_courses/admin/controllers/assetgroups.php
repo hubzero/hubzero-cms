@@ -35,11 +35,12 @@ namespace Components\Courses\Admin\Controllers;
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Courses controller class for managing membership and course info
@@ -53,8 +54,8 @@ class Assetgroups extends AdminController
 	 */
 	public function execute()
 	{
-		$task   = Request::getVar('task', '');
-		$plugin = Request::getVar('plugin', '');
+		$task   = Request::getCmd('task', '');
+		$plugin = Request::getString('plugin', '');
 		if ($plugin && $task && $task != 'manage') //!isset($this->_taskMap[$task]))
 		{
 			Request::setVar('action', $task);
@@ -215,7 +216,7 @@ class Assetgroups extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -279,7 +280,7 @@ class Assetgroups extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Instantiate a Course object
 		$model = new \Components\Courses\Models\Assetgroup($fields['id']);
@@ -291,7 +292,7 @@ class Assetgroups extends AdminController
 			return;
 		}
 
-		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 
 		$model->set('params', $p->toString());
 
@@ -317,7 +318,7 @@ class Assetgroups extends AdminController
 	public function copyTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', array());
+		$id = Request::getArray('id', array());
 
 		// Get the single ID we're working with
 		if (is_array($id))
@@ -365,7 +366,7 @@ class Assetgroups extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$num = 0;
@@ -411,7 +412,7 @@ class Assetgroups extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -466,7 +467,7 @@ class Assetgroups extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$id = Request::getVar('id', array(0), 'post', 'array');
+		$id = Request::getArray('id', array(0), 'post');
 		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$uid = $id[0];

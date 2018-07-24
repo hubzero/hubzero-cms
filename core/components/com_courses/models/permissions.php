@@ -38,9 +38,9 @@ use Component;
 use Request;
 use User;
 
-require_once(__DIR__ . DS . 'course.php');
-require_once(__DIR__ . DS . 'manager.php');
-require_once(__DIR__ . DS . 'student.php');
+require_once __DIR__ . DS . 'course.php';
+require_once __DIR__ . DS . 'manager.php';
+require_once __DIR__ . DS . 'student.php';
 
 /**
  * Courses model class for course permissions
@@ -407,7 +407,7 @@ class Permissions extends Obj
 		if (!$this->get('course_id'))
 		{
 			// Try to get the course from request
-			$course = Course::getInstance(Request::getVar('gid', ''));
+			$course = Course::getInstance(Request::getString('gid', ''));
 			if ($course->exists())
 			{
 				$this->set('course_id', $course->get('id'));
@@ -489,7 +489,7 @@ class Permissions extends Obj
 		// If no offering ID is found
 		if (!$this->get('offering_id'))
 		{
-			$oid = Request::getVar('offering', '');
+			$oid = Request::getString('offering', '');
 
 			//$course = \Components\Courses\Models\Course::getInstance($this->get('course_id'));
 			$offering = $course->offering($oid);
