@@ -165,7 +165,7 @@ class Resources extends SiteController
 				$fields[$field->name] = $field;
 			}
 
-			$nbtag = Request::getVar('nbtag', array());
+			$nbtag = Request::getArray('nbtag', array());
 			$found = array();
 			foreach ($nbtag as $tagname => $tagcontent)
 			{

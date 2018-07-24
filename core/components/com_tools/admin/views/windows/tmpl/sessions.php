@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_WINDOWS'), 'tools.png');
+Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_WINDOWS'), 'tools');
 Toolbar::deleteList('terminate');
 Toolbar::spacer();
 Toolbar::help('sessions');
@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 			foreach ($this->apps as $record)
 			{
 				$html  = ' <option value="' . $record->path . '"';
-				if (Request::getVar('appname','') == $record->path)
+				if (Request::getString('appname','') == $record->path)
 				{
 					$html .= ' selected="selected"';
 				}

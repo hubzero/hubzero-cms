@@ -288,7 +288,7 @@ class Authors extends SiteController
 	public function updateTask()
 	{
 		// Incoming
-		$ids = Request::getVar('authors', array(), 'post');
+		$ids = Request::getArray('authors', array(), 'post');
 		$pid = Request::getInt('pid', 0);
 
 		// Ensure we have a resource ID ($pid) to work with

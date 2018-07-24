@@ -42,7 +42,7 @@ use Route;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php';
 
 /**
  * Administrative tools controller for zone locations
@@ -165,7 +165,7 @@ class Locations extends AdminController
 		{
 			$this->view->row->set('zone_id', $this->view->zone);
 		}
-		$this->view->tmpl = Request::getVar('tmpl', '');
+		$this->view->tmpl = Request::getCmd('tmpl', '');
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -190,8 +190,8 @@ class Locations extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
-		$tmpl   = Request::getVar('tmpl', '');
+		$fields = Request::getArray('fields', array(), 'post');
+		$tmpl   = Request::getCmd('tmpl', '');
 
 		$row = new Middleware\Location($fields['id']);
 		if (!$row->bind($fields))
@@ -285,7 +285,7 @@ class Locations extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		if (count($ids) > 0)
 		{

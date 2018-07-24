@@ -42,9 +42,9 @@ use Lang;
 use Html;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclassgroup.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclassgroup.php';
 
 /**
  * Manage member quotas
@@ -143,7 +143,7 @@ class Preferences extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -208,7 +208,7 @@ class Preferences extends AdminController
 		Request::checkToken();
 
 		// Incoming fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the profile
 		$row = new Tables\Preferences($this->database);
@@ -266,7 +266,7 @@ class Preferences extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?

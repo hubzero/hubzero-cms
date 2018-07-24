@@ -173,7 +173,7 @@ class Pipeline extends AdminController
 		Request::checkToken();
 
 		// Incoming instance ID
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Do we have an ID?
 		if (!$fields['id'])

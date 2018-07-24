@@ -138,7 +138,7 @@ class Hosttypes extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$item = Request::getVar('item', '', 'get');
+			$item = Request::getString('item', '', 'get');
 
 			$mwdb = Utils::getMWDBO();
 
@@ -200,7 +200,7 @@ class Hosttypes extends AdminController
 		// Get the middleware database
 		$mwdb = Utils::getMWDBO();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$row = new Hosttype($mwdb);
 
@@ -281,7 +281,7 @@ class Hosttypes extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		$removed = 0;
 

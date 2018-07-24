@@ -181,7 +181,7 @@ class Versions extends AdminController
 		Request::checkToken();
 
 		// Incoming instance ID
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Do we have an ID?
 		if (!$fields['version'])
@@ -205,7 +205,7 @@ class Versions extends AdminController
 		}
 
 		$row->vnc_command = trim($fields['vnc_command']);
-		$row->vnc_timeout = ($fields['vnc_timeout'] != 0) ? intval(trim($fields['vnc_timeout'])) : NULL;
+		$row->vnc_timeout = ($fields['vnc_timeout'] != 0) ? intval(trim($fields['vnc_timeout'])) : null;
 		$row->hostreq     = trim($fields['hostreq']);
 		$row->mw          = trim($fields['mw']);
 		$row->params      = trim($fields['params']);
@@ -332,11 +332,17 @@ class Versions extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', [], 'post');
+		$fields = Request::getArray('fields', [], 'post');
 		$row    = Zone::oneOrNew($fields['id'])->set($fields);
 
-		if (empty($fields['publish_up'])) $row->set('publish_up', null);
-		if (empty($fields['publish_down'])) $row->set('publish_down', null);
+		if (empty($fields['publish_up']))
+		{
+			$row->set('publish_up', null);
+		}
+		if (empty($fields['publish_down']))
+		{
+			$row->set('publish_down', null);
+		}
 
 		if (!$row->save())
 		{
