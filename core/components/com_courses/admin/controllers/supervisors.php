@@ -35,7 +35,7 @@ namespace Components\Courses\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Exception;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Manage a course section's manager entries
@@ -78,7 +78,7 @@ class Supervisors extends AdminController
 		));
 
 		// Incoming host
-		$m = Request::getVar('usernames', '', 'post');
+		$m = Request::getString('usernames', '', 'post');
 		$mbrs = explode(',', $m);
 
 		$users = array();
@@ -150,7 +150,7 @@ class Supervisors extends AdminController
 			$model->section($section);
 		}
 
-		$mbrs = Request::getVar('entries', array(0), 'post');
+		$mbrs = Request::getArray('entries', array(0), 'post');
 
 		foreach ($mbrs as $mbr)
 		{
@@ -196,7 +196,7 @@ class Supervisors extends AdminController
 			$model->section($section);
 		}
 
-		$entries = Request::getVar('entries', array(0), 'post');
+		$entries = Request::getArray('entries', array(0), 'post');
 
 		foreach ($entries as $key => $data)
 		{
@@ -249,4 +249,3 @@ class Supervisors extends AdminController
 			->display();
 	}
 }
-

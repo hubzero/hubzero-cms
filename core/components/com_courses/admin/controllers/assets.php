@@ -41,7 +41,7 @@ use Route;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php';
 
 /**
  * Courses controller class for managing course pages
@@ -160,8 +160,8 @@ class Assets extends AdminController
 
 		// Incoming
 		$asset_id  = Request::getInt('asset', 0);
-		$tmpl      = Request::getVar('tmpl', '');
-		$scope     = Request::getVar('scope', 'asset_group');
+		$tmpl      = Request::getString('tmpl', '');
+		$scope     = Request::getString('scope', 'asset_group');
 		$scope_id  = Request::getInt('scope_id', 0);
 		$course_id = Request::getInt('course_id', 0);
 
@@ -198,8 +198,8 @@ class Assets extends AdminController
 
 		// Incoming
 		$asset_id  = Request::getInt('asset', 0);
-		$tmpl      = Request::getVar('tmpl', '');
-		$scope     = Request::getVar('scope', 'asset_group');
+		$tmpl      = Request::getString('tmpl', '');
+		$scope     = Request::getString('scope', 'asset_group');
 		$scope_id  = Request::getInt('scope_id', 0);
 		$course_id = Request::getInt('course_id', 0);
 
@@ -243,7 +243,7 @@ class Assets extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$ids = Request::getVar('id', array());
+			$ids = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($ids))
@@ -261,8 +261,8 @@ class Assets extends AdminController
 
 		$this->view->row = $model;
 
-		$this->view->tmpl      = Request::getVar('tmpl', '');
-		$this->view->scope     = Request::getVar('scope', 'asset_group');
+		$this->view->tmpl      = Request::getString('tmpl', '');
+		$this->view->scope     = Request::getString('scope', 'asset_group');
 		$this->view->scope_id  = Request::getInt('scope_id', 0);
 		$this->view->course_id = Request::getInt('course_id', 0);
 		$this->view->config    = $this->config;
@@ -290,8 +290,8 @@ class Assets extends AdminController
 		Request::checkToken();
 
 		// load the request vars
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
-		$tmpl   = Request::getVar('tmpl', '');
+		$fields = Request::getArray('fields', array(), 'post');
+		$tmpl   = Request::getString('tmpl', '');
 
 		// instatiate course page object for saving
 		$row = new Tables\Asset($this->database);
@@ -360,7 +360,7 @@ class Assets extends AdminController
 		}
 
 		// Incoming file
-		/*$file = Request::getVar('upload', '', 'files', 'array');
+		/*$file = Request::getArray('upload', '', 'files');
 		if ($file['name'])
 		{
 			$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'] . DS . $row->id;
@@ -455,11 +455,11 @@ class Assets extends AdminController
 		$move = $this->_task == 'orderup' ? -1 : 1;
 
 		// Incoming
-		$id = Request::getVar('id', array());
+		$id = Request::getArray('id', array());
 		$id = $id[0];
 
-		$tmpl      = Request::getVar('tmpl', '');
-		$scope     = Request::getVar('scope', 'asset_group');
+		$tmpl      = Request::getString('tmpl', '');
+		$scope     = Request::getString('scope', 'asset_group');
 		$scope_id  = Request::getInt('scope_id', 0);
 		$course_id = Request::getInt('course_id', 0);
 
@@ -485,8 +485,8 @@ class Assets extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$tmpl      = Request::getVar('tmpl', '');
-		$scope     = Request::getVar('scope', 'asset_group');
+		$tmpl      = Request::getString('tmpl', '');
+		$scope     = Request::getString('scope', 'asset_group');
 		$scope_id  = Request::getInt('scope_id', 0);
 		$course_id = Request::getInt('course_id', 0);
 
