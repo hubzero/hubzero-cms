@@ -440,7 +440,7 @@ class Authors extends Base
 			$objO->userid 		 = $uid;
 			$objO->status 		 = $uid ? 1 : 0;
 			$objO->added 		 = Date::toSql();
-			$objO->role 		 = 2;
+			$objO->role 		 = \Components\Projects\Models\Orm\Owner::ROLE_INVITEE;
 			$objO->invited_email = $email;
 			$objO->invited_name  = $name;
 
@@ -736,7 +736,7 @@ class Authors extends Base
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
 		// Get selector styles
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team', 'selector');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(

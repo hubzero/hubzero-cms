@@ -221,13 +221,13 @@ $roles = [
 
 			switch ($owner->role)
 			{
-				case '1':
+				case \Components\Projects\Models\Orm\Owner::ROLE_MANAGER:
 					$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER');
 					break;
-				case '5':
+				case \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER:
 					$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_REVIEWER');
 					break;
-				case '2':
+				case \Components\Projects\Models\Orm\Owner::ROLE_COLLABORATOR:
 				default:
 					$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATOR');
 					break;
