@@ -44,7 +44,7 @@ use Route;
 use Lang;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php';
 
 /**
  * Administrative tools controller for zones
@@ -190,8 +190,8 @@ class Zones extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
-		$params = Request::getVar('zoneparams', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
+		$params = Request::getArray('zoneparams', array(), 'post');
 		$row    = new Middleware\Zone($fields['id']);
 
 		$fields['params'] = json_encode($params);
@@ -213,7 +213,7 @@ class Zones extends AdminController
 		/*$vl = new \Components\Tools\Tables\ZoneLocations($mwdb);
 		$vl->deleteByZone($row->id);
 
-		$locations = Request::getVar('locations', array(), 'post');
+		$locations = Request::getArray('locations', array(), 'post');
 		foreach ($locations as $location)
 		{
 			$vl = new \Components\Tools\Tables\ZoneLocations($mwdb);
@@ -293,7 +293,7 @@ class Zones extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		$mwdb = Utils::getMWDBO();
 
@@ -326,7 +326,7 @@ class Zones extends AdminController
 	public function defaultTask()
 	{
 		// Get item to default from request
-		$id = Request::getVar('id', [], '', 'array');
+		$id = Request::getArray('id', [], '', 'array');
 
 		if (empty($id))
 		{
@@ -468,7 +468,7 @@ class Zones extends AdminController
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -521,7 +521,7 @@ class Zones extends AdminController
 	 */
 	public function uploadTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -550,14 +550,14 @@ class Zones extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_NO_FILE'));
 			$this->pictureTask('', $id);
 			return;
 		}
-		$curfile = Request::getVar('curfile', '');
+		$curfile = Request::getString('curfile', '');
 
 		if (!is_dir($path))
 		{
@@ -680,7 +680,7 @@ class Zones extends AdminController
 	 */
 	public function removefileTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxRemoveTask();
 		}

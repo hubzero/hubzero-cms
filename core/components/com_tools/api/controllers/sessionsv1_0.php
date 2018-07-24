@@ -85,7 +85,7 @@ class Sessionsv1_0 extends ApiController
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		//get supportedtag usage
-		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
 		$resource_tags = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
@@ -138,8 +138,8 @@ class Sessionsv1_0 extends ApiController
 	{
 		$database = \App::get('db');
 
-		$tool    = Request::getVar('tool', '');
-		$version = Request::getVar('version', 'current');
+		$tool    = Request::getString('tool', '');
+		$version = Request::getString('version', 'current');
 
 		//we need a tool to continue
 		if ($tool == '')
@@ -149,7 +149,7 @@ class Sessionsv1_0 extends ApiController
 
 		//poll database for tool matching alias
 		$sql = "SELECT r.id, r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, r.fulltxt as abstract, r.created
-				FROM #__resources as r, #__tool_version as tv
+				FROM `#__resources` as r, `#__tool_version` as tv
 				WHERE r.published=1
 				AND r.type=7
 				AND r.standalone=1
@@ -178,14 +178,14 @@ class Sessionsv1_0 extends ApiController
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		//get supportedtag usage
-		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
 		$this->rt = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
 		//get screenshots
-		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'screenshot.php');
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+		include_once Component::path('com_resources') . DS . 'tables' . DS . 'screenshot.php';
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 		$ts = new \Components\Resources\Tables\Screenshot($database);
 		$tv = new \Components\Tools\Tables\Version($database);
 		$vid   = $tv->getVersionIdFromResource($tool_info->id, $version);
@@ -282,16 +282,16 @@ class Sessionsv1_0 extends ApiController
 	{
 		//$this->requiresAuthentication();
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
 		//instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get any request vars
-		$type      = Request::getVar('type', 'png');
-		$sessionid = Request::getVar('sessionid', '');
-		$notFound  = Request::getVar('notfound', 0);
+		$type      = Request::getString('type', 'png');
+		$sessionid = Request::getString('sessionid', '');
+		$notFound  = Request::getInt('notfound', 0);
 
 		$image_type = IMAGETYPE_PNG;
 		if ($type == 'jpeg' || $type == 'jpg')
@@ -393,44 +393,56 @@ class Sessionsv1_0 extends ApiController
 	{
 		$tool = preg_replace('/[^-_a-z0-9]/', '', explode('/', $_SERVER['SCRIPT_URL'])[3]);
 		$path = DS . 'apps' . DS . $tool . DS . 'current' . DS . 'rappture' . DS;
-		if (!file_exists($path)) {
+
+		if (!file_exists($path))
+		{
 			throw new Exception(Lang::txt('Unable to find tool.xml.'), 404);
 		}
 
 		$xml = new \SimpleXMLElement(file_get_contents($path . 'tool.xml'));
-		$xpath = Request::getVar('xpath', '');
+		$xpath = Request::getString('xpath', '');
 
 		// replace loader > example references to external files with the file
 		// contents
 		// these are needed to generate complete interfaces
-		foreach ($xml->xpath('//loader') as $loader) {
+		foreach ($xml->xpath('//loader') as $loader)
+		{
 			$match = [];
 			// the text of the <example> either refers to a specific filename or
 			// more likely a glob (*.xml)
 			// there can be any number of these
-			foreach ($loader->xpath('//example') as $example) {
+			foreach ($loader->xpath('//example') as $example)
+			{
 				$match[] = "$example";
 				// this removes the node from <loader>
 				unset($example[0]);
 			}
-			if (count($match) === 0) {
+
+			if (count($match) === 0)
+			{
 				continue;
 			}
 
 			// find the files that match any given expression
 			$include = [];
-			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path . 'examples')) as $file) {
+			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path . 'examples')) as $file)
+			{
 				// redundant in conforming files, but just in case restrict to .xml
-				if (fnmatch('*.xml', $file)) {
-					foreach ($match as $expr) {
-						if (fnmatch($expr, $file)) {
+				if (fnmatch('*.xml', $file))
+				{
+					foreach ($match as $expr)
+					{
+						if (fnmatch($expr, $file))
+						{
 							$include[] = "$file";
 							break;
 						}
 					}
 				}
 			}
-			if (!count($include)) {
+
+			if (!count($include))
+			{
 				continue;
 			}
 
@@ -442,13 +454,15 @@ class Sessionsv1_0 extends ApiController
 			$examples = new \DOMElement('examples');
 			$domLoader = dom_import_simplexml($loader);
 			$domLoader->appendChild($examples);
-			foreach ($include as $file) {
+			foreach ($include as $file)
+			{
 				$subDoc = new \DOMDocument();
 				$subDoc->loadXML(file_get_contents($file));
 				// select top level element
 				$run = $subDoc->getElementsByTagName('run');
 				// non-conforming, skip it
-				if (count($run) === 0) {
+				if (count($run) === 0)
+				{
 					continue;
 				}
 				// note filename for benefit of xpathers
@@ -460,20 +474,26 @@ class Sessionsv1_0 extends ApiController
 
 		header('Content-Type: text/xml');
 		header('Access-Control-Allow-Origin: *');
-		if (!$xpath) {
+
+		if (!$xpath)
+		{
 			echo $xml->asXML();
 		}
-		else {
+		else
+		{
 			$matches = $xml->xpath($xpath);
-			if (count($matches) === 0) {
+			if (count($matches) === 0)
+			{
 				throw new Exception(Lang::txt('Path not found.'), 404);
 			}
 			echo '<matches>';
-			foreach ($matches as $fragment) {
+			foreach ($matches as $fragment)
+			{
 				echo '<match>' . $fragment->asXML(). '</match>';
 			}
 			echo '</matches>';
 		}
+
 		exit();
 	}
 
@@ -497,8 +517,8 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//get request vars
-		$tool_name    = Request::getVar('app', '');
-		$tool_version = Request::getVar('version', 'default');
+		$tool_name    = Request::getString('app', '');
+		$tool_version = Request::getString('version', 'default');
 
 		//build application object
 		$app = new stdClass;
@@ -514,9 +534,9 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//include needed tool libraries
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
 		//create database object
 		$database = \App::get('db');
@@ -589,13 +609,13 @@ class Sessionsv1_0 extends ApiController
 		$jobs = $ms->getCount($result->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
 
 		$preferences = new \Components\Tools\Tables\Preferences($database);
 		$preferences->loadByUser($result->get('uidNumber'));
 		if (!$preferences || !$preferences->id)
 		{
-			include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
 			$scls = new \Components\Tools\Tables\SessionClass($this->database);
 			$default = $scls->find('one', array('alias' => 'default'));
 			$preferences->user_id  = $result->get('uidNumber');
@@ -708,8 +728,8 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		// Grab tool name and version
-		$tool_name    = Request::getVar('app', '');
-		$tool_version = Request::getVar('revision', 'default');
+		$tool_name    = Request::getString('app', '');
+		$tool_version = Request::getString('revision', 'default');
 
 		// Build application object
 		$app          = new stdClass;
@@ -799,7 +819,7 @@ class Sessionsv1_0 extends ApiController
 		$jobs = $ms->getCount($profile->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
 
 		$preferences = new \Components\Tools\Tables\Preferences($database);
 		$preferences->loadByUser($profile->get('id'));
@@ -820,7 +840,7 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		// Check for an incoming driver file
-		if ($driver = Request::getVar('xml', false, 'post', 'none', 2))
+		if ($driver = Request::getString('xml', false, 'post'))
 		{
 			// Build a path to where the driver file will go through webdav
 			$base = DS . 'webdav' . DS . 'home';
@@ -842,7 +862,7 @@ class Sessionsv1_0 extends ApiController
 			if (!\Filesystem::exists($homeDir))
 			{
 				// Try to create their home directory
-				require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php');
+				require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php';
 
 				if (!\Components\Tools\Helpers\Utils::createHomeDirectory($profile->get('username')))
 				{
@@ -1002,7 +1022,7 @@ class Sessionsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$session = Request::getInt('session_num', 0);
-		$runFile = Request::getVar('run_file', false);
+		$runFile = Request::getString('run_file', false);
 
 		if (!$session)
 		{
@@ -1070,16 +1090,16 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//include needed tool libs
-		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
 		//instantiate db objects
 		$database = \App::get('db');
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
-		$sessionid = Request::getVar('sessionid', '');
+		$sessionid = Request::getString('sessionid', '');
 		$ip        = Request::ip();
 
 		//make sure we have the session
@@ -1173,13 +1193,13 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//include needed libraries
-		require_once(dirname(dirname(__DIR__)) . '/models/middleware/session.php');
+		require_once dirname(dirname(__DIR__)) . '/models/middleware/session.php';
 
 		//instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
-		$sessionid = Request::getVar('sessionid', '');
+		$sessionid = Request::getString('sessionid', '');
 
 		//make sure we have the session
 		if (!$sessionid)
@@ -1246,13 +1266,13 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		// include needed libraries
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php';
 
 		// instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// get request vars
-		$sessionid = Request::getVar('sessionid', '');
+		$sessionid = Request::getString('sessionid', '');
 
 		// check to make sure we have session id
 		if (!$sessionid)
@@ -1300,10 +1320,10 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		// get request vars
-		$type = Request::getVar('type', 'soft');
+		$type = Request::getString('type', 'soft');
 
 		// get storage quota
-		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php';
 		$disk_usage = \Components\Tools\Helpers\Utils::getDiskUsage($result->get('username'));
 
 		// get the tools storage path
@@ -1323,7 +1343,6 @@ class Sessionsv1_0 extends ApiController
 
 		$this->send($object);
 	}
-
 
 	/**
 	 * Method to purge users storage
@@ -1347,7 +1366,7 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		// get request vars
-		$degree = Request::getVar('degree', '');
+		$degree = Request::getString('degree', '');
 
 		// get the hubs storage host
 		$tool_params = Component::params('com_tools');
@@ -1450,17 +1469,17 @@ class Sessionsv1_0 extends ApiController
 	{
 		//$this->requiresAuthentication();
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
 		// instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// get any request vars
-		$username   = Request::getVar('username');
-		$sessionid  = Request::getVar('id');
-		$private_ip = Request::getVar('private_ip');
-		$public_ip  = Request::getVar('public_ip', Request::ip());
+		$username   = Request::getString('username');
+		$sessionid  = Request::getString('id');
+		$private_ip = Request::getString('private_ip');
+		$public_ip  = Request::getString('public_ip', Request::ip());
 
 		// check to make sure we have a valid sessionid
 		if ($sessionid == '' || !is_numeric($sessionid))
@@ -1531,5 +1550,4 @@ class Sessionsv1_0 extends ApiController
 		}
 		$this->send($object);
 	}
-
 }

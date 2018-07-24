@@ -158,7 +158,7 @@ class Router extends Base
 				case 'remove':
 				case 'save':
 					$vars['option'] = 'com_tools';
-					$vars['controller'] = \Request::getVar('controller', 'authors');
+					$vars['controller'] = \Request::getCmd('controller', 'authors');
 					$vars['task'] = $segments[0];
 				break;
 

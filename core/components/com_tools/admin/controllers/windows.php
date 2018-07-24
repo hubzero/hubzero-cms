@@ -120,7 +120,7 @@ class Windows extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -154,7 +154,7 @@ class Windows extends AdminController
 		Request::checkToken();
 
 		// Incoming fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields['standalone'] = 1;
 
 		// Load the profile
@@ -219,7 +219,7 @@ class Windows extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -305,7 +305,7 @@ class Windows extends AdminController
 			->rows();
 
 		// Get a list of all active sessions for specified app
-		$appname = Request::getVar('appname','');
+		$appname = Request::getString('appname', '');
 
 		$sessions = array();
 
@@ -318,7 +318,7 @@ class Windows extends AdminController
 			{
 				$sessionsArray = explode("|", $s);
 
-				if (sizeof($sessionsArray) == 4)
+				if (count($sessionsArray) == 4)
 				{
 					$sessions[] = array("sessionid" => $sessionsArray[0], "status" => $sessionsArray[2], "opaquedata" => $sessionsArray[3]);
 				}
@@ -349,7 +349,6 @@ class Windows extends AdminController
 			->display();
 	}
 
-
 	/**
 	 * Display sessions
 	 *
@@ -359,8 +358,8 @@ class Windows extends AdminController
 	{
 		// Get report startdate and enddate set
 		// 'Y-m-d H:i:s'
-		$startdate = Request::getVar('startdate', '');
-		$enddate = Request::getVar('enddate', '');
+		$startdate = Request::getString('startdate', '');
+		$enddate = Request::getString('enddate', '');
 
 		if (empty($startdate))
 		{
@@ -417,7 +416,6 @@ class Windows extends AdminController
 			->display();
 	}
 
-
 	/**
 	 * Delete one or more sessions
 	 *
@@ -429,7 +427,7 @@ class Windows extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)

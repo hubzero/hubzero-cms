@@ -903,7 +903,7 @@ class Pipeline extends SiteController
 		);
 
 		// set vars
-		$tool = Request::getVar('tool', array(), 'post');
+		$tool = Request::getArray('tool', array(), 'post');
 		$tool = array_map('trim', $tool);
 		// Sanitize the input a bit
 		$noHtmlFilter = \JFilterInput::getInstance();

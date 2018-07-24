@@ -33,7 +33,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$newSession = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='. $this->app->version), 'server');
+$newSession = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='. $this->app->version), 'server');
 if (strstr($newSession, '?'))
 {
 	$newSession .= '&amp;newinstance=1';
