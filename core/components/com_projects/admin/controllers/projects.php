@@ -893,7 +893,7 @@ class Projects extends AdminController
 		// Output messsage and redirect
 		if ($i)
 		{
-			Notify::success(Lang::txt('COM_PROJCTS_SUCCESS_' . $this->getTask(), $i));
+			Notify::success(Lang::txt('COM_PROJECTS_SUCCESS_' . strtoupper($this->getTask()), $i));
 		}
 
 		$this->cancelTask();
