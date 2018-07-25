@@ -88,7 +88,7 @@ class UsersControllerUser extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = null)
 	{
-		$data = Request::getVar('jform', array(), 'post', 'array');
+		$data = Request::getArray('jform', array(), 'post');
 
 		// TODO: JForm should really have a validation handler for this.
 		if (isset($data['password']) && isset($data['password2']))

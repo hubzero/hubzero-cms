@@ -49,7 +49,7 @@ class UsersControllerLevel extends JControllerForm
 		Session::checkToken() or exit(Lang::txt('JInvalid_Token'));
 
 		// Initialise variables.
-		$ids  = Request::getVar('cid', array(), '', 'array');
+		$ids = Request::getArray('cid', array());
 
 		if (!User::authorise('core.admin', $this->option))
 		{

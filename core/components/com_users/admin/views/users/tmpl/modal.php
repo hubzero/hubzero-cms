@@ -17,7 +17,7 @@ $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
-<form action="<?php echo Route::url('index.php?option=com_users&view=users&layout=modal&tmpl=component&groups='.Request::getVar('groups', '', 'default', 'BASE64').'&excluded='.Request::getVar('excluded', '', 'default', 'BASE64'));?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_users&view=users&layout=modal&tmpl=component&groups='.Request::getString('groups', '').'&excluded='.Request::getString('excluded', ''));?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filter clearfix">
 		<div class="grid">
 			<div class="col span8">
