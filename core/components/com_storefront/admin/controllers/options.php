@@ -280,7 +280,7 @@ class Options extends AdminController
 				Request::checkToken();
 
 				// Incoming
-				$oIds = Request::getArray('oId', 0);
+				$oIds = Request::getArray('oId', array(0));
 
 				// Make sure we have ID(s) to work with
 				if (empty($oIds))
