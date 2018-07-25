@@ -87,12 +87,14 @@ class CurrentCart extends Cart
 		if ($cart)
 		{
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-			if (!$juser->get('guest')) {
+			if (!$juser->get('guest'))
+			{
 				if (empty($this->cart->linked) || !$this->cart->linked)
 				{
 					// link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
 					// if linking fails create a new cart
-					if (!$this->linkCarts()) {
+					if (!$this->linkCarts())
+					{
 						$this->createCart();
 					}
 				}
@@ -531,7 +533,7 @@ class CurrentCart extends Cart
 
 		foreach ($requiredFields as $field)
 		{
-			$fieldValue = Request::getVar($field, false, 'post');
+			$fieldValue = Request::getString($field, false, 'post');
 			if (empty($fieldValue))
 			{
 				$errors[] = Lang::txt('COM_CART_FILL_REQUIRED_FIELDS');
@@ -540,7 +542,7 @@ class CurrentCart extends Cart
 		}
 
 		// Check values
-		if (empty($errors) && !CartHelper::validZip(Request::getVar('shippingZip', false, 'post', 'string')))
+		if (empty($errors) && !CartHelper::validZip(Request::getString('shippingZip', false, 'post')))
 		{
 			$errors[] = Lang::txt('COM_CART_INCORRECT_ZIP');
 		}
@@ -551,12 +553,12 @@ class CurrentCart extends Cart
 		if (empty($errors))
 		{
 			// save shipping info
-			$shippingToFirst = $this->_db->quote(Request::getVar('shippingToFirst', false, 'post', 'string'));
-			$shippingToLast = $this->_db->quote(Request::getVar('shippingToLast', false, 'post', 'string'));
-			$shippingAddress = $this->_db->quote(Request::getVar('shippingAddress', false, 'post', 'string'));
-			$shippingCity = $this->_db->quote(Request::getVar('shippingCity', false, 'post', 'string'));
-			$shippingState = $this->_db->quote(Request::getVar('shippingState', false, 'post', 'string'));
-			$shippingZip = $this->_db->quote(Request::getVar('shippingZip', false, 'post', 'string'));
+			$shippingToFirst = $this->_db->quote(Request::getString('shippingToFirst', false, 'post'));
+			$shippingToLast = $this->_db->quote(Request::getString('shippingToLast', false, 'post'));
+			$shippingAddress = $this->_db->quote(Request::getString('shippingAddress', false, 'post'));
+			$shippingCity = $this->_db->quote(Request::getString('shippingCity', false, 'post'));
+			$shippingState = $this->_db->quote(Request::getString('shippingState', false, 'post'));
+			$shippingZip = $this->_db->quote(Request::getString('shippingZip', false, 'post'));
 
 			if ($this->debug)
 			{
@@ -573,7 +575,7 @@ class CurrentCart extends Cart
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 
-			$saveAddress = $this->_db->quote(Request::getVar('saveAddress', false, 'post', 'string'));
+			$saveAddress = $this->_db->quote(Request::getString('saveAddress', false, 'post'));
 			// Save the address for future use if requested
 			if ($saveAddress)
 			{
@@ -939,7 +941,7 @@ class CurrentCart extends Cart
 	public function addCoupon($couponCode)
 	{
 		// Check if coupon is valid and active (throws exception if invalid)
-		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php';
+		require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
 		$coupons = new \Components\Storefront\Models\Coupons();
 
 		// Get coupons
@@ -980,7 +982,7 @@ class CurrentCart extends Cart
 	 */
 	public function applyCoupon($cnId)
 	{
-		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php';
+		require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
 		$storefrontCoupons = new \Components\Storefront\Models\Coupons();
 		$coupon = $storefrontCoupons->getCouponInfo($cnId, true, true, true, true);
 
@@ -1058,7 +1060,7 @@ class CurrentCart extends Cart
 		$cnIds = $this->_db->loadColumn();
 
 		// Get coupon types
-		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php';
+		require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
 		$storefrontCoupons = new \Components\Storefront\Models\Coupons();
 		$coupons = $storefrontCoupons->getCouponsInfo($cnIds);
 
@@ -1333,7 +1335,8 @@ class CurrentCart extends Cart
 					}
 
 					// Quit if there is no amount to discount
-					if (!$amountToDiscount) {
+					if (!$amountToDiscount)
+					{
 						//break;
 					}
 
@@ -1459,7 +1462,7 @@ class CurrentCart extends Cart
 		// init membership info
 		$memberships = array();
 
-		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
+		require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
 		$ms = new \Components\Storefront\Models\Memberships();
 
 		// Get membership types
@@ -1652,7 +1655,7 @@ class CurrentCart extends Cart
 			echo "<br>Lifting session cart";
 		}
 
-		$session = \App::get('session'); //Factory::getSession();
+		$session = \App::get('session');
 		$cart = $session->get('cart');
 
 		if ($cart && !empty($cart->crtId))
@@ -1748,7 +1751,7 @@ class CurrentCart extends Cart
 		}
 
 		// If cookie exists, check if this is not pointing to a members' cart and load it.
-		$crtId = Request::getVar('cartId', '', 'COOKIE');
+		$crtId = Request::getString('cartId', '', 'COOKIE');
 
 		if (!empty($crtId) && !$this->cartIsLinked($crtId))
 		{
@@ -1822,7 +1825,8 @@ class CurrentCart extends Cart
 			$uId = $juser->id;
 			$cart->linked = 1;
 		}
-		else {
+		else
+		{
 			$cart->linked = 0;
 		}
 
@@ -1864,8 +1868,6 @@ class CurrentCart extends Cart
 			echo "<br>Linking carts";
 		}
 
-		//print_r($this); die;
-
 		// Kill the old cookie
 		setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
 
@@ -1900,7 +1902,7 @@ class CurrentCart extends Cart
 		else
 		{
 			// Get a static instance of the users' cart
-			require_once(__DIR__ . DS . 'UserCart.php');
+			require_once __DIR__ . DS . 'UserCart.php';
 			$userCart = new UserCart($userCartId);
 			// Get items from the user's cart to see if it is empty or nor
 			$userCartItems = $userCart->getCartItems();
@@ -1968,7 +1970,7 @@ class CurrentCart extends Cart
 			$this->crtId = $userCartId;
 		}
 
-		require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
+		require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
 		$storefrontCoupons = new \Components\Storefront\Models\Coupons();
 
 		// Go through each coupon and apply all that are not applied
@@ -2087,9 +2089,9 @@ class CurrentCart extends Cart
 			}
 
 			// Reserve/lock items
-			require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+			require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 			$sku = \Components\Storefront\Models\Sku::getInstance($sId);
-			//print_r($sku); die;
+
 			$sku->reserveInventory($skuInfo['cartInfo']->qty);
 		}
 
@@ -2172,7 +2174,7 @@ class CurrentCart extends Cart
 		// lock transaction items
 		$warehouse = $this->warehouse;
 
-		require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+		require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 
 		foreach ($tItems as $sId => $item)
 		{

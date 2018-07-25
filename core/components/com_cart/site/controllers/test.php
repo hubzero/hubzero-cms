@@ -43,7 +43,7 @@ class Test extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -75,7 +75,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// CREATE COUPON
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
+			include_once \Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCoupon.php';
 			try
 			{
 				// Constructor take the coupon code
@@ -123,7 +123,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// CREATE NEW COURSE
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+			include_once \Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
 
 			$course = new Course();
 			$course->setName('Name of the course');
@@ -173,7 +173,7 @@ class Test extends ComponentController
 		if (0)
 		{
 			// UPDATE COURSE by recreating it
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
+			include_once \Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCourse.php';
 			$course = new Course();
 			$course->setName('Operations Management 104');
 			$course->setDescription('Operations Management 104 is some kind of test course for now...');
@@ -227,8 +227,7 @@ class Test extends ComponentController
 		//$user->delete();
 		//die;
 
-		$doc =& JFactory::getDocument();
-		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		\Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
@@ -279,7 +278,7 @@ class Test extends ComponentController
 		$curl_err = curl_error($ch);
 		curl_close($ch);
 
-		print_r(json_decode($curl_result));
+		//print_r(json_decode($curl_result));
 		//print_r($curl_result);
 		die('+');
 
@@ -322,10 +321,9 @@ class Test extends ComponentController
 		$curl_err = curl_error($ch);
 		curl_close($ch);
 
-		print_r(json_decode($curl_result));
+		//print_r(json_decode($curl_result));
 		//print_r($curl_result);
 		die('~');
-
 	}
 
 	public function passportTask()
