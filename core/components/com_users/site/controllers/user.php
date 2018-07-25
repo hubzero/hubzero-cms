@@ -29,7 +29,7 @@ class UsersControllerUser extends UsersController
 		// Populate the data array:
 		$data             = array();
 		$options          = array();
-		$data['return']   = Request::getVar('return', '', 'POST', 'BASE64');
+		$data['return']   = Request::getString('return', '', 'POST');
 		if (preg_match('/[^A-Za-z0-9\+\/\=]/', $data['return']))
 		{
 			$data['return'] = '';
@@ -38,10 +38,10 @@ class UsersControllerUser extends UsersController
 		{
 			$data['return'] = base64_decode($data['return']);
 		}
-		$data['username'] = Request::getVar('username', '', 'method', 'username');
-		$data['password'] = Request::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
+		$data['username'] = Request::getString('username', '');
+		$data['password'] = Request::getString('passwd', '', 'post');
 
-		$authenticator    = Request::getVar('authenticator', '', 'method');
+		$authenticator    = Request::getString('authenticator', '');
 
 		// If a specific authenticator is specified try to call the login method for that plugin
 		if (!empty($authenticator))
@@ -87,7 +87,7 @@ class UsersControllerUser extends UsersController
 			// Check for request forgeries
 			Session::checkToken('request');
 
-			if ($return = Request::getVar('return', '', 'method', 'base64'))
+			if ($return = Request::getString('return', ''))
 			{
 				if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 				{
@@ -103,7 +103,7 @@ class UsersControllerUser extends UsersController
 				}
 			}
 
-			if ($freturn = Request::getVar('freturn', '', 'method', 'base64'))
+			if ($freturn = Request::getString('freturn', ''))
 			{
 				if (preg_match('/[^A-Za-z0-9\+\/\=]/', $freturn))
 				{
@@ -227,7 +227,7 @@ class UsersControllerUser extends UsersController
 
 		$user = User::getInstance();
 
-		$authenticator = Request::getVar('authenticator', '', 'method');
+		$authenticator = Request::getString('authenticator', '');
 		$singleSignOn = Request::getVar('sso', false);
 
 		if (empty($authenticator) || $authenticator == '')
@@ -343,7 +343,7 @@ class UsersControllerUser extends UsersController
 			}
 
 			// Get the return url from the request and validate that it is internal.
-			$return = Request::getVar('return', '', 'method', 'base64');
+			$return = Request::getString('return', '');
 			$return = base64_decode($return);
 			if (!JURI::isInternal($return))
 			{
@@ -369,7 +369,7 @@ class UsersControllerUser extends UsersController
 		Session::checkToken('post');
 
 		// Get the form data.
-		$data   = Request::getVar('user', array(), 'post', 'array');
+		$data   = Request::getArray('user', array(), 'post');
 
 		// Get the model and validate the data.
 		$model  = $this->getModel('Registration', 'UsersModel');
@@ -434,7 +434,7 @@ class UsersControllerUser extends UsersController
 		Session::checkToken('post');
 
 		$model = $this->getModel('User', 'UsersModel');
-		$data  = Request::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getArray('jform', array(), 'post');
 
 		// Submit the username remind request.
 		$return = $model->processRemindRequest($data);
@@ -514,7 +514,7 @@ class UsersControllerUser extends UsersController
 		// Do we have a return
 		$return  = '';
 		$options = array();
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$return = base64_decode($return);
 			if (!JURI::isInternal($return))
@@ -527,7 +527,7 @@ class UsersControllerUser extends UsersController
 			}
 		}
 
-		$authenticator = Request::getVar('authenticator', '', 'method');
+		$authenticator = Request::getString('authenticator', '');
 
 		// If a specific authenticator is specified try to call the link method for that plugin
 		if (!empty($authenticator))
@@ -578,7 +578,7 @@ class UsersControllerUser extends UsersController
 	public function consent()
 	{
 		Session::set('user_consent', true);
-		App::redirect(base64_decode(Request::getVar('return')));
+		App::redirect(base64_decode(Request::getString('return')));
 	}
 
 	public function attach()

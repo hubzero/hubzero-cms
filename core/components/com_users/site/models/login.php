@@ -55,7 +55,7 @@ class UsersModelLogin extends JModelForm
 		$data = $app->getUserState('users.login.form.data', array());
 
 		// check for return URL from the request first
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{

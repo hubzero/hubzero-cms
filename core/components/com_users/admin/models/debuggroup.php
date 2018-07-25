@@ -86,7 +86,7 @@ class UsersModelDebugGroup extends JModelList
 		$app = JFactory::getApplication('administrator');
 
 		// Adjust the context to support modal layouts.
-		if ($layout = Request::getVar('layout', 'default'))
+		if ($layout = Request::getCmd('layout', 'default'))
 		{
 			$this->context .= '.'.$layout;
 		}
