@@ -58,9 +58,9 @@ class Daterangefilter extends Filter
 		$startdate = isset($dateValues['startdate']) ? $dateValues['startdate'] : '';
 		$enddate = isset($dateValues['enddate']) ? $dateValues['enddate'] : '';
 		$html = '<ul><li><fieldset class="search-filters"><legend>' . $this->label . '</legend>';
-		$html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters[' . 
+		$html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters[' .
 			$this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';
-		$html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters[' . 
+		$html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters[' .
 			$this->field . '][enddate]"' . $maxDateString . ' value="' . $enddate . '" autocomplete="off"/>';
 		$html .= '</li></ul></fieldset>';
 		return $html;
