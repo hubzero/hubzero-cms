@@ -42,7 +42,7 @@ use Config;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php';
 
 /**
  * API controller for the publications component
@@ -115,7 +115,7 @@ class Publicationsv1_1 extends ApiController
 
 			$publications = $model->entries('list', $filters, true);
 			$response->total = $model->entries('count', $filters, true);
-			$searchable = Request::getVar('searchable', false);
+			$searchable = Request::getBool('searchable', false);
 		}
 		else
 		{

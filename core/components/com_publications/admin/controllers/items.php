@@ -56,7 +56,7 @@ class Items extends AdminController
 	 */
 	public function execute()
 	{
-		$this->_task = strtolower(Request::getVar('task', '', 'request'));
+		$this->_task = strtolower(Request::getCmd('task', ''));
 		parent::execute();
 	}
 
@@ -150,7 +150,7 @@ class Items extends AdminController
 		$this->view->config = $this->config;
 
 		// Incoming publication ID
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		if (is_array($id))
 		{
 			$id = $id[0];
@@ -169,13 +169,13 @@ class Items extends AdminController
 		}
 
 		// Incoming version
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['category'] = Request::getVar('category', '');
-		$this->view->return['sortby']   = Request::getVar('sortby', '');
-		$this->view->return['status']   = Request::getVar('status', '');
+		$this->view->return['category'] = Request::getString('category', '');
+		$this->view->return['sortby']   = Request::getString('sortby', '');
+		$this->view->return['status']   = Request::getString('status', '');
 
 		// Instantiate a publication object
 		$this->view->model = new Models\Publication($id, $version);
@@ -236,7 +236,7 @@ class Items extends AdminController
 		// Incoming
 		$id = Request::getInt('id', 0);
 		$el = Request::getInt('el', 0);
-		$v  = Request::getVar('v', 'default');
+		$v  = Request::getString('v', 'default');
 
 		// Get publication information
 		$this->view->pub = new Models\Publication($id, $v);
@@ -293,9 +293,9 @@ class Items extends AdminController
 		// Incoming
 		$el      = Request::getInt('el', 0);
 		$id      = Request::getInt('id', 0);
-		$version = Request::getVar('version', '');
-		$params  = Request::getVar('params', array(), 'request', 'array');
-		$attachments = Request::getVar('attachments', array(), 'request', 'array');
+		$version = Request::getString('version', '');
+		$params  = Request::getArray('params', array());
+		$attachments = Request::getArray('attachments', array());
 
 		// Load publication model
 		$this->model  = new Models\Publication($id, $version);
@@ -469,8 +469,8 @@ class Items extends AdminController
 
 		// Incoming
 		$id       = Request::getInt('id', 0);
-		$version  = Request::getVar('version', '');
-		$neworder = Request::getVar('list', '');
+		$version  = Request::getString('version', '');
+		$neworder = Request::getString('list', '');
 
 		// Set redirect URL
 		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
@@ -559,11 +559,11 @@ class Items extends AdminController
 		// Incoming
 		$author  = Request::getInt('author', 0);
 		$id      = Request::getInt('id', 0);
-		$version = Request::getVar('version', '');
+		$version = Request::getString('version', '');
 
-		$firstName = Request::getVar('firstName', '', 'post');
-		$lastName  = Request::getVar('lastName', '', 'post');
-		$org       = Request::getVar('organization', '', 'post');
+		$firstName = Request::getString('firstName', '', 'post');
+		$lastName  = Request::getString('lastName', '', 'post');
+		$org       = Request::getString('organization', '', 'post');
 
 		// Set redirect URL
 		$url = Route::url('index.php?option=' . $this->_option . '&controller='
@@ -662,9 +662,9 @@ class Items extends AdminController
 
 		// Incoming
 		$id           = Request::getInt('id', 0);
-		$action       = Request::getVar('admin_action', '');
-		$published_up = Request::getVar('published_up', '');
-		$version      = Request::getVar('version', 'default');
+		$action       = Request::getString('admin_action', '');
+		$published_up = Request::getString('published_up', '');
+		$version      = Request::getString('version', 'default');
 
 		// Is this a new publication? Cannot create via back-end
 		$isnew = $id ? 0 : 1;
@@ -700,22 +700,22 @@ class Items extends AdminController
 					? $this->model->_curationModel->_manifest->params->require_doi : 0;
 
 		// Incoming updates
-		$title          = trim(Request::getVar('title', '', 'post'));
+		$title          = trim(Request::getString('title', '', 'post'));
 		$title          = htmlspecialchars($title);
-		$abstract       = trim(Request::getVar('abstract', '', 'post'));
+		$abstract       = trim(Request::getString('abstract', '', 'post'));
 		$abstract       = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($abstract));
-		$description    = trim(Request::getVar('description', '', 'post', 'none', 2));
-		$release_notes  = stripslashes(trim(Request::getVar('release_notes', '', 'post', 'none', 2)));
+		$description    = trim(Request::getString('description', '', 'post'));
+		$release_notes  = stripslashes(trim(Request::getString('release_notes', '', 'post')));
 		$group_owner    = Request::getInt('group_owner', 0, 'post');
-		$published_up   = trim(Request::getVar('published_up', '', 'post'));
-		$published_down = trim(Request::getVar('published_down', '', 'post'));
+		$published_up   = trim(Request::getString('published_up', '', 'post'));
+		$published_down = trim(Request::getString('published_down', '', 'post'));
 		$state          = Request::getInt('state', 0);
 		$featured       = Request::getInt('featured', 0);
 		$metadata       = '';
 		$activity       = '';
 
 		// Save publication record
-		$this->model->publication->alias    = trim(Request::getVar('alias', '', 'post'));
+		$this->model->publication->alias    = trim(Request::getString('alias', '', 'post'));
 		$this->model->publication->category = trim(Request::getInt('category', 0, 'post'));
 		$this->model->publication->access   = Request::getInt('access', 0, 'post');
 		$this->model->publication->group_owner = $group_owner;
@@ -741,7 +741,7 @@ class Items extends AdminController
 				}
 			}
 
-			$nbtag = Request::getVar('nbtag', array(), 'request', 'array');
+			$nbtag = Request::getArray('nbtag', array());
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
 				$tagcontent = trim(stripslashes($tagcontent));
@@ -769,10 +769,10 @@ class Items extends AdminController
 		$this->model->version->description  = $description;
 		$this->model->version->metadata     = $metadata;
 		$this->model->version->release_notes= $release_notes;
-		$this->model->version->license_text = trim(Request::getVar('license_text', '', 'post'));
+		$this->model->version->license_text = trim(Request::getString('license_text', '', 'post'));
 		$this->model->version->license_type = Request::getInt('license_type', 0, 'post');
 		$this->model->version->access       = Request::getInt('access', 0, 'post');
-		if ($version_label = Request::getVar('version_label', null, 'post'))
+		if ($version_label = Request::getString('version_label', null, 'post'))
 		{
 			$this->model->version->version_label = $version_label;
 		}
@@ -781,7 +781,7 @@ class Items extends AdminController
 		$doiService = new Models\Doi($this->model);
 
 		// DOI manually entered?
-		$doi = trim(Request::getVar('doi', '', 'post'));
+		$doi = trim(Request::getString('doi', '', 'post'));
 		if ($doi
 		 && (!$this->model->version->doi || !preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi)))
 		{
@@ -829,7 +829,7 @@ class Items extends AdminController
 		}
 
 		// Incoming tags
-		$tags = Request::getVar('tags', '', 'post');
+		$tags = Request::getString('tags', '', 'post');
 
 		// Save the tags
 		$rt = new Helpers\Tags($this->database);
@@ -842,7 +842,7 @@ class Items extends AdminController
 					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))
 					. ' "' . $pubtitle . '" ';
 		$sendmail = 0;
-		$message  = rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar('message', '')));
+		$message  = rtrim(\Hubzero\Utility\Sanitize::clean(Request::getString('message', '')));
 		$output   = Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_ITEM');
 
 		// Admin actions
@@ -1066,7 +1066,7 @@ class Items extends AdminController
 		}
 
 		// Save parameters
-		$params = Request::getVar('params', '', 'post');
+		$params = Request::getArray('params', '', 'post');
 		if (is_array($params))
 		{
 			foreach ($params as $k => $v)
@@ -1223,9 +1223,9 @@ class Items extends AdminController
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['cat']    = Request::getVar('cat', '');
-		$this->view->return['sortby'] = Request::getVar('sortby', '');
-		$this->view->return['status'] = Request::getVar('status', '');
+		$this->view->return['cat']    = Request::getString('cat', '');
+		$this->view->return['sortby'] = Request::getString('sortby', '');
+		$this->view->return['status'] = Request::getString('status', '');
 
 		// Load publication model
 		$this->view->pub = new Models\Publication($id, 'default');
@@ -1265,7 +1265,7 @@ class Items extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$erase = Request::getInt('erase', 1);
 
 		// Ensure we have some IDs to work with
@@ -1279,7 +1279,7 @@ class Items extends AdminController
 			return;
 		}
 
-		$version = count($ids) == 1 ? Request::getVar('version', 'all') : 'all';
+		$version = count($ids) == 1 ? Request::getString('version', 'all') : 'all';
 
 		require_once \Component::path('com_projects') . DS . 'tables' . DS . 'activity.php';
 
@@ -1558,7 +1558,7 @@ class Items extends AdminController
 		// Incoming
 		$pid     = Request::getInt('pid', 0);
 		$vid     = Request::getInt('vid', 0);
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 
 		// Load publication
 		$pub = new Models\Publication($pid, $version, $vid);

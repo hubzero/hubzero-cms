@@ -235,7 +235,7 @@ class Citations extends Base
 		}
 
 		// Incoming
-		$url = Request::getVar('citation-doi', '');
+		$url = Request::getString('citation-doi', '');
 		if (!$url)
 		{
 			return true;
@@ -295,7 +295,7 @@ class Citations extends Base
 	 */
 	public function addItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
-		$cite = Request::getVar('cite', array(), 'post', 'none', 2);
+		$cite = Request::getArray('cite', array(), 'post');
 
 		$new  = $cite['id'] ? false : true;
 

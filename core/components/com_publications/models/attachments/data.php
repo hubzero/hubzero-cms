@@ -395,7 +395,7 @@ class Data extends Base
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = Request::getVar('selecteditems', '');
+			$selections = Request::getString('selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -615,7 +615,7 @@ class Data extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title = Request::getVar('title', '');
+		$title = Request::getString('title', '');
 		$thumb = Request::getInt('makedefault', 0);
 		$uid   = User::get('id');
 

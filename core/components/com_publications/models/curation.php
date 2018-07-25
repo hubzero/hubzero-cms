@@ -808,7 +808,7 @@ class Curation extends Obj
 		}
 
 		// Incoming
-		$dispute  = urldecode(Request::getVar('review', ''));
+		$dispute  = urldecode(Request::getString('review', ''));
 
 		if (!trim($dispute))
 		{
@@ -843,7 +843,7 @@ class Curation extends Obj
 		}
 
 		// Incoming
-		$reason = urldecode(Request::getVar('review', ''));
+		$reason = urldecode(Request::getString('review', ''));
 
 		if (!trim($reason))
 		{
@@ -1880,7 +1880,7 @@ class Curation extends Obj
 		}
 
 		// Incoming
-		$comment = Request::getVar('comment', '', 'post');
+		$comment = Request::getString('comment', '', 'post');
 
 		// Collect details
 		$changelog = $this->getChangeLog($oldStatus, $newStatus, $curator);
@@ -2550,7 +2550,7 @@ class Curation extends Obj
 		$row = new Tables\Version($this->_db);
 
 		// Incoming
-		$label = trim(Request::getVar('label', '', 'post'));
+		$label = trim(Request::getString('label', '', 'post'));
 		$used_labels = $row->getUsedLabels($this->_pub->id, $this->_pub->version_number);
 
 		if ($label && in_array($label, $used_labels))
