@@ -310,7 +310,7 @@ class Articles extends SiteController
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = Comment::oneOrNew($comment['id'])->set($comment);

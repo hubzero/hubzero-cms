@@ -160,7 +160,7 @@ class Answers extends AdminController
 
 		if (!is_object($row))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = (is_array($id) && !empty($id)) ? $id[0] : $id;
 
 			$row = Response::oneOrNew($id);
@@ -196,7 +196,7 @@ class Answers extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('answer', array(), 'post', 'none', 2);
+		$fields = Request::getArray('answer', array(), 'post');
 
 		// Initiate extended database class
 		$row = Response::oneOrNew(intval($fields['id']))->set($fields);
@@ -253,7 +253,7 @@ class Answers extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
@@ -306,7 +306,7 @@ class Answers extends AdminController
 
 		// Incoming
 		$qid = Request::getInt('qid', 0);
-		$id  = Request::getVar('id', array(0));
+		$id  = Request::getArray('id', array());
 		$id  = !is_array($id) ? array($id) : $id;
 
 		$publish = ($this->_task == 'accept') ? 1 : 0;
@@ -376,7 +376,7 @@ class Answers extends AdminController
 		}
 
 		// Incoming
-		$answer = Request::getVar('answer', array());
+		$answer = Request::getArray('answer', array());
 
 		// Reset some values
 		$model = Response::oneOrFail(intval($answer['id']));

@@ -126,7 +126,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 
 		if (!$file['name'] || $file['size'] == 0)
 		{

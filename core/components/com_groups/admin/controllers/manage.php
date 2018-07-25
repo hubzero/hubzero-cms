@@ -121,7 +121,7 @@ class Manage extends AdminController
 				'ASC'
 			),
 			'approved'   => Request::getString('approved'),
-			//'published'  => Request::getVar('published', 1),
+			//'published'  => Request::getInt('published', 1),
 			'created'    => Request::getString('created', '')
 		);
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];

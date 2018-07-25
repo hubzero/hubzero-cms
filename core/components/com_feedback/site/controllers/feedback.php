@@ -251,7 +251,7 @@ class Feedback extends SiteController
 
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$fields['user_id'] = User::get('id');

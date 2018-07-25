@@ -157,7 +157,7 @@ class Questions extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			$row = Question::oneOrNew($id);
@@ -187,7 +187,7 @@ class Questions extends AdminController
 		}
 
 		// Incoming data
-		$fields = Request::getVar('question', array(), 'post', 'none', 2);
+		$fields = Request::getArray('question', array(), 'post');
 		$tags = null;
 		if (isset($fields['tags']))
 		{
@@ -259,7 +259,7 @@ class Questions extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
@@ -310,7 +310,7 @@ class Questions extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$publish = ($this->_task == 'close') ? 1 : 0;

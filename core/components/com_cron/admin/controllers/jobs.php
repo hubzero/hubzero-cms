@@ -117,7 +117,7 @@ class Jobs extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = intval($id[0]);
@@ -202,7 +202,7 @@ class Jobs extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$recurrence = array();
 		if (isset($fields['minute']))
@@ -243,7 +243,7 @@ class Jobs extends AdminController
 			$row->set('next_run', $row->nextRun());
 		}
 
-		$p = new \Hubzero\Config\Registry(Request::getVar('params', '', 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 
 		$row->set('params', $p->toString());
 
@@ -278,7 +278,7 @@ class Jobs extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Ensure we have an ID to work with
 		if (empty($ids))
@@ -350,7 +350,7 @@ class Jobs extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -404,7 +404,7 @@ class Jobs extends AdminController
 		// Incoming
 		$state = $this->_task == 'publish' ? 1 : 0;
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -464,7 +464,7 @@ class Jobs extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

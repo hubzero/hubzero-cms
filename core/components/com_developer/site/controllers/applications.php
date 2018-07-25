@@ -252,8 +252,8 @@ class Applications extends SiteController
 		Request::checkToken();
 
 		// get request vars
-		$data = Request::getVar('application', array(), 'post', 2, 'none');
-		$team = Request::getVar('team', array(), 'post', 2, 'none');
+		$data = Request::getArray('application', array(), 'post');
+		$team = Request::getArray('team', array(), 'post');
 
 		// must be logged in
 		if (User::isGuest())
@@ -601,7 +601,7 @@ class Applications extends SiteController
 		$request->query['state'] = uniqid();
 
 		// Config OAuth to give a token 100 years in the future (for now)
-		$server = new \Hubzero\Oauth\Server(new MysqlStorage, array('access_lifetime'=>3153600000));
+		$server = new \Hubzero\Oauth\Server(new MysqlStorage, array('access_lifetime' => 3153600000));
 
 		// Validate and handle the authorization request
 		if (!$server->validateAuthorizeRequest($request, $response))

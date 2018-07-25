@@ -240,7 +240,7 @@ class Wishes extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -335,7 +335,7 @@ class Wishes extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Keep tags for saving
@@ -370,7 +370,7 @@ class Wishes extends AdminController
 		// Set tags
 		$row->tag($tags, User::get('id'));
 
-		$plan = Request::getVar('plan', array(), 'post', 'none', 2);
+		$plan = Request::getArray('plan', array(), 'post');
 		$plan['wishid'] = ($plan['wishid'] ? $plan['wishid'] : $row->get('id'));
 
 		$create_revision = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
@@ -425,7 +425,7 @@ class Wishes extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -530,7 +530,7 @@ class Wishes extends AdminController
 
 		// Incoming
 		$cid = Request::getInt('cid', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
