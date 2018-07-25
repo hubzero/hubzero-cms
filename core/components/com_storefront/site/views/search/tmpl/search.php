@@ -59,7 +59,6 @@ $this->css()
 		</form>
 
 		<?php
-
 		if (!empty($this->products))
 		{
 			echo '<ul class="rres cf">';
@@ -93,7 +92,7 @@ $this->css()
 					echo ')"></div>';
 				}
 				echo '<a href="';
-				echo Route::url('index.php?option=' . Request::getVar('option')) . 'product/' . $productIdentificator;
+				echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/' . $productIdentificator;
 				echo '">';
 				echo '<div class="content">';
 				echo '<h3>' . $product->pName . '</h3>';
@@ -104,10 +103,10 @@ $this->css()
 			echo '<li class="stub"><div class="a"><div class="content"><p>&nbsp;</p></div></div></li>';
 			echo '</ul>';
 		}
-		else {
+		else
+		{
 			echo '<p>No results found</p>';
 		}
-
 		?>
 	</div>
 </section>

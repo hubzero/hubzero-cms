@@ -37,7 +37,9 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Admin\Helpers\RestrictionsHelper;
 use Request;
+use Route;
 use User;
+use App;
 
 /**
  * Controller class
@@ -52,10 +54,10 @@ class Restrictions extends AdminController
 	public function displayTask()
 	{
 		// Get SKU ID
-		$sId = Request::getVar('id');
+		$sId = Request::getInt('id');
 		if (empty($sId))
 		{
-			$sId = Request::getVar('sId', array(0));
+			$sId = Request::getArray('sId', array(0));
 		}
 		$this->view->sId = $sId;
 
@@ -112,7 +114,7 @@ class Restrictions extends AdminController
 	{
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getVar('sId', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0), false)
 		);
 	}
 
@@ -124,11 +126,11 @@ class Restrictions extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', 0);
-		$sId = Request::getVar('sId');
+		$ids = Request::getInt('id', 0);
+		$sId = Request::getInt('sId');
 
 		RestrictionsHelper::removeUsers($ids);
 
@@ -149,7 +151,7 @@ class Restrictions extends AdminController
 	 */
 	public function newTask()
 	{
-		$sId = Request::getVar('id', '');
+		$sId = Request::getInt('id', '');
 		$this->view->sId = $sId;
 
 		// Set any errors
@@ -170,7 +172,7 @@ class Restrictions extends AdminController
 	public function addusersTask()
 	{
 		$sId = Request::getInt('sId', '');
-		$users = Request::getVar('users', '');
+		$users = Request::getString('users', '');
 
 		$users = explode(',', $users);
 		$noHubUserMatch = array();
@@ -232,9 +234,9 @@ class Restrictions extends AdminController
 		Request::checkToken();
 
 		// See if we have a file
-		$csvFile = Request::getVar('csvFile', false, 'files', 'array');
+		$csvFile = Request::getArray('csvFile', false, 'files');
 
-		$sId = Request::getVar('sId', '');
+		$sId = Request::getInt('sId', '');
 		$inserted = 0;
 		$skipped = array();
 		$ignored = array();

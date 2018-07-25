@@ -74,8 +74,6 @@ class Meta extends AdminController
 			'int'
 		);
 
-		//print_r($this->view->filters);
-
 		$obj = new Archive();
 
 		// Get record count
@@ -83,8 +81,6 @@ class Meta extends AdminController
 
 		// Get records
 		$this->view->rows  = $obj->products('list', $this->view->filters);
-
-		//print_r($this->view->rows); die;
 
 		// Set any errors
 		if ($this->getError())
@@ -96,7 +92,6 @@ class Meta extends AdminController
 		}
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 
@@ -131,7 +126,7 @@ class Meta extends AdminController
 		else
 		{
 			// Incoming
-			$id = Request::getVar('id', 0);
+			$id = Request::getArray('id', 0);
 
 			if (is_array($id) && !empty($id))
 			{
@@ -157,7 +152,8 @@ class Meta extends AdminController
 			// Software
 			$layout = 'edit-software';
 		}
-		else {
+		else
+		{
 			App::abort(404, Lang::txt('No meta for this product'));
 		}
 
@@ -186,10 +182,10 @@ class Meta extends AdminController
 	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$obj = new Archive();
 		// Get the product

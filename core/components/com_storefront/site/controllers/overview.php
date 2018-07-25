@@ -41,12 +41,12 @@ class Overview extends ComponentController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -60,7 +60,7 @@ class Overview extends ComponentController
 	/**
 	 * Display default page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function defaultTask()
 	{
@@ -69,14 +69,12 @@ class Overview extends ComponentController
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-					Lang::txt(strtoupper($this->_option)),
-					'index.php?option=' . $this->_option
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
 			);
 		}
 
 		$this->view->config = $config;
 		$this->view->display();
 	}
-
 }
-
