@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$tmpl = Request::getVar('tmpl', '');
+$tmpl = Request::getCmd('tmpl', '');
 
 if ($tmpl != 'component')
 {
