@@ -151,12 +151,12 @@ class UsersCategoriesv2_0 extends ApiController
 	 */
 	public function destroyTask()
 	{
-		$userId = Request::getVar('userId');
+		$userId = Request::getInt('userId');
 		$currentUserId = User::get('id');
 
 		$this->_requiresMatchingUser($currentUserId, $userId);
 
-		$categoriesIds = Request::getVar('categoriesIds');
+		$categoriesIds = Request::getArray('categoriesIds');
 
 		$usersCategories = UsersCategory::all()
 			->whereEquals('user_id', $userId)

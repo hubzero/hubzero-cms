@@ -56,7 +56,7 @@ class Login extends AdminController
 	{
 		// If authenticator is specified, call the plugin display method,
 		// otherwise (or if method does not exist) use default
-		$authenticator = Request::getVar('authenticator', '', 'method');
+		$authenticator = Request::getString('authenticator', '');
 
 		Plugin::import('authentication');
 

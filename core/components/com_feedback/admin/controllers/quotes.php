@@ -125,7 +125,7 @@ class Quotes extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming ID
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = (is_array($id) ? $id[0] : $id);
 
 			// Initiate database class and load info
@@ -168,7 +168,7 @@ class Quotes extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate model and bind the incoming data to it
 		$row = Quote::oneOrNew($fields['id'])->set($fields);
@@ -190,7 +190,7 @@ class Quotes extends AdminController
 		if (is_dir($path))
 		{
 			// Remove pictures that were marked for deletion
-			$existing = Request::getVar('existingPictures', array(), 'post', 'none', 2);
+			$existing = Request::getArray('existingPictures', array(), 'post');
 			$pictures = Filesystem::files($path);
 
 			foreach ($pictures as $picture)
@@ -208,7 +208,7 @@ class Quotes extends AdminController
 		}
 
 		// Get the list of uploaded files
-		$files = Request::getVar('files', null, 'files', 'array');
+		$files = Request::getArray('files', null, 'files');
 
 		if ($files)
 		{
@@ -251,7 +251,7 @@ class Quotes extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID

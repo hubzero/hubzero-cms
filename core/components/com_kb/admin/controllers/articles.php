@@ -155,7 +155,7 @@ class Articles extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -216,13 +216,13 @@ class Articles extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate extended database class
 		$row = Article::oneOrNew($fields['id'])->set($fields);
 
 		// Get parameters
-		$params = Request::getVar('params', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 
 		$p = $row->param();
 
@@ -277,7 +277,7 @@ class Articles extends AdminController
 
 		// Incoming
 		$cid = Request::getInt('cid', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -323,7 +323,7 @@ class Articles extends AdminController
 
 		// Incoming
 		$cid = Request::getInt('cid', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -370,7 +370,7 @@ class Articles extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$filters = Request::getVar('filters', array());
+		$filters = Request::getArray('filters', array());
 
 		if (isset($filters['id']) && $filters['id'])
 		{

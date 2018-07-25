@@ -725,7 +725,7 @@ class Wishlists extends SiteController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$wishlist->set($fields);
 		$wishlist->removeAttribute('admin');
@@ -1099,7 +1099,7 @@ class Wishlists extends SiteController
 		}
 
 		// trim and addslashes all posted items
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// initiate class and bind posted items to database fields
 		$row = Wish::oneOrNew($fields['id'])->set($fields);
@@ -1976,7 +1976,7 @@ class Wishlists extends SiteController
 
 		if ($id && $category)
 		{
-			$fields = Request::getVar('comment', array(), 'post');
+			$fields = Request::getArray('comment', array(), 'post');
 
 			$row = Comment::blank()->set($fields);
 
@@ -2457,7 +2457,7 @@ class Wishlists extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', array(), 'files', 'array');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!isset($file['name']) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_NO_FILE'));
@@ -2530,7 +2530,7 @@ class Wishlists extends SiteController
 	 */
 	public function downloadTask()
 	{
-		$file   = Request::getVar('file', '');
+		$file   = Request::getString('file', '');
 		$wishid = Request::getInt('wishid', 0);
 
 		$wish = Wish::oneOrFail($wishid);

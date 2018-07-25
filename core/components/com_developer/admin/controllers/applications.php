@@ -122,7 +122,7 @@ class Applications extends AdminController
 			// IDs can come arrive in two formts: single integer or 
 			// an array of integers. If it's the latter, we'll only take 
 			// the first ID in the list.
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -162,8 +162,8 @@ class Applications extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
-		$team   = Request::getVar('team', '', 'post', 2, 'none');
+		$fields = Request::getArray('fields', array(), 'post');
+		$team   = Request::getString('team', '', 'post');
 
 		// Bind the incoming data to our mdoel
 		$row = Application::oneOrNew($fields['id'])->set($fields);
@@ -266,7 +266,7 @@ class Applications extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we actually have any entries?
@@ -319,7 +319,7 @@ class Applications extends AdminController
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we actually have any entries?
@@ -394,7 +394,7 @@ class Applications extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we actually have any entries?
@@ -452,7 +452,7 @@ class Applications extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we actually have any entries?
