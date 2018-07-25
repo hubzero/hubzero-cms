@@ -299,7 +299,7 @@ class View
 		$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
 
 		$out = '';
-		if (sizeof($pageArray) > 0)
+		if (count($pageArray) > 0)
 		{
 			$out = '<ul>';
 			foreach ($pageArray as $key => $page)
