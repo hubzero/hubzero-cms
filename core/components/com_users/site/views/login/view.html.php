@@ -85,7 +85,7 @@ class UsersViewLogin extends JViewLegacy
 		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
-		if ($return = Request::getVar('return', null, 'GET', 'BASE64'))
+		if ($return = Request::getString('return', null, 'get'))
 		{
 			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
 			{
@@ -169,7 +169,7 @@ class UsersViewLogin extends JViewLegacy
 		$this->description         = $description;
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
-		$authenticator = Request::getVar('authenticator', '', 'method');
+		$authenticator = Request::getString('authenticator', '');
 
 		Plugin::import('authentication');
 

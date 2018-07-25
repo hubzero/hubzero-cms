@@ -41,7 +41,7 @@ class UsersControllerUsers extends JControllerAdmin
 	{
 		parent::__construct($config);
 
-		$this->registerTask('block',   'changeBlock');
+		$this->registerTask('block', 'changeBlock');
 		$this->registerTask('unblock', 'changeBlock');
 	}
 
@@ -74,7 +74,7 @@ class UsersControllerUsers extends JControllerAdmin
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids    = Request::getVar('cid', array(), '', 'array');
+		$ids    = Request::getArray('cid', array());
 		$values = array('block' => 1, 'unblock' => 0);
 		$task   = $this->getTask();
 		$value  = \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
@@ -122,7 +122,7 @@ class UsersControllerUsers extends JControllerAdmin
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids = Request::getVar('cid', array(), '', 'array');
+		$ids = Request::getArray('cid', array());
 
 		if (empty($ids))
 		{
@@ -158,7 +158,7 @@ class UsersControllerUsers extends JControllerAdmin
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids = Request::getVar('cid', array(), '', 'array');
+		$ids = Request::getArray('cid', array());
 
 		if (empty($ids))
 		{

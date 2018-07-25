@@ -71,7 +71,7 @@ class UsersModelMail extends JModelAdmin
 	public function send()
 	{
 		// Initialise variables.
-		$data = Request::getVar('jform', array(), 'post', 'array');
+		$data = Request::getArray('jform', array(), 'post');
 		$app  = JFactory::getApplication();
 		$user = JFactory::getUser();
 		$acl  = JFactory::getACL();

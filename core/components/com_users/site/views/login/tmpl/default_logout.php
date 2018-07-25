@@ -12,7 +12,7 @@ defined('_HZEXEC_') or die();
 // If the user is already logged in, redirect to the return or profile page.
 if (!User::isGuest())
 {
-	$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
+	$return = base64_decode(Request::getString('return', ''));
 
 	if ($return)
 	{

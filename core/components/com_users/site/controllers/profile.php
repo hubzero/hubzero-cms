@@ -81,7 +81,7 @@ class UsersControllerProfile extends UsersController
 		$userId = (int) $user->get('id');
 
 		// Get the user data.
-		$data = Request::getVar('jform', array(), 'post', 'array');
+		$data = Request::getArray('jform', array(), 'post');
 
 		// Force the ID to this user.
 		$data['id'] = $userId;
