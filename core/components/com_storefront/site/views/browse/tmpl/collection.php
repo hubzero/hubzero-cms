@@ -41,7 +41,6 @@ defined('_HZEXEC_') or die();
 			<a class="btn" href="/cart"><?php echo  Lang::txt('COM_STOREFRONT_CART'); ?></a>
 		</p>
 	</div>
-
 </header>
 
 <section class="section">
@@ -58,8 +57,7 @@ defined('_HZEXEC_') or die();
 			</div>
 		</form>
 
-	<?php
-
+		<?php
 		if (!empty($this->products))
 		{
 			echo '<ul class="rres cf">';
@@ -93,7 +91,7 @@ defined('_HZEXEC_') or die();
 						echo ')"></div>';
 					}
 					echo '<a href="';
-					echo Route::url('index.php?option=' . Request::getVar('option')) . 'product/' . $productIdentificator;
+					echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/' . $productIdentificator;
 					echo '">';
 					echo '<div class="content">';
 					echo '<h3>' . $product->pName . '</h3>';
@@ -104,11 +102,11 @@ defined('_HZEXEC_') or die();
 			echo '<li class="stub"><div class="a"><div class="content"><p>&nbsp;</p></div></div></li>';
 			echo '</ul>';
 		}
-		else {
+		else
+		{
 			echo Lang::txt('COM_STOREFRONT_NO_PRODUCTS');
 		}
-
-	?>
+		?>
 
 	</div>
 </section>

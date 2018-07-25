@@ -34,7 +34,7 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Collection;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php';
 
 /**
  * Controller class for storefront collections
@@ -51,31 +51,30 @@ class Collections extends AdminController
 		// Get filters
 		$this->view->filters = array(
 			// Get sorting variables
-				'sort' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						'title'
-				),
-				'sort_Dir' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						'ASC'
-				),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
 			// Get paging variables
-				'limit' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limit',
-						'limit',
-						Config::get('list_limit'),
-						'int'
-				),
-				'start' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limitstart',
-						'limitstart',
-						0,
-						'int'
-				)
+			'limit' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
-		//print_r($this->view->filters);
 
 		$obj = new Archive();
 
@@ -84,8 +83,6 @@ class Collections extends AdminController
 
 		// Get records
 		$this->view->rows  = $obj->collections('list', $this->view->filters);
-		//print_r($this->view->rows); die;
-
 
 		// Set any errors
 		if ($this->getError())
@@ -97,7 +94,6 @@ class Collections extends AdminController
 		}
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 
@@ -114,6 +110,7 @@ class Collections extends AdminController
 	/**
 	 * Edit a category
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -130,7 +127,7 @@ class Collections extends AdminController
 		else
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -174,10 +171,10 @@ class Collections extends AdminController
 	public function saveTask($redirect = true)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Get the collection
 		$collection = new Collection($fields['cId']);
@@ -241,7 +238,7 @@ class Collections extends AdminController
 				Request::setVar('hidemainmenu', 1);
 
 				// Incoming
-				$id = Request::getVar('id', array(0));
+				$id = Request::getArray('id', array(0));
 				if (!is_array($id) && !empty($id))
 				{
 					$id = array($id);
@@ -261,23 +258,23 @@ class Collections extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken();
 
 				// Incoming
-				$cIds = Request::getVar('cId', array(0));
+				$cIds = Request::getArray('cId', array(0));
 
 				// Make sure we have IDs to work with
 				if (empty($cIds))
 				{
 					App::redirect(
-							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-							Lang::txt('COM_STOREFRONT_NO_ID'),
-							'error'
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+						Lang::txt('COM_STOREFRONT_NO_ID'),
+						'error'
 					);
 					return;
 				}
 
-				$delete = Request::getVar('delete', 0);
+				$delete = Request::getInt('delete', 0);
 
 				$msg = "Delete canceled";
 				$type = 'error';
@@ -295,9 +292,9 @@ class Collections extends AdminController
 						catch (\Exception $e)
 						{
 							App::redirect(
-									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
-									$e->getMessage(),
-									$type
+								Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+								$e->getMessage(),
+								$type
 							);
 							return;
 						}
@@ -309,11 +306,11 @@ class Collections extends AdminController
 
 				// Set the redirect
 				App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
-						$msg,
-						$type
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+					$msg,
+					$type
 				);
-				break;
+			break;
 		}
 	}
 
@@ -345,16 +342,16 @@ class Collections extends AdminController
 	 */
 	public function stateTask($state = 0)
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			App::redirect(
-					Route::url('index.php?option='. $this->_option . '&controller=' . $this->_controller, false),
-					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-					'error'
+				Route::url('index.php?option='. $this->_option . '&controller=' . $this->_controller, false),
+				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+				'error'
 			);
 			return;
 		}
@@ -362,7 +359,8 @@ class Collections extends AdminController
 		foreach ($ids as $cId)
 		{
 			// Save category
-			try {
+			try
+			{
 				$collection = new Collection($cId);
 				$collection->setActiveStatus($state);
 
@@ -405,7 +403,7 @@ class Collections extends AdminController
 			}
 
 			$message = 'Collection could not be ' . $action;
-			if (sizeof($ids) > 1)
+			if (count($ids) > 1)
 			{
 				$message = 'Some collection(s) could not be ' . $action;
 			}
@@ -414,25 +412,31 @@ class Collections extends AdminController
 
 		// Redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$message,
-				$type
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			$message,
+			$type
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @param   object  $collection
+	 * @return  bool
+	 */
 	private function checkIntegrity($collection)
 	{
 		// If the collection is not being published, no need to check for integrity
@@ -441,7 +445,7 @@ class Collections extends AdminController
 			return true;
 		}
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Integrity.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Integrity.php';
 		$integrityCheck = \Integrity::collectionIntegrityCheck($collection);
 
 		if ($integrityCheck->status != 'ok')

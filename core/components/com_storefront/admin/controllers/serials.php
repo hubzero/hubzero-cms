@@ -30,11 +30,15 @@
 
 namespace Components\Storefront\Admin\Controllers;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Serials.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Serials.php';
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Helpers\Serials as SerialsHelper;
+use Request;
+use Config;
+use Route;
+use App;
 
 ini_set("auto_detect_line_endings", true);
 
@@ -51,7 +55,7 @@ class Serials extends AdminController
 	public function displayTask()
 	{
 		// Get SKU ID
-		$sId = Request::getVar('sId');
+		$sId = Request::getInt('sId');
 		$this->view->sId = $sId;
 
 		// Get SKU
@@ -108,7 +112,7 @@ class Serials extends AdminController
 	{
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getVar('sId', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0), false)
 		);
 	}
 
@@ -120,11 +124,11 @@ class Serials extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('srId', 0);
-		$sId = Request::getVar('sId');
+		$ids = Request::getInt('srId', 0);
+		$sId = Request::getInt('sId');
 		//print_r($ids); die;
 
 		$deletedMessage = SerialsHelper::delete($ids);
@@ -142,9 +146,14 @@ class Serials extends AdminController
 		);
 	}
 
+	/**
+	 * Create an entry
+	 *
+	 * @return  void
+	 */
 	public function newTask()
 	{
-		$sId = Request::getVar('sId', '');
+		$sId = Request::getInt('sId', 0);
 		$this->view->sId = $sId;
 
 		// Set any errors
@@ -157,10 +166,15 @@ class Serials extends AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * Add serials
+	 *
+	 * @return  void
+	 */
 	public function addserialsTask()
 	{
 		$sId = Request::getInt('sId', '');
-		$serials = Request::getVar('serials', '');
+		$serials = Request::getString('serials', '');
 
 		$serials = explode(',', $serials);
 		foreach ($serials as $serial)
@@ -169,34 +183,44 @@ class Serials extends AdminController
 		}
 	}
 
+	/**
+	 * Upload
+	 *
+	 * @return  void
+	 */
 	public function uploadTask()
 	{
-		$sId = Request::getInt('sId', '');
+		$sId = Request::getInt('sId', 0);
 		$this->view->sId = $sId;
 
 		// Output the HTML
 		$this->view->display();
 	}
 
+	/**
+	 * Upload a CSV file
+	 *
+	 * @return  void
+	 */
 	public function uploadcsvTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
 		// See if we have a file
-		$csvFile = Request::getVar('csvFile', false, 'files', 'array');
+		$csvFile = Request::getArray('csvFile', false, 'files');
 
-		$sId = Request::getVar('sId', '');
+		$sId = Request::getInt('sId', 0);
 
 		if (isset($csvFile['name']) && $csvFile['name'] && $csvFile['type'] == 'text/csv')
 		{
-			if (($handle = fopen($csvFile['tmp_name'], "r")) !== FALSE)
+			if (($handle = fopen($csvFile['tmp_name'], "r")) !== false)
 			{
 				$inserted = 0;
 				$skipped = array();
 				$ignored = array();
 
-				while (($line = fgetcsv($handle, 1000, ",")) !== FALSE)
+				while (($line = fgetcsv($handle, 1000, ",")) !== false)
 				{
 					if (!empty($line[0]))
 					{
@@ -207,7 +231,8 @@ class Serials extends AdminController
 						{
 							$inserted++;
 						}
-						else {
+						else
+						{
 							$skipped[] = $serial;
 						}
 
@@ -224,7 +249,8 @@ class Serials extends AdminController
 				$this->view->setError('Could not read the file.');
 			}
 		}
-		else {
+		else
+		{
 			$this->view->setError('No file or bad file was uploaded. Please make sure you upload the CSV formated file.');
 		}
 
@@ -233,4 +259,3 @@ class Serials extends AdminController
 		$this->view->display();
 	}
 }
-

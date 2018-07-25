@@ -34,9 +34,14 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\OptionGroup;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php';
 
 /**
  * Controller class for knowledge base collections
@@ -52,29 +57,29 @@ class Optiongroups extends AdminController
 	{
 		$this->view->filters = array(
 			// Get sorting variables
-				'sort' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						'title'
-				),
-				'sort_Dir' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						'ASC'
-				),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
 			// Get paging variables
-				'limit' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limit',
-						'limit',
-						Config::get('list_limit'),
-						'int'
-				),
-				'start' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limitstart',
-						'limitstart',
-						0,
-						'int'
-				)
+			'limit' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$obj = new Archive();
@@ -84,7 +89,6 @@ class Optiongroups extends AdminController
 
 		// Get records
 		$this->view->rows = $obj->optionGroups('list', $this->view->filters);
-		//print_r($this->view->rows); die;
 
 		// For all records here get options
 		$options = new \stdClass();
@@ -93,8 +97,6 @@ class Optiongroups extends AdminController
 		{
 			$key = $r->ogId;
 			$allOptions = $warehouse->getOptionGroupOptions($key, 'rows', false);
-
-			//print_r($allOptions); die;
 
 			// Count how many active and how many inactive options there are
 			$optionCounter = new \stdClass();
@@ -114,9 +116,7 @@ class Optiongroups extends AdminController
 			$options->$key = $optionCounter;
 		}
 
-		//print_r($options); die;
 		$this->view->options = $options;
-
 
 		// Set any errors
 		if ($this->getError())
@@ -128,7 +128,6 @@ class Optiongroups extends AdminController
 		}
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 
@@ -145,6 +144,7 @@ class Optiongroups extends AdminController
 	/**
 	 * Edit a category
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -161,7 +161,7 @@ class Optiongroups extends AdminController
 		else
 		{
 			// Incoming
-			$id = Request::getVar('ogId', array(0));
+			$id = Request::getArray('ogId', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -203,17 +203,16 @@ class Optiongroups extends AdminController
 	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
-
-		//print_r($fields); die;
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Update record(s)
 		$obj = new Archive();
 
-		try {
+		try
+		{
 			$optionGroup = $obj->updateOptionGroup($fields['ogId'], $fields);
 		}
 		catch (\Exception $e)
@@ -229,8 +228,8 @@ class Optiongroups extends AdminController
 		{
 			// Redirect
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED')
 			);
 			return;
 		}
@@ -257,7 +256,7 @@ class Optiongroups extends AdminController
 				Request::setVar('hidemainmenu', 1);
 
 				// Incoming
-				$id = Request::getVar('id', array(0));
+				$id = Request::getArray('id', array(0));
 				if (!is_array($id) && !empty($id))
 				{
 					$id = array($id);
@@ -277,24 +276,23 @@ class Optiongroups extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken();
 
 				// Incoming
-				$ogIds = Request::getVar('ogId', 0);
-				//print_r($ogIds); die;
+				$ogIds = Request::getInt('ogId', 0);
 
 				// Make sure we have ID(s) to work with
 				if (empty($ogIds))
 				{
 					App::redirect(
-							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
-							Lang::txt('COM_STOREFRONT_NO_ID'),
-							'error'
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+						Lang::txt('COM_STOREFRONT_NO_ID'),
+						'error'
 					);
 					return;
 				}
 
-				$delete = Request::getVar('delete', 0);
+				$delete = Request::getInt('delete', 0);
 
 				$msg = "Delete canceled";
 				$type = 'error';
@@ -327,9 +325,9 @@ class Optiongroups extends AdminController
 						catch (\Exception $e)
 						{
 							App::redirect(
-									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
-									$e->getMessage(),
-									$type
+								Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+								$e->getMessage(),
+								$type
 							);
 							return;
 						}
@@ -341,9 +339,9 @@ class Optiongroups extends AdminController
 
 				// Set the redirect
 				App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
-						$msg,
-						$type
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+					$msg,
+					$type
 				);
 				if ($warnings)
 				{
@@ -352,14 +350,14 @@ class Optiongroups extends AdminController
 						\Notify::warning($warning);
 					}
 				}
-				break;
+			break;
 		}
 	}
 
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -369,7 +367,7 @@ class Optiongroups extends AdminController
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -379,23 +377,21 @@ class Optiongroups extends AdminController
 	/**
 	 * Set the state of an entry
 	 *
-	 * @param      integer $state State to set
-	 * @return     void
+	 * @param   integer  $state  State to set
+	 * @return  void
 	 */
 	public function stateTask($state = 0)
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-
-		//print_r($ids); die;
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-					'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+				'error'
 			);
 			return;
 		}
@@ -406,7 +402,8 @@ class Optiongroups extends AdminController
 		foreach ($ids as $ogId)
 		{
 			// Save category
-			try {
+			try
+			{
 				$obj->updateOptionGroup($ogId, array('state' => $state));
 			}
 			catch (\Exception $e)
@@ -432,21 +429,21 @@ class Optiongroups extends AdminController
 
 		// Redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$message
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			$message
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

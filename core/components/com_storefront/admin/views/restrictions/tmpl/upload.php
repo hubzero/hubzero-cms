@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$tmpl = Request::getVar('tmpl', '');
+$tmpl = Request::getCmd('tmpl', '');
 
 $text = 'Upload a CSV file';
 
@@ -77,8 +77,8 @@ Html::behavior('framework');
 		<fieldset>
 			<div class="configuration" >
 				<div class="fltrt configuration-options">
-					<button type="button" onclick="submitbutton('uploadcsv');"><?php echo Lang::txt( 'Import' );?></button>
-					<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt( 'Cancel' );?></button>
+					<button type="button" onclick="submitbutton('uploadcsv');"><?php echo Lang::txt('Import');?></button>
+					<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('Cancel');?></button>
 				</div>
 				<?php echo Lang::txt('Uplaod a file with users') ?>
 			</div>

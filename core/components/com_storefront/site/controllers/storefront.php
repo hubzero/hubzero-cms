@@ -41,14 +41,14 @@ class Storefront extends ComponentController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		$this->warehouse = new Warehouse();
 
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -62,7 +62,7 @@ class Storefront extends ComponentController
 	/**
 	 * Display default page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function homeTask()
 	{
@@ -75,13 +75,11 @@ class Storefront extends ComponentController
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-					Lang::txt(strtoupper($this->_option)),
-					'index.php?option=' . $this->_option
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
 			);
 		}
 
 		$this->view->display();
 	}
-
 }
-
