@@ -145,7 +145,7 @@ class Categories extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
@@ -181,13 +181,13 @@ class Categories extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$prop = Request::getVar('prop', array(), 'post');
+		$prop = Request::getArray('prop', array(), 'post');
 
 		// Initiate extended database class
 		$row = Category::oneOrNew($prop['id'])->set($prop);
 
 		// Get the custom fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		if (is_array($fields))
 		{
 			$elements = new stdClass();
@@ -235,7 +235,7 @@ class Categories extends AdminController
 		}
 
 		// Get parameters
-		$params = Request::getVar('params', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 
 		$p = $row->params;
 
@@ -283,7 +283,7 @@ class Categories extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0), '', 'array');
+		$ids = Request::getArray('id', array(0));
 
 		$success = 0;
 
@@ -319,20 +319,20 @@ class Categories extends AdminController
 	 */
 	public function elementTask()
 	{
-		$ctrl = Request::getVar('ctrl', 'fields');
+		$ctrl = Request::getString('ctrl', 'fields');
 
 		$option = new stdClass;
 		$option->label = '';
 		$option->value = '';
 
 		$field = new stdClass;
-		$field->label       = Request::getVar('name', 0);
+		$field->label       = Request::getString('name', 0);
 		$field->element     = '';
 		$field->description = '';
 		$field->text        = $field->label;
 		$field->name        = $field->label;
 		$field->default     = '';
-		$field->type        = Request::getVar('type', '');
+		$field->type        = Request::getString('type', '');
 		$field->options     = array(
 			$option,
 			$option
@@ -360,7 +360,7 @@ class Categories extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?

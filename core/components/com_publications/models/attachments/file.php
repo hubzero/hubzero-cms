@@ -939,7 +939,7 @@ class File extends Base
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = Request::getVar('selecteditems', '');
+			$selections = Request::getString('selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -1094,8 +1094,8 @@ class File extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title = Request::getVar('title', '');
-		$name  = Request::getVar('filename', '');
+		$title = Request::getString('title', '');
+		$name  = Request::getString('filename', '');
 		$thumb = Request::getInt('makedefault', 0);
 
 		// Get configs

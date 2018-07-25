@@ -276,7 +276,7 @@ class Router extends Base
 		}
 
 		// are we serving up a file
-		$uri = Request::getVar('REQUEST_URI', '', 'server');
+		$uri = Request::getString('REQUEST_URI', '', 'server');
 		if (strstr($uri, 'Image:') || strstr($uri, 'File:'))
 		{
 			$vars['task'] = 'download';

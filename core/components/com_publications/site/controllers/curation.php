@@ -55,7 +55,7 @@ class Curation extends SiteController
 	 */
 	public function execute()
 	{
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 		$this->_id    = Request::getInt('id', 0);
 		$this->_pub   = null;
 
@@ -101,8 +101,8 @@ class Curation extends SiteController
 		$filters = array();
 		$filters['limit']         = Request::getInt('limit', 25);
 		$filters['start']         = Request::getInt('limitstart', 0);
-		$filters['sortby']        = Request::getVar('t_sortby', 'submitted');
-		$filters['sortdir']       = Request::getVar('t_sortdir', 'DESC');
+		$filters['sortby']        = Request::getString('t_sortby', 'submitted');
+		$filters['sortdir']       = Request::getString('t_sortdir', 'DESC');
 		$filters['ignore_access'] = 1;
 
 		// Only get types for which authorized
@@ -205,7 +205,7 @@ class Curation extends SiteController
 	{
 		// Incoming
 		$pid     = $this->_id ? $this->_id : Request::getInt('id', 0);
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 		$vid     = Request::getInt('vid');
 
 		if (!$pid)
@@ -285,7 +285,7 @@ class Curation extends SiteController
 	{
 		// Incoming
 		$pid     = $this->_id ? $this->_id : Request::getInt('id', 0);
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 		$ajax    = Request::getInt('ajax', 0);
 
 		if (!$pid)
@@ -408,7 +408,7 @@ class Curation extends SiteController
 					$this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));
 				}
 			}
-			elseif ($selected && Request::getVar('owner', ''))
+			elseif ($selected && Request::getString('owner', ''))
 			{
 				$owner = $selected;
 			}
@@ -656,10 +656,10 @@ class Curation extends SiteController
 		// Incoming
 		$pid    = $this->_id ? $this->_id : Request::getInt('id', 0);
 		$vid    = Request::getInt('vid', 0);
-		$props  = Request::getVar('p', '');
+		$props  = Request::getString('p', '');
 		$pass   = Request::getInt('pass', 0);
 		$action = $pass ? 'pass' : 'fail';
-		$review = Request::getVar('review', '');
+		$review = Request::getString('review', '');
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -913,7 +913,7 @@ class Curation extends SiteController
 	 */
 	protected function _login()
 	{
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),

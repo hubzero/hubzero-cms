@@ -33,7 +33,7 @@ namespace Components\Publications\Models\Block;
 use Components\Publications\Models\Block as Base;
 use stdClass;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
 
 /**
  * Tags block
@@ -41,42 +41,42 @@ require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php');
 class Tags extends Base
 {
 	/**
-	* Block name
-	*
-	* @var		string
-	*/
-	protected	$_name = 'tags';
+	 * Block name
+	 *
+	 * @var		string
+	 */
+	protected $_name = 'tags';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
-	protected	$_parentname 	= NULL;
+	 * Parent block name
+	 *
+	 * @var		string
+	 */
+	protected $_parentname = null;
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected	$_manifest 	= NULL;
+	 * Default manifest
+	 *
+	 * @var		string
+	 */
+	protected $_manifest = null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
-	protected	$_blockId = 0;
+	 * Numeric block ID
+	 *
+	 * @var		integer
+	 */
+	protected $_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
+	public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -110,7 +110,7 @@ class Tags extends Base
 		}
 
 		$view->manifest 	= $this->_manifest;
-		$view->content 		= self::buildContent( $pub, $viewname );
+		$view->content 		= self::buildContent($pub, $viewname);
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
@@ -118,7 +118,7 @@ class Tags extends Base
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -128,7 +128,7 @@ class Tags extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent($pub = null, $viewname = 'edit')
 	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
@@ -151,7 +151,7 @@ class Tags extends Base
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -161,10 +161,10 @@ class Tags extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -176,7 +176,7 @@ class Tags extends Base
 		}
 
 		// Load publication version
-		$objP = new \Components\Publications\Tables\Publication( $this->_parent->_db );
+		$objP = new \Components\Publications\Tables\Publication($this->_parent->_db);
 
 		if (!$objP->load($pub->id))
 		{
@@ -184,15 +184,15 @@ class Tags extends Base
 			return false;
 		}
 
-		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db );
-		$tags 		= trim(Request::getVar('tags', '', 'post'));
+		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
+		$tags = trim(Request::getString('tags', '', 'post'));
 		$tagsHelper->tag_object($actor, $pub->id, $tags, 1);
 
 		// Reflect the update in curation record
 		$this->_parent->set('_update', 1);
 
 		// Save category
-		$cat = Request::getInt( 'pubtype', 0 );
+		$cat = Request::getInt('pubtype', 0);
 		if ($cat && $pub->_category->id != $cat)
 		{
 			$objP->category = $cat;
@@ -207,12 +207,12 @@ class Tags extends Base
 	 *
 	 * @return  object
 	 */
-	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
+	public function getStatus($pub = null, $manifest = null, $elementId = null)
 	{
 		// Start status
-		$status 	 = new \Components\Publications\Models\Status();
+		$status = new \Components\Publications\Models\Status();
 
-		$tagsHelper  = new \Components\Publications\Helpers\Tags( $this->_parent->_db);
+		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
 
 		// Required?
 		$required = $manifest->params->required;
@@ -246,10 +246,10 @@ class Tags extends Base
 				'about'			=> 'Tags help users find your publication. Before adding your own tags, try finding good matches in existing tag library.',
 				'adminTips'		=> '',
 				'elements' 		=> array(),
-				'params'		=> array( 'required' => 1, 'published_editing' => 0 )
+				'params'		=> array('required' => 1, 'published_editing' => 0)
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;
