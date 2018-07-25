@@ -38,8 +38,8 @@ class ComponentController extends \Hubzero\Component\SiteController
 	/**
 	 * Parse the URL parameters and map each parameter (in order) to the given array of names
 	 *
-	 * @param		array varNames: Array of names to map the URL parameters to
-	 * @return		object: Object with properties named after var names mapped to URL parameters
+	 * @param   array   $varNames  Array of names to map the URL parameters to
+	 * @return  object  Object with properties named after var names mapped to URL parameters
 	 */
 	protected function getParams($varNames)
 	{
@@ -49,7 +49,7 @@ class ComponentController extends \Hubzero\Component\SiteController
 		$params = false;
 
 		// check if there are more parameters than needed
-		$extraParameter = Request::getVar('p' . count($varNames), '');
+		$extraParameter = Request::getString('p' . count($varNames), '');
 		if ($strictProcessing && !empty($extraParameter))
 		{
 			// too many parameters in the URL
@@ -60,12 +60,13 @@ class ComponentController extends \Hubzero\Component\SiteController
 		// Go through each var name and assign a sequential URL parameter's value to it
 		foreach ($varNames as $varName)
 		{
-			$value = Request::getVar('p' . $i, '');
+			$value = Request::getString('p' . $i, '');
 			if (!empty($value))
 			{
 				$params->$varName = $value;
 			}
-			else {
+			else
+			{
 				if ($strictProcessing)
 				{
 					// missing parameter in the URL
@@ -78,6 +79,4 @@ class ComponentController extends \Hubzero\Component\SiteController
 		}
 		return $params;
 	}
-
 }
-

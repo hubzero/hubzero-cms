@@ -79,8 +79,8 @@ class Search extends \Hubzero\Component\SiteController
 	public function searchTask()
 	{
 		// Incoming
-		$search = Request::getVar('q', '');
-		$cId = Request::getVar('cId', '');
+		$search = Request::getString('q', '');
+		$cId = Request::getString('cId', '');
 
 		if ($cId)
 		{
