@@ -174,7 +174,7 @@ class SearchComponent extends Relational
 		{
 			$searchFields = array();
 		}
-		return $searchFields; 
+		return $searchFields;
 	}
 
 	/**
@@ -222,7 +222,7 @@ class SearchComponent extends Relational
 	 */
 	public function filters()
 	{
-		return $this->oneToMany('Filters\Filter', 'component_id');	
+		return $this->oneToMany('Filters\Filter', 'component_id');
 	}
 
 	/**
@@ -275,7 +275,7 @@ class SearchComponent extends Relational
 	/**
 	 * get namespace of object provided to solr
 	 *
-	 *	@return string
+	 * @return string
 	 */
 	public function getSearchNamespace()
 	{
