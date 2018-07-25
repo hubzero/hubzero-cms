@@ -67,7 +67,7 @@ class Listfilter extends Filter
 					continue;
 				}
 				$checked = in_array($option->value, $selectedOptions) ? 'checked' : '';
-				$html .= '<li><label><input type="checkbox" class="checkbox" name="filters[' . 
+				$html .= '<li><label><input type="checkbox" class="checkbox" name="filters[' .
 					$this->field . '][' . $option->id . ']" value="' . $option->value . '"' . $checked . '/>';
 				$html .= $option->value . '<span class="item-count">' . $count . '</span></a>';
 				$html .= '</label></li>';

@@ -131,7 +131,7 @@ class Solr extends SiteController
 			$tagParams = '&tags=' . $tagString;
 		}
 		$urlQuery = '?terms=' . $terms . $tagParams;
-		
+
 		// Apply the sorting
 		if ($sortBy != '' && $sortDir != '')
 		{

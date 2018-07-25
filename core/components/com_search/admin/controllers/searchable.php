@@ -213,7 +213,7 @@ class Searchable extends AdminController
 			foreach ($oldFilters as $filter)
 			{
 				$field = $filter->get('field');
-				$oldFilterIds[$field] = $filter->get('id'); 	
+				$oldFilterIds[$field] = $filter->get('id');
 			}
 			$filterCount = 1;
 			foreach ($filters as $field => $element)
@@ -221,7 +221,7 @@ class Searchable extends AdminController
 				$filterId = isset($oldFilterIds[$field]) ? $oldFilterIds[$field] : 0;
 				if ($filterId)
 				{
-					$oldFilters->drop($filterId);			
+					$oldFilters->drop($filterId);
 				}
 				$filter = Filter::oneOrNew($filterId);
 				$filter->set('field', $field);
@@ -241,7 +241,7 @@ class Searchable extends AdminController
 				foreach ($oldOptions as $option)
 				{
 					$value = $option->get('value');
-					$oldOptionIds[$value] = $option->get('id'); 	
+					$oldOptionIds[$value] = $option->get('id');
 				}
 				$optionsCount = 1;
 				foreach ($optionValues as $value)
