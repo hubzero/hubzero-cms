@@ -43,7 +43,7 @@ class CartControllerDo extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -61,7 +61,7 @@ class CartControllerDo extends ComponentController
 	 */
 	public function homeTask()
 	{
-		die('no direct access');
+		App::abort(404);
 	}
 
 	/**
@@ -72,8 +72,5 @@ class CartControllerDo extends ComponentController
 	public function deleteTask()
 	{
 		$sId = $this->getParams('sId');
-
 	}
-
 }
-

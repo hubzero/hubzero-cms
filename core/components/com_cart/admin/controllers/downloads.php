@@ -39,7 +39,7 @@ use Route;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
@@ -262,7 +262,7 @@ class Downloads extends AdminController
 	 */
 	public function stateTask($state = 0)
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
