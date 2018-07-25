@@ -409,7 +409,7 @@ class Products extends AdminController
 				Request::setVar('hidemainmenu', 1);
 
 				// Incoming
-				$id = Request::getArray('id', array(0));
+				$id = Request::getArray('id', array());
 				if (!is_array($id) && !empty($id))
 				{
 					$id = array($id);
