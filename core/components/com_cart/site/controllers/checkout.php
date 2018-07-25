@@ -42,7 +42,7 @@ use User;
 use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Courses controller class
@@ -57,7 +57,7 @@ class Checkout extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -206,12 +206,12 @@ class Checkout extends ComponentController
 
 		$this->view->productEula = $productEula;
 
-		$eulaSubmitted = Request::getVar('submitEula', false, 'post');
+		$eulaSubmitted = Request::getBool('submitEula', false, 'post');
 
 		if ($eulaSubmitted)
 		{
 			// check if agreed
-			$eulaAccepted = Request::getVar('acceptEula', false, 'post');
+			$eulaAccepted = Request::getBool('acceptEula', false, 'post');
 
 			if (!$eulaAccepted)
 			{
@@ -294,14 +294,14 @@ class Checkout extends ComponentController
 		}
 		$this->view->noteFields = $noteFields;
 
-		$notesSubmitted = Request::getVar('submitNotes', false, 'post');
+		$notesSubmitted = Request::getBool('submitNotes', false, 'post');
 
 		if ($notesSubmitted)
 		{
 			// Check all required notes
 			foreach ($noteFields as $sId => $fieldInfo)
 			{
-				$itemNotes = Request::getVar('notes-' . $sId, false, 'post');
+				$itemNotes = Request::getString('notes-' . $sId, false, 'post');
 				if ($fieldInfo['sCheckoutNotesRequired'])
 				{
 					if (!$itemNotes)
@@ -325,7 +325,7 @@ class Checkout extends ComponentController
 			}
 			else
 			{
-				$notes = Request::getVar('notes', false, 'post');
+				$notes = Request::getString('notes', false, 'post');
 
 				// Save order's notes
 				$cart->setTransactionNotes($notes);
@@ -405,7 +405,7 @@ class Checkout extends ComponentController
 		}
 
 		// handle non-ajax form submit
-		$shippingInfoSubmitted = Request::getVar('submitShippingInfo', false, 'post');
+		$shippingInfoSubmitted = Request::getBool('submitShippingInfo', false, 'post');
 
 		if ($shippingInfoSubmitted)
 		{
@@ -580,16 +580,14 @@ class Checkout extends ComponentController
 		}
 
 		// Payment selected
-		$selected = Request::getVar('paymentSelect', 0, 'post');
-		$submitted = Request::getVar('paymentSubmit', 0, 'post');
-		$provider = Request::getVar('paymentProvider', 0, 'post');
+		$selected = Request::getString('paymentSelect', 0, 'post');
+		$submitted = Request::getString('paymentSubmit', 0, 'post');
+		$provider = Request::getString('paymentProvider', 0, 'post');
 
 		if ($selected && $provider)
 		{
 			// Do whatever needed to do on the server side
 			$payments = Event::trigger('cart.onSelectedPayment', array($transaction, User::getRoot()));
-
-			//print_r($payments); die;
 
 			$paymentResponse = false;
 			foreach ($payments as $options)
@@ -611,7 +609,6 @@ class Checkout extends ComponentController
 				->set('transactionItems', $transaction->items)
 				->set('transactionInfo', $transaction->info)
 				->display();
-
 		}
 		elseif ($submitted && $provider)
 		{
@@ -643,7 +640,7 @@ class Checkout extends ComponentController
 
 		// Generate payment code
 		/*
-		$params = Component::params(Request::getVar('option'));
+		$params = Component::params(Request::getCmd('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 
 		require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php';

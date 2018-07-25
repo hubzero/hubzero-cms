@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once (dirname(dirname(dirname(dirname(__DIR__)))) . DS . 'helpers' . DS . 'Helper.php');
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . DS . 'helpers' . DS . 'Helper.php';
 $states = \Components\Cart\Helpers\CartHelper::getUsStates();
 
 $this->css();
@@ -72,27 +72,27 @@ if (!empty($this->notifications))
 
 						<label for="shippingToFirst">
 							<?php echo Lang::txt('First name:'); ?>
-							<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo $this->escape(Request::getVar('shippingToFirst', User::get('givenName'), 'post')); ?>" />
+							<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo $this->escape(Request::getString('shippingToFirst', User::get('givenName'), 'post')); ?>" />
 						</label>
 
 						<label for="shippingToLast">
 							<?php echo Lang::txt('Last name:'); ?>
-							<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo $this->escape(Request::getVar('shippingToLast', User::get('surname'), 'post')); ?>" />
+							<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo $this->escape(Request::getString('shippingToLast', User::get('surname'), 'post')); ?>" />
 						</label>
 
 						<label for="shippingAddress">
 							<?php echo Lang::txt('Shipping address:'); ?>
-							<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo $this->escape(Request::getVar('shippingAddress', false, 'post')); ?>" />
+							<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo $this->escape(Request::getString('shippingAddress', false, 'post')); ?>" />
 						</label>
 
 						<label for="shippingCity">
 							<?php echo Lang::txt('City:'); ?>
-							<input type="text" name="shippingCity" id="shippingCity" value="<?php echo $this->escape(Request::getVar('shippingCity', false, 'post')); ?>" />
+							<input type="text" name="shippingCity" id="shippingCity" value="<?php echo $this->escape(Request::getString('shippingCity', false, 'post')); ?>" />
 						</label>
 
 						<label for="shippingZip">
 							<?php echo Lang::txt('Zip:'); ?>
-							<input type="text" name="shippingZip" id="shippingZip" value="<?php echo $this->escape(Request::getVar('shippingZip', false, 'post')); ?>" />
+							<input type="text" name="shippingZip" id="shippingZip" value="<?php echo $this->escape(Request::getString('shippingZip', false, 'post')); ?>" />
 						</label>
 
 						<label for="shippingState">
@@ -103,7 +103,7 @@ if (!empty($this->notifications))
 									foreach ($states as $abbr => $state)
 									{
 										echo '<option value="' . $abbr . '"';
-										if (Request::getVar('shippingState', false, 'post') == $abbr)
+										if (Request::getString('shippingState', false, 'post') == $abbr)
 										{
 											echo ' selected';
 										}

@@ -147,7 +147,7 @@ class Orders extends AdminController
 	public function viewTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 
 		// Get transaction info
 		$transactionItems = Cart::getTransactionItems($id, false);
@@ -265,7 +265,7 @@ class Orders extends AdminController
 	public function editTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 
 		// Get transaction info
 		$transactionItems = Cart::getTransactionItems($id, false);
@@ -320,23 +320,23 @@ class Orders extends AdminController
 	public function saveTask($redirect = true)
 	{
 		// Incoming
-		$id = Request::getVar('id', '');
+		$id = Request::getInt('id', '');
 
 		// get the transaction items' QTYs
-		$tiQty = Request::getVar('tiQty', array());
+		$tiQty = Request::getArray('tiQty', array());
 
 		// get the transaction items' prices
-		$tiPrice = Request::getVar('tiPrice', array());
+		$tiPrice = Request::getArray('tiPrice', array());
 
 		// get the transaction items' checkoutNotes
-		$tiCheckoutNotes = Request::getVar('checkoutNotes', array());
+		$tiCheckoutNotes = Request::getArray('checkoutNotes', array());
 
 		// get the transaction notes
-		$tiNotes = Request::getVar('tiNotes', '');
+		$tiNotes = Request::getString('tiNotes', '');
 		$transactionInfo = array('tiNotes' => $tiNotes);
 
 		// get the payment details
-		$tiPaymentDetails = Request::getVar('tiPaymentDetails', '');
+		$tiPaymentDetails = Request::getString('tiPaymentDetails', '');
 		$transactionInfo['tiPaymentDetails'] = $tiPaymentDetails;
 
 		//print_r($tiCheckoutNotes); die;
@@ -736,8 +736,8 @@ class Orders extends AdminController
 	public function cancelTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', '');
-		$from = Request::getVar('from', '');
+		$id = Request::getString('id', '');
+		$from = Request::getString('from', '');
 
 		$attr = '';
 		if ($from && $from == 'edit')

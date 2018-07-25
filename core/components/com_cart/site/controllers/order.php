@@ -55,7 +55,7 @@ class Order extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -73,7 +73,7 @@ class Order extends ComponentController
 	 */
 	public function homeTask()
 	{
-		die('no direct access');
+		App::abort(404);
 	}
 
 	/**
@@ -84,7 +84,7 @@ class Order extends ComponentController
 	public function completeTask()
 	{
 		// Get the plugins working
-		$provider = Request::getVar('provider', '', 'get');
+		$provider = Request::getString('provider', '', 'get');
 		$pay = Event::trigger('cart.onComplete', array($provider));
 
 		$verificationVar = false;
@@ -107,7 +107,7 @@ class Order extends ComponentController
 		if ($verificationVar)
 		{
 			// Check the GET values passed
-			$customVar = Request::getVar($verificationVar, '');
+			$customVar = Request::getString($verificationVar, '');
 
 			$tId = false;
 			if (strstr($customVar, '-'))
@@ -124,7 +124,7 @@ class Order extends ComponentController
 			// Verify token
 			if (!$token || !Cart::verifySecurityToken($token, $tId))
 			{
-				die('Error processing your order. Failed to verify security token.');
+				App::abort(500, 'Error processing your order. Failed to verify security token.');
 			}
 		}
 
@@ -133,7 +133,8 @@ class Order extends ComponentController
 
 		if (empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed')
 		{
-			die('Error processing your order...');
+			Notify::error('Error processing your order...');
+
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
@@ -178,30 +179,30 @@ class Order extends ComponentController
 		}
 
 		// get security token (Parameter 0)
-		$token = Request::getVar('p0');
+		$token = Request::getString('p0');
 
 		if (!$token || !$cart->verifyToken($token))
 		{
-			die('Error processing your order. Bad security token.');
+			App::abort(500, 'Error processing your order. Bad security token.');
 		}
 
 		// Check if the order total is 0
 		if ($transaction->info->tiTotal != 0)
 		{
-			die('Cannot process transaction. Order total is not zero.');
+			App::abort(500, 'Cannot process transaction. Order total is not zero.');
 		}
 
 		// Check if the transaction's status is pending
 		if ($transaction->info->tStatus != 'pending')
 		{
-			die('Cannot process transaction. Transaction status is invalid.');
+			App::abort(500, 'Cannot process transaction. Transaction status is invalid.');
 		}
 
 		if ($this->completeOrder($transaction))
 		{
 			// redirect to thank you page
-			$redirect_url = Route::url('index.php?option=' . 'com_cart') . '/order/complete/' .
-				'?custom=' . $token . '-' . $transaction->info->tId;
+			$redirect_url = Route::url('index.php?option=' . 'com_cart') . '/order/complete/?custom=' . $token . '-' . $transaction->info->tId;
+
 			App::redirect(
 				$redirect_url
 			);
@@ -224,7 +225,7 @@ class Order extends ComponentController
 			$postBackTransactionId = 116;
 		}
 
-		$params = Component::params(Request::getVar('option'));
+		$params = Component::params(Request::getCmd('option'));
 
 		if (empty($_POST) && !$test)
 		{

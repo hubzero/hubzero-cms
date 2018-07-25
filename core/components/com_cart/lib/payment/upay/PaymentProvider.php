@@ -54,7 +54,7 @@ class PaymentProvider
 	{
 		$hubName  = Config::get('sitename');
 
-		$params = Component::params(Request::getVar('option'));
+		$params = Component::params(Request::getCmd('option'));
 
 		$this->options = new \stdClass();
 		// Default action is payment
