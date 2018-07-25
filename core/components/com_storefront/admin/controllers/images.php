@@ -266,7 +266,7 @@ class Images extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_STOREFRONT_NO_FILE'));
