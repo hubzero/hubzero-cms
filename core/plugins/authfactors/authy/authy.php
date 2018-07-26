@@ -100,8 +100,8 @@ class plgAuthfactorsAuthy extends \Hubzero\Plugin\Plugin
 		$authy = new AuthyApi($this->params->get('key'));
 
 		// Gather and validate inputs
-		$email = Request::getVar('email', null);
-		$phone = Request::getVar('phone', null);
+		$email = Request::getString('email');
+		$phone = Request::getString('phone');
 		$cc    = Request::getInt('country_code', 1);
 
 		if (!Validate::email($email) || !Validate::phone($phone))
@@ -151,7 +151,7 @@ class plgAuthfactorsAuthy extends \Hubzero\Plugin\Plugin
 		// Get factor_id and token and verify them
 		$authy        = new AuthyApi($this->params->get('key'));
 		$factor_id    = Factor::currentOrFailByDomain('authy')->factor_id;
-		$verification = $authy->verifyToken($factor_id, Request::getVar('token'));
+		$verification = $authy->verifyToken($factor_id, Request::getString('token'));
 
 		// If they pass, update the session
 		if ($verification->ok())

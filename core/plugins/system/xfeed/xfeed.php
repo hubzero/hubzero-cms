@@ -50,7 +50,7 @@ class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$uri = Request::getVar('REQUEST_URI', null, 'server');
+		$uri = Request::getString('REQUEST_URI', null, 'server');
 		$bits = explode('?', $uri);
 		$bit = $bits[0];
 

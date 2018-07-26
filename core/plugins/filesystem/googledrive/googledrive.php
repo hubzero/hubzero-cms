@@ -74,10 +74,10 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
 		{
 			\Session::set('googledrive.app_id', $app_id);
 			\Session::set('googledrive.app_secret', $app_secret);
-			\Session::set('googledrive.connection_to_set_up', Request::getVar('connection', 0));
+			\Session::set('googledrive.connection_to_set_up', Request::getInt('connection', 0));
 
 			// Set upp a return and redirect to Google for auth
-			$return = (Request::getVar('return')) ? Request::getVar('return') : Request::current(true);
+			$return = (Request::getString('return')) ? Request::getString('return') : Request::current(true);
 			$return = base64_encode($return);
 
 			$redirectUri      = trim(Request::root(), '/') . '/developer/callback/googledriveAuthorize';

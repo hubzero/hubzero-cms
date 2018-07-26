@@ -30,7 +30,7 @@
  */
 
 use Components\Cart\Models\Cart;
-require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php';
+require_once Component::path('com_cart') . DS . 'models' . DS . 'Cart.php';
 
 /**
  * Cart plugin for Payment: UPay
@@ -63,6 +63,12 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 		return $payment;
 	}
 
+	/**
+	 * Post back
+	 *
+	 * @param   array  $postData
+	 * @return  mixed
+	 */
 	public function onPostback($postData)
 	{
 		$provider = Request::getWord('provider', false, 'post');
@@ -126,6 +132,13 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 		return $response;
 	}
 
+	/**
+	 * Complete payment
+	 *
+	 * @param   object  $transaction
+	 * @param   object  $user
+	 * @return  mixed
+	 */
 	public function onSelectedPayment($transaction, $user)
 	{
 		$provider = Request::getWord('paymentProvider', false, 'post');
@@ -180,12 +193,14 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set transaction details
 	 *
+	 * @param   object  $transactionDetails
+	 * @return  void
 	 */
 	private function setTransactionDetails($transactionDetails)
 	{
 		$hubName  = Config::get('sitename');
 
-		$params = Component::params(Request::getVar('option'));
+		$params = Component::params(Request::getCmd('option'));
 
 		$this->options = new \stdClass();
 		$this->options->transactionName = "$hubName online purchase";
@@ -203,9 +218,15 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 			$transactionDetails->token . '-' . $transactionDetails->info->tId;
 	}
 
+	/**
+	 * Complete payment
+	 *
+	 * @param   object  $provider
+	 * @return  mixed
+	 */
 	public function onComplete($provider)
 	{
-		if (!Request::getVar('UPAY_SITE_ID', '', 'get'))
+		if (!Request::getString('UPAY_SITE_ID', '', 'get'))
 		{
 			return false;
 		}

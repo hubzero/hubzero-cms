@@ -102,7 +102,7 @@ if (isset($this->entityId) && isset($this->entityType))
 	$tracking = Components\System\Models\Mediatracking::oneByUserAndObject($this->entityId, $this->entityType, User::get('id'));
 
 	// Check to see if we already have a time query param
-	$hasTime = (Request::getVar('time', '') != '') ? true : false;
+	$hasTime = (Request::getString('time', '') != '') ? true : false;
 
 	// Do we want to redirect user with time added to url
 	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration && !Request::getInt('no_html', 0))
@@ -111,7 +111,7 @@ if (isset($this->entityId) && isset($this->entityType))
 
 		// do we have tmpl=componet in url?
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
-		if (Request::getVar('tmpl', '') == 'component')
+		if (Request::getCmd('tmpl', '') == 'component')
 		{
 			$redirect .= $delimeter . 'tmpl=component';
 		}

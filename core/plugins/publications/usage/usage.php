@@ -122,7 +122,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get/set some variables
-		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
+		$dthis  = Request::getString('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
 		require_once \Component::path($option) . DS . 'tables' . DS . 'stats.php';

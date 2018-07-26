@@ -109,9 +109,9 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 			'sort_Dir' => 'desc',
 			'limit'    => Request::getInt('limit', 0),
 			'start'    => Request::getInt('limitstart', 0),
-			'search'   => Request::getVar('q', ''),
-			'filterby' => Request::getVar('filterby', ''),
-			'sortby'   => Request::getVar('sortby', 'withinplugin')
+			'search'   => Request::getString('q', ''),
+			'filterby' => Request::getString('filterby', ''),
+			'sortby'   => Request::getString('sortby', 'withinplugin')
 		);
 
 		$identifier = $this->publication->identifier();
@@ -266,7 +266,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Login required
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=' . $this->_name, false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=' . $this->_name, false, true), 'server');
 
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -326,12 +326,12 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$tags   = Request::getVar('tags', '');
+		$tags   = Request::getString('tags', '');
 		$funds  = Request::getInt('funds', 0);
 		$reward = Request::getInt('reward', 0);
 
 		// Initiate class and bind posted items to database fields
-		$fields = Request::getVar('question', array(), 'post', 'none', 2);
+		$fields = Request::getArray('question', array(), 'post');
 
 		$row = \Components\Answers\Models\Question::oneOrNew($fields['id'])->set($fields);
 

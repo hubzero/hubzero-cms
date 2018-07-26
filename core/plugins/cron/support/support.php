@@ -358,7 +358,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 				);
 
 				// Set mail additional args (mail return path - used for bounces)
-				if ($host = Request::getVar('HTTP_HOST', '', 'server'))
+				if ($host = Request::getString('HTTP_HOST', '', 'server'))
 				{
 					$args = '-f hubmail-bounces@' . $host;
 				}
@@ -553,7 +553,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		);
 
 		//set mail additional args (mail return path - used for bounces)
-		if ($host = Request::getVar('HTTP_HOST', '', 'server'))
+		if ($host = Request::getString('HTTP_HOST', '', 'server'))
 		{
 			$args = '-f hubmail-bounces@' . $host;
 		}
@@ -944,7 +944,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		$from['multipart'] = md5(date('U'));
 
 		// Set mail additional args (mail return path - used for bounces)
-		if ($host = Request::getVar('HTTP_HOST', '', 'server'))
+		if ($host = Request::getString('HTTP_HOST', '', 'server'))
 		{
 			$args = '-f hubmail-bounces@' . $host;
 		}
