@@ -4,7 +4,7 @@ All extensions of the `app` directory are subtrees (effectively).
 
 ## Components
 
- * [com_fmns](https://github.com/qubeshub/com_fmns): Faculty Mentoring Networks component (_in development_). **dev** :white_check_mark: **prod** :x:
+ * [com_fmns](https://github.com/qubeshub/com_fmns): Faculty Mentoring Networks component (_in development_). **dev** :white_check_mark: **prod** :white_check_mark:
  * [com_partners](https://github.com/qubeshub/com_partners): Partners component **dev** :white_check_mark: **prod** :white_check_mark:
  * [com_publications](https://github.com/qubeshub/com_publications): **Override** of HubZero publications component. **dev** :white_check_mark: **prod** :white_check_mark:
  * [com_tags](https://github.com/qubeshub/com_tags): **Override** of HubZero tags component. **dev** :white_check_mark: **prod** :white_check_mark:
