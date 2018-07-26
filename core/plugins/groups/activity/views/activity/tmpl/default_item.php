@@ -138,9 +138,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 
 					if ($project)
 					{
+						$projectDetailUrl = $this->row->log->details->get('url');
+						$projectDetailUrl = !empty($projectDetailUrl) ? $projectDetailUrl : Route::url('index.php?option=com_projects&alias=' . $project->get('alias'));
 						?>
 						<div class="activity-source icon-project">
-							<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $project->get('alias')); ?>"><?php echo $project->get('title'); ?></a>
+							<a href="<?php echo $projectDetailUrl; ?>"><?php echo $project->get('title'); ?></a>
 						</div>
 						<?php
 					}
@@ -341,7 +343,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 	</div><!-- / .activity-content -->
 
 	<?php
-	if ($this->row->log->get('scope') == 'activity.comment')
+	if ($this->row->log->get('scope') == 'activity.comment' || $this->row->log->get('scope') == 'project.comment')
 	{
 		$recipient = Hubzero\Activity\Recipient::all();
 
