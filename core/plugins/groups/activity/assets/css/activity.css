@@ -145,6 +145,11 @@
 	.comment-add .option {
 		width: auto;
 	}
+
+	.comment-add textarea {
+		width: 100%;
+	}
+
 	.comment-add .upload-label {
 		margin-bottom: 0.5em;
 		width: 50%;
