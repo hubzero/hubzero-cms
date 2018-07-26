@@ -76,7 +76,7 @@ defined('_HZEXEC_') or die();
 					<select id="org" name="org">
 						<option value="">(select from list or enter other)</option>
 						<?php
-						$dbh->setQuery('SELECT organization FROM `#__xorganizations` ORDER BY organization');
+						$dbh->setQuery("SELECT o.label FROM `#__user_profile_options` AS o INNER JOIN `#__user_profile_fields` AS f ON f.id=o.field_id WHERE f.name='organization' ORDER BY o.label ASC");
 						foreach ($dbh->loadAssocList() as $org)
 						{
 							echo '<option value="'.$org['organization'].'"'.(isset($_POST['org']) && $_POST['org'] === $org['organization'] ? ' selected="selected"' : '').'>'.$org['organization'].'</option>';
