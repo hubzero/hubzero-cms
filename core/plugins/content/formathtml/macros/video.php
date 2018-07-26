@@ -510,7 +510,7 @@ class Video extends Macro
 		$this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
 		if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs))
 		{
-			if (\Request::getVar('format') == 'pdf')
+			if (\Request::getString('format') == 'pdf')
 			{
 				return $this->_path($file);
 			}

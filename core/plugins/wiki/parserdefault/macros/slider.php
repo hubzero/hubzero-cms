@@ -75,7 +75,7 @@ class SliderMacro extends WikiMacro
 		$id = uniqid();
 
 		//get the group
-		$gid = Request::getVar('cn');
+		$gid = Request::getString('cn');
 
 		//get the group object based on gid
 		$group = \Hubzero\User\Group::getInstance($gid);

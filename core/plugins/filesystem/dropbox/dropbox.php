@@ -94,12 +94,11 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 	 **/
 	protected static function _setLocalOauthData($state)
 	{
-		$connectionId = Request::getVar('connection', 0);
+		$connectionId = Request::getInt('connection', 0);
 		$projectsFilesUrl = Request::current();
 
 		Session::set('dropbox.connection_to_set_up', $connectionId);
 		Session::set('dropbox.local_origin_url', $projectsFilesUrl);
 		Session::set('dropbox.state', $state);
 	}
-
 }

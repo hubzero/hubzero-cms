@@ -268,8 +268,8 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		$captcha = Request::getVar('captcha', array());
-		$task = Request::getVar('task', '');
+		$captcha = Request::getArray('captcha', array());
+		$task = Request::getCmd('task', '');
 
 		if (!isset($captcha['instance']) || !isset($captcha['answer']))
 		{
@@ -356,7 +356,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
 		//$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 
-		App::get('session')->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
+		App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
 
 		if ($this->_verified)
 		{
@@ -396,7 +396,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	private function _generateImageCaptcha()
 	{
-		$showCaptcha = Request::getVar('showCaptcha', '');
+		$showCaptcha = Request::getString('showCaptcha', '');
 		if ($showCaptcha)
 		{
 			return $this->_displayImage();
@@ -463,9 +463,9 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$GLOBALS['totalCaptchas']++;
 
 		$view = $this->view('default', 'image')
-					->set('task', Request::getVar('task', ''))
-					->set('controller', Request::getVar('controller', ''))
-					->set('option', Request::getVar('option', ''))
+					->set('task', Request::getCmd('task', ''))
+					->set('controller', Request::getCmd('controller', ''))
+					->set('option', Request::getCmd('option', ''))
 					->set('total', $GLOBALS['totalCaptchas']);
 
 		return $view->loadTemplate();
@@ -612,7 +612,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 						}
 						if ($shift == 10000)
 						{
-							$shift = mt_rand(4,6);
+							$shift = mt_rand(4, 6);
 						}
 					}
 				}
@@ -731,7 +731,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$security_code = $this->_generateHash($this->keystring, date('j'));
 
 		//Set the session to store the security code
-		App::get('session')->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
+		App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
 		$width = 120;
 		$height = 40;
 	}
@@ -751,7 +751,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$security_code = $this->_generateHash($security_code, date('j'));
 
 		// Set the session to store the security code
-		App::get('session')->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
+		App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
 
 		$width  = 120;
 		$height = 40;

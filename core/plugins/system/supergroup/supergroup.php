@@ -54,8 +54,8 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$cn     = Request::getVar('cn', '');
-		$active = Request::getVar('active', '');
+		$cn     = Request::getString('cn', '');
+		$active = Request::getString('active', '');
 
 		// load group object
 		$group  = Hubzero\User\Group::getInstance($cn);

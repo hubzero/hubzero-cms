@@ -52,7 +52,7 @@ class GroupMacro extends WikiMacro
 	 */
 	public function __construct()
 	{
-		$cname = \Request::getVar('cn', \Request::getVar('gid', ''));
+		$cname = \Request::getString('cn', \Request::getString('gid', ''));
 		$this->group = Group::getInstance($cname);
 	}
 

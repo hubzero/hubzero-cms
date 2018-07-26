@@ -33,12 +33,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$period = Request::getVar('period','1999-12');
+$period = Request::getString('period', '1999-12');
 
 $date = $period;
 
 $dataurl = Route::url('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=markers&local=us');
-$dataurl = str_replace('&amp;','&',$dataurl);
+$dataurl = str_replace('&amp;', '&', $dataurl);
 
 $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
@@ -50,12 +50,12 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 <meta http-equiv='content-type' content='text/html; charset=utf-8'/>
 <title>User Animation</title>
 <script type='text/javascript' src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=".$key."'></script>
-<script type='text/javascript' src='/components/".$option."/maps/js/elabel.js'></script>
+<script type='text/javascript' src='/core/components/".$option."/maps/js/elabel.js'></script>
 <script type='text/javascript'>
 
 	function initialize() {
 		var dt = '".$date."';
-		var plotdt = '".substr($date,0,7)."';
+		var plotdt = '".substr($date, 0, 7)."';
 		if (GBrowserIsCompatible()) {
 			map = new GMap2(document.getElementById('map_canvas'));
 			// map.addControl(new GLargeMapControl());
@@ -67,13 +67,13 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 			map.setCenter(new GLatLng(35,-113), 5, G_HYBRID_MAP);
 
 			var icon1 = new GIcon();
-			icon1.image = '/components/".$option."/maps/images/org.png';
+			icon1.image = '/core/components/".$option."/maps/images/org.png';
 			icon1.iconSize = new GSize(40, 40);
 			icon1.iconAnchor = new GPoint(20, 20);
 			marker1 = new GMarker(new GLatLng('40.4427','-86.9237'),icon1);
 			map.addOverlay(marker1);
 			getMarkers(dt);
-			var label = new ELabel(new GLatLng(-52.7,11.0),'".substr($date,0,7)."','style1');
+			var label = new ELabel(new GLatLng(-52.7,11.0),'".substr($date, 0, 7)."','style1');
 			map.addOverlay(label);
 
 			// plot overlay
@@ -91,7 +91,7 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 
 
 	function getMarkers(dt) {
-		//var urlstr='/components/".$option."/maps/read_us_location.php?period='+dt;
+		//var urlstr='/core/components/".$option."/maps/read_us_location.php?period='+dt;
 		var urlstr='".$dataurl."&period='+dt;
 		var request = GXmlHttp.create();
 		request.open('GET', urlstr , true); // request XML from PHP with AJAX call
@@ -103,7 +103,7 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 				if (locations.length) {
 					for (var i = 0; i < locations.length; i++) { // cycle thru locations
 						var icon = new GIcon();
-						icon.image = '/components/".$option."/maps/images/1.png';
+						icon.image = '/core/components/".$option."/maps/images/1.png';
 						icon.iconSize = new GSize(20, 34);
 						icon.iconAnchor = new GPoint(10, 34);
 						markers[i] = new GMarker(new GLatLng(locations[i].getAttribute('lat'),locations[i].getAttribute('lng')),icon);
@@ -121,4 +121,3 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 	<div id='map_canvas' style='width: 2200px; height: 1010px'></div>
 </body>
 </html>";
-

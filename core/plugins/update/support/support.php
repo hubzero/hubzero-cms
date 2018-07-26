@@ -280,7 +280,7 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 				);
 
 				// Set mail additional args (mail return path - used for bounces)
-				if ($host = Request::getVar('HTTP_HOST', '', 'server'))
+				if ($host = Request::getString('HTTP_HOST', '', 'server'))
 				{
 					$args = '-f hubmail-bounces@' . $host;
 				}

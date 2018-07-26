@@ -89,7 +89,7 @@ class Slider extends Macro
 		switch ($option)
 		{
 			case 'com_groups':
-				$cn = \Request::getVar('cn');
+				$cn = \Request::getString('cn');
 				$group = Group::getInstance($cn);
 
 				$base_url  = DS . trim($config->get('uploadpath', 'site/groups'), DS) . DS;

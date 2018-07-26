@@ -91,7 +91,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 		$mediaUrl = Request::base() . trim($sef, '/') . '/' . $publication->version_id . '/Image:master';
 
 		// Incoming action
-		$sharewith = Request::getVar('sharewith', '');
+		$sharewith = Request::getString('sharewith', '');
 
 		if ($sharewith)
 		{

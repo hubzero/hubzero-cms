@@ -92,7 +92,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	 */
 	private function get_count(&$db, $domain, $location)
 	{
-		$query = "SELECT COUNT(DISTINCT username) FROM #__xsession,#__session WHERE #__xsession.session_id=#__session.session_id AND guest = '0' AND domain = '" . $domain . "' AND ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+		$query = "SELECT COUNT(DISTINCT username) FROM `#__xsession`,`#__session` WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '0' AND domain = '" . $domain . "' AND ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
 		$db->setQuery($query);
 		$users = $db->loadResult();
@@ -103,7 +103,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			$info .= '_br_ - Users: ' . $users;
 		}
 
-		$query = "SELECT COUNT(DISTINCT ip) FROM #__xsession,#__session WHERE #__xsession.session_id=#__session.session_id AND guest = '1' AND domain = '" . $domain . "' AND bot = '0' AND ipLATITUDE = '" . $location['lat']."' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+		$query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session` WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '1' AND domain = '" . $domain . "' AND bot = '0' AND ipLATITUDE = '" . $location['lat']."' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
 		$db->setQuery($query);
 		$guests = $db->loadResult();
@@ -113,7 +113,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			$info .= '_br_ - Guests: ' . $guests;
 		}
 
-		$query = "SELECT COUNT(DISTINCT ip) FROM #__xsession,#__session WHERE #__xsession.session_id=#__session.session_id AND  guest = '1' AND domain = '" . $domain . "' AND bot = '1' AND ipLATITUDE = '" . $location['lat']."' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+		$query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session` WHERE `#__xsession`.session_id=`#__session`.session_id AND  guest = '1' AND domain = '" . $domain . "' AND bot = '1' AND ipLATITUDE = '" . $location['lat']."' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
 		$db->setQuery($query);
 		$bots = $db->loadResult();
@@ -182,8 +182,8 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'markers':
-				$date = Request::getVar('period', '2008-03-00');
-				$local = Request::getVar('local', '');
+				$date = Request::getString('period', '2008-03-00');
+				$local = Request::getString('local', '');
 
 				if ($local == 'us')
 				{
@@ -194,7 +194,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
-					#$sql = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
+					//$sql = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
 					$query = "SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY ips";
 				}
 
@@ -238,7 +238,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			break;
 		}
 
-		while (@ob_end_clean());
+		@ob_end_clean();
 
 		// Date in the past
 		header("Expires: Mon, 26 Jul 2017 05:00:00 GMT");
@@ -281,9 +281,9 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$lat  = Request::getVar('lat', '35');
-		$long = Request::getVar('long', '-90');
-		$zoom = Request::getVar('zoom', '');
+		$lat  = Request::getString('lat', '35');
+		$long = Request::getString('long', '-90');
+		$zoom = Request::getString('zoom', '');
 		if ($lat != '35' && $long != '-90')
 		{
 			$zoom = '14';
@@ -293,14 +293,14 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			$zoom = '4';
 		}
 
-		$type = Request::getVar('type', 'online');
-		$no_html = Request::getVar('no_html', 0);
+		$type = Request::getString('type', 'online');
+		$no_html = Request::getInt('no_html', 0);
 
 		$type = str_replace(':', '-', $type);
 
 		if ($no_html)
 		{
-			$data = Request::getVar('data','');
+			$data = Request::getString('data', '');
 
 			if ($data)
 			{
@@ -315,7 +315,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 				if (is_file(__DIR__ . DS . $type . '.php'))
 				{
-					include_once(__DIR__ . DS . $type . '.php');
+					include_once __DIR__ . DS . $type . '.php';
 				}
 				else
 				{
@@ -336,4 +336,3 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		return $html;
 	}
 }
-
