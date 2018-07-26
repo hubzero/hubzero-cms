@@ -749,7 +749,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
+		$entry = Request::getArray('entry', array(), 'post');
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
@@ -957,7 +957,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$data = Request::getVar('comment', array(), 'post', 'none', 2);
+		$data = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$comment = Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
@@ -1145,12 +1145,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$settings = Request::getVar('settings', array(), 'post');
+		$settings = Request::getArray('settings', array(), 'post');
 
 		$row = Hubzero\Plugin\Params::blank()->set($settings);
 
 		// Get parameters
-		$p = new Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
+		$p = new Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 
 		$row->set('params', $p->toString());
 

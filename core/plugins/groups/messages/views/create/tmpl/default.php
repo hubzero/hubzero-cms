@@ -41,7 +41,7 @@ $group_statuses = array(
 );
 
 $role_name = '';
-$role_id = Request::getVar('role_id');
+$role_id = Request::getInt('role_id');
 if ($role_id)
 {
 	foreach ($this->member_roles as $role)

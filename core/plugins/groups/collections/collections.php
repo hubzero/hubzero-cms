@@ -652,7 +652,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			'user_id'       => User::get('id'),
 			'search'        => Request::getString('search', ''),
 			'state'         => 1,
-			'collection_id' => Request::getVar('board', 0)
+			'collection_id' => Request::getInt('board', 0)
 		);
 
 		$view->collection = $this->model->collection($view->filters['collection_id']);
@@ -1070,7 +1070,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		if ($fields['id'] && !is_numeric($fields['id']))
 		{
@@ -1093,11 +1093,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add some data
-		if ($files  = Request::getVar('fls', '', 'files', 'array'))
+		if ($files  = Request::getArray('fls', '', 'files'))
 		{
 			$item->set('_files', $files);
 		}
-		$item->set('_assets', Request::getVar('assets', null, 'post'));
+		$item->set('_assets', Request::getArray('assets', array(), 'post'));
 		$item->set('_tags', trim(Request::getString('tags', '')));
 		$item->set('state', 1);
 		if (!$item->exists())
@@ -1144,7 +1144,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Create a post entry linking the item to the board
-		$p = Request::getVar('post', array(), 'post');
+		$p = Request::getArray('post', array(), 'post');
 
 		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
@@ -1650,7 +1650,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$data = Request::getVar('comment', array(), 'post');
+		$data = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$comment = \Hubzero\Item\Comment::oneOrNew($data['id'])->set($data);
@@ -1922,7 +1922,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields['id'] = intval($fields['id']);
 
 		// Bind new content
@@ -2141,7 +2141,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$settings = Request::getVar('settings', array(), 'post');
+		$settings = Request::getArray('settings', array(), 'post');
 
 		$row = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), $this->_type, $this->_name);
 
@@ -2150,7 +2150,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$row->set('element', $this->_name);
 
 		// Get parameters
-		$prms = Request::getVar('params', array(), 'post');
+		$prms = Request::getArray('params', array(), 'post');
 
 		$params = new \Hubzero\Config\Registry($prms);
 

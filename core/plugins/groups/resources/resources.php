@@ -191,12 +191,12 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// Incoming paging vars
-		$sort = Request::getVar('sort', 'date');
+		$sort = Request::getString('sort', 'date');
 		if (!in_array($sort, array('date', 'title', 'ranking', 'rating')))
 		{
 			$sort = 'date';
 		}
-		$access = Request::getVar('access', 'all');
+		$access = Request::getString('access', 'all');
 		if (!in_array($access, array('all', 'public', 'protected', 'private')))
 		{
 			$access = 'date';
@@ -322,7 +322,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		{
 			case 'html':
 				// If we have a specific ID and we're a supergroup, serve a resource page inside supergroup template
-				if (Request::getVar('id', Request::getVar('alias', null)) && $this->group->type == 3)
+				if (Request::getString('id', Request::getString('alias', null)) && $this->group->type == 3)
 				{
 					// Load neccesities for com_resources controller
 					$lang = App::get('language');
