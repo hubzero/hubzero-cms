@@ -475,7 +475,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$members = $this->group->get('members');
 
 		// Incoming array of users to promote
-		$mbrs = Request::getVar('users', array(0));
+		$mbrs = Request::getArray('users', array());
 
 		foreach ($mbrs as $mbr)
 		{
@@ -588,7 +588,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$managers = $this->group->get('managers');
 
 		// Incoming array of users to promote
-		$mbrs = Request::getVar('users', array(0));
+		$mbrs = Request::getArray('users', array());
 
 		foreach ($mbrs as $mbr)
 		{
@@ -705,7 +705,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('users', array(0));
+		$mbrs = Request::getArray('users', array());
 
 		foreach ($mbrs as $mbr)
 		{
@@ -815,7 +815,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
-		$view->users = Request::getVar('users', array(0));
+		$view->users = Request::getArray('users', array());
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -854,7 +854,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$users_man = array();
 
 		// Incoming array of users to remove
-		$mbrs = Request::getVar('users', array(0));
+		$mbrs = Request::getArray('users', array());
 
 		// Figure out how many managers are being deleted
 		$intersect = array_intersect($managers, $mbrs);
@@ -1004,7 +1004,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
-		$view->users = Request::getVar('users', array(0));
+		$view->users = Request::getArray('users', array());
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -1039,7 +1039,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('users', array(0));
+		$mbrs = Request::getArray('users', array());
 
 		foreach ($mbrs as $mbr)
 		{
@@ -1136,7 +1136,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
-		$view->users = Request::getVar('users', array(0));
+		$view->users = Request::getArray('users', array());
 		if ($this->getError())
 		{
 			$view->setError($this->getError());
@@ -1169,12 +1169,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$user_emails = array();
 
 		// Incoming array of users to demote
-		$mbrs = Request::getVar('users', array(), 'post');
+		$mbrs = Request::getArray('users', array(), 'post');
 
 		// Set a flag for emailing any changes made
 		$admchange = '';
 
-		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+		require_once Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
 
 		foreach ($mbrs as $mbr)
 		{
@@ -1311,7 +1311,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	public function saveRole()
 	{
 		// get request vars
-		$fields = Request::getVar('role', array());
+		$fields = Request::getArray('role', array());
 		$fields['gidNumber']   = $this->group->get('gidNumber');
 		$fields['permissions'] = json_encode($fields['permissions']);
 

@@ -326,7 +326,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		$view->member_roles = $member_roles;
 		$view->members = $members;
-		$view->users = Request::getVar('users', array('all'));
+		$view->users = Request::getArray('users', array('all'));
 		$view->no_html = Request::getInt('no_html', 0);
 
 		foreach ($this->getErrors() as $error)
@@ -355,7 +355,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$message = Lang::txt('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
 
 		// Incoming array of users to message
-		$mbrs = Request::getVar('users', array(0), 'post');
+		$mbrs = Request::getArray('users', array(0), 'post');
 		switch ($mbrs[0])
 		{
 			case 'invitees':

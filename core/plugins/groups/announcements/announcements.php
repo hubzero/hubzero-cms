@@ -398,7 +398,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Email announcement

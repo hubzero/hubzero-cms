@@ -627,7 +627,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming posted data
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 		$fields['state'] = 1;
 
@@ -1046,7 +1046,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a category
@@ -1425,7 +1425,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$section = Request::getString('section', '');
-		$fields  = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields  = Request::getArray('fields', array(), 'post');
 		$fields  = array_map('trim', $fields);
 
 		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
@@ -1933,7 +1933,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))
@@ -2166,7 +2166,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$settings = Request::getVar('settings', array(), 'post');
+		$settings = Request::getArray('settings', array(), 'post');
 
 		$row = \Hubzero\Plugin\Params::blank()->set($settings);
 

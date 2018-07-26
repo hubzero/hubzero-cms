@@ -204,7 +204,7 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 			->set('notifications', array());
 
 		//get rel path to start
-		$view->activeFolder = Request::getVar('path', '/');
+		$view->activeFolder = Request::getString('path', '/');
 
 		// make sure we have an active folder
 		if ($view->activeFolder == '')
