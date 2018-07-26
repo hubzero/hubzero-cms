@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+include_once Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Courses Plugin class for store
@@ -156,7 +156,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 			if (!$params->get('store_product_id', 0))
 			{
-				include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+				include_once Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
 
 				$product = new \Components\Storefront\Models\Course();
 				$product->setName($title);
@@ -314,14 +314,14 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 		}
 		if ($isNew && Request::getInt('store_product', 0))
 		{
-			include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
+			include_once Component::path('com_storefront') . DS . 'models' . DS . 'Coupon.php';
 
 			try
 			{
 				// Constructor take the coupon code
 				$coupon = new \Components\Storefront\Models\Coupon($model->get('code'));
 				// Couponn description (shows up in the cart)
-				$coupon->setDescription(Request::getVar('description', 'Test coupon, 10% off product with ID 111'));
+				$coupon->setDescription(Request::getString('description', 'Test coupon, 10% off product with ID 111'));
 				// Expiration date
 				$coupon->setExpiration($model->get('created'));
 				// Number of times coupon can be used (unlimited by default)
@@ -332,7 +332,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 				// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
 				//$section = new CorusesModelSection($model->get('section_id'));
 
-				include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+				include_once Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
 
 				$product = new \Components\Storefront\Models\Course();
 				$product->setCourseId($model->find('course'));

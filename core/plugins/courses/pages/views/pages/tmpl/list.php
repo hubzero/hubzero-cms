@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$no_html = Request::getVar('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
 
 $section = Request::getInt('section_id', 0);
 
@@ -88,7 +88,7 @@ if (!$no_html) { ?>
 				<?php
 				if ($this->docs)
 				{
-					$page = Request::getVar('page', '');
+					$page = Request::getString('page', '');
 
 					foreach ($this->docs as $path => $name)
 					{

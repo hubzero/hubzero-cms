@@ -106,7 +106,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			     ->js('guide.overlay');
 		}
 
-		if (!($active = Request::getVar('active')))
+		if (!($active = Request::getString('active')))
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
