@@ -415,48 +415,35 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 				$recipients[] = ['project', $this->model->get('id')];
 				// Log the activity to the creator
 				$recipients[] = ['user', $row->get('created_by')];
-
-				// Notify the creator of the parent comment
-				if ($row->get('parent'))
-				{
-					$recipients[] = ['user', $row->parent()->get('created_by')];
-
-					// We have a child comment
-					// So, we want to force the parent to show up more recent in the list
-					// to reflect the new comment.
-
-					// Unset the parent's recipient record(s)
-					$past = Hubzero\Activity\Recipient::all()
-						->whereEquals('scope', 'project')
-						->whereEquals('scope_id', $this->model->get('id'))
-						->whereEquals('log_id', $row->get('parent'))
-						->whereEquals('state', 1)
-						->rows();
-
-					foreach ($past as $p)
-					{
-						$p->set('state', 0);
-						$p->save();
-					}
-
-					// And add a new recipient record with an updated timestamp
-					$updated = Hubzero\Activity\Recipient::blank()
-						->set(array(
-							'scope'    => 'project',
-							'scope_id' => $this->model->get('id'),
-							'log_id'   => $row->get('parent'),
-							'state'    => 1,
-							'created'  => Date::toSql(),
-							'viewed'   => Date::toSql()
-						));
-					$updated->save();
-				}
-
 				// Notify the parent group
 				if ($gid = $this->model->get('owned_by_group'))
 				{
 					$recipients[] = ['group', $gid];
 				}
+
+				// Notify the creator of the parent comment
+				if ($row->get('parent'))
+				{
+					$recipients[] = ['user', $row->parent()->row()->get('created_by')];
+
+					// We have a child comment
+					// So, we want to force the parent to show up more recent in the list
+					// to reflect the new comment.
+					$currentRecipients = Hubzero\Activity\Recipient::all()
+						->whereEquals('log_id', $row->get('parent'))
+						->whereEquals('state', 1)
+						->rows();
+
+					foreach ($currentRecipients as $recipient)
+					{
+						$recipient->set(array(
+							'created'  => Date::toSql(),
+							'viewed'   => '0000-00-00 00:00:00'
+						));
+						$recipient->save();
+					}
+				}
+
 
 				Event::trigger('system.logActivity', [
 					'activity' => [
