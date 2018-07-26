@@ -72,7 +72,7 @@ $options = array(
 );
 
 //no html?
-$no_html = Request::getVar("no_html", 0);
+$no_html = Request::getInt("no_html", 0);
 ?>
 <?php if (!$no_html) : ?>
 <h3 class="section-header">

@@ -72,7 +72,7 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 
 	public function login(&$credentials, &$options)
 	{
-		$return = Request::getVar('return', false);
+		$return = Request::getString('return', '');
 		$options['return'] = base64_decode($return);
 		return;
 	}
@@ -93,10 +93,10 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 		$email = Request::getString('email', "no email given");
 
 		// Some versions sent 'code', some sent 'confirm'
-		$code = Request::getVar('confirm', false);
+		$code = Request::getString('confirm', '');
 		if (!$code)
 		{
-			$code = Request::getVar('code', false);
+			$code = Request::getString('code', '');
 		}
 
 		// Get the user profile requested
@@ -230,7 +230,7 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 				else
 				{
 					//@FIXME: Convert to HUBzero Error Logger
-					error_log('fail2ban-client not found.');
+					Log::error('fail2ban-client not found.');
 
 					// Bail early
 					return false;

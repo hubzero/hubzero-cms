@@ -78,7 +78,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		$b64dreturn = '';
 
 		// Check the state for our return variable
-		if ($return = Request::getVar('state', '', 'method', 'base64'))
+		if ($return = Request::getString('state', ''))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
@@ -90,7 +90,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		$options['return'] = $b64dreturn;
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if (!Request::getVar('code', null))
+		if (!Request::getString('code'))
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
@@ -147,7 +147,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		      ->setRedirectUri(self::getRedirectUri('orcid'));
 
 		// Authenticate the user
-		$oauth->authenticate(Request::getVar('code'));
+		$oauth->authenticate(Request::getString('code'));
 
 		// Check for successful authentication
 		if ($oauth->isAuthenticated())
@@ -234,7 +234,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		      ->setRedirectUri(self::getRedirectUri('orcid'));
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if (!Request::getVar('code', null))
+		if (!Request::getString('code'))
 		{
 			// User didn't authorize our app, or, clicked cancel...
 			App::redirect(
@@ -245,7 +245,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		}
 
 		// Authenticate the user
-		$oauth->authenticate(Request::getVar('code'));
+		$oauth->authenticate(Request::getString('code'));
 
 		// Check for successful authentication
 		if ($oauth->isAuthenticated())

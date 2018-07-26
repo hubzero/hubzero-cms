@@ -351,7 +351,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
 		// get request vars
-		$data = Request::getVar('address', array());
+		$data = Request::getArray('address', array());
 		$data['uidNumber'] = User::get('id');
 
 		// set up objects

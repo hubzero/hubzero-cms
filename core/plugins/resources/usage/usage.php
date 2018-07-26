@@ -116,7 +116,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get/set some variables
-		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
+		$dthis  = Request::getString('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
 		include_once Component::path($option) . DS . 'models' . DS . 'stat.php';
@@ -140,10 +140,10 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$action = Request::getVar('action', '');
+			$action = Request::getString('action', '');
 			if ($action == 'top')
 			{
-				$dtm = Request::getVar('datetime', '0000-00-00 00:00:00');
+				$dtm = Request::getString('datetime', '0000-00-00 00:00:00');
 				if (!preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $dtm))
 				{
 					$dtm = '0000-00-00 00:00:00';

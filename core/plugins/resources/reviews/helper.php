@@ -46,7 +46,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 	public function execute()
 	{
 		// Incoming action
-		$action = Request::getVar('action', '');
+		$action = Request::getString('action', '');
 
 		$this->loggedin = true;
 
@@ -110,7 +110,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		$id = Request::getInt('id', 0);
 
 		// Trim and addslashes all posted items
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		if (!$id)
 		{
@@ -191,8 +191,8 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 	{
 		$id   = Request::getInt('refid', 0);
 		$ajax = Request::getInt('no_html', 0);
-		$cat  = Request::getVar('category', 'review');
-		$vote = Request::getVar('vote', '');
+		$cat  = Request::getString('category', 'review');
+		$vote = Request::getString('vote', '');
 		$ip   = Request::ip();
 		$rid  = Request::getInt('id', 0);
 
@@ -323,7 +323,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		Request::checkToken();
 
 		// Incoming
-		$data = Request::getVar('review', array(), 'post', 'none', 2);
+		$data = Request::getArray('review', array(), 'post');
 
 		// Bind the form data to our object
 		$row = \Components\Resources\Reviews\Models\Review::oneOrNew($data['id'])->set($data);

@@ -48,9 +48,9 @@ $this->css();
 			<span>
 				(<?php
 					$visibleCount = sizeof($this->rows);
-					$limit = Request::getVar('limit') ? Request::getVar('limit') : $visibleCount;
+					$limit = Request::getInt('limit') ? Request::getInt('limit') : $visibleCount;
 					$total = $this->count;
-					$start = $limit > $total ? 1 : Request::getVar('limitstart') + 1;
+					$start = $limit > $total ? 1 : Request::getInt('limitstart') + 1;
 
 					if ($start + $limit > $total)
 					{

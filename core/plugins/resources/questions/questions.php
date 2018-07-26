@@ -116,9 +116,9 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			'limit'    => Request::getInt('limit', 0),
 			'start'    => Request::getInt('limitstart', 0),
 			'tag'      => ($this->model->isTool() ? 'tool:' . $this->model->alias : 'resource:' . $this->model->id),
-			'search'   => Request::getVar('q', ''),
-			'filterby' => Request::getVar('filterby', ''),
-			'sortby'   => Request::getVar('sortby', 'withinplugin'),
+			'search'   => Request::getString('q', ''),
+			'filterby' => Request::getString('filterby', ''),
+			'sortby'   => Request::getString('sortby', 'withinplugin'),
 			'sort_Dir' => 'desc'
 		);
 
@@ -267,7 +267,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Login required
 		if (User::isGuest())
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url($this->model->link() . '&active=' . $this->_name, false, true), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url($this->model->link() . '&active=' . $this->_name, false, true), 'server');
 
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -325,7 +325,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		Lang::load('com_answers');
 
 		// Incoming
-		$tags   = Request::getVar('tags', '');
+		$tags   = Request::getString('tags', '');
 		$funds  = Request::getInt('funds', 0);
 		$reward = Request::getInt('reward', 0);
 
@@ -345,7 +345,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate class and bind posted items to database fields
-		$fields = Request::getVar('question', array(), 'post', 'none', 2);
+		$fields = Request::getArray('question', array(), 'post');
 
 		$row = \Components\Answers\Models\Question::oneOrNew($fields['id'])->set($fields);
 
