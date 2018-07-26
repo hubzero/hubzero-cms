@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(__DIR__ . DS . 'models' . DS . 'note.php');
+require_once __DIR__ . DS . 'models' . DS . 'note.php';
 
 /**
  * Courses Plugin class for user notes
@@ -70,7 +70,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = Request::getVar('active')))
+		if (!($active = Request::getString('active')))
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
@@ -89,7 +89,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 
 			$this->view->filters = array(
 				'section_id' => $offering->section()->get('id'),
-				'search'     => Request::getVar('search', '')
+				'search'     => Request::getString('search', '')
 			);
 
 			if ($action = strtolower(Request::getWord('action', '')))
@@ -268,11 +268,11 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		{
 			$model->set('state', $state);
 		}
-		if ($timestamp = Request::getVar('time', ''))
+		if ($timestamp = Request::getString('time', ''))
 		{
 			$model->set('timestamp', $timestamp);
 		}
-		if ($content = Request::getVar('txt', ''))
+		if ($content = Request::getString('txt', ''))
 		{
 			$model->set('content', $content);
 		}

@@ -68,7 +68,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = Request::getVar('active')))
+		if (!($active = Request::getString('active')))
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
@@ -182,7 +182,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		$this->view->setLayout('default');
 
-		$active = Request::getVar('unit', '');
+		$active = Request::getString('unit', '');
 
 		// Section specific pages
 		$spages = $this->view->offering->pages(array(
@@ -263,7 +263,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$page = Request::getVar('unit', '');
+			$page = Request::getString('unit', '');
 
 			$this->view->model = $this->view->offering->page($page);
 		}
@@ -327,7 +327,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$page = Request::getVar('fields', array(), 'post', 'none', 2);
+		$page = Request::getArray('fields', array(), 'post');
 
 		$model = new \Components\Courses\Models\Page($page['id']);
 
@@ -374,7 +374,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
-		$model = $this->view->offering->page(Request::getVar('unit', ''));
+		$model = $this->view->offering->page(Request::getString('unit', ''));
 
 		if ($model->exists())
 		{
@@ -539,7 +539,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_files();
 		}
 
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->_ajaxUpload();
 		}
@@ -556,7 +556,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
@@ -660,10 +660,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_files();
 		}
 
-		$no_html = Request::getVar('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		// Incoming file
-		$file = trim(Request::getVar('file', '', 'get'));
+		$file = trim(Request::getString('file', '', 'get'));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
@@ -822,7 +822,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the scope of the parent page the file is attached to
-		$filename = Request::getVar('group', '');
+		$filename = Request::getString('group', '');
 
 		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
@@ -842,11 +842,11 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . $filename);
 		}
 
-		$page = $this->view->offering->page(Request::getVar('unit', ''));
+		$page = $this->view->offering->page(Request::getString('unit', ''));
 		if (!$page->exists())
 		{
 			$pages = $this->view->offering->pages(array(
-				'url'         => Request::getVar('unit', ''),
+				'url'         => Request::getString('unit', ''),
 				'offering_id' => array(0, $this->view->offering->get('id')),
 				'section_id'  => array(0, $this->view->offering->section()->get('id')),
 				'limit'       => 1,

@@ -93,7 +93,7 @@ if (!isset($this->category))
 
 		if (count($subs) > 0)
 		{
-			$offering = \Components\Courses\Models\Offering::getInstance(Request::getVar('offering', ''));
+			$offering = \Components\Courses\Models\Offering::getInstance(Request::getString('offering', ''));
 			if ($offering->exists())
 			{
 				$database = App::get('db');

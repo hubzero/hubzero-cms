@@ -80,7 +80,7 @@ if ($rows->total() > 0)
 						</dd>
 					</dl>
 					<?php
-						$page = Request::getVar('REQUEST_URI', '', 'server');
+						$page = Request::getString('REQUEST_URI', '', 'server');
 						if ($page && $this->params->get('allowClose', 1))
 						{
 							$page .= (strstr($page, '?')) ? '&' : '?';
