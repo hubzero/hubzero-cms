@@ -520,10 +520,14 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Mimicking google toolbar: https://developers.google.com/chart/interactive/docs/gallery/toolbar
-		// CSV download: https://stackoverflow.com/a/38387061
-		// PNG download: https://developers.google.com/chart/interactive/docs/printing
-		// SVG: $('#page_views_chart svg')[0].outerHTML
+		/* Mimicking google toolbar: https://developers.google.com/chart/interactive/docs/gallery/toolbar
+		 * CSV download: https://stackoverflow.com/a/38387061
+		 *   For CSV: Format numbers to remove commas
+		 *     - https://developers.google.com/chart/interactive/docs/reference#numberformat
+		 *     - http://icu-project.org/apiref/icu4c/classDecimalFormat.html#_details)
+		 * PNG download: https://developers.google.com/chart/interactive/docs/printing
+		 * SVG: $('#page_views_chart svg')[0].outerHTML
+		 */
 		$script = "
 			google.load(\"visualization\", \"1\", {
 				packages:[\"corechart\"]
@@ -539,6 +543,9 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
     	}
 
 			function drawToolbar(data, chart) {
+				var formatter = new google.visualization.NumberFormat({pattern: '0'});
+				formatter.format(data, 1);
+				formatter.format(data, 2);
 				var csvFormattedData = \"date,pageviews,unique_visitors\\n\" + google.visualization.dataTableToCsv(data);
 				var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvFormattedData);
 				$('#toolbar-csv').attr('href', encodedUri);
