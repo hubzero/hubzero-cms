@@ -97,7 +97,10 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 				<a id="toolbar-svg" download="pagetraffic.svg" target="_blank" href="#">Export image as SVG</a>
   		</div>
 		</div>
-		<div id="page_views_caption">Click-and-drag to zoom vertically.  Right click/Ctrl+click to reset.</div>
+		<div id="page_views_caption">
+			Click-and-drag to zoom.  Right click/Ctrl+click to reset.<br>
+			<strong>Pageviews</strong> count the number of page loads over a day/week/month.  <strong>Unique Visitors</strong> count the number of page loads by unique IP addresses over a day/week/month.
+		</div>
 	</div>
 
 	<table class="data">

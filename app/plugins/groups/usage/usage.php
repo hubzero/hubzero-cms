@@ -420,11 +420,9 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		} elseif ($window == 'week') {
 			$query = "SELECT IF(u.visits is NULL, 0, u.visits) AS visits,
 	   									 IF(u.visitors IS NULL, 0, u.visitors) AS visitors,
-       				 				 CONCAT('w.', b.week, ', ', b.year) as `date`
+       				 				 CONCAT(monthname(b.day), ' ', dayofmonth(b.day), ', ', year(b.day)) as `date`
 								FROM
-									(SELECT DATE(a.Days - INTERVAL (DAYOFWEEK(a.Days) - 1) DAY) as day,
-									        week(a.Days,2) AS week,
-													year(a.Days) AS year
+									(SELECT DATE(a.Days - INTERVAL (DAYOFWEEK(a.Days) - 1) DAY) as day
     							FROM (
         			 	    SELECT " . $database->quote($end) . " - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a)) DAY AS Days
         						FROM       (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
@@ -433,29 +431,25 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
         						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS d
     							) a
     							WHERE a.Days >= " . $database->quote($start) . " AND a.Days <= " . $database->quote($end) . "
-    							GROUP BY year, week) b
+    							GROUP BY day) b
 								LEFT JOIN (SELECT count(*) AS visits,
 								                  count(distinct ip) AS visitors,
-																	DATE(date - INTERVAL (DAYOFWEEK(date) - 1) DAY) as day,
-																	week(date,2) as week,
-																	year(date) as year
+																	DATE(date - INTERVAL (DAYOFWEEK(date) - 1) DAY) as day
 													 FROM #__xgroups_pages_hits
 													 WHERE gidNumber=" . $database->quote($gid) . "
 													   AND date(date) >= " . $database->quote($start) . "
 														 AND date(date) <= " . $database->quote($end) .
 														 ($pageid != '' ? " AND pageid=" . $pageid : "") . "
-														 GROUP BY year, week(date,2)
-														 ORDER BY year, week(date,2) ASC) u
+														 GROUP BY day
+														 ORDER BY day ASC) u
 								ON u.day = b.day
 							ORDER BY b.day ASC";
 		} elseif ($window == 'month') {
 			$query = "SELECT IF(u.visits is NULL, 0, u.visits) AS visits,
 	   									 IF(u.visitors IS NULL, 0, u.visitors) AS visitors,
-       				 				 CONCAT(b.month, ', ', b.year) as `date`
+       				 				 CONCAT(monthname(b.day), ' 1, ', year(b.day)) as `date`
 								FROM
-									(SELECT last_day(a.Days) AS day,
-													monthname(a.Days) AS month,
-													year(a.Days) AS year
+									(SELECT last_day(a.Days) AS day
     							FROM (
         			 	    SELECT " . $database->quote($end) . " - INTERVAL (a.a + (10 * b.a) + (100 * c.a) + (1000 * d.a)) DAY AS Days
         						FROM       (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
@@ -464,19 +458,17 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
         						CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS d
     							) a
     							WHERE a.Days >= " . $database->quote($start) . " AND a.Days <= " . $database->quote($end) . "
-    							GROUP BY year, month) b
+    							GROUP BY day) b
 								LEFT JOIN (SELECT count(*) AS visits,
 								                  count(distinct ip) AS visitors,
-																	last_day(date) AS day,
-																	monthname(date) AS month,
-																	year(date) as year
+																	last_day(date) AS day
 													 FROM #__xgroups_pages_hits
 													 WHERE gidNumber=" . $database->quote($gid) . "
 													   AND date(date) >= " . $database->quote($start) . "
 														 AND date(date) <= " . $database->quote($end) .
 														 ($pageid != '' ? " AND pageid=" . $pageid : "") . "
-														 GROUP BY year, monthname(date)
-														 ORDER BY year, monthname(date) ASC) u
+														 GROUP BY day
+														 ORDER BY day ASC) u
 								ON u.day = b.day
 							ORDER BY b.day ASC";
 		}
@@ -513,7 +505,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		foreach ($page_visits as $d => $c)
 		{
 			$count++;
-			$jsObj .= "[\"{$d}\", {$c['visits']}, {$c['visitors']}]";
+			$jsObj .= "[new Date(\"{$d}\"), {$c['visits']}, {$c['visitors']}]";
 			if ($count < $total)
 			{
 				$jsObj .= ", \n \t\t\t\t";
@@ -559,7 +551,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	    };
 
 			function drawChart(data, chart) {
-				data.addColumn('string', 'Day');
+				data.addColumn('date', 'Day');
 				data.addColumn('number', 'Pageviews');
 				data.addColumn('number', 'Unique Visitors');
 				data.addRows([
@@ -575,20 +567,15 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 					explorer: { actions: ['dragToZoom', 'rightClickToReset'],
 					 						keepInBounds: true },
 					hAxis: {
-						textPosition: 'out',
-						slantedText: false,
-						slantedTextAngle: 0,
-						showTextEvery: 2,
 						textStyle: {
 							fontSize:10
 						}
 					},
 					vAxis: {
 						minValue: 5,
-						textPosition: 'out'
 					},
 					chartArea: {
-						width: \"90%\"
+						width: \"92%\"
 					}
 				}
 
