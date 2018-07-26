@@ -189,6 +189,15 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			'published'     => 1
 		);
 
+		if ($filters['sortby'] == 'date')
+		{
+			$filters['sortby'] = 'created';
+		}
+		if ($filters['sortby'] == 'usage')
+		{
+			$filters['sortby'] = 'users';
+		}
+
 		/*$groups = $member->groups();
 
 		if (!empty($groups))
@@ -264,10 +273,19 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			// Get results
 			$query = \Components\Resources\Models\Entry::allWithFilters($filters);
 
+			if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users'))
+			{
+				include_once \Component::path('com_resources') . DS . 'models' . DS . 'stat.php';
+
+				$s = \Components\Resources\Models\Stat::blank()->getTableName();
+
+				$query->select('(SELECT rs.users FROM ' . $s . ' AS rs WHERE rs.resid=' . $query->getTableName() . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)', 'users');
+			}
+
 			$rows = $query
 				->limit($filters['limit'])
 				->start($filters['limitstart'])
-				->order($query->getTableName() . '.created', 'desc')
+				->order($filters['sortby'], 'desc')
 				->rows();
 
 			// Return the results
