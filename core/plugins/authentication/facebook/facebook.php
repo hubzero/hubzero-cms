@@ -140,7 +140,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	{
 		$return = '';
 		$b64dreturn = '';
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))

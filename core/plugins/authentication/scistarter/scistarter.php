@@ -89,7 +89,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if ($code = Request::getVar('code', null))
+		if ($code = Request::getString('code'))
 		{
 			// Authenticate the user
 			$client->authenticate($code);
@@ -279,7 +279,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
-		if ($code = Request::getVar('code', null))
+		if ($code = Request::getString('code'))
 		{
 			// Authenticate the user
 			$client->authenticate($code);

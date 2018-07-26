@@ -507,7 +507,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['get', 'post']);
 
 		// Incoming file
-		$file = Request::getVar('uploadres', '', 'files', 'array');
+		$file = Request::getArray('uploadres', '', 'files');
 
 		if (!$file['name'])
 		{

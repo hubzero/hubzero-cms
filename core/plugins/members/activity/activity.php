@@ -532,7 +532,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$settings = Request::getVar('settings', array(), 'post');
+		$settings = Request::getArray('settings', array(), 'post');
 		$settings['scope']    = 'user';
 		$settings['scope_id'] = $this->member->get('id');
 
