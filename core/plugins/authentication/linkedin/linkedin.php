@@ -112,7 +112,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$b64dreturn = '';
 
 		// Check to see if a return parameter was specified
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
@@ -132,7 +132,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!Request::getVar('oauth_verifier', null))
+		if (!Request::getString('oauth_verifier'))
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
@@ -148,7 +148,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
-			Request::getVar('oauth_verifier')
+			Request::getString('oauth_verifier')
 		);
 		if ($reply['success'] === true)
 		{
@@ -383,7 +383,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!Request::getVar('oauth_verifier', null))
+		if (!Request::getString('oauth_verifier'))
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
@@ -399,7 +399,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
-			Request::getVar('oauth_verifier')
+			Request::getString('oauth_verifier')
 		);
 		if ($reply['success'] === true)
 		{

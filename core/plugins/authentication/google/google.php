@@ -118,7 +118,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$b64dreturn = '';
 
 		// Check the state for our return variable
-		if ($return = Request::getVar('state', '', 'method', 'base64'))
+		if ($return = Request::getString('state', ''))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
@@ -136,7 +136,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$client->setRedirectUri(self::getRedirectUri('google'));
 
 		// If we have a code comeing back, the user has authorized our app, and we can authenticate
-		if ($code = Request::getVar('code', null))
+		if ($code = Request::getString('code', ''))
 		{
 			// Authenticate the user
 			$client->authenticate($code);
@@ -308,7 +308,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$oauth2 = new Google_Service_Oauth2($client);
 
 		// If we have this code, we know we have a successful return from google
-		if ($code = Request::getVar('code', null))
+		if ($code = Request::getString('code', ''))
 		{
 			// Authenticate the user
 			$client->authenticate($code);

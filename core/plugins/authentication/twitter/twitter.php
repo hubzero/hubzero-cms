@@ -76,7 +76,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 	 */
 	public function login(&$credentials, &$options)
 	{
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
@@ -165,7 +165,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		);
 
 		// Request user specific (longer lasting) credentials
-		$token_credentials = $twitter->getAccessToken(Request::getVar('oauth_verifier'));
+		$token_credentials = $twitter->getAccessToken(Request::getString('oauth_verifier'));
 
 		// Build new twitter object with user credentials
 		$twitter = new TwitterOAuth(
@@ -260,7 +260,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		);
 
 		// Request user specific (longer lasting) credentials
-		$token_credentials = $twitter->getAccessToken(Request::getVar('oauth_verifier'));
+		$token_credentials = $twitter->getAccessToken(Request::getString('oauth_verifier'));
 
 		// Build new twitter object with user credentials
 		$twitter = new TwitterOAuth(

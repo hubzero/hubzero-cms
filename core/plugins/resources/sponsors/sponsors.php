@@ -269,7 +269,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Initiate extended database class
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrNew($fields['id'])->set($fields);
@@ -314,7 +314,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Ensure we have an ID to work with
 		if (empty($ids))
@@ -378,7 +378,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// Check for an ID
 		if (count($ids) < 1)

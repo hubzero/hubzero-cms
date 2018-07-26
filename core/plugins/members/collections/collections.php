@@ -1011,7 +1011,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		if ($fields['id'] && !is_numeric($fields['id']))
 		{
@@ -1034,11 +1034,11 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add some data
-		if ($files  = Request::getVar('fls', '', 'files', 'array'))
+		if ($files  = Request::getArray('fls', '', 'files'))
 		{
 			$item->set('_files', $files);
 		}
-		$item->set('_assets', Request::getVar('assets', null, 'post'));
+		$item->set('_assets', Request::getArray('assets', array(), 'post'));
 		$item->set('_tags', trim(Request::getString('tags', '')));
 		$item->set('state', 1);
 		if (!$item->exists())
@@ -1085,7 +1085,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Create a post entry linking the item to the board
-		$p = Request::getVar('post', array(), 'post');
+		$p = Request::getArray('post', array(), 'post');
 
 		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
@@ -1524,7 +1524,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post');
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = \Hubzero\Item\Comment::blank()->set($comment);
@@ -1761,7 +1761,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields['id'] = intval($fields['id']);
 
 		// Bind new content

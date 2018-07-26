@@ -73,7 +73,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 
 		$return = '';
 
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$return = base64_decode($return);
 
@@ -121,7 +121,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	 */
 	public function login(&$credentials, &$options)
 	{
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$return = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($return))

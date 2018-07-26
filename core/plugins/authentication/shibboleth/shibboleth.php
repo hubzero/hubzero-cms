@@ -360,7 +360,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function login(&$credentials, &$options)
 	{
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$return = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($return))
