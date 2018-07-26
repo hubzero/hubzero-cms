@@ -197,7 +197,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			}
 
 			// Set some variables for the wiki
-			/*$scope = trim(Request::getVar('scope', ''));
+			/*$scope = trim(Request::getString('scope', ''));
 			if (!$scope)
 			{
 				Request::setVar('scope', $group->get('cn') . DS . $active);
@@ -240,7 +240,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				break;
 			}
 
-			$pagename = trim(Request::getVar('pagename', ''));
+			$pagename = trim(Request::getString('pagename', ''));
 
 			if (substr(strtolower($pagename), 0, strlen('image:')) == 'image:'
 			 || substr(strtolower($pagename), 0, strlen('file:')) == 'file:')

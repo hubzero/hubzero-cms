@@ -158,9 +158,9 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				'updates'  => 1,
 				'getowner' => 1,
 				'group'    => $group->get('gidNumber'),
-				'sortby'   => Request::getVar('sortby', 'title'),
-				'sortdir'  => Request::getVar('sortdir', 'ASC'),
-				'filterby' => Request::getVar('filterby', 'active')
+				'sortby'   => Request::getString('sortby', 'title'),
+				'sortdir'  => Request::getString('sortdir', 'ASC'),
+				'filterby' => Request::getString('filterby', 'active')
 			);
 			if (!in_array($this->_filters['filterby'], array('active', 'archived')))
 			{
@@ -209,7 +209,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 
 			// Which view
-			$task = $action ? strtolower(trim($action)) : Request::getVar('action', '');
+			$task = $action ? strtolower(trim($action)) : Request::getString('action', '');
 
 			switch ($task)
 			{
@@ -372,7 +372,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	protected function _updates()
 	{
 		$filters = array(
-			'limit' => Request::getVar('limit', 25, 'request')
+			'limit' => Request::getInt('limit', 25)
 		);
 
 		// Get shared updates feed from feed plugin
@@ -422,7 +422,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['post']);
 
 		$managers  = Request::getInt('managers_only', 0, 'post');
-		$entry     = trim(Request::getVar('blogentry', '', 'post'));
+		$entry     = trim(Request::getString('blogentry', '', 'post'));
 		$posted    = Date::toSql();
 		$posted_by = User::get('id');
 		$projectid = Request::getInt('projectid', 0, 'post');

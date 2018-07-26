@@ -39,7 +39,7 @@ $this->css()
 
 if ($this->category->get('section_id') == 0)
 {
-	$this->category->set('section_id', Request::getVar('section_id'));
+	$this->category->set('section_id', Request::getInt('section_id'));
 }
 
 ?>

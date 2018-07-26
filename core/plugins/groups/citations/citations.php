@@ -271,7 +271,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	private function _browse()
 	{
 		// Instantiate a new citations object
-		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
+		$obj = $this->_filterHandler(Request::getArray('filters', array()), $this->group->get('gidNumber'));
 
 		$count = clone $obj['citations'];
 		$count = $count->count();
@@ -377,7 +377,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->filters['idlist'] = Request::getVar('idlist', $session->get('idlist'));
+			$view->filters['idlist'] = Request::getString('idlist', $session->get('idlist'));
 			$session->set('idlist', $view->filters['idlist']);
 		}
 
@@ -764,7 +764,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 
 		// save links
-		$links = Request::getVar('links', array(), 'post');
+		$links = Request::getArray('links', array(), 'post');
 		if ($links)
 		{
 			foreach ($links as $link)
@@ -814,8 +814,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		$id = Request::getInt('id', 0);
-		$citationIDs = Request::getVar('citationIDs', array());
-		$bulk = Request::getVar('bulk', false);
+		$citationIDs = Request::getArray('citationIDs', array());
+		$bulk = Request::getBool('bulk', false);
 
 		if ($id != 0 && !$bulk)
 		{
@@ -958,8 +958,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// get the variables
 		$id = Request::getInt('id', 0);
-		$citationIDs = Request::getVar('citationIDs', '');
-		$bulk = Request::getVar('bulk', false);
+		$citationIDs = Request::getArray('citationIDs', array());
+		$bulk = Request::getBool('bulk', false);
 
 		// for single citation operation
 		if ($id != 0 && !$bulk)
@@ -1358,10 +1358,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$cites_require_no_attention = $this->importer->readRequiresNoAttention();
 
 		// action for citations needing attention
-		$citations_action_attention = Request::getVar('citation_action_attention', array());
+		$citations_action_attention = Request::getArray('citation_action_attention', array());
 
 		// action for citations needing no attention
-		$citations_action_no_attention = Request::getVar('citation_action_no_attention', array());
+		$citations_action_no_attention = Request::getArray('citation_action_no_attention', array());
 
 		// check to make sure we have citations
 		if (!$cites_require_attention && !$cites_require_no_attention)
