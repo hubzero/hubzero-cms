@@ -520,18 +520,41 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Mimicking google toolbar: https://developers.google.com/chart/interactive/docs/gallery/toolbar
+		// CSV download: https://stackoverflow.com/a/38387061
+		// PNG download: https://developers.google.com/chart/interactive/docs/printing
+		// SVG: $('#page_views_chart svg')[0].outerHTML
 		$script = "
 			google.load(\"visualization\", \"1\", {
 				packages:[\"corechart\"]
 			});
 
-			google.setOnLoadCallback(drawChart);
+			google.setOnLoadCallback(draw);
 
-			function drawChart() {
+			function draw(data) {
 				var data = new google.visualization.DataTable();
+				var chart = new google.visualization.LineChart(document.getElementById('page_views_chart'));
+      	drawChart(data, chart);
+      	drawToolbar(data, chart);
+    	}
+
+			function drawToolbar(data, chart) {
+				var csvFormattedData = \"date,pageviews,unique_visitors\\n\" + google.visualization.dataTableToCsv(data);
+				var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvFormattedData);
+				$('#toolbar-csv').attr('href', encodedUri);
+
+				encodedUri = chart.getImageURI();
+				$('#toolbar-png').attr('href', encodedUri);
+
+				var svg = $('#page_views_chart svg')[0].outerHTML;
+				var encodedUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+				$('#toolbar-svg').attr('href', encodedUri);
+	    };
+
+			function drawChart(data, chart) {
 				data.addColumn('string', 'Day');
-				data.addColumn('number', 'Visits');
-				data.addColumn('number', 'Visitors');
+				data.addColumn('number', 'Pageviews');
+				data.addColumn('number', 'Unique Visitors');
 				data.addRows([
 					{$jsObj}
 				]);
@@ -539,9 +562,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 				var options = {
 					height: 240,
 					focusTarget: 'category',
-					legend: {position: 'top'},
+					legend: { position: 'top' },
 					pointSize: 4,
 					axisTitlesPosition: 'none',
+					explorer: { actions: ['dragToZoom', 'rightClickToReset'],
+					 						keepInBounds: true },
 					hAxis: {
 						textPosition: 'out',
 						slantedText: false,
@@ -560,8 +585,12 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-				var chart = new google.visualization.LineChart(document.getElementById('page_views_chart'));
 				chart.draw(data, options);
+			}
+
+			function myFunction() {
+				$('#toolbar-dropdown').toggleClass('show');
+				$('.dropbtn').toggleClass('open');
 			}";
 
 		return $script;

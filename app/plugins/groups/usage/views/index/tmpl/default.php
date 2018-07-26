@@ -52,21 +52,21 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 	<div id="page_views">
 
 		<div id="page_views_heading">
-			<h3>Group & Page Visits</h3>
+			<h3>Page Traffic</h3>
 			<div id="page_view_settings">
 				<form name="page_selector" action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=usage'); ?>" method="get">
 					<span class="pagepicker">
 						<label>Count</label>
 						<select name="pid" id="page_view_selector">
-							<option value=""<?php if ($this->pid == '') { echo "selected"; } ?>>Group Visits</option>
+							<option value=""<?php if ($this->pid == '') { echo "selected"; } ?>>All Page</option>
 							<?php foreach ($this->pages as $page) : ?>
 								<?php $sel = ($this->pid == $page['id']) ? "selected" : ""; ?>
-								<option <?php echo $sel; ?> value="<?php echo $page['id']; ?>"><?php echo $page['title'] . ' Visits'; ?></option>
+								<option <?php echo $sel; ?> value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
 							<?php endforeach; ?>
 						</select>
 					<span>
 					<span class="windowpicker">
-						<label>by</label>
+						<label>views by</label>
 					  <select name="window" id="window_selector">
 						  <option value="day" <?php echo $this->window == "day" ? "selected" : ""; ?>>Day</option>
 						  <option value="week" <?php echo $this->window == "week" ? "selected" : ""; ?>>Week</option>
@@ -88,6 +88,16 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 				<p class="info">To view this page views graph, Javascript must be enabled.</p>
 			</noscript>
 		</div>
+
+		<div id="page_views_toolbar">
+			<button onclick="myFunction()" class="dropbtn">Export</button>
+  		<div id="toolbar-dropdown" class="toolbar-content">
+    		<a id="toolbar-csv" download="pagetraffic.csv" target="_blank" href="#">Export data as CSV</a>
+    		<a id="toolbar-png" download="pagetraffic.png" target="_blank" href="#">Export image as PNG</a>
+				<a id="toolbar-svg" download="pagetraffic.svg" target="_blank" href="#">Export image as SVG</a>
+  		</div>
+		</div>
+		<div id="page_views_caption">Click-and-drag to zoom vertically.  Right click/Ctrl+click to reset.</div>
 	</div>
 
 	<table class="data">
