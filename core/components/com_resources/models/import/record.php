@@ -524,7 +524,7 @@ class Record extends Obj
 
 		// get valid role aliases
 		$existingRoles = array_map(function($role) {
-			return $role->alias;
+			return $role['alias'];
 		}, $rolesForType);
 
 		// handle contributors as string
