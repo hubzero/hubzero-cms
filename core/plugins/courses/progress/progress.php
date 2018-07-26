@@ -33,8 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+require_once Component::path('com_courses') . DS . 'models' . DS . 'gradepolicies.php';
+require_once Component::path('com_courses') . DS . 'models' . DS . 'gradebook.php';
 
 /**
  * Courses Plugin class for user progress
@@ -71,7 +71,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = Request::getVar('active')))
+		if (!($active = Request::getString('active')))
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
@@ -587,7 +587,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			App::abort(403, 'Sorry, you don\'t have permission to do this');
 		}
 
-		if (!$asset_ids = Request::getVar('assets', false))
+		if (!$asset_ids = Request::getString('assets', ''))
 		{
 			App::abort(422, 'Sorry, we don\'t know what results you\'re trying to retrieve');
 		}
@@ -722,7 +722,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		if ($asset_id = Request::getInt('asset_id', false))
 		{
 			$asset->load($asset_id);
-			$asset->set('title', Request::getVar('title', $asset->get('title')));
+			$asset->set('title', Request::getString('title', $asset->get('title')));
 			$asset->set('grade_weight', Request::getWord('type', $asset->get('grade_weight')));
 
 			if ($asset->get('type') == 'form')
@@ -846,7 +846,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			echo json_encode(array('success' => false));
 			exit();
 		}
-		if (!$grade_value = Request::getVar('grade', false))
+		if (!$grade_value = Request::getString('grade', false))
 		{
 			echo json_encode(array('success' => false));
 			exit();
@@ -1001,7 +1001,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$gp->set('quiz_weight', $quiz_weight);
 		$gp->set('homework_weight', $homework_weight);
 		$gp->set('threshold', (Request::getInt('threshold') / 100));
-		$gp->set('description', trim(Request::getVar('description')));
+		$gp->set('description', trim(Request::getString('description')));
 
 		if (!$gp->store())
 		{
@@ -1021,7 +1021,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			$section->store();
 		}
 
-		if (Request::getInt('no_html', false))
+		if (Request::getInt('no_html', 0))
 		{
 			echo json_encode(array('success'=>true, 'message'=>'Scoring policy successfully saved!'));
 			exit();

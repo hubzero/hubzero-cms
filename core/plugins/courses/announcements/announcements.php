@@ -68,7 +68,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = Request::getVar('active')))
+		if (!($active = Request::getString('active')))
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
@@ -178,7 +178,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 
 		// Get filters for the entries list
 		$filters = array(
-			'search' => Request::getVar('q', ''),
+			'search' => Request::getString('q', ''),
 			'limit'  => Request::getInt('limit', Config::get('list_limit', 25)),
 			'start'  => Request::getInt('limitstart', 0)
 		);
@@ -252,7 +252,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		$response->code = 0;
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Get the model and bind the data

@@ -74,7 +74,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		$nonadmin = Request::getState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
-		if (!($active = Request::getVar('active')) && !$nonadmin)
+		if (!($active = Request::getString('active')) && !$nonadmin)
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
@@ -90,7 +90,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 			);
 
 			$view = with($this->view('default', 'overview'))
-				->set('option', Request::getVar('option', 'com_courses'))
+				->set('option', Request::getCmd('option', 'com_courses'))
 				->set('course', $course)
 				->set('offering', $offering)
 				->set('params', $this->params);
