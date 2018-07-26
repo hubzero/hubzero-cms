@@ -70,7 +70,7 @@ class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the terms to highlight from the request.
-		$terms = Request::getVar('highlight', null, 'base64');
+		$terms = Request::getString('highlight');
 		$terms = $terms ? json_decode(base64_decode($terms)) : null;
 
 		// Check the terms.

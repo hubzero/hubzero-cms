@@ -86,7 +86,7 @@ class GroupEventMacro extends WikiMacro
 		//$num_events = (isset($arg['number']) && is_numeric($arg['number']) && $arg['number'] > 0) ? $arg['number'] : $default_events;
 
 		//get the group
-		$cn = Request::getVar('cn');
+		$cn = Request::getString('cn');
 
 		//get the group object based on gid
 		$group = \Hubzero\User\Group::getInstance($cn);

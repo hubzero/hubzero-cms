@@ -156,8 +156,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 	 */
 	public function getUsageForDate()
 	{
-		$period   = $this->periodToInt(Request::getVar('period', $this->params->get('period', 'prior12')));
-		$datetime = Request::getVar('datetime', date("Y") . '-' . date("m")) . '-00 00:00:00';
+		$period   = $this->periodToInt(Request::getString('period', $this->params->get('period', 'prior12')));
+		$datetime = Request::getString('datetime', date("Y") . '-' . date("m")) . '-00 00:00:00';
 
 		$db = Components\Usage\Helpers\Helper::getUDBO();
 

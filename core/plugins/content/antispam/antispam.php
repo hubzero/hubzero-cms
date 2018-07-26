@@ -125,7 +125,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 			'username'   => User::get('username'),
 			'id'         => User::get('id'),
 			'ip'         => Request::ip(),
-			'user_agent' => Request::getVar('HTTP_USER_AGENT', null, 'server'),
+			'user_agent' => Request::getString('HTTP_USER_AGENT', null, 'server'),
 			'text'       => $content
 		);
 

@@ -485,7 +485,7 @@ class FileMacro extends WikiMacro
 		$type = 'File';
 		if (in_array(strtolower(Filesystem::extension($file)), $this->imgs))
 		{
-			if (Request::getVar('format') == 'pdf')
+			if (Request::getCmd('format') == 'pdf')
 			{
 				return $this->_path($file);
 			}

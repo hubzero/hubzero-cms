@@ -52,7 +52,7 @@ class plgSystemMobile extends \Hubzero\Plugin\Plugin
 		}
 
 		$session = App::get('session');
-		$tmpl = Request::getVar('tmpl', '');
+		$tmpl = Request::getCmd('tmpl', '');
 
 		if ($tmpl == 'mobile')
 		{
