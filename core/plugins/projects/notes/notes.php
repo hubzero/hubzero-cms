@@ -201,7 +201,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			$this->_group = $this->_config->get('group_prefix', 'pr-') . $this->model->get('alias');
 
 			// Incoming
-			$this->_pagename = trim(Request::getVar('pagename', '', 'default', 'none', 2));
+			$this->_pagename = trim(Request::getString('pagename', ''));
 			if (strstr($this->_pagename, '/'))
 			{
 				$bits = explode('/', $this->_pagename);
@@ -219,7 +219,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			);
 
 			// What's the task?
-			$this->_task = $action ? $action : Request::getVar('action', 'view');
+			$this->_task = $action ? $action : Request::getString('action', 'view');
 
 			// Publishing?
 			if ($this->_task == 'browser')
@@ -253,7 +253,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				case 'removecomment':
 				case 'comments':
 					$this->_controllerName = 'comments';
-					$cid = Request::getVar('cid', 0);
+					$cid = Request::getInt('cid', 0);
 					if ($cid)
 					{
 						Request::setVar('comment', $cid);
@@ -314,9 +314,9 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	public function page()
 	{
 		// Incoming
-		$preview = trim(Request::getVar('preview', ''));
-		$note    = Request::getVar('page', array(), 'post', 'none', 2);
-		$scope   = trim(Request::getVar('scope', $this->_masterScope), '/');
+		$preview = trim(Request::getString('preview', ''));
+		$note    = Request::getArray('page', array(), 'post');
+		$scope   = trim(Request::getString('scope', $this->_masterScope), '/');
 		$scope   = trim(str_replace($this->_masterScope, '', $scope), '/');
 		$pagePrefix = '';
 
@@ -419,8 +419,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			if ($rename)
 			{
 				// Incoming
-				$oldpagename = trim(Request::getVar('oldpagename', '', 'post'));
-				$newpagename = trim(Request::getVar('newpagename', '', 'post'));
+				$oldpagename = trim(Request::getString('oldpagename', '', 'post'));
+				$newpagename = trim(Request::getString('newpagename', '', 'post'));
 				$this->note->fixScopePaths($scope, $oldpagename, $newpagename);
 			}
 

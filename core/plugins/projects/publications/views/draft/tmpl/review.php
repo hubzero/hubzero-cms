@@ -51,7 +51,7 @@ $sitename = Config::get('sitename');
 $citation = '';
 if ($this->pub->doi)
 {
-	include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
+	include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 	$cite 		 	= new stdClass();
 	$cite->title 	= $this->pub->get('title');
@@ -68,7 +68,7 @@ if ($this->pub->doi)
 }
 
 // Embargo
-$pubdate = Request::getVar('publish_date');
+$pubdate = Request::getString('publish_date');
 
 // Get configs
 $termsUrl = $this->pub->config()->get('deposit_terms', '');
@@ -86,7 +86,7 @@ $requestReview = isset($this->pub->_curationModel->_manifest->params->request_re
 	<?php } else { ?>
 	<p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INCOMPLETE'); ?></p>
 	<div class="submitarea">
-		<a href="<?php echo Route::url( $this->pub->link('editversion') . '&active=publications&action=continue'); ?>" class="btn mini btn-success icon-next"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
+		<a href="<?php echo Route::url($this->pub->link('editversion') . '&active=publications&action=continue'); ?>" class="btn mini btn-success icon-next"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
 	</div>
 	<?php } ?>
 

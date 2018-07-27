@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes';
-$pagename = Request::getVar('pagename', '');
+$pagename = Request::getString('pagename', '');
 
 ?>
 <section class="main section">

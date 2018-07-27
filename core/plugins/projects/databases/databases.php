@@ -33,8 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'database.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'database.version.php';
+require_once Component::path('com_projects') . DS . 'tables' . DS . 'database.php';
+require_once Component::path('com_projects') . DS . 'tables' . DS . 'database.version.php';
 
 /**
  * Projects - Databases plugin
@@ -233,12 +233,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$this->_config = $model->config();
 		$this->gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
 
-		$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar('repo', 'local');
+		$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
 		$this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
 
 		$this->_database   = \App::get('db');
 		$this->_uid        = User::get('id');
-		$this->subdir      = trim(urldecode(Request::getVar('subdir', '')), DS);
+		$this->subdir      = trim(urldecode(Request::getString('subdir', '')), DS);
 
 		if (!$this->repo->exists())
 		{
@@ -249,7 +249,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$raw_op = Request::getInt('raw_op', 0);
-		$action = $action ? $action : Request::getVar('action', 'list');
+		$action = $action ? $action : Request::getString('action', 'list');
 
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
@@ -328,11 +328,11 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = Request::getVar('p', '');
+		$props  = Request::getString('p', '');
 		$ajax   = Request::getInt('ajax', 0);
 		$pid    = Request::getInt('pid', 0);
 		$vid    = Request::getInt('vid', 0);
-		$filter = urldecode(Request::getVar('filter', ''));
+		$filter = urldecode(Request::getString('filter', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -560,8 +560,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$params = array(
 			'subdir'               => $this->subdir,
 			'filter'               => 'csv',
-			'sortby'               => Request::getVar('sortby', 'name'),
-			'sortdir'              => Request::getVar('sortdir', 'ASC'),
+			'sortby'               => Request::getString('sortby', 'name'),
+			'sortdir'              => Request::getString('sortdir', 'ASC'),
 			'showFullMetadata'     => true,
 			'showUntracked'        => true,
 			'showAll'              => true,
@@ -646,8 +646,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	public function act_preview_data()
 	{
 		// Incoming
-		$file = Request::getVar('file', false);
-		$dir  = Request::getVar('dir', '');
+		$file = Request::getString('file', '');
+		$dir  = Request::getString('dir', '');
 
 		if (!$file)
 		{
@@ -934,13 +934,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$file  = Request::getVar('file', false);
-		$dir   = Request::getVar('dir', '');
-		$title = Request::getVar('title', '');
-		$desc  = Request::getVar('desc', '');
-		$db_id = Request::getVar('db_id', '');
-		$hash  = Request::getVar('hash', \Hubzero\Utility\Date::of()->toUnix());
-		$dd    = Request::getVar('dd', false);
+		$file  = Request::getString('file', '');
+		$dir   = Request::getString('dir', '');
+		$title = Request::getString('title', '');
+		$desc  = Request::getString('desc', '');
+		$db_id = Request::getString('db_id', '');
+		$hash  = Request::getString('hash', \Hubzero\Utility\Date::of()->toUnix());
+		$dd    = Request::getString('dd', '');
 		$d     = json_decode($dd, true);
 
 		$db    = $this->get_ds_db($this->model->get('id'));
@@ -1259,7 +1259,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$id = Request::getVar('db_id', false);
+		$id = Request::getString('db_id', false);
 		$ds_db = $this->get_ds_db($this->model->get('id'));
 
 		// Get project database object
@@ -1323,9 +1323,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$id          = Request::getVar('db_id', false);
-		$title       = Request::getVar('db_title', false);
-		$description = Request::getVar('db_description', false);
+		$id          = Request::getString('db_id', '');
+		$title       = Request::getString('db_title', '');
+		$description = Request::getString('db_description', '');
 
 		// Get project database object
 		$objPD = new \Components\Projects\Tables\Database($this->_database);
