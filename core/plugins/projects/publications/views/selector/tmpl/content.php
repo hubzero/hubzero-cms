@@ -35,12 +35,12 @@ $pubParams = $this->publication->params;
 
 
 $filters = array(
-	'category'    => Request::getVar('category', ''),
+	'category'    => Request::getString('category', ''),
 	'sortby'      => Request::getCmd('sortby', 'title'),
 	'limit'       => Request::getInt('limit', 25), //Config::get('list_limit')),
 	'start'       => Request::getInt('limitstart', 0),
-	'search'      => Request::getVar('search', ''),
-	'tag'         => trim(Request::getVar('tag', '', 'request', 'none', 2)),
+	'search'      => Request::getString('search', ''),
+	'tag'         => trim(Request::getString('tag', '')),
 	'tag_ignored' => array()
 );
 // Instantiate a publication object

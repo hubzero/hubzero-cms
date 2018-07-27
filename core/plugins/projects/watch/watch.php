@@ -212,7 +212,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$email      = User::get('email');
-		$categories = Request::getVar('category', array());
+		$categories = Request::getArray('category', array());
 		$frequency  = Request::getWord('frequency', 'immediate');
 
 		// Save subscription
@@ -427,7 +427,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		}
 
 		$eview = new Hubzero\Mail\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
+			'base_path' => Component::path('com_projects') . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => 'watch_plain'
 		));

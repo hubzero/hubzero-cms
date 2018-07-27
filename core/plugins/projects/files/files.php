@@ -106,7 +106,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($this->params->get('default_action', 'browse') == 'connections')
 		{
-			$model = new Components\Projects\Models\Project(Request::getVar('alias', ''));
+			$model = new Components\Projects\Models\Project(Request::getString('alias', ''));
 			$userIsMember = $model->access('member');
 			$active = Request::getInt('connection', 0);
 
@@ -115,7 +115,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				'name'  => 'default',
 				'title' => sprintf($this->params->get('default_connection_name', '%s Master Repository'), $model->get('title')),
 				'url'   => UrlHelper::updatePerMembership($model->link('files') . '&action=browse', $userIsMember),
-				'class' => 'filesystem default' . (Request::getVar('action') == 'browse' && !$active ? ' active' : ''),
+				'class' => 'filesystem default' . (Request::getString('action') == 'browse' && !$active ? ' active' : ''),
 				//'image' => '/core/plugins/filesystem/local/assets/img/icon.png',
 				'icon'  => 'f0a0'
 			);
@@ -189,7 +189,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Project model
 		$this->model = $model;
-		$subdir = Request::getVar('subdir');
+		$subdir = Request::getString('subdir');
 
 		// Check authorization
 		if ($this->model->exists() && !$this->model->access('member') && !AccessHelper::allowPublicAccess($subdir))
@@ -201,7 +201,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Load repo model
-			$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar('repo', 'local');
+			$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
 			$this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
 
 			$default = $this->params->get('default_action', 'browse');
@@ -209,8 +209,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 			$this->_database   = \App::get('db');
 			$this->_uid        = User::get('id');
-			$this->_task       = $action ? $action : Request::getVar('action', $default);
-			$this->subdir      = trim(urldecode(Request::getVar('subdir', '')), DS);
+			$this->_task       = $action ? $action : Request::getString('action', $default);
+			$this->subdir      = trim(urldecode(Request::getString('subdir', '')), DS);
 			$this->publication = Request::getInt('pid', 0);
 
 			// Set repo path
@@ -478,11 +478,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set params
 		$view->params = array(
 			'subdir'               => $this->subdir,
-			'filter'               => Request::getVar('filter', ''),
+			'filter'               => Request::getString('filter', ''),
 			'limit'                => Request::getInt('limit', 0),
 			'start'                => Request::getInt('limitstart', 0),
-			'sortby'               => Request::getVar('sortby', 'name'),
-			'sortdir'              => Request::getVar('sortdir', 'ASC'),
+			'sortby'               => Request::getString('sortby', 'name'),
+			'sortdir'              => Request::getString('sortdir', 'ASC'),
 			'showFullMetadata'     => true,
 			'showUntracked'        => true,
 			'getPubConnections'    => false,
@@ -514,12 +514,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _select()
 	{
 		// Incoming
-		$props     = Request::getVar('p', '');
+		$props     = Request::getString('p', '');
 		$ajax      = Request::getInt('ajax', 0);
 		$pid       = Request::getInt('pid', 0);
 		$vid       = Request::getInt('vid', 0);
-		$filter    = urldecode(Request::getVar('filter', ''));
-		$directory = urldecode(Request::getVar('directory', ''));
+		$filter    = urldecode(Request::getString('filter', ''));
+		$directory = urldecode(Request::getString('directory', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -683,14 +683,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$json       = Request::getVar('json', 0);
-		$no_html    = Request::getVar('no_html', 0);
-		$view       = Request::getVar('view', 'view'); // where to redirect
+		$json       = Request::getInt('json', 0);
+		$no_html    = Request::getInt('no_html', 0);
+		$view       = Request::getString('view', 'view'); // where to redirect
 		$ajaxUpload = $no_html && !$json ? true : false;
 
 		if ($view == 'pub')
 		{
-			$url = Request::getVar('HTTP_REFERER', null, 'server');
+			$url = Request::getString('HTTP_REFERER', null, 'server');
 		}
 		else
 		{
@@ -792,7 +792,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _newDir()
 	{
 		// Incoming
-		$newdir = Request::getVar('newdir', '', 'post');
+		$newdir = Request::getString('newdir', '', 'post');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -835,7 +835,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set params
 		$params = array(
 			'subdir' => $this->subdir,
-			'newDir' => trim(Request::getVar('newdir', '')),
+			'newDir' => trim(Request::getString('newdir', '')),
 			'path'   => $this->_path
 		);
 
@@ -882,7 +882,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set params
 		$params = array(
 			'subdir'  => $this->subdir,
-			'item'    => trim(urldecode(Request::getVar('dir', '')), DS),
+			'item'    => trim(urldecode(Request::getString('dir', '')), DS),
 			'path'    => $this->_path
 		);
 
@@ -1106,9 +1106,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$params = array(
 			'subdir'  => $this->subdir,
 			'path'    => $this->_path,
-			'from'    => Request::getVar('oldname', ''),
-			'to'      => Request::getVar('newname', ''),
-			'type'    => Request::getVar('type', 'file')
+			'from'    => Request::getString('oldname', ''),
+			'to'      => Request::getString('newname', ''),
+			'type'    => Request::getString('type', 'file')
 		);
 
 		// Rename
@@ -1218,8 +1218,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$moved  = 0;
 
 		// Incoming
-		$newpath = trim(urldecode(Request::getVar('newpath', '')), DS);
-		$newdir  = Request::getVar('newdir', '');
+		$newpath = trim(urldecode(Request::getString('newpath', '')), DS);
+		$newdir  = Request::getString('newdir', '');
 		$target  = $newdir ? $newdir : $newpath;
 
 		// Set params for the move
@@ -1458,10 +1458,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$params['rev1']     = urldecode(Request::getVar('old', ''));
-		$params['rev2']     = urldecode(Request::getVar('new', ''));
+		$params['rev1']     = urldecode(Request::getString('old', ''));
+		$params['rev2']     = urldecode(Request::getString('new', ''));
 		$params['fullDiff'] = Request::getInt('full', 0);
-		$params['mode']     = urldecode(Request::getVar('mode', 'side-by-side'));
+		$params['mode']     = urldecode(Request::getString('mode', 'side-by-side'));
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -1608,8 +1608,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$item = urldecode(Request::getVar('asset', ''));
-		$hash = Request::getVar('hash', '');
+		$item = urldecode(Request::getString('asset', ''));
+		$hash = Request::getString('hash', '');
 
 		// Params for repo call
 		$params = array('subdir'  => $this->subdir);
@@ -1653,8 +1653,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _download()
 	{
 		// Incoming
-		$render = Request::getVar('render', 'download');
-		$hash   = Request::getVar('hash', '');
+		$render = Request::getString('render', 'download');
+		$hash   = Request::getString('hash', '');
 
 		// Metadata collector
 		$collector = array();
@@ -1862,7 +1862,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Viewing current file
-				$serveas 	  = urldecode(Request::getVar('serveas', $file->get('name')));
+				$serveas      = urldecode(Request::getString('serveas', $file->get('name')));
 				$downloadPath = $file->get('fullPath');
 			}
 		}
@@ -2269,7 +2269,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$converted = Request::getInt('converted', 0);
-		$service   = Request::getVar('service', 'google');
+		$service   = Request::getString('service', 'google');
 		$sync      = false;
 		$shared    = 0;
 
@@ -2391,7 +2391,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				else
 				{
 					// Incoming
-					$importExt = Request::getVar('format', 'pdf', 'post');
+					$importExt = Request::getString('format', 'pdf', 'post');
 
 					// Remove Google native extension from title
 					$title = $file->get('name');
@@ -2730,7 +2730,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _connect($service = '', $callback = '')
 	{
 		// Incoming
-		$service    = $service ? $service : Request::getVar('service', '');
+		$service    = $service ? $service : Request::getString('service', '');
 		$reauth     = Request::getInt('reauth', 0);
 		$removeData = Request::getInt('removedata', 1);
 
@@ -2898,7 +2898,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function syncError()
 	{
-		$service = Request::getVar('service', 'google');
+		$service = Request::getString('service', 'google');
 
 		$this->_rSync = new Sync($this->_connect);
 		$this->_rSync->writeToFile('');
@@ -2917,7 +2917,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$pid     = Request::getInt('id', 0);
-		$service = Request::getVar('service', 'google');
+		$service = Request::getString('service', 'google');
 		$status  = array('status' => '', 'msg' => time(), 'output' => '');
 
 		// Read status file
@@ -3387,9 +3387,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _cleanData()
 	{
 		// Clean up empty values
-		$checked = Request::getVar('asset', array());
+		$checked = Request::getArray('asset', array());
 		$checked = (!is_array($checked) ? array($checked) : $checked);
-		$folders = Request::getVar('folder', array());
+		$folders = Request::getArray('folder', array());
 		$folders = (!is_array($folders) ? array($folders) : $folders);
 
 		foreach ($checked as $key => $value)
@@ -3431,8 +3431,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_cleanData();
 
 		// Incoming
-		$checked = Request::getVar('asset', array());
-		$folders = Request::getVar('folder', array());
+		$checked = Request::getArray('asset', array());
+		$folders = Request::getArray('folder', array());
 
 		$combined = array();
 		if (!empty($checked) && is_array($checked))
@@ -3445,13 +3445,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		elseif ($file = Request::getVar('asset', ''))
+		elseif ($file = Request::getString('asset', ''))
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
 
 		// [!] Legacy support
-		$files = Request::getVar('file', array());
+		$files = Request::getArray('file', array());
 		if (!empty($files) && is_array($files))
 		{
 			foreach ($files as $ch)
@@ -3462,7 +3462,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		elseif ($file = Request::getVar('file', ''))
+		elseif ($file = Request::getString('file', ''))
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
@@ -3477,7 +3477,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		elseif ($folder = Request::getVar('folder', ''))
+		elseif ($folder = Request::getString('folder', ''))
 		{
 			$combined[] = array('folder' => urldecode($folder));
 		}
