@@ -141,7 +141,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Set vars
-			$act = Request::getVar('action', '');
+			$act = Request::getString('action', '');
 			$this->_task     = $action ? $action : $act;
 			if ($act && ($this->_task == 'edit' || $this->_task == 'setup'))
 			{
@@ -304,7 +304,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->filters['start']   = Request::getInt('limitstart', 0);
 		$view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
 		$view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
-		$view->filters['status']  = Request::getVar('status', 'active');
+		$view->filters['status']  = Request::getString('status', 'active');
 		if (!in_array($view->filters['sortdir'], array('ASC', 'DESC')))
 		{
 			$view->filters['sortdir'] = 'ASC';
@@ -416,7 +416,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = Request::getVar('p', '');
+		$props  = Request::getString('p', '');
 		$ajax   = Request::getInt('ajax', 0);
 		$pid    = Request::getInt('pid', 0);
 		$vid    = Request::getInt('vid', 0);
@@ -478,8 +478,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$objO = $this->model->table('Owner');
 		$view->filters['limit']         =  0;
 		$view->filters['start']         = Request::getInt('t_limitstart', 0);
-		$view->filters['sortby']        = Request::getVar('t_sortby', 'name');
-		$view->filters['sortdir']       = Request::getVar('t_sortdir', 'ASC');
+		$view->filters['sortby']        = Request::getString('t_sortby', 'name');
+		$view->filters['sortdir']       = Request::getString('t_sortdir', 'ASC');
 		$view->filters['status']        = 'active';
 		$view->filters['pub_versionid'] = $vid;
 
@@ -528,7 +528,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$newm = array_filter($newm);
 		}
 		$newm    = (array)$newm;
-		$groups  = urldecode(trim(Request::getVar('newgroup', '')));
+		$groups  = urldecode(trim(Request::getString('newgroup', '')));
 		$role    = Request::getInt('role', 0);
 
 		// Result collectors
@@ -547,7 +547,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$objO = $this->model->table('Owner');
 
 		// Instantiate a new registration object
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		include_once Component::path('com_members') . DS . 'models' . DS . 'registration.php';
 		$xregistration = new \Components\Members\Models\Registration();
 
 		// Owner names not supplied
@@ -829,8 +829,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function delete()
 	{
 		// Incoming
-		$checked = Request::getVar('owner', array());
-		$groups  = Request::getVar('group', array());
+		$checked = Request::getArray('owner', array());
+		$groups  = Request::getArray('group', array());
 
 		// Are we setting up project?
 		$setup = $this->model->inSetup() ? 1 : 0;
@@ -934,7 +934,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$projectId = $this->model->get('id');
 		$userId = User::getInstance()->get('id');
 		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
-		$ownerId = Request::getVar('owner', 0);
+		$ownerId = Request::getInt('owner', 0);
 		if ($currentUser->isManager() && $ownerId != 0)
 		{
 			$owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
@@ -971,7 +971,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$projectId = $this->model->get('id');
 		$userId = User::getInstance()->get('id');
 		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
-		$ownerId = Request::getVar('owner', 0);
+		$ownerId = Request::getInt('owner', 0);
 		$confirm = Request::getInt('confirm', 0);
 		if ($currentUser->isManager() && $ownerId != 0)
 		{
@@ -986,15 +986,15 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 					)
 				);
 
-				$view->option   = $this->_option;
-				$view->model    = $this->model;
-				$view->owner	= $owner;
+				$view->option = $this->_option;
+				$view->model  = $this->model;
+				$view->owner  = $owner;
 				$view->setErrors($this->getErrors());
 
 				return $view->loadTemplate();
 			}
 			$owner->set('status', 4);
-			$message = Request::getVar('message');
+			$message = Request::getString('message');
 			$params = $owner->params;
 			if ($message)
 			{
@@ -1219,9 +1219,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function _changeRole()
 	{
 		// Incoming
-		$checked = Request::getVar('owner', array());
-		$groups  = Request::getVar('group', array());
-		$owner   = Request::getVar('owner', '');
+		$checked = Request::getArray('owner', array());
+		$groups  = Request::getArray('group', array());
+		$owner   = Request::getString('owner', '');
 		$role    = Request::getInt('role', 0);
 
 		if ($owner)
@@ -1373,7 +1373,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Message body
 		$eview = new \Hubzero\Mail\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
+			'base_path' => Component::path('com_projects') . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => 'invite_plain'
 		));

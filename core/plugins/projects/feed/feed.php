@@ -172,7 +172,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 
 			// Set vars
 			$this->_config = $model->config();
-			$this->_task   = Request::getVar('action', '');
+			$this->_task   = Request::getString('action', '');
 			$this->_uid    = User::get('id');
 
 			switch ($this->_task)
@@ -303,7 +303,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			'role'  => ($this->model->member() ? $this->model->member()->role : 0),
 			'limit' => Request::getInt('limit', $limit),
 			'start' => Request::getInt('start', 0),
-			'search' => Request::getVar('search', '')
+			'search' => Request::getString('search', '')
 		);
 
 		$recipient = Hubzero\Activity\Recipient::all();
@@ -376,7 +376,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$managers  = Request::getInt('managers_only', 0);
 		$comment = array(
 			'id'          => Request::getInt('activity', 0),
-			'description' => trim(Request::getVar('comment', '')),
+			'description' => trim(Request::getString('comment', '')),
 			'scope'       => 'project.comment',
 			'scope_id'    => $this->model->get('id'),
 			'parent'      => Request::getInt('parent_activity', 0),
@@ -575,7 +575,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			'created' => ''
 		);
 
-		if ($start = Request::getVar('recorded'))
+		if ($start = Request::getString('recorded'))
 		{
 			$filters['created'] = $start;
 			$filters['sortby']  = 'created';

@@ -155,7 +155,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$this->todo = new \Components\Projects\Models\Todo();
 
 			// Set vars
-			$this->_task     = $action ? $action : Request::getVar('action', '');
+			$this->_task     = $action ? $action : Request::getString('action', '');
 			$this->_todoid   = Request::getInt('todoid', 0);
 			$this->_database = App::get('db');
 			$this->_uid      = User::get('id');
@@ -288,7 +288,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$defaultView = $mparams->get('todo_layout', 'pinboard');
 
 		// Incoming
-		$layout = Request::getVar('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';
+		$layout = Request::getString('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';
 		$mine = isset($this->_mine) ? $this->_mine : Request::getInt('mine', 0);
 
 		// Output HTML
@@ -310,8 +310,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			'state'      => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
 			'mine'       => $mine,
 			'assignedto' => $mine == 1  ? $this->_uid : 0,
-			'sortby'     => Request::getVar('sortby', 'priority'),
-			'sortdir'    => Request::getVar('sortdir', 'ASC'),
+			'sortby'     => Request::getString('sortby', 'priority'),
+			'sortdir'    => Request::getString('sortdir', 'ASC'),
 			'layout'     => $layout
 		);
 
@@ -393,8 +393,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		$view->uid   = $this->_uid;
 		$view->title = $this->_area['title'];
-		$view->list  = Request::getVar('list', '');
-		$view->ajax  = Request::getVar('ajax', 0);
+		$view->list  = Request::getString('list', '');
+		$view->ajax  = Request::getInt('ajax', 0);
 
 		return $view->loadTemplate();
 	}
@@ -410,12 +410,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$listcolor = Request::getVar('list', '');
-		$content   = Request::getVar('content', '');
+		$listcolor = Request::getString('list', '');
+		$content   = Request::getString('content', '');
 		$todoid    = Request::getInt('todoid', 0);
-		$newlist   = Request::getVar('newlist', '', 'post');
-		$newcolor  = Request::getVar('newcolor', '', 'post');
-		$page      = Request::getVar('page', 'list', 'post');
+		$newlist   = Request::getString('newlist', '', 'post');
+		$newcolor  = Request::getString('newcolor', '', 'post');
+		$page      = Request::getString('page', 'list', 'post');
 		$assigned  = Request::getInt('assigned', 0);
 		$mine      = Request::getInt('mine', 0);
 		$state     = Request::getInt('state', 0);
@@ -485,16 +485,16 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$objTD->state       = $state;
 
 			// Get due date
-			$due = trim(Request::getVar('due', ''));
+			$due = trim(Request::getString('due', ''));
 
-			if ($due && $due!= 'mm/dd/yyyy')
+			if ($due && $due != 'mm/dd/yyyy')
 			{
 				$date = explode('/', $due);
 				if (count($date) == 3)
 				{
-					$month	= $date[0];
-					$day	= $date[1];
-					$year	= $date[2];
+					$month = $date[0];
+					$day   = $date[1];
+					$year  = $date[2];
 					if (intval($month) && intval($day) && intval($year))
 					{
 						if (strlen($day) == 1)
@@ -698,7 +698,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$todoid = $this->_todoid;
-		$list = Request::getVar('dl', '');
+		$list = Request::getString('dl', '');
 
 		$gobacklist = '';
 
@@ -813,7 +813,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$newid = Request::getInt('newid', 0);
 		$oldid = Request::getInt('oldid', 0);
-		$items = Request::getVar('item', array());
+		$items = Request::getArray('item', array());
 
 		if ($newid && $oldid)
 		{
@@ -922,7 +922,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$itemid = Request::getInt('itemid', 0, 'post');
-		$comment = trim(Request::getVar('comment', '', 'post'));
+		$comment = trim(Request::getString('comment', '', 'post'));
 		$parent_activity = Request::getInt('parent_activity', 0, 'post');
 
 		// Clean-up
