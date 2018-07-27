@@ -229,7 +229,6 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					//@FIXME: Convert to HUBzero Error Logger
 					Log::error('fail2ban-client not found.');
 
 					// Bail early
