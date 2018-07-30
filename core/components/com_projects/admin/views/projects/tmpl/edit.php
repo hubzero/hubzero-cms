@@ -579,6 +579,10 @@ function submitbutton(pressbutton)
 						</tbody>
 					</table>
 				</fieldset>
+			<?php } else { ?>
+				<fieldset class="adminform">
+					<?php echo Lang::txt('COM_PROJECTS_IMAGE_NONE'); ?>
+				</fieldset>
 			<?php } ?>
 		</div>
 	</div>
