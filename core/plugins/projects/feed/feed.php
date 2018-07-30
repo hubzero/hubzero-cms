@@ -431,7 +431,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					// to reflect the new comment.
 					$currentRecipients = Hubzero\Activity\Recipient::all()
 						->whereEquals('log_id', $row->get('parent'))
-						->whereEquals('state', 1)
+						->whereEquals('state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
 						->rows();
 
 					foreach ($currentRecipients as $recipient)
@@ -443,7 +443,6 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 						$recipient->save();
 					}
 				}
-
 
 				Event::trigger('system.logActivity', [
 					'activity' => [
