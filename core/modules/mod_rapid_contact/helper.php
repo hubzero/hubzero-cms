@@ -130,7 +130,7 @@ class Helper extends Module
 
 		if (isset($_POST['rp']))
 		{
-			$this->posted = Request::getVar('rp', array(), 'post');
+			$this->posted = Request::getArray('rp', array(), 'post');
 
 			// Make sure input is of the correct type.
 			foreach ($this->posted as $key => $val)

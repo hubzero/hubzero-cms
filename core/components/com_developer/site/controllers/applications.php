@@ -516,7 +516,7 @@ class Applications extends SiteController
 		}
 
 		$return = Route::url('index.php?option=com_developer&controller=applications');
-		if (Request::getvar('return') == 'tokens')
+		if (Request::getString('return') == 'tokens')
 		{
 			$return = Route::url('index.php?option=com_developer&controller=applications&id=' . $id . '&active=tokens');
 		}
