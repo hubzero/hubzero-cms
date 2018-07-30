@@ -188,7 +188,7 @@ if ($mode != 'preview')
 							}
 						}
 
-						$live_site = rtrim(Request::base(),'/');
+						$live_site = rtrim(Request::base(), '/');
 
 						if ($notes || $audio || $video)
 						{
@@ -289,7 +289,7 @@ if ($mode != 'preview')
 	if ($this->tab == 'about' && $ccount > 0)
 	{
 		$filters = array(
-			'sortby' => Request::getVar('sortby', $this->model->params->get('sort_children', 'ordering')),
+			'sortby' => Request::getString('sortby', $this->model->params->get('sort_children', 'ordering')),
 			'limit'  => Request::getInt('limit', 0),
 			'start'  => Request::getInt('limitstart', 0),
 			'id'     => $this->model->id

@@ -59,7 +59,7 @@ class Helper extends Module
 			return;
 		}
 
-		include_once(\Component::path('com_collections') . DS . 'models' . DS . 'archive.php');
+		include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
 		$this->model = new Archive('member', User::get('id'));
 
@@ -84,7 +84,7 @@ class Helper extends Module
 	 */
 	public function collect()
 	{
-		$collectible = Request::getVar('collectible', array(), 'post', 'none', 2);
+		$collectible = Request::getArray('collectible', array(), 'post');
 
 		if (!$this->item->make())
 		{
@@ -114,7 +114,10 @@ class Helper extends Module
 			{
 				foreach ($this->groupboards as $optgroup => $boards)
 				{
-					if (count($boards) <= 0) continue;
+					if (count($boards) <= 0)
+					{
+						continue;
+					}
 
 					foreach ($boards as $board)
 					{
@@ -151,7 +154,10 @@ class Helper extends Module
 						{
 							foreach ($this->groupboards as $optgroup => $boards)
 							{
-								if (count($boards) <= 0) continue;
+								if (count($boards) <= 0)
+								{
+									continue;
+								}
 
 								foreach ($boards as $board)
 								{
@@ -168,7 +174,7 @@ class Helper extends Module
 			}
 
 			ob_clean();
-			require($this->getLayoutPath('collect'));
+			require $this->getLayoutPath('collect');
 			exit;
 		}
 
@@ -239,4 +245,3 @@ class Helper extends Module
 		exit;
 	}
 }
-
