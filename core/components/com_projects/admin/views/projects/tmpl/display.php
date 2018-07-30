@@ -128,6 +128,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_PRIVACY', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
+				<th class="priority-3"><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -265,6 +266,11 @@ function submitbutton(pressbutton)
 						</td>
 						<td class="priority-4">
 							<?php echo $quota . 'GB'; ?>
+						</td>
+						<td class="priority-3">
+							<a class="state activity hasTip" title="<?php echo Lang::txt('COM_PROJECTS_ACTIVITY_TITLE'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=activity&project=' . $row->id); ?>">
+								<span><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></span>
+							</a>
 						</td>
 					</tr>
 					<?php
