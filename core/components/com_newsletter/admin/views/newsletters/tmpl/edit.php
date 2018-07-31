@@ -50,7 +50,11 @@ $this->js()
      ->js('jquery.formwatcher', 'system');
 
 // Primary and secondary stories
-$primaries = $this->newsletter->primary()->ordered()->rows();
+$primaries = $this->newsletter->primary()
+	->whereEquals('deleted', 0)
+	->ordered()
+	->rows();
+
 $primary_highest_order = 1;
 if ($primaries->count() > 0)
 {
@@ -60,7 +64,10 @@ if ($primaries->count() > 0)
 	$primaries->rewind();
 }
 
-$secondaries = $this->newsletter->secondary()->ordered()->rows();
+$secondaries = $this->newsletter->secondary()
+	->whereEquals('deleted', 0)
+	->ordered()
+	->rows();
 $secondary_highest_order = 1;
 if ($secondaries->count() > 0)
 {
