@@ -82,9 +82,10 @@ $html = '';
 
 	$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
-	if (preg_match("/$UrlPtn/", $url))
+	if (preg_match("/$UrlPtn/", $this->activechild->path))
 	{
-		if (!empty( $_SERVER['HTTPS']))
+		$url = $this->activechild->path;
+		if (!empty($_SERVER['HTTPS']))
 		{
 			$url = str_replace('http:', 'https:', $url);
 		}
