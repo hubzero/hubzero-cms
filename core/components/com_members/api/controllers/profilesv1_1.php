@@ -166,6 +166,10 @@ class Profilesv1_1 extends ApiController
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
+			if ($admin == true && isset($searchable))
+			{
+				return false;
+			}
 
 			foreach ($rows as $entry)
 			{
