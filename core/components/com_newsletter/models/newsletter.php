@@ -387,7 +387,10 @@ class Newsletter extends Relational
 
 			//get and format primary stories
 			$campaignPrimaryStories = '';
-			$primaryStories = $campaign->primary;
+			$primaryStories = $campaign->primary()
+				->whereEquals('deleted', 0)
+				->ordered()
+				->rows();
 			foreach ($primaryStories as $pStory)
 			{
 				$campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;'.$primaryTitleColor.'">';
@@ -408,7 +411,10 @@ class Newsletter extends Relational
 
 			//get secondary stories
 			$campaignSecondaryStories = '<br /><br />';
-			$secondaryStories = $campaign->secondary;
+			$secondaryStories = $campaign->secondary()
+				->whereEquals('deleted', 0)
+				->ordered()
+				->rows();
 			foreach ($secondaryStories as $sStory)
 			{
 				$campaignSecondaryStories .= '<span style="display:block;page-break-inside:avoid;'.$secondaryTitleColor.'">';
