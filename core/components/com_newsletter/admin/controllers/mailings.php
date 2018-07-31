@@ -173,7 +173,7 @@ class Mailings extends AdminController
 		// Get clicks and process
 		$clcks = Action::all()
 			->whereEquals('mailingid', $id)
-			->whereEquals('action', 'clicks')
+			->whereEquals('action', 'click')
 			->rows();
 
 		$clicks = array();
