@@ -157,6 +157,7 @@ class Publicationsv1_1 extends ApiController
 		}
 		elseif (isset($searchable))
 		{
+			return false;
 			foreach ($publications as $i => $entry)
 			{
 				$obj = new stdClass;

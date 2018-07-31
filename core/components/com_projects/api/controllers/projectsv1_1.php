@@ -126,7 +126,10 @@ class Projectsv1_1 extends ApiController
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
-
+			if (isset($searchable))
+			{
+				return false;
+			}
 			foreach ($model->entries('list', $filters, $admin) as $i => $entry)
 			{
 				if (isset($searchable))

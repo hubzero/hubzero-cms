@@ -202,6 +202,7 @@ class Entriesv1_1 extends ApiController
 
 			if (isset($searchable) && $admin)
 			{
+				return false;
 				foreach ($records as $entry)
 				{
 					$obj = new stdClass;

@@ -86,6 +86,7 @@ class Entriesv1_0 extends ApiController
 			$query = 'SELECT * FROM `#__content` LIMIT ' . $filters['start'] . ', ' . $filters['limit'] . ';';
 			$db->setQuery($query);
 			$pages = $db->loadObjectList();
+			return false;
 
 			foreach ($pages as &$page)
 			{
