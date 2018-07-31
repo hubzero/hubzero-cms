@@ -2187,7 +2187,7 @@ class Curation extends Obj
 
 			foreach ($this->_pub->_authors as $author)
 			{
-				$readme .= ($author->name) ? $author->name : $author->p_name;
+				$readme .= '  ' . (($author->name) ? $author->name : $author->p_name);
 				$org = ($author->organization) ? $author->organization : $author->p_organization;
 
 				if ($org)
@@ -2201,36 +2201,69 @@ class Curation extends Obj
 		// Add DOI if available
 		if ($this->_pub->doi)
 		{
-			$readme .= 'doi:' . $this->_pub->doi . "\n ";
-		}
+			$readme .= "https://dx.doi.org/" . $this->_pub->doi . "\n ";
+		} // else {
+			// Couldn't get Route::url to work <shrug>
+			// $readme .= "https://" . Config::get('sitename') . "/publications/" . $this->_pub->id . DS . $this->_pub->version_number . "\n ";
+		  // }
 
 		// Add license information
 		$objL = new Tables\License($this->_db);
 		if ($objL->loadLicense($this->_pub->license_type) && $objL->id)
 		{
-			$readme .= "\n " . "\n ";
+			$readme .= "\n ";
 			$readme .= 'License: ' . "\n ";
-			$readme .= $objL->title . "\n ";
+			$readme .= '  ' . $objL->title . "\n   See LICENSE.txt for details.\n ";
 
 			// Custom license text?
 			if ($this->_pub->license_text)
 			{
-				$readme .= $this->_pub->license_text . "\n ";
+				$licText = $this->_pub->license_text . "\n ";
+			} elseif ($objL->text) {
+				$licText = $objL->text;
+			} else {
+				$licText = "License information not found.";
+			}
 
-				// Create license file
-				$handle  = fopen($licFile, 'w');
-				fwrite($handle, $this->_pub->license_text);
-				fclose($handle);
-			}
-			elseif ($objL->text)
-			{
-				$readme .= $objL->text . "\n ";
-			}
+			// Create license file
+			$handle  = fopen($licFile, 'w');
+			fwrite($handle, $licText);
+			fclose($handle);
 		}
+
+		// Add citation information
+		$cite = new stdClass();
+		$cite->title     = $this->_pub->title;
+		$cite->year      = $this->_pub->published_up && $this->_pub->published_up != '0000-00-00 00:00:00' ? Date::of($this->_pub->published_up)->toLocal('Y') : Date::of('now')->toLocal('Y');
+
+		$cite->location  = '';
+		$cite->date      = '';
+
+		$cite->doi       = $this->_pub->doi ? $this->_pub->doi : '';
+		$cite->url       = $cite->doi ? trim($this->_pub->params->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : null;
+		$cite->type      = '';
+		$cite->pages     = '';
+		$cite->author    = $this->_pub->getUnlinkedContributors();
+		$cite->publisher = $this->_pub->params->get('doi_publisher', '');
+		if ($this->_pub->groupOwner())
+		{
+			$cite->organization = $this->_pub->groupOwner('description');
+			$cite->org_url = '/groups/' . $this->_pub->groupOwner('cn');
+		}
+		if ($this->_pub->version_label > 1)
+		{
+			$cite->version = $this->_pub->version_label;
+		}
+
+		$citations = '';
+		$citeinstruct  = \Components\Publications\Helpers\Html::citation($cite, $this->_pub, $citations);
+		$readme .= "\n ";
+		$readme .= 'Suggested citation: ' . "\n ";
+		$readme .= '  ' . str_replace(['COM_PUBLICATIONS_CITATION_INSTRUCTIONS', 'BibTex | EndNote'], '', \Hubzero\Utility\Sanitize::stripAll($citeinstruct)) . "\n ";
 
 		$readme .= "\n ";
 		$readme .= '#####################################' . "\n ";
-		$readme .= 'Included Publication Materials:' . "\n ";
+		$readme .= 'Included Materials:' . "\n ";
 		$readme .= '#####################################' . "\n ";
 
 		// Create bundle
@@ -2267,7 +2300,7 @@ class Curation extends Obj
 				$readme .= "\n ";
 				$readme .= "\n ";
 				$readme .= '--------------------------------------------' . "\n ";
-				$readme .= 'Archival package produced ' . Date::toSql();
+				$readme .= 'This download bundle was created at ' . Config::get('sitename') . ' (https://' . App::get('request')->getHttpHost() . '/) on ' . Date::toSql() . "\n ";
 
 				$handle  = fopen($readmeFile, 'w');
 				fwrite($handle, $readme);

@@ -78,7 +78,10 @@ class Link extends Base
 						? 1 : 0;
 
 		// Log path
-		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+		// $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+		$configs->pubBase  = $pub->path('base', true);
+		$configs->logPath  = $pub->path('logs', true);
+		$configs->linkPath = $configs->pubBase . DS . 'links';
 
 		// replace current attachments?
 		$configs->replace  	= Request::getInt('replace_current', 0, 'post');
@@ -340,6 +343,16 @@ class Link extends Base
 			return false;
 		}
 
+		// Add link directory
+		if (!is_dir($configs->linkPath))
+		{
+			if (!Filesystem::makeDirectory($configs->linkPath, 0755, true, true))
+			{
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+				return false;
+			}
+		}
+
 		// Get existing attachments for the elemnt
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
@@ -459,6 +472,8 @@ class Link extends Base
 			$this->setError(Lang::txt('There was a problem attaching the link'));
 			return false;
 		}
+		// Determine accompanying files and copy them in the right location
+		$this->publishLinkFile($objPA, $configs);
 
 		return true;
 	}
@@ -698,6 +713,47 @@ class Link extends Base
 	 */
 	public function addToBundle($zip, $attachments, $element, $elementId, $pub, $blockParams, &$readme, $bundleDir)
 	{
+		if (!$attachments)
+		{
+			return false;
+		}
+
+		// Get configs
+		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+
+		// Add link files to readme and zip
+		foreach ($attachments as $attachment)
+		{
+			if ($attachment->type === 'link')
+			{
+				if ($attachment->title != '')
+				{
+					$title = str_replace(' ', '_', $attachment->title);
+				}
+				else
+				{
+					$title = 'link_' . $attachment->publication_id . '_' . $attachment->publication_version_id . '_' . $attachment->element_id;;
+				}
+
+				if ($title)
+				{
+					$tmpFile = $configs->linkPath . DS . $title . '.html';
+
+					// Create file if doesn't exist
+					if (!file_exists($tmpFile)) {
+						$this->publishLinkFile($attachment, $configs);
+					}
+
+					// Add to bundle
+					$where = $bundleDir . DS . 'links' . DS . $title . '.html';
+					if ($zip->addFile($tmpFile, $where))
+					{
+						$readme .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+					}
+				}
+			}
+		}
+
 		return false;
 	}
 
@@ -715,5 +771,72 @@ class Link extends Base
 	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		return false;
+	}
+
+	/**
+	 * Link file contents
+	 */
+	private function getLinkFileContents($link)
+	{
+		$content = '<html>' . "\n\n";
+		$content .= '<head>' . "\n\n";
+		$content .= '<meta http-equiv="refresh" content="1.5;url=' . $link . '">' . "\n\n";
+		$content .= '</head>' . "\n\n";
+		$content .= '<body>' . "\n";
+		$content .= '<p>Please wait while you are redirected...</p>' . "\n";
+		$content .= '</body>' . "\n\n";
+		$content .= '</html>';
+
+		return $content;
+	}
+
+	/**
+	 * Publish link file
+	 *
+	 * @param   object   $objPA
+	 * @param   array    $configs
+	 * @return  boolean  or error
+	 */
+	public function publishLinkFile($objPA, $configs)
+	{
+		if (!$objPA->publication_id)
+		{
+			return false;
+		}
+
+		// Add temp link directory if it doesn't exist
+		if (!is_dir($configs->linkPath))
+		{
+			if (!Filesystem::makeDirectory($configs->linkPath, 0755, true, true))
+			{
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+				return false;
+			}
+		}
+
+		if ($objPA->type === 'link')
+		{
+			if ($objPA->title != '')
+			{
+				$title = str_replace(' ', '_', $objPA->title);
+			}
+			else
+			{
+				$title = 'link_' . $objPA->publication_id . '_' . $objPA->publication_version_id . '_' . $objPA->element_id;
+			}
+
+			if ($title)
+			{
+				$tmpFile = $configs->linkPath . DS . $title . '.html';
+				$contents = $this->getLinkFileContents($objPA->path);
+
+				// Create file
+				if (!Filesystem::write($tmpFile, $contents))
+				{
+					$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+					return false;
+				}
+			}
+		}
 	}
 }
