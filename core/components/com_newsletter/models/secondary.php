@@ -120,4 +120,21 @@ class Secondary extends Relational
 
 		return $data['order'];
 	}
+
+	/**
+	 * Get Highest Story Order
+	 *
+	 * @param   integer  $newsletterId  Newsletter Id
+	 * @return 	integer
+	 */
+	public function _getCurrentHighestOrder($newsletterId)
+	{
+		$last = self::all()
+			->whereEquals('nid', $newsletterId)
+			->whereEquals('deleted', 0)
+			->order('order', 'desc')
+			->row();
+
+		return $last->get('order', 0);
+	}
 }
