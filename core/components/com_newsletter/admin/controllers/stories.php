@@ -320,7 +320,7 @@ class Stories extends AdminController
 	public function reorderTask()
 	{
 		//get request vars
-		$id = Request::getInt('id', 0);
+		$id = Request::getInt('nid', 0);
 		$sid = Request::getInt('sid', 0);
 		$type = Request::getWord('type', 'primary');
 		$direction = Request::getWord('direction', 'down');
@@ -388,7 +388,7 @@ class Stories extends AdminController
 		Notify::success(Lang::txt('COM_NEWSLETTER_STORY_REORDER_SUCCESS'));
 
 		App::redirect(
-			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $id . '#' . $type . '-stories', false)
+			Route::url('index.php?option=com_newsletter&controller=newsletters&task=edit&id=' . $id . '#' . $type . '-stories', false)
 		);
 	}
 
