@@ -242,16 +242,38 @@ class Link extends Base
 	 */
 	public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
 	{
+		// Get configs
+		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
+
+		$newConfigs = new stdClass;
+		$newConfigs->linkPath = \Components\Publications\Helpers\Html::buildPubPath(
+			$pub->id,
+			$newVersion->id,
+			'',
+			'links',
+			1
+		);
+
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
+			if ($att->type != $this->_name)
+			{
+				continue;
+			}
+
 			// Make new attachment record
 			$pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
 			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id')))
 			{
 				continue;
 			}
+
+			// Publish link file
+			$this->publishLinkFile($pAttach, $newConfigs);
 		}
+
+		return true;
 	}
 
 	/**
@@ -499,6 +521,12 @@ class Link extends Base
 			return false;
 		}
 
+		// Remove link file
+		$fileName = $configs->linkPath . DS . $this->getLinkFileName($row) . '.html';
+		if (file_exists($fileName)) {
+			Filesystem::delete($fileName);
+		}
+
 		// Remove link
 		if (!$this->getError())
 		{
@@ -539,10 +567,18 @@ class Link extends Base
 			return false;
 		}
 
+		// Get previous link file name
+		$oldFileName = $configs->linkPath . DS . $this->getLinkFileName($row) . '.html';
+
 		// Update label
 		$row->title       = $title;
 		$row->modified_by = User::get('id');
 		$row->modified    = Date::toSql();
+
+		// Rename to new link file name
+		if (file_exists($oldFileName)) {
+			Filesystem::rename($oldFileName, $configs->linkPath . DS . $this->getLinkFileName($row) . '.html');
+		}
 
 		// Update record
 		if (!$row->store())
@@ -726,16 +762,7 @@ class Link extends Base
 		{
 			if ($attachment->type === 'link')
 			{
-				if ($attachment->title != '')
-				{
-					$title = str_replace(' ', '_', $attachment->title);
-				}
-				else
-				{
-					$title = 'link_' . $attachment->publication_id . '_' . $attachment->publication_version_id . '_' . $attachment->element_id;;
-				}
-
-				if ($title)
+				if ($title = $this->getLinkFileName($attachment))
 				{
 					$tmpFile = $configs->linkPath . DS . $title . '.html';
 
@@ -770,7 +797,51 @@ class Link extends Base
 	 */
 	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
-		return false;
+		// Get configs
+		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+
+		$list = null;
+
+		// Add link files
+		$linkFiles = array();
+		if (is_dir($configs->linkPath))
+		{
+			$linkFiles = Filesystem::files($configs->linkPath, '.', true, true);
+		}
+		if (!empty($linkFiles))
+		{
+			$list .= '<li>' . \Components\Projects\Models\File::drawIcon('folder') . ' links</li>';
+			foreach ($linkFiles as $e)
+			{
+				$file = new \Components\Projects\Models\File($e);
+
+				$fileinfo = pathinfo($e);
+				$a_dir = $fileinfo['dirname'];
+				$a_dir = trim(str_replace($configs->linkPath, '', $a_dir), DS);
+
+				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
+				$where = 'data' . DS . $fPath . basename($e);
+
+				$list .= '<li class="level2"><span class="item-title">' . $file::drawIcon($file->get('ext')) . ' ' . $fPath . basename($e) . '</span></li>';
+			}
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Link file name
+	 */
+	private function getLinkFileName($objPA)
+	{
+		if ($objPA->title != '')
+		{
+			return str_replace(' ', '_', $objPA->title) . '-' . $objPA->id;
+		}
+		else
+		{
+			return 'link_' . $objPA->object_id . '-' . $objPA->id;
+		}
 	}
 
 	/**
@@ -816,16 +887,7 @@ class Link extends Base
 
 		if ($objPA->type === 'link')
 		{
-			if ($objPA->title != '')
-			{
-				$title = str_replace(' ', '_', $objPA->title);
-			}
-			else
-			{
-				$title = 'link_' . $objPA->publication_id . '_' . $objPA->publication_version_id . '_' . $objPA->element_id;
-			}
-
-			if ($title)
+			if ($title = $this->getLinkFileName($objPA))
 			{
 				$tmpFile = $configs->linkPath . DS . $title . '.html';
 				$contents = $this->getLinkFileContents($objPA->path);

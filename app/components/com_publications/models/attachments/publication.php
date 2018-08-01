@@ -73,17 +73,16 @@ class Publication extends Base
 		$typeParams = $element->typeParams;
 
 		// Allow changes in non-draft version?
-		$configs->freeze = 0;
-
-		if (isset($blockParams->published_editing)
-		 && $blockParams->published_editing == 0
-		 && ($pub->state == 1 || $pub->state == 5))
-		{
-			$configs->freeze = 1;
-		}
+		$configs->freeze = isset($blockParams->published_editing)
+						&& $blockParams->published_editing == 0
+						&& ($pub->state == 1 || $pub->state == 5)
+						? 1 : 0;
 
 		// Log path
-		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+		// $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+		$configs->pubBase  = $pub->path('base', true);
+		$configs->logPath  = $pub->path('logs', true);
+		$configs->linkPath = $configs->pubBase . DS . 'links';
 
 		// replace current attachments?
 		$configs->replace = Request::getInt('replace_current', 0, 'post');
@@ -261,17 +260,38 @@ class Publication extends Base
 	 */
 	public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
 	{
+		// Get configs
+		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
+
+		$newConfigs = new stdClass;
+		$newConfigs->linkPath = \Components\Publications\Helpers\Html::buildPubPath(
+			$pub->id,
+			$newVersion->id,
+			'',
+			'links',
+			1
+		);
+
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
+			if ($att->type != $this->_name)
+			{
+				continue;
+			}
+
 			// Make new attachment record
 			$pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
-
 			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id')))
 			{
 				continue;
 			}
+
+			// Publish link file
+			$this->publishLinkFile($pAttach, $newConfigs);
 		}
+
+		return true;
 	}
 
 	/**
@@ -358,6 +378,16 @@ class Publication extends Base
 		if (empty($toAttach) && !$configs->replace)
 		{
 			return false;
+		}
+
+		// Add link directory
+		if (!is_dir($configs->linkPath))
+		{
+			if (!Filesystem::makeDirectory($configs->linkPath, 0755, true, true))
+			{
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+				return false;
+			}
 		}
 
 		// Get existing attachments for the elemnt
@@ -472,6 +502,8 @@ class Publication extends Base
 			$this->setError(Lang::txt('There was a problem attaching the publication'));
 			return false;
 		}
+		// Determine accompanying files and copy them in the right location
+		$this->publishLinkFile($objPA, $configs);
 
 		return true;
 	}
@@ -497,6 +529,9 @@ class Publication extends Base
 			return false;
 		}
 
+		// Remove link file
+		Filesystem::delete($configs->linkPath . DS . $this->getLinkFileName($row) . '.html');
+
 		// Remove link
 		if (!$this->getError())
 		{
@@ -514,7 +549,7 @@ class Publication extends Base
 	}
 
 	/**
-	 * Update attachment properties
+	 * Update attachment properties -- NOT USED (COPIED FROM LINK TYPE)
 	 *
 	 * @param   object   $row
 	 * @param   object   $element
@@ -716,11 +751,43 @@ class Publication extends Base
 	 */
 	public function addToBundle($zip, $attachments, $element, $elementId, $pub, $blockParams, &$readme, $bundleDir)
 	{
+		if (!$attachments)
+		{
+			return false;
+		}
+
+		// Get configs
+		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+
+		// Add link files to readme and zip
+		foreach ($attachments as $attachment)
+		{
+			if ($attachment->type === 'publication')
+			{
+				if ($title = $this->getLinkFileName($attachment))
+				{
+					$tmpFile = $configs->linkPath . DS . $title . '.html';
+
+					// Create file if doesn't exist
+					if (!file_exists($tmpFile)) {
+						$this->publishLinkFile($attachment, $configs);
+					}
+
+					// Add to bundle
+					$where = $bundleDir . DS . 'links' . DS . $title . '.html';
+					if ($zip->addFile($tmpFile, $where))
+					{
+						$readme .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+					}
+				}
+			}
+		}
+
 		return false;
 	}
 
 	/**
-	 * Draw list
+	 * Draw list (NOT NEEDED - LINKS ADDRESSED IN link.php)
 	 *
 	 * @param   array    $attachments
 	 * @param   object   $element
@@ -733,5 +800,88 @@ class Publication extends Base
 	public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
 	{
 		return false;
+	}
+
+	/**
+	 * Link file name
+	 */
+	private function getLinkFileName($objPA)
+	{
+		if ($objPA->title != '')
+		{
+			return str_replace(' ', '_', $objPA->title) . '-' . $objPA->id;
+		}
+		else
+		{
+			return 'QUBES_Resource_' . $objPA->object_id . '-' . $objPA->id;
+		}
+	}
+
+	/**
+	 * Link file contents
+	 */
+	private function getLinkFileContents($objPA)
+	{
+		$publication = new \Components\Publications\Models\Publication($objPA->object_id, 'default');
+
+		$title = $publication->get('title');
+		$abstract = $publication->get('abstract');
+		$description = $publication->get('description');
+		$link = $objPA->path;
+
+		$content = '<html>' . "\n\n";
+		$content .= '<head>' . "\n\n";
+		$content .= '<meta http-equiv="refresh" content="1.5;url=' . $link . '">' . "\n\n";
+		$content .= '</head>' . "\n\n";
+		$content .= '<body>' . "\n";
+		$content .= '<p><strong>Title</strong>: ' . $title . "</p>\n\n";
+		$content .= '<p><strong>Abstract</strong>: ' . $abstract . "</p>\n\n";
+		$content .= '<p><strong>Description</strong>: ' . $description . "</p>\n\n";
+		$content .= '<p>Please wait while you are redirected...</p>' . "\n";
+		$content .= '</body>' . "\n\n";
+		$content .= '</html>';
+
+		return $content;
+	}
+
+	/**
+	 * Publish link file
+	 *
+	 * @param   object   $objPA
+	 * @param   array    $configs
+	 * @return  boolean  or error
+	 */
+	public function publishLinkFile($objPA, $configs)
+	{
+		if (!$objPA->publication_id)
+		{
+			return false;
+		}
+
+		// Add temp link directory if it doesn't exist
+		if (!is_dir($configs->linkPath))
+		{
+			if (!Filesystem::makeDirectory($configs->linkPath, 0755, true, true))
+			{
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+				return false;
+			}
+		}
+
+		if ($objPA->type === 'publication')
+		{
+			if ($title = $this->getLinkFileName($objPA))
+			{
+				$tmpFile = $configs->linkPath . DS . $title . '.html';
+				$contents = $this->getLinkFileContents($objPA);
+
+				// Create file
+				if (!Filesystem::write($tmpFile, $contents))
+				{
+					$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+					return false;
+				}
+			}
+		}
 	}
 }
