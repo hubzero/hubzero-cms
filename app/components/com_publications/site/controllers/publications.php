@@ -1584,7 +1584,7 @@ class Publications extends SiteController
 		$version->set('accepted', '0000-00-00 00:00:00');
 		$version->set('archived', '0000-00-00 00:00:00');
 		$version->set('submitted', '0000-00-00 00:00:00');
-		$version->set('version_label', '1.0.0');
+		$version->set('version_label', '1.0');
 		$version->set('version_number', 1);
 		$version->set('curation', '');
 		$version->set('reviewed', '0000-00-00 00:00:00');
@@ -1637,7 +1637,7 @@ class Publications extends SiteController
 		{
 			$objO = $project->table('Owner');
 		}
-		$ownrs = $objO->getOwners($project->get('id'));
+		$ownrs = $objO->getOwners($project->get('id')); // Owners = Members
 		$owners = array();
 		foreach ($ownrs as $owner)
 		{
@@ -1648,6 +1648,7 @@ class Publications extends SiteController
 		{
 			$owner_id = $author->get('project_owner_id');
 
+			// Authors get added to project? (jos_project_owners)
 			if (!isset($owners[$author->get('user_id')]))
 			{
 				$objO->load($owner_id);
@@ -1667,6 +1668,7 @@ class Publications extends SiteController
 				$owners[$author->get('user_id')] = $objO->id;
 			}
 
+			// Authors then get added to author list of new pub (jos_publication_authors)
 			$author->set('id', 0);
 			$author->set('publication_version_id', $version->get('id'));
 			$author->set('project_owner_id', $owners[$author->get('user_id')]);
@@ -1682,23 +1684,28 @@ class Publications extends SiteController
 		}
 
 		// Add the user as the author of the publication
-		$author = Models\Orm\Author::blank();
-		$author->set('user_id', User::get('id'));
-		$author->set('name', User::get('name'));
-		$author->set('firstName', User::get('givenName'));
-		$author->set('lastName', User::get('surname'));
-		$author->set('organization', User::get('organization'));
-		$author->set('status', 1);
-		$author->set('publication_version_id', $version->get('id'));
-		$author->set('project_owner_id', $owners[$author->get('user_id')]);
-		$author->set('created', Date::of('now')->toSql());
-		$author->set('created_by', User::get('id'));
-		$author->set('modified', '0000-00-00 00:00:00');
-		$author->set('modified_by', 0);
+		//   Probably an easier way to do this check...
+		//   For example, could use ORM relational thingy?
+		$auth_check = new Tables\Author($this->database);
+		if (!$auth_check->loadAssociation(User::get('id'), $version->get('id'))) {
+			$author = Models\Orm\Author::blank();
+			$author->set('user_id', User::get('id'));
+			$author->set('name', User::get('name'));
+			$author->set('firstName', User::get('givenName'));
+			$author->set('lastName', User::get('surname'));
+			$author->set('organization', User::get('organization'));
+			$author->set('status', 1);
+			$author->set('publication_version_id', $version->get('id'));
+			$author->set('project_owner_id', $owners[$author->get('user_id')]);
+			$author->set('created', Date::of('now')->toSql());
+			$author->set('created_by', User::get('id'));
+			$author->set('modified', '0000-00-00 00:00:00');
+			$author->set('modified_by', 0);
 
-		if (!$author->save())
-		{
-			App::abort(500, $author->getError());
+			if (!$author->save())
+			{
+				App::abort(500, $author->getError());
+			}
 		}
 
 		// Copy attachments
