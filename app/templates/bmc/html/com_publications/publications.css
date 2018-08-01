@@ -70,6 +70,9 @@
 	.com_publications .filter-options {
 		width: 60%;
 	}
+	.com_publications span.extras {
+		margin-left: 0.5em;
+	}
 
 /* Publication category icons */
 	.com_publications div.extracontent li a:before {

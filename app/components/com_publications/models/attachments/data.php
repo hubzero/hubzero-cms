@@ -922,7 +922,7 @@ class Data extends Base
 				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$where = 'data' . DS . $fPath . basename($e);
 
-				$list .= '<li class="level2"><span class="item-title">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span></li>';
+				$list .= '<li class="level2"><span class="item-title">' . $file::drawIcon($file->get('ext')) . ' ' . $fPath . basename($e) . '</span></li>';
 			}
 		}
 
@@ -1019,7 +1019,7 @@ class Data extends Base
 					Filesystem::makeDirectory(dirname($configs->dataPath . DS . $file), 0755, true, true);
 				}
 
-				// Copy the file from the project to the publication	
+				// Copy the file from the project to the publication
 				if (Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $file))
 				{
 					// Don't bother turning anything but an image into a thumbnail
