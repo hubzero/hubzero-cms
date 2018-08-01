@@ -64,7 +64,7 @@ HUBzero is a registered trademark of Purdue University.
 				</field>
 				<field name="threading" type="list" default="both" label="PLG_GROUPS_FORUM_CONFIG_THREADING_LABEL" description="PLG_GROUPS_FORUM_CONFIG_THREADING_DESC">
 					<option value="list">PLG_GROUPS_FORUM_CONFIG_THREADING_LIST</option>
-					<option value="tree">PLG_GROUPS_CONFIG_THREADING_TREE</option>
+					<option value="tree">PLG_GROUPS_FORUM_CONFIG_THREADING_TREE</option>
 				</field>
 				<field name="threading_depth" type="text" default="3" label="PLG_GROUPS_FORUM_CONFIG_THREADING_LEVEL_LABEL" description="PLG_GROUPS_FORUM_CONFIG_THREADING_LEVEL_DESC" />
 			</fieldset>
