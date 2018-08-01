@@ -2063,7 +2063,7 @@ class Curation extends Obj
 			return false;
 		}
 
-		return Lang::txt('Publication') . '_' . $this->_pub->id . '.zip';
+		return Lang::txt('Resource') . '_' . $this->_pub->id . '.zip';
 	}
 
 	/**

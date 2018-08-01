@@ -166,7 +166,7 @@ class File extends Base
 							: null;
 
 		// Archival path
-		$tarname  = Lang::txt('Publication') . '_' . $pub->id . '.zip';
+		$tarname  = Lang::txt('Resource') . '_' . $pub->id . '.zip';
 		$configs->archPath = $configs->pubBase . DS . $tarname;
 
 		return $configs;
@@ -1049,7 +1049,7 @@ class File extends Base
 			$this->setError(Lang::txt('There was a problem removing published file'));
 		}
 
-		// Remove file and record
+		// Remove record
 		if (!$this->getError())
 		{
 			$row->delete();

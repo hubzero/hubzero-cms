@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $message  = $this->subject ."\n";
 $message .= '-------------------------------' ."\n";
-$message .= Lang::txt('Publication') . ': ' . $this->publication->title . ' (' . $this->publication->id . ')' . "\n";
+$message .= Lang::txt('Resource') . ': ' . $this->publication->title . ' (' . $this->publication->id . ')' . "\n";
 
 // Append a message
 if ($this->message)

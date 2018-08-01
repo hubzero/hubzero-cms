@@ -119,7 +119,7 @@ $schema = $metaElements->getSchema();
 			}
 
 			// Archival path
-			$tarname  = Lang::txt('Publication') . '_' . $this->publication->id . '.zip';
+			$tarname  = Lang::txt('Resource') . '_' . $this->publication->id . '.zip';
 			$archPath = $path . DS . $tarname;
 
 			$showArchive = isset($this->publication->_curationModel->_manifest->params->show_archival)

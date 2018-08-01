@@ -1852,7 +1852,7 @@ class Publication extends Obj
 		if (!isset($this->_bundlePath))
 		{
 			// Archival package
-			$tarname  = Lang::txt('Publication') . '_' . $this->get('id') . '.zip';
+			$tarname  = Lang::txt('Resource') . '_' . $this->get('id') . '.zip';
 			$this->_bundlePath = Helpers\Html::buildPubPath($this->get('id'), $this->get('version_id'), '', '', 1) . DS . $tarname;
 		}
 
