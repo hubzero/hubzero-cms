@@ -35,11 +35,13 @@ namespace Components\Search\Models\Solr;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Components\Search\Helpers\DiscoveryHelper;
+use Components\Search\Models\Solr\Blacklist;
 use \Solarium\Exception\HttpException;
 use Component;
 
 require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
 require_once Component::path('com_search') . '/models/solr/filters/filter.php';
+require_once Component::path('com_search') . '/models/solr/blacklist.php';
 
 /**
  * Database model for search components
@@ -132,13 +134,14 @@ class SearchComponent extends Relational
 		$newQuery = $this->getSearchIndexer();
 
 		$modelResults = $model::searchResults($batchSize, $offset);
+		$blackListIds = Blacklist::getDocIdsByScope($model::searchNamespace());
 
 		if (count($modelResults) > 0)
 		{
 			foreach ($modelResults as $result)
 			{
 				$searchResult = $result->searchResult();
-				if ($searchResult)
+				if ($searchResult && !in_array($searchResult->id, $blackListIds))
 				{
 					$newQuery->index($searchResult, true, $commitWithin, $batchSize);
 				}

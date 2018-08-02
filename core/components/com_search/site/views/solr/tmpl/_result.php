@@ -74,12 +74,14 @@
 					$baseTagUrl = Route::url('index.php?option=com_search&terms=' . $this->terms); 
 				?>
 				<?php foreach ($this->result['_childDocuments_'] as $tag): ?>
+					<?php if (!empty($tag['title'][0])): ?>
 					<li>
 						<?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0];?>
 						<a class="tag" href="<?php echo $baseTagUrl . '&tags=' . $description;?>" data-tag="<?php echo $description;?>">
 							<?php echo $tag['title'][0]; ?>
 						</a>
 					</li>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</ul>
 		</div>

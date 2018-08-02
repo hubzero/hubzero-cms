@@ -118,7 +118,8 @@ class DiscoveryHelper
 		{
 			$ormModels = scandir($ormModelPath);
 		}
-		$models = array_filter($models, function($model){
+		$allModels = array_merge($models, $ormModels);
+		$models = array_filter($allModels, function($model){
 			$suffix = '.php';
 			$suffixLength = strlen($suffix);
 			if (substr($model, - $suffixLength) == $suffix)
@@ -136,16 +137,24 @@ class DiscoveryHelper
 			if (in_array($model, $ormModels))
 			{
 				$ormClassName = $baseNameSpace . 'Orm\\' . $className;
-				include_once $ormModelPath . $model;
-				if (self::isSearchable($ormClassName))
+				$ormFilePath = $ormModelPath . $model;
+				if (file_exists($ormFilePath))
 				{
-					return $ormClassName;
+					include_once $ormFilePath;
+					if (self::isSearchable($ormClassName))
+					{
+						return $ormClassName;
+					}
 				}
 			}
-			include_once $modelPath . $model;
-			if (self::isSearchable($fullClassName))
+			$filePath = $modelPath . $model;
+			if (file_exists($filePath))
 			{
-				return $fullClassName;
+				include_once $filePath;
+				if (self::isSearchable($fullClassName))
+				{
+					return $fullClassName;
+				}
 			}
 		}
 		return false;

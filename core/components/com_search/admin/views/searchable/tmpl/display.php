@@ -122,9 +122,10 @@ function submitbutton(pressbutton)
 					<?php 
 						$componentName = $component->getQueryName();
 						$componentCount = !empty($this->componentCounts[$componentName]) ? $this->componentCounts[$componentName] : 0;
+						$componentLink = Route::url('index.php?option=com_search&controller=' . $this->controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
 					?>
 					<?php if ($componentCount > 0): ?>
-					<a href="<?php echo Route::url('index.php?option=com_search&controller=' . $this->controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace()); ?>">
+					<a href="<?php echo $componentLink;?>">
 						<?php echo $componentCount; ?>
 					</a>
 					<?php else: ?>
@@ -133,7 +134,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="tasks">
 					<?php if ($component->get('state') == 1): ?>
-						<a class="button unpublishtask"  data-linktext="Rebuild Index" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=activateIndex' . '&id=' . $component->get('id') . '&' . Session::getFormToken() . '=1');?>">
+						<a class="button unpublishtask"  data-link="<?php echo $componentLink;?>" data-linktext="Rebuild Index" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=activateIndex' . '&id=' . $component->get('id') . '&' . Session::getFormToken() . '=1');?>">
 							Rebuild Index
 						</a>
 					<?php endif; ?>
