@@ -1632,7 +1632,9 @@ class Publications extends SiteController
 			}
 		}
 
-		// Copy authors
+		// Add adapter as author
+		// @TODO First, get ownership id - pretty sure there is an
+		//   easier way to do this...
 		if (!isset($objO))
 		{
 			$objO = $project->table('Owner');
@@ -1642,45 +1644,6 @@ class Publications extends SiteController
 		foreach ($ownrs as $owner)
 		{
 			$owners[$owner->userid] = $owner->id;
-		}
-
-		foreach ($authors as $author)
-		{
-			$owner_id = $author->get('project_owner_id');
-
-			// Authors get added to project? (jos_project_owners)
-			if (!isset($owners[$author->get('user_id')]))
-			{
-				$objO->load($owner_id);
-				$objO->projectid  = $project->get('id');
-				$objO->id         = null;
-				$objO->added      = Date::of('now')->toSql();
-				$objO->num_visits = 0;
-				$objO->lastvisit  = null;
-				$objO->status     = 2;
-				$objO->role       = 0;
-				if ($objO->groupid != $project->get('owned_by_group'))
-				{
-					$objO->groupid = 0;
-				}
-				$objO->store();
-
-				$owners[$author->get('user_id')] = $objO->id;
-			}
-
-			// Authors then get added to author list of new pub (jos_publication_authors)
-			$author->set('id', 0);
-			$author->set('publication_version_id', $version->get('id'));
-			$author->set('project_owner_id', $owners[$author->get('user_id')]);
-			$author->set('created', Date::of('now')->toSql());
-			$author->set('created_by', User::get('id'));
-			$author->set('modified', '0000-00-00 00:00:00');
-			$author->set('modified_by', 0);
-
-			if (!$author->save())
-			{
-				App::abort(500, $author->getError());
-			}
 		}
 
 		// Add the user as the author of the publication
