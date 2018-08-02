@@ -90,12 +90,8 @@ class Filter extends Relational
 	 */
 	public function transformParams()
 	{
-		if (!isset($this->params))
-		{
-			$params = new Registry($this->get('params'));
-			$this->params = $params;
-		}
-		return $this->params;
+		$params = new Registry($this->get('params'));
+		return $params;
 	}
 
 	/**

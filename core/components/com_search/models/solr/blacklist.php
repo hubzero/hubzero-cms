@@ -80,4 +80,18 @@ class Blacklist extends Relational
 		'created_by',
 		'created'
 	);
+
+	/**
+	 * Get all doc_ids that are prefixed by $scope
+	 * @param 	string 	$scope 	name of prefix to filter doc_ids on
+	 * @return	array	collection of doc_ids
+	 **/
+	public static function getDocIdsByScope($scope)
+	{
+		$blackListIds = self::all()->select('doc_id')
+			->where('doc_id', 'LIKE', $scope . '%')
+			->rows()
+			->fieldsByKey('doc_id');
+		return $blackListIds;
+	}
 }

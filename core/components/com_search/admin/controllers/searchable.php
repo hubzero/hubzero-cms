@@ -122,8 +122,9 @@ class Searchable extends AdminController
 			if (!$recordsIndexed)
 			{
 				$component->set('state', 1);
+				$componentLink = Route::url('index.php?option=com_search&controller=' . $this->_controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
 				$recordsIndexed['state'] = 1;
-				$recordsIndexed['total'] = $component->getSearchCount();
+				$recordsIndexed['total'] = '<a href="' . $componentLink . '">' . $component->getSearchCount() . '</a>';
 				$recordsIndexed['link'] = Route::url('index.php?option=' . $this->_option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
 			}
 			elseif (isset($recordsIndexed['error']))
