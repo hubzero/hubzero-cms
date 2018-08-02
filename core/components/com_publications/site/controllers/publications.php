@@ -1653,6 +1653,7 @@ class Publications extends SiteController
 			$owners[$owner->userid] = $owner->id;
 		}
 
+		$isAlreadyAuthor = false;
 		foreach ($authors as $author)
 		{
 			$owner_id = $author->get('project_owner_id');
@@ -1688,26 +1689,34 @@ class Publications extends SiteController
 			{
 				App::abort(500, $author->getError());
 			}
+
+			if ($author->get('user_id') == User::get('id'))
+			{
+				$isAlreadyAuthor = true;
+			}
 		}
 
 		// Add the user as the author of the publication
-		$author = Models\Orm\Author::blank();
-		$author->set('user_id', User::get('id'));
-		$author->set('name', User::get('name'));
-		$author->set('firstName', User::get('givenName'));
-		$author->set('lastName', User::get('surname'));
-		$author->set('organization', User::get('organization'));
-		$author->set('status', 1);
-		$author->set('publication_version_id', $version->get('id'));
-		$author->set('project_owner_id', $owners[$author->get('user_id')]);
-		$author->set('created', Date::of('now')->toSql());
-		$author->set('created_by', User::get('id'));
-		$author->set('modified', '0000-00-00 00:00:00');
-		$author->set('modified_by', 0);
-
-		if (!$author->save())
+		if (!$isAlreadyAuthor)
 		{
-			App::abort(500, $author->getError());
+			$author = Models\Orm\Author::blank();
+			$author->set('user_id', User::get('id'));
+			$author->set('name', User::get('name'));
+			$author->set('firstName', User::get('givenName'));
+			$author->set('lastName', User::get('surname'));
+			$author->set('organization', User::get('organization'));
+			$author->set('status', 1);
+			$author->set('publication_version_id', $version->get('id'));
+			$author->set('project_owner_id', $owners[$author->get('user_id')]);
+			$author->set('created', Date::of('now')->toSql());
+			$author->set('created_by', User::get('id'));
+			$author->set('modified', '0000-00-00 00:00:00');
+			$author->set('modified_by', 0);
+
+			if (!$author->save())
+			{
+				App::abort(500, $author->getError());
+			}
 		}
 
 		// Copy attachments
