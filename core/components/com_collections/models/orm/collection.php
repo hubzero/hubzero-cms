@@ -74,6 +74,7 @@ class Collection extends Relational
 	 * @var  array
 	 **/
 	public $always = array(
+		'alias'
 	);
 
 	/**
@@ -83,8 +84,7 @@ class Collection extends Relational
 	 */
 	public $initiate = array(
 		'created',
-		'created_by',
-		'alias'
+		'created_by'
 	);
 
 	/**
@@ -101,6 +101,7 @@ class Collection extends Relational
 				->whereEquals('alias', $data['alias'])
 				->whereEquals('object_id', $data['object_id'])
 				->whereEquals('object_type', $data['object_type'])
+				->where('id', '!=', $data['id'])
 				->where('state', '!=', self::STATE_DELETED)
 				->total();
 
