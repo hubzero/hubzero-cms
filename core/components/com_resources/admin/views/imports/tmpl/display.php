@@ -92,34 +92,38 @@ function submitbutton(pressbutton)
 				<?php foreach ($this->imports as $i => $import) : ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="isChecked(this.checked);" />
+							<?php if ($canDo->get('core.create')): ?>
+								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="isChecked(this.checked);" />
+							<?php endif; ?>
 						</td>
 						<td>
-							<?php echo $this->escape($import->get('name')); ?> <br />
+							<?php if ($canDo->get('core.create')): ?>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $import->get('id')); ?>">
+									<?php echo $this->escape($import->get('name')); ?>
+								</a>
+							<?php else: ?>
+								<?php echo $this->escape($import->get('name')); ?>
+							<?php endif; ?>
+							<br />
 							<span class="hint">
 								<?php echo nl2br($this->escape($import->get('notes'))); ?>
 							</span>
 						</td>
 						<td>
 							<?php
-								if ($import->get('count'))
-								{
-									echo number_format($this->escape($import->get('count')));
-								}
+							echo number_format((int)$import->get('count', 0));
 							?>
 						</td>
 						<td class="priority-4">
 							<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
 							<?php
-								$created_on = Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a');
-								echo $created_on . '<br />';
+							$created_on = Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a');
+							echo $created_on . '<br />';
 							?>
 							<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
 							<?php
-								if ($created_by = User::getInstance($import->get('created_by')))
-								{
-									echo $created_by->get('name');
-								}
+							$created_by = User::getInstance($import->get('created_by'));
+							echo $created_by->get('name', Lang::txt('COM_RESOURCE_UNKNOWN'));
 							?>
 						</td>
 						<td class="priority-3">
@@ -168,8 +172,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
