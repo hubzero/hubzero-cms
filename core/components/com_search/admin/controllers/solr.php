@@ -100,15 +100,15 @@ class Solr extends AdminController
 			{
 				Notify::error('Optimization failed');
 			}
-			App::redirect(
-				Route::url('index.php?option=com_search&task=display', false)
-			);
 		}
 		catch (\Solarium\Exception\HttpException $e)
 		{
 			$this->view->setError($e->getMessage());
 			$this->displayTask();
 		}
+		App::redirect(
+			Route::url('index.php?option=com_search&task=display', false)
+		);
 	}
 
 

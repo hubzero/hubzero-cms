@@ -66,7 +66,7 @@ function indexResults(url, link, limit, offset, numprocess){
 					$(link).removeClass('unpublishtask');
 					$(link).attr('href', response.link);
 				}
-				$(link).parent('td').siblings('.total').text(response.total);
+				$(link).parent('td').siblings('.total').html(response.total);
 				$(link).removeAttr('disabled');
 				activeProcesses--;
 			}

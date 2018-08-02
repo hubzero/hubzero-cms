@@ -117,12 +117,14 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
 			<div class="result-tags">
 				<ul class="tags">
 					<?php foreach ($this->result['_childDocuments_'] as $tag): ?>
+						<?php if (!empty($tag['title'][0])): ?>
 						<li>
 							<?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0]; ?>
 							<a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . $description); ?>" data-tag="<?php echo $description; ?>">
 								<?php echo $tag['title'][0]; ?>
 							</a>
 						</li>
+						<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
 			</div>

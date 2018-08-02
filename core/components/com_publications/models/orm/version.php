@@ -37,6 +37,7 @@ use Hubzero\Utility\Str;
 use Date;
 use User;
 use Lang;
+use stdClass;
 
 require_once __DIR__ . DS . 'attachment.php';
 require_once __DIR__ . DS . 'author.php';
@@ -45,7 +46,7 @@ require_once __DIR__ . DS . 'license.php';
 /**
  * Model class for publication version
  */
-class Version extends Relational
+class Version extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * State constants
@@ -574,5 +575,138 @@ class Version extends Relational
 		}
 
 		return $data;
+	}
+
+	/*
+	 * Generate link to current active version
+	 * @return string
+	 */
+	public function link()
+	{
+		$link = 'index.php?option=com_publications';
+		$link .= $this->publication->get('alias') ? '&alias=' . $this->publication->get('alias') : '&id=' . $this->publication->get('id');
+		$link .= '&v=' . $this->version_number;
+		return $link;
+	}
+
+	/*
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public static function searchNamespace()
+	{
+		$searchNamespace = 'publication';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = self::searchNamespace() . '-' . $this->publication->id;
+		return $searchId;
+	}
+
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
+	public function searchResult()
+	{
+		$activeVersion = $this->publication->getActiveVersion();
+		if ($activeVersion->id != $this->id)
+		{
+			return false;
+		}
+
+		$obj = new stdClass;
+		$obj->id = $this->searchId();
+		$obj->hubtype = self::searchNamespace();
+		$obj->title = $this->get('title');
+
+		$description = $this->get('abstract') . ' ' . $this->get('description');
+		$description = html_entity_decode($description);
+		$description = \Hubzero\Utility\Sanitize::stripAll($description);
+
+		$obj->description   = $description;
+		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
+		$obj->doi = $this->get('doi');
+
+		$tags = $this->publication->tags();
+		if (count($tags) > 0)
+		{
+			$obj->tags = array();
+			foreach ($tags as $tag)
+			{
+				$title = $tag->get('raw_tag', '');
+				$description = $tag->get('tag', '');
+				$label = $tag->get('label', '');
+				$obj->tags[] = array(
+					'id' => 'tag-' . $tag->id,
+					'title' => $title,
+					'description' => $description,
+					'access_level' => $tag->admin == 0 ? 'public' : 'private',
+					'type' => 'publication-tag',
+					'badge_b' => $label == 'badge' ? true : false
+				);
+			}
+		}
+		else
+		{
+			$obj->tags[] = array(
+				'id' => '',
+				'title' => ''
+			);
+		}
+
+		$authors = $this->authors;
+		foreach ($authors as $author)
+		{
+			$obj->author[] = $author->name;
+		}
+
+		$obj->owner_type = 'user';
+		$obj->owner = $this->created_by;
+		if ($this->statusName != 'published')
+		{
+			$obj->access_level = 'private';
+		}
+		elseif ($this->statusName == 'published')
+		{
+			if ($this->access == 0)
+			{
+				$obj->access_level = 'public';
+			}
+			elseif ($this->access == 1)
+			{
+				$obj->access_level = 'registered';
+			}
+			else
+			{
+				$obj->access_level = 'private';
+			}
+		}
+		return $obj;
+	}
+
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 * @return Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
 	}
 }

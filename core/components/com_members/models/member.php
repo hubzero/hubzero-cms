@@ -658,6 +658,6 @@ class Member extends User implements \Hubzero\Search\Searchable
 			$obj->owner_type = 'user';
 		}
 
-		return (array) $obj;
+		return $obj;
 	}
 }

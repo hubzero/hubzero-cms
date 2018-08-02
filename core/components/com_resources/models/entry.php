@@ -1658,7 +1658,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$groups = $this->getGroups();
 		$tags = $this->tags(false);
 
-		if (!empty($tags))
+		if ($tags->count() > 0)
 		{
 			foreach ($tags as $tag)
 			{
@@ -1675,6 +1675,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				);
 			}
 		}
+		else
+		{
+			$obj->tags[] = array(
+				'id' => '',
+				'title' => ''
+			);
+		}
+
 		$fields = $this->fields();
 		if (!empty($fields))
 		{
@@ -1724,7 +1732,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$obj->owner_type = 'user';
 			$obj->owner = $this->created_by;
 		}
-		return (array) $obj;
+		return $obj;
 	}
 
 	public static function searchTotal()
