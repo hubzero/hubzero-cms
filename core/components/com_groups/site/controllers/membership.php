@@ -144,7 +144,7 @@ class Membership extends Base
 		{
 			if (strpos($invite, '@'))
 			{
-				if (!\Components\Members\Helpers\Utility::validemail($invite))
+				if (!\Hubzero\Utility\Validate::email($invite))
 				{
 					unset($invites[$i]);
 				}
