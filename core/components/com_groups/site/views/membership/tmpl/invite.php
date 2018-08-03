@@ -72,11 +72,11 @@ $this->css();
 				<label>
 					<?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
 					<?php
-						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'logins', 'acmembers')));
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'logins', 'acmembers', '', implode(', ', $this->invites))));
 						if (count($mc) > 0) {
 							echo $mc[0];
 						} else { ?>
-							<input type="text" name="logins" id="acmembers" value="" size="35" />
+							<input type="text" name="logins" id="acmembers" value="<?php echo $this->escape(implode(', ', $this->invites)); ?>" size="35" />
 						<?php } ?>
 					<span class="hint"><?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS_HINT'); ?></span>
 				</label>

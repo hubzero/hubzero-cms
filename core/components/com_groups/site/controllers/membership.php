@@ -138,6 +138,29 @@ class Membership extends Base
 			return;
 		}
 
+		$invites = Request::getArray('to', array());
+
+		foreach ($invites as $i => $invite)
+		{
+			if (strpos($invite, '@'))
+			{
+				if (!\Components\Members\Helpers\Utility::validemail($invite))
+				{
+					unset($invites[$i]);
+				}
+			}
+			else
+			{
+				$profile = User::getInstance($invite);
+				if (!$profile->get('id'))
+				{
+					unset($invites[$i]);
+				}
+			}
+		}
+
+		$this->view->invites = $invites;
+
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
