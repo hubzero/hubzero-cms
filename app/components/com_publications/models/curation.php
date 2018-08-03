@@ -2250,16 +2250,46 @@ class Curation extends Obj
 			$cite->organization = $this->_pub->groupOwner('description');
 			$cite->org_url = '/groups/' . $this->_pub->groupOwner('cn');
 		}
-		if ($this->_pub->version_label > 1)
-		{
-			$cite->version = $this->_pub->version_label;
-		}
+		$cite->version = $this->_pub->version_label;
 
 		$citations = '';
 		$citeinstruct  = \Components\Publications\Helpers\Html::citation($cite, $this->_pub, $citations);
 		$readme .= "\n ";
 		$readme .= 'Suggested citation: ' . "\n ";
 		$readme .= '  ' . str_replace(['COM_PUBLICATIONS_CITATION_INSTRUCTIONS', 'BibTex | EndNote'], '', \Hubzero\Utility\Sanitize::stripAll($citeinstruct)) . "\n ";
+
+		if ($this->_pub->forked_from)
+		{
+			// Get forked pub
+			$parent = new \Components\Publications\Models\Publication(null, 'default', $this->_pub->forked_from);
+
+			// Build our citation object
+			$cite = new stdClass();
+			$cite->title     = $parent->title;
+			$cite->year      = $parent->published_up && $parent->published_up != '0000-00-00 00:00:00' ? Date::of($parent->published_up)->toLocal('Y') : Date::of('now')->toLocal('Y');
+
+			$cite->location  = '';
+			$cite->date      = '';
+
+			$cite->doi       = $parent->doi ? $parent->doi : '';
+			$cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : null;
+			$cite->type      = '';
+			$cite->pages     = '';
+			$cite->author    = $parent->getUnlinkedContributors();
+			$cite->publisher = $this->_pub->params->get('doi_publisher', '');
+			if ($parent->groupOwner())
+			{
+				$cite->organization = $parent->groupOwner('description');
+				$cite->org_url = '/groups/' . $parent->groupOwner('cn');
+			}
+			$cite->version = $parent->version_label;
+
+			$citeinstruct  = \Components\Publications\Helpers\Html::citation($cite, $parent, $citations);
+
+			$readme .= "\n ";
+			$readme .= 'Adapted from: ' . "\n ";
+			$readme .= '  ' . str_replace(['COM_PUBLICATIONS_CITATION_INSTRUCTIONS', 'BibTex | EndNote'], '', \Hubzero\Utility\Sanitize::stripAll($citeinstruct)) . "\n ";
+		}
 
 		$readme .= "\n ";
 		$readme .= '#####################################' . "\n ";

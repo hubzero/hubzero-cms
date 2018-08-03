@@ -778,6 +778,7 @@ class Publication extends Base
 					if ($zip->addFile($tmpFile, $where))
 					{
 						$readme .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+						$readme .= '    [URL: ' . $attachment->path . "]\n";
 					}
 				}
 			}
