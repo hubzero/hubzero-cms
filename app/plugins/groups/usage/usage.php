@@ -545,7 +545,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 				encodedUri = chart.getImageURI();
 				$('#toolbar-png').attr('href', encodedUri);
 
-				var svg = $('#page_views_chart svg')[0].outerHTML;
+				var svg = $('#page_views_chart svg')[0].outerHTML.replace('>',' xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">');
 				var encodedUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 				$('#toolbar-svg').attr('href', encodedUri);
 	    };
