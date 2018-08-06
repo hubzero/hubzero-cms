@@ -407,7 +407,7 @@
 		padding-bottom: 0.5em;
 	}
 	.viewalldocs {
-		margin-top: -1em;
+		margin-top: 0.2em;
 		font-size: 85%;
 		padding: 0 0 0.8em 30px;
 		background: url("/core/components/com_publications/site/assets/img/childlink.gif") 10px 0 no-repeat;
