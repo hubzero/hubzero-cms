@@ -158,7 +158,7 @@ class Batchcreate extends AdminController
 
 		// Incoming
 		$id     = Request::getInt('projectid', 0);
-		$file   = Request::getVar('file', array(), 'FILES');
+		$file   = Request::getArray('file', array(), 'FILES');
 		$dryRun = Request::getInt('dryrun', 1);
 
 		$this->data = null;
@@ -284,7 +284,7 @@ class Batchcreate extends AdminController
 		$objL   = new Tables\License($this->database);
 
 		// Get base type
-		$base = Request::getVar('base', 'files');
+		$base = Request::getString('base', 'files');
 
 		// Determine publication master type
 		$mt = new Tables\MasterType($this->database);

@@ -79,7 +79,7 @@ class Media extends SiteController
 		}
 
 		// Get the file name
-		$uri = Request::getVar('REQUEST_URI', '', 'server');
+		$uri = Request::getString('REQUEST_URI', '', 'server');
 		if (strstr($uri, 'Image:'))
 		{
 			$file = str_replace('Image:', '', strstr($uri, 'Image:'));

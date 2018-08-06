@@ -39,42 +39,42 @@ use stdClass;
 class License extends Base
 {
 	/**
-	* Block name
-	*
-	* @var		string
-	*/
-	protected	$_name 			= 'license';
+	 * Block name
+	 *
+	 * @var		string
+	 */
+	protected $_name = 'license';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
-	protected	$_parentname 	= NULL;
+	 * Parent block name
+	 *
+	 * @var		string
+	 */
+	protected $_parentname = null;
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected	$_manifest 		= NULL;
+	 * Default manifest
+	 *
+	 * @var		string
+	 */
+	protected $_manifest = null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
-	protected	$_blockId 		= 0;
+	 * Numeric block ID
+	 *
+	 * @var		integer
+	 */
+	protected $_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
+	public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -108,7 +108,7 @@ class License extends Base
 		}
 
 		$view->manifest 	= $this->_manifest;
-		$view->content 		= self::buildContent( $pub, $viewname );
+		$view->content 		= self::buildContent($pub, $viewname);
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
@@ -116,7 +116,7 @@ class License extends Base
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -126,12 +126,12 @@ class License extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent($pub = null, $viewname = 'edit')
 	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
 		// Get selector styles
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -147,23 +147,23 @@ class License extends Base
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_blockId;
 
-		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
+		$objL = new \Components\Publications\Tables\License($this->_parent->_db);
 
 		// Get selected license
-		$view->license = $objL->getPubLicense( $pub->version_id );
+		$view->license = $objL->getPubLicense($pub->version_id);
 
-		$view->selections = $objL->getBlockLicenses( $this->_manifest, $view->license );
+		$view->selections = $objL->getBlockLicenses($this->_manifest, $view->license);
 
 		// Pre-select single available license
 		if (!$view->license && count($view->selections) == 1)
 		{
-			$view->license = new \Components\Publications\Tables\License( $this->_parent->_db );
+			$view->license = new \Components\Publications\Tables\License($this->_parent->_db);
 			$view->license->load($view->selections[0]->id);
 		}
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -173,10 +173,10 @@ class License extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -188,7 +188,7 @@ class License extends Base
 		}
 
 		// Load publication version
-		$row = new \Components\Publications\Tables\Version( $this->_parent->_db );
+		$row = new \Components\Publications\Tables\Version($this->_parent->_db);
 
 		if (!$row->load($pub->version_id))
 		{
@@ -200,30 +200,30 @@ class License extends Base
 		$originalText = $row->license_text;
 
 		// Load license class
-		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
+		$objL = new \Components\Publications\Tables\License($this->_parent->_db);
 
 		// Incoming - license screen agreements
-		$license = Request::getInt( 'license', 0, 'post' );
-		$text 	 = \Hubzero\Utility\Sanitize::clean(Request::getVar( 'license_text', '', 'post'));
-		$agree 	 = Request::getInt( 'agree', 0, 'post');
-		$custom  = Request::getVar( 'substitute', array(), 'request', 'array' );
+		$license = Request::getInt('license', 0, 'post');
+		$text 	 = \Hubzero\Utility\Sanitize::clean(Request::getString('license_text', '', 'post'));
+		$agree 	 = Request::getInt('agree', 0, 'post');
+		$custom  = Request::getArray('substitute', array());
 
 		if ($license)
 		{
 			if (!$objL->load($license))
 			{
-				$this->setError( Lang::txt('There was a problem saving license selection') );
+				$this->setError(Lang::txt('There was a problem saving license selection'));
 				return false;
 			}
 
 			if ($objL->agreement == 1 && !$agree)
 			{
-				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT'));
 				return false;
 			}
 			elseif ($objL->customizable == 1 && !$text)
 			{
-				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT'));
 				return false;
 			}
 
@@ -244,7 +244,7 @@ class License extends Base
 					{
 						if (!isset($custom[$sub]) || !$custom[$sub])
 						{
-							$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM') );
+							$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM'));
 							return false;
 						}
 						else
@@ -276,7 +276,7 @@ class License extends Base
 		}
 
 		// Incoming - selector screen
-		$selections = Request::getVar( 'selecteditems', '');
+		$selections = Request::getString('selecteditems', '');
 		$toAttach = explode(',', $selections);
 
 		// Allows to select nothing if optional
@@ -317,12 +317,12 @@ class License extends Base
 
 		if ($i)
 		{
-			$this->set('_message', Lang::txt('License selection saved') );
+			$this->set('_message', Lang::txt('License selection saved'));
 			return true;
 		}
 		else
 		{
-			$this->setError( Lang::txt('There was a problem saving license selection') );
+			$this->setError(Lang::txt('There was a problem saving license selection'));
 			return false;
 		}
 	}
@@ -332,7 +332,7 @@ class License extends Base
 	 *
 	 * @return  object
 	 */
-	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
+	public function getStatus($pub = null, $manifest = null, $elementId = null)
 	{
 		$id = $pub->_curationModel->getBlockId('license');
 		$blocks = $pub->_curationModel->getBlockSchema();
@@ -347,12 +347,12 @@ class License extends Base
 		}
 
 		// Start status
-		$status 	 = new \Components\Publications\Models\Status();
+		$status = new \Components\Publications\Models\Status();
 
 		$status->status = 1;
 
 		// Load license class
-		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
+		$objL = new \Components\Publications\Tables\License($this->_parent->_db);
 
 		if ($pub->license_type && $objL->load($pub->license_type) && $required == 1)
 		{
@@ -361,14 +361,14 @@ class License extends Base
 			// Missing agreement?
 			if ($objL->agreement == 1 && !$agreement && $required)
 			{
-				$status->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
+				$status->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT'));
 				$status->status = 0;
 			}
 
 			if ($objL->customizable == 1
 				&& $objL->text && !$pub->license_text)
 			{
-				$status->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
+				$status->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT'));
 				$status->status = 0;
 			}
 
@@ -377,7 +377,7 @@ class License extends Base
 				preg_replace('/\[([^]]+)\]/', ' ', $pub->license_text, -1, $bingo);
 				if ($bingo)
 				{
-					$status->setError( Lang::txt('Default values need to be substituted') );
+					$status->setError(Lang::txt('Default values need to be substituted'));
 					$status->status = 0;
 				}
 			}
@@ -417,10 +417,10 @@ class License extends Base
 				'about'			=> Lang::txt('COM_PUBLICATIONS_BLOCKS_LICENSE_DRAFT_ABOUT'),
 				'adminTips'		=> '',
 				'elements' 		=> array(),
-				'params'		=> array( 'required' => 1, 'published_editing' => 0, 'include' => array(), 'exclude' => array())
+				'params'		=> array('required' => 1, 'published_editing' => 0, 'include' => array(), 'exclude' => array())
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;

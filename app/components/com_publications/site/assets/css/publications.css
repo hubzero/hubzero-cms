@@ -311,7 +311,7 @@
 	p.wip {
 		font-size: 85%;
 		color: #333333;
-		margin-top: -1em;
+		/*margin-top: -1em;*/
 	}
 	p.devversion span {
 		display: block;
@@ -547,9 +547,15 @@
 		width: 60%;
 		float: left;
 	}
-	#primary-document .btn {
+	#primary-document {
 		width: 100%;
 		text-align: left;
+	}
+	#primary-document .btn:first-child {
+		width: calc(100% - (1.5em + 8px));
+	}
+	#primary-document .dropdown-menu {
+		width: 100%;
 	}
 	#primary-document_pop {
 		display: none;

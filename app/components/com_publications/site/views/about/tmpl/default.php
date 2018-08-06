@@ -273,3 +273,11 @@ if (($this->publication->params->get('show_notes')) && $this->publication->get('
 }
 ?>
 </div><!-- / .pubabout -->
+
+<?php
+	/* Temporarily removing this from the main view in favor of an overlay
+	$this->css('filelist.css');
+	$this->view('_bundle_metadata')
+		->set('bundle', $this->bundle)
+		->display();*/
+

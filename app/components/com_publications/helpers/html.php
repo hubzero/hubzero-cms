@@ -877,9 +877,10 @@ class Html
 	 * @param   string   $action    Link action
 	 * @param   boolean  $disabled  Is the button disable?
 	 * @param   string   $pop       Pop-up content
+	 * @param   array    $options
 	 * @return  string
 	 */
-	public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '')
+	public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '', $options = array())
 	{
 		$view = new \Hubzero\Component\View(array(
 			'base_path' => dirname(__DIR__) . DS . 'site',
@@ -895,6 +896,7 @@ class Html
 		$view->xtra     = $xtra;
 		$view->pop      = $pop;
 		$view->msg      = $msg;
+		$view->options  = $options;
 
 		return $view->loadTemplate();
 	}

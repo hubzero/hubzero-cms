@@ -39,42 +39,42 @@ use stdClass;
 class Description extends Base
 {
 	/**
-	* Block name
-	*
-	* @var		string
-	*/
-	protected	$_name 			= 'description';
+	 * Block name
+	 *
+	 * @var		string
+	 */
+	protected $_name = 'description';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
-	protected	$_parentname 	= 'description';
+	 * Parent block name
+	 *
+	 * @var		string
+	 */
+	protected $_parentname = 'description';
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected	$_manifest 		= NULL;
+	 * Default manifest
+	 *
+	 * @var		string
+	 */
+	protected $_manifest = null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
-	protected	$_blockId 		= 0;
+	 * Numeric block ID
+	 *
+	 * @var		integer
+	 */
+	protected $_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
+	public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -122,7 +122,7 @@ class Description extends Base
 		$master->props		= $elModel->getActiveElement($status->elements, $status->review);
 
 		$view->manifest 	= $this->_manifest;
-		$view->content 		= self::buildContent( $pub, $viewname, $status, $master );
+		$view->content 		= self::buildContent($pub, $viewname, $status, $master);
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
@@ -133,7 +133,7 @@ class Description extends Base
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
 	}
@@ -143,10 +143,10 @@ class Description extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -158,7 +158,7 @@ class Description extends Base
 		}
 
 		// Load publication version
-		$row = new \Components\Publications\Tables\Version( $this->_parent->_db );
+		$row = new \Components\Publications\Tables\Version($this->_parent->_db);
 
 		if (!$row->load($pub->version_id))
 		{
@@ -172,7 +172,7 @@ class Description extends Base
 		$collapse = $this->_manifest->params->collapse_elements == 0 ? 0 : 1;
 
 		// Incoming
-		$nbtags = Request::getVar( 'nbtag', array(), 'request', 'array' );
+		$nbtags = Request::getArray('nbtag', array());
 
 		// Parse metadata
 		$data = array();
@@ -201,7 +201,7 @@ class Description extends Base
 
 			if ($field == 'metadata')
 			{
-				$value = isset($nbtags[$aliasmap]) ? trim(stripslashes($nbtags[$aliasmap])) : NULL;
+				$value = isset($nbtags[$aliasmap]) ? trim(stripslashes($nbtags[$aliasmap])) : null;
 
 				if (!$value && $required)
 				{
@@ -229,7 +229,7 @@ class Description extends Base
 			}
 			else
 			{
-				$value = trim(Request::getVar( $field, '', 'post', 'none', 2 ));
+				$value = trim(Request::getString($field, '', 'post'));
 				$value = ($input == 'editor')
 					? stripslashes($value)
 					: \Hubzero\Utility\Sanitize::clean($value);
@@ -244,9 +244,9 @@ class Description extends Base
 					$changed++;
 
 					// Record update time
-					$data 				= new stdClass;
-					$data->updated 		= Date::toSql();
-					$data->updated_by 	= $actor;
+					$data = new stdClass;
+					$data->updated    = Date::toSql();
+					$data->updated_by = $actor;
 
 					// Unmark as skipped
 					if ($lastRecord && $lastRecord->review_status == 3)
@@ -297,7 +297,7 @@ class Description extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit', $status, $master )
+	public function buildContent($pub = null, $viewname = 'edit', $status, $master)
 	{
 		// Get block element model
 		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
@@ -324,19 +324,19 @@ class Description extends Base
 	 *
 	 * @return  object
 	 */
-	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
+	public function getStatus($pub = null, $manifest = null, $elementId = null)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
 
 		// Start status
-		$status 	 = new \Components\Publications\Models\Status();
+		$status = new \Components\Publications\Models\Status();
 
 		// Return element status
-		if ($elementId !== NULL && isset($this->_manifest->elements->$elementId))
+		if ($elementId !== null && isset($this->_manifest->elements->$elementId))
 		{
 			return self::getElementStatus($this->_manifest->elements->$elementId, $pub);
 		}
@@ -345,8 +345,8 @@ class Description extends Base
 		if ($this->_manifest && $this->_manifest->elements)
 		{
 			// Check if requirements are satisfied for each attachment element
-			$i 		 	= 0;
-			$success 	= 0;
+			$i          = 0;
+			$success    = 0;
 			$incomplete = 0;
 
 			foreach ($this->_manifest->elements as $elementId => $element)
@@ -379,12 +379,12 @@ class Description extends Base
 	 *
 	 * @return  object
 	 */
-	public function getElementStatus( $element, $pub = NULL )
+	public function getElementStatus($element, $pub = null)
 	{
 		// Get block element model
-		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db );
+		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
 
-		$status = $elModel->getStatus( $element->type, $element, $pub );
+		$status = $elModel->getStatus($element->type, $element, $pub);
 		return $status;
 	}
 
@@ -413,7 +413,7 @@ class Description extends Base
 				'rows'			=> '6'
 			)
 		);
-		return json_decode(json_encode($manifest), FALSE);
+		return json_decode(json_encode($manifest), false);
 	}
 
 	/**
@@ -492,7 +492,7 @@ class Description extends Base
 						)
 					)
 				),
-				'params'	=> array( 'required' => 1, 'published_editing' => 0, 'collapse_elements' => 1 )
+				'params' => array('required' => 1, 'published_editing' => 0, 'collapse_elements' => 1)
 			);
 
 			if ($new == true)
@@ -503,7 +503,7 @@ class Description extends Base
 				$manifest['elements'] 		= array(1 => $this->getElementManifest());
 			}
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;

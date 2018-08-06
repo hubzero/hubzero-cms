@@ -361,7 +361,7 @@ class Publication extends Base
 	{
 		if (empty($toAttach))
 		{
-			$selections = Request::getVar('selecteditems', '');
+			$selections = Request::getString('selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -561,7 +561,7 @@ class Publication extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title = Request::getVar('title', '');
+		$title = Request::getString('title', '');
 		$thumb = Request::getInt('makedefault', 0);
 
 		// Get configs

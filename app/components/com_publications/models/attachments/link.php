@@ -340,9 +340,9 @@ class Link extends Base
 	 */
 	public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
 	{
-		$toAttach = $toAttach ? $toAttach : Request::getVar('url', '', 'post', 'array');
-		$titles   = Request::getVar('title', '', 'post', 'array');
-		$desc     = Request::getVar('desc', '', 'post', 'array');
+		$toAttach = $toAttach ? $toAttach : Request::getArray('url', '', 'post');
+		$titles   = Request::getArray('title', '', 'post');
+		$desc     = Request::getArray('desc', '', 'post');
 
 		// Incoming selections
 		if (!is_array($toAttach))
@@ -555,7 +555,7 @@ class Link extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title = Request::getVar('title', '');
+		$title = Request::getString('title', '');
 		$thumb = Request::getInt('makedefault', 0);
 
 		// Get configs

@@ -32,8 +32,11 @@
 
 namespace Components\Publications\Site\Controllers;
 
+require_once Component::path('com_publications') . '/models/bundle.php';
+
 use Hubzero\Component\SiteController;
 use Components\Publications\Tables;
+use Components\Publications\Models\Bundle;
 use Components\Publications\Models;
 use Components\Publications\Helpers;
 use Component;
@@ -90,7 +93,7 @@ class Publications extends SiteController
 		$this->registerTask('start', 'contribute');
 		$this->registerTask('publication', 'contribute');
 
-		$this->_task = trim(Request::getVar('task', ''));
+		$this->_task = trim(Request::getCmd('task', ''));
 		if (($this->_id || $this->_alias) && !$this->_task)
 		{
 			$this->_task = 'page';
@@ -137,8 +140,8 @@ class Publications extends SiteController
 	protected function _incoming()
 	{
 		$this->_id      = Request::getInt('id', 0);
-		$this->_alias   = Request::getVar('alias', '');
-		$this->_version = Request::getVar('v', 'default');
+		$this->_alias   = Request::getString('alias', '');
+		$this->_version = Request::getString('v', 'default');
 
 		$this->_identifier = $this->_alias ? $this->_alias : $this->_id;
 
@@ -324,7 +327,7 @@ class Publications extends SiteController
 	 */
 	protected function _login()
 	{
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -414,12 +417,12 @@ class Publications extends SiteController
 
 		// Incoming
 		$this->view->filters = array(
-			'category'    => Request::getVar('category', ''),
+			'category'    => Request::getString('category', ''),
 			'sortby'      => Request::getCmd('sortby', $default_sort),
 			'limit'       => Request::getInt('limit', Config::get('list_limit')),
 			'start'       => Request::getInt('limitstart', 0),
-			'search'      => Request::getVar('search', ''),
-			'tag'         => trim(Request::getVar('tag', '', 'request', 'none', 2)),
+			'search'      => Request::getString('search', ''),
+			'tag'         => trim(Request::getString('tag', '', 'request')),
 			'tag_ignored' => array()
 		);
 
@@ -545,7 +548,7 @@ class Publications extends SiteController
 		$this->view->setName('view');
 
 		// Incoming
-		$tab      = Request::getVar('active', '');   // The active tab (section)
+		$tab      = Request::getString('active', '');   // The active tab (section)
 		$no_html  = Request::getInt('no_html', 0);   // No-html display?
 
 		// Ensure we have an ID or alias to work with
@@ -659,18 +662,26 @@ class Publications extends SiteController
 		$body = '';
 		if ($tab == 'about')
 		{
+			$publicationVersionId = $this->model->get('version_id');
+			$bundle = new Bundle([
+				'publication_id' => $this->model->get('id'),
+				'publication_version_id' => $publicationVersionId
+			]);
 			// Build the HTML of the "about" tab
 			$view = new \Hubzero\Component\View(array(
 				'name'   => 'about',
 				'layout' => 'default'
 			));
 			$view->option      = $this->_option;
+			$view->controller  = $this->_controller;
+			$view->task        = $this->_task;
 			$view->config      = $this->config;
 			$view->database    = $this->database;
 			$view->publication = $this->model;
 			$view->authorized  = $authorized;
 			$view->restricted  = $restricted;
-			$view->version     = $this->model->versionAlias;
+			$view->version     = $publicationVersionId;
+			$view->bundle      = $bundle;
 			$view->sections    = $sections;
 			$body              = $view->loadTemplate();
 
@@ -692,7 +703,7 @@ class Publications extends SiteController
 		$defaultsort = ($this->model->_category->alias == 'series' && $this->config->get('show_ranking')) ? 'ranking' : $defaultsort;
 
 		$filters = array(
-			'sortby' => Request::getVar('sortby', $defaultsort),
+			'sortby' => Request::getString('sortby', $defaultsort),
 			'limit'  => Request::getInt('limit', 0),
 			'start'  => Request::getInt('limitstart', 0),
 			'id'     => $this->model->publication->id
@@ -742,10 +753,10 @@ class Publications extends SiteController
 		// Incoming
 		$aid        = Request::getInt('a', 0);             // Attachment id
 		$elementId  = Request::getInt('el', 1);            // Element id
-		$render     = Request::getVar('render', '');
+		$render     = Request::getString('render', '');
 		$vid        = Request::getInt('vid', '');
-		$file       = Request::getVar('file', '');
-		$disp       = Request::getVar('disposition');
+		$file       = Request::getString('file', '');
+		$disp       = Request::getString('disposition');
 		$disp       = in_array($disp, array('inline', 'attachment')) ? $disp : 'attachment';
 
 		// Get our model and load publication data
@@ -957,7 +968,7 @@ class Publications extends SiteController
 	public function citationTask()
 	{
 		// Incoming
-		$format = Request::getVar('type', 'bibtex');
+		$format = Request::getString('type', 'bibtex');
 
 		// Get our model and load publication data
 		$this->model = new Models\Publication($this->_identifier, $this->_version);
@@ -1090,7 +1101,7 @@ class Publications extends SiteController
 	public function pluginTask()
 	{
 		// Incoming
-		$trigger = trim(Request::getVar('trigger', ''));
+		$trigger = trim(Request::getString('trigger', ''));
 
 		// Ensure we have a trigger
 		if (!$trigger)
@@ -1199,8 +1210,8 @@ class Publications extends SiteController
 	{
 		// Incoming
 		$pid     = Request::getInt('pid', 0);
-		$action  = Request::getVar('action', '');
-		$active  = Request::getVar('active', 'publications');
+		$action  = Request::getString('action', '');
+		$active  = Request::getString('active', 'publications');
 		$action  = $this->_task == 'start' ? 'start' : $action;
 		$ajax    = Request::getInt('ajax', 0);
 		$doiErr  = Request::getInt('doierr', 0);
@@ -1364,7 +1375,7 @@ class Publications extends SiteController
 
 		// Incoming
 		$id      = Request::getInt('id', 0);
-		$tags    = Request::getVar('tags', '');
+		$tags    = Request::getString('tags', '');
 		$no_html = Request::getInt('no_html', 0);
 
 		// Process tags
