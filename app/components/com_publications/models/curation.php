@@ -2337,7 +2337,7 @@ class Curation extends Obj
 			$cite->date      = '';
 
 			$cite->doi       = $parent->doi ? $parent->doi : '';
-			$cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : null;
+			$cite->url       = $cite->doi ? trim($this->_pub->params->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : null;
 			$cite->type      = '';
 			$cite->pages     = '';
 			$cite->author    = $parent->getUnlinkedContributors();
