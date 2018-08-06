@@ -118,9 +118,9 @@ foreach ($profiles as $profile)
 		$values = $fields[$profile->get('profile_key')]->get('profile_value');
 		if (!is_array($values))
 		{
-			$values = array($fields[$profile->get('profile_key')]->get('label', $values));
+			$values = array($values => $fields[$profile->get('profile_key')]->get('label', $values));
 		}
-		$values[] = $profile->get('label', $profile->get('profile_value'));
+		$values[$profile->get('profile_value')] = $profile->get('label', $profile->get('profile_value'));
 
 		$fields[$profile->get('profile_key')]->set('profile_value', $values);
 	}
@@ -696,17 +696,19 @@ $legacy = array(
 					}
 				}
 
+				$val = $value;
 				if (is_array($value))
 				{
+					$val = array();
 					foreach ($value as $k => $v)
 					{
-						$value[$k] = renderIfJson($v);
+						$val[$k] = renderIfJson($v);
 					}
-					$value = implode('<br />', $value);
+					$val = implode('<br />', $val);
 				}
 				else
 				{
-					$value = renderIfJson($value);
+					$val = renderIfJson($value);
 				}
 
 				if (empty($value))
@@ -717,14 +719,14 @@ $legacy = array(
 				<li class="<?php echo implode(' ', $cls); ?> section" id="input-section-<?php echo $this->escape($field->get('name')); ?>">
 					<div class="section-content">
 						<div class="key"><?php echo $field->get('label'); ?></div>
-						<div class="value"><?php echo (!empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET')); ?></div>
+						<div class="value"><?php echo (!empty($val) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET')); ?></div>
 						<br class="clear" />
 						<?php
 						if ($isUser)
 						{
 							if ($field->get('type') == 'url')
 							{
-								$value = strip_tags($value);
+								$value = strip_tags($val);
 							}
 							if ($field->get('type') == 'tags')
 							{
@@ -734,6 +736,10 @@ $legacy = array(
 							{
 								$value = $profile->get('profile_value');
 								$value = $value ?: $this->profile->get($field->get('name'));
+							}
+							if (is_array($value))
+							{
+								$value = array_keys($value);
 							}
 							$formfield = $form->getField($field->get('name'));
 							if ($formfield)
