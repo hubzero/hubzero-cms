@@ -155,12 +155,18 @@ function submitbutton(pressbutton)
 
 				<p>Payment method: <?php echo $this->tInfo->tiPayment; ?></p>
 
+
+
 				<?php
 				if (!empty($this->tInfo->tiPaymentDetails))
 				{
-					echo '<p>' . $this->tInfo->tiPaymentDetails . '</p>';
+				?>
+					<p>
+						<strong>Payment details:</strong><br>
+						<input type="text" name="tiPaymentDetails" style="width: 100%" value="<?php echo $this->tInfo->tiPaymentDetails; ?>" />
+					</p>
+				<?php
 				}
-
 				?>
 
 			</fieldset>
@@ -204,7 +210,7 @@ function submitbutton(pressbutton)
 							?>
 							<span><?php echo $product; ?></span>
 						</td>
-						<td><span><?php echo $itemInfo->sPrice; ?></span></td>
+						<td><input type="text" name="tiPrice[<?php echo $itemInfo->sId; ?>]" size="10" maxlength="100" value="<?php echo $itemOrdered['transactionInfo']->tiPrice; ?>" /></td>
 						<td><input type="text" name="tiQty[<?php echo $itemInfo->sId; ?>]" size="10" maxlength="100" value="<?php echo $itemOrdered['transactionInfo']->qty; ?>" /></td>
 					</tr>
 			<?php
@@ -228,7 +234,7 @@ function submitbutton(pressbutton)
 					//'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
 					'object' => 'transactionItem',
 					'objectId' => $item['info']->sId,
-					'label' => $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku,
+					'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
 					'notes' => $meta->checkoutNotes);
 			}
 		}
@@ -236,7 +242,7 @@ function submitbutton(pressbutton)
 		$genericNotesLabel = '';
 		if (!empty($notes))
 		{
-			$genericNotesLabel = 'Other notes/comments';
+			$genericNotesLabel = '<strong>' . 'Other notes/comments' . '</strong>';
 		}
 
 		if ($this->tInfo->tiNotes)
@@ -244,7 +250,7 @@ function submitbutton(pressbutton)
 			$notes[] = array(
 				'object' => 'transaction',
 				'objectId' => $this->tInfo->tId,
-				'label' => '<strong>' . $genericNotesLabel . '</strong>',
+				'label' => $genericNotesLabel,
 				'notes' => $this->tInfo->tiNotes);
 		}
 
@@ -257,11 +263,6 @@ function submitbutton(pressbutton)
 				//print_r($note); die;
 				echo '<p>';
 				echo $note['label'];
-				if ($note['label'])
-				{
-					echo ': ';
-				}
-				echo $note['notes'];
 				if ($note['object'] == 'transactionItem')
 				{
 					echo '<textarea rows="6" name="checkoutNotes[' . $note['objectId'] . ']">' . $note['notes'] . '</textarea>';

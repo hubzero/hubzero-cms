@@ -312,7 +312,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = Request::getVar('active')))
+		if (!($active = Request::getString('active')))
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
@@ -349,13 +349,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			{
 				$action = 'sections';
 
-				$b = Request::getVar('group', '');
+				$b = Request::getString('group', '');
 				if ($b)
 				{
 					Request::setVar('section', $b);
 				}
 
-				$c = Request::getVar('asset', '');
+				$c = Request::getString('asset', '');
 				switch ($c)
 				{
 					case 'orderdown':
@@ -379,7 +379,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 							Request::setVar('category', $c);
 							$action = 'editcategory';
 						}
-						$d = Request::getVar('d', '');
+						$d = Request::getString('d', '');
 						switch ($d)
 						{
 							case 'edit':
@@ -397,15 +397,15 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			if (Request::getVar('file', ''))
+			if (Request::getString('file', ''))
 			{
 				$action = 'download';
 			}
 
-			$action = Request::getVar('action', $action, 'post');
+			$action = Request::getString('action', $action, 'post');
 			if (!$action)
 			{
-				$action = Request::getVar('action', $action, 'get');
+				$action = Request::getString('action', $action, 'get');
 			}
 			if ($action == 'edit' && Request::getInt('post', 0))
 			{
@@ -550,13 +550,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'limit'     => Request::getInt('limit', 500),
 			'start'     => Request::getInt('limitstart', 0),
-			'section'   => Request::getVar('section', ''),
-			'category'  => Request::getVar('category', ''),
+			'section'   => Request::getString('section', ''),
+			'category'  => Request::getString('category', ''),
 			'state'     => array(1, 3),
 			'scope'     => 'course',
 			'scope_id'  => $course->offering()->get('id'),
 			'sticky'    => false,
-			'search'    => Request::getVar('search', ''),
+			'search'    => Request::getString('search', ''),
 			'sort_Dir'  => 'DESC',
 			'sort'      => 'c.created',
 			'object_id' => $lecture->get('id')
@@ -672,7 +672,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			{
 				case 'posts':
 					$filters['parent']   = $post->get('id');
-					$filters['start_at'] = Request::getVar('start_at', '');
+					$filters['start_at'] = Request::getString('start_at', '');
 
 					$data->thread = $this->_posts($post, $filters);
 				break;
@@ -690,7 +690,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'search':
-					$filters['search'] = Request::getVar('search', '');
+					$filters['search'] = Request::getString('search', '');
 
 					$data->threads = $this->_threadsSearch($post, $filters);
 				break;
@@ -701,11 +701,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'both':
-					$filters['start_at'] = Request::getVar('start_at', '');
+					$filters['start_at'] = Request::getString('start_at', '');
 
 					$data->thread = $this->_thread($post, $filters);
 
-					$filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['start_at'] = Request::getString('threads_start', '');
 
 					$data->threads = $this->_threads($post, $filters);
 				break;
@@ -713,7 +713,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				case 'threads':
 				default:
 					$filters['parent']   = $post->get('id');
-					$filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['start_at'] = Request::getString('threads_start', '');
 
 					$data->threads = $this->_threads($post, $filters);
 				break;
@@ -734,7 +734,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		switch ($action)
 		{
 			case 'search':
-				$filters['search'] = Request::getVar('search', '');
+				$filters['search'] = Request::getString('search', '');
 				$data = $this->_threadsSearch($post, $filters);
 				$threads = $data->posts;
 			break;
@@ -1212,7 +1212,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			'scope'      => 'course',
 			'scope_id'   => $this->offering->get('id'),
 			'scope_sub_id' => 0,
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'section_id' => 0,
 			'state'      => Post::STATE_PUBLISHED,
 			'limit'      => Request::getInt('limit', 500),
@@ -1274,7 +1274,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			{
 				case 'posts':
 					$filters['parent']   = $post->get('id');
-					$filters['start_at'] = Request::getVar('start_at', '');
+					$filters['start_at'] = Request::getString('start_at', '');
 
 					$data->thread = $this->_posts($post, $filters);
 				break;
@@ -1292,7 +1292,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'search':
-					$filters['search'] = Request::getVar('search', '');
+					$filters['search'] = Request::getString('search', '');
 
 					$data->threads = $this->_threadsSearch($post, $filters);
 				break;
@@ -1303,11 +1303,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'both':
-					$filters['start_at'] = Request::getVar('start_at', '');
+					$filters['start_at'] = Request::getString('start_at', '');
 
 					$data->thread = $this->_thread($post, $filters);
 
-					$filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['start_at'] = Request::getString('threads_start', '');
 
 					$data->threads = $this->_threads($post, $filters);
 				break;
@@ -1315,7 +1315,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				case 'threads':
 				default:
 					$filters['parent']   = $post->get('id');
-					$filters['start_at'] = Request::getVar('threads_start', '');
+					$filters['start_at'] = Request::getString('threads_start', '');
 
 					$data->threads = $this->_threads($post, $filters);
 				break;
@@ -1471,7 +1471,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			'scope'        => 'course',
 			'scope_id'     => $offering->get('id'),
 			'scope_sub_id' => $offering->section()->get('id'),
-			'search'       => Request::getVar('search', ''),
+			'search'       => Request::getString('search', ''),
 			'section_id'   => 0,
 			'state'        => Section::STATE_PUBLISHED,
 			'limit'        => Request::getInt('limit', 500),
@@ -1573,11 +1573,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			'scope'    => $this->forum->get('scope'),
 			'scope_id' => $this->forum->get('scope_id'),
 			'state'    => Section::STATE_PUBLISHED,
-			'search'   => Request::getVar('q', ''),
+			'search'   => Request::getString('q', ''),
 			'access'   => User::getAuthorisedViewLevels()
 		);
 
-		$edit = Request::getVar('section', '');
+		$edit = Request::getString('section', '');
 
 		// Get Sections
 		$sections = $this->forum->sections($filters);
@@ -1610,7 +1610,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming posted data
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a new table row and bind the incoming data
@@ -1672,7 +1672,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Load the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section'))
+			->whereEquals('alias', Request::getString('section'))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->row();
@@ -1753,9 +1753,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		/// Incoming
 		$filters = array(
-			'section'    => Request::getVar('section', ''),
+			'section'    => Request::getString('section', ''),
 			'category'   => Request::getCmd('category', ''),
-			'search'     => Request::getVar('q', ''),
+			'search'     => Request::getString('q', ''),
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => Category::STATE_PUBLISHED,
@@ -1768,23 +1768,23 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			case 'title':
 				$filters['sort'] = 'sticky` DESC, `title';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
 				$filters['sort'] = 'sticky` DESC, `rgt';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'created':
 				$filters['sort'] = 'sticky` DESC, `created';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
 				$filters['sort'] = 'sticky` DESC, `activity';
-				$filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
+				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 		}
 
@@ -1860,7 +1860,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Get the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('alias', Request::getString('section', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->row();
@@ -1869,7 +1869,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		if (!is_object($category))
 		{
 			$category = Category::all()
-				->whereEquals('alias', Request::getVar('category', ''))
+				->whereEquals('alias', Request::getString('category', ''))
 				->whereEquals('scope', $this->forum->get('scope'))
 				->whereEquals('scope_id', $this->forum->get('scope_id'))
 				->row();
@@ -1917,7 +1917,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return $this->panel();
 		}
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a category
@@ -2001,7 +2001,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Load the category
 		$category = Category::all()
-			->whereEquals('alias', Request::getVar('category', ''))
+			->whereEquals('alias', Request::getString('category', ''))
 			->whereEquals('scope', $this->forum->get('scope'))
 			->whereEquals('scope_id', $this->forum->get('scope_id'))
 			->row();
@@ -2087,7 +2087,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'limit'    => Request::getInt('limit', 25),
 			'start'    => Request::getInt('limitstart', 0),
-			'section'  => Request::getVar('section', $this->offering->get('alias')),
+			'section'  => Request::getString('section', $this->offering->get('alias')),
 			'category' => Request::getCmd('category', ''),
 			'thread'   => Request::getInt('thread', 0),
 			'scope'    => $this->forum->get('scope'),
@@ -2233,8 +2233,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	public function editthread($post=null)
 	{
 		$id       = Request::getInt('post', 0);
-		$category = Request::getVar('category', '');
-		$section  = Request::getVar('section', '');
+		$category = Request::getString('category', '');
+		$section  = Request::getString('section', '');
 
 		if (User::isGuest())
 		{
@@ -2313,9 +2313,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$section = Request::getVar('section', '');
+		$section = Request::getString('section', '');
 		$no_html = Request::getInt('no_html', 0);
-		$fields  = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields  = Request::getArray('fields', array(), 'post');
 		$fields  = array_map('trim', $fields);
 
 		// Check permissions
@@ -2375,7 +2375,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Save tags
-		$post->tag(Request::getVar('tags', '', 'post'), User::get('id'));
+		$post->tag(Request::getString('tags', '', 'post'), User::get('id'));
 
 		$thread = $post->get('thread');
 
@@ -2398,7 +2398,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			}
 
 			// If we have a lecture set, push through to the lecture view
-			if (Request::getVar('group', ''))
+			if (Request::getString('group', ''))
 			{
 				$unit = $this->course->offering()->unit($category->get('alias'));
 
@@ -2412,7 +2412,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$rtrn = base64_decode(Request::getVar('return', '', 'post'));
+		$rtrn = base64_decode(Request::getString('return', '', 'post'));
 		if (!$rtrn)
 		{
 			$rtrn = Route::url($this->base . '&thread=' . $thread);
@@ -2435,8 +2435,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function deletethread($id=0, $redirect=true)
 	{
-		$section  = Request::getVar('section', '');
-		$category = Request::getVar('category', '');
+		$section  = Request::getString('section', '');
+		$category = Request::getString('category', '');
 
 		// Is the user logged in?
 		if (User::isGuest())
@@ -2529,7 +2529,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Instantiate an attachment record
 		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
-		$attachment->set('description', trim(Request::getVar('description', '')));
+		$attachment->set('description', trim(Request::getString('description', '')));
 		$attachment->set('parent', $thread_id);
 		$attachment->set('post_id', $post_id);
 		if ($attachment->isNew())
@@ -2538,7 +2538,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))
@@ -2578,7 +2578,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$thread = Request::getInt('group', 0);
 		$post   = Request::getInt('asset', 0);
-		$file   = Request::getVar('file', '');
+		$file   = Request::getString('file', '');
 
 		// Check logged in status
 		if (User::isGuest())
@@ -2688,7 +2688,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Get the section
 		$section = Section::all()
-			->whereEquals('alias', Request::getVar('section', ''))
+			->whereEquals('alias', Request::getString('section', ''))
 			->whereEquals('scope', 'course')
 			->whereEquals('scope_id', $this->offering->get('id'))
 			->row();

@@ -66,9 +66,9 @@ class Tags extends SiteController
 		$this->registerTask('feed.rss', 'feed');
 		$this->registerTask('feedrss', 'feed');
 
-		if ($tagstring = urldecode(trim(Request::getVar('tag', '', 'request', 'none', 2))))
+		if ($tagstring = urldecode(trim(Request::getString('tag', ''))))
 		{
-			if (!Request::getVar('task', ''))
+			if (!Request::getCmd('task', ''))
 			{
 				Request::setVar('task', 'view');
 			}
@@ -104,9 +104,9 @@ class Tags extends SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$tagstring = urldecode(htmlspecialchars_decode(trim(Request::getVar('tag', '', 'request', 'none', 2))));
+		$tagstring = urldecode(htmlspecialchars_decode(trim(Request::getString('tag', ''))));
 
-		$addtag = trim(Request::getVar('addtag', ''));
+		$addtag = trim(Request::getString('addtag', ''));
 
 		// Ensure we were passed a tag
 		if (!$tagstring && !$addtag)
@@ -177,7 +177,7 @@ class Tags extends SiteController
 		$this->view->filters = array(
 			'limit' => Request::getInt('limit', Config::get('list_limit')),
 			'start' => Request::getInt('limitstart', 0),
-			'sort'  => Request::getVar('sort', 'date')
+			'sort'  => Request::getString('sort', 'date')
 		);
 		if (!in_array($this->view->filters['sort'], array('date', 'title')))
 		{
@@ -315,7 +315,7 @@ class Tags extends SiteController
 		$this->_buildTitle($tags);
 
 		// Output HTML
-		if (Request::getVar('format', '') == 'xml')
+		if (Request::getString('format', '') == 'xml')
 		{
 			$this->view->setLayout('view_xml');
 		}
@@ -386,7 +386,7 @@ class Tags extends SiteController
 	public function feedTask()
 	{
 		// Incoming
-		$tagstring = trim(Request::getVar('tag', '', 'request', 'none', 2));
+		$tagstring = trim(Request::getString('tag', ''));
 
 		// Ensure we were passed a tag
 		if (!$tagstring)
@@ -426,8 +426,8 @@ class Tags extends SiteController
 		$areas = Event::trigger('tags.onTagAreas');
 
 		// Get the active category
-		$area = Request::getVar('area', '');
-		$sort = Request::getVar('sort', '');
+		$area = Request::getString('area', '');
+		$sort = Request::getString('sort', '');
 
 		// Get the search results
 		if (!$area)
@@ -600,13 +600,13 @@ class Tags extends SiteController
 	public function browseTask()
 	{
 		// Instantiate a new view
-		if (Request::getVar('format', '') == 'xml')
+		if (Request::getString('format', '') == 'xml')
 		{
 			$this->view->setLayout('browse_xml');
 		}
 
 		// Fallback support for deprecated sorting option
-		if ($sortby = Request::getVar('sortby'))
+		if ($sortby = Request::getString('sortby'))
 		{
 			Request::setVar('sort', $sortby);
 		}
@@ -708,8 +708,8 @@ class Tags extends SiteController
 		$filters = array(
 			'limit'    => Request::getInt('limit', 0),
 			'start'    => Request::getInt('limitstart', 0),
-			'sort'     => Request::getVar('sort', ''),
-			'sort_Dir' => Request::getVar('sortdir', ''),
+			'sort'     => Request::getString('sort', ''),
+			'sort_Dir' => Request::getString('sortdir', ''),
 			'search'   => urldecode(Request::getString('search', ''))
 		);
 
@@ -733,7 +733,7 @@ class Tags extends SiteController
 	 */
 	public function cancelTask()
 	{
-		$return = Request::getVar('return', 'index.php?option=' . $this->_option . '&task=browse', 'get');
+		$return = Request::getString('return', 'index.php?option=' . $this->_option . '&task=browse', 'get');
 
 		App::redirect(
 			Route::url($return, false)
@@ -757,7 +757,7 @@ class Tags extends SiteController
 		}
 
 		// Incoming
-		$tag = Request::getVar('fields', array(), 'post');
+		$tag = Request::getArray('fields', array(), 'post');
 
 		$subs = '';
 		if (isset($tag['substitutions']))
@@ -820,7 +820,7 @@ class Tags extends SiteController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -847,8 +847,8 @@ class Tags extends SiteController
 		$this->cleancacheTask(false);
 
 		// Get the browse filters so we can go back to previous view
-		$search = Request::getVar('search', '');
-		$sortby = Request::getVar('sortby', '');
+		$search = Request::getString('search', '');
+		$sortby = Request::getString('sortby', '');
 		$limit  = Request::getInt('limit', 25);
 		$start  = Request::getInt('limitstart', 0);
 		$count  = Request::getInt('count', 1);

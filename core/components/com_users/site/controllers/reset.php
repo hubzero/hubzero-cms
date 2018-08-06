@@ -31,7 +31,7 @@ class UsersControllerReset extends UsersController
 
 		$app   = JFactory::getApplication();
 		$model = $this->getModel('Reset', 'UsersModel');
-		$data  = Request::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getArray('jform', array(), 'post');
 
 		// Submit the password reset request.
 		$return	= $model->processResetRequest($data);
@@ -90,7 +90,7 @@ class UsersControllerReset extends UsersController
 
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('Reset', 'UsersModel');
-		$data	= Request::getVar('jform', array(), 'request', 'array');
+		$data	= Request::getArray('jform', array());
 
 		// Confirm the password reset request.
 		$return	= $model->processResetConfirm($data);
@@ -149,7 +149,7 @@ class UsersControllerReset extends UsersController
 
 		$app   = JFactory::getApplication();
 		$model = $this->getModel('Reset', 'UsersModel');
-		$data  = Request::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getArray('jform', array(), 'post');
 
 		// Complete the password reset request.
 		$return	= $model->processResetComplete($data);

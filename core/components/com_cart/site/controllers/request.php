@@ -51,8 +51,8 @@ class Request extends ComponentController
 		$cart = new CurrentCart();
 
 		// update cart
-		$updateCartRequest = \Request::getVar('updateCart', false, 'post');
-		$pIds = \Request::getVar('pId', false, 'post');
+		$updateCartRequest = \Request::getBool('updateCart', false, 'post');
+		$pIds = \Request::getArray('pId', false, 'post');
 
 		// If pIds are posted, convert them to SKUs
 		if (!empty($pIds))
@@ -66,7 +66,7 @@ class Request extends ComponentController
 				$product_skus = $warehouse->getProductSkus($pId);
 
 				// must be only one sku to work
-				if (sizeof($product_skus) != 1)
+				if (count($product_skus) != 1)
 				{
 					// each pId must map to one SKU, otherwise ignored
 					continue;
@@ -77,7 +77,7 @@ class Request extends ComponentController
 		}
 		else
 		{
-			$skus = \Request::getVar('skus', false, 'post');
+			$skus = \Request::getArray('skus', false, 'post');
 		}
 
 		// Initialize errors array
@@ -101,8 +101,8 @@ class Request extends ComponentController
 		}
 
 		// add coupon if needed
-		$addCouponRequest = \Request::getVar('addCouponCode', false, 'post');
-		$couponCode = \Request::getVar('couponCode', false, 'post');
+		$addCouponRequest = \Request::getBool('addCouponCode', false, 'post');
+		$couponCode = \Request::getString('couponCode', false, 'post');
 
 		if ($addCouponRequest && $couponCode)
 		{

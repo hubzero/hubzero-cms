@@ -34,9 +34,9 @@
 defined('_HZEXEC_') or die();
 
 // Include [temporary] ORM models (these will be merged with existing models at some point in the future)
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'project.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'connection.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'orm' . DS . 'provider.php';
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
+require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
 
 use Components\Projects\Models\Orm\Project;
 use Components\Projects\Models\Orm\Connection;
@@ -226,7 +226,7 @@ class connections
 	 **/
 	public function saveconnection()
 	{
-		$data = Request::getVar('connect', array(), 'post');
+		$data = Request::getArray('connect', array(), 'post');
 
 		$data['owner_id'] = User::get('id');
 		if (Request::getInt('shareconnection', 0, 'post'))
@@ -298,8 +298,8 @@ class connections
 		$this->onAfterUpdate();
 
 		// Get sorting variables
-		$sortby  = Request::getVar('sortby', 'basename');
-		$sortasc = Request::getVar('sortdir', 'ASC') == 'ASC' ? true : false;
+		$sortby  = Request::getString('sortby', 'basename');
+		$sortasc = Request::getString('sortdir', 'ASC') == 'ASC' ? true : false;
 
 		// Get directory that we're interested in
 		$dir = Entity::fromPath($this->subdir, $this->connection->adapter());
@@ -329,7 +329,7 @@ class connections
 	{
 		$items = $this->getCollection();
 
-		if (Request::getVar('render', 'download') == 'preview')
+		if (Request::getString('render', 'download') == 'preview')
 		{
 			return $this->preview();
 		}
@@ -386,7 +386,7 @@ class connections
 			)
 		);
 
-		$file         = Request::getVar('asset');
+		$file         = Request::getString('asset');
 		$path         = trim($this->subdir, '/') . '/' . $file;
 		$view->option = $this->_option;
 		$view->model  = $this->model;
@@ -447,7 +447,7 @@ class connections
 		}
 
 		// Incoming
-		$no_html    = Request::getVar('no_html', 0);
+		$no_html    = Request::getInt('no_html', 0);
 		$expand     = Request::getInt('expand_zip', 0);
 		$ajaxUpload = $no_html ? true : false;
 
@@ -478,7 +478,7 @@ class connections
 		else
 		{
 			// Regular upload
-			$upload = Request::getVar('upload', '', 'files', 'array');
+			$upload = Request::getArray('upload', '', 'files');
 
 			if (empty($upload['name']) or $upload['name'][0] == '')
 			{
@@ -668,7 +668,7 @@ class connections
 		}
 
 		// Incoming
-		$no_html    = Request::getVar('no_html', 0);
+		$no_html    = Request::getInt('no_html', 0);
 		$expand     = Request::getInt('expand_zip', 0);
 		$ajaxUpload = $no_html ? true : false;
 
@@ -782,7 +782,7 @@ class connections
 			$files = [];
 
 			// Regular upload
-			$upload = Request::getVar('upload', '', 'files', 'array');
+			$upload = Request::getArray('upload', '', 'files');
 
 			if (empty($upload['name']) || $upload['name'][0] == '')
 			{
@@ -1010,8 +1010,8 @@ class connections
 		$moved = 0;
 
 		// Incoming
-		$newpath = trim(urldecode(Request::getVar('newpath', '')), '/');
-		$newdir  = Request::getVar('newdir', '');
+		$newpath = trim(urldecode(Request::getString('newpath', '')), '/');
+		$newdir  = Request::getString('newdir', '');
 		$dest    = $newdir ? $newdir : $newpath;
 
 		// Delete checked items
@@ -1110,10 +1110,10 @@ class connections
 		}
 
 		// Rename
-		$entity  = Entity::fromPath(Request::getVar('oldname', ''), $this->connection->adapter());
+		$entity  = Entity::fromPath(Request::getString('oldname', ''), $this->connection->adapter());
 		$oldName = $entity->getAbsolutePath();
 
-		if ($entity->rename(Request::getVar('newname', '')))
+		if ($entity->rename(Request::getString('newname', '')))
 		{
 			// Trigger the move event
 			Event::trigger('metadata.onFileMove', [$oldName, $entity->getAbsolutePath()]);
@@ -1141,7 +1141,7 @@ class connections
 	public function newdir()
 	{
 		// Incoming
-		$newdir = Request::getVar('newdir', '', 'post');
+		$newdir = Request::getString('newdir', '', 'post');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View([
@@ -1181,7 +1181,7 @@ class connections
 		}
 
 		// Create
-		$entity = Entity::fromPath(trim($this->subdir, '/') . '/' . trim(Request::getVar('newdir', '')), $this->connection->adapter());
+		$entity = Entity::fromPath(trim($this->subdir, '/') . '/' . trim(Request::getString('newdir', '')), $this->connection->adapter());
 
 		if (!$entity->create())
 		{
@@ -1264,12 +1264,12 @@ class connections
 		}
 
 		// Get the file entity
-		$file   = trim($this->subdir, '/') . '/' . trim(Request::getVar('item', ''));
+		$file   = trim($this->subdir, '/') . '/' . trim(Request::getString('item', ''));
 		$entity = Entity::fromPath($file, $this->connection->adapter());
 
 		// Grab annotations
-		$keys     = Request::getVar('key', []);
-		$values   = Request::getVar('value', []);
+		$keys     = Request::getArray('key', []);
+		$values   = Request::getArray('value', []);
 		$metadata = [];
 
 		foreach ($keys as $idx => $key)
@@ -1375,8 +1375,8 @@ class connections
 	private function getCollection()
 	{
 		// Incoming
-		$files       = $this->prune((array) Request::getVar('asset', []));
-		$directories = $this->prune((array) Request::getVar('folder', []));
+		$files       = $this->prune((array) Request::getArray('asset', []));
+		$directories = $this->prune((array) Request::getArray('folder', []));
 		$collection  = new Collection;
 
 		$entities = array_merge($files, $directories);

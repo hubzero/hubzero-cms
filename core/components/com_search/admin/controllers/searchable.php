@@ -34,6 +34,8 @@ namespace Components\Search\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Search\Models\Solr\Blacklist;
 use Components\Search\Models\Solr\Facet;
+use Components\Search\Models\Solr\Filters\Filter;
+use Components\Search\Models\Solr\Option;
 use Components\Search\Models\Solr\SearchComponent;
 use \Hubzero\Search\Query;
 use \Hubzero\Search\Index;
@@ -63,11 +65,41 @@ class Searchable extends AdminController
 	 */
 	public function displayTask()
 	{
+		$config = Component::params('com_search');
+		$query = new \Hubzero\Search\Query($config);
+		$multifacet = $query->adapter->getFacetMultiQuery('hubtypes');
 		// Load the subfacets, if applicable
-		$components = SearchComponent::all()
-			->rows();
+		$components = SearchComponent::all()->rows();
+		foreach ($components as $component)
+		{
+			$hubType = 'hubtype:' . $component->getSearchNamespace();
+			$multifacet->createQuery($component->getQueryName(), $hubType, array('include' => 'child_type'));
+		}
+
+		// Perform the query
+		try
+		{
+			$query = $query->run();
+		}
+		catch (\Solarium\Exception\HttpException $e)
+		{
+			$query->query('')->limit($limit)->start($start)->run();
+			\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
+		}
+
+		if (isset($query->resultsFacetSet) && $query->resultsFacetSet)
+		{
+			$facetResults = $query->resultsFacetSet->getFacet('hubtypes');
+		}
+		$facetCounts = array();
+		foreach ($facetResults as $facet => $count)
+		{
+			$facetCounts[$facet] = $count;
+		}
+
 		$this->view
 			->set('components', $components)
+			->set('componentCounts', $facetCounts)
 			->display();
 	}
 
@@ -83,8 +115,6 @@ class Searchable extends AdminController
 		$numProcess = Request::getInt('numprocess');
 		$components = SearchComponent::all()
 			->whereIn('id', $ids)
-			->where('state', 'IS', null, 'AND', 1)
-			->orWhereEquals('state', 0, 1)
 			->rows();
 		foreach ($components as $component)
 		{
@@ -92,7 +122,9 @@ class Searchable extends AdminController
 			if (!$recordsIndexed)
 			{
 				$component->set('state', 1);
+				$componentLink = Route::url('index.php?option=com_search&controller=' . $this->_controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
 				$recordsIndexed['state'] = 1;
+				$recordsIndexed['total'] = '<a href="' . $componentLink . '">' . $component->getSearchCount() . '</a>';
 				$recordsIndexed['link'] = Route::url('index.php?option=' . $this->_option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
 			}
 			elseif (isset($recordsIndexed['error']))
@@ -104,7 +136,7 @@ class Searchable extends AdminController
 			{
 				$component->set('indexed_records', $recordsIndexed['offset']);
 				$recordsIndexed['state'] = 0;
-				$recordsIndexed['numprocess'] = empty($numProcess) ? $component->getSearchCount() : $numProcess;
+				$recordsIndexed['numprocess'] = empty($numProcess) ? $component->getBatchSize() : $numProcess;
 				$recordsIndexed['numprocess'] .= ' Batches';
 			}
 			$component->save();
@@ -114,6 +146,133 @@ class Searchable extends AdminController
 		}
 
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
+	}
+
+	/**
+	 * Edit a search category
+	 * 
+	 * @param   integer  $parentID
+	 * @return  void
+	 */
+	public function editTask()
+	{
+		$id = Request::getInt('id', 0);
+
+		$category = SearchComponent::oneOrFail($id);
+		$fields = $category->getSearchableFields();
+		$existingFields = $category->filters->fieldsByKey('field');
+		$existingFields = array_filter($existingFields, 'strtolower');
+		$availableFields = array_diff($fields, $existingFields);
+		$filters = array();
+		foreach ($category->filters()->order('ordering', 'ASC') as $filter)
+		{
+			$filters[$filter->field]['label'] = !empty($filter->get('label')) ? $filter->get('label') : $filter->field;
+			$filters[$filter->field]['type'] = $filter->type;
+			$params = $filter->params->toArray();
+			if (!empty($params))
+			{
+				$filters[$filter->field]['params'] = $filter->params->toArray();
+			}
+			if ($filter->options->count() > 0)
+			{
+				$filters[$filter->field]['options'] = $filter->options()->order('ordering', 'ASC')->rows()->fieldsByKey('value');
+			}
+		}
+
+		$this->view
+			->set('category', $category)
+			->set('fields', array())
+			->set('filters', $filters)
+			->set('availableFields', $availableFields)
+			->display();
+	}
+
+	/**
+	 * saveTask 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function saveTask()
+	{
+		Request::checkToken(["post", "get"]);
+
+		$fields = Request::getArray('fields', array());
+		$id     = Request::getInt('id', 0);
+		$filters = Request::getArray('filters');
+		$searchComponent = SearchComponent::oneOrFail($id);
+		$searchComponent->set($fields);
+		if (!$searchComponent->save())
+		{
+			Notify::error(Lang::txt('COM_SEARCH_FAILURE_TO_SAVE'));
+		}
+		else
+		{
+			Notify::success(Lang::txt('COM_SEARCH_COMPONENT_SAVE_SUCCESS', $searchComponent->title));
+			$oldFilters = $searchComponent->filters;
+			$oldFilterIds = array();
+			foreach ($oldFilters as $filter)
+			{
+				$field = $filter->get('field');
+				$oldFilterIds[$field] = $filter->get('id');
+			}
+			$filterCount = 1;
+			foreach ($filters as $field => $element)
+			{
+				$filterId = isset($oldFilterIds[$field]) ? $oldFilterIds[$field] : 0;
+				if ($filterId)
+				{
+					$oldFilters->drop($filterId);
+				}
+				$filter = Filter::oneOrNew($filterId);
+				$filter->set('field', $field);
+				$optionValues = isset($element['options']) ? $element['options'] : array();
+				unset($element['options']);
+				$filter->set($element);
+				$filter->set('ordering', $filterCount);
+				$filter->set('component_id', $searchComponent->get('id'));
+				if (!$filter->save())
+				{
+					Notify::error($filter->getError());
+					continue;
+				}
+				$filterCount++;
+				$oldOptions = $filter->options;
+				$oldOptionIds = array();
+				foreach ($oldOptions as $option)
+				{
+					$value = $option->get('value');
+					$oldOptionIds[$value] = $option->get('id');
+				}
+				$optionsCount = 1;
+				foreach ($optionValues as $value)
+				{
+					$optionId = isset($oldOptionIds[$value]) ? $oldOptionIds[$value] : 0;
+					if ($optionId)
+					{
+						$oldOptions->drop($optionId);
+					}
+					$option = Option::oneOrNew($optionId);
+					$option->set('filter_id', $filter->get('id'));
+					$option->set('value', $value);
+					$option->set('ordering', $optionsCount);
+					if (!$option->save())
+					{
+						Notify::error($option->getError());
+						continue;
+					}
+					$optionsCount++;
+				}
+				$oldOptions->destroyAll();
+			}
+			$oldFilters->destroyAll();
+		}
+
+		$return = Route::url('index.php?option=com_search&controller=searchable', false);
+
+		App::redirect(
+			Route::url($return, false)
+		);
 	}
 
 	/**
@@ -132,7 +291,7 @@ class Searchable extends AdminController
 		{
 			$searchIndex = new \Hubzero\Search\Index($this->config);
 			$componentSearchModel = $component->getSearchableModel();
-			$modelNamespace = $componentSearchModel::blank()->searchNamespace();
+			$modelNamespace = $componentSearchModel::searchNamespace();
 			$deleteQuery = array('hubtype' => $modelNamespace);
 			$searchIndex->delete($deleteQuery);
 			$component->set('state', 0);
@@ -146,6 +305,78 @@ class Searchable extends AdminController
 		}
 
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
+	}
+
+	/**
+	 * documentByTypeTask - view a type's records
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function documentListingTask()
+	{
+		$facet = Request::getVar('facet', '');
+		$filter = Request::getVar('filter', '');
+		$limitstart = Request::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', 10);
+
+		// Display CMS errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		// Get the blacklist to indidicate marked for removal
+		$blacklistEntries = Blacklist::all()
+			->select('doc_id')
+			->rows()
+			->toObject();
+
+		// @TODO: PHP 5.5+ supports array_column()
+		$blacklist = array();
+		foreach ($blacklistEntries as $entry)
+		{
+			array_push($blacklist, $entry->doc_id);
+		}
+
+		// Temporary override to get all matching documents
+		if ($filter == '')
+		{
+			$filter = '*:*';
+		}
+
+		// Instantitate and get all results for a particular document type
+		try
+		{
+			$config = Component::params('com_search');
+			$query = new \Hubzero\Search\Query($config);
+			$results = $query->query($filter)
+				->addFilter('facet', $facet)
+				->limit($limit)->start($limitstart)->run()->getResults();
+
+			// Get the total number of records
+			$total = $query->getNumFound();
+		}
+		catch (\Solarium\Exception\HttpException $e)
+		{
+			App::redirect(
+				Route::url('index.php?option=com_search&task=display', false)
+			);
+		}
+
+		// Create the pagination
+		$pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
+		$pagination->setLimits(array('5','10','15','20','50','100','200'));
+		$this->view->pagination = $pagination;
+
+		// Pass the filters and documents to the display
+		$this->view->filter = ($filter == '') || $filter = '*:*' ? '' : $filter;
+		$this->view->facet = !isset($facet) ? '' : $facet;
+		$this->view->documents = isset($results) ? $results : array();
+		$this->view->blacklist = $blacklist;
+
+		// Display the view
+		$this->view->display();
 	}
 
 	/**

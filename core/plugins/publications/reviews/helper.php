@@ -46,7 +46,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 	public function execute()
 	{
 		// Incoming action
-		$action = Request::getVar('action', '');
+		$action = Request::getString('action', '');
 
 		$this->loggedin = true;
 
@@ -107,7 +107,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		$publication =& $this->publication;
 
 		// Trim and addslashes all posted items
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		if (!$publication->exists())
 		{
@@ -194,8 +194,8 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 
 		$id   = Request::getInt('refid', 0);
 		$ajax = Request::getInt('no_html', 0);
-		$cat  = Request::getVar('category', 'pubreview');
-		$vote = Request::getVar('vote', '');
+		$cat  = Request::getString('category', 'pubreview');
+		$vote = Request::getString('vote', '');
 		$ip   = Request::ip();
 
 		if (!$id || !$publication->exists())
@@ -378,7 +378,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		$publication->table()->updateRating();
 
 		// Process tags
-		$tags = trim(Request::getVar('review_tags', ''));
+		$tags = trim(Request::getString('review_tags', ''));
 		if ($tags)
 		{
 			$rt = new \Components\Publications\Helpers\Tags($database);

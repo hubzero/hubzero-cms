@@ -195,7 +195,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	{
 		$filters = array();
 		$filters['filter'] = Request::getWord('filter');
-		$filters['search'] = Request::getVar('q');
+		$filters['search'] = Request::getString('q');
 		$filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
 		$filters['start']  = Request::getInt('start', 0);
 
@@ -321,7 +321,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	{
 		$id      = Request::getInt('activity', 0);
 		$no_html = Request::getInt('no_html', 0);
-		$action  = Request::getVar('action', 'star');
+		$action  = Request::getWord('action', 'star');
 
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
 		$entry->set('starred', ($action == 'star' ? 1 : 0));
@@ -378,13 +378,13 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('activity', array(), 'post', 'none', 2);
+		$comment = Request::getArray('activity', array(), 'post');
 
 		// Instantiate a new object and bind data
 		$row = Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
 
 		// Process attachment
-		$upload = Request::getVar('activity_file', '', 'files', 'array');
+		$upload = Request::getArray('activity_file', '', 'files');
 
 		if (!empty($upload) && $upload['name'])
 		{

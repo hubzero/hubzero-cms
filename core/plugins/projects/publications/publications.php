@@ -166,7 +166,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->model = $model;
 
 		// Incoming
-		$this->_task = Request::getVar('action', '');
+		$this->_task = Request::getString('action', '');
 		$this->_pid  = Request::getInt('pid', 0);
 		if (!$this->_task)
 		{
@@ -410,8 +410,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		$filters['limit']         = Request::getInt('limit', Config::get('list_limit'));
 		$filters['start']         = Request::getInt('limitstart', 0);
-		$filters['sortby']        = Request::getVar('sortby', 'title');
-		$filters['sortdir']       = Request::getVar('sortdir', 'ASC');
+		$filters['sortby']        = Request::getString('sortby', 'title');
+		$filters['sortdir']       = Request::getString('sortdir', 'ASC');
 		$filters['project']       = $this->model->get('id');
 		$filters['ignore_access'] = 1;
 		$filters['dev']           = 1; // get dev versions
@@ -471,12 +471,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function handler()
 	{
 		// Incoming
-		$props  = Request::getVar('p', '');
+		$props  = Request::getString('p', '');
 		$ajax   = Request::getInt('ajax', 0);
 		$pid    = Request::getInt('pid', 0);
 		$vid    = Request::getInt('vid', 0);
-		$handler= trim(Request::getVar('h', ''));
-		$action = trim(Request::getVar('do', ''));
+		$handler= trim(Request::getString('h', ''));
+		$action = trim(Request::getString('do', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -486,7 +486,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Output HTML
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'base_path' => Component::path('com_publications') . DS . 'site',
 			'name'      => 'handlers',
 			'layout'    => 'editor',
 		));
@@ -567,11 +567,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = Request::getVar('p', '');
+		$props  = Request::getString('p', '');
 		$ajax   = Request::getInt('ajax', 0);
 		$pid    = Request::getInt('pid', 0);
 		$vid    = Request::getInt('vid', 0);
-		$filter = urldecode(Request::getVar('filter', ''));
+		$filter = urldecode(Request::getString('filter', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -663,8 +663,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$vid   = Request::getInt('vid', 0);
-		$param = Request::getVar('param', '');
-		$value = urldecode(Request::getVar('value', ''));
+		$param = Request::getString('param', '');
+		$value = urldecode(Request::getString('value', ''));
 
 		// Check permission
 		if (!$this->model->access('content'))
@@ -703,12 +703,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 		$ajax    = Request::getInt('ajax', 0);
-		$block   = Request::getVar('section', '');
+		$block   = Request::getString('section', '');
 		$blockId = Request::getInt('step', 0);
 		$element = Request::getInt('element', 0);
-		$props   = Request::getVar('p', '');
+		$props   = Request::getString('p', '');
 		$parts   = explode('-', $props);
 
 		// Parse props for curation
@@ -757,16 +757,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$vid     = Request::getInt('vid', 0);
-		$version = Request::getVar('version', 'dev');
-		$block   = Request::getVar('section', '');
+		$version = Request::getString('version', 'dev');
+		$block   = Request::getString('section', '');
 		$blockId = Request::getInt('step', 0);
 		$element = Request::getInt('element', 0);
 		$next    = Request::getInt('next', 0);
 		$json    = Request::getInt('json', 0);
-		$move    = Request::getVar('move', ''); // draft flow?
-		$back    = Request::getVar('backUrl', Request::getVar('HTTP_REFERER', null, 'server'));
+		$move    = Request::getString('move', ''); // draft flow?
+		$back    = Request::getString('backUrl', Request::getString('HTTP_REFERER', null, 'server'));
 		$new     = false;
-		$props   = Request::getVar('p', '');
+		$props   = Request::getString('p', '');
 		$parts   = explode('-', $props);
 
 		// Check permission
@@ -997,7 +997,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 
 		// Load publication
 		$pub = new \Components\Publications\Models\Publication($pid, $version);
@@ -1011,7 +1011,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		$aid     = Request::getInt('aid', 0);
-		$block   = Request::getVar('section', 'content');
+		$block   = Request::getString('section', 'content');
 		$blockId = Request::getInt('step', 1);
 
 		$db = App::get('db');
@@ -1168,7 +1168,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function createDraft()
 	{
 		// Incoming
-		$base = Request::getVar('base', 'files');
+		$base = Request::getString('base', 'files');
 
 		// Check permission
 		if ($this->model->exists() && !$this->model->access('content'))
@@ -1330,8 +1330,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$vid     = Request::getInt('vid', 0);
-		$version = Request::getVar('version', 'default');
-		$block   = Request::getVar('section', 'status');
+		$version = Request::getString('version', 'default');
+		$block   = Request::getString('section', 'status');
 		$blockId = Request::getInt('step', 0);
 
 		// Provision draft
@@ -1461,7 +1461,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$id 	= Request::getInt('aid', 0);
-		$props  = Request::getVar('p', '');
+		$props  = Request::getString('p', '');
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -1547,7 +1547,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->project  = $this->model;
 		$view->pub      = $pub;
 		$view->row      = $row;
-		$view->backUrl  = Request::getVar('HTTP_REFERER', null, 'server');
+		$view->backUrl  = Request::getString('HTTP_REFERER', null, 'server');
 		$view->ajax     = Request::getInt('ajax', 0);
 		$view->props    = $props;
 
@@ -1581,9 +1581,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 
-		require_once PATH_CORE . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php';
+		require_once Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -1634,7 +1634,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 		$ajax    = Request::getInt('ajax', 0);
 
 		// Load publication
@@ -1649,9 +1649,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// File a support ticket
 		if ($this->_task == 'save_license')
 		{
-			$l_title = htmlentities(Request::getVar('license_title', '', 'post'));
-			$l_url   = htmlentities(Request::getVar('license_url', '', 'post'));
-			$l_text  = htmlentities(Request::getVar('details', '', 'post'));
+			$l_title = htmlentities(Request::getString('license_title', '', 'post'));
+			$l_url   = htmlentities(Request::getString('license_url', '', 'post'));
+			$l_text  = htmlentities(Request::getString('details', '', 'post'));
 
 			if (!$l_title && !$l_url && !$l_text)
 			{
@@ -1660,7 +1660,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Include support scripts
-				include_once PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php';
+				include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
 				// Load the support config
 				$sparams = Component::params('com_support');
@@ -1676,7 +1676,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$report .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL') . ': ' . $l_url . "\r\n";
 				$report .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_COMMENTS') . ': ' . $l_text ."\r\n";
 				$row->set('report', $report);
-				$row->set('referrer', Request::getVar('HTTP_REFERER', null, 'server'));
+				$row->set('referrer', Request::getString('HTTP_REFERER', null, 'server'));
 				$row->set('type', 0);
 				$row->set('severity', 'normal');
 
@@ -1788,8 +1788,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$ajax  = Request::getInt('ajax', 0);
-		$label = trim(Request::getVar('version_label', '', 'post'));
-		$selected_version = Request::getVar('selected_version', 'default');
+		$label = trim(Request::getString('version_label', '', 'post'));
+		$selected_version = Request::getString('selected_version', 'default');
 
 		// Check permission
 		if (!$this->model->access('content'))
@@ -1985,14 +1985,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$confirm   = Request::getInt('confirm', 0);
-		$version   = Request::getVar('version', 'dev');
+		$version   = Request::getString('version', 'dev');
 		$agree     = Request::getInt('agree', 0);
-		$pubdate   = Request::getVar('publish_date', '', 'post');
-		$review    = Request::getVar('request_review', 0);
+		$pubdate   = Request::getString('publish_date', '', 'post');
+		$review    = Request::getInt('request_review', 0);
 		$submitter = Request::getInt('submitter', $this->_uid, 'post');
 		$notify    = 1;
 
-		$block     = Request::getVar('section', '');
+		$block     = Request::getString('section', '');
 		$blockId   = Request::getInt('step', 0);
 		$element   = Request::getInt('element', 0);
 
@@ -2098,7 +2098,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Contact info is required for repositories
 		if ($pub->config()->get('repository') && $this->_task != 'revert')
 		{
-			$contact = Request::getVar('contact', array(), 'post');
+			$contact = Request::getArray('contact', array(), 'post');
 
 			if (!$contact || empty($contact))
 			{
@@ -2432,6 +2432,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pub->_curationModel->package(true);
 		}
 
+		if ($pub->version->get('state') == 1)
+		{
+			$pub->_curationModel->createSymLink();
+		}
+		else
+		{
+			$pub->_curationModel->removeSymLink();
+		}
+
 		// Pass error or success message
 		if ($this->getError())
 		{
@@ -2495,7 +2504,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$confirm = Request::getInt('confirm', 0);
-		$version = Request::getVar('version', 'default');
+		$version = Request::getString('version', 'default');
 		$ajax    = Request::getInt('ajax', 0);
 
 		// Check permission
@@ -2937,8 +2946,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		$filters['limit']         = Request::getInt('limit', 25);
 		$filters['start']         = Request::getInt('limitstart', 0);
-		$filters['sortby']        = Request::getVar('t_sortby', 'title');
-		$filters['sortdir']       = Request::getVar('t_sortdir', 'ASC');
+		$filters['sortby']        = Request::getString('t_sortby', 'title');
+		$filters['sortdir']       = Request::getString('t_sortdir', 'ASC');
 		$filters['project']       = $model->get('id');
 		$filters['ignore_access'] = 1;
 		$filters['dev']           = 1; // get dev versions

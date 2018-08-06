@@ -36,7 +36,7 @@ use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'role.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'role.php';
 
 /**
  * Manage course roles
@@ -122,7 +122,7 @@ class Roles extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
@@ -141,7 +141,7 @@ class Roles extends AdminController
 			$this->view->row->created    = Date::toSql();
 		}
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php';
 		$model = \Components\Courses\Models\Courses::getInstance();
 		$this->view->courses = $model->courses();
 
@@ -167,7 +167,7 @@ class Roles extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -213,7 +213,7 @@ class Roles extends AdminController
 		Request::checkToken();
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

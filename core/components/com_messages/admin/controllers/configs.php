@@ -100,7 +100,7 @@ class Configs extends AdminController
 		}
 
 		$db = App::get('db');
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
 		$tuples = array();
 		foreach ($fields as $k => $v)

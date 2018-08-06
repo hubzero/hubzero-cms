@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 if ($this->collection_id)
 {
-	$task = Request::getVar('board', 0) . '/collect';
+	$task = Request::getString('board', 0) . '/collect';
 }
 ?>
 

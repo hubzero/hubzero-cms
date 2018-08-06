@@ -134,7 +134,7 @@ foreach ($citation->resources()->whereEquals('#_citations_assoc.tbl', 'resource'
 }
 
 //get the sub area we are trying to load
-$area = Request::getVar('area', 'about');
+$area = Request::getString('area', 'about');
 ?>
 
 <header id="content-header" class="half">

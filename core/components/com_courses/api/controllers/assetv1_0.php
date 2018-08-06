@@ -87,7 +87,7 @@ class Assetv1_0 extends base
 		$max_upload = min((int)(ini_get('upload_max_filesize')), (int)(ini_get('post_max_size')));
 
 		// Return message
-		$this->send(['ext'=>$ext, 'handlers'=>$handlers, 'max_upload'=>$max_upload]);
+		$this->send(['ext' => $ext, 'handlers' => $handlers, 'max_upload' => $max_upload]);
 	}
 
 	/**
@@ -160,7 +160,7 @@ class Assetv1_0 extends base
 		$assetHandler = new Handler($database, $ext);
 
 		// Create the new asset
-		$return = $assetHandler->doCreate(Request::getVar('handler', null));
+		$return = $assetHandler->doCreate(Request::getString('handler', null));
 
 		// Check for errors in response
 		if (array_key_exists('error', $return))
@@ -320,7 +320,7 @@ class Assetv1_0 extends base
 		$asset->set('alias', strtolower(str_replace(' ', '', $asset->get('title'))));
 
 		// If we have an incoming url, update the url, otherwise, leave it alone
-		if ($url = Request::getVar('url', false))
+		if ($url = Request::getString('url', false))
 		{
 			$asset->set('url', urldecode($url));
 		}
@@ -363,7 +363,7 @@ class Assetv1_0 extends base
 		// If we're saving progress calculation var
 		if ($progress = Request::getInt('progress_factors', false))
 		{
-			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>$this->course->offering()->section()->get('id')));
+			$asset->set('progress_factors', array('asset_id' => $asset->get('id'), 'section_id' => $this->course->offering()->section()->get('id')));
 		}
 		elseif (Request::getInt('edit_progress_factors', false))
 		{
@@ -372,7 +372,7 @@ class Assetv1_0 extends base
 		}
 
 		// If we have content
-		if ($content = Request::getVar('content', false, 'default', 'none', 2))
+		if ($content = Request::getString('content', false))
 		{
 			$asset->set('content', $content);
 		}
@@ -440,9 +440,9 @@ class Assetv1_0 extends base
 					}
 
 					// Set the type and build the invoke url with file param
-					$asset->set('type',    'url');
+					$asset->set('type', 'url');
 					$asset->set('subtype', 'tool');
-					$asset->set('url',     '/tools/'.$tool_alias.'/invoke?params=file:'.$param_path);
+					$asset->set('url', '/tools/'.$tool_alias.'/invoke?params=file:'.$param_path);
 				}
 			}
 		}
@@ -459,9 +459,9 @@ class Assetv1_0 extends base
 			unlink($param_path);
 
 			// Reset type and subtype to file
-			$asset->set('type',    'file');
+			$asset->set('type', 'file');
 			$asset->set('subtype', 'file');
-			$asset->set('url',     $file[0]);
+			$asset->set('url', $file[0]);
 		}
 
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
@@ -545,7 +545,7 @@ class Assetv1_0 extends base
 		);
 
 		// Set the status code
-		$status = ($id) ? array('code'=>200, 'text'=>'OK') : array('code'=>201, 'text'=>'Created');
+		$status = ($id) ? array('code' => 200, 'text' => 'OK') : array('code' => 201, 'text' => 'Created');
 
 		// Return message
 		$this->send(
@@ -694,7 +694,7 @@ class Assetv1_0 extends base
 
 		// Grab incoming id, if applicable
 		$id       = Request::getInt('id', null);
-		$filename = Request::getVar('filename', null);
+		$filename = Request::getString('filename', null);
 
 		// Create our object
 		$asset = new Asset($id);
@@ -753,7 +753,7 @@ class Assetv1_0 extends base
 		$database           = App::get('db');
 		$assetAssocationObj = new AssetAssociation($database);
 
-		$assets   = Request::getVar('asset', array());
+		$assets   = Request::getArray('asset', array());
 		$scope_id = Request::getInt('scope_id', 0);
 		$scope    = Request::getWord('scope', 'asset_group');
 
@@ -767,7 +767,7 @@ class Assetv1_0 extends base
 			}
 
 			// Save the asset group
-			if (!$assetAssocationObj->save(array('ordering'=>$order)))
+			if (!$assetAssocationObj->save(array('ordering' => $order)))
 			{
 				App::abort(500, 'Asset asssociation save failed');
 			}
@@ -830,7 +830,7 @@ class Assetv1_0 extends base
 		}
 
 		// Return message
-		$this->send(['asset_state'=>$asset->get('state')]);
+		$this->send(['asset_state' => $asset->get('state')]);
 	}
 
 	/**
@@ -929,8 +929,7 @@ class Assetv1_0 extends base
 		// Check
 		/*if (!is_numeric($depId))
 		{
-			$this->setMessage("Failed to retrieve the deployment ID", 500, 'Internal server error');
-			return;
+			App::abort(500, "Failed to retrieve the deployment ID");
 		}*/
 
 		// Return message

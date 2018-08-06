@@ -176,7 +176,7 @@ class Messages extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -216,7 +216,7 @@ class Messages extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = Message::oneOrNew($fields['message_id'])->set($fields);
@@ -259,7 +259,7 @@ class Messages extends AdminController
 		$state = $this->_task == 'publish' ? Message::STATE_PUBLISHED : Message::STATE_UNPUBLISHED;
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Loop through all the IDs
@@ -321,7 +321,7 @@ class Messages extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		if (count($ids) > 0)
 		{

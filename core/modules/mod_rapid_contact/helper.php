@@ -130,7 +130,7 @@ class Helper extends Module
 
 		if (isset($_POST['rp']))
 		{
-			$this->posted = Request::getVar('rp', array(), 'post');
+			$this->posted = Request::getArray('rp', array(), 'post');
 
 			// Make sure input is of the correct type.
 			foreach ($this->posted as $key => $val)
@@ -161,7 +161,7 @@ class Helper extends Module
 			if ($this->error == '')
 			{
 				$mySubject  = Sanitize::clean($this->posted['subject']);
-				$myMessage  = Lang::txt('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], Request::getVar('HTTP_REFERER', '', 'SERVER'), Config::get('sitename'));
+				$myMessage  = Lang::txt('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], Request::getString('HTTP_REFERER', '', 'SERVER'), Config::get('sitename'));
 				$myMessage .= "\n\n". Sanitize::clean($this->posted['message']);
 
 				$this->from_email = $this->posted['email'];

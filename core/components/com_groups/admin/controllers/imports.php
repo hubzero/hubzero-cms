@@ -166,7 +166,7 @@ class Imports extends AdminController
 		if (!($import instanceof Import))
 		{
 			// get request vars
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (isset($id[0]) ? $id[0] : 0);
@@ -232,11 +232,11 @@ class Imports extends AdminController
 		Session::checkToken();
 
 		// Get request vars
-		$import = Request::getVar('import', array());
-		$hooks  = Request::getVar('hooks', array());
-		$params = Request::getVar('params', array());
-		$fields = Request::getVar('mapping', array());
-		$file   = Request::getVar('file', array(), 'FILES');
+		$import = Request::getArray('import', array());
+		$hooks  = Request::getArray('hooks', array());
+		$params = Request::getArray('params', array());
+		$fields = Request::getArray('mapping', array());
+		$file   = Request::getArray('file', array(), 'FILES');
 
 		// Create import model object
 		$model = Import::oneOrNew(isset($import['id']) ? $import['id'] : 0);
@@ -344,7 +344,7 @@ class Imports extends AdminController
 		Session::checkToken();
 
 		// get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
@@ -397,7 +397,7 @@ class Imports extends AdminController
 	public function runTask($dryRun = 0)
 	{
 		// Get request vars
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		$id = (is_array($id) ? $id[0] : $id);
 
 

@@ -170,7 +170,7 @@ class Items extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id))
 			{
@@ -210,7 +210,7 @@ class Items extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate extended database class
 		$row = Item::oneOrNew($fields['id'])->set($fields);
@@ -223,7 +223,7 @@ class Items extends AdminController
 		}
 
 		// Save assets
-		$assets = Request::getVar('assets', array(), 'post');
+		$assets = Request::getArray('assets', array(), 'post');
 
 		$k = 1;
 
@@ -260,7 +260,7 @@ class Items extends AdminController
 		}
 
 		// Process tags
-		$row->tag(trim(Request::getVar('tags', '')));
+		$row->tag(trim(Request::getString('tags', '')));
 
 		Notify::success(Lang::txt('COM_COLLECTIONS_POST_SAVED'));
 
@@ -289,7 +289,7 @@ class Items extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 		$i = 0;
 

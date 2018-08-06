@@ -94,18 +94,20 @@ class Collection extends Relational
 	 */
 	public function setup()
 	{
+		// alias rule to ensure unique alias
 		$this->addRule('alias', function($data)
 		{
 			$exists = self::all()
 				->whereEquals('alias', $data['alias'])
 				->whereEquals('object_id', $data['object_id'])
 				->whereEquals('object_type', $data['object_type'])
+				->where('id', '!=', $data['id'])
 				->where('state', '!=', self::STATE_DELETED)
 				->total();
 
 			if ($exists)
 			{
-				return Lang::txt('a collection with this alias already exists.');
+				return Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_ALIAS_EXISTS');
 			}
 			return false;
 		});
@@ -182,7 +184,7 @@ class Collection extends Relational
 	 */
 	public function votes()
 	{
-		return $this->item->votes();
+		return $this->item()->votes();
 	}
 
 	/**
@@ -206,13 +208,13 @@ class Collection extends Relational
 	public function save()
 	{
 		// Make sure state cascades to children
-		if ($this->item->get('id'))
+		if ($this->item()->get('id'))
 		{
-			$this->item->set('state', $this->get('state'));
+			$this->item()->set('state', $this->get('state'));
 
-			if (!$this->item->save())
+			if (!$this->item()->save())
 			{
-				$this->addError($this->item->getError());
+				$this->addError($this->item()->getError());
 				return false;
 			}
 		}
@@ -245,7 +247,7 @@ class Collection extends Relational
 
 		if (!$this->item()->destroy())
 		{
-			$this->addError($this->item->getError());
+			$this->addError($this->item()->getError());
 			return false;
 		}
 

@@ -68,7 +68,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = Request::getVar('active')))
+		if (!($active = Request::getString('active')))
 		{
 			Request::setVar('active', ($active = $this->_name));
 		}
@@ -124,11 +124,11 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	 */
 	private function _display()
 	{
-		if (($unit = Request::getVar('unit', '')))
+		if (($unit = Request::getString('unit', '')))
 		{
 			$this->view->setLayout('unit');
 		}
-		if (($group = Request::getVar('group', '')))
+		if (($group = Request::getString('group', '')))
 		{
 			$this->view->setLayout('lecture');
 		}

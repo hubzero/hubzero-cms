@@ -94,8 +94,8 @@ class Entriesv1_1 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
-			'sort'       => Request::getVar('sort', 'created'),
+			'search'     => Request::getString('search', ''),
+			'sort'       => Request::getString('sort', 'created'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
 			'state'      => 1
 		);
@@ -112,18 +112,18 @@ class Entriesv1_1 extends ApiController
 		$earliest_year = !empty($earliest_year) ? $earliest_year : 1990;
 
 		$filters['id']              = Request::getInt('id', 0);
-		$filters['tag']             = Request::getVar('tag', '', 'request', 'none', 2);
-		$filters['type']            = Request::getVar('type', '');
-		$filters['author']          = Request::getVar('author', '');
-		$filters['publishedin']     = Request::getVar('publishedin', '');
+		$filters['tag']             = Request::getString('tag', '', 'request', 'none', 2);
+		$filters['type']            = Request::getString('type', '');
+		$filters['author']          = Request::getString('author', '');
+		$filters['publishedin']     = Request::getString('publishedin', '');
 		$filters['year_start']      = Request::getInt('year_start', $earliest_year);
 		$filters['year_end']        = Request::getInt('year_end', date("Y"));
-		$filters['filter']          = Request::getVar('filter', '');
-		$filters['reftype']         = Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-		$filters['geo']             = Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-		$filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
-		$filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
-		$filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
+		$filters['filter']          = Request::getString('filter', '');
+		$filters['reftype']         = Request::getArray('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
+		$filters['geo']             = Request::getArray('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
+		$filters['aff']             = Request::getArray('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+		$filters['startuploaddate'] = Request::getString('startuploaddate', '0000-00-00');
+		$filters['enduploaddate']   = Request::getString('enduploaddate', '0000-00-00');
 		$filters['scope']           = 'all';
 
 		$filters['sort'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
@@ -137,7 +137,7 @@ class Entriesv1_1 extends ApiController
 		if (User::authorise('core.admin', 'com_citations'))
 		{
 			$admin = true;
-			$searchable = Request::getVar('searchable', false);
+			$searchable = Request::getBool('searchable', false);
 		}
 
 		$response = new stdClass;

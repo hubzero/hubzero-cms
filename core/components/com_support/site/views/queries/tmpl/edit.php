@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$tmpl = Request::getVar('tmpl', '');
+$tmpl = Request::getString('tmpl', '');
 $no_html = Request::getInt('no_html', 0);
 
 if (!$tmpl && !$no_html) {

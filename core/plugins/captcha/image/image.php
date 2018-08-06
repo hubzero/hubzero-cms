@@ -79,7 +79,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 	 */
 	public function onDisplay($name = null, $id = 'image_captcha_1', $class = '')
 	{
-		if (Request::getVar('showCaptcha', ''))
+		if (Request::getString('showCaptcha', ''))
 		{
 			return $this->_display();
 		}
@@ -130,11 +130,11 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCheckAnswer($code = null)
 	{
-		$imgCatchaTxt     = strtolower(Request::getVar('imgCatchaTxt', ''));
-		$imgCatchaTxtInst = Request::getVar('imgCatchaTxtInst', '');
+		$imgCatchaTxt     = strtolower(Request::getString('imgCatchaTxt', ''));
+		$imgCatchaTxtInst = Request::getString('imgCatchaTxtInst', '');
 
 		$option = Request::getCmd('option');
-		$task   = Request::getVar('task');
+		$task   = Request::getCmd('task');
 
 		if ($imgCatchaTxtInst == '' || $imgCatchaTxt == '')
 		{
@@ -166,8 +166,8 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		$GLOBALS['totalCaptchas']++;
 
 		$view = $this->view('default', 'display');
-		$view->set('task', Request::getVar('task', ''));
-		$view->set('option', Request::getVar('option', ''));
+		$view->set('task', Request::getCmd('task', ''));
+		$view->set('option', Request::getCmd('option', ''));
 		$view->set('total', $GLOBALS['totalCaptchas']);
 
 		return $view->loadTemplate();
@@ -429,7 +429,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		$security_code = strtolower(str_replace(' ', '', trim($this->keystring)));
 
 		//Set the session to store the security code
-		App::get('session')->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
+		App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
 		$width = 120;
 		$height = 40;
 	}
@@ -448,7 +448,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		$security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5));
 
 		// Set the session to store the security code
-		App::get('session')->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
+		App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
 
 		$width = 120;
 		$height = 40;

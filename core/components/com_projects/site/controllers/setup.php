@@ -65,7 +65,7 @@ class Setup extends Base
 
 		// Incoming
 		$defaultSection = $this->_task == 'edit' ? 'info' : '';
-		$this->section  = Request::getVar('active', $defaultSection);
+		$this->section  = Request::getCmd('active', $defaultSection);
 		$this->group    = null;
 
 		// Login required
@@ -120,9 +120,9 @@ class Setup extends Base
 				return;
 			}
 			$this->model->saveParam('versionTracking', '0');
-			$this->model->set('alias', Request::getVar('name', '', 'post'));
-			$this->model->set('title', Request::getVar('title', '', 'post'));
-			$this->model->set('about', trim(Request::getVar('about', '', 'post', 'none', 2)));
+			$this->model->set('alias', Request::getString('name', '', 'post'));
+			$this->model->set('title', Request::getString('title', '', 'post'));
+			$this->model->set('about', trim(Request::getString('about', '', 'post', 'none', 2)));
 			$this->model->set('private', 1);
 			$this->model->set('setup_stage', 0);
 			$this->model->set('type', Request::getInt('type', 1, 'post'));
@@ -396,7 +396,7 @@ class Setup extends Base
 	protected function _finalize()
 	{
 		$agree       = Request::getInt('agree', 0, 'post');
-		$restricted  = Request::getVar('restricted', '', 'post');
+		$restricted  = Request::getString('restricted', '', 'post');
 		$agree_irb   = Request::getInt('agree_irb', 0, 'post');
 		$agree_ferpa = Request::getInt('agree_ferpa', 0, 'post');
 		$state       = 1;
@@ -427,10 +427,10 @@ class Setup extends Base
 			if ($this->config->get('restricted_data', 0) == 1)
 			{
 				$restrictions = array(
-					'hipaa_data'  => Request::getVar('hipaa', 'no', 'post'),
-					'ferpa_data'  => Request::getVar('ferpa', 'no', 'post'),
-					'export_data' => Request::getVar('export', 'no', 'post'),
-					'irb_data'    => Request::getVar('irb', 'no', 'post')
+					'hipaa_data'  => Request::getString('hipaa', 'no', 'post'),
+					'ferpa_data'  => Request::getString('ferpa', 'no', 'post'),
+					'export_data' => Request::getString('export', 'no', 'post'),
+					'irb_data'    => Request::getString('irb', 'no', 'post')
 				);
 
 				// Save individual restrictions
@@ -513,10 +513,10 @@ class Setup extends Base
 			// Collect grant information
 			if ($this->config->get('grantinfo', 0))
 			{
-				$grant_agency = Request::getVar('grant_agency', '');
-				$grant_title  = Request::getVar('grant_title', '');
-				$grant_PI     = Request::getVar('grant_PI', '');
-				$grant_budget = Request::getVar('grant_budget', '');
+				$grant_agency = Request::getString('grant_agency', '');
+				$grant_title  = Request::getString('grant_title', '');
+				$grant_PI     = Request::getString('grant_PI', '');
+				$grant_budget = Request::getString('grant_budget', '');
 				$this->model->saveParam('grant_budget', $grant_budget);
 				$this->model->saveParam('grant_agency', $grant_agency);
 				$this->model->saveParam('grant_title', $grant_title);
@@ -654,8 +654,8 @@ class Setup extends Base
 			case 'info':
 			case 'info_custom':
 				// Incoming
-				$name  = trim(Request::getVar('name', '', 'post'));
-				$title = trim(Request::getVar('title', '', 'post'));
+				$name  = trim(Request::getString('name', '', 'post'));
+				$title = trim(Request::getString('title', '', 'post'));
 
 				$name  = preg_replace('/ /', '', $name);
 				$name  = strtolower($name);
@@ -692,7 +692,7 @@ class Setup extends Base
 				}
 
 				$this->model->set('title', \Hubzero\Utility\Str::truncate($title, 250));
-				$this->model->set('about', trim(Request::getVar('about', '', 'post', 'none', 2)));
+				$this->model->set('about', trim(Request::getString('about', '', 'post', 'none', 2)));
 				$this->model->set('type', Request::getInt('type', 1, 'post'));
 
 				// save advanced permissions
@@ -718,7 +718,7 @@ class Setup extends Base
 				// Save custom description
 				if ($this->section == 'info_custom')
 				{
-					$newInfo = Request::getVar('description', array());
+					$newInfo = Request::getArray('description', array());
 
 					$projectID = $this->model->get('id');
 					$project = ProjectORM::one($this->model->get('id'));
@@ -842,7 +842,7 @@ class Setup extends Base
 						}
 					}
 					// Save params
-					$incoming   = Request::getVar('params', array());
+					$incoming   = Request::getArray('params', array());
 					if (!empty($incoming))
 					{
 						foreach ($incoming as $key => $value)
@@ -918,8 +918,20 @@ class Setup extends Base
 					// Are we syncing group membership?
 					if ($this->model->get('sync_group'))
 					{
+						$syncRole = Request::getInt('syncRole', 0);
+
 						$objO = $this->model->table('Owner');
-						$objO->saveOwners($this->model->get('id'), User::get('id'), 0, $this->_gid, 0, 1, 1, '', $split_group_roles = 0);
+						$objO->saveOwners(
+							$this->model->get('id'),
+							User::get('id'),
+							0,
+							$this->_gid,
+							$syncRole,
+							1,
+							1,
+							'',
+							$split_group_roles = 0
+						);
 					}
 				}
 
@@ -959,7 +971,7 @@ class Setup extends Base
 				}
 
 				// Save params
-				$incoming   = Request::getVar('params', array());
+				$incoming   = Request::getArray('params', array());
 				if (!empty($incoming))
 				{
 					foreach ($incoming as $key => $value)
@@ -1132,7 +1144,7 @@ class Setup extends Base
 	public function verifyTask()
 	{
 		// Incoming
-		$name = isset($this->_text) ? $this->_text : trim(Request::getVar('text', ''));
+		$name = isset($this->_text) ? $this->_text : trim(Request::getString('text', ''));
 		$id   = $this->_identifier  ? $this->_identifier: trim(Request::getInt('pid', 0));
 		$ajax = isset($this->_ajax) ? $this->_ajax : trim(Request::getInt('ajax', 0));
 
@@ -1162,7 +1174,7 @@ class Setup extends Base
 	public function suggestaliasTask()
 	{
 		// Incoming
-		$title = isset($this->_text) ? $this->_text : trim(Request::getVar('text', ''));
+		$title = isset($this->_text) ? $this->_text : trim(Request::getString('text', ''));
 		$title = urldecode($title);
 
 		$suggested = Helpers\Html::suggestAlias($title);

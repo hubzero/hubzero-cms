@@ -160,7 +160,7 @@ class Sessions extends AdminController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$stopped = 0;
@@ -341,7 +341,7 @@ class Sessions extends AdminController
 		if (!$id)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -373,7 +373,7 @@ class Sessions extends AdminController
 		Request::checkToken();
 
 		// Incoming fields
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the profile
 		$row = new Tables\SessionClass($this->database);
@@ -428,7 +428,7 @@ class Sessions extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?

@@ -103,10 +103,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			$task = Request::getVar('action', '');
+			$task = Request::getCmd('action', '');
 			if (!$task)
 			{
-				$task = Request::getVar('inaction', '');
+				$task = Request::getCmd('inaction', '');
 			}
 
 			$mid = Request::getInt('msg', 0);
@@ -251,7 +251,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				'int'
 			),
 			'state'  => 0,
-			'filter' => Request::getVar('filter', '')
+			'filter' => Request::getString('filter', '')
 		);
 
 		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -302,7 +302,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				'int'
 			),
 			'state'  => 1,
-			'filter' => Request::getVar('filter', '')
+			'filter' => Request::getString('filter', '')
 		);
 
 		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -353,7 +353,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				'int'
 			),
 			'state'  => 2,
-			'filter' => Request::getVar('filter', '')
+			'filter' => Request::getString('filter', '')
 		);
 
 		$filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -521,7 +521,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$tos = array();
 
 		// get members name and id
-		$mbrs = Request::getVar('to', array());
+		$mbrs = Request::getArray('to', array());
 		foreach ($mbrs as $mbr)
 		{
 			$mem = User::getInstance($mbr);
@@ -588,7 +588,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('limitstart', 0);
-		$mids  = Request::getVar('mid', array());
+		$mids  = Request::getArray('mid', array());
 
 		if (count($mids) > 0)
 		{
@@ -636,7 +636,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('limitstart', 0);
-		$mids  = Request::getVar('mid', array());
+		$mids  = Request::getArray('mid', array());
 
 		if (count($mids) > 0)
 		{
@@ -677,7 +677,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('limitstart', 0);
-		$mids  = Request::getVar('mid', array());
+		$mids  = Request::getArray('mid', array());
 
 		if (count($mids) > 0)
 		{
@@ -746,7 +746,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('limitstart', 0);
-		$mids  = Request::getVar('mid', array());
+		$mids  = Request::getArray('mid', array());
 
 		if (count($mids) > 0)
 		{
@@ -789,7 +789,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('limitstart', 0);
-		$ids   = Request::getVar('mid', array());
+		$ids   = Request::getArray('mid', array());
 
 		if (count($ids) > 0)
 		{
@@ -833,7 +833,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('limitstart', 0);
-		$ids   = Request::getVar('mid', array());
+		$ids   = Request::getArray('mid', array());
 
 		if (count($ids) > 0)
 		{
@@ -875,8 +875,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		//$override = Request::getInt('override', 0);
-		$settings = Request::getVar('settings', array());
-		$ids = Request::getVar('ids', array());
+		$settings = Request::getArray('settings', array());
+		$ids = Request::getArray('ids', array());
 
 		// Ensure we have data to work with
 		if ($settings && count($settings) > 0)
@@ -987,7 +987,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming array of users to message
-		$mbrs = array_map("trim", explode(',', Request::getVar('mbrs', array(), 'post')));
+		$mbrs = array_map("trim", explode(',', Request::getArray('mbrs', array(), 'post')));
 
 		//array to hold members
 		$email_users = array();
@@ -1030,8 +1030,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming message and subject
-		$subject = Request::getVar('subject', Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'));
-		$message = Request::getVar('message', '');
+		$subject = Request::getString('subject', Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'));
+		$message = Request::getString('message', '');
 		$no_html = Request::getInt('no_html', 0);
 
 		if (!$subject || !$message)

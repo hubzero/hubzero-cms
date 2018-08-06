@@ -49,7 +49,7 @@ class Managers extends SiteController
 	public function execute()
 	{
 		// Load the course page
-		$this->course = Course::getInstance(Request::getVar('gid', ''));
+		$this->course = Course::getInstance(Request::getString('gid', ''));
 
 		parent::execute();
 	}
@@ -77,7 +77,7 @@ class Managers extends SiteController
 		$managers = $this->course->managers(); //get('managers');
 
 		// Incoming host
-		$m = Request::getVar('usernames', '', 'post');
+		$m = Request::getString('usernames', '', 'post');
 
 		$mbrs = explode(',', $m);
 
@@ -149,7 +149,7 @@ class Managers extends SiteController
 
 		$managers = $this->course->managers();
 
-		$mbrs = Request::getVar('entries', array(0), 'post');
+		$mbrs = Request::getArray('entries', array(0), 'post');
 
 		$users = array();
 		foreach ($mbrs as $mbr)
@@ -213,9 +213,9 @@ class Managers extends SiteController
 
 		$model = Course::getInstance($id);
 
-		$entries = Request::getVar('entries', array(0), 'post');
+		$entries = Request::getArray('entries', array(0), 'post');
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php';
 
 		foreach ($entries as $key => $data)
 		{

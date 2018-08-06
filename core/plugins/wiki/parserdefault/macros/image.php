@@ -430,7 +430,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	{
 		if (substr($file, 0, 1) == DS)
 		{
-			$path = PATH_APP . $file;
+			$path = PATH_ROOT . $file;
 		}
 		else
 		{
@@ -477,7 +477,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		$file = trim($file, DS);
 
-		if (Request::getVar('format') == 'pdf')
+		if (Request::getString('format') == 'pdf')
 		{
 			return $this->_path($file);
 		}

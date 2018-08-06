@@ -81,7 +81,7 @@ class Resources extends GenericItem
 
 		if (!Request::getInt('id', 0))
 		{
-			if (!Request::getVar('alias', ''))
+			if (!Request::getString('alias', ''))
 			{
 				return false;
 			}
@@ -110,7 +110,7 @@ class Resources extends GenericItem
 
 		if (!$id)
 		{
-			$alias = Request::getVar('alias', '');
+			$alias = Request::getString('alias', '');
 
 			$resource = Entry::oneByAlias($alias);
 			$id = $resource->id;

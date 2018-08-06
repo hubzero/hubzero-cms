@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$tmpl = Request::getVar('tmpl', '');
+$tmpl = Request::getCmd('tmpl', '');
 
 $text = 'Upload a CSV file';
 
@@ -60,54 +60,39 @@ Html::behavior('framework');
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
-<?php if ($tmpl == 'component') { ?>
-	<fieldset>
-		<div class="configuration" >
-			<div class="fltrt configuration-options">
-				<button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt( 'Close' );?></button>
+	<?php if ($tmpl == 'component') { ?>
+		<fieldset>
+			<div class="configuration" >
+				<div class="fltrt configuration-options">
+					<button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt('Close');?></button>
+				</div>
+				<?php echo Lang::txt('Upload a file with serial numbers') ?>
 			</div>
-			<?php echo Lang::txt('Upload a file with serial numbers') ?>
+		</fieldset>
+	<?php } ?>
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } else { ?>
+		<div class="col width-100">
+			<div class="current">
+				<p><?php echo $this->inserted; ?> serial number<?php echo $this->inserted == 1 ? '' : 's'; ?> inserted.</p>
+
+				<?php if (!empty($this->skipped)) { ?>
+					<p><?php echo count($this->skipped); ?> duplicate serial number<?php echo count($this->skipped) == 1 ? '' : 's'; ?> skipped.</p>
+				<?php } ?>
+
+				<?php if (!empty($this->ignored)) { ?>
+					<p><?php echo count($this->ignored); ?> serial number<?php echo count($this->ignored) == 1 ? '' : 's'; ?> <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:</p>
+					<ul>
+						<?php
+						foreach ($this->ignored as $ignore)
+						{
+							echo '<li>' . $ignore . '</li>';
+						}
+						?>
+					</ul>
+				<?php } ?>
+			</div>
 		</div>
-	</fieldset>
-<?php } ?>
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php }
-else {
-?>
-<div class="col width-100">
-	<div class="current">
-		<p><?php echo $this->inserted; ?> serial number<?php echo $this->inserted == 1 ? '' : 's'; ?> inserted.</p>
-
-		<?php
-		if (!empty($this->skipped))
-		{
-		?>
-		<p><?php echo count($this->skipped); ?> duplicate serial number<?php echo count($this->skipped) == 1 ? '' : 's'; ?> skipped.</p>
-		<?php
-		}
-		?>
-
-		<?php
-		if (!empty($this->ignored))
-		{
-			?>
-			<p><?php echo count($this->ignored); ?> serial number<?php echo count($this->ignored) == 1 ? '' : 's'; ?> <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:</p>
-			<ul>
-
-			<?php
-			foreach ($this->ignored as $ignore)
-			{
-				echo '<li>' . $ignore . '</li>';
-			}
-			?>
-
-			</ul>
-		<?php
-		}
-		?>
-	</div>
-</div>
-<?php }
-?>
+	<?php } ?>
 </form>

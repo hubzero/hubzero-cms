@@ -139,7 +139,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				0,
 				'int'
 			);
-			$view->filters['task'] = strtolower(Request::getVar('action', ''));
+			$view->filters['task'] = strtolower(Request::getCmd('action', ''));
 			$view->filters['sort'] = strtolower(Request::getWord('sort', 'enrolled'));
 			if (!in_array($view->filters['sort'], array('enrolled', 'title')))
 			{

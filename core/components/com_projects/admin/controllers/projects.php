@@ -65,6 +65,8 @@ class Projects extends AdminController
 		$this->registerTask('applydescription', 'savedescription');
 		$this->registerTask('accesspublic', 'access');
 		$this->registerTask('accessprivate', 'access');
+		$this->registerTask('feature', 'featured');
+		$this->registerTask('unfeature', 'featured');
 
 		// Publishing enabled?
 		$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
@@ -145,7 +147,7 @@ class Projects extends AdminController
 			'authorized' => true,
 			'getowner'   => 1,
 			'activity'   => 1,
-			'quota'      => Request::getVar('quota', 'all', 'post')
+			'quota'      => Request::getString('quota', 'all', 'post')
 		);
 
 		if (!in_array($this->view->filters['filterby'], array('active', 'archived')))
@@ -243,7 +245,7 @@ class Projects extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Incoming project ID
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		if (is_array($id))
 		{
 			$id = (!empty($id) ? intval($id[0]) : 0);
@@ -387,8 +389,8 @@ class Projects extends AdminController
 		// Incoming
 		$formdata = $_POST;
 		$id       = Request::getInt('id', 0);
-		$action   = Request::getVar('admin_action', '');
-		$message  = rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar('message', '')));
+		$action   = Request::getString('admin_action', '');
+		$message  = rtrim(\Hubzero\Utility\Sanitize::clean(Request::getString('message', '')));
 
 		// Load model
 		$model = new Models\Project($id);
@@ -498,14 +500,14 @@ class Projects extends AdminController
 		}
 
 		// Incoming tags
-		$tags = Request::getVar('tags', '', 'post');
+		$tags = Request::getString('tags', '', 'post');
 
 		// Save the tags
 		$cloud = new Models\Tags($model->get('id'));
 		$cloud->setTags($tags, User::get('id'), 1);
 
 		// Save params
-		$incoming = Request::getVar('params', array());
+		$incoming = Request::getArray('params', array());
 		if (!empty($incoming))
 		{
 			foreach ($incoming as $key => $value)
@@ -586,7 +588,7 @@ class Projects extends AdminController
 	protected function _saveMember()
 	{
 		// New member added?
-		$members = urldecode(trim(Request::getVar('newmember', '', 'post' )));
+		$members = urldecode(trim(Request::getString('newmember', '', 'post' )));
 		$role = Request::getInt('role', 0);
 
 		$mbrs = explode(',', $members);
@@ -676,7 +678,7 @@ class Projects extends AdminController
 
 		// Incoming
 		$private = ($this->getTask() == 'accesspublic' ? 0 : 1); //Request::getInt('private', 0);
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -737,7 +739,7 @@ class Projects extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -797,7 +799,7 @@ class Projects extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -842,13 +844,69 @@ class Projects extends AdminController
 	}
 
 	/**
+	 * Set featured state of project(s)
+	 *
+	 * @return  void
+	 */
+	public function featuredTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$ids = Request::getArray('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		$i = 0;
+
+		//foreach group id passed in
+		foreach ($ids as $id)
+		{
+			// Update record(s)
+			$model = new Models\Project($id);
+
+			if (!$model->exists())
+			{
+				Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
+				continue;
+			}
+
+			$model->set('featured', $this->getTask() == 'feature' ? 1 : 0);
+
+			if (!$model->store())
+			{
+				Notify::error($model->getError());
+				continue;
+			}
+
+			// Allow plugins to respond to changes
+			Event::trigger('projects.onProjectAfterSave', array($model));
+
+			$i++;
+		}
+
+		// Output messsage and redirect
+		if ($i)
+		{
+			Notify::success(Lang::txt('COM_PROJECTS_SUCCESS_' . strtoupper($this->getTask()), $i));
+		}
+
+		$this->cancelTask();
+	}
+
+	/**
 	 * Erases all project information (to be used for test projects only)
 	 *
 	 * @return  void
 	 */
 	public function eraseTask()
 	{
-		$id = Request::getVar('id', 0);
+		$id = Request::getInt('id', 0);
 		$permanent = 1;
 
 		// Initiate extended database class
@@ -962,8 +1020,8 @@ class Projects extends AdminController
 	 */
 	public function gitaddTask()
 	{
-		$id   = Request::getVar('id', 0);
-		$file = Request::getVar('file', '');
+		$id   = Request::getInt('id', 0);
+		$file = Request::getString('file', '');
 
 		// Initiate extended database class
 		$obj = new Tables\Project($this->database);
@@ -1021,7 +1079,7 @@ class Projects extends AdminController
 	 */
 	public function gitgcTask()
 	{
-		$id = Request::getVar('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Get repo model
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'repo.php';
@@ -1055,7 +1113,7 @@ class Projects extends AdminController
 	 */
 	public function fixsyncTask()
 	{
-		$id = Request::getVar('id', 0);
+		$id = Request::getInt('id', 0);
 		$service = 'google';
 
 		// Initiate extended database class
@@ -1151,7 +1209,7 @@ class Projects extends AdminController
 		}
 
 		// Incoming data
-		$description = json_decode(Request::getVar('descriptionFields', '{}', 'post', 'none', 2));
+		$description = json_decode(Request::getString('descriptionFields', '{}', 'post', 'none', 2));
 
 		// Get the old schema
 		$fields = Field::all()

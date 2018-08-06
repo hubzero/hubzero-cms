@@ -51,7 +51,7 @@ class plgSystemJquery extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check if active for this client
-		if (!$this->params->get('activateSite') || Request::getVar('format') == 'pdf')
+		if (!$this->params->get('activateSite') || Request::getString('format') == 'pdf')
 		{
 			return;
 		}

@@ -51,6 +51,11 @@ if ($group)
 	$members = $group->get('members');
 	$managers = $group->get('managers');
 }
+$roles = [
+	'COLLABORATORS' => 0,
+	'MANAGERS' => 1,
+	'REVIEWERS' => 5
+];
 ?>
 
 <?php if ($this->model->groupOwner()) { ?>
@@ -70,6 +75,17 @@ if ($group)
 				<input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio" value="1" <?php if ($this->model->get('sync_group') != 0) { echo ' checked="checked"'; } ?> />
 				<span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?></span>
 			</label>
+
+			<select id="sync-role-selector" name="syncRole" hidden>
+				<?php foreach ($roles as $description => $value): ?>
+					<option value="" selected disabled hidden>
+						<?php echo Lang::txt('PLG_PROJECTS_TEAM_SYNCING_DEFAULT'); ?>
+					</option>
+					<option value="<?php echo $value; ?>">
+						<?php echo Lang::txt("PLG_PROJECTS_TEAM_SYNCING_$description"); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
 
 			<div class="group-action group-action-syncall">
 				<?php if (count($notteam)) { ?>
@@ -98,9 +114,11 @@ if ($group)
 <?php } ?>
 
 <fieldset>
-	<?php if (!$this->setup) { ?>
+	<?php if (!$this->setup): ?>
 		<legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_NEW_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AS') . ':'; ?></legend>
-	<?php } ?>
+	<?php else: ?>
+		<legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_PER_USER'); ?>:</legend>
+	<?php endif; ?>
 
 	<div class="combine_options">
 		<label for="role_owner">
@@ -203,13 +221,13 @@ if ($group)
 
 			switch ($owner->role)
 			{
-				case '1':
+				case \Components\Projects\Models\Orm\Owner::ROLE_MANAGER:
 					$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER');
 					break;
-				case '5':
+				case \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER:
 					$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_REVIEWER');
 					break;
-				case '2':
+				case \Components\Projects\Models\Orm\Owner::ROLE_COLLABORATOR:
 				default:
 					$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATOR');
 					break;
@@ -255,15 +273,15 @@ if ($group)
 				</td>
 				<td>
 					<?php if ($owner->status == 3): ?>
-						<a id="<?php echo 'form-' . $owner->id;?>" 
-							href="<?php echo Route::url('index.php?option=com_projects&alias=' . 
-								$this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>" 
+						<a id="<?php echo 'form-' . $owner->id;?>"
+							href="<?php echo Route::url('index.php?option=com_projects&alias=' .
+								$this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
 							class="btn btn-success">
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
 						</a>
-						<a id="<?php echo 'form-' . $owner->id;?>" 
-							href="<?php echo Route::url('index.php?option=com_projects&alias=' . 
-								$this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>" 
+						<a id="<?php echo 'form-' . $owner->id;?>"
+							href="<?php echo Route::url('index.php?option=com_projects&alias=' .
+								$this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
 							class="btn btn-danger modal">
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
 						</a>

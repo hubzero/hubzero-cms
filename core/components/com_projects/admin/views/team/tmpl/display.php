@@ -123,13 +123,13 @@ function submitbutton(pressbutton)
 
 			switch ($row->role)
 			{
-				case '1':
+				case \Components\Projects\Models\Orm\Owner::ROLE_MANAGER:
 					$role = Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER');
 					break;
-				case '5':
+				case \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER:
 					$role = Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER');
 					break;
-				case '2':
+				case \Components\Projects\Models\Orm\Owner::ROLE_COLLABORATOR:
 				default:
 					$role = Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR');
 					break;
@@ -177,15 +177,15 @@ function submitbutton(pressbutton)
 						<span class="prominent"><?php echo Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role); ?></span>
 					<?php } else { ?>
 						<select name="role[<?php echo $row->userid; ?>]" onchange="Joomla.submitbutton('update');">
-							<option value="1"<?php if ($row->role == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER'); ?></option>
-							<option value="0"<?php if ($row->role == 2 || !$row->role) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR'); ?></option>
-							<option value="5"<?php if ($row->role == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER'); ?></option>
+							<option value="1"<?php if ($row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER'); ?></option>
+							<option value="0"<?php if ($row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE || !$row->role) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR'); ?></option>
+							<option value="5"<?php if ($row->role == \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER'); ?></option>
 						</select>
 					<?php } ?>
 					</span>
 				</td>
 				<td class="priority-4">
-					<?php echo $row->status == 1 ? Date::of($row->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('PLG_PROJECTS_TEAM_INVITED') . '</span>'; ?>
+					<?php echo $row->status == 1 ? Date::of($row->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('COM_PROJECTS_TEAM_INVITED') . '</span>'; ?>
 				</td>
 				<td class="priority-4">
 					<?php

@@ -382,8 +382,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the form input
-		$token  = Request::getVar('token', null, 'post', 'alnum');
-		$change = Request::getVar('change', '', 'post');
+		$token  = Request::getString('token', null, 'post', 'alnum');
+		$change = Request::getString('change', '', 'post');
 
 		// Create the view
 		$view = new \Hubzero\Plugin\View(
@@ -500,9 +500,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the password input
-		$password1 = Request::getVar('password1', null, 'post', 'string', JREQUEST_ALLOWRAW);
-		$password2 = Request::getVar('password2', null, 'post', 'string', JREQUEST_ALLOWRAW);
-		$change    = Request::getVar('change', '', 'post');
+		$password1 = Request::getString('password1', null, 'post', 'string', JREQUEST_ALLOWRAW);
+		$password2 = Request::getString('password2', null, 'post', 'string', JREQUEST_ALLOWRAW);
+		$change    = Request::getString('change', '', 'post');
 
 		// Create the view
 		$view = new \Hubzero\Plugin\View(
@@ -764,7 +764,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the form input
-		$content = Request::getVar('keytext', '');
+		$content = Request::getString('keytext', '');
 
 		// Write to the file
 		if (!Filesystem::write($base . $user . $ssh . $auth, $content) && $content != '')
@@ -974,7 +974,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the password
-		$pw = Request::getVar('password1', null, 'post');
+		$pw = Request::getString('password1', null, 'post');
 
 		// Validate the password
 		if (!empty($pw))

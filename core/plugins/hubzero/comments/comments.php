@@ -90,28 +90,41 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$this->comment = new \Plugins\Hubzero\Comments\Models\Comment();
 
 		$this->view->params   = $this->params;
-		$this->view->task     = $this->task    = Request::getVar('action', '');
+		$this->view->task     = $this->task    = Request::getCmd('action', '');
 
 		switch ($this->task)
 		{
 			// Feeds
-			case 'feed.rss': $this->_feed();   break;
-			case 'feed':     $this->_feed();   break;
+			case 'feed.rss':
+			case 'feed':
+				$this->_feed();
+				break;
 
 			// Entries
 			case 'commentsave':
-			case 'save':     $this->_save();   break;
-			//case 'new':      $this->_view();   break;
+			case 'save':
+				$this->_save();
+				break;
 			case 'commentnew':
 			case 'commentedit':
-			case 'edit':     $this->_view();   break;
+			case 'edit':
+				$this->_view();
+				break;
 			case 'commentdelete':
-			case 'delete':   $this->_delete(); break;
-			case 'view':     $this->_view();   break;
+			case 'delete':
+				$this->_delete();
+				break;
+			case 'view':
+				$this->_view();
+				break;
 			case 'commentvote':
-			case 'vote':     $this->_vote();   break;
+			case 'vote':
+				$this->_vote();
+				break;
 
-			default:         $this->_view();   break;
+			default:
+				$this->_view();
+				break;
 		}
 
 		foreach ($this->getErrors() as $error)
@@ -330,7 +343,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object
 		$row = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($comment['id'])->set($comment);
@@ -359,7 +372,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		$upload = Request::getVar('comment_file', '', 'files', 'array');
+		$upload = Request::getArray('comment_file', array(), 'files');
 
 		if (!empty($upload) && $upload['name'])
 		{
@@ -466,7 +479,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$doc->title .= ($title) ? ': ' . stripslashes($title) : '';
 		$doc->title .= ': ' . Lang::txt('PLG_HUBZERO_COMMENTS');
 
-		$doc->description = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_DESCRIPTION',Config::get('sitename'), stripslashes($title));
+		$doc->description = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($title));
 		$doc->copyright   = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
 		$comments = \Plugins\Hubzero\Comments\Models\Comment::all()

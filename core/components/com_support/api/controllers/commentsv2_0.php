@@ -101,11 +101,11 @@ class Commentsv2_0 extends ApiController
 
 		if (Request::getInt('ticket', null))
 		{
-			$comments = $comments->whereEquals('ticket', Request::get('ticket'));
+			$comments = $comments->whereEquals('ticket', Request::getInt('ticket'));
 		}
 		if (Request::getInt('created_by', null))
 		{
-			$comments = $comments->whereEquals('created_by', Request::get('created_by'));
+			$comments = $comments->whereEquals('created_by', Request::getInt('created_by'));
 		}
 
 		$response = new stdClass;
@@ -237,10 +237,10 @@ class Commentsv2_0 extends ApiController
 		$comment = \Components\Support\Models\Comment::blank();
 		$changelog = new stdClass;
 
-		$comment->set('ticket', Request::get('ticket', ''));
-		$comment->set('comment', nl2br(Request::get('comment')));
+		$comment->set('ticket', Request::getInt('ticket', ''));
+		$comment->set('comment', nl2br(Request::getString('comment')));
 		$comment->set('created_by', User::get('id'));
-		$comment->set('access', (Request::get('private', false) == 'true' ? 1 : 0));
+		$comment->set('access', (Request::getBool('private', false) == 'true' ? 1 : 0));
 
 		$changes = array();
 		foreach (['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)

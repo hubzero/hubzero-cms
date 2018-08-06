@@ -58,7 +58,7 @@ defined('_HZEXEC_') or die();
 			//if we are on the overview tab and we have group pages
 			if ($section['name'] == 'overview' && count($this->pages) > 0)
 			{
-				$trueTab = strtolower(Request::getVar('active', 'overview'));
+				$trueTab = strtolower(Request::getString('active', 'overview'));
 				$liClass = ($trueTab != $this->tab) ? '' : $liClass;
 
 				if (($access == 'registered' && User::isGuest()) || ($access == 'members' && !in_array(User::get("id"), $this->group->get('members'))))

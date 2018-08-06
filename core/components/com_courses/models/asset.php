@@ -40,10 +40,10 @@ use User;
 use Lang;
 use App;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.association.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'section' . DS . 'date.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.association.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'section' . DS . 'date.php';
 
 /**
  * Asset model class for a course
@@ -300,13 +300,13 @@ class Asset extends Base
 	 */
 	public function logView($course=null)
 	{
-		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php');
+		require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php';
 
 		if (!$course || !is_object($course))
 		{
-			$gid      = Request::getVar('gid');
-			$offering = Request::getVar('offering');
-			$section  = Request::getVar('section');
+			$gid      = Request::getString('gid');
+			$offering = Request::getString('offering');
+			$section  = Request::getString('section');
 
 			$course = new Course($gid);
 			$course->offering($offering);
@@ -395,7 +395,7 @@ class Asset extends Base
 		}
 
 		// Get the scope of the parent page the file is attached to
-		$filename = Request::getVar('file', '');
+		$filename = Request::getString('file', '');
 		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
 			$filename = substr($filename, strlen('image:'));

@@ -208,7 +208,7 @@ class Pages extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -248,7 +248,7 @@ class Pages extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('page', array(), 'post');
+		$fields = Request::getArray('page', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$authors = $fields['authors'];
@@ -260,7 +260,7 @@ class Pages extends AdminController
 		$page = Page::oneOrNew($fields['id'])->set($fields);
 
 		// Get parameters
-		$params = Request::getVar('params', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 		if (is_array($params))
 		{
 			$pparams = new \Hubzero\Config\Registry($page->get('params'));
@@ -324,7 +324,7 @@ class Pages extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0));
+		$ids = Request::getArray('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

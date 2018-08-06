@@ -37,7 +37,7 @@ use Route;
 use Lang;
 use App;
 
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'languages.php');
+include_once dirname(__DIR__) . DS . 'models' . DS . 'languages.php';
 
 /**
  * Languages Installer Controller
@@ -127,7 +127,7 @@ class Languages extends AdminController
 		$model = new Models\Languages();
 
 		// Get array of selected languages
-		$lids = Request::getVar('cid', array(), '', 'array');
+		$lids = Request::getArray('cid', array(), '');
 		\Hubzero\Utility\Arr::toInteger($lids, array());
 
 		if (!$lids)

@@ -393,7 +393,7 @@ class Categories extends SiteController
 		$url = 'index.php?option=' . $this->_option;
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a category

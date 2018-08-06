@@ -40,7 +40,7 @@ if (!$this->sub)
 $this->js('wiki.js', 'com_wiki')
      ->js('jquery.fileuploader.js', 'system');
 
-$tags = $this->page->tags('string') ? $this->page->tags('string') : Request::getVar('tags', '');
+$tags = $this->page->tags('string') ? $this->page->tags('string') : Request::getString('tags', '');
 
 if ($this->page->exists())
 {
@@ -53,7 +53,7 @@ else
 }
 
 // Incoming
-$scope   = Request::getVar('scope', '');
+$scope   = Request::getString('scope', '');
 
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">

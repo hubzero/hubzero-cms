@@ -149,12 +149,15 @@ function submitbutton(pressbutton)
 			<fieldset class="adminform">
 				<legend><span>Payment info</span></legend>
 
-				<p>Payment method: <?php echo $this->tInfo->tiPayment; ?></p>
+				<p>
+					<strong>Payment method:</strong><br>
+					<?php echo $this->tInfo->tiPayment; ?>
+				</p>
 
 				<?php
 				if (!empty($this->tInfo->tiPaymentDetails))
 				{
-					echo '<p>' . $this->tInfo->tiPaymentDetails . '</p>';
+					echo '<p><strong>Payment details:</strong><br>' . $this->tInfo->tiPaymentDetails . '</p>';
 				}
 
 				?>
@@ -200,7 +203,7 @@ function submitbutton(pressbutton)
 							?>
 							<span><?php echo $product; ?></span>
 						</td>
-						<td><span><?php echo isset($itemInfo->sPrice) ? $itemInfo->sPrice : 'N/A'; ?></span></td>
+						<td><span><?php echo isset($itemOrdered['transactionInfo']->tiPrice) ? $itemOrdered['transactionInfo']->tiPrice : 'N/A'; ?></span></td>
 						<td><span><?php echo $itemOrdered['transactionInfo']->qty; ?></span></td>
 					</tr>
 			<?php
@@ -221,7 +224,7 @@ function submitbutton(pressbutton)
 			{
 				$notes[] = array(
 					//'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
-					'label' => $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku,
+					'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
 					'notes' => $meta->checkoutNotes);
 			}
 		}
@@ -229,13 +232,13 @@ function submitbutton(pressbutton)
 		$genericNotesLabel = '';
 		if (!empty($notes))
 		{
-			$genericNotesLabel = 'Other notes/comments';
+			$genericNotesLabel = '<strong>' . 'Other notes/comments' . '</strong>';
 		}
 
 		if ($this->tInfo->tiNotes)
 		{
 			$notes[] = array(
-				'label' => '<strong>' . $genericNotesLabel . '</strong>',
+				'label' => $genericNotesLabel,
 				'notes' => $this->tInfo->tiNotes);
 		}
 

@@ -535,7 +535,7 @@ class Curation extends Obj
 						// Take the first one matching our role and type
 						// It's technically possible to have more than one match, but no way of
 						// telling which one is correct at that point as fas as I can tell
-						if ($role == $element->params->role && $type == $element->params->type)
+						if ($role == $element->params->role && (!$type || ($type && $type == $element->params->type)))
 						{
 							$output = new stdClass;
 							$output->block   = $block;
@@ -621,7 +621,7 @@ class Curation extends Obj
 	 * @param   integer  $elementId  Element ID
 	 * @return  boolean
 	 */
-	public function addItem ($actor = 0, $elementId = 0)
+	public function addItem($actor = 0, $elementId = 0)
 	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
@@ -808,7 +808,7 @@ class Curation extends Obj
 		}
 
 		// Incoming
-		$dispute  = urldecode(Request::getVar('review', ''));
+		$dispute  = urldecode(Request::getString('review', ''));
 
 		if (!trim($dispute))
 		{
@@ -843,7 +843,7 @@ class Curation extends Obj
 		}
 
 		// Incoming
-		$reason = urldecode(Request::getVar('review', ''));
+		$reason = urldecode(Request::getString('review', ''));
 
 		if (!trim($reason))
 		{
@@ -1880,7 +1880,7 @@ class Curation extends Obj
 		}
 
 		// Incoming
-		$comment = Request::getVar('comment', '', 'post');
+		$comment = Request::getString('comment', '', 'post');
 
 		// Collect details
 		$changelog = $this->getChangeLog($oldStatus, $newStatus, $curator);
@@ -2033,7 +2033,29 @@ class Curation extends Obj
 
 		// Get attachment type model
 		$attModel = new Attachments($this->_db);
-		$contents = '<ul class="filelist">';
+
+		$bundle = $this->_pub->bundlePath();
+
+		$contents = '<div class="bundle-data">';
+		if (file_exists($bundle))
+		{
+			$contents .= '<div class="grid bundle-meta">
+				<div class="col span4">
+					<ul class="bundle-info">
+						<li>' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CONTENT') . '</li>
+						<li><span class="bundle-size">' . \Hubzero\Utility\Number::formatBytes(filesize($bundle)) . '</span></li>
+					</ul>
+				</div>
+				<div class="col span8 omega">
+					<div class="bundle-checksum">
+						<span class="bundle-checksum-value">md5:' . md5_file($bundle) . '</span>
+						<span class="bundle-checksum-help icon-help tooltips" title="' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '</span>
+					</div>
+				</div>
+			</div>';
+		}
+		$contents .= '<div class="bundle-files">';
+		$contents .= '<ul class="filelist">';
 
 		$contents .= $attModel->showPackagedItems(
 			$elements,
@@ -2043,10 +2065,18 @@ class Curation extends Obj
 		// Custom license to be included in LICENSE.txt
 		if ($this->_pub->license_text)
 		{
-			$contents .= '<li>' . \Components\Projects\Models\File::drawIcon('txt') . ' LICENSE.txt</li>';
+			$contents .= '<li>';
+			$contents .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('txt') . '</span>';
+			$contents .= '<span class="item-title">LICENSE.txt</span>';
+			$contents .= '</li>';
 		}
-		$contents .= '<li>' . \Components\Projects\Models\File::drawIcon('txt') . ' README.txt</li>';
+		$contents .= '<li>';
+		$contents .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('txt') . '</span>';
+		$contents .= '<span class="item-title">README.txt</span>';
+		$contents .= '</li>';
 		$contents .= '</ul>';
+
+		$contents .= '</div></div>';
 
 		return $contents;
 	}
@@ -2054,16 +2084,32 @@ class Curation extends Obj
 	/**
 	 * Get bundle package name
 	 *
+	 * @param	boolean	$includeVersionNum
 	 * @return  mixed  False on error, string on success
 	 */
-	public function getBundleName()
+	public function getBundleName($includeVersionNum = false)
 	{
 		if (empty($this->_pub))
 		{
 			return false;
 		}
+		$doi = $this->_pub->version->get('doi');
+		if ($doi != '')
+		{
+			$doi = str_replace('.', '_', $doi);
+			$doi = str_replace('/', '_', $doi);
+			$bundleName = $doi;
+		}
+		else
+		{
+			$bundleName = Lang::txt('Publication') . '_' . $this->_pub->id;
+			if ($includeVersionNum)
+			{
+				$bundleName .= '_' . $this->_pub->version->get('version_number');
+			}
+		}
 
-		return Lang::txt('Publication') . '_' . $this->_pub->id . '.zip';
+		return $bundleName . '.zip';
 	}
 
 	/**
@@ -2079,19 +2125,9 @@ class Curation extends Obj
 		}
 
 		$bundle = $this->_pub->path('base', true) . DS . $this->getBundleName();
-		$doi = $this->_pub->version->get('doi');
 
-		if ($doi != '')
-		{
-			$doi = str_replace('.', '_', $doi);
-			$doi = str_replace('/', '_', $doi);
-			$serveas = $doi . '.zip';
-		}
-		else
-		{
-			// Already contains a '.zip' on the end.
-			$serveas = $this->getBundleName();
-		}
+		// Already contains a '.zip' on the end.
+		$serveas = $this->getBundleName();
 
 		if (!is_file($bundle))
 		{
@@ -2112,6 +2148,46 @@ class Curation extends Obj
 		}
 
 		exit;
+	}
+
+	/**
+	 * Generate symbolic link for publication package
+	 *
+	 * @return boolean
+	 */
+	public function createSymLink()
+	{
+		$tarname = $this->getBundleName();
+		$tarpath = $this->_pub->path('base', true) . DS . $tarname;
+		$symLink = $this->_symLinkPath();
+		if (empty($this->_pub) || $symLink == false || !is_file($tarpath))
+		{
+			return false;
+		}
+		if (!is_file($symLink))
+		{
+			if (!symlink($tarpath, $symLink))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Remove symbolic link for publication package
+	 *
+	 * @return boolean
+	 */
+	public function removeSymLink()
+	{
+		$symLink = $this->_symLinkPath();
+		if ($symLink == false)
+		{
+			return false;
+		}
+		unlink($symLink);
+		return true;
 	}
 
 	/**
@@ -2146,18 +2222,7 @@ class Curation extends Obj
 			return false;
 		}
 
-		// Use DOI if available
-		$doi = $this->_pub->version->get('doi');
-		if ($doi != '')
-		{
-			$doi = str_replace('.', '_', $doi);
-			$doi = str_replace('/', '_', $doi);
-			$bundleName = $doi;
-		}
-		else
-		{
-			$bundleName = rtrim($this->getBundleName(), '.zip');
-		}
+		$bundleName = rtrim($this->getBundleName(), '.zip');
 
 		// Set archival properties
 		$bundleDir  = $bundleName;
@@ -2282,7 +2347,6 @@ class Curation extends Obj
 		{
 			return false;
 		}
-
 		return true;
 	}
 
@@ -2486,7 +2550,7 @@ class Curation extends Obj
 		$row = new Tables\Version($this->_db);
 
 		// Incoming
-		$label = trim(Request::getVar('label', '', 'post'));
+		$label = trim(Request::getString('label', '', 'post'));
 		$used_labels = $row->getUsedLabels($this->_pub->id, $this->_pub->version_number);
 
 		if ($label && in_array($label, $used_labels))
@@ -2598,5 +2662,21 @@ class Curation extends Obj
 		}
 
 		return $current->id;
+	}
+
+	/**
+	 * Get path to symbolic link used for downloading package via SFTP
+	 *
+	 * @return 	mixed 	string if sftp path provided, false if not
+	 */
+	private function _symLinkPath()
+	{
+		$sftpPath = PATH_APP . Component::params('com_publications')->get('sftppath');
+		if (!is_dir($sftpPath))
+		{
+			return false;
+		}
+		$symLink = $sftpPath . '/' . $this->getBundleName(true);
+		return $symLink;
 	}
 }

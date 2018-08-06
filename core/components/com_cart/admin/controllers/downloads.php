@@ -39,7 +39,7 @@ use Route;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
@@ -262,7 +262,7 @@ class Downloads extends AdminController
 	 */
 	public function stateTask($state = 0)
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -341,76 +341,100 @@ class Downloads extends AdminController
 				date('m/d/Y')
 			)
 		);
-		$rowsRaw = CartDownload::getDownloads('array', $filters);
-
-		$rows = array();
-
-		foreach ($rowsRaw as $row)
-		{
-			$status = 'active';
-			if (!$row->dStatus)
-			{
-				$status = 'inactive';
-			}
-
-			if ($row->meta)
-			{
-				// userInfo
-				if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo'])
-				{
-					$metaUserInfo = unserialize($row->meta['userInfo']['mtValue']);
-					$metaUserInfoCsv = array();
-					foreach ($metaUserInfo as $mtK => $mtV)
-					{
-						if (is_array($mtV))
-						{
-							$mtV = implode('; ', $mtV);
-						}
-						$metaUserInfoCsv[] = $mtV;
-					}
-					$metaUserInfoCsv = implode(', ', $metaUserInfoCsv);
-				}
-
-				// eulaAccepted
-				if (array_key_exists('eulaAccepted', $row->meta) && $row->meta['eulaAccepted'])
-				{
-					if ($row->meta['eulaAccepted']['mtValue'])
-					{
-						$metaEula = 'EULA accepted';
-					}
-				}
-				else
-				{
-					$metaEula = '';
-				}
-			}
-			else
-			{
-				$metaUserInfoCsv = '';
-				$metaEula = '';
-			}
-
-			$rows[] = array($row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username, $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status);
-		}
 
 		$dateFrom = date('dMY', strtotime($filters['report-from']));
 		$dateTo = date('dMY', strtotime($filters['report-to']));
 		$date = date('d-m-Y');
 
-		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=cart-downloads-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
-		// Disable caching
-		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
-		header("Pragma: no-cache"); // HTTP 1.0
-		header("Expires: 0"); // Proxies
+		// If debugging is enabled it seems to want a lot more memory
+		ini_set('memory_limit', '1G');
+		// Disable output buffering
+		if (ob_get_level())
+		{
+			ob_end_clean();
+		}
+
+		// Give the browser some headers so it knows what we're sending
+		header('Cache-Control: no-cache, no-store, must-revalidate, post-check=0, pre-check=0'); // HTTP 1.1
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Disposition: attachment; filename=cart-downloads-' . $date . '(' . $dateFrom . '-' . $dateTo . ').csv');
+		header('Expires: 0'); // Proxies
+		header('Pragma: no-cache'); // HTTP 1.0
 
 		$output = fopen("php://output", "w");
+
 		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'User Details', 'EULA', 'IP', 'Status');
 		fputcsv($output, $row);
-		foreach ($rows as $row)
+
+		// flush to get the headers to the browser and give the user the download dialog immediately
+		flush();
+
+		//get a count of records
+		$rowsCount = CartDownload::getDownloads('count', $filters);
+
+		// in chunks of 5000, grab results and start outputting to filestream
+		$filters['limit'] = 5000;
+		for ($i = 0; $i < $rowsCount; $i += 5000)
 		{
-			fputcsv($output, $row);
+			// get up to another 5000 records
+			$filters['start'] = $i;
+			$rowsRaw = CartDownload::getDownloads('array', $filters);
+
+			// parse the metadata
+			foreach ($rowsRaw as $row)
+			{
+				$status = 'active';
+				if (!$row->dStatus)
+				{
+					$status = 'inactive';
+				}
+
+				if ($row->meta)
+				{
+					// userInfo
+					if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo'])
+					{
+						$metaUserInfo = unserialize($row->meta['userInfo']['mtValue']);
+						$metaUserInfoCsv = array();
+						foreach ($metaUserInfo as $mtK => $mtV)
+						{
+							if (is_array($mtV))
+							{
+								$mtV = implode('; ', $mtV);
+							}
+							$metaUserInfoCsv[] = $mtV;
+						}
+						$metaUserInfoCsv = implode(', ', $metaUserInfoCsv);
+					}
+
+					// eulaAccepted
+					if (array_key_exists('eulaAccepted', $row->meta) && $row->meta['eulaAccepted'])
+					{
+						if ($row->meta['eulaAccepted']['mtValue'])
+						{
+							$metaEula = 'EULA accepted';
+						}
+					}
+					else
+					{
+						$metaEula = '';
+					}
+				}
+				else
+				{
+					$metaUserInfoCsv = '';
+					$metaEula = '';
+				}
+
+				// ouput to stream
+				fputcsv($output, array($row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username, $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status));
+				// flush up to 5000 lines of output to browser
+				flush();
+			}
 		}
+		// close stream and die
 		fclose($output);
 		die;
 	}
@@ -485,4 +509,3 @@ class Downloads extends AdminController
 		die;
 	}
 }
-

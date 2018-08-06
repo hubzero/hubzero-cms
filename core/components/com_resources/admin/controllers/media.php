@@ -54,7 +54,7 @@ class Media extends AdminController
 		Request::checkToken();
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', '', 'post');
+		$listdir = Request::getString('listdir', '', 'post');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
@@ -62,13 +62,13 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('dirPath', '', 'post');
+		$subdir = Request::getString('dirPath', '', 'post');
 
 		// Build the path
 		$path = Utilities::buildUploadPath($listdir, $subdir);
 
 		// Are we creating a new folder?
-		$foldername = Request::getVar('foldername', '', 'post');
+		$foldername = Request::getString('foldername', '', 'post');
 		if ($foldername != '')
 		{
 			// Make sure the name is valid
@@ -105,7 +105,7 @@ class Media extends AdminController
 			}
 
 			// Incoming file
-			$file = Request::getVar('upload', '', 'files', 'array');
+			$file = Request::getArray('upload', '', 'files');
 			if (!$file['name'])
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
@@ -192,7 +192,7 @@ class Media extends AdminController
 		Request::checkToken('get');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', '');
+		$listdir = Request::getString('listdir', '');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
@@ -208,13 +208,13 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = Utilities::buildUploadPath($listdir, $subdir);
 
 		// Incoming directory to delete
-		$folder = Request::getVar('delFolder', '');
+		$folder = Request::getString('delFolder', '');
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_DIRECTORY'));
@@ -252,7 +252,7 @@ class Media extends AdminController
 		Request::checkToken('get');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', '');
+		$listdir = Request::getString('listdir', '');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
@@ -268,13 +268,13 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = Utilities::buildUploadPath($listdir, $subdir);
 
 		// Incoming file to delete
-		$file = Request::getVar('delFile', '');
+		$file = Request::getString('delFile', '');
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
@@ -307,7 +307,7 @@ class Media extends AdminController
 	public function displayTask()
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', '');
+		$listdir = Request::getString('listdir', '');
 		if (!$listdir)
 		{
 			echo '<p class="error">' . Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR') . '</p>';
@@ -315,14 +315,14 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 		if (!$subdir)
 		{
-			$subdir = Request::getVar('dirPath', '', 'post');
+			$subdir = Request::getString('dirPath', '', 'post');
 		}
 
 		// Build the path
-		$path = Utilities::buildUploadPath($listdir, $subdir);
+		$path = Utilities::buildUploadPath($listdir);//, $subdir);
 
 		// Get list of directories
 		$dirs = $this->_recursiveListDir($path);
@@ -369,7 +369,7 @@ class Media extends AdminController
 	public function listTask()
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', '');
+		$listdir = Request::getString('listdir', '');
 		if (!$listdir)
 		{
 			echo '<p class="error">' . Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR') . '</p>';
@@ -377,7 +377,7 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = Utilities::buildUploadPath($listdir, $subdir);

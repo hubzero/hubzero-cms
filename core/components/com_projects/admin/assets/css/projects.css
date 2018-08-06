@@ -76,6 +76,11 @@
 		content: "\f021";
 		color: #bbb;
 	}
+	.state.activity:before {
+		content: "\f056";
+		color: #bbb;
+	}
+	.state.activity:hover:before,
 	.state.not-synced:hover:before,
 	.state.synced:hover:before {
 		color: #333;

@@ -34,8 +34,12 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\OptionGroup;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
+use Request;
+use Route;
+use Lang;
+use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php';
 
 /**
  * Controller class for knowledge base categories
@@ -52,34 +56,33 @@ class Options extends AdminController
 		// Get filters
 		$this->view->filters = array(
 			// Get sorting variables
-				'sort' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						'title'
-				),
-				'sort_Dir' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						'ASC'
-				),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
 			// Get paging variables
-				'limit' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limit',
-						'limit',
-						Config::get('list_limit'),
-						'int'
-				),
-				'start' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limitstart',
-						'limitstart',
-						0,
-						'int'
-				)
+			'limit' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
-		//print_r($this->view->filters);
 
 		// Get option group ID
-		$ogId = Request::getVar('ogId', array(0));
+		$ogId = Request::getInt('ogId', 0);
 		$this->view->ogId = $ogId;
 
 		// Get option group
@@ -93,8 +96,6 @@ class Options extends AdminController
 
 		// Get records
 		$this->view->rows = $obj->options('list', $ogId, $this->view->filters);
-		//print_r($this->view->rows); die;
-
 
 		// Set any errors
 		if ($this->getError())
@@ -106,7 +107,6 @@ class Options extends AdminController
 		}
 
 		// Output the HTML
-		//print_r($this->view); die;
 		$this->view->display();
 	}
 
@@ -137,7 +137,7 @@ class Options extends AdminController
 			// If this is a new option, set option group ID
 			if (!$id)
 			{
-				$ogId = Request::getVar('ogId');
+				$ogId = Request::getInt('ogId');
 				$row->setOptionGroupId($ogId);
 			}
 			$this->view->row = $row;
@@ -146,7 +146,7 @@ class Options extends AdminController
 		else
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -160,19 +160,16 @@ class Options extends AdminController
 			// If this is a new option, set option group ID
 			if (!$id)
 			{
-				$ogId = Request::getVar('ogId');
+				$ogId = Request::getInt('ogId');
 				$row->setOptionGroupId($ogId);
 			}
 		}
-
-		//print_r($row); die;
 
 		// Get option group's info
 		$ogId = $row->getOptionGroupId();
 		$warehouse = new Warehouse();
 		$ogInfo = $warehouse->getOptionGroups('list', $filters = array('ids' => $ogId));
 		$this->view->ogInfo = $ogInfo[0];
-		//print_r($ogInfo); die;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -208,21 +205,20 @@ class Options extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$obj = new Archive();
 		// Save option
-		try {
+		try
+		{
 			$option = $obj->updateOption($fields['oId'], $fields);
-			//print_r($option); die;
 		}
 		catch (\Exception $e)
 		{
-			//echo $e->getMessage(); die;
 			\Notify::error($e->getMessage());
 			// Get the sku
 			$option = $obj->option($fields['oId']);
-			//print_r($sku); die;
+
 			$this->editTask($option);
 			return;
 		}
@@ -231,8 +227,8 @@ class Options extends AdminController
 		{
 			// Redirect
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $fields['ogId'], false),
-					Lang::txt('COM_STOREFRONT_OPTION_SAVED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $fields['ogId'], false),
+				Lang::txt('COM_STOREFRONT_OPTION_SAVED')
 			);
 			return;
 		}
@@ -252,7 +248,7 @@ class Options extends AdminController
 		$step = Request::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
-		$ogId = Request::getVar('ogId');
+		$ogId = Request::getInt('ogId');
 
 		// What step are we on?
 		switch ($step)
@@ -261,7 +257,7 @@ class Options extends AdminController
 				Request::setVar('hidemainmenu', 1);
 
 				// Incoming
-				$id = Request::getVar('id', array(0));
+				$id = Request::getArray('id', array(0));
 				if (!is_array($id) && !empty($id))
 				{
 					$id = array($id);
@@ -281,23 +277,23 @@ class Options extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken();
 
 				// Incoming
-				$oIds = Request::getVar('oId', 0);
+				$oIds = Request::getArray('oId', array());
 
 				// Make sure we have ID(s) to work with
 				if (empty($oIds))
 				{
 					App::redirect(
-							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $ogId, false),
-							Lang::txt('COM_STOREFRONT_NO_ID'),
-							'error'
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $ogId, false),
+						Lang::txt('COM_STOREFRONT_NO_ID'),
+						'error'
 					);
 					return;
 				}
 
-				$delete = Request::getVar('delete', 0);
+				$delete = Request::getInt('delete', 0);
 
 				$msg = "Delete canceled";
 				$type = 'error';
@@ -344,9 +340,9 @@ class Options extends AdminController
 
 				// Set the redirect
 				App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&ogId=' . $ogId, false),
-						$msg,
-						$type
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&ogId=' . $ogId, false),
+					$msg,
+					$type
 				);
 
 				if (!empty($warnings))
@@ -388,18 +384,18 @@ class Options extends AdminController
 	 */
 	public function stateTask($state=0)
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$ogId = Request::getVar('ogId', 0);
+		$ogId = Request::getInt('ogId', 0);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-					'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+				'error'
 			);
 			return;
 		}
@@ -437,8 +433,8 @@ class Options extends AdminController
 
 		// Redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $ogId, false),
-				$message
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $ogId, false),
+			$message
 		);
 	}
 
@@ -449,12 +445,12 @@ class Options extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$ogId = $fields['ogId'];
 
 		// Set the redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $ogId, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $ogId, false)
 		);
 	}
 }

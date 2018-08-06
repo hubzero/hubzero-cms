@@ -60,7 +60,7 @@ class Mailings extends SiteController
 
 		$data = new stdClass();
 
-		$data->link = urldecode(Request::getVar('link', '', 'method', 'base64'));
+		$data->link = urldecode(Request::getString('link', '', 'method', 'base64'));
 
 		if ($data->link == '')
 		{

@@ -60,7 +60,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		$response->message = Lang::txt('No invoke URL found.');
 
 		// Check for an imconing token.
-		if ($token = Request::getVar('token', '', 'get'))
+		if ($token = Request::getString('token', '', 'get'))
 		{
 			$dtoken = base64_decode($token);
 
@@ -95,7 +95,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$appid = Request::getVar('appid');
+			$appid = Request::getString('appid');
 
 			// Generate the URL
 			$url = $this->generateInvokeUrl($option, $appid, $user, $ip);
@@ -150,7 +150,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 
 		$response = json_encode($response);
 
-		if ($callback = Request::getVar('callback'))
+		if ($callback = Request::getString('callback'))
 		{
 			$response = $callback . '(' . $response . ')';
 		}
@@ -170,7 +170,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 	 */
 	public function generateInvokeUrl($option, $appid = null, $user = null, $ip = null)
 	{
-		$appid = $appid ?: Request::getVar('appid');
+		$appid = $appid ?: Request::getString('appid');
 
 		if (!$appid)
 		{
@@ -278,7 +278,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 			$isAuthorised = User::authorise('core.manage', 'com_resources');
 
 			// Get the current page
-			include_once(__DIR__ . DS . 'models' . DS . 'page.php');
+			include_once __DIR__ . DS . 'models' . DS . 'page.php';
 
 			$page = Plugins\Resources\Windowstools\Models\Page::all()
 				->whereIn('access', User::getAuthorisedViewLevels())
@@ -327,7 +327,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 						// This will fall through to the default page
 						Request::checkToken();
 
-						$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+						$fields = Request::getArray('fields', array(), 'post');
 
 						$page->set($fields);
 

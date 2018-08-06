@@ -384,7 +384,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -457,7 +457,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'group',
 			'scope_id'   => $this->group->get('gidNumber'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'created_by' => Request::getInt('author', 0),
 			'state'      => 'public'
 		);
@@ -639,6 +639,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$filters['authorized'] = false;
 		}
 
+		Event::trigger('blog.onBlogView', array($row));
+
 		$view = $this->view('default', 'entry')
 			->set('option', $this->option)
 			->set('group', $this->group)
@@ -747,7 +749,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
+		$entry = Request::getArray('entry', array(), 'post');
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
@@ -792,7 +794,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Process tags
-		if (!$row->tag(Request::getVar('tags', '')))
+		if (!$row->tag(Request::getString('tags', '')))
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
@@ -856,8 +858,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		$process    = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
+		$process    = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
 
 		// Initiate a blog entry object
 		$entry = Components\Blog\Models\Entry::oneOrFail($id);
@@ -955,7 +957,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$data = Request::getVar('comment', array(), 'post', 'none', 2);
+		$data = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$comment = Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
@@ -1143,12 +1145,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$settings = Request::getVar('settings', array(), 'post');
+		$settings = Request::getArray('settings', array(), 'post');
 
 		$row = Hubzero\Plugin\Params::blank()->set($settings);
 
 		// Get parameters
-		$p = new Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
+		$p = new Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 
 		$row->set('params', $p->toString());
 

@@ -380,7 +380,7 @@ class ResourceMapGenerator
 	 */
 	public function pushDownload()
 	{
-		$alias = Request::getVar('alias', '');
+		$alias = Request::getString('alias', '');
 
 		$this->id = '';
 		if (substr($alias, -4) == '.rdf')

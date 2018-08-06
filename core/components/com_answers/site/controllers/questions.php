@@ -109,7 +109,7 @@ class Questions extends SiteController
 
 		// Incoming
 		$questionID = Request::getInt('rid');
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// clean input
 		array_walk($comment, function(&$field, $key)
@@ -640,7 +640,7 @@ class Questions extends SiteController
 			->set('question', $question)
 			->set('config', $this->config)
 			->set('funds', $funds)
-			->set('tag', Request::getVar('tag', ''))
+			->set('tag', Request::getString('tag', ''))
 			->setLayout('new')
 			->display();
 	}
@@ -670,7 +670,7 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$tags   = Request::getString('tags', '');
 		if (!isset($fields['reward']))
 		{
@@ -978,7 +978,7 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$response = Request::getVar('response', array(), 'post', 'none', 2);
+		$response = Request::getArray('response', array(), 'post');
 
 		// clean input
 		array_walk($response, function(&$field, $key)

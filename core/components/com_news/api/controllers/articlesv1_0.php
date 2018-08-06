@@ -85,9 +85,9 @@ class Articlesv1_0 extends ApiController
 		}
 
 		//get the request vars
-		$limit    = Request::getVar('limit', 5);
-		$section  = Request::getVar('section', 'news');
-		$category = Request::getVar('category', 'latest');
+		$limit    = Request::getInt('limit', 5);
+		$section  = Request::getString('section', 'news');
+		$category = Request::getString('category', 'latest');
 
 		//load up the news articles
 		$database = App::get('db');

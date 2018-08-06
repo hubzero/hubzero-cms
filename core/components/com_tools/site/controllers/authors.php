@@ -42,8 +42,8 @@ use Lang;
 use User;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
@@ -100,10 +100,10 @@ class Authors extends SiteController
 		}
 
 		// Incoming authors
-		$authorsNewstr = trim(Request::getVar('new_authors', '', 'post'));
+		$authorsNewstr = trim(Request::getString('new_authors', '', 'post'));
 		$authid   = Request::getInt('authid', 0, 'post');
-		$username = Request::getVar('author', '', 'post');
-		$role     = Request::getVar('role', '', 'post');
+		$username = Request::getString('author', '', 'post');
+		$role     = Request::getString('role', '', 'post');
 
 		// Turn the string into an array of usernames
 		$authorsNew = empty($authorsNew) ? explode(',', $authorsNewstr) : $authorsNew;
@@ -288,7 +288,7 @@ class Authors extends SiteController
 	public function updateTask()
 	{
 		// Incoming
-		$ids = Request::getVar('authors', array(), 'post');
+		$ids = Request::getArray('authors', array(), 'post');
 		$pid = Request::getInt('pid', 0);
 
 		// Ensure we have a resource ID ($pid) to work with
@@ -333,7 +333,7 @@ class Authors extends SiteController
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
-		$move = Request::getVar('move', 'down');
+		$move = Request::getWord('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -392,7 +392,7 @@ class Authors extends SiteController
 			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
 		}
 
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 
 		// Get all contributors of this resource
 		$resource = Entry::oneOrFail($id);

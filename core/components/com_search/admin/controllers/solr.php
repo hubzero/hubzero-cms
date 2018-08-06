@@ -32,16 +32,23 @@
 namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Access\Group as Accessgroup;
+use Hubzero\Search\Query;
+use Hubzero\Search\Index;
 use Components\Search\Models\Solr\Blacklist;
 use Components\Search\Models\Solr\Facet;
 use Components\Search\Models\Solr\SearchComponent;
-use \Hubzero\Search\Query;
-use \Hubzero\Search\Index;
 use Components\Search\Helpers\SolrHelper;
 use Components\Search\Helpers\DiscoveryHelper;
 use Components\Developer\Models\Application;
-use Hubzero\Access\Group as Accessgroup;
 use stdClass;
+use Component;
+use Request;
+use Notify;
+use Date;
+use User;
+use Lang;
+use App;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
@@ -54,9 +61,15 @@ require_once Component::path('com_developer') . DS . 'models' . DS . 'applicatio
  */
 class Solr extends AdminController
 {
+	/**
+	 * Determine task and execute it
+	 * 
+	 * @return void
+	 */
 	public function execute()
 	{
 		$solrUser = User::oneByUsername('hubzerosolrworker')->get('id');
+
 		if (file_exists(PATH_APP . '/config/solr.json') && $solrUser >= 0)
 		{
 			parent::execute();
@@ -68,10 +81,42 @@ class Solr extends AdminController
 	}
 
 	/**
+	 * Optimize/defragment solr index
+	 *
+	 * @return void
+	 */
+	public function optimizeTask()
+	{
+		$config = Component::params('com_search');
+		$index = new \Hubzero\Search\Index($config);
+		try
+		{
+			$result = $index->optimize();
+			if ($result->getStatus() == 0)
+			{
+				Notify::success('Successfully Optimized');
+			}
+			else
+			{
+				Notify::error('Optimization failed');
+			}
+		}
+		catch (\Solarium\Exception\HttpException $e)
+		{
+			$this->view->setError($e->getMessage());
+			$this->displayTask();
+		}
+		App::redirect(
+			Route::url('index.php?option=com_search&task=display', false)
+		);
+	}
+
+
+
+	/**
 	 * configure - Adds solr index user and creates json file 
 	 * 
-	 * @access private
-	 * @return void
+	 * @return  void
 	 */
 	private function configure()
 	{
@@ -120,7 +165,7 @@ class Solr extends AdminController
 
 				if (!$result)
 				{
-					\Notify::error($result->getError());
+					Notify::error($result->getError());
 				}
 
 				// Make an application
@@ -129,7 +174,7 @@ class Solr extends AdminController
 				$application->set('description', 'DO NOT DELETE! Application used by Solr indexer.');
 				if (!$application->save())
 				{
-					\Notify::error($application->getError());
+					Notify::error($application->getError());
 				}
 
 				$comConfig = Component::params('com_search');
@@ -148,17 +193,19 @@ class Solr extends AdminController
 			}
 			else
 			{
-				\Notify::error($user->getError());
+				Notify::error($user->getError());
 			}
 		}
 
-		\Notify::success(Lang::txt('COM_SEARCH_SOLR_CONFIGURATION_MADE'));
+		Notify::success(Lang::txt('COM_SEARCH_SOLR_CONFIGURATION_MADE'));
 
 		return $this->displayTask();
 	}
 
 	/**
 	 * Display the overview
+	 *
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -206,109 +253,10 @@ class Solr extends AdminController
 		$this->view->display();
 	}
 
-	public function optimizeTask()
-	{
-		$config = Component::params('com_search');
-		$index = new \Hubzero\Search\Index($config);
-		try
-		{
-			$result = $index->optimize();
-			if ($result->getStatus() == 0)
-			{
-				Notify::success('Successfully Optimized');
-			}
-			else
-			{
-				Notify::error('Optimization failed');
-			}
-			App::redirect(
-				Route::url('index.php?option=com_search&task=display', false)
-			);
-		}
-		catch (\Solarium\Exception\HttpException $e)
-		{
-			$this->view->setError($e->getMessage());
-			$this->displayTask();
-		}
-	}
-
 	/**
-	 * documentByTypeTask - view a type's records
+	 * Manage blacklist
 	 * 
-	 * @access public
-	 * @return void
-	 */
-	public function documentListingTask()
-	{
-		$facet = Request::getVar('facet', '');
-		$filter = Request::getVar('filter', '');
-		$limitstart = Request::getInt('limitstart', 0);
-		$limit = Request::getInt('limit', 10);
-
-		// Display CMS errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		// Get the blacklist to indidicate marked for removal
-		$blacklistEntries = Blacklist::all()
-			->select('doc_id')
-			->rows()
-			->toObject();
-
-		// @TODO: PHP 5.5+ supports array_column()
-		$blacklist = array();
-		foreach ($blacklistEntries as $entry)
-		{
-			array_push($blacklist, $entry->doc_id);
-		}
-
-		// Temporary override to get all matching documents
-		if ($filter == '')
-		{
-			$filter = '*:*';
-		}
-
-		// Instantitate and get all results for a particular document type
-		try
-		{
-			$config = Component::params('com_search');
-			$query = new \Hubzero\Search\Query($config);
-			$results = $query->query($filter)
-				->addFilter('facet', $facet)
-				->limit($limit)->start($limitstart)->run()->getResults();
-
-			// Get the total number of records
-			$total = $query->getNumFound();
-		}
-		catch (\Solarium\Exception\HttpException $e)
-		{
-			App::redirect(
-				Route::url('index.php?option=com_search&task=display', false)
-			);
-		}
-
-		// Create the pagination
-		$pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
-		$pagination->setLimits(array('5','10','15','20','50','100','200'));
-		$this->view->pagination = $pagination;
-
-		// Pass the filters and documents to the display
-		$this->view->filter = ($filter == '') || $filter = '*:*' ? '' : $filter;
-		$this->view->facet = !isset($facet) ? '' : $facet;
-		$this->view->documents = isset($results) ? $results : array();
-		$this->view->blacklist = $blacklist;
-
-		// Display the view
-		$this->view->display();
-	}
-
-	/**
-	 * manageBlacklistTask 
-	 * 
-	 * @access public
-	 * @return Hubzero\View\View 
+	 * @return  void
 	 */
 	public function manageBlacklistTask()
 	{
@@ -317,16 +265,15 @@ class Solr extends AdminController
 	}
 
 	/**
-	 * addToBlacklistTask - Makes a database entry and removes from index
+	 * Makes a database entry and removes from index
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function addToBlacklistTask()
 	{
-		$id = Request::getVar('id', '');
-		$facet = Request::getVar('facet', '');
-		$filter = Request::getVar('filter', '');
+		$id = Request::getString('id', '');
+		$facet = Request::getString('facet', '');
+		$filter = Request::getString('filter', '');
 		$limitstart = Request::getInt('limitstart', 0);
 		$limit = Request::getInt('limit', 10);
 
@@ -342,29 +289,22 @@ class Solr extends AdminController
 		// Remove from index
 		if ($helper->removeDocument($id, 'delete'))
 		{
-			// Redirect back to the search page.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentlisting&facet='.$facet.'&limitstart='.$limitstart.'&limit='.$limit.'&filter='.$filter, false),
-				'Submitted ' . $id . ' for removal.',
-				'success'
-			);
+			Notify::success(Lang::txt('COM_SEARCH_SOLR_REMOVE_DOCUMENT', $id));
 		}
 		else
 		{
-			// Redirect back to the search page.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=documentByType&type='.$scope, false),
-				'Failed to remove '. $id,
-				'error'
-			);
+			Notify::error(Lang::txt('COM_SEARCH_SOLR_REMOVE_DOCUMENT_ERROR', $id));
 		}
+		// Redirect back to the search page.
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=searchable' . '&task=documentlisting&facet='.$facet.'&limitstart='.$limitstart.'&limit='.$limit.'&filter='.$filter, false)
+		);
 	}
 
 	/**
-	 * removeBlacklistEntryTask 
+	 * Remove a blacklist entry
 	 * 
-	 * @access public
-	 * @return void
+	 * @return  void
 	 */
 	public function removeBlacklistEntryTask()
 	{
@@ -377,199 +317,6 @@ class Solr extends AdminController
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false),
 			'Successfully removed entry #' . $entryID,
 			'success'
-		);
-	}
-
-	/**
-	 * Manage facets
-	 * 
-	 * @return  void
-	 */
-	public function searchIndexTask()
-	{
-		if (in_array('parent_id', array_keys($_GET)))
-		{
-			Request::checkToken(["post", "get"]);
-		}
-
-		// Check if we are adding a parent
-		$parentID = Request::getInt('parent_id', 0);
-
-		$parent = Facet::oneOrNew($parentID);
-
-		// Load the subfacets, if applicable
-		$facets = Facet::all()
-			->whereEquals('parent_id', $parentID)
-			->rows();
-
-		foreach ($facets as $facet)
-		{
-			$facet->set('count', -1);
-
-			// Instantitate and get all results for a particular document type
-			try
-			{
-				$query = new \Hubzero\Search\Query($this->config);
-				$results = $query->query($facet->facet)->run()->getResults();
-
-				// Get the total number of records
-				$total = $query->getNumFound();
-				$facet->set('count', $total);
-			}
-			catch (\Solarium\Exception\HttpException $e)
-			{
-				Notify::error(Lang::txt($e->getMessage()));
-			}
-		}
-
-		$this->view
-			->set('parent', $parent)
-			->set('facets', $facets)
-			->display();
-	}
-
-	/**
-	 * saveFacetTask 
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	public function saveFacetTask()
-	{
-		Request::checkToken(["post", "get"]);
-
-		$fields = Request::getVar('fields', array());
-		$action = Request::getCmd('action', '');
-		$id     = Request::getInt('id', 0);
-
-		$facet = Facet::oneOrNew($id);
-
-		switch ($action)
-		{
-			case 'togglestate':
-				$facet->set('state', !$facet->state);
-				if (!$facet->save())
-				{
-					Notify::error(Lang::txt('COM_SEARCH_FAILURE_TO_SAVE'));
-				}
-			break;
-
-			case 'editfacet':
-			default:
-				$new = $facet->isNew();
-				$facet->set($fields);
-
-				if (!$facet->save())
-				{
-					Notify::error(Lang::txt('COM_SEARCH_FAILURE_TO_SAVE'));
-				}
-				else
-				{
-					if ($new)
-					{
-						Notify::success(Lang::txt('COM_SEARCH_FACET_CREATED', $facet->name));
-					}
-					else
-					{
-						Notify::success(Lang::txt('COM_SEARCH_FACET_UPDATED', $facet->name));
-					}
-				}
-			break;
-		}
-
-		//@FIXME: Redirect back to the child if selected
-		$return = Route::url('index.php?option=com_search&task=searchIndex', false);
-
-		App::redirect(
-			Route::url($return, false)
-		);
-	}
-
-	/**
-	 * Add a facet
-	 * 
-	 * @return  void
-	 */
-	public function addFacetTask()
-	{
-		$parentID = Request::getInt('parent_id', 0);
-
-		return $this->editFacetTask($parentID);
-	}
-
-	/**
-	 * Edit a facet
-	 * 
-	 * @param   integer  $parentID
-	 * @return  void
-	 */
-	public function editFacetTask($parentID = 0)
-	{
-		$id = Request::getInt('id', 0);
-
-		$facet = Facet::oneOrNew($id);
-
-		if ($facet->isNew())
-		{
-			$facet->set('parent_id', $parentID);
-		}
-
-		$this->view
-			->set('facet', $facet)
-			->setLayout('editfacet')
-			->display();
-	}
-
-	/**
-	 * Delete a facet
-	 * 
-	 * @return  void
-	 */
-	public function deleteFacetTask()
-	{
-		$ids = Request::getArray('id', 0);
-		$message = '';
-
-		foreach ($ids as $id)
-		{
-			$facet = Facet::one($id);
-			$protected = $facet->get('protected');
-			$name = $facet->get('name');
-
-			if ($protected != 1)
-			{
-				if ($facet->children()->count() == 0)
-				{
-					if ($facet->destroy())
-					{
-						$message .= Lang::txt('COM_SEARCH_FACET_DELETE', $name);
-						$success = 'success';
-					}
-					else
-					{
-						$message .= Lang::txt('COM_SEARCH_FACET_DELETE_FAILED', $name);
-						$success = 'error';
-					}
-				}
-				else
-				{
-					$message .= Lang::txt('COM_SEARCH_FACET_HAS_CHILDREN', $name);
-					$success = 'warning';
-				}
-			}
-			else
-			{
-				$message .= Lang::txt('COM_SEARCH_FACET_DELETE_PROTECTED', $name);
-				$success = 'warning';
-			}
-		}
-
-		$return = Route::url('index.php?option=com_search&task=searchIndex', false);
-
-		App::redirect(
-			Route::url($return, false),
-			$message,
-			$success
 		);
 	}
 }

@@ -536,7 +536,7 @@ class ImageViewer extends Base
 	public function drawEditor($editor)
 	{
 		// Incoming
-		$active = trim(Request::getVar('o', null)); // Requested image
+		$active = trim(Request::getString('o', null)); // Requested image
 
 		$database = \App::get('db');
 

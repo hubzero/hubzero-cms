@@ -112,7 +112,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$b64dreturn = '';
 
 		// Check to see if a return parameter was specified
-		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getString('return', ''))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
@@ -132,7 +132,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!Request::getVar('oauth_verifier', null))
+		if (!Request::getString('oauth_verifier'))
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
@@ -148,7 +148,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
-			Request::getVar('oauth_verifier')
+			Request::getString('oauth_verifier')
 		);
 		if ($reply['success'] === true)
 		{
@@ -248,8 +248,33 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$linkedin_client = new LinkedIn($config);
 			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
 
+			// Fields we need
+			$retrieve = array(
+				'id',
+				'first-name',
+				'last-name',
+				'email-address'
+			);
+			// Extra fields we might want to collect
+			$fields = array(
+				'num-connections',
+				'summary',
+				'specialties',
+				'public-profile-url',
+				'industry',
+				'location',
+				'positions'
+			);
+			foreach ($fields as $field)
+			{
+				if ($this->params->get('profile_' . $field))
+				{
+					$retrieve[] = $field;
+				}
+			}
+
 			// Get the linked in profile
-			$profile = $linkedin_client->profile('~:(id,first-name,last-name,email-address,picture-urls::(original))');
+			$profile = $linkedin_client->profile('~:(' . implode(',', $retrieve) . ',picture-urls::(original))');
 			$profile = $profile['linkedin'];
 
 			// Parse the profile XML
@@ -301,6 +326,23 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 			$hzal->update();
 
+			// Save extra data
+			foreach ($fields as $key)
+			{
+				$val = $profile->$key;
+
+				if (in_array($key, $retrieve) && $val)
+				{
+					$datum = Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, $key);
+					$datum->set(array(
+						'link_id'      => $hzal->id,
+						'domain_key'   => (string)$key,
+						'domain_value' => (string)$val
+					));
+					$datum->save();
+				}
+			}
+
 			// If we have a real user, drop the authenticator cookie
 			if (isset($user) && is_object($user))
 			{
@@ -341,7 +383,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!Request::getVar('oauth_verifier', null))
+		if (!Request::getString('oauth_verifier'))
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
@@ -357,7 +399,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
-			Request::getVar('oauth_verifier')
+			Request::getString('oauth_verifier')
 		);
 		if ($reply['success'] === true)
 		{

@@ -205,7 +205,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	private function browseAction()
 	{
 		 // Instantiate a new citations object
-		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->member->get('id'));
+		$obj = $this->_filterHandler(Request::getArray('filters', array()), $this->member->get('id'));
 
 		$count = clone $obj['citations'];
 		$count = $count->count();
@@ -315,7 +315,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->filters['idlist'] = Request::getVar('idlist', $session->get('idlist'));
+			$view->filters['idlist'] = Request::getString('idlist', $session->get('idlist'));
 			$session->set('idlist', $view->filters['idlist']);
 		}
 
@@ -561,10 +561,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$scopeID = $this->member->get('id');
 
 		// Get tags
-		$tags = trim(Request::getVar('tags', ''));
+		$tags = trim(Request::getString('tags', ''));
 
 		// Get badges
-		$badges = trim(Request::getVar('badges', ''));
+		$badges = trim(Request::getString('badges', ''));
 
 		// Check to see if new
 		$cid = Request::getInt('cid');
@@ -574,41 +574,41 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
 			->set(array(
 				'type' => Request::getInt('type'),
-				'cite' => Request::getVar('cite'),
-				'ref_type' => Request::getVar('ref_type'),
-				'date_submit' => Request::getVar('date_submit', '0000-00-00 00:00:00'),
-				'date_accept' => Request::getVar('date_accept', '0000-00-00 00:00:00'),
-				'date_publish' => Request::getVar('date_publish', '0000-00-00 00:00:00'),
-				'year' => Request::getVar('year'),
-				'month' => Request::getVar('month'),
-				'author_address' => Request::getVar('author_address'),
-				'editor' => Request::getVar('editor'),
-				'title' => Request::getVar('title'),
-				'booktitle' => Request::getVar('booktitle'),
-				'short_title' => Request::getVar('short_title'),
-				'journal' => Request::getVar('journal'),
-				'volume' => Request::getVar('volume'),
-				'number' => Request::getVar('number'),
-				'pages' => Request::getVar('pages'),
-				'isbn' => Request::getVar('isbn'),
-				'doi' => Request::getVar('doi'),
-				'call_number' => Request::getVar('call_number'),
-				'accession_number' => Request::getVar('accession_number'),
-				'series' => Request::getVar('series'),
-				'edition' => Request::getVar('edition'),
-				'school' => Request::getVar('school'),
-				'publisher' => Request::getVar('publisher'),
-				'institution' => Request::getVar('institution'),
-				'address' => Request::getVar('address'),
-				'location' => Request::getVar('location'),
-				'howpublished' => Request::getVar('howpublished'),
-				'url' => Request::getVar('uri'),
-				'eprint' => Request::getVar('eprint'),
-				'abstract' => Request::getVar('abstract'),
-				'keywords' => Request::getVar('keywords'),
-				'research_notes' => Request::getVar('research_notes'),
-				'language' => Request::getVar('language'),
-				'label' => Request::getVar('label'),
+				'cite' => Request::getString('cite'),
+				'ref_type' => Request::getString('ref_type'),
+				'date_submit' => Request::getString('date_submit', '0000-00-00 00:00:00'),
+				'date_accept' => Request::getString('date_accept', '0000-00-00 00:00:00'),
+				'date_publish' => Request::getString('date_publish', '0000-00-00 00:00:00'),
+				'year' => Request::getString('year'),
+				'month' => Request::getString('month'),
+				'author_address' => Request::getString('author_address'),
+				'editor' => Request::getString('editor'),
+				'title' => Request::getString('title'),
+				'booktitle' => Request::getString('booktitle'),
+				'short_title' => Request::getString('short_title'),
+				'journal' => Request::getString('journal'),
+				'volume' => Request::getString('volume'),
+				'number' => Request::getString('number'),
+				'pages' => Request::getString('pages'),
+				'isbn' => Request::getString('isbn'),
+				'doi' => Request::getString('doi'),
+				'call_number' => Request::getString('call_number'),
+				'accession_number' => Request::getString('accession_number'),
+				'series' => Request::getString('series'),
+				'edition' => Request::getString('edition'),
+				'school' => Request::getString('school'),
+				'publisher' => Request::getString('publisher'),
+				'institution' => Request::getString('institution'),
+				'address' => Request::getString('address'),
+				'location' => Request::getString('location'),
+				'howpublished' => Request::getString('howpublished'),
+				'url' => Request::getString('uri'),
+				'eprint' => Request::getString('eprint'),
+				'abstract' => Request::getString('abstract'),
+				'keywords' => Request::getString('keywords'),
+				'research_notes' => Request::getString('research_notes'),
+				'language' => Request::getString('language'),
+				'label' => Request::getString('label'),
 				'uid' => User::get('id'),
 				'created' => Date::toSql(),
 				'affiliated' => Request::getInt('affiliated', 0),
@@ -646,7 +646,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		elseif (!$isNew && ($authorCount == 0))
 		{
-			$authorField = explode(',', Request::getVar('author'));
+			$authorField = explode(',', Request::getString('author'));
 			$totalAuths = count($authorField);
 
 			if ($totalAuths == 0)
@@ -705,8 +705,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$id = Request::getInt('cid', 0);
-		$citationIDs = Request::getVar('citationIDs', '');
-		$bulk = Request::getVar('bulk', false);
+		$citationIDs = Request::getString('citationIDs', '');
+		$bulk = Request::getBool('bulk', false);
 
 		// for single citation operation
 		if ($id != 0 && !$bulk)
@@ -715,7 +715,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$citation->set('published', $citation::STATE_DELETED);
 
 			if ($citation->save() && $citation->scope == 'member'
-					&& $citation->scope_id == $this->member->get('id'))
+			 && $citation->scope_id == $this->member->get('id'))
 			{
 				App::redirect(
 					Route::url($this->member->link() . '&active=' . $this->_name),
@@ -797,8 +797,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	{
 		if ($_POST)
 		{
-			$display = Request::getVar('display', '');
-			$format = Request::getVar('citation-format', '');
+			$display = Request::getString('display', '');
+			$format = Request::getString('citation-format', '');
 
 			// craft a clever name
 			$name =  "custom-member-" . $this->member->get('id');
@@ -810,7 +810,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew()))
 			{
 				$citationFormat->set(array(
-					'format' => Request::getVar('template'),
+					'format' => Request::getString('template'),
 					'style'  => $name
 				));
 
@@ -826,10 +826,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$citationFormatID = $format;
 			}
 
-			$include_coins = \Hubzero\Utility\Sanitize::clean(Request::getVar('include_coins', ''));
-			$coins_only = \Hubzero\Utility\Sanitize::clean(Request::getVar('coins_only', ''));
-			$citation_show_tags = \Hubzero\Utility\Sanitize::clean(Request::getVar('citations_show_tags', ''));
-			$citation_show_badges = \Hubzero\Utility\Sanitize::clean(Request::getVar('citations_show_badges', ''));
+			$include_coins = \Hubzero\Utility\Sanitize::clean(Request::getString('include_coins', ''));
+			$coins_only = \Hubzero\Utility\Sanitize::clean(Request::getString('coins_only', ''));
+			$citation_show_tags = \Hubzero\Utility\Sanitize::clean(Request::getString('citations_show_tags', ''));
+			$citation_show_badges = \Hubzero\Utility\Sanitize::clean(Request::getString('citations_show_badges', ''));
 
 			// set member citation parameters
 			$this->member->setParam('citationFormat', $citationFormatID);
@@ -928,9 +928,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function publishAction()
 	{
-		$id = Request::getVar('cid', 0);
-		$citationIDs = Request::getVar('citationIDs', array());
-		$bulk = Request::getVar('bulk', false);
+		$id = Request::getInt('cid', 0);
+		$citationIDs = Request::getString('citationIDs', '');
+		$bulk = Request::getBool('bulk', false);
 
 		if ($id != 0 && !$bulk)
 		{
@@ -1267,10 +1267,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$cites_require_no_attention = $this->importer->readRequiresNoAttention();
 
 		// action for citations needing attention
-		$citations_action_attention    = Request::getVar('citation_action_attention', array());
+		$citations_action_attention    = Request::getArray('citation_action_attention', array());
 
 		// action for citations needing no attention
-		$citations_action_no_attention = Request::getVar('citation_action_no_attention', array());
+		$citations_action_no_attention = Request::getArray('citation_action_no_attention', array());
 
 		// check to make sure we have citations
 		if (!$cites_require_attention && !$cites_require_no_attention)

@@ -209,7 +209,7 @@ class Team extends AdminController
 		$this->model = new Project($project_id);
 
 		// Incoming
-		$newm    = Request::getVar('newmember', '', 'post');
+		$newm    = Request::getString('newmember', '', 'post');
 		if (is_string($newm))
 		{
 			$newm = trim(urldecode($newm));
@@ -217,7 +217,7 @@ class Team extends AdminController
 			$newm = array_filter($newm);
 		}
 		$newm    = (array)$newm;
-		$groups  = urldecode(trim(Request::getVar('newgroup', '')));
+		$groups  = urldecode(trim(Request::getString('newgroup', '')));
 		$role    = Request::getInt('role', 0);
 
 		// Result collectors
@@ -316,8 +316,8 @@ class Team extends AdminController
 		// Load the group page
 		$model = new Project($project_id);
 
-		//$ids   = Request::getVar('id', array());
-		$roles = Request::getVar('role', array());
+		//$ids   = Request::getArray('id', array());
+		$roles = Request::getArray('role', array());
 
 		// Instantiate project owner
 		$objO = $model->table('Owner');
@@ -376,8 +376,8 @@ class Team extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$checked = Request::getVar('id', array());
-		//$groups  = Request::getVar('group', array());
+		$checked = Request::getArray('id', array());
+		//$groups  = Request::getArray('group', array());
 		$project_id = Request::getInt('project', 0);
 
 		// Load the group page

@@ -120,7 +120,7 @@ class Imports extends AdminController
 		if (!($import instanceof Import))
 		{
 			// get request vars
-			$ids = Request::getVar('id', array());
+			$ids = Request::getArray('id', array());
 			$id  = (isset($ids[0])) ? $ids[0] : 0;
 
 			// get the import object
@@ -175,10 +175,10 @@ class Imports extends AdminController
 		}
 
 		// get request vars
-		$fields = Request::getVar('import', array());
-		$hooks  = Request::getVar('hooks', array());
-		$params = Request::getVar('params', array());
-		$file   = Request::getVar('file', array(), 'FILES');
+		$fields = Request::getArray('import', array());
+		$hooks  = Request::getArray('hooks', array());
+		$params = Request::getArray('params', array());
+		$file   = Request::getArray('file', array(), 'FILES');
 
 		// create import model object
 		$import = Import::oneOrNew($fields['id'])->set($fields);
@@ -288,7 +288,7 @@ class Imports extends AdminController
 		}
 
 		// get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// loop through all ids posted
 		$success = 0;
@@ -334,7 +334,7 @@ class Imports extends AdminController
 	public function runTask($dryRun = 0)
 	{
 		// get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : 0;
 
 		// create import model object

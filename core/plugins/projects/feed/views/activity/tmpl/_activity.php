@@ -331,5 +331,5 @@ if (!$this->activity->log->get('anonymous'))
 		<?php
 	}
 	?>
-
+	<div id="tail_<?php echo $this->activity->log->get('id'); ?>"></div>
 </div><!-- / .activity -->

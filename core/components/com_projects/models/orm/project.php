@@ -494,6 +494,10 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 				}
 			}
 		}
+		elseif (is_file($path . DS . 'master.png') && $size != 'original')
+		{
+			$src = $path . DS . 'master.png';
+		}
 		else
 		{
 			// Get the picture if set
@@ -565,7 +569,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	 *
 	 * @return  string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		return 'project';
 	}
@@ -577,7 +581,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = $this->searchNamespace() . '-' . $this->id;
+		$searchId = self::searchNamespace() . '-' . $this->id;
 		return $searchId;
 	}
 
@@ -620,7 +624,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 		$page->owner = $team;
 		$page->id = $this->searchId();
 		$page->title = $this->title;
-		$page->hubtype = $this->searchNamespace();
+		$page->hubtype = self::searchNamespace();
 		$page->description = \Hubzero\Utility\Sanitize::stripAll($this->about);
 
 		return $page;

@@ -162,7 +162,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			$this->_option = $option;
 
 			// Which view
-			$task = Request::getVar('action', '');
+			$task = Request::getCmd('action', '');
 
 			switch ($task)
 			{

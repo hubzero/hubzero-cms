@@ -169,9 +169,13 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 			$sources[] = $version->id;
 		}
 
-		$db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" . implode(',', $sources) . ")");
+		$forks = 0;
+		if (count($sources))
+		{
+			$db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" . implode(',', $sources) . ")");
 
-		$forks = $db->loadResult();
+			$forks = $db->loadResult();
+		}
 
 		// Return the output
 		$arr['html'] = $this->view('status', 'forks')

@@ -41,6 +41,7 @@ require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 
 use Components\Search\Helpers\DiscoveryHelper;
 use Components\Search\Models\Solr\SearchComponent;
+use Components\Search\Models\Solr\Blacklist;
 use Hubzero\Search\Index;
 
 class plgSearchSolr extends \Hubzero\Plugin\Plugin
@@ -75,7 +76,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 				{
 					return false;
 				}
-				$indexResultModel = $searchModel::one($model->get('id'));
+				$indexResultModel = $searchModel::newFromResults($model);
 			}
 
 			if ($indexResultModel)
@@ -84,7 +85,8 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 				$commitWithin = $config->get('solr_commit');
 				$index = new Hubzero\Search\Index($config);
 				$modelIndex = $indexResultModel->searchResult();
-				if ($modelIndex !== false)
+				$blackListIds = Blacklist::getDocIdsByScope($indexResultModel::searchNamespace());
+				if ($modelIndex !== false && !in_array($modelIndex->id, $blackListIds))
 				{
 					$message = $index->updateIndex($modelIndex, $commitWithin);
 				}

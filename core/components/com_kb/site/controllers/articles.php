@@ -83,7 +83,7 @@ class Articles extends SiteController
 	 */
 	public function categoryTask()
 	{
-		$categoryAlias = Request::getVar('categoryAlias', '');
+		$categoryAlias = Request::getString('categoryAlias', '');
 
 		// Make sure we have an alias for the category
 		if (!$categoryAlias)
@@ -122,7 +122,7 @@ class Articles extends SiteController
 		$this->view->filters = array(
 			'sort'     => Request::getWord('sort', 'recent'),
 			'category' => $category->get('id'),
-			'search'   => Request::getVar('search', '')
+			'search'   => Request::getString('search', '')
 		);
 
 		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
@@ -150,7 +150,7 @@ class Articles extends SiteController
 	public function articleTask()
 	{
 		// Incoming
-		$articleAlias = Request::getVar('articleAlias', '');
+		$articleAlias = Request::getString('articleAlias', '');
 		$categoryId   = Request::getInt('categoryId', 0);
 
 		// Load the article
@@ -183,7 +183,7 @@ class Articles extends SiteController
 		}
 		else
 		{
-			$this->view->vote = strtolower(Request::getVar('vote', ''));
+			$this->view->vote = strtolower(Request::getString('vote', ''));
 		}
 
 		// Load the category object
@@ -219,7 +219,7 @@ class Articles extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$return = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
@@ -229,8 +229,8 @@ class Articles extends SiteController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$type = strtolower(Request::getVar('type', ''));
-		$vote = strtolower(Request::getVar('vote', ''));
+		$type = strtolower(Request::getString('type', ''));
+		$vote = strtolower(Request::getString('vote', ''));
 		$id   = Request::getInt('id', 0);
 
 		// Did they vote?
@@ -297,7 +297,7 @@ class Articles extends SiteController
 		// Ensure the user is logged in
 		if (User::isGuest())
 		{
-			$return = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
 				Lang::txt('COM_KB_LOGIN_NOTICE'),
@@ -310,7 +310,7 @@ class Articles extends SiteController
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = Comment::oneOrNew($comment['id'])->set($comment);
@@ -369,11 +369,11 @@ class Articles extends SiteController
 		}
 
 		// Incoming
-		$alias = Request::getVar('alias', '');
+		$alias = Request::getString('alias', '');
 		$id    = Request::getInt('id', 0);
 
 		// Load the article
-		$category = Category::oneByAlias(Request::getVar('category'));
+		$category = Category::oneByAlias(Request::getString('category'));
 
 		$article = ($alias ? Article::oneByAlias($alias) : Article::oneOrFail($id));
 		if (!$article->get('id'))

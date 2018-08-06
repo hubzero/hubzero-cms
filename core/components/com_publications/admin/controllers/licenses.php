@@ -138,7 +138,7 @@ class Licenses extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
@@ -168,7 +168,7 @@ class Licenses extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -225,7 +225,7 @@ class Licenses extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$id = Request::getVar('id', array(0), '', 'array');
+		$id = Request::getArray('id', array(0));
 
 		// Load row
 		$row = License::oneOrFail((int) $id[0]);
@@ -256,7 +256,7 @@ class Licenses extends AdminController
 		}
 
 		// Incoming
-		$id = Request::getVar('id', array(0), '', 'array');
+		$id = Request::getArray('id', array(0));
 
 		if (count($id) > 1)
 		{
@@ -297,7 +297,7 @@ class Licenses extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array(0), '', 'array');
+		$ids = Request::getArray('id', array(0));
 
 		$success = 0;
 
@@ -342,7 +342,7 @@ class Licenses extends AdminController
 		}
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;

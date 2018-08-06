@@ -153,7 +153,7 @@ class Categories extends Base
 	public function saveTask()
 	{
 		// get request vars
-		$category = Request::getVar('category', array(), 'post');
+		$category = Request::getArray('category', array(), 'post');
 
 		// add group id to category
 		$category['gidNumber'] = $this->group->get('gidNumber');

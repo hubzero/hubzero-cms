@@ -77,7 +77,7 @@ class Unityv1_0 extends base
 		$user_id = App::get('authn')['user_id'];
 
 		// Parse some things out of the referer
-		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : Request::getVar('referrer');
+		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : Request::getString('referrer');
 		preg_match('/\/asset\/([[:digit:]]*)/', $referer, $matches);
 
 		if (!$asset_id = $matches[1])
@@ -111,7 +111,7 @@ class Unityv1_0 extends base
 			App::abort(500, 'Failed to get course member ID');
 		}
 
-		if (!$data = Request::getVar('payload', false))
+		if (!$data = Request::getString('payload', ''))
 		{
 			App::abort(400, 'Missing payload');
 		}

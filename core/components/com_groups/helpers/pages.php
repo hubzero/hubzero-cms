@@ -148,7 +148,7 @@ class Pages
 	private static function getCurrentPathSegments()
 	{
 		// get group
-		$cn = Request::getVar('cn', '');
+		$cn = Request::getString('cn', '');
 		$group = \Hubzero\User\Group::getInstance($cn);
 
 		// use Route so in case the hub is /members/groups/... instead of top level /groups
@@ -226,27 +226,22 @@ class Pages
 		}
 
 		// loop through each segment to to get right page
-		foreach ($segments as $k => $segment)
+		// make sure a page was found
+		$urlString = ltrim(implode('/', $segments), '/');
+		foreach ($pages as $p)
 		{
-			// make sure a page was found
-			foreach ($pages as $p)
+			if (ltrim($p->url(false), '/') == $urlString)
 			{
-				if ($p->get('alias') == $segment
-					&& $p->get('depth') == ($k + 1))
-				{
-					$page = $p;
-				}
+				$page = $p;
+				break;
 			}
+		}
 
-			// make sure we have page
-			// make sure page is child of parent
-			if (!$page || $page->get('parent') != $prevPage->get('id'))
-			{
-				return null;
-			}
-
-			// hold on to the page
-			$prevPage = $page;
+		// make sure we have page
+		// make sure page is child of parent
+		if (!$page)
+		{
+			return null;
 		}
 
 		// return page object
@@ -702,7 +697,7 @@ class Pages
 			// create path
 			$path = Component::params('com_groups')->get('uploadpath');
 
-			include_once(Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php');
+			include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
 			// build wiki config
 			$wikiConfig = array(

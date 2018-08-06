@@ -137,7 +137,7 @@ class Subscriptions extends AdminController
 
 		if (!is_object($subscription))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -195,9 +195,9 @@ class Subscriptions extends AdminController
 		}
 
 		$author    = User::getInstance($subscription->uid);
-		$subscription->notes = rtrim(stripslashes(Request::getVar('notes', '')));
-		$action    = Request::getVar('action', '');
-		$message   = Request::getVar('message', '');
+		$subscription->notes = rtrim(stripslashes(Request::getString('notes', '')));
+		$action    = Request::getString('action', '');
+		$message   = Request::getString('message', '');
 		$statusmsg = '';
 		$email     = 0;
 

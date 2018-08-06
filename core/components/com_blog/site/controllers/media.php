@@ -59,7 +59,7 @@ class Media extends SiteController
 		$archive = new Archive('site', 0);
 
 		$entry = Entry::oneByScope(
-			Request::getVar('alias', ''),
+			Request::getString('alias', ''),
 			'site',
 			0
 		);
@@ -69,7 +69,7 @@ class Media extends SiteController
 			throw new Exception(Lang::txt('Access denied.'), 403);
 		}
 
-		if (!($file = Request::getVar('file', '')))
+		if (!($file = Request::getString('file', '')))
 		{
 			$filename = array_pop(explode('/', $_SERVER['REQUEST_URI']));
 
@@ -126,7 +126,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 
 		if (!$file['name'] || $file['size'] == 0)
 		{
@@ -225,7 +225,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = trim(Request::getVar('folder', '', 'get'));
+		$file = trim(Request::getString('folder', '', 'get'));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
@@ -272,7 +272,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = trim(Request::getVar('file', '', 'get'));
+		$file = trim(Request::getString('file', '', 'get'));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));

@@ -184,7 +184,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$data['alias'] = '';
 		}
 		$alias = str_replace(' ', '-', $data['alias']);
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+		return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($alias));
 	}
 
 	/**
@@ -1614,7 +1614,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 * Namespace used for solr Search
 	 * @return string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		$searchNamespace = 'resource';
 		return $searchNamespace;
@@ -1626,7 +1626,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = $this->searchNamespace() . '-' . $this->id;
+		$searchId = self::searchNamespace() . '-' . $this->id;
 		return $searchId;
 	}
 
@@ -1642,7 +1642,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$obj->title = $this->title;
 		$id = $this->id;
 		$obj->id = $this->searchId();
-		$obj->hubtype = $this->searchNamespace();
+		$obj->hubtype = self::searchNamespace();
 		$obj->type = $type->type;
 		$solrDateFormat = 'Y-m-d\TH:i:s\Z';
 		$obj->date_created = Date::of($this->get('created'))->format($solrDateFormat);
@@ -1658,7 +1658,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$groups = $this->getGroups();
 		$tags = $this->tags(false);
 
-		if (!empty($tags))
+		if ($tags->count() > 0)
 		{
 			foreach ($tags as $tag)
 			{
@@ -1675,6 +1675,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				);
 			}
 		}
+		else
+		{
+			$obj->tags[] = array(
+				'id' => '',
+				'title' => ''
+			);
+		}
+
 		$fields = $this->fields();
 		if (!empty($fields))
 		{
@@ -1684,6 +1692,21 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				$obj->$fieldName = $value;
 			}
 		}
+
+		$publicationDate = !empty($fields['yearofpublication']) ? $fields['yearofpublication'] : '';
+		$publicationDate = empty($publicationDate) && !empty($fields['publicationdate']) ? $fields['publicationdate'] : $publicationDate;
+		if (strlen($publicationDate) == 4)
+		{
+			$publicationDate = $publicationDate . '-01-01 00:00:00';
+			$publicationDate = Date::of($publicationDate)->format($solrDateFormat);
+		}
+
+		$publicationDate = empty($publicationDate) && !empty($obj->publish_up) ? $obj->publish_up : $publicationDate;
+		$obj->yearofpublication_s = $publicationDate;
+		$obj->journaltitle_s = !empty($fields['journaltitle']) ? $fields['journaltitle'] : '';
+		$obj->volumeno_s = !empty($fields['volumeno']) ? $fields['volumeno'] : '';
+		$obj->issuenomonth_s = !empty($fields['issuenomonth']) ? $fields['issuenomonth'] : '';
+		$obj->pagenumbers_s = !empty($fields['pagenumbers']) ? $fields['pagenumbers'] : '';
 
 		if (!empty($groups))
 		{
@@ -1709,7 +1732,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$obj->owner_type = 'user';
 			$obj->owner = $this->created_by;
 		}
-		return (array) $obj;
+		return $obj;
 	}
 
 	public static function searchTotal()

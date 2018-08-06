@@ -71,7 +71,7 @@ class Media extends AdminController
 		Request::checkToken(['post', 'get']);
 
 		// Ensure we have an ID to work with
-		$listdir = Request::getVar('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_NO_ID')));
@@ -79,7 +79,7 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
@@ -163,7 +163,7 @@ class Media extends AdminController
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -197,7 +197,7 @@ class Media extends AdminController
 	 */
 	public function uploadTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -206,7 +206,7 @@ class Media extends AdminController
 		Request::checkToken();
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', 0, 'post');
+		$listdir = Request::getInt('listdir', 0, 'post');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COURSES_NO_LISTDIR'));
@@ -215,13 +215,13 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '', 'post');
+		$subdir = Request::getString('subdir', '', 'post');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
 		// Are we creating a new folder?
-		$foldername = Request::getVar('foldername', '', 'post');
+		$foldername = Request::getString('foldername', '', 'post');
 		if ($foldername != '')
 		{
 			// Make sure the name is valid
@@ -259,7 +259,7 @@ class Media extends AdminController
 			}
 
 			// Incoming file
-			$file = Request::getVar('upload', '', 'files', 'array');
+			$file = Request::getArray('upload', '', 'files');
 			if (!$file['name'])
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
@@ -353,7 +353,7 @@ class Media extends AdminController
 		$this->view->setLayout('display');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
@@ -362,13 +362,13 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
 		// Incoming directory to delete
-		$folder = trim(Request::getVar('delFolder', ''), DS);
+		$folder = trim(Request::getString('delFolder', ''), DS);
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY'));
@@ -405,7 +405,7 @@ class Media extends AdminController
 		Request::checkToken('get');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = Request::getVar('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
@@ -414,13 +414,13 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
 		// Incoming file to delete
-		$file = Request::getVar('delFile', '');
+		$file = Request::getString('delFile', '');
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
@@ -457,7 +457,7 @@ class Media extends AdminController
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->course_id = Request::getInt('course', 0);
-		$this->view->listdir   = Request::getVar('listdir', 0);
+		$this->view->listdir   = Request::getInt('listdir', 0);
 		if (!$this->view->listdir)
 		{
 			echo '<p class="error">' . Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY') . '</p>';
@@ -465,7 +465,7 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
+		$this->view->subdir = Request::getString('subdir', '');
 
 		// Build the path
 		//$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->view->course_id . DS . $this->view->listdir;
@@ -517,7 +517,7 @@ class Media extends AdminController
 	{
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->course_id = Request::getInt('course', 0);
-		$this->view->listdir   = Request::getVar('listdir', 0);
+		$this->view->listdir   = Request::getInt('listdir', 0);
 		if (!$this->view->listdir)
 		{
 			echo '<p class="error">' . Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY') . '</p>';
@@ -525,7 +525,7 @@ class Media extends AdminController
 		}
 
 		// Incoming sub-directory
-		$this->view->subdir = Request::getVar('subdir', '');
+		$this->view->subdir = Request::getString('subdir', '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
@@ -608,4 +608,3 @@ class Media extends AdminController
 		return $dirlist;
 	}
 }
-

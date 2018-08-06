@@ -96,7 +96,7 @@ class Media extends SiteController
 	 */
 	public function downloadTask()
 	{
-		$pagename = urldecode(Request::getVar('pagename', '', 'default', 'none', 2));
+		$pagename = urldecode(Request::getString('pagename', '', 'default', 'none', 2));
 		$pagename = explode('/', $pagename);
 		$filename = array_pop($pagename);
 		$pagename = implode('/', $pagename);
@@ -286,7 +286,7 @@ class Media extends SiteController
 		// Create database entry
 		$attachment->set('page_id', $listdir);
 		$attachment->set('filename', $filename . '.' . $ext);
-		$attachment->set('description', trim(Request::getVar('description', '', 'post')));
+		$attachment->set('description', trim(Request::getString('description', '', 'post')));
 		$attachment->set('created', Date::toSql());
 		$attachment->set('created_by', User::get('id'));
 
@@ -316,7 +316,7 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -330,7 +330,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_FILE'));
@@ -367,7 +367,7 @@ class Media extends SiteController
 			// Create database entry
 			$attachment->set('page_id', $listdir);
 			$attachment->set('filename', $file['name']);
-			$attachment->set('description', trim(Request::getVar('description', '', 'post')));
+			$attachment->set('description', trim(Request::getString('description', '', 'post')));
 			$attachment->set('created', Date::toSql());
 			$attachment->set('created_by', User::get('id'));
 
@@ -403,7 +403,7 @@ class Media extends SiteController
 		}
 
 		// Incoming folder
-		$folder = trim(Request::getVar('folder', '', 'get'));
+		$folder = trim(Request::getString('folder', '', 'get'));
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_DIRECTORY'));
@@ -430,7 +430,7 @@ class Media extends SiteController
 		}
 
 		// Push through to the media view
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->listTask();
 		}
@@ -461,7 +461,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = trim(Request::getVar('file', '', 'get'));
+		$file = trim(Request::getString('file', '', 'get'));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_FILE'));
@@ -487,7 +487,7 @@ class Media extends SiteController
 		}
 
 		// Push through to the media view
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->listTask();
 		}

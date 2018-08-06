@@ -97,7 +97,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('RESOURCES_NO_FILE'));
@@ -182,7 +182,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file to delete
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 
 		if (!$file)
 		{
@@ -235,7 +235,7 @@ class Media extends SiteController
 		$row->set('id', $resource);
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Allow for temp resource uploads
 		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')
@@ -344,11 +344,11 @@ class Media extends SiteController
 		$session  = App::get('session');
 
 		// Get request vars
-		$time       = Request::getVar('time', 0);
-		$duration   = Request::getVar('duration', 0);
-		$event      = Request::getVar('event', 'update');
-		$resourceid = Request::getVar('resourceid', 0);
-		$detailedId = Request::getVar('detailedTrackingId', 0);
+		$time       = Request::getInt('time', 0);
+		$duration   = Request::getInt('duration', 0);
+		$event      = Request::getWord('event', 'update');
+		$resourceid = Request::getInt('resourceid', 0);
+		$detailedId = Request::getInt('detailedTrackingId', 0);
 		$ipAddress  = Request::ip();
 
 		// Check for resource id

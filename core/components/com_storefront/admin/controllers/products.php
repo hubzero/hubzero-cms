@@ -41,9 +41,9 @@ use Route;
 use Lang;
 use App;
 
-require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Download.php';
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php');
+require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Download.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php';
 
 /**
  * Controller class for knowledge base categories
@@ -204,7 +204,7 @@ class Products extends AdminController
 		else
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -271,10 +271,10 @@ class Products extends AdminController
 	public function saveTask($redirect = true)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
@@ -344,10 +344,10 @@ class Products extends AdminController
 			$product->setPublishTime($fields['publish_up'], $fields['publish_down']);
 			$product->save();
 
-			$accessgroups = Request::getVar('accessgroupsyes', array(), 'post');
+			$accessgroups = Request::getArray('accessgroupsyes', array(), 'post');
 			$product->setAccessGroups($accessgroups, 'include');
 
-			$accessgroups = Request::getVar('accessgroupsno', array(), 'post');
+			$accessgroups = Request::getArray('accessgroupsno', array(), 'post');
 			$product->setAccessGroups($accessgroups, 'exclude');
 		}
 		catch (\Exception $e)
@@ -409,7 +409,7 @@ class Products extends AdminController
 				Request::setVar('hidemainmenu', 1);
 
 				// Incoming
-				$id = Request::getVar('id', array(0));
+				$id = Request::getArray('id', array());
 				if (!is_array($id) && !empty($id))
 				{
 					$id = array($id);
@@ -428,10 +428,10 @@ class Products extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken();
 
 				// Incoming
-				$pIds = Request::getVar('pIds', 0);
+				$pIds = Request::getArray('pIds', 0);
 
 				// Make sure we have IDs to work with
 				if (empty($pIds))
@@ -444,7 +444,7 @@ class Products extends AdminController
 					return;
 				}
 
-				$delete = Request::getVar('delete', 0);
+				$delete = Request::getInt('delete', 0);
 
 				$msg = "Delete canceled";
 				$type = 'error';
@@ -586,7 +586,7 @@ class Products extends AdminController
 	 */
 	public function stateTask($state = 0)
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -604,7 +604,8 @@ class Products extends AdminController
 		foreach ($ids as $pId)
 		{
 			// Save product
-			try {
+			try
+			{
 				$product = new Product($pId);
 				$product->setActiveStatus($state);
 				$product->save();
@@ -643,7 +644,7 @@ class Products extends AdminController
 			}
 
 			$message = 'Product could not be ' . $action;
-			if (sizeof($ids) > 1)
+			if (count($ids) > 1)
 			{
 				$message = 'Some products could not be ' . $action;
 			}

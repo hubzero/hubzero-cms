@@ -138,13 +138,36 @@ class Membership extends Base
 			return;
 		}
 
+		$invites = Request::getArray('to', array());
+
+		foreach ($invites as $i => $invite)
+		{
+			if (strpos($invite, '@'))
+			{
+				if (!\Hubzero\Utility\Validate::email($invite))
+				{
+					unset($invites[$i]);
+				}
+			}
+			else
+			{
+				$profile = User::getInstance($invite);
+				if (!$profile->get('id'))
+				{
+					unset($invites[$i]);
+				}
+			}
+		}
+
+		$this->view->invites = $invites;
+
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		//set some vars for view
 		$this->view->title  = Lang::txt('Invite Members: ' . $this->view->group->get('description'));
-		$this->view->msg    = trim(Request::getVar('msg', $this->config->get('invite_message', '')));
-		$this->view->return = trim(Request::getVar('return', ''));
+		$this->view->msg    = trim(Request::getString('msg', $this->config->get('invite_message', '')));
+		$this->view->return = trim(Request::getString('return', ''));
 
 		//display view
 		$this->view->display();

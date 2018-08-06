@@ -58,8 +58,8 @@ class Media extends AdminController
 
 		// Incoming
 		$id      = Request::getInt('id', 0);
-		$curfile = Request::getVar('file', '');
-		$file    = Request::getVar('upload', '', 'files', 'array');
+		$curfile = Request::getString('file', '');
+		$file    = Request::getArray('upload', '', 'files');
 
 		// Build upload path
 		$dir  = Str::pad($id);
@@ -176,7 +176,7 @@ class Media extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));

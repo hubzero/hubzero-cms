@@ -225,7 +225,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			$database = App::get('db');
 
-			$task = Request::getVar('action', '');
+			$task = Request::getCmd('action', '');
 
 			switch ($task)
 			{
@@ -279,11 +279,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save($database, $option, $member, $task, $emp)
 	{
-		$lookingfor = Request::getVar('lookingfor', '');
-		$tagline    = Request::getVar('tagline', '');
+		$lookingfor = Request::getString('lookingfor', '');
+		$tagline    = Request::getString('tagline', '');
 		$active     = Request::getInt('activeres', 0);
 		$author     = Request::getInt('author', 0);
-		$title      = Request::getVar('title', '');
+		$title      = Request::getString('title', '');
 
 		if ($task == 'saveprefs')
 		{
@@ -507,7 +507,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['get', 'post']);
 
 		// Incoming file
-		$file = Request::getVar('uploadres', '', 'files', 'array');
+		$file = Request::getArray('uploadres', '', 'files');
 
 		if (!$file['name'])
 		{
@@ -516,7 +516,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$title = Request::getVar('title', '');
+		$title = Request::getString('title', '');
 		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
 		$path = PATH_APP . $path;
 

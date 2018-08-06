@@ -264,8 +264,8 @@ class Pages extends Base
 		Request::checkToken();
 
 		// Get the page vars being posted
-		$page    = Request::getVar('page', array(), 'post');
-		$version = Request::getVar('pageversion', array(), 'post', 'none', JREQUEST_ALLOWRAW);
+		$page    = Request::getArray('page', array(), 'post');
+		$version = Request::getArray('pageversion', array(), 'post');
 
 		// are we updating or creating a new page
 		$task = ($page['id']) ? 'update' : 'create';
@@ -419,7 +419,7 @@ class Pages extends Base
 		Helpers\Pages::checkin($this->page->get('id'));
 
 		// redirect to return url
-		if ($return = Request::getVar('return', '', 'post'))
+		if ($return = Request::getString('return', '', 'post'))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED', $task), 'passed');
 			App::redirect(base64_decode($return));
@@ -622,7 +622,7 @@ class Pages extends Base
 
 		//inform user & redirect
 		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages');
-		if ($r = Request::getVar('return', '', 'get'))
+		if ($r = Request::getString('return', '', 'get'))
 		{
 			$url = base64_decode($r);
 		}
@@ -670,7 +670,7 @@ class Pages extends Base
 	public function reorderTask()
 	{
 		//get the request vars
-		$pagesOrder = Request::getVar('order', array(), 'post');
+		$pagesOrder = Request::getArray('order', array(), 'post');
 
 		// update each page accordingly
 		foreach ($pagesOrder as $pageOrder)
@@ -751,7 +751,7 @@ class Pages extends Base
 
 		// redirect
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
-		if ($return = Request::getVar('return', '', 'get'))
+		if ($return = Request::getString('return', '', 'get'))
 		{
 			App::redirect(base64_decode($return));
 		}
@@ -773,7 +773,7 @@ class Pages extends Base
 			App::abort(404, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_FOUND'));
 		}
 
-		if ((string) $pageid !== (string) Request::getVar('pageid', 0, 'get'))
+		if ((string) $pageid !== (string) Request::getString('pageid', 0, 'get'))
 		{
 			App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
 		}

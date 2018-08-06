@@ -33,9 +33,13 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Collection;
+use Component;
+use Filesystem;
+use Request;
+use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php';
 
 /**
  * Manage logo for a course
@@ -150,7 +154,7 @@ class Images extends AdminController
 			fclose($input);
 
 			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
+			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
 			fclose($target);
@@ -169,7 +173,7 @@ class Images extends AdminController
 		}
 
 		// Do we have an old file we're replacing?
-		if (($curfile = Request::getVar('currentfile', '')))
+		if (($curfile = Request::getString('currentfile', '')))
 		{
 			// Remove old image
 			if (file_exists($path . DS . $curfile))
@@ -234,7 +238,7 @@ class Images extends AdminController
 	 */
 	public function uploadTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
@@ -262,14 +266,14 @@ class Images extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_STOREFRONT_NO_FILE'));
 			$this->displayTask('', $id);
 			return;
 		}
-		$curfile = Request::getVar('curfile', '');
+		$curfile = Request::getString('curfile', '');
 
 		if (!is_dir($path))
 		{
@@ -303,7 +307,7 @@ class Images extends AdminController
 			}
 
 			// Do we have an old file we're replacing?
-			if (($curfile = Request::getVar('currentfile', '')))
+			if (($curfile = Request::getString('currentfile', '')))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
@@ -350,7 +354,7 @@ class Images extends AdminController
 	public function ajaxRemoveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken(array('get', 'post')) or jexit('Invalid Token');
+		Request::checkToken(array('get', 'post'));
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -361,7 +365,7 @@ class Images extends AdminController
 		}
 
 		$type = strtolower(Request::getWord('type', ''));
-		$imgId = Request::getVar('currentfile', '');
+		$imgId = Request::getString('currentfile', '');
 
 		// Instantiate a model, change some info and save
 		switch ($type)
@@ -407,7 +411,7 @@ class Images extends AdminController
 	 */
 	public function removeTask()
 	{
-		if (Request::getVar('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxRemoveTask();
 		}
@@ -446,4 +450,3 @@ class Images extends AdminController
 		return $path;
 	}
 }
-

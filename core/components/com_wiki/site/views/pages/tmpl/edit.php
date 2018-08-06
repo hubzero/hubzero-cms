@@ -172,7 +172,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 						<?php
 							$hi = array();
 
-							$tplate = strtolower(Request::getVar('tplate', ''));
+							$tplate = strtolower(Request::getString('tplate', ''));
 
 							foreach ($this->book->templates()->rows() as $template)
 							{

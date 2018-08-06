@@ -138,12 +138,12 @@ class Jobs extends AdminController
 		$this->css();
 
 		// Incoming job ID
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 		$id = is_array($id) ? $id[0] : $id;
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['sortby'] = Request::getVar('sortby', 'added');
+		$this->view->return['sortby'] = Request::getString('sortby', 'added');
 
 		$this->view->row = new Job($this->database);
 
@@ -239,8 +239,8 @@ class Jobs extends AdminController
 
 		// Incoming
 		$data       = array_map('trim', $_POST);
-		$action     = Request::getVar('action', '');
-		$message    = Request::getVar('message', '');
+		$action     = Request::getString('action', '');
+		$message    = Request::getString('message', '');
 		$id         = Request::getInt('id', 0);
 		$employerid = Request::getInt('employerid', 0);
 		$emailbody  = '';
@@ -405,7 +405,7 @@ class Jobs extends AdminController
 		Request::checkToken();
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

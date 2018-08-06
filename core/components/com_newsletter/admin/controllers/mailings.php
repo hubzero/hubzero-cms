@@ -123,7 +123,7 @@ class Mailings extends AdminController
 	public function trackingTask()
 	{
 		// Get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$id = (isset($ids)) ? $ids[0] : 0;
 
 		// Instantiate newsletter mailing object
@@ -173,7 +173,7 @@ class Mailings extends AdminController
 		// Get clicks and process
 		$clcks = Action::all()
 			->whereEquals('mailingid', $id)
-			->whereEquals('action', 'clicks')
+			->whereEquals('action', 'click')
 			->rows();
 
 		$clicks = array();
@@ -212,7 +212,7 @@ class Mailings extends AdminController
 		// Get the mailing id
 		if (is_null($mailingId))
 		{
-			$mailingId = Request::getVar('mailingid', 0);
+			$mailingId = Request::getInt('mailingid', 0);
 		}
 
 		$states = array(
@@ -311,7 +311,7 @@ class Mailings extends AdminController
 	public function stopTask()
 	{
 		// Get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$id = (isset($ids)) ? $ids[0] : null;
 
 		// Instantiate newsletter mailing object

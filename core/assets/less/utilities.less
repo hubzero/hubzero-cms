@@ -133,3 +133,14 @@
 		opacity: 0;
 		filter:Alpha(Opacity=0);
 	}
+
+// Make sure SVG icons inherit font size and color
+	.icn {
+		display: inline-flex;
+		align-self: center;
+	}
+	.icn svg {
+		height: 1em;
+		width: 1em;
+		fill: currentColor;
+	}

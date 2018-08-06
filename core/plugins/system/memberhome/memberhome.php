@@ -44,7 +44,7 @@ class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		$task = Request::getVar('task', 'none');
+		$task = Request::getCmd('task', 'none');
 
 		if (User::isGuest() || !App::isSite() || $task == 'user.logout')
 		{

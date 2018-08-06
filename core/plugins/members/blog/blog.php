@@ -116,9 +116,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_MEMBERS_BLOG'));
 
 			// Get and determine task
-			$this->task = Request::getVar('action', '');
+			$this->task = Request::getCmd('action', '');
 
-			if (!($task = Request::getVar('action', '', 'post')))
+			if (!($task = Request::getCmd('action', '', 'post')))
 			{
 				$bits = $this->_parseUrl();
 				if ($this->task != 'deletecomment')
@@ -294,7 +294,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('id'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'authorized' => false,
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -356,7 +356,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('id'),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			//'created_by' => $this->member->get('id')
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
@@ -489,6 +489,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$filters['access'] = User::getAuthorisedViewLevels();
 		}
 
+		Event::trigger('blog.onBlogView', array($row));
+
 		$view = $this->view('default', 'entry')
 			->set('option', $this->option)
 			->set('member', $this->member)
@@ -600,7 +602,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
+		$entry = Request::getArray('entry', array(), 'post');
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
@@ -627,7 +629,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Process tags
-		if (!$row->tag(Request::getVar('tags', '')))
+		if (!$row->tag(Request::getString('tags', '')))
 		{
 			$this->setError($row->getError());
 
@@ -679,8 +681,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		$process    = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
+		$process    = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
 
 		// Initiate a blog entry object
 		$entry = \Components\Blog\Models\Entry::oneOrFail($id);
@@ -752,7 +754,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$data = Request::getVar('comment', array(), 'post', 'none', 2);
+		$data = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$comment = \Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
@@ -917,11 +919,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$settings = Request::getVar('settings', array(), 'post');
+		$settings = Request::getArray('settings', array(), 'post');
 
 		$row = \Hubzero\Plugin\Params::blank()->set($settings);
 
-		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 
 		$row->set('params', $p->toString());
 

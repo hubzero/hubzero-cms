@@ -45,7 +45,7 @@ $this->css()
 $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages';
 
 // define return link
-$return      = Request::getVar('return', '');
+$return      = Request::getString('return', '');
 $return_link = $base_link;
 if ($return != '')
 {
@@ -61,7 +61,7 @@ $gidNumber = $this->page->get('gidNumber', '');
 $category  = $this->page->get('category', '');
 $alias     = $this->page->get('alias', '');
 $title     = $this->page->get('title', '');
-$content   = $this->version->get('content', '');
+$content   = stripslashes($this->version->get('content', ''));
 $version   = $this->version->get('version', 0);
 $ordering  = $this->page->get('ordering', null);
 $state     = $this->page->get('state', 1);
@@ -173,7 +173,7 @@ if ($this->page->get('id'))
 
 							// display with ckeditor
 							$editor = App::get('editor'); //new \Hubzero\Html\Editor('ckeditor');
-							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
+							echo $editor->display('pageversion[content]', $this->escape($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
 						?>
 
 					</label>
@@ -317,7 +317,7 @@ if ($this->page->get('id'))
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="pages" />
-		<input type="hidden" name="return" value="<?php echo $this->escape(Request::getVar('return', '','get')); ?>" />
+		<input type="hidden" name="return" value="<?php echo $this->escape(Request::getString('return', '','get')); ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
 </section>

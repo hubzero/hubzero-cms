@@ -70,7 +70,7 @@ class Media extends SiteController
 		}
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('dirPath', '', 'post');
+		$subdir = Request::getString('dirPath', '', 'post');
 
 		$row = Entry::oneOrFail($resource);
 
@@ -92,7 +92,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
@@ -169,7 +169,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file to delete
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 
 		if (!$file)
 		{
@@ -214,7 +214,7 @@ class Media extends SiteController
 		$row = Entry::oneOrFail($resource);
 
 		// Incoming sub-directory
-		$subdir = Request::getVar('subdir', '');
+		$subdir = Request::getString('subdir', '');
 
 		// Allow for temp resource uploads
 		if (!$row->get('created') || $row->get('created') == '0000-00-00 00:00:00')

@@ -96,7 +96,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		// Incoming paging vars
 		$limit = Request::getInt('limit', 25);
 		$limitstart = Request::getInt('limitstart', 0);
-		$sort = strtolower(Request::getVar('sort', 'date'));
+		$sort = strtolower(Request::getString('sort', 'date'));
 		if (!in_array($sort, array('usage', 'title', 'date')))
 		{
 			$sort = 'date';
@@ -111,7 +111,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the active category
-		$area = Request::getVar('area', '');
+		$area = Request::getString('area', '');
 		if ($area)
 		{
 			$activeareas = array($area);

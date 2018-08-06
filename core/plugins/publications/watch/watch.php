@@ -146,7 +146,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$confirm = Request::getInt('confirm', 0);
-		$email   = Request::getVar('email', '');
+		$email   = Request::getString('email', '');
 		$url = Route::url($this->publication->link());
 		// Login required
 		if (User::isGuest() || !$this->publication->exists())

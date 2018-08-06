@@ -111,13 +111,13 @@ class Description extends Relational
 	}
 
 	/**
-	 * Generates automatic ordering field value
+	 * Load a record by $description_key and $project_id combination
 	 *
 	 * @param   string   $description_key
 	 * @param   integer  $project_id
 	 * @return  object
 	 */
-	public static function oneByKeyAndUser($description_key, $project_id)
+	public static function oneByKeyAndProject($description_key, $project_id)
 	{
 		return self::all()
 			->whereEquals('description_key', $description_key)
@@ -128,7 +128,7 @@ class Description extends Relational
 	/**
 	 * Helper method to collect multi-value fields
 	 *
-	 * @param   mixed
+	 * @param   array  $data
 	 * @return  array
 	 */
 	public static function collect($data)

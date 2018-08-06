@@ -73,7 +73,7 @@ class Registration extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$settings = Request::getVar('settings', array(), 'post');
+		$settings = Request::getArray('settings', array(), 'post');
 
 		if (!is_array($settings) || empty($settings))
 		{

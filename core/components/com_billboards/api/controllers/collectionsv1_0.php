@@ -69,8 +69,8 @@ class Collectionsv1_0 extends ApiController
 	public function listTask()
 	{
 		// Get the request vars
-		$limit      = Request::getVar('limit', 25);
-		$limitstart = Request::getVar('limitstart', 0);
+		$limit      = Request::getInt('limit', 25);
+		$limitstart = Request::getInt('limitstart', 0);
 
 		// Load up the entries
 		$collections = Collection::start($limitstart)->limit($limit)->rows();

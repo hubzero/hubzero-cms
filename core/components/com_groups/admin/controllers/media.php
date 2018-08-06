@@ -81,7 +81,7 @@ class Media extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
-		$file = urldecode(Request::getVar('file', '', 'get', 'none', 2));
+		$file = urldecode(Request::getString('file', '', 'get'));
 
 		if (!file_exists(PATH_ROOT . DS . $file))
 		{
@@ -127,13 +127,13 @@ class Media extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$dir  = urldecode(Request::getVar('dir', ''));
+		$dir  = urldecode(Request::getString('dir', ''));
 
 		// Build upload path
 		$path = $this->path . ($dir ? DS . trim($dir, DS) : '');
 		$path = Util::normalizePath($path);
 
-		$foldername = Request::getVar('foldername', '', 'post');
+		$foldername = Request::getString('foldername', '', 'post');
 
 		if ($foldername)
 		{
@@ -160,7 +160,7 @@ class Media extends AdminController
 		}
 		else
 		{
-			$file = Request::getVar('upload', '', 'files', 'array');
+			$file = Request::getArray('upload', '', 'files');
 
 			// max upload size
 			$sizeLimit = $this->config->get('maxAllowed', '40000000');
@@ -229,8 +229,8 @@ class Media extends AdminController
 		Request::checkToken('get');
 
 		// Incoming directory to delete
-		$dir    = urldecode(Request::getVar('dir', ''));
-		$folder = urldecode(Request::getVar('folder', ''));
+		$dir    = urldecode(Request::getString('dir', ''));
+		$folder = urldecode(Request::getString('folder', ''));
 
 		if (!$folder)
 		{
@@ -273,14 +273,14 @@ class Media extends AdminController
 		// Check for request forgeries
 		Request::checkToken('get');
 
-		$dir  = urldecode(Request::getVar('dir', ''));
+		$dir  = urldecode(Request::getString('dir', ''));
 
 		// Build upload path
 		$path = $this->path . ($dir ? DS . trim($dir, DS) : '');
 		$path = Util::normalizePath($path);
 
 		// Incoming file to delete
-		$file = urldecode(Request::getVar('file', ''));
+		$file = urldecode(Request::getString('file', ''));
 
 		if (!$file)
 		{
@@ -314,7 +314,7 @@ class Media extends AdminController
 	 */
 	public function displayTask()
 	{
-		$dir  = urldecode(Request::getVar('dir', ''));
+		$dir  = urldecode(Request::getString('dir', ''));
 
 		$path = $this->path . ($dir ? DS . trim($dir, DS) : '');
 		$path = Util::normalizePath($path);
@@ -361,7 +361,7 @@ class Media extends AdminController
 	 */
 	public function listTask()
 	{
-		$dir  = Request::getVar('dir', '');
+		$dir  = Request::getString('dir', '');
 
 		// Build upload path
 		$path = $this->path . ($dir ? DS . trim($dir, DS) : '');

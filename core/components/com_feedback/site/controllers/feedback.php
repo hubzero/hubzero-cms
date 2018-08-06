@@ -180,8 +180,8 @@ class Feedback extends SiteController
 
 		// Incoming
 		$quote = array(
-			'long'  => Request::getVar('quote', '', 'post'),
-			'short' => Request::getVar('short_quote', '', 'post')
+			'long'  => Request::getString('quote', '', 'post'),
+			'short' => Request::getString('short_quote', '', 'post')
 		);
 
 		// Set page title
@@ -251,7 +251,7 @@ class Feedback extends SiteController
 
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$fields['user_id'] = User::get('id');

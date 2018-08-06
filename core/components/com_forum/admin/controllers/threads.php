@@ -404,7 +404,7 @@ class Threads extends AdminController
 
 		if (!is_object($post))
 		{
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id))
 			{
 				$id = intval($id[0]);
@@ -501,7 +501,7 @@ class Threads extends AdminController
 		User::setState('com_forum.edit.thread.data', null);
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
@@ -530,7 +530,7 @@ class Threads extends AdminController
 		$post->set('scope_id', $category->get('scope_id'));
 
 		// Bind the rules.
-		$data = Request::getVar('jform', array(), 'post');
+		$data = Request::getArray('jform', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
 			$form = $post->getForm($data);
@@ -558,7 +558,7 @@ class Threads extends AdminController
 		}
 
 		// Process tags
-		$post->tag(trim(Request::getVar('tags', '')));
+		$post->tag(trim(Request::getString('tags', '')));
 
 		Notify::success(Lang::txt('COM_FORUM_POST_SAVED'));
 
@@ -597,7 +597,7 @@ class Threads extends AdminController
 
 		// Instantiate an attachment record
 		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
-		$attachment->set('description', trim(Request::getVar('description', '')));
+		$attachment->set('description', trim(Request::getString('description', '')));
 		$attachment->set('parent', $thread_id);
 		$attachment->set('post_id', $post_id);
 		if ($attachment->isNew())
@@ -606,7 +606,7 @@ class Threads extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))
@@ -652,7 +652,7 @@ class Threads extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Loop through each ID
@@ -697,7 +697,7 @@ class Threads extends AdminController
 		$state = $this->getTask() == 'publish' ? Post::STATE_PUBLISHED : Post::STATE_UNPUBLISHED;
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Loop through each record
@@ -754,7 +754,7 @@ class Threads extends AdminController
 		// Incoming
 		$sticky = Request::getInt('sticky', 0);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Loop through each record
@@ -811,7 +811,7 @@ class Threads extends AdminController
 		// Incoming
 		$access = Request::getInt('access', 0);
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Loop through each record
@@ -848,7 +848,7 @@ class Threads extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$fields = Request::getVar('fields', array());
+		$fields = Request::getArray('fields', array());
 		$thread = 0;
 		if (isset($fields['thread']) && $fields['thread'])
 		{

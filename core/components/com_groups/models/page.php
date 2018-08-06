@@ -114,17 +114,20 @@ class Page extends Model
 	/**
 	 * Get Page Versions
 	 *
+	 * @param   array   $opt
 	 * @return  object  \Hubzero\Base\ItemList
 	 */
-	public function versions()
+	public function versions($opt = array())
 	{
 		if (!isset($this->_versions))
 		{
-			$pageVersionArchive = new Page\Version\Archive();
-			$this->_versions = $pageVersionArchive->versions('list', array(
+			$options = array_merge(array(
 				'pageid'  => $this->get('id', -1),
 				'orderby' => 'version DESC',
-			));
+			), $opt);
+
+			$pageVersionArchive = new Page\Version\Archive();
+			$this->_versions = $pageVersionArchive->versions('list', $options);
 		}
 		return $this->_versions;
 	}
@@ -229,27 +232,35 @@ class Page extends Model
 		{
 			$alias .= '_page';
 		}
-
 		// get current page as it exists in db
 		$page = new Page( $this->get('id') );
-		$currentAlias = $page->get('alias');
+		$page->set('gidNumber', $group->get('gidNumber'));
+		$currentUrl = $page->url();
 
 		// only against our pages if alias has changed
-		if ($currentAlias != $alias)
+		if ($currentUrl != $this->url())
 		{
 			// make sure we dont already have a page with the same alias
 			// get group pages
 			$pageArchive = Page\Archive::getInstance();
-			$aliases = $pageArchive->pages('alias', array(
+			$aliases = $pageArchive->pages('list', array(
 				'gidNumber' => $group->get('gidNumber'),
 				'state'     => array(0,1),
 				'depth'     => $this->get('depth')
 			));
 
+			$aliasUrls = array();
+			foreach ($aliases as $aliasObj)
+			{
+				$aliasUrls[] = $aliasObj->url();
+			}
+
 			// Append random number if page already exists
-			while (in_array($alias, $aliases))
+			while (in_array($this->url(), $aliasUrls))
 			{
 				$alias .= mt_rand(1, 9);
+				$this->set('alias', $alias);
+				$pageUrl = $page->url();
 			}
 		}
 

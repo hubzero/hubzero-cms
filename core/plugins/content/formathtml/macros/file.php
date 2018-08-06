@@ -481,7 +481,7 @@ class File extends Macro
 		$type = 'File';
 		if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs))
 		{
-			if (\Request::getVar('format') == 'pdf')
+			if (\Request::getString('format') == 'pdf')
 			{
 				return $this->_path($file);
 			}

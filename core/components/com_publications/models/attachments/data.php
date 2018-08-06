@@ -224,7 +224,20 @@ class Data extends Base
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : Lang::txt('Go to data');
-			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
+
+			$options = array();
+
+			if (file_exists($pub->bundlePath()) && $pub->base == 'databases')
+			{
+				$show = new \stdClass;
+				$show->href = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
+				$show->class = 'archival-package';
+				$show->title = Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE');
+
+				$options[] = $show;
+			}
+
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop, $options);
 		}
 		elseif ($role == 2 && $attachments)
 		{
@@ -382,7 +395,7 @@ class Data extends Base
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = Request::getVar('selecteditems', '');
+			$selections = Request::getString('selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -602,7 +615,7 @@ class Data extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title = Request::getVar('title', '');
+		$title = Request::getString('title', '');
 		$thumb = Request::getInt('makedefault', 0);
 		$uid   = User::get('id');
 
@@ -894,7 +907,10 @@ class Data extends Base
 			return false;
 		}
 
-		$list .= '<li>' . \Components\Projects\Models\File::drawIcon('csv') . ' data.csv</li>';
+		$list .= '<li>';
+		$list .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('csv') . '</span>';
+		$list .= '<span class="item-title">data.csv</span>';
+		$list .= '</li>';
 
 		// Add data files
 		$dataFiles = array();
@@ -904,7 +920,10 @@ class Data extends Base
 		}
 		if (!empty($dataFiles))
 		{
-			$list .= '<li>' . \Components\Projects\Models\File::drawIcon('folder') . ' data</li>';
+			$list .= '<li>';
+			$list .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('folder') . '</span>';
+			$list .= '<span class="item-title">data</span>';
+			$list .= '</li>';
 			foreach ($dataFiles as $e)
 			{
 				// Skip thumbnails and CSV
@@ -922,7 +941,10 @@ class Data extends Base
 				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$where = 'data' . DS . $fPath . basename($e);
 
-				$list .= '<li class="level2"><span class="item-title">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span></li>';
+				$list .= '<li class="level2">';
+				$list .= '<span class="item-icon">' . $file::drawIcon($file->get('ext')) . '</span>';
+				$list .= '<span class="item-title">' . trim($where, DS) . '</span>';
+				$list .= '</li>';
 			}
 		}
 

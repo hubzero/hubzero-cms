@@ -81,7 +81,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->params->get('public') || !$this->params->get('private'))
 		{
-			throw new Exception(Lang::txt('PLG_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
+			throw new Exception(Lang::txt('PLG_CAPTCHA_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
 		}
 
 		return true;
@@ -145,7 +145,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 	public function onCheckAnswer($code = null)
 	{
 		// get request params
-		$response = Request::getVar('g-recaptcha-response', null);
+		$response = Request::getString('g-recaptcha-response', null);
 		$remoteIp = Request::ip();
 
 		// Discard empty solution submissions

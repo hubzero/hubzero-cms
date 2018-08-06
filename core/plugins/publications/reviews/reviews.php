@@ -145,7 +145,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			// If so, they need to be logged in first.
 			if (!$h->loggedin)
 			{
-				$rtrn = Request::getVar('REQUEST_URI', Route::url($model->link($this->_name)), 'server');
+				$rtrn = Request::getString('REQUEST_URI', Route::url($model->link($this->_name)), 'server');
 
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),

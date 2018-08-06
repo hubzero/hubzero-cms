@@ -176,7 +176,7 @@ class Entries extends AdminController
 		if (!is_object($tag))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -210,7 +210,7 @@ class Entries extends AdminController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$subs = '';
 		if (isset($fields['substitutions']))
@@ -282,7 +282,7 @@ class Entries extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID
@@ -345,7 +345,7 @@ class Entries extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$step = Request::getInt('step', 1);
@@ -387,7 +387,7 @@ class Entries extends AdminController
 				Request::checkToken();
 
 				// Get the string of tag IDs we plan to merge
-				$ind = Request::getVar('ids', '', 'post');
+				$ind = Request::getString('ids', '', 'post');
 				if ($ind)
 				{
 					$ids = explode(',', $ind);
@@ -399,7 +399,7 @@ class Entries extends AdminController
 
 				// Incoming
 				$tag_exist = Request::getInt('existingtag', 0, 'post');
-				$tag_new   = Request::getVar('newtag', '', 'post');
+				$tag_new   = Request::getString('newtag', '', 'post');
 
 				// Are we merging tags into a totally new tag?
 				if ($tag_new)
@@ -479,7 +479,7 @@ class Entries extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$step = Request::getInt('step', 1);
@@ -521,7 +521,7 @@ class Entries extends AdminController
 				Request::checkToken();
 
 				// Get the string of tag IDs we plan to merge
-				$ind = Request::getVar('ids', '', 'post');
+				$ind = Request::getString('ids', '', 'post');
 				if ($ind)
 				{
 					$ids = explode(',', $ind);
@@ -533,7 +533,7 @@ class Entries extends AdminController
 
 				// Incoming
 				$tag_exist = Request::getInt('existingtag', 0, 'post');
-				$tag_new   = Request::getVar('newtag', '', 'post');
+				$tag_new   = Request::getString('newtag', '', 'post');
 
 				// Are we merging tags into a totally new tag?
 				if ($tag_new)
@@ -591,7 +591,7 @@ class Entries extends AdminController
 	 */
 	public function calculateTask()
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID

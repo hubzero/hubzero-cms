@@ -138,7 +138,7 @@ class MenusControllerItem extends JControllerForm
 		// Initialise variables.
 		$app = JFactory::getApplication();
 		$model = $this->getModel('Item', '', array());
-		$data = Request::getVar('jform', array(), 'post', 'array');
+		$data = Request::getArray('jform', array(), 'post');
 		$task = $this->getTask();
 		$context = 'com_menus.edit.item';
 		$recordId = Request::getInt('id');
@@ -326,7 +326,7 @@ class MenusControllerItem extends JControllerForm
 		$app = JFactory::getApplication();
 
 		// Get the posted values from the request.
-		$data = Request::getVar('jform', array(), 'post', 'array');
+		$data = Request::getArray('jform', array(), 'post');
 		$recordId = Request::getInt('id');
 
 		// Get the type.

@@ -58,7 +58,7 @@ class Offering extends SiteController
 	 */
 	public function execute()
 	{
-		$this->gid = Request::getVar('gid', '');
+		$this->gid = Request::getString('gid', '');
 		if (!$this->gid)
 		{
 			App::redirect(
@@ -77,7 +77,7 @@ class Offering extends SiteController
 		}
 
 		// No offering provided
-		if (!($offering = Request::getVar('offering', '')))
+		if (!($offering = Request::getString('offering', '')))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('alias'))
@@ -295,7 +295,7 @@ class Offering extends SiteController
 		$enrolled = false;
 
 		// If enrollment is open OR a coupon code was posted
-		if (!$offering->section()->get('enrollment') || ($code = Request::getVar('code', '')))
+		if (!$offering->section()->get('enrollment') || ($code = Request::getString('code', '')))
 		{
 			$section_id = $offering->section()->get('id');
 
@@ -554,7 +554,7 @@ class Offering extends SiteController
 		}
 
 		// If requesting a file from a wiki type asset, then serve that up directly
-		if ($asset->get('subtype') == 'wiki' && Request::getVar('file', false))
+		if ($asset->get('subtype') == 'wiki' && Request::getString('file', false))
 		{
 			echo $asset->download($this->course);
 		}
@@ -620,10 +620,7 @@ class Offering extends SiteController
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_COURSES_SERVER_ERROR'), 404);
 		}
-		else
-		{
-			exit;
-		}
+
+		exit;
 	}
 }
-

@@ -98,7 +98,7 @@ class Templates extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			$row = Template::oneOrNew($id);
@@ -136,7 +136,7 @@ class Templates extends AdminController
 		}
 
 		// Incoming data
-		$fields = Request::getVar('fields', array(), 'post', 'array', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Initiate model
 		$row = Template::oneOrNew($fields['id'])->set($fields);
@@ -176,7 +176,7 @@ class Templates extends AdminController
 		}
 
 		// get the request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 
 		// make sure we have ids
 		$success = 0;
@@ -232,7 +232,7 @@ class Templates extends AdminController
 		}
 
 		//get request vars
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		//are we editing or adding a new tempalte

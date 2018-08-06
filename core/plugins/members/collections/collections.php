@@ -114,7 +114,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			{
 				$default = 'collections';
 			}
-			$this->action = Request::getVar('action', $default);
+			$this->action = Request::getCmd('action', $default);
 
 			$path = Request::path();
 			if (strstr($path, '/'))
@@ -463,7 +463,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters = array(
 			'limit'   => Request::getInt('limit', Config::get('list_limit')),
 			'start'   => Request::getInt('limitstart', 0),
-			'search'  => Request::getVar('search', ''),
+			'search'  => Request::getString('search', ''),
 			'state'   => 1,
 			'user_id' => User::get('id')
 		);
@@ -516,9 +516,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			'limit'         => Request::getInt('limit', Config::get('list_limit')),
 			'start'         => Request::getInt('limitstart', 0),
 			'user_id'       => $this->member->get('id'),
-			'search'        => Request::getVar('search', ''),
+			'search'        => Request::getString('search', ''),
 			'state'         => 1,
-			'collection_id' => Request::getVar('board', ''),
+			'collection_id' => Request::getString('board', ''),
 			'access'        => -1
 		);
 
@@ -616,7 +616,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'collection':
-				$collection = $this->model->collection(Request::getVar('board', ''));
+				$collection = $this->model->collection(Request::getString('board', ''));
 				if (!$collection->exists())
 				{
 					App::abort(404, Lang::txt('Collection does not exist'));
@@ -685,7 +685,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'collection':
-				$collection = $this->model->collection(Request::getVar('board', ''));
+				$collection = $this->model->collection(Request::getString('board', ''));
 				if (!$collection->exists())
 				{
 					App::abort(404, Lang::txt('Collection does not exist'));
@@ -737,9 +737,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters['limit']       = Request::getInt('limit', Config::get('list_limit'));
 		$view->filters['start']       = Request::getInt('limitstart', 0);
 		$view->filters['user_id']     = $this->member->get('id');
-		$view->filters['search']      = Request::getVar('search', '');
+		$view->filters['search']      = Request::getString('search', '');
 		$view->filters['state']       = 1;
-		$view->filters['collection_id'] = Request::getVar('board', '');
+		$view->filters['collection_id'] = Request::getString('board', '');
 
 		// Filters for returning results
 		$count = array(
@@ -798,7 +798,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			'limit'       => Request::getInt('limit', Config::get('list_limit')),
 			'start'       => Request::getInt('limitstart', 0),
 			'created_by'  => $this->member->get('id'),
-			'search'      => Request::getVar('search', ''),
+			'search'      => Request::getString('search', ''),
 			'state'       => 1,
 			'object_id'   => $this->member->get('id'),
 			'object_type' => 'member',
@@ -951,14 +951,14 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$id = Request::getInt('post', 0);
 
-		$view->collection = $this->model->collection(Request::getVar('board', 0));
+		$view->collection = $this->model->collection(Request::getString('board', 0));
 
 		$view->collections = $this->model->collections();
 		if (!$view->collections->total())
 		{
 			$view->collection->setup($this->member->get('id'), 'member');
 			$view->collections = $this->model->collections();
-			$view->collection  = $this->model->collection(Request::getVar('board', 0));
+			$view->collection  = $this->model->collection(Request::getString('board', 0));
 		}
 
 		$view->entry = (is_object($entry) ? $entry : $view->collection->post($id));
@@ -1011,7 +1011,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		if ($fields['id'] && !is_numeric($fields['id']))
 		{
@@ -1034,12 +1034,12 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add some data
-		if ($files  = Request::getVar('fls', '', 'files', 'array'))
+		if ($files  = Request::getArray('fls', '', 'files'))
 		{
 			$item->set('_files', $files);
 		}
-		$item->set('_assets', Request::getVar('assets', null, 'post'));
-		$item->set('_tags', trim(Request::getVar('tags', '')));
+		$item->set('_assets', Request::getArray('assets', array(), 'post'));
+		$item->set('_tags', trim(Request::getString('tags', '')));
 		$item->set('state', 1);
 		if (!$item->exists())
 		{
@@ -1085,7 +1085,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Create a post entry linking the item to the board
-		$p = Request::getVar('post', array(), 'post');
+		$p = Request::getArray('post', array(), 'post');
 
 		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
@@ -1094,7 +1094,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$post->set('original', 1);
 		}
 
-		$coltitle = Request::getVar('collection_title', '', 'post');
+		$coltitle = Request::getString('collection_title', '', 'post');
 		if (!$p['collection_id'] && $coltitle)
 		{
 			$collection = new \Components\Collections\Models\Collection();
@@ -1176,7 +1176,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			// Incoming
 			$post_id       = Request::getInt('post', 0);
-			$collection_id = Request::getVar('board', 0);
+			$collection_id = Request::getString('board', 0);
 
 			if (!$post_id && $collection_id)
 			{
@@ -1221,7 +1221,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (!$collection_id)
 		{
 			$collection = new \Components\Collections\Models\Collection();
-			$collection->set('title', Request::getVar('collection_title', ''));
+			$collection->set('title', Request::getString('collection_title', ''));
 			$collection->set('object_id', User::get('id'));
 			$collection->set('object_type', 'member');
 			if (!$collection->store())
@@ -1242,7 +1242,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$post = new \Components\Collections\Tables\Post($this->database);
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
-			$post->description   = Request::getVar('description', '', 'none', 2);
+			$post->description   = Request::getString('description', '', 'none', 2);
 			if (!$post->check())
 			{
 				$this->setError($post->getError());
@@ -1427,8 +1427,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_collections();
 		}
 
-		$process = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
+		$process = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
 
 		$collection = $this->model->collection($post->get('collection_id'));
 
@@ -1524,7 +1524,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post');
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = \Hubzero\Item\Comment::blank()->set($comment);
@@ -1720,7 +1720,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->entry = $this->model->collection(Request::getVar('board', ''));
+			$view->entry = $this->model->collection(Request::getString('board', ''));
 		}
 
 		foreach ($this->getErrors() as $error)
@@ -1761,7 +1761,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields['id'] = intval($fields['id']);
 
 		// Bind new content
@@ -1834,7 +1834,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$no_html = Request::getInt('no_html', 0);
-		$id = Request::getVar('board', 0);
+		$id = Request::getString('board', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -1842,8 +1842,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_collections();
 		}
 
-		$process = Request::getVar('process', '');
-		$confirmdel = Request::getVar('confirmdel', '');
+		$process = Request::getString('process', '');
+		$confirmdel = Request::getString('confirmdel', '');
 
 		// Get the collection model
 		$collection = $this->model->collection($id);

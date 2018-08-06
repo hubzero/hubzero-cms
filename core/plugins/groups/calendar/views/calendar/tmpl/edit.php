@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 //include registration
-$includeRegistration = Request::getVar('includeRegistration', 0);
+$includeRegistration = Request::getInt('includeRegistration', 0);
 
 //set button and form title
 $formTitle = Lang::txt('Add Group Event');
@@ -58,7 +58,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 <ul id="page_options">
 	<li>
-		<?php if (Request::getVar('action') == 'edit') : ?>
+		<?php if (Request::getString('action') == 'edit') : ?>
 			<a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=details&event_id='.$this->event->get('id')); ?>">
 				<?php echo Lang::txt('Back to Event'); ?>
 			</a>
@@ -135,7 +135,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<label for="event_start">
 						<?php echo Lang::txt('Start:'); ?> <span class="required">Required</span>
 						<?php
-							$start           = Request::getVar('start', '', 'get');
+							$start           = Request::getString('start', '', 'get');
 							$publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
 							$publish_up_date = '';
 							$publish_up_time = '';
@@ -154,7 +154,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<label for="event_end">
 						<?php echo Lang::txt('End:'); ?> <span class="optional">Optional</span>
 						<?php
-							$end               = Request::getVar('end', '', 'get');
+							$end               = Request::getString('end', '', 'get');
 							$publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
 							$publish_down_date = '';
 							$publish_down_time = '';

@@ -149,6 +149,7 @@ class Media extends Base
 		// Delete older file with same name
 		if (file_exists($path . DS . $file))
 		{
+			//Filesystem::delete($path . DS . 'original.' . Filesystem::extension($file));
 			Filesystem::delete($path . DS . $file);
 		}
 
@@ -189,6 +190,12 @@ class Media extends Base
 			$hi = new \Hubzero\Image\Processor($path . DS . $file);
 			if (count($hi->getErrors()) == 0)
 			{
+				// Delete previous master
+				if (file_exists($path . DS . 'master.png'))
+				{
+					Filesystem::delete($path . DS . 'master.png');
+				}
+
 				// PHP versions < 7 has issues with reading EXIF data
 				// So, we want to try and catch those specific errors
 				// and ignore them.
@@ -215,7 +222,7 @@ class Media extends Base
 				{
 					$hi->resize(200);
 					$hi->setImageType(IMAGETYPE_PNG);
-					$hi->save($path . DS . $file);
+					$hi->save($path . DS . 'master.png');// $file);
 				}
 				catch (\Exception $e)
 				{
@@ -314,7 +321,7 @@ class Media extends Base
 		}
 
 		// Incoming file
-		$file = Request::getVar('file', '');
+		$file = Request::getString('file', '');
 		$file = $file ? $file : $this->model->get('picture');
 		if (!$file)
 		{
@@ -343,7 +350,7 @@ class Media extends Base
 		}
 		else
 		{
-			// Attempt to delete the file
+			// Attempt to delete the original file
 			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
@@ -362,6 +369,22 @@ class Media extends Base
 			if (file_exists($path . DS . $curthumb))
 			{
 				if (!Filesystem::delete($path . DS . $curthumb))
+				{
+					$this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
+					if ($ajax)
+					{
+						echo json_encode(array('error' => $this->getError()));
+						return;
+					}
+					$this->_showError();
+					return;
+				}
+			}
+
+			// Delete master
+			if (file_exists($path . DS . 'master.png'))
+			{
+				if (!Filesystem::delete($path . DS . 'master.png'))
 				{
 					$this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
 					if ($ajax)
@@ -423,7 +446,7 @@ class Media extends Base
 	public function mediaTask()
 	{
 		// Incoming
-		$media    = trim(Request::getVar('media', 'thumb'));
+		$media    = trim(Request::getString('media', 'thumb'));
 		$source   = null;
 		$redirect = false;
 		$dir      = 'preview';
@@ -433,7 +456,7 @@ class Media extends Base
 			return false;
 		}
 
-		$uri = Request::getVar('SCRIPT_URL', '', 'server');
+		$uri = Request::getString('SCRIPT_URL', '', 'server');
 		if (strstr($uri, 'Compiled:'))
 		{
 			$media = str_replace('Compiled:', '', strstr($uri, 'Compiled:'));

@@ -70,7 +70,7 @@ class Helper extends Module
 			$this->guestOrTmpAccount = false;
 		}
 
-		$this->referrer = Request::getVar('REQUEST_URI','','server');
+		$this->referrer = Request::getString('REQUEST_URI', '', 'server');
 		$this->referrer = str_replace('&amp;', '&', $this->referrer);
 		$this->referrer = base64_encode($this->referrer);
 

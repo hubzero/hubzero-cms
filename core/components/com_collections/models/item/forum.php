@@ -37,7 +37,7 @@ use Components\Forum\Models\Post;
 use Request;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'item.php');
+require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for an item

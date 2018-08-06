@@ -39,6 +39,7 @@ use Components\Support\Models\Comment;
 use Components\Support\Models\Tags;
 use Components\Support\Models\Attachment;
 use Components\Support\Models\QueryFolder;
+use Components\Support\Models\Query;
 use Components\Support\Models\Watching;
 use Components\Support\Models\Category;
 use Components\Support\Models\Message;
@@ -169,7 +170,7 @@ class Tickets extends SiteController
 		// Check authorization
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
@@ -192,7 +193,7 @@ class Tickets extends SiteController
 		$type = Request::getWord('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
 
-		$this->view->group = preg_replace('/[^0-9a-zA-Z_\-]/', '', Request::getVar('group', '_none_'));
+		$this->view->group = preg_replace('/[^0-9a-zA-Z_\-]/', '', Request::getString('group', '_none_'));
 
 		// Set up some dates
 		$this->offset = Config::get('offset');
@@ -280,7 +281,7 @@ class Tickets extends SiteController
 		$startyear  = $first;
 		$startmonth = 1;
 
-		$this->view->start = Request::getVar('start', $first . '-01');
+		$this->view->start = Request::getString('start', $first . '-01');
 		if ($this->view->start != $first . '-01')
 		{
 			if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->start))
@@ -296,7 +297,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		$this->view->end   = Request::getVar('end', '');
+		$this->view->end   = Request::getString('end', '');
 
 		$endmonth = $month;
 		$endyear = date("Y");
@@ -574,7 +575,7 @@ class Tickets extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
@@ -775,15 +776,15 @@ class Tickets extends SiteController
 			$row->set('open', 1)
 				->set('status', 0)
 				->set('ip', Request::ip())
-				->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'))
-				->set('referrer', base64_encode(Request::getVar('HTTP_REFERER', null, 'server')))
-				->set('cookies', (Request::getVar('sessioncookie', '', 'cookie') ? 1 : 0))
+				->set('uas', Request::getString('HTTP_USER_AGENT', '', 'server'))
+				->set('referrer', base64_encode(Request::getString('HTTP_REFERER', null, 'server')))
+				->set('cookies', (Request::getString('sessioncookie', '', 'cookie') ? 1 : 0))
 				->set('instances', 1)
 				->set('section', 1)
-				->set('tool', Request::getVar('tool', ''))
+				->set('tool', Request::getString('tool', ''))
 				->set('verified', 0);
 
-			if ($referrer = Request::getVar('referrer'))
+			if ($referrer = Request::getString('referrer'))
 			{
 				$row->set('referrer', base64_encode($referrer));
 			}
@@ -883,8 +884,8 @@ class Tickets extends SiteController
 			// This really, REALLY shouldn't happen.
 			App::abort(400, Lang::txt('COM_SUPPORT_ERROR_MISSING_DATA'));
 		}
-		$reporter = Request::getVar('reporter', array(), 'post', 'none', 2);
-		$problem  = Request::getVar('problem', array(), 'post', 'none', 2);
+		$reporter = Request::getArray('reporter', array(), 'post');
+		$problem  = Request::getArray('problem', array(), 'post');
 
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 
@@ -940,7 +941,7 @@ class Tickets extends SiteController
 
 		// Get the user's IP
 		$ip = Request::ip();
-		$hostname = gethostbyaddr(Request::getVar('REMOTE_ADDR', '', 'server'));
+		$hostname = gethostbyaddr(Request::getString('REMOTE_ADDR', '', 'server'));
 
 		if (!$verified)
 		{
@@ -968,7 +969,7 @@ class Tickets extends SiteController
 				return;
 			}
 			// Quick bot check
-			$botcheck = Request::getVar('botcheck', '');
+			$botcheck = Request::getString('botcheck', '');
 			if ($botcheck)
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_INVALID_BOTCHECK'));
@@ -1031,9 +1032,9 @@ class Tickets extends SiteController
 		$row->set('name', $reporter['name']);
 		$row->set('ip', $ip);
 		$row->set('hostname', $hostname);
-		$row->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
+		$row->set('uas', Request::getString('HTTP_USER_AGENT', '', 'server'));
 		$row->set('referrer', base64_decode($problem['referer']));
-		$row->set('cookies', (Request::getVar('sessioncookie', '', 'cookie') ? 1 : 0));
+		$row->set('cookies', (Request::getString('sessioncookie', '', 'cookie') ? 1 : 0));
 		$row->set('instances', 1);
 		$row->set('section', 1);
 		$row->set('group_id', (int)$group);
@@ -1080,7 +1081,7 @@ class Tickets extends SiteController
 		$attachment = $this->uploadTask($row->get('id'));
 
 		// Save tags
-		$row->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
+		$row->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
 
 		// Get any set emails that should be notified of ticket submission
 		$defs = explode(',', $this->config->get('emails', '{config.mailfrom}'));
@@ -1202,7 +1203,7 @@ class Tickets extends SiteController
 			// Compare fields to find out what has changed for this ticket and build a changelog
 			$rowc->changelog()->diff($old, $row);
 
-			$rowc->changelog()->cced(Request::getVar('cc', ''));
+			$rowc->changelog()->cced(Request::getString('cc', ''));
 
 			// Were there any changes, CCs, or comments to record?
 			if (count($rowc->changelog()->get('changes')) > 0 || count($rowc->changelog()->get('cc')) > 0)
@@ -1687,8 +1688,8 @@ class Tickets extends SiteController
 			App::abort(500, Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'));
 		}
 
-		$comment  = Request::getVar('comment', '', 'post', 'none', 2);
-		$incoming = Request::getVar('ticket', array(), 'post');
+		$comment  = Request::getString('comment', '', 'post');
+		$incoming = Request::getArray('ticket', array(), 'post');
 		$incoming = array_map('trim', $incoming);
 
 		if (isset($incoming['target_date']))
@@ -1714,7 +1715,7 @@ class Tickets extends SiteController
 		$rowc->set('ticket', $id);
 
 		// Check if changes were made within the time the comment was started and posted
-		$started = Request::getVar('started', Date::toSql(), 'post');
+		$started = Request::getString('started', Date::toSql(), 'post');
 
 		$lastcomment = $row->comments()
 			->order('created', 'DESC')
@@ -1762,7 +1763,7 @@ class Tickets extends SiteController
 		}
 
 		// Save the tags
-		$row->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
+		$row->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
 		$row->set('tags', $row->tags('string'));
 
 		// Create a new support comment object and populate it
@@ -1777,7 +1778,7 @@ class Tickets extends SiteController
 		// Compare fields to find out what has changed for this ticket and build a changelog
 		$rowc->changelog()->diff($old, $row);
 
-		$rowc->changelog()->cced(Request::getVar('cc', ''));
+		$rowc->changelog()->cced(Request::getString('cc', ''));
 
 		// Save the data
 		if (!$rowc->save())
@@ -2181,7 +2182,7 @@ class Tickets extends SiteController
 
 		// Check for a session token
 		$sessnum = '';
-		if ($sess = Request::getVar('sesstoken', ''))
+		if ($sess = Request::getString('sesstoken', ''))
 		{
 			include_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
@@ -2309,7 +2310,7 @@ class Tickets extends SiteController
 		// Check logged in status
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
@@ -2425,7 +2426,7 @@ class Tickets extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', array(), 'files', 'array');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!isset($file['name']) || !$file['name'])
 		{
 			//$this->setError(Lang::txt('SUPPORT_NO_FILE'));
@@ -2433,7 +2434,7 @@ class Tickets extends SiteController
 		}
 
 		// Incoming
-		$description = Request::getVar('description', '');
+		$description = Request::getString('description', '');
 
 		// Build the path if it doesn't exist
 		if (!is_dir($path))
@@ -2529,8 +2530,8 @@ class Tickets extends SiteController
 			'owner'      => '',
 			'reportedby' => '',
 			'severity'   => 'normal',
-			'sort'       => trim(Request::getVar('filter_order', 'created')),
-			'sortdir'    => trim(Request::getVar('filter_order_Dir', 'DESC')),
+			'sort'       => trim(Request::getString('filter_order', 'created')),
+			'sortdir'    => trim(Request::getString('filter_order_Dir', 'DESC')),
 			'severity'   => ''
 		);
 
@@ -2539,8 +2540,8 @@ class Tickets extends SiteController
 		$filters['start'] = Request::getInt('limitstart', 0);
 
 		// Incoming
-		$filters['_find'] = urldecode(trim(Request::getVar('find', '', 'post')));
-		$filters['_show'] = urldecode(trim(Request::getVar('show', '', 'post')));
+		$filters['_find'] = urldecode(trim(Request::getString('find', '', 'post')));
+		$filters['_show'] = urldecode(trim(Request::getString('show', '', 'post')));
 
 		if ($filters['_find'] != '' || $filters['_show'] != '')
 		{
@@ -2548,8 +2549,8 @@ class Tickets extends SiteController
 		}
 		else
 		{
-			$filters['_find'] = urldecode(trim(Request::getVar('find', '', 'get')));
-			$filters['_show'] = urldecode(trim(Request::getVar('show', '', 'get')));
+			$filters['_find'] = urldecode(trim(Request::getString('find', '', 'get')));
+			$filters['_show'] = urldecode(trim(Request::getString('show', '', 'get')));
 		}
 
 		// Break it apart so we can get our filters
@@ -2740,7 +2741,7 @@ class Tickets extends SiteController
 						foreach ($members as $member)
 						{
 							$u = User::getInstance($member);
-							if (!is_object($u))
+							if (!(is_object($u) && $u->get('block') == '0'))
 							{
 								continue;
 							}
@@ -2768,7 +2769,7 @@ class Tickets extends SiteController
 				foreach ($members as $member)
 				{
 					$u = User::getInstance($member);
-					if (!is_object($u))
+					if (!(is_object($u) && $u->get('block') == '0'))
 					{
 						continue;
 					}

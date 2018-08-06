@@ -147,11 +147,11 @@ class Citations extends SiteController
 			'publishedin'     => Request::getString('publishedin', ''),
 			'year_start'      => Request::getInt('year_start', $earliest_year),
 			'year_end'        => Request::getInt('year_end', gmdate("Y")),
-			'filter'          => Request::getVar('filter', ''),
+			'filter'          => Request::getString('filter', ''),
 			'sort'            => Request::getString('sort', 'created DESC'),
-			'reftype'         => Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
-			'geo'             => Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1)),
-			'aff'             => Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
+			'reftype'         => Request::getArray('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
+			'geo'             => Request::getArray('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1)),
+			'aff'             => Request::getArray('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
 			'startuploaddate' => Request::getString('startuploaddate', '0000-00-00'),
 			'enduploaddate'   => Request::getString('enduploaddate', '0000-00-00'),
 			'scope'           => 'hub'
@@ -199,7 +199,7 @@ class Citations extends SiteController
 		}
 		else
 		{
-			$this->view->filters['idlist'] = Request::getVar('idlist', $session->get('idlist'));
+			$this->view->filters['idlist'] = Request::getString('idlist', $session->get('idlist'));
 			$session->set('idlist', $this->view->filters['idlist']);
 		}
 
@@ -682,7 +682,7 @@ class Citations extends SiteController
 
 		// get the posted vars
 		$id = Request::getInt('id', 0, 'post');
-		$c  = Request::getVar('fields', array(), 'post');
+		$c  = Request::getArray('fields', array(), 'post');
 
 
 		// Bind incoming data to object
@@ -713,7 +713,7 @@ class Citations extends SiteController
 
 		// Incoming associations
 		$associations = array();
-		$assocParams = Request::getVar('assocs', array(), 'post');
+		$assocParams = Request::getArray('assocs', array(), 'post');
 		foreach ($assocParams as $assoc)
 		{
 			$assoc = array_map('trim', $assoc);
@@ -748,14 +748,14 @@ class Citations extends SiteController
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
-			$tags = trim(Request::getVar('tags', '', 'post'));
+			$tags = trim(Request::getString('tags', '', 'post'));
 			$row->updateTags($tags);
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
-			$badges = trim(Request::getVar('badges', '', 'post'));
+			$badges = trim(Request::getString('badges', '', 'post'));
 			$row->updateTags($badges, 'badge');
 		}
 
@@ -798,7 +798,7 @@ class Citations extends SiteController
 		}
 
 		// Incoming (we're expecting an array)
-		$ids = (array) Request::getVar('id', array());
+		$ids = (array) Request::getArray('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -844,12 +844,17 @@ class Citations extends SiteController
 	{
 		// Incoming
 		$id = Request::getInt('id', 0, 'request');
-		$format = strtolower(Request::getVar('citationFormat', 'bibtex', 'request'));
+		$format = strtolower(Request::getString('citationFormat', 'bibtex', 'request'));
+
+		if (!in_array($format, array('bibtex', 'endnote')))
+		{
+			App::abort(404, Lang::txt('COM_CITATIONS_NO_CITATION_FORMAT'));
+		}
 
 		// Esnure we have an ID to work with
 		if (!$id)
 		{
-			throw new Exception(Lang::txt('COM_CITATIONS_NO_CITATION_ID'), 500);
+			App::abort(404, Lang::txt('COM_CITATIONS_NO_CITATION_ID'));
 		}
 
 		// Load the citation
@@ -871,7 +876,7 @@ class Citations extends SiteController
 		{
 			if (!Filesystem::makeDirectory($path))
 			{
-				throw new Exception(Lang::txt('COM_CITATIONS_UNABLE_TO_CREATE_UPLOAD_PATH'), 500);
+				App::abort(500, Lang::txt('COM_CITATIONS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 			}
 		}
 
@@ -893,11 +898,11 @@ class Citations extends SiteController
 	public function downloadbatchTask()
 	{
 		// get the submit buttons value
-		$download = Request::getVar('download', '');
-		$no_html = Request::getVar('no_html', 0);
+		$download = Request::getString('download', '');
+		$no_html = Request::getInt('no_html', 0);
 
 		// get the citations we want to export
-		$citationsString = Request::getVar('idlist', '');
+		$citationsString = Request::getString('idlist', '');
 		$citationIds       = explode('-', $citationsString);
 
 		// return to browse mode if we really dont wanna download
@@ -1063,7 +1068,7 @@ class Citations extends SiteController
 	 */
 	public function getformatTask()
 	{
-		echo 'format' . Request::getVar('format', 'apa');
+		echo 'format' . Request::getString('format', 'apa');
 	}
 
 	/**
@@ -1074,7 +1079,7 @@ class Citations extends SiteController
 	public function downloadimageTask()
 	{
 		// get the image we want to serve
-		$image = Request::getVar('image', '');
+		$image = Request::getString('image', '');
 
 		// if we dont have an image were done
 		if ($image == '')

@@ -38,7 +38,7 @@ use Request;
 use Route;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'item.php');
+require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for a blog post
@@ -79,7 +79,7 @@ class Blog extends GenericItem
 			return false;
 		}
 
-		if (!Request::getVar('alias'))
+		if (!Request::getString('alias'))
 		{
 			return false;
 		}
@@ -107,7 +107,7 @@ class Blog extends GenericItem
 
 		if (!$id)
 		{
-			$alias = Request::getVar('alias', '');
+			$alias = Request::getString('alias', '');
 
 			$post = Entry::oneByScope($alias, 'site', 0);
 			$id = $post->get('id');

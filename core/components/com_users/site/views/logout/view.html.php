@@ -116,7 +116,7 @@ class UsersViewLogout extends JViewLegacy
 		}
 
 		// Get the return URL
-		if (!$url = Request::getVar('return', '', 'method', 'base64'))
+		if (!$url = Request::getString('return', ''))
 		{
 			$url = base64_encode($params->get($type));
 		}

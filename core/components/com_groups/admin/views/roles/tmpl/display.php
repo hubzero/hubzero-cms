@@ -32,11 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$tmpl = Request::getVar('tmpl', '');
+$tmpl = Request::getCmd('tmpl', '');
 
 $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
-Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . Lang::txt('COM_GROUPS_ROLES'), 'groups.png');
+Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . Lang::txt('COM_GROUPS_ROLES'), 'groups');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();

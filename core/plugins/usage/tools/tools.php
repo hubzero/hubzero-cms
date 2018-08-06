@@ -701,8 +701,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$this->_task = $task;
 
 		// Incoming
-		$period = Request::getVar('period', '12');
-		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
+		$period = Request::getString('period', '12');
+		$dthis  = Request::getString('dthis', date('Y') . '-' . date('m'));
 		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
 		{
 			$dthis = date('Y') . '-' . date('m');

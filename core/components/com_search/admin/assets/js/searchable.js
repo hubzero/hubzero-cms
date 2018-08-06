@@ -1,6 +1,7 @@
 var activeProcesses = 0;
 $(function(){
 	$('td').on('click', '.unpublishtask', function(e){
+		var originalLink = $(this).clone();
 		e.preventDefault();
 		if ($(this).attr('disabled') != 'disabled')
 		{
@@ -46,12 +47,27 @@ function indexResults(url, link, limit, offset, numprocess){
 			}
 			else
 			{
-				$(link).text('');
-				$(link).addClass('state');
-				$(link).addClass('published');
-				$(link).removeClass('unpublishtask');
+				if ($(link).data('linktext'))
+				{
+					var buttonText = $(link).data('linktext');
+					$(link).text(buttonText);
+				}
+				else
+				{
+					var rebuildLink = $(link).clone();
+					rebuildLink.text('Rebuild Index');
+					rebuildLink.addClass('button');
+					rebuildLink.removeAttr('disabled');
+					rebuildLink.attr('data-linktext', 'Rebuild Index');
+					$(link).parent('td').siblings('.tasks').append(rebuildLink);
+					$(link).text('');
+					$(link).addClass('state');
+					$(link).addClass('published');
+					$(link).removeClass('unpublishtask');
+					$(link).attr('href', response.link);
+				}
+				$(link).parent('td').siblings('.total').html(response.total);
 				$(link).removeAttr('disabled');
-				$(link).attr('href', response.link);
 				activeProcesses--;
 			}
 		}	

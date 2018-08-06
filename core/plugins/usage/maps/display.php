@@ -33,14 +33,14 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$period = Request::getVar('period','1999-12');
-$xres   = Request::getVar('xres','2050');
-$yres   = Request::getVar('yres','1050');
-$label  = Request::getVar('label','1');
+$period = Request::getString('period', '1999-12');
+$xres   = Request::getString('xres', '2050');
+$yres   = Request::getString('yres', '1050');
+$label  = Request::getString('label', '1');
 $date   = $period;
 
 $dataurl = Route::url('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=markers');
-$dataurl = str_replace('&amp;','&',$dataurl);
+$dataurl = str_replace('&amp;', '&', $dataurl);
 
 $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,7 +58,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	{
 		var dt = "'.$date.'";
 		var disp_label = "'.$label.'";
-		var plotdt = "'.substr($date,0,7).'";
+		var plotdt = "'.substr($date, 0, 7).'";
 		if (GBrowserIsCompatible()) {
 			map = new GMap2(document.getElementById("map_canvas"));
 			// map.addControl(new GLargeMapControl());
@@ -75,7 +75,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 			marker1 = new GMarker(new GLatLng("40.4427","-86.9237"),icon1);
 			map.addOverlay(marker1);
 			getMarkers(dt);
-			var label = new ELabel(new GLatLng(-52.7,11.0),"'.substr($date,0,7).'","style1");
+			var label = new ELabel(new GLatLng(-52.7,11.0),"'.substr($date, 0, 7).'","style1");
 			if (disp_label == "1") {
 				map.addOverlay(label);
 			}
@@ -124,4 +124,3 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	<div id="map_canvas" style="width: '.$xres.'px; height: '.$yres.'px"></div>
 </body>
 </html>';
-

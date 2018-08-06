@@ -52,7 +52,7 @@ defined('_HZEXEC_') or die();
 		}
 	}
 
-	$rtrn = $this->url ? $this->url : Request::getVar('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments', 'server');
+	$rtrn = $this->url ? $this->url : Request::getString('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments', 'server');
 
 	$this->comment->set('url', $rtrn);
 ?>

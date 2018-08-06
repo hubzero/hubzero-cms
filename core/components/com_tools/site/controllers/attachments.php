@@ -44,9 +44,9 @@ use User;
 use Date;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
@@ -80,7 +80,7 @@ class Attachments extends SiteController
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
-		$move = Request::getVar('move', 'down');
+		$move = Request::getWord('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -128,7 +128,7 @@ class Attachments extends SiteController
 	{
 		// Incoming
 		$id   = Request::getInt('id', 0);
-		$name = Request::getVar('name', '');
+		$name = Request::getString('name', '');
 
 		// Ensure we have everything we need
 		if ($id && $name)
@@ -169,7 +169,7 @@ class Attachments extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));

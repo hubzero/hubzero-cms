@@ -97,7 +97,7 @@ class Questionsv1_0 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'state'      => Request::getInt('state', -1),
 			'sort'       => Request::getWord('sort', 'created'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
@@ -231,9 +231,9 @@ class Questionsv1_0 extends ApiController
 		$fields = array(
 			'email'      => Request::getInt('email', 0, 'post'),
 			'anonymous'  => Request::getInt('anonymous', 0, 'post'),
-			'subject'    => Request::getVar('subject', null, 'post', 'none', 2),
-			'question'   => Request::getVar('question', null, 'post', 'none', 2),
-			'created'    => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'subject'    => Request::getString('subject', null, 'post', 'none', 2),
+			'question'   => Request::getString('question', null, 'post', 'none', 2),
+			'created'    => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by' => Request::getInt('created_by', User::get('id'), 'post'),
 			'state'      => Request::getInt('state', 0, 'post'),
 			'reward'     => Request::getInt('reward', 0, 'post')
@@ -390,9 +390,9 @@ class Questionsv1_0 extends ApiController
 		$fields = array(
 			'email'      => Request::getInt('email', $row->get('email')),
 			'anonymous'  => Request::getInt('anonymous', $row->get('anonymous')),
-			'subject'    => Request::getVar('subject', $row->get('subject')),
-			'question'   => Request::getVar('question', $row->get('question')),
-			'created'    => Request::getVar('created', $row->get('created')),
+			'subject'    => Request::getString('subject', $row->get('subject')),
+			'question'   => Request::getString('question', $row->get('question')),
+			'created'    => Request::getString('created', $row->get('created')),
 			'created_by' => Request::getInt('created_by', $row->get('created_by')),
 			'state'      => Request::getInt('state', $row->get('state')),
 			'reward'     => Request::getInt('reward', $row->get('reward'))
@@ -413,7 +413,7 @@ class Questionsv1_0 extends ApiController
 
 		$tags = Request::getVar('tags', null);
 
-		if (isset($tags))
+		if (!is_null($tags) && is_string($tags))
 		{
 			if (!$row->tag($tags, $fields['created_by']))
 			{
@@ -442,7 +442,7 @@ class Questionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

@@ -81,6 +81,9 @@
 		height: 100%;
 		min-height: 100%;
 	}
+	*::-ms-backdrop, .upload-browser-filelist-iframe {
+		height: 50em;
+	}
 	@-moz-document url-prefix() {
 		.upload-browser-filelist-iframe {
 			position: absolute;

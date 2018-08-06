@@ -44,9 +44,9 @@ use Lang;
 use User;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php');
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php');
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php';
 
 /**
  * Members API controller class
@@ -102,7 +102,7 @@ class Profilesv1_1 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'sortby'     => Request::getWord('sort', 'name'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
 			'activation' => 1,
@@ -113,7 +113,7 @@ class Profilesv1_1 extends ApiController
 		if (User::authorise('core.admin'))
 		{
 			$admin = true;
-			$searchable = Request::getVar('searchable', false);
+			$searchable = Request::getBool('searchable', false);
 		}
 
 		// Build query
@@ -166,6 +166,10 @@ class Profilesv1_1 extends ApiController
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
+			if ($admin == true && isset($searchable))
+			{
+				return false;
+			}
 
 			foreach ($rows as $entry)
 			{
@@ -263,13 +267,13 @@ class Profilesv1_1 extends ApiController
 		$user->set('groups', array($newUsertype));
 		$user->set('registerDate', Date::toSql());
 
-		$user->set('name', Request::getVar('name', '', 'post'));
+		$user->set('name', Request::getString('name', '', 'post'));
 		if (!$user->get('name'))
 		{
 			App::abort(400, Lang::txt('No name provided.'));
 		}
 
-		$user->set('username', Request::getVar('username', '', 'post'));
+		$user->set('username', Request::getString('username', '', 'post'));
 		if (!$user->get('username'))
 		{
 			App::abort(400, Lang::txt('No username provided.'));
@@ -279,7 +283,7 @@ class Profilesv1_1 extends ApiController
 			App::abort(422, Lang::txt('Username not valid.'));
 		}
 
-		$user->set('email', Request::getVar('email', '', 'post'));
+		$user->set('email', Request::getString('email', '', 'post'));
 		if (!$user->get('email'))
 		{
 			App::abort(400, Lang::txt('No email provided.'));
@@ -300,7 +304,7 @@ class Profilesv1_1 extends ApiController
 			$middleName = implode(' ', $name);
 		}
 
-		$password = Request::getVar('password', '', 'post');
+		$password = Request::getString('password', '', 'post');
 		if (!$password)
 		{
 			App::abort(400, Lang::txt('No password provided.'));
@@ -343,7 +347,7 @@ class Profilesv1_1 extends ApiController
 			App::abort(500, Lang::txt('Account creation failed.'));
 		}
 
-		if ($groups = Request::getVar('groups', array(), 'post'))
+		if ($groups = Request::getArray('groups', array(), 'post'))
 		{
 			foreach ($groups as $id)
 			{
@@ -441,7 +445,7 @@ class Profilesv1_1 extends ApiController
 			$profile[$key] = $val;
 		}
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php';
 		$cloud = new \Components\Members\Models\Tags($userid);
 
 		foreach ($cloud->tags('list') as $i => $tag)
@@ -556,7 +560,7 @@ class Profilesv1_1 extends ApiController
 		}
 
 		// Get the password
-		$pw = Request::getVar('password1', null, 'post');
+		$pw = Request::getString('password1', null, 'post');
 
 		// Validate the password
 		if (!empty($pw))
@@ -675,7 +679,7 @@ class Profilesv1_1 extends ApiController
 	 */
 	public function fieldValuesTask()
 	{
-		$name = Request::getVar('field', '');
+		$name = Request::getString('field', '');
 
 		$field = Field::all()
 			->whereEquals('name', $name)

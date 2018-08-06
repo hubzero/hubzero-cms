@@ -131,7 +131,7 @@ class Orders extends AdminController
 		{
 			$tInfo = Cart::getTransactionInfo($r->tId);
 			$r->tiTotal = $tInfo->tiTotal;
-			$tiItemsQty = sizeof(unserialize($tInfo->tiItems));
+			$tiItemsQty = count(unserialize($tInfo->tiItems));
 			$r->tiItemsQty = $tiItemsQty;
 		}
 
@@ -147,7 +147,7 @@ class Orders extends AdminController
 	public function viewTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 
 		// Get transaction info
 		$transactionItems = Cart::getTransactionItems($id, false);
@@ -217,6 +217,10 @@ class Orders extends AdminController
 						{
 							$msg .= ' <strong>quantity</strong>';
 						}
+						elseif ($item->key == 'tiPrice')
+						{
+							$msg .= ' <strong>price</strong>';
+						}
 
 						$msg .= ' value was updated';
 					}
@@ -227,6 +231,10 @@ class Orders extends AdminController
 						if ($item->key == 'tiNotes')
 						{
 							$msg .= ' <strong>notes</strong>';
+						}
+						elseif ($item->key == 'tiPaymentDetails')
+						{
+							$msg .= ' <strong>payment details</strong>';
 						}
 
 						$msg .= ' value was updated';
@@ -257,7 +265,7 @@ class Orders extends AdminController
 	public function editTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', array(0));
+		$id = Request::getArray('id', array(0));
 
 		// Get transaction info
 		$transactionItems = Cart::getTransactionItems($id, false);
@@ -312,17 +320,24 @@ class Orders extends AdminController
 	public function saveTask($redirect = true)
 	{
 		// Incoming
-		$id = Request::getVar('id', '');
+		$id = Request::getInt('id', '');
 
 		// get the transaction items' QTYs
-		$tiQty = Request::getVar('tiQty', array());
+		$tiQty = Request::getArray('tiQty', array());
+
+		// get the transaction items' prices
+		$tiPrice = Request::getArray('tiPrice', array());
 
 		// get the transaction items' checkoutNotes
-		$tiCheckoutNotes = Request::getVar('checkoutNotes', array());
+		$tiCheckoutNotes = Request::getArray('checkoutNotes', array());
 
 		// get the transaction notes
-		$tiNotes = Request::getVar('tiNotes', '');
+		$tiNotes = Request::getString('tiNotes', '');
 		$transactionInfo = array('tiNotes' => $tiNotes);
+
+		// get the payment details
+		$tiPaymentDetails = Request::getString('tiPaymentDetails', '');
+		$transactionInfo['tiPaymentDetails'] = $tiPaymentDetails;
 
 		//print_r($tiCheckoutNotes); die;
 
@@ -339,6 +354,16 @@ class Orders extends AdminController
 			$tiInfo->$sId->tiQty = $qty;
 		}
 
+		// populate the prices
+		foreach ($tiPrice as $sId => $price)
+		{
+			if (empty($tiInfo->$sId))
+			{
+				$tiInfo->$sId = new \stdClass();
+			}
+			$tiInfo->$sId->tiPrice = $price;
+		}
+
 		// populate the notes
 		foreach ($tiCheckoutNotes as $sId => $notes)
 		{
@@ -353,13 +378,13 @@ class Orders extends AdminController
 			$tiInfo->$sId->meta->checkoutNotes = $notes;
 		}
 
-		$itemsChanges = Cart::updateTransactionItems($id, $tiInfo);
-		$transactionChanges = Cart::updateTransactionInfo($id, $transactionInfo);
+		//print_r($transactionInfo); die;
 
 		// Log the changes
+		$itemsChanges = Cart::updateTransactionItems($id, $tiInfo);
+		$transactionChanges = Cart::updateTransactionInfo($id, $transactionInfo);
 		//print_r($itemsChanges);
 		//print_r($transactionChanges); //die;
-
 		$orderChanges = array_merge($itemsChanges, $transactionChanges);
 		//print_r($orderChanges); die;
 
@@ -711,8 +736,8 @@ class Orders extends AdminController
 	public function cancelTask()
 	{
 		// Incoming
-		$id = Request::getVar('id', '');
-		$from = Request::getVar('from', '');
+		$id = Request::getString('id', '');
+		$from = Request::getString('from', '');
 
 		$attr = '';
 		if ($from && $from == 'edit')

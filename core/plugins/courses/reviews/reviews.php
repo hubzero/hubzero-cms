@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once(__DIR__ . DS . 'models' . DS . 'comment.php');
+include_once __DIR__ . DS . 'models' . DS . 'comment.php';
 
 /**
  * Courses Plugin class for review
@@ -93,7 +93,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 			$this->_authorize();
 
 			$this->view->params   = $this->params;
-			$this->view->task     = $this->task    = Request::getVar('action', '');
+			$this->view->task     = $this->task    = Request::getString('action', '');
 
 			switch ($this->task)
 			{
@@ -239,7 +239,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
-		$url = ($url != '') ? $url : Request::getVar('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews'), 'server');
+		$url = ($url != '') ? $url : Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews'), 'server');
 
 		App::redirect($url, $msg, $msgType);
 	}
@@ -251,7 +251,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _login()
 	{
-		$return = base64_encode(Request::getVar('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews', false, true), 'server'));
+		$return = base64_encode(Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews', false, true), 'server'));
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -368,7 +368,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = \Components\Courses\Models\Comment::blank()->set($comment);

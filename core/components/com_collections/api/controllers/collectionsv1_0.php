@@ -100,7 +100,7 @@ class Collectionsv1_0 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'state'      => 1,
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
 			'is_default' => 0,
@@ -224,17 +224,17 @@ class Collectionsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'object_type'    => Request::getVar('object_type', '', 'post'),
+			'object_type'    => Request::getString('object_type', '', 'post'),
 			'object_id'      => Request::getInt('object_id', 0, 'post'),
-			'title'          => Request::getVar('title', null, 'post', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'post'),
-			'description'    => Request::getVar('description', null, 'post', 'none', 2),
-			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'post'),
+			'title'          => Request::getString('title', null, 'post', 'none', 2),
+			'alias'          => Request::getString('alias', 0, 'post'),
+			'description'    => Request::getString('description', null, 'post', 'none', 2),
+			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
 			'created_by'     => Request::getInt('created_by', 0, 'post'),
 			'state'          => Request::getInt('state', 0, 'post'),
 			'access'         => Request::getInt('access', 0, 'post'),
-			'layout'         => Request::getVar('layout', 'grid', 'post'),
-			'sort'           => Request::getVar('sort', 'created', 'post')
+			'layout'         => Request::getWord('layout', 'grid', 'post'),
+			'sort'           => Request::getString('sort', 'created', 'post')
 		);
 
 		$row = new Collection();
@@ -385,17 +385,17 @@ class Collectionsv1_0 extends ApiController
 
 		$fields = array(
 			'id'             => Request::getInt('id', 0, 'put'),
-			'object_type'    => Request::getVar('object_type', '', 'put'),
+			'object_type'    => Request::getString('object_type', '', 'put'),
 			'object_id'      => Request::getInt('object_id', 0, 'put'),
-			'title'          => Request::getVar('title', null, 'put', 'none', 2),
-			'alias'          => Request::getVar('alias', 0, 'put'),
-			'description'    => Request::getVar('description', null, 'put', 'none', 2),
-			'created'        => Request::getVar('created', with(new Date('now'))->toSql(), 'put'),
+			'title'          => Request::getString('title', null, 'put', 'none', 2),
+			'alias'          => Request::getString('alias', 0, 'put'),
+			'description'    => Request::getString('description', null, 'put', 'none', 2),
+			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'put'),
 			'created_by'     => Request::getInt('created_by', 0, 'put'),
 			'state'          => Request::getInt('state', 0, 'put'),
 			'access'         => Request::getInt('access', 0, 'put'),
-			'layout'         => Request::getVar('layout', 'grid', 'put'),
-			'sort'           => Request::getVar('sort', 'created', 'put')
+			'layout'         => Request::getWord('layout', 'grid', 'put'),
+			'sort'           => Request::getString('sort', 'created', 'put')
 		);
 
 		$row = new Collection($fields['id']);
@@ -438,7 +438,7 @@ class Collectionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)

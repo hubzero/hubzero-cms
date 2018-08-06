@@ -229,11 +229,11 @@ class Comment extends Relational
 
 				$parsed = $parser->parse(stripslashes($this->get('ctext')), array(
 					'option'   => Request::getCmd('option', 'com_wiki'),
-					'scope'    => Request::getVar('scope'),
-					'pagename' => Request::getVar('pagename'),
+					'scope'    => Request::getString('scope'),
+					'pagename' => Request::getString('pagename'),
 					'pageid'   => $this->get('page_id'),
 					'filepath' => '',
-					'domain'   => Request::getVar('group', '')
+					'domain'   => Request::getString('group', '')
 				));
 
 				$this->set('chtml', $parsed);

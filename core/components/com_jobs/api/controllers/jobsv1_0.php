@@ -37,6 +37,7 @@ use Hubzero\Component\ApiController;
 use stdClass;
 use Date;
 use Request;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'job.php';
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php';
@@ -98,18 +99,18 @@ class Jobsv1_0 extends ApiController
 		$filters = array();
 		$filters['limit'] = Request::getInt('limit', 25);
 		$filters['start'] = Request::getInt('start', 0);
-		$filters['search'] = Request::getVar('search', "");
-		$filters['sort'] = Request::getVar('sort', "name");
-		$filters['sort_dir'] = Request::getCmd('sort_Dir', "desc");
+		$filters['search'] = Request::getString('search', '');
+		$filters['sort'] = Request::getWord('sort', 'name');
+		$filters['sort_dir'] = Request::getCmd('sort_Dir', 'desc');
 
-		$database = \App::get('db');
+		$database = App::get('db');
 
 		$obj = new \Components\Jobs\Tables\Job($database);
 
 		$jobs = $obj->get_openings($filters);
 
 		// Create object with records property
-		$response          = new stdClass();
+		$response = new stdClass();
 		$response->jobs = $jobs;
 
 		// Return object
@@ -135,14 +136,14 @@ class Jobsv1_0 extends ApiController
 	{
 		$jobCode = Request::getInt('jobcode');
 
-		$database = \App::get('db');
+		$database = App::get('db');
 
 		$obj = new \Components\Jobs\Tables\Job($database);
 		$filters = array();
 		$job = $obj->get_opening($jid = null, $uid = null, $admin = null, $jobcode = $jobCode);
 
 		// Create object with records property
-		$response          = new stdClass();
+		$response = new stdClass();
 		$response->job = $job;
 
 		// Return object

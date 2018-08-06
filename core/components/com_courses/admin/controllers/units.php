@@ -42,9 +42,9 @@ use Date;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Courses controller class for managing membership and course info
@@ -150,7 +150,7 @@ class Units extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -194,7 +194,7 @@ class Units extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Instantiate a Course object
 		$model = \Components\Courses\Models\Unit::getInstance($fields['id']);
@@ -254,7 +254,7 @@ class Units extends AdminController
 	public function copyTask()
 	{
 		// Incoming
-		$ids = Request::getVar('id', 0);
+		$ids = Request::getInt('id', 0);
 
 		// Get the single ID we're working with
 		if (is_array($id))
@@ -302,7 +302,7 @@ class Units extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$num = 0;
@@ -361,7 +361,7 @@ class Units extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -415,7 +415,7 @@ class Units extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$id = Request::getVar('id', array(0), 'post', 'array');
+		$id = Request::getArray('id', array(0), 'post');
 		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$uid = $id[0];

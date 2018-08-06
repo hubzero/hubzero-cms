@@ -174,7 +174,7 @@ class CartMessenger
 	{
 		$transactionInfo = $transaction->info;
 		$transactionItems = $transaction->items;
-		$params = Component::params(Request::getVar('option'));
+		$params = Component::params(Request::getCmd('option'));
 
 		$items = unserialize($transactionInfo->tiItems);
 
@@ -481,7 +481,7 @@ class CartMessenger
 	 */
 	private function emailError($error, $errorType = null)
 	{
-		$params = Component::params(Request::getVar('option'));
+		$params = Component::params(Request::getCmd('option'));
 
 		// "from" info
 		$from = array();

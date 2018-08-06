@@ -75,7 +75,7 @@ class Create extends SiteController
 		$this->registerTask('start', 'draft');
 
 		// Get the task at hand
-		$task = Request::getVar('task', '');
+		$task = Request::getCmd('task', '');
 		$this->step = Request::getInt('step', 0);
 		if ($this->step && !$task)
 		{
@@ -179,7 +179,7 @@ class Create extends SiteController
 	 */
 	public function loginTask()
 	{
-		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller), 'server');
+		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller), 'server');
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
@@ -310,7 +310,7 @@ class Create extends SiteController
 		$types = Type::getMajorTypes();
 
 		$this->view
-			->set('group', Request::getVar('group', ''))
+			->set('group', Request::getString('group', ''))
 			->set('step', $step)
 			->set('types', $types)
 			->setErrors($this->getErrors())
@@ -325,7 +325,7 @@ class Create extends SiteController
 	 */
 	public function step_compose($row=null)
 	{
-		$group = Request::getVar('group', '');
+		$group = Request::getString('group', '');
 		$type = Request::getInt('type', '');
 
 		if ($type == '7')
@@ -585,7 +585,7 @@ class Create extends SiteController
 
 		if (!$tags)
 		{
-			$tags = Request::getVar('tags', '');
+			$tags = Request::getString('tags', '');
 		}
 
 		if ($err = Request::getInt('err', 0))
@@ -708,7 +708,7 @@ class Create extends SiteController
 	public function step_compose_process()
 	{
 		// Initiate extended database class
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
@@ -748,7 +748,7 @@ class Create extends SiteController
 
 		$fulltxt = $row->get('fulltxt');
 
-		$nbtag = Request::getVar('nbtag', array(), 'post');
+		$nbtag = Request::getArray('nbtag', array(), 'post');
 		$found = array();
 		foreach ($nbtag as $tagname => $tagcontent)
 		{
@@ -930,7 +930,7 @@ class Create extends SiteController
 		$prev = $row->get('group_owner');
 
 		// Set the group and access level
-		$row->set('group_owner', Request::getVar('group_owner', ''));
+		$row->set('group_owner', Request::getString('group_owner', ''));
 		$row->set('access', Request::getInt('access', 0));
 
 		if ($row->get('access') > 2 && !$row->get('group_owner'))
@@ -1244,7 +1244,7 @@ class Create extends SiteController
 			->where('#__tags_object.label', '!=', 'badge')
 			->rows()->toArray();
 
-		foreach($tagNames as $i => $tagName)
+		foreach ($tagNames as $i => $tagName)
 		{
 			if (!in_array($tagName, $currentTagNames))
 			{
@@ -1473,13 +1473,13 @@ class Create extends SiteController
 		// Is this resource licensed under Creative Commons?
 		if ($this->config->get('cc_license'))
 		{
-			$license = Request::getVar('license', '');
+			$license = Request::getString('license', '');
 
 			if ($license == 'custom')
 			{
 				$license .= $resource->get('id');
 
-				$licenseText = Request::getVar('license-text', '');
+				$licenseText = Request::getString('license-text', '');
 
 				if ($licenseText == '[ENTER LICENSE HERE]')
 				{
@@ -1555,7 +1555,7 @@ class Create extends SiteController
 		$resource = Entry::oneOrNew($id);
 
 		// Incoming step
-		$step = Request::getVar('step', 1);
+		$step = Request::getInt('step', 1);
 
 		// Perform step
 		switch ($step)
@@ -1578,7 +1578,7 @@ class Create extends SiteController
 
 			case 2:
 				// Incoming confirmation flag
-				$confirm = Request::getVar('confirm', '', 'post');
+				$confirm = Request::getString('confirm', '', 'post');
 
 				// Did they confirm the deletion?
 				if ($confirm != 'confirmed')

@@ -368,7 +368,7 @@ class Connect extends Obj
 		// Connect to google (OAUTH2)
 		if ($service == 'google')
 		{
-			$code  = Request::getVar('code', '', 'get');
+			$code  = Request::getString('code', '', 'get');
 			$refresh_token = '';
 
 			// We got here from the redirect from a successful authorization grant, fetch the access token

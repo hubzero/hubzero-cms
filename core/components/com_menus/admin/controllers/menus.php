@@ -54,7 +54,7 @@ class MenusControllerMenus extends JControllerLegacy
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid = Request::getVar('cid', array(), '', 'array');
+		$cid = Request::getArray('cid', array(), '');
 
 		if (!is_array($cid) || count($cid) < 1)
 		{

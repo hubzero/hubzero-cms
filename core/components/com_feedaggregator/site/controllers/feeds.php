@@ -40,8 +40,8 @@ use Route;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feed.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'post.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feed.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'post.php';
 
 /**
  *  Feed Aggregator controller class
@@ -57,7 +57,7 @@ class Feeds extends SiteController
 	{
 		if (User::isGuest()) // have person login
 		{
-			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
@@ -124,7 +124,7 @@ class Feeds extends SiteController
 	public function statusTask()
 	{
 		$id     = Request::getInt('id');
-		$action = Request::getVar('action');
+		$action = Request::getString('action');
 
 		$enabled = ($action == 'enable' ? 1 : 0);
 
@@ -157,11 +157,11 @@ class Feeds extends SiteController
 	{
 		// get the URL first in order to validate
 		$feed = Feed::blank();
-		$feed->set('id', Request::getVar('id'));
-		$feed->set('url', Request::getVar('url'));
-		$feed->set('name', Request::getVar('name'));
-		$feed->set('enabled', Request::getVar('enabled'));
-		$feed->set('description', Request::getVar('description'));
+		$feed->set('id', Request::getString('id'));
+		$feed->set('url', Request::getString('url'));
+		$feed->set('name', Request::getString('name'));
+		$feed->set('enabled', Request::getString('enabled'));
+		$feed->set('description', Request::getString('description'));
 
 		//validate url
 		if (!filter_var($feed->get('url'), FILTER_VALIDATE_URL))

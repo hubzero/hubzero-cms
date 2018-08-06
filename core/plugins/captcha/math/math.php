@@ -93,7 +93,7 @@ class plgCaptchaMath extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCheckAnswer($code = null)
 	{
-		$key    = Request::getVar('captcha_krhash', 0);
+		$key    = Request::getInt('captcha_krhash', 0);
 		$answer = Request::getInt('captcha_answer', 0);
 		$answer = $this->_generateHash($answer, date('j'));
 

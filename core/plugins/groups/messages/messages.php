@@ -82,7 +82,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name' => 'messages',
 			'title' => Lang::txt('PLG_GROUPS_MESSAGES'),
-			'default_access' => $this->params->get('plugin_access','members'),
+			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => '2709'
 		);
@@ -178,11 +178,19 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 			switch ($task)
 			{
-				case 'send':        $arr['html'] = $this->_send();   break;
-				case 'new':         $arr['html'] = $this->_create(); break;
-				case 'viewmessage': $arr['html'] = $this->_view();   break;
+				case 'send':
+					$arr['html'] = $this->_send();
+					break;
+				case 'new':
+					$arr['html'] = $this->_create();
+					break;
+				case 'viewmessage':
+					$arr['html'] = $this->_view();
+					break;
 				case 'sent':
-				default:            $arr['html'] = $this->_sent();   break;
+				default:
+					$arr['html'] = $this->_sent();
+					break;
 			}
 		}
 
@@ -244,7 +252,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	protected function _view()
 	{
 		//get the message id
-		$message = Request::getVar('msg','','get');
+		$message = Request::getInt('msg', 0, 'get');
 
 		//if there is no message id show all sent messages
 		if (!$message)
@@ -318,7 +326,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		$view->member_roles = $member_roles;
 		$view->members = $members;
-		$view->users = Request::getVar('users', array('all'));
+		$view->users = Request::getArray('users', array('all'));
 		$view->no_html = Request::getInt('no_html', 0);
 
 		foreach ($this->getErrors() as $error)
@@ -347,7 +355,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$message = Lang::txt('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
 
 		// Incoming array of users to message
-		$mbrs = Request::getVar('users', array(0), 'post');
+		$mbrs = Request::getArray('users', array(0), 'post');
 		switch ($mbrs[0])
 		{
 			case 'invitees':
@@ -401,8 +409,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming message and subject
-		$s = Request::getVar('subject', Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT'));
-		$m = Request::getVar('message', '');
+		$s = Request::getString('subject', Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT'));
+		$m = Request::getString('message', '');
 
 		// Ensure we have a message
 		if (!$s || !$m)
@@ -531,4 +539,3 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		return $obfuscatedEmail;
 	}
 }
-

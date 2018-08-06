@@ -132,7 +132,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	 */
 	public function display($view, $tpl)
 	{
-		$returnUrl = Request::getVar('return', '', 'method', 'base64');
+		$returnUrl = Request::getString('return', '');
 		$provider = $this->cilogon();
 		$loginUrl = $provider->getAuthorizationUrl(array(
 			'scope' => ['openid', 'email', 'profile', 'org.cilogon.userinfo']
@@ -162,7 +162,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				throw new Exception('Mismatched state');
 			}
 			Session::clear('state', 'cilogon');
-			$token = $this->cilogon()->getAccessToken('authorization_code', array('code' => Request::getVar('code')));
+			$token = $this->cilogon()->getAccessToken('authorization_code', array('code' => Request::getString('code')));
 		}
 		catch (\Exception $e)
 		{
@@ -260,7 +260,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	{
 		try
 		{
-			$session = $this->cilogon()->getAccessToken('authorization_code', ['code' => Request::getVar('code')]);
+			$session = $this->cilogon()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
 		}
 		catch (\Exception $ex)
 		{

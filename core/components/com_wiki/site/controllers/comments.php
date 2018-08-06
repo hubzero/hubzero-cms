@@ -222,7 +222,7 @@ class Comments extends SiteController
 		// If not, then we need to stop everything else and display a login form
 		if (User::isGuest())
 		{
-			$url = Request::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
@@ -260,13 +260,13 @@ class Comments extends SiteController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('comment', array(), 'post');
+		$fields = Request::getArray('comment', array(), 'post');
 
 		// Bind the form data to our object
 		$comment = Comment::oneOrNew($fields['id'])->set($fields);
 
 		// Parse the wikitext and set some values
-		$comment->set('chtml', NULL);
+		$comment->set('chtml', null);
 		$comment->set('chtml', $comment->content('parsed'));
 		$comment->set('anonymous', ($comment->get('anonymous') ? 1 : 0));
 		$comment->set('created', $comment->get('created', Date::toSql()));

@@ -115,7 +115,6 @@ class CartDownload
 		$sql .= ' LEFT JOIN `#__users` x ON (d.uId = x.id)';
 		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
 		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
-		//$sql .= ' LEFT JOIN `#__cart_meta` mt ON (d.dId = mt.scope_id AND mt.scope = \'download\')';
 		$sql .= ' WHERE 1';
 
 		// Filter by filters
@@ -207,27 +206,41 @@ class CartDownload
 		}
 
 		$db->setQuery($sql);
-		//echo $db->toString(); die;
 		$db->execute();
 		if ($rtrn == 'count')
 		{
 			return($db->getNumRows());
 		}
 
-		$res = $db->loadObjectList();
+		// Get results keyed on download ID so we can add metadata later easily
+		$res = $db->loadObjectList('dId');
+		$dids = implode(',', array_keys($res));
 
-		// Get the meta for all returned objects
-		foreach ($res as $download)
+		if (!empty($dids))
 		{
-			$dId = $download->dId;
 
-			$sql = "SELECT `mtKey`, `mtValue` FROM `#__cart_meta` WHERE `scope` = 'download' AND `scope_id` = {$dId}";
+			// Get the meta for all returned objects
+			// Build a (potentially) long SQL statement to get metadata
+			$sql = "SELECT `scope_id`, `mtKey`, `mtValue` FROM `#__cart_meta` WHERE `scope` = 'download' AND `scope_id` IN ({$dids})";
 			$db->setQuery($sql);
 			$db->execute();
+			$metas = $db->loadAssocList();
+			foreach ($metas as $meta)
+			{
+				$dId = $meta['scope_id'];
 
-			$meta = $db->loadAssocList('mtKey');
-			$download->meta = $meta;
+				// ditch scope_id to match old output
+				unset($meta['scope_id']);
+
+				// if the download record has no metadata yet, add it
+				if (!isset($res[$dId]->meta))
+				{
+					$res[$dId]->meta = array();
+				}
+				$res[$dId]->meta[$meta['mtKey']] = $meta;
+			}
 		}
+
 
 		return $res;
 	}

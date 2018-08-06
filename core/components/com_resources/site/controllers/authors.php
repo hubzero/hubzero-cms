@@ -86,10 +86,10 @@ class Authors extends SiteController
 		}
 
 		// Incoming authors
-		$authorsNewstr = trim(Request::getVar('new_authors', '', 'post'));
+		$authorsNewstr = trim(Request::getString('new_authors', '', 'post'));
 		$authid   = Request::getInt('authid', 0, 'post');
-		$username = Request::getVar('author', '', 'post');
-		$role     = Request::getVar('role', '', 'post');
+		$username = Request::getString('author', '', 'post');
+		$role     = Request::getString('role', '', 'post');
 
 		// Turn the string into an array of usernames
 		$authorsNew = empty($authorsNew) ? explode(',', $authorsNewstr) : $authorsNew;
@@ -317,7 +317,7 @@ class Authors extends SiteController
 	public function updateTask()
 	{
 		// Incoming
-		$ids = Request::getVar('authors', array(), 'post');
+		$ids = Request::getArray('authors', array(), 'post');
 		$pid = Request::getInt('pid', 0);
 
 		// Ensure we have a resource ID ($pid) to work with
@@ -362,7 +362,7 @@ class Authors extends SiteController
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
-		$move = Request::getVar('move', 'down');
+		$move = Request::getWord('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)

@@ -55,7 +55,7 @@ class Helper extends Module
 		// Which list is being viewed?
 		$listid   = Request::getInt('id', 0);
 		$refid    = Request::getInt('rid', 0);
-		$category = Request::getVar('category', '');
+		$category = Request::getString('category', '');
 
 		// Figure list id
 		if ($category && $refid)

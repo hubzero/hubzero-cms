@@ -43,7 +43,7 @@ use Route;
 use Lang;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'book.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'book.php';
 
 /**
  * API controller class for Wiki Pages
@@ -113,11 +113,11 @@ class Pagesv1_0 extends ApiController
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getVar('search', ''),
+			'search'     => Request::getString('search', ''),
 			'sort'       => Request::getWord('sort', 'title'),
 			'sort_Dir'   => strtoupper(Request::getWord('sort_Dir', 'ASC')),
 			'state'      => array(Page::STATE_PUBLISHED),
-			'scope'      => Request::getVar('scope', 'site'),
+			'scope'      => Request::getWord('scope', 'site'),
 			'scope_id'   => Request::getInt('scope_id', 0)
 		);
 
@@ -387,15 +387,15 @@ class Pagesv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$fields = array(
-			'title'          => Request::getVar('title', null, '', 'none', 2),
-			'pagename'       => Request::getVar('pagename', null),
-			'scope'          => Request::getVar('scope', 'site'),
+			'title'          => Request::getString('title', null, '', 'none', 2),
+			'pagename'       => Request::getString('pagename', null),
+			'scope'          => Request::getWord('scope', 'site'),
 			'scope_id'       => Request::getInt('scope_id', 0),
-			'created'        => Request::getVar('created', null),
+			'created'        => Request::getString('created', null),
 			'created_by'     => Request::getInt('created_by', null),
 			'state'          => Request::getInt('state', 0),
 			'access'         => Request::getInt('access', 0),
-			'params'         => Request::getVar('params', array())
+			'params'         => Request::getArray('params', array())
 		);
 
 		if (!$id)
@@ -419,7 +419,7 @@ class Pagesv1_0 extends ApiController
 
 		// Get parameters
 		$params = new \Hubzero\Config\Registry($page->get('params', ''));
-		$params->merge(Request::getVar('params', array(), 'post'));
+		$params->merge(Request::getArray('params', array(), 'post'));
 
 		$page->set('params', $params->toString());
 
@@ -440,7 +440,7 @@ class Pagesv1_0 extends ApiController
 		}
 
 		// Set authors
-		if (!Author::setForPage(Request::getVar('authors', '', 'post'), $page->get('id')))
+		if (!Author::setForPage(Request::getString('authors', '', 'post'), $page->get('id')))
 		{
 			throw new Exception(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'), 500);
 		}
@@ -449,8 +449,8 @@ class Pagesv1_0 extends ApiController
 
 		$revision->set('id', 0);
 		$revision->set('page_id', $page->get('id'));
-		$revision->set('pagetext', Request::getVar('pagetext', '', '', 'none', 2));
-		$revision->set('summary',  Request::getVar('summary', null));
+		$revision->set('pagetext', Request::getString('pagetext', ''));
+		$revision->set('summary', Request::getString('summary', null));
 		$revision->set('version', $revision->get('version') + 1);
 
 		if ($page->param('mode', 'wiki') == 'knol')
@@ -497,7 +497,7 @@ class Pagesv1_0 extends ApiController
 		}
 
 		// Process tags
-		$page->tag(Request::getVar('tags', ''));
+		$page->tag(Request::getString('tags', ''));
 
 		$this->send($page->toObject());
 	}

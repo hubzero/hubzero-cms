@@ -103,7 +103,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$this->areas  = $areas;
 
 			//get task
-			$this->task = Request::getVar('action', 'view');
+			$this->task = Request::getCmd('action', 'view');
 			switch ($this->task)
 			{
 				case 'addaddress':
@@ -351,7 +351,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
 		// get request vars
-		$data = Request::getVar('address', array());
+		$data = Request::getArray('address', array());
 		$data['uidNumber'] = User::get('id');
 
 		// set up objects

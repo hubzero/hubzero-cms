@@ -113,7 +113,7 @@ class PasswordBlacklist extends AdminController
 		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -151,7 +151,7 @@ class PasswordBlacklist extends AdminController
 		}
 
 		// Incoming password blacklist edits
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the record
 		$row = Blacklist::oneOrNew($fields['id'])->set($fields);
@@ -193,7 +193,7 @@ class PasswordBlacklist extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;
@@ -212,7 +212,7 @@ class PasswordBlacklist extends AdminController
 				if (!$row->destroy())
 				{
 					Notify::error($row->getError());
-					continue;
+					continue;å
 				}
 
 				$i++;

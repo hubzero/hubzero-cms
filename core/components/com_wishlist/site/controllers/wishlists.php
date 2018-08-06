@@ -175,7 +175,7 @@ class Wishlists extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				$this->_msg,
@@ -725,7 +725,7 @@ class Wishlists extends SiteController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		$wishlist->set($fields);
 		$wishlist->removeAttribute('admin');
@@ -737,15 +737,15 @@ class Wishlists extends SiteController
 		}
 
 		// Save new owners
-		if ($newowners = Request::getVar('newowners', '', 'post'))
+		if ($newowners = Request::getString('newowners', '', 'post'))
 		{
 			$wishlist->addOwner('individuals', $newowners);
 		}
-		if ($newadvisory = Request::getVar('newadvisory', '', 'post'))
+		if ($newadvisory = Request::getString('newadvisory', '', 'post'))
 		{
 			$wishlist->addOwner('advisory', $newadvisory);
 		}
-		if ($newgroups = Request::getVar('newgroups', '', 'post'))
+		if ($newgroups = Request::getString('newgroups', '', 'post'))
 		{
 			$wishlist->addOwner('groups', $newgroups);
 		}
@@ -870,7 +870,7 @@ class Wishlists extends SiteController
 		$page->set('created_by', Request::getInt('created_by', User::get('id'), 'post'));
 		$page->set('created', Date::toSql());
 		$page->set('approved', 1);
-		$page->set('pagetext', Request::getVar('pagetext', '', 'post', 'none'));
+		$page->set('pagetext', Request::getString('pagetext', '', 'post', 'none'));
 
 		// Stripslashes just to make sure
 		$oldpagetext = rtrim(stripslashes($old->get('pagetext')));
@@ -891,7 +891,7 @@ class Wishlists extends SiteController
 
 		// do we have a due date?
 		$isdue = Request::getInt('isdue', 0);
-		$due   = Request::getVar('publish_up', '');
+		$due   = Request::getString('publish_up', '');
 
 		if ($due)
 		{
@@ -1085,9 +1085,9 @@ class Wishlists extends SiteController
 		}
 
 		$listid = Request::getInt('wishlist', 0);
-		$reward = Request::getVar('reward', '');
-		$funds  = Request::getVar('funds', '0');
-		$tags   = Request::getVar('tags', '');
+		$reward = Request::getString('reward', '');
+		$funds  = Request::getInt('funds', '0');
+		$tags   = Request::getString('tags', '');
 
 		// Get wish list info
 		$wishlist = Wishlist::oneOrFail($listid);
@@ -1099,7 +1099,7 @@ class Wishlists extends SiteController
 		}
 
 		// trim and addslashes all posted items
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// initiate class and bind posted items to database fields
 		$row = Wish::oneOrNew($fields['id'])->set($fields);
@@ -1107,7 +1107,7 @@ class Wishlists extends SiteController
 		$wishid = $row->get('id');
 
 		// If we are editing
-		$by = Request::getVar('by', '', 'post');
+		$by = Request::getString('by', '', 'post');
 		if ($by)
 		{
 			$ruser = User::getInstance($by);
@@ -1848,8 +1848,8 @@ class Wishlists extends SiteController
 		}
 
 		// get vote
-		$effort     = Request::getVar('effort', '', 'post');
-		$importance = Request::getVar('importance', '', 'post');
+		$effort     = Request::getString('effort', '', 'post');
+		$importance = Request::getString('importance', '', 'post');
 
 		// Login required
 		if (User::isGuest())
@@ -1976,7 +1976,7 @@ class Wishlists extends SiteController
 
 		if ($id && $category)
 		{
-			$fields = Request::getVar('comment', array(), 'post');
+			$fields = Request::getArray('comment', array(), 'post');
 
 			$row = Comment::blank()->set($fields);
 
@@ -2162,7 +2162,7 @@ class Wishlists extends SiteController
 		if ($row->get('created_by') != User::get('id'))
 		{
 			App::redirect(
-				Request::getVar('HTTP_REFERER', null, 'server'),
+				Request::getString('HTTP_REFERER', null, 'server'),
 				Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
 				'error'
 			);
@@ -2206,7 +2206,7 @@ class Wishlists extends SiteController
 
 		// Go back to the page
 		App::redirect(
-			Request::getVar('HTTP_REFERER', null, 'server')
+			Request::getString('HTTP_REFERER', null, 'server')
 		);
 	}
 
@@ -2326,8 +2326,8 @@ class Wishlists extends SiteController
 		$filters = array();
 		$filters['sortby']   = Request::getWord('sortby', '');
 		$filters['filterby'] = Request::getWord('filterby', 'all');
-		$filters['search']   = Request::getVar('search', '');
-		$filters['tag']      = Request::getVar('tags', '');
+		$filters['search']   = Request::getString('search', '');
+		$filters['tag']      = Request::getString('tags', '');
 
 		if ($admin)
 		{
@@ -2354,7 +2354,7 @@ class Wishlists extends SiteController
 		$filters['start']    = Request::getInt('limitstart', 0);
 		$filters['new']      = Request::getInt('newsearch', 0);
 		$filters['start']    = $filters['new'] ? 0 : $filters['start'];
-		$filters['comments'] = Request::getVar('comments', 1, 'get');
+		$filters['comments'] = Request::getInt('comments', 1, 'get');
 
 		// Return the array
 		return $filters;
@@ -2457,7 +2457,7 @@ class Wishlists extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', array(), 'files', 'array');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!isset($file['name']) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_NO_FILE'));
@@ -2470,7 +2470,7 @@ class Wishlists extends SiteController
 
 		//make sure that file is acceptable type
 		$attachment = Attachment::blank()->set(array(
-			'description' => Request::getVar('description', ''),
+			'description' => Request::getString('description', ''),
 			'wish'        => $listdir,
 			'filename'    => $file['name']
 		));
@@ -2530,7 +2530,7 @@ class Wishlists extends SiteController
 	 */
 	public function downloadTask()
 	{
-		$file   = Request::getVar('file', '');
+		$file   = Request::getString('file', '');
 		$wishid = Request::getInt('wishid', 0);
 
 		$wish = Wish::oneOrFail($wishid);

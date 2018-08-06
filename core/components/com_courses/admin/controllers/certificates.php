@@ -41,8 +41,8 @@ use Route;
 use Lang;
 use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'certificate.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'certificate.php';
 
 /**
  * Courses controller class for managing membership and course info
@@ -106,7 +106,7 @@ class Certificates extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Instantiate a Course object
 		$model = Certificate::getInstance($fields['id'], $fields['course_id']);
@@ -182,7 +182,7 @@ class Certificates extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -258,7 +258,7 @@ class Certificates extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
+		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));

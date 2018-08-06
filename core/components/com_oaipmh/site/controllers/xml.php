@@ -51,20 +51,20 @@ class Xml extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$metadata   = Request::getVar('metadataPrefix');
-		$from       = Request::getVar('from');
+		$metadata   = Request::getString('metadataPrefix');
+		$from       = Request::getString('from');
 		if ($from)
 		{
 			$from = \Date::of($from)->toSql();
 		}
-		$until      = Request::getVar('until');
+		$until      = Request::getString('until');
 		if ($until)
 		{
 			$until = \Date::of($until)->toSql();
 		}
-		$set        = Request::getVar('set');
-		$resumption = urldecode(Request::getVar('resumptionToken'));
-		$identifier = urldecode(Request::getVar('identifier'));
+		$set        = Request::getString('set');
+		$resumption = urldecode(Request::getString('resumptionToken'));
+		$identifier = urldecode(Request::getString('identifier'));
 
 		$igran  = 'YYYY-MM-DD';
 		$igran .= $this->config->get('gran', 'c') == 'c' ? 'Thh:mm:ssZ' : '';
@@ -94,7 +94,7 @@ class Xml extends SiteController
 				->set('gran', $this->config->get('gran', 'c'))
 				->set('resumption', $resumption);
 
-		$verb = Request::getVar('verb');
+		$verb = Request::getString('verb');
 		switch ($verb)
 		{
 			case 'Identify':
@@ -381,7 +381,7 @@ class Xml extends SiteController
 		Document::setType('xml');
 
 		$this->view
-			->setLayout(Request::getVar('stylesheet', 'stylesheet'))
+			->setLayout(Request::getString('stylesheet', 'stylesheet'))
 			->display();
 	}
 }

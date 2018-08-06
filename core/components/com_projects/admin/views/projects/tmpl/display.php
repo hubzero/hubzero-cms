@@ -118,20 +118,22 @@ function submitbutton(pressbutton)
 	<table class="adminlist" id="projects-admin">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-5" scope="col"> </th>
-				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th class="priority-3" scope="col"><?php echo Html::grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th class="priority-3" scope="col"><?php echo Lang::txt('Team'); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-3" scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_OWNER', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_FEATURED', 'featured', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-3" scope="col"><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-4" scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_PRIVACY', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
+				<th class="priority-3"><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="9"><?php 
+				<td colspan="10"><?php 
 				// Initiate paging
 				echo $this->pagination(
 					$this->total,
@@ -224,9 +226,28 @@ function submitbutton(pressbutton)
 						<td class="priority-3">
 							<span class="glyph <?php echo $ownerclass; ?>"><?php echo $owner; ?></span>
 						</td>
+						<td class="priority-4">
+							<?php if ($row->featured): ?>
+								<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
+									<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unfeature&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>">
+								<?php endif; ?>
+								<span class="state default"><span class="text"><?php echo Lang::txt('JYES'); ?></span></span>
+								<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
+									</a>
+								<?php endif; ?>
+							<?php else: ?>
+								<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
+									<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=feature&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>">
+								<?php endif; ?>
+								<span class="state notdefault"><span class="text"><?php echo Lang::txt('JNO'); ?></span></span>
+								<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
+									</a>
+								<?php endif; ?>
+							<?php endif; ?>
+						</td>
 						<td class="priority-3">
 							<a class="state <?php echo ($row->owned_by_group && $row->sync_group) ? 'synced' : 'not-synced'; ?> team hasTip" title="<?php echo ($row->owned_by_group && $row->sync_group) ? Lang::txt('This team is synced with a group.') : Lang::txt('This team is comprised of selected individuals.'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=team&project=' . $row->id); ?>">
-								<span><?php echo Lang::txt('team'); ?></span>
+								<span><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></span>
 							</a>
 						</td>
 						<td>
@@ -246,12 +267,17 @@ function submitbutton(pressbutton)
 						<td class="priority-4">
 							<?php echo $quota . 'GB'; ?>
 						</td>
+						<td class="priority-3">
+							<a class="state activity hasTip" title="<?php echo Lang::txt('COM_PROJECTS_ACTIVITY_TITLE'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=activity&project=' . $row->id); ?>">
+								<span><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></span>
+							</a>
+						</td>
 					</tr>
 					<?php
 					$k = 1 - $k;
 				}
 			} else { ?>
-				<tr><td colspan="9"><?php echo Lang::txt('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
+				<tr><td colspan="10"><?php echo Lang::txt('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
 		<?php } ?>
 		</tbody>
 	</table>

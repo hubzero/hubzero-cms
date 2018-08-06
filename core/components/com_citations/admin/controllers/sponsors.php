@@ -93,7 +93,7 @@ class Sponsors extends AdminController
 		if (!($row instanceof Sponsor))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -126,7 +126,7 @@ class Sponsors extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$s = Request::getVar('sponsor', array(), 'post');
+		$s = Request::getArray('sponsor', array(), 'post');
 		$sponsorId = !empty($s['id']) ? $s['id'] : null;
 		unset($s['id']);
 
@@ -161,7 +161,7 @@ class Sponsors extends AdminController
 		}
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;

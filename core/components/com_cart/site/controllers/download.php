@@ -38,7 +38,7 @@ use User;
 use Hubzero\Access\Group as Accessgroup;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Product viewing controller class
@@ -52,7 +52,6 @@ class Download extends ComponentController
 	 */
 	public function execute()
 	{
-
 		$this->warehouse = new Warehouse();
 
 		$this->juser = User::getInstance();
@@ -78,10 +77,10 @@ class Download extends ComponentController
 		$tId  = Request::getInt('task', '');
 
 		// Get the SKU ID
-		$sId = Request::getVar('p0');
+		$sId = Request::getString('p0');
 
 		// Get the landing page flag
-		$direct = Request::getVar('p1');
+		$direct = Request::getString('p1');
 
 		// Check if the transaction is complete and belongs to the user and is active and the SKU requested is valid
 		$transaction = Cart::getTransactionFacts($tId);

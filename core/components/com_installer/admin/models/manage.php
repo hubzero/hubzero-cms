@@ -76,7 +76,7 @@ class Manage extends Extension
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$filters = Request::getVar('filters');
+		$filters = Request::getArray('filters');
 		if (empty($filters))
 		{
 			$data = User::getState($this->context . '.data');

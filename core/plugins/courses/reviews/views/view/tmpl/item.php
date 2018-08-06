@@ -40,7 +40,7 @@ if (!$this->comment->get('anonymous') && $this->obj->get('created_by') == $this-
 	$cls .= ' author';
 }
 
-$rtrn = $this->url ? $this->url : Request::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
+$rtrn = $this->url ? $this->url : Request::getString('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
 if (!strstr($rtrn, 'index.php'))
 {
 	$rtrn .= '?';
@@ -52,13 +52,31 @@ else
 
 switch ($this->comment->get('rating'))
 {
-	case 1:   $rating = ' one-stars';   $strs = '&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
-	case 2:   $rating = ' two-stars';   $strs = '&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;'; break;
-	case 3:   $rating = ' three-stars'; $strs = '&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;'; break;
-	case 4:   $rating = ' four-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;'; break;
-	case 5:   $rating = ' five-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;'; break;
+	case 1:
+		$rating = ' one-stars';
+		$strs = '&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;';
+		break;
+	case 2:
+		$rating = ' two-stars';
+		$strs = '&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;';
+		break;
+	case 3:
+		$rating = ' three-stars';
+		$strs = '&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;';
+		break;
+	case 4:
+		$rating = ' four-stars';
+		$strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;';
+		break;
+	case 5:
+		$rating = ' five-stars';
+		$strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;';
+		break;
 	case 0:
-	default:  $rating = ' no-stars';    $strs = '&#x2729;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
+	default:
+		$rating = ' no-stars';
+		$strs = '&#x2729;&#x2729;&#x2729;&#x2729;&#x2729;';
+		break;
 }
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">

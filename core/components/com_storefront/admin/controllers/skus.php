@@ -36,8 +36,13 @@ use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Warehouse;
 use Components\Cart\Helpers\CartDownload;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
-require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Download.php';
+require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Download.php';
 
 /**
  * Controller class for knowledge base categories
@@ -52,10 +57,10 @@ class Skus extends AdminController
 	public function displayTask()
 	{
 		// Get product ID
-		$pId = Request::getVar('id');
+		$pId = Request::getInt('id');
 		if (empty($pId))
 		{
-			$pId = Request::getVar('pId', array(0));
+			$pId = Request::getArray('pId', array(0));
 		}
 		$this->view->pId = $pId;
 
@@ -66,29 +71,29 @@ class Skus extends AdminController
 		// Get filters
 		$this->view->filters = array(
 			// Get sorting variables
-				'sort' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						'title'
-				),
-				'sort_Dir' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						'ASC'
-				),
-			// Get paging variables
-				'limit' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limit',
-						'limit',
-						Config::get('list_limit'),
-						'int'
-				),
-				'start' => Request::getState(
-						$this->_option . '.' . $this->_controller . '.limitstart',
-						'limitstart',
-						0,
-						'int'
-				)
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+		// Get paging variables
+			'limit' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$obj = new Archive();
@@ -125,6 +130,7 @@ class Skus extends AdminController
 	/**
 	 * Edit a SKU
 	 *
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row = null)
@@ -139,7 +145,7 @@ class Skus extends AdminController
 			// If this is a new SKU, set product ID
 			if (!$id)
 			{
-				$pId = Request::getVar('pId');
+				$pId = Request::getInt('pId');
 				$row->setProductId($pId);
 			}
 			$this->view->row = $row;
@@ -148,7 +154,7 @@ class Skus extends AdminController
 		else
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -156,7 +162,7 @@ class Skus extends AdminController
 			}
 
 			// Get correct SKU instance
-			$pId = Request::getVar('pId');
+			$pId = Request::getInt('pId');
 
 			if ($id)
 			{
@@ -222,10 +228,10 @@ class Skus extends AdminController
 	public function saveTask($redirect = true)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
@@ -235,9 +241,9 @@ class Skus extends AdminController
 		{
 			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
 		}
-		//print_r($fields); die;
 
-		$pId = Request::getVar('pId');
+		$pId = Request::getInt('pId');
+
 		// Get the proper SKU
 		if ($fields['sId'])
 		{
@@ -251,7 +257,8 @@ class Skus extends AdminController
 
 		// Save SKU
 		$obj = new Archive();
-		try {
+		try
+		{
 			$sku = $obj->updateSku($sku, $fields);
 		}
 		catch (\Exception $e)
@@ -265,8 +272,8 @@ class Skus extends AdminController
 		{
 			// Redirect
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0), false),
-					Lang::txt('COM_STOREFRONT_SKU_SAVED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0), false),
+				Lang::txt('COM_STOREFRONT_SKU_SAVED')
 			);
 			return;
 		}
@@ -286,7 +293,7 @@ class Skus extends AdminController
 		$step = Request::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
-		$pId = Request::getVar('pId');
+		$pId = Request::getInt('pId');
 
 		// What step are we on?
 		switch ($step)
@@ -295,7 +302,7 @@ class Skus extends AdminController
 				Request::setVar('hidemainmenu', 1);
 
 				// Incoming
-				$id = Request::getVar('id', array(0));
+				$id = Request::getArray('id', array(0));
 				if (!is_array($id) && !empty($id))
 				{
 					$id = array($id);
@@ -319,21 +326,20 @@ class Skus extends AdminController
 				Request::checkToken() or jexit('Invalid Token');
 
 				// Incoming
-				$sIds = Request::getVar('sId', 0);
-				//print_r($sId); die;
+				$sIds = Request::getInt('sId', 0);
 
 				// Make sure we have an ID to work with
 				if (empty($sIds))
 				{
 					App::redirect(
-							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-							Lang::txt('COM_STOREFRONT_NO_ID'),
-							'error'
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+						Lang::txt('COM_STOREFRONT_NO_ID'),
+						'error'
 					);
 					return;
 				}
 
-				$delete = Request::getVar('delete', 0);
+				$delete = Request::getInt('delete', 0);
 
 				$msg = "Delete canceled";
 				$type = 'error';
@@ -353,9 +359,9 @@ class Skus extends AdminController
 						catch (\Exception $e)
 						{
 							App::redirect(
-									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId, false),
-									$e->getMessage(),
-									$type
+								Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId, false),
+								$e->getMessage(),
+								$type
 							);
 							return;
 						}
@@ -367,9 +373,9 @@ class Skus extends AdminController
 
 				// Set the redirect
 				App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId, false),
-						$msg,
-						$type
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId, false),
+					$msg,
+					$type
 				);
 			break;
 		}
@@ -378,7 +384,7 @@ class Skus extends AdminController
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -388,7 +394,7 @@ class Skus extends AdminController
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -398,23 +404,23 @@ class Skus extends AdminController
 	/**
 	 * Set the state of an entry
 	 *
-	 * @param      integer $state State to set
-	 * @return     void
+	 * @param   integer  $state  State to set
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$pId = Request::getVar('pId', 0);
+		$pId = Request::getInt('pId', 0);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-					'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+				'error'
 			);
 			return;
 		}
@@ -465,7 +471,7 @@ class Skus extends AdminController
 			}
 
 			$message = 'SKU could not be ' . $action;
-			if (sizeof($ids) > 1)
+			if (count($ids) > 1)
 			{
 				$message = 'Some SKUs could not be ' . $action;
 			}
@@ -474,22 +480,22 @@ class Skus extends AdminController
 
 		// Redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId, false),
-				$message,
-				$type
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId, false),
+			$message,
+			$type
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0), false)
 		);
 	}
 }

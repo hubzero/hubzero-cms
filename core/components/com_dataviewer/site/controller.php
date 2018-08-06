@@ -15,7 +15,7 @@ function controller()
 	global $dv_conf;
 	$db_id = array();
 
-	$db_id['id'] = Request::getVar('db');
+	$db_id['id'] = Request::getString('db');
 	$db_info = explode(':', $db_id['id']);
 	$db_id['name'] = $db_info[0];
 	$db_id['mode'] = isset($db_info[1]) ? $db_info[1] : 'db';
@@ -24,14 +24,14 @@ function controller()
 	$dv_conf['settings']['db_id'] = $db_id;
 
 	/* Include database mode specific functionality */
-	require_once(__DIR__ . DS . 'modes' . DS . 'mode_' . $db_id['mode'] . '.php');
+	require_once __DIR__ . DS . 'modes' . DS . 'mode_' . $db_id['mode'] . '.php';
 
 	/* Update config with DB specific values */
 	get_conf($db_id);
 
 
 
-	$task = strtolower(Request::getVar('task'));
+	$task = strtolower(Request::getCmd('task'));
 	$task_func = 'task_' . $task;
 
 	if (function_exists($task_func)) {
@@ -55,7 +55,7 @@ function task_file($db_id)
 
 function task_stream_file($db_id)
 {
-	$hash = Request::getVar('hash');
+	$hash = Request::getString('hash');
 	stream_file($hash);
 	exit;
 }
@@ -77,7 +77,7 @@ function task_view($db_id)
 		return;
 	}
 
-	$filter = strtolower(Request::getVar( 'format', 'json' ));
+	$filter = strtolower(Request::getString('format', 'json'));
 	$file = (__DIR__.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);
@@ -103,7 +103,7 @@ function task_data($db_id)
 		return;
 	}
 
-	$filter = strtolower(Request::getVar('type', 'json'));
+	$filter = strtolower(Request::getString('type', 'json'));
 	$file = (__DIR__.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);

@@ -168,7 +168,7 @@ class Notes extends AdminController
 		if (!$row)
 		{
 			// Incoming
-			$id = Request::getVar('id', array());
+			$id = Request::getArray('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -204,7 +204,7 @@ class Notes extends AdminController
 		Request::checkToken();
 
 		// Incoming password blacklist edits
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the record
 		$row = Note::oneOrNew($fields['id'])->set($fields);
@@ -239,7 +239,7 @@ class Notes extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$i = 0;

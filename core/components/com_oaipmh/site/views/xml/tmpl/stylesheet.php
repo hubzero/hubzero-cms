@@ -31,7 +31,7 @@
 
 defined('_HZEXEC_') or die();
 
-$mprefix = Request::getVar('metadataPrefix', 'oai_dc');
+$mprefix = Request::getString('metadataPrefix', 'oai_dc');
 
 echo '<?xml version="1.0" encoding="utf-8"?>';
 

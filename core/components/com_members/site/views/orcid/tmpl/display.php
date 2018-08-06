@@ -33,9 +33,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$fname = Request::getVar('fname', '');
-$lname = Request::getVar('lname', '');
-$email = Request::getVar('email', '');
+$fname = Request::getString('fname', '');
+$lname = Request::getString('lname', '');
+$email = Request::getString('email', '');
 
 $returnOrcid = Request::getInt('return', 0);
 

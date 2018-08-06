@@ -93,7 +93,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function onProject($model, $action = '', $areas = null)
 	{
 		// What's the task?
-		$this->_task = $action ? $action : Request::getVar('action');
+		$this->_task = $action ? $action : Request::getString('action');
 
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
@@ -185,7 +185,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$cid     = Request::getInt('cid', 0);
 		$vid     = Request::getInt('vid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 		$pid     = Request::getInt('pid', 0);
 
 		if (!$cid || !$pid)
@@ -235,10 +235,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function addCitation()
 	{
 		// Incoming
-		$url     = Request::getVar('citation-doi', '');
-		$url     = $url ? $url : urldecode(Request::getVar('url'));
+		$url     = Request::getString('citation-doi', '');
+		$url     = $url ? $url : urldecode(Request::getString('url'));
 		$vid     = Request::getInt('vid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 		$pid     = Request::getInt('pid', 0);
 
 		if (!$url || !$pid)
@@ -279,10 +279,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function savecite()
 	{
 		// Incoming
-		$cite    = Request::getVar('cite', array(), 'post', 'none', 2);
+		$cite    = Request::getArray('cite', array(), 'post');
 		$vid     = Request::getInt('vid', 0);
 		$pid     = Request::getInt('pid', 0);
-		$version = Request::getVar('version', 'dev');
+		$version = Request::getString('version', 'dev');
 
 		$new  = $cite['id'] ? false : true;
 
@@ -609,11 +609,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = Request::getVar('p', '');
+		$props  = Request::getString('p', '');
 		$ajax   = Request::getInt('ajax', 0);
 		$pid    = Request::getInt('pid', 0);
 		$vid    = Request::getInt('vid', 0);
-		$filter = urldecode(Request::getVar('filter', ''));
+		$filter = urldecode(Request::getString('filter', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -846,7 +846,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function parseDoi()
 	{
 		// Incoming
-		$url = Request::getVar('url', '');
+		$url = Request::getString('url', '');
 
 		// Is this a DOI?
 		$parts = explode("doi:", $url);
@@ -870,7 +870,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function parseUrl($url = '', $citation = true, $incPreview = true, $format = 'apa')
 	{
 		// Incoming
-		$url = $url ? $url : urldecode(Request::getVar('url', $url));
+		$url = $url ? $url : urldecode(Request::getString('url', $url));
 		$output = array('rtype' => 'url', 'message' => '');
 
 		if (!$url)
@@ -965,7 +965,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 			if ($content)
 			{
-				require_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'links' . DS . 'helpers' . DS . 'simple_html_dom.php';
+				require_once __DIR__ . DS . 'helpers' . DS . 'simple_html_dom.php';
 
 				$out = '';
 
@@ -1089,7 +1089,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function getDoiMetadata($doi, $citation = false, &$url, $rawData = false, $format = 'apa')
 	{
 		// Include metadata model
-		include_once PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'metadata.php';
+		include_once Component::path('com_publications') . DS . 'models' . DS . 'metadata.php';
 
 		$format = in_array($format, array('apa', 'ieee')) ? $format : 'apa';
 

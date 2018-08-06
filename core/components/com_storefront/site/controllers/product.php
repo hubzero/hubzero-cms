@@ -41,8 +41,8 @@ use Lang;
 use User;
 use App;
 
-require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php';
+require_once \Component::path('com_cart') . DS . 'models' . DS . 'CurrentCart.php';
+require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Audit.php';
 
 
 /**
@@ -53,7 +53,7 @@ class Product extends \Hubzero\Component\SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -70,12 +70,11 @@ class Product extends \Hubzero\Component\SiteController
 	/**
 	 * Display product
 	 *
-	 * @param		$pId
-	 * @return     	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$productIdentifier = Request::getVar('product', '');
+		$productIdentifier = Request::getString('product', '');
 		$pInfo = $this->warehouse->checkProduct($productIdentifier);
 
 		if (!$pInfo->status)
@@ -101,8 +100,8 @@ class Product extends \Hubzero\Component\SiteController
 		$cart = new CurrentCart();
 
 		// POST add to cart request
-		$addToCartRequest = Request::getVar('addToCart', false, 'post');
-		$options = Request::getVar('og', false, 'post');
+		$addToCartRequest = Request::getBool('addToCart', false, 'post');
+		$options = Request::getArray('og', false, 'post');
 		$qty = Request::getInt('qty', 1, 'post');
 
 		if ($addToCartRequest)
@@ -126,7 +125,8 @@ class Product extends \Hubzero\Component\SiteController
 			{
 				$this->view->setError($errors);
 			}
-			else {
+			else
+			{
 				// prevent resubmitting by refresh
 				// If not an ajax call, redirect to cart
 				App::redirect(Route::url('index.php?option=com_cart'));
@@ -164,7 +164,8 @@ class Product extends \Hubzero\Component\SiteController
 			$data = $productOptions->options;
 			$this->view->options = $data->options;
 		}
-		else {
+		else
+		{
 			$this->view->statusMessage = $productOptions->msg;
 		}
 
@@ -222,13 +223,16 @@ class Product extends \Hubzero\Component\SiteController
 
 		if ($data)
 		{
-			foreach ($data->skus as $sId => $info) {
+			foreach ($data->skus as $sId => $info)
+			{
 				$info = $info['info'];
 
-				if ($info->sPrice > $priceRange['high']) {
+				if ($info->sPrice > $priceRange['high'])
+				{
 					$priceRange['high'] = $info->sPrice;
 				}
-				if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice) {
+				if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice)
+				{
 					$priceRange['low'] = $info->sPrice;
 				}
 			}
@@ -258,8 +262,10 @@ class Product extends \Hubzero\Component\SiteController
 	/**
 	 * Generate JS needed for displaying a product page
 	 *
-	 * @param		void
-	 * @return     	void
+	 * @param   array   $ops
+	 * @param   array   $skus
+	 * @param   string  $productIdentifier
+	 * @return  string
 	 */
 	private function getDisplayJs($ops, $skus, $productIdentifier)
 	{
@@ -407,8 +413,8 @@ class Product extends \Hubzero\Component\SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @param      array $course_pages List of roup pages
-	 * @return     void
+	 * @param   string  $product
+	 * @return  void
 	 */
 	public function _buildPathway($product)
 	{

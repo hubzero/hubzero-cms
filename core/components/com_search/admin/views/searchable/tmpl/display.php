@@ -48,10 +48,6 @@ Submenu::addEntry(
 	'index.php?option='.$option.'&task=configure'
 );
 Submenu::addEntry(
-	Lang::txt('Search Index'),
-	'index.php?option='.$option.'&task=searchindex'
-);
-Submenu::addEntry(
 	Lang::txt('Searchable Components'),
 	'index.php?option='.$option.'&task=display&controller=searchable',
 	true
@@ -84,8 +80,10 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->components); ?>);" /></th>
 				<th scope="col" class="priority-5"><a href="#" onclick="Joomla.tableOrdering('id','asc','');return false;" title="Click to sort by this column" class="active desc sort">ID</a></th>
-				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('name','asc','');return false;" title="Click to sort by this column" class="sort">Name</a></th>
+				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('title','asc','');return false;" title="Click to sort by this column" class="sort">Title</a></th>
 				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('state','asc','');return false;" title="Click to sort by this column" class="sort">Active?</a></th>
+				<th scope="col">Records</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -98,7 +96,7 @@ function submitbutton(pressbutton)
 					<?php echo $component->id; ?>
 				</td>
 				<td>
-					<?php echo $component->name; ?>
+					<?php echo '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $component->get('id')) . '">' . $component->title . '</a>'; ?>
 				</td>
 				<td>
 					<?php 
@@ -120,6 +118,27 @@ function submitbutton(pressbutton)
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
+				<td class="total">
+					<?php 
+						$componentName = $component->getQueryName();
+						$componentCount = !empty($this->componentCounts[$componentName]) ? $this->componentCounts[$componentName] : 0;
+						$componentLink = Route::url('index.php?option=com_search&controller=' . $this->controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
+					?>
+					<?php if ($componentCount > 0): ?>
+					<a href="<?php echo $componentLink;?>">
+						<?php echo $componentCount; ?>
+					</a>
+					<?php else: ?>
+						<?php echo $componentCount; ?>
+					<?php endif; ?>
+				</td>
+				<td class="tasks">
+					<?php if ($component->get('state') == 1): ?>
+						<a class="button unpublishtask"  data-link="<?php echo $componentLink;?>" data-linktext="Rebuild Index" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=activateIndex' . '&id=' . $component->get('id') . '&' . Session::getFormToken() . '=1');?>">
+							Rebuild Index
+						</a>
+					<?php endif; ?>
+				</td>
 			</tr>
 			<?php $i++; ?>
 			<?php endforeach; ?>
@@ -135,5 +154,3 @@ function submitbutton(pressbutton)
 	<?php echo Html::input('token'); ?>
 </form>
 </section><!-- / #main -->
-<script type="text/javascript">
-</script>

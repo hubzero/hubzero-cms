@@ -40,12 +40,12 @@ Pathway::append(
 
 $database = App::get('db');
 
-$sort = strtolower(Request::getVar('sort', 'created'));
+$sort = strtolower(Request::getString('sort', 'created'));
 if (!in_array($sort, array('created', 'filename', 'description', 'created_by')))
 {
 	$sort = 'created';
 }
-$dir = strtoupper(Request::getVar('dir', 'DESC'));
+$dir = strtoupper(Request::getString('dir', 'DESC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'DESC';

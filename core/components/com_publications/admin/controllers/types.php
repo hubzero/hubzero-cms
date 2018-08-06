@@ -316,7 +316,7 @@ class Types extends AdminController
 
 		// Incoming
 		$id       = Request::getInt('id', 0);
-		$newblock = Request::getVar('newblock', '');
+		$newblock = Request::getString('newblock', '');
 		$before   = Request::getInt('before', 1);
 
 		$database = App::get('db');
@@ -469,7 +469,7 @@ class Types extends AdminController
 	{
 		// Incoming
 		$id       = Request::getInt('id', 0);
-		$curation = Request::getVar('curation', '', 'post', 'none', 2);
+		$curation = Request::getString('curation', '', 'post');
 		$curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
 		$database = App::get('db');
 
@@ -602,7 +602,7 @@ class Types extends AdminController
 		$manifest = $objC->_manifest;
 
 		// Get curation configs
-		$curation = Request::getVar('curation', array(), 'post', 'none', 2);
+		$curation = Request::getArray('curation', array(), 'post');
 
 		// Collect modifications
 		if (is_array($curation) && isset($curation['blocks'][$blockId]))
@@ -730,7 +730,7 @@ class Types extends AdminController
 
 		// Incoming
 		$id       = Request::getInt('id', 0);
-		$neworder = Request::getVar('neworder', '');
+		$neworder = Request::getString('neworder', '');
 		$order    = explode('-', $neworder);
 		$database = App::get('db');
 
@@ -800,7 +800,7 @@ class Types extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
@@ -863,7 +863,7 @@ class Types extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 		$database = App::get('db');
 
@@ -889,7 +889,7 @@ class Types extends AdminController
 		if ($row->id)
 		{
 			// Incoming
-			$curatorGroup = Request::getVar('curatorgroup', '');
+			$curatorGroup = Request::getString('curatorgroup', '');
 			if ($group = \Hubzero\User\Group::getInstance($curatorGroup))
 			{
 				$row->curatorGroup = $group->get('gidNumber');
@@ -903,7 +903,7 @@ class Types extends AdminController
 			$manifest = $objC->_manifest;
 
 			// Get curation configs
-			$curation = Request::getVar('curation', array(), 'post');
+			$curation = Request::getArray('curation', array());
 
 			// Collect modifications
 			if (is_array($curation))
@@ -955,7 +955,7 @@ class Types extends AdminController
 		else
 		{
 			// Get parameters
-			$params = Request::getVar('params', '', 'post');
+			$params = Request::getArray('params', '', 'post');
 			if (is_array($params))
 			{
 				$txt = array();
@@ -1030,7 +1030,7 @@ class Types extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$id = Request::getVar('id', array(0), '', 'array');
+		$id = Request::getArray('id', array(0), '');
 		$database = App::get('db');
 
 		// Load row
@@ -1056,7 +1056,7 @@ class Types extends AdminController
 		Request::checkToken();
 
 		// Incoming (expecting an array)
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

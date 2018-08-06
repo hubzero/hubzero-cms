@@ -89,7 +89,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 		$url = Request::base() . ltrim($sef, '/');
 
 		// Incoming action
-		$sharewith = Request::getVar('sharewith', '');
+		$sharewith = Request::getString('sharewith', '');
 
 		if ($sharewith)
 		{

@@ -36,10 +36,10 @@ $this->css('reports')
 	->js('reports');
 
 // Incoming
-$data   = Request::getVar( 'data', array(), 'post', 'array' );
-$from   = Request::getVar( 'fromdate', Date::of('-1 month')->toLocal('Y-m') );
-$to     = Request::getVar( 'todate', Date::of('now')->toLocal('Y-m') );
-$filter = Request::getVar( 'searchterm', '');
+$data   = Request::getArray('data', array(), 'post');
+$from   = Request::getString('fromdate', Date::of('-1 month')->toLocal('Y-m'));
+$to     = Request::getString('todate', Date::of('now')->toLocal('Y-m'));
+$filter = Request::getString('searchterm', '');
 
 ?>
 <header id="content-header" class="reports">

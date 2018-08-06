@@ -301,6 +301,11 @@
 	.content-feed #blab input.blog-submit:hover {
 		cursor: pointer;
 	}
+
+	.content-feed textarea[name="comment"] {
+		width: 100%;
+	}
+
 	.blog-submit {
 		display: block;
 		margin: 1em 0 0 0;

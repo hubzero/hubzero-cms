@@ -166,7 +166,7 @@ class Router extends Base
 				default:
 					if (isset($segments[0]{0}) && $segments[0]{0} == 'n')
 					{
-						$vars['id'] = '-' . substr($segments[0],1);
+						$vars['id'] = '-' . substr($segments[0], 1);
 					}
 					else
 					{
@@ -225,7 +225,7 @@ class Router extends Base
 		}
 
 		// are we serving up a file
-		$uri = \Request::getVar('REQUEST_URI', '', 'server');
+		$uri = \Request::getString('REQUEST_URI', '', 'server');
 		if (strstr($uri, 'Image:') || strstr($uri, 'File:'))
 		{
 			$vars['task'] = 'download';

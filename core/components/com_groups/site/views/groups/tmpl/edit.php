@@ -58,8 +58,8 @@ $levels = array(
 );
 
 //build back link
-$host = Request::getVar("HTTP_HOST", "", "SERVER");
-$referrer = Request::getVar("HTTP_REFERER", "", "SERVER");
+$host = Request::getString("HTTP_HOST", "", "SERVER");
+$referrer = Request::getString("HTTP_REFERER", "", "SERVER");
 
 //check to make sure referrer is a valid url
 //check to make sure the referrer is a link within the HUB

@@ -48,7 +48,7 @@ class Cart extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = Request::getVar('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -66,8 +66,7 @@ class Cart extends ComponentController
 	 */
 	public function huiTask()
 	{
-		print_r($_POST);
-		die;
+		ddie($_POST);
 	}
 
 	/**
@@ -79,18 +78,15 @@ class Cart extends ComponentController
 	{
 		$cart = new CurrentCart();
 
-		//print_r($this); die;
-
 		// Initialize errors array
 		$errors = array();
 
 		// Update cart if needed
-		$updateCartRequest = Request::getVar('updateCart', false, 'post');
+		$updateCartRequest = Request::getBool('updateCart', false, 'post');
 
 		// If pIds are posted, convert them to SKUs
-		$pIds = Request::getVar('pId', false, 'post');
-		//print_r($pIds); die;
-		$skus = Request::getVar('skus', false, 'post');
+		$pIds = Request::getArray('pId', false, 'post');
+		$skus = Request::getArray('skus', false, 'post');
 
 		if ($updateCartRequest && ($pIds || $skus))
 		{
@@ -106,7 +102,7 @@ class Cart extends ComponentController
 
 					// each pId must map to one SKU, otherwise ignored, since there is no way which SKU is being added
 					// Must be only one sku...
-					if (sizeof($product_skus) != 1)
+					if (count($product_skus) != 1)
 					{
 						continue;
 					}
@@ -121,7 +117,6 @@ class Cart extends ComponentController
 					$skus = array($skus => 1);
 				}
 			}
-			//print_r($skus); die;
 
 			// Turn off syncing to prevent redundant session update queries
 			$cart->setSync(false);
@@ -175,8 +170,8 @@ class Cart extends ComponentController
 		}
 
 		// Add coupon if needed
-		$addCouponRequest = Request::getVar('addCouponCode', false, 'post');
-		$couponCode = Request::getVar('couponCode', false, 'post');
+		$addCouponRequest = Request::getBool('addCouponCode', false, 'post');
+		$couponCode = Request::getString('couponCode', false, 'post');
 
 		if ($addCouponRequest && $couponCode)
 		{
@@ -206,7 +201,7 @@ class Cart extends ComponentController
 		{
 			// If this is an express checkout (go to the confirm page right away) there shouldn't be any items in the cart
 			// Since redirect is set, there are no errors
-			$expressCheckout = Request::getVar('expressCheckout', false, 'post');
+			$expressCheckout = Request::getBool('expressCheckout', false, 'post');
 
 			// make sure the cart is empty
 			if ($expressCheckout && !empty($skus) && $cart->isEmpty())
@@ -251,8 +246,8 @@ class Cart extends ComponentController
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-					Lang::txt(strtoupper($this->_option)),
-					'index.php?option=' . $this->_option
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
 			);
 		}
 

@@ -72,7 +72,7 @@ class Posts extends SiteController
 	 */
 	public function loginTask()
 	{
-		$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+		$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 		);
@@ -141,7 +141,7 @@ class Posts extends SiteController
 
 		$id = Request::getInt('post', 0);
 
-		$this->view->collection = $this->model->collection(Request::getVar('board', 0));
+		$this->view->collection = $this->model->collection(Request::getString('board', 0));
 
 		// Get all collections for a user
 		$this->view->collections = $this->model->collections();
@@ -149,7 +149,7 @@ class Posts extends SiteController
 		{
 			$this->view->collection->setup(User::get('id'), 'member');
 			$this->view->collections = $this->model->collections();
-			$this->view->collection  = $this->model->collection(Request::getVar('board', 0));
+			$this->view->collection  = $this->model->collection(Request::getString('board', 0));
 		}
 
 		// Load the post
@@ -211,7 +211,7 @@ class Posts extends SiteController
 		}
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getArray('fields', array(), 'post');
 
 		// Get model
 		$row = new Item();
@@ -225,8 +225,8 @@ class Posts extends SiteController
 
 		// Add some data
 		//$row->set('_files', $files);
-		$row->set('_assets', Request::getVar('assets', array(), 'post'));
-		$row->set('_tags', trim(Request::getVar('tags', '')));
+		$row->set('_assets', Request::getArray('assets', array(), 'post'));
+		$row->set('_tags', trim(Request::getString('tags', '')));
 		$row->set('state', 1);
 
 		// Store new content
@@ -237,7 +237,7 @@ class Posts extends SiteController
 		}
 
 		// Create a post entry linking the item to the board
-		$p = Request::getVar('post', array(), 'post');
+		$p = Request::getArray('post', array(), 'post');
 
 		// Load a post entry
 		$post = new Post($p['id']);
@@ -249,7 +249,7 @@ class Posts extends SiteController
 		}
 
 		// Are we creating a new collection for it?
-		$coltitle = Request::getVar('collection_title', '', 'post');
+		$coltitle = Request::getString('collection_title', '', 'post');
 		if (!$p['collection_id'] && $coltitle)
 		{
 			$collection = new Collection();
@@ -303,7 +303,7 @@ class Posts extends SiteController
 		}
 
 		// Incoming
-		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getArray('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = Comment::blank()->set($comment);
@@ -507,7 +507,7 @@ class Posts extends SiteController
 		{
 			// Incoming
 			$post_id       = Request::getInt('post', 0);
-			$collection_id = Request::getVar('board', 0);
+			$collection_id = Request::getInt('board', 0);
 
 			if (!$post_id && $collection_id)
 			{
@@ -539,7 +539,7 @@ class Posts extends SiteController
 
 		Request::checkToken();
 
-		$collection_title = Request::getVar('collection_title', '');
+		$collection_title = Request::getString('collection_title', '');
 		$collection_id = Request::getInt('collection_id', 0);
 		$item_id       = Request::getInt('item_id', 0);
 
@@ -566,7 +566,7 @@ class Posts extends SiteController
 			$post = new Tables\Post($this->database);
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
-			$post->description   = Request::getVar('description', '');
+			$post->description   = Request::getString('description', '');
 			if (!$post->check())
 			{
 				$this->setError($post->getError());
@@ -634,7 +634,7 @@ class Posts extends SiteController
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
-		$posts = Request::getVar('post', array());
+		$posts = Request::getArray('post', array());
 
 		if (is_array($posts))
 		{

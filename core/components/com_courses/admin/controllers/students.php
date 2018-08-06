@@ -36,9 +36,9 @@ use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 
 /**
  * Courses controller class for managing membership and course info
@@ -186,7 +186,7 @@ class Students extends AdminController
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getArray('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -237,7 +237,7 @@ class Students extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post');
+		$fields = Request::getArray('fields', array(), 'post');
 
 		if (strstr($fields['user_id'], ','))
 		{
@@ -348,7 +348,7 @@ class Students extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getVar('id', array());
+		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$offering_id = Request::getInt('offering', 0);
