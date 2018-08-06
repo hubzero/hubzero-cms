@@ -61,7 +61,7 @@ class Relationships extends AdminController
 			$this->view->setError($error);
 		}
 
-		$tag = Request::getVar('tag', null);
+		$tag = Request::getString('tag', null);
 		if ($tag && (int) $tag == $tag)
 		{
 			$this->database->setQuery('SELECT tag FROM `#__tags` WHERE id = ' . $tag);
@@ -467,7 +467,6 @@ class Relationships extends AdminController
 		$this->database->execute();
 		$this->database->setQuery('TRUNCATE TABLE #__focus_area_publication_master_type_rel');
 		$this->database->execute();
-		error_log(var_export($_POST, 1));
 		$about = Request::getVar('about', array(), 'post');
 		foreach ($existing as $id => $fa)
 		{
