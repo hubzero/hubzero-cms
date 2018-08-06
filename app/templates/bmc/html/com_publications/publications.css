@@ -285,6 +285,15 @@
 	.ui-tooltip {
 		z-index: 9999 !important;
 	}
+
+	/* Bundle dropdown */
+	.btn-group:hover > .btn:first-child:hover + .dropdown-toggle {
+    background: #6E9C39;
+	}
+	.btn-group span.dropdown-toggle:before, .btn .caret {
+		border-top: 4px solid #fff;
+	}
+
 	p.curversion,
 	p.devversion,
 	p.posted,
