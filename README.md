@@ -132,10 +132,12 @@ Grab the hashes for the commits of interest.
 There are a few commands that we should be aware of:
 
  1. `git cherry-pick -x <hash>`
- 2. `git cherry-pick -x --no-commit <hash>`
+ 2. `git cherry-pick -x -n (--no-commit) <hash>`
  3. `git cherry-pick -x --strategy=subtree <hash>`
 
 It is a good idea to look at each commit to see if there was an edit, addition, or deletion, as the addition and deletions will cause some trouble.
+
+**For most things, the 2nd command above will work.**  If you have files that are NOT in the extension of interest, use `git rm -r` (recursive for directories).
 
 #### Only files were added in a commit
 
@@ -259,7 +261,9 @@ We can then continue the cherry-picking
 [foo]$ git push ext_foo HEAD:master
 ```
 
-## How to push changes to `dev`
+## How to push changes to `dev` (RARE)
+
+_This is a rare operation as the only thing we are tracking in the app directory now are some overrides._
 
 If you want to push changes to `dev`, you need to update the `app` repository, as the `dev` machine has the `app` directory added as a subtree.  To do this:
 
@@ -277,85 +281,40 @@ git subtree pull --prefix=app qubeshub app
 
 Note the change of the remote from `origin` to `qubeshub`.  On `dev`, `origin` is set to `https://github.com/hubzero/hubzero.cms`, and `qubeshub` is set to `https://github.com/qubeshub/hubzero.cms`.
 
-# How to push changes from `dev`
-
-If you are developing on `dev`, then NEVER push to `origin` (well, you probably won't be able to anyways).  In this case, everything should be subtree pushed, like this:
-
-```
-git subtree push --prefix=app qubeshub app
-```
-
-Then, in order for those changes to be integrated into the `master` branch, perform the following from the vagrant box:
-
-```
-git subtree pull --prefix=app origin app
-```
-
-Note that this is essentially the reverse workflow of working on the vagrant box.
-
 # Monthly updates
 
 On the Thursday or Friday before QA push, do the following:
 
 ```
-=======
 git fetch --all
 git pull upstream 2.2
 ```
 
-This will pull in the new code into `/core`.  For the extensions that have overrides, perform the following in order (they may or may not work).
-
-## 1. Update app
-
-You first want to make sure your local `app` branch is up-to-date.  From the local `master` branch:
+This will pull in the new code into `/core`.  For the extensions that have overrides, follow the same steps above for updating remote extensions.
 
 ```
-// Pushes app to GitHub
-git subtree push --prefix=app origin app
-
-// Switch to app branch
-git checkout app
-
-// Pull in changes from GitHub
-git pull --rebase origin app
+git merge -X subtree=app/<extension directory> -Xtheirs --squash <extension>/master --allow-unrelated-histories
 ```
 
-For the extensions in question, go to `hubzero/hubzero-cms` and see what changes were made.  Then, grab the commit of interest and perform a cherry pick:
+The `-Xtheirs` is important and safe, as we effectively want our version in the main repo to mirror the remote extension.
+
+**This will pull in ALL commits in the history of the repo into the commit message.**  Edit the commit file as follows.
+
+## Change the edit message
 
 ```
-git cherry-pick <commit hash>
+Squashed commit of the following:
 ```
 
-This may or may not work!  If you run into trouble, try the next thing.
-
-## 2. Subtree a subtree?
-
-From the `app` branch, perform the following:
+to
 
 ```
-git subtree split -P <extension> -b <extension>
-git checkout <extension>
-git cherry-pick <commit hash>
+[extension] Squashed commit of the following...
 ```
 
-If this works, then you can merge the changes back into the `app` branch:
+## Change the edit description
 
-```
-git checkout app
-git merge -Xsubtree=<extension> <extension>
-```
-
-If THIS works, then you want to update the `app` branch on GitHub and pull in the changes to `master`:
-
-```
-git push origin app
-git checkout master
-git subtree pull --prefix=app origin app
-```
-
-## 3. Template overrides
-
-Be careful, as there are cases where we have overrides of php files in `app/templates/bmc/html`.  In this case, do manual checks.  Using FileMerge can be helpful here.
+Include all recent commits from the core to app merge.  After the oldest more recent commit, add `...` on its own line and delete all the way until the commit info at the end (although these will be stripped as they are just comments - good to reread just to be sure).
 
 # Fixing core issues
 
