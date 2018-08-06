@@ -598,7 +598,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 		}
 		$page = new stdClass;
 
-		if ($this->get('state') == self::STATE_PUBLISHED && $this->isOpen())
+		if ($this->get('state') == self::STATE_PUBLISHED && ($this->isPublic() || $this->isOpen()))
 		{
 			$access_level = 'public';
 		}
