@@ -188,11 +188,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			//$this->js('datepicker.js');
 
 			//get the page id if we want to view stats on a specific page
-			$pid = Request::getVar('pid', '');
+			$pid = Request::getString('pid', '');
 
 			//get start and end dates
-			$start = Request::getVar('start', gmdate("Y-m-d", strtotime('-30 DAYS')));
-			$end   = Request::getVar('end', gmdate("Y-m-d"));
+			$start = Request::getString('start', gmdate("Y-m-d", strtotime('-30 DAYS')));
+			$end   = Request::getString('end', gmdate("Y-m-d"));
 			if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $start))
 			{
 				$start = Date::of($start)->format('Y-m-d');
