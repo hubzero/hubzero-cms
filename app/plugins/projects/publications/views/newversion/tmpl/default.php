@@ -89,7 +89,7 @@ if ($this->getError()) {
 				<?php if ($this->ajax) { ?>
 				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
 				<?php } else {
-					$rtn = Request::getVar('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server');
+					$rtn = Request::getString('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server');
 				?>
 				<span class="btn btncancel"><a href="<?php echo $rtn; ?>"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a></span>
 				<?php } ?>

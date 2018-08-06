@@ -72,7 +72,7 @@ if ($this->getError()) {
 		<input type="hidden" name="version" id="version" value="<?php echo $this->pub->versionAlias; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->isProvisioned() ? 1 : 0; ?>" />
 		<?php if ($this->project->isProvisioned()) { ?>
-		<input type="hidden" name="task" value="submit" />
+			<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
 	<div <?php if (!$this->ajax) { echo 'class="vform"'; } ?>>
@@ -92,9 +92,9 @@ if ($this->getError()) {
 		<p class="submitarea">
 			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
 			<?php if ($this->ajax) { ?>
-			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
-			<?php } else { $rtn = Request::getVar('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server'); ?>
-			<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
+			<?php } else { $rtn = Request::getString('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server'); ?>
+				<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 </form>
