@@ -278,6 +278,13 @@
 	}
 
 /* Launch area content */
+
+  .launcharea {
+		margin-top: 1em;
+	}
+	.ui-tooltip {
+		z-index: 9999 !important;
+	}
 	p.curversion,
 	p.devversion,
 	p.posted,
@@ -288,7 +295,7 @@
 	p.wip {
 		font-size: 85%;
 		color: #333333;
-		margin-top: -1em;
+		margin-top: 0.1em;
 	}
 	p.devversion span {
 		display: block;
@@ -517,9 +524,15 @@
 		padding: 2em;
 	}
 
-	#primary-document .btn {
+	#primary-document {
 		width: 100%;
 		text-align: left;
+	}
+	#primary-document .btn:first-child {
+		width: calc(100% - (1.5em + 8px));
+	}
+	#primary-document .dropdown-menu {
+		width: 100%;
 	}
 	#primary-document_pop {
 		display: none;
