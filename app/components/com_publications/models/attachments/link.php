@@ -837,7 +837,8 @@ class Link extends Base
 	{
 		if ($objPA->title != '')
 		{
-			return str_replace(' ', '_', $objPA->title) . '-' . $objPA->id;
+			// return str_replace(' ', '_', $objPA->title) . '-' . $objPA->id;
+			return preg_replace('![^a-z0-9]+!i', '_', $objPA->title) . '-' . $objPA->id;
 		}
 		else
 		{
