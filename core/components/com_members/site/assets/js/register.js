@@ -108,7 +108,7 @@ jQuery(document).ready(function($){
 			$.ajax({
 				url: "/api/members/checkpass",
 				type: "POST",
-				data: "password1="+passwd.val(),
+				data: {"password1": passwd.val()},
 				dataType: "json",
 				cache: false,
 				success: function(json) {
