@@ -35,6 +35,7 @@ defined('_HZEXEC_') or die();
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Hubzero\Utility\Arr;
 
 /**
  * Plugin class for Google Drive filesystem connectivity
@@ -87,9 +88,10 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
 
 			App::redirect($client->createAuthUrl());
 		}
+		$path = Arr::getValue($params, 'path', null);
 		$client->setAccessToken($accessToken);
 		$service = new \Google_Service_Drive($client);
-		$adapter = new \Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter($service, 'root');
+		$adapter = new \Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter($service, $path);
 		return $adapter;
 	}
 }
