@@ -1190,7 +1190,10 @@ class Project extends Model
 					$action = 'cancelled';
 					break;
 
+				case 'posted a to do item':
 				case 'posted a to-do item':
+				case 'checked off a to do item':
+				case 'checked off a to-do item':
 					$scope = 'project.todo';
 					break;
 
@@ -1198,6 +1201,7 @@ class Project extends Model
 					$scope = 'project.comment';
 					break;
 
+				case 'commented on a to do item':
 				case 'commented on a to-do item':
 					$scope = 'project.todo.comment';
 					break;
@@ -1222,19 +1226,19 @@ class Project extends Model
 					{
 						$action = 'uploaded';
 						$scope = 'project.file';
-						$refid = $this->get('id');
+						$scope_id = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('updated file')) == 'updated file')
 					{
 						$action = 'updated';
 						$scope = 'project.file';
-						$refid = $this->get('id');
+						$scope_id = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('restored deleted file')) == 'restored deleted file')
 					{
 						$action = 'updated';
 						$scope = 'project.file';
-						$refid = $this->get('id');
+						$scope_id = $this->get('id');
 					}
 					if (substr($activity, 0, strlen('created database')) == 'created database')
 					{
@@ -1348,7 +1352,9 @@ class Project extends Model
 					'class'       => $class,
 					'underline'   => $underline,
 					'commentable' => $commentable,
-					'admin'       => $admin
+					'admin'       => $admin,
+					'referenceid' => $refid,
+					'projectid'   => $this->get('id')
 				)
 			]);
 
