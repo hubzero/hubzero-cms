@@ -203,6 +203,11 @@ class connections
 		return $view->loadTemplate();
 	}
 
+	/** 
+	 * Reset the API token for the project connection
+	 * 
+	 * @return void
+	 */
 	public function refreshaccess()
 	{
 		$connection = Connection::oneOrNew(Request::getInt('connection'));
@@ -216,6 +221,27 @@ class connections
 		}
 
 		Notify::message(Lang::txt("Connection " . $connection->get('name') . " reset."));
+		App::redirect(Route::url($this->model->link('files')));
+	}
+
+	/**
+	 * Reset the directory that the connection was locked to
+	 * 
+	 * @return void
+	 */
+	public function refreshpath()
+	{
+		$connection = Connection::oneOrNew(Request::getInt('connection'));
+
+		if ($this->connection)
+		{
+			$connection_params = json_decode($connection->get('params'));
+			unset($connection_params->path);
+			$connection->set('params', json_encode($connection_params));
+			$connection->save();
+		}
+
+		Notify::message(Lang::txt("Connection " . $connection->get('name') . " path reset."));
 		App::redirect(Route::url($this->model->link('files')));
 	}
 
@@ -287,6 +313,11 @@ class connections
 	public function browse()
 	{
 		// Set up view
+		$connection_params = json_decode($this->connection->params);
+		if(!isset($connection_params->path))
+		{
+			return $this->setup_base_dir();
+		}
 		$view = new \Hubzero\Plugin\View([
 			'folder'  => 'projects',
 			'element' => 'files',
@@ -318,6 +349,78 @@ class connections
 
 		// Load and return view content
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Render a view to set up connection dir jail
+	 *
+	 * @return string
+	 */
+	public function setup_base_dir()
+	{
+		$view = new \Hubzero\Plugin\View([
+			'folder'	=> 'projects',
+			'element'	=> 'files',
+			'name'		=> 'connected',
+			'layout'	=> 'pathprefix'
+		]);
+		$subdir = Request::getString('subdir', '');
+		$dir = Entity::fromPath($subdir, $this->connection->adapter());
+		$contents = $dir->listContents()->sort('basename', 'ASC');
+		$dirs = array();
+		foreach($contents as $file)
+		{
+			if ($file->isDir())
+			{
+				$dirs[] = $file;
+			}
+		}
+
+		$view->items       = $dirs;
+		$view->url         = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->title       = $this->_area['title'];
+		$view->option      = $this->_option;
+		$view->parent      = $dir->getParent(true);
+		$view->subdir      = $subdir;
+		$view->current_dir = $dir;
+		$view->model       = $this->model;
+		$view->fileparams  = $this->params;
+		$view->connection  = $this->connection;
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Save prefix
+	 * 
+	 * @return void
+	 */
+	public function setprefix()
+	{
+		$prefix = Request::getString('prefix', null);
+		if (is_null($prefix))
+		{
+			return $this->browse();
+		}
+		$connection_params = json_decode($this->connection->params);
+		$connection_params->path = $prefix;
+		$this->connection->set('params', json_encode($connection_params));
+
+		if (!$this->connection->save())
+		{
+			App::redirect(
+				Route::url($this->model->link('files'), false),
+				$this->connection->getError(),
+				'error'
+			);
+		}
+		$url  = $this->model->link('files') . '&action=browse';
+		$url .= '&connection=' . $this->connection->id;
+		$url  = Route::url($url, false);
+
+		// Redirect
+		Notify::message(Lang::txt('PLG_PROJECTS_FILES_CONNECTED_PREFIX_SELECT_SUCCESS'));
+		App::redirect($url);
 	}
 
 	/**
