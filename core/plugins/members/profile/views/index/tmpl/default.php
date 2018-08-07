@@ -530,6 +530,43 @@ $legacy = array(
 		$scripts = array();
 		$toggle = array();
 
+		// We need to collect a list of all field options
+		// that have dependent fields. We'll use this later
+		// on to determine what we should or shouldn't
+		// display, regardless if the field has a value
+		// submitted by the user.
+		$f = array();
+		foreach ($this->fields as $field)
+		{
+			if ($field->options->count())
+			{
+				foreach ($field->options as $option)
+				{
+					if (!$option->get('dependents'))
+					{
+						continue;
+					}
+
+					$events = json_decode($option->get('dependents'));
+					$option->set('dependents', $events);
+
+					if (empty($events))
+					{
+						continue;
+					}
+
+					if (!isset($f[$field->get('name')]))
+					{
+						$f[$field->get('name')] = array();
+					}
+					$f[$field->get('name')][$option->get('value')] = $events;
+				}
+			}
+		}
+
+		$sh = array();
+		$hd = array();
+
 		foreach ($this->fields as $field):
 			// Build scripts for toggling dependent fields
 			if ($isUser && $field->options->count())
@@ -545,13 +582,7 @@ $legacy = array(
 
 					$i++;
 
-					if (!$option->get('dependents'))
-					{
-						continue;
-					}
-
-					$events = json_decode($option->get('dependents'));
-					$option->set('dependents', $events);
+					$events = $option->get('dependents');
 
 					if (empty($events))
 					{
@@ -697,8 +728,30 @@ $legacy = array(
 				}
 
 				$val = $value;
+
+				// If we have a field that has options with dependent values
+				// We push all the dependent fields into a "hide" list
+				if (isset($f[$field->get('name')]))
+				{
+					foreach ($f[$field->get('name')] as $opt => $deps)
+					{
+						$hd = array_merge($deps, $hd);
+					}
+				}
+
 				if (is_array($value))
 				{
+					// If the value is from an option that has dependent fields
+					// We need to caputre its list of dependent fields so we
+					// can tell the code to display those fields
+					foreach (array_keys($value) as $k => $v)
+					{
+						if (isset($f[$field->get('name')]) && isset($f[$field->get('name')][$v]))
+						{
+							$sh += $f[$field->get('name')][$v];
+						}
+					}
+
 					$val = array();
 					foreach ($value as $k => $v)
 					{
@@ -708,7 +761,24 @@ $legacy = array(
 				}
 				else
 				{
+					if (isset($f[$field->get('name')]) && isset($f[$field->get('name')][$value]))
+					{
+						$sh += $f[$field->get('name')][$value];
+					}
+
 					$val = renderIfJson($value);
+				}
+
+				$hd = array_diff($hd, $sh);
+
+				// Is the field in the list of hidden dependents?
+				if (in_array($field->get('name'), $hd))
+				{
+					if (!$isUser)
+					{
+						continue;
+					}
+					$cls[] = 'hide';
 				}
 
 				if (empty($value))
