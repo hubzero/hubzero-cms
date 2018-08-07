@@ -48,7 +48,7 @@ $parentUrl = Route::url($this->model->link('files') . '&action=browse&connection
 	</h3>
 
 	<?php if ($this->getError()) : ?>
-		<?php echo ('<p class="witherror">' . $this->getError() . '</p>'); ?>
+		<?php echo '<p class="witherror">' . $this->getError() . '</p>'; ?>
 	<?php else : ?>
 		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->url . '&'); ?>">
 			<fieldset >
