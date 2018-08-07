@@ -314,7 +314,7 @@ class connections
 	{
 		// Set up view
 		$connection_params = json_decode($this->connection->params);
-		if(!isset($connection_params->path))
+		if (!isset($connection_params->path))
 		{
 			return $this->setup_base_dir();
 		}
@@ -368,7 +368,7 @@ class connections
 		$dir = Entity::fromPath($subdir, $this->connection->adapter());
 		$contents = $dir->listContents()->sort('basename', 'ASC');
 		$dirs = array();
-		foreach($contents as $file)
+		foreach ($contents as $file)
 		{
 			if ($file->isDir())
 			{
