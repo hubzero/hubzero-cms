@@ -612,7 +612,7 @@ class Groups extends Base
 		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
 		$tags              = trim(Request::getString('tags', ''));
 		$lid               = Request::getInt('lid', 0, 'post');
-		$customization     = Request::getString('group', '', 'POST');
+		$customization     = Request::getArray('group', array(), 'POST');
 		$plugins           = Request::getArray('group_plugin', '', 'POST');
 		$params            = Request::getArray('params', array(), 'POST');
 
