@@ -378,13 +378,11 @@ class connections
 
 		$view->items       = $dirs;
 		$view->url         = $this->model->link('files') . '&connection=' . $this->connection->id;
-		$view->title       = $this->_area['title'];
 		$view->option      = $this->_option;
 		$view->parent      = $dir->getParent(true);
 		$view->subdir      = $subdir;
 		$view->current_dir = $dir;
 		$view->model       = $this->model;
-		$view->fileparams  = $this->params;
 		$view->connection  = $this->connection;
 
 		return $view->loadTemplate();
