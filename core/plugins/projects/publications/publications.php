@@ -534,7 +534,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$modelHandler->update($view->handler, $view->publication, $element, $action);
 			}
-
 			// Load editor
 			$view->editor = $modelHandler->loadEditor($view->handler, $view->publication, $element);
 		}
@@ -836,7 +835,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'deleteitem':
-				$pub->_curationModel->deleteItem($this->_uid, $element);
+			    $pub->_curationModel->deleteItem($this->_uid, $element);
 				break;
 
 			case 'reorder':
@@ -890,14 +889,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($json)
 		{
 			return json_encode(
-				array(
+			    array(
 					'success' => 1,
 					'error'   => $this->getError(),
 					'message' => $this->_msg
 				)
 			);
 		}
-
+		
 		// Go back to panel after changes to individual attachment
 		if ($this->_task == 'saveitem')
 		{
@@ -924,14 +923,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$prevnum     = $pub->_curationModel->getPreviousBlock($block, $blockId);
 		$prevsection = isset($pub->_curationModel->_blocks->$prevnum)
 					 ? $pub->_curationModel->_blocks->$prevnum->name : 'status';
-
+					 
 		// Build route
 		$route  = $pub->link('edit');
 		$route .= $move ? '&move=continue' : '';
-
+		
 		// Append version label
 		$route .= $version != 'default' ? '&version=' . $version : '';
-
+		
 		// Determine which panel to go to
 		if ($this->_task == 'apply' || !$move)
 		{
