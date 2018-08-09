@@ -160,14 +160,14 @@ function submitbutton(pressbutton)
 						<input type="text" name="curation[params][list_label]" id="field-listlabel" maxlength="255" value="<?php echo (isset($curParams->list_label) && $curParams->list_label) ? $curParams->list_label : '';  ?>" />
 					</div>
 					<div class="input-wrap">
-						<label for="field-autoapprove"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_AUTO_APPROVE'); ?>:</label>
+						<label for="field-autoapprove"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_AUTO_APPROVE'); ?></label>
 						<select name="curation[params][auto_approve]" id="field-autoapprove">
 							<option value="0" <?php echo (!isset($curParams->auto_approve) || $curParams->auto_approve == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
 							<option value="1" <?php echo (isset($curParams->auto_approve) && $curParams->auto_approve == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
 						</select>
 					</div>
 					<div class="input-wrap">
-						<label for="field-requestreview"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REQUEST_REVIEW'); ?>:</label>
+						<label for="field-requestreview"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REQUEST_REVIEW'); ?></label>
 						<select name="curation[params][request_review]" id="field-requestreview">
 							<option value="0" <?php echo (!isset($curParams->request_review) || $curParams->request_review == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
 							<option value="1" <?php echo (isset($curParams->request_review) && $curParams->request_review == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
