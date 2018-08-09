@@ -77,6 +77,7 @@ $autoApprove = isset($this->pub->_curationModel->_manifest->params->auto_approve
 			? $this->pub->_curationModel->_manifest->params->auto_approve : 0;
 $requestReview = isset($this->pub->_curationModel->_manifest->params->request_review)
 			? $this->pub->_curationModel->_manifest->params->request_review : 0;
+$unsubmitted = $this->pub->version->get('state') == 3;
 ?>
 
 <!-- Load content selection browser //-->
@@ -246,7 +247,7 @@ $requestReview = isset($this->pub->_curationModel->_manifest->params->request_re
 
 	<?php
 		// Request Review
-		if ($autoApprove && $requestReview):
+		if ($autoApprove && $requestReview && $unsubmitted):
 	?>
 		<div class="blockelement" id="request-review">
 			<div class="element_editing">
