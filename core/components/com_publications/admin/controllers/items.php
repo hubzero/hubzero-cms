@@ -533,7 +533,12 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi))
 				{
-					$doiService->update($model->version->doi, true);
+					$result = $doiService->update($model->version->doi);
+			
+					if (!$result)
+					{
+						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+					}
 				}
 			}
 
@@ -625,7 +630,12 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->get('doi')))
 				{
-					$doiService->update($model->version->get('doi'), true);
+					$result = $doiService->update($model->version->get('doi'));
+			
+					if (!$result)
+					{
+						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+					}
 				}
 			}
 
@@ -824,7 +834,12 @@ class Items extends AdminController
 			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
-				$doiService->update($this->model->version->doi, true);
+				$result = $doiService->update($this->model->version->doi);
+			
+				if (!$result)
+				{
+					throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+				}
 			}
 		}
 
@@ -871,9 +886,22 @@ class Items extends AdminController
 					{
 						if ($this->model->version->doi
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
-						{
-							// Update
-							$doiService->update($this->model->version->doi, true);
+						{							
+							// Update DOI metadata, then register DOI name and dataset URL.
+							$upResult = $doiService->update($this->model->version->doi);
+			
+							if (!$upResult)
+							{
+								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+							}
+							
+							$regResult = $doiService->registerURL($this->model->version->doi);
+			
+							if (!$regResult)
+							{
+								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
+							}
+							
 							if ($doiService->getError())
 							{
 								$this->setError($doiService->getError());
@@ -881,8 +909,8 @@ class Items extends AdminController
 						}
 						elseif ($requireDoi)
 						{
-							// Register
-							$doi = $doiService->register(true);
+							// Register DOI metadata when dataset is submitted
+							$doi = $doiService->registerMetadata();
 
 							if (!$doi)
 							{
@@ -894,6 +922,19 @@ class Items extends AdminController
 							else
 							{
 								$this->model->version->doi = $doi;
+							}
+							
+							// Register the DOI name and URL to complete the DOI registration.
+							$result = $doiService->registerURL($doi);
+			
+							if (!$result)
+							{
+								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
+							}
+							
+							if ($doiService->getError())
+							{
+								$this->setError($doiService->getError());
 							}
 						}
 					}

@@ -2214,15 +2214,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		$pub->version->set('modified', Date::toSql());
 		$pub->version->set('modified_by', $this->_uid);
-
+		
 		// Issue DOI
 		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
-			$extended = $state == 5 ? false : true;
-			$doi = $doiService->register($extended, ($state == 5 ? 'reserved' : 'public'));
-
+			
+			$doi = $doiService->registerMetadata();
 			// Store DOI
 			if ($doi)
 			{
@@ -2232,8 +2231,23 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
 				$doiErr = true;
+			}
+		}
+		
+		// Register DOI name and URL when the publication configuration option is set to automatically approved.
+		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
+		{
+			$result = $doiService->registerURL($pub->version->get('doi'));
+			if (!$result)
+			{
+				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
+			}
+			
+			if ($doiService->getError())
+			{
+				$this->setError($doiService->getError());
 			}
 		}
 
