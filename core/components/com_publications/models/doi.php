@@ -359,8 +359,7 @@ class Doi extends Obj
 	 *
 	 * @param  string $doi
 	 * @return xml string
-	 */
-	
+	*/
 	public function buildXML($doi = null)
 	{
 		if (!$this->checkRequired())
@@ -455,7 +454,7 @@ class Doi extends Obj
 	 * @return	boolean
 	 */
 	public function regMetadata($url, $postvals, &$doi)
-	{	
+	{
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
@@ -478,10 +477,10 @@ class Doi extends Obj
 			return false;
 		}
 		
-		$doi = $match[1];		
+		$doi = $match[1];
 		
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				
+		
 		curl_close($ch);
 		
 		if ($code == 201 || $code == 200)
@@ -503,7 +502,7 @@ class Doi extends Obj
 	 * @return	boolean
 	 */
 	public function regURL($url, $postvals)
-	{	
+	{
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
@@ -520,7 +519,7 @@ class Doi extends Obj
 		}
 		
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				
+		
 		curl_close($ch);
 		
 		if ($code == 201 || $code == 200)
@@ -532,15 +531,14 @@ class Doi extends Obj
 			return false;
 		}
 	}
-	 
+	
 	/**
 	 * Register DOI metadata. This is the first step and is to create DOI name and register metadata on DataCite.
 	 *
 	 * @return string $doi
-	 */
-	 
-	 public function registerMetadata()
-	 {
+	*/
+	public function registerMetadata()
+	{
 		$doi = null;
 		
 		if (!$this->on())
@@ -560,16 +558,14 @@ class Doi extends Obj
 		}
 		
 		return $doi;
-	 }
-	 
+	}
 	/**
 	 * Register the DOI name and associated URL. This is the second step to finish the DOI registration on DataCite.
 	 *
 	 * @return boolean
-	 */
-	 
-	 public function registerURL($doi)
-	 {
+	*/
+	public function registerURL($doi)
+	{
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
@@ -580,7 +576,7 @@ class Doi extends Obj
 		$url = $this->get('url');
 		$regURL = $this->_configs->service . DS . 'doi' . DS . $doi;
 		$str = "doi=" . $doi . "\n" . "url=" . $url;
-
+		
 		$regResult = $this->regURL($regURL, $str);
 		
 		if(!$regResult)
@@ -591,7 +587,7 @@ class Doi extends Obj
 		{
 			return true;
 		}
-	 }
+	}
 	
 	/**
 	 * Update DOI metadata 
