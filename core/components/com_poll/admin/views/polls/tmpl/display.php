@@ -84,7 +84,7 @@ Toolbar::help('polls');
 		<thead>
 			<tr>
 				<th scope="col">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" />
+					<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 				</th>
 				<th scope="col">
 					<?php echo Lang::txt('COM_POLL_COL_NUM'); ?>
@@ -140,7 +140,7 @@ Toolbar::help('polls');
 					<?php if (($row->get('checked_out') && $row->get('checked_out') != User::get('id')) || !$canDo->get('core.edit')) { ?>
 						<span> </span>
 					<?php } else { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 					<?php } ?>
 				</td>
 				<td>
@@ -202,8 +202,8 @@ Toolbar::help('polls');
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['order']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['order_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['order']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['order_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

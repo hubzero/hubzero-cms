@@ -173,6 +173,8 @@ Joomla.renderMessages = function(messages) {
 		dd.appendTo(dl);
 	});
 	dl.appendTo(container);
+
+	$(document).trigger('renderMessages');
 };
 
 
