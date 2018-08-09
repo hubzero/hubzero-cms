@@ -104,6 +104,9 @@
 	     -o-box-shadow: none;
 	        box-shadow: none;
 }
+.account {
+	background: #333;
+}
 .auth .account:hover,
 .auth .local a:hover,
 .auth .multi-auth a:hover {
