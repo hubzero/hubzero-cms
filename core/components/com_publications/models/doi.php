@@ -355,243 +355,14 @@ class Doi extends Obj
 	}
 
 	/**
-	 * Start input
+	 * Build XML - DOI is not required when register metadata using DataCite MDS API
 	 *
-	 * @param   string  $status  DOI status [public, reserved]
-	 * @return  string  response string
+	 * @param  string $doi
+	 * @return xml string
 	 */
-	public function startInput($status = 'public')
+	
+	public function buildXML($doi = null)
 	{
-		if (!$this->checkRequired())
-		{
-			$this->setError(Lang::txt('Missing required DOI metadata'));
-			return false;
-		}
-
-		$input  = "_target: " . $this->get('url') ."\n";
-		$input .= "datacite.creator: " . $this->get('creator') . "\n";
-		$input .= "datacite.title: ". $this->get('title') . "\n";
-		$input .= "datacite.publisher: " . $this->get('publisher') . "\n";
-		$input .= "datacite.publicationyear: " . $this->get('pubYear') . "\n";
-		$input .= "datacite.resourcetype: " . $this->get('resourceType') . "\n";
-		$input .= "_profile: datacite". "\n";
-
-		$status = strtolower($status);
-		if (!in_array($status, array('public', 'reserved')))
-		{
-			$status = 'public';
-		}
-
-		$input .= "_status: " . $status . "\n";
-
-		return $input;
-	}
-
-	/**
-	 * Run cURL
-	 *
-	 * @param   string   $url
-	 * @param   array    $postvals
-	 * @return  boolean
-	 */
-	public function runCurl($url, $postvals = null)
-	{
-		$ch = curl_init($url);
-
-		$options = array(
-			CURLOPT_URL             => $url,
-			CURLOPT_POST            => true,
-			CURLOPT_USERPWD         => $this->_configs->userpw,
-			CURLOPT_POSTFIELDS      => $postvals,
-			CURLOPT_RETURNTRANSFER  => true,
-			CURLOPT_HTTPHEADER      => array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals))
-		);
-		curl_setopt_array($ch, $options);
-
-		$response = curl_exec($ch);
-		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		curl_close($ch);
-
-		if ($success === 201 || $success === 200)
-		{
-			$out = explode('/', $response);
-			$handle = trim(end($out));
-			if ($handle)
-			{
-				// Return DOI
-				return strtoupper($this->_configs->shoulder . DS . $handle);
-			}
-		}
-		else
-		{
-			$this->setError($success . ' ' . $response);
-		}
-
-		return false;
-	}
-
-	/**
-	 * Register a DOI
-	 *
-	 * @param   boolean  $sendXml
-	 * @param   string   $status  DOI status [public, reserved]
-	 * @return  boolean
-	 */
-	public function register($sendXml = false, $status = 'public')
-	{
-		if (!$this->on())
-		{
-			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
-			return false;
-		}
-
-		$input = $this->startInput($status);
-		if (!$input)
-		{
-			// Cannot process if any required fields are missing
-			return false;
-		}
-
-		// Get service call
-		$url = $this->getServicePath();
-
-		// Make service call to provision doi
-		$doi = $this->runCurl($url, $input);
-
-		// Are we sending extended data?
-		if ($sendXml == true && $doi)
-		{
-			$xml = $this->buildXml($doi);
-
-			// Load the xml document in the DOMDocument object
-			$xdoc = new \DomDocument;
-			$xdoc->loadXML($xml);
-
-			// Validate against schema
-			if (!$xdoc->schemaValidate($this->_configs->xmlSchema))
-			{
-				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
-			}
-			else
-			{
-				// Append XML
-				$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
-
-				// Make service call to send extended metadata
-				$doi = $this->runCurl($url, $input);
-			}
-		}
-
-		// Return DOI
-		return $doi;
-	}
-
-	/**
-	 * Update a DOI
-	 *
-	 * @param   string   $doi
-	 * @param   boolean  $sendXml
-	 * @param   string   $status  DOI status [public, reserved]
-	 * @return  boolean
-	 */
-	public function update($doi = null, $sendXml = false, $status = 'public')
-	{
-		$doi = $doi ? $doi : $this->get('doi');
-		if (!$doi)
-		{
-			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
-			return false;
-		}
-
-		if (!$this->on())
-		{
-			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
-			return false;
-		}
-
-		// Check that we are trying to update a DOI issued by the hub
-		if (!preg_match("/" . $this->_configs->shoulder . "/", $doi))
-		{
-			return false;
-		}
-
-		$input = $this->startInput($status);
-		if (!$input)
-		{
-			// Cannot process if any required fields are missing
-			return false;
-		}
-
-		// Are we sending extended data?
-		if ($sendXml == true && $doi)
-		{
-			$xml = $this->buildXml($doi);
-
-			// Load the xml document in the DOMDocument object
-			$xdoc = new \DomDocument;
-			$xdoc->loadXML($xml);
-
-			// Validate against schema
-			if (!$xdoc->schemaValidate($this->_configs->xmlSchema))
-			{
-				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
-			}
-			else
-			{
-				// Append XML
-				$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
-			}
-		}
-
-		// Get service call
-		$url = $this->getServicePath($doi);
-
-		// Make service call
-		$result = $this->runCurl($url, $input);
-
-		return $result ? $result : false;
-	}
-
-	/**
-	 * Delete a DOI
-	 *
-	 * @param   string   $doi
-	 * @return  boolean
-	 */
-	public function delete($doi = null)
-	{
-		$doi = $doi ? $doi : $this->get('doi');
-		if (!$doi)
-		{
-			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
-			return false;
-		}
-
-		if (!$this->on())
-		{
-			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
-			return false;
-		}
-
-		// TBD
-		// Call to delete a DOI
-		return true;
-	}
-
-	/**
-	 * Build XML
-	 *
-	 * @param   string  $doi
-	 * @return  mixed   xml output
-	 */
-	public function buildXml($doi = null)
-	{
-		$doi = $doi ? $doi : $this->get('doi');
-		if (!$doi)
-		{
-			return false;
-		}
-
 		if (!$this->checkRequired())
 		{
 			return false;
@@ -672,5 +443,233 @@ class Doi extends Obj
 		</resource>';
 
 		return $xmlfile;
+	}
+	
+	/**
+	 * Run cURL to register metadata and create DOI 
+	 *
+	 * @param	string	$url
+	 * @param	array	$postVals
+	 * @param   string   &$doi
+	 *
+	 * @return	boolean
+	 */
+	public function regMetadata($url, $postvals, &$doi)
+	{	
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
+		curl_setopt($ch, CURLOPT_FAILONERROR, true);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+		
+		$response = curl_exec($ch);
+		
+		if(!$response)
+		{
+			return false;
+		}
+		
+		$pattern = '/\((.*?)\)/';
+		$ret = preg_match($pattern, $response, $match);
+		if ($ret != 1)
+		{
+			return false;
+		}
+		
+		$doi = $match[1];		
+		
+		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				
+		curl_close($ch);
+		
+		if ($code == 201 || $code == 200)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Run cURL to register DOI name and URL that refers to the dataset
+	 *
+	 * @param	string	$url
+	 * @param	array	$postVals
+	 *
+	 * @return	boolean
+	 */
+	public function regURL($url, $postvals)
+	{	
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
+		curl_setopt($ch, CURLOPT_FAILONERROR, true);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+		
+		$response = curl_exec($ch);
+		
+		if(!$response)
+		{
+			return false;
+		}
+		
+		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				
+		curl_close($ch);
+		
+		if ($code == 201 || $code == 200)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	 
+	/**
+	 * Register DOI metadata. This is the first step and is to create DOI name and register metadata on DataCite.
+	 *
+	 * @return string $doi
+	 */
+	 
+	 public function registerMetadata()
+	 {
+		$doi = null;
+		
+		if (!$this->on())
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+				
+		// Submit DOI metadata
+		$metadataURL = $this->_configs->service . DS . 'metadata' . DS . $this->_configs->shoulder;
+		$xml = $this->buildXML();
+		$subResult = $this->regMetadata($metadataURL, $xml, $doi);
+
+		if (!$subResult)
+		{
+			return false;
+		}
+		
+		return $doi;
+	 }
+	 
+	/**
+	 * Register the DOI name and associated URL. This is the second step to finish the DOI registration on DataCite.
+	 *
+	 * @return boolean
+	 */
+	 
+	 public function registerURL($doi)
+	 {
+		if (!$this->on())
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+		
+		// Register URL
+		$url = $this->get('url');
+		$regURL = $this->_configs->service . DS . 'doi' . DS . $doi;
+		$str = "doi=" . $doi . "\n" . "url=" . $url;
+
+		$regResult = $this->regURL($regURL, $str);
+		
+		if(!$regResult)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	 }
+	
+	/**
+	 * Update DOI metadata 
+	 *
+	 * @param   string   $doi
+	 *
+	 * @return  boolean
+	 */
+	public function update($doi)
+	{
+		$doi = $doi ? $doi : $this->get('doi');
+		
+		if (!$doi)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
+			return false;
+		}
+		
+		if (!$this->on())
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+		
+		$metadataURL = $this->_configs->service . DS . 'metadata';
+		$xml = $this->buildXML($doi);
+		
+		$ch = curl_init($metadataURL);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)));
+		curl_setopt($ch, CURLOPT_FAILONERROR, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		
+		$response = curl_exec($ch);
+		
+		if(!$response)
+		{
+			return false;
+		}
+		
+		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				
+		curl_close($ch);
+		
+		if ($code == 201 || $code == 200)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Delete a DOI - This is going to change the DOI state from Findable to Registered
+	 *
+	 * @return boolean
+	 */
+	public function delete($doi = NULL)
+	{
+		$doi = $doi ? $doi : $this->get('doi');
+		if (!$doi)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
+			return false;
+		}
+
+		if (!$this->on())
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+
+		// TBD
+		// Call to delete a DOI
+		return true;
 	}
 }
