@@ -33,7 +33,7 @@ use Components\Storefront\Models\Sku;
 
 $canDo = \Components\Cart\Admin\Helpers\Permissions::getActions('download');
 
-Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'), 'cart.png');
+Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'), 'cart');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -52,17 +52,6 @@ Toolbar::spacer();
 Toolbar::help('downloads');
 ?>
 <script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-		// do field validation
-		submitform(pressbutton);
-	}
-
 	$( function() {
 		var dateFormat = "mm/dd/yy",
 			from = $( "#filter-report-from" )
@@ -175,7 +164,7 @@ $this->view('_submenu')
 			</tr>
 		<?php } ?>
 		<tr>
-			<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+			<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
@@ -222,7 +211,7 @@ $this->view('_submenu')
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php
@@ -338,11 +327,11 @@ $this->view('_submenu')
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	<input type="hidden" name="uidNumber" id="filter_uidNumber" value="<?php echo $this->filters['uidNumber']; ?>" />
-	<input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->filters['pId']; ?>" />
-	<input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->filters['sId']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+	<input type="hidden" name="uidNumber" id="filter_uidNumber" value="<?php echo $this->escape($this->filters['uidNumber']); ?>" />
+	<input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->escape($this->filters['pId']); ?>" />
+	<input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->escape($this->filters['sId']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

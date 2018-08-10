@@ -79,18 +79,6 @@ else
 	$colspan = 7;
 }
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
@@ -103,7 +91,7 @@ function submitbutton(pressbutton)
 				</tr>
 			<?php } ?>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th><?php echo Lang::txt('COM_RESOURCES_COL_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_RESOURCES_COL_TITLE'); ?></th>
 				<th><?php echo Lang::txt('COM_RESOURCES_COL_STATUS'); ?></th>
@@ -321,7 +309,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" autocomplete="off" />
 	<input type="hidden" name="viewtask" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="pid" value="<?php echo $this->filters['parent_id']; ?>" />
+	<input type="hidden" name="pid" value="<?php echo $this->escape($this->filters['parent_id']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

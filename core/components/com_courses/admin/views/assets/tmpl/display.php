@@ -50,16 +50,6 @@ $pageNav = $this->pagination(
 Html::behavior('modal');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
 function setTask(task)
 {
 	$('#task').val(task);
@@ -72,7 +62,6 @@ jQuery(document).ready(function($){
 		window.top.document.assetform.open({'href': $(this).attr('href'), 'type': 'iframe', 'width': 570, 'height': 550, 'autoHeight': false});
 	});
 });
-
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
@@ -122,7 +111,7 @@ foreach ($this->rows as $row)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $this->escape($row->id); ?>
-					<input style="visibility:hidden;" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input style="visibility:hidden;" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
@@ -178,10 +167,10 @@ foreach ($this->rows as $row)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="course_id" value="<?php echo $this->filters['course_id']; ?>" />
-	<input type="hidden" name="tmpl" value="<?php echo $this->filters['tmpl']; ?>" />
-	<input type="hidden" name="scope" value="<?php echo $this->filters['asset_scope']; ?>" />
-	<input type="hidden" name="scope_id" value="<?php echo $this->filters['asset_scope_id']; ?>" />
+	<input type="hidden" name="course_id" value="<?php echo $this->escape($this->filters['course_id']); ?>" />
+	<input type="hidden" name="tmpl" value="<?php echo $this->escape($this->filters['tmpl']); ?>" />
+	<input type="hidden" name="scope" value="<?php echo $this->escape($this->filters['asset_scope']); ?>" />
+	<input type="hidden" name="scope_id" value="<?php echo $this->escape($this->filters['asset_scope_id']); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" id="task" value="" />

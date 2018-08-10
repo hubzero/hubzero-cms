@@ -66,25 +66,12 @@ $this->css('import');
 	</ul>
 </nav>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_NAME'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
@@ -110,7 +97,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<?php if ($canDo->get('core.admin')) { ?>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 							<?php } ?>
 						</td>
 						<td>
