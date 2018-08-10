@@ -37,9 +37,9 @@ class Migration20170901000000PlgAuthenticationShibboleth extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('#__#__shibboleth_sessions'))
+		if ($this->db->tableExists('#__shibboleth_sessions'))
 		{
-			$query = "DROP TABLE IF EXISTS `#__#__shibboleth_sessions`;";
+			$query = "DROP TABLE IF EXISTS `#__shibboleth_sessions`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
