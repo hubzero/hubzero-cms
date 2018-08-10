@@ -52,20 +52,13 @@ Toolbar::spacer();
 Toolbar::custom('manage', 'config','config','COM_GROUPS_MANAGE',false);
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform(pressbutton);
-}
-</script>
-
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="adminForm" method="post">
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count();?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?></th>
 				<th class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?></th>
 			</tr>
@@ -76,7 +69,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<?php if ($canDo->get('core.edit')) : ?>
-								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" onclick="isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 							<?php endif; ?>
 						</td>
 						<td>

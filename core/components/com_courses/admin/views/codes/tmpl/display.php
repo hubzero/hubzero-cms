@@ -55,18 +55,6 @@ if ($canDo->get('core.delete'))
 
 Html::behavior('tooltip');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -104,7 +92,7 @@ function submitbutton(pressbutton)
 		</caption>
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CODE'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_CREATED'); ?></th>
@@ -135,7 +123,7 @@ function submitbutton(pressbutton)
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
@@ -181,7 +169,7 @@ function submitbutton(pressbutton)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="section" value="<?php echo $this->section->get('id'); ?>" />
+	<input type="hidden" name="section" value="<?php echo $this->escape($this->section->get('id')); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" autocomplete="" />

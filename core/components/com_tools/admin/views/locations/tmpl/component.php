@@ -71,14 +71,14 @@ jQuery(document).ready(function($){
 			<tr>
 				<th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_ID'); ?></th>
 			<?php if (!$this->filters['zone']) { ?>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<?php } ?>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_IP_FROM', 'ipFROM', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_IP_TO', 'ipTO', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_CONTINENT', 'continent', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_COUNTRY', 'countrySHORT', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_REGION', 'ipREGION', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_CITY', 'ipCITY', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_FROM', 'ipFROM', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_TO', 'ipTO', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_CONTINENT', 'continent', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_COUNTRY', 'countrySHORT', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_REGION', 'ipREGION', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_CITY', 'ipCITY', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">X</th>
 			</tr>
 		</thead>
@@ -137,7 +137,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl'] . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('[ x ]'); ?>" /></span>
+						<span><?php echo Lang::txt('[ x ]'); ?></span>
 					</a>
 				</td>
 			</tr>
@@ -149,8 +149,8 @@ foreach ($this->rows as $row)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="zone" value="<?php echo $this->filters['zone']; ?>" />
-	<input type="hidden" name="tmpl" value="<?php echo $this->filters['tmpl']; ?>" />
+	<input type="hidden" name="zone" value="<?php echo $this->escape($this->filters['zone']); ?>" />
+	<input type="hidden" name="tmpl" value="<?php echo $this->escape($this->filters['tmpl']); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" id="task" value="" />
