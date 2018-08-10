@@ -72,7 +72,7 @@ Joomla.submitbutton = function(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->mailings); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILING_DATE', 'date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
@@ -94,7 +94,7 @@ Joomla.submitbutton = function(pressbutton)
 				<?php foreach ($this->mailings as $mailing) { ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->id; ?>" onclick="isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 						</td>
 						<td>
 							<?php echo $mailing->newsletter->get('name', Lang::txt('COM_NEWSLETTER_UNKNOWN')); ?>

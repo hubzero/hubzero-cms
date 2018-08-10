@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_PAGES'), 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_PAGES'), 'courses');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -50,13 +50,6 @@ if ($canDo->get('core.delete'))
 Toolbar::spacer();
 Toolbar::help('pages');
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -100,7 +93,7 @@ function submitbutton(pressbutton)
 		</caption>
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
@@ -141,7 +134,7 @@ function submitbutton(pressbutton)
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="Joomla.isChecked(this.checked);" />
 					</td>
 					<td class="priority-3">
 						<?php echo $this->escape($page->get('id')); ?>
@@ -204,8 +197,8 @@ function submitbutton(pressbutton)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="course" value="<?php echo $this->filters['course']; ?>" />
-	<input type="hidden" name="offering" value="<?php echo $this->filters['offering']; ?>" />
+	<input type="hidden" name="course" value="<?php echo $this->escape($this->filters['course']); ?>" />
+	<input type="hidden" name="offering" value="<?php echo $this->escape($this->filters['offering']); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" autocomplete="" />

@@ -32,23 +32,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_ACL'), 'support.png');
+Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_ACL'), 'support');
 Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('acl');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-
 /**
 * Toggles the check state of a group of boxes
 *
@@ -81,7 +70,7 @@ function checkAllOptions()
 				<th> </th>
 			</tr>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
 				<th><?php echo Lang::txt('COM_SUPPORT_COL_MODEL'); ?></th>
@@ -197,7 +186,7 @@ foreach ($this->rows as $row)
 	}
 ?>
 			<tr>
-				<td style="text-align:center;"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
+				<td style="text-align:center;"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" /></td>
 				<td style="text-align:center;"><?php echo $row->id; ?></td>
 				<td><?php echo $row->alias; ?> (<?php echo $row->foreign_key; ?>)</td>
 				<td><?php echo $row->model; ?></td>

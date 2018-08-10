@@ -33,7 +33,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_HOOKS'), 'import.png');
+Toolbar::title(Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_HOOKS'), 'import');
 
 Toolbar::spacer();
 Toolbar::addNew();
@@ -41,25 +41,12 @@ Toolbar::editList();
 Toolbar::deleteList();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset>
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->hooks->count(); ?>);" /></th>
+					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 					<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 					<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 					<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE', 'file', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -78,7 +65,7 @@ function submitbutton(pressbutton)
 					<?php foreach ($this->hooks as $i => $hook) : ?>
 						<tr>
 							<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 							</td>
 							<td>
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $hook->get('id')); ?>">
@@ -126,8 +113,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

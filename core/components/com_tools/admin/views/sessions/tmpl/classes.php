@@ -50,7 +50,7 @@ Toolbar::help('sessionclasses');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th class="priority-3"><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_ALIAS'); ?></th>
 				<th><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_JOBS'); ?></th>
@@ -79,7 +79,7 @@ Toolbar::help('sessionclasses');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-3">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
