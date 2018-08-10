@@ -72,7 +72,7 @@ class Resources extends Base
 		     ->set('category', 'resource')
 		     ->set('option', $this->_segments['option']);
 
-		$this->_item = Entry::oneOrNew($this->get('referenceid'));
+		$this->_item = Entry::getInstance($this->get('referenceid'));
 
 		if ($this->_item->standalone != 1 || $this->_item->published != Entry::STATE_PUBLISHED)
 		{
@@ -91,21 +91,23 @@ class Resources extends Base
 	{
 		$owners = array();
 
-		if (!$this->_item->isTool())
+		if ($this->_item->isTool())
 		{
-			$sql = "SELECT a.authorid
-				FROM `#__author_assoc` AS a
-				WHERE a.subtable='resources'
-				AND a.subid=" . $this->_item->id;
+			$cons = $this->_item->contributors('tool');
+		}
+		else
+		{
+			$cons = $this->_item->contributors();
+		}
 
-			$db = \App::get('db');
-			$db->setQuery($sql);
-			$cons = $db->loadObjectList();
-
-			foreach ($cons as $con)
+		foreach ($cons as $contributor)
+		{
+			if (!isset($contributor->authorid) && isset($contributor->uid))
 			{
-				$owners[] = $con->authorid;
+				$contributor->authorid = $contributor->uid;
 			}
+
+			$owners[] = $contributor->authorid;
 		}
 
 		return $owners;
