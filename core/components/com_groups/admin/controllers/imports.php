@@ -648,7 +648,9 @@ class Imports extends AdminController
 			array_push($fields, $key);
 		}
 
-		/*$attribs = Field::all()
+		include_once dirname(dirname(__DIR__)) . '/models/orm/field.php';
+
+		$attribs = \Components\Groups\Models\Orm\Field::all()
 			->including(['options', function ($option){
 				$option
 					->select('*');
@@ -673,7 +675,7 @@ class Imports extends AdminController
 
 			array_push($row, $example);
 			array_push($fields, $key);
-		}*/
+		}
 
 		$record = new \Components\Groups\Models\Import\Record(new \stdClass);
 		foreach ($record->handlers() as $handler)
