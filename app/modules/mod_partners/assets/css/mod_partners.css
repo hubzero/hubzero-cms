@@ -16,13 +16,13 @@
 /* Status */
 .network .network-logos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
-  grid-gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  grid-gap: 20px;
   justify-items: center;
 }
 
 .network .network-logos .logo {
   background-color: transparent !important;
   border: none !important;
-  width: 75px !important;
+  width: 95px !important;
 }
