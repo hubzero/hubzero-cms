@@ -321,7 +321,7 @@ class Abusereports extends AdminController
 		}
 
 		// Mark abuse report as deleted
-		$report->get('state', 2);
+		$report->set('state', Report::STATE_DELETED);
 
 		if (!$report->save())
 		{
