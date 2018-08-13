@@ -194,8 +194,7 @@ class Doi extends Obj
 			if ($this->_configs->ezidSwitch == 1)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
-			}
-			
+			}			
 		}
 		else
 		{
@@ -569,7 +568,7 @@ class Doi extends Obj
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 			return false;
 		}
-				
+		
 		// Submit DOI metadata
 		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata' . DS . $this->_configs->shoulder;
 		$xml = $this->buildXml();
@@ -628,7 +627,7 @@ class Doi extends Obj
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
 			return false;
 		}
-		
+				
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
