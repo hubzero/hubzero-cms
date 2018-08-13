@@ -533,11 +533,19 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi))
 				{
-					$result = $doiService->update($model->version->doi);
-					
-					if (!$result)
+					if ($doiService->_configs->dataciteSwitch == 1)
 					{
-						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+						$result = $doiService->dataciteMetadataUpdate($model->version->doi);
+						
+						if (!$result)
+						{
+							throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+						}
+					}
+					
+					if ($doiService->_configs->ezidSwitch == 1)
+					{
+						$doiService->ezidMetadataUpdate($model->version->doi, true);
 					}
 				}
 			}
@@ -630,11 +638,19 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->get('doi')))
 				{
-					$result = $doiService->update($model->version->get('doi'));
-					
-					if (!$result)
+					if ($doiService->_configs->dataciteSwitch == 1)
 					{
-						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+						$result = $doiService->dataciteMetadataUpdate($model->version->get('doi'));
+						
+						if (!$result)
+						{
+							throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+						}
+					}
+					
+					if ($doiService->_configs->ezidSwitch == 1)
+					{
+						$doiService->ezidMetadataUpdate($model->version->get('doi'), true);
 					}
 				}
 			}
@@ -834,11 +850,19 @@ class Items extends AdminController
 			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
-				$result = $doiService->update($this->model->version->doi);
-				
-				if (!$result)
+				if ($doiService->_configs->dataciteSwitch == 1)
 				{
-					throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+					$result = $doiService->dataciteMetadataUpdate($this->model->version->doi);
+					
+					if (!$result)
+					{
+						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+					}					
+				}
+				
+				if ($doiService->_configs->ezidSwitch == 1)
+				{
+					$doiService->ezidMetadataUpdate($this->model->version->doi, true);
 				}
 			}
 		}
@@ -886,20 +910,29 @@ class Items extends AdminController
 					{
 						if ($this->model->version->doi
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
-						{							
-							// Update DOI metadata, then register DOI name and dataset URL.
-							$upResult = $doiService->update($this->model->version->doi);
-							
-							if (!$upResult)
+						{
+							if ($doiService->_configs->dataciteSwitch == 1)
 							{
-								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+								// Update DOI metadata, then register DOI name and dataset URL.
+								$upResult = $doiService->dataciteMetadataUpdate($this->model->version->doi);
+								
+								if (!$upResult)
+								{
+									throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+								}
+								
+								$regResult = $doiService->registerURL($this->model->version->doi);
+								
+								if (!$regResult)
+								{
+									throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
+								}
 							}
 							
-							$regResult = $doiService->registerURL($this->model->version->doi);
-							
-							if (!$regResult)
+							if ($doiService->_configs->ezidSwitch == 1)
 							{
-								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
+								// Update
+								$doiService->ezidMetadataUpdate($this->model->version->doi, true);
 							}
 							
 							if ($doiService->getError())
@@ -909,9 +942,28 @@ class Items extends AdminController
 						}
 						elseif ($requireDoi)
 						{
-							// Register DOI metadata when dataset is submitted
-							$doi = $doiService->registerMetadata();
-
+							if (($doiService->_configs->dataciteSwitch == 0) && ($doiService->_configs->ezidSwitch == 0))
+							{
+								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'), 400);
+							}
+							
+							if (($doiService->_configs->dataciteSwitch == 1) && ($doiService->_configs->ezidSwitch == 1))
+							{
+								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_BOTH_DOI_SERVICE_ACTIVATED'), 400);
+							}
+							
+							if ($doiService->_configs->dataciteSwitch == 1)
+							{
+								// Register DOI metadata when dataset is submitted
+								$doi = $doiService->registerMetadata();
+							}
+							
+							if ($doiService->_configs->ezidSwitch == 1)
+							{
+								// Register
+								$doi = $doiService->register(true);
+							}
+							
 							if (!$doi)
 							{
 								App::redirect(
@@ -924,17 +976,20 @@ class Items extends AdminController
 								$this->model->version->doi = $doi;
 							}
 							
-							// Register the DOI name and URL to complete the DOI registration.
-							$result = $doiService->registerURL($doi);
-							
-							if (!$result)
+							if ($doiService->_configs->dataciteSwitch == 1)
 							{
-								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
-							}
-							
-							if ($doiService->getError())
-							{
-								$this->setError($doiService->getError());
+								// Register the DOI name and URL to complete the DOI registration.
+								$result = $doiService->registerURL($doi);
+								
+								if (!$result)
+								{
+									throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
+								}
+								
+								if ($doiService->getError())
+								{
+									$this->setError($doiService->getError());
+								}
 							}
 						}
 					}

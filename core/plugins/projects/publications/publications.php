@@ -534,6 +534,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$modelHandler->update($view->handler, $view->publication, $element, $action);
 			}
+
 			// Load editor
 			$view->editor = $modelHandler->loadEditor($view->handler, $view->publication, $element);
 		}
@@ -835,7 +836,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'deleteitem':
-			    $pub->_curationModel->deleteItem($this->_uid, $element);
+				$pub->_curationModel->deleteItem($this->_uid, $element);
 				break;
 
 			case 'reorder':
@@ -889,14 +890,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($json)
 		{
 			return json_encode(
-			    array(
+				array(
 					'success' => 1,
 					'error'   => $this->getError(),
 					'message' => $this->_msg
 				)
 			);
 		}
-		
+
 		// Go back to panel after changes to individual attachment
 		if ($this->_task == 'saveitem')
 		{
@@ -923,14 +924,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$prevnum     = $pub->_curationModel->getPreviousBlock($block, $blockId);
 		$prevsection = isset($pub->_curationModel->_blocks->$prevnum)
 					 ? $pub->_curationModel->_blocks->$prevnum->name : 'status';
-					 
+
 		// Build route
 		$route  = $pub->link('edit');
 		$route .= $move ? '&move=continue' : '';
-		
+
 		// Append version label
 		$route .= $version != 'default' ? '&version=' . $version : '';
-		
+
 		// Determine which panel to go to
 		if ($this->_task == 'apply' || !$move)
 		{
@@ -2213,14 +2214,34 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		$pub->version->set('modified', Date::toSql());
 		$pub->version->set('modified_by', $this->_uid);
-		
+
 		// Issue DOI
 		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
 			
-			$doi = $doiService->registerMetadata();
+			if (($doiService->_configs->dataciteSwitch == 0) && ($doiService->_configs->ezidSwitch == 0))
+			{
+				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'), 400);
+			}
+			
+			if (($doiService->_configs->dataciteSwitch == 1) && ($doiService->_configs->ezidSwitch == 1))
+			{
+				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_BOTH_DOI_SERVICE_ACTIVATED'), 400);
+			}
+			
+			if ($doiService->_configs->dataciteSwitch == 1)
+			{
+				$doi = $doiService->registerMetadata();
+			}
+			
+			if ($doiService->_configs->ezidSwitch == 1)
+			{
+				$extended = $state == 5 ? false : true;
+				$doi = $doiService->register($extended, ($state == 5 ? 'reserved' : 'public'));
+			}
+			
 			// Store DOI
 			if ($doi)
 			{
@@ -2230,26 +2251,37 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
+				if ($doiService->_configs->dataciteSwitch == 1)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
+				}
+				
+				if ($doiService->_configs->ezidSwitch == 1)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
+				}
 				$doiErr = true;
 			}
 		}
 		
-		// Register DOI name and URL when the publication configuration option is set to automatically approved.
-		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
+		if ($doiService->_configs->dataciteSwitch == 1)
 		{
-			$result = $doiService->registerURL($pub->version->get('doi'));
-			if (!$result)
+			// Register DOI name and URL when the publication configuration option is set to automatically approved.
+			if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
 			{
-				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
-			}
-			
-			if ($doiService->getError())
-			{
-				$this->setError($doiService->getError());
+				$result = $doiService->registerURL($pub->version->get('doi'));
+				if (!$result)
+				{
+					throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
+				}
+				
+				if ($doiService->getError())
+				{
+					$this->setError($doiService->getError());
+				}
 			}
 		}
-
+		
 		// Proceed if no error
 		if (!$this->getError())
 		{

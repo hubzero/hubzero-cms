@@ -64,8 +64,18 @@
 		<field name="aboutdoi" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_ABOUT_DOI" description="COM_PUBLICATIONS_CONFIG_ABOUT_DOI_DESC" />
 		<field name="doi_shoulder" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START" description="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START_DESC" />
 		<field name="doi_prefix" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_END" description="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_END_DESC" />
-		<field name="doi_service" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_SERVICE" description="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_DESC" />
-		<field name="doi_userpw" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_USERPASS" description="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_USERPASS_DESC" />
+		<field name="datacite_doi_service_switch" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_DATACITE_DOI_SERVICE_SWITCH" description="COM_PUBLICATIONS_CONFIG_DATACITE_DOI_SERVICE_SWITCH_DESC" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="datacite_doi_service" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DATACITE_DOI_SERVICE" description="COM_PUBLICATIONS_CONFIG_DATACITE_DOI_SERVICE_DESC" />
+		<field name="datacite_doi_userpw" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DATACITE_DOI_SERVICE_USERPASS" description="COM_PUBLICATIONS_CONFIG_DATACITE_DOI_SERVICE_USERPASS_DESC" />
+		<field name="ezid_doi_service_switch" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_SWITCH" description="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_SWITCH_DESC" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="ezid_doi_service" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE" description="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_DESC" />
+		<field name="ezid_doi_userpw" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_USERPASS" description="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_USERPASS_DESC" />
 		<field name="doi_xmlschema" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA" description="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA_DESC" />
 		<field name="doi_publisher" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER" description="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER_DESC" />
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE" description="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE_DESC" />
