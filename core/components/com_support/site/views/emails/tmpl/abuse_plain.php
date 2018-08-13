@@ -47,8 +47,6 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 $base = rtrim(str_replace('/administrator', '', $base), '/');
 
-$this->commentor = User::getInstance($this->reported->author);
-
 $message  = '----------------------------' . "\n";
 $message .= strtoupper(Lang::txt('Case #')) . ': ' . $this->report->id . "\n";
 $message .= strtoupper(Lang::txt('Reason')) . ': ' . $this->report->subject . "\n";
@@ -69,14 +67,23 @@ if ($this->report->note && !$this->author)
 //$message .= strtoupper(Lang::txt('Status')) . ': removed' . "\n";
 if ($this->author)
 {
-$message .= strtoupper(Lang::txt('Dispute')) . ': ' . Lang::txt('The content marked as inappropriate is presented below in its entirety. If you wish to dispute the report, please file a ticket with our support center and reference the case #.') . "\n";
+	$message .= strtoupper(Lang::txt('Dispute')) . ': ' . Lang::txt('The content marked as inappropriate is presented below in its entirety. If you wish to dispute the report, please file a ticket with our support center and reference the case #.') . "\n";
 }
 $message .= '----------------------------'."\n\n";
 
-$message .= Lang::txt('Created by') . ': ' . stripslashes($this->commentor->get('name')) . ' (' . $this->commentor->get('username') . ')' . "\n";
-$message .= Lang::txt('Created') . ': ' . $this->reported->created . "\n\n";
+if ($this->reported)
+{
+	$this->commentor = User::getInstance($this->reported->author);
 
-$message .= str_replace('<br />', '', $this->reported->text);
+	$message .= Lang::txt('Created by') . ': ' . stripslashes($this->commentor->get('name')) . ' (' . $this->commentor->get('username') . ')' . "\n";
+	$message .= Lang::txt('Created') . ': ' . $this->reported->created . "\n\n";
+
+	$message .= str_replace('<br />', '', $this->reported->text);
+}
+else
+{
+	$message .= Lang::txt('(reported item not found)') . "\n\n";
+}
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $message) . "\n";
