@@ -98,9 +98,13 @@ class Doi extends Obj
 
 			$configs = new stdClass;
 			$configs->shoulder  = $params->get('doi_shoulder');
-			$configs->service   = trim($params->get('doi_service'), DS);
 			$configs->prefix    = $params->get('doi_prefix');
-			$configs->userpw    = $params->get('doi_userpw');
+			$configs->dataciteSwitch = $params->get('datacite_doi_service_switch');
+			$configs->dataciteServiceURL = $params->get('datacite_doi_service');
+			$configs->dataciteUserPW = $params->get('datacite_doi_userpw');
+			$configs->ezidSwitch = $params->get('ezid_doi_service_switch');
+			$configs->ezidServiceURL = $params->get('ezid_doi_service');
+			$configs->ezidUserPW = $params->get('ezid_doi_userpw');
 			$configs->publisher = $params->get('doi_publisher', Config::get('sitename'));
 			$configs->livesite  = trim(Request::root(), DS);
 			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'), DS);
@@ -159,7 +163,7 @@ class Doi extends Obj
 		$this->configs();
 
 		// Check required
-		if ($this->_configs->shoulder && $this->_configs->service && $this->_configs->userpw)
+		if ($this->_configs->shoulder && (($this->_configs->dataciteServiceURL && $this->_configs->dataciteUserPW) || ($this->_configs->ezidServiceURL && $this->_configs->ezidUserPW)))
 		{
 			return true;
 		}
@@ -182,13 +186,32 @@ class Doi extends Obj
 
 		if ($doi)
 		{
-			$call  = $this->_configs->service . DS . 'id' . DS . 'doi:' . $doi;
+			if ($this->_configs->dataciteSwitch == 1)
+			{
+				$call  = $this->_configs->dataciteServiceURL . DS . 'id' . DS . 'doi:' . $doi;
+			}
+			
+			if ($this->_configs->ezidSwitch == 1)
+			{
+				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
+			}
+			
 		}
 		else
 		{
-			$call  = $this->_configs->service . DS . 'shoulder' . DS . 'doi:';
+			if ($this->_configs->dataciteSwitch == 1)
+			{
+				$call  = $this->_configs->dataciteServiceURL . DS . 'shoulder' . DS . 'doi:';
+			}
+			
+			if ($this->_configs->ezidSwitch == 1)
+			{
+				$call  = $this->_configs->ezidServiceURL . DS . 'shoulder' . DS . 'doi:';
+			}
+			
 			$call .= $this->_configs->shoulder;
 			$call .= $this->_configs->prefix ? DS . $this->_configs->prefix : DS;
+
 		}
 		return $call;
 	}
@@ -360,7 +383,7 @@ class Doi extends Obj
 	 * @param  string $doi
 	 * @return xml string
 	*/
-	public function buildXML($doi = null)
+	public function buildXml($doi = null)
 	{
 		if (!$this->checkRequired())
 		{
@@ -445,7 +468,7 @@ class Doi extends Obj
 	}
 	
 	/**
-	 * Run cURL to register metadata and create DOI 
+	 * Run cURL to register metadata and create DOI on DataCite
 	 *
 	 * @param	string	$url
 	 * @param	array	$postVals
@@ -456,7 +479,7 @@ class Doi extends Obj
 	public function regMetadata($url, $postvals, &$doi)
 	{
 		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
@@ -494,7 +517,7 @@ class Doi extends Obj
 	}
 	
 	/**
-	 * Run cURL to register DOI name and URL that refers to the dataset
+	 * Run cURL to register DOI name and URL that refers to the dataset on DataCite
 	 *
 	 * @param	string	$url
 	 * @param	array	$postVals
@@ -504,7 +527,7 @@ class Doi extends Obj
 	public function regURL($url, $postvals)
 	{
 		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
@@ -533,7 +556,7 @@ class Doi extends Obj
 	}
 	
 	/**
-	 * Register DOI metadata. This is the first step and is to create DOI name and register metadata on DataCite.
+	 * Register DOI metadata. This is the first step to create DOI name and register metadata on DataCite.
 	 *
 	 * @return string $doi
 	*/
@@ -548,8 +571,8 @@ class Doi extends Obj
 		}
 				
 		// Submit DOI metadata
-		$metadataURL = $this->_configs->service . DS . 'metadata' . DS . $this->_configs->shoulder;
-		$xml = $this->buildXML();
+		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata' . DS . $this->_configs->shoulder;
+		$xml = $this->buildXml();
 		$subResult = $this->regMetadata($metadataURL, $xml, $doi);
 
 		if (!$subResult)
@@ -574,7 +597,7 @@ class Doi extends Obj
 		
 		// Register URL
 		$url = $this->get('url');
-		$regURL = $this->_configs->service . DS . 'doi' . DS . $doi;
+		$regURL = $this->_configs->dataciteServiceURL . DS . 'doi' . DS . $doi;
 		$str = "doi=" . $doi . "\n" . "url=" . $url;
 		
 		$regResult = $this->regURL($regURL, $str);
@@ -596,7 +619,7 @@ class Doi extends Obj
 	 *
 	 * @return  boolean
 	 */
-	public function update($doi)
+	public function dataciteMetadataUpdate($doi)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		
@@ -612,11 +635,11 @@ class Doi extends Obj
 			return false;
 		}
 		
-		$metadataURL = $this->_configs->service . DS . 'metadata';
-		$xml = $this->buildXML($doi);
+		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata';
+		$xml = $this->buildXml($doi);
 		
 		$ch = curl_init($metadataURL);
-		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userpw);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)));
@@ -645,11 +668,12 @@ class Doi extends Obj
 	}
 
 	/**
-	 * Delete a DOI - This is going to change the DOI state from Findable to Registered
+	 * Delete a DOI
 	 *
+	 * @param  string $doi
 	 * @return boolean
 	 */
-	public function delete($doi = NULL)
+	public function delete($doi = null)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)
@@ -668,4 +692,202 @@ class Doi extends Obj
 		// Call to delete a DOI
 		return true;
 	}
+	
+	/**
+	 * Start input
+	 *
+	 * @param   string  $status  DOI status [public, reserved]
+	 * @return  string  response string
+	 */
+	public function startInput($status = 'public')
+	{
+		if (!$this->checkRequired())
+		{
+			$this->setError(Lang::txt('Missing required DOI metadata'));
+			return false;
+		}
+
+		$input  = "_target: " . $this->get('url') ."\n";
+		$input .= "datacite.creator: " . $this->get('creator') . "\n";
+		$input .= "datacite.title: ". $this->get('title') . "\n";
+		$input .= "datacite.publisher: " . $this->get('publisher') . "\n";
+		$input .= "datacite.publicationyear: " . $this->get('pubYear') . "\n";
+		$input .= "datacite.resourcetype: " . $this->get('resourceType') . "\n";
+		$input .= "_profile: datacite". "\n";
+
+		$status = strtolower($status);
+		if (!in_array($status, array('public', 'reserved')))
+		{
+			$status = 'public';
+		}
+
+		$input .= "_status: " . $status . "\n";
+
+		return $input;
+	}
+	
+	/**
+	 * Run cURL to register DOI on EZID
+	 *
+	 * @param   string   $url
+	 * @param   array    $postvals
+	 * @return  boolean
+	 */
+	public function runCurl($url, $postvals = null)
+	{
+		$ch = curl_init($url);
+
+		$options = array(
+			CURLOPT_URL             => $url,
+			CURLOPT_POST            => true,
+			CURLOPT_USERPWD         => $this->_configs->ezidUserPW,
+			CURLOPT_POSTFIELDS      => $postvals,
+			CURLOPT_RETURNTRANSFER  => true,
+			CURLOPT_HTTPHEADER      => array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals))
+		);
+		curl_setopt_array($ch, $options);
+
+		$response = curl_exec($ch);
+		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+
+		if ($success === 201 || $success === 200)
+		{
+			$out = explode('/', $response);
+			$handle = trim(end($out));
+			if ($handle)
+			{
+				// Return DOI
+				return strtoupper($this->_configs->shoulder . DS . $handle);
+			}
+		}
+		else
+		{
+			$this->setError($success . ' ' . $response);
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Register a DOI on EZID
+	 *
+	 * @param   boolean  $sendXml
+	 * @param   string   $status  DOI status [public, reserved]
+	 * @return  boolean
+	 */
+	public function register($sendXml = false, $status = 'public')
+	{
+		if (!$this->on())
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+
+		$input = $this->startInput($status);
+		if (!$input)
+		{
+			// Cannot process if any required fields are missing
+			return false;
+		}
+
+		// Get service call
+		$url = $this->getServicePath();
+
+		// Make service call to provision doi
+		$doi = $this->runCurl($url, $input);
+
+		// Are we sending extended data?
+		if ($sendXml == true && $doi)
+		{
+			$xml = $this->buildXml($doi);
+
+			// Load the xml document in the DOMDocument object
+			$xdoc = new \DomDocument;
+			$xdoc->loadXML($xml);
+
+			// Validate against schema
+			if (!$xdoc->schemaValidate($this->_configs->xmlSchema))
+			{
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
+			}
+			else
+			{
+				// Append XML
+				$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
+
+				// Make service call to send extended metadata
+				$doi = $this->runCurl($url, $input);
+			}
+		}
+
+		// Return DOI
+		return $doi;
+	}
+	
+	/**
+	 * Update a DOI on EZID
+	 *
+	 * @param   string   $doi
+	 * @param   boolean  $sendXml
+	 * @param   string   $status  DOI status [public, reserved]
+	 * @return  boolean
+	 */
+	public function ezidMetadataUpdate($doi = null, $sendXml = false, $status = 'public')
+	{
+		$doi = $doi ? $doi : $this->get('doi');
+		if (!$doi)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
+			return false;
+		}
+
+		if (!$this->on())
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+
+		// Check that we are trying to update a DOI issued by the hub
+		if (!preg_match("/" . $this->_configs->shoulder . "/", $doi))
+		{
+			return false;
+		}
+
+		$input = $this->startInput($status);
+		if (!$input)
+		{
+			// Cannot process if any required fields are missing
+			return false;
+		}
+
+		// Are we sending extended data?
+		if ($sendXml == true && $doi)
+		{
+			$xml = $this->buildXml($doi);
+
+			// Load the xml document in the DOMDocument object
+			$xdoc = new \DomDocument;
+			$xdoc->loadXML($xml);
+
+			// Validate against schema
+			if (!$xdoc->schemaValidate($this->_configs->xmlSchema))
+			{
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
+			}
+			else
+			{
+				// Append XML
+				$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
+			}
+		}
+
+		// Get service call
+		$url = $this->getServicePath($doi);
+
+		// Make service call
+		$result = $this->runCurl($url, $input);
+
+		return $result ? $result : false;
+	}	
 }
