@@ -47,8 +47,6 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 $base = rtrim(str_replace('/administrator', '', $base), '/');
 
-$this->commentor = User::getInstance($this->reported->author);
-
 $this->css(
 	'@media only screen and (max-device-width: 480px) {
 		#ticket-number {
@@ -175,23 +173,38 @@ $this->css(
 
 	<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
+		<?php if ($this->reported) {
+			$this->commentor = User::getInstance($this->reported->author);
+			?>
 			<tr>
 				<th style="text-align: left;" align="left"><?php echo $this->commentor->get('name'); ?> (<?php echo $this->commentor->get('username'); ?>)</th>
 				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide">@ <?php echo Date::of($this->reported->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of($this->reported->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span></th>
 			</tr>
+		<?php } ?>
 			<tr>
 				<td colspan="2" style="padding: 0 2em;">
 					<?php
-					if (!strstr($this->reported->text, '</p>') && !strstr($this->reported->text, '<pre class="wiki">'))
+					if ($this->reported)
 					{
-						$this->reported->text = str_replace("<br />", '', $this->reported->text);
-						$this->reported->text = $this->escape($this->reported->text);
-						$this->reported->text = nl2br($this->reported->text);
-						$this->reported->text = str_replace("\t", ' &nbsp; &nbsp;', $this->reported->text);
-						$this->reported->text = preg_replace('/  /', ' &nbsp;', $this->reported->text);
+						if (!strstr($this->reported->text, '</p>') && !strstr($this->reported->text, '<pre class="wiki">'))
+						{
+							$this->reported->text = str_replace("<br />", '', $this->reported->text);
+							$this->reported->text = $this->escape($this->reported->text);
+							$this->reported->text = nl2br($this->reported->text);
+							$this->reported->text = str_replace("\t", ' &nbsp; &nbsp;', $this->reported->text);
+							$this->reported->text = preg_replace('/  /', ' &nbsp;', $this->reported->text);
+						}
+						?>
+						<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->reported->text; ?></p>
+						<?php
+					}
+					else
+					{
+						?>
+						<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo Lang::txt('(reported item not found)'); ?></p>
+						<?php
 					}
 					?>
-					<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->reported->text; ?></p>
 				</td>
 			</tr>
 		</tbody>
