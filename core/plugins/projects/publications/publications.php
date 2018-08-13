@@ -92,7 +92,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		return $area;
 	}
-
+	
 	/**
 	 * Event call to return count of items
 	 *

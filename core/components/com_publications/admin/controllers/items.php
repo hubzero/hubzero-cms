@@ -993,7 +993,7 @@ class Items extends AdminController
 							}
 						}
 					}
-
+					
 					// Save date accepted
 					if ($action == 'publish')
 					{
