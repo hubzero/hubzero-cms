@@ -533,7 +533,7 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi))
 				{
-					if ($doiService->_configs->dataciteSwitch == 1)
+					if ($doiService->_configs->dataciteEZIDSwitch == 1)
 					{
 						$result = $doiService->dataciteMetadataUpdate($model->version->doi);
 						
@@ -542,8 +542,7 @@ class Items extends AdminController
 							throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
 						}
 					}
-					
-					if ($doiService->_configs->ezidSwitch == 1)
+					else
 					{
 						$doiService->ezidMetadataUpdate($model->version->doi, true);
 					}
@@ -638,7 +637,7 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->get('doi')))
 				{
-					if ($doiService->_configs->dataciteSwitch == 1)
+					if ($doiService->_configs->dataciteEZIDSwitch == 1)
 					{
 						$result = $doiService->dataciteMetadataUpdate($model->version->get('doi'));
 						
@@ -647,8 +646,7 @@ class Items extends AdminController
 							throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
 						}
 					}
-					
-					if ($doiService->_configs->ezidSwitch == 1)
+					else
 					{
 						$doiService->ezidMetadataUpdate($model->version->get('doi'), true);
 					}
@@ -850,7 +848,7 @@ class Items extends AdminController
 			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
-				if ($doiService->_configs->dataciteSwitch == 1)
+				if ($doiService->_configs->dataciteEZIDSwitch == 1)
 				{
 					$result = $doiService->dataciteMetadataUpdate($this->model->version->doi);
 					
@@ -859,8 +857,7 @@ class Items extends AdminController
 						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
 					}					
 				}
-				
-				if ($doiService->_configs->ezidSwitch == 1)
+				else
 				{
 					$doiService->ezidMetadataUpdate($this->model->version->doi, true);
 				}
@@ -911,7 +908,7 @@ class Items extends AdminController
 						if ($this->model->version->doi
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 						{
-							if ($doiService->_configs->dataciteSwitch == 1)
+							if ($doiService->_configs->dataciteEZIDSwitch == 1)
 							{
 								// Update DOI metadata, then register DOI name and dataset URL.
 								$upResult = $doiService->dataciteMetadataUpdate($this->model->version->doi);
@@ -928,8 +925,7 @@ class Items extends AdminController
 									throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
 								}
 							}
-							
-							if ($doiService->_configs->ezidSwitch == 1)
+							else
 							{
 								// Update
 								$doiService->ezidMetadataUpdate($this->model->version->doi, true);
@@ -942,23 +938,12 @@ class Items extends AdminController
 						}
 						elseif ($requireDoi)
 						{
-							if (($doiService->_configs->dataciteSwitch == 0) && ($doiService->_configs->ezidSwitch == 0))
-							{
-								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'), 400);
-							}
-							
-							if (($doiService->_configs->dataciteSwitch == 1) && ($doiService->_configs->ezidSwitch == 1))
-							{
-								throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_BOTH_DOI_SERVICE_ACTIVATED'), 400);
-							}
-							
-							if ($doiService->_configs->dataciteSwitch == 1)
+							if ($doiService->_configs->dataciteEZIDSwitch == 1)
 							{
 								// Register DOI metadata when dataset is submitted
 								$doi = $doiService->registerMetadata();
 							}
-							
-							if ($doiService->_configs->ezidSwitch == 1)
+							else
 							{
 								// Register
 								$doi = $doiService->register(true);
@@ -976,7 +961,7 @@ class Items extends AdminController
 								$this->model->version->doi = $doi;
 							}
 							
-							if ($doiService->_configs->dataciteSwitch == 1)
+							if ($doiService->_configs->dataciteEZIDSwitch == 1)
 							{
 								// Register the DOI name and URL to complete the DOI registration.
 								$result = $doiService->registerURL($doi);
