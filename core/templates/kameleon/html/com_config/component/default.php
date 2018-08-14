@@ -83,27 +83,97 @@ $configs->dataciteEZIDSwitch = $params->get('datacite_ezid_doi_service_switch');
 							<?php echo $field->input; ?>
 							
 							<script type="text/javascript">
-							<?php if ($configs->dataciteEZIDSwitch == 1) : ?>
+							<?php if ($configs->dataciteEZIDSwitch == 2) : ?>
+							$("#hzform_doi_shoulder-lbl").show();
+							$("#hzform_doi_shoulder").show();
 							$("#hzform_doi_prefix-lbl").hide();
 							$("#hzform_doi_prefix").hide();
+							$("#hzform_datacite_doi_service-lbl").show();
+							$("#hzform_datacite_doi_service").show();
+							$("#hzform_datacite_doi_userpw-lbl").show();
+							$("#hzform_datacite_doi_userpw").show();
+							$("#hzform_ezid_doi_service-lbl").hide();
+							$("#hzform_ezid_doi_service").hide();
+							$("#hzform_ezid_doi_userpw-lbl").hide();
+							$("#hzform_ezid_doi_userpw").hide();
+							<?php endif; ?>
+							
+							<?php if ($configs->dataciteEZIDSwitch == 1) : ?>
+							$("#hzform_doi_shoulder-lbl").show();
+							$("#hzform_doi_shoulder").show();
+							$("#hzform_doi_prefix-lbl").show();
+							$("#hzform_doi_prefix").show();
+							$("#hzform_ezid_doi_service-lbl").show();
+							$("#hzform_ezid_doi_service").show();
+							$("#hzform_ezid_doi_userpw-lbl").show();
+							$("#hzform_ezid_doi_userpw").show();
+							$("#hzform_datacite_doi_service-lbl").hide();
+							$("#hzform_datacite_doi_service").hide();
+							$("#hzform_datacite_doi_userpw-lbl").hide();
+							$("#hzform_datacite_doi_userpw").hide();
 							<?php endif; ?>
 							
 							<?php if ($configs->dataciteEZIDSwitch == 0) : ?>
-							$("#hzform_doi_prefix-lbl").show();
-							$("#hzform_doi_prefix").show();
+							$("#hzform_doi_shoulder-lbl").hide();
+							$("#hzform_doi_shoulder").hide();
+							$("#hzform_doi_prefix-lbl").hide();
+							$("#hzform_doi_prefix").hide();
+							$("#hzform_datacite_doi_service-lbl").hide();
+							$("#hzform_datacite_doi_service").hide();
+							$("#hzform_datacite_doi_userpw-lbl").hide();
+							$("#hzform_datacite_doi_userpw").hide();
+							$("#hzform_ezid_doi_service-lbl").hide();
+							$("#hzform_ezid_doi_service").hide();
+							$("#hzform_ezid_doi_userpw-lbl").hide();
+							$("#hzform_ezid_doi_userpw").hide();
 							<?php endif; ?>
 							
 							$("#hzform_datacite_ezid_doi_service_switch").on('change', function()
 							{
-								if ($("#hzform_datacite_ezid_doi_service_switch option:selected").text() == 'Yes')
+								if ($("#hzform_datacite_ezid_doi_service_switch option:selected").text() == 'DataCite')
 								{
+									$("#hzform_doi_shoulder-lbl").show();
+									$("#hzform_doi_shoulder").show();
 									$("#hzform_doi_prefix-lbl").hide();
 									$("#hzform_doi_prefix").hide();
+									$("#hzform_datacite_doi_service-lbl").show();
+									$("#hzform_datacite_doi_service").show();
+									$("#hzform_datacite_doi_userpw-lbl").show();
+									$("#hzform_datacite_doi_userpw").show();
+									$("#hzform_ezid_doi_service-lbl").hide();
+									$("#hzform_ezid_doi_service").hide();
+									$("#hzform_ezid_doi_userpw-lbl").hide();
+									$("#hzform_ezid_doi_userpw").hide();
 								}
-								else if ($("#hzform_datacite_ezid_doi_service_switch option:selected").text() == 'No')
+								else if ($("#hzform_datacite_ezid_doi_service_switch option:selected").text() == 'EZID')
 								{
+									$("#hzform_doi_shoulder-lbl").show();
+									$("#hzform_doi_shoulder").show();
 									$("#hzform_doi_prefix-lbl").show();
 									$("#hzform_doi_prefix").show();
+									$("#hzform_ezid_doi_service-lbl").show();
+									$("#hzform_ezid_doi_service").show();
+									$("#hzform_ezid_doi_userpw-lbl").show();
+									$("#hzform_ezid_doi_userpw").show();
+									$("#hzform_datacite_doi_service-lbl").hide();
+									$("#hzform_datacite_doi_service").hide();
+									$("#hzform_datacite_doi_userpw-lbl").hide();
+									$("#hzform_datacite_doi_userpw").hide();
+								}
+								else if ($("#hzform_datacite_ezid_doi_service_switch option:selected").text() == 'None')
+								{
+									$("#hzform_doi_shoulder-lbl").hide();
+									$("#hzform_doi_shoulder").hide();
+									$("#hzform_doi_prefix-lbl").hide();
+									$("#hzform_doi_prefix").hide();
+									$("#hzform_datacite_doi_service-lbl").hide();
+									$("#hzform_datacite_doi_service").hide();
+									$("#hzform_datacite_doi_userpw-lbl").hide();
+									$("#hzform_datacite_doi_userpw").hide();
+									$("#hzform_ezid_doi_service-lbl").hide();
+									$("#hzform_ezid_doi_service").hide();
+									$("#hzform_ezid_doi_userpw-lbl").hide();
+									$("#hzform_ezid_doi_userpw").hide();
 								}
 							}
 							);

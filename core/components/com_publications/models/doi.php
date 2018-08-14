@@ -162,7 +162,8 @@ class Doi extends Obj
 		$this->configs();
 
 		// Check required
-		if ($this->_configs->shoulder && (($this->_configs->dataciteServiceURL && $this->_configs->dataciteUserPW) || ($this->_configs->ezidServiceURL && $this->_configs->ezidUserPW)))
+		if ($this->_configs->dataciteEZIDSwitch && $this->_configs->shoulder 
+		&& (($this->_configs->dataciteServiceURL && $this->_configs->dataciteUserPW) || ($this->_configs->prefix && $this->_configs->ezidServiceURL && $this->_configs->ezidUserPW)))
 		{
 			return true;
 		}
@@ -185,22 +186,22 @@ class Doi extends Obj
 
 		if ($doi)
 		{
-			if ($this->_configs->dataciteEZIDSwitch == 1)
+			if ($this->_configs->dataciteEZIDSwitch == 2)
 			{
 				$call  = $this->_configs->dataciteServiceURL . DS . 'id' . DS . 'doi:' . $doi;
 			}
-			else
+			elseif ($this->_configs->dataciteEZIDSwitch == 1)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
 			}		
 		}
 		else
 		{
-			if ($this->_configs->dataciteEZIDSwitch == 1)
+			if ($this->_configs->dataciteEZIDSwitch == 2)
 			{
 				$call  = $this->_configs->dataciteServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}
-			else
+			elseif ($this->_configs->dataciteEZIDSwitch == 1)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}
