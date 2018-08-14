@@ -2221,22 +2221,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
 			
-			if (($doiService->_configs->dataciteSwitch == 0) && ($doiService->_configs->ezidSwitch == 0))
-			{
-				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'), 400);
-			}
-			
-			if (($doiService->_configs->dataciteSwitch == 1) && ($doiService->_configs->ezidSwitch == 1))
-			{
-				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_BOTH_DOI_SERVICE_ACTIVATED'), 400);
-			}
-			
-			if ($doiService->_configs->dataciteSwitch == 1)
+			if ($doiService->_configs->dataciteEZIDSwitch == 1)
 			{
 				$doi = $doiService->registerMetadata();
 			}
-			
-			if ($doiService->_configs->ezidSwitch == 1)
+			else
 			{
 				$extended = $state == 5 ? false : true;
 				$doi = $doiService->register($extended, ($state == 5 ? 'reserved' : 'public'));
@@ -2251,12 +2240,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				if ($doiService->_configs->dataciteSwitch == 1)
+				if ($doiService->_configs->dataciteEZIDSwitch == 1)
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
 				}
-				
-				if ($doiService->_configs->ezidSwitch == 1)
+				else
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
 				}
@@ -2264,7 +2252,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 		}
 		
-		if ($doiService->_configs->dataciteSwitch == 1)
+		if ($doiService->_configs->dataciteEZIDSwitch == 1)
 		{
 			// Register DOI name and URL when the publication configuration option is set to automatically approved.
 			if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
