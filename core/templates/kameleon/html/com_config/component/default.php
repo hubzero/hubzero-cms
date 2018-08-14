@@ -83,7 +83,7 @@ $configs->dataciteEZIDSwitch = $params->get('datacite_ezid_doi_service_switch');
 							<?php echo $field->input; ?>
 							
 							<script type="text/javascript">
-							<?php if($configs->dataciteEZIDSwitch == 1) : ?>
+							<?php if ($configs->dataciteEZIDSwitch == 1) : ?>
 							$("#hzform_doi_prefix-lbl").hide();
 							$("#hzform_doi_prefix").hide();
 							<?php endif; ?>
