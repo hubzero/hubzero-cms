@@ -99,10 +99,9 @@ class Doi extends Obj
 			$configs = new stdClass;
 			$configs->shoulder  = $params->get('doi_shoulder');
 			$configs->prefix    = $params->get('doi_prefix');
-			$configs->dataciteSwitch = $params->get('datacite_doi_service_switch');
+			$configs->dataciteEZIDSwitch = $params->get('datacite_ezid_doi_service_switch');
 			$configs->dataciteServiceURL = $params->get('datacite_doi_service');
 			$configs->dataciteUserPW = $params->get('datacite_doi_userpw');
-			$configs->ezidSwitch = $params->get('ezid_doi_service_switch');
 			$configs->ezidServiceURL = $params->get('ezid_doi_service');
 			$configs->ezidUserPW = $params->get('ezid_doi_userpw');
 			$configs->publisher = $params->get('doi_publisher', Config::get('sitename'));
@@ -186,24 +185,22 @@ class Doi extends Obj
 
 		if ($doi)
 		{
-			if ($this->_configs->dataciteSwitch == 1)
+			if ($this->_configs->dataciteEZIDSwitch == 1)
 			{
 				$call  = $this->_configs->dataciteServiceURL . DS . 'id' . DS . 'doi:' . $doi;
 			}
-			
-			if ($this->_configs->ezidSwitch == 1)
+			else
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
-			}			
+			}		
 		}
 		else
 		{
-			if ($this->_configs->dataciteSwitch == 1)
+			if ($this->_configs->dataciteEZIDSwitch == 1)
 			{
 				$call  = $this->_configs->dataciteServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}
-			
-			if ($this->_configs->ezidSwitch == 1)
+			else
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}
