@@ -292,6 +292,8 @@ git pull upstream 2.2
 
 This will pull in the new code into `/core`.  For the extensions that have overrides, follow the same steps above for updating remote extensions.
 
+After updating the remote extension, we need to merge those commits into the extensions in the app directory on the master branch.
+
 ```
 git merge -X subtree=app/<extension directory> -Xtheirs --squash <extension>/master --allow-unrelated-histories
 ```
