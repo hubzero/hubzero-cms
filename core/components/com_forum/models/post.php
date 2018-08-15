@@ -478,7 +478,7 @@ class Post extends Relational
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->adapter = new $cls($this->get('scope_id'));
