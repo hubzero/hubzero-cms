@@ -1,5 +1,8 @@
 {
 	"name": "qubeshub/com_partners",
 	"description": "Partner component for QUBES",
-	"type": "hubzero-component"
+	"type": "hubzero-component",
+	"extra": {
+	    "install-directory": "/components/com_partners"
+	}
 }
