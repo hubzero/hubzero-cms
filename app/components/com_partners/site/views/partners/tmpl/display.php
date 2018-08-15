@@ -46,7 +46,7 @@ Pathway::append(
 );
 ?>
 <header id="content-header">
-	<h2>Hello, World!</h2>
+	<h2>Our Partners</h2>
 </header>
 
 <!-- Need to add checks if metadata is available before displaying -->
@@ -62,7 +62,7 @@ Pathway::append(
 							 ->set('controller', $this->controller)
 							 ->set('record', $record)
 							 ->display();
-					} 
+					}
 				} ?>
 			</div>
 		</div>
@@ -78,7 +78,7 @@ Pathway::append(
 							 ->set('controller', $this->controller)
 							 ->set('record', $record)
 							 ->display();
-					} 
+					}
 				} ?>
 			</div>
 		</div>
@@ -94,7 +94,7 @@ Pathway::append(
 							 ->set('controller', $this->controller)
 							 ->set('record', $record)
 							 ->display();
-					} 
+					}
 				} ?>
 			</div>
 		</div>
