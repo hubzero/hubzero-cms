@@ -20,6 +20,10 @@
     color: white;
   }
 
+  .billboard-content {
+    display: none;
+  }
+
 /* Container Styling */
 	.slider {
 		position:relative;

@@ -115,5 +115,8 @@ foreach ($item_boards as $board) { ?>
 			}
 			?>
 		</div>
+		<div class="billboard-content">
+			<?php echo $board->text; ?>
+		</div>
 	</div>
 <?php } ?>
