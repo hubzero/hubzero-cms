@@ -771,7 +771,7 @@ class Items extends AdminController
 			$authorslist->authnames = $authnames;
 			$authorslist->attribs   = $row->attribs;
 			$authorslist->option    = $this->_option;
-			$authorslist->roles     = $row->type->roles();
+			$authorslist->roles     = $row->type->roles()->rows();
 
 			$lists['authors'] = $authorslist->loadTemplate();
 		}
