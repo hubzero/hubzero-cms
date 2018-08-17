@@ -332,6 +332,8 @@ class Abusereports extends AdminController
 		// Notify item owner
 		if ($email)
 		{
+			Lang::load($this->_option . '.abuse', dirname(dirname(__DIR__)) . '/site');
+
 			$user = User::getInstance($reported->author);
 
 			// Email "from" info
