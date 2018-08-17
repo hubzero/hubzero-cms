@@ -48,26 +48,25 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 $base = rtrim(str_replace('/administrator', '', $base), '/');
 
 $message  = '----------------------------' . "\n";
-$message .= strtoupper(Lang::txt('Case #')) . ': ' . $this->report->id . "\n";
-$message .= strtoupper(Lang::txt('Reason')) . ': ' . $this->report->subject . "\n";
-$message .= strtoupper(Lang::txt('Reported')) . ': ' . $this->report->created . "\n";
+$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_CASE_NUM')) . ': ' . $this->report->id . "\n";
+$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_REASON')) . ': ' . $this->report->subject . "\n";
+$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_REPORTED')) . ': ' . $this->report->created . "\n";
 if (!$this->author)
 {
 	$reporter = User::getInstance($this->report->created_by);
 
-	$message .= strtoupper(Lang::txt('Reported by')) . ': ' . $this->escape($reporter->get('name')) . '(' . $this->escape($reporter->get('username')) . ')' . "\n";
-	$message .= strtoupper(Lang::txt('Comments')) . ': "' . $this->escape($this->report->report) . '"' . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_REPORTED_BY')) . ': ' . $this->escape($reporter->get('name')) . '(' . $this->escape($reporter->get('username')) . ')' . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_COMMENTS')) . ': "' . $this->escape($this->report->report) . '"' . "\n";
 }
-$message .= strtoupper(Lang::txt('Reviewed')) . ': ' . $this->report->reviewed . "\n";
-$message .= strtoupper(Lang::txt('Status')) . ': removed' . "\n";
+$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_REVIEWED')) . ': ' . $this->report->reviewed . "\n";
+$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_STATUS')) . ': ' . Lang::txt('COM_SUPPORT_EMAIL_STATUS_REMOVED') . "\n";
 if ($this->report->note && !$this->author)
 {
-	$message .= strtoupper(Lang::txt('Note')) . ': ' . $this->report->note . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_NOTE')) . ': ' . $this->report->note . "\n";
 }
-//$message .= strtoupper(Lang::txt('Status')) . ': removed' . "\n";
 if ($this->author)
 {
-	$message .= strtoupper(Lang::txt('Dispute')) . ': ' . Lang::txt('The content marked as inappropriate is presented below in its entirety. If you wish to dispute the report, please file a ticket with our support center and reference the case #.') . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL_DISPUTE')) . ': ' . strip_tags(Lang::txt('COM_SUPPORT_EMAIL_DISPUTE_EXPLANATION', '#', $this->report->id)) . "\n";
 }
 $message .= '----------------------------'."\n\n";
 
@@ -75,14 +74,14 @@ if ($this->reported)
 {
 	$this->commentor = User::getInstance($this->reported->author);
 
-	$message .= Lang::txt('Created by') . ': ' . stripslashes($this->commentor->get('name')) . ' (' . $this->commentor->get('username') . ')' . "\n";
-	$message .= Lang::txt('Created') . ': ' . $this->reported->created . "\n\n";
+	$message .= Lang::txt('COM_SUPPORT_EMAIL_CREATED_BY') . ': ' . stripslashes($this->commentor->get('name')) . ' (' . $this->commentor->get('username') . ')' . "\n";
+	$message .= Lang::txt('COM_SUPPORT_EMAIL_CREATED') . ': ' . $this->reported->created . "\n\n";
 
 	$message .= str_replace('<br />', '', $this->reported->text);
 }
 else
 {
-	$message .= Lang::txt('(reported item not found)') . "\n\n";
+	$message .= Lang::txt('COM_SUPPORT_EMAIL_REPORTED_ITEM_NOT_FOUND') . "\n\n";
 }
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 
