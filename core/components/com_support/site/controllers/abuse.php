@@ -226,6 +226,8 @@ class Abuse extends SiteController
 		// Send notification email
 		if ($this->config->get('abuse_notify', 1))
 		{
+			Lang::load($this->_option . '.abuse', dirname(__DIR__));
+
 			$reported = new \stdClass;
 			$reported->author = 0;
 
