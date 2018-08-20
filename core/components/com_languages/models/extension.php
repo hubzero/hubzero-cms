@@ -250,8 +250,23 @@ class Extension extends Relational
 			// Get information
 			$path = $this->path($client_id);
 
-			$file = $path . '/' . $lang . '/' . $lang . '.xml';
-			$file = file_exists(PATH_APP . $file) ? PATH_APP . $file : PATH_CORE . $file;
+			$dir = '/' . $lang . '/' . $lang . '.xml';
+			foreach (array(PATH_APP, PATH_CORE) as $base)
+			{
+				$file = $base . $path . $dir;
+
+				if (file_exists($file))
+				{
+					break;
+				}
+
+				$file = $base . strtolower($path) . $dir;
+
+				if (file_exists($file))
+				{
+					break;
+				}
+			}
 
 			$info = self::metaFile($file);
 
