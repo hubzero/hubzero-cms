@@ -34,25 +34,23 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user = User::getRoot();
 		$result = new Object;
 
 		$actions = array(
-			'admin',
-			'manage',
-			'create',
-			'edit',
-			'edit.state',
-			'edit.featured',
-			'delete'
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.edit.featured',
+			'core.delete'
 		);
 
 		foreach ($actions as $action)
 		{
-			$result->set('core.' . $action, $user->authorise($action, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;
 	}
 }
-
