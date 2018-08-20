@@ -74,7 +74,7 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once \Component::path('com_menus') . '/helpers/menus.php';
+		require_once \Component::path('com_menus') . '/admin/helpers/menus.php';
 
 		$lang = Lang::getRoot();
 		$menu = App::get('menu');
@@ -107,15 +107,16 @@ class Helper extends Module
 		foreach ($languages as $i => &$language)
 		{
 			// Do not display language without frontend UI
-			if (!Lang::exists($language->lang_code))
+			if (!Lang::exists($language->lang_code, PATH_APP . DS . 'bootstrap' . DS . strtolower(App::get('client')->name))
+			 && !Lang::exists($language->lang_code, PATH_CORE . DS . 'bootstrap' . DS . ucfirst(App::get('client')->name)))
 			{
 				unset($languages[$i]);
 			}
 			// Do not display language without specific home menu
-			elseif (!isset($homes[$language->lang_code]))
+			/*elseif (!isset($homes[$language->lang_code]))
 			{
 				unset($languages[$i]);
-			}
+			}*/
 			// Do not display language without authorized access level
 			elseif (isset($language->access) && $language->access && !in_array($language->access, $levels))
 			{
@@ -124,6 +125,7 @@ class Helper extends Module
 			else
 			{
 				$language->active = $language->lang_code == $lang->getTag();
+
 				if (App::get('language.filter'))
 				{
 					if (isset($associations[$language->lang_code]) && $menu->getItem($associations[$language->lang_code]))
