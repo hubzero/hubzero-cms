@@ -2158,8 +2158,13 @@ class Curation extends Obj
 	public function createSymLink()
 	{
 		$tarname = $this->getBundleName();
-		$tarpath = $this->_pub->path('base', true) . DS . $tarname;
+		$tarpath = $this->_pub->path('relative') . DS . $tarname;
 		$symLink = $this->_symLinkPath();
+		if ($symLink !== false)
+		{
+			chdir(dirname($symLink));
+		}
+
 		if (empty($this->_pub) || $symLink == false || !is_file($tarpath))
 		{
 			return false;
@@ -2186,6 +2191,7 @@ class Curation extends Obj
 		{
 			return false;
 		}
+
 		if (is_file($symLink))
 		{
 			unlink($symLink);
