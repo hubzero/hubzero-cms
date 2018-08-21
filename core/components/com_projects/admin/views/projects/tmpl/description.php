@@ -33,7 +33,7 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . Lang::txt('COM_PROJECTS_CUSTOM_DESCRIPTION'));
-if (User::authorise('core.edit') || User::authorise('core.create'))
+if (User::authorise('core.edit', $this->option) || User::authorise('core.create', $this->option))
 {
 	Toolbar::apply('applyDescription');
 	Toolbar::save('saveDescription');
