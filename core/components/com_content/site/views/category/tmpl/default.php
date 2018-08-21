@@ -11,6 +11,15 @@ defined('_HZEXEC_') or die();
 
 Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 
+$layoutWithAside = false;
+$sectionInnerClass = '';
+
+if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0)
+{
+	$layoutWithAside = true;
+	$sectionInnerClass = ' hz-layout-with-aside';
+}
+
 ?>
 <?php if ($this->params->get('show_page_heading') or $this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
 	<header id="content-header">
@@ -32,9 +41,9 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 <?php endif; ?>
 
 <section class="main section">
-	<div class="section-inner category-list<?php echo $this->pageclass_sfx;?>">
+	<div class="section-inner category-list<?php echo $this->pageclass_sfx;?><?php echo $sectionInnerClass; ?>">
 
-		<?php if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0) : ?>
+		<?php if ($layoutWithAside) : ?>
 			<div class="subject">
 		<?php endif; ?>
 
@@ -54,7 +63,7 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 			<?php echo $this->loadTemplate('articles'); ?>
 		</div>
 
-		<?php if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0) : ?>
+		<?php if ($layoutWithAside) : ?>
 			</div>
 			<aside class="aside">
 				<div class="cat-children">

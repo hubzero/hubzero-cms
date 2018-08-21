@@ -60,7 +60,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 </header>
 
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>

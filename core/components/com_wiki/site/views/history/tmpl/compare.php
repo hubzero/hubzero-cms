@@ -79,12 +79,12 @@ $drauthor = $this->dr->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
 					<dt><?php echo Lang::txt('COM_WIKI_VERSION') . ' ' . $this->dr->get('version'); ?><dt>
 					<dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->dr->get('created') . '">' . $this->dr->get('created') . '</time>', $this->escape($drauthor)); ?><dd>
 				</dl>
-			</div><!-- / .aside -->
+			</div>
 			<div class="col span-half omega">
 				<p class="diff-deletedline"><?php echo Lang::txt('COM_WIKI_HISTORY_DELETIONS'); ?></p>
 				<p class="diff-addedline"><?php echo Lang::txt('COM_WIKI_HISTORY_ADDITIONS'); ?></p>
-			</div><!-- / .subject -->
-		</div><!-- / .section -->
+			</div>
+		</div>
 
 		<?php echo $this->content; ?>
 	</div>

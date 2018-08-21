@@ -41,20 +41,21 @@ $this->js('posts')
 </header>
 
 <section id="introduction" class="section">
-	<div class="subject">
-		<div class="grid">
-			<div class="col span-half">
-				<h3><?php echo Lang::txt('COM_FEEDAGGREGATOR_WHAT_IS_AGGREGATOR'); ?></h3>
-				<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_WHAT_IS_AGGREGATOR_DESC'); ?></p>
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject">
+			<div class="grid">
+				<div class="col span-half">
+					<h3><?php echo Lang::txt('COM_FEEDAGGREGATOR_WHAT_IS_AGGREGATOR'); ?></h3>
+					<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_WHAT_IS_AGGREGATOR_DESC'); ?></p>
+				</div>
+				<div class="col span-half omega">
+					<h3><?php echo Lang::txt('COM_FEEDAGGREGATOR_HOW_TO_READ_AGGREGATOR'); ?></h3>
+					<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_HOW_TO_READ_AGGREGATOR_DESC'); ?></p>
+					<p><a href="<?php echo Route::url('index.php?option=com_feedaggregator#feedbox'); ?>" class="feed-btn btn-success fancybox-inline"><?php echo Lang::txt('COM_FEEDAGGREGATOR_GENERATE_FEED'); ?></a></p>
+				</div>
 			</div>
-			<div class="col span-half omega">
-				<h3><?php echo Lang::txt('COM_FEEDAGGREGATOR_HOW_TO_READ_AGGREGATOR'); ?></h3>
-				<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_HOW_TO_READ_AGGREGATOR_DESC'); ?></p>
-				<p><a href="<?php echo Route::url('index.php?option=com_feedaggregator#feedbox'); ?>" class="feed-btn btn-success fancybox-inline"><?php echo Lang::txt('COM_FEEDAGGREGATOR_GENERATE_FEED'); ?></a></p>
-			</div>
-		</div>
-	</div><!-- / .subject -->
-	<aside class="aside">
+		</div><!-- / .subject -->
+		<aside class="aside">
 		<h3><?php echo Lang::txt('COM_FEEDAGGREGATOR_QUESTIONS'); ?></h3>
 		<ul>
 			<li>
@@ -62,6 +63,7 @@ $this->js('posts')
 			</li>
 		</ul>
 	</aside><!-- / .aside -->
+	</div>
 </section>
 
 <section class="main section">

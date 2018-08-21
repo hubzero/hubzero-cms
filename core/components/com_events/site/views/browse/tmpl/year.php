@@ -58,29 +58,30 @@ $this->css()
 </nav>
 
 <section class="main section">
-	<div class="subject">
-	<p id="toggle-prior"><strong><a id="toggle-prior-anchor" href="#" onClick="return false;">Show Past Events</a></strong></p>
-	<?php if (count($this->rows) > 0) { ?>
-		<ul class="events">
-		<?php
-			foreach ($this->rows as $row)
-			{
-				$this->view('item')
-				     ->set('option', $this->option)
-				     ->set('task', $this->task)
-				     ->set('row', $row)
-				     ->set('fields', $this->fields)
-				     ->set('categories', $this->categories)
-				     ->set('showdate', 1)
-				     ->display();
-			}
-		?>
-		</ul>
-	<?php } else { ?>
-		<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.$this->year.'</strong>'; ?></p>
-	<?php } ?>
-	</div><!-- / .subject -->
-	<div class="aside">
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject">
+		<p id="toggle-prior"><strong><a id="toggle-prior-anchor" href="#" onClick="return false;">Show Past Events</a></strong></p>
+		<?php if (count($this->rows) > 0) { ?>
+			<ul class="events">
+			<?php
+				foreach ($this->rows as $row)
+				{
+					$this->view('item')
+						 ->set('option', $this->option)
+						 ->set('task', $this->task)
+						 ->set('row', $row)
+						 ->set('fields', $this->fields)
+						 ->set('categories', $this->categories)
+						 ->set('showdate', 1)
+						 ->display();
+				}
+			?>
+			</ul>
+		<?php } else { ?>
+			<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.$this->year.'</strong>'; ?></p>
+		<?php } ?>
+		</div><!-- / .subject -->
+		<div class="aside">
 		<form action="<?php echo Route::url('index.php?option='.$this->option.'&year='.$this->year); ?>" method="get" id="event-categories">
 			<fieldset>
 				<label for="event-cateogry"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
@@ -147,4 +148,5 @@ $this->css()
 			</p>
 		</div><!-- / .calendarwrap -->
 	</div><!-- / .aside -->
+	</div>
 </section><!-- / .main section -->

@@ -53,6 +53,7 @@ $this->css('create.css')
 <?php } ?>
 
 <section class="main section">
+	<div class="section-inner hz-layout-with-aside">
 	<div class="subject">
 		<div class="grid">
 <?php
@@ -183,9 +184,10 @@ $this->css('create.css')
 				</div>
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
-	</div><!-- /.subject -->
-	<aside class="aside">
-		<h3>Select a type</h3>
-		<p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
-	</aside><!-- /.aside -->
+		</div><!-- /.subject -->
+		<aside class="aside">
+			<h3>Select a type</h3>
+			<p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
+		</aside><!-- /.aside -->
+	</div>
 </section><!-- /.main section -->

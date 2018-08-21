@@ -82,7 +82,7 @@ $activeVersion = Request::getString('version', reset($versions));
 </header>
 
 <section class="section api docs">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<aside class="aside">
 			<?php 
 			$this->view('_menu')

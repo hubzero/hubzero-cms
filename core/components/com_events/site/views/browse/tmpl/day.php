@@ -57,37 +57,38 @@ $this->css();
 </nav>
 
 <section class="main section">
-	<div class="subject">
-	<?php if (count($this->rows) > 0) { ?>
-		<ul class="events">
-			<li>
-				<dl class="event-details">
-					<dt><?php echo Date::of($this->year.'-'.$this->month.'-'.$this->day.' 00:00:00')->format(Lang::txt('DATE_FORMAT_HZ1')); ?></dt>
-				</dl>
-				<div class="ewrap">
-					<ul class="events">
-					<?php
-						foreach ($this->rows as $row)
-						{
-							$this->view('item')
-							     ->set('option', $this->option)
-							     ->set('task', $this->task)
-							     ->set('row', $row)
-							     ->set('fields', $this->fields)
-							     ->set('categories', $this->categories)
-							     ->set('showdate', 0)
-							     ->display();
-						}
-					?>
-					</ul>
-				</div>
-			</li>
-		</ul>
-	<?php } else { ?>
-		<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.\Components\Events\Helpers\Html::getDateFormat($this->year,$this->month,$this->day,0).'</strong>'; ?></p>
-	<?php } ?>
-	</div><!-- / .subject -->
-	<div class="aside">
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject">
+		<?php if (count($this->rows) > 0) { ?>
+			<ul class="events">
+				<li>
+					<dl class="event-details">
+						<dt><?php echo Date::of($this->year.'-'.$this->month.'-'.$this->day.' 00:00:00')->format(Lang::txt('DATE_FORMAT_HZ1')); ?></dt>
+					</dl>
+					<div class="ewrap">
+						<ul class="events">
+						<?php
+							foreach ($this->rows as $row)
+							{
+								$this->view('item')
+									 ->set('option', $this->option)
+									 ->set('task', $this->task)
+									 ->set('row', $row)
+									 ->set('fields', $this->fields)
+									 ->set('categories', $this->categories)
+									 ->set('showdate', 0)
+									 ->display();
+							}
+						?>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		<?php } else { ?>
+			<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.\Components\Events\Helpers\Html::getDateFormat($this->year,$this->month,$this->day,0).'</strong>'; ?></p>
+		<?php } ?>
+		</div><!-- / .subject -->
+		<div class="aside">
 		<form action="<?php echo Route::url('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day); ?>" method="get" id="event-categories">
 			<fieldset>
 				<label for="event-cateogry"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
@@ -168,4 +169,5 @@ $this->css();
 			?>
 		</div><!-- / .calendarwrap -->
 	</div><!-- / .aside -->
+	</div>
 </section><!-- / .main section -->
