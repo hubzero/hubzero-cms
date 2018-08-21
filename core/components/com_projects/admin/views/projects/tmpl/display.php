@@ -37,20 +37,20 @@ $this->css();
 Toolbar::title(Lang::txt('Projects'), 'projects');
 
 // Only display if enabled
-if (User::authorise('core.manage', $this->option . '.component') && $this->config->get('custom_profile') == 'custom')
+if (User::authorise('core.manage', $this->option) && $this->config->get('custom_profile') == 'custom')
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
 	Toolbar::spacer();
 }
-if (User::authorise('core.edit.state', $this->option . '.component'))
+if (User::authorise('core.edit.state', $this->option))
 {
 	Toolbar::archiveList();
 }
-if (User::authorise('core.edit', $this->option . '.component'))
+if (User::authorise('core.edit', $this->option))
 {
 	Toolbar::editList();
 }
-if (User::authorise('core.admin', $this->option . '.component'))
+if (User::authorise('core.admin', $this->option))
 {
 	Toolbar::spacer();
 	Toolbar::preferences('com_projects', '550');
