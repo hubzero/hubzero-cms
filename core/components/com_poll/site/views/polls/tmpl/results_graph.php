@@ -33,43 +33,44 @@ defined('_HZEXEC_') or die();
 
 $votes = 0;
 ?>
-<div class="subject">
-	<?php if ($this->poll->get('id')) { ?>
-		<table class="pollresults">
-			<thead>
-				<tr>
-					<th colspan="3" class="sectiontableheader">
-						<?php echo $this->escape($this->poll->get('title')); ?>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-		<?php foreach ($this->votes as $vote) : ?>
-				<tr class="sectiontableentry<?php echo $vote->odd; ?>">
-					<td>
-						<div class="graph">
-							<strong class="bar <?php echo $vote->class; ?>" style="width: <?php echo $this->escape($vote->percent); ?>%;"><span><?php echo $this->escape($vote->percent); ?>%</span></strong>
-						</div>
-					</td>
-					<td>
-						<?php echo stripslashes($vote->text); ?>
-					</td>
-					<td class="votes">
-						<?php
-						$votes += $vote->hits;
-						echo $this->escape($vote->hits); ?>
-					</td>
-				</tr>
-		<?php endforeach; ?>
-			</tbody>
-		</table>
-	<?php } else { ?>
-		<p>
-			<?php echo Lang::txt('COM_POLL_SELECT_POLL'); ?>
-		</p>
-	<?php } ?>
-</div><!-- / .subject -->
-<aside class="aside">
+<div class="section-inner hz-layout-with-aside">
+	<div class="subject">
+		<?php if ($this->poll->get('id')) { ?>
+			<table class="pollresults">
+				<thead>
+					<tr>
+						<th colspan="3" class="sectiontableheader">
+							<?php echo $this->escape($this->poll->get('title')); ?>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+			<?php foreach ($this->votes as $vote) : ?>
+					<tr class="sectiontableentry<?php echo $vote->odd; ?>">
+						<td>
+							<div class="graph">
+								<strong class="bar <?php echo $vote->class; ?>" style="width: <?php echo $this->escape($vote->percent); ?>%;"><span><?php echo $this->escape($vote->percent); ?>%</span></strong>
+							</div>
+						</td>
+						<td>
+							<?php echo stripslashes($vote->text); ?>
+						</td>
+						<td class="votes">
+							<?php
+							$votes += $vote->hits;
+							echo $this->escape($vote->hits); ?>
+						</td>
+					</tr>
+			<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php } else { ?>
+			<p>
+				<?php echo Lang::txt('COM_POLL_SELECT_POLL'); ?>
+			</p>
+		<?php } ?>
+	</div><!-- / .subject -->
+	<aside class="aside">
 	<p>
 		<strong><?php echo Lang::txt('COM_POLL_NUMBER_OF_VOTERS'); ?></strong><br />
 		<?php echo ($votes) ? $votes : '--'; ?>
@@ -83,3 +84,4 @@ $votes = 0;
 		<?php echo ($this->last_vote) ? $this->escape($this->last_vote) : '--'; ?>
 	</p>
 </aside><!-- / .aside -->
+</div>

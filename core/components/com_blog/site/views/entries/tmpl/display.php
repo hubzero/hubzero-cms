@@ -106,7 +106,7 @@ $rows = $this->archive->entries($this->filters)
 </header>
 
 <section class="main section">
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="section-inner">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<?php if ($this->getError()) { ?>
 				<p class="error"><?php echo $this->getError(); ?></p>

@@ -61,14 +61,24 @@ $this->css()
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
+<?php
+$qNotFound = false;
+$sectionInnerClass = ' hz-layout-with-aside';
+if ($this->question->isDeleted() or !$this->question->get('id'))
+{
+	$qNotFound = true;
+	$sectionInnerClass = '';
+}
+?>
+
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner<?php echo $sectionInnerClass; ?>">
 		<?php if ($this->getError()) { ?>
 			<p class="warning"><?php echo $this->getError(); ?></p>
 		<?php } ?>
 
 	<!-- start question block -->
-	<?php if ($this->question->isDeleted() or !$this->question->get('id')) { ?>
+	<?php if ($qNotFound) { ?>
 		<h3><?php echo Lang::txt('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); ?></h3>
 		<?php /*if ($this->note['msg']!='') { ?>
 		<p class="help"><?php echo urldecode($this->note['msg']); ?></p>
@@ -323,7 +333,7 @@ $this->css()
 
 		<?php if ($this->task == 'answer') { // answer form ?>
 			<section class="below section">
-				<div class="section-inner">
+				<div class="section-inner hz-layout-with-aside">
 					<div class="subject">
 						<h3>
 							<?php echo Lang::txt('COM_ANSWERS_YOUR_ANSWER'); ?>
@@ -394,7 +404,7 @@ $this->css()
 		if ($chosen->count()) { ?>
 			<!-- list of chosen answers -->
 			<section class="below section" id="bestanswer">
-				<div class="section-inner">
+				<div class="section-inner hz-layout-with-aside">
 					<div class="subject">
 						<h3>
 							<?php echo Lang::txt('COM_ANSWERS_CHOSEN_ANSWER'); ?>
@@ -423,7 +433,7 @@ $this->css()
 
 		<!-- start comment block -->
 		<section class="below section" id="answers">
-			<div class="section-inner">
+			<div class="section-inner hz-layout-with-aside">
 				<div class="subject">
 					<?php
 					$responses = $this->question->responses()

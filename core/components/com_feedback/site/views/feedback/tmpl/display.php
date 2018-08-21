@@ -44,7 +44,7 @@ $this->css('introduction.css', 'system')
 		<div class="col span8">
 			<h3><?php echo Lang::txt('COM_FEEDBACK_HAVE_SOMETHING_TO_SAY'); ?></h3>
 			<p><?php echo Lang::txt('COM_FEEDBACK_INTRO', Config::get('sitename')); ?></p>
-		</div><!-- / .subject -->
+		</div>
 		<div class="col span4 omega">
 			<h3><?php echo Lang::txt('COM_FEEDBACK_PARTICIPATE'); ?></h3>
 			<ul>
@@ -52,7 +52,7 @@ $this->css('introduction.css', 'system')
 				<li><a href="<?php echo Route::url('index.php?option=com_forum'); ?>"><?php echo Lang::txt('COM_FEEDBACK_LINK_FORUM'); ?></a></li>
 				<li><a href="<?php echo Route::url('index.php?option=com_groups'); ?>"><?php echo Lang::txt('COM_FEEDBACK_LINK_GROUPS'); ?></a></li>
 			</ul>
-		</div><!-- / .aside -->
+		</div>
 	</div>
 </section><!-- / #introduction.section -->
 

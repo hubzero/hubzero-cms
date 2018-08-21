@@ -145,7 +145,7 @@ foreach ($cats as $cat)
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get">
+	<form class="section-inner hz-layout-with-aside" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get">
 		<div class="subject">
 			<div class="container data-entry">
 				<input type="hidden" name="task" value="view" />

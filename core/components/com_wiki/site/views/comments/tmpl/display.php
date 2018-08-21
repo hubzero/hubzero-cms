@@ -76,19 +76,21 @@ if (!$this->sub)
 
 <?php if (!$this->sub) { ?>
 <section class="section">
-	<div class="subject">
-<?php } ?>
-		<p><?php echo Lang::txt('COM_WIKI_COMMENTS_EXPLANATION'); ?></p>
-<?php if (!$this->sub) { ?>
-	</div><!-- / .subject -->
-	<aside class="aside">
-		<p><a href="<?php echo Route::url($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo Lang::txt('COM_WIKI_ADD_COMMENT'); ?></a></p>
-	</aside><!-- / .aside -->
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject">
+	<?php } ?>
+			<p><?php echo Lang::txt('COM_WIKI_COMMENTS_EXPLANATION'); ?></p>
+	<?php if (!$this->sub) { ?>
+		</div><!-- / .subject -->
+		<aside class="aside">
+			<p><a href="<?php echo Route::url($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo Lang::txt('COM_WIKI_ADD_COMMENT'); ?></a></p>
+		</aside><!-- / .aside -->
+	<div class="section-inner hz-layout-with-aside">
 </section><!-- / .section -->
 <?php } ?>
 
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<?php if ($this->sub) { ?>
 				<p class="comment-add-btn">
@@ -177,7 +179,7 @@ if (!$this->sub)
 
 <?php if (isset($this->mycomment) && $this->mycomment instanceof \Components\Wiki\Models\Comment) { ?>
 <section class="below section">
-	<form action="<?php echo Route::url($this->page->link('comments')); ?>" method="post" id="commentform" class="section-inner">
+	<form action="<?php echo Route::url($this->page->link('comments')); ?>" method="post" id="commentform" class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<h3 id="commentform-title">
 				<?php echo Lang::txt('COM_WIKI_ADD_COMMENT'); ?>

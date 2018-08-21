@@ -150,30 +150,32 @@ $this->css()
 		?>
 	</section>
 	<section class="below section">
-	<?php if ($this->results) { ?>
-		<div class="subject">
-			<h3><?php echo Lang::txt('COM_RESOURCES_TOP_RATED'); ?></h3>
-			<?php
-			$supported = array();
+		<div class="section-inner hz-layout-with-aside">
+		<?php if ($this->results) { ?>
+			<div class="subject">
+				<h3><?php echo Lang::txt('COM_RESOURCES_TOP_RATED'); ?></h3>
+				<?php
+				$supported = array();
 
-			if ($this->supportedtag)
-			{
-				include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+				if ($this->supportedtag)
+				{
+					include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
 
-				$rt = new \Components\Resources\Helpers\Tags(0);
-				$supported = $rt->getTagUsage($this->supportedtag, 'id');
-			}
+					$rt = new \Components\Resources\Helpers\Tags(0);
+					$supported = $rt->getTagUsage($this->supportedtag, 'id');
+				}
 
-			$this->view('_list', 'browse')
-			     ->set('lines', $this->results)
-			     ->set('show_edit', $this->authorized)
-			     ->set('supported', $supported)
-			     ->display();
-			?>
-		</div><!-- / .subject -->
-	<?php } ?>
-		<aside class="aside">
-			<p><?php echo Lang::txt('COM_RESOURCES_TOP_RATED_EXPLANATION'); ?></p>
-		</aside><!-- / .aside -->
-	</div><!-- / .main section -->
+				$this->view('_list', 'browse')
+					 ->set('lines', $this->results)
+					 ->set('show_edit', $this->authorized)
+					 ->set('supported', $supported)
+					 ->display();
+				?>
+			</div><!-- / .subject -->
+		<?php } ?>
+			<aside class="aside">
+				<p><?php echo Lang::txt('COM_RESOURCES_TOP_RATED_EXPLANATION'); ?></p>
+			</aside><!-- / .aside -->
+		</div>
+	</section><!-- / .main section -->
 </form>

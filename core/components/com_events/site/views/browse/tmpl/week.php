@@ -57,7 +57,8 @@ $this->css();
 </nav>
 
 <section class="main section">
-	<div class="subject">
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject">
 	<?php if (count($this->rows) > 0) { ?>
 		<ul class="events">
 		<?php
@@ -123,103 +124,104 @@ $this->css();
 	<?php } else { ?>
 		<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.\Components\Events\Helpers\Html::getDateFormat($this->year,$this->month,'',3).'</strong>'; ?></p>
 	<?php } ?>
-	</div><!-- / .subject -->
-	<div class="aside">
-		<form action="<?php echo Route::url('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day.'&task=week'); ?>" method="get" id="event-categories">
-			<fieldset>
-				<label for="event-cateogry"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
-				<select name="category" id="event-cateogry">
-					<option value=""><?php echo Lang::txt('EVENTS_ALL_CATEGORIES'); ?></option>
-				<?php
-				if ($this->categories)
-				{
-					foreach ($this->categories as $id=>$title)
-					{
-					?>
-						<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>
+		</div><!-- / .subject -->
+		<div class="aside">
+			<form action="<?php echo Route::url('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day.'&task=week'); ?>" method="get" id="event-categories">
+				<fieldset>
+					<label for="event-cateogry"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
+					<select name="category" id="event-cateogry">
+						<option value=""><?php echo Lang::txt('EVENTS_ALL_CATEGORIES'); ?></option>
 					<?php
+					if ($this->categories)
+					{
+						foreach ($this->categories as $id=>$title)
+						{
+						?>
+							<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>
+						<?php
+						}
 					}
-				}
-				?>
-				</select>
-				<input type="submit" value="<?php echo Lang::txt('EVENTS_GO'); ?>" />
-			</fieldset>
-		</form>
+					?>
+					</select>
+					<input type="submit" value="<?php echo Lang::txt('EVENTS_GO'); ?>" />
+				</fieldset>
+			</form>
 
-		<div class="calendarwrap">
-			<p class="datenav">
+			<div class="calendarwrap">
+				<p class="datenav">
+					<?php
+					$this_date = new \Components\Events\Helpers\EventsDate();
+					$this_date->setDate( $this->year, $this->month, 0 );
+
+					$prev_year = clone($this_date);
+					$prev_year->addMonths( -12 );
+					$next_year = clone($this_date);
+					$next_year->addMonths( +12 );
+					$database = App::get('db');
+					$sql = "SELECT MIN(publish_up) min, MAX(publish_down) max FROM `#__events` as e
+									WHERE `scope`='event'
+									AND `state`=1
+									AND `approved`=1";
+					$database->setQuery($sql);
+					$rows = $database->loadObjectList();
+					$first_event_time = new DateTime($rows[0]->min);
+					$last_event_time = new DateTime($rows[0]->max);
+					$this_datetime = new DateTime($this->year . '-' . '01-01');
+					//get a DateTime for the first day of the year and check if there's an event earlier
+					if ($this_datetime > $first_event_time) {
+						$prev = Route::url('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task));
+						$prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
+					} else {
+						$prev = "javascript:void(0);";
+						$prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
+					}
+					//get a DateTime for the first day of the next year and see if there's an event after
+					$this_datetime->add(new DateInterval("P1Y"));
+					if ($this_datetime <= $last_event_time) {
+						$next = Route::url('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task));
+						$next_text = Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
+					} else {
+						$next = "javascript:void(0);";
+						$next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
+					}
+
+					?>
+					<a class="prv" href="<?php echo $prev;?>" title="<?php echo $prev_text; ?>">&lsaquo;</a>
+					<a class="nxt" href="<?php echo $next;?>" title="<?php echo $next_text; ?>">&rsaquo;</a>
+					<?php echo $this->year; ?>
+				</p>
+			</div><!-- / .calendarwrap -->
+
+			<div class="calendarwrap">
 				<?php
-				$this_date = new \Components\Events\Helpers\EventsDate();
-				$this_date->setDate( $this->year, $this->month, 0 );
-
-				$prev_year = clone($this_date);
-				$prev_year->addMonths( -12 );
-				$next_year = clone($this_date);
-				$next_year->addMonths( +12 );
-				$database = App::get('db');
-				$sql = "SELECT MIN(publish_up) min, MAX(publish_down) max FROM `#__events` as e
-								WHERE `scope`='event'
-								AND `state`=1
-								AND `approved`=1";
-				$database->setQuery($sql);
-				$rows = $database->loadObjectList();
-				$first_event_time = new DateTime($rows[0]->min);
-				$last_event_time = new DateTime($rows[0]->max);
-				$this_datetime = new DateTime($this->year . '-' . '01-01');
-				//get a DateTime for the first day of the year and check if there's an event earlier
-				if ($this_datetime > $first_event_time) {
-					$prev = Route::url('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task));
-					$prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
-				} else {
-					$prev = "javascript:void(0);";
-					$prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
-				}
-				//get a DateTime for the first day of the next year and see if there's an event after
-				$this_datetime->add(new DateInterval("P1Y"));
-				if ($this_datetime <= $last_event_time) {
-					$next = Route::url('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task));
-					$next_text = Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
-				} else {
-					$next = "javascript:void(0);";
-					$next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
-				}
-
+				$this->view('calendar')
+					 ->set('option', $this->option)
+					 ->set('task', $this->task)
+					 ->set('year', $this->year)
+					 ->set('month', $this->month)
+					 ->set('day', $this->day)
+					 ->set('offset', $this->offset)
+					 ->set('shownav', 1)
+					 ->display();
 				?>
-				<a class="prv" href="<?php echo $prev;?>" title="<?php echo $prev_text; ?>">&lsaquo;</a>
-				<a class="nxt" href="<?php echo $next;?>" title="<?php echo $next_text; ?>">&rsaquo;</a>
-				<?php echo $this->year; ?>
-			</p>
-		</div><!-- / .calendarwrap -->
+			</div><!-- / .calendarwrap -->
 
-		<div class="calendarwrap">
-			<?php
-			$this->view('calendar')
-			     ->set('option', $this->option)
-			     ->set('task', $this->task)
-			     ->set('year', $this->year)
-			     ->set('month', $this->month)
-			     ->set('day', $this->day)
-			     ->set('offset', $this->offset)
-			     ->set('shownav', 1)
-			     ->display();
-			?>
-		</div><!-- / .calendarwrap -->
+			<div class="calendarwrap">
+				<p class="datenav">
+					<?php
+					$this_date = new \Components\Events\Helpers\EventsDate();
+					$this_date->setDate( $this->year, $this->month, $this->day );
 
-		<div class="calendarwrap">
-			<p class="datenav">
-				<?php
-				$this_date = new \Components\Events\Helpers\EventsDate();
-				$this_date->setDate( $this->year, $this->month, $this->day );
-
-				$prev_week = clone($this_date);
-				$prev_week->addDays( -7 );
-				$next_week = clone($this_date);
-				$next_week->addDays( +7 );
-				?>
-				<a class="prv" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$prev_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>">&lsaquo;</a>
-				<a class="nxt" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$next_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_NEXTWEEK'); ?>">&rsaquo;</a>
-				<?php echo $this->startdate.' to '.$this->enddate; ?>
-			</p>
-		</div><!-- / .calendarwrap -->
-	</div><!-- / .aside -->
+					$prev_week = clone($this_date);
+					$prev_week->addDays( -7 );
+					$next_week = clone($this_date);
+					$next_week->addDays( +7 );
+					?>
+					<a class="prv" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$prev_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>">&lsaquo;</a>
+					<a class="nxt" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$next_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_NEXTWEEK'); ?>">&rsaquo;</a>
+					<?php echo $this->startdate.' to '.$this->enddate; ?>
+				</p>
+			</div><!-- / .calendarwrap -->
+		</div><!-- / .aside -->
+	</div>
 </section><!-- / .main section -->

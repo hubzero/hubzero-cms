@@ -50,7 +50,7 @@ $this->css('browse.css');
 <?php } ?>
 
 <section class="main section">
-	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
+	<form class="section-inner hz-layout-with-aside" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
 		<div class="subject">
 
 			<div class="container data-entry">
