@@ -60,6 +60,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * @var	 array
 	 */
 	protected $_msg = null;
+	
+	/**
+	 * DataCite and EZID switch options
+	 *
+	 * @const
+	 */
+	const SWITCH_OPTION_NONE = 0;
+	const SWITCH_OPTION_EZID = 1;
+	const SWITCH_OPTION_DATACITE = 2;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -2221,16 +2230,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
 						
-			if ($doiService->_configs->dataciteEZIDSwitch == 2)
+			if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 			{
 				$doi = $doiService->registerMetadata();
 			}
-			elseif ($doiService->_configs->dataciteEZIDSwitch == 1)
+			elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 			{
 				$extended = $state == 5 ? false : true;
 				$doi = $doiService->register($extended, ($state == 5 ? 'reserved' : 'public'));
 			}
-			elseif ($doiService->_configs->dataciteEZIDSwitch == 0)
+			elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
 			{
 				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_NO_DOI_SERVICE'), 400);
 			}
@@ -2244,11 +2253,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				if ($doiService->_configs->dataciteEZIDSwitch == 2)
+				if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
 				}
-				elseif ($doiService->_configs->dataciteEZIDSwitch == 1)
+				elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
 				}
@@ -2256,7 +2265,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 		}
 		
-		if ($doiService->_configs->dataciteEZIDSwitch == 2)
+		if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 		{
 			// Register DOI name and URL when the publication configuration option is set to automatically approved.
 			if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
