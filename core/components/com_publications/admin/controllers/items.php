@@ -59,10 +59,10 @@ class Items extends AdminController
 	const SWITCH_OPTION_DATACITE = 2;
 	
 	/**
-	 * Executes a task
-	 *
-	 * @return  void
-	 */
+	* Executes a task
+	*
+	* @return  void
+	*/
 	public function execute()
 	{
 		$this->_task = strtolower(Request::getCmd('task', ''));
@@ -864,7 +864,7 @@ class Items extends AdminController
 					if (!$result)
 					{
 						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
-					}					
+					}				
 				}
 				elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 				{
