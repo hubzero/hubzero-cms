@@ -2229,7 +2229,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
-						
+			
 			if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 			{
 				$doi = $doiService->registerMetadata();
