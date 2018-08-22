@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
-					<?php echo \Components\Resources\Helpers\Html::selectType($this->categories, 'type[category]', $this->row->category, Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
+					<?php echo \Components\Resources\Helpers\Html::selectType($this->categories, 'type[category]', $this->row->category, 'category', Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="field-contributable"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
