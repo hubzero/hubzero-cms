@@ -52,7 +52,7 @@ if ($canDo->get('core.delete'))
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="category"><?php echo Lang::txt('COM_RESOURCES_FILTER_CATEGORY'); ?>:</label>
-		<?php echo \Components\Resources\Helpers\Html::selectType($this->cats, 'category', $this->filters['category'], Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
+		<?php echo \Components\Resources\Helpers\Html::selectType($this->cats, 'category', $this->filters['category'], 'category', Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
