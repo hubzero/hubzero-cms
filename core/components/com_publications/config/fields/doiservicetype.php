@@ -55,6 +55,7 @@ class DOIServicetype extends Select
 	protected function getOptions()
 	{
 		$options   = array();
+		
 		$options[] =  Html::select('option', '0', Lang::txt('None'));
 		$options[] =  Html::select('option', '1', Lang::txt('EZID'));
 		$options[] =  Html::select('option', '2', Lang::txt('DataCite'));
