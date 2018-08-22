@@ -701,14 +701,14 @@ class Items extends AdminController
 		// Build selects of various types
 		if ($row->standalone != 1)
 		{
-			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'type', $row->get('type'), '', '', '', '');
-			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 28)->order('type', 'asc')->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
-			$lists['sub_type']     = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
+			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'fields[type]', $row->get('type'), 'type', '', '', '', '');
+			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 28)->order('type', 'asc')->rows(), 'fields[logical_type]', $row->get('logical_type'), 'logical_type', '[ none ]', '', '', '');
+			$lists['sub_type']     = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'fields[logical_type]', $row->get('logical_type'), 'sub_type', '[ none ]', '', '', '');
 		}
 		else
 		{
-			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 27)->order('type', 'asc')->rows(), 'type', $row->get('type'), '', '', '', '');
-			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 21)->order('type', 'asc')->rows(), 'logical_type', $row->get('logical_type'), '[ none ]', '', '', '');
+			$lists['type']         = Html::selectType(Type::all()->whereEquals('category', 27)->order('type', 'asc')->rows(), 'fields[type]', $row->get('type'), 'type', '', '', '', '');
+			$lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 21)->order('type', 'asc')->rows(), 'fields[logical_type]', $row->get('logical_type'), 'logical_type', '[ none ]', '', '', '');
 		}
 
 		// Build the <select> of admin users
