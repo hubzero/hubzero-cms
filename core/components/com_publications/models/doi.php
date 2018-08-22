@@ -67,7 +67,16 @@ class Doi extends Obj
 	 * @var  object
 	 */
 	private $_db = null;
-
+	
+	/**
+	 * DataCite and EZID switch options
+	 *
+	 * @const
+	 */
+	const SWITCH_OPTION_NONE = 0;
+	const SWITCH_OPTION_EZID = 1;
+	const SWITCH_OPTION_DATACITE = 2;
+	
 	/**
 	 * Constructor
 	 *
@@ -186,22 +195,22 @@ class Doi extends Obj
 
 		if ($doi)
 		{
-			if ($this->_configs->dataciteEZIDSwitch == 2)
+			if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 			{
 				$call  = $this->_configs->dataciteServiceURL . DS . 'id' . DS . 'doi:' . $doi;
 			}
-			elseif ($this->_configs->dataciteEZIDSwitch == 1)
+			elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
 			}		
 		}
 		else
 		{
-			if ($this->_configs->dataciteEZIDSwitch == 2)
+			if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 			{
 				$call  = $this->_configs->dataciteServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}
-			elseif ($this->_configs->dataciteEZIDSwitch == 1)
+			elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}

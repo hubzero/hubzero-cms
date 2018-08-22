@@ -50,6 +50,15 @@ use App;
 class Items extends AdminController
 {
 	/**
+	 * DataCite and EZID switch options
+	 *
+	 * @const
+	 */
+	const SWITCH_OPTION_NONE = 0;
+	const SWITCH_OPTION_EZID = 1;
+	const SWITCH_OPTION_DATACITE = 2;
+	
+	/**
 	 * Executes a task
 	 *
 	 * @return  void
@@ -533,7 +542,7 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi))
 				{
-					if ($doiService->_configs->dataciteEZIDSwitch == 2)
+					if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 					{
 						$result = $doiService->dataciteMetadataUpdate($model->version->doi);
 						
@@ -542,7 +551,7 @@ class Items extends AdminController
 							throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
 						}
 					}
-					elseif ($doiService->_configs->dataciteEZIDSwitch == 1)
+					elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 					{
 						$doiService->ezidMetadataUpdate($model->version->doi, true);
 					}
@@ -637,7 +646,7 @@ class Items extends AdminController
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->get('doi')))
 				{
-					if ($doiService->_configs->dataciteEZIDSwitch == 2)
+					if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 					{
 						$result = $doiService->dataciteMetadataUpdate($model->version->get('doi'));
 						
@@ -646,7 +655,7 @@ class Items extends AdminController
 							throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
 						}
 					}
-					elseif ($doiService->_configs->dataciteEZIDSwitch == 1)
+					elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 					{
 						$doiService->ezidMetadataUpdate($model->version->get('doi'), true);
 					}
@@ -848,7 +857,7 @@ class Items extends AdminController
 			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
-				if ($doiService->_configs->dataciteEZIDSwitch == 2)
+				if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 				{
 					$result = $doiService->dataciteMetadataUpdate($this->model->version->doi);
 					
@@ -857,7 +866,7 @@ class Items extends AdminController
 						throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
 					}					
 				}
-				elseif ($doiService->_configs->dataciteEZIDSwitch == 1)
+				elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 				{
 					$doiService->ezidMetadataUpdate($this->model->version->doi, true);
 				}
@@ -908,7 +917,7 @@ class Items extends AdminController
 						if ($this->model->version->doi
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 						{
-							if ($doiService->_configs->dataciteEZIDSwitch == 2)
+							if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 							{
 								// Update DOI metadata, then register DOI name and dataset URL.
 								$upResult = $doiService->dataciteMetadataUpdate($this->model->version->doi);
@@ -925,7 +934,7 @@ class Items extends AdminController
 									throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
 								}
 							}
-							elseif ($doiService->_configs->dataciteEZIDSwitch == 1)
+							elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 							{
 								// Update
 								$doiService->ezidMetadataUpdate($this->model->version->doi, true);
@@ -938,12 +947,12 @@ class Items extends AdminController
 						}
 						elseif ($requireDoi)
 						{
-							if ($doiService->_configs->dataciteEZIDSwitch == 2)
+							if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 							{
 								// Register DOI metadata when dataset is submitted
 								$doi = $doiService->registerMetadata();
 							}
-							elseif ($doiService->_configs->dataciteEZIDSwitch == 1)
+							elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 							{
 								// Register
 								$doi = $doiService->register(true);
@@ -961,7 +970,7 @@ class Items extends AdminController
 								$this->model->version->doi = $doi;
 							}
 							
-							if ($doiService->_configs->dataciteEZIDSwitch == 2)
+							if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 							{
 								// Register the DOI name and URL to complete the DOI registration.
 								$result = $doiService->registerURL($doi);
