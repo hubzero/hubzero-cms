@@ -152,7 +152,7 @@ Html::behavior('modal');
 				</td>
 				<td class="priority-3">
 					<?php
-					$creator = User::getInstance($row->get('created_by'));
+					$creator = User::getInstance($row->log->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name', Lang::txt('COM_PROJECTS_UNKNOWN'))));
 					?>
 				</td>
