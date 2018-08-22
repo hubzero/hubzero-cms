@@ -171,8 +171,7 @@ class Doi extends Obj
 		$this->configs();
 
 		// Check required
-		if ($this->_configs->dataciteEZIDSwitch && $this->_configs->shoulder 
-		&& (($this->_configs->dataciteServiceURL && $this->_configs->dataciteUserPW) || ($this->_configs->prefix && $this->_configs->ezidServiceURL && $this->_configs->ezidUserPW)))
+		if ($this->_configs->dataciteEZIDSwitch && $this->_configs->shoulder && (($this->_configs->dataciteServiceURL && $this->_configs->dataciteUserPW) || ($this->_configs->prefix && $this->_configs->ezidServiceURL && $this->_configs->ezidUserPW)))
 		{
 			return true;
 		}
@@ -202,7 +201,7 @@ class Doi extends Obj
 			elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
-			}		
+			}			
 		}
 		else
 		{
@@ -634,7 +633,7 @@ class Doi extends Obj
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
 			return false;
 		}
-				
+		
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
@@ -660,7 +659,7 @@ class Doi extends Obj
 		}
 		
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				
+		
 		curl_close($ch);
 		
 		if ($code == 201 || $code == 200)
