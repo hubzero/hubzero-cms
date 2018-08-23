@@ -478,7 +478,7 @@ class Products extends AdminController
 
 				// Set the redirect
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly'),
 					$msg,
 					$type
 				);
