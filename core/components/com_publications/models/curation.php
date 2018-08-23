@@ -2186,7 +2186,10 @@ class Curation extends Obj
 		{
 			return false;
 		}
-		unlink($symLink);
+		if (is_file($symLink))
+		{
+			unlink($symLink);
+		}
 		return true;
 	}
 
