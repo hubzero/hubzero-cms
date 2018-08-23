@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to add #__cart_downloads table
+ * Migration script to add notes field to `#__cart_transaction_info` table
  **/
 class Migration20160911000001ComCart extends Base
 {
@@ -15,7 +15,7 @@ class Migration20160911000001ComCart extends Base
 	 **/
 	public function up()
 	{
-		if (!$this->db->tableHasField('#__cart_transaction_info', 'notes'))
+		if (!$this->db->tableHasField('#__cart_transaction_info', 'tiNotes'))
 		{
 			$query = "ALTER TABLE `#__cart_transaction_info` ADD `tiNotes` TEXT  NULL;";
 			$this->db->setQuery($query);
@@ -28,7 +28,7 @@ class Migration20160911000001ComCart extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('#__cart_downloads'))
+		if ($this->db->tableHasField('#__cart_transaction_info', 'tiNotes'))
 		{
 			$query = "ALTER TABLE `#__cart_transaction_info` DROP COLUMN `tiNotes`";
 			$this->db->setQuery($query);

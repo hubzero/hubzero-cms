@@ -15,7 +15,7 @@ class Migration20130702181838ComWiki extends Base
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('#__wiki_page') && $this->db->tableExists('#__wiki_version'))
+		if ($this->db->tableExists('#__wiki_page') && $this->db->tableExists('#__wiki_version') && $this->db->tableHasField('#__wiki_version', 'pageid'))
 		{
 			$query  = "SELECT wv.* FROM `#__wiki_page` AS wp,";
 			$query .= " `#__wiki_version` AS wv";
