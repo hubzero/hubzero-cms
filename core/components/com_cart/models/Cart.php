@@ -211,6 +211,7 @@ abstract class Cart
 				OR x.`username` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
 				OR sku.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
 				OR p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%') . "
+				OR t.`tId` = " . $db->quote($filters['search']) . "
 			)";
 		}
 
