@@ -101,7 +101,7 @@ class UpdateTimezoneDatabase extends Base
 				}
 
 				$this->db->setQuery($s);
-				
+
 				try
 				{
 					$this->db->query();
