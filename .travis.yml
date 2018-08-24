@@ -15,5 +15,5 @@ before_script:
   - git clone --branch hubzero-cms-2.1 --depth=1 https://github.com/hubzero/standards ~/build/standards
   - FILES=$((git log --pretty=format\:'' --name-only --since="yesterday"; git log --diff-filter=D --pretty=format\:'' --name-only --since="yesterday") | sort | uniq -u | tr '\r\n' ' ')
 script:
-- vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml --ignore=*/test/*,*/assets/*,*/views/*,*/tmpl/*,/core/components/com_dataviewer/*,/core/libraries/*
+- vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml --ignore='*/test/*,*/assets/*,*/views/*,*/tmpl/*,*/com_dataviewer/*,/core/libraries/*'
   $FILES
