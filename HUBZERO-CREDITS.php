@@ -8,7 +8,7 @@
 
 // No direct access
 defined('_HZEXE_') or die();
-
+  
 /**
  * HUBzero includes or is derivative of works distributed under the licenses listed below.
  *
