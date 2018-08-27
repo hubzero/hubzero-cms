@@ -46,6 +46,7 @@ use Config;
 use Notify;
 use Route;
 use Cache;
+use Event;
 use Lang;
 use User;
 use Date;
@@ -1127,6 +1128,8 @@ class Profiles extends SiteController
 			return;
 		}
 
+		Event::trigger('onUserAfterChangePassword', array($profile->toArray()));
+
 		// Redirect user back to main account page
 		$return = base64_decode(Request::getString('return', '', 'method', 'base64'));
 		$this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
@@ -1735,6 +1738,8 @@ class Profiles extends SiteController
 		if ($email != $oldemail)
 		{
 			$this->_sendConfirmationCode($member->get('username'), $email, $confirm);
+
+			Event::trigger('onUserAfterChangeEmail', array($member->toArray()));
 		}
 
 		// If were declinging the terms we want to logout user and tell the javascript
