@@ -987,7 +987,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		Request::checkToken();
 
 		// Incoming array of users to message
-		$mbrs = array_map("trim", explode(',', Request::getArray('mbrs', array(), 'post')));
+		$mbrs = array_map("trim", explode(',', Request::getString('mbrs', '', 'post')));
 
 		//array to hold members
 		$email_users = array();
