@@ -43,10 +43,10 @@ class View
 	 *
 	 *
 	 */
-	 	 
+
 	/**
 	 * Output menu
-	 * 
+	 *
 	 * @param  [type] $pageArray [description]
 	 * @return [type]            [description]
 	 */
@@ -88,7 +88,7 @@ class View
 					$out .= '<a class="page" title="' . $page->get('title') . '" href="' . $page->url() . '">' . $page->get('title') . '</a>';
 				}
 
-				// do we have child menu items				
+				// do we have child menu items
 				if (!is_array($page->get('children')))
 				{
 					$out .= '</li>';
@@ -120,7 +120,7 @@ class View
  *
  */
 
-// Get list of pages from group 
+// Get list of pages from group
 $db = App::get('db');
 $db->setQuery(
 	"SELECT p.id
@@ -141,7 +141,7 @@ if (count($pages) > 0)
 	// only pass in the children of the root node
 	// basically skip the overview page here
 	$item = View::buildRecursivePageMenu($this->group, $menupages, $pageids);
-	
+
 	echo $item;
 }
 ?>

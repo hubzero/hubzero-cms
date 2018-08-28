@@ -21,7 +21,7 @@ Document::addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7
 Document::addStyleSheet($base . '/assets/css/main.css?v=' . filemtime(__DIR__ . '/assets/css/main.css'));
 Document::addStyleSheet($base . '/assets/css/sidebar.css?v=' . filemtime(__DIR__ . '/assets/css/sidebar.css'));
 Document::addScript($base . '/assets/js/main.js?v=' . filemtime(__DIR__ . '/assets/js/main.js'));
-// Document::addScript($base . '/assets/js/sidebar.js?v=' . filemtime(__DIR__ . '/assets/js/sidebar.js'));
+Document::addScript($base . '/assets/js/sidebar.js?v=' . filemtime(__DIR__ . '/assets/js/sidebar.js'));
 Document::addScript($base . '/assets/js/ResizeSensor.js');
 Document::addScript($base . '/assets/js/ElementQueries.js');
 ?>
@@ -30,7 +30,7 @@ Document::addScript($base . '/assets/js/ElementQueries.js');
 <?php $uploads = rtrim(str_replace(PATH_ROOT, '', __DIR__), 'template') . 'uploads'; ?>
 <style>
 .super-group-header-wrap {
-	<?php 
+	<?php
 	if (file_exists(PATH_ROOT . $uploads . DS . "banner.jpg")):
 		echo "background-image: url(" . $uploads . DS . "banner.jpg);";
 	elseif (file_exists(PATH_ROOT . $uploads . DS . "banner.png")):

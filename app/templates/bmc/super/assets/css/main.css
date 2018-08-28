@@ -1,7 +1,7 @@
 /**
  * Template for Test Supergroup
  *
- * Template used for Special Groups. Will now be auto-created 
+ * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
  *
  * @author     HUBzero, M. Drew LaMar
@@ -12,9 +12,9 @@
 	background: #45611F;
 	min-width: inherit;
 }
-/** 
+/**
  * BEGIN header buttons
- * The next two are for the Getting Started buttons in upper left 
+ * The next two are for the Getting Started buttons in upper left
  **/
 #page_options .btn {
 	background: #3f8dc6;
@@ -170,6 +170,7 @@
 	left: 0px;
 }
 .super-group-menu ul ul li {
+	display: block !important; /* Override display: table-cell for submenus on greedy nav */
 	float: none;
 }
 .super-group-menu ul ul li a {
@@ -226,7 +227,7 @@
 	border-color: #000 !important;
 }
 .super-group-toolbar ul.dropdown-menu {
-	left: auto !important; 
+	left: auto !important;
 	right: 0 !important;
 	font-size: 12px !important;
 }
@@ -312,7 +313,7 @@ a:hover {
 	font-size: 1.15em;
 }
 /* Calendar Adjustments */
-.fs-dropdown { 
+.fs-dropdown {
 	font-size: 1.0em;
 }
 /* Forms adjustment */
@@ -347,9 +348,9 @@ as most (if not all) messages are temporary */
 }
 
 /* Group announcements */
-/* Note that javascript in main.js needs to move .super-group-content-wrap down by the vertical 
-height of this element, as we are specifying that .scontainer be below menu but above content. 
-Also note that utilizing javascript is the only way I know how to move this around given it's 
+/* Note that javascript in main.js needs to move .super-group-content-wrap down by the vertical
+height of this element, as we are specifying that .scontainer be below menu but above content.
+Also note that utilizing javascript is the only way I know how to move this around given it's
 automatic element placement by the Hub. */
 .scontainer {
 	position: absolute;
@@ -425,7 +426,7 @@ automatic element placement by the Hub. */
 }
 
 /* Responsive */
-.super-group-menu>ul li.option-select {
+/* .super-group-menu>ul li.option-select {
 	padding: 1em 0;
 	float: none;
 }
@@ -438,13 +439,128 @@ automatic element placement by the Hub. */
 }
 .super-group-menu>ul.js li.option-select select {
 	width: 100%;
+} */
+
+/* Greedy Nav (Priority+ navigation) - lukejacksonn https://codepen.io/lukejacksonn/pen/PwmwWV */
+.super-group-menu {
+	position: relative;
+	min-width: 15.625rem;
+}
+.super-group-menu button {
+	position: absolute;
+	height: 100%;
+	right: 0;
+	padding: 0 0.9375em;
+	border: 0;
+	outline: none;
+	background-color: #628a2c;
+	color: #fff;
+	cursor: pointer;
+	transition: 0.1s ease-in-out;
+}
+.super-group-menu button:hover {
+	background-color: rgba(0,0,0,0.15);
+}
+.super-group-menu button::after {
+	content: attr(count);
+	position: absolute;
+	width: 1.875rem;
+	height: 1.875rem;
+	left: -.5rem;
+	top: .3rem;
+	text-align: center;
+	background-color: #628a2c;
+	color: #fff;
+	font-size: 0.7rem;
+	line-height: 1.5rem;
+	border-radius: 50%;
+	border: 3px solid #fff;
+	font-weight: bold;
+}
+.super-group-menu .hamburger {
+	position: relative;
+	width: 2rem;
+	height: .25rem;
+	background-color: #fff;
+	margin: auto;
+}
+.super-group-menu .hamburger:before,
+.super-group-menu .hamburger:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	width: 2rem;
+	height: .25rem;
+	background-color: #fff;
+}
+.super-group-menu .hamburger:before {
+	top: -.5rem;
+}
+.super-group-menu .hamburger:after {
+	bottom: -.5rem;
+}
+.super-group-menu .visible-links {
+	display: inline-table;
+}
+.super-group-menu .visible-links li {
+	display: table-cell;
+	float: none;
+	white-space: nowrap;
+}
+.super-group-menu .hidden-links {
+	position: absolute;
+	right: 0;
+	top: 100%;
+	left: auto;
+	background-color: #628a2c;
+}
+.super-group-menu .hidden-links li {
+	display: block;
+	float: none;
+}
+.super-group-menu .hidden {
+	visibility: hidden;
 }
 
-@media (min-width: 40em) {
-	.super-group-menu>ul.js li {
-		display: block;
+/* Responsiveness */
+@media (min-width: 340px) and (max-width: 520px) {
+	.super-group-bar .content {
+		position: relative;
 	}
-	.super-group-menu>ul.js li.option-select {
-		display: none;
+	.super-group-bar .content .branding {
+    float: left;
+	}
+	.super-group-bar .content .subnav {
+		position: absolute;
+		right: 0;
+	}
+	.super-group-bar .content .branding .poweredby {
+		display: inline-block;
+	}
+	.super-group-bar .content .subnav > li > a {
+		line-height: 0;
+	}
+	.super-group-bar .content .subnav > li > a.icon.user-account-link:before {
+		line-height: 0;
+	}
+}
+@media (min-width: 340px) and (max-width: 640px) {
+	.header-id {
+		z-index: 1001 !important;
+	}
+}
+
+@media (min-width: 320px) and (max-width: 339px) {
+.super-group-bar .content {
+	display: flex;
+	height: 100%;
+}
+	.super-group-bar .content .subnav {
+		display: flex;
+		height: 100%;
+		margin: 0;
+	}
+	.super-group-bar .content .subnav > li > a {
+		font-size: .6rem;
 	}
 }

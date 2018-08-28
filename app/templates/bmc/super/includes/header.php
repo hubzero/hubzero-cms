@@ -8,7 +8,7 @@
  * @author     HUBzero, M. Drew LaMar
  * @copyright  December 2015, March 2017
  */
- 
+
 // $sections = Event::trigger('groups.onGroupAreas', array());
 // print_r ( $sections );
 
@@ -50,8 +50,12 @@ if ($this->group->get('logo') == NULL) {
 
 <div class="super-group-menu-wrap">
 	<div class="super-group-menu">
+    <button>
+      <div class="hamburger"></div>
+    </button>
 		<!-- ###  Start Menu Include  ### -->
 		<?php include_once dirname(__DIR__) . DS . 'helpers' . DS . 'menu.php'; ?>
+    <ul class="hidden-links hidden"></ul>
 		<!-- ###  End Menu Include  ### -->
 	</div>
 </div>
