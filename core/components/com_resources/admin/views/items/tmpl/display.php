@@ -143,7 +143,7 @@ $this->css();
 
 		foreach ($this->rows as $row)
 		{
-			$license = $row->get('license');
+			$license = $row->get('license', $row->params->get('license'));
 
 			// Build some publishing info
 			$info  = Lang::txt('COM_RESOURCES_CREATED') . ': ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
