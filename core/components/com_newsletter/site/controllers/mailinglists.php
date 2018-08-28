@@ -185,6 +185,7 @@ class Mailinglists extends SiteController
 			{
 				$alllists = Mailinglist::all()
 					->whereEquals('private', 0)
+					->whereEquals('deleted', 0)
 					->rows();
 			}
 			else
@@ -192,6 +193,7 @@ class Mailinglists extends SiteController
 				$alllists = Mailinglist::all()
 					->whereEquals('private', 0)
 					->whereEquals('guest', 0)
+					->whereEquals('deleted', 0)
 					->rows();
 			}
 
