@@ -464,7 +464,7 @@ class Products extends AdminController
 						catch (\Exception $e)
 						{
 							App::redirect(
-								Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
+								Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId),
 								$e->getMessage(),
 								$type
 							);
@@ -478,7 +478,7 @@ class Products extends AdminController
 
 				// Set the redirect
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly'),
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display'),
 					$msg,
 					$type
 				);
