@@ -207,8 +207,11 @@ jQuery(document).ready(function(jq) {
 				$sidebarWrap.removeClass('sidebar-wrapper-footer');
 			}
 		}
+	});
 
-		// Sidebar responsiveness
+	// Sidebar responsiveness
+	$(window).on('load resize', function() {
+
 		// Media query triggered and window is mobile width
 		if ($moreMenu.is(':visible')) {
 
@@ -233,7 +236,6 @@ jQuery(document).ready(function(jq) {
 			$sidebarWrap.removeClass('fullscreen');
 			$('body, html').removeClass('no-scroll');
 		}
-
 	});
 
 	// Mobile menu button

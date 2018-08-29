@@ -67,6 +67,7 @@
 	left: 20px;
 	margin: 0.5em 0;
 	padding: 0;
+	width: calc(100% - 40px);
 	z-index: 1000;
 }
 .super-group-header-overlay h1 a {
@@ -79,6 +80,9 @@
 	color: #FFF;
 	font-family: 'Martel', 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
 	border: none !important;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .super-group-header-overlay h1 a span {
 	position: relative;
@@ -334,7 +338,7 @@ a:hover {
 as most (if not all) messages are temporary */
 #sitenotice, #system-message-container {
 	position: absolute;
-    top: 44px;
+    /* top: 44px; */
     z-index: 1;
     width: 100%;
 }
@@ -562,5 +566,12 @@ automatic element placement by the Hub. */
 	}
 	.super-group-bar .content .subnav > li > a {
 		font-size: .6rem;
+	}
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+	.super-group-content {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
 	}
 }
