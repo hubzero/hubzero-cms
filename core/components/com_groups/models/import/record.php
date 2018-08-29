@@ -34,6 +34,7 @@ namespace Components\Groups\Models\Import;
 
 use Components\Groups\Models\Orm\Group;
 use Components\Groups\Models\Orm\Field;
+use Components\Groups\Models\Page;
 use Hubzero\Utility\Validate;
 use Exception;
 use stdClass;
@@ -452,6 +453,45 @@ class Record extends \Hubzero\Content\Import\Model\Record
 					}
 				}
 			}
+		}
+
+		// create home page
+		if ($isNew)
+		{
+			// create page
+			$page = new Page(array(
+				'gidNumber' => $this->record->entry->get('gidNumber'),
+				'parent'    => 0,
+				'lft'       => 1,
+				'rgt'       => 2,
+				'depth'     => 0,
+				'alias'     => 'overview',
+				'title'     => 'Overview',
+				'state'     => 1,
+				'privacy'   => 'default',
+				'home'      => 1
+			));
+			$page->store(false);
+
+			// create page version
+			$version = new Page\Version(array(
+				'pageid'     => $page->get('id'),
+				'version'    => 1,
+				'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
+				'created'    => Date::of('now')->toSql(),
+				'created_by' => User::get('id'),
+				'approved'   => 1
+			));
+			$version->store(false);
+		}
+
+		if (isset($this->record->members) && !empty($this->record->members))
+		{
+			$this->record->entry->add('members', $this->record->members);
+		}
+		if (isset($this->record->managers) && !empty($this->record->managers))
+		{
+			$this->record->entry->add('managers', $this->record->managers);
 		}
 	}
 
