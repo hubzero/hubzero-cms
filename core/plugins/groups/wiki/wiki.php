@@ -265,7 +265,8 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			$controller = new $controllerName(array(
 				'base_path' => Component::path('com_wiki') . DS . 'site',
 				'scope'     => 'group',
-				'scope_id'  => $group->get('gidNumber')
+				'scope_id'  => $group->get('gidNumber'),
+				'sub'       => !($group->isSuperGroup())
 			));
 
 			// Catch any echoed content with ob

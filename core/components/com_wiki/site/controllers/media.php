@@ -50,6 +50,20 @@ use App;
 class Media extends SiteController
 {
 	/**
+	 * Book model
+	 *
+	 * @var  object
+	 */
+	public $book = null;
+
+	/**
+	 * Sub component?
+	 *
+	 * @var  bool
+	 */
+	public $sub = false;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $config  Optional configurations
@@ -65,6 +79,11 @@ class Media extends SiteController
 		if (!isset($config['scope_id']))
 		{
 			$config['scope_id'] = 0;
+		}
+
+		if (isset($config['sub']))
+		{
+			$this->sub = $config['sub'];
 		}
 
 		$this->book = new Book($config['scope'], $config['scope_id']);
@@ -85,6 +104,11 @@ class Media extends SiteController
 	public function execute()
 	{
 		$this->page = $this->book->page();
+
+		if (is_null($this->sub))
+		{
+			$this->sub = ($this->page->get('scope') != 'site');
+		}
 
 		parent::execute();
 	}
@@ -572,7 +596,7 @@ class Media extends SiteController
 			->set('folders', $folders)
 			->set('config', $this->config)
 			->set('listdir', $listdir)
-			->set('sub', $this->page->get('scope') != 'site')
+			->set('sub', $this->sub)
 			->setErrors($this->getErrors())
 			->setLayout('list')
 			->display();

@@ -51,20 +51,42 @@ $this->js();
 	?>
 </header><!-- /#content-header -->
 
-<?php
-if ($this->page->get('id'))
-{
-	$this->view('submenu', 'pages')
-		//->setBasePath($this->base_path)
-		->set('option', $this->option)
-		->set('controller', $this->controller)
-		->set('page', $this->page)
-		->set('task', $this->task)
-		->set('sub', $this->sub)
-		->display();
-}
-?>
-
+<?php if (!$this->sub) { ?>
 <section class="main section">
-	<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $this->version); ?></p>
+	<div class="aside">
+		<?php
+		$this->view('wikimenu')
+			->set('option', $this->option)
+			->set('controller', $this->controller)
+			->set('page', $this->page)
+			->set('task', $this->task)
+			->set('sub', $this->sub)
+			->display();
+		?>
+	</div>
+	<div class="subject">
+<?php } ?>
+
+		<?php
+		if ($this->page->get('id'))
+		{
+			$this->view('submenu', 'pages')
+				//->setBasePath($this->base_path)
+				->set('option', $this->option)
+				->set('controller', $this->controller)
+				->set('page', $this->page)
+				->set('task', $this->task)
+				->set('sub', $this->sub)
+				->display();
+		}
+		?>
+
+<?php if ($this->sub) { ?>
+<section class="main section">
+	<div class="section-inner">
+<?php } ?>
+
+		<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $this->version); ?></p>
+
+	</div>
 </section><!-- / .main section -->

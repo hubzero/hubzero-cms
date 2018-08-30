@@ -58,6 +58,13 @@ class Pages extends SiteController
 	public $book = null;
 
 	/**
+	 * Sub component?
+	 *
+	 * @var  bool
+	 */
+	public $sub = false;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $config  Optional configurations
@@ -80,6 +87,11 @@ class Pages extends SiteController
 		if (!isset($config['scope_id']))
 		{
 			$config['scope_id'] = 0;
+		}
+
+		if (isset($config['sub']))
+		{
+			$this->sub = $config['sub'];
 		}
 
 		$this->book = new Book($config['scope'], $config['scope_id']);
@@ -116,6 +128,11 @@ class Pages extends SiteController
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download')
 			);
+		}
+
+		if (is_null($this->sub))
+		{
+			$this->sub = ($this->page->get('scope') != 'site');
 		}
 
 		parent::execute();
@@ -159,7 +176,7 @@ class Pages extends SiteController
 				->set('layout', $this->page->stripNamespace())
 				->set('page', $this->page)
 				->set('book', $this->book)
-				->set('sub', $this->page->get('scope') != 'site')
+				->set('sub', $this->sub)
 				->display();
 			return;
 		}
@@ -175,7 +192,7 @@ class Pages extends SiteController
 			$this->view
 				->set('page', $this->page)
 				->set('book', $this->book)
-				->set('sub', $this->page->get('scope') != 'site')
+				->set('sub', $this->sub)
 				->setLayout('doesnotexist')
 				->display();
 			return;
@@ -232,7 +249,7 @@ class Pages extends SiteController
 				->set('page', $this->page)
 				->set('version', ($version ? $version : $this->page->get('version_id')))
 				->set('book', $this->book)
-				->set('sub', $this->page->get('scope') != 'site')
+				->set('sub', $this->sub)
 				->setLayout('nosuchrevision')
 				->display();
 			return;
@@ -281,7 +298,7 @@ class Pages extends SiteController
 			->set('page', $this->page)
 			->set('revision', $revision)
 			->set('parents', $parents)
-			->set('sub', $this->page->get('scope') != 'site')
+			->set('sub', $this->sub)
 			->set('base_path', $this->_base_path)
 			->setErrors($this->getErrors())
 			->display();
@@ -452,7 +469,7 @@ class Pages extends SiteController
 			->set('book', $this->book)
 			->set('page', $this->page)
 			->set('revision', $revision)
-			->set('sub', $this->page->get('scope') != 'site')
+			->set('sub', $this->sub)
 			->set('tree', $tree)
 			->set('tags', $tags)
 			->set('preview', $this->preview)
@@ -828,7 +845,7 @@ class Pages extends SiteController
 					->set('page', $this->page)
 					->set('base_path', $this->_base_path)
 					->set('parents', $parents)
-					->set('sub', $this->page->get('scope') != 'site')
+					->set('sub', $this->sub)
 					->setErrors($this->getErrors())
 					->display();
 				return;
@@ -912,7 +929,7 @@ class Pages extends SiteController
 			->set('page', $this->page)
 			->set('parents', $parents)
 			->set('base_path', $this->_base_path)
-			->set('sub', $this->page->get('scope') != 'site')
+			->set('sub', $this->sub)
 			->setErrors($this->getErrors())
 			->setLayout('rename')
 			->display();
@@ -1045,7 +1062,7 @@ class Pages extends SiteController
 			$this->view
 				->set('page', $this->page)
 				->set('version', $version)
-				->set('sub', $this->page->get('scope') != 'site')
+				->set('sub', $this->sub)
 				->setLayout('nosuchrevision')
 				->display();
 			return;
