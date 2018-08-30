@@ -591,6 +591,22 @@ class Course extends Base
 	}
 
 	/**
+	 * Run just validation check to ensure no errors occur
+	 *
+	 *
+	 * @return boolean
+	 */
+	public function check()
+	{
+		if (!$this->_tbl->check())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Short title for 'update'
 	 * Long title (if any) ...
 	 *
@@ -611,18 +627,18 @@ class Course extends Base
 
 		if ($check)
 		{
-			if (!$this->_tbl->check())
+			if (!$this->check())
 			{
-				$this->setError($this->_tbl->getError());
 				return false;
 			}
 
-			$this->importPlugin('content')->trigger('onContentBeforeSave', array(
-				'com_courses.course.description',
-				&$this,
-				$this->exists()
-			));
 		}
+
+		$this->importPlugin('content')->trigger('onContentBeforeSave', array(
+			'com_courses.course.description',
+			&$this,
+			$this->exists()
+		));
 
 		if (!$this->_tbl->store())
 		{
