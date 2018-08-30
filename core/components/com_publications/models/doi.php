@@ -387,7 +387,7 @@ class Doi extends Obj
 	 *
 	 * @param  string $doi
 	 * @return xml string
-	*/
+	 */
 	public function buildXml($doi = null)
 	{
 		if (!$this->checkRequired())
@@ -564,7 +564,7 @@ class Doi extends Obj
 	 * Register DOI metadata. This is the first step to create DOI name and register metadata on DataCite.
 	 *
 	 * @return string $doi
-	*/
+	 */
 	public function registerMetadata()
 	{
 		$doi = null;
@@ -591,7 +591,7 @@ class Doi extends Obj
 	 * Register the DOI name and associated URL. This is the second step to finish the DOI registration on DataCite.
 	 *
 	 * @return boolean
-	*/
+	 */
 	public function registerURL($doi)
 	{
 		if (!$this->on())
@@ -980,7 +980,7 @@ class Doi extends Obj
 			{
 				$doi = $this->registerEZID($sendXML, $status);
 				return $doi;
-			}			
+			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
 		{
