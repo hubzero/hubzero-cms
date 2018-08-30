@@ -38,8 +38,8 @@
 }
 
 .one .current-postdocs .postdoc-title {
-  position: absolute;
   left: 0;
+  position: absolute;
   text-align: left;
   top: -1em;
 }
@@ -155,16 +155,16 @@
 }
 
 .three .postdoc-activities {
-  order: -1;
   grid-column: 1/span 3;
   align-self: center;
+  order: -1;
   padding: 0 10px;
 }
 
 @media only screen and (min-width: 801px) {
   .three .postdoc-activities {
-    order: 1;
     grid-column: 2/span 2;
+    order: 1;
   }
 }
 
@@ -275,17 +275,6 @@ ul.postdoc-list {
   padding: 15px;
 }
 
-.postdoc-title {
-  text-align: center;
-  clear: left;
-  color: #6E9C39;
-}
-
-.postdoc-link {
-  display: block;
-  clear: left;
-}
-
 .type-em {
   font-size: 1.2rem;
   font-style: italic;
@@ -293,39 +282,39 @@ ul.postdoc-list {
 }
 
 .open-positions {
-  position: relative;
   border: 1px solid #eb6546;
   padding: 10px;
+  position: relative;
 }
 
 .ribbon {
+  height: 75px;
+  overflow: hidden;
   position: absolute;
   right: -5px;
-  top: -5px;
-  z-index: 1;
-  overflow: hidden;
-  width: 75px;
-  height: 75px;
   text-align: right;
+  top: -5px;
+  width: 75px;
+  z-index: 1;
 }
 
 .ribbon span {
-  font-size: 10px;
-  font-weight: bold;
-  color: #FFF;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 20px;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  width: 100px;
-  display: block;
   background: #79A70A;
   background: linear-gradient(#F70505 0%, #8F0808 100%);
   box-shadow: 0 3px 10px -5px black;
+  color: #FFF;
+  display: block;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 20px;
   position: absolute;
-  top: 19px;
   right: -21px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  text-align: center;
+  text-transform: uppercase;
+  top: 19px;
+  width: 100px;
 }
 
 .ribbon span::before {

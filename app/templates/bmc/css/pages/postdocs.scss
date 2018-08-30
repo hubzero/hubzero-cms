@@ -13,11 +13,12 @@
 
 	.postdoc-intro {
 		@include grid(1 / span 3, 1);
-		padding: 0 10px;
 		@include respond-at(801px) {
 			@include grid(1 / span 2, null);
 		}
+		padding: 0 10px;
 	}
+
 	.current-postdocs {
 		@include grid(1 / span 3, 2);
 		border: 1px solid $green;
@@ -26,8 +27,8 @@
 		position: relative;
 
 		.postdoc-title {
-			position: absolute;
 			left: 0;
+			position: absolute;
 			text-align: left;
 			top: -1em;
 		}
@@ -48,6 +49,7 @@
 	@include grid-template(repeat(3, 1fr), repeat(3, auto), 1rem);
 	background-color: $light-gray;
 	padding: 2.5em;
+
 	h2 {
 		@include grid(1 / span 3, 1);
 	}
@@ -93,21 +95,21 @@
 
 	.img-container {
 		@include grid(1 / span 3, 2);
-		padding: 0 10px;
 		@include respond-at(801px) {
 			@include grid(1 / span 1, 1);
 		}
+		padding: 0 10px;
 	}
 
 	.postdoc-activities {
-		order: -1;
 		@include grid(1 / span 3, null);
-		align-self: center;
-		padding: 0 10px;
 		@include respond-at(801px) {
-			order: 1;
 			@include grid(2 / span 2, null);
+			order: 1;
 		}
+		align-self: center;
+		order: -1;
+		padding: 0 10px;
 	}
 
 	@include respond-at(801px) {
@@ -125,19 +127,19 @@
 
 	.postdoc-activities {
 		@include grid(1 / span 3, 1);
-		align-self: center;
-		padding: 0 10px;
 		@include respond-at(701px) {
 			@include grid(1 / span 2, null);
 		}
+		align-self: center;
+		padding: 0 10px;
 	}
 
 	.img-container {
 		@include grid(1 / span 3, 2);
-		padding: 0 10px;
 		@include respond-at(801px) {
 			@include grid(3 / span 1, 1);
 		}
+		padding: 0 10px;
 	}
 	@include respond-at(801px) {
 		@include flexbox;
@@ -172,19 +174,12 @@ a {
 ul.postdoc-list {
 	list-style: none;
 }
+
 #postdoc-pos1 {
 	display: none;
 	padding: 15px;
 }
-.postdoc-title {
-	text-align: center;
-	clear: left;
-	color: $link-color;
-}
-.postdoc-link {
-	display: block;
-	clear: left;
-}
+
 .type-em {
 	font-size: 1.2rem;
 	font-style: italic;
@@ -192,34 +187,39 @@ ul.postdoc-list {
 }
 
 .open-positions {
-  position: relative;
-  border: 1px solid #eb6546;
+	border: 1px solid #eb6546;
 	padding: 10px;
+  position: relative;
 }
+
 .ribbon {
+	height: 75px;
+	overflow: hidden;
   position: absolute;
-  right: -5px; top: -5px;
-  z-index: 1;
-  overflow: hidden;
-  width: 75px; height: 75px;
-  text-align: right;
+  right: -5px;
+	text-align: right;
+	top: -5px;
+  width: 75px;
+	z-index: 1;
 }
+
 .ribbon span {
-  font-size: 10px;
-  font-weight: bold;
-  color: #FFF;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 20px;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  width: 100px;
-  display: block;
-  background: #79A70A;
+	background: #79A70A;
   background: linear-gradient(#F70505 0%, #8F0808 100%);
   box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-  position: absolute;
-  top: 19px; right: -21px;
+	color: #FFF;
+	display: block;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 20px;
+	position: absolute;
+	right: -21px;
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	text-align: center;
+  text-transform: uppercase;
+	top: 19px;
+  width: 100px;
 }
 
 .ribbon span::before {
