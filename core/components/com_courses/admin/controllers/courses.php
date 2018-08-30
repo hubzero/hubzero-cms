@@ -195,8 +195,11 @@ class Courses extends AdminController
 			return;
 		}
 
-		// Store content
-		if (!$row->store(true))
+		$isNew = $this->get('id') ? false : true;
+
+		// Go ahead and store content if new
+		$validated = $isNew ? $row->store(true) : $row->check();
+		if (!$validated)
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -205,6 +208,7 @@ class Courses extends AdminController
 
 		$tags = Request::getString('tags', '', 'post');
 		$row->tag($tags, User::get('id'));
+		$row->store(false);
 
 		if ($this->_task == 'apply')
 		{
