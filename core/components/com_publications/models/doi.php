@@ -601,11 +601,11 @@ class Doi extends Obj
 		}
 		
 		// Register URL
-		$url = $this->get('url');
-		$regURL = $this->_configs->dataciteServiceURL . DS . 'doi' . DS . $doi;
-		$str = "doi=" . $doi . "\n" . "url=" . $url;
+		$resURL = $this->get('url');
+		$url = $this->_configs->dataciteServiceURL . DS . 'doi' . DS . $doi;
+		$postvals = "doi=" . $doi . "\n" . "url=" . $resURL;
 		
-		$regResult = $this->regURL($regURL, $str);
+		$regResult = $this->regURL($url, $postvals);
 		
 		if(!$regResult)
 		{
@@ -781,7 +781,7 @@ class Doi extends Obj
 	 * @param   string   $status  DOI status [public, reserved]
 	 * @return  boolean
 	 */
-	public function register($sendXml = false, $status = 'public')
+	public function registerEZID($sendXml = false, $status = 'public')
 	{
 		if (!$this->on())
 		{
@@ -800,9 +800,28 @@ class Doi extends Obj
 		$url = $this->getServicePath();
 
 		// Make service call to provision doi
-		$doi = $this->runCurl($url, $input);
+		if ($status == 'reserved')
+		{
+			$doi = $this->runCurl($url, $input);
+		}
+		
+		if (($status == 'public') && ($sendXml == true))
+		{
+			$xml = $this->buildXml();
+
+			// Load the xml document in the DOMDocument object
+			$xdoc = new \DomDocument;
+			$xdoc->loadXML($xml);
+			
+			// Append XML
+			$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
+
+			// Make service call to send extended metadata
+			$doi = $this->runCurl($url, $input);
+		}
 
 		// Are we sending extended data?
+		/*
 		if ($sendXml == true && $doi)
 		{
 			$xml = $this->buildXml($doi);
@@ -825,6 +844,7 @@ class Doi extends Obj
 				$doi = $this->runCurl($url, $input);
 			}
 		}
+		*/
 
 		// Return DOI
 		return $doi;
@@ -894,5 +914,79 @@ class Doi extends Obj
 		$result = $this->runCurl($url, $input);
 
 		return $result ? $result : false;
+	}
+	
+	/**
+	 * Update DOI metadata - Entry to update DOI metadata. 
+	 *
+	 * @param   string   $doi
+	 * @param   boolean  $sendXML   -- This is set to true when using EZID DOI service
+	 *
+	 * @return  null
+	 */
+	public function update($doi, $sendXML = false)
+	{
+		if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
+		{
+			$result = $this->dataciteMetadataUpdate($doi);
+			
+			if (!$result)
+			{
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+			}
+		}
+		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
+		{
+			$this->ezidMetadataUpdate($doi, $sendXML);
+		}
+	}
+	
+	/**
+	 * Register - Entry to register DOI metadata, or URL for DataCite DOI; Or register DOI for EZID 
+	 *
+	 * @param   boolean  $regMetadata - Register Metadata for DataCite DOI when it is set to true.
+	 * @param   boolean  $regUrl      - Register URL and DOI name for for DataCite DOI when it is set to true.
+	 * @param   string   $doi
+	 * @param   boolean  $sendXML     - Whether including XML for EZID DOI Update
+	 * @param   string   $status      - EZID DOI status
+	 *
+	 * @return  string $doi or null
+	 */
+	public function register($regMetadata = false, $regUrl = false, $doi = null, $sendXML = false, $status = 'public')
+	{
+		if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
+		{
+			// Register DOI Metadata through DataCite service
+			if ($regMetadata)
+			{
+				$doi = $this->registerMetadata();
+				return $doi;
+			}
+			
+			if ($regUrl && !empty($doi))
+			{
+				$regResult = $this->registerURL($doi);
+				
+				if (!$regResult)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'));
+				}
+			}
+		}
+		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
+		{
+			// Register DOI through EZID service
+			if (!$regUrl)
+			{
+				$doi = $this->registerEZID($sendXML, $status);
+				return $doi;
+			}			
+		}
+		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
+		{
+			$doi = null;
+			return $doi;
+		}
 	}	
 }
+	
