@@ -32,19 +32,23 @@
 namespace Components\Courses\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Components\Courses\Models\Tags;
 use Hubzero\Config\Registry;
 use Component;
 use Event;
 use Html;
+use stdClass;
 
-require_once dirname(__DIR__) . DS . 'tags.php';
+require_once Component::path('com_courses') . '/models/tags.php';
 require_once __DIR__ . DS . 'offering.php';
 require_once __DIR__ . DS . 'page.php';
+require_once __DIR__ . DS . 'member.php';
+require_once __DIR__ . DS . 'role.php';
 
 /**
  * Model class for a course entry
  */
-class Course extends Relational
+class Course extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table namespace
@@ -176,6 +180,26 @@ class Course extends Relational
 	}
 
 	/**
+	 * Get a list of members
+	 *
+	 * @return  object
+	 */
+	public function members()
+	{
+		return $this->oneToMany('Member', 'course_id');
+	}
+
+	/**
+	 * Get a list of managers
+	 *
+	 * @return  object
+	 */
+	public function managers()
+	{
+		return $this->members()->including('role')->whereEquals('student', 0);
+	}
+
+	/**
 	 * Get a list of pages
 	 *
 	 * @return  object
@@ -210,9 +234,15 @@ class Course extends Relational
 				break;
 			}
 		}
-
 		$cloud = new Tags($this->get('id'));
-
+		if ($what == 'list')
+		{
+			$filters = array(
+				'scope' => 'courses',
+				'scope_id' => $this->id
+			);
+			return $cloud->tags('list', $filters);
+		}
 		return $cloud->render($what, array('admin' => $admin));
 	}
 
@@ -417,5 +447,116 @@ class Course extends Relational
 
 		// Attempt to delete the record
 		return parent::destroy();
+	}
+
+	/*
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public static function searchNamespace()
+	{
+		$searchNamespace = 'course';
+		return $searchNamespace;
+	}
+
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = self::searchNamespace() . '-' . $this->id;
+		return $searchId;
+	}
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+
+	/**
+	 * Get records to be included in solr index
+	 * @return Hubzero\Database\Rows
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()->start($offset)->limit($limit)->rows();
+	}
+
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
+	public function searchResult()
+	{
+		if ($this->state == 2)
+		{
+			return false;
+		}
+		$obj = new stdClass;
+		$obj->id = $this->searchId();
+		$obj->hubtype = self::searchNamespace();
+		$obj->title = $this->get('title');
+
+		$description = $this->get('blurb') . ' ' . $this->get('description');
+		$description = html_entity_decode($description);
+		$description = \Hubzero\Utility\Sanitize::stripAll($description);
+
+		$obj->description   = $description;
+		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
+
+		$tags = $this->tags('list');
+		if (count($tags) > 0)
+		{
+			$obj->tags = array();
+			foreach ($tags as $tag)
+			{
+				$title = $tag->get('raw_tag', '');
+				$description = $tag->get('tag', '');
+				$label = $tag->get('label', '');
+				$obj->tags[] = array(
+					'id' => 'tag-' . $tag->id,
+					'title' => $title,
+					'description' => $description,
+					'access_level' => $tag->admin == 0 ? 'public' : 'private',
+					'type' => 'course-tag',
+					'badge_b' => $label == 'badge' ? true : false
+				);
+			}
+		}
+		else
+		{
+			$obj->tags[] = array(
+				'id' => '',
+				'title' => ''
+			);
+		}
+		$managers = $this->managers;
+		$instructors = array();
+		$managerIds = array();
+		foreach ($managers as $manager)
+		{
+			$managerIds[] = $manager->get('user_id');
+			if (strtolower($manager->role->alias) == 'instructor')
+			{
+				$obj->author[] = $manager->user->name;
+			}
+		}
+
+		$obj->owner_type = 'user';
+		$obj->owner = implode(' OR ', $managerIds);
+		if ($this->state == 1)
+		{
+			$obj->access_level = 'public';
+		}
+		else
+		{
+			$obj->access_level = 'private';
+		}
+		return $obj;
 	}
 }
