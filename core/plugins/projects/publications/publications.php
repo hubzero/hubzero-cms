@@ -62,15 +62,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected $_msg = null;
 	
 	/**
-	 * DataCite and EZID switch options
-	 *
-	 * @const
-	 */
-	const SWITCH_OPTION_NONE = 0;
-	const SWITCH_OPTION_EZID = 1;
-	const SWITCH_OPTION_DATACITE = 2;
-
-	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @param   string  $alias
@@ -2230,19 +2221,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
 			
-			if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
-			{
-				$doi = $doiService->registerMetadata();
-			}
-			elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
-			{
-				$extended = $state == 5 ? false : true;
-				$doi = $doiService->register($extended, ($state == 5 ? 'reserved' : 'public'));
-			}
-			elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
-			{
-				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_NO_DOI_SERVICE'), 400);
-			}
+			$extended = $state == 5 ? false : true;
+			$status = $state == 5 ? 'reserved' : 'public';
+			$doi = $doiService->register(true, false, null, $extended, $status);
 			
 			// Store DOI
 			if ($doi)
@@ -2253,33 +2234,30 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
+				if ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
 				}
-				elseif ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
+				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_EZID)
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
+				}
+				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_NONE)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
 				}
 				$doiErr = true;
 			}
 		}
 		
-		if ($doiService->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
+		// Register DOI name and URL for DataCite DOI when the publication is set to be automatically approved.
+		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
 		{
-			// Register DOI name and URL when the publication configuration option is set to automatically approved.
-			if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
+			$doiService->register(false, true, $pub->version->get('doi'));
+			
+			if ($doiService->getError())
 			{
-				$result = $doiService->registerURL($pub->version->get('doi'));
-				if (!$result)
-				{
-					throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL'), 400);
-				}
-				
-				if ($doiService->getError())
-				{
-					$this->setError($doiService->getError());
-				}
+				$this->setError($doiService->getError());
 			}
 		}
 		
