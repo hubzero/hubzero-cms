@@ -50,10 +50,10 @@ use App;
 class Items extends AdminController
 {
 	/**
-	* Executes a task
-	*
-	* @return  void
-	*/
+	 * Executes a task
+	 *
+	 * @return  void
+	 */
 	public function execute()
 	{
 		$this->_task = strtolower(Request::getCmd('task', ''));
