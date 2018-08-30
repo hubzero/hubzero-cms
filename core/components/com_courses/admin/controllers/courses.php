@@ -196,7 +196,7 @@ class Courses extends AdminController
 		}
 
 		// Store content
-		if (!$row->store(true))
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -205,6 +205,7 @@ class Courses extends AdminController
 
 		$tags = Request::getString('tags', '', 'post');
 		$row->tag($tags, User::get('id'));
+		$row->store(false);
 
 		if ($this->_task == 'apply')
 		{
