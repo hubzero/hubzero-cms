@@ -50,6 +50,20 @@ use App;
 class Comments extends SiteController
 {
 	/**
+	 * Book model
+	 *
+	 * @var  object
+	 */
+	public $book = null;
+
+	/**
+	 * Sub component?
+	 *
+	 * @var  bool
+	 */
+	public $sub = false;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $config  Optional configurations
@@ -72,6 +86,11 @@ class Comments extends SiteController
 		if (!isset($config['scope_id']))
 		{
 			$config['scope_id'] = 0;
+		}
+
+		if (isset($config['sub']))
+		{
+			$this->sub = $config['sub'];
 		}
 
 		$this->book = new Book($config['scope'], $config['scope_id']);
@@ -113,6 +132,11 @@ class Comments extends SiteController
 		if (!$this->page->exists())
 		{
 			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
+		}
+
+		if (is_null($this->sub))
+		{
+			$this->sub = ($this->page->get('scope') != 'site');
 		}
 
 		$this->registerTask('addcomment', 'edit');
@@ -192,7 +216,7 @@ class Comments extends SiteController
 		$this->view
 			->set('parents', $parents)
 			->set('page', $this->page)
-			->set('sub', $this->page->get('scope') != 'site')
+			->set('sub', $this->sub)
 			->set('mycomment', $mycomment)
 			->set('version', $version)
 			->set('config', $this->config)

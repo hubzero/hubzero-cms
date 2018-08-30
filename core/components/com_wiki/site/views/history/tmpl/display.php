@@ -63,23 +63,42 @@ $revisions = $this->page->versions()
 	?>
 </header><!-- /#content-header -->
 
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+<?php if (!$this->sub) { ?>
+<section class="main section">
+	<div class="aside">
+		<?php
+		$this->view('wikimenu', 'pages')
+			->set('option', $this->option)
+			->set('controller', $this->controller)
+			->set('page', $this->page)
+			->set('task', $this->task)
+			->set('sub', $this->sub)
+			->display();
+		?>
+	</div>
+	<div class="subject">
 <?php } ?>
 
-<?php
-	$this->view('submenu', 'pages')
-		//->setBasePath($this->base_path)
-		->set('option', $this->option)
-		->set('controller', $this->controller)
-		->set('page', $this->page)
-		->set('task', $this->task)
-		->set('sub', $this->sub)
-		->display();
-?>
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php } ?>
 
+		<?php
+		$this->view('submenu', 'pages')
+			//->setBasePath($this->base_path)
+			->set('option', $this->option)
+			->set('controller', $this->controller)
+			->set('page', $this->page)
+			->set('task', $this->task)
+			->set('sub', $this->sub)
+			->display();
+		?>
+
+<?php if ($this->sub) { ?>
 <section class="main section">
 	<div class="section-inner">
+<?php } ?>
+
 		<div class="grid">
 			<div class="col span-half">
 				<p><?php echo Lang::txt('COM_WIKI_HISTORY_EXPLANATION', Route::url($this->page->link('base') . '&pagename=Help:PageHistory')); ?></p>

@@ -36,6 +36,8 @@ if (!$this->sub)
 {
 	$this->css();
 }
+// Include any Scripts
+$this->js();
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<?php if (count($this->parents)) { ?>
@@ -46,16 +48,19 @@ if (!$this->sub)
 		</p>
 	<?php } ?>
 
-	<h2><?php echo $this->escape($this->page->title); ?></h2>
+	<h2><?php echo $this->page->title; ?></h2>
+
 	<?php
 	if (!$this->page->isStatic())
 	{
-		$this->view('authors', 'pages')
+		$this->view('authors')
 			//->setBasePath($this->base_path)
 			->set('page', $this->page)
 			->display();
 	}
 	?>
+
+	<?php echo $this->page->event->afterDisplayTitle; ?>
 </header><!-- /#content-header -->
 
 <?php if (!$this->sub) { ?>
@@ -79,7 +84,9 @@ if (!$this->sub)
 		<?php } ?>
 
 		<?php
-		$this->view('submenu', 'pages')
+		echo $this->page->event->beforeDisplayContent;
+
+		$this->view('submenu')
 			//->setBasePath($this->base_path)
 			->set('option', $this->option)
 			->set('controller', $this->controller)
@@ -94,37 +101,22 @@ if (!$this->sub)
 	<div class="section-inner">
 <?php } ?>
 
-	<?php if ($this->page->isLocked() && !$this->page->access('manage')) { ?>
-		<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
-	<?php } else { ?>
-		<form action="<?php echo Route::url($this->page->link('base')); ?>" method="post" id="hubForm" class="full">
-			<fieldset>
-				<legend><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></legend>
+		<article class="wikipage">
+			<?php echo $this->revision->get('pagehtml'); ?>
 
-				<label for="confirm-delete">
-					<input class="option" type="checkbox" name="confirm" id="confirm-delete" value="1" />
-					<?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE'); ?>
-				</label>
-
-				<p class="warning">
-					<?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
-				</p>
-
-				<input type="hidden" name="pagename" value="<?php echo $this->escape(($this->page->get('path') ? $this->page->get('path') . '/' : '') . $this->page->get('pagename')); ?>" />
-				<input type="hidden" name="page_id" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-
-				<?php foreach ($this->page->adapter()->routing('delete') as $name => $val) { ?>
-					<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
-				<?php } ?>
-
-				<?php echo Html::input('token'); ?>
-			</fieldset>
-
-			<p class="submit">
-				<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('COM_WIKI_DELETE'); ?>" />
+			<p class="timestamp">
+				<?php echo Lang::txt('COM_WIKI_PAGE_CREATED') . ' <time datetime="' . $this->page->created() . '">'.$this->page->created('date') . '</time>, ' . Lang::txt('COM_WIKI_PAGE_LAST_MODIFIED') . ' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>'; ?>
 			</p>
-		</form>
-	<?php } ?>
+			<?php if ($this->page->tags('cloud')) { ?>
+				<div class="article-tags">
+					<h3><?php echo Lang::txt('COM_WIKI_PAGE_TAGS'); ?></h3>
+					<?php echo $this->page->tags('cloud'); ?>
+				</div>
+			<?php } ?>
+		</article>
 
+		<?php
+		echo $this->page->event->afterDisplayContent;
+		?>
 	</div>
-</section><!-- / .main section -->
+</section>

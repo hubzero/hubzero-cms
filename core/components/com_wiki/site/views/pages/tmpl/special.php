@@ -42,33 +42,54 @@ $this->js();
 	<h2><?php echo $this->page->title; ?></h2>
 </header><!-- /#content-header -->
 
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+<?php if (!$this->sub) { ?>
+<section class="main section">
+	<div class="aside">
+		<?php
+		$this->view('wikimenu', 'pages')
+			->set('option', $this->option)
+			->set('controller', $this->controller)
+			->set('page', $this->page)
+			->set('task', $this->task)
+			->set('sub', $this->sub)
+			->display();
+		?>
+	</div>
+	<div class="subject">
 <?php } ?>
 
-<?php
-$this->view('submenu', 'pages')
-	//->setBasePath($this->base_path)
-	->set('option', $this->option)
-	->set('controller', $this->controller)
-	->set('page', $this->page)
-	->set('task', $this->task)
-	->set('sub', $this->sub)
-	->display();
-?>
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php } ?>
 
-<section class="main section">
-	<article>
 		<?php
-		$this->view(strtolower($this->layout), 'special')
+		$this->view('submenu', 'pages')
 			//->setBasePath($this->base_path)
 			->set('option', $this->option)
 			->set('controller', $this->controller)
 			->set('page', $this->page)
 			->set('task', $this->task)
 			->set('sub', $this->sub)
-			->set('book', $this->book)
-			->display()
+			->display();
 		?>
-	</article>
+
+<?php if ($this->sub) { ?>
+<section class="main section">
+	<div class="section-inner">
+<?php } ?>
+
+		<article>
+			<?php
+			$this->view(strtolower($this->layout), 'special')
+				//->setBasePath($this->base_path)
+				->set('option', $this->option)
+				->set('controller', $this->controller)
+				->set('page', $this->page)
+				->set('task', $this->task)
+				->set('sub', $this->sub)
+				->set('book', $this->book)
+				->display()
+			?>
+		</article>
+	</div>
 </section><!-- / .main section -->
