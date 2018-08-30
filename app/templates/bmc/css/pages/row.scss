@@ -1,0 +1,103 @@
+@import 'variables';
+@import 'mixins';
+
+.header-logo {
+  img {
+    width: 100%;
+  }
+}
+
+.header-tag {
+  @include flexbox(wrap);
+  @include respond-at(671px) {
+    @include flexbox;
+  }
+
+  h2 {
+    @include respond-at(671px) {
+      width: 70%;
+    }
+  }
+
+  .module {
+    margin-left: 1em;
+  }
+}
+
+.wrapper {
+  @include respond-at(801px) {
+    @include flexbox;
+  }
+  @include flexbox(wrap);
+
+  .description {
+    align-self: center;
+    flex: 2 1 20rem;
+    padding: 0 2em 0 0;
+
+    .link-wrap {
+      margin-top: 2em;
+      text-align: center;
+    }
+
+    .link {
+      @include respond-at(1256px) {
+        display: inline;
+      }
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
+      display: block;
+      margin: 1em;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .most-recent {
+    flex: 1 1 25rem;
+
+    h2 {
+      color: $green;
+      position: relative;
+      top: .75em;
+    }
+  }
+
+  .module-recent {
+    border: 1px solid $green;
+    border-radius: 6px;
+    padding: 1em;
+  }
+
+  .billboard-image {
+    height: 16rem;
+    margin-bottom: 1em;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .billboard-header {
+    font-family: 'Martel', serif;
+    font-size: 1.5rem;
+  }
+
+  .billboard-content {
+    display: block;
+
+    p {
+      width: auto;
+    }
+
+    .authors {
+      font-weight: 700;
+    }
+
+  }
+}

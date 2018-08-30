@@ -130,30 +130,22 @@ $(document).ready(function() {
     }
   });
 
+  // Loading the intro
+  $(window).on('load', function () {
+    var $bcg = $('.bcg-mission'),
+        $mission = $('.mission-statement'),
+        tlIntro = new TimelineMax();
+    tlIntro
+      .from($bcg, 1, {autoAlpha: 0, ease:Power0.easeNone})
+      .from($mission, 1, {autoAlpha: 0, ease:Power0.easeNone});
+  });
+
   //Init ScrollMagic
   var controller = new ScrollMagic.Controller();
 
-  //Scene to fade in intro
-  var $bcg = $('.bcg-mission'),
-      $mission = $('.mission-statement'),
-      tlIntro = new TimelineMax();
-  tlIntro
-    .from($bcg, 1, {autoAlpha: 0, ease:Power0.easeNone})
-    .from($mission, 1, {autoAlpha: 0, ease:Power0.easeNone});
-
-  var ourScene = new ScrollMagic.Scene({
-    triggerElement: '#mission'
-  })
-  .setTween(tlIntro) //add timeline
-  .addIndicators({
-    colorTrigger: '#007991',
-    colorStart: '#cb48b7'
-  })
-  .addTo(controller);
-
   //Parallax for intro
   var introParallax = new ScrollMagic.Scene({
-    triggerElement: '#mission',
+    triggerElement: '.mission',
     triggerHook: 1,
     duration: '140%'
   })
@@ -161,22 +153,26 @@ $(document).ready(function() {
   .addTo(controller);
 
   //Scene About Us
+  var $aboutBcg = $('.about'),
+      $aboutContent1 = $('.content1'),
+      tlScene2 = new TimelineMax();
+  tlScene2
+    .from($aboutBcg, 1, {css: {backgroundColor: '#FFFFFF'}, ease: Power0.easeNone})
+    .from($aboutContent1, .5, {y: 10, autoAlpha: 0, ease: Power0.easeNone});
+
   var ourScene2 = new ScrollMagic.Scene({
     triggerElement: '.content1',
     triggerHook: .8
   })
-  .setClassToggle('.content1', 'fade-up')
+  .setTween(tlScene2)
   .addIndicators()
   .addTo(controller);
 
 
-  var $img1 = $('.pane-2 .img-container'),
-      $content1 = $('.pane-2 p'),
+  var $aboutP = $('.pane-2 p'),
       tlScene3 = new TimelineMax();
   tlScene3
-    .from($img1, 0.8, {autoAlpha: 0, ease:Power0.easeNone})
-    .fromTo($img1, 0.8, {y: '+=150'}, {y: '-=300', ease:Power0.easeNone}, '-=0.8')
-    .from($content1, 1, {autoAlpha: 0, ease:Power0.easeNone});
+    .staggerFrom($aboutP, 1, {y: 10, autoAlpha: 0, ease:Power0.easeNone}, 0.2);
 
   var ourScene3 = new ScrollMagic.Scene({
     triggerElement: '.pane-2',
@@ -186,19 +182,53 @@ $(document).ready(function() {
   .addIndicators()
   .addTo(controller);
 
-  var $img2 = $('.pane-3 .img-container'),
-      $content2 = $('.pane-3 p'),
-      tlScene4 = new TimelineMax();
-  tlScene4
-    .from($img2, 0.8, {autoAlpha: 0, ease:Power0.easeNone})
-    .fromTo($img2, 0.8, {y: '+=150'}, {y: '-=300', ease:Power0.easeNone}, '-=0.8')
-    .from($content2, 1, {autoAlpha: 0, ease:Power0.easeNone});
+  // var $img2 = $('.pane-3 .img-container'),
+  //     $content2 = $('.pane-3 p'),
+  //     tlScene4 = new TimelineMax();
+  // tlScene4
+  //   .from($img2, 0.8, {autoAlpha: 0, ease:Power0.easeNone})
+  //   .fromTo($img2, 0.8, {y: '+=150'}, {y: '-=300', ease:Power0.easeNone}, '-=0.8')
+  //   .from($content2, 1, {autoAlpha: 0, ease:Power0.easeNone});
+  //
+  // var ourScene4 = new ScrollMagic.Scene({
+  //   triggerElement: '.pane-3',
+  //   triggerHook: .8
+  // })
+  // .setTween(tlScene4)
+  // .addIndicators()
+  // .addTo(controller);
 
-  var ourScene4 = new ScrollMagic.Scene({
-    triggerElement: '.pane-3',
-    triggerHook: .8
+  // Meet the Team
+  var $teamHeader = $('.team .header'),
+      $teamCards = $('.team-wrapper .card'),
+      tlScene5 = new TimelineMax();
+
+  tlScene5
+    .from($teamHeader, 1, {y: 10, autoAlpha: 0})
+    .staggerFrom($teamCards, 1, {y: 10, autoAlpha: 0, ease: Power0.easeNone}, 0.2);
+
+    var ourScene5 = new ScrollMagic.Scene({
+      triggerElement: '.team',
+      triggerHook: .6
+    })
+    .setTween(tlScene5)
+    .addIndicators()
+    .addTo(controller);
+
+  // Board of Advisors
+  var $advisorsH2 = $('#advisors'),
+      $advisorsCards = $('.wrapper .card'),
+      tlScene6 = new TimelineMax();
+
+  tlScene6
+    .from($advisorsH2, 1, {y: 50, autoAlpha: 0})
+    .staggerFrom($advisorsCards, 1, {y: 50, autoAlpha: 0, ease: Power0.easeNone}, 0.2);
+
+  var ourScene6 = new ScrollMagic.Scene({
+    triggerElement: '.advisors',
+    triggerHook: .6
   })
-  .setTween(tlScene4)
+  .setTween(tlScene6)
   .addIndicators()
   .addTo(controller);
 });

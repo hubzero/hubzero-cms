@@ -1,0 +1,156 @@
+.header-logo img {
+  width: 100%;
+}
+
+.header-tag {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media only screen and (min-width: 671px) {
+  .header-tag {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+}
+
+@media only screen and (min-width: 671px) {
+  .header-tag h2 {
+    width: 70%;
+  }
+}
+
+.header-tag .module {
+  margin-left: 1em;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media only screen and (min-width: 801px) {
+  .wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+}
+
+.wrapper .description {
+  align-self: center;
+  flex: 2 1 20rem;
+  padding: 0 2em 0 0;
+}
+
+.wrapper .description .link-wrap {
+  margin-top: 2em;
+  text-align: center;
+}
+
+.wrapper .description .link {
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px #6E9C39;
+  color: #6E9C39;
+  transition: color 0.25s 0.08333s;
+  position: relative;
+  padding: .25em .75em;
+  border-radius: 2px;
+  display: block;
+  margin: 1em;
+}
+
+@media only screen and (min-width: 1256px) {
+  .wrapper .description .link {
+    display: inline;
+  }
+}
+
+.wrapper .description .link::before, .wrapper .description .link::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.wrapper .description .link::before {
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.wrapper .description .link::after {
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.wrapper .description .link:hover {
+  color: #cca231;
+}
+
+.wrapper .description .link:hover::before, .wrapper .description .link:hover::after {
+  border-color: #cca231;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper .description .link:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.wrapper .description .link:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
+}
+
+.wrapper .description p {
+  font-size: 1rem;
+}
+
+.wrapper .most-recent {
+  flex: 1 1 25rem;
+}
+
+.wrapper .most-recent h2 {
+  color: #84bf41;
+  position: relative;
+  top: .75em;
+}
+
+.wrapper .module-recent {
+  border: 1px solid #84bf41;
+  border-radius: 6px;
+  padding: 1em;
+}
+
+.wrapper .billboard-image {
+  height: 16rem;
+  margin-bottom: 1em;
+  overflow: hidden;
+}
+
+.wrapper .billboard-image img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.wrapper .billboard-header {
+  font-family: 'Martel', serif;
+  font-size: 1.5rem;
+}
+
+.wrapper .billboard-content {
+  display: block;
+}
+
+.wrapper .billboard-content p {
+  width: auto;
+}
+
+.wrapper .billboard-content .authors {
+  font-weight: 700;
+}
