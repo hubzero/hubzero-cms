@@ -49,6 +49,20 @@ use App;
 class History extends SiteController
 {
 	/**
+	 * Book model
+	 *
+	 * @var  object
+	 */
+	public $book = null;
+
+	/**
+	 * Sub component?
+	 *
+	 * @var  bool
+	 */
+	public $sub = false;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      array $config Optional configurations
@@ -71,6 +85,11 @@ class History extends SiteController
 		if (!isset($config['scope_id']))
 		{
 			$config['scope_id'] = 0;
+		}
+
+		if (isset($config['sub']))
+		{
+			$this->sub = $config['sub'];
 		}
 
 		$this->book = new Book($config['scope'], $config['scope_id']);
@@ -112,6 +131,11 @@ class History extends SiteController
 		if (!$this->page->exists())
 		{
 			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
+		}
+
+		if (is_null($this->sub))
+		{
+			$this->sub = ($this->page->get('scope') != 'site');
 		}
 
 		$this->registerTask('deleterevision', 'delete');
@@ -163,13 +187,13 @@ class History extends SiteController
 		);
 		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
+			$this->page->link() . '&' . ($this->sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view
 			->set('parents', $parents)
 			->set('page', $this->page)
-			->set('sub', $this->page->get('scope') != 'site')
+			->set('sub', $this->sub)
 			->setErrors($this->getErrors())
 			->setLayout('display')
 			->display();
@@ -251,14 +275,14 @@ class History extends SiteController
 		);
 		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
+			$this->page->link() . '&' . ($this->sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		// Output view
 		$this->view
 			->set('parents', $parents)
 			->set('page', $this->page)
-			->set('sub', $this->page->get('scope') != 'site')
+			->set('sub', $this->sub)
 			->set('content', $result)
 			->set('or', $or)
 			->set('dr', $dr)
