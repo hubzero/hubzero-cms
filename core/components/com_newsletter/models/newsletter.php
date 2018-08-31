@@ -318,6 +318,7 @@ class Newsletter extends Relational
 		foreach ($this->primary()->rows() as $primary)
 		{
 			$primary->set('nid', $newsletter->get('id'));
+			$primary->set('id', null);
 
 			if (!$primary->save())
 			{
@@ -329,6 +330,7 @@ class Newsletter extends Relational
 		foreach ($this->secondary()->rows() as $secondary)
 		{
 			$secondary->set('nid', $newsletter->get('id'));
+			$secondary->set('id', null);
 
 			if (!$secondary->save())
 			{
