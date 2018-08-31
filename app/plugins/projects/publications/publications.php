@@ -60,7 +60,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * @var	 array
 	 */
 	protected $_msg = null;
-
+	
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
@@ -92,7 +92,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		return $area;
 	}
-
+	
 	/**
 	 * Event call to return count of items
 	 *
@@ -2221,8 +2221,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
 			$extended = $state == 5 ? false : true;
-			$doi = $doiService->register($extended, ($state == 5 ? 'reserved' : 'public'));
-
+			$status = $state == 5 ? 'reserved' : 'public';
+			$doi = $doiService->register(true, false, null, $extended, $status);
+			
 			// Store DOI
 			if ($doi)
 			{
@@ -2232,11 +2233,33 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
+				if ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
+				}
+				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_EZID)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
+				}
+				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_NONE)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
+				}
 				$doiErr = true;
 			}
 		}
-
+		
+		// Register DOI name and URL for DataCite DOI when the publication is set to be automatically approved.
+		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
+		{
+			$doiService->register(false, true, $pub->version->get('doi'));
+			
+			if ($doiService->getError())
+			{
+				$this->setError($doiService->getError());
+			}
+		}
+		
 		// Proceed if no error
 		if (!$this->getError())
 		{
