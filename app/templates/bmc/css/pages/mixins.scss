@@ -149,11 +149,11 @@
 }
 @mixin showcase-tag($background-color, $link-color) {
   position: absolute;
-  bottom: 50px;
+  bottom: 5em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: .8em;
+  padding: .5em .8em;
   background-color: $background-color;
   a {
     color: $link-color;
