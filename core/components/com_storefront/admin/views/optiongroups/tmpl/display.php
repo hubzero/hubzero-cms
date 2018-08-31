@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('category');
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Option Groups', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Option Groups', 'storefront');
 if (0  && $canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -71,11 +71,11 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">Options (published)</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -123,7 +123,7 @@ foreach ($this->rows as $row)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->ogId; ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->ogId; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
@@ -182,8 +182,8 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

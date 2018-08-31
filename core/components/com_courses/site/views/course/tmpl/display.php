@@ -83,7 +83,7 @@ $this->css('course.css')
 <?php } ?>
 
 <section class="course section intro<?php echo ($this->course->get('logo')) ? ' with-identity' : ''; ?>">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
 				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
@@ -183,7 +183,7 @@ $this->css('course.css')
 
 <?php if ($this->course->access('edit', 'course') && !$offerings->total()) { ?>
 	<section class="course section intro offering-help">
-		<div class="section-inner">
+		<div class="section-inner hz-layout-with-aside">
 			<div class="subject">
 				<p>
 					<strong><?php echo Lang::txt('COM_COURSES_COURSE_NEEDS_AN_OFFERING'); ?></strong></p>
@@ -202,134 +202,135 @@ $this->css('course.css')
 <?php } ?>
 
 <section class="course section">
-	<div class="subject">
-		<ul class="sub-menu">
-			<?php
-			if ($action == 'addpage')
-			{
-				$this->active = '';
-			}
-
-			if ($this->plugins)
-			{
-				foreach ($this->plugins as $i => $plugin)
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject">
+			<ul class="sub-menu">
+				<?php
+				if ($action == 'addpage')
 				{
-					$url = Route::url($this->course->link() . '&active=' . $plugin->get('name'));
+					$this->active = '';
+				}
 
-					if ($plugin->get('name') == $this->active)
+				if ($this->plugins)
+				{
+					foreach ($this->plugins as $i => $plugin)
 					{
-						Pathway::append($plugin->get('title'), $url);
+						$url = Route::url($this->course->link() . '&active=' . $plugin->get('name'));
 
-						if ($this->active != 'overview')
+						if ($plugin->get('name') == $this->active)
 						{
-							Document::setTitle(Document::getTitle() . ': ' . $plugin->get('title'));
+							Pathway::append($plugin->get('title'), $url);
+
+							if ($this->active != 'overview')
+							{
+								Document::setTitle(Document::getTitle() . ': ' . $plugin->get('title'));
+							}
 						}
+						?>
+						<li id="sm-<?php echo $i; ?>"<?php echo ($plugin->get('name') == $this->active) ? ' class="active"' : ''; ?>>
+							<a class="tab" data-rel="<?php echo $plugin->get('name'); ?>" href="<?php echo $url; ?>">
+								<span><?php echo $this->escape($plugin->get('title')); ?></span>
+							</a>
+						</li>
+						<?php
 					}
-					?>
-					<li id="sm-<?php echo $i; ?>"<?php echo ($plugin->get('name') == $this->active) ? ' class="active"' : ''; ?>>
-						<a class="tab" data-rel="<?php echo $plugin->get('name'); ?>" href="<?php echo $url; ?>">
-							<span><?php echo $this->escape($plugin->get('title')); ?></span>
+				}
+				?>
+				<?php if ($this->course->access('edit', 'course')) { ?>
+					<li class="add-page">
+						<a class="icon-add tab" href="<?php echo Route::url($this->course->link() . '&action=addpage'); ?>">
+							<?php echo Lang::txt('PLG_COURSES_PAGES_ADD_PAGE'); ?>
 						</a>
 					</li>
-					<?php
-				}
-			}
-			?>
-			<?php if ($this->course->access('edit', 'course')) { ?>
-				<li class="add-page">
-					<a class="icon-add tab" href="<?php echo Route::url($this->course->link() . '&action=addpage'); ?>">
-						<?php echo Lang::txt('PLG_COURSES_PAGES_ADD_PAGE'); ?>
-					</a>
-				</li>
-			<?php } ?>
-		</ul>
+				<?php } ?>
+			</ul>
 
-		<?php
-		foreach ($this->notifications as $notification)
-		{
-			echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
-		}
-
-		if (($action == 'addpage' || $action == 'editpage') && $this->course->access('edit', 'course'))
-		{
-			$page = $this->course->page($this->active);
-			?>
-			<div class="inner-section" id="addpage-section">
-				<form action="<?php echo Route::url($this->course->link()); ?>" class="form-inplace" method="post">
-					<fieldset>
-						<div class="grid">
-							<div class="col span-half">
-								<label for="field-title">
-									<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_PAGES_REQUIRED'); ?></span>
-									<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($page->get('title'))); ?>" />
-									<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
-								</label>
-							</div>
-							<div class="col span-half omega">
-								<label for="field-url">
-									<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo Lang::txt('PLG_COURSES_PAGES_OPTINAL'); ?></span>
-									<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($page->get('url'))); ?>" />
-									<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
-								</label>
-							</div>
-						</div>
-
-						<label for="field_description">
-							<?php echo $this->editor('page[content]', $this->escape(stripslashes($page->get('content'))), 35, 50, 'field_content'); ?>
-						</label>
-
-						<p class="submit">
-							<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
-							<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
-								<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
-							</a>
-						</p>
-
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="course" />
-						<input type="hidden" name="task" value="savepage" />
-
-						<?php echo Html::input('token'); ?>
-
-						<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
-						<input type="hidden" name="page[id]" value="<?php echo $this->escape($page->get('id')); ?>" />
-						<input type="hidden" name="page[alias]" value="<?php echo $this->escape($page->get('alias')); ?>" />
-						<input type="hidden" name="page[course_id]" value="<?php echo $this->course->get('id'); ?>" />
-						<input type="hidden" name="page[section_id]" value="0" />
-						<input type="hidden" name="page[offering_id]" value="0" />
-					</fieldset>
-				</form>
-			</div>
 			<?php
-		}
-		elseif ($this->plugins)
-		{
-			foreach ($this->plugins as $plugin)
+			foreach ($this->notifications as $notification)
 			{
-				if ($html = $plugin->get('html'))
-				{
-					?>
-					<div class="inner-section" id="<?php echo $plugin->get('name'); ?>-section">
-						<?php if ($this->course->access('edit', 'course') && $plugin->get('isPage')) { ?>
-							<div class="manager-options">
-								<a class="icon-error btn btn-secondary btn-danger" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage'); ?>">
-									<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
-								</a>
-								<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
-									<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
-								</a>
-								<span><strong><?php echo Lang::txt('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
+				echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
+			}
+
+			if (($action == 'addpage' || $action == 'editpage') && $this->course->access('edit', 'course'))
+			{
+				$page = $this->course->page($this->active);
+				?>
+				<div class="inner-section" id="addpage-section">
+					<form action="<?php echo Route::url($this->course->link()); ?>" class="form-inplace" method="post">
+						<fieldset>
+							<div class="grid">
+								<div class="col span-half">
+									<label for="field-title">
+										<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_PAGES_REQUIRED'); ?></span>
+										<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($page->get('title'))); ?>" />
+										<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
+									</label>
+								</div>
+								<div class="col span-half omega">
+									<label for="field-url">
+										<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo Lang::txt('PLG_COURSES_PAGES_OPTINAL'); ?></span>
+										<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($page->get('url'))); ?>" />
+										<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
+									</label>
+								</div>
 							</div>
-						<?php } ?>
-						<?php echo $html; ?>
-					</div><!-- / .inner-section -->
-					<?php
+
+							<label for="field_description">
+								<?php echo $this->editor('page[content]', $this->escape(stripslashes($page->get('content'))), 35, 50, 'field_content'); ?>
+							</label>
+
+							<p class="submit">
+								<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
+								<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
+									<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+								</a>
+							</p>
+
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="controller" value="course" />
+							<input type="hidden" name="task" value="savepage" />
+
+							<?php echo Html::input('token'); ?>
+
+							<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+							<input type="hidden" name="page[id]" value="<?php echo $this->escape($page->get('id')); ?>" />
+							<input type="hidden" name="page[alias]" value="<?php echo $this->escape($page->get('alias')); ?>" />
+							<input type="hidden" name="page[course_id]" value="<?php echo $this->course->get('id'); ?>" />
+							<input type="hidden" name="page[section_id]" value="0" />
+							<input type="hidden" name="page[offering_id]" value="0" />
+						</fieldset>
+					</form>
+				</div>
+				<?php
+			}
+			elseif ($this->plugins)
+			{
+				foreach ($this->plugins as $plugin)
+				{
+					if ($html = $plugin->get('html'))
+					{
+						?>
+						<div class="inner-section" id="<?php echo $plugin->get('name'); ?>-section">
+							<?php if ($this->course->access('edit', 'course') && $plugin->get('isPage')) { ?>
+								<div class="manager-options">
+									<a class="icon-error btn btn-secondary btn-danger" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage'); ?>">
+										<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
+									</a>
+									<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
+										<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+									</a>
+									<span><strong><?php echo Lang::txt('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
+								</div>
+							<?php } ?>
+							<?php echo $html; ?>
+						</div><!-- / .inner-section -->
+						<?php
+					}
 				}
 			}
-		}
-		?>
-	</div><!-- / .subject -->
-	<aside class="aside">
+			?>
+		</div><!-- / .subject -->
+		<aside class="aside">
 		<?php if ($field == 'summary' && $this->course->access('edit', 'course')) { ?>
 			<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace course-summary" method="post">
 				<label for="field_length">
@@ -651,6 +652,7 @@ $this->css('course.css')
 		}
 		?>
 	</aside><!-- / .aside -->
+	</div>
 </section><!-- / .course section -->
 
 <?php

@@ -1041,7 +1041,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 		$group->owner_type = 'group';
 		$group->owner = $this->get('id');
 		$group->id = $this->searchId();
-		$group->title = $this->description;
+		$group->title = empty($this->description) ? $this->cn : $this->description;
 		$group->hubtype = self::searchNamespace();
 		$group->description = \Hubzero\Utility\Sanitize::stripAll($this->public_desc);
 

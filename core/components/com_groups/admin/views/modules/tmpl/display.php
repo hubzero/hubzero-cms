@@ -61,13 +61,6 @@ $this->css();
 Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen'=>true));
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform(pressbutton);
-}
-</script>
-
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
 <?php if ($this->needsAttention->count() > 0) : ?>
@@ -150,7 +143,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->modules->count();?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?></th>
@@ -161,7 +154,7 @@ function submitbutton(pressbutton)
 	<?php foreach ($this->modules as $k => $module) : ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $module->get('id')); ?>">

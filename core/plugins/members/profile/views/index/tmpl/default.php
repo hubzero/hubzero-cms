@@ -118,9 +118,9 @@ foreach ($profiles as $profile)
 		$values = $fields[$profile->get('profile_key')]->get('profile_value');
 		if (!is_array($values))
 		{
-			$values = array($fields[$profile->get('profile_key')]->get('label', $values));
+			$values = array($values => $fields[$profile->get('profile_key')]->get('label', $values));
 		}
-		$values[] = $profile->get('label', $profile->get('profile_value'));
+		$values[$profile->get('profile_value')] = $profile->get('label', $profile->get('profile_value'));
 
 		$fields[$profile->get('profile_key')]->set('profile_value', $values);
 	}
@@ -530,6 +530,43 @@ $legacy = array(
 		$scripts = array();
 		$toggle = array();
 
+		// We need to collect a list of all field options
+		// that have dependent fields. We'll use this later
+		// on to determine what we should or shouldn't
+		// display, regardless if the field has a value
+		// submitted by the user.
+		$f = array();
+		foreach ($this->fields as $field)
+		{
+			if ($field->options->count())
+			{
+				foreach ($field->options as $option)
+				{
+					if (!$option->get('dependents'))
+					{
+						continue;
+					}
+
+					$events = json_decode($option->get('dependents'));
+					$option->set('dependents', $events);
+
+					if (empty($events))
+					{
+						continue;
+					}
+
+					if (!isset($f[$field->get('name')]))
+					{
+						$f[$field->get('name')] = array();
+					}
+					$f[$field->get('name')][$option->get('value')] = $events;
+				}
+			}
+		}
+
+		$sh = array();
+		$hd = array();
+
 		foreach ($this->fields as $field):
 			// Build scripts for toggling dependent fields
 			if ($isUser && $field->options->count())
@@ -545,13 +582,7 @@ $legacy = array(
 
 					$i++;
 
-					if (!$option->get('dependents'))
-					{
-						continue;
-					}
-
-					$events = json_decode($option->get('dependents'));
-					$option->set('dependents', $events);
+					$events = $option->get('dependents');
 
 					if (empty($events))
 					{
@@ -696,17 +727,58 @@ $legacy = array(
 					}
 				}
 
+				$val = $value;
+
+				// If we have a field that has options with dependent values
+				// We push all the dependent fields into a "hide" list
+				if (isset($f[$field->get('name')]))
+				{
+					foreach ($f[$field->get('name')] as $opt => $deps)
+					{
+						$hd = array_merge($deps, $hd);
+					}
+				}
+
 				if (is_array($value))
 				{
+					// If the value is from an option that has dependent fields
+					// We need to caputre its list of dependent fields so we
+					// can tell the code to display those fields
+					foreach (array_keys($value) as $k => $v)
+					{
+						if (isset($f[$field->get('name')]) && isset($f[$field->get('name')][$v]))
+						{
+							$sh += $f[$field->get('name')][$v];
+						}
+					}
+
+					$val = array();
 					foreach ($value as $k => $v)
 					{
-						$value[$k] = renderIfJson($v);
+						$val[$k] = renderIfJson($v);
 					}
-					$value = implode('<br />', $value);
+					$val = implode('<br />', $val);
 				}
 				else
 				{
-					$value = renderIfJson($value);
+					if (isset($f[$field->get('name')]) && isset($f[$field->get('name')][$value]))
+					{
+						$sh += $f[$field->get('name')][$value];
+					}
+
+					$val = renderIfJson($value);
+				}
+
+				$hd = array_diff($hd, $sh);
+
+				// Is the field in the list of hidden dependents?
+				if (in_array($field->get('name'), $hd))
+				{
+					if (!$isUser)
+					{
+						continue;
+					}
+					$cls[] = 'hide';
 				}
 
 				if (empty($value))
@@ -717,14 +789,14 @@ $legacy = array(
 				<li class="<?php echo implode(' ', $cls); ?> section" id="input-section-<?php echo $this->escape($field->get('name')); ?>">
 					<div class="section-content">
 						<div class="key"><?php echo $field->get('label'); ?></div>
-						<div class="value"><?php echo (!empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET')); ?></div>
+						<div class="value"><?php echo (!empty($val) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET')); ?></div>
 						<br class="clear" />
 						<?php
 						if ($isUser)
 						{
 							if ($field->get('type') == 'url')
 							{
-								$value = strip_tags($value);
+								$value = strip_tags($val);
 							}
 							if ($field->get('type') == 'tags')
 							{
@@ -734,6 +806,10 @@ $legacy = array(
 							{
 								$value = $profile->get('profile_value');
 								$value = $value ?: $this->profile->get($field->get('name'));
+							}
+							if (is_array($value))
+							{
+								$value = array_keys($value);
 							}
 							$formfield = $form->getField($field->get('name'));
 							if ($formfield)

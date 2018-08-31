@@ -59,27 +59,28 @@ $this->css()
 </header>
 
 <section class="main section">
-	<div class="subject newsletter">
-		<?php
-		if ($this->getError())
-		{
-			echo '<p class="error">' . $this->getError() . '</p>';
-		}
-		?>
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject newsletter">
+			<?php
+			if ($this->getError())
+			{
+				echo '<p class="error">' . $this->getError() . '</p>';
+			}
+			?>
 
-		<h3><?php echo $this->escape($this->title); ?></h3>
+			<h3><?php echo $this->escape($this->title); ?></h3>
 
-		<?php if ($this->newsletter != '') : ?>
-			<div class="container">
-				<iframe id="newsletter-iframe" width="100%" height="0" title="<?php echo $this->escape($this->title); ?>" src="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>"></iframe>
-			</div>
-		<?php else : ?>
-			<p class="info">
-				<?php echo Lang::txt('COM_NEWSLETTER_VIEW_NO_NEWSLETTERS'); ?>
-			</p>
-		<?php endif; ?>
-	</div><!-- /.subject -->
-	<aside class="aside">
+			<?php if ($this->newsletter != '') : ?>
+				<div class="container">
+					<iframe id="newsletter-iframe" width="100%" height="0" title="<?php echo $this->escape($this->title); ?>" src="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>"></iframe>
+				</div>
+			<?php else : ?>
+				<p class="info">
+					<?php echo Lang::txt('COM_NEWSLETTER_VIEW_NO_NEWSLETTERS'); ?>
+				</p>
+			<?php endif; ?>
+		</div><!-- /.subject -->
+		<aside class="aside">
 		<div class="container">
 			<h3><?php echo Lang::txt('COM_NEWSLETTER_VIEW_PAST_NEWSLETTERS'); ?></h3>
 			<ul>
@@ -105,4 +106,5 @@ $this->css()
 			</ul>
 		</div>
 	</aside><!-- /.aside -->
+	</div>
 </section><!-- /.main .section -->

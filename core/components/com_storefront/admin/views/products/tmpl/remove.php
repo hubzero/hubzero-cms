@@ -54,8 +54,7 @@ function submitbutton(pressbutton)
 		<tbody>
 		<tr>
 			<td>
-				<input type="checkbox" name="delete" value="delete"
-					   id="field-delete">
+				<input type="checkbox" name="delete" value="1" id="field-delete" />
 				<label for="field-delete">I'm positive. Go ahead and do the delete.</label>
 			</td>
 		</tr>

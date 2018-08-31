@@ -321,7 +321,7 @@ class Abusereports extends AdminController
 		}
 
 		// Mark abuse report as deleted
-		$report->get('state', 2);
+		$report->set('state', Report::STATE_DELETED);
 
 		if (!$report->save())
 		{
@@ -332,6 +332,8 @@ class Abusereports extends AdminController
 		// Notify item owner
 		if ($email)
 		{
+			Lang::load($this->_option . '.abuse', dirname(dirname(__DIR__)) . '/site');
+
 			$user = User::getInstance($reported->author);
 
 			// Email "from" info

@@ -402,7 +402,7 @@ class Tickets extends AdminController
 			$ticket->set('target_date', '0000-00-00 00:00:00');
 		}
 
-		$text = Request::getArray('comment', '', 'post');
+		$text = Request::getString('comment', '', 'post');
 		$comment = Comment::blank();
 		$comment->set('ticket', $id);
 

@@ -2171,7 +2171,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$row = \Hubzero\Plugin\Params::blank()->set($settings);
 
 		// Get parameters
-		$p = new \Hubzero\Config\Registry(Request::getString('params', '', 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 
 		$row->set('params', $p->toString());
 

@@ -52,7 +52,7 @@ if ($canDo->get('core.delete'))
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="category"><?php echo Lang::txt('COM_RESOURCES_FILTER_CATEGORY'); ?>:</label>
-		<?php echo \Components\Resources\Helpers\Html::selectType($this->cats, 'category', $this->filters['category'], Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
+		<?php echo \Components\Resources\Helpers\Html::selectType($this->cats, 'category', $this->filters['category'], 'category', Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
@@ -60,7 +60,7 @@ if ($canDo->get('core.delete'))
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TITLE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -101,7 +101,7 @@ if ($canDo->get('core.delete'))
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit') && $row->id != 7) { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 					<?php } ?>
 				</td>
 				<td class="priority-4">

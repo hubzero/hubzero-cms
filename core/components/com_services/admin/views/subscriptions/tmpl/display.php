@@ -45,18 +45,6 @@ $now = Date::toSql();
 // Push some styles to the template
 $this->css('admin.subscriptions.css');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">

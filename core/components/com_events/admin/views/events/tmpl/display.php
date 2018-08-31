@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_EVENTS_MANAGER'), 'event.png');
+Toolbar::title(Lang::txt('COM_EVENTS_MANAGER'), 'event');
 Toolbar::preferences('com_events', '550');
 Toolbar::spacer();
 Toolbar::custom('addpage', 'new', 'COM_EVENTS_PAGES_ADD', 'COM_EVENTS_PAGES_ADD', true, false);
@@ -51,19 +51,6 @@ Toolbar::help('events');
 Html::behavior('tooltip');
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
@@ -79,7 +66,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
@@ -120,7 +107,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
 						&nbsp;
 					<?php } else { ?>
-						<input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 					<?php } ?>
 				</td>
 				<td>

@@ -64,7 +64,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 </header>
 
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<?php if ($this->getError()) { ?>
 				<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
@@ -104,7 +104,6 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 				</div><!-- / .container-block -->
 			</article><!-- / .container -->
 		</div><!-- / .subject -->
-
 		<aside class="aside">
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
@@ -151,7 +150,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
 <?php if ($this->article->param('allow_comments')) { ?>
 <section class="below section" id="comments">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<h3 class="comments-title">
 				<?php echo Lang::txt('COM_KB_COMMENTS_ON_ENTRY'); ?>
@@ -284,9 +283,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 				</fieldset>
 			</form>
 		</div><!-- / .subject -->
-		<aside class="aside">
-
-		</aside>
+		<aside class="aside">&nbsp;</aside>
 	</div><!-- / .section-inner -->
 </section><!-- / .below -->
 

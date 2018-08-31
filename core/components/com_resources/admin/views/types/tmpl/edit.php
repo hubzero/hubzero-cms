@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
-					<?php echo \Components\Resources\Helpers\Html::selectType($this->categories, 'type[category]', $this->row->category, Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
+					<?php echo \Components\Resources\Helpers\Html::selectType($this->categories, 'type[category]', $this->row->category, 'category', Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="field-contributable"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
@@ -173,7 +173,7 @@ function submitbutton(pressbutton)
 						}
 						?>
 						<tr>
-							<th scope="row"><?php echo (strstr($plugin->name, '_') ? Lang::txt(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></th>
+							<th scope="row"><?php echo strstr($plugin->name, '_') ? Lang::txt(stripslashes($plugin->name)) : stripslashes($plugin->name); ?></th>
 							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_' . $plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> <?php echo Lang::txt('COM_RESOURCES_OFF'); ?></label></td>
 							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_' . $plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> <?php echo Lang::txt('COM_RESOURCES_ON'); ?></label></td>
 						</tr>

@@ -47,17 +47,6 @@ if ($canDo->get('core.edit'))
 }
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -70,7 +59,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'authorid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_COL_MEMBER'); ?></th>
@@ -114,7 +103,7 @@ function submitbutton(pressbutton)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->authorid; ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->authorid; ?>" onclick="Joomla.isChecked(this.checked);" />
 					<?php } ?>
 				</td>
 				<td class="priority-4">

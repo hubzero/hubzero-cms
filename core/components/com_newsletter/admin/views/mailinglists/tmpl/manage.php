@@ -63,7 +63,7 @@ Toolbar::cancel();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->list_emails); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th>
 					<?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
@@ -92,7 +92,7 @@ Toolbar::cancel();
 				<?php foreach ($this->list_emails as $le) { ?>
 					<tr>
 						<td width="30">
-							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" onclick="isChecked(this.checked);" />
+							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 						</td>
 						<td>
 							<a href="mailto:<?php echo $le->email; ?>"><?php echo $this->escape($le->email); ?></a>

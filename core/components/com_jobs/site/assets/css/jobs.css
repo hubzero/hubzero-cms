@@ -65,7 +65,7 @@
 		background: url("/core/components/com_jobs/site/assets/img/smiley_grey.gif") 0 50% no-repeat;
 		padding-left: 16px;
 	}*/
-	.alljobs:before; {
+	.alljobs:before {
 		content: "\f08d";
 		font-family: "Fontcons";
 		margin-right: 0.2em;

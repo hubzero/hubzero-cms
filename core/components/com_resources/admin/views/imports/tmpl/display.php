@@ -53,25 +53,12 @@ Toolbar::help('import');
 $this->css('import');
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS', 'count', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED', 'created_at', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -93,7 +80,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<?php if ($canDo->get('core.create')): ?>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 							<?php endif; ?>
 						</td>
 						<td>

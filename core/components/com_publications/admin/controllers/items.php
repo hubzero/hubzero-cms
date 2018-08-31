@@ -872,8 +872,11 @@ class Items extends AdminController
 						if ($this->model->version->doi
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 						{
-							// Update
 							$doiService->update($this->model->version->doi, true);
+							
+							// Register URL and DOI name for DataCite DOI service
+							$doiService->register(false, true, $this->model->version->doi);
+							
 							if ($doiService->getError())
 							{
 								$this->setError($doiService->getError());
@@ -881,9 +884,9 @@ class Items extends AdminController
 						}
 						elseif ($requireDoi)
 						{
-							// Register
-							$doi = $doiService->register(true);
-
+							// Register metadata
+							$doi = $doiService->register(true, false, null, true);
+							
 							if (!$doi)
 							{
 								App::redirect(
@@ -895,9 +898,17 @@ class Items extends AdminController
 							{
 								$this->model->version->doi = $doi;
 							}
+							
+							// Register the DOI name and URL to complete the DataCite DOI registration.
+							$doiService->register(false, true, $doi);
+							
+							if ($doiService->getError())
+							{
+								$this->setError($doiService->getError());
+							}
 						}
 					}
-
+					
 					// Save date accepted
 					if ($action == 'publish')
 					{

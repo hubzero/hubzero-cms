@@ -114,7 +114,7 @@ $this->css('quotas.css');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -141,7 +141,7 @@ $this->css('quotas.css');
 			?>
 			<tr class="<?php echo "row$k quota-row"; ?>">
 				<td>
-					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-5">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">

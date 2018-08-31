@@ -41,7 +41,7 @@ Toolbar::deleteList();
 		<caption><?php echo Lang::txt('PLG_RESOURCES_SPONSORS'); ?></caption>
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -84,7 +84,7 @@ Toolbar::deleteList();
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $row->id; ?>

@@ -69,7 +69,7 @@ if ($canDo->get('core.admin'))
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->lists); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NAME'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ACTIVE_SUBSCRIBERS'); ?></th>
@@ -90,7 +90,7 @@ if ($canDo->get('core.admin'))
 				<?php foreach ($this->lists as $list) { ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $list->id; ?>" onclick="isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $list->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 						</td>
 						<td>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $list->id); ?>">

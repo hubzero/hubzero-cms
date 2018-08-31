@@ -54,7 +54,7 @@ $now = Date::of('now')->toSql();
 </header>
 
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
 				<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>

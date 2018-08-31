@@ -33,26 +33,13 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_SESSIONS'), 'tools.png');
+Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_SESSIONS'), 'tools');
 Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('sessions');
 
 Html::behavior('tooltip');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
 
 <?php
 	$this->view('_submenu')
@@ -123,7 +110,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SESSION', 'sessnum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_OWNER', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_VIEWER', 'viewuser', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -158,7 +145,7 @@ function submitbutton(pressbutton)
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sessnum; ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sessnum; ?>" onclick="Joomla.isChecked(this.checked);" />
 					</td>
 					<td>
 						<span class="editlinktip hasTip" title="<?php echo $this->escape(stripslashes($row->sessname)); ?>::Host: <?php echo $row->exechost; ?>&lt;br /&gt;IP: <?php echo $row->remoteip; ?>">
@@ -211,8 +198,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

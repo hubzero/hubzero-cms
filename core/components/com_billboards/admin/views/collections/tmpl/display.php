@@ -34,10 +34,19 @@ defined('_HZEXEC_') or die();
 
 // Add the toolbar items
 Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS'), 'billboards');
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::spacer();
-Toolbar::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
+if (User::authorise('core.create', $this->option))
+{
+	Toolbar::addNew();
+}
+if (User::authorise('core.edit', $this->option))
+{
+	Toolbar::editList();
+	Toolbar::spacer();
+}
+if (User::authorise('core.delete', $this->option))
+{
+	Toolbar::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
+}
 Toolbar::spacer();
 Toolbar::help('collections');
 ?>
@@ -46,7 +55,7 @@ Toolbar::help('collections');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->copy()->total();?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
 			</tr>
@@ -61,7 +70,7 @@ Toolbar::help('collections');
 		<?php $i = 0; ?>
 		<?php foreach ($this->rows as $row) : ?>
 			<tr>
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" /></td>
+				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" /></td>
 				<td class="priority-3"><?php echo $row->id; ?></td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">

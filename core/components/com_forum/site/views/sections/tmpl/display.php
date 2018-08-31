@@ -48,7 +48,7 @@ $this->css()
 
 <section class="main section">
 <?php if ($this->sections->count()) { ?>
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
 				<div class="container data-entry">

@@ -60,6 +60,7 @@ class Permissions
 
 		if ($assetId)
 		{
+			$assetName .= '.' . $assetType;
 			$assetName .= '.' . (int) $assetId;
 		}
 

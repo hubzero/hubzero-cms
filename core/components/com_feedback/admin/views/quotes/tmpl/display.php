@@ -56,18 +56,6 @@ Toolbar::spacer();
 Toolbar::help('quotes');
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -82,7 +70,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_FEEDBACK_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onClick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_FEEDBACK_COL_SUBMITTED', 'date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_FEEDBACK_COL_AUTHOR', 'fullname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FEEDBACK_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -118,7 +106,7 @@ function submitbutton(pressbutton)
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onClick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onClick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-2">
 					<?php if ($row->get('date') && $row->get('date') != '0000-00-00 00:00:00') { ?>

@@ -206,9 +206,10 @@ class Html
 	 * @param      string $skip     ITems to skip
 	 * @return     string HTML
 	 */
-	public static function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
+	public static function selectType($arr, $name, $value='', $id='', $shownone='', $class='', $js='', $skip='')
 	{
-		$html  = '<select name="fields[' . $name . ']" id="' . $name . '"' . $js;
+		$id = empty($id) ? $name : $id;
+		$html  = '<select name="' . $name . '" id="' . $id . '"' . $js;
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		if ($shownone != '')
 		{

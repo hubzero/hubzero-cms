@@ -36,15 +36,30 @@ Html::behavior('tooltip');
 
 // Menu
 Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS'), 'billboards');
-Toolbar::preferences($this->option, '200', '500');
-Toolbar::spacer();
-Toolbar::publishList();
-Toolbar::unpublishList();
-Toolbar::spacer();
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::spacer();
-Toolbar::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
+if (User::authorise('core.admin', $this->option))
+{
+	Toolbar::preferences($this->option);
+	Toolbar::spacer();
+}
+if (User::authorise('core.edit.state', $this->option))
+{
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
+}
+if (User::authorise('core.create', $this->option))
+{
+	Toolbar::addNew();
+}
+if (User::authorise('core.edit', $this->option))
+{
+	Toolbar::editList();
+	Toolbar::spacer();
+}
+if (User::authorise('core.delete', $this->option))
+{
+	Toolbar::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
+}
 Toolbar::spacer();
 Toolbar::help('billboards');
 ?>
@@ -53,7 +68,7 @@ Toolbar::help('billboards');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onClick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_NAME'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
@@ -99,7 +114,7 @@ Toolbar::help('billboards');
 					<?php echo $row->collection->name; ?>
 				</td>
 				<td class="order priority-3">
-					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
+					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" />
 				</td>
 				<td class="priority-1">
 					<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_BILLBOARDS_SET_TO', $task); ?>">

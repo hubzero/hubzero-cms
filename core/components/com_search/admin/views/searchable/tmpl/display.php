@@ -60,25 +60,13 @@ Submenu::addEntry(
 
 <section id="main" class="com_search">
 <!-- Content begins -->
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	console.log(pressbutton);
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
+
 <?php $i = 0; ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->components); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-5"><a href="#" onclick="Joomla.tableOrdering('id','asc','');return false;" title="Click to sort by this column" class="active desc sort">ID</a></th>
 				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('title','asc','');return false;" title="Click to sort by this column" class="sort">Title</a></th>
 				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('state','asc','');return false;" title="Click to sort by this column" class="sort">Active?</a></th>
@@ -90,7 +78,7 @@ function submitbutton(pressbutton)
 			<?php foreach ($this->components as $component): ?>
 			<tr class="row0">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $component->get('id') ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $component->get('id') ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-5">
 					<?php echo $component->id; ?>

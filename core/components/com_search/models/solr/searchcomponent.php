@@ -66,6 +66,16 @@ class SearchComponent extends Relational
 		'created'
 	);
 
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 **/
+	protected $rules = array(
+		'title' => 'notempty',
+		'name' => 'notempty'
+	);
+
 
 	/**
 	 * Hubzero\Search\Adapters\SolrIndexAdapter

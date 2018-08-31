@@ -37,20 +37,20 @@ $this->css();
 Toolbar::title(Lang::txt('Projects'), 'projects');
 
 // Only display if enabled
-if (User::authorise('core.manage', $this->option . '.component') && $this->config->get('custom_profile') == 'custom')
+if (User::authorise('core.manage', $this->option) && $this->config->get('custom_profile') == 'custom')
 {
 	Toolbar::custom('customizeDescription', 'menus', 'menus', 'COM_PROJECTS_CUSTOM_DESCRIPTION', false);
 	Toolbar::spacer();
 }
-if (User::authorise('core.edit.state', $this->option . '.component'))
+if (User::authorise('core.edit.state', $this->option))
 {
 	Toolbar::archiveList();
 }
-if (User::authorise('core.edit', $this->option . '.component'))
+if (User::authorise('core.edit', $this->option))
 {
 	Toolbar::editList();
 }
-if (User::authorise('core.admin', $this->option . '.component'))
+if (User::authorise('core.admin', $this->option))
 {
 	Toolbar::spacer();
 	Toolbar::preferences('com_projects', '550');
@@ -68,18 +68,6 @@ if (substr($base, -13) == 'administrator')
 }
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -118,7 +106,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist" id="projects-admin">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-5" scope="col"> </th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
@@ -285,7 +273,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
 	<?php echo Html::input('token'); ?>
 </form>

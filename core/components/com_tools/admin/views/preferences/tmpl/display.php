@@ -68,7 +68,7 @@ Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DE
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -99,7 +99,7 @@ Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DE
 			?>
 			<tr class="<?php echo "row$k quota-row"; ?>">
 				<td>
-					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-4">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
@@ -132,7 +132,7 @@ Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DE
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 	<?php echo Html::input('token'); ?>
 </form>

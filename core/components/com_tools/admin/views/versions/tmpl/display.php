@@ -33,26 +33,13 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_TOOLS'), 'tools.png');
+Toolbar::title(Lang::txt('COM_TOOLS'), 'tools');
 Toolbar::preferences('com_tools', '550');
 Toolbar::spacer();
 Toolbar::help('versions');
 
 $this->css('tools.css');
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
@@ -65,11 +52,11 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_INSTANCE', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_TOOLS_COL_VERSION', 'version', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_COL_REVISION', 'revision', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_INSTANCE', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_VERSION', 'version', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_REVISION', 'revision', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -95,22 +82,44 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	switch ($row['state'])
 	{
-		case 0: $state = 'unpublished'; break;
-		case 1: $state = 'registered';  break;
-		case 2: $state = 'created';     break;
-		case 3: $state = 'uploaded';    break;
-		case 4: $state = 'installed';   break;
-		case 5: $state = 'updated';     break;
-		case 6: $state = 'approved';    break;
-		case 7: $state = 'published';   break;
-		case 8: $state = 'retired';     break;
-		case 9: $state = 'abandoned';   break;
-		default: $state = 'unknown';    break;
+		case 0:
+			$state = 'unpublished';
+			break;
+		case 1:
+			$state = 'registered';
+			break;
+		case 2:
+			$state = 'created';
+			break;
+		case 3:
+			$state = 'uploaded';
+			break;
+		case 4:
+			$state = 'installed';
+			break;
+		case 5:
+			$state = 'updated';
+			break;
+		case 6:
+			$state = 'approved';
+			break;
+		case 7:
+			$state = 'published';
+			break;
+		case 8:
+			$state = 'retired';
+			break;
+		case 9:
+			$state = 'abandoned';
+			break;
+		default:
+			$state = 'unknown';
+			break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="radio" name="id" id="cb<?php echo $i; ?>" value="<?php echo $row['id']; ?>" onclick="isChecked(this.checked);" />
+					<input type="radio" name="id" id="cb<?php echo $i; ?>" value="<?php echo $row['id']; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-5">
 					<?php echo $this->escape($row['id']); ?>

@@ -60,25 +60,12 @@ Toolbar::help('import');
 	</ul>
 </nav>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="adminform">
 		<table class="admintable">
 			<thead>
 				<tr>
-					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->hooks->count(); ?>);" /></th>
+					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 					<th scope="col" class="priority-3"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_NAME'); ?></th>
 					<th scope="col" class="priority-2"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_TYPE'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_FILE'); ?></th>
@@ -99,7 +86,7 @@ function submitbutton(pressbutton)
 					<?php foreach ($this->hooks as $i => $hook) : ?>
 						<tr>
 							<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 							</td>
 							<td class="priority-3">
 								<?php echo $this->escape($hook->get('name')); ?> <br />

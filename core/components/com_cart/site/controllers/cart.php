@@ -32,6 +32,7 @@ namespace Components\Cart\Site\Controllers;
 
 use Request;
 use Components\Cart\Models\CurrentCart;
+use Components\Storefront\Models\Warehouse;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 
@@ -85,8 +86,8 @@ class Cart extends ComponentController
 		$updateCartRequest = Request::getBool('updateCart', false, 'post');
 
 		// If pIds are posted, convert them to SKUs
-		$pIds = Request::getArray('pId', false, 'post');
-		$skus = Request::getArray('skus', false, 'post');
+		$pIds = Request::getVar('pId', false, 'post');
+		$skus = Request::getVar('skus', false, 'post');
 
 		if ($updateCartRequest && ($pIds || $skus))
 		{

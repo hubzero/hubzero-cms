@@ -92,9 +92,12 @@ class Searchable extends AdminController
 			$facetResults = $query->resultsFacetSet->getFacet('hubtypes');
 		}
 		$facetCounts = array();
-		foreach ($facetResults as $facet => $count)
+		if (!empty($facetResults))
 		{
-			$facetCounts[$facet] = $count;
+			foreach ($facetResults as $facet => $count)
+			{
+				$facetCounts[$facet] = $count;
+			}
 		}
 
 		$this->view
@@ -154,17 +157,17 @@ class Searchable extends AdminController
 	 * @param   integer  $parentID
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($obj = null)
 	{
 		$id = Request::getInt('id', 0);
 
-		$category = SearchComponent::oneOrFail($id);
-		$fields = $category->getSearchableFields();
-		$existingFields = $category->filters->fieldsByKey('field');
+		$searchComponent = is_object($obj) ? $obj : SearchComponent::oneOrFail($id);
+		$fields = $searchComponent->getSearchableFields();
+		$existingFields = $searchComponent->filters->fieldsByKey('field');
 		$existingFields = array_filter($existingFields, 'strtolower');
 		$availableFields = array_diff($fields, $existingFields);
 		$filters = array();
-		foreach ($category->filters()->order('ordering', 'ASC') as $filter)
+		foreach ($searchComponent->filters()->order('ordering', 'ASC') as $filter)
 		{
 			$filters[$filter->field]['label'] = !empty($filter->get('label')) ? $filter->get('label') : $filter->field;
 			$filters[$filter->field]['type'] = $filter->type;
@@ -180,7 +183,8 @@ class Searchable extends AdminController
 		}
 
 		$this->view
-			->set('category', $category)
+			->setLayout('edit')
+			->set('searchComponent', $searchComponent)
 			->set('fields', array())
 			->set('filters', $filters)
 			->set('availableFields', $availableFields)
@@ -204,7 +208,8 @@ class Searchable extends AdminController
 		$searchComponent->set($fields);
 		if (!$searchComponent->save())
 		{
-			Notify::error(Lang::txt('COM_SEARCH_FAILURE_TO_SAVE'));
+			Notify::error($searchComponent->getError());
+			return $this->editTask($searchComponent);
 		}
 		else
 		{

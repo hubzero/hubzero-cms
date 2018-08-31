@@ -62,7 +62,7 @@ foreach ($this->fields as $field)
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<form action="<?php echo Route::url($base); ?>" method="get" class="section-inner">
+	<form action="<?php echo Route::url($base); ?>" method="get" class="section-inner hz-layout-with-aside">
 		<aside class="aside">
 			<div class="container">
 				<fieldset>

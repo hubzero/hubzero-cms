@@ -64,6 +64,7 @@ if ($mode != 'preview')
 }
 ?>
 <section class="main section upperpane <?php echo $this->model->params->get('pageclass_sfx', ''); ?>">
+	<div class="section-inner hz-layout-with-aside">
 	<div class="subject">
 		<div class="grid overviewcontainer">
 			<div class="col span8">
@@ -224,42 +225,44 @@ if ($mode != 'preview')
 			->set('model', $this->model)
 			->display();
 		?>
-	</div><!-- / .subject -->
-	<aside class="aside rankarea">
-		<?php
-		// Show metadata
-		if ($this->model->params->get('show_metadata', 1))
-		{
-			$this->view('_metadata')
-				->set('option', $this->option)
-				->set('sections', $this->sections)
-				->set('model', $this->model)
-				->display();
-		}
-		?>
-	</aside><!-- / .aside -->
+		</div><!-- / .subject -->
+		<aside class="aside rankarea">
+			<?php
+			// Show metadata
+			if ($this->model->params->get('show_metadata', 1))
+			{
+				$this->view('_metadata')
+					->set('option', $this->option)
+					->set('sections', $this->sections)
+					->set('model', $this->model)
+					->display();
+			}
+			?>
+		</aside><!-- / .aside -->
+	</div>
 </section>
 
 <?php if ($this->model->access('view-all')) { ?>
 	<section class="main section <?php echo $this->model->params->get('pageclass_sfx', ''); ?>">
-		<div class="subject tabbed">
-			<?php
-			$this->view('_tabs')
-				->set('option', $this->option)
-				->set('cats', $this->cats)
-				->set('resource', $this->model)
-				->set('active', $this->tab)
-				->display();
+		<div class="section-inner hz-layout-with-aside">
+			<div class="subject tabbed">
+				<?php
+				$this->view('_tabs')
+					->set('option', $this->option)
+					->set('cats', $this->cats)
+					->set('resource', $this->model)
+					->set('active', $this->tab)
+					->display();
 
-			$this->view('_sections')
-				->set('option', $this->option)
-				->set('sections', $this->sections)
-				->set('resource', $this->model)
-				->set('active', $this->tab)
-				->display();
-			?>
-		</div><!-- / .subject -->
-		<aside class="aside extracontent">
+				$this->view('_sections')
+					->set('option', $this->option)
+					->set('sections', $this->sections)
+					->set('resource', $this->model)
+					->set('active', $this->tab)
+					->display();
+				?>
+			</div><!-- / .subject -->
+			<aside class="aside extracontent">
 			<?php
 			// Show related content
 			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
@@ -280,6 +283,7 @@ if ($mode != 'preview')
 			}
 			?>
 		</aside><!-- / .aside extracontent -->
+		</div>
 	</section>
 
 	<?php
@@ -324,34 +328,35 @@ if ($mode != 'preview')
 		?>
 		<form method="get" id="series" action="<?php echo Route::url($this->model->link()); ?>">
 			<section class="section">
-				<div class="subject">
-					<h3>
-						<?php echo Lang::txt('COM_RESOURCES_IN_THIS_SERIES'); ?>
-					</h3>
+				<div class="section-inner hz-layout-with-aside">
+					<div class="subject">
+						<h3>
+							<?php echo Lang::txt('COM_RESOURCES_IN_THIS_SERIES'); ?>
+						</h3>
 
-					<?php
-					$this->view('_list', 'browse')
-					     ->set('lines', $children)
-					     ->set('show_edit', $this->model->access('edit'))
-					     ->display();
-					?>
+						<?php
+						$this->view('_list', 'browse')
+							 ->set('lines', $children)
+							 ->set('show_edit', $this->model->access('edit'))
+							 ->display();
+						?>
 
-					<div class="clear"></div><!-- / .clear -->
+						<div class="clear"></div><!-- / .clear -->
 
-					<?php
-					// Initiate paging for children
-					$pageNav = $this->pagination(
-						$ccount,
-						$filters['start'],
-						$filters['limit']
-					);
-					$pageNav->setAdditionalUrlParam('id', $this->model->id);
-					$pageNav->setAdditionalUrlParam('sortby', $filters['sortby']);
+						<?php
+						// Initiate paging for children
+						$pageNav = $this->pagination(
+							$ccount,
+							$filters['start'],
+							$filters['limit']
+						);
+						$pageNav->setAdditionalUrlParam('id', $this->model->id);
+						$pageNav->setAdditionalUrlParam('sortby', $filters['sortby']);
 
-					echo $pageNav->render();
-					?>
-				</div><!-- / .subject -->
-				<div class="aside">
+						echo $pageNav->render();
+						?>
+					</div><!-- / .subject -->
+					<div class="aside">
 					<fieldset class="controls">
 						<label for="sortby">
 							<?php echo Lang::txt('COM_RESOURCES_SORT_BY'); ?>:
@@ -362,6 +367,7 @@ if ($mode != 'preview')
 						</p>
 					</fieldset>
 				</div><!-- / .aside -->
+				</div>
 			</section><!-- / .main section -->
 		</form>
 	<?php } // if ($this->tab == 'about' && $ccount > 0) ?>

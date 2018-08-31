@@ -134,7 +134,7 @@ $saveOrder = $listOrder == 'ordering';
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>

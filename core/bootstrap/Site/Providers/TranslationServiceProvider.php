@@ -67,13 +67,25 @@ class TranslationServiceProvider extends ServiceProvider
 		$translator = $this->app['language'];
 
 		$language = null;
+		$path = PATH_APP . DS . 'bootstrap' . DS . strtolower($this->app['client']->name);
 
 		// If a language was specified it has priority
 		if (!$language && $this->app->has('request'))
 		{
 			$lang = $this->app['request']->getString('language', null);
 
-			if ($lang && $translator->exists($lang))
+			if ($lang && $translator->exists($lang, $path))
+			{
+				$language = $lang;
+			}
+		}
+
+		// Detect cookie language
+		if (!$language) // && $this->app->has('language.filter'))
+		{
+			$lang = $this->app['request']->getString($this->app->hash('language'), null, 'cookie');
+
+			if ($lang && $translator->exists($lang, $path))
 			{
 				$language = $lang;
 			}
@@ -84,7 +96,7 @@ class TranslationServiceProvider extends ServiceProvider
 		{
 			$lang = \User::getParam($this->app['client']->alias . '_language');
 
-			if ($lang && $translator->exists($lang))
+			if ($lang && $translator->exists($lang, $path))
 			{
 				$language = $lang;
 			}
@@ -95,7 +107,7 @@ class TranslationServiceProvider extends ServiceProvider
 		{
 			$lang = $translator->detectLanguage();
 
-			if ($lang && $translator->exists($lang))
+			if ($lang && $translator->exists($lang, $path))
 			{
 				$language = $lang;
 			}
@@ -113,11 +125,11 @@ class TranslationServiceProvider extends ServiceProvider
 		}
 
 		// One last check to make sure we have something
-		if (!$language || !$translator->exists($language))
+		if (!$language || !$translator->exists($language, $path))
 		{
 			$lang = $this->app['config']->get('language', 'en-GB');
 
-			if ($translator->exists($lang))
+			if ($translator->exists($lang, $path))
 			{
 				$language = $lang;
 			}
@@ -128,9 +140,7 @@ class TranslationServiceProvider extends ServiceProvider
 			$translator->setLanguage($language);
 		}
 
-		$boot = DS . 'bootstrap' . DS . ucfirst($this->app['client']->name);
-
-		$translator->load('lib_joomla', PATH_APP . $boot, null, false, true) ||
-		$translator->load('lib_joomla', PATH_CORE . $boot, null, false, true);
+		$translator->load('lib_joomla', $path, null, false, true) ||
+		$translator->load('lib_joomla', PATH_CORE . DS . 'bootstrap' . DS . ucfirst($this->app['client']->name), null, false, true);
 	}
 }

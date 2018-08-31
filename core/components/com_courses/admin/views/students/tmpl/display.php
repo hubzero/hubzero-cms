@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_STUDENTS'), 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_STUDENTS'), 'courses');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -50,18 +50,6 @@ if ($canDo->get('core.delete'))
 
 Html::behavior('tooltip');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -142,7 +130,7 @@ function submitbutton(pressbutton)
 		<?php } ?>
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_NAME'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_EMAIL'); ?></th>
@@ -179,7 +167,7 @@ function submitbutton(pressbutton)
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-5">
 					<?php echo $this->escape($row->get('user_id')); ?>

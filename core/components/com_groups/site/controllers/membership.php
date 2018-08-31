@@ -378,7 +378,7 @@ class Membership extends Base
 		);
 
 		// Message subject
-		$subject = Lang::txt('COM_GROUPS_INVITE_EMAIL_SUBJECT', $this->view->group->get('cn'));
+		$subject = Lang::txt('COM_GROUPS_INVITE_EMAIL_SUBJECT', $this->view->group->get('description'));
 
 		// Message body for HUB user
 		$eview = new \Hubzero\Mail\View(array(

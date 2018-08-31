@@ -81,7 +81,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this);" />
 				</th>
 				<th>
 					<?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_KEY', 'key', $listDirn, $listOrder); ?>

@@ -65,73 +65,74 @@ defined('_HZEXEC_') or die();
 
 <form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes'); ?>">
 	<section class="main section">
-		<div class="subject">
-		<?php if ($filters['filterby']== 'shortlisted') { ?>
-			<h4><?php echo Lang::txt('Candidate Shortlist '); ?></h4>
-		<?php } ?>
-		<?php if (count($seekers) > 0) { // show how many ?>
-			<p class="note_total">
-				<?php echo Lang::txt('Displaying '); ?>
-				<?php
-				if ($filters['start'] == 0) {
-					echo $pageNav->total > count($seekers) ? ' top ' . count($seekers) . ' out of ' . $pageNav->total : strtolower(Lang::txt('all')) . ' ' . count($seekers);
-				} else {
-					echo ($filters['start'] + 1);
-					echo ' - ' . ($filters['start'] + count($seekers)) . ' out of ' . $pageNav->total;
-				}
-				echo ' ';
-				if ($filters['filterby'] == 'shortlisted') {
-					echo Lang::txt('shortlisted') . ' ';
-				} else {
-					echo '';
-				}
-				echo strtolower(Lang::txt('candidates'));
-				?>
-			</p>
+		<div class="section-inner hz-layout-with-aside">
+			<div class="subject">
+			<?php if ($filters['filterby']== 'shortlisted') { ?>
+				<h4><?php echo Lang::txt('Candidate Shortlist '); ?></h4>
+			<?php } ?>
+			<?php if (count($seekers) > 0) { // show how many ?>
+				<p class="note_total">
+					<?php echo Lang::txt('Displaying '); ?>
+					<?php
+					if ($filters['start'] == 0) {
+						echo $pageNav->total > count($seekers) ? ' top ' . count($seekers) . ' out of ' . $pageNav->total : strtolower(Lang::txt('all')) . ' ' . count($seekers);
+					} else {
+						echo ($filters['start'] + 1);
+						echo ' - ' . ($filters['start'] + count($seekers)) . ' out of ' . $pageNav->total;
+					}
+					echo ' ';
+					if ($filters['filterby'] == 'shortlisted') {
+						echo Lang::txt('shortlisted') . ' ';
+					} else {
+						echo '';
+					}
+					echo strtolower(Lang::txt('candidates'));
+					?>
+				</p>
 
-			<ul id="candidates">
+				<ul id="candidates">
+				<?php
+				foreach ($seekers as $seeker)
+				{
+					?>
+					<li>
+					<?php
+						$this->controller = '';
+						$this->task = 'resumes';
+						$view = $this->view('seeker');
+						$params = new \Hubzero\Config\Registry(Plugin::params('members', 'resume'));
+
+						$view->seeker   = $seeker;
+						$view->emp      = $emp;
+						$view->option   = 'com_members';
+						$view->admin    = $admin;
+						$view->params   = $params;
+						$view->list     = 1;
+						echo $view->loadTemplate();
+					?>
+					</li>
+					<?php
+				}
+				?>
+				</ul>
+			<?php } else { // no candidates found ?>
+				<p>
+					<?php echo $filters['filterby']=='shortlisted' ? Lang::txt('You haven\'t yet included any candidates on your shortlist. Keep searching!') : Lang::txt('Sorry, no resumes found at the moment.'); ?>
+				</p>
+			<?php } ?>
+
 			<?php
-			foreach ($seekers as $seeker)
-			{
-				?>
-				<li>
-				<?php
-					$this->controller = '';
-					$this->task = 'resumes';
-					$view = $this->view('seeker');
-					$params = new \Hubzero\Config\Registry(Plugin::params('members', 'resume'));
-
-					$view->seeker   = $seeker;
-					$view->emp      = $emp;
-					$view->option   = 'com_members';
-					$view->admin    = $admin;
-					$view->params   = $params;
-					$view->list     = 1;
-					echo $view->loadTemplate();
-				?>
-				</li>
-				<?php
-			}
+			// Insert page navigation
+			$pageNav->setAdditionalUrlParam('task', 'resumes');
+			$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+			$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+			$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+			$pageNav->setAdditionalUrlParam('type', $this->filters['type']);
+			$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+			echo $this->pageNav->render();
 			?>
-			</ul>
-		<?php } else { // no candidates found ?>
-			<p>
-				<?php echo $filters['filterby']=='shortlisted' ? Lang::txt('You haven\'t yet included any candidates on your shortlist. Keep searching!') : Lang::txt('Sorry, no resumes found at the moment.'); ?>
-			</p>
-		<?php } ?>
-
-		<?php
-		// Insert page navigation
-		$pageNav->setAdditionalUrlParam('task', 'resumes');
-		$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-		$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-		$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
-		$pageNav->setAdditionalUrlParam('type', $this->filters['type']);
-		$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-		echo $this->pageNav->render();
-		?>
-		</div><!-- / .subject -->
-		<div class="aside">
+			</div><!-- / .subject -->
+			<div class="aside">
 		<?php if ($filters['filterby'] != 'shortlisted') { ?>
 			<fieldset id="matchsearch">
 				<label>
@@ -169,5 +170,6 @@ defined('_HZEXEC_') or die();
 			</p>
 		<?php } ?>
 		</div><!-- / .aside -->
+		</div>
 	</section>
 </form>

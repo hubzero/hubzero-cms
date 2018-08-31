@@ -69,7 +69,7 @@ $filterstring = "";
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->packages); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col">Extension</th>
 				<th scope="col priority-3">Installed Version</th>
 				<th scope="col priority-4">Description</th>
@@ -94,7 +94,7 @@ $filterstring = "";
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="packages[]" id="cb<?php echo $i; ?>" value="<?php echo $package->getPrettyName(); ?>" onClick="isChecked(this.checked);">
+						<input type="checkbox" name="packages[]" id="cb<?php echo $i; ?>" value="<?php echo $package->getPrettyName(); ?>" onClick="Joomla.isChecked(this.checked);">
 					</td>
 					<td> 
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&packageName=' . $package->getName() . $filterstring); ?>">

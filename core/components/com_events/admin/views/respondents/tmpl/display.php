@@ -1,24 +1,43 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt( 'COM_EVENTS' ).': '.Lang::txt('COM_EVENTS_RESPONDANTS'), 'user.png' );
+Toolbar::title(Lang::txt('COM_EVENTS').': '.Lang::txt('COM_EVENTS_RESPONDANTS'), 'user.png');
 Toolbar::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false, false);
-Toolbar::deleteList( '', 'remove', 'COM_EVENTS_DELETE' );
+Toolbar::deleteList('', 'remove', 'COM_EVENTS_DELETE');
 Toolbar::cancel();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<h2><?php echo stripslashes($this->event->title); ?></h2>
@@ -33,7 +52,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
  			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_RESPONDANT_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_RESPONDANT_REGISTERED', 'registered', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -57,7 +76,7 @@ function submitbutton(pressbutton)
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td>
-						<input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" />
 					</td>
 					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=respondent&id=' . $row->id . '&event_id=' . $this->event->id); ?>">
@@ -103,8 +122,8 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

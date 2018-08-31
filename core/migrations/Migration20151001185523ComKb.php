@@ -17,85 +17,85 @@ class Migration20151001185523ComKb extends Base
 	{
 		if ($this->db->tableExists('#__faq_categories') && $this->db->tableExists('#__categories'))
 		{
-			$query = "SELECT * FROM `#__faq_categories`";
-			$this->db->setQuery($query);
-			$categories = $this->db->loadObjectList();
-
-			$sub = array();
-			$par = array();
-
-			foreach ($categories as $category)
-			{
-				if ($category->section)
-				{
-					$sub[] = $category;
-					continue;
-				}
-
-				$category->section = 1;
-				$category->level   = 1;
-				$category->path    = $category->alias;
-
-				$par[$category->id] = $this->category($category);
-			}
-
-			foreach ($sub as $category)
-			{
-				$parent = (isset($par[$category->section]) ? $par[$category->section] : 1);
-
-				$category->path    = $category->alias;
-				foreach ($categories as $c)
-				{
-					if ($c->id == $category->section)
-					{
-						$category->path = $c->alias . '/' . $category->alias;
-						break;
-					}
-				}
-				$category->section = $parent;
-				$category->level   = 2;
-
-				$par[$category->id] = $this->category($category);
-			}
-
-			$query = "SELECT MAX(rgt) FROM `#__categories` LIMIT 1";
-			$this->db->setQuery($query);
-			if ($max = $this->db->loadResult())
-			{
-				$max = intval($max);
-				$query = "UPDATE `#__categories` SET `rgt`=" . $this->db->quote($max + 1) . " WHERE `extension`='system' AND `title`='ROOT'";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-
-			$query = "UPDATE `#__categories` SET `parent_id`=1 WHERE `extension`='com_kb' AND `parent_id`=0";
-			$this->db->setQuery($query);
-			$this->db->query();
-
-			$query = "SELECT id, section, category FROM `#__faq`";
-			$this->db->setQuery($query);
-			$articles = $this->db->loadObjectList();
-
-			foreach ($articles as $article)
-			{
-				$key = ($article->category ? $article->category : $article->section);
-
-				$article->category = (isset($par[$key]) ? $par[$key] : 0);
-
-				$query = "UPDATE `#__faq` SET `category`=" . $this->db->quote($article->category) . " WHERE `id`=" . $this->db->quote($article->id);
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-
-			if ($this->db->tableHasKey('#__faq', 'idx_section'))
-			{
-				$query = "ALTER TABLE `#__faq` DROP INDEX `idx_section`";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-
 			if ($this->db->tableHasField('#__faq', 'section'))
 			{
+				$query = "SELECT * FROM `#__faq_categories`";
+				$this->db->setQuery($query);
+				$categories = $this->db->loadObjectList();
+
+				$sub = array();
+				$par = array();
+
+				foreach ($categories as $category)
+				{
+					if ($category->section)
+					{
+						$sub[] = $category;
+						continue;
+					}
+
+					$category->section = 1;
+					$category->level   = 1;
+					$category->path    = $category->alias;
+
+					$par[$category->id] = $this->category($category);
+				}
+
+				foreach ($sub as $category)
+				{
+					$parent = (isset($par[$category->section]) ? $par[$category->section] : 1);
+
+					$category->path    = $category->alias;
+					foreach ($categories as $c)
+					{
+						if ($c->id == $category->section)
+						{
+							$category->path = $c->alias . '/' . $category->alias;
+							break;
+						}
+					}
+					$category->section = $parent;
+					$category->level   = 2;
+
+					$par[$category->id] = $this->category($category);
+				}
+
+				$query = "SELECT MAX(rgt) FROM `#__categories` LIMIT 1";
+				$this->db->setQuery($query);
+				if ($max = $this->db->loadResult())
+				{
+					$max = intval($max);
+					$query = "UPDATE `#__categories` SET `rgt`=" . $this->db->quote($max + 1) . " WHERE `extension`='system' AND `title`='ROOT'";
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+
+				$query = "UPDATE `#__categories` SET `parent_id`=1 WHERE `extension`='com_kb' AND `parent_id`=0";
+				$this->db->setQuery($query);
+				$this->db->query();
+
+				$query = "SELECT id, section, category FROM `#__faq`";
+				$this->db->setQuery($query);
+				$articles = $this->db->loadObjectList();
+
+				foreach ($articles as $article)
+				{
+					$key = ($article->category ? $article->category : $article->section);
+
+					$article->category = (isset($par[$key]) ? $par[$key] : 0);
+
+					$query = "UPDATE `#__faq` SET `category`=" . $this->db->quote($article->category) . " WHERE `id`=" . $this->db->quote($article->id);
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+
+				if ($this->db->tableHasKey('#__faq', 'idx_section'))
+				{
+					$query = "ALTER TABLE `#__faq` DROP INDEX `idx_section`";
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+
 				$query = "ALTER TABLE `#__faq` DROP `section`;";
 				$this->db->setQuery($query);
 				$this->db->query();

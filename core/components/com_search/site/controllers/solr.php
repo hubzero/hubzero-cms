@@ -212,9 +212,12 @@ class Solr extends SiteController
 			$facetResult = $query->resultsFacetSet->getFacet('hubtypes');
 		}
 		$facetCounts = array();
-		foreach ($facetResult as $facet => $count)
+		if (!empty($facetResult))
 		{
-			$facetCounts[$facet] = $count;
+			foreach ($facetResult as $facet => $count)
+			{
+				$facetCounts[$facet] = $count;
+			}
 		}
 		// Format the results (highlighting, snippet, etc)
 		$results = $this->formatResults($results, $terms);

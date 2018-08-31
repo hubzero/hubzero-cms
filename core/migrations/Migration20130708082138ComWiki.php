@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for fixing nanoHUB reference in wiki formatting page
+ * Migration script for fixing 'xsearch' reference in wiki formatting page
  **/
 class Migration20130708082138ComWiki extends Base
 {
@@ -15,7 +15,7 @@ class Migration20130708082138ComWiki extends Base
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('#__wiki_page') && $this->db->tableExists('#__wiki_version'))
+		if ($this->db->tableExists('#__wiki_page') && $this->db->tableExists('#__wiki_version') && $this->db->tableHasField('#__wiki_version', 'pageid'))
 		{
 			$query  = "SELECT wv.* FROM `#__wiki_page` AS wp,";
 			$query .= " `#__wiki_version` AS wv";

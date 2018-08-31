@@ -151,6 +151,17 @@ function submitbutton(pressbutton)
 
 						<hr />
 
+						<h4><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_RESULT_MANAGERS'); ?></h4>
+						<ul>
+							{{#each record.managers}}
+								<li>{{{ this }}}</li>
+							{{else}}
+								<li><span class="hint"><?php echo Lang::txt('COM_GROUPS_NONE'); ?></span></li>
+							{{/each}}
+						</ul>
+
+						<hr />
+
 						<h4><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_RESULT_TAGS'); ?></h4>
 						<ul>
 							{{#each record.tags}}

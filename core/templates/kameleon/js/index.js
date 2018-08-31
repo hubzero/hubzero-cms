@@ -199,18 +199,22 @@ jQuery(document).ready(function($){
 	$('input, textarea').placeholder();
 
 	// Display system messages in Growl-like way
-	var msg = $('#system-message-container');
-	if (msg.length && msg.html().replace(/\s+/, '') != '') {
-		if (msg.find('dd.error, dd.warning, dd.info').length) {
-			$.growl.settings.displayTimeout = 0;
-		} else {
-			msg.find('dd.message').each(function(i, el) {
-				var tm = ($(el).text().length * 10) + 500;
-				if (tm > 2000) {
-					$.growl.settings.displayTimeout = tm;
-				}
-			});
+	$(document).on("renderMessages", function() {
+		var msg = $('#system-message-container');
+		if (msg.length && msg.html().replace(/\s+/, '') != '') {
+			if (msg.find('dd.error, dd.warning, dd.info').length) {
+				$.growl.settings.displayTimeout = 0;
+			} else {
+				msg.find('dd.message').each(function(i, el) {
+					var tm = ($(el).text().length * 10) + 500;
+					if (tm > 2000) {
+						$.growl.settings.displayTimeout = tm;
+					}
+				});
+			}
+			$.growl('', msg.html());
 		}
-		$.growl('', msg.html());
-	}
+	});
+
+	$(document).trigger('renderMessages');
 });

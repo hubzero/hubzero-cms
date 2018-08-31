@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Citations\Helpers\Permissions::getActions('type');
 
-Toolbar::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_TYPES'), 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_TYPES'), 'citations');
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
@@ -51,23 +51,12 @@ if ($canDo->get('core.delete'))
 Toolbar::spacer();
 Toolbar::help('types');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->types); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('CITATION_TYPES_ID'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('CITATION_TYPES_TITLE'); ?></th>
@@ -77,7 +66,7 @@ function submitbutton(pressbutton)
 			<?php foreach ($this->types as $i => $t) : ?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $t['id']; ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $t['id']; ?>" onclick="Joomla.isChecked(this.checked);" />
 					</td>
 					<td class="priority-3">
 						<?php echo $t['id']; ?>

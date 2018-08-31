@@ -1917,6 +1917,10 @@ class Publication extends Obj
 		}
 		switch (strtolower($type))
 		{
+			case 'relative':
+				$path = '..' . DS . \Hubzero\Utility\Str::pad($this->get('id')) . DS . \Hubzero\Utility\Str::pad($this->get('version_id'));
+			break;
+
 			case 'base':
 				$path = $this->_basePath;
 			break;

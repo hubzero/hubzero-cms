@@ -172,7 +172,7 @@ $this->css('.adminlist tr td {
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $item->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $item->id ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php if ($canEdit) : ?>
@@ -228,8 +228,8 @@ $this->css('.adminlist tr td {
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

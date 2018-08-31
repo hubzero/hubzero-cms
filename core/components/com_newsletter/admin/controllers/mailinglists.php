@@ -326,7 +326,7 @@ class Mailinglists extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get request vars
-		$mailinglistId = Request::getInt('id', Request::getInt('mid', 0));
+		$mailinglistId = Request::getVar('id', array(Request::getInt('mid', 0)));
 		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : 0;
 
 		// load mailing list

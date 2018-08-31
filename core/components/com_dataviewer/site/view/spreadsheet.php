@@ -173,7 +173,7 @@ function view($dd = false)
 		}
 
 		// Filtered Views
-		$filter = Request::getString('filter', false);
+		$filter = Request::getVar('filter', false);
 		$filted_view = array();
 		$filted_view_str = '';
 		if ($filter !== false) {

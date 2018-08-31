@@ -264,7 +264,7 @@ function query_gen(&$dd)
 	}
 
 	// Filtered views
-	$filters = Request::getString('filter', false);
+	$filters = Request::getVar('filter', false);
 	if ($filters !== false) {
 		$filters = explode('||', $filters);
 		foreach ($filters as $filter) {

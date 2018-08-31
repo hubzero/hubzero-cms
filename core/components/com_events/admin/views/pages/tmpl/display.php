@@ -38,18 +38,6 @@ Toolbar::editList();
 Toolbar::deleteList();
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -69,7 +57,7 @@ function submitbutton(pressbutton)
 				</th>
 			</tr>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th><?php echo Lang::txt('COM_EVENTS_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_EVENTS_TITLE'); ?></th>
 				<th colspan="3"><?php echo Lang::txt('COM_EVENTS_REORDER'); ?></th>
@@ -95,7 +83,7 @@ function submitbutton(pressbutton)
 			{
 				?>
 				<tr class="<?php echo "row$k"; ?>">
-					<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
+					<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" /></td>
 					<td><?php echo $row->id; ?></td>
 					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event_id=' . $this->event->id); ?>"><?php echo $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')'; ?></a></td>
 					<td>

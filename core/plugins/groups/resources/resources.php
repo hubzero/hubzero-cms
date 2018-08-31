@@ -196,6 +196,11 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		{
 			$sort = 'date';
 		}
+		$sortdir = Request::getString('sortdir', 'asc');
+		if (!in_array($sortdir, array('asc', 'desc')))
+		{
+			$sortdir = 'asc';
+		}
 		$access = Request::getString('access', 'all');
 		if (!in_array($access, array('all', 'public', 'protected', 'private')))
 		{
@@ -313,7 +318,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$limitstart,
 			$sort,
 			$access,
-			$activeareas
+			$activeareas,
+			$sortdir
 		);
 		$results = array($r);
 
@@ -370,6 +376,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 					$view->limit = $limit;
 					$view->total = $total;
 					$view->sort = $sort;
+					$view->sortdir = $sortdir;
 					$view->access = $access;
 
 					foreach ($this->getErrors() as $error)
@@ -512,7 +519,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	 * @param   mixed    $areas       An array or string of areas that should retrieve records
 	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
-	public function getResources($group, $authorized, $limit=0, $limitstart=0, $sort='date', $access='all', $areas=null)
+	public function getResources($group, $authorized, $limit=0, $limitstart=0, $sort='date', $access='all', $areas=null, $sortdir='asc')
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit)
@@ -536,6 +543,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		$filters['now'] = Date::toSql();
 		$filters['sortby'] = ($sort == 'date' ? 'created' : $sort);
+		$filters['sortdir'] = $sortdir;
 		$filters['group'] = $group->get('cn');
 		$filters['access'] = $access;
 		$filters['authorized'] = $authorized;
@@ -589,7 +597,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 			// Get results
 			$rows = Components\Resources\Models\Entry::allWithFilters($filters)
-				->order($filters['sortby'], 'asc')
+				->order($filters['sortby'], $filters['sortdir'])
 				->limit($limit)
 				->start($limitstart)
 				->rows();

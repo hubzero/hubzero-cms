@@ -80,8 +80,8 @@ function submitbutton(pressbutton)
 
 				<!-- Name -->
 				<div class="input-wrap">
-					<label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_NAME'); ?>:</label>
-						<input type="text" name="fields[title]" id="field-name" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->category->title)); ?>" />
+					<label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_TITLE'); ?>:</label>
+						<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->title)); ?>" />
 				</div> <!-- /.input-wrap -->
 			</fieldset> <!-- /.adminform -->
 		</div><!-- /.col span7 -->
@@ -91,7 +91,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('ID'); ?>:</th>
 						<td>
-							<?php echo $this->category->get('id', 0); ?>
+							<?php echo $this->searchComponent->get('id', 0); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -130,7 +130,7 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 	<?php echo Html::input('token'); ?>
-	<input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->searchComponent->id; ?>" />
 	<input type="hidden" name="option" value="com_search" />
 	<input type="hidden" name="controller" value="searchable" />
 	<input type="hidden" name="task" value="save" autocomplete="" />

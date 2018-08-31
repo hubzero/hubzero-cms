@@ -886,7 +886,7 @@ class Page extends Relational
 				// No scope = Site wiki
 				else
 				{
-					$this->config()->set('access-page-create', (User::authorise('core.create', $option) !== false));
+					$this->config()->set('access-page-create', User::authorise('core.create', $option));
 
 					// Check permissions based on the page mode (knol/wiki)
 					switch ($this->param('mode'))
@@ -917,8 +917,8 @@ class Page extends Relational
 						default:
 							if (!$this->isLocked())
 							{
-								$this->config()->set('access-page-delete', (User::authorise('core.delete', $option) !== false));
-								$this->config()->set('access-page-edit', (User::authorise('core.edit', $option) !== false));
+								$this->config()->set('access-page-delete', User::authorise('core.delete', $option));
+								$this->config()->set('access-page-edit', User::authorise('core.edit', $option));
 								$this->config()->set('access-page-modify', true);
 							}
 

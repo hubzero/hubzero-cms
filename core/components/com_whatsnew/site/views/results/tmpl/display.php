@@ -131,7 +131,7 @@ foreach ($this->cats as $cat)
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" class="section-inner">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<div class="container">
 			<?php

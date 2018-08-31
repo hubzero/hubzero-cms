@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title( Lang::txt( 'COM_EVENTS_MANAGER' ) . ': ' . Lang::txt( 'COM_EVENTS_CONFIGURATION' ), 'event.png' );
+Toolbar::title(Lang::txt( 'COM_EVENTS_MANAGER' ) . ': ' . Lang::txt( 'COM_EVENTS_CONFIGURATION' ), 'event');
 Toolbar::save();
 Toolbar::cancel();
 ?>

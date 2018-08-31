@@ -41,6 +41,7 @@ use Session;
 use Request;
 use Config;
 use Route;
+use Event;
 use Lang;
 use User;
 use Date;
@@ -1241,6 +1242,8 @@ class Register extends SiteController
 			$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION', $email));
 		}
 
+		Event::trigger('onUserAfterConfirmResend', array($xprofile->toArray()));
+
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -1376,6 +1379,8 @@ class Register extends SiteController
 
 						// Show the success form
 						$success = true;
+
+						Event::trigger('onUserAfterChangeEmail', array($xprofile->toArray()));
 					}
 				}
 			}
@@ -1528,7 +1533,7 @@ class Register extends SiteController
 			// set public setting
 			$xprofile->set('access', $this->config->get('privacy', 1));
 
-			// upload profile
+			// update profile
 			if (!$xprofile->save())
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_CONFIRMING'));
@@ -1540,6 +1545,8 @@ class Register extends SiteController
 			{
 				Session::set('userchangedemail', 0);
 			}
+
+			Event::trigger('onUserAfterConfirmEmail', array($xprofile->toArray()));
 
 			// Redirect
 			if (empty($return))

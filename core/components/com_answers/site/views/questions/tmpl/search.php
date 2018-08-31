@@ -66,7 +66,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 </header>
 
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 

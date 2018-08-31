@@ -44,6 +44,13 @@ if ($this->application->get('id') > 0)
 	$title  = Lang::txt('COM_DEVELOPER_API_APPLICATION_EDIT', $this->application->get('name'));
 	$return = Route::url($this->application->link());
 }
+
+$sectionInnerClass = '';
+if ($this->application->get('id'))
+{
+	$sectionInnerClass = 'hz-layout-with-aside';
+}
+
 ?>
 
 <header id="content-header">
@@ -59,7 +66,7 @@ if ($this->application->get('id') > 0)
 </header>
 
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner<?php echo $sectionInnerClass; ?>">
 		<div class="subject">
 			<?php if ($this->getError()) { ?>
 				<p class="error"><?php echo $this->getError(); ?></p>

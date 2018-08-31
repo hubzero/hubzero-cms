@@ -33,34 +33,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_HOST_TYPES'), 'tools.png');
+Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_HOST_TYPES'), 'tools');
 Toolbar::spacer();
 Toolbar::addNew();
 Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('hosttypes');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_BIT', 'value', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll();" /></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_BIT', 'value', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_TOOLS_COL_REFERENCES'); ?></th>
 			</tr>
@@ -97,7 +84,7 @@ if ($this->rows)
 ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->name; ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->name; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&item=' . $row->name); ?>">
@@ -113,7 +100,7 @@ if ($this->rows)
 					</a>
 				</td>
 				<td class="priority-2">
-					<?php echo $row->refs; ?>
+					<?php echo $this->escape($row->refs); ?>
 				</td>
 			</tr>
 <?php
@@ -128,8 +115,8 @@ if ($this->rows)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

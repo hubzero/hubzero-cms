@@ -66,7 +66,7 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
 		$client = new DropboxClient($accessToken);
 
 		// Return the adapter
-		return new DropboxAdapter($client, Arr::getValue($params, 'subdir'));
+		return new DropboxAdapter($client, Arr::getValue($params, 'path', ''));
 	}
 
 	/**

@@ -58,7 +58,7 @@ class plgFilesystemAWSS3 extends \Hubzero\Plugin\Plugin
 		$app_secret = $params['app_secret'];
 		$region = $params['region'];
 		$bucket = $params['bucket'];
-		$directory = isset($params['directory']) ? $params['directory'] : '';
+		$path = isset($params['path']) ? $params['path'] : '';
 
 		$client = S3Client::factory([
 			'key'			=> $app_id,
@@ -67,7 +67,7 @@ class plgFilesystemAWSS3 extends \Hubzero\Plugin\Plugin
 			'base_url' => 'http://s3.amazonaws.com',
 			'signature'=> 'v4'
 		]);
-		$adapter = new AwsS3Adapter($client, $bucket, $directory);
+		$adapter = new AwsS3Adapter($client, $bucket, $path);
 		return $adapter;
 	}
 }

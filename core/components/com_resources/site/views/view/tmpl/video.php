@@ -102,7 +102,7 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 					//if were playing local files
 					if (substr($video->source, 0, 4) != 'http')
 					{
-						$source = $base . $source;
+						$source = '/resources/' . $this->resource->id . '/download/' . $presentation->title;
 						if (in_array($video->type, array('mp4','m4v')))
 						{
 							$mp4 = $base . $mp4;

@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die;
 
 require_once Component::path('com_menus') . '/admin/helpers/menus.php';
-require_once Component::path('com_languages') . '/admin/helpers/multilangstatus.php';
+require_once Component::path('com_languages') . '/helpers/multilangstatus.php';
 
 /**
  * Language Filter Plugin
@@ -46,7 +46,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  bool
 	 */
-	protected static $mode_sef;
+	protected static $mode_sef = true;
 
 	/**
 	 * Language tag
@@ -130,7 +130,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				self::$lang_codes   = Lang::available('lang_code');
 				self::$default_lang = Component::params('com_languages')->get('site', 'en-GB');
 				self::$default_sef  = self::$lang_codes[self::$default_lang]->sef;
-				self::$homes        = MultilangstatusHelper::getHomepages();
+				self::$homes        = Components\Languages\Helpers\Multilangstatus::getHomepages();
 
 				$levels = User::getAuthorisedViewLevels();
 				foreach (self::$sefs as $sef => &$language)
@@ -148,7 +148,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				if (self::$mode_sef)
 				{
 					// Get the route path from the request.
-					$path = substr($uri->toString(), strlen($uri->root()));
+					$path = substr($uri->toString(), strlen(Request::root()));
 
 					// Apache mod_rewrite is Off
 					$path = Config::get('sef_rewrite') ? $path : substr($path, 10);
@@ -169,9 +169,21 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				{
 					$sef = $uri->getVar('lang');
 				}
+
 				if (isset(self::$sefs[$sef]))
 				{
 					$lang_code = self::$sefs[$sef]->lang_code;
+
+					if (Lang::getLanguage() != $lang_code)
+					{
+						Lang::setLanguage($lang_code);
+
+						$boot = DS . 'bootstrap' . DS . ucfirst(App::get('client')->name);
+
+						Lang::load('lib_joomla', PATH_APP . $boot, null, false, true) ||
+						Lang::load('lib_joomla', PATH_CORE . $boot, null, false, true);
+					}
+
 					// Create a cookie
 					$cookie_domain = Config::get('cookie_domain', '');
 					$cookie_path   = Config::get('cookie_path', '/');

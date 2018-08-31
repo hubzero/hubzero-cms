@@ -65,26 +65,26 @@ class Migration20150326183839ComTools extends Base
 				$this->db->query();
 			}
 
-			// Create a preferences entry for anyone who has a non-default value for jobs allowed
-			$query = "SELECT `uidNumber`, `jobsAllowed` FROM `#__xprofiles` WHERE `jobsAllowed`!=3 AND `uidNumber` > 0";
-			$this->db->setQuery($query);
-			if ($rows = $this->db->loadObjectList())
-			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
-
-				foreach ($rows as $row)
-				{
-					$preferences = new \Components\Tools\Tables\Preferences($this->db);
-					$preferences->loadByUser($row->uidNumber);
-					$preferences->user_id  = $row->uidNumber;
-					$preferences->class_id = 0;
-					$preferences->jobs     = ($row->jobsAllowed ? $row->jobsAllowed : 10);
-					$preferences->store();
-				}
-			}
-
 			if ($this->db->tableHasField('#__xprofiles', 'jobsAllowed'))
 			{
+				// Create a preferences entry for anyone who has a non-default value for jobs allowed
+				$query = "SELECT `uidNumber`, `jobsAllowed` FROM `#__xprofiles` WHERE `jobsAllowed`!=3 AND `uidNumber` > 0";
+				$this->db->setQuery($query);
+				if ($rows = $this->db->loadObjectList())
+				{
+					include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php';
+
+					foreach ($rows as $row)
+					{
+						$preferences = new \Components\Tools\Tables\Preferences($this->db);
+						$preferences->loadByUser($row->uidNumber);
+						$preferences->user_id  = $row->uidNumber;
+						$preferences->class_id = 0;
+						$preferences->jobs     = ($row->jobsAllowed ? $row->jobsAllowed : 10);
+						$preferences->store();
+					}
+				}
+
 				$query = "ALTER TABLE `#__xprofiles` DROP COLUMN `jobsAllowed`;";
 				$this->db->setQuery($query);
 				$this->db->query();

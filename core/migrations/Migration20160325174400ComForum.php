@@ -40,7 +40,8 @@ class Migration20160325174400ComForum extends Base
 		}
 
 		if ($this->db->tableExists('#__forum_attachments')
-		 && $this->db->tableHasField('#__forum_attachments', 'status'))
+		 && $this->db->tableHasField('#__forum_attachments', 'status')
+		 && !$this->db->tableHasField('#__forum_attachments', 'state'))
 		{
 			$query = "ALTER TABLE `#__forum_attachments` CHANGE `status` `state` int(3) NOT NULL default 0;";
 			$this->db->setQuery($query);
@@ -78,7 +79,8 @@ class Migration20160325174400ComForum extends Base
 		}
 
 		if ($this->db->tableExists('#__forum_attachments')
-		 && $this->db->tableHasField('#__forum_attachments', 'status'))
+		 && !$this->db->tableHasField('#__forum_attachments', 'status')
+		 && $this->db->tableHasField('#__forum_attachments', 'state'))
 		{
 			$query = "ALTER TABLE `#__forum_attachments` CHANGE `state` `status` int(11) NOT NULL default 0;";
 			$this->db->setQuery($query);

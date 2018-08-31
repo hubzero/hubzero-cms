@@ -84,209 +84,210 @@ if ($label == 'none') {
 
 <form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="get" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 	<section class="main section">
-		<div class="subject">
-			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="Search" />
-				<fieldset class="entry-search">
-					<legend><?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-					<label for="entry-search-field"><?php echo Lang::txt('COM_CITATIONS_BROWSE_SEARCH_HELP'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
-				</fieldset>
-			</div><!-- /.container .data-entry -->
-			<div class="container">
-				<nav class="entries-filters">
-					<ul class="entries-menu filter-options">
-						<?php
-							$queryString = "";
-							$exclude = array("filter");
-							foreach ($this->filters as $k => $v)
-							{
-								if ($v != "" && !in_array($k, $exclude))
+		<div class="section-inner hz-layout-with-aside">
+			<div class="subject">
+				<div class="container data-entry">
+					<input class="entry-search-submit" type="submit" value="Search" />
+					<fieldset class="entry-search">
+						<legend><?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+						<label for="entry-search-field"><?php echo Lang::txt('COM_CITATIONS_BROWSE_SEARCH_HELP'); ?></label>
+						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+					</fieldset>
+				</div><!-- /.container .data-entry -->
+				<div class="container">
+					<nav class="entries-filters">
+						<ul class="entries-menu filter-options">
+							<?php
+								$queryString = "";
+								$exclude = array("filter");
+								foreach ($this->filters as $k => $v)
 								{
-									if (is_array($v))
+									if ($v != "" && !in_array($k, $exclude))
 									{
-										foreach ($v as $k2 => $v2)
+										if (is_array($v))
 										{
-											$queryString .= "&{$k}[{$k2}]={$v2}";
+											foreach ($v as $k2 => $v2)
+											{
+												$queryString .= "&{$k}[{$k2}]={$v2}";
+											}
+										}
+										else
+										{
+											$queryString .= "&{$k}={$v}";
 										}
 									}
-									else
-									{
-										$queryString .= "&{$k}={$v}";
-									}
 								}
+							?>
+							<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></a></li>
+							<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('COM_CITATIONS_AFFILIATED'); ?></a></li>
+							<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('COM_CITATIONS_NONAFFILIATED'); ?></a></li>
+						</ul>
+					</nav>
+
+					<?php if (count($this->citations) > 0) : ?>
+						<?php
+
+							// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
+							$counter = $this->filters['limitstart'] + 1;
+
+							if ($counter == '')
+							{
+								$counter = 1;
 							}
+
 						?>
-						<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></a></li>
-						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('COM_CITATIONS_AFFILIATED'); ?></a></li>
-						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('COM_CITATIONS_NONAFFILIATED'); ?></a></li>
-					</ul>
-				</nav>
-
-				<?php if (count($this->citations) > 0) : ?>
-					<?php
-
-						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-						$counter = $this->filters['limitstart'] + 1;
-
-						if ($counter == '')
-						{
-							$counter = 1;
-						}
-
-					?>
-					<table class="citations entries">
-						<thead>
-							<tr>
-								<?php if ($batch_download) : ?>
-									<th class="batch">
-										<input type="checkbox" class="checkall-download" />
-									</th>
-								<?php endif; ?>
-								<th colspan="2"><?php echo Lang::txt('COM_CITATIONS'); ?></th>
-							</tr>
-							<?php if ($this->isAdmin) : ?>
-								<tr class="hidden"></tr>
-							<?php endif; ?>
-						</thead>
-						<tbody>
-							<?php $x = 0; ?>
-							<?php foreach ($this->citations as $cite) : ?>
+						<table class="citations entries">
+							<thead>
 								<tr>
-									<?php $citeId = $cite->id; ?>
 									<?php if ($batch_download) : ?>
-										<td class="batch">
-											<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $citeId; ?>" />
-										</td>
+										<th class="batch">
+											<input type="checkbox" class="checkall-download" />
+										</th>
 									<?php endif; ?>
-									<?php if ($label != "none") : ?>
-										<td class="priority-3 citation-label <?php echo $citations_label_class; ?>">
-											<?php
-												$type = "";
-												foreach ($this->types as $t) {
-													if ($t['id'] == $cite->type) {
-														$type = $t['type_title'];
-													}
-												}
-												$type = ($type != "") ? $type : "Generic";
-
-												switch ($label)
-												{
-													case "number":
-														echo "<span class=\"number\">{$counter}.</span>";
-														break;
-													case "type":
-														echo "<span class=\"type\">{$type}</span>";
-														break;
-													case "both":
-														echo "<span class=\"number\">{$counter}.</span>";
-														echo "<span class=\"type\">{$type}</span>";
-														break;
-												}
-											?>
-										</td>
-									<?php endif; ?>
-									<td class="citation-container">
-										<?php
-											$formatted = $cite->formatted(array('format'=>$this->defaultFormat));
-											if ($cite->doi)
-											{
-												$formatted = str_replace('doi:' . $cite->doi,
-													'<a href="' . $cite->url . '" rel="external">'
-													. 'doi:' . $cite->doi . '</a>', $formatted);
-											}
-
-											echo $formatted; ?>
-										<?php
-											//get this citations rollover param
-											$params = new \Hubzero\Config\Registry($cite->params);
-											$citation_rollover = $params->get('rollover', $rollover);
-										?>
-										<?php if ($citation_rollover && $cite->abstract != "") : ?>
-											<div class="citation-notes">
+									<th colspan="2"><?php echo Lang::txt('COM_CITATIONS'); ?></th>
+								</tr>
+								<?php if ($this->isAdmin) : ?>
+									<tr class="hidden"></tr>
+								<?php endif; ?>
+							</thead>
+							<tbody>
+								<?php $x = 0; ?>
+								<?php foreach ($this->citations as $cite) : ?>
+									<tr>
+										<?php $citeId = $cite->id; ?>
+										<?php if ($batch_download) : ?>
+											<td class="batch">
+												<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $citeId; ?>" />
+											</td>
+										<?php endif; ?>
+										<?php if ($label != "none") : ?>
+											<td class="priority-3 citation-label <?php echo $citations_label_class; ?>">
 												<?php
-													$final = "";
-													if ($cite->sponsors)
-													{
-														foreach ($cite->sponsors as $s)
-														{
-															$final .= '<a rel="external" href="' . $s->get('link') . '">' . $s->get('sponsor') . '</a>, ';
+													$type = "";
+													foreach ($this->types as $t) {
+														if ($t['id'] == $cite->type) {
+															$type = $t['type_title'];
 														}
 													}
+													$type = ($type != "") ? $type : "Generic";
+
+													switch ($label)
+													{
+														case "number":
+															echo "<span class=\"number\">{$counter}.</span>";
+															break;
+														case "type":
+															echo "<span class=\"type\">{$type}</span>";
+															break;
+														case "both":
+															echo "<span class=\"number\">{$counter}.</span>";
+															echo "<span class=\"type\">{$type}</span>";
+															break;
+													}
 												?>
-												<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
-													<?php $final = substr($final, 0, -2); ?>
-													<p class="sponsor"><?php echo Lang::txt('COM_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
-												<?php endif; ?>
-												<p><?php echo nl2br($cite->abstract); ?></p>
-											</div>
+											</td>
 										<?php endif; ?>
-										<div class="citation-details">
+										<td class="citation-container">
 											<?php
-											$singleCitationView = $this->config->get('citation_single_view', 0);
-											if (!$singleCitationView)
-											{
-												echo $cite->citationDetails($this->openurl);
-											}
+												$formatted = $cite->formatted(array('format'=>$this->defaultFormat));
+												if ($cite->doi)
+												{
+													$formatted = str_replace('doi:' . $cite->doi,
+														'<a href="' . $cite->url . '" rel="external">'
+														. 'doi:' . $cite->doi . '</a>', $formatted);
+												}
+
+												echo $formatted; ?>
+											<?php
+												//get this citations rollover param
+												$params = new \Hubzero\Config\Registry($cite->params);
+												$citation_rollover = $params->get('rollover', $rollover);
 											?>
-											<?php if ($this->config->get("citation_show_badges", "no") == "yes") : ?>
-												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>
+											<?php if ($citation_rollover && $cite->abstract != "") : ?>
+												<div class="citation-notes">
+													<?php
+														$final = "";
+														if ($cite->sponsors)
+														{
+															foreach ($cite->sponsors as $s)
+															{
+																$final .= '<a rel="external" href="' . $s->get('link') . '">' . $s->get('sponsor') . '</a>, ';
+															}
+														}
+													?>
+													<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
+														<?php $final = substr($final, 0, -2); ?>
+														<p class="sponsor"><?php echo Lang::txt('COM_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
+													<?php endif; ?>
+													<p><?php echo nl2br($cite->abstract); ?></p>
+												</div>
 											<?php endif; ?>
+											<div class="citation-details">
+												<?php
+												$singleCitationView = $this->config->get('citation_single_view', 0);
+												if (!$singleCitationView)
+												{
+													echo $cite->citationDetails($this->openurl);
+												}
+												?>
+												<?php if ($this->config->get("citation_show_badges", "no") == "yes") : ?>
+													<?php echo \Components\Citations\Helpers\Format::citationBadges($cite); ?>
+												<?php endif; ?>
 
-											<?php if ($this->config->get("citation_show_tags", "no") == "yes") : ?>
-												<?php echo \Components\Citations\Helpers\Format::citationTags($cite); ?>
-											<?php endif; ?>
-										</div>
-									</td>
-									<?php if ($this->isAdmin === true) : ?>
-										<td class="col-edit">
-											<a class="icon-edit" href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id=' . $citeId); ?>">
-												<?php echo Lang::txt('COM_CITATIONS_EDIT'); ?>
-											</a>
+												<?php if ($this->config->get("citation_show_tags", "no") == "yes") : ?>
+													<?php echo \Components\Citations\Helpers\Format::citationTags($cite); ?>
+												<?php endif; ?>
+											</div>
 										</td>
-									<?php endif; ?>
-								</tr>
-								<?php $counter++; ?>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				<?php else : ?>
-					<p class="warning"><?php echo Lang::txt('COM_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
-				<?php endif; ?>
-				<?php
-					// Initiate paging
-					$pageNav = $this->citations->pagination;
-					$pageNav->setAdditionalUrlParam('task', 'browse');
-					foreach ($this->filters as $key => $value)
-					{
-						switch ($key)
+										<?php if ($this->isAdmin === true) : ?>
+											<td class="col-edit">
+												<a class="icon-edit" href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id=' . $citeId); ?>">
+													<?php echo Lang::txt('COM_CITATIONS_EDIT'); ?>
+												</a>
+											</td>
+										<?php endif; ?>
+									</tr>
+									<?php $counter++; ?>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					<?php else : ?>
+						<p class="warning"><?php echo Lang::txt('COM_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+					<?php endif; ?>
+					<?php
+						// Initiate paging
+						$pageNav = $this->citations->pagination;
+						$pageNav->setAdditionalUrlParam('task', 'browse');
+						foreach ($this->filters as $key => $value)
 						{
-							case 'limit':
-							case 'idlist';
-							case 'start':
-							break;
+							switch ($key)
+							{
+								case 'limit':
+								case 'idlist';
+								case 'start':
+								break;
 
-							case 'reftype':
-							case 'aff':
-							case 'geo':
-							case 'published':
-								foreach ($value as $k => $v)
-								{
-									$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
-								}
-							break;
+								case 'reftype':
+								case 'aff':
+								case 'geo':
+								case 'published':
+									foreach ($value as $k => $v)
+									{
+										$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
+									}
+								break;
 
-							default:
-								$pageNav->setAdditionalUrlParam($key, $value);
-							break;
+								default:
+									$pageNav->setAdditionalUrlParam($key, $value);
+								break;
+							}
 						}
-					}
-					echo $pageNav->render();
-				?>
-				<div class="clearfix"></div>
-			</div><!-- /.container -->
-		</div><!-- /.subject -->
-		<div class="aside">
+						echo $pageNav->render();
+					?>
+					<div class="clearfix"></div>
+				</div><!-- /.container -->
+			</div><!-- /.subject -->
+			<div class="aside">
 			<?php if ($batch_download) : ?>
 				<fieldset id="download-batch">
 					<strong><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
@@ -433,5 +434,6 @@ if ($label == 'none') {
 				</p>
 			</fieldset>
 		</div><!-- /.aside -->
+		</div>
 	</section>
 </form>

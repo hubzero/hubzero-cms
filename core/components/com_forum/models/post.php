@@ -143,14 +143,14 @@ class Post extends Relational
 			if (!isset($data['id']) || !$data['id'])
 			{
 				$id = self::all()
-					->whereEquals('thread', $data['thread'])
+					//->whereEquals('thread', $data['thread'])
 					->whereEquals('created_by', $data['created_by'])
 					->whereEquals('comment', $data['comment'])
 					->whereEquals('state', self::STATE_PUBLISHED)
 					//->where('created', '>', Date::of('now')->subtract('1 hour')->toSql())
 					//->whereEquals('category_id', $data['category_id'])
-					//->whereEquals('scope', $data['category_id'])
-					//->whereEquals('scope_id', $data['scope_id'])
+					->whereEquals('scope', $data['scope'])
+					->whereEquals('scope_id', $data['scope_id'])
 					->row()
 					->get('id');
 
@@ -478,7 +478,7 @@ class Post extends Relational
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->adapter = new $cls($this->get('scope_id'));

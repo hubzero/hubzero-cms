@@ -146,12 +146,28 @@ if ($this->cats)
 				</ul>
 
 				<ul class="entries-menu">
-					<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=date&access=' . $this->access); ?>" title="Sort by newest to oldest">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_DATE'); ?></a></li>
-					<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=title&access=' . $this->access); ?>" title="Sort by title">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_TITLE'); ?></a></li>
+					<li>
+						<a class="<?php echo ($this->sort == 'date') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=date&sortdir=' . ($this->sort == 'date' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by newest to oldest">
+							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_DATE'); ?>
+						</a>
+					</li>
+					<li>
+						<a class="<?php echo ($this->sort == 'title') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=title&sortdir=' . ($this->sort == 'title' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by title">
+							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_TITLE'); ?>
+						</a>
+					</li>
 					<?php if ($config->get('show_ranking')) { ?>
-						<li><a<?php echo ($this->sort == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=ranking&access=' . $this->access); ?>" title="Sort by popularity">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RANKING'); ?></a></li>
+						<li>
+							<a class="<?php echo ($this->sort == 'ranking') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=ranking&sortdir=' . ($this->sort == 'ranking' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by popularity">
+								<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RANKING'); ?>
+							</a>
+						</li>
 					<?php } else { ?>
-						<li><a<?php echo ($this->sort == 'rating') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=rating&access=' . $this->access); ?>" title="Sort by popularity">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RATING'); ?></a></li>
+						<li>
+							<a class="<?php echo ($this->sort == 'rating') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=rating&sortdir=' . ($this->sort == 'rating' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by popularity">
+								<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RATING'); ?>
+							</a>
+						</li>
 					<?php } ?>
 				</ul>
 			</nav>

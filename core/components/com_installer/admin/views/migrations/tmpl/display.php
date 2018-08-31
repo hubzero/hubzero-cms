@@ -53,7 +53,7 @@ $this->css();
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col">Extension</th>
 				<th scope="col priority-3">Date</th>
 				<th scope="col">Filename</th>
@@ -103,7 +103,7 @@ $this->css();
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['entry']); ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['entry']); ?>" onclick="Joomla.isChecked(this.checked);" />
 					</td>
 					<td>
 						<?php echo $component; ?><br />

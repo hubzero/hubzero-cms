@@ -78,7 +78,7 @@ $first = $this->archive->entries(array(
 </header>
 
 <section class="main section">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
@@ -300,7 +300,7 @@ $first = $this->archive->entries(array(
 
 <?php if ($this->row->get('allow_comments')) { ?>
 <section class="below section">
-	<div class="section-inner">
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<h3 id="comments">
 				<?php echo Lang::txt('COM_BLOG_COMMENTS_HEADER'); ?>

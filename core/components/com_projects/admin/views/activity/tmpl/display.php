@@ -92,7 +92,7 @@ Html::behavior('modal');
 			</tr>
 		<?php } ?>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_CREATED_BY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -138,7 +138,7 @@ Html::behavior('modal');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-6">
 					<?php
@@ -152,7 +152,7 @@ Html::behavior('modal');
 				</td>
 				<td class="priority-3">
 					<?php
-					$creator = User::getInstance($row->get('created_by'));
+					$creator = User::getInstance($row->log->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name', Lang::txt('COM_PROJECTS_UNKNOWN'))));
 					?>
 				</td>

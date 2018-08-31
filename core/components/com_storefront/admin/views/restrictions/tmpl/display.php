@@ -61,17 +61,6 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 	{
 		location.reload();
 	}
-
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-		// do field validation
-		submitform(pressbutton);
-	}
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
@@ -83,7 +72,7 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 				</th>
 			</tr>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'ID', 'uId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">Email</th>
@@ -118,7 +107,7 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 					<span>
@@ -150,8 +139,8 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 	<input type="hidden" name="sId" value="<?php echo $this->sId; ?>" />
 	<input type="hidden" name="pId" value="<?php echo $this->sku->getProductId(); ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

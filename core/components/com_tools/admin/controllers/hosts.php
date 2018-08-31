@@ -239,8 +239,8 @@ class Hosts extends AdminController
 		$zones = $v->find('list');
 
 		// make sure we have a hostname
-		$toolCounts = 0;
-		$statusCounts = 0;
+		$toolCounts = array();
+		$statusCounts = array();
 		if ($row->hostname != '')
 		{
 			//get tool instance counts

@@ -58,7 +58,7 @@ Toolbar::help('categories');
 		<thead>
 			<tr>
 				<th scope="col">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" />
+					<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 				</th>
 				<th scope="col" class="priority-2">
 					<?php echo $this->grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
@@ -93,7 +93,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td class="priority-2">
 					<?php echo $row->id; ?>
@@ -124,8 +124,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

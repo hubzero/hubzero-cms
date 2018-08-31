@@ -1236,7 +1236,9 @@ class Wishlists extends SiteController
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $wishlist->owners('individuals'), $this->_option)))
+			$owners = $wishlist->getOwners();
+
+			if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 			}
@@ -1636,7 +1638,9 @@ class Wishlists extends SiteController
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-				if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $newlist->owners('individuals'), $this->_option)))
+				$owners = $newlist->getOwners();
+
+				if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 				}

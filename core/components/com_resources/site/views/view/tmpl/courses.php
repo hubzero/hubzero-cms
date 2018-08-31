@@ -64,134 +64,135 @@ if ($mode != 'preview')
 }
 ?>
 <section class="main section upperpane <?php echo $this->model->params->get('pageclass_sfx', ''); ?>">
-	<div class="subject">
-		<div class="grid overviewcontainer">
-			<div class="col span8">
-				<header id="content-header">
-					<h2>
-						<?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
-						<?php if ($this->model->params->get('access-edit-resource')) { ?>
-							<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
-						<?php } ?>
-					</h2>
-					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
-				</header>
+	<div class="section-inner hz-layout-with-aside">
+		<div class="subject">
+			<div class="grid overviewcontainer">
+				<div class="col span8">
+					<header id="content-header">
+						<h2>
+							<?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
+							<?php if ($this->model->params->get('access-edit-resource')) { ?>
+								<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
+							<?php } ?>
+						</h2>
+						<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
+					</header>
 
-				<?php if ($this->model->params->get('show_authors', 1)) { ?>
-					<div id="authorslist">
-						<?php
-						// Display authors
-						$this->view('_contributors')
-							->set('option', $this->option)
-							->set('contributors', $this->model->contributors('!submitter'))
-							->display();
+					<?php if ($this->model->params->get('show_authors', 1)) { ?>
+						<div id="authorslist">
+							<?php
+							// Display authors
+							$this->view('_contributors')
+								->set('option', $this->option)
+								->set('contributors', $this->model->contributors('!submitter'))
+								->display();
+							?>
+						</div><!-- / #authorslist -->
+					<?php } ?>
+				</div><!-- / .overviewcontainer -->
+
+				<div class="col span4 omega launcharea">
+					<?php
+					// Private/Public resource access check
+					if (!$this->model->access('view-all'))
+					{
+						$ghtml = array();
+						foreach ($this->model->groups as $allowedgroup)
+						{
+							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+						}
 						?>
-					</div><!-- / #authorslist -->
-				<?php } ?>
-			</div><!-- / .overviewcontainer -->
-
-			<div class="col span4 omega launcharea">
-				<?php
-				// Private/Public resource access check
-				if (!$this->model->access('view-all'))
-				{
-					$ghtml = array();
-					foreach ($this->model->groups as $allowedgroup)
-					{
-						$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+						<p class="warning">
+							<?php if (User::isGuest()): ?>
+								<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+							<?php else: ?>
+								<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+							<?php endif; ?>
+						</p>
+						<?php
 					}
+					else
+					{
+						$schildren = $this->model->children()
+							->whereEquals('standalone', 1)
+							->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+							->order('ordering', 'asc')
+							->rows();
+
+						$ccount = count($schildren);
+
+						if ($ccount > 0)
+						{
+							$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $this->model->type->get('type');
+
+							$this->view('_primary')
+								->set('option', $this->option)
+								->set('class', 'download')
+								->set('href', Route::url($this->model->link()) . '#series')
+								->set('title', $mesg)
+								->set('xtra', '')
+								->set('pop', '')
+								->set('action', '')
+								->set('msg', $mesg)
+								->display();
+						}
+
+						$html = '';
+
+						$thumb = '/site/stats/resource_impact/resource_impact_' . $this->model->id . '_th.gif';
+						$full  = '/site/stats/resource_impact/resource_impact_' . $this->model->id . '.gif';
+						if (file_exists(PATH_APP . $thumb))
+						{
+							$html .= '<br />';
+							$html .= '<a id="member-stats-graph" title="'.$this->model->id.' Impact Graph" href="' . Request::base(true) . $full . '" rel="lightbox">';
+							$html .= '<img src="' . Request::base(true) . $thumb . '" alt="'.$this->model->id.' Impact Graph"/>';
+							$html .= '</a>';
+						}
+
+						// Display some supporting documents
+						$children = $this->model->children()
+							->whereEquals('standalone', 0)
+							->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+							->order('ordering', 'asc')
+							->rows();
+
+						$firstChild = $children->first();
+
+						// Sort out supporting docs
+						$html .= $children && count($children) > 1
+							   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
+							   : '';
+
+						echo $html;
+
+						$live_site = rtrim(Request::base(),'/');
+						?>
+						<p>
+							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->id.'/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
+							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->id.'/feed.rss?content=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
+							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->id.'/feed.rss?content=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
+						</p>
+						<?php
+						if ($this->tab != 'play')
+						{
+							$this->view('_license')
+								->set('license', $this->model->license())
+								->display();
+						}
+					} // --- end else (if group check passed)
 					?>
-					<p class="warning">
-						<?php if (User::isGuest()): ?>
-							<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
-						<?php else: ?>
-							<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
-						<?php endif; ?>
-					</p>
-					<?php
-				}
-				else
-				{
-					$schildren = $this->model->children()
-						->whereEquals('standalone', 1)
-						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-						->order('ordering', 'asc')
-						->rows();
+				</div><!-- / .aside launcharea -->
+			</div>
 
-					$ccount = count($schildren);
-
-					if ($ccount > 0)
-					{
-						$mesg = Lang::txt('COM_RESOURCES_VIEW') . ' ' . $this->model->type->get('type');
-
-						$this->view('_primary')
-							->set('option', $this->option)
-							->set('class', 'download')
-							->set('href', Route::url($this->model->link()) . '#series')
-							->set('title', $mesg)
-							->set('xtra', '')
-							->set('pop', '')
-							->set('action', '')
-							->set('msg', $mesg)
-							->display();
-					}
-
-					$html = '';
-
-					$thumb = '/site/stats/resource_impact/resource_impact_' . $this->model->id . '_th.gif';
-					$full  = '/site/stats/resource_impact/resource_impact_' . $this->model->id . '.gif';
-					if (file_exists(PATH_APP . $thumb))
-					{
-						$html .= '<br />';
-						$html .= '<a id="member-stats-graph" title="'.$this->model->id.' Impact Graph" href="' . Request::base(true) . $full . '" rel="lightbox">';
-						$html .= '<img src="' . Request::base(true) . $thumb . '" alt="'.$this->model->id.' Impact Graph"/>';
-						$html .= '</a>';
-					}
-
-					// Display some supporting documents
-					$children = $this->model->children()
-						->whereEquals('standalone', 0)
-						->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-						->order('ordering', 'asc')
-						->rows();
-
-					$firstChild = $children->first();
-
-					// Sort out supporting docs
-					$html .= $children && count($children) > 1
-						   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
-						   : '';
-
-					echo $html;
-
-					$live_site = rtrim(Request::base(),'/');
-					?>
-					<p>
-						<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->id.'/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
-						<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->id.'/feed.rss?content=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
-						<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->id.'/feed.rss?content=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
-					</p>
-					<?php
-					if ($this->tab != 'play')
-					{
-						$this->view('_license')
-							->set('license', $this->model->license())
-							->display();
-					}
-				} // --- end else (if group check passed)
-				?>
-			</div><!-- / .aside launcharea -->
-		</div>
-
-		<?php
-		// Display canonical
-		$this->view('_canonical')
-			->set('option', $this->option)
-			->set('model', $this->model)
-			->display();
-		?>
-	</div><!-- / .subject -->
-	<aside class="aside rankarea">
+			<?php
+			// Display canonical
+			$this->view('_canonical')
+				->set('option', $this->option)
+				->set('model', $this->model)
+				->display();
+			?>
+		</div><!-- / .subject -->
+		<aside class="aside rankarea">
 		<?php
 		// Show metadata
 		if ($this->model->params->get('show_metadata', 1))
@@ -204,28 +205,30 @@ if ($mode != 'preview')
 		}
 		?>
 	</aside><!-- / .aside -->
+	</div>
 </section>
 
 <?php if ($this->model->access('view-all')) { ?>
 	<section class="main section noborder <?php echo $this->model->params->get('pageclass_sfx', ''); ?>">
-		<div class="subject tabbed">
-			<?php
-			$this->view('_tabs')
-				->set('option', $this->option)
-				->set('cats', $this->cats)
-				->set('resource', $this->model)
-				->set('active', $this->tab)
-				->display();
+		<div class="section-inner hz-layout-with-aside">
+			<div class="subject tabbed">
+				<?php
+				$this->view('_tabs')
+					->set('option', $this->option)
+					->set('cats', $this->cats)
+					->set('resource', $this->model)
+					->set('active', $this->tab)
+					->display();
 
-			$this->view('_sections')
-				->set('option', $this->option)
-				->set('sections', $this->sections)
-				->set('resource', $this->model)
-				->set('active', $this->tab)
-				->display();
-			?>
-		</div><!-- / .subject -->
-		<div class="aside extracontent">
+				$this->view('_sections')
+					->set('option', $this->option)
+					->set('sections', $this->sections)
+					->set('resource', $this->model)
+					->set('active', $this->tab)
+					->display();
+				?>
+			</div><!-- / .subject -->
+			<div class="aside extracontent">
 			<?php
 			// Show related content
 			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
@@ -247,6 +250,7 @@ if ($mode != 'preview')
 			}
 			?>
 		</div><!-- / .aside extracontent -->
+		</div>
 	</section>
 
 	<?php

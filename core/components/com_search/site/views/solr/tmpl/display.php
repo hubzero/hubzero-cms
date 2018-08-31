@@ -110,7 +110,7 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 				</div>
 			<?php }
 		} else { ?>
-			<div class="section-inner">
+			<div class="section-inner hz-layout-with-aside">
 				<nav class="aside">
 					<div class="container facet">
 						<h3>Category</h3>

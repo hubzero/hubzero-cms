@@ -652,7 +652,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			'user_id'       => User::get('id'),
 			'search'        => Request::getString('search', ''),
 			'state'         => 1,
-			'collection_id' => Request::getInt('board', 0)
+			'collection_id' => Request::getVar('board', 0)
 		);
 
 		$view->collection = $this->model->collection($view->filters['collection_id']);
@@ -1495,7 +1495,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$post = \Components\Collections\Models\Post::getInstance(Request::getInt('post', 0));
 
-		if (!$post->move(Request::getInt('board', 0)))
+		if (!$post->move(Request::getVar('board', 0)))
 		{
 			$this->setError($post->getError());
 		}

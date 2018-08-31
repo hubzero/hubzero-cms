@@ -147,7 +147,7 @@ class Orders extends AdminController
 	public function viewTask()
 	{
 		// Incoming
-		$id = Request::getArray('id', array(0));
+		$id = Request::getInt('id', 0);
 
 		// Get transaction info
 		$transactionItems = Cart::getTransactionItems($id, false);
@@ -265,7 +265,7 @@ class Orders extends AdminController
 	public function editTask()
 	{
 		// Incoming
-		$id = Request::getArray('id', array(0));
+		$id = Request::getInt('id', 0);
 
 		// Get transaction info
 		$transactionItems = Cart::getTransactionItems($id, false);
