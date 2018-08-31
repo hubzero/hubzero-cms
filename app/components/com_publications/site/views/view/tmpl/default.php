@@ -187,27 +187,28 @@ if ($this->publication->access('view-all'))
 {
 	?>
 	<section class="main section noborder">
-		<div class="subject tabbed">
-			<?php
-			echo \Components\Publications\Helpers\Html::tabs(
-				$this->option,
-				$this->publication->id,
-				$this->cats,
-				$this->tab,
-				$this->publication->alias,
-				$this->version
-			);
+		<div class="section-inner hz-layout-with-aside">
+			<div class="subject tabbed">
+				<?php
+				echo \Components\Publications\Helpers\Html::tabs(
+					$this->option,
+					$this->publication->id,
+					$this->cats,
+					$this->tab,
+					$this->publication->alias,
+					$this->version
+				);
 
-			echo \Components\Publications\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main');
+				echo \Components\Publications\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main');
 
-			// Add footer notice
-			if ($this->tab == 'about')
-			{
-				echo \Components\Publications\Helpers\Html::footer($this->publication);
-			}
-			?>
-		</div><!-- / .subject -->
-		<div class="aside extracontent">
+				// Add footer notice
+				if ($this->tab == 'about')
+				{
+					echo \Components\Publications\Helpers\Html::footer($this->publication);
+				}
+				?>
+			</div><!-- / .subject -->
+			<div class="aside extracontent">
 			<?php
 			// Show related content
 			$out = Event::trigger('publications.onPublicationSub', array($this->publication, $this->option, 1));
@@ -229,6 +230,7 @@ if ($this->publication->access('view-all'))
 			}
 			?>
 		</div><!-- / .aside extracontent -->
+		</div>
 	</section><!-- / .main section -->
 	<div class="clear"></div>
 	<?php
