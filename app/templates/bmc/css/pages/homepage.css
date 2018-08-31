@@ -1,12 +1,18 @@
 .feature .billboard-image, .resources .module-left .resource-img, .community .module-right .billboard-image, .community .module-right .resource-img {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .feature .billboard-image img, .resources .module-left .resource-img img, .community .module-right .billboard-image img, .community .module-right .resource-img img {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  transition: all 3s ease-in-out;
+}
+
+.feature .billboard-image:hover img, .resources .module-left .resource-img:hover img, .community .module-right .billboard-image:hover img, .community .module-right .resource-img:hover img {
+  transform: scale(1.1);
 }
 
 .community .module-right .partner-img, .community .module-right .group .group-img {
@@ -49,7 +55,6 @@
   background: url("/app/site/media/images/pexels-photo-355988.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/pexels-photo-355988.jpg");
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
   background-color: #000;
   color: #fff;
@@ -124,7 +129,24 @@
   }
 }
 
+.feature .module-feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, 10rem);
+  grid-gap: 10px;
+}
+
+@media only screen and (min-width: 601px) {
+  .feature .module-feature {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 10rem);
+    grid-gap: 10px;
+  }
+}
+
 .feature .billboard-image {
+  background-color: #fff;
   transition: all 3s ease-in-out;
   overflow: hidden;
 }
@@ -139,16 +161,16 @@
 
 .feature .billboard {
   position: relative;
-  height: 20rem;
+  height: 10rem;
 }
 
 .feature .billboard .billboard-tag {
   position: absolute;
-  bottom: 50px;
+  bottom: 5em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: .8em;
+  padding: .5em .8em;
   background-color: #84bf41;
 }
 
@@ -176,6 +198,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: #fff;
+}
+
+.feature .regular {
+  flex: 1 1 20rem;
+  height: 10rem;
+  margin: 2.5px;
+}
+
+@supports (display: grid) {
+  .feature .regular {
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
 }
 
 .one {
@@ -319,11 +355,11 @@ h3 {
 
 .resources .module-left .resource .resource-tag {
   position: absolute;
-  bottom: 50px;
+  bottom: 5em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: .8em;
+  padding: .5em .8em;
   background-color: #222b37;
 }
 
@@ -900,11 +936,11 @@ h3 {
 
 .community .module-right .billboard .billboard-tag {
   position: absolute;
-  bottom: 50px;
+  bottom: 5em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: .8em;
+  padding: .5em .8em;
   background-color: #84bf41;
 }
 
@@ -940,11 +976,11 @@ h3 {
 
 .community .module-right .resource .resource-tag {
   position: absolute;
-  bottom: 50px;
+  bottom: 5em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: .8em;
+  padding: .5em .8em;
   background-color: #222b37;
   background-color: #222b37;
 }
@@ -977,11 +1013,11 @@ h3 {
 
 .community .module-right .partner-tag {
   position: absolute;
-  bottom: 50px;
+  bottom: 5em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: .8em;
+  padding: .5em .8em;
   background-color: #84bf41;
 }
 
@@ -1017,11 +1053,11 @@ h3 {
 
 .community .module-right .group .group-tag {
   position: absolute;
-  bottom: 50px;
+  bottom: 5em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: .8em;
+  padding: .5em .8em;
   background-color: #84bf41;
 }
 
