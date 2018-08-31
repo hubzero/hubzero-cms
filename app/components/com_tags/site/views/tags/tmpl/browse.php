@@ -49,7 +49,7 @@ $this->css()
 </header>
 
 <section class="main section">
-	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
+	<form class="section-inner hz-layout-with-aside" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
 		<div class="subject">
 
 			<div class="container data-entry">
