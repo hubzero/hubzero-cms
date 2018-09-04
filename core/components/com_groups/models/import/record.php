@@ -484,15 +484,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			));
 			$version->store(false);
 		}
-
-		if (isset($this->record->members) && !empty($this->record->members))
-		{
-			$this->record->entry->add('members', $this->record->members);
-		}
-		if (isset($this->record->managers) && !empty($this->record->managers))
-		{
-			$this->record->entry->add('managers', $this->record->managers);
-		}
 	}
 
 	/**
