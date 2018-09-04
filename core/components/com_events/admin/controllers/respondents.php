@@ -179,7 +179,7 @@ class Respondents extends AdminController
 			->paginated('limitstart', 'limit')
 			->rows();
 
-		Csv::downloadlist($this->getRespondents(), $this->_option);
+		Csv::downloadlist($rows, $this->_option);
 	}
 
 	/**
