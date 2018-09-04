@@ -150,7 +150,7 @@ class Version extends Table
 			return false;
 		}
 
-		$query  = "SELECT v.*, d.* ";
+		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi ";
 		$query .= "FROM $this->_tbl as v ";
 		$query .= "LEFT JOIN `#__doi_mapping` as d ON d.alias=v.toolname  AND d.local_revision=v.revision ";
 		$query .= "WHERE v.toolname = " . $this->_db->quote($alias) . " AND v.state!=3 ORDER BY v.revision DESC";
@@ -416,7 +416,7 @@ class Version extends Table
 	{
 		$objA = new \Components\Tools\Tables\Author($this->_db);
 
-		$query  = "SELECT v.*, d.* ";
+		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi ";
 		$query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($toolid)
 		{
