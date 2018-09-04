@@ -119,53 +119,38 @@ class Csv
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      object $resp Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
+	 * @param      object $respondents   Parameter description (if any) ...
+	 * @param      unknown $option       Parameter description (if any) ...
 	 * @return     void
 	 */
-	public static function downloadlist($resp, $option)
+	public static function downloadlist($respondents, $option)
 	{
 		$database = \App::get('db');
 		$ee = new \Components\Events\Tables\Event($database);
+		$fields = array('name', 'registered', 'affiliation', 'email', 'telephone', 'arrival', 'departure', 'disability', 'dietary', 'dinner');
 
 		header('Content-type: text/comma-separated-values');
 		header('Content-disposition: attachment; filename="eventrsvp.csv"');
-		$fields = array('name', 'registered', 'affiliation', 'email', 'telephone', 'arrival', 'departure', 'disability', 'dietary', 'dinner'); //array_merge($ee->getDefinedFields(Request::getArray('id', array())), array('name'));
 
 		// Output header
 		usort($fields, array('\Components\Events\Helpers\Csv', 'fieldSorter'));
 		echo self::quoteRow(array_map('ucfirst', $fields));
 
-		$rows = $resp->getRecords();
-
-		// Get a list of IDs to query the race identification for all of them at once to avoid
-		// querying for it in a loop later
-		$race_ids = array();
-		foreach ($rows as $re)
-		{
-			$race_ids[$re->id] = array('identification' => '');
-		}
-
-		foreach (\Components\Events\Tables\Respondent::getRacialIdentification(array_keys($race_ids)) as $id => $val)
-		{
-			$race_ids[$id] = $val;
-		}
-
 		// Output rows
-		foreach ($rows as $re)
+		foreach ($respondents as $respondent)
 		{
-			if (!isset($re->last_name) || !$re->last_name)
+			if (!$respondent->get('last_name'))
 			{
-				$re->last_name = '[unknown]';
+				$respondent->set('last_name', '[unknown]');
 			}
-			if (!isset($re->first_name) || !$re->first_name)
+			if (!$respondent->get('first_name'))
 			{
-				$re->first_name = '[unknown]';
+				$respondent->set('first_name', '[unknown]');
 			}
 			$row = array(
-				$re->last_name . ', ' . $re->first_name
+				$respondent->last_name . ', ' . $respondent->first_name
 			);
-			// TODO: Oops, I should have made these fields match up better in the first place.
+
 			foreach ($fields as $field)
 			{
 				switch ($field)
@@ -173,50 +158,27 @@ class Csv
 					case 'name':
 						break;
 					case 'position':
-						$row[] = $re->position_description;
+						$row[] = $respondent->get('position_description');
 						break;
 					case 'comments':
-						$row[] = $re->comment;
+						$row[] = $respondent->get('comment');
 						break;
 					case 'degree':
-						$row[] = $re->highest_degree;
+						$row[] = $respondent->get('highest_degree');
 						break;
-					case 'race':
-						$row[] = $race_ids[$re->id]['identification'];
-						break;
-					case 'address':
-						$address = array();
-						if ($re->city)
-						{
-							$address[] = $re->city;
-						}
-						if ($re->state)
-						{
-							$address[] = $re->state;
-						}
-						if ($re->zip)
-						{
-							$address[] = $re->zip;
-						}
-						if ($re->country)
-						{
-							$address[] = $re->country;
-						}
-						$row[] = implode(', ', $address);
-					break;
 					case 'disability':
-						$row[] = $re->disability_needs ? 'Yes' : 'No';
+						$row[] = $respondent->get('disability_needs') ? 'Yes' : 'No';
 						break;
 					case 'dietary':
-						$row[] = $re->dietary_needs;
+						$row[] = $respondent->get('dietary_needs');
 						break;
 					case 'dinner':
-						$row[] = $re->attending_dinner ? 'Yes' : 'No';
+						$row[] = $respondent->get('attending_dinner') ? 'Yes' : 'No';
 						break;
 					default:
-						if (isset($re->$field))
+						if (isset($respondent->$field))
 						{
-							$row[] = $re->$field;
+							$row[] = $respondent->get($field);
 						}
 						else
 						{
