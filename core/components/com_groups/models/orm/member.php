@@ -52,7 +52,7 @@ class Member extends Relational
 	 *
 	 * @var  string
 	 **/
-	protected $pk = 'gidNumber';
+	protected $pk = 'id';
 
 	/**
 	 * Default order by for model
@@ -107,10 +107,17 @@ class Member extends Relational
 	 */
 	public static function oneByGroupAndUser($gidNumber, $uidNumber)
 	{
-		return self::all()
+		$row = self::all()
 			->whereEquals('uidNumber', $uidNumber)
 			->whereEquals('gidNumber', $gidNumber)
 			->row();
+
+		if (!$row)
+		{
+			$row = self::blank();
+		}
+
+		return $row;
 	}
 
 	/**
@@ -118,7 +125,7 @@ class Member extends Relational
 	 *
 	 * @return  bool
 	 **/
-	public function save()
+	/*public function save()
 	{
 		// Validate
 		if (!$this->validate())
@@ -141,7 +148,7 @@ class Member extends Relational
 		\Event::trigger('system.onContentSave', array($this->getTableName(), $this));
 
 		return $result;
-	}
+	}*/
 
 	/**
 	 * Inserts a new row into the database

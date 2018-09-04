@@ -423,7 +423,6 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 			->rows()
 			->fieldsByKey('uidNumber');
 
-		//$ids = array_merge($existing, $users);
 		$ids = array_diff($users, $existing);
 
 		foreach ($ids as $id)
@@ -431,15 +430,20 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 			$model = rtrim($role, 's');
 			$model = __NAMESPACE__ . '\\' . ucfirst($model);
 
-			$row = new $model;
-			$row->set(array(
-				'uidNumber' => $id,
-				'gidNumber' => $this->get('gidNumber')
-			));
-			if (!$row->save())
+			$row = $model::oneByGroupAndUser($this->get('gidNumber'), $id);
+
+			if ($row->isNew())
 			{
-				$this->addError($row->getError());
-				continue;
+				$row->set(array(
+					'uidNumber' => $id,
+					'gidNumber' => $this->get('gidNumber')
+				));
+
+				if (!$row->save())
+				{
+					$this->addError($row->getError());
+					return false;
+				}
 			}
 
 			// Managers are a special case in that they
@@ -447,12 +451,20 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 			// managers tables
 			if ($role == 'managers')
 			{
-				$row = new Member;
-				$row->set(array(
-					'uidNumber' => $id,
-					'gidNumber' => $this->get('gidNumber')
-				));
-				$row->save();
+				$row = Member::oneByGroupAndUser($this->get('gidNumber'), $id);
+
+				if ($row->isNew())
+				{
+					$row->set(array(
+						'uidNumber' => $id,
+						'gidNumber' => $this->get('gidNumber')
+					));
+					if (!$row->save())
+					{
+						$this->addError($row->getError());
+						return false;
+					}
+				}
 			}
 		}
 
@@ -998,7 +1010,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	 *
 	 * @return  string
 	 */
-	public static function searchNamespace()
+	public function searchNamespace()
 	{
 		return 'group';
 	}
@@ -1010,7 +1022,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = self::searchNamespace() . '-' . $this->get('id');
+		$searchId = $this->searchNamespace() . '-' . $this->get('id');
 		return $searchId;
 	}
 
@@ -1041,8 +1053,8 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 		$group->owner_type = 'group';
 		$group->owner = $this->get('id');
 		$group->id = $this->searchId();
-		$group->title = empty($this->description) ? $this->cn : $this->description;
-		$group->hubtype = self::searchNamespace();
+		$group->title = $this->description;
+		$group->hubtype = $this->searchNamespace();
 		$group->description = \Hubzero\Utility\Sanitize::stripAll($this->public_desc);
 
 		return $group;
