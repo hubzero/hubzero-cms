@@ -107,10 +107,17 @@ class Applicant extends Relational
 	 */
 	public static function oneByGroupAndUser($gidNumber, $uidNumber)
 	{
-		return self::all()
+		$row = self::all()
 			->whereEquals('uidNumber', $uidNumber)
 			->whereEquals('gidNumber', $gidNumber)
 			->row();
+
+		if (!$row)
+		{
+			$row = self::blank();
+		}
+
+		return $row;
 	}
 
 	/**
@@ -127,7 +134,7 @@ class Applicant extends Relational
 		}
 
 		// See if we're creating or updating
-		$method = $this->isNew() ? 'createWithNoPk' : 'modifyWithNoPk';
+		$method = 'createWithNoPk'; //$this->isNew() ? 'createWithNoPk' : 'modifyWithNoPk';
 		$result = $this->$method($this->getAttributes());
 
 		$result = ($result === false ? false : true);
