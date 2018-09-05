@@ -439,6 +439,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			->limit(1)
 			->row()
 			->get('year');
+		$earliestYear = $earliestYear ?: date('Y');
 
 		$groupCitations = array();
 		$affiliations = array('non-affiliate' => 0, 'affiliate' => 0);
