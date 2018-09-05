@@ -768,7 +768,7 @@ class Ticket extends Relational
 	 */
 	public static function allWithQuery($query, $filters=array())
 	{
-		if (!$query)
+		if (!$query || $query->isNew())
 		{
 			return array();
 		}
