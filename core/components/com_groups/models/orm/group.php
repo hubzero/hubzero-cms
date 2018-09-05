@@ -1010,7 +1010,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 	 *
 	 * @return  string
 	 */
-	public function searchNamespace()
+	public static function searchNamespace()
 	{
 		return 'group';
 	}
