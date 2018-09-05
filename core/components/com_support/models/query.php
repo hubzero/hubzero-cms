@@ -266,6 +266,11 @@ class Query extends Relational
 			$condition = json_decode($condition);
 		}
 
+		if (empty($condition))
+		{
+			return '';
+		}
+
 		$db = App::get('db');
 		$user = User::getInstance();
 

@@ -693,9 +693,9 @@ class Ticket extends Relational
 	 */
 	public static function countWithQuery($query, $filters=array())
 	{
-		if (!$query)
+		if (!$query || $query->isNew())
 		{
-			return array();
+			return 0;
 		}
 
 		if (!is_string($query))
@@ -730,7 +730,7 @@ class Ticket extends Relational
 			$sql .= " LEFT JOIN `#__support_comments` AS w ON w.ticket=f.id";
 		}
 
-		$sql .= self::parseFind($filters) . " AND " . $query;
+		$sql .= self::parseFind($filters) . ($query ? " AND " . $query : "");
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -764,7 +764,7 @@ class Ticket extends Relational
 	 *
 	 * @param   string   $query    Filters to build query from
 	 * @param   array    $filters
-	 * @return  integer
+	 * @return  array
 	 */
 	public static function allWithQuery($query, $filters=array())
 	{
@@ -803,7 +803,7 @@ class Ticket extends Relational
 			$sql .= " LEFT JOIN `#__support_comments` AS w ON w.ticket=f.id";
 		}
 
-		$sql .= self::parseFind($filters) . " AND " . $query;
+		$sql .= self::parseFind($filters) . ($query ? " AND " . $query : "");
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
