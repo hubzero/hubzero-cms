@@ -29,7 +29,7 @@ define('DS', DIRECTORY_SEPARATOR);
 */
 
 // Define the root. Typically, this is the current directory.
-$root = __DIR__;
+$root = dirname(__DIR__);
 if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'])
 {
 	$root = $_SERVER['DOCUMENT_ROOT'];
