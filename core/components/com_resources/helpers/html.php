@@ -591,23 +591,40 @@ class Html
 	 */
 	public static function citationCOins($cite, $model)
 	{
-		if (!$cite)
+		if (!$model->id)
 		{
 			return '';
 		}
 
-		$html  = '<span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
+		$title = array(
+			'ctx_ver=Z39.88-2004',
+			'rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal',  //info:ofi/fmt:kev:mtx:journal
+			'rft.genre=article',
+			'rft.atitle=' . urlencode($model->title),
+			'rft.date=' . \Date::of($model->date)->toLocal('Y')
+		);
 
-		// Get contribtool params
-		$tconfig = Component::params('com_tools');
-		$doi = '';
+		$tconfig = \Component::params('com_tools');
 
-		$html .= $model->get('doi')
-			? '&amp;rft_id=info%3Adoi%2F' . urlencode($model->get('doi'))
-			: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
-		$html .= '&amp;rft.genre=article';
-		$html .= '&amp;rft.atitle=' . urlencode($cite->title);
-		$html .= '&amp;rft.date=' . urlencode($cite->year);
+		if ($doi = $model->get('doi'))
+		{
+			if ($tconfig->get('doi_shoulder'))
+			{
+				$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($doi);
+			}
+		}
+		else if ($model->get('doi_label'))
+		{
+			$doi = '10254/' . $tconfig->get('doi_prefix') . $model->get('id') . '.' . $model->get('doi_label');
+		}
+		else
+		{
+			$uri = \Hubzero\Utility\Uri::getInstance();
+
+			$doi = $uri->getVar('host') . ':' . \Config::get('sitename');
+		}
+
+		$title[] = 'rft_id=info%3Adoi%2F' . urlencode($doi);
 
 		if (isset($model->revision) && $model->revision != 'dev')
 		{
@@ -623,30 +640,30 @@ class Html
 			$i = 0;
 			foreach ($author_array as $author)
 			{
-				if ($author->surname || $author->givenName)
+				if (!$author->surname || !$author->givenName)
 				{
-					$name = stripslashes($author->givenName) . ' ';
-					if ($author->middleName != null)
-					{
-						$name .= stripslashes($author->middleName) . ' ';
-					}
-					$name .= stripslashes($author->surname);
+					$name = explode(' ', $author->name);
+
+					$author->givenName = array_shift($name);
+					$author->surname   = array_pop($name);
 				}
-				else
-				{
-					$name = $author->name;
-				}
+
+				$lastname  = $author->surname ? $author->surname : $author->name;
+				$firstname = $author->givenName ? $author->givenName : $author->name;
+
+				$title[] = 'rft.aulast=' . urlencode($lastname);
+				$title[] = 'rft.aufirst=' . urlencode($firstname);
 
 				if ($i == 0)
 				{
-					$lastname  = $author->surname ? $author->surname : $author->name;
-					$firstname = $author->givenName ? $author->givenName : $author->name;
-					$html .= '&amp;rft.aulast=' . urlencode($lastname) . '&amp;rft.aufirst=' . urlencode($firstname);
+					break;
 				}
+
+				$i++;
 			}
 		}
 
-		$html .= '"></span>' . "\n";
+		$html = '<span class="Z3988" title="' . implode('&amp;', $title) . '"></span>' . "\n";
 
 		return $html;
 	}

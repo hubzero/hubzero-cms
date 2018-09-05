@@ -235,8 +235,7 @@ $maintext = $this->model->description;
 					$cite = null;
 				}
 
-				$citeinstruct  = \Components\Resources\Helpers\Html::citation($this->option, $cite, $this->model->id, $citations, $this->model->type, $revision);
-				$citeinstruct .= \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
+				$citeinstruct = \Components\Resources\Helpers\Html::citation($this->option, $cite, $this->model->id, $citations, $this->model->type, $revision);
 				?>
 
 				<?php if ($this->model->params->get('show_citation') == 3): ?>
@@ -323,5 +322,10 @@ $maintext = $this->model->description;
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
+
+		<?php
+		$cite = null; // Not used
+		echo \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
+		?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->
