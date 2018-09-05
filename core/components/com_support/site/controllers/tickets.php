@@ -724,6 +724,8 @@ class Tickets extends SiteController
 					// TODO - not sure this works, pretty edge case though
 					$query = Query::blank();
 					$query->set('count', 0);
+					$query->set('sort', 'created');
+					$query->set('sort_dir', 'desc');
 				}
 			}
 
