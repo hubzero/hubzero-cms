@@ -655,6 +655,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			{
 				array_push($this->record->notices, $error);
 			}
+
+			$handler->setErrors(array());
 		}
 	}
 
@@ -673,6 +675,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			{
 				array_push($this->record->notices, $error);
 			}
+
+			$handler->setErrors(array());
 		}
 	}
 
