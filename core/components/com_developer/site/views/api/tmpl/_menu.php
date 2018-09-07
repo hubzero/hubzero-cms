@@ -36,7 +36,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<h3 class="toc-header" data-section="overview" data-index="0"><?php echo Lang::txt('Using the API'); ?></h3>
 				<div class="toc-content">
 					<ul>
-						<li class="<?php echo ($this->active ? 'inactive' : 'active'); ?>">
+						<li class="<?php echo $this->active ? 'inactive' : 'active'; ?>">
 							<a href="<?php echo Route::url($base . '&task=docs'); ?>"><?php echo Lang::txt('Overview'); ?></a>
 							<ul>
 								<li><a href="<?php echo Route::url($base . '&task=docs#overview-schema'); ?>"><?php echo Lang::txt('Schema'); ?></a></li>
@@ -52,7 +52,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 				<h3 class="toc-header" data-section="oauth" data-index="1"><?php echo Lang::txt('Authentication (OAuth2)'); ?></h3>
 				<div class="toc-content"> -->
-						<li class="<?php echo ($this->active ? 'inactive' : 'active'); ?>">
+						<li class="<?php echo $this->active ? 'inactive' : 'active'; ?>">
 							<a href="<?php echo Route::url($base . '&task=docs#oauth'); ?>"><?php echo Lang::txt('Authentication (OAuth2)'); ?></a>
 							<ul>
 								<li><a href="<?php echo Route::url($base . '&task=docs#oauth-authorizationcode'); ?>"><?php echo Lang::txt('Web Application Flow'); ?></a></li>
@@ -70,7 +70,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<div class="toc-content">
 					<ul>
 				<?php $i = 2; foreach ($this->documentation['sections'] as $component => $endpoints) :?>
-						<li class="<?php echo ($component == $this->active ? 'active' : 'inactive'); ?>">
+						<li class="<?php echo $component == $this->active ? 'active' : 'inactive'; ?>">
 							<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component . '&version=' . $this->version); ?>"><?php echo ucfirst($component); ?></a>
 							<?php if (count($endpoints)) : ?>
 								<ul>
@@ -87,7 +87,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								</ul>
 							<?php endif; ?>
 						</li>
-				<?php endforeach; $i++; ?>
+				<?php endforeach;
+					$i++; ?>
 					</ul>
 				</div>
 			</nav>
