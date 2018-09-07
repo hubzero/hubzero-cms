@@ -71,7 +71,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					<ul>
 				<?php $i = 2; foreach ($this->documentation['sections'] as $component => $endpoints) :?>
 						<li class="<?php echo ($component == $this->active ? 'active' : 'inactive'); ?>">
-							<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component); ?>"><?php echo ucfirst($component); ?></a>
+							<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component . '&version=' . $this->version); ?>"><?php echo ucfirst($component); ?></a>
 							<?php if (count($endpoints)) : ?>
 								<ul>
 									<?php foreach ($endpoints as $endpoint) : ?>
@@ -82,7 +82,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 												continue;
 											}
 										?>
-										<li><a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component . '#' . $key); ?>"><?php echo $endpoint['name']; ?></a></li>
+										<li><a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component . '&version=' . $this->version . '#' . $key); ?>"><?php echo $endpoint['name']; ?></a></li>
 									<?php endforeach; ?>
 								</ul>
 							<?php endif; ?>
