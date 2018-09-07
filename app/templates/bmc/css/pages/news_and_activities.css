@@ -25,6 +25,10 @@
   width: 100%;
 }
 
+.content-header {
+  display: none;
+}
+
 .activities-wrapper {
   display: flex;
   flex-wrap: wrap;

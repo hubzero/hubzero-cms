@@ -1,6 +1,10 @@
 @import 'variables';
 @import 'mixins';
 
+.content-header {
+  display: none;
+}
+
 .activities-wrapper {
   @include flexbox(wrap);
 }
