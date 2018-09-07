@@ -58,7 +58,7 @@ $activeVersion = Request::getString('version', reset($versions));
 	<div id="content-header-extra">
 		<ul>
 			<li>
-				<a class="btn icon-cog" href="<?php echo Route::url('index.php?option=com_developer&controller=api'); ?>">
+				<a class="btn icon-cog" href="<?php echo Route::url('index.php?option=com_developer&controller=api&version=' . $activeVersion); ?>">
 					<?php echo Lang::txt('COM_DEVELOPER_API_HOME'); ?>
 				</a>
 			<?php if (!empty($versions)) : ?>
