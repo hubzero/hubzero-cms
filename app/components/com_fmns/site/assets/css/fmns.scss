@@ -1,0 +1,424 @@
+@import 'variables';
+@import 'mixins';
+
+body {
+  overflow: hidden;
+}
+
+.content-header {
+  display: none;
+}
+
+.wrapper {
+  h3,
+  h4 {
+    font-family: 'Martel', serif;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+// Header
+.header {
+  color: $white;
+  height: 35rem;
+  overflow: hidden;
+  padding: 2em;
+  position: relative;
+  text-align: center;
+
+  h2,
+  h3 {
+    color: $white;
+  }
+
+  h2 {
+    margin-top: .7em;
+  }
+
+  h3 {
+    margin: 1.5em 0;
+  }
+
+  p {
+    @include respond-at(35.625em) {
+      max-width: 50%;
+    }
+    margin: 1em auto;
+  }
+
+  .bcg-fmn {
+    @include bcg-img('/app/site/media/images/art-board-network.jpg');
+    height: 140%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    width: 100%;
+    z-index: -1;
+  }
+}
+
+// Anchor Links
+.anchor-links {
+  @include flexbox(wrap);
+  justify-content: center;
+
+  .anchor-wrap {
+    background-color: $white;
+    color: $dark-blue;
+    flex: 1 1 auto;
+    margin: 2em;
+    padding: 1em;
+    transition: .2s ease;
+    visibility: hidden;
+    width: 22rem;
+
+    hr {
+      background: $dark-blue;
+      margin: 0;
+      width: 45%;
+    }
+
+    &:hover {
+      border-left: 4px solid $dark-blue;
+    }
+  }
+}
+
+// New and Upcoming
+.new {
+  padding: 0 2.5em;
+
+  h2 {
+    bottom: -.76em;
+    color: $green;
+    display: block;
+    position: relative;
+  }
+
+  h4 {
+    margin: 1.5em 0;
+    text-align: center;
+  }
+
+  .new-wrap {
+    border: 1px solid $green;
+    border-radius: 6px;
+    padding: 1em 2em;
+
+    p {
+      bottom: -.875em;
+      font-size: 1.3rem;
+      left: 1em;
+      margin: 0;
+      position: relative;
+      text-align: right;
+    }
+  }
+
+  .module-upcoming {
+    @include flexbox(wrap);
+  }
+
+  .billboard-image {
+    @extend %showcase-img;
+    background-color: $white;
+    overflow: hidden;
+    transition: 3s ease-in-out;
+
+    img {
+      transition: 3s ease-in-out;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .billboard {
+    margin: .3125em;
+    position: relative;
+
+    .billboard-tag {
+      @include showcase-tag($green, $white);
+    }
+
+    .billboard-header {
+      bottom: 0;
+      padding: 10px;
+      position: absolute;
+
+      a {
+        @include showcase-header(1.1rem, 1.3, 2);
+      }
+    }
+  }
+
+  .regular {
+    flex: 1 1 20rem;
+    height: 15rem;
+  }
+}
+
+// Benefits of Participation
+.benefits {
+  background-color: $light-gray;
+  padding: 1.5em 2.5em;
+
+  h2 {
+    @include respond-at(41.875em) {
+      margin-top: 0;
+    }
+    margin-top: 2em;
+    text-align: center;
+  }
+
+  .emphasis {
+    font-style: italic;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+  p {
+    @include respond-at(41.875em) {
+      max-width: 50%;
+    }
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .benefits-wrapper {
+    @include flexbox(wrap);
+    margin-top: 2em;
+
+    ul {
+      @include respond-at(43.75em) {
+        width: 50%;
+      }
+      align-self: center;
+      padding: 0 1.5em;
+
+      li {
+        list-style-type: none;
+        margin: 1em 0;
+      }
+
+    }
+
+    .map-wrapper {
+      @include respond-at(43.75em) {
+        height: 50%;
+        width: 50%;
+      }
+      align-self: center;
+    }
+    @include respond-at(43.75em) {
+      @include flexbox;
+    }
+  }
+}
+
+// Featured Resources
+.products {
+  margin-top: 4em;
+  padding: 0 2.5em;
+
+  h2 {
+    bottom: -.76em;
+    color: $green;
+    position: relative;
+  }
+
+  h3 {
+    @include respond-at(71.875em) {
+      position: relative;
+      top: 5em;
+    }
+  }
+
+  .oer-wrap {
+    @include flexbox(wrap);
+    @include respond-at(59.375em) {
+      @include flexbox;
+    }
+    justify-content: center;
+
+    img {
+      @include respond-at(34.0625em) {
+        height: 28rem;
+      }
+      @include respond-at(43.75em) {
+        height: 35rem;
+      }
+      height: 22rem;
+    }
+
+    .oer {
+      align-self: center;
+    }
+  }
+
+  .product-wrap {
+    border: 1px solid $green;
+    border-radius: 6px;
+    padding: 1em;
+  }
+}
+
+.module-fmn {
+  @include flexbox(wrap);
+}
+
+.resource-img {
+  @extend %showcase-img;
+  }
+
+.resource {
+  flex: 1 1 10rem;
+  height: 15rem;
+  margin: 2.5px;
+  position: relative;
+
+  .resource-tag {
+    @include showcase-tag($dark-blue, $white);
+  }
+
+  .resource-title {
+    bottom: 0;
+    padding: 10px;
+    position: absolute;
+
+    a {
+      @include showcase-header(1em, 1, 2);
+    }
+  }
+}
+
+// Beyond the FMN
+.bridge {
+  padding: 2.5em;
+  text-align: center;
+
+  .bridge-wrapper {
+    @include flexbox(wrap);
+    flex-direction: row;
+
+    .bridge-wrap {
+      flex: 1 1 auto;
+      flex-direction: column;
+      margin: 2em;
+      padding: 2em;
+      width: 15rem;
+    }
+
+    .participant-wrap {
+      @include flexbox(wrap);
+      justify-content: center;
+      margin-top: 1em;
+
+      .participant {
+        margin: 1em;
+      }
+
+      img {
+        border-radius: 50%;
+        height: 6.25rem;
+        width: 6.25rem;
+      }
+    }
+
+    .link {
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
+    }
+    @include respond-at(40em) {
+      flex-direction: row;
+    }
+  }
+}
+
+.institution {
+  font-style: italic;
+}
+
+.quote-wrapper {
+  @include flexbox(wrap);
+}
+.quote-wrap {
+  flex: 1 1 45%;
+  padding: 2em;
+  text-align: left;
+
+  p {
+    font-family: 'Martel', serif;
+    font-size: 1.1rem;
+  }
+
+  .testimonial-author {
+    font-size: 1rem;
+    text-align: right;
+  }
+}
+
+// Benefits for Projects
+.projects {
+  background-color: $light-gray;
+  padding: 2.5em;
+
+  h2,
+  h4 {
+    text-align: center;
+  }
+
+  h4 {
+    margin: 2em 0 1em 0;
+  }
+
+  p {
+    @include respond-at(51.25em) {
+      margin: 0 auto;
+      width: 50%;
+    }
+  }
+
+  ul {
+    margin: 0 auto;
+    width: 30rem;
+  }
+
+  .projects-wrapper {
+    @include flexbox(wrap);
+    @include grid-template(1fr, repeat(4, 1fr));
+    @include respond-at(42.5625em) {
+      @include grid-template(repeat(2, 1fr), repeat(2, 1fr));
+    }
+    background-color: $dark-blue;
+    justify-content: center;
+    margin-top: 2em;
+  }
+
+  .projects-wrap {
+    flex: 1 1 32.5rem;
+    padding: 1em;
+
+    img {
+      display: block;
+      height: 5rem;
+      margin: 0 auto;
+      width: 5rem;
+    }
+
+    h5 {
+      color: $white;
+      display: block;
+      margin: 0 auto;
+      padding-top: .5em;
+      width: 80%;
+    }
+  }
+}

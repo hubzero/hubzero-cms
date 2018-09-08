@@ -61,7 +61,7 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 			$link = 'index.php?Itemid=';
 			$active = false;
 			// Community menu
-			if (isset($segments[0]) && in_array($segments[0], array('groups', 'projects', 'members', 'partners')))
+			if (isset($segments[0]) && in_array($segments[0], array('groups', 'projects', 'members', 'partners', 'fmns')))
 			{
 				// The appropriate method here might be to look
 				// up the menu item's parent menu item and use its
@@ -151,7 +151,7 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 		$segment = $request->segment(1);
 
 		// Community menu
-		if (in_array($segment, array('groups', 'projects', 'members', 'partners')))
+		if (in_array($segment, array('groups', 'projects', 'members', 'partners', 'fmns')))
 		{
 			$uri = str_replace('/' . $segment, '/community/' . $segment, $request->current(true));
 			App::redirect($uri);
