@@ -19,7 +19,7 @@
 -->
 
 <config>
-	<fieldset name="basic" addfieldpath="/core/components/com_publications/config/fields">
+	<fieldset name="basic" addfieldpath="/app/components/com_publications/config/fields">
 		<field name="enabled" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_COMPONENT_ON" description="COM_PUBLICATIONS_CONFIG_COMPONENT_ON_DESC">
 			<option value="0">JOFF</option>
 			<option value="1">JON</option>
@@ -60,7 +60,7 @@
 		</field>
 		<field name="autoapproved_users" label="COM_PUBLICATIONS_CONFIG_AUTO_APPROVED_USERS" type="textarea" rows="8" cols="40" default="" description="COM_PUBLICATIONS_CONFIG_AUTO_APPROVED_USERS_DESC" />
 	</fieldset>
-	<fieldset name="DOI" addfieldpath="/core/components/com_publications/config/fields">
+	<fieldset name="DOI" addfieldpath="/app/components/com_publications/config/fields">
 		<field name="aboutdoi" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_ABOUT_DOI" description="COM_PUBLICATIONS_CONFIG_ABOUT_DOI_DESC" />
 		<field name="datacite_ezid_doi_service_switch" type="doiservicetype" default="1" label="COM_PUBLICATIONS_CONFIG_DATACITE_EZID_DOI_SERVICE_SWITCH" description="COM_PUBLICATIONS_CONFIG_DATACITE_EZID_DOI_SERVICE_SWITCH_DESC" />
 		<field name="doi_shoulder" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START" description="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START_DESC" />

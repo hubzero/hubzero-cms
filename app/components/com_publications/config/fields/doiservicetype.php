@@ -55,13 +55,13 @@ class DOIServicetype extends Select
 	protected function getOptions()
 	{
 		$options   = array();
-		
+
 		$options[] =  Html::select('option', '0', Lang::txt('None'));
 		$options[] =  Html::select('option', '1', Lang::txt('EZID'));
 		$options[] =  Html::select('option', '2', Lang::txt('DataCite'));
-		
-		Document::addScript('/core/components/com_publications/admin/assets/js/doiservice.js');
-		
+
+		Document::addScript('/app/components/com_publications/admin/assets/js/doiservice.js');
+
 		return $options;
 	}
 }
