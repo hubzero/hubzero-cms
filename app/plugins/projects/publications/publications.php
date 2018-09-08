@@ -2215,11 +2215,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->version->set('modified', Date::toSql());
 		$pub->version->set('modified_by', $this->_uid);
 
+		// Get DOI service
+		$doiService = new \Components\Publications\Models\Doi($pub);
+
 		// Issue DOI
 		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
-			// Get DOI service
-			$doiService = new \Components\Publications\Models\Doi($pub);
 			$extended = $state == 5 ? false : true;
 			$status = $state == 5 ? 'reserved' : 'public';
 			$doi = $doiService->register(true, false, null, $extended, $status);
