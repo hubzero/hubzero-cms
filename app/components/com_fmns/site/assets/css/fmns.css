@@ -75,8 +75,8 @@ body {
 }
 
 .header .bcg-fmn {
-  background: url("/app/site/media/images/art-board-network.jpg");
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/art-board-network.jpg");
+  background: url("/app/components/com_fmns/site/assets/img/art-board-network.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/components/com_fmns/site/assets/img/art-board-network.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   height: 140%;

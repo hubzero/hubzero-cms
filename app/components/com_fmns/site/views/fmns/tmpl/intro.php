@@ -28,7 +28,7 @@ Pathway::append(
 
     <a href="#new">
       <div class="anchor-wrap">
-        <h4>New and Upcoming</h4>
+        <h4>Current and Upcoming</h4>
         <hr>
         <p>Check out current FMNs that are happening right now or see what is comming up and apply!</p>
       </div>
@@ -74,7 +74,7 @@ Pathway::append(
     <div class="new-wrap">
 			<?php \Hubzero\Module\Helper::displayModules('fmnUpcoming'); ?>
     </div>
-    <h4>View all past FMNs, <a href="#">click here</a>.</h4>
+    <!-- <h4>View all past FMNs, <a href="#">click here</a>.</h4> -->
 
   </section>
 
@@ -147,7 +147,7 @@ Pathway::append(
       <div class="bridge-wrap">
         <h4>QUBES Ambassador</h4>
         <p class="ambassador-text">Are you interested in sharing what you learned and developed in your QUBES FMN with a wider audience? Apply to be a QUBES Ambassador!</p>
-        <a href="#" class="link">Learn More</a>
+        <a href="/fmns/ambassadors" class="link">Learn More</a>
         <!-- <div class="participant-wrap">
           <div class="participant">
             <img src="http://placekitten.com/200/200" alt="Mentor Image">

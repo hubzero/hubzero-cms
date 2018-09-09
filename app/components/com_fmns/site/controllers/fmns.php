@@ -72,4 +72,17 @@ class Fmns extends SiteController
 		     ->setLayout('intro')
 		     ->display();
 	}
+  
+  /**
+	 * Display specific page
+	 *
+	 * @return	void
+	 */
+  public function pageTask()
+  {
+    $pageName = \Request::getCmd('page', 'intro');
+    $this->view
+		     ->setLayout($pageName)
+		     ->display();    
+  }
 }

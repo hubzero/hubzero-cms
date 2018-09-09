@@ -75,6 +75,11 @@ class Router extends Base
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
+    if (!empty($query['page']))
+    {
+      $segments[] = $query['page'];
+      unset($query['page']);
+    }
 
 		return $segments;
 	}
@@ -100,15 +105,16 @@ class Router extends Base
 			return $vars;
 		}
 
-		if (isset($segments[0])) 
+    // Check first to see if requesting a page
+		if (in_array($segments[0], array('ambassadors'))) 
 		{
-			$vars['controller'] = $segments[0];
-		}
-		if (isset($segments[1])) 
-		{
-			$vars['task'] = $segments[1];
-		}
-
+      $vars['task'] = 'page';
+			$vars['page'] = $segments[0];
+		} else {
+      // Otherwise must be a controller
+      $vars['task'] = $segments[0];
+    }
+    
 		return $vars;
 	}
 }

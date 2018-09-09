@@ -33,7 +33,7 @@ namespace Components\Fmns\Site;
 
 require_once dirname(__DIR__) . DS . 'models' . DS . 'fmn.php';
 
-$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'intro'));
+$controllerName = \Request::getCmd('controller', 'fmns');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'fmns';
