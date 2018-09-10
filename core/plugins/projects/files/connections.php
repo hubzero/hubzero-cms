@@ -395,7 +395,7 @@ class connections
 	 */
 	public function setprefix()
 	{
-		$prefix = Request::getString('prefix', null);
+		$prefix = urldecode(Request::getString('prefix', ''));
 		$connection_params = json_decode($this->connection->params);
 		// Attempt to prevent URL tampering
 		// Don't set a prefix if one was set already, user must unset it from connections menu first
