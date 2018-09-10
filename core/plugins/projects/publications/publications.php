@@ -60,7 +60,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * @var	 array
 	 */
 	protected $_msg = null;
-	
+
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
@@ -92,7 +92,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		return $area;
 	}
-	
+
 	/**
 	 * Event call to return count of items
 	 *
@@ -2215,15 +2215,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->version->set('modified', Date::toSql());
 		$pub->version->set('modified_by', $this->_uid);
 
+		// Get DOI service
+		$doiService = new \Components\Publications\Models\Doi($pub);
+
 		// Issue DOI
 		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
-			// Get DOI service
-			$doiService = new \Components\Publications\Models\Doi($pub);
 			$extended = $state == 5 ? false : true;
-			$status = $state == 5 ? 'reserved' : 'public';
+			$status   = $state == 5 ? 'reserved' : 'public';
+
 			$doi = $doiService->register(true, false, null, $extended, $status);
-			
+
 			// Store DOI
 			if ($doi)
 			{
@@ -2248,18 +2250,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$doiErr = true;
 			}
 		}
-		
-		// Register DOI name and URL for DataCite DOI when the publication is set to be automatically approved.
+
+		// Register DOI name and URL for DOI when the publication is set to be automatically approved.
 		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
 		{
 			$doiService->register(false, true, $pub->version->get('doi'));
-			
+
 			if ($doiService->getError())
 			{
 				$this->setError($doiService->getError());
 			}
 		}
-		
+
 		// Proceed if no error
 		if (!$this->getError())
 		{
