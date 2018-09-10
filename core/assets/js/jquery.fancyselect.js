@@ -108,7 +108,7 @@
 	methods.selectText = function( value, callSelected ) {
 		return this.each(function(){
 			$('#fs-dropdown-' + $(this).data('fancyselect').id)
-				.find('.fs-dropdown-option a span:contains(' + value + ')')
+				.find('.fs-dropdown-option a span:contains("' + value.replace('"', '\"') + '")')
 				.parent('a')
 				.trigger('click', callSelected);
 		});
