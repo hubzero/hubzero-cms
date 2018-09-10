@@ -669,8 +669,7 @@ class MenusModelItem extends JModelAdmin
 					// Load the language file for the component.
 					$lang = Lang::getRoot();
 						$lang->load($args['option'], PATH_APP, null, false, true)
-					||	$lang->load($args['option'], PATH_APP . '/components/' . $args['option'] . '/admin', null, false, true)
-					||	$lang->load($args['option'], PATH_CORE . '/components/' . $args['option'] . '/admin', null, false, true);
+					||	$lang->load($args['option'], \Component::path($args['option']) . '/admin', null, false, true);
 
 					// Determine the component id.
 					$component = Component::load($args['option']);
@@ -901,7 +900,7 @@ class MenusModelItem extends JModelAdmin
 				if (!$formFile && (strpos($layout, ':') > 0 ))
 				{
 					$temp = explode(':', $layout);
-					$templatePath = JPATH::clean(JPATH_SITE.'/templates/'.$temp[0].'/html/'.$option.'/'.$view.'/'.$temp[1].'.xml');
+					$templatePath = JPATH::clean(PATH_APP.'/templates/'.$temp[0].'/html/'.$option.'/'.$view.'/'.$temp[1].'.xml');
 					if (Filesystem::exists($templatePath))
 					{
 						$formFile = $templatePath;
@@ -947,26 +946,17 @@ class MenusModelItem extends JModelAdmin
 		}
 		else
 		{
-
 			// We don't have a component. Load the form XML to get the help path
-
-			$xmlFile = JPath::find(PATH_CORE . '/components/com_menus/admin/models/forms', 'item_' . $type . '.xml');
-
-
+			$xmlFile = JPath::find(__DIR__ . '/forms', 'item_' . $type . '.xml');
 
 			// Attempt to load the xml file.
-
 			if ($xmlFile && !$xml = simplexml_load_file($xmlFile))
 			{
-
 				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
-
 			}
 
 
-
 			// Get the help data from the XML file if present.
-
 			$help = $xml->xpath('/form/help');
 		}
 
@@ -993,7 +983,7 @@ class MenusModelItem extends JModelAdmin
 		// TODO: Work out why 'fixing' this breaks JForm
 		if ($isNew = false)
 		{
-			$path = JPath::clean(PATH_CORE.'/components/'.$option.'/config/config.xml');
+			$path = JPath::clean(\Component::path($option) . '/config/config.xml');
 		}
 		else
 		{

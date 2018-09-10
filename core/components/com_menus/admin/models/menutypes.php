@@ -76,7 +76,7 @@ class MenusModelMenutypes extends JModelLegacy
 						if (isset($option->request['option']))
 						{
 								$lang->load($option->request['option'] . '.sys', PATH_APP, null, false, true)
-							||	$lang->load($option->request['option'] . '.sys', ($component->protected ? PATH_CORE : PATH_APP). '/components/'.$option->request['option'].'/admin', null, false, true);
+							||	$lang->load($option->request['option'] . '.sys', \Component::path($option->request['option']) . '/admin', null, false, true);
 						}
 					}
 				}
@@ -91,7 +91,8 @@ class MenusModelMenutypes extends JModelLegacy
 		// Initialise variables.
 		$options = array();
 
-		$mainXML = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/metadata.xml';
+		//$mainXML = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/metadata.xml';
+		$mainXML = \Component::path($component->option) . '/site/metadata.xml';
 
 		if (is_file($mainXML))
 		{
@@ -193,7 +194,8 @@ class MenusModelMenutypes extends JModelLegacy
 		$options = array();
 
 		// Get the views for this component.
-		$path = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/views';
+		//$path = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/views';
+		$path = \Component::path($component->option) . '/site/views';
 
 		if (Filesystem::exists($path))
 		{
@@ -301,7 +303,9 @@ class MenusModelMenutypes extends JModelLegacy
 		$lang = Lang::getRoot();
 
 		// Get the layouts from the view folder.
-		$path = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/views/' . $view . '/tmpl';
+		//$path = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/views/' . $view . '/tmpl';
+		$path = \Component::path($component->option) . '/site/views/' . $view . '/tmpl';
+
 		if (Filesystem::exists($path))
 		{
 			$layouts = array_merge($layouts, Filesystem::files($path, '.xml$', false, true));
