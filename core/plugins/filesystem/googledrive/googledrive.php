@@ -89,6 +89,8 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
 			App::redirect($client->createAuthUrl());
 		}
 		$path = Arr::getValue($params, 'path', null);
+		$path = explode('/', urldecode($path));
+		$path = end($path);
 		$client->setAccessToken($accessToken);
 		$service = new \Google_Service_Drive($client);
 		$adapter = new \Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter($service, $path);
