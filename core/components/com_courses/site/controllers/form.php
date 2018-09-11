@@ -692,6 +692,7 @@ class Form extends SiteController
 		$gid      = Request::getString('gid');
 		$offering = Request::getString('offering');
 		$section  = Request::getString('section');
+		$section  = ($section ?: null);
 
 		$this->course = new Course($gid);
 		$this->course->offering($offering);
