@@ -1,5 +1,5 @@
-@import '/Users/jenny/hubzero-vagrant/public/app/templates/bmc/css/pages/variables.scss';
-@import '/Users/jenny/hubzero-vagrant/public/app/templates/bmc/css/pages/mixins.scss';
+@import '../../../../../templates/bmc/css/pages/variables';
+@import '../../../../../templates/bmc/css/pages/mixins';
 
 body {
   overflow: hidden;
@@ -50,7 +50,7 @@ body {
   }
 
   .bcg-fmn {
-    @include bcg-img('/app/site/media/images/art-board-network.jpg');
+    @include bcg-img('/app/components/com_fmns/site/assets/img/art-board-network.jpg');
     height: 140%;
     left: 0;
     position: absolute;
