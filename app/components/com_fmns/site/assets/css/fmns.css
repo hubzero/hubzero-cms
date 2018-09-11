@@ -75,8 +75,8 @@ body {
 }
 
 .header .bcg-fmn {
-  background: url("/app/components/com_fmns/site/assets/img/art-board-network.jpg");
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/components/com_fmns/site/assets/img/art-board-network.jpg");
+  background: url("/app/site/media/images/art-board-network.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/art-board-network.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   height: 140%;
@@ -132,6 +132,8 @@ body {
 }
 
 .new .new-wrap {
+  display: flex;
+  flex-wrap: wrap;
   border: 1px solid #84bf41;
   border-radius: 6px;
   padding: 1em 2em;
@@ -144,11 +146,6 @@ body {
   margin: 0;
   position: relative;
   text-align: right;
-}
-
-.new .module-upcoming {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .new .billboard-image {
@@ -336,14 +333,11 @@ body {
 }
 
 .products .product-wrap {
+  display: flex;
+  flex-wrap: wrap;
   border: 1px solid #84bf41;
   border-radius: 6px;
   padding: 1em;
-}
-
-.module-fmn {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .resource {

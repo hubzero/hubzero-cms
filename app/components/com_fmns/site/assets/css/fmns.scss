@@ -1,5 +1,5 @@
-@import 'variables';
-@import 'mixins';
+@import '/Users/jenny/hubzero-vagrant/public/app/templates/bmc/css/pages/variables.scss';
+@import '/Users/jenny/hubzero-vagrant/public/app/templates/bmc/css/pages/mixins.scss';
 
 body {
   overflow: hidden;
@@ -105,6 +105,7 @@ body {
   }
 
   .new-wrap {
+    @include flexbox(wrap);
     border: 1px solid $green;
     border-radius: 6px;
     padding: 1em 2em;
@@ -117,10 +118,6 @@ body {
       position: relative;
       text-align: right;
     }
-  }
-
-  .module-upcoming {
-    @include flexbox(wrap);
   }
 
   .billboard-image {
@@ -264,14 +261,11 @@ body {
   }
 
   .product-wrap {
+    @include flexbox(wrap);
     border: 1px solid $green;
     border-radius: 6px;
     padding: 1em;
   }
-}
-
-.module-fmn {
-  @include flexbox(wrap);
 }
 
 .resource-img {
