@@ -434,6 +434,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			->join($a, $a . '.cid', $c . '.id', 'inner')
 			->whereEquals($a . '.tbl', 'publication')
 			->whereEquals($c . '.doi', $doi)
+			->whereEquals($a . '.oid', $pid)
 			->row();
 
 		if ($citation->get('id'))
