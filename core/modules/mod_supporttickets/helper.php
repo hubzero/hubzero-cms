@@ -109,8 +109,9 @@ class Helper extends Module
 
 		$this->offset = Config::get('offset');
 
-		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
-		$month = strftime("%m", time()+($this->offset*60*60));
+		$date = new \Hubzero\Utility\Date();
+		$year = $date->toLocal('Y');
+		$month = $date->toLocal('m');
 
 		$this->year = $year;
 		$this->opened = array();
