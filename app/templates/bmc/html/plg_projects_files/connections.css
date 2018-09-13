@@ -1,0 +1,13 @@
+@import url('/core/plugins/projects/files/assets/css/connections.css');
+.connection > img {
+  max-width: 48px;
+}
+.connections .new-connection .new {
+  height: 48px;
+  line-height: 48px;
+}
+.connections .new-connection .new:before {
+  height: 48px;
+  width: 48px;
+  font-size: 48px;
+}
