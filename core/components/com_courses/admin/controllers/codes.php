@@ -33,8 +33,11 @@
 namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use PHPQRCode\QRcode;
 use Exception;
+use Request;
+use Route;
+use Lang;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
@@ -300,32 +303,6 @@ class Codes extends AdminController
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section, false)
 			);
 		}
-	}
-
-	/**
-	 * Generate QR code
-	 *
-	 * @return  void
-	 */
-	public function qrcodeTask()
-	{
-		$no_html = Request::getInt('no_html', 0);
-		$code = Request::getString('code');
-
-		if (!$code)
-		{
-			throw new Exception(Lang::txt('No code provided'), 500);
-		}
-
-		$url = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
-
-		if ($no_html)
-		{
-			echo QRcode::png($url);
-			return;
-		}
-
-		echo QRcode::text($url);
 	}
 
 	/**
