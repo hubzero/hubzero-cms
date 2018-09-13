@@ -6,6 +6,15 @@
 }
 */
 @import url("/core/components/com_projects/site/assets/css/projects.css");
+.private:before,
+.s-private:before {
+  position: absolute;
+  top: 0.4em;
+  left: 0.35em;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
 #basic_info {
   overflow: hidden;
 }
