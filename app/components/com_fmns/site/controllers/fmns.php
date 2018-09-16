@@ -165,6 +165,7 @@ class Fmns extends SiteController
         ]);
 
         var options = {
+          height: data.getNumberOfRows() * 42 + 50
         }
 
         // The select handler. Call the chart's getSelection() method
