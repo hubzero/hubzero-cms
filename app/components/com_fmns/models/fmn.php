@@ -2,7 +2,7 @@
 namespace Components\Fmns\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
+use Hubzero\Utility\Str;
 use Session;
 use Date;
 
@@ -52,6 +52,10 @@ class Fmn extends Relational
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
 		{
+			case 'group':
+			$link = DS . 'groups' . DS . $this->get('group_cn');
+			break;
+			
 			case 'edit':
 				$link .= '&task=edit&id=' . $this->get('id');
 			break;
@@ -118,7 +122,50 @@ class Fmn extends Relational
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$content = Str::truncate($content, $shorten, $options);
+		}
+		return $content;
+	}
+
+	/**
+	 * Get the fmn start and stop dates
+   *
+	 * @param  string  $when    Start or stop date?
+	 * @param  string  $as 			Return type
+	 * @return date
+	 */	
+	public function date($when = 'start_date', $as = 'string')
+	{
+		$when = ($when == 'start_date' ? $when : 'stop_date');
+
+		switch ($as) 
+		{
+			case 'seconds':
+				$content = $this->get($when);
+			break;
+			
+			case 'string':
+			default:
+				$content = Date::of($this->get($when))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+			break;
+		}
+		
+		return $content;
+	}
+
+	/**
+	 * Get the fmn name
+   *
+	 * @param  integer $shorten Number of characters to shorten text to
+	 * @return string
+	 */		
+	public function name($shorten = 0)
+	{
+		$content = trim($this->get('name'));
+		
+		if ($shorten)
+		{
+			$content = Str::truncate($content, $shorten);
 		}
 		return $content;
 	}

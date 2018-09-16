@@ -74,7 +74,7 @@ Pathway::append(
     <div class="new-wrap">
 			<?php \Hubzero\Module\Helper::displayModules('fmnUpcoming'); ?>
     </div>
-    <!-- <h4>View all past FMNs, <a href="#">click here</a>.</h4> -->
+    <h4>View all past FMNs, <a href="/fmns/browse">click here</a>.</h4>
 
   </section>
 
