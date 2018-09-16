@@ -27,7 +27,6 @@ Pathway::append(
 		</div>
 				
 		<div id="browse_gantt_caption">
-			This is a caption.
 		</div>
   </section>
 </main>
