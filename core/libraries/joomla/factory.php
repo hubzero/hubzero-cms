@@ -278,6 +278,14 @@ abstract class JFactory
 	 */
 	public static function getCache($group = '', $handler = 'callback', $storage = null)
 	{
+		if (class_exists('\\App'))
+		{
+			if (\App::has('cache.store'))
+			{
+				return \App::get('cache.store');
+			}
+		}
+
 		$hash = md5($group . $handler . $storage);
 		if (isset(self::$cache[$hash]))
 		{
