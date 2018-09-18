@@ -142,11 +142,6 @@
 		color: #000;
 		font-weight: normal;
 	}
-	#introduction li:before {
-		content: "\2714";
-		color: #55c64c;
-		vertical-align: top;
-	}
 	.admin-note:before {
 		content: "\275D";
 		width: 14px;
