@@ -182,7 +182,6 @@
 	}
 	#introduction .omega ul {
 		padding-left: 0;
-		margin-left: 0.5em;
 		border: none;
 	}
 	#introduction .omega li {
@@ -191,17 +190,6 @@
 	#content .browse {
 		position: relative;
 		padding: 0.5em 0.5em;
-	}
-
-	/* Icon */
-	body #introduction small.intro-after,
-	body #introduction:after {
-		content: "\f03f";
-	}
-	body #introduction li:before {
-		content: "\2714";
-		color: #55c64c;
-		display: inline;
 	}
 
 
@@ -1427,13 +1415,7 @@
 --------------------------------------------- */
 	.noresults {
 		padding: 1em;
-		background: #f8ffff;
-		border-top: 1px solid #c8e6e4;
-		border-bottom: 1px solid #c8e6e4;
 		font-size: 90%;
-	}
-	.noresults a {
-		padding: 0.5em 0 0.5em 0;
 	}
 	.noresults .addnew {
 		padding-left: 18px;
