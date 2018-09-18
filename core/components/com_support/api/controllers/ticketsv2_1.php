@@ -75,7 +75,7 @@ class Ticketsv2_1 extends ApiController
 	 * Display a list of tickets
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /support/tickets
+	 * @apiUri    /support/tickets/list
 	 * @apiParameter {
 	 * 		"name":          "limit",
 	 * 		"description":   "Number of result to return.",
@@ -330,7 +330,7 @@ class Ticketsv2_1 extends ApiController
 				$vals = explode(',', $val);
 				foreach ($vals as $i => $v)
 				{
-					$vals[$i] = $this->_toTimestamp(trim($v));
+					$vals[$i] = $this->toTimestamp(trim($v));
 				}
 				return $vals;
 			}
