@@ -2024,6 +2024,7 @@ class Curation extends Obj
 		$second   = $this->getElements(2);
 		$gallery  = $this->getElements(3);
 		$elements = array_merge($prime, $second, $gallery);
+		Lang::load('com_publications', Component::path('com_publications') . '/site');
 
 		// Do we have items to package?
 		if (!$elements)
