@@ -598,7 +598,9 @@ class File extends Base
 						{
 							$uri = \Hubzero\Utility\Uri::getInstance();
 							$uri->setScheme('ftp');
-							$uri->setPath('ftp' . '/' . $pub->_curationModel->getBundleName());
+							//$uri->setUser('guest');
+							//$uri->setPass('guest');
+							$uri->setPath('ftp' . '/Publication_' . $pub->id . '_' . $pub->version_number . '.zip'); //$pub->_curationModel->getBundleName());
 
 							$url = $uri->toString();
 						}
