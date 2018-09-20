@@ -93,16 +93,14 @@ class Migration20180820101435ComPublications extends Base
 	 */
 	protected function createSymLink($pubId, $versionId, $versionNum, $doi = '')
 	{
+		$bundleName = 'Publication' . '_' . $pubId;
+		$bundleWithVersion = $bundleName . '_' . $versionNum;
+
 		if ($doi != '')
 		{
 			$doi = str_replace('.', '_', $doi);
 			$doi = str_replace('/', '_', $doi);
 			$bundleName = $doi;
-		}
-		else
-		{
-			$bundleName = 'Publication' . '_' . $pubId;
-			$bundleWithVersion = $bundleName . '_' . $versionNum;
 		}
 
 		$tarname = $bundleName . '.zip';
