@@ -135,6 +135,8 @@ Document::setTitle(Lang::txt('COM_KB'));
 							$articles = $row->articles()
 								->whereEquals('state', 1)
 								->whereIn('access', User::getAuthorisedViewLevels())
+								->order('modified', 'desc')
+								->order('created', 'desc')
 								->limit(3)
 								->rows();
 
