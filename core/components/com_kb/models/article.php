@@ -88,7 +88,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 * @var  array
 	 **/
 	public $always = array(
-		'alias'
+		'alias',
+		'modified',
+		'modified_by'
 	);
 
 	/**
@@ -718,5 +720,29 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		$article->hubtype = self::searchNamespace();
 		$article->description = \Hubzero\Utility\Sanitize::stripAll($this->fulltxt);
 		return $article;
+	}
+
+	/**
+	 * Generates automatic modified field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticModified($data)
+	{
+		$data['modified'] = Date::of()->toSql();
+		return $data['modified'];
+	}
+
+	/**
+	 * Generates automatic modified by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticModifiedBy($data)
+	{
+		$data['modified_by'] = User::getInstance()->get('id');
+		return $data['modified_by'];
 	}
 }
