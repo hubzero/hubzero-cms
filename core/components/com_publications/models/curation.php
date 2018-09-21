@@ -2087,28 +2087,27 @@ class Curation extends Obj
 	 * @param	boolean	$includeVersionNum
 	 * @return  mixed  False on error, string on success
 	 */
-	public function getBundleName($includeVersionNum = false)
+	public function getBundleName($symLinkName = false)
 	{
 		if (empty($this->_pub))
 		{
 			return false;
 		}
-		$doi = $this->_pub->version->get('doi');
-		if ($doi != '')
+		$bundleName = Lang::txt('Publication') . '_' . $this->_pub->id;
+		if ($symLinkName)
 		{
-			$doi = str_replace('.', '_', $doi);
-			$doi = str_replace('/', '_', $doi);
-			$bundleName = $doi;
+			$bundleName .= '_' . $this->_pub->version->get('version_number');
 		}
 		else
 		{
-			$bundleName = Lang::txt('Publication') . '_' . $this->_pub->id;
-			if ($includeVersionNum)
+			$doi = $this->_pub->version->get('doi');
+			if ($doi != '')
 			{
-				$bundleName .= '_' . $this->_pub->version->get('version_number');
+				$doi = str_replace('.', '_', $doi);
+				$doi = str_replace('/', '_', $doi);
+				$bundleName = $doi;
 			}
 		}
-
 		return $bundleName . '.zip';
 	}
 
