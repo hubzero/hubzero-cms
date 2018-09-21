@@ -2,8 +2,6 @@ language: php
 php:
 - 5.6
 - 7.0
-- 7.1
-- 7.2
 git:
   depth: 10
 cache:
@@ -15,5 +13,8 @@ before_script:
   - git clone --branch hubzero-cms-2.1 --depth=1 https://github.com/hubzero/standards ~/build/standards
   - FILES=$((git log --pretty=format\:'' --name-only --since="yesterday"; git log --diff-filter=D --pretty=format\:'' --name-only --since="yesterday") | sort | uniq -u | tr '\r\n' ' ')
   - echo $FILES
+  - echo $TRAVIS_BRANCH
+  - echo $TRAVIS_PULL_REQUEST_BRANCH
+  - echo $TRAVIS_EVENT_TYPE
 script:
 - vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml $FILES
