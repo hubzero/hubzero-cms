@@ -13,7 +13,6 @@ defined('_HZEXE_') or die();
  * HUBzero includes or is derivative of works distributed under the licenses listed below.
  *
  * This list may not be complete.
- *
  * A variety of composer packages included in core/vendor, see each package
  * for their licensing and copyright information.
  *
