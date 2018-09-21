@@ -371,8 +371,8 @@
 		color: #5da643;
 		border: none;
 		content: "\271A";
-		margin: 0 0 0 -1.2em;
-		position: absolute;
+		vertical-align: middle;
+		margin-right: 10px;
 	}
 	.item-options {
 		float: right;

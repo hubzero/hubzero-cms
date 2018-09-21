@@ -48,15 +48,12 @@ class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
-		if ($isnew)
+		if (!isset($user['id']) || !$user['id'])
 		{
-			if (!isset($user['id']) || !$user['id'])
-			{
-				return;
-			}
-
-			$this->approveUser($user['id']);
+			return;
 		}
+
+		$this->approveUser($user);
 	}
 
 	/**
@@ -80,24 +77,19 @@ class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLogin($user, $options = array())
 	{
-		$userId = User::get('id');
+		$userArr = User::getInstance()->toArray();
 
-		return $this->approveUser($userId);
+		return $this->approveUser($userArr);
 	}
 
 	/**
 	 * Set user access groups based on profile choice
 	 *
-	 * @param   integer  $user
+	 * @param   array    $user
 	 * @return  boolean  True on success
 	 */
-	public function approveUser($userId)
+	public function approveUser($user)
 	{
-		if (!$userId)
-		{
-			return false;
-		}
-
 		$pattern = $this->params->get('email_pattern');
 
 		if (!$pattern)
@@ -105,24 +97,24 @@ class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$user = User::getInstance($userId);
-
-		if (!$user || !$user->get('email'))
+		if (!$user || !$user['email'])
 		{
 			return false;
 		}
 
-		if ($user->get('approved'))
+		if ($user['approved'])
 		{
 			return true;
 		}
 
-		if (preg_match("/$pattern/", $user->get('email')))
+		if (preg_match("/$pattern/", $user['email']))
 		{
-			$query = $user->getQuery()
-				->update($user->getTableName())
+			$usr = User::getInstance($user['id']);
+
+			$query = $usr->getQuery()
+				->update($usr->getTableName())
 				->set(['approved' => 1])
-				->whereEquals('id', $user->get('id'))
+				->whereEquals('id', $user['id'])
 				->toString();
 
 			$db = App::get('db');
