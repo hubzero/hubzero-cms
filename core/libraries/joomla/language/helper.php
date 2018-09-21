@@ -167,7 +167,8 @@ class JLanguageHelper
 						}
 					}
 
-					$cache->store($languages, 'languages');
+					//$cache->store($languages, 'languages');
+					$cache->put('languages', $languages, \App::get('config')->get('cachetime', 15));
 				}
 			}
 		}
