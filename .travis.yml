@@ -16,6 +16,7 @@ before_script:
   - NEW=$(git diff --name-only $TRAVIS_PULL_REQUEST_BRANCH $(git merge-base $TRAVIS_PULL_REQUEST_BRANCH $TRAVIS_BRANCH))
   - echo $FILES
   - echo $NEW
+  - echo $STUFF
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_PULL_REQUEST_BRANCH
   - echo $TRAVIS_EVENT_TYPE
