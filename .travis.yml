@@ -12,6 +12,7 @@ before_script:
   - mkdir -p ~/build
   - git clone --branch hubzero-cms-2.1 --depth=1 https://github.com/hubzero/standards ~/build/standards
   - FILES=$((git log --pretty=format\:'' --name-only --since="yesterday"; git log --diff-filter=D --pretty=format\:'' --name-only --since="yesterday") | sort | uniq -u | tr '\r\n' ' ')
+  - STUFF=$(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD $TRAVIS_BRANCH))
   - NEW=$(git diff --name-only $TRAVIS_PULL_REQUEST_BRANCH $(git merge-base $TRAVIS_PULL_REQUEST_BRANCH $TRAVIS_BRANCH))
   - echo $FILES
   - echo $NEW
