@@ -2093,7 +2093,7 @@ class Curation extends Obj
 		{
 			return false;
 		}
-		$bundleName = Lang::txt('Publication') . '_' . $this->_pub->id;
+		$bundleName = 'Publication' . '_' . $this->_pub->id;
 		if ($symLinkName)
 		{
 			$bundleName .= '_' . $this->_pub->version->get('version_number');
