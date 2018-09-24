@@ -115,7 +115,14 @@ class DocumentServiceProvider extends Middleware
 				'directory' => dirname($this->app['template']->path),
 				'params'    => $this->app['template']->params
 			);
-			$params['baseurl'] = rtrim(\Request::root(true), '/') . rtrim(substr(dirname($params['directory']), strlen(PATH_ROOT)), '/');
+
+			// Path is <PATH>/[core|app]/templates
+			$basepath = dirname(dirname($params['directory']));
+
+			// Strip off the base path
+			$path = substr(dirname($params['directory']), strlen($basepath));
+
+			$params['baseurl'] = rtrim(\Request::root(true), '/') . rtrim($path, '/');
 		}
 
 		if (!$document->getTitle())
