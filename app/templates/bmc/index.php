@@ -125,12 +125,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								</a>
 							</div>
 							<nav class="nav-primary">
-								<!--ul>
-									<li><a class="root-link active" href="#">Resources</a></li>
-									<li><a class="root-link" href="#">Community</a></li>
-									<li><a class="root-link" href="#">Services</a></li>
-								</ul-->
-								<jdoc:include type="modules" name="user3" />
+								<jdoc:include type="modules" name="mainmenu" />
 							</nav>
 							<button class="mobile-menu">
 								<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><style>.st2{fill:#999999;}</style><path class="st2" d="M46.7 25.3L32.3 39.8 17.8 25.3c-.8-.8-2-.8-2.8 0-.8.8-.8 2 0 2.8L30.8 44c.2.2.6.4.9.5.2 0 .3.1.5.1.5 0 1-.2 1.4-.6l15.9-15.9c.8-.8.8-2 0-2.8s-2-.8-2.8 0z"/><path class="st2" d="M32 0C14.4 0 0 14.4 0 32s14.4 32 32 32 32-14.4 32-32S49.6 0 32 0zm0 60C16.6 60 4 47.4 4 32S16.6 4 32 4s28 12.6 28 28-12.6 28-28 28z"/></svg></div>
@@ -308,8 +303,8 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 				<div class="subpanel menu">
 					<div class="inner">
 						<h4><a style="color: #8cc540;" href="/">Home</a></h4>
-						<jdoc:include type="modules" name="user3" />
-						<jdoc:include type="modules" name="mobile-menu" />
+						<jdoc:include type="modules" name="mainmenu" />
+						<jdoc:include type="modules" name="secondarymenu" />
 					</div>
 				</div>
 				<div class="subpanel search">

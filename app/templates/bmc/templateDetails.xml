@@ -42,7 +42,8 @@
 		<position>left</position>
 		<position>right</position>
 		<position>helppane</position>
-		<position>user3</position>
+		<position>mainmenu</position>
+		<position>secondarymenu</position>
 		<position>introblock</position>
 		<position>notices</position>
 		<position>search</position>

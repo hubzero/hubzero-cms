@@ -73,7 +73,8 @@ $browser = new \Hubzero\Browser\Detector();
 					</div>
 					<div id="nav" role="main navigation">
 						<a name="nav"></a>
-						<jdoc:include type="modules" name="user3" />
+						<jdoc:include type="modules" name="mainmenu" />
+						<jdoc:include type="modules" name="secondarymenu" />
 					</div><!-- / #nav -->
 					<select name="menu" id="mobile-nav">
 					</select>

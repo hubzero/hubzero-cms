@@ -78,7 +78,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 								</a>
 							</div>
 							<nav class="nav-primary">
-								<?php echo Module::position('user3'); ?>
+								<?php echo Module::position('mainmenu'); ?>
 							</nav>
 							<button class="mobile-menu">
 								<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><style>.st2{fill:#999999;}</style><path class="st2" d="M46.7 25.3L32.3 39.8 17.8 25.3c-.8-.8-2-.8-2.8 0-.8.8-.8 2 0 2.8L30.8 44c.2.2.6.4.9.5.2 0 .3.1.5.1.5 0 1-.2 1.4-.6l15.9-15.9c.8-.8.8-2 0-2.8s-2-.8-2.8 0z"/><path class="st2" d="M32 0C14.4 0 0 14.4 0 32s14.4 32 32 32 32-14.4 32-32S49.6 0 32 0zm0 60C16.6 60 4 47.4 4 32S16.6 4 32 4s28 12.6 28 28-12.6 28-28 28z"/></svg></div>
@@ -87,9 +87,13 @@ Lang::load('tpl_' . $this->template, __DIR__);
 
 							<div class="aux">
 								<nav class="nav-secondary">
+									<?php echo Module::position('secondarymenu'); ?>
 									<ul>
-										<li><a href="#">About</a></li>
-										<li><a href="#">News &amp; Activities</a></li>
+										<li id="help" class="helpme">
+											<a href="/support/ticket/new" title="<?php echo Lang::txt('Need help? Send a trouble report to our support team.'); ?>">
+												<span><?php echo Lang::txt('Help'); ?></span>
+											</a>
+										</li>
 									</ul>
 								</nav>
 								<nav class="buttons">
@@ -245,7 +249,8 @@ Lang::load('tpl_' . $this->template, __DIR__);
 		<div class="inner scroller">
 			<div class="subpanel menu">
 				<div class="inner">
-					<?php echo Module::position('user3'); ?>
+					<?php echo Module::position('mainmenu'); ?>
+					<?php echo Module::position('secondarymenu'); ?>
 				</div>
 			</div>
 			<div class="subpanel search">
