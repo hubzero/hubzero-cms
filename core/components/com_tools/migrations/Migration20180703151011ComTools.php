@@ -24,8 +24,8 @@ class Migration20180703151011ComTools extends Base
 		if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'first_display')) 
 		{
 			$query = "ALTER TABLE host ADD COLUMN first_display INT DEFAULT 1;";
-			$this->db->setQuery($query);
-			$this->db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 	}
 
@@ -44,8 +44,8 @@ class Migration20180703151011ComTools extends Base
 		if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'first_display')) 
 		{
 			$query = "ALTER TABLE host DROP COLUMN first_display;";
-			$this->db->setQuery($query);
-			$this->db->query();
+			$mwdb->setQuery($query);
+			$mwdb->query();
 		}
 	}
 }
