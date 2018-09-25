@@ -21,7 +21,7 @@ class Migration20180703151011ComTools extends Base
 		}
 
 		// ADD COLUMN first_display to table host
-		if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'first_display')) 
+		if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'first_display'))
 		{
 			$query = "ALTER TABLE host ADD COLUMN first_display INT DEFAULT 1;";
 			$mwdb->setQuery($query);
@@ -41,7 +41,7 @@ class Migration20180703151011ComTools extends Base
 		}
 
 		// Drop column first_display
-		if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'first_display')) 
+		if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'first_display'))
 		{
 			$query = "ALTER TABLE host DROP COLUMN first_display;";
 			$mwdb->setQuery($query);
