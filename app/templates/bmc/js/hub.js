@@ -251,7 +251,7 @@ if (!jq) {
 
 		if(subnavId && subnavId != 'none') {
 			// find the subnav parent
-			var subnavParent = $('nav.nav-primary > ul').children("[data-alias='" + subnavId + "']");
+			var subnavParent = $('nav > ul').children("[data-alias='" + subnavId + "']");
 
 			if(subnavParent.length > 0) {
 				var subnavContent = subnavParent.children('ul');
@@ -271,7 +271,7 @@ if (!jq) {
 			var subnavContainer = nav.find('.sub nav');
 
 			// see if there is a 'active' parent
-			var subnavActiveParent = nav.find('.nav-primary .parent.active');
+			var subnavActiveParent = nav.find('.nav-primary .parent.active, .nav-secondary .parent.active');
 			if(subnavActiveParent.length > 0) {
 				var subnavContent = subnavActiveParent.children('ul');
 
@@ -283,7 +283,7 @@ if (!jq) {
 			}
 			else {
 				// see if there is an active item in the subnav
-				var subnavActiveLink = nav.find('.nav-primary .active');
+				var subnavActiveLink = nav.find('.nav-primary .active, .nav-secondary .active');
 				var subnavParent = subnavActiveLink.closest('.parent');
 
 				if(subnavParent.length > 0) {

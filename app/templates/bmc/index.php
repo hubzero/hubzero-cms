@@ -139,9 +139,8 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 							<div class="aux">
 								<nav class="nav-secondary">
+									<jdoc:include type="modules" name="secondarymenu" />
 									<ul>
-										<li><a href="/about">About</a></li>
-										<li><a href="/news">News & Activities</a></li>
 									  <li id="help" class="helpme">
 											<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('Need help? Send a trouble report to our support team.'); ?>">
 												<span><?php echo Lang::txt('Help'); ?></span>
