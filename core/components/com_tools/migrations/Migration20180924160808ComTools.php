@@ -9,16 +9,22 @@ defined('_HZEXEC_') or die();
  * Migration to add primary key to display table
  **/
 
-class Migration20180924160808Core extends Base
+class Migration20180924160808ComTools extends Base
 {
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('display'))
+		if (!$mwdb = $this->getMWDBO())
 		{
-			$keys = $this->db->getTableKeys('display');
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
+		}
+
+		if ($mwdb->tableExists('display'))
+		{
+			$keys = $mwdb->getTableKeys('display');
 			$primary_keys = array();
 			if (is_array($keys) && (count($keys) > 0))
 			{
@@ -34,8 +40,8 @@ class Migration20180924160808Core extends Base
 			if (count($primary_keys) == 0)
 			{
 				$query = "ALTER TABLE `display` ADD PRIMARY KEY (hostname, dispnum)";
-				$this->db->setQuery($query);
-				$this->db->query();
+				$mwdb->setQuery($query);
+				$mwdb->query();
 			}
 		}
 	}
@@ -45,13 +51,19 @@ class Migration20180924160808Core extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('display'))
+		if (!$mwdb = $this->getMWDBO())
 		{
-			if ($this->db->getPrimaryKey('display') == 'hostname' || $this->db->getPrimaryKey('display') == 'dispnum')
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
+		}
+
+		if ($mwdb->tableExists('display'))
+		{
+			if ($mwdb->getPrimaryKey('display') == 'hostname' || $mwdb->getPrimaryKey('display') == 'dispnum')
 			{
 				$query = "ALTER TABLE `display` DROP PRIMARY KEY";
-				$this->db->setQuery($query);
-				$this->db->query();
+				$mwdb->setQuery($query);
+				$mwdb->query();
 			}
 		}
 	}
