@@ -850,7 +850,6 @@ class MenusModelItem extends JModelAdmin
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
-
 		// Initialise variables.
 		$link = $this->getState('item.link');
 		$type = $this->getState('item.type');
@@ -871,7 +870,7 @@ class MenusModelItem extends JModelAdmin
 			if (isset($args['option'])) {
 				// The option determines the base path to work with.
 				$option = $args['option'];
-				$base   = PATH_CORE.'/components/'.$option.'/site';
+				$base   = \Component::path($option) . '/site'; //PATH_CORE.'/components/'.$option.'/site';
 			}
 
 			// Confirm a view is defined.
@@ -908,7 +907,7 @@ class MenusModelItem extends JModelAdmin
 				}
 			}
 
-			//Now check for a view manifest file
+			// Now check for a view manifest file
 			if (!$formFile)
 			{
 				if (isset($view) && Filesystem::exists($path = JPath::clean($base.'/views/'.$view.'/metadata.xml')))
@@ -931,7 +930,6 @@ class MenusModelItem extends JModelAdmin
 		{
 			// If an XML file was found in the component, load it first.
 			// We need to qualify the full path to avoid collisions with component file names.
-
 			if ($form->loadFile($formFile, true, '/metadata') == false) {
 				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
@@ -962,21 +960,13 @@ class MenusModelItem extends JModelAdmin
 
 		if (!empty($help))
 		{
-
 			$helpKey = trim((string) $help[0]['key']);
-
 			$helpURL = trim((string) $help[0]['url']);
-
 			$helpLoc = trim((string) $help[0]['local']);
 
-
-
 			$this->helpKey = $helpKey ? $helpKey : $this->helpKey;
-
 			$this->helpURL = $helpURL ? $helpURL : $this->helpURL;
-
 			$this->helpLocal = (($helpLoc == 'true') || ($helpLoc == '1') || ($helpLoc == 'local')) ? true : false;
-
 		}
 
 		// Now load the component params.
@@ -987,7 +977,7 @@ class MenusModelItem extends JModelAdmin
 		}
 		else
 		{
-			$path='null';
+			$path = 'null';
 		}
 
 		if (Filesystem::exists($path)) {
