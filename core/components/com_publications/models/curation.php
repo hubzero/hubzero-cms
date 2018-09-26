@@ -2171,7 +2171,7 @@ class Curation extends Obj
 		}
 		if (!is_file($symLink))
 		{
-			if (!symlink($tarpath, $symLink))
+			if (!link($tarpath, $symLink))
 			{
 				return false;
 			}
