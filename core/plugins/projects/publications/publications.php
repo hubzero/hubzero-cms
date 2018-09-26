@@ -2457,7 +2457,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pub->_curationModel->package(true);
 		}
 
-		if ($pub->version->get('state') == 1)
+		if ($pub->version->get('state') == 1 && !$pub->isEmbargoed())
 		{
 			$pub->_curationModel->createSymLink();
 		}
