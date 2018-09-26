@@ -600,7 +600,7 @@ class File extends Base
 							$uri->setScheme('ftp');
 							//$uri->setUser('guest');
 							//$uri->setPass('guest');
-							$uri->setPath('ftp' . '/Publication_' . $pub->id . '_' . $pub->version_number . '.zip'); //$pub->_curationModel->getBundleName());
+							$uri->setPath($pub->_curationModel->getBundleName(true));
 
 							$url = $uri->toString();
 						}
