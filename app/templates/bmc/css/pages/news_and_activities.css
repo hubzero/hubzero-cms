@@ -1,21 +1,21 @@
-.billboard-image {
+.blog-img, .billboard-image {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.billboard-image img {
+.blog-img img, .billboard-image img {
   height: 100%;
   width: 100%;
   object-fit: cover;
   transition: all 3s ease-in-out;
 }
 
-.billboard-image:hover img {
+.blog-img:hover img, .billboard-image:hover img {
   transform: scale(1.1);
 }
 
-.billboard-image::after {
+.blog-img::after, .billboard-image::after {
   content: '';
   display: block;
   position: absolute;
@@ -63,12 +63,38 @@
 
 .newsletters h2 {
   position: absolute;
-  top: -.95em;
+  top: -.96em;
 }
 
 .regular {
-  height: 20rem;
+  height: 11rem;
   margin: 1em;
+}
+
+.blog {
+  position: relative;
+}
+
+.blog .blog-title {
+  bottom: 0;
+  padding: 10px;
+  position: absolute;
+}
+
+.blog .blog-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2.86rem;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
 }
 
 .billboard {
