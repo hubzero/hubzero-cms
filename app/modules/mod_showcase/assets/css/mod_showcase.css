@@ -16,7 +16,8 @@
   .billboard-tag span,
 	.group-tag span,
 	.partner-tag span,
-	.resource-tag span {
+	.resource-tag span,
+  .blog-tag span {
     color: white;
   }
 

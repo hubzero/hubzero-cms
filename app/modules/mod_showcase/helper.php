@@ -275,6 +275,70 @@ class Helper extends Module
 
 		return $item_partners;
 	}
+	
+	/**
+	 * Get blogs.
+	 * @return array Blogs
+	 */
+	private function _getBlogs($item)
+	{
+		if (empty($this->blogs))
+		{
+			$sql = "SELECT b.id, 
+										 b.title, 
+										 b.alias, 
+										 b.content
+					FROM `#__blog_entries` AS b
+					WHERE (b.state=1
+					AND b.scope='site')";
+
+			$this->db->setQuery($sql . " ORDER BY `id` DESC;");
+			if (!$this->db->getError())
+			{
+				$this->blogs = $this->db->loadObjectList('id');
+			}
+
+			// No featured blogs
+			$this->featured["blogs"] = [];
+		}
+
+		// This code really needs to be turned into a function
+		// Make sure we don't ask for too much
+		$n = min($item["n"], ($item["featured"] ? count($this->featured["blogs"]) : count($this->blogs)));
+		if ($n < $item["n"]) {
+			echo 'Showcase Module Error: Not enough selected blogs left!';
+			return [];
+		}
+
+		if ($item["ordering"] === "recent") {
+			if ($item["featured"]) {
+				$item_blogs = array_slice($this->featured["blogs"], 0, $n, $preserve = true);
+			} else {
+				$item_blogs = array_slice($this->blogs, 0, $n, $preserve = true);
+			}
+		} elseif ($item["ordering"] === "random") {
+			if ($item["featured"]) {
+				$rind = array_flip((array)array_rand($this->featured["blogs"], $n));
+				$item_blogs = $this->shuffle_assoc(array_intersect_key($this->featured["blogs"], $rind));
+			} else {
+				$rind = array_flip((array)array_rand($this->blogs, $n));
+				$item_blogs = $this->shuffle_assoc(array_intersect_key($this->blogs, $rind));
+			}
+		} elseif ($item["ordering"] === "indexed") {
+			// Just use array_intersect_keys silly!
+			$item_blogs = array_filter($this->blogs, function($blog) use ($item) {
+				return in_array($blog->id, $item["indices"]);
+			});
+		} else {
+			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
+			return [];
+		}
+		// Remove used blogs from master lists
+		$this->blogs = array_diff_key($this->blogs, $item_blogs);
+		$this->featured["blogs"] = array_diff_key($this->featured["blogs"], $item_blogs);
+
+		return $item_blogs;
+	}
 
 	/**
 	 * Parse the item specifications.
@@ -328,6 +392,10 @@ class Helper extends Module
 
     					case 'partners':
     						$items[$i]["tag-target"] = Route::url('index.php?option=com_partners');
+    					break;
+
+							case 'blogs':
+    						$items[$i]["tag-target"] = Route::url('index.php?option=com_blog');
     					break;
 
     					default:

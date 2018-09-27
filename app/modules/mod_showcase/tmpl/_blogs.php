@@ -29,44 +29,40 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
+// no direct access
 defined('_HZEXEC_') or die();
-?>
 
-<?php 
-$boards = array();
-foreach ($this->items as $item) {
-	if ($item["type"] === "static") {
-		require $this->getLayoutPath('_billboards');
-	} elseif ($item["type"] === "dynamic") {
-		switch ($item["content"])
+foreach ($item_blogs as $blog)
+{
+	// https://stackoverflow.com/a/21947465
+	preg_match("/\<img.+src\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>/", $blog->content, $matches);
+	$img_link = $matches[1];
+	
+	echo '<div class="' . $item['class'] . ' blog' . ($item["featured"] ? ' featured' : '') . '">
+';
+  echo '  <a href="' . Route::url('blog' . DS . $blog->alias) . '">';
+  echo '    <div class="blog-img">';
+	echo '      <img src="' . $img_link . '" alt="">';
+	echo '    </div>';
+	echo '  </a>';
+	if ($item['tag']) {
+		if ($item['tag-target'])
 		{
-			case 'publications':
-				$item_pubs = $this->_getPublications($item);
-				require $this->getLayoutPath('_publications');
-			break;
-
-			case 'groups':
-				$item_groups = $this->_getGroups($item);
-				require $this->getLayoutPath('_groups');
-			break;
-
-			case 'partners':
-				$item_partners = $this->_getPartners($item);
-				require $this->getLayoutPath('_partners');
-			break;
-
-			case 'blogs':
-				$item_blogs = $this->_getBlogs($item);
-				require $this->getLayoutPath('_blogs');
-			break;
-
-			default:
-				echo 'Showcase Module Error: Unknown dynamic type "' . $item["content"] . '".  Possible values include "publications", "groups", "partners", or "blogs".';
-			break;
+			echo '  <a href="' . $item['tag-target'] . '">';
 		}
-	} else {
-		echo 'Showcase Module Error: Unknown type "' . $item["type"] . '".  Possible values include "static" or "dynamic".';
+		echo '    <div class="blog-tag">';
+		echo '      <span>' . $item['tag'] . '</span>';
+		echo '    </div>';
+		if ($item['tag-target'])
+		{
+			echo '  </a>';
+		}
 	}
+	echo '  <div class="blog-title">';
+	echo '    <a href="' . Route::url('blog' . DS . $blog->alias) . '">';
+	echo '      <span>' . $blog->title . '</span>';
+	echo '    </a>';
+	echo '  </div>';
+	echo '</div>';
 }
 ?>
