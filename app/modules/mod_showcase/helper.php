@@ -35,9 +35,11 @@ use Hubzero\Module\Module;
 use Hubzero\User\Group;
 use Components\Publications\Models\Publication;
 use Components\Partners\Models\Partner;
+use Components\Blog\Models\Entry;
 
 include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
+include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Mod_Showcase helper class, used to query for billboards and contains the display method
@@ -284,18 +286,18 @@ class Helper extends Module
 	{
 		if (empty($this->blogs))
 		{
-			$sql = "SELECT b.id, 
-										 b.title, 
-										 b.alias, 
-										 b.content
+			$sql = "SELECT b.id
 					FROM `#__blog_entries` AS b
 					WHERE (b.state=1
 					AND b.scope='site')";
 
 			$this->db->setQuery($sql . " ORDER BY `id` DESC;");
-			if (!$this->db->getError())
+			if ($this->blogs = $this->db->loadObjectList('id'))
 			{
-				$this->blogs = $this->db->loadObjectList('id');
+				foreach ($this->blogs as $id => $result)
+				{
+					$this->blogs[$id] = Entry::oneOrFail($id);
+				}
 			}
 
 			// No featured blogs

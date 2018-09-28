@@ -35,12 +35,12 @@ defined('_HZEXEC_') or die();
 foreach ($item_blogs as $blog)
 {
 	// https://stackoverflow.com/a/21947465
-	preg_match("/\<img.+src\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>/", $blog->content, $matches);
+	preg_match("/\<img.+src\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>/", $blog->get('content'), $matches);
 	$img_link = $matches[1];
 	
 	echo '<div class="' . $item['class'] . ' blog' . ($item["featured"] ? ' featured' : '') . '">
 ';
-  echo '  <a href="' . Route::url('blog' . DS . $blog->alias) . '">';
+  echo '  <a href="' . Route::url($blog->link()) . '">';
   echo '    <div class="blog-img">';
 	echo '      <img src="' . $img_link . '" alt="">';
 	echo '    </div>';
@@ -59,8 +59,8 @@ foreach ($item_blogs as $blog)
 		}
 	}
 	echo '  <div class="blog-title">';
-	echo '    <a href="' . Route::url('blog' . DS . $blog->alias) . '">';
-	echo '      <span>' . $blog->title . '</span>';
+	echo '    <a href="' . Route::url($blog->link()) . '">';
+	echo '      <span>' . $blog->get('title') . '</span>';
 	echo '    </a>';
 	echo '  </div>';
 	echo '</div>';
