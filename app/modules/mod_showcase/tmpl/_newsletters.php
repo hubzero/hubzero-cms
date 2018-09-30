@@ -29,49 +29,45 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
+// no direct access
 defined('_HZEXEC_') or die();
-?>
 
-<?php 
-$boards = array();
-foreach ($this->items as $item) {
-	if ($item["type"] === "static") {
-		require $this->getLayoutPath('_billboards');
-	} elseif ($item["type"] === "dynamic") {
-		switch ($item["content"])
-		{
-			case 'publications':
-				$item_pubs = $this->_getPublications($item);
-				require $this->getLayoutPath('_publications');
-			break;
-
-			case 'groups':
-				$item_groups = $this->_getGroups($item);
-				require $this->getLayoutPath('_groups');
-			break;
-
-			case 'partners':
-				$item_partners = $this->_getPartners($item);
-				require $this->getLayoutPath('_partners');
-			break;
-
-			case 'blogs':
-				$item_blogs = $this->_getBlogs($item);
-				require $this->getLayoutPath('_blogs');
-			break;
-			
-			case 'newsletters':
-				$item_newsletters = $this->_getNewsletters($item);
-				require $this->getLayoutPath('_newsletters');
-			break;
-
-			default:
-				echo 'Showcase Module Error: Unknown dynamic type "' . $item["content"] . '".  Possible values include "publications", "groups", "partners", "blogs", or "newsletters".';
-			break;
-		}
+foreach ($item_newsletters as $newsletter)
+{
+	// https://stackoverflow.com/a/21947465
+	$content = ($newsletter->template_id === '-1' ? $newsletter->html_content : $newsletter->primary()->rows()->first()->story);
+	preg_match("/\<img.+src\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>/", $content, $matches);
+	if (count($matches) > 1) {
+		$img_link = $matches[1];
 	} else {
-		echo 'Showcase Module Error: Unknown type "' . $item["type"] . '".  Possible values include "static" or "dynamic".';
+		$img_link = '';
 	}
+	
+	echo '<div class="' . $item['class'] . ' newsletter' . ($item["featured"] ? ' featured' : '') . '">
+';
+  echo '  <a href="' . Route::url('index.php?option=com_newsletter&id=' . $newsletter->id) . '">';
+  echo '    <div class="newsletter-img">';
+	echo '      <img src="' . $img_link . '" alt="">';
+	echo '    </div>';
+	echo '  </a>';
+	if ($item['tag']) {
+		if ($item['tag-target'])
+		{
+			echo '  <a href="' . $item['tag-target'] . '">';
+		}
+		echo '    <div class="newsletter-tag">';
+		echo '      <span>' . $item['tag'] . '</span>';
+		echo '    </div>';
+		if ($item['tag-target'])
+		{
+			echo '  </a>';
+		}
+	}
+	echo '  <div class="newsletter-title">';
+	echo '    <a href="' . Route::url('index.php?option=com_newsletter&id=' . $newsletter->id) . '">';
+	echo '      <span>' . $newsletter->name . '</span>';
+	echo '    </a>';
+	echo '  </div>';
+	echo '</div>';
 }
 ?>

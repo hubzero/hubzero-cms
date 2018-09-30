@@ -36,10 +36,12 @@ use Hubzero\User\Group;
 use Components\Publications\Models\Publication;
 use Components\Partners\Models\Partner;
 use Components\Blog\Models\Entry;
+use Components\Newsletter\Models\Newsletter;
 
 include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
 include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
+include_once \Component::path('com_newsletter') . DS . 'models' . DS . 'newsletter.php';
 
 /**
  * Mod_Showcase helper class, used to query for billboards and contains the display method
@@ -343,6 +345,83 @@ class Helper extends Module
 	}
 
 	/**
+	 * Get newsletters.
+	 * @return array Newsletters
+	 */
+	private function _getNewsletters($item)
+	{
+		if (empty($this->newsletters))
+		{
+			// Template name will be used for autotagging
+			$sql = "SELECT n.id,
+       							 t.name
+							FROM `#__newsletters` AS n
+							LEFT JOIN `#__newsletter_templates` as t 
+							  ON n.template_id = t.id
+							WHERE n.published = 1 AND n.deleted = 0";
+			
+			$this->db->setQuery($sql . " ORDER BY `id` DESC;");
+			if ($this->newsletters = $this->db->loadObjectList('id'))
+			{
+				foreach ($this->newsletters as $id => $result)
+				{
+					$this->newsletters[$id] = Newsletter::oneOrFail($id);
+				}
+			}
+
+			// Get specific newsletter, stored in featured argument
+			$this->featured["newsletters"] = [];
+			if ($item["featured"]) {
+				$this->db->setQuery($sql . ' AND LOWER(t.name) = LOWER(' . $this->db->quote($item["featured"]) . ') ORDER BY `id` DESC;');
+				if ($this->featured["newsletters"] = $this->db->loadObjectList('id'))
+				{
+					foreach ($this->featured["newsletters"] as $id => $result)
+					{
+						$this->featured["newsletters"][$id] = Newsletter::oneOrFail($id);
+					}
+				}
+			}
+		}
+
+		// This code really needs to be turned into a function
+		// Make sure we don't ask for too much
+		$n = min($item["n"], ($item["featured"] ? count($this->featured["newsletters"]) : count($this->newsletters)));
+		if ($n < $item["n"]) {
+			echo 'Showcase Module Error: Not enough selected newsletters left!';
+			return [];
+		}
+
+		if ($item["ordering"] === "recent") {
+			if ($item["featured"]) {
+				$item_newsletters = array_slice($this->featured["newsletters"], 0, $n, $preserve = true);
+			} else {
+				$item_newsletters = array_slice($this->newsletters, 0, $n, $preserve = true);
+			}
+		} elseif ($item["ordering"] === "random") {
+			if ($item["featured"]) {
+				$rind = array_flip((array)array_rand($this->featured["newsletters"], $n));
+				$item_newsletters = $this->shuffle_assoc(array_intersect_key($this->featured["newsletters"], $rind));
+			} else {
+				$rind = array_flip((array)array_rand($this->newsletters, $n));
+				$item_newsletters = $this->shuffle_assoc(array_intersect_key($this->newsletters, $rind));
+			}
+		} elseif ($item["ordering"] === "indexed") {
+			// Just use array_intersect_keys silly!
+			$item_newsletters = array_filter($this->newsletters, function($newsletter) use ($item) {
+				return in_array($newsletter->id, $item["indices"]);
+			});
+		} else {
+			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
+			return [];
+		}
+		// Remove used newsletters from master lists
+		$this->newsletters = array_diff_key($this->newsletters, $item_newsletters);
+		$this->featured["newsletters"] = array_diff_key($this->featured["newsletters"], $item_newsletters);
+
+		return $item_newsletters;
+	}
+	
+	/**
 	 * Parse the item specifications.
 	 * @return [type] [description]
 	 */
@@ -399,6 +478,10 @@ class Helper extends Module
 							case 'blogs':
     						$items[$i]["tag-target"] = Route::url('index.php?option=com_blog');
     					break;
+							
+							case 'newsletters':
+								$items[$i]["tag-target"] = Route::url('index.php?option=com_newsletter');
+							break;
 
     					default:
     					break;
