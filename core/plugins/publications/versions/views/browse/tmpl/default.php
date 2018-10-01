@@ -53,11 +53,11 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
 	<table class="resource-versions">
 		<thead>
 			<tr>
-				<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_VERSION'); ?></th>
-				<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_RELEASED'); ?></th>
-				<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_DOI_HANDLE'); ?></th>
-				<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_STATUS'); ?></th>
-				<th></th>
+				<th scope="col"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_VERSION'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_RELEASED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_DOI_HANDLE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_STATUS'); ?></th>
+				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody>
