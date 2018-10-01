@@ -37,10 +37,17 @@ $votes = 0;
 	<div class="subject">
 		<?php if ($this->poll->get('id')) { ?>
 			<table class="pollresults">
+				<caption class="sectiontableheader"><?php echo $this->escape($this->poll->get('title')); ?></caption>
 				<thead>
 					<tr>
-						<th colspan="3" class="sectiontableheader">
-							<?php echo $this->escape($this->poll->get('title')); ?>
+						<th scope="col">
+							<?php echo Lang::txt('COM_POLL_PERCENTAGE'); ?>
+						</th>
+						<th scope="col">
+							<?php echo Lang::txt('COM_POLL_OPTION'); ?>
+						</th>
+						<th scope="col">
+							<?php echo Lang::txt('COM_POLL_NUMBER_OF_VOTERS'); ?>
 						</th>
 					</tr>
 				</thead>
