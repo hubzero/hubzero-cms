@@ -32,27 +32,27 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-function debug_to_console( $data ) {
-  $output = $data;
-  if ( is_array( $output ) )
-      $output = implode( ',', $output);
-
-  echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
-}
-
 foreach ($item_newsletters as $newsletter)
 {
 	// https://stackoverflow.com/a/21947465
-	$content = ($newsletter->template_id === '-1' ? $newsletter->html_content : $newsletter->primary()->rows()->first()->story);
+	if ($newsletter->template_id === '-1') {
+		$content = $newsletter->html_content;
+	} else {
+		// Loop through primary stories until find one that is not deleted
+		foreach($newsletter->primary()->rows() as $primary) {
+			if ($primary->deleted == 0) {
+				$content = $primary->story;
+				break;
+			}
+		}
+	}
 	preg_match("/\<img.+src\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>/", $content, $matches);
 	if (count($matches) > 1) {
 		$img_link = $matches[1];
 	} else {
 		$img_link = '';
 	}
-	
-	debug_to_console($img_link);
-	
+		
 	echo '<div class="' . $item['class'] . ' newsletter' . ($item["featured"] ? ' featured' : '') . '">
 ';
   echo '  <a href="' . Route::url('index.php?option=com_newsletter&id=' . $newsletter->id) . '">';
