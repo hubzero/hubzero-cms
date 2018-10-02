@@ -116,6 +116,9 @@
 		padding: 0;
 		text-align: right;
 	}
+	#help-container legend {
+		display: none;
+	}
 	#help-container fieldset {
 		background: transparent;
 		margin: 0;
