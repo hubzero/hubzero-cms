@@ -32,6 +32,14 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
+function debug_to_console( $data ) {
+  $output = $data;
+  if ( is_array( $output ) )
+      $output = implode( ',', $output);
+
+  echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
+}
+
 foreach ($item_newsletters as $newsletter)
 {
 	// https://stackoverflow.com/a/21947465
@@ -42,6 +50,8 @@ foreach ($item_newsletters as $newsletter)
 	} else {
 		$img_link = '';
 	}
+	
+	debug_to_console($img_link);
 	
 	echo '<div class="' . $item['class'] . ' newsletter' . ($item["featured"] ? ' featured' : '') . '">
 ';
