@@ -52,6 +52,9 @@
 		text-transform: uppercase;
 		font-size: 0.85em;
 	}
+	#help-container legend {
+		display: none;
+	}
 
 /* Loading */
 	#trSending {

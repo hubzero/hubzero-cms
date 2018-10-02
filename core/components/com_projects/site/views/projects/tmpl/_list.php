@@ -30,45 +30,43 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
 ?>
-
 <table class="listing" id="projectlist">
 	<thead>
 		<tr>
-			<th class="th_image" colspan="2"></th>
-			<th><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></th>
-			<th><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></th>
+			<th scope="col" class="th_image" colspan="2"></th>
+			<th scope="col"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></th>
 	<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
 		<?php if ($this->filters['reviewer'] == 'sensitive') {  ?>
-			<th><?php echo Lang::txt('COM_PROJECTS_TYPE_OF_DATA'); ?></th>
-			<th><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_PROJECTS_TYPE_OF_DATA'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
 		<?php } ?>
 		<?php if ($this->filters['reviewer'] == 'sponsored') {  ?>
-			<th><?php echo Lang::txt('COM_PROJECTS_SPS_INFO'); ?></th>
-			<th><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_PROJECTS_SPS_INFO'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
 		<?php } ?>
-			<th></th>
+			<th scope="col"></th>
 	<?php } ?>
 		</tr>
 	</thead>
 	<tbody>
-<?php
-foreach ($this->rows as $row)
-{
-	if ($row->get('owned_by_group') && !$row->groupOwner())
-	{
-		continue; // owner group has been deleted
-	}
+		<?php
+		foreach ($this->rows as $row)
+		{
+			if ($row->get('owned_by_group') && !$row->groupOwner())
+			{
+				continue; // owner group has been deleted
+			}
 
-	// Display List of items
-	$this->view('_item')
-	     ->set('option', $this->option)
-	     ->set('filters', $this->filters)
-	     ->set('model', $this->model)
-	     ->set('row', $row)
-	     ->display();
-}
-?>
+			// Display List of items
+			$this->view('_item')
+			     ->set('option', $this->option)
+			     ->set('filters', $this->filters)
+			     ->set('model', $this->model)
+			     ->set('row', $row)
+			     ->display();
+		}
+		?>
 	</tbody>
 </table>
