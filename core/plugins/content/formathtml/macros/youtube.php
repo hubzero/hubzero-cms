@@ -42,7 +42,7 @@ class Youtube extends Macro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -58,7 +58,7 @@ class Youtube extends Macro
 							<li><code>[[Youtube(FgfGOEpZEOw, 100%)]] - width of 100%</code></li>
 						</ul>
 						<p>Displays:</p>
-						<iframe src="https://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0"></iframe>';
+						<iframe src="https://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0" title="YouTube video"></iframe>';
 
 		return $txt['html'];
 	}
@@ -66,17 +66,17 @@ class Youtube extends Macro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
-		//get the args passed in
+		// get the args passed in
 		$content = $this->args;
 
-		//declare the partial youtube embed url
+		// declare the partial youtube embed url
 		$youtube_url = 'https://www.youtube.com/embed/';
 
-		//defaults
+		// defaults
 		$default_width = 640;
 		$default_height = 380;
 
@@ -86,26 +86,26 @@ class Youtube extends Macro
 			return '';
 		}
 
-		//split up the args
+		// split up the args
 		$args = array_map('trim', explode(',', $content));
 		$url  = $args[0];
 
 		$width  = (isset($args[1]) && $args[1] != '') ? $args[1] : $default_width;
 		$height = (isset($args[2]) && $args[2] != '') ? $args[2] : $default_height;
 
-		//check is user entered full youtube url or just Video Id
+		// check is user entered full youtube url or just Video Id
 		if (strstr($url, 'http'))
 		{
-			//split the string into two parts
-			//uri and query string
+			// split the string into two parts
+			// uri and query string
 			$full_url_parts = explode('?', $url);
 
-			//split apart any key=>value pairs in query string
+			// split apart any key=>value pairs in query string
 			$query_string_parts = explode("%26%2338%3B", urlencode($full_url_parts[1]));
 
-			//foreach query string parts
-			//explode at equals sign
-			//check to see if v is the first part and if it is set the second part to the video id
+			// foreach query string parts
+			// explode at equals sign
+			// check to see if v is the first part and if it is set the second part to the video id
 			foreach ($query_string_parts as $qsp)
 			{
 				$pairs_parts = explode("%3D", $qsp);
@@ -121,13 +121,13 @@ class Youtube extends Macro
 			$video_id = $url;
 		}
 
-		//append to the youtube url
+		// append to the youtube url
 		$youtube_url .= $video_id;
 
-		//add wmode to url so that lightboxes appear over embedded videos
+		// add wmode to url so that lightboxes appear over embedded videos
 		$youtube_url .= '?wmode=transparent';
 
-		//return the emdeded youtube video
-		return '<iframe src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '"></iframe>';
+		// return the emdeded youtube video
+		return '<iframe src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '" title="YouTube video"></iframe>';
 	}
 }
