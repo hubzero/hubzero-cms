@@ -1,7 +1,10 @@
 <?php
+use Hubzero\Utility\Arr;
+
 $connectionId = $this->connectionId;
 $item = $this->item;
 $itemName = $this->itemName;
+$match = [];
 $model = $this->model;
 try {
 	$itemMimeType = $item->getMimeType();
@@ -10,8 +13,22 @@ catch (Exception $e)
 {
 	$itemMimeType = null;
 }
+if ($itemMimeType && preg_match('/^application\/vnd\.google\-apps\.([^.]+)/', $itemMimeType, $match))
+{
+	$googleMimetypeMap = [
+		'document'     => 'gdoc',      // Google Docs
+		'presentation' => 'gslides',  // Google Slides
+		'spreadsheet'  => 'gsheet',  // Google Sheets
+	];
+	$format = Arr::getValue($match, 1, null);
+	$itemExtension = $googleMimetypeMap[$format];
+}
+else
+{
+	$itemExtension = $item->getExtension();
+}
 
-echo \Components\Projects\Models\File::drawIcon($item->getExtension());
+echo \Components\Projects\Models\File::drawIcon($itemExtension);
 if ($this->itemIsFile)
 	{
 		$this->view('_item_link_file')
