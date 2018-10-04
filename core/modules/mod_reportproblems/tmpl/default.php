@@ -95,7 +95,7 @@ defined('_HZEXEC_') or die();
 					</label>
 
 					<?php
-						$captchas = Event::trigger('support.onGetModuleCaptcha');
+						$captchas = Event::trigger('captcha.onDisplay');
 
 						if (count($captchas) > 0)
 						{
