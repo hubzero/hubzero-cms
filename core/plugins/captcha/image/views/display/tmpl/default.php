@@ -33,13 +33,13 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = Request::base();
-if (Request::isSecure())
-{
-	$base = str_replace('http://', 'https://', $base);
-}
+$current = Request::current();
 
-$controller = Request::getCmd('controller', Request::getCmd('view', ''));
+$append = '?';
+if (strstr($current, '?'))
+{
+	$append = '&';
+}
 
 $this->css();
 ?>
@@ -56,13 +56,13 @@ $this->css();
 		</div>
 		<div class="col span4 omega">
 			<div class="captcha-wrap">
-				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="This is a randomly generated image of letters and numbers." />
+				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $current . htmlentities($append); ?>showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="This is a randomly generated image of letters and numbers." />
 
 				<script type="text/javascript">
 					//<![CDATA[
 					function reloadCapthcha<?php echo $this->total; ?>(instanceNo)
 					{
-						var captchaSrc = "<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&controller=<?php echo $controller; ?>&task=<?php echo $this->task; ?>&no_html=1&showCaptcha=True&instanceNo="+instanceNo+"&time="+ new Date().getTime();
+						var captchaSrc = "<?php echo $current . $append; ?>showCaptcha=True&instanceNo="+instanceNo+"&time="+ new Date().getTime();
 						document.getElementById('captchaCode'+instanceNo).src = captchaSrc;
 					}
 					//]]>

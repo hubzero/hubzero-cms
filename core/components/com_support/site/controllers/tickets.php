@@ -856,7 +856,7 @@ class Tickets extends SiteController
 			->set('file_types', $this->config->get('file_ext'))
 			->set('lists', $lists)
 			->set('row', $row)
-			->set('captchas', Event::trigger('support.onGetComponentCaptcha'))
+			->set('captchas', Event::trigger('captcha.onDisplay'))
 			->setLayout('new')
 			->setErrors($this->getErrors())
 			->display();
@@ -948,7 +948,7 @@ class Tickets extends SiteController
 		if (!$verified)
 		{
 			// Check CAPTCHA
-			$validcaptchas = Event::trigger('support.onValidateCaptcha');
+			$validcaptchas = Event::trigger('captcha.onCheckAnswer');
 			if (count($validcaptchas) > 0)
 			{
 				foreach ($validcaptchas as $validcaptcha)
