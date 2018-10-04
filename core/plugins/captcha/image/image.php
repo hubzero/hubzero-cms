@@ -405,6 +405,13 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		$security_code = strtolower(str_replace(' ', '', trim($this->keystring)));
+
+		//Set the session to store the security code
+		App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
+		$width = 120;
+		$height = 40;
+
 		ob_clean();
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -419,19 +426,15 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 		else if (function_exists('imagegif'))
 		{
 			header('Content-Type: image/gif');
-			imagegif ($img2);
+			imagegif($img2);
 		}
 		else if (function_exists('imagepng'))
 		{
 			header('Content-Type: image/x-png');
 			imagepng($img2);
 		}
-		$security_code = strtolower(str_replace(' ', '', trim($this->keystring)));
 
-		//Set the session to store the security code
-		App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
-		$width = 120;
-		$height = 40;
+		exit();
 	}
 
 	/**
