@@ -2222,9 +2222,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
 			$extended = $state == 5 ? false : true;
-			$status = $state == 5 ? 'reserved' : 'public';
+			$status   = $state == 5 ? 'reserved' : 'public';
+
 			$doi = $doiService->register(true, false, null, $extended, $status);
-			
+
 			// Store DOI
 			if ($doi)
 			{
@@ -2249,18 +2250,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$doiErr = true;
 			}
 		}
-		
-		// Register DOI name and URL for DataCite DOI when the publication is set to be automatically approved.
+
+		// Register DOI name and URL for DOI when the publication is set to be automatically approved.
 		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
 		{
 			$doiService->register(false, true, $pub->version->get('doi'));
-			
+
 			if ($doiService->getError())
 			{
 				$this->setError($doiService->getError());
 			}
 		}
-		
+
 		// Proceed if no error
 		if (!$this->getError())
 		{
@@ -2456,7 +2457,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pub->_curationModel->package(true);
 		}
 
-		if ($pub->version->get('state') == 1)
+		if ($pub->version->get('state') == 1 && !$pub->isEmbargoed())
 		{
 			$pub->_curationModel->createSymLink();
 		}

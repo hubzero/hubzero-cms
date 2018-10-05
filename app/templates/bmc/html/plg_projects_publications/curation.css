@@ -12,10 +12,6 @@
   margin-left: 0.5rem;
   z-index: 10;
 }
-.item-add:before {
-  margin: -0.1rem 0 0 -1.2em;
-  line-height: 1em;
-}
 .blockelement input.btn {
   width: auto;
 }
