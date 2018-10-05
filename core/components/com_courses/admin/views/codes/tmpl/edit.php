@@ -194,15 +194,6 @@ function submitbutton(pressbutton)
 					<?php } ?>
 				</tbody>
 			</table>
-
-			<fieldset class="adminform">
-				<legend><span><?php echo Lang::txt('COM_COURSES_QR_CODE'); ?></span></legend>
-				<?php if ($this->row->get('id')) { ?>
-					<img src="<?php echo Route::url('index.php?option=com_courses&controller=codes&task=qrcode&no_html=1&code=' . $this->row->get('code')); ?>" alt="QR Code" />
-				<?php } else { ?>
-					<p class="warning"><?php echo Lang::txt('COM_COURSES_QR_CODE_ENTY_MOST_BE_SAVED'); ?></p>
-				<?php } ?>
-			</fieldset>
 		</div>
 	</div>
 

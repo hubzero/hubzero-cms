@@ -1,7 +1,8 @@
 <?php
 
 use Hubzero\Content\Migration\Base;
-
+use \Components\Publications\Models\Publication;
+include Component::path('com_publications') . '/models/publication.php';
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -29,7 +30,9 @@ class Migration20180820101435ComPublications extends Base
 		$versionCount = $this->db->loadResult();
 		while ($offset < $versionCount)
 		{
-			$query = "SELECT `doi`, `publication_id`, `id`, `version_number`, `state` FROM `#__publication_versions` WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
+			$query = "SELECT `v`.`doi`, `v`.`id`, `v`.`version_number`, `v`.`publication_id`, `v`.`state`, `p`.`master_type`, `t`.`alias` FROM `#__publication_versions` v";
+			$query .= " JOIN `#__publications` p ON `v`.`publication_id` = `p`.`id` JOIN `#__publication_master_types` t ON `p`.`master_type` = `t`.`id`";
+			$query .= " WHERE `v`.`state` = 1 AND `v`.`published_up` < NOW() AND `t`.`alias` NOT IN ('series', 'databases') LIMIT {$offset}, {$this->limit};";
 
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -93,16 +96,14 @@ class Migration20180820101435ComPublications extends Base
 	 */
 	protected function createSymLink($pubId, $versionId, $versionNum, $doi = '')
 	{
+		$bundleName = 'Publication' . '_' . $pubId;
+		$bundleWithVersion = $bundleName . '_' . $versionNum;
+
 		if ($doi != '')
 		{
 			$doi = str_replace('.', '_', $doi);
 			$doi = str_replace('/', '_', $doi);
 			$bundleName = $doi;
-		}
-		else
-		{
-			$bundleName = 'Publication' . '_' . $pubId;
-			$bundleWithVersion = $bundleName . '_' . $versionNum;
 		}
 
 		$tarname = $bundleName . '.zip';
@@ -113,6 +114,14 @@ class Migration20180820101435ComPublications extends Base
 		{
 			chdir($symLinkPath);
 		}
+		if (!is_file($tarPath))
+		{
+			echo "Creating package for {$pubId}_{$versionNum}...." . PHP_EOL;
+			$pubModel = new Publication($pubId, null, $versionId);
+			$pubModel->setCuration();
+			$pubModel->_curationModel->package();
+			echo "Finished creating package for {$pubId}_{$versionNum}...." . PHP_EOL;
+		}
 		if (empty($pubId) || $symLinkPath == false || !is_file($tarPath))
 		{
 			return false;
@@ -120,7 +129,7 @@ class Migration20180820101435ComPublications extends Base
 		$symLink = $symLinkPath . '/' . $symFileName;
 		if (!is_file($symLink))
 		{
-			if (!symlink($tarPath, $symLink))
+			if (!link($tarPath, $symLink))
 			{
 				return false;
 			}
@@ -135,19 +144,16 @@ class Migration20180820101435ComPublications extends Base
 	 */
 	protected function removeSymLink($pubId, $versionId, $versionNum, $doi='')
 	{
+		$bundleName = 'Publication' . '_' . $pubId;
+		$bundleWithVersion = $bundleName . '_' . $versionNum;
 		if ($doi != '')
 		{
 			$doi = str_replace('.', '_', $doi);
 			$doi = str_replace('/', '_', $doi);
 			$bundleName = $doi;
 		}
-		else
-		{
-			$bundleName = 'Publication' . '_' . $pubId;
-			$bundleName .= '_' . $versionNum;
-		}
 
-		$tarname = $bundleName . '.zip';
+		$tarname = $bundleWithVersion . '.zip';
 		$symLinkPath = $this->_symLinkPath();
 		$symLink = $symLinkPath . '/' . $tarname;
 		if ($symLink == false)

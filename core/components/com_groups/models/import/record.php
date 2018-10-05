@@ -162,13 +162,46 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			{
 				$field = Field::oneByName($key);
 
-				if ($field->get('id'))
+				if (!$field->get('id'))
 				{
-					$field->setFormAnswers($this->_description);
-					if (!$field->validate())
+					array_push($this->record->notices, Lang::txt('Could not find field named "%s"', $key));
+					continue;
+				}
+
+				// Check if the field was a radio, select, or checkbox
+				// If so, then the value being set *must* match the value
+				// or label of one of the available options.
+				$options = $field->options;
+
+				if ($options->count())
+				{
+					$validvalue = false;
+
+					foreach ($options as $opt)
 					{
-						array_push($this->record->errors, (string)$field->getError());
+						if ($val == $opt->get('value'))
+						{
+							$validvalue = true;
+						}
+
+						if ($val == $opt->get('label'))
+						{
+							$this->_description[$key] = $opt->get('value');
+							$validvalue = true;
+						}
 					}
+
+					if (!$validvalue)
+					{
+						array_push($this->record->errors, Lang::txt('Invalid value "%s" for field "%s"', $val, $key));
+						continue;
+					}
+				}
+
+				$field->setFormAnswers($this->_description);
+				if (!$field->validate())
+				{
+					array_push($this->record->errors, (string)$field->getError());
 				}
 			}
 		}
@@ -444,13 +477,46 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			{
 				$field = Field::oneByName($key);
 
-				if ($field->get('id'))
+				if (!$field->get('id'))
 				{
-					$field->setFormAnswers($this->_description);
-					if (!$field->saveGroupAnswers($this->record->entry->get('gidNumber')))
+					array_push($this->record->notices, Lang::txt('Could not find field named "%s"', $key));
+					continue;
+				}
+
+				// Check if the field was a radio, select, or checkbox
+				// If so, then the value being set *must* match the value
+				// or label of one of the available options.
+				$options = $field->options;
+
+				if ($options->count())
+				{
+					$validvalue = false;
+
+					foreach ($options as $opt)
 					{
-						throw new Exception($field->getError());
+						if ($val == $opt->get('value'))
+						{
+							$validvalue = true;
+						}
+
+						if ($val == $opt->get('label'))
+						{
+							$this->_description[$key] = $opt->get('value');
+							$validvalue = true;
+						}
 					}
+
+					if (!$validvalue)
+					{
+						array_push($this->record->errors, Lang::txt('Invalid value "%s" for field "%s"', $val, $key));
+						continue;
+					}
+				}
+
+				$field->setFormAnswers($this->_description);
+				if (!$field->saveGroupAnswers($this->record->entry->get('gidNumber')))
+				{
+					throw new Exception($field->getError());
 				}
 			}
 		}
@@ -484,15 +550,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			));
 			$version->store(false);
 		}
-
-		if (isset($this->record->members) && !empty($this->record->members))
-		{
-			$this->record->entry->add('members', $this->record->members);
-		}
-		if (isset($this->record->managers) && !empty($this->record->managers))
-		{
-			$this->record->entry->add('managers', $this->record->managers);
-		}
 	}
 
 	/**
@@ -520,6 +577,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			{
 				array_push($this->record->notices, $error);
 			}
+
+			$handler->setErrors(array());
 		}
 	}
 
@@ -536,8 +595,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 			foreach ($handler->getErrors() as $error)
 			{
-				array_push($this->record->notices, $error);
+				array_push($this->record->errors, $error);
 			}
+
+			$handler->setErrors(array());
 		}
 	}
 

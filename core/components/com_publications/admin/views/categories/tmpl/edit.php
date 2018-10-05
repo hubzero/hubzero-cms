@@ -131,10 +131,10 @@ function submitbutton(pressbutton)
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?>">
 						<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?></span>
 
-						<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
+						<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo ($this->row->isContributable()) ? 'checked="checked"' : ''; ?> />
 						<label for="field-contributable1"><?php echo Lang::txt('JYES'); ?></label>
 						<br />
-						<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
+						<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo (!$this->row->isContributable()) ? 'checked="checked"' : ''; ?> />
 						<label for="field-contributable0"><?php echo Lang::txt('JNO'); ?></label>
 					</div>
 				</fieldset>

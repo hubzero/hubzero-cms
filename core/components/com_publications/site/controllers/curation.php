@@ -767,7 +767,7 @@ class Curation extends SiteController
 		$pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
 
 		// Create SFTP accessible symlink for package
-		if ($status == 1)
+		if ($status == 1 && !$this->_pub->isEmbargoed())
 		{
 			$pub->_curationModel->createSymLink();
 		}

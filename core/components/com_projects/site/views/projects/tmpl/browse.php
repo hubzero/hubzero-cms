@@ -65,7 +65,7 @@ $total = $this->model->entries('count', $this->filters);
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<legend></legend>
+				<legend><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?></legend>
 				<label for="entry-search-field"><?php echo Lang::txt('COM_PROJECTS_ENTER_PHRASE'); ?></label>
 				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_ENTER_PHRASE'); ?>" />
 				<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
@@ -128,12 +128,10 @@ $total = $this->model->entries('count', $this->filters);
 				$pagenavhtml = $pageNav->render();
 				$pagenavhtml = str_replace('projects/?','projects/browse/?', $pagenavhtml);
 				?>
-				<fieldset>
-					<?php echo $pagenavhtml; ?>
-					<?php if (!empty($this->filters['reviewer'])): ?>
-						<input type="hidden" name="reviewer" value="<?php echo $this->filters['reviewer'];?>" />
-					<?php endif; ?>
-				</fieldset>
+				<?php echo $pagenavhtml; ?>
+				<?php if (!empty($this->filters['reviewer'])): ?>
+					<input type="hidden" name="reviewer" value="<?php echo $this->filters['reviewer'];?>" />
+				<?php endif; ?>
 				<div class="clear"></div>
 				<?php
 			}
@@ -157,7 +155,8 @@ $total = $this->model->entries('count', $this->filters);
 						echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_AUTHOROZED_PROJECTS_FOUND') . '</p>';
 					}
 				}
-			} ?>
+			}
+			?>
 		</div>
 	</section><!-- / .main section -->
 </form>

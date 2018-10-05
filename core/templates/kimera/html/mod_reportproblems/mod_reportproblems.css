@@ -8,8 +8,8 @@
 	.fancybox-overlay #help-pane {
 		display: block;
 	}
-	#help-pane h1,
-	#help-pane .span4 {
+	#help-container>.span4,
+	#help-pane h1 {
 		display: none;
 	}
 	#help-pane h2 {
@@ -38,7 +38,7 @@
 		     -o-background-size: 30px 30px;
 		        background-size: 30px 30px;
 	}
-	#help-pane .col {
+	#help-container>.col {
 		float: none;
 		width: auto;
 	}
@@ -51,6 +51,9 @@
 		color: #d86560;
 		text-transform: uppercase;
 		font-size: 0.85em;
+	}
+	#help-container legend {
+		display: none;
 	}
 
 /* Loading */

@@ -74,20 +74,44 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 			<?php if ($this->model->access('content')) : ?>
 				<span id="manage_assets">
 					<?php if ($this->connection->provider->alias != 'github') {?>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=upload'   . $subdirlink); ?>" class="fmanage" id="a-upload" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?></span></a>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=newdir'   . $subdirlink); ?>" id="a-folder" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span></a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=upload'   . $subdirlink); ?>"
+							class="fmanage" id="a-upload" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>">
+						<span><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?></span>
+					</a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=newdir'   . $subdirlink); ?>"
+							id="a-folder" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage">
+						<span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span>
+					</a>
 					<?php }?>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=download' . $subdirlink . '&a=1'); ?>" class="fmanage js" id="a-download" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span></a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=download' . $subdirlink . '&a=1'); ?>"
+						 class="fmanage js" id="a-download" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP'); ?>">
+						<span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span>
+					</a>
 					<?php if ($this->connection->provider->alias != 'github') {?>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=move'     . $subdirlink); ?>" class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span></a>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=delete'   . $subdirlink); ?>" class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span></a>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=rename'   . $subdirlink); ?>" class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span></a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=move'     . $subdirlink); ?>"
+						class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>">
+						<span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span>
+					</a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=delete'   . $subdirlink); ?>"
+						class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>">
+						<span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span>
+					</a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=rename'   . $subdirlink); ?>"
+						class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>">
+						<span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span>
+					</a>
 					<?php }?>
 					<?php if (count($metadata)) : ?>
-						<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink); ?>" class="fmanage js" id="a-annotate" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span></a>
+						<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink); ?>"
+							class="fmanage js" id="a-annotate" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP'); ?>">
+							<span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span>
+						</a>
 					<?php endif;
-					if ($this->connection->id) : ?>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=compile'  . $subdirlink); ?>" class="fmanage js" id="a-handle" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span></a>
+					if ($this->connection->id): ?>
+						<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=compile'  . $subdirlink); ?>"
+							class="fmanage js" id="a-handle" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>">
+							<span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span>
+						</a>
 					<?php endif; ?>
 				</span>
 				<noscript>
@@ -103,18 +127,21 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 					<th class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
 				<?php endif; ?>
 				<th class="asset_doc <?php if ($this->sortby == 'filename') { echo ' activesort'; } ?>">
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=filename&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=filename&sortdir=' . $sortbyDir); ?>"
+						class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
 						<?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>
 					</a>
 				</th>
 				<th class="centeralign"></th>
 				<th <?php if ($this->sortby == 'size') { echo 'class="activesort"'; } ?>>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>">
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir); ?>"
+						class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>">
 						<?php echo Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>
 					</a>
 				</th>
 				<th <?php if ($this->sortby == 'timestamp') { echo 'class="activesort"'; } ?>>
-					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=timestamp&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>">
+					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=timestamp&sortdir=' . $sortbyDir); ?>"
+						class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>">
 						<?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>
 					</a>
 				</th>
@@ -128,7 +155,8 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 					<td></td>
 					<?php $min = $this->model->access('content') ? 1 : 0; ?>
 					<td colspan="<?php echo 6 - $min; ?>" class="mini">
-						<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id . '&subdir=' . $parent); ?>" class="uptoparent"><?php echo Lang::txt('PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
+						<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id . '&subdir=' . $parent); ?>"
+							class="uptoparent"><?php echo Lang::txt('PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
 					</td>
 				</tr>
 			<?php endif; ?>

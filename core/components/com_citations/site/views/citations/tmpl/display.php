@@ -153,9 +153,9 @@ $cls = 'even';
 $rows = array();
 $j = 0;
 $data_arr = array();
-$data_arr['text'] = null;
-$data_arr['hits'] = null;
-foreach ($typestats as $type=>$stat)
+$data_arr['text'] = array();
+$data_arr['hits'] = array();
+foreach ($typestats as $type => $stat)
 {
 	$data_arr['text'][$j] = trim($type);
 	$data_arr['hits'][$j] = $stat;
@@ -170,15 +170,16 @@ $tabcnt = 0;
 $colorx = 0;
 $maxval = 0;
 
-array_multisort( $data_arr['hits'], SORT_NUMERIC, SORT_DESC, $data_arr['text']);
+array_multisort($data_arr['hits'], SORT_NUMERIC, SORT_DESC, $data_arr['text']);
 
 foreach ($data_arr['hits'] as $hits)
 {
-	if ($maxval < $hits) {
+	if ($maxval < $hits)
+	{
 		$maxval = $hits;
 	}
 }
-$sumval = array_sum( $data_arr['hits']);
+$sumval = array_sum($data_arr['hits']);
 
 for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 {

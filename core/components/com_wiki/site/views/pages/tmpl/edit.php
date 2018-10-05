@@ -79,6 +79,22 @@ $authors = implode(', ', $authors);
 	?>
 </header><!-- /#content-header -->
 
+<?php if (!$this->sub) { ?>
+<section class="main section">
+	<div class="aside">
+		<?php
+		$this->view('wikimenu')
+			->set('option', $this->option)
+			->set('controller', $this->controller)
+			->set('page', $this->page)
+			->set('task', $this->task)
+			->set('sub', $this->sub)
+			->display();
+		?>
+	</div>
+	<div class="subject">
+<?php } ?>
+
 <?php
 	$this->view('submenu')
 		//->setBasePath($this->base_path)
@@ -90,7 +106,11 @@ $authors = implode(', ', $authors);
 		->display();
 ?>
 
+<?php if ($this->sub) { ?>
 <section class="main section">
+	<div class="section-inner">
+<?php } ?>
+
 <?php
 if ($this->page->exists() && !$this->page->access('modify')) {
 	if ($this->page->param('allow_changes') == 1) { ?>
@@ -121,8 +141,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	</div>
 <?php } ?>
 
-<form action="<?php echo Route::url($this->page->link()); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
-	<?php if (!$this->sub) { ?>
+<form action="<?php echo Route::url($this->page->link()); ?>" method="post" id="hubForm" class="full">
+	<?php /*if (!$this->sub) { ?>
 		<div class="explaination">
 			<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
 				<p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
@@ -132,11 +152,11 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			</div>
 			<div id="file-uploader-list"></div>
 		</div>
-	<?php } else { ?>
+	<?php } else {*/ ?>
 		<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
 			<p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
 		<?php } ?>
-	<?php } ?>
+	<?php //} ?>
 	<fieldset>
 		<legend><?php echo Lang::txt('COM_WIKI_FIELDSET_PAGE'); ?></legend>
 
@@ -224,7 +244,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			?>
 		</label>
 
-	<?php if ($this->sub) { ?>
+	<?php //if ($this->sub) { ?>
 		<div class="field-wrap">
 			<div class="grid">
 				<div class="col span-half">
@@ -241,7 +261,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				</div>
 			</div><!-- / .grid -->
 		</div>
-	<?php } ?>
+	<?php //} ?>
 	</fieldset><div class="clear"></div>
 
 	<?php if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) {?>
@@ -306,10 +326,10 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 						<?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
 					</label>
 			<?php } else { ?>
-					<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
-					<input type="hidden" name="params[hide_authors]" value="<?php echo $this->page->param('hide_authors', 1); ?>" />
-					<input type="hidden" name="params[allow_changes]" value="<?php echo $this->page->param('allow_changes', 1); ?>" />
-					<input type="hidden" name="params[allow_comments]" value="<?php echo $this->page->param('allow_comments', 1); ?>" />
+					<input type="hidden" name="params[mode]" value="<?php echo $this->escape($this->page->param('mode', 'wiki')); ?>" />
+					<input type="hidden" name="params[hide_authors]" value="<?php echo $this->escape($this->page->param('hide_authors', 1)); ?>" />
+					<input type="hidden" name="params[allow_changes]" value="<?php echo $this->escape($this->page->param('allow_changes', 1)); ?>" />
+					<input type="hidden" name="params[allow_comments]" value="<?php echo $this->escape($this->page->param('allow_comments', 1)); ?>" />
 					<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($authors); ?>" />
 			<?php } ?>
 
@@ -323,36 +343,34 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<div class="clear"></div>
 	<?php } else { ?>
 		<input type="hidden" name="page[protected]" value="<?php echo $this->escape($this->page->get('protected', 0)); ?>" />
-		<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
-		<input type="hidden" name="params[hide_authors]" value="<?php echo $this->page->param('hide_authors', 1); ?>" />
-		<input type="hidden" name="params[allow_changes]" value="<?php echo $this->page->param('allow_changes', 1); ?>" />
-		<input type="hidden" name="params[allow_comments]" value="<?php echo $this->page->param('allow_comments', 1); ?>" />
+		<input type="hidden" name="params[mode]" value="<?php echo $this->escape($this->page->param('mode', 'wiki')); ?>" />
+		<input type="hidden" name="params[hide_authors]" value="<?php echo $this->escape($this->page->param('hide_authors', 1)); ?>" />
+		<input type="hidden" name="params[allow_changes]" value="<?php echo $this->escape($this->page->param('allow_changes', 1)); ?>" />
+		<input type="hidden" name="params[allow_comments]" value="<?php echo $this->escape($this->page->param('allow_comments', 1)); ?>" />
 		<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($authors); ?>" />
 	<?php } ?>
 
-<?php if ($this->page->access('edit')) { ?>
-	<?php if (!$this->sub) { ?>
-		<div class="explaination">
-			<p><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
-		</div>
-	<?php } ?>
+	<?php if ($this->page->access('edit')) { ?>
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_WIKI_FIELDSET_METADATA'); ?></legend>
-			<label>
+
+			<p><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
+
+			<label for="actags">
 				<?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php
-				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)));
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->escape($tags))));
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else {
-					echo '<input type="text" name="tags" value="'. $tags .'" size="38" />';
+					echo '<input type="text" name="tags" value="'. $this->escape($tags) .'" size="38" />';
 				}
 				?>
 				<span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</label>
-<?php } else { ?>
-			<input type="hidden" name="tags" value="<?php echo $this->escape($tags); ?>" />
-<?php } ?>
+	<?php } else { ?>
+			<input type="hidden" name="tags" id="actags" value="<?php echo $this->escape($tags); ?>" />
+	<?php } ?>
 
 			<label for="field-summary">
 				<?php echo Lang::txt('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
@@ -390,4 +408,5 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
 		</p>
 	</form>
+	</div>
 </section><!-- / .main section -->

@@ -58,29 +58,46 @@ if (!$this->sub)
 	?>
 </header><!-- /#content-header -->
 
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+<?php if (!$this->sub) { ?>
+<section class="main section">
+	<div class="aside">
+		<?php
+		$this->view('wikimenu')
+			->set('option', $this->option)
+			->set('controller', $this->controller)
+			->set('page', $this->page)
+			->set('task', $this->task)
+			->set('sub', $this->sub)
+			->display();
+		?>
+	</div>
+	<div class="subject">
 <?php } ?>
 
-<?php
-	$this->view('submenu', 'pages')
-		//->setBasePath($this->base_path)
-		->set('option', $this->option)
-		->set('controller', $this->controller)
-		->set('page', $this->page)
-		->set('task', $this->task)
-		->set('sub', $this->sub)
-		->display();
-?>
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php } ?>
 
+		<?php
+		$this->view('submenu', 'pages')
+			//->setBasePath($this->base_path)
+			->set('option', $this->option)
+			->set('controller', $this->controller)
+			->set('page', $this->page)
+			->set('task', $this->task)
+			->set('sub', $this->sub)
+			->display();
+		?>
+
+<?php if ($this->sub) { ?>
 <section class="main section">
+	<div class="section-inner">
+<?php } ?>
+
 	<?php if ($this->page->isLocked() && !$this->page->access('manage')) { ?>
 		<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 	<?php } else { ?>
-		<form action="<?php echo Route::url($this->page->link('base')); ?>" method="post" id="hubForm">
-			<div class="explaination">
-				<p><?php echo Lang::txt('COM_WIKI_DELETE_PAGE_EXPLANATION'); ?></p>
-			</div>
+		<form action="<?php echo Route::url($this->page->link('base')); ?>" method="post" id="hubForm" class="full">
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></legend>
 
@@ -101,11 +118,13 @@ if (!$this->sub)
 				<?php } ?>
 
 				<?php echo Html::input('token'); ?>
-			</fieldset><div class="clear"></div>
+			</fieldset>
 
 			<p class="submit">
 				<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('COM_WIKI_DELETE'); ?>" />
 			</p>
 		</form>
 	<?php } ?>
+
+	</div>
 </section><!-- / .main section -->

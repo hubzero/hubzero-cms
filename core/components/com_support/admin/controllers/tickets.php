@@ -181,6 +181,8 @@ class Tickets extends AdminController
 				{	// for no custom queries.
 					$query = Query::blank();
 					$query->set('count', 0);
+					$query->set('sort', 'created');
+					$query->set('sort_dir', 'desc');
 				}
 			}
 

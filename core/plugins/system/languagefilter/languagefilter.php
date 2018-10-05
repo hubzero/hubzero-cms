@@ -304,7 +304,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			 || $this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie)
 			{
 				//$uri->setPath($uri->getPath() . '/' . $sef);
-				$uri->setPath($sef . '/' . $uri->getPath());
+				$uri->setPath('/' . trim($sef, '/') . '/' . ltrim($uri->getPath(), '/'));
 			}
 			else
 			{

@@ -135,15 +135,18 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 				// formatted results
 				if (isset($fileinfo['extension']))
 				{
-
 					$extension = $fileInfo['extension'];
 				}
 				else
 				{
-	
-					$fileContent = file_get_contents($filePath);
-					$mimeType = \Hubzero\Filesystem\Util\MimeType::detectByContent($fileContent);
-					$extension = array_search($mimeType, $mimeTypes);
+					$extension = Filesystem::extension($file);
+
+					if (!$extension)
+					{
+						$fileContent = file_get_contents($filePath);
+						$mimeType = \Hubzero\Filesystem\Util\MimeType::detectByContent($fileContent);
+						$extension = array_search($mimeType, $mimeTypes);
+					}
 				}
 
 				$formattedFilesize   = \Hubzero\Utility\Number::formatBytes($filesize);

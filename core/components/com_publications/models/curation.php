@@ -2024,6 +2024,7 @@ class Curation extends Obj
 		$second   = $this->getElements(2);
 		$gallery  = $this->getElements(3);
 		$elements = array_merge($prime, $second, $gallery);
+		Lang::load('com_publications', Component::path('com_publications') . '/site');
 
 		// Do we have items to package?
 		if (!$elements)
@@ -2087,28 +2088,27 @@ class Curation extends Obj
 	 * @param	boolean	$includeVersionNum
 	 * @return  mixed  False on error, string on success
 	 */
-	public function getBundleName($includeVersionNum = false)
+	public function getBundleName($symLinkName = false)
 	{
 		if (empty($this->_pub))
 		{
 			return false;
 		}
-		$doi = $this->_pub->version->get('doi');
-		if ($doi != '')
+		$bundleName = 'Publication' . '_' . $this->_pub->id;
+		if ($symLinkName)
 		{
-			$doi = str_replace('.', '_', $doi);
-			$doi = str_replace('/', '_', $doi);
-			$bundleName = $doi;
+			$bundleName .= '_' . $this->_pub->version->get('version_number');
 		}
 		else
 		{
-			$bundleName = Lang::txt('Publication') . '_' . $this->_pub->id;
-			if ($includeVersionNum)
+			$doi = $this->_pub->version->get('doi');
+			if ($doi != '')
 			{
-				$bundleName .= '_' . $this->_pub->version->get('version_number');
+				$doi = str_replace('.', '_', $doi);
+				$doi = str_replace('/', '_', $doi);
+				$bundleName = $doi;
 			}
 		}
-
 		return $bundleName . '.zip';
 	}
 
@@ -2171,7 +2171,7 @@ class Curation extends Obj
 		}
 		if (!is_file($symLink))
 		{
-			if (!symlink($tarpath, $symLink))
+			if (!link($tarpath, $symLink))
 			{
 				return false;
 			}
