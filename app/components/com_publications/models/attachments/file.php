@@ -582,6 +582,30 @@ class File extends Base
 					$label .= ' ' . Lang::txt('Bundle');
 					$title = $pub->title . ' ' . Lang::txt('Bundle');
 
+					$path = $pub->path('base', true) . DS . $pub->_curationModel->getBundleName();
+
+					if ($path && file_exists($path))
+					{
+						$size = filesize($path);
+						$label .= ' (' . \Hubzero\Utility\Number::formatBytes($size) . ')';
+						$title .= ' (' . \Hubzero\Utility\Number::formatBytes($size) . ')';
+
+						// Convert to MB
+						$size = (($size / 1024) / 1024);
+
+						// Is sFTP enabled and is the file over the threshold?
+						if ($pub->config()->get('sftppath') && $size >= intval($pub->config()->get('sftpsize', 5000)))
+						{
+							$uri = \Hubzero\Utility\Uri::getInstance();
+							$uri->setScheme('ftp');
+							//$uri->setUser('guest');
+							//$uri->setPass('guest');
+							$uri->setPath($pub->_curationModel->getBundleName(true));
+
+							$url = $uri->toString();
+						}
+					}
+
 					$show = new \stdClass;
 					$show->href = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=showcontents');
 					$show->class = 'showBundle';
