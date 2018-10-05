@@ -57,6 +57,8 @@ defined('_HZEXEC_') or die();
 			</h2>
 			<form method="post" action="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=save'); ?>" id="troublereport" enctype="multipart/form-data">
 				<fieldset class="reporter">
+					<legend><?php echo Lang::txt('MOD_REPORTPROBLEMS_LEGEND_REPORTER'); ?></legend>
+
 					<label<?php if ($this->guestOrTmpAccount) { echo ' for="trLogin"'; } ?>>
 						<?php echo Lang::txt('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 						<?php if (!$this->guestOrTmpAccount) { ?>
@@ -101,7 +103,9 @@ defined('_HZEXEC_') or die();
 						<input type="text" name="botcheck" id="trBotcheck" value="" />
 					</label>
 				</fieldset>
-				<fieldset>
+				<fieldset class="reporting">
+					<legend><?php echo Lang::txt('MOD_REPORTPROBLEMS_LEGEND_REPORTING'); ?></legend>
+
 					<label for="trProblem">
 						Message: <span class="required"><?php echo Lang::txt('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
 						<textarea name="problem[long]" id="trProblem" rows="10" cols="40"></textarea>
