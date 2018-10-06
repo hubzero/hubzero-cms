@@ -1790,6 +1790,7 @@ class Items extends AdminController
 			->set('org', $org)
 			->set('id', $id)
 			->set('roles', $roles)
+			->set('role', $role)
 			->display();
 	}
 
