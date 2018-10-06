@@ -9,7 +9,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for creating sym links in the SFTP directory
  **/
-class Migration20180820101435ComPublications extends Base
+class Migration20180820101436ComPublications extends Base
 {
 	/**
 	 * Number of database rows to process at a time
