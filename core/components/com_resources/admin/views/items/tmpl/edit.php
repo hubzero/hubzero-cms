@@ -276,7 +276,7 @@ $this->view('_edit_script')
 				?>
 				<textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
 				<?php echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_BADGES'), 'badges-page'); ?>
-				<textarea name="badges" id="badges" cols="35" rows="6"><?php echo $this->lists['badges']; ?></textarea>
+				<textarea name="badges" id="badges" cols="35" rows="6"><?php echo isset($this->lists['badges']) ? $this->lists['badges'] : ''; ?></textarea>
 				<?php
 				echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 				echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
