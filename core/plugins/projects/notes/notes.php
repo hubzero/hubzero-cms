@@ -392,7 +392,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			$controller = new $controllerName(array(
 				'base_path' => $basePath,
 				'scope'     => 'project',
-				'scope_id'  => $this->model->get('id')
+				'scope_id'  => $this->model->get('id'),
+				'sub'       => true
 			));
 
 			// Catch any echoed content with ob
