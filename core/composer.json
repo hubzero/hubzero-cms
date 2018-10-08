@@ -54,7 +54,8 @@
         "solarium/solarium" : "3.8.1",
         "cilogon/oauth2-cilogon": "^1.1",
         "srmklive/flysystem-dropbox-v2": "^1.0",
-        "stevenmaguire/oauth2-dropbox": "^2.0.0"
+        "stevenmaguire/oauth2-dropbox": "^2.0.0",
+        "jasig/phpcas": "1.3.5"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"
