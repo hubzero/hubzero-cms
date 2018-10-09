@@ -130,7 +130,7 @@ class Source extends AdminController
 
 		$file = new File($fields['filename'], $fields['extension_id']);
 
-		if (!$file->save($fields['source']))
+		if (!$file->save($fields))
 		{
 			Notify::error($file->getError());
 		}
