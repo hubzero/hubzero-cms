@@ -34,13 +34,13 @@ use Components\Storefront\Models\Course;
 use Components\Storefront\Models\Warehouse;
 use Exception;
 use Filesystem;
+use Component;
+use Lang;
 
-require_once(__DIR__ . DS . 'Warehouse.php');
+require_once __DIR__ . DS . 'Warehouse.php';
 
 /**
- *
  * Storefront product class
- *
  */
 class Product
 {
@@ -50,8 +50,8 @@ class Product
 	/**
 	 * Constructor
 	 *
-	 * @param  int		Product ID
-	 * @return void
+	 * @param   int   $pId  Product ID
+	 * @return  void
 	 */
 	public function __construct($pId = false)
 	{
@@ -70,8 +70,8 @@ class Product
 	/**
 	 * Load existing product
 	 *
-	 * @param	void
-	 * @return	void		Throws exception if product cannot be loaded
+	 * @throws  Exception
+	 * @return  void       Throws exception if product cannot be loaded
 	 */
 	private function load()
 	{
@@ -82,8 +82,8 @@ class Product
 		//$productInfo = $warehouse->getProductInfo($pId, true);
 
 		$sql = 	"SELECT p.*,
-				IF((p.`publish_up` IS NULL OR p.`publish_up` = '0000-00-00 00:00:00' OR p.`publish_up` <= NOW())
-				AND (p.`publish_down` IS NULL OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW()), 1, 0) AS pPublishedNow,
+				IF((p.`publish_up` IS null OR p.`publish_up` = '0000-00-00 00:00:00' OR p.`publish_up` <= NOW())
+				AND (p.`publish_down` IS null OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW()), 1, 0) AS pPublishedNow,
 				pt.ptName, pt.ptModel";
 		$sql .= " FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
@@ -116,8 +116,9 @@ class Product
 	/**
 	 * Set product type
 	 *
-	 * @param	string		Product type
-	 * @return	void		Throws exception if the produt type is bad
+	 * @param   string     $productType  Product type
+	 * @throws  Exception
+	 * @return  bool       Throws exception if the produt type is bad
 	 */
 	public function setType($productType)
 	{
@@ -145,8 +146,7 @@ class Product
 	/**
 	 * Get product type
 	 *
-	 * @param	void
-	 * @return	int		Product type
+	 * @return  mixed  Product type (int) or false
 	 */
 	public function getType()
 	{
@@ -160,10 +160,10 @@ class Product
 	/**
 	 * Set product type info
 	 *
-	 * @param	int		Product type ID
-	 * @param	string		Product type name
-	 * @param	string		Product type model
-	 * @return	void		Throws exception if the produt type is bad
+	 * @param   int     $ptId     Product type ID
+	 * @param   string  $ptName   Product type name
+	 * @param   string  $ptModel  Product type model
+	 * @return  void
 	 */
 	private function setTypeInfo($ptId, $ptName, $ptModel)
 	{
@@ -178,8 +178,7 @@ class Product
 	/**
 	 * Get product type info
 	 *
-	 * @param	void
-	 * @return	obj		Product type info
+	 * @return  mixed  Product type info (obj) or false
 	 */
 	public function getTypeInfo()
 	{
@@ -193,6 +192,7 @@ class Product
 	/**
 	 * Get product access groups
 	 *
+	 * @param   string  $type
 	 * @return  array
 	 */
 	public function getAccessGroups($type = 'include')
@@ -276,7 +276,7 @@ class Product
 			}
 
 			// Insert new record
-			$db->setQuery("INSERT INTO `#__storefront_product_access_groups` (`id`, `pId`, `agId`, `exclude`) VALUES (NULL," . $db->quote($id) .  "," . $db->quote($group) . "," . $db->quote($type) . ")");
+			$db->setQuery("INSERT INTO `#__storefront_product_access_groups` (`id`, `pId`, `agId`, `exclude`) VALUES (null," . $db->quote($id) .  "," . $db->quote($group) . "," . $db->quote($type) . ")");
 			if (!$db->query())
 			{
 				return false;
@@ -291,8 +291,7 @@ class Product
 	/**
 	 * Get product collections
 	 *
-	 * @param	void
-	 * @return	array		collection IDs
+	 * @return  array  collection IDs
 	 */
 	public function getCollections()
 	{
@@ -317,8 +316,8 @@ class Product
 	/**
 	 * Set product collections
 	 *
-	 * @param	array		collection IDs
-	 * @return	void
+	 * @param   array  $collections  collection IDs
+	 * @return  void
 	 */
 	public function setCollections($collections)
 	{
@@ -328,8 +327,8 @@ class Product
 	/**
 	 * Add product to collection
 	 *
-	 * @param	int		collection ID
-	 * @return	bool	true
+	 * @param   int   $cId  collection ID
+	 * @return  bool
 	 */
 	public function addToCollection($cId)
 	{
@@ -339,14 +338,12 @@ class Product
 		return true;
 	}
 
-
 	/* ****************************** SKUs ******************************* */
 
 	/**
 	 * Get product skus
 	 *
-	 * @param	void
-	 * @return	array		product SKUs
+	 * @return  array  product SKUs
 	 */
 	public function getSkus()
 	{
@@ -366,19 +363,17 @@ class Product
 				// software
 				if ($this->getTypeInfo() && $this->getTypeInfo()->name == 'Software Download')
 				{
-					//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
-					require_once(__DIR__ . DS . 'SoftwareSku.php');
+					require_once __DIR__ . DS . 'SoftwareSku.php';
 					$instanceName = '\Components\Storefront\Models\SoftwareSku';
 				}
 				else
 				{
-					require_once(__DIR__ . DS . 'Sku.php');
+					require_once __DIR__ . DS . 'Sku.php';
 					$instanceName = '\Components\Storefront\Models\Sku';
 				}
 
 				foreach ($skuIds as $sId)
 				{
-					//print_r($instanceName); die;
 					$sku = new $instanceName($sId);
 					$skus[] = $sku;
 				}
@@ -392,7 +387,13 @@ class Product
 		return $this->skus;
 	}
 
-	// Removes all old SKUs sets given SKUs
+	/**
+	 * Removes all old SKUs sets given SKUs
+	 *
+	 * @param   array  $skus
+	 * @param   bool   $deleteOld
+	 * @return  void
+	 */
 	private function setSkus($skus, $deleteOld = true)
 	{
 		// Delete all skus that are not part of the new SKUs
@@ -420,8 +421,9 @@ class Product
 	/**
 	 * Sets a new SKU for the product, used by single SKU products, removes all other SKUs from the product
 	 *
-	 * @param	StorefrontModelSku
-	 * @return	void
+	 * @param   object  $sku  StorefrontModelSku
+	 * @return  void
+	 * @throws  Exception
 	 */
 	protected function setSku($sku)
 	{
@@ -433,6 +435,13 @@ class Product
 		$this->setSkus(array($sku));
 	}
 
+	/**
+	 * Add a SKU for the product
+	 *
+	 * @param   object  $sku  StorefrontModelSku
+	 * @return  void
+	 * @throws  Exception
+	 */
 	public function addSku($sku)
 	{
 		if (!($sku instanceof Sku))
@@ -452,8 +461,8 @@ class Product
 	/**
 	 * Set product id
 	 *
-	 * @param	int			product ID
-	 * @return	bool		true
+	 * @param   int   $pId  product ID
+	 * @return  bool
 	 */
 	public function setId($pId)
 	{
@@ -464,8 +473,7 @@ class Product
 	/**
 	 * Get product id (if set)
 	 *
-	 * @param	void
-	 * @return	int		product ID
+	 * @return  mixed  product ID or false
 	 */
 	public function getId()
 	{
@@ -479,8 +487,8 @@ class Product
 	/**
 	 * Set product name
 	 *
-	 * @param	string		Product name
-	 * @return	bool		true
+	 * @param   string  $productName  Product name
+	 * @return  bool
 	 */
 	public function setName($productName)
 	{
@@ -491,8 +499,7 @@ class Product
 	/**
 	 * Get product name
 	 *
-	 * @param	void
-	 * @return	string		Product name
+	 * @return  mixed  Product name or false
 	 */
 	public function getName()
 	{
@@ -506,8 +513,9 @@ class Product
 	/**
 	 * Set product alias
 	 *
-	 * @param	string		Product alias
-	 * @return	bool		true
+	 * @param   string  $pAlias  Product alias
+	 * @return  bool
+	 * @throws  Exception
 	 */
 	public function setAlias($pAlias)
 	{
@@ -528,8 +536,7 @@ class Product
 	/**
 	 * Get product alias
 	 *
-	 * @param	void
-	 * @return	string		Product alias
+	 * @return  mixed  Product alias or false
 	 */
 	public function getAlias()
 	{
@@ -543,8 +550,8 @@ class Product
 	/**
 	 * Set product description
 	 *
-	 * @param	string		Product description
-	 * @return	bool		true
+	 * @param  string  $productDescription  Product description
+	 * @return  bool
 	 */
 	public function setDescription($productDescription)
 	{
@@ -555,8 +562,7 @@ class Product
 	/**
 	 * Get product description
 	 *
-	 * @param	void
-	 * @return	string		Product description
+	 * @return  mixed  Product description or false
 	 */
 	public function getDescription()
 	{
@@ -570,8 +576,8 @@ class Product
 	/**
 	 * Set product features
 	 *
-	 * @param	string		Product Features
-	 * @return	bool		true
+	 * @param   string  $productFeatures  Product Features
+	 * @return  bool
 	 */
 	public function setFeatures($productFeatures)
 	{
@@ -582,8 +588,7 @@ class Product
 	/**
 	 * Get product Features
 	 *
-	 * @param	void
-	 * @return	string		Product Features
+	 * @return  mixed  Product Features or false
 	 */
 	public function getFeatures()
 	{
@@ -599,8 +604,8 @@ class Product
 	/**
 	 * Get product images
 	 *
-	 * @param	void
-	 * @return	array		Product images
+	 * @param   bool   $forceReload
+	 * @return  array  Product images
 	 */
 	public function getImages($forceReload = false)
 	{
@@ -636,14 +641,14 @@ class Product
 	{
 		$images = $this->getImages();
 
-		return (empty($images) ? NULL : $images[0]);
+		return (empty($images) ? null : $images[0]);
 	}
 
 	/**
 	 * Set product images
 	 *
-	 * @param	array		Product images
-	 * @return	bool		true
+	 * @param   array  $img  Product images
+	 * @return  bool
 	 */
 	public function setImages($img)
 	{
@@ -651,6 +656,12 @@ class Product
 		return true;
 	}
 
+	/**
+	 * Set product image
+	 *
+	 * @param   string  $img  Product image
+	 * @return  bool
+	 */
 	public function setImage($img)
 	{
 		$image = new \stdClass();
@@ -662,8 +673,8 @@ class Product
 	/**
 	 * Add product images
 	 *
-	 * @param	array		Product images
-	 * @return	bool		true
+	 * @param   array  $img  Product images
+	 * @return  bool
 	 */
 	public function addImages($img)
 	{
@@ -674,8 +685,8 @@ class Product
 	/**
 	 * Add primary image (the first image in the array)
 	 *
-	 * @param	string		Product image name
-	 * @return	bool		true
+	 * @param   string  $img  Product image name
+	 * @return  bool
 	 */
 	public function addImage($img)
 	{
@@ -695,8 +706,8 @@ class Product
 	/**
 	 * Remove image
 	 *
-	 * @param	int			Image ID
-	 * @return	bool		Succes of Failure
+	 * @param   int   $imgId  Image ID
+	 * @return  bool  Succes of Failure
 	 */
 	public function removeImage($imgId)
 	{
@@ -726,8 +737,8 @@ class Product
 	/**
 	 * Set product tagline
 	 *
-	 * @param	string		Product tagline
-	 * @return	bool		true
+	 * @param   string  $productTagline  Product tagline
+	 * @return  bool
 	 */
 	public function setTagline($productTagline)
 	{
@@ -738,14 +749,13 @@ class Product
 	/**
 	 * Get product tagline
 	 *
-	 * @param	void
-	 * @return	string		Product tagline
+	 * @return  mixed  Product tagline
 	 */
 	public function getTagline()
 	{
 		if (empty($this->data->tagline))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->tagline;
 	}
@@ -753,8 +763,8 @@ class Product
 	/**
 	 * Set product multiple flag
 	 *
-	 * @param	int			allowMultiple
-	 * @return	bool		true
+	 * @param   int   $productAllowMiltiple  Allow multiple
+	 * @return  bool
 	 */
 	public function setAllowMultiple($productAllowMiltiple)
 	{
@@ -765,14 +775,13 @@ class Product
 	/**
 	 * Get product multiple flag
 	 *
-	 * @param	void
-	 * @return	int		allowMultiple
+	 * @return  mixed
 	 */
 	public function getAllowMultiple()
 	{
 		if (empty($this->data->allowMiltiple))
 		{
-			return NULL;
+			return null;
 		}
 		return $this->data->allowMiltiple;
 	}
@@ -780,9 +789,10 @@ class Product
 	/**
 	 * Set publishing times
 	 *
-	 * @param	string		publish up time
-	 * @param	string		publish down time
-	 * @return	bool		true
+	 * @param   string  $publishUp      publish up time
+	 * @param   string  $publishDown    publish down time
+	 * @param   bool    $pPublishedNow
+	 * @return  bool
 	 */
 	public function setPublishTime($publishUp = '', $publishDown = '', $pPublishedNow = false)
 	{
@@ -806,8 +816,7 @@ class Product
 	/**
 	 * Get publishing times
 	 *
-	 * @param	void
-	 * @return	object
+	 * @return  string
 	 */
 	public function getPublishTime()
 	{
@@ -821,8 +830,8 @@ class Product
 	/**
 	 * Set product access level
 	 *
-	 * @param	int		Product access level
-	 * @return	bool		true
+	 * @param   int   $accessLevel  Product access level
+	 * @return  bool
 	 */
 	public function setAccessLevel($accessLevel)
 	{
@@ -833,8 +842,7 @@ class Product
 	/**
 	 * Get product access level
 	 *
-	 * @param	void
-	 * @return	int		Product access level
+	 * @return  int  Product access level
 	 */
 	public function getAccessLevel()
 	{
@@ -848,8 +856,8 @@ class Product
 	/**
 	 * Set product active status
 	 *
-	 * @param	bool		Product status
-	 * @return	bool		true
+	 * @param   int   $activeStatus  Product status
+	 * @return  bool
 	 */
 	public function setActiveStatus($activeStatus)
 	{
@@ -872,6 +880,11 @@ class Product
 
 	/* ****************************** Option groups ******************************* */
 
+	/**
+	 * Get option groups
+	 *
+	 * @return  array
+	 */
 	public function getOptionGroups()
 	{
 		if (!isset($this->data->optionGroups))
@@ -889,13 +902,20 @@ class Product
 				$res = $db->loadColumn();
 				$this->setOptionGroups($res);
 			}
-			else {
+			else
+			{
 				return array();
 			}
 		}
 		return $this->data->optionGroups;
 	}
 
+	/**
+	 * Set option groups
+	 *
+	 * @param   array  $ogIds
+	 * @return  bool
+	 */
 	public function setOptionGroups($ogIds)
 	{
 		$this->data->optionGroups = array_unique($ogIds);
@@ -905,8 +925,8 @@ class Product
 	/**
 	 * Add option group
 	 *
-	 * @param	int		option group ID
-	 * @return	bool	true
+	 * @param   int   $ogId  option group ID
+	 * @return  bool
 	 */
 	public function addOptionGroup($ogId)
 	{
@@ -919,8 +939,7 @@ class Product
 	/**
 	 * Get product active status
 	 *
-	 * @param	void
-	 * @return	bool		Product status
+	 * @return  string  Product status
 	 */
 	public function getActiveStatus()
 	{
@@ -934,8 +953,8 @@ class Product
 	/**
 	 * Check if everything checks out and the product is ready to go
 	 *
-	 * @param  	void
-	 * @return 	void
+	 * @throws  Exception
+	 * @return  bool
 	 */
 	public function verify()
 	{
@@ -961,8 +980,7 @@ class Product
 	/**
 	 * Save product
 	 *
-	 * @param  	void
-	 * @return 	bool		true
+	 * @return  bool
 	 */
 	public function save()
 	{
@@ -992,7 +1010,6 @@ class Product
 				`publish_up` = " . $db->quote($this->getPublishTime()->publish_up) . ",
 				`publish_down` = " . $db->quote($this->getPublishTime()->publish_down) . ",
 				`access` = " . $db->quote($this->getAccessLevel());
-
 
 		// Set pId if needed if adding new product
 		if (!$pId)
@@ -1112,8 +1129,7 @@ class Product
 	/**
 	 * Delete the product
 	 *
-	 * @param	void
-	 * @return 	true on success, throws exception on failure
+	 * @return  void
 	 */
 	public function delete()
 	{
@@ -1125,7 +1141,6 @@ class Product
 		// Delete product record
 		$sql = 'DELETE FROM `#__storefront_products` WHERE `pId` = ' . $db->quote($this->getId());
 		$db->setQuery($sql);
-		//print_r($db->replacePrefix($db->getQuery()));
 		$db->query();
 
 		// Delete product-related files (product image)
@@ -1135,9 +1150,8 @@ class Product
 
 		if (file_exists($dir))
 		{
-			$it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-			$files = new RecursiveIteratorIterator($it,
-				RecursiveIteratorIterator::CHILD_FIRST);
+			$it = new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
+			$files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
 			foreach ($files as $file)
 			{
 				if ($file->isDir())
@@ -1157,11 +1171,9 @@ class Product
 		$db->setQuery($sql);
 		$db->query();
 
-
 		// Delete all SKUs
 		foreach ($skus as $sku)
 		{
-			//print_r($sku);
 			$sku->delete();
 		}
 
@@ -1186,6 +1198,11 @@ class Product
 		$db->query();
 	}
 
+	/**
+	 * Update dependencies
+	 *
+	 * @return  void
+	 */
 	private function updateDependencies()
 	{
 		// Update SKUs' references for this product first
@@ -1216,11 +1233,22 @@ class Product
 		}
 	}
 
+	/**
+	 * Add a message
+	 *
+	 * @param   string  $msg
+	 * @return  void
+	 */
 	private function addMessage($msg)
 	{
 		$this->data->messages[] = $msg;
 	}
 
+	/**
+	 * Get messages
+	 *
+	 * @return  mixed
+	 */
 	public function getMessages()
 	{
 		if (empty($this->data->messages))
@@ -1230,6 +1258,12 @@ class Product
 		return $this->data->messages;
 	}
 
+	/**
+	 * Set product meta
+	 *
+	 * @param   array  $meta
+	 * @return  void
+	 */
 	public function setMeta($meta)
 	{
 		$db = \App::get('db');
@@ -1244,6 +1278,11 @@ class Product
 		}
 	}
 
+	/**
+	 * Get product meta
+	 *
+	 * @return  object
+	 */
 	public function getMeta()
 	{
 		$db = \App::get('db');
@@ -1265,9 +1304,9 @@ class Product
 	/**
 	 * Get product meta value by name
 	 *
-	 * @param  	int		Product ID
-	 * @param	String	Meta key to get a certain valuea
-	 * @return 	mixed	Meta value
+	 * @param   integer  $pId      Product ID
+	 * @param   string   $metaKey  Meta key to get a certain value
+	 * @return  mixed    Meta value
 	 */
 	public static function getMetaValue($pId, $metaKey)
 	{
@@ -1285,17 +1324,22 @@ class Product
 		return $meta;
 	}
 
+	/**
+	 * Get product instance
+	 *
+	 * @param   integer  $pId  Product ID
+	 * @return  mixed    Object if Product is found, false if not
+	 */
 	public static function getInstance($pId)
 	{
 		$db = \App::get('db');
 
 		// Get product type first
 		$sql = "SELECT pt.ptName, pt.ptId FROM `#__storefront_products` p
- 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
- 				WHERE p.`pId` = " . $db->quote($pId);
+				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
+				WHERE p.`pId` = " . $db->quote($pId);
 
 		$db->setQuery($sql);
-		//print_r($db->toString()); die;
 		$db->execute();
 		$productTypeInfo = $db->loadObject();
 
@@ -1316,5 +1360,4 @@ class Product
 
 		return $product;
 	}
-
 }
