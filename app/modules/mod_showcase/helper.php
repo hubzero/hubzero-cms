@@ -42,6 +42,7 @@ include_once \Component::path('com_publications') . DS . 'models' . DS . 'public
 include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
 include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 include_once \Component::path('com_newsletter') . DS . 'models' . DS . 'newsletter.php';
+include_once \Component::path('com_fmns') . DS . 'models' . DS . 'fmn.php';
 
 /**
  * Mod_Showcase helper class, used to query for billboards and contains the display method
@@ -55,9 +56,15 @@ class Helper extends Module
 	protected $pubs = [];
 
 	protected $partners = [];
+	
+	protected $blogs = [];
+	
+	protected $newsletters = [];
+	
+	protected $fmns = [];
 
 	protected $featured = [];
-
+	
 	/**
 	 * Get the list of billboads in the selected collection
 	 *
@@ -104,42 +111,7 @@ class Helper extends Module
 			}
 		}
 
-		// This code really needs to be turned into a function
-		// Make sure we don't ask for too much
-		$n = min($item["n"], ($item["featured"] ? count($this->featured["pubs"]) : count($this->pubs)));
-		if ($n < $item["n"]) {
-			echo 'Showcase Module Error: Not enough requested publications left!';
-			return [];
-		}
-
-		if ($item["ordering"] === "recent") {
-			if ($item["featured"]) {
-				$item_pubs = array_slice($this->featured["pubs"], 0, $n, $preserve = true);
-			} else {
-				$item_pubs = array_slice($this->pubs, 0, $n, $preserve = true);
-			}
-		} elseif ($item["ordering"] === "random") {
-			if ($item["featured"]) {
-				$rind = array_flip((array)array_rand($this->featured["pubs"], $n));
-				$item_pubs = $this->shuffle_assoc(array_intersect_key($this->featured["pubs"], $rind));
-			} else {
-				$rind = array_flip((array)array_rand($this->pubs, $n));
-				$item_pubs = $this->shuffle_assoc(array_intersect_key($this->pubs, $rind));
-			}
-		} elseif ($item["ordering"] === "indexed") {
-			// Just use array_intersect_keys silly!
-			$item_pubs = array_filter($this->pubs, function($pub) use ($item) {
-				return in_array($pub->id, $item["indices"]);
-			});
-		} else {
-			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
-			return [];
-		}
-		// Remove used pubs from master lists
-		$this->pubs = array_diff_key($this->pubs, $item_pubs);
-		$this->featured["pubs"] = array_diff_key($this->featured["pubs"], $item_pubs);
-
-		return $item_pubs;
+		return $this->_filter($item, 'pubs');
 	}
 
 	/**
@@ -178,42 +150,7 @@ class Helper extends Module
 			}
 		}
 
-		// This code really needs to be turned into a function
-		// Make sure we don't ask for too much
-		$n = min($item["n"], ($item["featured"] ? count($this->featured["groups"]) : count($this->groups)));
-		if ($n < $item["n"]) {
-			echo 'Showcase Module Error: Not enough selected groups left!';
-			return [];
-		}
-
-		if ($item["ordering"] === "recent") {
-			if ($item["featured"]) {
-				$item_groups = array_slice($this->featured["groups"], 0, $n, $preserve = true);
-			} else {
-				$item_groups = array_slice($this->groups, 0, $n, $preserve = true);
-			}
-		} elseif ($item["ordering"] === "random") {
-			if ($item["featured"]) {
-				$rind = array_flip((array)array_rand($this->featured["groups"], $n));
-				$item_groups = $this->shuffle_assoc(array_intersect_key($this->featured["groups"], $rind));
-			} else {
-				$rind = array_flip((array)array_rand($this->groups, $n));
-				$item_groups = $this->shuffle_assoc(array_intersect_key($this->groups, $rind));
-			}
-		} elseif ($item["ordering"] === "indexed") {
-			// Just use array_intersect_keys silly!
-			$item_groups = array_filter($this->groups, function($group) use ($item) {
-				return in_array($group->gidNumber, $item["indices"]);
-			});
-		} else {
-			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
-			return [];
-		}
-		// Remove used groups from master lists
-		$this->groups = array_diff_key($this->groups, $item_groups);
-		$this->featured["groups"] = array_diff_key($this->featured["groups"], $item_groups);
-
-		return $item_groups;
+		return $this->_filter($item, 'groups');
 	}
 
 	/**
@@ -242,42 +179,7 @@ class Helper extends Module
 			}
 		}
 
-		// This code really needs to be turned into a function
-		// Make sure we don't ask for too much
-		$n = min($item["n"], ($item["featured"] ? count($this->featured["partners"]) : count($this->partners)));
-		if ($n < $item["n"]) {
-			echo 'Showcase Module Error: Not enough selected partners left!';
-			return [];
-		}
-
-		if ($item["ordering"] === "recent") {
-			if ($item["featured"]) {
-				$item_partners = array_slice($this->featured["partners"], 0, $n, $preserve = true);
-			} else {
-				$item_partners = array_slice($this->partners, 0, $n, $preserve = true);
-			}
-		} elseif ($item["ordering"] === "random") {
-			if ($item["featured"]) {
-				$rind = array_flip((array)array_rand($this->featured["partners"], $n));
-				$item_partners = $this->shuffle_assoc(array_intersect_key($this->featured["partners"], $rind));
-			} else {
-				$rind = array_flip((array)array_rand($this->partners, $n));
-				$item_partners = $this->shuffle_assoc(array_intersect_key($this->partners, $rind));
-			}
-		} elseif ($item["ordering"] === "indexed") {
-			// Just use array_intersect_keys silly!
-			$item_partners = array_filter($this->partners, function($partner) use ($item) {
-				return in_array($partner->id, $item["indices"]);
-			});
-		} else {
-			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
-			return [];
-		}
-		// Remove used partners from master lists
-		$this->partners = array_diff_key($this->partners, $item_partners);
-		$this->featured["partners"] = array_diff_key($this->featured["partners"], $item_partners);
-
-		return $item_partners;
+		return $this->_filter($item, 'partners');
 	}
 	
 	/**
@@ -306,42 +208,7 @@ class Helper extends Module
 			$this->featured["blogs"] = [];
 		}
 
-		// This code really needs to be turned into a function
-		// Make sure we don't ask for too much
-		$n = min($item["n"], ($item["featured"] ? count($this->featured["blogs"]) : count($this->blogs)));
-		if ($n < $item["n"]) {
-			echo 'Showcase Module Error: Not enough selected blogs left!';
-			return [];
-		}
-
-		if ($item["ordering"] === "recent") {
-			if ($item["featured"]) {
-				$item_blogs = array_slice($this->featured["blogs"], 0, $n, $preserve = true);
-			} else {
-				$item_blogs = array_slice($this->blogs, 0, $n, $preserve = true);
-			}
-		} elseif ($item["ordering"] === "random") {
-			if ($item["featured"]) {
-				$rind = array_flip((array)array_rand($this->featured["blogs"], $n));
-				$item_blogs = $this->shuffle_assoc(array_intersect_key($this->featured["blogs"], $rind));
-			} else {
-				$rind = array_flip((array)array_rand($this->blogs, $n));
-				$item_blogs = $this->shuffle_assoc(array_intersect_key($this->blogs, $rind));
-			}
-		} elseif ($item["ordering"] === "indexed") {
-			// Just use array_intersect_keys silly!
-			$item_blogs = array_filter($this->blogs, function($blog) use ($item) {
-				return in_array($blog->id, $item["indices"]);
-			});
-		} else {
-			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
-			return [];
-		}
-		// Remove used blogs from master lists
-		$this->blogs = array_diff_key($this->blogs, $item_blogs);
-		$this->featured["blogs"] = array_diff_key($this->featured["blogs"], $item_blogs);
-
-		return $item_blogs;
+		return $this->_filter($item, 'blogs');
 	}
 
 	/**
@@ -383,42 +250,7 @@ class Helper extends Module
 			}
 		}
 
-		// This code really needs to be turned into a function
-		// Make sure we don't ask for too much
-		$n = min($item["n"], ($item["featured"] ? count($this->featured["newsletters"]) : count($this->newsletters)));
-		if ($n < $item["n"]) {
-			echo 'Showcase Module Error: Not enough selected newsletters left!';
-			return [];
-		}
-
-		if ($item["ordering"] === "recent") {
-			if ($item["featured"]) {
-				$item_newsletters = array_slice($this->featured["newsletters"], 0, $n, $preserve = true);
-			} else {
-				$item_newsletters = array_slice($this->newsletters, 0, $n, $preserve = true);
-			}
-		} elseif ($item["ordering"] === "random") {
-			if ($item["featured"]) {
-				$rind = array_flip((array)array_rand($this->featured["newsletters"], $n));
-				$item_newsletters = $this->shuffle_assoc(array_intersect_key($this->featured["newsletters"], $rind));
-			} else {
-				$rind = array_flip((array)array_rand($this->newsletters, $n));
-				$item_newsletters = $this->shuffle_assoc(array_intersect_key($this->newsletters, $rind));
-			}
-		} elseif ($item["ordering"] === "indexed") {
-			// Just use array_intersect_keys silly!
-			$item_newsletters = array_filter($this->newsletters, function($newsletter) use ($item) {
-				return in_array($newsletter->id, $item["indices"]);
-			});
-		} else {
-			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
-			return [];
-		}
-		// Remove used newsletters from master lists
-		$this->newsletters = array_diff_key($this->newsletters, $item_newsletters);
-		$this->featured["newsletters"] = array_diff_key($this->featured["newsletters"], $item_newsletters);
-
-		return $item_newsletters;
+		return $this->_filter($item, 'newsletters');
 	}
 	
 	/**
@@ -443,7 +275,7 @@ class Helper extends Module
     		if ($str_item !== false) {
     			$item = explode(',', $str_item);
     			$items[] = array(
-    			  "n" => (int) $item[0],
+    			  "n" => $item[0],
     			  "class" => $item[1],
     			  "type" => $item[2],
     			  "ordering" => $item[3],
@@ -482,6 +314,10 @@ class Helper extends Module
 							case 'newsletters':
 								$items[$i]["tag-target"] = Route::url('index.php?option=com_newsletter');
 							break;
+							
+							case 'fmns':
+								$items[$i]["tag-target"] = Route::url('index.php?option=com_fmns');
+							break;
 
     					default:
     					break;
@@ -489,16 +325,16 @@ class Helper extends Module
     			}
 
     			// Add optional tag
-				$tag = 0;
-				if (($items[$i]["indices"] or $items[$i]["featured"]) and count($item) > 6) {
-					$tag = explode(';', $item[6]);
-				} elseif ((!$items[$i]["indices"] and !$items[$i]["featured"]) and count($item) > 5) {
-					$tag = explode(';', $item[5]);
-				}
-				if ($tag) {
-					$items[$i]["tag"] = $tag[0];
-					$items[$i]["tag-target"] = (count($tag) > 1 ? $tag[1] : 0);
-				}
+					$tag = 0;
+					if (($items[$i]["indices"] or $items[$i]["featured"]) and count($item) > 6) {
+						$tag = explode(';', $item[6]);
+					} elseif ((!$items[$i]["indices"] and !$items[$i]["featured"]) and count($item) > 5) {
+						$tag = explode(';', $item[5]);
+					}
+					if ($tag) {
+						$items[$i]["tag"] = $tag[0];
+						$items[$i]["tag-target"] = (count($tag) > 1 ? $tag[1] : 0);
+					}
     		}
     		$i++;
 		}
@@ -524,6 +360,57 @@ class Helper extends Module
   		return $random;
 	}
 
+	/**
+	 * Get the list of billboads in the selected collection
+	 *
+	 * @return retrieved rows
+	 */
+	private function _filter($item, $type)
+	{
+		// Parse the number of requested items
+		$n = ($item["featured"] ? count($this->featured[$type]) : count($this->$type));
+		$n = min($n, ($item["n"] === '*' ? INF : (int) $item["n"]));
+		if (($item["n"] !== '*') && ($n < (int) $item["n"])) {
+			echo 'Showcase Module Error: Not enough requested ' . $type . ' left!';
+			return [];
+		}
+
+		if ($item["ordering"] === "recent") {
+			if ($item["featured"]) {
+				$items = array_slice($this->featured[$type], 0, $n, $preserve = true);
+			} else {
+				$items = array_slice($this->$type, 0, $n, $preserve = true);
+			}
+		} elseif ($item["ordering"] === "random") {
+			if ($item["featured"]) {
+				$rind = array_flip((array)array_rand($this->featured[$type], $n));
+				$items = $this->shuffle_assoc(array_intersect_key($this->featured[$type], $rind));
+			} else {
+				$rind = array_flip((array)array_rand($this->$type, $n));
+				$items = $this->shuffle_assoc(array_intersect_key($this->$type, $rind));
+			}
+		} elseif ($item["ordering"] === "indexed") {
+			// Just use array_intersect_keys silly!
+			$items = array_filter($this->$type, function($thing) use ($item) {
+				// Careful!!  Check to make sure this is always 'id'
+				$key = 'id';
+				if ($type == 'groups') {
+					$key = 'gidNumber';
+				}
+				return in_array($thing->$key, $item["indices"]);
+			});
+		} else {
+			echo 'Showcase Module Error: Unknown ordering "' . $item["ordering"] . '".  Possible values include "recent", "random", or "indexed".';
+			return [];
+		}
+		
+		// Remove used items from master lists
+		$this->$type = array_diff_key($this->$type, $items);
+		$this->featured[$type] = array_diff_key($this->featured[$type], $items);
+		
+		return $items;
+	}
+	
 	/**
 	 * Display method
 	 * Used to add CSS for each slide as well as the javascript file(s) and the parameterized function
