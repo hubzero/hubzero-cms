@@ -451,7 +451,7 @@ class Helper extends Module
 			}
 		} elseif ($item["ordering"] === "indexed") {
 			// Just use array_intersect_keys silly!
-			$items = array_filter($this->$type, function($thing) use ($item) {
+			$items = array_filter($this->$type, function($thing) use ($item, $type) {
 				$key = 'id';
 				if ($type == 'groups') {
 					$key = 'gidNumber';
