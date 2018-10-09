@@ -267,7 +267,7 @@ class Helper extends Module
 							FROM `#__fmn_fmns`
 							WHERE state = 1";
 			
-			$this->db->setQuery($sql . " ORDER BY `id` DESC;");
+			$this->db->setQuery($sql . " ORDER BY `start_date` DESC;");
 			if ($this->fmns = $this->db->loadObjectList('id'))
 			{
 				foreach ($this->fmns as $id => $result)
@@ -297,7 +297,7 @@ class Helper extends Module
 						$sql .= " AND featured = 1";
 					break;
 				}
-				$this->db->setQuery($sql . " ORDER BY `id` DESC;");
+				$this->db->setQuery($sql . " ORDER BY `start_date` DESC;");
 				if ($this->featured["fmns"] = $this->db->loadObjectList('id'))
 				{
 					foreach ($this->featured["fmns"] as $id => $result)
