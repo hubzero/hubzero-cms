@@ -156,6 +156,32 @@ body {
     }
   }
 
+  .fmn-img {
+    @extend %showcase-img;
+  }
+
+  .fmn {
+    position: relative;
+
+    .fmn-title {
+      bottom: 0;
+      padding: 10px;
+      position: absolute;
+
+      a {
+        @include showcase-header(1.1rem, 1.3, 2);
+      }
+    }
+
+    .fmn-tag {
+      @include showcase-tag($green, $white);
+
+      span {
+        color: $white;
+      }
+    }
+  }
+
   .regular {
     flex: 1 1 20rem;
     height: 15rem;
