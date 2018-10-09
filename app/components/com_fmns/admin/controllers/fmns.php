@@ -102,7 +102,7 @@ class Fmns extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'name'
+				'id'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
@@ -137,7 +137,9 @@ class Fmns extends AdminController
 			$record->whereLike('name', $search);
 		}
 
-		$this->view->rows = $record->ordered('filter_order', 'filter_order_Dir')->paginated();
+		$this->view->rows = $record->order($this->view->filters['sort'], 
+																			 $this->view->filters['sort_Dir'])
+															 ->paginated();
 
 		// Output the view
 		$this->view->display();
