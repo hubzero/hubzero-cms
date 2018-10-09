@@ -37,6 +37,7 @@ use Components\Publications\Models\Publication;
 use Components\Partners\Models\Partner;
 use Components\Blog\Models\Entry;
 use Components\Newsletter\Models\Newsletter;
+use Components\Fmns\Models\Fmn;
 
 include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 include_once \Component::path('com_partners') . DS . 'models' . DS . 'partner.php';
@@ -254,6 +255,63 @@ class Helper extends Module
 	}
 	
 	/**
+	 * Get newsletters.
+	 * @return array Newsletters
+	 */
+	private function _getFmns($item)
+	{
+		if (empty($this->fmns))
+		{
+			// Template name will be used for autotagging
+			$sql = "SELECT *
+							FROM `#__fmn_fmns`
+							WHERE state = 1";
+			
+			$this->db->setQuery($sql . " ORDER BY `id` DESC;");
+			if ($this->fmns = $this->db->loadObjectList('id'))
+			{
+				foreach ($this->fmns as $id => $result)
+				{
+					$this->fmns[$id] = Fmn::oneOrFail($id);
+				}
+			}
+
+			// Get specific fmns, stored in featured argument
+			$this->featured["fmns"] = [];
+			if ($item["featured"]) {
+				switch ($item["featured"])
+				{
+					case "open":
+						$sql .= " AND reg_status = 1";
+					break;
+					
+					case "current":
+						$sql .= " AND (CURDATE() >= start_date) AND (CURDATE() <= stop_date)";
+					break;
+					
+					case "upcoming":
+						$sql .= " AND CURDATE() < start_date";
+					break;
+					
+					default:
+						$sql .= " AND featured = 1";
+					break;
+				}
+				$this->db->setQuery($sql . " ORDER BY `id` DESC;");
+				if ($this->featured["fmns"] = $this->db->loadObjectList('id'))
+				{
+					foreach ($this->featured["fmns"] as $id => $result)
+					{
+						$this->featured["fmns"][$id] = Fmn::oneOrFail($id);
+					}
+				}
+			}
+		}
+
+		return $this->_filter($item, 'fmns');
+	}
+	
+	/**
 	 * Parse the item specifications.
 	 * @return [type] [description]
 	 */
@@ -290,7 +348,9 @@ class Helper extends Module
     			if (($this->autotag) and ($items[$i]["type"] === 'dynamic')) {
     				if ($items[$i]["content"] === 'publications') {
     					$items[$i]["tag"] = "Resource";
-    				} else {
+    				} elseif ($items[$i]["content"] === 'fmns') {
+						  $items[$i]["tag"] = ""; // Setting this on view (see _fmns.php)
+						} else {
     					$items[$i]["tag"] = ucfirst(rtrim($items[$i]["content"], 's'));
     				}
     				switch ($items[$i]["content"])
@@ -392,7 +452,6 @@ class Helper extends Module
 		} elseif ($item["ordering"] === "indexed") {
 			// Just use array_intersect_keys silly!
 			$items = array_filter($this->$type, function($thing) use ($item) {
-				// Careful!!  Check to make sure this is always 'id'
 				$key = 'id';
 				if ($type == 'groups') {
 					$key = 'gidNumber';
@@ -411,6 +470,23 @@ class Helper extends Module
 		return $items;
 	}
 	
+	// https://stackoverflow.com/questions/2113940/compare-given-date-with-today
+	// These three functions are used for FMN tagging
+	private function _isToday($time) // midnight second
+	{
+    return (strtotime($time) === strtotime('today'));
+	}
+
+	private function _isPast($time)
+	{
+	    return (strtotime($time) < time());
+	}
+
+	private function _isFuture($time)
+	{
+	    return (strtotime($time) > time());
+	}
+
 	/**
 	 * Display method
 	 * Used to add CSS for each slide as well as the javascript file(s) and the parameterized function

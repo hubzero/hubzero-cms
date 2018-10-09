@@ -65,9 +65,14 @@ foreach ($this->items as $item) {
 				$item_newsletters = $this->_getNewsletters($item);
 				require $this->getLayoutPath('_newsletters');
 			break;
+			
+			case 'fmns':
+				$item_fmns = $this->_getFmns($item);
+				require $this->getLayoutPath('_fmns');
+			break;
 
 			default:
-				echo 'Showcase Module Error: Unknown dynamic type "' . $item["content"] . '".  Possible values include "publications", "groups", "partners", "blogs", or "newsletters".';
+				echo 'Showcase Module Error: Unknown dynamic type "' . $item["content"] . '".  Possible values include "publications", "groups", "partners", "blogs", "newsletters", or "fmns".';
 			break;
 		}
 	} else {
