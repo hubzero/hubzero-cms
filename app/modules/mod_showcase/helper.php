@@ -327,76 +327,76 @@ class Helper extends Module
 			if ($i == 0) {
 				$str_item = strtok($str_items, $separator);
 			} else {
-    			$str_item = strtok($separator);
-    		}
+  			$str_item = strtok($separator);
+  		}
 
-    		if ($str_item !== false) {
-    			$item = explode(',', $str_item);
-    			$items[] = array(
-    			  "n" => $item[0],
-    			  "class" => $item[1],
-    			  "type" => $item[2],
-    			  "ordering" => $item[3],
-    			  "content" => ($item[2] === 'static' ? $item[4] : strtolower($item[4])),
-    			  "featured" => (($item[2] === 'dynamic' and count($item) > 5) ? $item[5] : 0),
-    			  "indices" => (($item[3] === 'indexed' and count($item) > 5) ? explode(';', $item[5]) : 0),
-    			  "tag" => 0, // Set this below
-    			  "tag-target" => 0 // Set this below
-    			);
+  		if ($str_item !== false) {
+  			$item = explode(',', $str_item);
+  			$items[] = array(
+  			  "n" => $item[0],
+  			  "class" => $item[1],
+  			  "type" => $item[2],
+  			  "ordering" => $item[3],
+  			  "content" => ($item[2] === 'static' ? $item[4] : strtolower($item[4])),
+  			  "featured" => (($item[2] === 'dynamic' and count($item) > 5) ? $item[5] : 0),
+  			  "indices" => (($item[3] === 'indexed' and count($item) > 5) ? explode(';', $item[5]) : 0),
+  			  "tag" => 0, // Set this below
+  			  "tag-target" => 0 // Set this below
+  			);
 
-    			// Add autotags to dynamic content
-    			if (($this->autotag) and ($items[$i]["type"] === 'dynamic')) {
-    				if ($items[$i]["content"] === 'publications') {
-    					$items[$i]["tag"] = "Resource";
-    				} elseif ($items[$i]["content"] === 'fmns') {
-						  $items[$i]["tag"] = ""; // Setting this on view (see _fmns.php)
-						} else {
-    					$items[$i]["tag"] = ucfirst(rtrim($items[$i]["content"], 's'));
-    				}
-    				switch ($items[$i]["content"])
-    				{
-    					case 'publications':
-    						$items[$i]["tag-target"] = Route::url('index.php?option=com_publications');
-    					break;
+  			// Add autotags to dynamic content
+  			if (($this->autotag) and ($items[$i]["type"] === 'dynamic')) {
+  				if ($items[$i]["content"] === 'publications') {
+  					$items[$i]["tag"] = "Resource";
+  				} elseif ($items[$i]["content"] === 'fmns') {
+					  $items[$i]["tag"] = ""; // Setting this on view (see _fmns.php)
+					} else {
+  					$items[$i]["tag"] = ucfirst(rtrim($items[$i]["content"], 's'));
+  				}
+  				switch ($items[$i]["content"])
+  				{
+  					case 'publications':
+  						$items[$i]["tag-target"] = Route::url('index.php?option=com_publications');
+  					break;
 
-    					case 'groups':
-    						$items[$i]["tag-target"] = Route::url('index.php?option=com_groups');
-    					break;
+  					case 'groups':
+  						$items[$i]["tag-target"] = Route::url('index.php?option=com_groups');
+  					break;
 
-    					case 'partners':
-    						$items[$i]["tag-target"] = Route::url('index.php?option=com_partners');
-    					break;
+  					case 'partners':
+  						$items[$i]["tag-target"] = Route::url('index.php?option=com_partners');
+  					break;
 
-							case 'blogs':
-    						$items[$i]["tag-target"] = Route::url('index.php?option=com_blog');
-    					break;
-							
-							case 'newsletters':
-								$items[$i]["tag-target"] = Route::url('index.php?option=com_newsletter');
-							break;
-							
-							case 'fmns':
-								$items[$i]["tag-target"] = Route::url('index.php?option=com_fmns');
-							break;
+						case 'blogs':
+  						$items[$i]["tag-target"] = Route::url('index.php?option=com_blog');
+  					break;
+						
+						case 'newsletters':
+							$items[$i]["tag-target"] = Route::url('index.php?option=com_newsletter');
+						break;
+						
+						case 'fmns':
+							$items[$i]["tag-target"] = Route::url('index.php?option=com_fmns');
+						break;
 
-    					default:
-    					break;
-    				}
-    			}
+  					default:
+  					break;
+  				}
+  			}
 
-    			// Add optional tag
-					$tag = 0;
-					if (($items[$i]["indices"] or $items[$i]["featured"]) and count($item) > 6) {
-						$tag = explode(';', $item[6]);
-					} elseif ((!$items[$i]["indices"] and !$items[$i]["featured"]) and count($item) > 5) {
-						$tag = explode(';', $item[5]);
-					}
-					if ($tag) {
-						$items[$i]["tag"] = $tag[0];
-						$items[$i]["tag-target"] = (count($tag) > 1 ? $tag[1] : 0);
-					}
-    		}
-    		$i++;
+  			// Add optional tag
+				$tag = 0;
+				if (($items[$i]["indices"] or $items[$i]["featured"]) and count($item) > 6) {
+					$tag = explode(';', $item[6]);
+				} elseif ((!$items[$i]["indices"] and !$items[$i]["featured"]) and count($item) > 5) {
+					$tag = explode(';', $item[5]);
+				}
+				if ($tag) {
+					$items[$i]["tag"] = $tag[0];
+					$items[$i]["tag-target"] = (count($tag) > 1 ? $tag[1] : 0);
+				}
+  		}
+  		$i++;
 		}
 
 		return $items;
@@ -410,14 +410,14 @@ class Helper extends Module
 	private function shuffle_assoc($list) {
 		if (!is_array($list)) return $list;
 
-  		$keys = array_keys($list);
-  		shuffle($keys);
-  		$random = array();
-  		foreach ($keys as $key) {
-    		$random[$key] = $list[$key];
-  		}
+		$keys = array_keys($list);
+		shuffle($keys);
+		$random = array();
+		foreach ($keys as $key) {
+  		$random[$key] = $list[$key];
+		}
 
-  		return $random;
+		return $random;
 	}
 
 	/**
