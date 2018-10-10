@@ -64,7 +64,18 @@ class Helper extends Module
 	
 	protected $fmns = [];
 
-	protected $featured = [];
+	protected $featured = array(
+		"groups" => [],
+		"pubs" => [],
+		"partners" => [],
+		"blogs" => [],
+		"newsletters" => [],
+		"fmns" => array(
+			"open" => [],
+			"current" => [],
+			"upcoming" => []
+		)
+	);
 	
 	/**
 	 * Get the list of billboads in the selected collection
@@ -97,6 +108,8 @@ class Helper extends Module
 		if (empty($this->pubs)) {
 			//query to get publications
 			$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3) AS versions FROM #__publication_versions as V, #__projects as PP, #__publication_master_types AS MT, #__publications AS C LEFT JOIN #__publication_categories AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM #__publication_versions AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
+
+			// ' Janky fix for weird code formatting in Atom
 
 			$this->db->setQuery($sql . ' AND V.state = 1 GROUP BY C.id ORDER BY V.published_up DESC');
 			if (!$this->db->getError())
@@ -204,9 +217,6 @@ class Helper extends Module
 					$this->blogs[$id] = Entry::oneOrFail($id);
 				}
 			}
-
-			// No featured blogs
-			$this->featured["blogs"] = [];
 		}
 
 		return $this->_filter($item, 'blogs');
@@ -238,7 +248,6 @@ class Helper extends Module
 			}
 
 			// Get specific newsletter, stored in featured argument
-			$this->featured["newsletters"] = [];
 			if ($item["featured"]) {
 				$this->db->setQuery($sql . ' AND LOWER(t.name) = LOWER(' . $this->db->quote($item["featured"]) . ') ORDER BY `id` DESC;');
 				if ($this->featured["newsletters"] = $this->db->loadObjectList('id'))
@@ -260,13 +269,13 @@ class Helper extends Module
 	 */
 	private function _getFmns($item)
 	{
+		$sql = "SELECT *
+						FROM `#__fmn_fmns`
+						WHERE state = 1";
+						
+		// Get all fmns
 		if (empty($this->fmns))
 		{
-			// Template name will be used for autotagging
-			$sql = "SELECT *
-							FROM `#__fmn_fmns`
-							WHERE state = 1";
-			
 			$this->db->setQuery($sql . " ORDER BY `start_date` DESC;");
 			if ($this->fmns = $this->db->loadObjectList('id'))
 			{
@@ -275,40 +284,40 @@ class Helper extends Module
 					$this->fmns[$id] = Fmn::oneOrFail($id);
 				}
 			}
+		}
 
-			// Get specific fmns, stored in featured argument
-			$this->featured["fmns"] = [];
-			if ($item["featured"]) {
-				switch ($item["featured"])
+		// Get specific fmns, stored in featured argument
+		if (($item["featured"]) && empty($this->featured["fmns"][$item["featured"]])) {
+			switch ($item["featured"])
+			{
+				case "open":
+					$sql .= " AND reg_status = 1";
+				break;
+				
+				case "current":
+					$sql .= " AND (CURDATE() >= start_date) AND (CURDATE() <= stop_date)";
+				break;
+				
+				case "upcoming":
+					$sql .= " AND CURDATE() < start_date";
+				break;
+				
+				default:
+					$sql .= " AND featured = 1";
+				break;
+			}
+			$this->db->setQuery($sql . " ORDER BY `start_date` DESC;");
+			if ($this->featured["fmns"][$item["featured"]] = $this->db->loadObjectList('id'))
+			{
+				foreach ($this->featured["fmns"][$item["featured"]] as $id => $result)
 				{
-					case "open":
-						$sql .= " AND reg_status = 1";
-					break;
-					
-					case "current":
-						$sql .= " AND (CURDATE() >= start_date) AND (CURDATE() <= stop_date)";
-					break;
-					
-					case "upcoming":
-						$sql .= " AND CURDATE() < start_date";
-					break;
-					
-					default:
-						$sql .= " AND featured = 1";
-					break;
-				}
-				$this->db->setQuery($sql . " ORDER BY `start_date` DESC;");
-				if ($this->featured["fmns"] = $this->db->loadObjectList('id'))
-				{
-					foreach ($this->featured["fmns"] as $id => $result)
-					{
-						$this->featured["fmns"][$id] = Fmn::oneOrFail($id);
-					}
+					$this->featured["fmns"][$item["featured"]][$id] = Fmn::oneOrFail($id);
 				}
 			}
 		}
 
-		return $this->_filter($item, 'fmns');
+		// Filter results based on recent, random, or indexed
+		return $this->_filter($item, 'fmns', ($item["featured"] ? $item["featured"] : NULL));
 	}
 	
 	/**
@@ -419,16 +428,23 @@ class Helper extends Module
 
 		return $random;
 	}
-
+	
 	/**
 	 * Get the list of billboads in the selected collection
 	 *
 	 * @return retrieved rows
 	 */
-	private function _filter($item, $type)
+	private function _filter($item, $type, $subtype = NULL)
 	{
+		// Allow for subtypes
+		if (is_null($subtype)) {
+			$featured = &$this->featured[$type];
+		} else {
+			$featured = &$this->featured[$type][$subtype];
+		}
+		
 		// Parse the number of requested items
-		$n = ($item["featured"] ? count($this->featured[$type]) : count($this->$type));
+		$n = ($item["featured"] ? count($featured) : count($this->$type));
 		$n = min($n, ($item["n"] === '*' ? INF : (int) $item["n"]));
 		if (($item["n"] !== '*') && ($n < (int) $item["n"])) {
 			echo 'Showcase Module Error: Not enough requested ' . $type . ' left!';
@@ -437,14 +453,14 @@ class Helper extends Module
 
 		if ($item["ordering"] === "recent") {
 			if ($item["featured"]) {
-				$items = array_slice($this->featured[$type], 0, $n, $preserve = true);
+				$items = array_slice($featured, 0, $n, $preserve = true);
 			} else {
 				$items = array_slice($this->$type, 0, $n, $preserve = true);
 			}
 		} elseif ($item["ordering"] === "random") {
 			if ($item["featured"]) {
-				$rind = array_flip((array)array_rand($this->featured[$type], $n));
-				$items = $this->shuffle_assoc(array_intersect_key($this->featured[$type], $rind));
+				$rind = array_flip((array)array_rand($featured, $n));
+				$items = $this->shuffle_assoc(array_intersect_key($featured, $rind));
 			} else {
 				$rind = array_flip((array)array_rand($this->$type, $n));
 				$items = $this->shuffle_assoc(array_intersect_key($this->$type, $rind));
@@ -465,7 +481,7 @@ class Helper extends Module
 		
 		// Remove used items from master lists
 		$this->$type = array_diff_key($this->$type, $items);
-		$this->featured[$type] = array_diff_key($this->featured[$type], $items);
+		$featured = array_diff_key($featured, $items);
 		
 		return $items;
 	}

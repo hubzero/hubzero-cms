@@ -45,7 +45,7 @@ foreach ($item_fmns as $fmn)
 	$set_tag = (!$tag) && ($this->autotag);
 	if ($this->_isFuture($fmn->start_date)) {
 		$cls = ' upcoming';
-		$tag = ($set_tag ? 'Upcoming FMNs' : $tag);
+		$tag = ($set_tag ? 'Upcoming FMN' : $tag);
 		if ($fmn->reg_status) {
 			$cls .= ' open';
 			$tag = ($set_tag ? $tag . ' - Open for applications!' : $tag);
@@ -53,7 +53,7 @@ foreach ($item_fmns as $fmn)
 	} elseif ($this->_isPast($fmn->start_date) &&
 						$this->_isFuture($fmn->stop_date)) {
 			$cls = ' current';
-			$tag = ($set_tag ? 'Current FMNs' : $tag);
+			$tag = ($set_tag ? 'Current FMN' : $tag);
 	} else {
 		$cls = '';
 	}
