@@ -78,7 +78,7 @@ class Tree extends \Hubzero\Base\Obj
 	 * @param   boolean  $setCurrent  True to set as current working node
 	 * @return  mixed
 	 */
-	public function addChild(&$node, $setCurrent = false)
+	public function addChild($node, $setCurrent = false)
 	{
 		$this->_current->addChild($node);
 
