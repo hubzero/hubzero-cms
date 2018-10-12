@@ -42,7 +42,7 @@ class MenusControllerItems extends JControllerAdmin
 	{
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
-		$this->setRedirect('index.php?option=com_menus&view=items');
+		$this->setRedirect(Route::url('index.php?option=com_menus&view=items', false));
 
 		// Initialise variables.
 		$model = $this->getModel();

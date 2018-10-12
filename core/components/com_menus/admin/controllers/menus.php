@@ -79,7 +79,7 @@ class MenusControllerMenus extends JControllerLegacy
 			}
 		}
 
-		$this->setRedirect('index.php?option=com_menus&view=menus');
+		$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));
 	}
 
 	/**
@@ -91,7 +91,7 @@ class MenusControllerMenus extends JControllerLegacy
 	{
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
-		$this->setRedirect('index.php?option=com_menus&view=menus');
+		$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));
 
 		// Initialise variables.
 		$model = $this->getModel('Item');
