@@ -127,9 +127,9 @@ class Screenshot extends Relational
 			$alias = substr($alias . ' ', 0, 100);
 			$alias = substr($alias, 0, strrpos($alias, ' '));
 		}
-		$alias = str_replace(' ', '-', $alias);
+		$alias = str_replace(' ', '_', $alias);
 
-		return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($alias));
+		return preg_replace("/[^a-zA-Z0-9\-_\.]/", '', $alias);
 	}
 
 	/**
@@ -221,8 +221,9 @@ class Screenshot extends Relational
 	 */
 	public static function oneByFilename($filename, $resourceid=0, $versionid=0)
 	{
-		$query = self::all()
-			->whereEquals('filename', $filename);
+		$query = self::all();
+
+		$query->whereEquals('filename', $query->automaticFilename(array('filename' => $filename)));
 
 		if ($resourceid)
 		{

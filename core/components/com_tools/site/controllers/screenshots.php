@@ -67,6 +67,8 @@ class Screenshots extends SiteController
 		$rconfig = Component::params('com_resources');
 		$this->rconfig = $rconfig;
 
+		$this->registerTask('order', 'reorder');
+
 		parent::execute();
 	}
 
@@ -92,7 +94,7 @@ class Screenshots extends SiteController
 		$this->_toolid = $obj->getToolIdFromResource($pid);
 
 		// make sure user is authorized to go further
-		if (!$this->check_access($this->_toolid))
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
 		}
