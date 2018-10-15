@@ -430,11 +430,26 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				->whereEquals('scope_id', $filters['scope_id']);
 		}
 
-		$earliestYear = self::blank()
+		$query = self::blank()
 			->select('year')
 			->where('year', '!=', '')
 			->where('year', 'IS NOT', null)
-			->where('year', '>', 0)
+			->where('year', '>', 0);
+
+		if ($scope == 'hub')
+		{
+			$query->whereEquals('scope', '', 1)
+				->orWhere('scope', 'IS', null, 1)
+				->orWhereEquals('scope', $scope, 1)
+				->resetDepth();
+		}
+		elseif ($scope != 'all' && !empty($filters['scope_id']))
+		{
+			$query->whereEquals('scope', $scope)
+				->whereEquals('scope_id', $filters['scope_id']);
+		}
+
+		$earliestYear = $query
 			->order('year', 'asc')
 			->limit(1)
 			->row()
