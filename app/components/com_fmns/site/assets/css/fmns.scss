@@ -23,7 +23,6 @@ body {
 // Header
 .header {
   color: $white;
-  height: 35rem;
   overflow: hidden;
   padding: 2em;
   position: relative;
@@ -42,11 +41,23 @@ body {
     margin: 1.5em 0;
   }
 
+  h4 {
+    color: $white;
+  }
+
   p {
     @include respond-at(35.625em) {
       max-width: 50%;
     }
     margin: 1em auto;
+  }
+
+  .mailinglist-signup {
+    visibility: hidden;
+
+    h4 {
+      display: none;
+    }
   }
 
   .bcg-fmn {
@@ -67,24 +78,8 @@ body {
   justify-content: center;
 
   .anchor-wrap {
-    background-color: $white;
-    color: $dark-blue;
-    flex: 1 1 auto;
-    margin: 2em;
-    padding: 1em;
-    transition: .2s ease;
+    @extend %anchor;
     visibility: hidden;
-    width: 22rem;
-
-    hr {
-      background: $dark-blue;
-      margin: 0;
-      width: 45%;
-    }
-
-    &:hover {
-      border-left: 4px solid $dark-blue;
-    }
   }
 }
 
@@ -93,10 +88,7 @@ body {
   padding: 0 2.5em;
 
   h2 {
-    bottom: -.76em;
-    color: $green;
-    display: block;
-    position: relative;
+    margin-bottom: 0;
   }
 
   h4 {
@@ -104,77 +96,110 @@ body {
     text-align: center;
   }
 
+  hr {
+    background: $dark-blue;
+    margin: 0 0 1em;
+    width: 45%;
+  }
+
   .new-wrap {
     @include flexbox(wrap);
-    border: 1px solid $green;
-    border-radius: 6px;
+    justify-content: space-between;
     padding: 1em 2em;
-
-    p {
-      bottom: -.875em;
-      font-size: 1.3rem;
-      left: 1em;
-      margin: 0;
-      position: relative;
-      text-align: right;
-    }
   }
 
   .billboard-image {
-    @extend %showcase-img;
-    background-color: $white;
+    border-right: 5px solid $green;
+    height: 100%;
+    width: 12.5rem;
     overflow: hidden;
-    transition: 3s ease-in-out;
 
     img {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
       transition: 3s ease-in-out;
     }
 
     &:hover {
       img {
-        transform: scale(1.1);
+        transform: translateY(-50%) scale(1.1);
       }
     }
   }
 
   .billboard {
-    margin: .3125em;
+    @include flexbox;
+    margin: 1em .75em;
     position: relative;
 
     .billboard-tag {
-      @include showcase-tag($green, $white);
+      position: absolute;
+      bottom: 0;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: .8em;
+      padding: .5em .8em;
+      background-color: $green;
+      a {
+        color: $white;
+      }
     }
 
     .billboard-header {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
+      @include truncate(1rem, 1.6, 5);
+      font-family: 'Martel', serif;
+      margin-left: .5em;
 
       a {
-        @include showcase-header(1.1rem, 1.3, 2);
+        color: $dark-blue;
       }
     }
   }
 
   .fmn-img {
-    @extend %showcase-img;
+    border-right: 5px solid $green;
+    height: 100%;
+    width: 12.5rem;
+    overflow: hidden;
+
+    img {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: 3s ease-in-out;
+    }
+
+    &:hover {
+      img {
+        transform: translateY(-50%) scale(1.1);
+      }
+    }
   }
 
   .fmn {
+    @include flexbox;
+    margin: 1em .75em;
     position: relative;
 
     .fmn-title {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
+      @include truncate(1rem, 1.6, 5);
+      font-family: 'Martel', serif;
+      margin-left: .5em;
 
       a {
-        @include showcase-header(1.1rem, 1.3, 2);
+        color: $dark-blue;
       }
     }
 
     .fmn-tag {
-      @include showcase-tag($green, $white);
+      position: absolute;
+      bottom: 0;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: .8em;
+      padding: .5em .8em;
+      background-color: $green;
 
       span {
         color: $white;
@@ -183,8 +208,8 @@ body {
   }
 
   .regular {
-    flex: 1 1 20rem;
-    height: 15rem;
+    height: 7rem;
+    width: 23.4375rem;
   }
 }
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $this->css();
 $this->js();
 $this->js("https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.min.js");
@@ -17,9 +17,11 @@ Pathway::append(
 
     <div class="bcg-fmn"></div>
     <h2>Faculty Mentoring Networks</h2>
-    <h3>What is a FMN?</h3>
+    <h3>What is an FMN?</h3>
     <p>Imagine meeting biweekly over a semester with a small group of educators around a common interest - exploring new ideas or classroom activities, sharing what has worked and what hasn’t, and gaining some credit for your teaching scholarship. That is the Faculty Mentoring Network model. </p>
     <p>Faculty Mentoring Networks (FMNs) are designed to fit into the busy schedules of college faculty, and provide support and guidance &quot;just in time &quot; during the implementation of course changes.  By capitalizing on the experience of a mentor and peers, FMNs provide a bridge between pedagogical theory and actionable classroom practice.
+		<h4>Subscribe to our newsletter to stay informed about all FMNs happening on QUBES.</h4>
+		<?php \Hubzero\Module\Helper::displayModules('news'); ?>
 </p>
 
   </section>
@@ -71,6 +73,7 @@ Pathway::append(
   <section class="new">
 
     <h2 id="new">New and Upcoming</h2>
+		<hr>
     <div class="new-wrap">
 			<?php \Hubzero\Module\Helper::displayModules('fmnUpcoming'); ?>
     </div>
@@ -109,7 +112,7 @@ Pathway::append(
     <h3 id="products">A Solid Commitment to OER</h3>
     <div class="oer-wrap">
       <div class="oer">
-        <p>Faculty mentoring networks are built around scholarly teaching practices, including Open Education Resources (OER). OER by fostering  scholarly teaching through access to infrastructure and community where faculty can find, customize, and share high quality teaching resources and strategies.</p>
+        <p>Faculty mentoring networks are built around scholarly teaching practices, including Open Education Resources (OER). OER fosters scholarly teaching through access to infrastructure and community where faculty can find, customize, and share high quality teaching resources and strategies.</p>
         <p>For example, many FMNs lead to teaching materials that provide several options for how to approach a single lesson. This multiplies the potential value of the original educational resource – faculty may more easily find a version they can implement given their unique classroom situation.</p>
       </div>
       <img src="/app/components/com_fmns/site/assets/img/oer-lifecycle.png" alt="Graphic of OER Lifecycle">

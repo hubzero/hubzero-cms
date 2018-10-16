@@ -18,6 +18,8 @@ $(document).ready(function() {
      $introH2 = $('.header h2'),
      $introH3 = $('.header h3'),
      $introP = $('.header p'),
+     $introH4 = $('.header h4'),
+     $signUp = $('.header .mailinglist-signup'),
      $anchor = $('.anchor-wrap'),
      $tlLoad = new TimelineMax();
 
@@ -30,28 +32,9 @@ $(document).ready(function() {
       .from($introH2, .8, {y: 10, autoAlpha: 0, ease: Power0.easeNone}, '-=0.2')
       .from($introH3, 0.8, {y: 10, autoAlpha: 0, ease: Power0.easeNone}, '-=0.5')
       .from($introP, 0.8, {y: 10, autoAlpha: 0, ease: Power0.easeNone}, '-=0.3')
-      .staggerFrom($anchor, .6, {y: 10, autoAlpha: 0, ease: Back.easeInOut.config(1.4)}, 0.2, '-=.5');
-  });
-
-  // Anchor hover animation
-  var $anchor = $('.anchor-wrap');
-
-  $('.anchor-wrap').on('hover', function() {
-
-    var $bar = $(this).find('hr'),
-        $title = $(this).find('h4');
-
-    TweenMax.to($title, .3, {css: {marginLeft: '.25em'}});
-    TweenMax.to($bar, .3, {css: {width: '65%'}});
-  });
-
-  $('.anchor-wrap').on('mouseleave', function() {
-
-    var $bar = $(this).find('hr'),
-        $title = $(this).find('h4');
-
-    TweenMax.to($title, .3, {css: {marginLeft: '0'}});
-    TweenMax.to($bar, .3, {css: {width: '45%'}});
+      .from($introH4, 0.8, {y: 10, autoAlpha: 0, ease: Power0.easeNone}, '-=0.3')
+      .from($signUp, 0.8, {y: 10, autoAlpha: 0, ease: Power0.easeNone}, '-=0.3')
+      .staggerFrom($anchor, .6, {y: 10, autoAlpha: 0, ease: Back.easeInOut.config(1.4)}, 0.2, '-=.3');
   });
 
   //Init ScrollMagic
