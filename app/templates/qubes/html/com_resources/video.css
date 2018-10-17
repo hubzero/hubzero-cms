@@ -1,0 +1,10 @@
+@import url("/core/components/com_resources/site/assets/css/video.css");
+
+#replay-now:before {
+	font-family: 'Fontcons';
+	content: '\f021';
+}
+
+#link:before {
+  font-family: 'Fontcons';
+}

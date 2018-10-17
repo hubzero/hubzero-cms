@@ -1,0 +1,19 @@
+@import url('/core/plugins/projects/files/assets/css/files.css');
+ul.sample img,
+div.sample img {
+  padding: 0 0.3em;
+}
+#hubForm label {
+  padding: 0 2em;
+}
+#hubForm label:last-child {
+  padding-bottom: 0;
+}
+.filesystem.googledrive.private:before {
+  position: absolute;
+  top: 0.4em;
+  left: 0.35em;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}

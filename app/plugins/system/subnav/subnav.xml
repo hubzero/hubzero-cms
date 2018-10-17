@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           core/plugins/system/incomplete/incomplete.xml
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
+@license        http://opensource.org/licenses/MIT MIT
+
+Copyright 2005-2015 HUBzero Foundation, LLC.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.5" type="plugin" group="system">
+	<name>System - Subnav</name>
+	<author>HUBzero</author>
+	<creationDate>June 2012</creationDate>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<description>PLG_SYSTEM_SUBNAV_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="incomplete">subnav.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_subnav.ini</language>
+		<language tag="en-GB">en-GB.plg_system_subnav.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="component_mappings" type="textarea" rows="15" cols="40" default="" label="PLG_SYSTEM_SUBNAV_COM_MAPPINGS_LABEL" description="PLG_SYSTEM_SUBNAV_COM_MAPPINGS_DESC" />
+				<field name="url_mappings" type="textarea" rows="15" cols="40" default="" label="PLG_SYSTEM_SUBNAV_URL_MAPPINGS_LABEL" description="PLG_SYSTEM_SUBNAV_URL_MAPPINGS_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

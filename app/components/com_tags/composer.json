@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/com_tags",
+	"description": "**Override** of HubZero tags component.",
+	"type": "hubzero-component",
+	"extra": {
+	    "install-directory": "/components/com_tags"
+	}
+}

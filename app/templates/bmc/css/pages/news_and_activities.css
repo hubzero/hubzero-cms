@@ -1,0 +1,138 @@
+.blog-img, .billboard-image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.blog-img img, .billboard-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: all 3s ease-in-out;
+}
+
+.blog-img:hover img, .billboard-image:hover img {
+  transform: scale(1.1);
+}
+
+.blog-img::after, .billboard-image::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  height: 100%;
+  width: 100%;
+}
+
+.content-header {
+  display: none;
+}
+
+.activities-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.blogs,
+.row {
+  border: 1px solid #84bf41;
+  border-radius: 6px;
+  position: relative;
+}
+
+.blogs h2,
+.row h2 {
+  color: #84bf41;
+  position: absolute;
+  top: -.95em;
+}
+
+.blogs,
+.newsletters,
+.row {
+  flex: 1 1 20rem;
+  margin: 3em .5em 0;
+}
+
+.newsletters {
+  background-color: #F1F2F2;
+  border-radius: 6px;
+  position: relative;
+}
+
+.newsletters h2 {
+  position: absolute;
+  top: -.96em;
+}
+
+.regular {
+  height: 11rem;
+  margin: 1em;
+}
+
+.blog {
+  position: relative;
+}
+
+.blog .blog-title {
+  bottom: 0;
+  padding: 10px;
+  position: absolute;
+}
+
+.blog .blog-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2.86rem;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.billboard {
+  position: relative;
+}
+
+.billboard .billboard-tag {
+  position: absolute;
+  bottom: 5em;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: .8em;
+  padding: .5em .8em;
+  background-color: #84bf41;
+}
+
+.billboard .billboard-tag a {
+  color: #fff;
+}
+
+.billboard .billboard-header {
+  bottom: 0;
+  padding: 10px;
+  position: absolute;
+}
+
+.billboard .billboard-header a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2.86rem;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}

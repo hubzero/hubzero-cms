@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/com_publications",
+	"description": "**Override** of HubZero publications component.",
+	"type": "hubzero-component",
+	"extra": {
+	    "install-directory": "/components/com_publications"
+	}
+}

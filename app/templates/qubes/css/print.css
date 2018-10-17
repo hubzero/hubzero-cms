@@ -1,0 +1,120 @@
+/*
+
+	-- -- -- -- -- -- --
+	print CSS
+	Print styles
+	-- -- -- -- -- -- --
+
+*/
+	* {
+		text-shadow: none !important;
+		color: #000 !important; /* Black prints faster: h5bp.com/s */
+		background: transparent !important;
+		box-shadow: none !important;
+		/* overflow: visible !important; */
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		font: 8pt/16pt "Lucida Grande", "Trebuchet MS", Tahoma, sans-serif;
+		height: 100%;
+		overflow: auto;
+		background: #fff;
+	}
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
+	/*a[href]:after {
+		content: " (" attr(href) ")";
+	}*/
+	abbr[title]:after {
+		content: " (" attr(title) ")";
+	}
+	/* Don't show links for images, or javascript/internal links */
+	a[href^="javascript:"]:after,
+	a[href^="#"]:after {
+		content: "";
+	}
+	pre,
+	blockquote {
+		border: 1px solid #999;
+		page-break-inside: avoid;
+	}
+	thead {
+		display: table-header-group; /* h5bp.com/t */
+	}
+	tr,
+	img {
+		page-break-inside: avoid;
+	}
+	img {
+		max-width: 100% !important;
+	}
+	p,
+	h2,
+	h3 {
+		orphans: 3;
+		widows: 3;
+	}
+	h2,
+	h3 {
+		page-break-after: avoid;
+	}
+
+	#header {
+		border-bottom: 1px solid #bbb;
+		padding-bottom: 20px;
+	}
+	#content {
+		border-bottom: 1px solid #bbb;
+	}
+	#footer {
+		border-top: 1px solid #bbb !important;
+		padding-top: 20px;
+	}
+	
+	#header h1 a {
+		text-indent: 0;
+	}
+	#help-pane {
+		display: none;
+	}
+	#nav,
+	#trail {
+		border-bottom: 1px solid #bbb;
+	}
+	#home-splash {
+		border-bottom: 1px solid #bbb;
+	}
+	#page_container {
+		padding-left: 150px !important;
+	}
+	#page_sidebar {
+		width: 150px !important;
+		margin-left: -150px !important;
+	}
+	#page_main {
+		border-left: 1px solid #bbb;
+	}
+	#page_sidebar a {
+		width: auto !important;
+		height: auto !important;
+		text-indent: 0 !important;
+		line-height: 1.5em !important;
+		display: inline !important;
+		color: #000 !important;
+	}
+	#page_sidebar a:before,
+	#page_sidebar a:after {
+		content: "";
+		display: none;
+	}
+	#system-debug,
+	#nav, #purdue, #utilities, #slider {
+		display: none;	
+	}
+
+	.aside ul.menu {
+		display: none;	
+	}

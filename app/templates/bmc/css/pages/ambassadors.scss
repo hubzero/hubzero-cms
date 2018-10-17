@@ -1,0 +1,152 @@
+@import 'variables';
+@import 'mixins';
+
+.wrapper {
+  @include grid-template(repeat(4, [col] 1fr), repeat(4, auto));
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+//Header
+.ambassador-header {
+  @include flexbox;
+  @include grid(col / span 4, 1);
+  @include bcg-img('/app/site/media/images/providence-doucet-87304-unsplash.jpg');
+  align-items: center;
+  background-position: center;
+  color: $white;
+  height: 20rem;
+  padding: 2.5em;
+  text-align: center;
+  visibility: hidden;
+
+  h2 {
+    color: $white;
+    visibility: hidden;
+  }
+  @include respond-at(901px) {
+    @include grid-template(repeat(4, 1fr), 1fr);
+  }
+  @include grid-support {
+    width: auto;
+  }
+}
+
+.intro {
+  @include grid(1 / span 4, null);
+  @include respond-at(901px) {
+    @include grid(2 / span 2, null);
+    width: 50%;
+  }
+  @include grid-support {
+    width: auto;
+  }
+  align-self: center;
+  margin: 0 auto;
+  width: 100%;
+
+  a {
+    color: $white;
+    text-decoration: underline;
+  }
+
+  p {
+    visibility: hidden;
+  }
+}
+
+//Ambassador Description
+.ambassador {
+  @include grid(col / span 4, 2);
+  margin: 1em auto;
+  max-width: 70%;
+  padding: 2.5em;
+  text-align: center;
+  visibility: hidden;
+}
+
+//Ways to Participate
+.participate-wrapper {
+  @include flexbox(wrap);
+  @include grid(col / span 4, 3);
+  @include grid-template(repeat(2, 1fr), 1.5fr 1fr);
+  @include respond-at(901px) {
+    @include grid-template(repeat(2, 1fr), 1fr);
+  }
+  background-color: $light-gray;
+}
+
+.big {
+  @include grid(span 2, 2);
+  @include bcg-plain-img('/app/site/media/images/pexels-photo-462680.jpg');
+  @include respond-at(901px) {
+    @include grid(2 / span 1, 1);
+    width: 50%;
+  }
+  @include grid-support {
+    height: auto;
+    width: auto;
+  }
+  width: 100%;
+}
+
+.participate {
+  @include grid(span 2, 1);
+  align-self: center;
+  order: -1;
+  padding: 2.5em;
+  width: 100%;
+
+  ul {
+    li {
+      list-style-type: none;
+      margin: 0;
+
+      a {
+        color: $white;
+        text-decoration: underline;
+
+        &:hover {
+          color: $orange;
+        }
+      }
+    }
+  }
+  @include respond-at(901px) {
+    @include grid(1 / span 1, 1);
+    width: 50%;
+  }
+  @include grid-support {
+    width: auto;
+  }
+}
+
+.link {
+  @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+  border-radius: 2px;
+}
+.center {
+  text-align: center;
+}
+
+//Apply
+.apply {
+  @include grid(col / span 4, 4);
+  padding: 2.5em;
+
+  .emphasis {
+    color: $dark-blue;
+    font-weight: bold;
+  }
+
+  .link {
+    margin-top: 4em;
+    text-align: center;
+
+    a {
+      @include btn-border-drawing($teal, $orange, 2px, bottom, right);
+    }
+  }
+}

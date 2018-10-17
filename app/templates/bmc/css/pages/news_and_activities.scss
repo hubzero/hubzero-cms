@@ -1,0 +1,86 @@
+@import 'variables';
+@import 'mixins';
+
+.content-header {
+  display: none;
+}
+
+.activities-wrapper {
+  @include flexbox(wrap);
+}
+
+.blogs,
+.row {
+  border: 1px solid $green;
+  border-radius: 6px;
+  position: relative;
+
+  h2 {
+    color: $green;
+    position: absolute;
+    top: -.95em;
+  }
+}
+
+.blogs,
+.newsletters,
+.row {
+  flex: 1 1 20rem;
+  margin: 3em .5em 0;
+}
+
+.newsletters {
+  background-color: $light-gray;
+  border-radius: 6px;
+  position: relative;
+
+  h2 {
+    position: absolute;
+    top: -.96em;
+  }
+}
+
+.regular {
+  height: 11rem;
+  margin: 1em;
+}
+
+.blog-img {
+  @extend %showcase-img;
+}
+
+.blog {
+  position: relative;
+
+  .blog-title {
+    bottom: 0;
+    padding: 10px;
+    position: absolute;
+
+    a {
+      @include showcase-header(1.1rem, 1.3, 2);
+    }
+  }
+}
+
+.billboard-image {
+  @extend %showcase-img;
+}
+
+.billboard {
+  position: relative;
+
+  .billboard-tag {
+    @include showcase-tag($green, $white);
+  }
+
+  .billboard-header {
+    bottom: 0;
+    padding: 10px;
+    position: absolute;
+
+    a {
+      @include showcase-header(1.1rem, 1.3, 2);
+    }
+  }
+}

@@ -1,0 +1,444 @@
+@import '../css/variables.scss';
+@import '../css/mixins.scss';
+
+
+.link-anchor {
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+  &:visited {
+    color: inherit;
+  }
+}
+.white {
+  color: $white;
+  a:active {
+    color: $white;
+  }
+  a:visited {
+    color: $white;
+  }
+  a:hover {
+    color: $orange;
+  }
+}
+
+.content {
+  @include grid-template(repeat(4, [col] 1fr), repeat(5, [row] auto));
+}
+.wrapper {
+  @include grid-template(repeat(4, [col] 1fr), repeat(5, [row] auto));
+}
+
+//Feature
+.feature {
+  @include grid(col / span 4, row);
+  @include flexbox(wrap);
+  @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
+  grid-auto-rows: 300px;
+  justify-content: center;
+  .module-feature {
+    @include flexbox(wrap);
+    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
+    grid-auto-rows: 300px;
+    justify-content: center;
+  }
+  .resource-img {
+      @extend %showcase-img;
+    }
+    .resource {
+      position: relative;
+      flex: 1 1 10rem;
+      height: 15rem;
+      margin: 2.5px;
+      .resource-tag {
+        @include showcase-tag($dark-blue, $white);
+      }
+      .resource-title {
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+        a {
+          @include showcase-header(1em, 1, 2);
+        }
+      }
+    }
+}
+
+//search
+.search-wrapper {
+  @include grid(col / span 4, row 2);
+  justify-content: center;
+  text-align: center;
+  padding: 30px 0;
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+  }
+}
+#rsearch {
+  width: 70%;
+}
+.page-body > .content form.search input[type="submit"] {
+  background-color: $green;
+  color: $white;
+}
+
+//Discover
+.discover {
+  @include flexbox(wrap);
+  @include grid(col / span 4, row 3);
+  @include grid-template(repeat(3, 1fr), auto, 10px);
+  padding: 30px;
+  h2 {
+    @include grid(1 / span 3, null);
+    width: 100%;
+  }
+  h4 {
+    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
+  }
+}
+.resources {
+  width: 30%;
+  padding: 10px;
+  h4 {
+    position: relative;
+    padding-bottom: 1em;
+    border-bottom: 1px solid $dark-blue;
+    &:after {
+      content: '';
+      width: 65%;
+      height: 1.1px;
+      background-color: $white;
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+    }
+  }
+}
+
+//OER and Resources
+#one {
+  @include grid(col / span 4, row 4);
+  @include grid-template(repeat(4, 1fr), repeat(3, minmax(20rem, auto)));
+  @include bcg-img('/app/site/media/images/pexels-photo-590493.jpg');
+}
+.resource-oer {
+  @include flexbox;
+  @include grid(1 / span 4, 1);
+  .oer {
+    align-self: center;
+    color: $white;
+    h2 {
+      color: $white;
+    }
+    padding: 2.5em;
+    text-align: center;
+  }
+}
+.resource-fmn {
+  @include flexbox;
+  @include grid(1 / span 4, 2);
+  @include grid-template(repeat(4, 1fr), null);
+  flex: 1;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  .module-fmn {
+    @include flexbox(wrap);
+    @include grid(1 / span 2, null);
+    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
+    grid-auto-rows: 300px;
+    justify-content: center;
+    width: 50%;
+    padding: 1em;
+    align-self: center;
+    }
+    .resource-img {
+        @extend %showcase-img;
+      }
+      .resource {
+        position: relative;
+        flex: 1 1 10rem;
+        height: 15rem;
+        margin: 2.5px;
+        .resource-tag {
+          @include showcase-tag($dark-blue, $white);
+        }
+        .resource-title {
+          position: absolute;
+          bottom: 0;
+          padding: 10px;
+          a {
+            @include showcase-header(1em, 1, 2);
+          }
+        }
+      }
+  .fmn {
+    @include grid(3 / span 2, null);
+    width: 50%;
+    padding: 2.5em;
+    align-self: center;
+  }
+}
+.resource-partner {
+  @include flexbox;
+  @include grid(1 / span 4, 3);
+  @include grid-template(repeat(4, 1fr), null);
+  flex: 1;
+  color: $white;
+  h2 {
+    color: $white;
+  }
+  .partner {
+    @include grid(1 / span 2, null);
+    width: 50%;
+    padding: 2.5em;
+    align-self: center;
+  }
+  .module-partner {
+    @include flexbox(wrap);
+    @include grid(3 / span 2, null);
+    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
+    grid-auto-rows: 300px;
+    width: 50%;
+    justify-content: center;
+    padding: 1em;
+    align-self: center;
+
+  }
+  .resource-img {
+    @extend %showcase-img;
+    }
+  .resource {
+    position: relative;
+    flex: 1 1 10rem;
+    height: 15rem;
+    margin: 2.5px;
+    .resource-tag {
+      @include showcase-tag($dark-blue, $white);
+    }
+    .resource-title {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+      a {
+        @include showcase-header(1em, 1, 2);
+      }
+    }
+  }
+  .browse {
+    @include grid(1 / span 4, null);
+    text-align: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($white);
+      display: inline-block;
+      margin: 0 1em;
+    }
+  }
+}
+
+//Collections
+#two {
+  @include flexbox;
+  @include grid(col / span 4, row 5);
+  @include grid-template(repeat(2, 1fr), null);
+  flex: 1;
+  .big {
+    width: 50%;
+    img {
+      display: block;
+      width: 30rem;
+      margin: 0 auto;
+    }
+  }
+  .collections {
+    width: 50%;
+    padding: 2.5em;
+    align-self: center;
+    .link {
+      @include buttons($green);
+      margin-top: 3em;
+    }
+  }
+}
+
+//Software
+#three {
+  @include flexbox;
+  @include grid(col / span 4, row 6);
+  @include grid-template(null, repeat(2, 1fr));
+  @include bcg($med-blue, $white);
+  flex: 1;
+  h2 {
+    color: $white;
+  }
+  .software {
+    width: 50%;
+    text-align: center;
+    padding: 2.5em;
+    .link {
+      @include buttons($white);
+      margin-top: 3em;
+    }
+  }
+  .software-logos {
+    @include flexbox(wrap);
+    @include grid-template(repeat(auto-fit, minmax(100px, 1fr)), null, 5px);
+    grid-auto-rows: 125px;
+    width: 50%;
+    padding: 2.5em;
+    justify-items: center;
+    align-self: center;
+    text-align: center;
+    .logo-wrap {
+      img {
+        height: 65%;
+        object-fit: scale-down;
+      }
+      h6 {
+        color: $light-gray;
+        padding-top: .5em;
+        a {
+          color: $light-gray;
+          &:visited {
+            color: $light-gray'
+          }
+          &:hover {
+            color: $light-gray'
+          }
+        }
+      }
+    }
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 900px) {
+  .discover {
+    @include grid-template(null, repeat(4, 1fr));
+    justify-content: center;
+    .resources {
+      width: 100%;
+      @include grid(span 3, null);
+    }
+  }
+  #one {
+    .resource-fmn {
+      flex-wrap: wrap;
+      @include grid-template(null, 1fr 2fr);
+      .fmn {
+        @include grid(1 / span 4, 1);
+        width: 100%;
+        order: -1;
+      }
+      .module-fmn {
+        @include grid(1 / span 4, 2);
+        width: 100%;
+      }
+    }
+    .resource-partner {
+      flex-wrap: wrap;
+      @include grid-template(null, 1fr 2fr);
+      .partner {
+        @include grid(1 / span 4, 1);
+        width: 100%;
+        order: -1;
+      }
+      .module-partner {
+        @include grid(1 / span 4, 2);
+        width: 100%;
+      }
+    }
+  }
+  #two {
+    flex-wrap: wrap;
+    @include grid-template(null, repeat(2, 1fr));
+    .collections {
+      @include grid(1 / span 4, 1);
+      width: 100%;
+    }
+    .big {
+      @include grid(1 / span 4, 2);
+      width: 100%;
+      height: auto;
+      order: 1;
+    }
+  }
+  #three {
+    flex-wrap: wrap;
+    @include grid-template(null, repeat(2, 1fr));
+    .software {
+      @include grid(1 / span 4, 1);
+      width: 100%;
+    }
+    .software-logos {
+      @include grid(1 / span 4, 2);
+      width: 100%;
+    }
+  }
+}
+//Reset widths if css grid is supported
+@supports (display:grid) {
+  .feature {
+    .regular {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
+  }
+  .discover {
+    h2 {
+      width: auto;
+    }
+    .resources {
+      width: auto;
+    }
+  }
+  #one {
+    .resource-fmn {
+      .fmn {
+        width: auto;
+      }
+      .module-fmn {
+        width: auto;
+        .regular {
+          height: auto;
+        }
+      }
+    }
+    .resource-partner {
+      .partner {
+        width: auto;
+      }
+      .module-partner {
+        width: auto;
+        .regular {
+          height: auto;
+        }
+      }
+    }
+  }
+
+  #two {
+    .big {
+      width: auto;
+      height: auto;
+    }
+    .collections {
+      width: auto;
+    }
+  }
+  #three {
+    .software {
+      width: auto;
+    }
+    .software-logos {
+      width: auto;
+      h6 {
+        width: auto;
+        height: auto;
+      }
+    }
+  }
+}

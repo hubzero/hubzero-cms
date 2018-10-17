@@ -1,0 +1,100 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/pagination.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Pagination (multiple pages)
+// --------------------------------------------------
+
+.list-footer {
+	margin: 5px 0;
+	padding: 0;
+	border-top: 1px solid #e2e2e2;
+	background-image: none;
+	list-style: none;
+	line-height: @baseLineHeight;
+	.cf();
+
+	li {
+		float: left;
+		margin: 0;
+		padding: 0 (@baseFontSize / 3);
+		background-image: none;
+		list-style: none;
+	}
+	.limit,
+	.counter {
+		padding: 10px 0;
+		font-size: 12px;
+	}
+	.counter {
+		float: right;
+		color: @paginationColor;
+	}
+	.page {
+		padding: 0 0.21em;
+	}
+	.limit {
+		padding-right: @baseFontSize;
+		color: @paginationColor;
+		float: right;
+	}
+	.start {
+		margin-left: 0;
+		padding-left: 0;
+	}
+	.next,
+	.prev {
+		display: none;
+	}
+	input,
+	label {
+		display: inline;
+		width: auto;
+	}
+
+	// Disabled buttons
+	span {
+		display: none;
+	}
+
+	// Current page
+	strong {
+		font-weight: normal;
+		border-color: #8F48CD;
+		padding: 10px 0;
+		text-align: center;
+		display: inline-block;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		position: relative;
+		font-size: 12px;
+		text-transform: uppercase;
+		border-top: 1px solid @colorLightBorder;
+		color: @paginationColor;
+	}
+
+	// Page links
+	a,
+	a:visited {
+		padding: 10px 0;
+		text-align: center;
+		display: inline-block;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		position: relative;
+		font-size: 12px;
+		text-transform: uppercase;
+		border-top: 1px solid @colorLightBorder;
+		color: @paginationColor;
+
+		&:hover {
+			color: #4fa3b5;
+		}
+	}
+}

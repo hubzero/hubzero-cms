@@ -1,0 +1,5 @@
+@import url("/core/components/com_jobs/site/assets/css/jobs.css");
+
+.com_jobs header#content-header h2 {
+	padding-right: 300px;
+}

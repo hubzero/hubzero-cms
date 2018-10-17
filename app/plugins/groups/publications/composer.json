@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/group-publications-plugin",
+	"description": "Group publications plugin",
+	"type": "hubzero-plugin",
+  	"extra": {
+	    "install-directory": "/plugins/groups/publications"
+	}
+}

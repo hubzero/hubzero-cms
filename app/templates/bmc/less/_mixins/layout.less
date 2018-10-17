@@ -1,0 +1,226 @@
+// Container padding
+
+// Pad the right side
+.padContainRight() {
+	padding-right:	@padContainS;
+
+	@media (min-width: @sizeM) {
+		padding-right:	@padContainM;
+	}
+
+	@media (min-width: @sizeL) {
+		padding-right:	@padContainL;
+	}
+
+	@media (min-width: @sizeXL) {
+		padding-right:	@padContainXL;
+	}
+	@media (min-width: @sizeXXL) {
+		padding-right: 	@padContainXXL;
+	}
+}
+
+// Pad the left side
+.padContainLeft() {
+	 padding-left: 	@padContainS;
+
+	 @media (min-width: @sizeM) {
+		 padding-left: 	@padContainM;
+	 }
+
+	 @media (min-width: @sizeL) {
+		 padding-left: 	@padContainL;
+	 }
+
+	 @media (min-width: @sizeXL) {
+		 padding-left: 	@padContainXL;
+	 }
+
+	 @media (min-width: @sizeXXL) {
+		 padding-left: 	@padContainXXL;
+	 }
+}
+
+// Pad both sides
+.padContain() {
+	.padContainRight();
+	.padContainLeft();
+}
+
+// Set the max width for the container
+.restrictContain(@maxWidth) when (@containMaxWidth > 0) {
+	max-width: @maxWidth;
+}
+
+.doContain() {
+	.restrictContain(@containMaxWidth);
+	margin-left: auto;
+	margin-right: auto;
+
+	.padContain();
+}
+
+.doContainLess() {
+	.doContain();
+
+	.restrictContain(@containLessMaxWidth);
+}
+
+.doContainMore() {
+	.doContain();
+
+	.restrictContain(@containMoreMaxWidth);
+}
+
+.doContainNoPad() {
+	.restrictContain(@containMaxWidth);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+// **********
+// Outer container padding
+
+.padOuterContainerRight() {
+	padding-right: 0;
+
+	@media (min-width: @sizeM) {
+		padding-right: @padOuterContainerM;
+	}
+
+	@media (min-width: @sizeL) {
+		padding-right: @padOuterContainerL;
+	}
+
+	@media (min-width: @sizeXL) {
+		padding-right: @padOuterContainerXL;
+	}
+}
+
+.padOuterContainerLeft() {
+	padding-left: 0;
+
+	@media (min-width: @sizeM) {
+		padding-left: @padOuterContainerM;
+	}
+
+	@media (min-width: @sizeL) {
+		padding-left: @padOuterContainerL;
+	}
+
+	@media (min-width: @sizeXL) {
+		padding-left: @padOuterContainerXL;
+	}
+}
+
+.padOuterContainer() {
+	.padOuterContainerLeft();
+	.padOuterContainerRight();
+}
+
+// **********
+// Inner container padding
+
+.padInnerContainerRight() {
+	padding-right: @padInnerContainerXS;
+
+	@media (min-width: @sizeS) {
+		padding-right: @padInnerContainerS;
+	}
+
+	@media (min-width: @sizeM) {
+		padding-right: @padInnerContainerM;
+	}
+
+	@media (min-width: @sizeL) {
+		padding-right: @padInnerContainerL;
+	}
+
+	@media (min-width: @sizeXL) {
+		padding-right: @padInnerContainerXL;
+	}
+}
+
+.padInnerContainerLeft() {
+	padding-left: @padInnerContainerXS;
+
+	@media (min-width: @sizeS) {
+		padding-left: @padInnerContainerS;
+	}
+
+	@media (min-width: @sizeM) {
+		padding-left: @padInnerContainerM;
+	}
+
+	@media (min-width: @sizeL) {
+		padding-left: @padInnerContainerL;
+	}
+
+	@media (min-width: @sizeXL) {
+		padding-left: @padInnerContainerXL;
+	}
+}
+
+.padInnerContainer() {
+	.padInnerContainerLeft();
+	.padInnerContainerRight();
+}
+
+// **********
+// Inner container padding for the inner elements in the header.
+// Since everything in the top section needs to be padded only when there is now outer padding applied to the header,
+// we need just a limited subset if padding rules
+
+.padInnerContainerWhenNoOuterPaddingRight() {
+	padding-right: @padInnerContainerXS;
+
+	@media (min-width: @sizeS) {
+		padding-right: @padInnerContainerS;
+	}
+
+	@media (min-width: @sizeM) {
+		padding-right: 0;
+	}
+}
+
+.padInnerContainerWhenNoOuterPaddingLeft() {
+	padding-left: @padInnerContainerXS;
+
+	@media (min-width: @sizeS) {
+		padding-left: @padInnerContainerS;
+	}
+
+	@media (min-width: @sizeM) {
+		padding-left: 0;
+	}
+}
+
+.padInnerContainerWhenNoOuterPadding() {
+	.padInnerContainerWhenNoOuterPaddingRight();
+	.padInnerContainerWhenNoOuterPaddingLeft();
+}
+
+// **********
+// Header sizing mixins
+
+// figure out the visible margin of the header (used by the overlay panel)
+.getHeaderLeftMarginAsLeftRight() {
+	left: 0;
+	right: 0;
+
+	@media (min-width: @sizeM) {
+		left: @padOuterContainerM / 2;
+		right: @padOuterContainerM / 2;
+	}
+
+	@media (min-width: @sizeL) {
+		left: @padOuterContainerL / 2;
+		right: @padOuterContainerL / 2;
+	}
+
+	@media (min-width: @sizeXL) {
+		left: @padOuterContainerXL / 2;
+		right: @padOuterContainerXL / 2;
+	}
+}

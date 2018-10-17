@@ -1,0 +1,93 @@
+#footer {
+	padding: 0;
+	color: #aaa;
+	font-size: .9em;
+	background: #ddd;
+	overflow: hidden;
+
+	.grid {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+	}
+}
+
+#footer h2 {
+	display: none
+}
+
+#footer h3 {
+	margin: 0;
+	padding: 0 0 1em 0;
+	text-transform: uppercase;
+	font-size: 0.7rem;
+	font-weight: 600;
+	letter-spacing: .15em
+}
+
+#footer a {
+	color: #777;
+	border-bottom: 0
+}
+
+#footer a:hover {
+	color: #222;
+	border-bottom: 1px solid #222
+}
+
+#footer ul {
+	list-style: none;
+	margin: 0
+}
+
+#footer li {
+	padding: .1em 0;
+	margin: 0
+}
+
+#footer #ancillary {
+	.padContain();
+}
+
+#footer ul#legalese {
+	overflow: hidden;
+	font-size: .85em;
+	color: #777;
+	background: #e6e6e6;
+	*zoom: 1;
+	border: 1px solid transparent;
+	.padContain();
+}
+
+#footer ul#legalese {
+
+	li {
+		display: inline-block;
+		text-shadow: none;
+		color: #aaa;
+		padding: 1rem 0;
+
+		&:last-child {
+			float: right;
+		}
+	}
+}
+
+#footer ul#legalese a {
+	color: #777
+}
+
+#footer ul#legalese a:hover {
+	color: #222;
+	border-bottom: 1px solid #222
+}
+
+#footer ul#legalese:before,
+#footer ul#legalese:after {
+	display: table;
+	content: "";
+	line-height: 0
+}
+
+#footer ul#legalese:after {
+	clear: both
+}

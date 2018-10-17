@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/plg_groups_usage",
+	"description": "**Override** of HubZero groups usage plugin.",
+	"type": "hubzero-plugin",
+  	"extra": {
+	    "install-directory": "/plugins/groups/usage"
+	}
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--list of categories one can use when creating component -->
+<access component="com_fmns">
+	<section name="component">
+		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
+		<action name="core.edit.state" title="COM_FMNS_ACTION_EDITSTATE" description="COM_FMNS_ACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.featured" title="COM_FMNS_ACTION_EDITFEATURED" description="COM_FMNS_ACTION_EDITFEATURED_COMPONENT_DESC" />
+		<action name="core.edit.status" title="COM_FMNS_ACTION_EDITSTATUS" description="COM_FMNS_ACTION_EDITSTATUS_COMPONENT_DESC" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
+	</section>
+
+	<section name="fmns">
+		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
+		<action name="core.edit.state" title="COM_FMNS_ACTION_EDITSTATE" description="COM_FMNS_ACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.featured" title="COM_FMNS_ACTION_EDITFEATURED" description="COM_FMNS_ACTION_EDITFEATURED_COMPONENT_DESC" />
+		<action name="core.edit.status" title="COM_FMNS_ACTION_EDITSTATUS" description="COM_FMNS_ACTION_EDITSTATUS_COMPONENT_DESC" />
+	</section>
+</access>

@@ -1,0 +1,29 @@
+@import url('/core/plugins/resources/about/assets/css/about.css');
+
+#showcase {
+	margin-bottom: 2rem;
+}
+
+#showcase-prev {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#showcase-window {
+	padding-left: 20px;
+	padding-right: 20px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#showcase-next {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+section.section .subject.abouttab {
+	display: block;
+}

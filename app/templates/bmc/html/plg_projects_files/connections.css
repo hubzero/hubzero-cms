@@ -1,0 +1,37 @@
+@import url('/core/plugins/projects/files/assets/css/connections.css');
+.connection img {
+  max-width: 48px;
+}
+.connections .new-connection .new {
+  height: 48px;
+  line-height: 48px;
+}
+.connections .new-connection .new:before {
+  height: 48px;
+  width: 48px;
+  font-size: 48px;
+}
+.connections .new-connection.small-icon .new {
+  height: 64px;
+  line-height: 64px;
+}
+.connections .new-connection.small-icon .new:before {
+  height: 64px;
+  width: 64px;
+  font-size: 64px;
+}
+.connections .new-connection.large-icon .new {
+  height: 128px;
+  line-height: 128px;
+}
+.connections .new-connection.large-icon .new:before {
+  height: 128px;
+  width: 128px;
+  font-size: 128px;
+}
+.connections .small-icon img {
+  max-width: 64px;
+}
+.connections .large-icon img {
+  max-width: 128px;
+}

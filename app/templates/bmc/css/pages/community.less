@@ -1,0 +1,116 @@
+@import "../../less/variables.less";
+@import "../../less/template_mixins.less";
+
+.com_content .contentpaneopen {
+	padding: 0;
+}
+
+.com_content .tagline {
+	margin: 0;
+	font-size: 2em;
+	padding: 0 @containSpacingXS;
+
+	@media (min-width: @sizeS) {
+		padding: 0 @containSpacingS;
+	}
+
+	@media (min-width: @sizeM) {
+		padding: 0 @containSpacingM;
+	}
+
+	@media (min-width: @sizeL) {
+		padding: 0 @containSpacingL;
+	}
+}
+
+.com_content .about {
+	border: none;
+	position: relative;
+	margin: 0;
+	padding: 30px @containSpacingXS;
+}
+.com_content .about.odd {
+	background: #fff;
+}
+.com_content .about.even {
+	background: #fafafa;
+}
+
+.com_content .about h3 a {
+	color: #484848;
+	border: none;
+}
+
+@media (min-width: 40em) {
+	.com_content .tagline {
+		line-height: 1.5;
+	}
+
+	.com_content .about {
+		line-height: 1.8em;
+	}
+
+	.com_content .about.odd {
+		padding: 30px @containSpacingXS 30px 50%;
+
+		@media (min-width: @sizeS) {
+			padding: 30px @containSpacingS 30px 50%;
+		}
+
+		@media (min-width: @sizeM) {
+			padding: 30px @containSpacingM 30px 50%;
+		}
+
+		@media (min-width: @sizeL) {
+			padding: 30px @containSpacingL 30px 50%;
+		}
+	}
+	.com_content .about.even {
+		padding: 30px 50% 30px @containSpacingXS;
+
+		@media (min-width: @sizeS) {
+			padding: 30px 50% 30px @containSpacingS;
+		}
+
+		@media (min-width: @sizeM) {
+			padding: 30px 50% 30px @containSpacingM;
+		}
+
+		@media (min-width: @sizeL) {
+			padding: 30px 50% 30px @containSpacingL;
+		}
+	}
+
+	.com_content .about h3:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 40px;
+		z-index: 100;
+		font-family: 'Fontcons';
+		font-size: 125px;
+		line-height: 1;
+		left: 17.5%;
+		color: #ccc;
+		content: "";
+	}
+	.com_content .about.even h3:after {
+		left: auto;
+		right: 17.5%;
+	}
+	.com_content .about.members h3:after {
+		content: "\f007";
+	}
+	.com_content .about.groups h3:after {
+		content: "\f042";
+		font-size: 150px;
+	}
+	.com_content .about.answers h3:after {
+		content: "\f0e6";
+	}
+	.com_content .about.forum h3:after {
+		content: "\f075";
+	}
+}

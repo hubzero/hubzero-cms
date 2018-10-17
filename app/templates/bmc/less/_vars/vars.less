@@ -1,0 +1,146 @@
+@pathTemplate:          "/app/templates/bmc";
+
+@import "_layout";
+
+// Extract colors used
+@import "_colors";
+
+// Buttons
+@buttonColor:			@colorAccent;
+@buttonHoverColor:		none;
+
+// Forms
+@containerDataBackground: darken(@colorLightBorder, 5%);
+
+
+// Typography -- enable only fonts listed in the fonts.less
+// -------------------------
+@fontLogo:				'Novecentosanswide-DemiBold', Helvetica, Arial, sans-serif;
+@fontLogoLight:			'Novecentosanswide-Book', Helvetica, Arial, sans-serif;
+
+@fontNavLight:			"latolight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontNavRegular:		"latoregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontNavBold:			"latosemibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontHeadingsLight:		"latoregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHeadingsRegular:	"latosemibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHeadingsBold:		"latobold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHeadingsFat:		"latoblack", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontHeadingsSerif:		'alegreyaregular', Georgia, Times, 'Times New Roman', serif;
+
+@fontTextULight:		"latohairline", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontTextLight:			"latolight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontTextRegular:		"latoregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontTextMedium:		"latomedium", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontTextBold:			"latosemibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontTextRealBold:		"latobold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontTextSerif:			"alegreyaregular", Georgia, Times, 'Times New Roman', serif;
+@fontTextSerifItalic:	"alegreyaitalic", Georgia, Times, 'Times New Roman', serif;
+
+@fontAllCaps:			@fontTextMedium;
+
+
+@fontCrispSansRegular:	"Arial", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontCrispSansLight:	"Arial", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontSerifRegular:		'Arial', Georgia, Times, 'Times New Roman', serif;
+
+@fontHeadingsUltraLight:"montserratultra_light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHeadingsMedium:	"playfair_displaybold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHeadingsSemi:		"montserratsemi_bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@fontHeadingSubLight:	"titillium_weblight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+
+
+@fontHomeHero:			"titillium_webthin", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHomeSubhead:		"titillium_webregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHomeSubheadSemiBold:	"titillium_websemibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@fontHomeSubheadBold:	"titillium_webbold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+
+@bodyFont: 				@fontTextRegular;
+@bodyFontRetina:		@fontTextLight;
+@headingFont: 			@fontHeadingsMedium;
+@navigationFont:  		@fontCrispSansLight;
+@subNavigationFont:  	@fontCrispSansLight;
+
+@monoFontFamily:        Monaco, Menlo, Consolas, "Courier New", monospace;
+
+// Extract fonts used
+@import "_fonts";
+
+@baseFontSize:          12px;
+@baseLineHeight:        20px;
+
+@headingsFontFamily:    inherit; // empty to use BS default, @baseFontFamily
+@headingsFontWeight:    normal;    // instead of browser default, bold
+@headingsColor:         inherit; // empty to use BS default, @textColor
+
+
+
+
+// Pre and Code
+// -------------------------
+@preBoxShadow:          0 0 0.25em rgba(0, 0, 0, 0.2);
+@preBorder:             none;
+@preBackground:         #fff;
+
+// Tables
+// -------------------------
+@tableBackground:                   transparent; // overall background-color
+@tableBackgroundAccent:             #f9f9f9; // for striping
+@tableBackgroundHover:              #f5f5f5; // for hover
+@tableBorder:                       #ddd; // table and cell border
+
+
+// Media query breaking points
+// --------------------------------------------------
+@sizeXS: 400px;
+@sizeS: 500px;
+@sizeM: 900px;
+@sizeL: 1200px;
+@sizeXL: 1600px;
+@sizeXXL: 2000px;
+
+// Padding values
+
+// outer container
+@padOuterContainerM:   40px;
+@padOuterContainerL:   60px;
+@padOuterContainerXL:  68px;
+
+// inner container
+@padInnerContainerXS:  10px;
+@padInnerContainerS:   15px;
+@padInnerContainerM:   20px;
+@padInnerContainerL:   25px;
+@padInnerContainerXL:  30px;
+
+
+@padContainS:   20px;
+@padContainM:	30px;
+@padContainL:	40px;
+@padContainXL:  50px;
+@padContainXXL: 60px;
+
+@padContain:   	@padContainS;
+
+@padPopup:		40px;
+
+// --- Spacing/padding values ---
+
+// Logo sizing
+@sizeLogoHeight: 40px;
+
+// Header sizing
+@headerHeight: @sizeLogoHeight + 32px; // 32px is 16 + 16 of the top and bottom padding around the logo
+
+// Global outer container maximum width
+@containMaxWidth: 1200px;
+// wider container
+@containMoreMaxWidth: @containMaxWidth + @containMaxWidth * 0.15;
+// narrower container
+@containLessMaxWidth: @containMaxWidth - @containMaxWidth * 0.15;
