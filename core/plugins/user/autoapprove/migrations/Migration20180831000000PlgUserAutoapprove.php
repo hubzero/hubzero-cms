@@ -15,7 +15,7 @@ class Migration20180831000000PlgUserAutoapprove extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('user', 'autoapprove');
+		$this->addPluginEntry('user', 'autoapprove', 0);
 	}
 
 	/**

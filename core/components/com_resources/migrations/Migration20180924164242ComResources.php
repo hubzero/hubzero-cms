@@ -21,8 +21,8 @@ class Migration20180924164242ComResources extends Base
 			if ($this->db->getPrimaryKey('#__resource_stats_tools_topvals') != 'id')
 			{
 				$query = "ALTER TABLE `#__resource_stats_tools_topvals` ADD PRIMARY KEY (id)";
-				$this->db->setQuery($query);
-				$this->db->query();
+				//$this->db->setQuery($query);
+				//$this->db->query();
 			}
 		}
 	}
@@ -37,8 +37,8 @@ class Migration20180924164242ComResources extends Base
 			if ($this->db->getPrimaryKey('#__resource_stats_tools_topvals') == 'id')
 			{
 				$query = "ALTER TABLE `#__resource_stats_tools_topvals` DROP PRIMARY KEY";
-				$this->db->setQuery($query);
-				$this->db->query();
+				//$this->db->setQuery($query);
+				//$this->db->query();
 			}
 		}
 	}
