@@ -286,6 +286,7 @@ body {
   text-transform: uppercase;
   font-weight: bold;
   font-size: .8em;
+  left: 0;
   padding: .5em .8em;
   background-color: #84bf41;
 }
