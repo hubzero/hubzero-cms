@@ -5,9 +5,10 @@ use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Session;
 use Date;
+use stdClass;
 
 //needs to be required in admin!
-class Partner extends Relational
+class Partner extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table namespace, access to the SQL database
@@ -150,5 +151,88 @@ class Partner extends Relational
 		$base   = $params->get('image_location', DS . 'app' . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'partners' . DS);
 
 		return DS . trim($base, DS) . DS . $this->get('logo_img');
+	}
+	
+	/*
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public static function searchNamespace()
+	{
+		$searchNamespace = 'partner';
+		return $searchNamespace;
+	}
+	
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = self::searchNamespace() . '-' . $this->get('id');
+		return $searchId;
+	}
+	
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+	
+	/**
+	 * Get records
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()
+			->start($offset)
+			->limit($limit)
+			->whereEquals('state', 1)
+			->rows();
+	}
+	
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
+	public function searchResult()
+	{
+		if ($this->get('state') == 0)
+		{
+			return false;
+		}
+
+		$obj = new stdClass;
+		$obj->hubtype = self::searchNamespace();
+		$obj->id = $this->searchId();
+		$obj->title = $this->get('name');
+
+		$description = $this->get('activities') . ' ' . $this->get('about');
+		$description = html_entity_decode($description);
+		$description = \Hubzero\Utility\Sanitize::stripAll($description);
+
+		$obj->description   = $description;
+		$obj->url = \Request::root() . 'groups/' . $this->get('groups_cn');
+
+		// No tags
+		$obj->tags[] = array(
+			'id' => '',
+			'title' => ''
+		);
+		
+		// Needed for admin database view
+		$obj->access_level = 'public';
+		$obj->owner_type = 'user';
+		$obj->owner = '';
+		
+		return $obj;
 	}
 }

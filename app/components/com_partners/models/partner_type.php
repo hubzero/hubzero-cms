@@ -37,10 +37,7 @@ class Partner_type extends Relational
 	 * Automatically fillable fields
 	 *
 	 * @var  array
-	 **/
-
-	/**
-	
+	 **/	
 	
 	/**
 	 * Generate and return various links to the entry
