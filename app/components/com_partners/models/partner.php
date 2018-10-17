@@ -220,7 +220,7 @@ class Partner extends Relational implements \Hubzero\Search\Searchable
 		$description = \Hubzero\Utility\Sanitize::stripAll($description);
 
 		$obj->description   = $description;
-		$obj->url = \Request::root() . 'groups/' . $this->get('groups_cn');
+		$obj->url = ($this->get('groups_cn') ? \Request::root() . 'groups/' . $this->get('groups_cn') : $this->get('site_url'));
 
 		// No tags
 		$obj->tags[] = array(
