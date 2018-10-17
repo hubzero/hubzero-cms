@@ -44,7 +44,7 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
 		{
 			$itemFormat = $formatMappings[$match[1]];
 			$linkUrl = "https://docs.google.com/$itemFormat/d/$urlEncodedItemName/edit";
-			$linkTarget = 'target="blank"';
+			$linkTarget = 'target="_blank"';
 		}
 		elseif (isset($unlinkable[$match[1]]))
 		{
@@ -74,4 +74,3 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
 		<?php endforeach; ?>
 	<?php endif; ?>
 </div>
-
