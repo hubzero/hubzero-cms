@@ -5,8 +5,9 @@ use Hubzero\Database\Relational;
 use Hubzero\Utility\Str;
 use Session;
 use Date;
+use stdClass;
 
-class Fmn extends Relational
+class Fmn extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
 	 * The table namespace, access to the SQL database
@@ -178,5 +179,88 @@ class Fmn extends Relational
 	public function destroy()
 	{
 		return parent::destroy();
+	}
+	
+	/*
+	 * Namespace used for solr Search
+	 * @return string
+	 */
+	public static function searchNamespace()
+	{
+		$searchNamespace = 'fmn';
+		return $searchNamespace;
+	}
+	
+	/*
+	 * Generate solr search Id
+	 * @return string
+	 */
+	public function searchId()
+	{
+		$searchId = self::searchNamespace() . '-' . $this->get('id');
+		return $searchId;
+	}
+	
+	/**
+	 * Get total number of records that will be indexed by Solr.
+	 * @return integer
+	 */
+	public static function searchTotal()
+	{
+		$total = self::all()->total();
+		return $total;
+	}
+	
+	/**
+	 * Get records
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object
+	 */
+	public static function searchResults($limit, $offset = 0)
+	{
+		return self::all()
+			->start($offset)
+			->limit($limit)
+			->whereEquals('state', 1)
+			->rows();
+	}
+	
+	/*
+	 * Generate search document for Solr
+	 * @return array
+	 */
+	public function searchResult()
+	{
+		if ($this->get('state') == 0)
+		{
+			return false;
+		}
+
+		$obj = new stdClass;
+		$obj->hubtype = self::searchNamespace();
+		$obj->id = $this->searchId();
+		$obj->title = $this->get('name');
+
+		$description = $this->get('about');
+		$description = html_entity_decode($description);
+		$description = \Hubzero\Utility\Sanitize::stripAll($description);
+
+		$obj->description   = $description;
+		$obj->url = ($this->get('group_cn') ? \Request::root() . 'groups/' . $this->get('group_cn') : \Request::root() . 'community' . DS . 'fmns');
+
+		// No tags
+		$obj->tags[] = array(
+			'id' => '',
+			'title' => ''
+		);
+		
+		// Needed for admin database view
+		$obj->access_level = 'public';
+		$obj->owner_type = 'group';
+		$obj->owner = '';
+		
+		return $obj;
 	}
 }
