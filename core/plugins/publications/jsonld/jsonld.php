@@ -76,9 +76,9 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		{
 			$data['dateModified'] = Date::of($publication->modified)->toLocal('Y-m-d');
 		}
-		if ($publication->publish_up && $publication->publish_up != $nullDate)
+		if ($publication->published_up && $publication->published_up != $nullDate)
 		{
-			$data['datePublished'] = Date::of($publication->publish_up)->toLocal('Y-m-d');
+			$data['datePublished'] = Date::of($publication->published_up)->toLocal('Y-m-d');
 		}
 
 		if ($doi = $publication->version->get('doi'))
@@ -105,7 +105,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		$keywords = array();
 		foreach ($publication->getTags() as $tag)
 		{
-			$keywords[] = $tag->tag;
+			$keywords[] = $tag->raw_tag;
 		}
 
 		if (!empty($keywords))
