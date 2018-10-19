@@ -32,7 +32,7 @@
 
 defined('_HZEXEC_') or die();
 
-if ($msg = App::get('request')->getVar('msg'))
+if ($msg = App::get('request')->getString('msg'))
 {
 	$errors[] = base64_decode($msg);
 }
