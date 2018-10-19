@@ -57,21 +57,20 @@ class WizardServiceProvider extends Middleware
 		 && $this->app['config']->get('password'))
 		{
 			$this->app->redirect($this->app['request']->root());
-			//return $response;
 		}
 
-		$referrer = $request->getVar('REQUEST_URI', '', 'server');
+		$referrer = $request->getString('REQUEST_URI', '', 'server');
 
 		if ($request->method() == 'POST' && \Hubzero\Utility\Uri::isInternal($referrer))
 		{
-			$data = $request->getVar('database', array(), 'post');
+			$data = $request->getArray('database', array(), 'post');
 
 			if (!empty($data))
 			{
 				// Load the defualt config from core
 				$config = new \Hubzero\Config\Repository(
 					'site',
-					new \Hubzero\Config\FileLoader(dirname(__DIR__) . DS . 'config')
+					new \Hubzero\Config\FileLoader(dirname(__DIR__) . '/config')
 				);
 
 				// Apply the POSTed values
@@ -81,7 +80,7 @@ class WizardServiceProvider extends Middleware
 				}
 
 				$data = $config->toArray();
-				$path = PATH_APP . DS . 'config';
+				$path = PATH_APP . '/config';
 				$format = 'php';
 
 				if (!is_dir($path))
@@ -123,11 +122,18 @@ class WizardServiceProvider extends Middleware
 
 					foreach ($data as $group => $values)
 					{
+						if (isset($values['secret']))
+						{
+							$length = 30;
+							$x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+							$values['secret'] = substr(str_shuffle(str_repeat($x, ceil($length/strlen($x)))), 1, $length);
+						}
+
 						if (!$writer->write($values, $group, $client))
 						{
 							$this->setError(sprintf(
 								'Failed to write configuration file <code>%s</code>.',
-								$path . DS . ($client ? $client . DS : '') . $group . '.' . $format)
+								$path . '/' . ($client ? $client . '/' : '') . $group . '.' . $format)
 							);
 						}
 					}
