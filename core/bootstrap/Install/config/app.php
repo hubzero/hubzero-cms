@@ -9,7 +9,7 @@ return array(
 	| installation. It is used for security functions.
 	|
 	*/
-	'secret' => 'lskafadfjlasdjfasdfaswer',
+	'secret' => 'youshouldreallychangethis',
 
 	/*
 	|--------------------------------------------------------------------------
