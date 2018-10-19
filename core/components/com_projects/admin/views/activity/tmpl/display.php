@@ -189,7 +189,7 @@ Html::behavior('modal');
 				<td class="priority-2">
 					<?php if ($row->get('starred')): ?>
 						<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unfeature&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unstar&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 						<?php endif; ?>
 						<span class="state default"><span class="text"><?php echo Lang::txt('JYES'); ?></span></span>
 						<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
@@ -197,7 +197,7 @@ Html::behavior('modal');
 						<?php endif; ?>
 					<?php else: ?>
 						<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=feature&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=star&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 						<?php endif; ?>
 						<span class="state notdefault"><span class="text"><?php echo Lang::txt('JNO'); ?></span></span>
 						<?php if (User::authorise('core.edit.state', $this->option . '.component')): ?>
