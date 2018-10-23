@@ -329,14 +329,15 @@ class Publications extends Macro
 	  		$html .= '      </h3>';
 				
 				// Authors
-				$html .= '      <p class="authors">';
-				$html .= '        ' . implode(', ', array_map(function ($author) {return $author->name; }, $pub->authors()));
+				$authors = implode(', ', array_map(function ($author) {return $author->name; }, $pub->authors()));
+				$html .= '      <p class="authors" title= "' . $authors . '">';
+				$html .= '        ' . $authors;
 	  		$html .= '      </p>';
 				
 				// Version info
 				$html .= '      <p class="hist">';
 				$html .= '        <span class="versions">';
-				$html .= '          Version: ' . $pub->version->get('version_number');
+				$html .= '          Version: ' . $pub->version->get('version_label');
 				$html .= '        </span>';
 				if ($v = $pub->forked_from) {
 					// Get forked ancestor
@@ -346,7 +347,7 @@ class Publications extends Macro
 					$ancestor = new \Components\Publications\Models\Publication($p, 'default', $v);
 					
 					$html .= '        <span class="adapted">';
-					$html .= '          Adapted From: <a href="' . $ancestor->link('version') . '">' . $ancestor->version->get('title') . '</a> v' . $ancestor->version->get('version_number');
+					$html .= '          Adapted From: <a href="' . $ancestor->link('version') . '">' . $ancestor->version->get('title') . '</a> v' . $ancestor->version->get('version_label');
 					$html .= '        </span>';
 				}
 				$html .= '      </p>';
@@ -396,6 +397,37 @@ class Publications extends Macro
 				$html .= '          ' . $downloads;
 				$html .= '        </a>';
 				$html .= '      </div>'; // End downloads
+
+				// Adaptation information
+				$this->_db->setQuery(
+					"SELECT COUNT(id) 
+					FROM `#__publication_versions` 
+					WHERE `forked_from` 
+					IN (" . $this->_db->quote($pub->version->id) . ")");
+				$forks = (int) $this->_db->loadResult();				
+
+				$html .= '      <div class="forks">';
+				$html .= '        <a aria-label="Adaptations" title= "Adaptations" href="' . $pub->link() . '/forks?v=' . $pub->version->get('version_number') . '">';
+				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/code-tree.svg") . '</span>';
+				$html .= '          ' . $forks;
+				$html .= '        </a>';
+				$html .= '      </div>'; // End adaptations
+				
+				// Watch Information
+				$this->_db->setQuery(
+					"SELECT COUNT(id) 
+					FROM `#__item_watch` 
+					WHERE `item_type` = 'publication'
+					AND `item_id`
+					IN (" . $pub->id . ")");
+				$watching = (int) $this->_db->loadResult();
+
+				$html .= '      <div class="watching">';
+				$html .= '        <span aria-label="Watching" title= "Watching">';
+				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
+				$html .= '          ' . $watching;
+				$html .= '        </span>';
+				$html .= '      </div>'; // End adaptations
 				
 				// Publish Date
 				$html .= '      <div class="date">';
@@ -424,6 +456,11 @@ class Publications extends Macro
 		    $html .= '      </a>';
 		    $html .= '      <a aria-label="Download" title= "Download" href="' . $pub->link('serve') . '?render=archive">';
 		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
+		    $html .= '      </a>';
+				
+				$url = $pub->link() . '/forks/' . $pub->version->get('version_number') . '?action=fork';
+				$html .= '      <a aria-label="Adapt" title= "Adapt" href="' . $url . '">';
+		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/code-tree.svg") . '</span>';
 		    $html .= '      </a>';
 				if ($watching) {
   		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this publication\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe">';
@@ -748,7 +785,7 @@ class Publications extends Macro
 			{
 				$style = (isset($matches[1]) ? $matches[1] : '');
 				unset($args[$k]);
-				return $this->_db->quote($style);
+				return $style;
 			}
 		}
 
