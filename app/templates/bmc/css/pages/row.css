@@ -1,3 +1,30 @@
+.newsletter-img {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.newsletter-img img {
+  height: 100%;
+  object-fit: cover;
+  transition: 3s ease-in-out;
+  width: 100%;
+}
+
+.newsletter-img:hover img {
+  transform: scale(1.1);
+}
+
+.newsletter-img::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  height: 100%;
+  width: 100%;
+}
+
 .header-logo img {
   width: 100%;
 }
@@ -48,12 +75,12 @@
 }
 
 .wrapper .description .link {
-  text-transform: uppercase;
   box-shadow: inset 0 0 0 1px #6E9C39;
   color: #6E9C39;
-  transition: color 0.25s 0.08333s;
-  position: relative;
   padding: .25em .75em;
+  position: relative;
+  text-transform: uppercase;
+  transition: color 0.25s 0.08333s;
   border-radius: 2px;
   display: block;
   margin: 1em;
@@ -69,10 +96,10 @@
   border: 0 solid transparent;
   box-sizing: border-box;
   content: '';
+  height: 0;
   pointer-events: none;
   position: absolute;
   width: 0;
-  height: 0;
   bottom: 0;
   right: 0;
 }
@@ -93,9 +120,9 @@
 
 .wrapper .description .link:hover::before, .wrapper .description .link:hover::after {
   border-color: #cca231;
+  height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
   width: 100%;
-  height: 100%;
 }
 
 .wrapper .description .link:hover::before {
@@ -155,6 +182,12 @@
   width: 25rem;
 }
 
+.module-past .newsletter {
+  height: 14.0625rem;
+  margin: 1em;
+  width: 20rem;
+}
+
 .billboard-image {
   height: 16rem;
   margin-bottom: 1em;
@@ -182,4 +215,30 @@
 
 .billboard-content .authors {
   font-weight: 700;
+}
+
+.newsletter {
+  position: relative;
+}
+
+.newsletter .newsletter-title {
+  bottom: 0;
+  padding: 10px;
+  position: absolute;
+}
+
+.newsletter .newsletter-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2.86rem;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
 }

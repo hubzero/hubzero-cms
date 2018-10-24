@@ -1,8 +1,12 @@
-@import 'variables.scss';
-@import 'mixins.scss';
+@import 'variables';
+@import 'mixins';
 
 .wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(4, [row] minmax(30rem, auto)));
+
+  h3 {
+    font-family: 'Martel', serif;
+  }
 }
 
 //Banner
@@ -12,19 +16,21 @@
   @include grid-template(repeat(4, 1fr), repeat(2, auto));
   @include bcg-img('/app/site/media/images/pexels-photo-355988.jpg');
   @include bcg($black, $white);
-  min-height: 25rem;
   @include respond-at(901px) {
     @include grid-template(repeat(4, 1fr), 35rem);
   }
   @include grid-support {
     height: auto;
   }
+  min-height: 25rem;
 }
+
 .intro {
   @include grid(1 / span 4, 1);
-  width: 100%;
   align-self: center;
   padding: 2.5em;
+  width: 100%;
+
   .tagline {
     color: $white;
   }
@@ -36,19 +42,24 @@
     width: auto;
   }
 }
+
 .feature {
   @include grid(1 / span 4, 2);
-  position: relative;
+  border: 1px solid $green;
+  border-radius: 6px;
   margin: 2em;
   padding: 2em;
-  border: 2px solid $link-color;
+  position: relative;
+
   h2 {
-    position: absolute;
-    top: -1.6rem;
+    color: $green;
     font-size: 1.5rem;
+    left: 0;
+    position: absolute;
     text-transform: uppercase;
-    color: $link-color;
+    top: -1.6rem;
   }
+
   h5 {
     color: $white;
   }
@@ -56,50 +67,99 @@
     @include grid(3 / span 2, 1);
     align-self: center;
   }
+
   .module-feature {
-    @include grid-template(1fr, repeat(4, 10rem), 10px);
-    @include respond-at(601px) {
-      @include grid-template(repeat(2, 1fr), repeat(2, 10rem), 10px);
-    }
+    @include grid-template(1fr 1fr, 1fr, 10px);
+    // @include respond-at(601px) {
+    //   @include grid-template(repeat(2, 1fr), repeat(2, 10rem), 10px);
+    // }
   }
   .billboard-image {
     @extend %showcase-img;
     background-color: $white;
-    transition: all 3s ease-in-out;
     overflow: hidden;
+    transition: 3s ease-in-out;
+
     img {
-      transition: all 3s ease-in-out;
+      transition: 3s ease-in-out;
     }
+
     &:hover {
       img {
         transform: scale(1.1);
       }
     }
   }
+
   .billboard {
-    position: relative;
     height: 10rem;
+    position: relative;
+
     .billboard-tag {
       @include showcase-tag($green, $white);
     }
+
     .billboard-header {
-      position: absolute;
       bottom: 0;
       padding: 10px;
+      position: absolute;
+
       a {
         @include showcase-header(1em, 1, 2);
       }
     }
   }
+
+  .blog {
+    @include flexbox;
+    position: relative;
+  }
+
+  .blog-img {
+    @extend %showcase-img;
+  }
+
+  .blog-title {
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+
+    a {
+      @include showcase-header(1em, 1, 2);
+    }
+  }
+
+  .newsletter-img {
+    @extend %showcase-img;
+  }
+
+  .newsletter {
+    position: relative;
+
+    .newsletter-title {
+      bottom: 0;
+      padding: 10px;
+      position: absolute;
+
+      a {
+        @include showcase-header(1.1rem, 1.3, 2);
+      }
+    }
+  }
+
+  .horizontal {
+    @include grid(1 / span 2, null);
+  }
+
   .regular {
+    @include grid-support {
+      height: auto;
+      margin: 0;
+      width: auto;
+    }
     flex: 1 1 20rem;
     height: 10rem;
     margin: 2.5px;
-    @include grid-support {
-      width: auto;
-      height: auto;
-      margin: 0;
-    }
   }
 }
 
@@ -107,41 +167,36 @@
 .one {
   @include grid(col / span 4, row 2);
   @include grid-template(1fr, repeat(4, auto));
-  @include bcg($med-blue, $white);
-  h2 {
-    color: $white;
-  }
-  h3 {
-    @extend h2;
-  }
+  @include bcg($light-gray, null);
 }
-h3 {
-  font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-}
+
 @include respond-at(901px) {
   @include grid-template(repeat(4, 1fr), repeat(2, minmax(23rem, auto)));
 }
+
 .resources {
   @include flexbox(wrap);
   @include grid(null, 1);
   @include grid-template(1fr, repeat(2, auto));
-  flex: 1;
   @include respond-at(901px) {
     @include grid(1 / span 4, 1);
     @include grid-template(repeat(4, 1fr), auto);
   }
+  flex: 1;
+
   .oer {
     @include grid(1fr, 1);
-    width: 100%;
-    padding: 2.5em;
     align-self: center;
     order: -1;
+    padding: 2.5em;
+    width: 100%;
+
     .link {
-      padding-top: 2em;
-      a {
-        @include btn-border-drawing($white, $orange, 2px, bottom, right);
-      }
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
+      margin-top: 2em;
     }
+
     @include respond-at(901px) {
       @include grid(3 / span 2, null);
       order: 0;
@@ -151,27 +206,33 @@ h3 {
       width: auto;
     }
   }
+
   .module-left {
     @include flexbox(wrap);
     @include grid-template(repeat(auto-fit, minmax(15rem, 1fr)), null, 5px);
     grid-auto-rows: 15rem;
-    width: 100%;
     padding: 2.5em;
+    width: 100%;
+
     .resource-img {
       @extend %showcase-img;
     }
+
     .resource {
       flex: 1 1 15rem;
       height: 15rem;
-      position: relative;
       margin: 5px;
+      position: relative;
+
       .resource-tag {
         @include showcase-tag($dark-blue, $white);
       }
+
       .resource-title {
-        position: absolute;
         bottom: 0;
         padding: 10px;
+        position: absolute;
+
         a {
           @include showcase-header(1em, 1, 2);
         }
@@ -180,7 +241,7 @@ h3 {
         margin: 0;
       }
     }
-    @include respond-at(901px){
+    @include respond-at(901px) {
       @include grid(1 / span 2, null);
       @include grid-template(1fr, repeat(3, 15rem), 5px);
       width: 50%;
@@ -194,23 +255,25 @@ h3 {
     }
   }
 }
+
 .software {
   @include flexbox(wrap);
   @include grid(1fr, 2);
   @include grid-template(1fr, repeat(2, auto));
-  flex: 1;
   @include respond-at(901px) {
     @include grid(1 / span 4, 2);
     @include grid-template(repeat(2, 1fr), null);
   }
+  flex: 1;
+
   .left {
-    width: 100%;
     padding: 2.5em;
+    width: 100%;
+
     .link {
-      padding-top: 2em;
-      a {
-        @include btn-border-drawing($white, $orange, 2px, bottom, right);
-      }
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
+      margin-top: 2em;
     }
     @include respond-at(901px) {
       width: 50%;
@@ -219,43 +282,45 @@ h3 {
       width: auto;
     }
   }
+
   .software-logos {
     @include flexbox(wrap);
     @include grid-template(repeat(auto-fit, minmax(100px, 1fr)), null, 10px);
-    grid-auto-rows: 125px;
-    width: 100%;
-    padding: 2.5em;
-    justify-items: center;
     align-self: center;
+    grid-auto-rows: 125px;
+    justify-items: center;
+    padding: 2.5em;
     text-align: center;
+    width: 100%;
+
     .logo-wrap {
-      width: 9rem;
-      height: 8rem;
-      transition: all 0.3s ease-in-out;
       @include grid-support {
-        width: auto;
         height: auto;
+        width: auto;
       }
+      height: 8rem;
+      transition: .3s ease-in-out;
+      width: 9rem;
+
       img {
         height: 65%;
-        width: 100px;
         object-fit: scale-down;
+        width: 100px;
       }
+
       &:hover {
         transform: scale(1.1);
+
         a {
           color: $orange;
         }
       }
     }
+
     h6 {
       align-self: center;
-      padding-top: .5em;
       margin: 0;
-      color: $light-gray;
-      a {
-        color: $light-gray;
-      }
+      padding-top: .5em;
     }
     @include respond-at(901px) {
       width: 50%;
@@ -265,6 +330,7 @@ h3 {
     }
   }
 }
+
 .sub-title {
   margin-left: 30px;
 }
@@ -274,6 +340,7 @@ h3 {
   @include grid(col / span 4, row 3);
   @include grid-template(1fr, repeat(2, auto));
 }
+
 .network {
   @include flexbox(wrap);
   @include grid(null, 1);
@@ -281,10 +348,12 @@ h3 {
   @include respond-at(901px) {
     @include grid-template(repeat(2, 1fr), 23rem);
   }
+
   .network-logos {
     @include grid-template(repeat(auto-fit, minmax(75px, 1fr)), null, 5px);
     justify-items: center;
     padding: 2.5em;
+
     .logo {
       align-self: center;
       background-color: transparent !important;
@@ -292,9 +361,8 @@ h3 {
       width: 4.6rem !important;
     }
   }
+
   .left {
-    width: 100%;
-    padding: 2.5em;
     @include respond-at(901px) {
       @include grid(1 / span 1, null);
       width: 50%;
@@ -302,12 +370,13 @@ h3 {
     @include grid-support {
       width: auto;
     }
-  }
-  .right {
-    @include grid(1fr, 1);
-    order: -1;
+    padding: 2.5em;
     width: 100%;
+  }
+
+  .right {
     @extend .left;
+    @include grid(1fr, 1);
     @include respond-at(901px) {
       @include grid(2 / span 1, null);
       order: 0;
@@ -316,80 +385,100 @@ h3 {
     @include grid-support {
       width: auto;
     }
+    order: -1;
+    width: 100%;
   }
+
   .link {
-    padding-top: 2em;
-    a {
-      @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
-    }
+    @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+    border-radius: 2px;
+    margin-top: 2em;
   }
 }
+
 .community {
   @include flexbox(wrap);
   @include grid-template(1fr, repeat(2, auto));
   @include respond-at(901px) {
     @include grid-template(repeat(2, 1fr), auto);
   }
+  padding: 0 2.5em;
+
   .left {
-    width: 100%;
-    padding: 2.5em;
     @include respond-at(620px) {
       @include grid-template(repeat(2, 1fr), repeat(2, auto));
     }
     @include respond-at(901px) {
       width: 50%;
     }
+    padding-right: 2.5em;
+    width: 100%;
+
     .title {
       @include grid(null, 1);
       @include respond-at(620px) {
         @include grid(span 2, null);
       }
     }
+
     ul {
       @include grid(null, 2);
-      list-style: none;
       @include respond-at(620px) {
         @include grid(span 1, null);
       }
+      list-style: none;
+
     }
+
     .button {
       @include grid(null, 3);
       margin: 1em 0;
       text-align: center;
+
       a {
-        @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
+        @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+        border-radius: 2px;
+        position: relative;
+        top: 50%;
       }
       @include respond-at(620px) {
         @include grid(null, 2);
-      }
-      h6 {
-        position: relative;
-        top: 50%;
       }
     }
     @include grid-support {
       width: auto;
     }
   }
+
   .right {
-    width: 100%;
     @include respond-at(901px) {
       width: 50%;
     }
     @include grid-support {
       width: auto;
     }
+    border: 1px solid $green;
+    border-radius: 6px;
+    position: relative;
+    width: 100%;
+
+    h2 {
+      color: $green;
+      position: absolute;
+      top: -.95em;
+    }
   }
+
   .module-right {
     @include flexbox(wrap);
     @include grid-template(repeat(4, 1fr), repeat(4, 15rem));
     @include respond-at(1001px) {
       @include grid-template(nykk, repeat(2, 15rem), 5px);
     }
+    padding: 1em;
+
     .horizontal {
       @include grid(span 4, null);
-      flex: 1 1 30rem;
-      height: 15rem;
       @include respond-at(901px) {
         @include grid(span 4, null);
         flex: 1 1 24rem;
@@ -399,14 +488,15 @@ h3 {
         @include grid(span 2, null);
       }
       @include grid-support {
-        width: auto;
         height: auto;
+        width: auto;
       }
+      flex: 1 1 30rem;
+      height: 15rem;
     }
+
     .regular {
       @include grid(span 2, null);
-      flex: 1 1 15rem;
-      height: 15rem;
       @include respond-at(901px) {
         @include grid(span 2, null);
         flex: 1 1 12rem;
@@ -416,73 +506,157 @@ h3 {
         @include grid(span 1, null);
       }
       @include grid-support {
-        width: auto;
         height: auto;
+        width: auto;
       }
+      flex: 1 1 15rem;
+      height: 15rem;
     }
+
     .billboard-image {
       @extend %showcase-img;
     }
+
     .billboard {
       position: relative;
+
       .billboard-tag {
         @include showcase-tag($green, $white);
       }
+
       .billboard-header {
-        position: absolute;
         bottom: 0;
         padding: 10px;
+        position: absolute;
+
         a {
           @include showcase-header(1em, 1, 2);
         }
       }
     }
+
     .resource-img {
       @extend %showcase-img;
     }
+
     .resource {
       position: relative;
+
       .resource-tag {
         @include showcase-tag($dark-blue, $white);
         background-color: $dark-blue;
       }
+
       .resource-title {
-        position: absolute;
         bottom: 0;
         padding: 10px;
+        position: absolute;
+
         a {
           @include showcase-header(1em, 1, 2);
         }
       }
     }
+
     .partner-img {
       @extend %showcase-group;
     }
+
     .partner-tag {
       @include showcase-tag($green, $white);
     }
+
     .partner-title {
-      position: absolute;
       bottom: 0;
       padding: 10px;
+      position: absolute;
+
       a {
         @include showcase-header(1em, 1, 2);
       }
     }
+
     .group {
       position: relative;
+
       .group-img {
         @extend %showcase-group;
       }
+
       .group-tag {
         @include showcase-tag($green, $white);
       }
+
       .group-description {
-        position: absolute;
         bottom: 0;
         padding: 10px;
+        position: absolute;
+
         a {
           @include showcase-header(1em, 1, 2);
+        }
+      }
+    }
+
+    .blog {
+      @include flexbox;
+      position: relative;
+    }
+
+    .blog-img {
+      @extend %showcase-img;
+    }
+
+    .blog-title {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+
+      a {
+        @include showcase-header(1em, 1, 2);
+      }
+    }
+
+    .newsletter-img {
+      @extend %showcase-img;
+    }
+
+    .newsletter {
+      position: relative;
+
+      .newsletter-title {
+        bottom: 0;
+        padding: 10px;
+        position: absolute;
+
+        a {
+          @include showcase-header(1.1rem, 1.3, 2);
+        }
+      }
+    }
+
+    .fmn-img {
+      @extend %showcase-img;
+    }
+
+    .fmn {
+      position: relative;
+
+      .fmn-title {
+        bottom: 0;
+        padding: 10px;
+        position: absolute;
+
+        a {
+          @include showcase-header(1.1rem, 1.3, 2);
+        }
+      }
+
+      .fmn-tag {
+        @include showcase-tag($green, $white);
+
+        span {
+          color: $white;
         }
       }
     }
@@ -495,31 +669,28 @@ h3 {
 //Services
 .three {
   @include flexbox(wrap);
-  flex: 1;
-  justify-content: space-between;
   @include grid(col / span 4, row 4);
   @include grid-template(2fr , repeat(5, auto), 10px);
-  justify-self: center;
-  padding: 2.5em;
   @include respond-at(901px) {
     @include grid-template(repeat(4, 1fr), auto, 10px);
   }
+  flex: 1;
+  justify-content: space-between;
+  justify-self: center;
+  padding: 2.5em;
+
   h4 {
     font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
   }
+
   .title {
-    width: 100%;
     @include grid(span 4, null);
     text-align: center;
+    width: 100%;
   }
+
   .service {
     @include grid(1 / span 2, null);
-    position: relative;
-    width: 100%;
-    border: 1px solid $green;
-    border-radius: 6px;
-    padding: 1.5em 1em 2.5em 1em;
-    margin: 5px 0;
     @include respond-at(901px) {
       @include grid(span 2, null);
       width: 47%;
@@ -529,21 +700,30 @@ h3 {
       @include grid(span 1, null);
       width: 21%;
     }
+    border: 1px solid $green;
+    border-radius: 6px;
+    margin: 5px 0;
+    padding: 1.5em 1em 2.5em;
+    position: relative;
+    width: 100%;
+
     h4 {
       height: 4.5rem;
     }
+
     .button {
-      position: absolute;
       bottom: .5rem;
+      position: absolute;
+
     }
+
     .link {
-      a {
-        @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
-      }
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
     }
     @include grid-support {
-      width: auto;
       margin: 0;
+      width: auto;
     }
   }
 }
