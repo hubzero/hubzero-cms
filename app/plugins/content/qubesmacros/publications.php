@@ -290,9 +290,9 @@ class Publications extends Macro
 			}
 		} else {
 			foreach ($items as $pub)
-			{				
+			{
 				$html .= '  <div class="card">';
-				
+
 				// Sponsors
 				if ($sponsors) {
 					$html .= '    <div class="logo-wrap">';
@@ -303,7 +303,7 @@ class Publications extends Macro
 					}
 					$html .= '    </div>';
 				}
-				
+
 				// Focus Tags
 				if ($focusTags) {
 					// http://colorbrewer2.org/#type=qualitative&scheme=Dark2
@@ -322,18 +322,18 @@ class Publications extends Macro
 
 				// Citation info
 	  		$html .= '	  <div class="title">';
-				
+
 				// Title
 	  		$html .= '      <h3>';
 	  		$html .= '        <a href="' . $pub->link() . '">' . $pub->get('title') . '</a>';
 	  		$html .= '      </h3>';
-				
+
 				// Authors
 				$authors = implode(', ', array_map(function ($author) {return $author->name; }, $pub->authors()));
 				$html .= '      <p class="authors" title= "' . $authors . '">';
 				$html .= '        ' . $authors;
 	  		$html .= '      </p>';
-				
+
 				// Version info
 				$html .= '      <p class="hist">';
 				$html .= '        <span class="versions">';
@@ -345,14 +345,14 @@ class Publications extends Macro
 					$this->_db->setQuery("SELECT publication_id FROM `#__publication_versions` WHERE `id`=" . $this->_db->quote($v));
 					$p = $this->_db->loadResult();
 					$ancestor = new \Components\Publications\Models\Publication($p, 'default', $v);
-					
+
 					$html .= '        <span class="adapted">';
 					$html .= '          Adapted From: <a href="' . $ancestor->link('version') . '">' . $ancestor->version->get('title') . '</a> v' . $ancestor->version->get('version_label');
 					$html .= '        </span>';
 				}
 				$html .= '      </p>';
 				$html .= '    </div>'; // End title
-				
+
 				// Content
 				$html .= '    <div class="card-content">';
 				$html .= '      <div class="img-wrap">';
@@ -362,12 +362,12 @@ class Publications extends Macro
 				$html .= '        ' . $pub->get('abstract');
 				$html .= '      </div>';
 				$html .= '    </div>'; // End content
-				
+
 				// More information button
-				$html .= '    <a aria-label="More Information" title="More Information" href="#" class="btn-action">';
+				$html .= '    <button aria-label="More Information" title="More Information" href="#" class="btn-action">';
 				$html .= '      <i class="menu"></i>';
-		    $html .= '    </a>';
-				
+		    $html .= '    </button>';
+
 				// Meta
 				$tags = $pub->getTags()->toArray();
 				$tagsTitle = implode(', ', array_map(function ($tag) {return (!$tag['admin'] ? $tag['raw_tag'] : NULL); }, $tags));
@@ -380,7 +380,7 @@ class Publications extends Macro
 				}
 				$html .= '        </span>';
 				$html .= '      </div>'; // End tags
-				
+
 				// Download information
 				// Code pulled from: plugins/publications/usage/usage.php (onPublication)
 				$this->_db->setQuery(
@@ -390,7 +390,7 @@ class Publications extends Macro
 					ORDER BY `year` ASC, `month` ASC"
 				);
 				$downloads = (int) $this->_db->loadResult();
-				
+
 				$html .= '      <div class="downloads">';
 				$html .= '        <a aria-label="Downloads" title= "Downloads" href="' . $pub->link('serve') . '?render=archive">';
 				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
@@ -400,23 +400,23 @@ class Publications extends Macro
 
 				// Adaptation information
 				$this->_db->setQuery(
-					"SELECT COUNT(id) 
-					FROM `#__publication_versions` 
-					WHERE `forked_from` 
+					"SELECT COUNT(id)
+					FROM `#__publication_versions`
+					WHERE `forked_from`
 					IN (" . $this->_db->quote($pub->version->id) . ")");
-				$forks = (int) $this->_db->loadResult();				
+				$forks = (int) $this->_db->loadResult();
 
 				$html .= '      <div class="forks">';
 				$html .= '        <a aria-label="Adaptations" title= "Adaptations" href="' . $pub->link() . '/forks?v=' . $pub->version->get('version_number') . '">';
-				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/code-tree.svg") . '</span>';
+				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
 				$html .= '          ' . $forks;
 				$html .= '        </a>';
 				$html .= '      </div>'; // End adaptations
-				
+
 				// Watch Information
 				$this->_db->setQuery(
-					"SELECT COUNT(id) 
-					FROM `#__item_watch` 
+					"SELECT COUNT(id)
+					FROM `#__item_watch`
 					WHERE `item_type` = 'publication'
 					AND `item_id`
 					IN (" . $pub->id . ")");
@@ -428,7 +428,7 @@ class Publications extends Macro
 				$html .= '          ' . $watching;
 				$html .= '        </span>';
 				$html .= '      </div>'; // End adaptations
-				
+
 				// Publish Date
 				$html .= '      <div class="date">';
 	      $html .= '        <span aria-label="Publish Date" title= "Publish Date">';
@@ -436,7 +436,7 @@ class Publications extends Macro
 	      $html .= '         ' . Date::of($pub->version->get('published_up'))->toLocal('m.d.Y');
 	      $html .= '        </span>';
 	      $html .= '      </div>'; // End publish date
-				
+
 				$html .= '    </div>'; // End meta
 
 				// Watch
@@ -447,9 +447,9 @@ class Publications extends Macro
 					'publication',
 					User::get('id')
 				);
-								
+
 				// Sub-menu
-				$html .= '    <div class="sub-menu-alt2">';
+				$html .= '    <div class="sub-menu">';
 				$html .= '      <a aria-label="Full Record" title= "Full Record" href="' . $pub->link() . '">';
 		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/arrow-right.svg") . '</span>';
 		    $html .= '        Full Record';
@@ -457,10 +457,10 @@ class Publications extends Macro
 		    $html .= '      <a aria-label="Download" title= "Download" href="' . $pub->link('serve') . '?render=archive">';
 		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
 		    $html .= '      </a>';
-				
+
 				$url = $pub->link() . '/forks/' . $pub->version->get('version_number') . '?action=fork';
 				$html .= '      <a aria-label="Adapt" title= "Adapt" href="' . $url . '">';
-		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/code-tree.svg") . '</span>';
+		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
 		    $html .= '      </a>';
 				if ($watching) {
   		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this publication\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe">';
@@ -469,14 +469,14 @@ class Publications extends Macro
 				} else {
 					$html .= '      <a aria-label="Watch" title= "Click to watch this publication and receive notifications when a new version is released" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe">';
   		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
-  		    $html .= '      </a>';					
+  		    $html .= '      </a>';
 				}
 		    $html .= '    </div>'; // End sub-menu
-												
+
 				$html .= '  </div>'; // End card
 			}
 		}
-		
+
 		$html .= '</div>'; // End card list
 
 		return $html;
@@ -770,7 +770,7 @@ class Publications extends Macro
 
 		return false;
 	}
-	
+
 	/**
 	 * Get card style
 	 *

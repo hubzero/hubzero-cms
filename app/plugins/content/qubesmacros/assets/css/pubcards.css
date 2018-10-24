@@ -42,22 +42,12 @@
 
 .card.active .abstract {
   margin-top: .5em;
+  visibility: visible;
 }
 
 .card.active .sub-menu {
   margin-top: 0;
-}
-
-.card.active .sub-menu-alt1 {
-  margin-top: 0;
-}
-
-.card.active .sub-menu-alt2 {
-  margin-top: 0;
-}
-
-.card.active .sub-menu-alt3 {
-  margin-top: 0;
+  visibility: visible;
 }
 
 .card.active .meta {
@@ -72,6 +62,11 @@
 
 .logo {
   height: 2rem;
+  transition: 1s;
+}
+
+.logo:hover {
+  transform: scale(1.1);
 }
 
 .img-wrap {
@@ -95,10 +90,10 @@
   border: 1px solid #F1F2F2;
   bottom: 0;
   height: 6.75rem;
-  width: 100%;
   padding: .3em .5em;
   position: absolute;
   transition: .4s;
+  width: 100%;
 }
 
 .title .authors {
@@ -146,7 +141,7 @@
   text-overflow: ellipsis;
   font-family: 'Martel', serif;
   margin: inherit;
-  margin-bottom: .2em;
+  margin-bottom: .5em;
 }
 
 .title p {
@@ -185,6 +180,7 @@
   position: absolute;
   top: 6.5rem;
   transition: .4s;
+  visibility: hidden;
 }
 
 .hist {
@@ -256,46 +252,6 @@
   flex-wrap: nowrap;
   background-color: #84bf41;
   font-size: 0.875rem;
-  justify-content: space-around;
-  margin-top: 5em;
-  position: absolute;
-  padding: .2em .5em .1em;
-  top: 16em;
-  transition: .4s;
-  width: 100%;
-}
-
-.sub-menu a {
-  color: #fff;
-}
-
-.sub-menu-alt1 {
-  display: flex;
-  flex-wrap: nowrap;
-  background-color: #84bf41;
-  font-size: 0.875rem;
-  margin-top: 5em;
-  position: absolute;
-  padding: .2em .5em .1em;
-  top: 16em;
-  transition: .4s;
-  width: 100%;
-}
-
-.sub-menu-alt1 a {
-  color: #fff;
-  margin: 0 1em;
-}
-
-.sub-menu-alt1 a:first-child {
-  margin-left: 0;
-}
-
-.sub-menu-alt2 {
-  display: flex;
-  flex-wrap: nowrap;
-  background-color: #84bf41;
-  font-size: 0.875rem;
   justify-content: flex-end;
   margin-top: 5em;
   position: absolute;
@@ -303,39 +259,17 @@
   top: 16em;
   transition: .4s;
   width: 100%;
+  visibility: hidden;
 }
 
-.sub-menu-alt2 a {
+.sub-menu a {
   color: #fff;
   margin: 0 1em;
 }
 
-.sub-menu-alt2 a:first-child {
+.sub-menu a:first-child {
   left: 0;
   position: absolute;
-}
-
-.sub-menu-alt3 {
-  display: flex;
-  flex-wrap: nowrap;
-  background-color: #84bf41;
-  font-size: 0.875rem;
-  margin-top: 5em;
-  position: absolute;
-  padding: .2em .5em .1em;
-  top: 16em;
-  transition: .4s;
-  width: 100%;
-}
-
-.sub-menu-alt3 a {
-  color: #fff;
-  margin: 0 1em;
-}
-
-.sub-menu-alt3 a:last-child {
-  position: absolute;
-  right: 0;
 }
 
 .btn-action {
@@ -357,8 +291,6 @@
 .btn-action:hover {
   border: 5px solid #fff;
 }
-
-/* Legacy */
 
 a {
   border: none;

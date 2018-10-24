@@ -1,6 +1,261 @@
 @import "variables.scss";
 @import "mixins.scss";
 
+// New resource cards as of 10/2018
+
+.icon-spinner {
+  -webkit-animation: spin-animation .2s infinite linear;
+  animation: spin-animation .2s infinite linear;
+  display: inline-block;
+}
+
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  height: 17.1875rem;
+  margin: .5em;
+  overflow: hidden;
+  position: relative;
+  width: 21.875rem;
+
+  &.active {
+
+    .title {
+      background-color: $white;
+      height: 100%;
+
+      h3 {
+        height: 2.5rem;
+        max-width: 85%;
+      }
+    }
+
+    .featured-tag {
+      bottom: 0;
+    }
+
+    .abstract {
+      margin-top: .5em;
+      visibility: visible;
+    }
+
+    .sub-menu {
+      margin-top: 0;
+      visibility: visible;
+    }
+
+    .meta {
+      background-color: $white;
+    }
+  }
+}
+
+.logo-wrap {
+  left: 5px;
+  position: absolute;
+  top: 5px;
+}
+
+.logo {
+  height: 2rem;
+  transition: 1s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.img-wrap {
+  height: 100%;
+  width: 100%;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+}
+
+.card-content {
+  height: 100%;
+  width: 100%;
+}
+
+.title {
+  background-color: rgba($white, .85);
+  border: 1px solid $light-gray;
+  bottom: 0;
+  height: 6.75rem;
+  padding: .3em .5em;
+  position: absolute;
+  transition: .4s;
+  width: 100%;
+
+  .authors {
+    @include truncate(.75rem, 1, 1);
+  }
+
+  .affilication {
+    @include truncate(.75rem, 1, 1);
+  }
+
+  h3 {
+    @include truncate(1.125rem, 1.2, 2);
+    font-family: 'Martel', serif;
+    margin: inherit;
+    margin-bottom: .5em;
+  }
+
+  p {
+    font-size: 0.75rem;
+    line-height: 1;
+    margin: 0;
+  }
+}
+
+.featured-tag {
+  background-color: $green;
+  bottom: 6.75rem;
+  color: $white !important;
+  font-family: 'Martel', sans-serif;
+  font-size: .8rem;
+  height: auto;
+  left: 0;
+  padding: .25em .5em;
+  position: absolute;
+  transition: .6s;
+}
+
+.abstract {
+  @include truncate(1rem, 1.2, 5);
+  margin: 14em .5em .5em .5em;
+  position: absolute;
+  top: 6.5rem;
+  transition: .4s;
+  visibility: hidden;
+}
+
+.hist {
+  @include flexbox;
+  justify-content: space-between;
+}
+
+.versions {
+  width: 5rem;
+}
+
+.adapted {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 14.5rem;
+}
+
+.icons {
+  display: inline-block;
+  width: .75rem;
+}
+
+.menu-icon {
+  display: inline-block;
+  fill: $white;
+  width: 1.1875rem;
+}
+
+.menu:before {
+  color: $white;
+  content: '\f039';
+  font-family: 'Fontcons';
+  font-style: normal;
+}
+
+.arrow-left:before {
+  color: $white;
+  content: '\2190';
+  font-family: 'Fontcons';
+  font-style: normal;
+}
+
+.meta {
+  @include flexbox;
+  bottom: 0;
+  font-family: 'Martel', serif;
+  font-size: 0.8125rem;
+  justify-content: space-between;
+  left: 0;
+  padding: 0 .5em;
+  position: absolute;
+  transition: .2s;
+  width: 100%;
+  z-index: 99;
+}
+
+.tag-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 9.6875rem;
+}
+
+.sub-menu {
+  @include flexbox;
+  background-color: $green;
+  font-size: 0.875rem;
+  justify-content: flex-end;
+  margin-top: 5em;
+  position: absolute;
+  padding: .2em .5em .1em;
+  top: 16em;
+  transition: .4s;
+  width: 100%;
+  visibility: hidden;
+
+  a {
+    color: $white;
+    margin: 0 1em;
+
+    &:first-child {
+      left: 0;
+      position: absolute;
+    }
+  }
+}
+
+.btn-action {
+  background-color: $green;
+  border: 5px solid $white;
+  border-radius: 50%;
+  color: $white;
+  height: 3.375rem;
+  line-height: 44px;
+  position: absolute;
+  right: 0.3125em;
+  text-align: center;
+  top: 0.3125em;
+  transition: .3s;
+  width: 3.375rem;
+  z-index: 100;
+
+  &:hover {
+    border: 5px solid $white;
+  }
+}
+
+// Original resource cards
+
 a {
   border: none;
 }
