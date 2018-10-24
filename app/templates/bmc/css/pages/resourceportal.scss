@@ -1,247 +1,167 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 
-
-.link-anchor {
-  color: inherit;
-  &:hover {
-    color: inherit;
-  }
-  &:visited {
-    color: inherit;
-  }
-}
-
 .wrapper {
-  @include grid-template(repeat(4, [col] 1fr), repeat(6, [row] auto));
+  h3,
+  h4 {
+    font-family: 'Martel', serif;
+  }
 }
 
 //Feature
 .feature {
-  @include grid(col / span 4, row);
   .module-feature {
     @include flexbox(wrap);
-    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
-    grid-auto-rows: 300px;
     justify-content: center;
   }
+
   .resource-img {
-      @extend %showcase-img;
+    @extend %showcase-img;
     }
-    .resource {
-      position: relative;
-      flex: 1 1 10rem;
-      height: 15rem;
-      margin: 2.5px;
-      .resource-tag {
-        @include showcase-tag($dark-blue, $white);
-      }
-      .resource-title {
-        position: absolute;
-        bottom: 0;
-        padding: 10px;
-        a {
-          @include showcase-header(1em, 1, 2);
-        }
-      }
-      @include grid-support {
-        width: auto;
-        height: auto;
-        margin: 0;
+
+  .resource {
+    flex: 1 1 10rem;
+    height: 15rem;
+    margin: 2.5px;
+    position: relative;
+
+    .resource-tag {
+      @include showcase-tag($dark-blue, $white);
+    }
+
+    .resource-title {
+      bottom: 0;
+      padding: 10px;
+      position: absolute;
+
+      a {
+        @include showcase-header(1em, 1, 2);
       }
     }
+  }
 }
 
 //search
-.search-wrapper {
-  @include grid(col / span 4, row 2);
-  justify-content: center;
-  text-align: center;
-  padding: 2.5em;
-  h4 {
-    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-  }
-}
-#rsearch {
-  width: 70%;
-}
-.page-body > .content form.search input[type="submit"] {
-  background-color: $green;
-  color: $white;
-}
+// .search-wrapper {
+//   @include grid(col / span 4, row 2);
+//   justify-content: center;
+//   padding: 2.5em;
+//   text-align: center;
+// }
+//
+// #rsearch {
+//   width: 70%;
+// }
+
+// .page-body > .content form.search input[type="submit"] {
+//   background-color: $green;
+//   color: $white;
+// }
 
 //Discover
 .discover {
   @include flexbox(wrap);
-  @include grid(col / span 4, row 3);
-  @include grid-template(repeat(3, 1fr), repeat(4, auto), 10px);
   justify-content: center;
   padding: 30px;
+
   h2 {
-    @include grid(1 / span 3, null);
     width: 100%;
-    @include grid-support {
-      width: auto;
-    }
-  }
-  h4 {
-    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-  }
-  .btn {
-    text-transform: uppercase;
-    background-color: $white;
-    border: 2px solid $link-color;
-    color: $link-color;
-    &:hover {
-      border: 2px solid $link-hover;
-    }
-  }
-  @include respond-at(800px) {
-    @include grid-template(null, repeat(2, auto));
   }
 }
+.discover-wrap {
+  @include flexbox(wrap);
+  justify-content: center;
+}
+
 .resources {
-  @include grid(span 3, null);
+  @extend %anchor;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
-  padding: 10px;
-  transition: all .3s ease-in-out;
-  h4 {
-    position: relative;
-    padding-bottom: 1em;
-    border-bottom: 1px solid $dark-blue;
-    &:after {
-      content: '';
-      width: 65%;
-      height: 1.1px;
-      background-color: $white;
-      position: absolute;
-      right: 0;
-      bottom: -1px;
-    }
-  }
+
   .link {
-    a {
-      @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
+    @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+    align-self: flex-start;
+    border-radius: 2px;
+    color: $link-color !important;
+
+    &:hover {
+      color: $orange !important;
     }
-  }
-  &:hover {
-    transform: scale(1.025);
-    -webkit-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
-    -moz-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
-    box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
-  }
-  @include respond-at(800px) {
-    @include grid(span 1, null);
-    width: 30%;
-  }
-  @include grid-support {
-    width: auto;
   }
 }
 
 //OER and Resources
-#one {
-  @include grid(col / span 4, row 4);
-  @include grid-template(repeat(4, 1fr), repeat(3, auto));
-  @include bcg-img('/app/site/media/images/pexels-photo-590493.jpg');
+.one {
+  background-color: $light-gray;
 }
+
 .resource-oer {
   @include flexbox;
-  @include grid(1 / span 4, 1);
+
   .oer {
     align-self: center;
-    color: $white;
-    h2 {
-      color: $white;
-    }
+    margin: 1em auto;
     padding: 2.5em;
     text-align: center;
+    width: 60%;
+  }
+
+  .link {
+    @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+    border-radius: 2px;
   }
 }
+
 .resource-fmn {
   @include flexbox(wrap);
-  @include grid(1 / span 4, 2);
-  @include grid-template(repeat(4, 1fr), repeat(2, auto));
   flex: 1;
-  color: $white;
-  h2 {
-    color: $white;
-  }
+
   .module-fmn {
     @include flexbox(wrap);
-    @include grid(1 / span 4, 2);
-    @include grid-template(repeat(auto-fit, minmax(175px, 1fr)), null, 5px);
-    grid-auto-rows: 17rem;
+    @include respond-at(901px) {
+      width: 50%;
+    }
     justify-content: center;
     width: 100%;
     padding: 1em;
     align-self: center;
-    @include respond-at(401px) {
-      div:last-child {
-        @include grid(span 2, null);
-      }
+  }
+
+  .resource-img {
+    @extend %showcase-img;
     }
-    @include respond-at(581px) {
-      div:last-child {
-        @include grid(span 1, null);
-      }
+
+  .resource {
+    position: relative;
+    flex: 1 1 10rem;
+    height: 15rem;
+    margin: 2.5px;
+
+    .resource-tag {
+      @include showcase-tag($dark-blue, $white);
     }
-    @include respond-at(901px) {
-      @include grid(1 / span 2, 1);
-      width: 50%;
-      div:last-child {
-        @include grid(span 2, null);
+
+    .resource-title {
+      bottom: 0;
+      padding: 10px;
+      position: absolute;
+
+      a {
+        @include showcase-header(1em, 1, 2);
       }
-    }
-    @include respond-at(1146px) {
-      div:last-child {
-        @include grid(span 1, null);
-      }
-    }
-    @include grid-support {
-      width: auto;
     }
   }
-    .resource-img {
-        @extend %showcase-img;
-      }
-      .resource {
-        position: relative;
-        flex: 1 1 10rem;
-        height: 15rem;
-        margin: 2.5px;
-        .resource-tag {
-          @include showcase-tag($dark-blue, $white);
-        }
-        .resource-title {
-          position: absolute;
-          bottom: 0;
-          padding: 10px;
-          a {
-            @include showcase-header(1em, 1, 2);
-          }
-        }
-        @include grid-support {
-          height: auto;
-        }
-      }
+
   .fmn {
-    @include grid(1 / span 4, 1);
-    width: 100%;
-    padding: 2.5em;
-    align-self: center;
-    order: -1;
     @include respond-at(901px) {
-      @include grid(3 / span 2, 1);
       order: 1;
       width: 50%;
     }
-    @include grid-support {
-      width: auto;
-    }
+    align-self: center;
+    order: -1;
+    padding: 2.5em;
+    width: 100%;
   }
   @include respond-at(901px) {
     @include grid(null, 1fr);
@@ -252,164 +172,179 @@
 }
 .resource-partner {
   @extend .resource-fmn;
-  @include grid(1/ span 4, 3);
+
   .partner {
     @extend .fmn;
     @include respond-at(901px) {
-      @include grid(1 / span 2, 1);
       order: -1;
     }
   }
   .module-partner {
     @extend .module-fmn;
-    @include respond-at(901px) {
-      @include grid(3 / span 2, 1);
+  }
+}
+
+.row {
+  @include flexbox(wrap);
+  @include respond-at(901px) {
+    @include flexbox;
+  }
+  padding: 2.5em;
+}
+
+.row-wrap {
+  @include respond-at(901px) {
+    order: 1;
+    width: 50%;
+  }
+  align-self: center;
+  order: -1;
+  padding: 2.5em;
+  width: 100%;
+}
+
+.module-recent {
+  @include respond-at(901px) {
+    width: 50%;
+  }
+  width: 100%;
+
+  .regular {
+    height: 18rem;
+  }
+}
+
+.newsletter-img {
+  @extend %showcase-img;
+}
+
+.newsletter {
+  position: relative;
+  margin: 0 auto;
+  width: 75%;
+
+  .newsletter-title {
+    bottom: 0;
+    padding: 10px;
+    position: absolute;
+
+    a {
+      @include showcase-header(1.1rem, 1.3, 2);
     }
   }
-  .browse {
-    @include grid(1 / span 4, null);
-    text-align: center;
-    padding: 2.5em;
-    margin: 0 auto;
-    .link {
-      display: inline-block;
-      margin: 1em;
-      a {
-        @include btn-border-drawing($white, $orange, 2px, bottom, right);
-      }
-    }
+}
+
+.browse {
+  text-align: center;
+  padding: 2.5em;
+  margin: 0 auto;
+
+  .link {
+    @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+    border-radius: 2px;
+    margin: 0 1em;
   }
 }
 
 //Collections
-#two {
+.two {
   @include flexbox(wrap);
-  @include grid(col / span 4, row 5);
-  @include grid-template(repeat(2, 1fr), repeat(2, auto));
-  flex: 1;
+
   .big {
-    @include grid(span 2, 2);
-    width: 100%;
-    img {
-      display: block;
-      width: 30rem;
-      margin: 0 auto;
-    }
     @include respond-at(901px) {
-      @include grid(span 1, 1);
       width: 50%;
     }
-    @include grid-support {
-      width: auto;
-      height: auto;
+    width: 100%;
+
+    img {
+      display: block;
+      margin: 0 auto;
+      width: 30rem;
     }
   }
+
   .collections {
-    @include grid(span 2, 1);
-    width: 100%;
-    padding: 2.5em;
-    align-self: center;
-    order: -1;
-    .link {
-      margin-top: 3em;
-      a {
-        @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
-      }
-    }
     @include respond-at(901px) {
-      @include grid(span 1, 1);
       order: 1;
       width: 50%;
     }
-    @include grid-support {
-      width: auto;
+    align-self: center;
+    order: -1;
+    padding: 2.5em;
+    width: 100%;
+
+    .link {
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
+      margin-top: 3em;
+
     }
-  }
-  @include respond-at(901px) {
-    @include grid-template(null, 1fr);
   }
 }
 
 //Software
-#three {
+.three {
   @include flexbox(wrap);
-  @include grid(col / span 4, row 6);
-  @include grid-template(repeat(2, 1fr), repeat(2, auto));
-  @include bcg($med-blue, $white);
-  flex: 1;
-  h2 {
-    color: $white;
-  }
+  background-color: $light-gray;
+
   .software {
-    @include grid(span 2, 1);
-    width: 100%;
-    text-align: center;
-    align-self: center;
-    padding: 2.5em;
-    .link {
-      margin-top: 3em;
-      a {
-        @include btn-border-drawing($white, $orange, 2px, bottom, right);
-      }
-    }
     @include respond-at(901px) {
-      @include grid(span 1, 1);
       width: 50%;
     }
-    @include grid-support {
-      width: auto;
+    align-self: center;
+    padding: 2.5em;
+    text-align: center;
+    width: 100%;
+
+    .link {
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
+      margin-top: 3em;
     }
   }
+
   .software-logos {
     @include flexbox(wrap);
-    @include grid(span 2, 2);
     @include grid-template(repeat(auto-fit, minmax(100px, 1fr)), null, 5px);
-    grid-auto-rows: 125px;
-    width: 100%;
-    padding: 2.5em;
-    justify-items: center;
-    justify-content: center;
+    @include respond-at(901px) {
+      width: 50%;
+    }
     align-self: center;
+    grid-auto-rows: 125px;
+    justify-content: center;
+    justify-items: center;
+    padding: 2.5em;
     text-align: center;
+    width: 100%;
+
     .logo-wrap {
-      width: 8rem;
+      @include grid-support {
+        height: auto;
+        width: auto;
+      }
       height: 8rem;
       padding: 5px;
-      transition: all 0.3s ease-in-out;
-      @include grid-support {
-        width: auto;
-        height: auto;
-      }
+      transition: .3s ease-in-out;
+      width: 8rem;
+
       img {
         height: 65%;
         object-fit: scale-down;
       }
+
       h6 {
-        color: $light-gray;
+        align-self: center;
+        margin: 0;
         padding-top: .5em;
-        a {
-          color: $light-gray;
-          &:visited {
-            color: $light-gray;
-          }
-        }
       }
+
       &:hover {
         transform: scale(1.1);
+
         a {
           color: $orange;
         }
       }
     }
-    @include respond-at(901px) {
-      @include grid(span 1, 1);
-      width: 50%;
-    }
-    @include grid-support {
-      width: auto;
-    }
-  }
-  @include respond-at(901px) {
-    @include grid-template(null, 1fr);
   }
 }

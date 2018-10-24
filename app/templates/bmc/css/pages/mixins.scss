@@ -2,19 +2,21 @@
 // compileOnSave: false
 //The above is to disable sass-autocompile plugin from compiling on save for Atom.io text editor
 
-@import 'variables.scss';
+@import 'variables';
 
 //Grid and Flexbox
 @mixin grid-template($columns, $rows, $gap: null) {
   display: grid;
+  grid-gap: $gap;
   grid-template-columns: $columns;
   grid-template-rows: $rows;
-  grid-gap: $gap;
 }
+
 @mixin grid($column, $row) {
   grid-column: $column;
   grid-row: $row;
 }
+
 @mixin flexbox($wrap: nowrap) {
   display: flex;
   flex-wrap: $wrap;
@@ -22,10 +24,11 @@
 
 //Media Queries and Grid Support(resets)
 @mixin respond-at($media) {
-    @media only screen and (min-width: $media){
-      @content;
+  @media only screen and (min-width: $media) {
+    @content;
   }
 }
+
 @mixin grid-support {
   @supports (display:grid) {
     @content;
@@ -36,16 +39,18 @@
 @mixin bcg-img($url) {
   background: url($url);
   background-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.7) 100%), url($url);
+  background-repeat: no-repeat;
   background-size: cover;
   // background-position: center;
-  background-repeat: no-repeat;
 }
+
 @mixin bcg-plain-img($url) {
   background: url($url);
-  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
 }
+
 @mixin bcg($color, $text-color) {
   background-color: $color;
   color: $text-color;
@@ -55,12 +60,14 @@
 @mixin buttons($color) {
   text-transform: uppercase;
   a {
-    padding: .25em .75em;
     border: 1px solid $color;
     color: $color !important;
+    padding: .25em .75em;
+
     &:active {
       color: $color;
     }
+
     &:visited {
       color: $color;
     }
@@ -68,21 +75,23 @@
 }
 
 @mixin btn-border-drawing($color: #ccc, $hover: black, $width: 2px, $vertical: top, $horizontal: left, $duration: 0.25s) {
-  text-transform: uppercase;
   box-shadow: inset 0 0 0 $width $color;
   color: $color;
-  transition: color $duration $duration/3;
-  position: relative;
   padding: .25em .75em;
+  position: relative;
+  text-transform: uppercase;
+  transition: color $duration $duration/3;
+
 
   &::before,
   &::after {
     border: 0 solid transparent;
     box-sizing: border-box;
     content: '';
+    height: 0;
     pointer-events: none;
     position: absolute;
-    width: 0; height: 0;
+    width: 0;
 
     #{$vertical}: 0;
     #{$horizontal}: 0;
@@ -108,9 +117,9 @@
     &::before,
     &::after {
       border-color: $hover;
+      height: 100%;
       transition: border-color 0s, width $duration, height $duration;
       width: 100%;
-      height: 100%;
     }
 
     &::before { transition-delay: 0s, 0s, $duration; }
@@ -147,14 +156,16 @@
   text-overflow: ellipsis;
   color: $white;
 }
+
 @mixin showcase-tag($background-color, $link-color) {
-  position: absolute;
-  bottom: 5em;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: .8em;
-  padding: .5em .8em;
   background-color: $background-color;
+  bottom: 5em;
+  font-size: .8em;
+  font-weight: bold;
+  padding: .5em .8em;
+  position: absolute;
+  text-transform: uppercase;
+
   a {
     color: $link-color;
   }
@@ -162,38 +173,52 @@
 
 //Extends for showcase module
 %showcase-img {
-  width: 100%;
   height: 100%;
   overflow: hidden;
+  width: 100%;
+
   img {
     height: 100%;
-    width: 100%;
     object-fit: cover;
-    transition: all 3s ease-in-out;
+    transition: 3s ease-in-out;
+    width: 100%;
   }
+
   &::after {
     @extend %image-gradient;
   }
+
   &:hover {
     img {
       transform: scale(1.1);
     }
   }
 }
+
 %showcase-group {
   height: 100%;
-  width: 100%;
-  text-align: center;
   overflow: hidden;
+  text-align: center;
+  width: 100%;
+
   img {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+    transition: 3s ease-in-out;
   }
+
   &::after {
     @extend %image-gradient;
   }
+
+  &:hover {
+    img {
+      transform: translateY(-50%) scale(1.1);
+    }
+  }
 }
+
 %image-gradient {
   content: '';
   display: block;
@@ -202,4 +227,45 @@
   background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);
   height: 100%;
   width: 100%;
+}
+
+// Extends for Anchor Links
+%anchor {
+  color: $dark-blue;
+  margin: 2em;
+  padding: 1em;
+  transition: .2s ease;
+  width: 22rem;
+
+  hr {
+    background: $dark-blue;
+    margin: 0;
+    transition: .3s;
+    width: 45%;
+  }
+
+  h4 {
+    transition: .2s;
+  }
+
+  a {
+    color: $dark-blue;
+
+    &:hover,
+    &:visited {
+      color: $dark-blue;
+    }
+  }
+
+  &:hover {
+    border-left: 4px solid $dark-blue;
+
+    hr {
+      width: 65%;
+    }
+
+    h4 {
+      margin-left: .25em;
+    }
+  }
 }
