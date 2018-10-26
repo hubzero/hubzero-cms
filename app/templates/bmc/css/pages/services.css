@@ -1,101 +1,119 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(4, [col] 1fr);
-  grid-template-rows: repeat(7, [row] minmax(22rem, auto));
+.service {
+  color: #222b37;
+  margin: 2em;
+  padding: 1em;
+  transition: .2s ease;
+  width: 22rem;
 }
 
-.link-anchor {
-  color: inherit;
+.service hr {
+  background: #222b37;
+  margin: 0;
+  transition: .3s;
+  width: 45%;
 }
 
-.link-anchor:hover {
-  color: inherit;
+.service h4 {
+  transition: .2s;
 }
 
-.link-anchor:visited {
-  color: inherit;
+.service a {
+  color: #222b37;
 }
 
-.link {
-  margin-top: 3em;
+.service a:hover, .service a:visited {
+  color: #222b37;
+}
+
+.service:hover {
+  border-left: 4px solid #222b37;
+}
+
+.service:hover hr {
+  width: 65%;
+}
+
+.service:hover h4 {
+  margin-left: .25em;
+}
+
+.content-header {
+  display: none;
+}
+
+.wrapper h3,
+.wrapper h4 {
+  font-family: 'Martel', serif;
 }
 
 .service-header {
   display: flex;
   flex-wrap: nowrap;
-  grid-column: col/span 4;
-  grid-row: row;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
   background: url("/app/site/media/images/jeff-sheldon-3231.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/jeff-sheldon-3231.jpg");
-  background-size: cover;
   background-repeat: no-repeat;
+  background-size: cover;
   background-color: #000;
   color: #fff;
   text-align: center;
 }
 
 .service-header .intro {
-  grid-column: 1/span 4;
-  padding: 2.5em;
   align-self: center;
+  margin: 0 auto;
+  padding: 2.5em;
+  width: 75%;
 }
 
-.service-header .intro .link a {
-  text-transform: uppercase;
-  box-shadow: inset 0 0 0 2px #fff;
+.service-header .intro .link {
+  box-shadow: inset 0 0 0 1px #fff;
   color: #fff;
-  transition: color 0.25s 0.08333s;
-  position: relative;
   padding: .25em .75em;
+  position: relative;
+  text-transform: uppercase;
+  transition: color 0.25s 0.08333s;
+  border-radius: 2px;
 }
 
-.service-header .intro .link a::before, .service-header .intro .link a::after {
+.service-header .intro .link::before, .service-header .intro .link::after {
   border: 0 solid transparent;
   box-sizing: border-box;
   content: '';
+  height: 0;
   pointer-events: none;
   position: absolute;
   width: 0;
-  height: 0;
   bottom: 0;
   right: 0;
 }
 
-.service-header .intro .link a::before {
-  border-bottom-width: 2px;
-  border-left-width: 2px;
+.service-header .intro .link::before {
+  border-bottom-width: 1px;
+  border-left-width: 1px;
 }
 
-.service-header .intro .link a::after {
-  border-top-width: 2px;
-  border-right-width: 2px;
+.service-header .intro .link::after {
+  border-top-width: 1px;
+  border-right-width: 1px;
 }
 
-.service-header .intro .link a:hover {
+.service-header .intro .link:hover {
   color: #cca231;
 }
 
-.service-header .intro .link a:hover::before, .service-header .intro .link a:hover::after {
+.service-header .intro .link:hover::before, .service-header .intro .link:hover::after {
   border-color: #cca231;
+  height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
   width: 100%;
-  height: 100%;
 }
 
-.service-header .intro .link a:hover::before {
+.service-header .intro .link:hover::before {
   transition-delay: 0s, 0s, 0.25s;
 }
 
-.service-header .intro .link a:hover::after {
+.service-header .intro .link:hover::after {
   transition-delay: 0s, 0.25s, 0s;
-}
-
-@media only screen and (min-width: 901px) {
-  .service-header .intro {
-    grid-column: 2/span 2;
-  }
 }
 
 .service-header h2 {
@@ -103,325 +121,257 @@
 }
 
 .learn {
-  grid-column: col/span 4;
-  grid-row: row 2;
   padding: 2.5em;
 }
 
 .services {
   display: flex;
   flex-wrap: wrap;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  grid-gap: 10px;
+  justify-content: center;
 }
 
-@media only screen and (min-width: 901px) {
-  .services {
-    padding: 2.5em;
-  }
-}
-
-.service {
-  flex: 1 1 20rem;
-  padding: 10px;
-  transition: all .3s ease-in-out;
-}
-
-.service h4 {
-  font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-  position: relative;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #007991;
-}
-
-.service h4:after {
-  content: '';
-  width: 65%;
-  height: 1.1px;
-  background-color: #fff;
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-}
-
-.service:hover {
-  transform: scale(1.025);
-  -webkit-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
-}
-
-#one {
+.one {
   display: flex;
   flex-wrap: nowrap;
-  grid-column: col/span 4;
-  grid-row: row 3;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr;
 }
 
-#one .community {
-  width: 100%;
-  grid-column: 1/span 3;
-  background-color: #84bf41;
-  color: #fff;
-  text-align: center;
+.one .community {
+  background-color: #F1F2F2;
   padding: 2.5em;
+  text-align: center;
+  width: 100%;
 }
 
-#one .community h2 {
-  color: #fff;
-}
-
-#one .community .link a {
-  text-transform: uppercase;
-  box-shadow: inset 0 0 0 2px #fff;
-  color: #fff;
-  transition: color 0.25s 0.08333s;
-  position: relative;
+.one .community .link {
+  box-shadow: inset 0 0 0 1px #6E9C39;
+  color: #6E9C39;
   padding: .25em .75em;
+  position: relative;
+  text-transform: uppercase;
+  transition: color 0.25s 0.08333s;
+  border-radius: 2px;
   display: block;
 }
 
-#one .community .link a::before, #one .community .link a::after {
-  border: 0 solid transparent;
-  box-sizing: border-box;
-  content: '';
-  pointer-events: none;
-  position: absolute;
-  width: 0;
-  height: 0;
-  bottom: 0;
-  right: 0;
-}
-
-#one .community .link a::before {
-  border-bottom-width: 2px;
-  border-left-width: 2px;
-}
-
-#one .community .link a::after {
-  border-top-width: 2px;
-  border-right-width: 2px;
-}
-
-#one .community .link a:hover {
-  color: #222b37;
-}
-
-#one .community .link a:hover::before, #one .community .link a:hover::after {
-  border-color: #222b37;
-  transition: border-color 0s, width 0.25s, height 0.25s;
-  width: 100%;
-  height: 100%;
-}
-
-#one .community .link a:hover::before {
-  transition-delay: 0s, 0s, 0.25s;
-}
-
-#one .community .link a:hover::after {
-  transition-delay: 0s, 0.25s, 0s;
-}
-
 @media only screen and (min-width: 670px) {
-  #one .community .link a {
+  .one .community .link {
     display: initial;
   }
 }
 
-@supports (display: grid) {
-  #one .community {
-    width: auto;
-  }
-}
-
-#two, #three, #four {
-  display: flex;
-  flex-wrap: wrap;
-  grid-column: col/span 4;
-  grid-row: row 4;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  background-color: #007991;
-  color: #fff;
-}
-
-#two .mentor, #three .mentor, #four .mentor, #three .workshop, #four .curate {
-  grid-column: span 2;
-  grid-row: 1;
-  width: 100%;
-  padding: 2.5em;
-  align-self: center;
-}
-
-#two .mentor h2, #three .mentor h2, #four .mentor h2, #three .workshop h2, #four .curate h2 {
-  color: #fff;
-}
-
-@media only screen and (min-width: 901px) {
-  #two .mentor, #three .mentor, #four .mentor, #three .workshop, #four .curate {
-    grid-column: 1/span 1;
-    grid-row: 1;
-    width: 50%;
-  }
-}
-
-@supports (display: grid) {
-  #two .mentor, #three .mentor, #four .mentor, #three .workshop, #four .curate {
-    width: auto;
-  }
-}
-
-#two .big, #three .big, #four .big {
-  grid-column: span 2;
-  grid-row: 2;
-  background: url("/app/site/media/images/workplace-1245776_1920.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 20rem;
-}
-
-@media only screen and (min-width: 901px) {
-  #two .big, #three .big, #four .big {
-    grid-column: 2/span 1;
-    grid-row: 1;
-    width: 50%;
-  }
-}
-
-@supports (display: grid) {
-  #two .big, #three .big, #four .big {
-    width: auto !important;
-    height: auto !important;
-  }
-}
-
-@media only screen and (min-width: 901px) {
-  #two, #three, #four {
-    display: grid;
-    grid-template-rows: 1fr;
-  }
-}
-
-#three {
-  grid-column: col/span 4;
-  grid-row: row 5;
-  background-color: #cb48b7;
-}
-
-#three .workshop {
-  order: -1;
-}
-
-@media only screen and (min-width: 901px) {
-  #three .workshop {
-    grid-column: 2/span 1;
-    grid-row: 1;
-    order: 1;
-  }
-}
-
-#three .big {
-  background: url("/app/site/media/images/javier-quesada-222120.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 20rem;
-}
-
-@media only screen and (min-width: 901px) {
-  #three .big {
-    grid-column: 1/span 1;
-    grid-row: 1;
-  }
-}
-
-#four {
-  grid-column: col/span 4;
-  grid-row: row 6;
-  background-color: #222b37;
-}
-
-#four .big {
-  background: url("/app/site/media/images/pexels-photo-392018.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-#four .curate {
-  order: -1;
-}
-
-#five {
-  display: flex;
-  flex-wrap: nowrap;
-  grid-column: col/span 4;
-  grid-row: row 7;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 2.5em;
-}
-
-#five .contact-qubes {
-  grid-column: 2/span 2;
-  align-self: center;
-  text-align: center;
-  margin: 0 auto;
-}
-
-#five .contact-qubes .link a {
-  text-transform: uppercase;
-  box-shadow: inset 0 0 0 2px #6E9C39;
-  color: #6E9C39;
-  transition: color 0.25s 0.08333s;
-  position: relative;
-  padding: .25em .75em;
-}
-
-#five .contact-qubes .link a::before, #five .contact-qubes .link a::after {
+.one .community .link::before, .one .community .link::after {
   border: 0 solid transparent;
   box-sizing: border-box;
   content: '';
+  height: 0;
   pointer-events: none;
   position: absolute;
   width: 0;
-  height: 0;
   bottom: 0;
   right: 0;
 }
 
-#five .contact-qubes .link a::before {
-  border-bottom-width: 2px;
-  border-left-width: 2px;
+.one .community .link::before {
+  border-bottom-width: 1px;
+  border-left-width: 1px;
 }
 
-#five .contact-qubes .link a::after {
-  border-top-width: 2px;
-  border-right-width: 2px;
+.one .community .link::after {
+  border-top-width: 1px;
+  border-right-width: 1px;
 }
 
-#five .contact-qubes .link a:hover {
+.one .community .link:hover {
   color: #cca231;
 }
 
-#five .contact-qubes .link a:hover::before, #five .contact-qubes .link a:hover::after {
+.one .community .link:hover::before, .one .community .link:hover::after {
   border-color: #cca231;
+  height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
   width: 100%;
-  height: 100%;
 }
 
-#five .contact-qubes .link a:hover::before {
+.one .community .link:hover::before {
   transition-delay: 0s, 0s, 0.25s;
 }
 
-#five .contact-qubes .link a:hover::after {
+.one .community .link:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
+}
+
+.two, .three, .four {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.two .mentor, .three .mentor, .four .mentor, .three .workshop, .four .curate {
+  align-self: center;
+  padding: 2.5em;
+  width: 100%;
+}
+
+@media only screen and (min-width: 901px) {
+  .two .mentor, .three .mentor, .four .mentor, .three .workshop, .four .curate {
+    width: 50%;
+  }
+}
+
+.two .big, .three .big, .four .big {
+  background: url("/app/site/media/images/workplace-1245776_1920.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 20rem;
+  width: 100%;
+}
+
+@media only screen and (min-width: 901px) {
+  .two .big, .three .big, .four .big {
+    width: 50%;
+  }
+}
+
+.two .link, .three .link, .four .link {
+  box-shadow: inset 0 0 0 1px #6E9C39;
+  color: #6E9C39;
+  padding: .25em .75em;
+  position: relative;
+  text-transform: uppercase;
+  transition: color 0.25s 0.08333s;
+  border-radius: 2px;
+}
+
+.two .link::before, .three .link::before, .four .link::before, .two .link::after, .three .link::after, .four .link::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  height: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.two .link::before, .three .link::before, .four .link::before {
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.two .link::after, .three .link::after, .four .link::after {
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.two .link:hover, .three .link:hover, .four .link:hover {
+  color: #cca231;
+}
+
+.two .link:hover::before, .three .link:hover::before, .four .link:hover::before, .two .link:hover::after, .three .link:hover::after, .four .link:hover::after {
+  border-color: #cca231;
+  height: 100%;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+}
+
+.two .link:hover::before, .three .link:hover::before, .four .link:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.two .link:hover::after, .three .link:hover::after, .four .link:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
+}
+
+.three .workshop {
+  order: -1;
+}
+
+@media only screen and (min-width: 901px) {
+  .three .workshop {
+    order: 1;
+  }
+}
+
+.three .big {
+  background: url("/app/site/media/images/javier-quesada-222120.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 20rem;
+}
+
+.four .big {
+  background: url("/app/site/media/images/pexels-photo-392018.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.four .curate {
+  order: -1;
+}
+
+.five {
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: #F1F2F2;
+  padding: 2.5em;
+}
+
+.five .contact-qubes {
+  align-self: center;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.five .contact-qubes .link {
+  box-shadow: inset 0 0 0 1px #6E9C39;
+  color: #6E9C39;
+  padding: .25em .75em;
+  position: relative;
+  text-transform: uppercase;
+  transition: color 0.25s 0.08333s;
+  border-radius: 2px;
+}
+
+.five .contact-qubes .link::before, .five .contact-qubes .link::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  height: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.five .contact-qubes .link::before {
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.five .contact-qubes .link::after {
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.five .contact-qubes .link:hover {
+  color: #cca231;
+}
+
+.five .contact-qubes .link:hover::before, .five .contact-qubes .link:hover::after {
+  border-color: #cca231;
+  height: 100%;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+}
+
+.five .contact-qubes .link:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+
+.five .contact-qubes .link:hover::after {
   transition-delay: 0s, 0.25s, 0s;
 }
