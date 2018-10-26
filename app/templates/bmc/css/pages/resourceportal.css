@@ -122,7 +122,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 30px;
 }
 
 .discover h2 {
@@ -275,10 +274,10 @@
 .resource-fmn .module-fmn, .resource-partner .module-fmn, .resource-partner .module-partner {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  padding: 1em;
   align-self: center;
+  justify-content: center;
+  padding: 1em;
+  width: 100%;
 }
 
 @media only screen and (min-width: 901px) {
@@ -288,10 +287,10 @@
 }
 
 .resource-fmn .resource, .resource-partner .resource {
-  position: relative;
   flex: 1 1 10rem;
   height: 15rem;
   margin: 2.5px;
+  position: relative;
 }
 
 .resource-fmn .resource .resource-tag, .resource-partner .resource .resource-tag {
@@ -404,8 +403,8 @@
 }
 
 .newsletter {
-  position: relative;
   margin: 0 auto;
+  position: relative;
   width: 75%;
 }
 
@@ -432,9 +431,9 @@
 }
 
 .browse {
-  text-align: center;
-  padding: 2.5em;
   margin: 0 auto;
+  padding: 2.5em;
+  text-align: center;
 }
 
 .browse .link {
