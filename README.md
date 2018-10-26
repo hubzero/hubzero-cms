@@ -23,6 +23,7 @@ Note:  Needed to include extra installation directory instructions in the `compo
  * [plg_content_qubesmacros](https://github.com/qubeshub/plg_content_qubesmacros): Content plugin that contains QUBES macros. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_projects_publications](https://github.com/qubeshub/plg_projects_publications): **Override** of HubZero project publications plugin. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_groups_publications](https://github.com/qubeshub/plg_groups_publications): Publication plugin for groups component. **dev** :white_check_mark: **prod** :x:
+ * [plg_groups_resources](https://github.com/qubeshub/plg_groups_resources): **Override** of HubZero resource plugin for groups. *This will eventually take over the plg_groups_publications plugin above* **dev** :x: **prod** :x:
  * [plg_groups_usage](https://github.com/qubeshub/plg_groups_usage): **Override** of HubZero usage plugin for groups. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_system_menurouter](https://github.com/qubeshub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_system_subnav](https://github.com/qubeshub/plg_system_subnav): Component/URL to subnavigation mapping **dev** :white_check_mark: **prod** :white_check_mark:
