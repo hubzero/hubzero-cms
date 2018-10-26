@@ -1,44 +1,37 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 
+.content-header {
+  display: none;
+}
+
 .wrapper {
-  @include grid-template(repeat(4, [col] 1fr), repeat(7, [row] minmax(22rem, auto)));
-}
-.link-anchor {
-  color: inherit;
-  &:hover {
-    color: inherit;
+  h3,
+  h4 {
+    font-family: 'Martel', serif;
   }
-  &:visited {
-    color: inherit;
-  }
-}
-.link {
-  margin-top: 3em;
 }
 
 //Header
 .service-header {
   @include flexbox;
-  @include grid(col / span 4, row);
-  @include grid-template(repeat(4, 1fr), null);
   @include bcg-img('/app/site/media/images/jeff-sheldon-3231.jpg');
   background-color: $black;
   color: $white;
   text-align: center;
+
   .intro {
-    @include grid(1 / span 4, null);
-    padding: 2.5em;
     align-self: center;
+    margin: 0 auto;
+    padding: 2.5em;
+    width: 75%;
+
     .link {
-      a {
-        @include btn-border-drawing($white, $orange, 2px, bottom, right);
-      }
-    }
-    @include respond-at(901px) {
-      @include grid(2 / span 2, null);
+      @include btn-border-drawing($white, $orange, 1px, bottom, right);
+      border-radius: 2px;
     }
   }
+
   h2 {
     color: $white;
   }
@@ -46,147 +39,95 @@
 
 //Services
 .learn {
-  @include grid(col / span 4, row 2);
   padding: 2.5em;
 }
+
 .services {
   @include flexbox(wrap);
-  @include grid-template(repeat(auto-fit, minmax(20rem, 1fr)), null, 10px);
-  @include respond-at(901px) {
-    padding: 2.5em;
-  }
+  justify-content: center;
 }
+
 .service {
-  flex: 1 1 20rem;
-  padding: 10px;
-  transition: all .3s ease-in-out;
-  h4 {
-    font-family: 'montserratultra_light', 'Montserrat', Helvetica Neue, Helvetica, sans-serif;
-    position: relative;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid $teal;
-    &:after {
-      content: '';
-      width: 65%;
-      height: 1.1px;
-      background-color: $white;
-      position: absolute;
-      right: 0;
-      bottom: -1px;
-    }
-  }
-  &:hover {
-    transform: scale(1.025);
-    -webkit-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
-    -moz-box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
-    box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.2);
-  }
+  @extend %anchor;
 }
 
 //Community Building
-#one {
+.one {
   @include flexbox;
-  @include grid(col / span 4, row 3);
-  @include grid-template(repeat(3, 1fr), 1fr);
+
   .community {
-    width: 100%;
-    @include grid(1 / span 3, null);
-    background-color: $green;
-    color: $white;
-    text-align: center;
+    background-color: $light-gray;
     padding: 2.5em;
-    h2 {
-      color: $white;
-    }
+    text-align: center;
+    width: 100%;
+
     .link {
-      a {
-        @include btn-border-drawing($white, $dark-blue, 2px, bottom, right);
-        display: block;
-        @include respond-at(670px) {
-          display: initial;
-        }
+      @include respond-at(670px) {
+        display: initial;
       }
-    }
-    @include grid-support {
-      width: auto;
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
+      display: block;
     }
   }
 }
 
 //Run a FMN
-#two {
+.two {
   @include flexbox(wrap);
-  @include grid(col / span 4, row 4);
-  @include grid-template(repeat(2, 1fr), repeat(2, 1fr));
-  background-color: $teal;
-  color: $white;
+
   .mentor {
-    @include grid(span 2, 1);
-    width: 100%;
-    padding: 2.5em;
+    @include respond-at(901px) {
+      width: 50%;
+    }
     align-self: center;
-    h2 {
-      color: $white;
-    }
-    @include respond-at(901px) {
-      @include grid(1 / span 1, 1);
-      width: 50%;
-    }
-    @include grid-support {
-      width: auto;
-    }
-  }
-  .big {
-    @include grid(span 2, 2);
-    @include bcg-plain-img('/app/site/media/images/workplace-1245776_1920.jpg');
+    padding: 2.5em;
     width: 100%;
-    height: 20rem;
+  }
+
+  .big {
     @include respond-at(901px) {
-      @include grid(2 / span 1, 1);
       width: 50%;
     }
-    @include grid-support {
-      width: auto !important;
-      height: auto !important;
-    }
+    @include bcg-plain-img('/app/site/media/images/workplace-1245776_1920.jpg');
+    height: 20rem;
+    width: 100%;
   }
-  @include respond-at(901px) {
-    @include grid-template(null, 1fr);
+
+  .link {
+    @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+    border-radius: 2px;
   }
 }
 
 //Run a Workshop
-#three {
-  @extend #two;
-  @include grid(col / span 4, row 5);
-  background-color: $pink;
+.three {
+  @extend .two;
+
   .workshop {
     @extend .mentor;
-    order: -1;
     @include respond-at(901px) {
-      @include grid(2 / span 1, 1);
       order: 1;
     }
+    order: -1;
   }
+
   .big {
     @extend .big;
     @include bcg-plain-img('/app/site/media/images/javier-quesada-222120.jpg');
     height: 20rem;
-    @include respond-at(901px) {
-      @include grid(1 / span 1, 1);
-    }
   }
 }
 
 //Curate Your Own Resources
-#four {
-  @extend #two;
-  @include grid(col / span 4, row 6);
-  background-color: $dark-blue;
+.four {
+  @extend .two;
+
   .big {
     @extend .big;
     @include bcg-plain-img('/app/site/media/images/pexels-photo-392018.jpg');
   }
+
   .curate {
     @extend .mentor;
     order: -1;
@@ -194,20 +135,19 @@
 }
 
 //Contact
-#five {
+.five {
   @include flexbox;
-  @include grid(col / span 4, row 7);
-  @include grid-template(repeat(4, 1fr), null);
+  background-color: $light-gray;
   padding: 2.5em;
+
   .contact-qubes {
-    @include grid(2 / span 2, null);
     align-self: center;
-    text-align: center;
     margin: 0 auto;
+    text-align: center;
+
     .link {
-      a {
-        @include btn-border-drawing($link-color, $orange, 2px, bottom, right);
-      }
+      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      border-radius: 2px;
     }
   }
 }
