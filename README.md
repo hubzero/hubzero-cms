@@ -53,6 +53,38 @@ Note that in the commands below, while we are referring to "subtrees", we are no
 
 **Reference for manual subtree commands**:  [Mastering Git subtrees](https://medium.com/@porteneuve/mastering-git-subtrees-943d29a798ec) by [Christophe Porteneuve](https://medium.com/@porteneuve?source=post_header_lockup).
 
+## Overriding a core extension
+
+First, checkout a new branch:
+
+```
+[master]$ git checkout -b <extension>
+```
+
+Filter out the core extension from the history into the new branch:
+
+```
+[extension]$ git filter-branch --subdirectory-filter <path to core extension>
+``` 
+
+Add the new remote on GitHub:
+
+```
+[extension]$ git remote add <extension> https://github.com/qubeshub/<extension>.git
+```
+
+Push to the new remote repository:
+
+```
+[extension]$ git push -u <extension> <extension>:master
+```
+
+Switch back to the `master` branch and follow the instructions in the next section to add in the new remote extension as a subtree to the `app` directory.
+
+```
+[extension]$ git checkout master
+```
+
 ## Adding remote extension as a subtree to this repository
 
 First, add the remote repository and fetch the repo:
