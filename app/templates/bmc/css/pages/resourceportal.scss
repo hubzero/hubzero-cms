@@ -1,5 +1,5 @@
-@import 'variables.scss';
-@import 'mixins.scss';
+@import 'variables';
+@import 'mixins';
 
 .wrapper {
   h3,
@@ -62,12 +62,12 @@
 .discover {
   @include flexbox(wrap);
   justify-content: center;
-  padding: 30px;
 
   h2 {
     width: 100%;
   }
 }
+
 .discover-wrap {
   @include flexbox(wrap);
   justify-content: center;
@@ -122,10 +122,10 @@
     @include respond-at(901px) {
       width: 50%;
     }
-    justify-content: center;
-    width: 100%;
-    padding: 1em;
     align-self: center;
+    justify-content: center;
+    padding: 1em;
+    width: 100%;
   }
 
   .resource-img {
@@ -133,10 +133,10 @@
     }
 
   .resource {
-    position: relative;
     flex: 1 1 10rem;
     height: 15rem;
     margin: 2.5px;
+    position: relative;
 
     .resource-tag {
       @include showcase-tag($dark-blue, $white);
@@ -170,6 +170,7 @@
     width: auto;
   }
 }
+
 .resource-partner {
   @extend .resource-fmn;
 
@@ -179,6 +180,7 @@
       order: -1;
     }
   }
+
   .module-partner {
     @extend .module-fmn;
   }
@@ -219,8 +221,8 @@
 }
 
 .newsletter {
-  position: relative;
   margin: 0 auto;
+  position: relative;
   width: 75%;
 
   .newsletter-title {
@@ -235,9 +237,9 @@
 }
 
 .browse {
-  text-align: center;
-  padding: 2.5em;
   margin: 0 auto;
+  padding: 2.5em;
+  text-align: center;
 
   .link {
     @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
