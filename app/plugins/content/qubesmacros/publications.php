@@ -370,16 +370,34 @@ class Publications extends Macro
 
 				// Meta
 				$tags = $pub->getTags()->toArray();
-				$tagsTitle = implode(', ', array_map(function ($tag) {return (!$tag['admin'] ? $tag['raw_tag'] : NULL); }, $tags));
+				$nonAdminTags = array_filter(array_map(function ($tag) {return (!$tag['admin'] ? $tag['raw_tag'] : NULL); }, $tags), 'strlen');
+				$tagsTitle = implode(', ', $nonAdminTags);
 				$html .= '    <div class="meta">';
 				$html .= '      <div aria-label="Tags" title= "' . $tagsTitle . '" class="tag-wrap">';
 	      $html .= '        <span class="icons">' . file_get_contents("core/assets/icons/tags.svg") . '</span>';
 				$html .= '        <span>';
-				if ($tags) {
-					$html .= '          <span class="tags">' . implode(', </span><span class="tags">', array_map(function ($tag) {return (!$tag['admin'] ? $tag['raw_tag'] : NULL); }, $tags));
+				if ($nonAdminTags) {
+					$html .= '          <span class="tags">' . implode(', </span><span class="tags">', $nonAdminTags);
 				}
 				$html .= '        </span>';
 				$html .= '      </div>'; // End tags
+
+				// Views Information
+				// Code pulled from: plugins/publications/usage/usage.php (onPublication)
+				$this->_db->setQuery(
+					"SELECT SUM(page_views)
+					FROM `#__publication_logs`
+					WHERE `publication_id`=" . $this->_db->quote($pub->id) . " AND `publication_version_id`=" . $this->_db->quote($pub->version->id) . "
+					ORDER BY `year` ASC, `month` ASC"
+				);
+				$views = (int) $this->_db->loadResult();
+
+				$html .= '      <div class="views">';
+				$html .= '        <span aria-label="Views" title= "Views">';
+				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
+				$html .= '          ' . $views;
+				$html .= '        </span>';
+				$html .= '      </div>'; // End views
 
 				// Download information
 				// Code pulled from: plugins/publications/usage/usage.php (onPublication)
@@ -392,10 +410,10 @@ class Publications extends Macro
 				$downloads = (int) $this->_db->loadResult();
 
 				$html .= '      <div class="downloads">';
-				$html .= '        <a aria-label="Downloads" title= "Downloads" href="' . $pub->link('serve') . '?render=archive">';
+				$html .= '        <span aria-label="Downloads" title= "Downloads">';
 				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
 				$html .= '          ' . $downloads;
-				$html .= '        </a>';
+				$html .= '        </span>';
 				$html .= '      </div>'; // End downloads
 
 				// Adaptation information
@@ -407,25 +425,9 @@ class Publications extends Macro
 				$forks = (int) $this->_db->loadResult();
 
 				$html .= '      <div class="forks">';
-				$html .= '        <a aria-label="Adaptations" title= "Adaptations" href="' . $pub->link() . '/forks?v=' . $pub->version->get('version_number') . '">';
+				$html .= '        <span aria-label="Adaptations" title= "Adaptations">';
 				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
 				$html .= '          ' . $forks;
-				$html .= '        </a>';
-				$html .= '      </div>'; // End adaptations
-
-				// Watch Information
-				$this->_db->setQuery(
-					"SELECT COUNT(id)
-					FROM `#__item_watch`
-					WHERE `item_type` = 'publication'
-					AND `item_id`
-					IN (" . $pub->id . ")");
-				$watching = (int) $this->_db->loadResult();
-
-				$html .= '      <div class="watching">';
-				$html .= '        <span aria-label="Watching" title= "Watching">';
-				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
-				$html .= '          ' . $watching;
 				$html .= '        </span>';
 				$html .= '      </div>'; // End adaptations
 
@@ -463,12 +465,12 @@ class Publications extends Macro
 		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
 		    $html .= '      </a>';
 				if ($watching) {
-  		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this publication\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe">';
-  		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/eye-close.svg") . '</span>';
+  		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this resource\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe">';
+  		    $html .= '        <span class="menu-icon">' . file_get_contents("app/plugins/content/qubesmacros/assets/icons/feed-off.svg") . '</span>';
   		    $html .= '      </a>';
 				} else {
-					$html .= '      <a aria-label="Watch" title= "Click to watch this publication and receive notifications when a new version is released" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe">';
-  		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
+					$html .= '      <a aria-label="Watch" title= "Click to receive notifications when a new version is released" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe">';
+  		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/feed.svg") . '</span>';
   		    $html .= '      </a>';
 				}
 		    $html .= '    </div>'; // End sub-menu
