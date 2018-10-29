@@ -103,7 +103,7 @@ function task_data($db_id)
 		return;
 	}
 
-	$filter = strtolower(Request::getString('type', 'json'));
+	$filter = strtolower(Request::getString('type', 'csv'));
 	$file = (__DIR__.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);
@@ -115,7 +115,10 @@ function task_data($db_id)
 		$sql = query_gen($dd);
 
 		$res = get_results($sql, $dd);
-		print filter($res, $dd);
+
+		$filteredResults = filter($res, $dd);
+
+		print $filteredResults;
 		exit(0);
 	} else {
 		print print "<p class=\"error\">Invalid Request</p>";
