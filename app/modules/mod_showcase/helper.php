@@ -112,7 +112,7 @@ class Helper extends Module
 			// ' Janky fix for weird code formatting in Atom
 
 			// Address embargo period and version publish status
-			$this->db->setQuery($sql . ' AND V.state = 1 AND (V.published_up <= CURDATE()) GROUP BY C.id ORDER BY V.published_up DESC');
+			$this->db->setQuery($sql . ' AND V.state = 1 AND (DATE(V.published_up) <= CURDATE()) GROUP BY C.id ORDER BY V.published_up DESC');
 			if (!$this->db->getError())
 			{
 				$this->pubs = $this->db->loadObjectList('id');
