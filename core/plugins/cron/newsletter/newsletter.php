@@ -287,9 +287,18 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 		// get db
 		$database = App::get('db');
 
+		$params = $job->params;
+		$limit = 100;
+		if (is_object($params))
+		{
+			$limit = $params->get('newsletter_ips_limit', 100);
+		}
+
 		// get actions
 		$unconvertedActions = \Components\Newsletter\Models\Mailing\Recipient\Action::all()
 			->whereRaw("(ipLATITUDE = '' OR ipLATITUDE IS NULL OR ipLONGITUDE = '' OR ipLONGITUDE IS NULL)")
+			->order('id', 'desc')
+			->limit($limit)
 			->rows();
 
 		// convert all unconverted actions
@@ -303,10 +312,19 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 			catch (Exception $e)
 			{
 				continue;
+
+				/*$location = array(
+					'countryCode' => '',
+					'country'     => '',
+					'region'      => '',
+					'city'        => '',
+					'latitude'    => 0.0,
+					'longitude'   => 0.0
+				);*/
 			}
 
 			// if we got a valid result lets update our action with location info
-			if (is_object($location) && $location['latitude'] != '' && $location['longitude'] != '-')
+			if (!empty($location) && $location['latitude'] != '' && $location['longitude'] != '-')
 			{
 				$sql = "UPDATE `#__newsletter_mailing_recipient_actions`
 						SET
