@@ -1017,7 +1017,7 @@ class File extends Base
 					// Create file objects
 					$conFile = Entity::fromPath($identifier, $connection->adapter());
 					$dirParts = explode(DS, $identifier);
-					
+
 					// We need the pretty directory that the file is stored in
 					// This is important mostly to translate between remote filesystems and local
 					$subdir = array_slice($dirParts, 0, -1);
