@@ -55,6 +55,7 @@ function filter($res, &$dd, $ob_mode = false)
 		}
 	}
 	$csv .= $nl;
+	$csv .= columnsMetadata($dd);
 	print $csv;
 
 	mysqli_data_seek($data, 0);
