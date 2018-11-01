@@ -41,7 +41,8 @@ $filters = array(
 	'start'       => Request::getInt('limitstart', 0),
 	'search'      => Request::getString('search', ''),
 	'tag'         => trim(Request::getString('tag', '')),
-	'tag_ignored' => array()
+	'tag_ignored' => array(),
+	'all_versions' => true
 );
 // Instantiate a publication object
 $model = new \Components\Publications\Models\Publication();
@@ -50,6 +51,7 @@ $model = new \Components\Publications\Models\Publication();
 $total = $model->entries('count', $filters);
 
 // Run query with limit
+$query = 
 $results = $model->entries('list', $filters);
 
 // Initiate paging
@@ -78,7 +80,7 @@ $pa = new \Components\Publications\Tables\Author($database);
 		{
 			$selected = false;
 
-			$liId = 'choice-' . $item->get('id');
+			$liId = 'choice-' . $item->get('version_id');
 
 			/*$info = $item->info;
 			if ($item->url)
@@ -115,7 +117,7 @@ $pa = new \Components\Publications\Tables\Author($database);
 				<div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" width="40" height="40" alt=""/></div>
 				<!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
 				<span class="item-wrap">
-					<?php echo $item->get('title'); ?><br />
+					<?php echo $item->get('title'); ?> <span class="item-version">(<?php echo $item->get('version_label'); ?>)</span><br />
 					<span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
 				</span>
 				<span class="item-fullinfo">
