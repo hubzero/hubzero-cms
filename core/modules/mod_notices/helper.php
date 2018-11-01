@@ -60,7 +60,8 @@ class Helper extends Module
 		$the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year);
 
 		// Get current unix timestamp
-		$now = time() + (Config::get('offset') * 60 * 60);
+		$date = new \Hubzero\Utility\Date();
+		$now = $date->toLocal('U');
 
 		$difference = $the_countdown_date - $now;
 		if ($difference < 0)
