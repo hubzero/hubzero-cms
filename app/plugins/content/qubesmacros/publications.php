@@ -291,7 +291,12 @@ class Publications extends Macro
 		} else {
 			foreach ($items as $pub)
 			{
-				$html .= '  <div class="card">';
+				$html .= '  <div class="card" style="background-image: url("' . Route::url($pub->link('masterimage')) . '");">';
+
+				// Featured ROW
+				$html .= '	<div class="featured">';
+				$html .= '	<span>Featured Resource of the Week</span>';
+				$html .= '</div>'; // End feature ribbon
 
 				// Sponsors
 				if ($sponsors) {
@@ -319,6 +324,12 @@ class Publications extends Macro
 						}
 					}
 				}
+
+				// Content
+				$html .= '    <div class="card-content">';
+				// $html .= '      <div class="img-wrap">';
+				// $html .= '        <img src="' . Route::url($pub->link('masterimage')) . '" alt="Resource Image">';
+				// $html .= '      </div>';
 
 				// Citation info
 	  		$html .= '	  <div class="title">';
@@ -352,15 +363,43 @@ class Publications extends Macro
 				}
 				$html .= '      </p>';
 				$html .= '    </div>'; // End title
-
-				// Content
-				$html .= '    <div class="card-content">';
-				$html .= '      <div class="img-wrap">';
-				$html .= '        <img src="' . Route::url($pub->link('masterimage')) . '" alt="Resource Image">';
-				$html .= '      </div>';
 				$html .= '      <div class="abstract">';
 				$html .= '        ' . $pub->get('abstract');
 				$html .= '      </div>';
+
+				// Watch
+				// Code pulled from: plugins/publications/watch
+				// Bug in watching code - Waiting for fix (see https://qubeshub.org/support/tickets/990)
+				$watching = \Hubzero\Item\Watch::isWatching(
+					$pub->get('id'),
+					'publication',
+					User::get('id')
+				);
+
+				// Sub-menu
+				$html .= '    <div class="sub-menu">';
+				$html .= '      <a aria-label="Full Record" title= "Full Record" href="' . $pub->link() . '">';
+		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/arrow-right.svg") . '</span>';
+		    $html .= '        Full Record';
+		    $html .= '      </a>';
+		    $html .= '      <a aria-label="Download" title= "Download" href="' . $pub->link('serve') . '?render=archive">';
+		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
+		    $html .= '      </a>';
+
+				$url = $pub->link() . '/forks/' . $pub->version->get('version_number') . '?action=fork';
+				$html .= '      <a aria-label="Adapt" title= "Adapt" href="' . $url . '">';
+		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
+		    $html .= '      </a>';
+				if ($watching) {
+  		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this resource\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe">';
+  		    $html .= '        <span class="menu-icon">' . file_get_contents("app/plugins/content/qubesmacros/assets/icons/feed-off.svg") . '</span>';
+  		    $html .= '      </a>';
+				} else {
+					$html .= '      <a aria-label="Watch" title= "Click to receive notifications when a new version is released" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe">';
+  		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/feed.svg") . '</span>';
+  		    $html .= '      </a>';
+				}
+		    $html .= '    </div>'; // End sub-menu
 				$html .= '    </div>'; // End content
 
 				// More information button
@@ -440,40 +479,6 @@ class Publications extends Macro
 	      $html .= '      </div>'; // End publish date
 
 				$html .= '    </div>'; // End meta
-
-				// Watch
-				// Code pulled from: plugins/publications/watch
-				// Bug in watching code - Waiting for fix (see https://qubeshub.org/support/tickets/990)
-				$watching = \Hubzero\Item\Watch::isWatching(
-					$pub->get('id'),
-					'publication',
-					User::get('id')
-				);
-
-				// Sub-menu
-				$html .= '    <div class="sub-menu">';
-				$html .= '      <a aria-label="Full Record" title= "Full Record" href="' . $pub->link() . '">';
-		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/arrow-right.svg") . '</span>';
-		    $html .= '        Full Record';
-		    $html .= '      </a>';
-		    $html .= '      <a aria-label="Download" title= "Download" href="' . $pub->link('serve') . '?render=archive">';
-		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
-		    $html .= '      </a>';
-
-				$url = $pub->link() . '/forks/' . $pub->version->get('version_number') . '?action=fork';
-				$html .= '      <a aria-label="Adapt" title= "Adapt" href="' . $url . '">';
-		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
-		    $html .= '      </a>';
-				if ($watching) {
-  		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this resource\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe">';
-  		    $html .= '        <span class="menu-icon">' . file_get_contents("app/plugins/content/qubesmacros/assets/icons/feed-off.svg") . '</span>';
-  		    $html .= '      </a>';
-				} else {
-					$html .= '      <a aria-label="Watch" title= "Click to receive notifications when a new version is released" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe">';
-  		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/feed.svg") . '</span>';
-  		    $html .= '      </a>';
-				}
-		    $html .= '    </div>'; // End sub-menu
 
 				$html .= '  </div>'; // End card
 			}

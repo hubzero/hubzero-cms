@@ -25,11 +25,10 @@
 }
 
 .card {
-  height: 17.1875rem;
+  background-position: center;
   margin: .5em;
-  overflow: hidden;
   position: relative;
-  width: 21.875rem;
+  object-fit: cover;
 
   &.active {
 
@@ -49,12 +48,10 @@
 
     .abstract {
       margin-top: .5em;
-      visibility: visible;
     }
 
     .sub-menu {
       margin-top: 0;
-      visibility: visible;
     }
 
     .meta {
@@ -66,32 +63,31 @@
 .logo-wrap {
   left: 5px;
   position: absolute;
-  top: 5px;
+  top: 20px;
+  z-index: 2;
 }
 
 .logo {
   height: 2rem;
-  transition: 1s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
 }
 
-.img-wrap {
-  height: 100%;
-  width: 100%;
-
-  img {
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
-  }
-}
+// .img-wrap {
+//   height: 100%;
+//   width: 100%;
+//
+//   img {
+//     height: 100%;
+//     object-fit: cover;
+//     width: 100%;
+//   }
+// }
 
 .card-content {
-  height: 100%;
-  width: 100%;
+  height: 17.1875rem;
+  overflow: hidden;
+  position: relative;
+  width: 21.875rem;
+  z-index: 3;
 }
 
 .title {
@@ -102,13 +98,8 @@
   padding: .3em .5em;
   position: absolute;
   transition: .4s;
-  width: 100%;
 
   .authors {
-    @include truncate(.75rem, 1, 1);
-  }
-
-  .affilication {
     @include truncate(.75rem, 1, 1);
   }
 
@@ -116,7 +107,7 @@
     @include truncate(1.125rem, 1.2, 2);
     font-family: 'Martel', serif;
     margin: inherit;
-    margin-bottom: .5em;
+    margin-bottom: .2em;
   }
 
   p {
@@ -127,7 +118,7 @@
 }
 
 .featured-tag {
-  background-color: $green;
+  background-color: $teal;
   bottom: 6.75rem;
   color: $white !important;
   font-family: 'Martel', sans-serif;
@@ -139,13 +130,41 @@
   transition: .6s;
 }
 
+.featured {
+  position: absolute;
+  top: -15px;
+  left: -10px;
+
+  span {
+    padding: .5em .75em;
+    display: block;
+    position: relative;
+    background-color: $green;
+    color: $white;
+    font-size: .8rem;
+    font-weight: bold;
+
+    &::before {
+      content: '';
+      height: 0;
+      width: 0;
+      display: block;
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      border-top: 10px solid $link-color;
+      border-left: 10px solid transparent;
+    }
+  }
+
+}
+
 .abstract {
   @include truncate(1rem, 1.2, 5);
   margin: 14em .5em .5em .5em;
   position: absolute;
   top: 6.5rem;
   transition: .4s;
-  visibility: hidden;
 }
 
 .hist {
@@ -221,7 +240,6 @@
   top: 16em;
   transition: .4s;
   width: 100%;
-  visibility: hidden;
 
   a {
     color: $white;
