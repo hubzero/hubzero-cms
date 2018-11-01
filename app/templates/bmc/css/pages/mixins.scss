@@ -230,6 +230,12 @@
 }
 
 // Extends for Anchor Links
+%anchor-container {
+  @include flexbox(wrap);
+  @include grid-template(repeat(auto-fit, minmax(22rem, max-content)), null, 2em);
+  justify-content: center;
+}
+
 %anchor {
   color: $dark-blue;
   margin: 2em;
