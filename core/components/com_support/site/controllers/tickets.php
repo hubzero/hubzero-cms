@@ -196,10 +196,10 @@ class Tickets extends SiteController
 		$this->view->group = preg_replace('/[^0-9a-zA-Z_\-]/', '', Request::getString('group', '_none_'));
 
 		// Set up some dates
-		$this->offset = Config::get('offset');
+		$date = new \Hubzero\Utility\Date();
 
-		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
-		$month = strftime("%m", time()+($this->offset*60*60));
+		$year  = Request::getInt('year', $date->toLocal('Y'));
+		$month = strftime("%m", $date->toLocal('m'));
 
 		$this->view->year = $year;
 		$this->view->opened = array();
