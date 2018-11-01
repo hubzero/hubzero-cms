@@ -134,8 +134,9 @@ class Helper extends Module
 				break;
 		}
 
-		// Get the time with offset
-		$timeWithOffset = time() + (intval(Config::get('offset'))*60*60);
+		// Get the time in unix format
+		$date = new \Hubzero\Utility\Date();
+		$timeWithOffset = $date->toLocal('U');
 
 		// Get the start day
 		$startday = $this->params->get('start_day');
