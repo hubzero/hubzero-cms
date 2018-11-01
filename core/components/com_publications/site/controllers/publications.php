@@ -882,7 +882,12 @@ class Publications extends SiteController
 		// We do need manifest!
 		if (!$curation || !isset($curation->element) || !$curation->element)
 		{
-			return false;
+			$curation = $this->model->_curationModel->getElementManifest($elementId);
+
+			if (!$curation || !isset($curation->element) || !$curation->element)
+			{
+				return false;
+			}
 		}
 
 		// Get attachment type model
