@@ -103,15 +103,15 @@ class Ticketsv1_0 extends ApiController
 		$group = Request::getString('group', '');
 
 		// Set up some dates
-		$this->offset = Config::get('offset');
+		$date = new \Hubzero\Utility\Date();
 
-		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
-		$month = strftime("%m", time()+($this->offset*60*60));
+		$year = Request::getInt('year', strftime("%Y", $date->toLocal('Y')));
+		$month = strftime("%m", $date->toLocal('m'));
 		if ($month <= "9"&preg_match("#(^[1-9]{1})#", $month))
 		{
 			$month = "0$month";
 		}
-		$day   = strftime("%d", time()+($this->offset*60*60));
+		$day = strftime("%d", $date->toLocal('d'));
 		if ($day <= "9"&preg_match("#(^[1-9]{1})#", $day))
 		{
 			$day = "0$day";
