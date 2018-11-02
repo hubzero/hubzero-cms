@@ -787,15 +787,13 @@ class Elements
 			}
 			else
 			{
-				$false = false;
-				return $false;
+				return false;
 			}
 		}
 
 		if (!class_exists($elementClass))
 		{
-			$false = false;
-			return $false;
+			return false;
 		}
 
 		$this->_elements[$signature] = new $elementClass($this);
