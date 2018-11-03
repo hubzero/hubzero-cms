@@ -1002,7 +1002,7 @@ HUB.Plugins.Autocomplete = {
 			{
 				case 'members':
 					cls = 'acm';
-					hint = 'Type in a name';
+					hint = 'Type in name or email';
 					showid = true;
 				break; 
 				case 'groups':

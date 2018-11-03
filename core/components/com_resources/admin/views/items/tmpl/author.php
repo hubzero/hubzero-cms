@@ -39,14 +39,14 @@ defined('_HZEXEC_') or die();
 		<br /><?php echo Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION'); ?>: <input type="text" name="<?php echo $this->id; ?>_organization" value="<?php echo $this->escape(stripslashes($this->org)); ?>" />
 
 		<select name="<?php echo $this->id; ?>_role">
-			<option value=""<?php if ($this->role == '') { echo ' selected="selected"'; }?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
+			<option value=""<?php if (empty($this->role)) { echo ' selected="selected"'; }?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
 <?php
 	if ($this->roles)
 	{
 		foreach ($this->roles as $role)
 		{
 ?>
-			<option value="<?php echo $this->escape($role->alias); ?>"<?php if ($this->role == $role->alias) { echo ' selected="selected"'; }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+			<option value="<?php echo $this->escape($role->alias); ?>"<?php if (isset($this->role) && ($this->role == $role->alias)) { echo ' selected="selected"'; }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 <?php
 		}
 	}

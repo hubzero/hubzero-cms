@@ -463,7 +463,16 @@ class Helper extends Module
 			}
 			else if (!preg_match('%^/members/' . $uid . '/profile%', $uri) && $hasCurl)
 			{
-				require $this->getLayoutPath('curl');
+				// check if there's anything we might ask about in the future. if so, show a curl tempting the user to be proactive and fill in more of their profile
+				list($allGroups) = $groups->getAllGroups();
+				$dbh->setQuery('SELECT '.implode(', ', $allGroups['cols']).' FROM #__profile_completion_awards WHERE user_id = '.$uid);
+				$row = $dbh->loadRow();
+				// never entered anything so far, or entered partial information w/r/t requested profile groups
+				if ($row === null || array_filter($row, function($col) {
+					return $col === 0;
+				})) {
+					require $this->getLayoutPath('curl');
+				}
 			}
 		}
 	}

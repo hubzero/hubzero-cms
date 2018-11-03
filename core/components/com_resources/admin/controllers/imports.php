@@ -87,9 +87,21 @@ class Imports extends AdminController
 			)
 		);
 
+		$query = Import::all();
+
+		$i = $query->getTableName();
+		$r = Run::blank()->getTableName();
+
+		$query->select($i . '.*');
+
+		if ($filters['sort'] == 'ran_at')
+		{
+			$query->select("(SELECT MAX(" . $r . ".ran_at) FROM " . $r . " WHERE " . $r . ".import_id=" . $i . ".`id` AND " . $r . ".dry_run=0)", 'ran_at');
+		}
+
 		// get all imports from archive
-		$imports = Import::all()
-			->ordered('filter_order', 'filter_order_Dir')
+		$imports = $query
+			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 

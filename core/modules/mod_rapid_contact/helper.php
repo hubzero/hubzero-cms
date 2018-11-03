@@ -160,12 +160,11 @@ class Helper extends Module
 
 			if ($this->error == '')
 			{
+				$this->posted['name'] = (isset($this->posted['name']) && Sanitize::clean($this->posted['name'])) ? Sanitize::clean($this->posted['name']) : $this->posted['email'];
+
 				$mySubject  = Sanitize::clean($this->posted['subject']);
 				$myMessage  = Lang::txt('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], Request::getString('HTTP_REFERER', '', 'SERVER'), Config::get('sitename'));
 				$myMessage .= "\n\n". Sanitize::clean($this->posted['message']);
-
-				$this->from_email = $this->posted['email'];
-				$this->from_name  = (isset($this->posted['name']) && Sanitize::clean($this->posted['name'])) ? Sanitize::clean($this->posted['name']) : $this->posted['email'];
 
 				$mailSender = new Message();
 				$mailSender->setSubject($mySubject)

@@ -151,12 +151,24 @@ class Router extends Base
 				$articleAlias = urldecode($segments[1]);
 				$articleAlias = str_replace(':', '-', $articleAlias);
 
-				include_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
+				include_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
 
 				$category = Category::all()
 					->whereEquals('alias', $categoryAlias)
 					->row();
 				$categoryId = $category->get('id');
+
+				// Check if the next segment is a category
+				// If not, then we assume it's an article
+				$category = Category::all()
+					->whereEquals('alias', $articleAlias)
+					->row();
+				if ($category && $category->get('id'))
+				{
+					$vars['task'] = 'category';
+					$vars['categoryAlias'] = $articleAlias;
+					return $vars;
+				}
 
 				if ($categoryId && $articleAlias)
 				{
@@ -179,17 +191,19 @@ class Router extends Base
 				}
 				else
 				{
+					include_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
+
+					$categoryAlias = urldecode($segments[1]);
+					$categoryAlias = str_replace(':', '-', $categoryAlias);
+
+					$category = Category::all()
+						->whereEquals('alias', $categoryAlias)
+						->row();
+					$vars['categoryId'] = $category->get('id');
+
 					$vars['task'] = 'article';
-					if (isset($vars['alias']) && $vars['alias'])
-					{
-						$vars['category'] = $vars['alias'];
-					}
-					else
-					{
-						$vars['category'] = $segments[0];
-					}
-					$vars['alias'] = urldecode($segments[2]);
-					$vars['alias'] = str_replace(':', '-', $vars['alias']);
+					$vars['articleAlias'] = urldecode($segments[2]);
+					$vars['articleAlias'] = str_replace(':', '-', $vars['articleAlias']);
 				}
 			break;
 

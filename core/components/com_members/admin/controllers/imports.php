@@ -38,6 +38,7 @@ use Components\Members\Models\Member;
 use Components\Members\Models\Profile\Field;
 use Hubzero\Component\AdminController;
 use Hubzero\Content\Import\Model\Hook;
+use Hubzero\Content\Import\Model\Run;
 use Hubzero\Content\Importer;
 use Hubzero\Config\Registry;
 use Filesystem;
@@ -102,12 +103,29 @@ class Imports extends AdminController
 				'int'
 			),
 			'state'    => array(1),
-			'sort'     => 'created_at',
-			'sort_Dir' => 'DESC',
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created_at'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'desc'
+			),
 			'type'     => 'members'
 		);
 
 		$model = Import::all();
+
+		$i = $model->getTableName();
+		$r = Run::blank()->getTableName();
+
+		if ($filters['sort'] == 'ran_at')
+		{
+			$model->select("(SELECT MAX(" . $r . ".ran_at) FROM " . $r . " WHERE " . $r . ".import_id=" . $i . ".`id` AND " . $r . ".dry_run=0)", 'ran_at');
+		}
 
 		if (isset($filters['state']) && $filters['state'])
 		{
@@ -125,7 +143,8 @@ class Imports extends AdminController
 			$model->whereEquals('type', $filters['type']);
 		}
 
-		$imports = $model->ordered()
+		$imports = $model
+			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 
