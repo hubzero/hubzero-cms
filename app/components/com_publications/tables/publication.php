@@ -126,7 +126,11 @@ class Publication extends Table
 	public function buildQuery($filters = array(), $admin = false)
 	{
 		$now = Date::toSql();
-		$groupby  = ' GROUP BY C.id ';
+		$groupby = '';
+		if (!isset($filters['all_versions']) || !$filters['all_versions'])
+		{
+			$groupby = ' GROUP BY C.id ';
+		}
 
 		$project  = isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
 		$dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
@@ -215,8 +219,12 @@ class Publication extends Table
 		}
 		else
 		{
-			$query .= " AND V.version_number = (SELECT MAX(version_number) FROM #__publication_versions
-						WHERE publication_id=C.id AND state=1 ) AND (V.state=1";
+			if (!isset($filters['all_versions']) || !$filters['all_versions'])
+			{
+				$query .= " AND V.version_number = (SELECT MAX(version_number) FROM #__publication_versions
+						WHERE publication_id=C.id AND state=1 )";
+			}
+			$query .= " AND (V.state=1";
 			if (count($projects) > 0)
 			{
 				$p_query = '';
@@ -370,11 +378,6 @@ class Publication extends Table
 					$query .= 'V.modified DESC';
 					break;
 
-				case 'title':
-				default:
-					$query .= 'V.title ' . $sortdir . ', V.version_number DESC';
-					break;
-
 				case 'id':
 					$query .= 'C.id '.$sortdir;
 					break;
@@ -421,6 +424,11 @@ class Publication extends Table
 
 				case 'submitted':
 					$query .= "V.submitted " . $sortdir;
+					break;
+
+				case 'title':
+				default:
+					$query .= 'V.title ' . $sortdir . ', V.version_number DESC';
 					break;
 			}
 		}
