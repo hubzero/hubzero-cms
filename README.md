@@ -316,6 +316,8 @@ Note the change of the remote from `origin` to `qubeshub`.  On `dev`, `origin` i
 
 # Monthly updates
 
+## Pull in code from upstream
+
 On the Thursday or Friday before QA push, do the following:
 
 ```
@@ -323,7 +325,26 @@ git fetch --all
 git pull upstream 2.2
 ```
 
-This will pull in the new code into `/core`.  For the extensions that have overrides, follow the same steps above for updating remote extensions.
+This will pull in the new code into `/core`.  
+
+## Update HubZero framework and run migration files in Vagrant Box
+
+Make sure you are in the vagrant directory and run the following commands:
+
+```
+vagrant ssh
+cd /var/www/public/core
+php bin/composer install
+cd ..
+php muse migration -f
+exit
+```
+
+## Update remote extensions
+
+For the extensions that have overrides, follow the same steps above for updating remote extensions.
+
+## Merge into app directory
 
 After updating the remote extension, we need to merge those commits into the extensions in the app directory on the master branch.
 
@@ -335,7 +356,7 @@ The `-Xtheirs` is important and safe, as we effectively want our version in the 
 
 **This will pull in ALL commits in the history of the repo into the commit message.**  Edit the commit file as follows.
 
-## Change the edit message
+### Change the edit message
 
 ```
 Squashed commit of the following:
@@ -347,7 +368,7 @@ to
 [extension] Squashed commit of the following...
 ```
 
-## Change the edit description
+### Change the edit description
 
 Include all recent commits from the core to app merge.  After the oldest more recent commit, add `...` on its own line and delete all the way until the commit info at the end (although these will be stripped as they are just comments - good to reread just to be sure).
 
