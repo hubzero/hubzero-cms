@@ -261,12 +261,13 @@ class Events extends SiteController
 		 */
 		define('_CAL_CONF_DATEFORMAT', $config->getCfg('dateformat'));
 
-		$this->offset = Config::get('offset');
+		$currentDate = new Date('now', Config::get('offset'));
+		$this->offset = $currentDate->getOffsetFromeGMT(true);
 
 		// Incoming
-		$this->year     = Request::getInt('year', Date::of('now')->format('Y'));
-		$this->month    = Request::getInt('month', Date::of('now')->format('m'));
-		$this->day      = Request::getInt('day', Date::of('now')->format('d'));
+		$this->year     = Request::getInt('year', $currentDate->toLocal('Y'));
+		$this->month    = Request::getInt('month', $currentDate->toLocal('m'));
+		$this->day      = Request::getInt('day', $currentDate->toLocal('d'));
 		$this->category = Request::getInt('category', 0);
 		$this->gid      = intval(User::get('gid'));
 

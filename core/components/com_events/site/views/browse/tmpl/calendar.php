@@ -38,7 +38,10 @@ $database = App::get('db');
 $gid = User::get('gid', 0);
 
 $startday = ((!_CAL_CONF_STARDAY) || (_CAL_CONF_STARDAY > 1)) ? 0 : _CAL_CONF_STARDAY;
-$timeWithOffset = time() + ($this->offset*60*60);
+
+$date = new Date('now', Config::get('offset'));
+$timeWithOffset = $date->toLocal('U');
+
 
 $to_day = date("Y-m-d", $timeWithOffset);
 
