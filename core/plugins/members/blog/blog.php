@@ -455,11 +455,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				$alias = end($bits);
 			}
 
-			$row = \Components\Blog\Models\Entry::oneByScope(
-				$alias,
-				$this->model->get('scope'),
-				$this->model->get('scope_id')
-			);
+			$row = \Components\Blog\Models\Entry::all()
+				->whereEquals('alias', $alias)
+				->whereEquals('scope', $this->model->get('scope'))
+				->whereEquals('scope_id', $this->model->get('scope_id'))
+				->whereIn('state', array(\Components\Blog\Models\Entry::STATE_UNPUBLISHED, \Components\Blog\Models\Entry::STATE_PUBLISHED))
+				->order('state', 'desc')
+				->row();
 		}
 
 		if (!$row->get('id') || $row->isDeleted())
