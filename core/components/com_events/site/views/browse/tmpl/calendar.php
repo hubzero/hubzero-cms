@@ -60,9 +60,9 @@ $ptime = mktime(0, 0, 0, ($this->month-1), 1, intval($this->year) );
 $ntime = mktime(0, 0, 0, ($this->month+1), 1, intval($this->year) );
 
 // This month
-$cal_year  = date("Y",$time);
-$cal_month = date("m",$time);
-$calmonth  = date("n",$time);
+$cal_year  = date("Y", $time);
+$cal_month = date("m", $time);
+$calmonth  = date("n", $time);
 
 $this_date = new \Components\Events\Helpers\EventsDate();
 $this_date->setDate( $this->year, $this->month, $this->day );
@@ -107,7 +107,7 @@ if ($this->shownav) {
 $content .= \Components\Events\Helpers\Html::getMonthName($cal_month).'</caption>'."\n";
 $content .= ' <thead>'."\n";
 $content .= '  <tr>'."\n";
-for ($i=0;$i<7;$i++)
+for ($i=0; $i<7; $i++)
 {
 	$content.='   <th scope="col">'.$day_name[($i+$startday)%7].'</th>'."\n";
 }
@@ -118,8 +118,8 @@ $content .= '  <tr>'."\n";
 
 // dmcd May 7/04 fix to fill in end days out of month correctly
 $dayOfWeek = $startday;
-$start = (date("w",mktime(0,0,0,$cal_month,1,$cal_year))-$startday+7)%7;
-$d = date("t",mktime(0,0,0,$cal_month,0,$cal_year))-$start + 1;
+$start = (date("w", mktime(0, 0, 0, $cal_month, 1, $cal_year))-$startday+7)%7;
+$d = date("t", mktime(0, 0, 0, $cal_month, 0, $cal_year))-$start + 1;
 $kownt = 0;
 
 for ($a=$start; $a>0; $a--)
@@ -135,9 +135,9 @@ for ($a=$start; $a>0; $a--)
 
 $monthHasEvent = false;
 //$eventCheck = new EventsRepeat;
-$lastDayOfMonth = date("t",mktime(0,0,0,$cal_month,1,$cal_year));
+$lastDayOfMonth = date("t", mktime(0, 0, 0, $cal_month, 1, $cal_year));
 $rd = 0;
-for ($d=1;$d<=$lastDayOfMonth;$d++)
+for ($d=1; $d<=$lastDayOfMonth; $d++)
 {
 	$do = ($d<10) ? "0$d" : "$d";
 	$selected_date = "$cal_year-$cal_month-$do";
@@ -199,7 +199,7 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 	}
 }
 
-for ($d=$rd;$d<=6;$d++)
+for ($d=$rd; $d<=6; $d++)
 {
 	$content .= '   <td';
 	if ($d == 6) {
