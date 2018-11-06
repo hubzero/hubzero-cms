@@ -291,12 +291,24 @@ class Publications extends Macro
 		} else {
 			foreach ($items as $pub)
 			{
-				$html .= '  <div class="card" style="background-image: url("' . Route::url($pub->link('masterimage')) . '");">';
-
+				$html .= '  <div class="card" style="background-image: url(' . $this->_db->quote(Route::url($pub->link('masterimage'))) . ');">';
+				
 				// Featured ROW
-				$html .= '	<div class="featured">';
-				$html .= '	<span>Featured Resource of the Week</span>';
-				$html .= '</div>'; // End feature ribbon
+				// For some reason, featured is not stored in model so we need to grab it
+				$this->_db->setQuery(
+					"SELECT `featured`
+					FROM `#__publications`
+					WHERE `id`=" . $this->_db->quote($pub->id)
+				);
+				$featured = (int) $this->_db->loadResult();
+				
+				if ($featured) {
+					$html .= '	<div class="featured">';
+					$html .= '    <a aria-label="Featured ROW" title="Featured Resouce of the Week" href="' . Route::url('/news/newsletter/row') . '">';
+					$html .= '	    <span>Featured Resource of the Week</span>';
+					$html .= '    </a>';
+					$html .= '  </div>'; // End feature ribbon
+				}
 
 				// Sponsors
 				if ($sponsors) {

@@ -91,10 +91,11 @@
 }
 
 .title {
-  background-color: rgba($white, .85);
+  background-color: rgba($white, .95);
   border: 1px solid $light-gray;
   bottom: 0;
   height: 6.75rem;
+  width: 100%;
   padding: .3em .5em;
   position: absolute;
   transition: .4s;
