@@ -70,11 +70,11 @@ class Html extends Obj
 		}
 		elseif ($lapsed > 86400 && $current['year'] != $parsed['year'])
 		{
-			return Date::of($timestamp)->toLocal('M j, Y');
+			return Date::of($time)->toLocal('M j, Y');
 		}
 		elseif ($lapsed > 86400)
 		{
-			return Date::of($timestamp)->toLocal('M j') . ' at ' . Date::of($timestamp)->toLocal('h:ia');
+			return Date::of($time)->toLocal('M j \a\t h:i A');
 		}
 		else
 		{
