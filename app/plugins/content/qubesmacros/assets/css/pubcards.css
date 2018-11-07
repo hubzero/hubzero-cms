@@ -20,9 +20,9 @@
 
 .card {
   background-position: center;
+  background-size: cover;
   margin: .5em;
   position: relative;
-  object-fit: cover;
 }
 
 .card.active .title {
@@ -33,6 +33,10 @@
 .card.active .title h3 {
   height: 2.5rem;
   max-width: 85%;
+}
+
+.card.active .card-content {
+  z-index: 80;
 }
 
 .card.active .featured-tag {
@@ -55,7 +59,7 @@
   left: 5px;
   position: absolute;
   top: 20px;
-  z-index: 2;
+  z-index: 4;
 }
 
 .logo {
@@ -67,6 +71,7 @@
   overflow: hidden;
   position: relative;
   width: 21.875rem;
+  transition: .4s;
   z-index: 3;
 }
 
@@ -137,6 +142,7 @@
   position: absolute;
   top: -15px;
   left: -10px;
+  z-index: 5;
 }
 
 .featured span {
