@@ -33,7 +33,7 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s serial numbers', 'storefront');
 
-Toolbar::appendButton('Popup', 'new', 'New', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&sId=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'new', 'New', \Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&sId=' . $this->sku->getId()), 570, 170);
 if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();
@@ -41,7 +41,7 @@ if ($canDo->get('core.delete'))
 
 Toolbar::spacer();
 //Toolbar::custom('upload', 'upload.png', '', 'Upload CSV', false);
-Toolbar::appendButton('Popup', 'upload', 'Upload CSV', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=upload&sId=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'upload', 'Upload CSV', \Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=upload&sId=' . $this->sku->getId()), 570, 170);
 Toolbar::spacer();
 Toolbar::cancel();
 
