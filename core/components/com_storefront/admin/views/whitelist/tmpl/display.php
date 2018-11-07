@@ -36,7 +36,7 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s whitelisted users', 'storefront');
 
-Toolbar::appendButton('Popup', 'new', 'Add Users', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'new', 'Add Users', \Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId()), 570, 170);
 if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();
