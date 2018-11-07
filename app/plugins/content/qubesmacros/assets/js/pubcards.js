@@ -54,6 +54,18 @@ $(document).ready(function(){
 
   });
 
+  // Adjust CSS of sponsor logos if Featured ROW exists
+    $('.card').each(function() {
+      var $sponsor = $(this).find('.logo-wrap'),
+          $featured = $(this).find('.featured');
+
+      if ($featured.length > 0 && $sponsor.length > 0) {
+        $sponsor.css('top', '1.25em');
+      } else {
+        // do nothing
+      }
+    });
+
   // Legacy
   $('.demo-two-card').hover(function(){
 

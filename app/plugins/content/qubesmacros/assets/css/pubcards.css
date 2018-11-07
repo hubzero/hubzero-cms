@@ -56,9 +56,9 @@
 }
 
 .logo-wrap {
-  left: 5px;
+  left: .3125em;
   position: absolute;
-  top: 20px;
+  top: .3125em;
   z-index: 4;
 }
 
@@ -140,8 +140,8 @@
 
 .featured {
   position: absolute;
-  top: -15px;
-  left: -10px;
+  top: -0.9375em;
+  left: -0.625em;
   z-index: 5;
 }
 
@@ -161,7 +161,7 @@
   width: 0;
   display: block;
   position: absolute;
-  bottom: -10px;
+  bottom: -0.625em;
   left: 0;
   border-top: 10px solid #6E9C39;
   border-left: 10px solid transparent;
