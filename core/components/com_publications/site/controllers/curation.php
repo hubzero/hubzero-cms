@@ -581,7 +581,6 @@ class Curation extends SiteController
 			{
 				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL'), 403);
 			}
-
 		}
 
 		// Mark as curated
