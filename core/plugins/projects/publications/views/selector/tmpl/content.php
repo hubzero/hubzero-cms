@@ -41,8 +41,7 @@ $filters = array(
 	'start'       => Request::getInt('limitstart', 0),
 	'search'      => Request::getString('search', ''),
 	'tag'         => trim(Request::getString('tag', '')),
-	'tag_ignored' => array(),
-	'all_versions' => true
+	'tag_ignored' => array()
 );
 // Instantiate a publication object
 $model = new \Components\Publications\Models\Publication();
