@@ -28,10 +28,26 @@ define('DS', DIRECTORY_SEPARATOR);
 |
 */
 
-define('JPATH_BASE', __DIR__);
-define('PATH_ROOT', dirname(__DIR__));
+// Define the root. Typically, this is the current directory.
+$root = dirname(__DIR__);
+if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'])
+{
+	$root = $_SERVER['DOCUMENT_ROOT'];
+}
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
+define('PATH_ROOT', $root);
+
+// Define core. Typically, this is a directory under root but can be
+// changed via an environment variable.
+$core = PATH_ROOT . '/core';
+if (isset($_ENV['PATH_CORE']) && $_ENV['PATH_CORE'])
+{
+	$core = $_ENV['PATH_CORE'];
+}
+
+define('PATH_CORE', $core);
+
+require_once PATH_CORE . DS . 'bootstrap' . DS . 'paths.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +60,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'version.php';
+require_once PATH_CORE . DS . 'bootstrap' . DS . 'version.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +73,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'version.php';
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
+require_once PATH_CORE . DS . 'bootstrap' . DS . 'autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +86,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
 |
 */
 
-$app = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'start.php';
+$app = require_once PATH_CORE . DS . 'bootstrap' . DS . 'start.php';
 
 /*
 |--------------------------------------------------------------------------

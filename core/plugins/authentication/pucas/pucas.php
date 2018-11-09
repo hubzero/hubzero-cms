@@ -34,8 +34,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once PATH_CORE . DS . 'libraries' . DS . 'CAS-1.3.3' . DS . 'CAS.php';
-
 /**
  * Authentication Plugin class for PUCAS
  */
@@ -85,7 +83,10 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			$return = '/' . ltrim($return, '/');
 		}
 
-		phpCAS::logout(array('service'=>$service . $return, 'url'=>$service . $return));
+		phpCAS::logout(array(
+			'service' => $service . $return,
+			'url'     => $service . $return
+		));
 	}
 
 	/**
@@ -97,7 +98,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	{
 		$status = array();
 
-		if (Config::Get('debug'))
+		if (Config::get('debug'))
 		{
 			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
 			phpCAS::setDebug($debug_location);
