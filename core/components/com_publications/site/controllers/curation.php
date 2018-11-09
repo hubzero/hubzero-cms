@@ -568,6 +568,20 @@ class Curation extends SiteController
 		if ($this->_pub->version->doi)
 		{
 			$doiService->update($this->_pub->version->doi, true);
+			
+			if ($doiService->getError())
+			{
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UPDATE_METADATA'), 403);
+			}
+			
+			// Register URL and DOI name for DataCite DOI service
+			$doiService->register(false, true, $this->_pub->version->doi);
+			
+			if ($doiService->getError())
+			{
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL'), 403);
+			}
+
 		}
 
 		// Mark as curated
