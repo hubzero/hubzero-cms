@@ -2271,7 +2271,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				{
 					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
 				}
-				
 				$doiErr = true;
 			}
 			else
@@ -2289,7 +2288,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					{
 						$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
 					}
-					
 					$doiErr = true;
 				}
 			}
