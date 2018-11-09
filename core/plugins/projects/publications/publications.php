@@ -2255,7 +2255,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $doi)
 		{
 			// Update DOI metadata
-			$doiService->update($doi, true);			
+			$doiService->update($doi, true);
+			
 			if ($doiService->getError())
 			{
 				if ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
