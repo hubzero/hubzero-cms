@@ -37,7 +37,7 @@ $canDo = \Components\Courses\Helpers\Permissions::getActions();
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_COUPON_CODES'), 'courses.png');
 if ($canDo->get('core.create'))
 {
-	Toolbar::appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
+	Toolbar::appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component'), 500, 200);
 
 	Toolbar::spacer();
 	Toolbar::custom('export', 'export', 'export', 'COM_COURSES_EXPORT_CODES', false);
