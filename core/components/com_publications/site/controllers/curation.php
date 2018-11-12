@@ -562,7 +562,7 @@ class Curation extends SiteController
 		{
 			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 		}
-
+		
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi($this->_pub);
 		
