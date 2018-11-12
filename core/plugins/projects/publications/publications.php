@@ -2250,15 +2250,46 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$doiErr = true;
 			}
 		}
-
-		// Register DOI name and URL for DOI when the publication is set to be automatically approved.
-		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
+		
+		// When dataset is automatically approved.
+		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $doi)
 		{
-			$doiService->register(false, true, $pub->version->get('doi'));
-
+			// Update DOI metadata
+			$doiService->update($doi, true);
+			
 			if ($doiService->getError())
 			{
-				$this->setError($doiService->getError());
+				if ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_DATACITE_DOI') . ' ' . $doiService->getError());
+				}
+				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_EZID)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_EZID_DOI') . ' ' . $doiService->getError());
+				}
+				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_NONE)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
+				}
+				$doiErr = true;
+			}
+			else
+			{
+				// Register DOI name and target URL for DataCite DOI
+				$doiService->register(false, true, $doi);
+
+				if ($doiService->getError())
+				{
+					if ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
+					{
+						$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());
+					}
+					elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_NONE)
+					{
+						$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
+					}
+					$doiErr = true;
+				}
 			}
 		}
 
