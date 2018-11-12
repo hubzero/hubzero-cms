@@ -46,7 +46,7 @@ class plgSystemActivity extends \Hubzero\Plugin\Plugin
 	 */
 	public function logActivity($activity, $recipients = array())
 	{
-		if (!App::isSite())
+		if (!App::isSite() && !App::isApi())
 		{
 			return;
 		}
