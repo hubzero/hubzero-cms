@@ -632,9 +632,9 @@ function query_gen(&$dd)
 
 	// Limit
 	$limit = '';
-	$no_limit = Request::getString('nolimit', false);
-	$limit_start = Request::getString('iDisplayStart', false);
-	$limit_length = Request::getInt('iDisplayLength', $dv_conf['settings']['limit']);
+	$no_limit = Request::getVar('nolimit', false);
+	$limit_start = Request::getVar('iDisplayStart', false);
+	$limit_length = Request::getVar('iDisplayLength', $dv_conf['settings']['limit']);
 	if ($no_limit === false && $limit_start !== false && $limit_length != '-1') {
 		$limit = " LIMIT $limit_start, $limit_length";
 	} elseif ($no_limit === false && isset($dd['serverside']) && $dd['serverside']) {
