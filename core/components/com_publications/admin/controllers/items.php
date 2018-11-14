@@ -534,7 +534,7 @@ class Items extends AdminController
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi))
 				{
 					$doiService->update($model->version->doi, true);
-					
+
 					if ($doiService->getError())
 					{
 						$this->setError($doiService->getError());
@@ -626,12 +626,12 @@ class Items extends AdminController
 				// Get updated authors
 				$authors = $model->table('Author')->getAuthors($model->version->id);
 				$doiService->set('authors', $authors);
-				
+
 				// Update DOI
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->get('doi')))
 				{
 					$doiService->update($model->version->get('doi'), true);
-					
+
 					if ($doiService->getError())
 					{
 						$this->setError($doiService->getError());
@@ -835,7 +835,7 @@ class Items extends AdminController
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
 				$doiService->update($this->model->version->doi, true);
-				
+
 				if ($doiService->getError())
 				{
 					$this->setError($doiService->getError());
@@ -888,7 +888,7 @@ class Items extends AdminController
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 						{
 							$doiService->update($this->model->version->doi, true);
-							
+
 							if ($doiService->getError())
 							{
 								$this->setError($doiService->getError());

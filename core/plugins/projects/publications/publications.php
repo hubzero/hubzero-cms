@@ -2237,16 +2237,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$doiErr = true;
 			}
 		}
-		
+
 		// When dataset is automatically approved.
 		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $doi)
 		{
 			// Update DOI metadata
 			$doiService->update($doi, true);
-			
+
 			if ($doiService->getError())
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_DOI') . ' ' . $doiService->getError());				
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_DOI') . ' ' . $doiService->getError());
 				$doiErr = true;
 			}
 			else
@@ -2256,7 +2256,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				if ($doiService->getError())
 				{
-					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());					
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());
 					$doiErr = true;
 				}
 			}
