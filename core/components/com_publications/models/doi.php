@@ -67,7 +67,7 @@ class Doi extends Obj
 	 * @var  object
 	 */
 	private $_db = null;
-	
+
 	/**
 	 * DataCite and EZID switch options
 	 *
@@ -76,7 +76,7 @@ class Doi extends Obj
 	const SWITCH_OPTION_NONE = 0;
 	const SWITCH_OPTION_EZID = 1;
 	const SWITCH_OPTION_DATACITE = 2;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -201,7 +201,7 @@ class Doi extends Obj
 			elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
-			}			
+			}
 		}
 		else
 		{
@@ -213,7 +213,7 @@ class Doi extends Obj
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}
-			
+
 			$call .= $this->_configs->shoulder;
 			$call .= $this->_configs->prefix ? DS . $this->_configs->prefix : DS;
 
@@ -471,7 +471,7 @@ class Doi extends Obj
 
 		return $xmlfile;
 	}
-	
+
 	/**
 	 * Run cURL to register metadata and create DOI on DataCite
 	 *
@@ -490,27 +490,27 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-		
+
 		$response = curl_exec($ch);
-		
+
 		if(!$response)
 		{
 			return false;
 		}
-		
+
 		$pattern = '/\((.*?)\)/';
 		$ret = preg_match($pattern, $response, $match);
 		if ($ret != 1)
 		{
 			return false;
 		}
-		
+
 		$doi = $match[1];
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+
 		curl_close($ch);
-		
+
 		if ($code == 201 || $code == 200)
 		{
 			return true;
@@ -520,7 +520,7 @@ class Doi extends Obj
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Run cURL to register DOI name and URL that refers to the dataset on DataCite
 	 *
@@ -538,18 +538,18 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-		
+
 		$response = curl_exec($ch);
-		
+
 		if(!$response)
 		{
 			return false;
 		}
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+
 		curl_close($ch);
-		
+
 		if ($code == 201 || $code == 200)
 		{
 			return true;
@@ -559,7 +559,7 @@ class Doi extends Obj
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Register DOI metadata. This is the first step to create DOI name and register metadata on DataCite.
 	 *
@@ -568,13 +568,13 @@ class Doi extends Obj
 	public function registerMetadata()
 	{
 		$doi = null;
-		
+
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 			return false;
 		}
-		
+
 		// Submit DOI metadata
 		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata' . DS . $this->_configs->shoulder;
 		$xml = $this->buildXml();
@@ -584,7 +584,7 @@ class Doi extends Obj
 		{
 			return false;
 		}
-		
+
 		return $doi;
 	}
 	/**
@@ -599,14 +599,14 @@ class Doi extends Obj
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 			return false;
 		}
-		
+
 		// Register URL
 		$resURL = $this->get('url');
 		$url = $this->_configs->dataciteServiceURL . DS . 'doi' . DS . $doi;
 		$postvals = "doi=" . $doi . "\n" . "url=" . $resURL;
-		
+
 		$regResult = $this->regURL($url, $postvals);
-		
+
 		if(!$regResult)
 		{
 			return false;
@@ -616,9 +616,9 @@ class Doi extends Obj
 			return true;
 		}
 	}
-	
+
 	/**
-	 * Update DOI metadata 
+	 * Update DOI metadata
 	 *
 	 * @param   string   $doi
 	 *
@@ -627,22 +627,22 @@ class Doi extends Obj
 	public function dataciteMetadataUpdate($doi)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
-		
+
 		if (!$doi)
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
 			return false;
 		}
-		
+
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 			return false;
 		}
-		
+
 		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata';
 		$xml = $this->buildXml($doi);
-		
+
 		$ch = curl_init($metadataURL);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
@@ -650,18 +650,18 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_POST, true);
-		
+
 		$response = curl_exec($ch);
-		
+
 		if(!$response)
 		{
 			return false;
 		}
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+
 		curl_close($ch);
-		
+
 		if ($code == 201 || $code == 200)
 		{
 			return true;
@@ -697,7 +697,7 @@ class Doi extends Obj
 		// Call to delete a DOI
 		return true;
 	}
-	
+
 	/**
 	 * Start input
 	 *
@@ -730,7 +730,7 @@ class Doi extends Obj
 
 		return $input;
 	}
-	
+
 	/**
 	 * Run cURL to register DOI on EZID
 	 *
@@ -773,7 +773,7 @@ class Doi extends Obj
 
 		return false;
 	}
-	
+
 	/**
 	 * Register a DOI on EZID
 	 *
@@ -804,7 +804,7 @@ class Doi extends Obj
 		{
 			$doi = $this->runCurl($url, $input);
 		}
-		
+
 		// Send XML and set DOI to public
 		if (($status == 'public') && ($sendXml == true))
 		{
@@ -813,7 +813,7 @@ class Doi extends Obj
 			// Load the xml document in the DOMDocument object
 			$xdoc = new \DomDocument;
 			$xdoc->loadXML($xml);
-			
+
 			// Append XML
 			$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
 
@@ -824,7 +824,7 @@ class Doi extends Obj
 		// Return DOI
 		return $doi;
 	}
-	
+
 	/**
 	 * Update a DOI on EZID
 	 *
@@ -890,9 +890,9 @@ class Doi extends Obj
 
 		return $result ? $result : false;
 	}
-	
+
 	/**
-	 * Update DOI metadata - Entry to update DOI metadata. 
+	 * Update DOI metadata - Entry to update DOI metadata.
 	 *
 	 * @param   string   $doi
 	 * @param   boolean  $sendXML   -- This is set to true when using EZID DOI service
@@ -904,7 +904,7 @@ class Doi extends Obj
 		if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 		{
 			$result = $this->dataciteMetadataUpdate($doi);
-			
+
 			if (!$result)
 			{
 				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_DATACITE_DOI_METADATA'));
@@ -913,16 +913,16 @@ class Doi extends Obj
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 		{
 			$result = $this->ezidMetadataUpdate($doi, $sendXML);
-			
+
 			if (!$result)
 			{
 				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_EZID_DOI_METADATA'));
 			}
 		}
 	}
-	
+
 	/**
-	 * Register - Entry to register DOI metadata, or URL for DataCite DOI; Or register DOI for EZID 
+	 * Register - Entry to register DOI metadata, or URL for DataCite DOI; Or register DOI for EZID
 	 *
 	 * @param   boolean  $regMetadata - Register Metadata for DataCite DOI when it is set to true.
 	 * @param   boolean  $regUrl      - Register URL and DOI name for for DataCite DOI when it is set to true.
@@ -940,24 +940,24 @@ class Doi extends Obj
 			if ($regMetadata)
 			{
 				$doi = $this->registerMetadata();
-				
+
 				if (!$doi)
 				{
 					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI'));
 				}
-				
+
 				return $doi;
 			}
-			
+
 			if ($regUrl && !empty($doi))
 			{
 				$regResult = $this->registerURL($doi);
-				
+
 				if (!$regResult)
 				{
 					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'));
 				}
-				
+
 				return $regResult;
 			}
 		}
@@ -967,21 +967,20 @@ class Doi extends Obj
 			if (!$regUrl)
 			{
 				$doi = $this->registerEZID($sendXML, $status);
-				
+
 				if (!$doi)
 				{
 					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI'));
 				}
-				
+
 				return $doi;
 			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
-			
+
 			return false;
 		}
-	}	
+	}
 }
-	
