@@ -572,7 +572,7 @@ class Curation extends SiteController
 			
 			if ($doiService->getError())
 			{
-				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UPDATE_METADATA'), 403);
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UPDATE_METADATA') . ' ' . $doiService->getError(), 403);
 			}
 			
 			// Register URL and DOI name for DataCite DOI service
@@ -580,7 +580,7 @@ class Curation extends SiteController
 			
 			if ($doiService->getError())
 			{
-				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL'), 403);
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL') . ' ' . $doiService->getError(), 403);
 			}
 		}
 

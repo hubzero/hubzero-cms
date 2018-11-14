@@ -805,6 +805,7 @@ class Doi extends Obj
 			$doi = $this->runCurl($url, $input);
 		}
 		
+		// Send XML and set DOI to public
 		if (($status == 'public') && ($sendXml == true))
 		{
 			$xml = $this->buildXml();
@@ -819,32 +820,6 @@ class Doi extends Obj
 			// Make service call to send extended metadata
 			$doi = $this->runCurl($url, $input);
 		}
-
-		// Are we sending extended data?
-		/*
-		if ($sendXml == true && $doi)
-		{
-			$xml = $this->buildXml($doi);
-
-			// Load the xml document in the DOMDocument object
-			$xdoc = new \DomDocument;
-			$xdoc->loadXML($xml);
-
-			// Validate against schema
-			if (!$xdoc->schemaValidate($this->_configs->xmlSchema))
-			{
-				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
-			}
-			else
-			{
-				// Append XML
-				$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
-
-				// Make service call to send extended metadata
-				$doi = $this->runCurl($url, $input);
-			}
-		}
-		*/
 
 		// Return DOI
 		return $doi;
@@ -932,12 +907,17 @@ class Doi extends Obj
 			
 			if (!$result)
 			{
-				throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_DATACITE_DOI_METADATA'));
 			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 		{
-			$this->ezidMetadataUpdate($doi, $sendXML);
+			$result = $this->ezidMetadataUpdate($doi, $sendXML);
+			
+			if (!$result)
+			{
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_EZID_DOI_METADATA'));
+			}
 		}
 	}
 	
@@ -960,6 +940,12 @@ class Doi extends Obj
 			if ($regMetadata)
 			{
 				$doi = $this->registerMetadata();
+				
+				if (!$doi)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI'));
+				}
+				
 				return $doi;
 			}
 			
@@ -971,6 +957,8 @@ class Doi extends Obj
 				{
 					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'));
 				}
+				
+				return $regResult;
 			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
@@ -979,13 +967,20 @@ class Doi extends Obj
 			if (!$regUrl)
 			{
 				$doi = $this->registerEZID($sendXML, $status);
+				
+				if (!$doi)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI'));
+				}
+				
 				return $doi;
 			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
 		{
-			$doi = null;
-			return $doi;
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
+			
+			return false;
 		}
 	}	
 }
