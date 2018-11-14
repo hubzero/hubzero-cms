@@ -562,22 +562,22 @@ class Curation extends SiteController
 		{
 			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 		}
-		
+
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi($this->_pub);
-		
+
 		if ($this->_pub->version->doi)
 		{
 			$doiService->update($this->_pub->version->doi, true);
-			
+
 			if ($doiService->getError())
 			{
 				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UPDATE_METADATA') . ' ' . $doiService->getError(), 403);
 			}
-			
+
 			// Register URL and DOI name for DataCite DOI service
 			$doiService->register(false, true, $this->_pub->version->doi);
-			
+
 			if ($doiService->getError())
 			{
 				throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL') . ' ' . $doiService->getError(), 403);
