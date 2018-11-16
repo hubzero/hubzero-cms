@@ -29,6 +29,20 @@
   background-size: cover;
   margin: .5em;
   position: relative;
+  
+  .meta {
+    @include flexbox;
+    bottom: 0;
+    font-family: 'Martel', serif;
+    font-size: 0.8125rem;
+    justify-content: space-between;
+    left: 0;
+    padding: 0 .5em;
+    position: absolute;
+    transition: .2s;
+    width: 100%;
+    z-index: 99;
+  }
 
   &.active {
 
@@ -215,25 +229,15 @@
   font-style: normal;
 }
 
-.meta {
-  @include flexbox;
-  bottom: 0;
-  font-family: 'Martel', serif;
-  font-size: 0.8125rem;
-  justify-content: space-between;
-  left: 0;
-  padding: 0 .5em;
-  position: absolute;
-  transition: .2s;
-  width: 100%;
-  z-index: 99;
-}
-
 .tag-wrap {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 9.6875rem;
+  
+  .tags {
+    font-size: 0.75rem !important;
+  }
 }
 
 .sub-menu {
@@ -273,6 +277,7 @@
   transition: .3s;
   width: 3.375rem;
   z-index: 100;
+  padding: 0;
 
   &:hover {
     border: 5px solid $white;
