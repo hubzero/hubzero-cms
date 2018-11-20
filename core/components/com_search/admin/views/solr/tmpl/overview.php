@@ -41,16 +41,16 @@ $option = $this->option;
 
 Submenu::addEntry(
 	Lang::txt('Overview'),
-	'index.php?option='.$option.'&task=configure',
+	\Route::url('index.php?option='.$option.'&task=configure'),
 	true
 );
 Submenu::addEntry(
 	Lang::txt('Searchable Components'),
-	'index.php?option='.$option.'&task=display&controller=searchable'
+	\Route::url('index.php?option='.$option.'&task=display&controller=searchable')
 );
 Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
-	'index.php?option='.$option.'&task=manageBlacklist'
+	\Route::url('index.php?option='.$option.'&task=manageBlacklist')
 );
 ?>
 <div id="widget-container" class="com_search">
