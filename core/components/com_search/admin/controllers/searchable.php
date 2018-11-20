@@ -83,7 +83,6 @@ class Searchable extends AdminController
 		}
 		catch (\Solarium\Exception\HttpException $e)
 		{
-			$query->query('')->limit($limit)->start($start)->run();
 			\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
 		}
 
