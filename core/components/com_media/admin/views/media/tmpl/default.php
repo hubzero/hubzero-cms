@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_MEDIA'));
 if (User::authorise('core.admin', 'com_media'))
 {
-	Toolbar::preferences($this->option, 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
+	Toolbar::preferences($this->option);
 	Toolbar::spacer();
 }
 if (User::authorise('core.delete', 'com_media'))
