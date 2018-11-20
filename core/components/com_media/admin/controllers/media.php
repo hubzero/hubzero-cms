@@ -139,7 +139,7 @@ class Media extends AdminController
 			if (!is_dir($path) && !is_file($path))
 			{
 				// Trigger the onContentBeforeSave event.
-				$object_file = new \Hubzero\Base\Object(array('filepath' => $path));
+				$object_file = new \Hubzero\Base\Obj(array('filepath' => $path));
 
 				$result = Event::trigger('content.onContentBeforeSave', array('com_media.folder', &$object_file, true));
 
@@ -248,7 +248,7 @@ class Media extends AdminController
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$object_file = new \Hubzero\Base\Object($file);
+			$object_file = new \Hubzero\Base\Obj($file);
 			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
 			if (in_array(false, $result, true))
 			{
@@ -320,7 +320,7 @@ class Media extends AdminController
 			}
 
 			$fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
-			$object_file = new \Hubzero\Base\Object(array('filepath' => $fullPath));
+			$object_file = new \Hubzero\Base\Obj(array('filepath' => $fullPath));
 			if (is_file($fullPath))
 			{
 				// Trigger the onContentBeforeDelete event.
