@@ -1029,7 +1029,8 @@ HUB.ProjectFiles = {
 
 		if ($('.main-content').length) {
 			subtract = $('.main-content').offset();
-			subtract.left -= $('.main-content').css('margin-left').replace('px', '');
+			subtract.left -= $('.main-content').width() * .25;
+			subtract.top += $('.main-content').height() * .5;
 		}
 
 		if ($('#plg-content').length > 0 && div.length > 0)
