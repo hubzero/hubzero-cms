@@ -34,8 +34,7 @@ defined('_HZEXEC_') or die();
 
 $this->css('search-enhanced')
 	->css('jquery.datetimepicker.css', 'system');
-$this->js('suggest')
-	->js('solr')
+$this->js('solr')
 	->js('jquery.datetimepicker', 'system');
 
 $terms = isset($this->terms) ? $this->terms : '';
