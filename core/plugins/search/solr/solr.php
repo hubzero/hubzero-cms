@@ -90,40 +90,27 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 		$searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
 		if ($searchComponent && $searchComponent->get('state') == 1)
 		{
-			$searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
-			$indexResultModel = $model;
-			if ($searchModel === false)
-			{
-				$searchModel = $searchComponent->getSearchableModel();
-				if (!$searchModel)
-				{
-					return false;
-				}
-				$searchModelBlank = new $searchModel;
-				$searchModelTable = $searchModelBlank->getTableName();
-				if ($table != $searchModelTable)
-				{
-					return false;
-				}
-				$indexResultModel = $searchModel::newFromResults($model);
-			}
-
+			$indexResultModel = $this->getSearchableModel($table, $model, $searchComponent);
 			if ($indexResultModel)
 			{
 				$config = Component::params('com_search');
 				$commitWithin = $config->get('solr_commit');
 				$index = new Hubzero\Search\Index($config);
+				$method = '';
 				$modelIndex = $indexResultModel->searchResult();
 				$blackListIds = Blacklist::getDocIdsByScope($indexResultModel::searchNamespace());
 				if ($modelIndex !== false && !in_array($modelIndex->id, $blackListIds))
 				{
 					$message = $index->updateIndex($modelIndex, $commitWithin);
+					$method = 'update';
 				}
 				else
 				{
 					$modelIndexId = $indexResultModel->searchId();
 					$message = $index->delete($modelIndexId);
+					$method = 'delete';
 				}
+				Event::trigger('search.sendSolrRequest', array($modelIndex, $method));
 				if ($message)
 				{
 					Notify::error($message);
@@ -155,11 +142,46 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 			$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
 			if ($searchComponent->get('state') == 1)
 			{
-				$config = Component::params('com_search');
-				$index = new Hubzero\Search\Index($config);
-				$modelIndexId = $model->searchId();
-				$index->delete($modelIndexId);
+				$indexResultModel = $this->getSearchableModel($table, $model, $searchComponent);
+				if ($indexResultModel)
+				{
+					$config = Component::params('com_search');
+					$index = new Hubzero\Search\Index($config);
+					$modelIndexId = $indexResultModel->searchId();
+					$index->delete($modelIndexId);
+					$method = 'delete';
+					Event::trigger('search.sendSolrRequest', array($indexResultModel->searchResult(), $method));
+				}
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @param Components\Search\Models\Solr\SearchComponent $searchComponent
+	 * @param mixed	$table
+	 * @param mixed	$model
+	 * @return mixed
+	 */
+	private function getSearchableModel($table, $model, $searchComponent)
+	{
+		$searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
+		$indexResultModel = $model;
+		if ($searchModel === false)
+		{
+			$searchModel = $searchComponent->getSearchableModel();
+			if (!$searchModel)
+			{
+				return false;
+			}
+			$searchModelBlank = new $searchModel;
+			$searchModelTable = $searchModelBlank->getTableName();
+			if ($table != $searchModelTable)
+			{
+				return false;
+			}
+			$indexResultModel = $searchModel::newFromResults($model);
+		}
+		return $indexResultModel;
 	}
 }
