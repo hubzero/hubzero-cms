@@ -155,14 +155,17 @@ class SearchComponent extends Relational
 
 		if (count($modelResults) > 0)
 		{
+			$searchResults = array();
 			foreach ($modelResults as $result)
 			{
 				$searchResult = $result->searchResult();
 				if ($searchResult && !in_array($searchResult->id, $blackListIds))
 				{
 					$newQuery->index($searchResult, true, $commitWithin, $batchSize);
+					$searchResults[] = $searchResult;
 				}
 			}
+			Event::trigger('search.sendSolrRequest', array($searchResults, 'update'));
 			$results = array(
 				'limit'  => $batchSize,
 				'offset' => $offset + $batchSize,
@@ -330,6 +333,28 @@ class SearchComponent extends Relational
 			return $searchModel::searchNamespace();
 		}
 		return $this->get('name');
+	}
+
+	/**
+	 * Add site code for instances where solr is used for multiple sites
+	 * @param object $searchResult stdClass object containing search document
+	 * @return object
+	 */
+	public static function addDomainNameSpace($searchResult)
+	{
+		$siteCode = Config::get('sitecode');
+		$siteName = Config::get('sitename');
+		if (empty($siteCode))
+		{
+			$siteCode = preg_replace('/[^a-zA-Z0-9]/', '', $siteName);
+		}
+		$searchResult->hubname_s = $siteName;
+		$searchResult->hubcode_s = $siteCode;
+		if (isset($searchResult->id))
+		{
+			$searchResult->id = $siteCode . '-' . $searchResult->id;
+		}
+		return $searchResult;
 	}
 
 	/**

@@ -331,6 +331,9 @@ class Searchable extends AdminController
 			if ($component->save())
 			{
 				Notify::success(Lang::txt('COM_SEARCH_DELETE_COMPONENT_SUCCESS', ucfirst($component->name)));
+				$deleteObj = new stdClass;
+				$deleteObj->hubtype = $modelNamespace;
+				Event::trigger('search.sendSolrRequest', array($deleteObj, 'delete'));
 			}
 		}
 
