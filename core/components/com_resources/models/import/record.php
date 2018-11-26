@@ -35,6 +35,7 @@ namespace Components\Resources\Models\Import;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Components\Resources\Models\Author;
+use Components\Resources\Models\Association;
 use Components\Resources\Helpers\Tags;
 use Hubzero\Base\Obj;
 use Exception;
