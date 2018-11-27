@@ -547,7 +547,7 @@ class Manage extends AdminController
 		}
 		else
 		{
-			Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'));
+			Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB_PERMISSIONS'));
 		}
 
 		// check to see if we have a super group db config
