@@ -60,6 +60,10 @@
     top: -1.6rem;
   }
 
+  h3 {
+    color: $white;
+  }
+
   h5 {
     color: $white;
   }
@@ -69,7 +73,8 @@
   }
 
   .module-feature {
-    @include grid-template(1fr 1fr, 1fr, 10px);
+    @include grid-template(1fr 1fr, null, 10px);
+    grid-auto-rows: 9rem;
     // @include respond-at(601px) {
     //   @include grid-template(repeat(2, 1fr), repeat(2, 10rem), 10px);
     // }
@@ -144,6 +149,29 @@
       a {
         @include showcase-header(1.1rem, 1.3, 2);
       }
+    }
+  }
+
+  .fmn-img {
+    @extend %showcase-img;
+    background-color: $white;
+  }
+
+  .fmn {
+    position: relative;
+
+    .fmn-title {
+      bottom: 0;
+      padding: 10px;
+      position: absolute;
+
+      a {
+        @include showcase-header(1.1rem, 1.3, 2);
+      }
+    }
+
+    .fmn-tag {
+      @include showcase-tag($green, $white);
     }
   }
 

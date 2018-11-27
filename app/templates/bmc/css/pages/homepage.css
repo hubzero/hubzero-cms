@@ -1,17 +1,17 @@
-.feature .billboard-image, .feature .blog-img, .feature .newsletter-img, .resources .module-left .resource-img, .community .module-right .billboard-image, .community .module-right .resource-img, .community .module-right .blog-img, .community .module-right .newsletter-img, .community .module-right .fmn-img {
+.feature .billboard-image, .feature .blog-img, .feature .newsletter-img, .feature .fmn-img, .resources .module-left .resource-img, .community .module-right .billboard-image, .community .module-right .resource-img, .community .module-right .blog-img, .community .module-right .newsletter-img, .community .module-right .fmn-img {
   height: 100%;
   overflow: hidden;
   width: 100%;
 }
 
-.feature .billboard-image img, .feature .blog-img img, .feature .newsletter-img img, .resources .module-left .resource-img img, .community .module-right .billboard-image img, .community .module-right .resource-img img, .community .module-right .blog-img img, .community .module-right .newsletter-img img, .community .module-right .fmn-img img {
+.feature .billboard-image img, .feature .blog-img img, .feature .newsletter-img img, .feature .fmn-img img, .resources .module-left .resource-img img, .community .module-right .billboard-image img, .community .module-right .resource-img img, .community .module-right .blog-img img, .community .module-right .newsletter-img img, .community .module-right .fmn-img img {
   height: 100%;
   object-fit: cover;
   transition: 3s ease-in-out;
   width: 100%;
 }
 
-.feature .billboard-image:hover img, .feature .blog-img:hover img, .feature .newsletter-img:hover img, .resources .module-left .resource-img:hover img, .community .module-right .billboard-image:hover img, .community .module-right .resource-img:hover img, .community .module-right .blog-img:hover img, .community .module-right .newsletter-img:hover img, .community .module-right .fmn-img:hover img {
+.feature .billboard-image:hover img, .feature .blog-img:hover img, .feature .newsletter-img:hover img, .feature .fmn-img:hover img, .resources .module-left .resource-img:hover img, .community .module-right .billboard-image:hover img, .community .module-right .resource-img:hover img, .community .module-right .blog-img:hover img, .community .module-right .newsletter-img:hover img, .community .module-right .fmn-img:hover img {
   transform: scale(1.1);
 }
 
@@ -33,7 +33,7 @@
   transform: translateY(-50%) scale(1.1);
 }
 
-.feature .billboard-image::after, .feature .blog-img::after, .feature .newsletter-img::after, .resources .module-left .resource-img::after, .community .module-right .billboard-image::after, .community .module-right .resource-img::after, .community .module-right .blog-img::after, .community .module-right .newsletter-img::after, .community .module-right .fmn-img::after, .community .module-right .partner-img::after, .community .module-right .group .group-img::after {
+.feature .billboard-image::after, .feature .blog-img::after, .feature .newsletter-img::after, .feature .fmn-img::after, .resources .module-left .resource-img::after, .community .module-right .billboard-image::after, .community .module-right .resource-img::after, .community .module-right .blog-img::after, .community .module-right .newsletter-img::after, .community .module-right .fmn-img::after, .community .module-right .partner-img::after, .community .module-right .group .group-img::after {
   content: '';
   display: block;
   position: absolute;
@@ -128,6 +128,10 @@
   top: -1.6rem;
 }
 
+.feature h3 {
+  color: #fff;
+}
+
 .feature h5 {
   color: #fff;
 }
@@ -144,7 +148,7 @@
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
+  grid-auto-rows: 9rem;
 }
 
 .feature .billboard-image {
@@ -253,6 +257,50 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #fff;
+}
+
+.feature .fmn-img {
+  background-color: #fff;
+}
+
+.feature .fmn {
+  position: relative;
+}
+
+.feature .fmn .fmn-title {
+  bottom: 0;
+  padding: 10px;
+  position: absolute;
+}
+
+.feature .fmn .fmn-title a {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2.86rem;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.feature .fmn .fmn-tag {
+  background-color: #84bf41;
+  bottom: 5em;
+  font-size: .8em;
+  font-weight: bold;
+  padding: .5em .8em;
+  position: absolute;
+  text-transform: uppercase;
+}
+
+.feature .fmn .fmn-tag a {
   color: #fff;
 }
 
