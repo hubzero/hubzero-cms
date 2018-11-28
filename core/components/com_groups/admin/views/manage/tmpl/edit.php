@@ -175,16 +175,56 @@ function submitbutton(pressbutton)
 								<label for="field-logo"><?php echo Lang::txt('COM_GROUPS_LOGO'); ?>:</label><br />
 								<input type="text" name="group[logo]" id="field-logo" value="<?php echo $this->escape($this->group->logo); ?>" />
 							</div>
-				 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_EDIT_PUBLIC_TEXT_HINT'); ?>">
-								<label for="field-public_desc"><?php echo Lang::txt('COM_GROUPS_EDIT_PUBLIC_TEXT'); ?>:</label><br />
-								<span class="hint"><?php echo Lang::txt('COM_GROUPS_EDIT_PUBLIC_TEXT_HINT'); ?></span>
-								<?php echo $this->editor('group[public_desc]', $this->escape(stripslashes($this->group->public_desc)), 40, 10, 'field-public_desc'); ?>
-							</div>
-							<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_EDIT_PRIVATE_TEXT_HINT'); ?>">
-								<label for="field-private_desc"><?php echo Lang::txt('COM_GROUPS_EDIT_PRIVATE_TEXT'); ?>:</label><br />
-								<span class="hint"><?php echo Lang::txt('COM_GROUPS_EDIT_PRIVATE_TEXT_HINT'); ?></span>
-								<?php echo $this->editor('group[private_desc]', $this->escape(stripslashes($this->group->private_desc)), 40, 10, 'field-private_desc'); ?>
-							</div>
+
+							<?php
+							$this->js('customfields');
+
+							$xml = Components\Groups\Models\Orm\Field::toXml($this->customFields);
+
+							$formInfo = array('control' => 'customfields');
+
+							$form = new Hubzero\Form\Form('application', $formInfo);
+							$form->load($xml);
+							$form->bind($this->customAnswers);
+
+							foreach ($this->customFields as $field)
+							{
+								$formfield = $form->getField($field->get('name'));
+
+								$hint = '';
+								if ($formfield->description && strtolower($formfield->type) != 'paragraph')
+								{
+									$hint = trim($formfield->description);
+								}
+
+								echo '<div class="input-wrap"' . ($hint ? ' data-hint="' . $this->escape($hint) . '"' : '') . '>';
+
+								if (strtolower($formfield->type) != 'paragraph')
+								{
+									echo $formfield->label;
+								}
+
+								if ($field->type == 'textarea')
+								{
+									$fieldName     = $field->get('name');
+									$fieldValue    = isset($this->customAnswers[$fieldName]) ? $this->customAnswers[$fieldName] : $field->get('default_value', '');
+									$fieldNameAttr = $formInfo['control'] . '[' . $fieldName . ']';
+									$fieldIdAttr   = $formInfo['control'] . '_' . $fieldName;
+
+									echo $this->editor($fieldNameAttr, $this->escape($fieldValue), 35, 8, $fieldIdAttr, array('class' => 'minimal no-footer images macros'));
+								}
+								else
+								{
+									echo $formfield->input;
+								}
+
+								if ($hint)
+								{
+									echo '<span class="hint">' . $hint . '</span>';
+								}
+								echo '</div>';
+							}
+							?>
 						</fieldset>
 
 						<fieldset class="adminform">
