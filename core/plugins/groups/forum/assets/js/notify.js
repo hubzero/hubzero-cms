@@ -25,7 +25,7 @@ class Notify {
 	static _getNotificationColor(type) {
 		const typeColorMappings = {
 			success: '#A3CA60',
-			warn: '#FDD023',
+			warn: '#E8BA09',
 			error: '#CC0000'
 		}
 		const typeColor = typeColorMappings[type]
