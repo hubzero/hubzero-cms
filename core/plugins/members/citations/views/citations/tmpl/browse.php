@@ -110,12 +110,12 @@ if (isset($this->messages))
 									<?php if ($this->label != "none") : ?>
 										<td class="citation-label <?php echo $this->citations_label_class; ?>">
 											<?php
-												/**
-												 * @TODO replace with Relational
-												 **/
+												// @TODO replace with Relational
 												$type = "";
-												foreach ($this->types as $t) {
-													if ($t->id == $cite->type) {
+												foreach ($this->types as $t)
+												{
+													if ($t->id == $cite->type)
+													{
 														$type = $t->type_title;
 													}
 												}
@@ -203,7 +203,7 @@ if (isset($this->messages))
 							<?php endforeach; ?>
 						</tbody>
 					</table>
-					<?php else : ?>
+					<?php else: ?>
 						<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
 					<?php echo $this->citations->pagination; ?>
@@ -218,14 +218,14 @@ if (isset($this->messages))
 					<input type="submit" name="download" class="download" id="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" />
 					|
 					<input type="submit" name="download" class="download" id="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
-				<!-- for serving up the file download -->
+					<!-- for serving up the file download -->
 					<iframe id="download-frame"></iframe>
-				<!-- end file serving -->
+					<!-- end file serving -->
 				</fieldset>
 				<fieldset>
-					<label>
+					<label for="filter_type">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE'); ?>
-						<select name="filters[type]" id="type">
+						<select name="filters[type]" id="filter_type">
 							<option value=""><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ALL'); ?></option>
 							<?php foreach ($this->types as $t) : ?>
 								<?php $sel = ($this->filters['type'] == $t->id) ? "selected=\"selected\"" : ""; ?>
@@ -233,33 +233,33 @@ if (isset($this->messages))
 							<?php endforeach; ?>
 						</select>
 					</label>
-					<label>
+					<label for="actags">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TAGS'); ?>:
 						<?php
 							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'filters[tag]', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
 							if (count($tf) > 0) : ?>
 								<?php echo $tf[0]; ?>
 							<?php else: ?>
-								<input type="text" name="filters[tag]" value="<?php echo $this->filters['tag']; ?>" />
+								<input type="text" name="filters[tag]" id="actags" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 							<?php endif; ?>
 					</label>
-					<label>
+					<label for="filter_author">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORED_BY'); ?>
-						<input type="text" name="filters[author]" value="<?php echo $this->filters['author']; ?>" />
+						<input type="text" name="filters[author]" id="filter_author" value="<?php echo $this->escape($this->filters['author']); ?>" />
 					</label>
-					<label>
+					<label for="filter_publishedin">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISHED_IN'); ?>
-						<input type="text" name="filters[publishedin]" value="<?php echo $this->filters['publishedin']; ?>" />
+						<input type="text" name="filters[publishedin]" id="filter_publishedin" value="<?php echo $this->escape($this->filters['publishedin']); ?>" />
 					</label>
-					<label for="year_start">
+					<label for="filter_year_start">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_YEAR'); ?><br />
-						<input type="text" name="filters[year_start]" class="half" value="<?php echo $this->filters['year_start']; ?>" />
+						<input type="text" name="filters[year_start]" id="filter_year_start" class="half" value="<?php echo $this->escape($this->filters['year_start']); ?>" />
 						to
-						<input type="text" name="filters[year_end]" class="half" value="<?php echo $this->filters['year_end']; ?>" />
+						<input type="text" name="filters[year_end]" id="filter_year_end" class="half" value="<?php echo $this->escape($this->filters['year_end']); ?>" />
 					</label>
-					<label>
+					<label for="filter_sort">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SORT_BY'); ?>
-						<select name="filters[sort]" id="sort" class="">
+						<select name="filters[sort]" id="filter_sort">
 							<?php foreach ($this->sorts as $k => $v) : ?>
 								<option value="<?php echo $k; ?>" <?php echo (trim($this->filters['sort']) == $k ? 'selected' : ''); ?>>
 									<?php echo $v; ?>
@@ -267,7 +267,7 @@ if (isset($this->messages))
 							<?php endforeach; ?>
 						</select>
 					</label>
-					<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
+					<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
 					<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
 					<input type="hidden" name="action" value="browse" />
 
