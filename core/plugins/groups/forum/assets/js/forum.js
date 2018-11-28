@@ -5,6 +5,10 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
+var HUB = HUB || {}
+
+HUB.User = HUB.User || {}
+
 if (!jq) {
 	var jq = $;
 }
@@ -19,9 +23,24 @@ jQuery(document).ready(function(jq){
 		}
 		return res;
 	});
+
 	$('a.reply').on('click', function (e) {
 		e.preventDefault();
 
+		var currentUser = new HUB.User();
+		var renderResponseFormForThis = renderResponseForm.bind(this);
+
+		currentUser.isAuthenticated()
+			.then((userStatus) => {
+				if (!userStatus.isAuthenticated) {
+					Notify.warn('Please sign in to reply');
+				} else {
+					renderResponseFormForThis();
+				}
+			})
+	});
+
+	var renderResponseForm = function() {
 		var frm = $('#' + $(this).attr('rel'));
 
 		if (frm.hasClass('hide')) {
@@ -35,7 +54,7 @@ jQuery(document).ready(function(jq){
 				.removeClass('active')
 				.text($(this).attr('data-txt-inactive'));
 		}
-	});
+	}
 
 	$('.edit-forum-options').click(function (e) {
 		e.preventDefault();

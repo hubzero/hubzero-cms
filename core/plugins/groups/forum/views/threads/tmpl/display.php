@@ -41,7 +41,10 @@ $this->thread->set('category', $this->category->get('alias'));
 $now = time();
 
 $this->css()
-     ->js();
+     ->js('api')
+     ->js('notify')
+     ->js('user')
+     ->js('forum');
 ?>
 <ul id="page_options">
 	<li>
