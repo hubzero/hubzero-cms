@@ -37,7 +37,6 @@ use Hubzero\Component\Router\Base;
  * Routing class for the component's API
  */
 class Router extends Base
-
 {
 
 	/**
