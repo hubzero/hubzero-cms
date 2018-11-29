@@ -1534,8 +1534,8 @@ class Filesv1_0 extends ApiController
 	public function connectionsTask()
 	{
 		$response = new stdClass;
-		$connections = $this->ormproj->connections()->thatICanView();
-		$response->count   = count($connections);
+		$connections = $this->ormproj->connections()->thatICanView()->rows();
+		$response->count = count($connections);
 		$response->connections = array();
 
 		foreach ($connections as $connection)
