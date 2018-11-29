@@ -46,4 +46,5 @@ return array(
 	'Filesystem' => 'Hubzero\Facades\Filesystem',
 	// API specific
 	'Component'  => 'Hubzero\Facades\Component',
+	'Session'    => 'Hubzero\Facades\Session',
 );
