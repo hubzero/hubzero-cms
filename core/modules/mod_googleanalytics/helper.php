@@ -22,7 +22,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (strtolower(Config::get('application_env', 'production')) != 'production')
+		if (substr(strtolower(Config::get('application_env', 'production')), 0, 10) != 'production')
 		{
 			return;
 		}

@@ -594,6 +594,8 @@
 				<option
 					value="production">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_PRODUCTION</option>
 				<option
+					value="production_cloud">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_PRODUCTION_CLOUD</option>
+				<option
 					value="staging">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_STAGING</option>
 				<option
 					value="testing">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_TESTING</option>
