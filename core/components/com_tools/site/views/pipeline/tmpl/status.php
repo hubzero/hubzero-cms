@@ -162,6 +162,10 @@ $this->css('pipeline.css')
 							</tr>
 						<?php } ?>
 						<tr>
+							<th><?php echo Lang::txt('COM_TOOLS_REPOHOST'); ?></th>
+							<td><?php echo $this->status['repohost']; ?></td>
+						</tr>
+						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_TOOL_EXEC'); ?></th>
 							<td><?php echo \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']); ?></td>
 						</tr>
@@ -181,11 +185,16 @@ $this->css('pipeline.css')
 						<?php if ($this->status['github'])
 						{ ?>
 							<tr>
-								<th><?php echo Lang::txt('Github URL:'); ?></th>
+								<th><?php echo Lang::txt('Git URL:'); ?></th>
 								<td><a href="<?php echo $this->status['github']; ?>"><?php echo $this->status['github']; ?></a></td>
 							</tr>
 						<?php } ?>
 						
+						<tr>
+							<th><?php echo Lang::txt('Publishing Option'); ?></th>
+							<td><?php echo $this->status['publishType']; ?></td>
+						</tr>
+
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?></th>
 							<td><?php echo \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']); ?></td>
