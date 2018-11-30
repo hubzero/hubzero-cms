@@ -53,12 +53,6 @@ $wikiChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');
 $wikiChoices['@OPEN'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_OPEN'));
 $wikiChoices['@DEV'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_RESTRICTED'));
 
-if (!is_array($this->defaults['developers']))
-{
-	$this->defaults['developers'] = explode(',', $this->defaults['developers']);
-	$this->defaults['developers'] = array_map('trim', $this->defaults['developers']);
-}
-
 $this->css('pipeline.css')
      ->js('pipeline.js');
 ?>
@@ -76,7 +70,7 @@ $this->css('pipeline.css')
 </header><!-- / #content-header -->
 
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
 <section class="section">
@@ -84,8 +78,6 @@ $this->css('pipeline.css')
 		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm" enctype="multipart/form-data">
 			<div class="explaination">
 				<?php if (!$this->id) { ?>
-					<h3><?php echo Lang::txt('COM_TOOLS_SIDE_HOW_CONTRIBUTE'); ?></h3>
-					<p><?php echo Lang::txt('COM_TOOLS_SIDE_EASY_PROCESS').' '.Lang::txt('COM_TOOLS_VIEW').' <a href="' . Route::url('index.php?option=com_tools') . '">'.Lang::txt('COM_TOOLS_RESOURCES').'</a> '.Lang::txt('COM_TOOLS_EXPLAINING_CONTRIBUTION').'.'; ?></p>
 					<h3><?php echo Lang::txt('COM_TOOLS_SIDE_WHAT_TOOLNAME'); ?></h3>
 					<p><?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLNAME'); ?></p>
 				<?php } else { ?>
@@ -108,7 +100,7 @@ $this->css('pipeline.css')
 						<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->defaults['toolname']; ?>" />
 						<strong><?php echo $this->defaults['toolname']; ?> (<?php echo ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION'); ?>)</strong>
 						<?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app=' . $this->defaults['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_ALL_VERSIONS'); ?></a>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app='.$this->id); ?>"><?php echo Lang::txt('COM_TOOLS_ALL_VERSIONS'); ?></a>
 						<?php } ?>
 					<?php } else { ?>
 						<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
@@ -119,7 +111,7 @@ $this->css('pipeline.css')
 
 				<label for="t_title">
 					<?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="tool[title]" id="t_title" maxlength="127" value="<?php echo $this->escape(stripslashes($this->defaults['title'])); ?>" />
+					<input type="text" name="tool[title]" id="t_title" maxlength = "127" value="<?php echo $this->escape(stripslashes($this->defaults['title'])); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TITLE'); ?></span>
 				</label>
 
@@ -144,8 +136,8 @@ $this->css('pipeline.css')
 				<?php if ($this->id && isset($this->defaults['resourceid'])) { ?>
 					<p>
 						<?php echo Lang::txt('COM_TOOLS_DESCRIPTION'); ?>:
-						<a class="icon-preview btn btn-secondary" href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->defaults['resourceid'] . '&rev=dev'); ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW') ?></a> 
-						<a class="icon-edit btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resource&app=' . $this->defaults['toolname']); ?>"><?php echo Lang::txt('Edit Resource Page') ?></a>
+						<a class="icon-preview btn btn-secondary" href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->defaults['resourceid'] . '&rev=dev'); ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+						<a class="icon-edit btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resource&app=' . $this->defaults['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?></a>
 					</p>
 				<?php } ?>
 
@@ -169,45 +161,15 @@ $this->css('pipeline.css')
 				<?php } ?>
 			</fieldset>
 
-			<?php if ($this->config->get('github', 1)) { ?>
-				<div class="explaination">
-					<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
-				</div>
-				<fieldset>
-					<legend><?php echo Lang::txt('Github Repository URL'); ?>:</legend>
-
-					<label for="github">
-						<?php echo Lang::txt('Github Repository for Source Code (<strong>must be public</strong>)') ?>: 
-						<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the web URL of the source code repository on the github.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
-					</label>
-					<p class="hint"><?php echo Lang::txt('Web URL: https://github.com/yourgithubrepo'); ?></p>
-				</fieldset>
-			<?php } ?>
-
-			<?php if ($this->config->get('jupyter', 1)) { ?>
-				<fieldset>
-					<legend><?php echo Lang::txt('Publishing Option'); ?>:</legend>
-
-					<label for="tool_publishType_standard">
-						<input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option" />
-						<?php echo Lang::txt('Publish as a standard hub tool'); ?>
-					</label>
-
-					<label for="tool_publishType_jupyter">
-						<input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option" />
-						<?php echo Lang::txt('Publish as a Jupyter Notebook'); ?>
-					</label>
-				</fieldset>
-			<?php } ?>
-
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_TOOLS_LEGEND_ACCESS'); ?>:</legend>
 
 				<label for="t_exec">
 					<?php echo Lang::txt('COM_TOOLS_TOOL_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS'); ?>">What should I choose?</span>
 					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
 				</label>
+
+				<p><?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS'); ?></p>
 
 				<div id="groupname" <?php echo ($this->defaults['exec']=='@GROUP') ? 'style="display:block"': 'style="display:none"'; ?>>
 					<input type="text" name="tool[membergroups]" id="t_groups" value="<?php echo \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id); ?>" />
@@ -216,15 +178,17 @@ $this->css('pipeline.css')
 
 				<label for="t_code">
 					<?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS'); ?>">What should I choose?</span>
 					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
 				</label>
 
+				<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS'); ?>
+
 				<label for="t_wiki">
 					<?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS'); ?>">What should I choose?</span>
 					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
 				</label>
+
+				<p><?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS'); ?></p>
 
 				<label for="t_team">
 					<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
