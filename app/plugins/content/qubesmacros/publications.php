@@ -66,6 +66,8 @@ class Publications extends Macro
 								<li><code>[[Publications(group=mygroup1;mygroup2, project=myproject, id=2;6;8)]]</code> - Display all publications from Groups "mygroup1" and "mygroup2", Project "myproject", and Publications with ids 2, 6, and 8.</li>
 								<li><code>[[Publications(group=mygroup, focusarea=myfa, fascheme=Dark2)]]</code> - Display all publications from Group "mygroup", using the children tags of the "myfa" tag as the primary categories.  Color scheme used is <a href="http://colorbrewer2.org/#type=qualitative&scheme=Dark2">Dark2 (default) from http://colorbrewer2.org</a>.</li>
 								<li><code>[[Publications(pubtype=qubesresource, tag=ecology;genetics)]]</code> - Display all QUBES publications that are tagged "ecology" <i>or</i> "genetics".</li>
+								<li><code>[[Publications(id=2;1;3, sortby=id, sortdir=none)]]</code> - Override the default sort by publish date and display publications in order given by id.</li>
+								<li><code>[[Publications(group=mygroup, sortby=date, sortdir=asc)]]</code> - Display publications in mygroup from oldest to newest (rather than default newest to oldest).</li>
 							</ul>';
 		return $txt['html'];
 	}
@@ -105,12 +107,14 @@ class Publications extends Macro
 		$mastertype = $this->_getMasterType($args);
 		$tags = $this->_getTags($args);
 		$style = $this->_getStyle($args);
+		$sortby = $this->_getSortBy($args);
+		$sortdir = $this->_getSortDir($args);
 
 		// 2.2 should take care of not needed to import?  i.e. the "use" command above should handle this
 		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 		// Get publications
-		$items = $this->_getPublications($mastertype, $group, $project, $pubid, $tags, $limit);
+		$items = $this->_getPublications($mastertype, $group, $project, $pubid, $tags, $limit, $sortby, $sortdir);
 
 		$base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
 
@@ -501,7 +505,7 @@ class Publications extends Macro
 		return $html;
 	}
 
-	private function _getPublications($mastertype, $group, $project, $id, $tags, $limit)
+	private function _getPublications($mastertype, $group, $project, $id, $tags, $limit, $sortby, $sortdir)
 	{
 		// Get publication model
 		//
@@ -546,7 +550,21 @@ class Publications extends Macro
 			$sql .= ' AND (C.id IN (SELECT DISTINCT(objectid) FROM #__tags_object O WHERE O.tagid IN (SELECT T.id FROM #__tags T WHERE T.tag IN (' . $tags . ')) AND O.tbl="publications"))';
 		}
 
-		$sql .= ' AND V.state != 2 GROUP BY C.id ORDER BY V.published_up DESC';
+		$sql .= ' AND V.state != 2 GROUP BY C.id ORDER BY';
+		
+		// Sorting
+		if ($sortby == 'id') {
+			if ($sortdir == 'none') {
+				$sql .= ' FIELD(C.id, ' . $id . ')';
+			} else {
+				$sql .= ' C.id';
+			}
+		} else {
+			$sql .= ' V.published_up';
+		}
+		if ($sortdir != 'none') {
+			$sql .= ($sortdir == 'asc' ? ' ASC' : ' DESC');
+		}
 
 		if ($limit)
 		{
@@ -805,6 +823,48 @@ class Publications extends Macro
 				$style = (isset($matches[1]) ? $matches[1] : '');
 				unset($args[$k]);
 				return $style;
+			}
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Get sort by argument
+	 *
+	 * @param  	$args Macro Arguments
+	 * @return 	mixed
+	 */
+	private function _getSortBy(&$args)
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/sortby=([\w;]*)/', $arg, $matches))
+			{
+				$sortby = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $sortby;
+			}
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Get sort direction argument
+	 *
+	 * @param  	$args Macro Arguments
+	 * @return 	mixed
+	 */
+	private function _getSortDir(&$args)
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/sortdir=([\w;]*)/', $arg, $matches))
+			{
+				$sortdir = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $sortdir;
 			}
 		}
 
