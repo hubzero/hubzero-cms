@@ -710,6 +710,7 @@ class Pipeline extends SiteController
 			'vncGeometryY' => $vncGeometryY,
 			'team'         => User::get('username'),
 			'hostreq'      => $this->config->get('default_hostreq', 'sessions'),
+			'repohost'     => 'svnLocal',
 			'github'       => '',
 			'publishType'  => 'standard'
 		);
@@ -1030,6 +1031,11 @@ class Pipeline extends SiteController
 			$txt->set('github', $tool['github']);
 		}
 
+		if ($this->config->get('repohost', 1) && isset($tool['repohost']))
+		{
+			$txt->set('repohost', $tool['repohost']);
+		}
+
 		$ptype = (empty($tool['publishType']) || $tool['publishType'] == 'standard') ? 'standard': 'weber=';
 		$txt->set('publishType', $ptype);
 		$params = $txt->toString();
@@ -1159,7 +1165,9 @@ class Pipeline extends SiteController
 			$this->_addRepo($output, array(
 				'toolname'    => $tool['toolname'],
 				'title'       => $tool['title'],
-				'description' => $tool['description']
+				'description' => $tool['description'],
+				'repohost'    => $tool['repohost'],
+				'github'      => $tool['github']
 			));
 			if ($output['class'] != 'error')
 			{
@@ -1252,7 +1260,29 @@ class Pipeline extends SiteController
 			$ldap_params = Component::params('com_system');
 			$pw = $ldap_params->get('ldap_searchpw', '');
 
-			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title ' . escapeshellarg($toolinfo['title']) . ' -description ' . escapeshellarg($toolinfo['description']) . ' -password "' . $pw . '"' . " -hubdir " . PATH_ROOT;
+			if (!file_exists('/usr/bin/addrepo.sh'))
+			{
+				$command  = '/usr/bin/addrepo ' . $toolinfo['toolname'];
+				$command .= ' -title ' . escapeshellarg($toolinfo['title']);
+				$command .= ' -description ' . escapeshellarg($toolinfo['description']);
+				$command .= ' -password "' . $pw . '"';
+				$command .= ' -hubdir ' . PATH_ROOT;
+			}
+			else
+			{
+				$command  = '/usr/bin/addrepo.sh ' . $toolinfo['repohost'];
+				$command .= ' --project ' . $toolinfo['toolname'];
+				$command .= ' --title ' . escapeshellarg($toolinfo['title']);
+				$command .= ' --description ' . escapeshellarg($toolinfo['description']);
+				$command .= ' --hubdir ' . PATH_ROOT;
+				if ($toolinfo['repohost'] == 'gitExternal')
+				{
+					if ($toolinfo['github'])
+					{
+						$command .= ' --gitURL ' . $toolinfo['github'];
+					}
+				}
+			}
 
 			if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'), $output))
 			{
@@ -2339,36 +2369,6 @@ class Pipeline extends SiteController
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pipeline'),
 			Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED')
 		);
-	}
-
-	/**
-	 * Set the license for a tool
-	 *
-	 * @param   string  $toolname  Tool name
-	 * @return  void
-	 */
-	public function licenseTool($toolname)
-	{
-		$token = md5(uniqid());
-
-		$fname = '/tmp/license' . $toolname . $token . '.txt';
-		$handle = fopen($fname, "w");
-
-		fwrite($handle, $this->_output);
-		fclose($handle);
-
-		$command = '/usr/bin/sudo -u apps /usr/bin/licensetool -hubdir ' . PATH_CORE . ' -type raw -license ' . $fname . ' ' . $toolname;
-
-		if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_LICENSE_CHECKED_IN'), $output))
-		{
-			unlink($fname);
-			return false;
-		}
-		else
-		{
-			unlink($fname);
-			return true;
-		}
 	}
 
 	/**
