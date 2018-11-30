@@ -825,7 +825,7 @@ class Manage extends AdminController
 			{
 				// only do stage setup on stage
 				$environment = strtolower(Config::get('application_env', 'development'));
-				if (substr($environment, 0, 10) != 'staging')
+				if (substr($environment, 0, 7) != 'staging')
 				{
 					$failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
 					continue;
