@@ -248,7 +248,7 @@ class Admin extends SiteController
 							. '/usr/bin/git2svn.sh -g ' . $status['github']
 							. ' -s ' . $status['toolname']
 							. ' -c ' . PATH_ROOT;
-	
+
 					if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION')))
 					{
 						$this->setError(Lang::txt('COM_TOOLS_ERROR_GIT_REPOSITORY_CONNECTION'));
@@ -258,14 +258,14 @@ class Admin extends SiteController
 		}
 		else
 		{
-	        	if ($status['repohost'] == 'gitExternal')
+		if ($status['repohost'] == 'gitExternal')
 			{
-	        		if ($status['github'])
+				if ($status['github'])
 				{
 					$command  = '/usr/bin/git2git.sh ' . $status['repohost'];
 					$command .= ' --project ' . $status['toolname'];
 					$command .= ' --gitURL ' . $status['github'];
-	
+
 					if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION')))
 					{
 						$this->setError(Lang::txt('COM_TOOLS_ERROR_GIT_REPOSITORY_CONNECTION'));
@@ -317,7 +317,7 @@ class Admin extends SiteController
 				// Update the revision number
 				$hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->_toolid);
 				$hztv->revision = intval($rev);
-	        		if ($status['repohost'] == 'gitLocal' || $status['repohost'] == 'gitExternal')
+				if ($status['repohost'] == 'gitLocal' || $status['repohost'] == 'gitExternal')
 				{
 					if ($commitHash != '')
 					{
