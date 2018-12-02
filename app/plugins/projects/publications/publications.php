@@ -2231,23 +2231,34 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$pub->version->set('doi', $doi);
 			}
-
-			// Can't proceed without a valid DOI
-			if (!$doi || $doiService->getError())
+			else
 			{
-				if ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
-				}
-				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_EZID)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
-				}
-				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_NONE)
-				{
-					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
-				}
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_DOI') . ' ' . $doiService->getError());
 				$doiErr = true;
+			}
+		}
+
+		// When dataset is automatically approved.
+		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $doi)
+		{
+			// Update DOI metadata
+			$doiService->update($doi, true);
+
+			if ($doiService->getError())
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
+			}
+			else
+			{
+				// Register DOI name and target URL for DataCite DOI
+				$doiService->register(false, true, $doi);
+
+				if ($doiService->getError())
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());
+					$doiErr = true;
+				}
 			}
 		}
 
