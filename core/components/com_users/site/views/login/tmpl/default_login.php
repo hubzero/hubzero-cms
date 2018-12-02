@@ -89,7 +89,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 	$primary = null;
 }
 ?>
-<?php if ($this->params->get('show_page_title', 1)) : ?>
+<?php if ($this->params->get('show_page_heading', 1)) : ?>
 	<header id="content-header">
 		<h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
 	</header>

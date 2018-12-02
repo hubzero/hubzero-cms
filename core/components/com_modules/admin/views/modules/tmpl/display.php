@@ -39,7 +39,7 @@ Toolbar::title(Lang::txt('COM_MODULES_MANAGER_MODULES'), 'module.png');
 if ($canDo->get('core.create'))
 {
 	//Toolbar::addNew('module.add');
-	Toolbar::appendButton('Popup', 'new', 'JTOOLBAR_NEW', 'index.php?option=com_modules&amp;task=select&amp;tmpl=component', 850, 400);
+	Toolbar::appendButton('Popup', 'new', 'JTOOLBAR_NEW', Route::url('index.php?option=com_modules&amp;task=select&amp;tmpl=component'), 850, 400);
 }
 
 if ($canDo->get('core.edit'))

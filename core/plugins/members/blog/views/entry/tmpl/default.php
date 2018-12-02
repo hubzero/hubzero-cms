@@ -144,7 +144,16 @@ $this->css()
 		<div class="container blog-popular-entries">
 			<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
 			<?php
-			$popular = $this->archive->entries()
+			$filters = array(
+				'state' => array(Components\Blog\Models\Entry::STATE_PUBLISHED),
+				'access' => User::getAuthorisedViewLevels()
+			);
+			if (User::get('id') == $this->member->get('id'))
+			{
+				$filters['state'][] = Components\Blog\Models\Entry::STATE_UNPUBLISHED;
+				unset($filters['access']);
+			}
+			$popular = $this->archive->entries($filters)
 					->order('hits', 'desc')
 					->limit(5)
 					->rows();

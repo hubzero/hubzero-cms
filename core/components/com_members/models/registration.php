@@ -210,7 +210,7 @@ class Registration
 		$this->_registration['password'] = Request::getString('password', null, 'post');
 		$this->_registration['confirmPassword'] = Request::getString('password2', null, 'post');
 		$this->_registration['usageAgreement'] = Request::getString('usageAgreement', null, 'post');
-		$this->_registration['sendEmail'] = Request::getString('sendEmail', null, 'post');
+		$this->_registration['sendEmail'] = Request::getString('sendEmail', '0', 'post');
 
 		if ($this->_registration['usageAgreement'] !== null)
 		{

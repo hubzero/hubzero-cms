@@ -553,28 +553,34 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 			//define mail preference options
-			$options = array(
+			/*$options = array(
 				'-1' => Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES_SELECT'),
 				'1'  => Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES_YES'),
 				'0'  => Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES_NO')
-			);
+			);*/
 
 			//if we dont have a mail pref option set to unanswered
 			if (!isset($this->registration['sendEmail']) || $this->registration['sendEmail'] == '')
 			{
 				$this->registration['sendEmail'] = '-1';
 			}
+
 			?>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_LEGEND_EMAIL_UPDATES'); ?></legend>
 
-				<label for="sendEmail"<?php echo $fieldclass; ?>>
+				<?php /*<label for="sendEmail"<?php echo $fieldclass; ?>>
 					<?php echo Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES'); ?> <?php echo ($this->registrationOptIn == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 					<select name="sendEmail" id="sendEmail">
 						<?php foreach ($options as $key => $value) { ?>
 							<option <?php echo ($key == $this->registration['sendEmail']) ? 'selected="selected"' : ''; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
 						<?php } ?>
 					</select>
+				</label>*/ ?>
+
+				<label for="sendEmail"<?php echo $fieldclass; ?>>
+					<input type="checkbox" name="sendEmail" id="sendEmail" value="1" <?php echo ($this->registration['sendEmail'] == '1' || $this->registration['sendEmail'] == '-1') ? 'checked="checked"' : ''; ?> />
+					<?php echo Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES'); ?> <?php echo ($this->registrationOptIn == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 				</label>
 				<?php echo $message; ?>
 			</fieldset><div class="clear"></div>

@@ -36,7 +36,7 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 
-Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170);
+Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid']), 570, 170);
 
 Toolbar::appendButton('Link', 'unblock', 'COM_GROUPS_ROLE_ASSIGN', 'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'], 400, 400);
 
