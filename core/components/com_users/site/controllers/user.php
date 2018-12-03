@@ -351,6 +351,11 @@ class UsersControllerUser extends UsersController
 			}
 
 			// Redirect the user.
+			if (substr(Config::get('application_env', ''), -5) == 'cloud')
+			{
+				setcookie('jwt', '', -86400, '/', '', true, true);
+				//App::redirect(Route::url('/auth/logout&return=' . $return, false));
+			}
 			App::redirect(Route::url($return, false));
 		}
 		else
