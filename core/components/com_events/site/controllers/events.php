@@ -261,8 +261,8 @@ class Events extends SiteController
 		 */
 		define('_CAL_CONF_DATEFORMAT', $config->getCfg('dateformat'));
 
-		$currentDate = new Date('now', Config::get('offset'));
-		$this->offset = $currentDate->getOffsetFromeGMT(true);
+		$currentDate = new \Hubzero\Utility\Date('now', Config::get('offset'));
+		$this->offset = $currentDate->getOffsetFromGMT(true);
 
 		// Incoming
 		$this->year     = Request::getInt('year', $currentDate->toLocal('Y'));

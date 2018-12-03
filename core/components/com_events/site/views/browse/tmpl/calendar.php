@@ -39,7 +39,7 @@ $gid = User::get('gid', 0);
 
 $startday = ((!_CAL_CONF_STARDAY) || (_CAL_CONF_STARDAY > 1)) ? 0 : _CAL_CONF_STARDAY;
 
-$date = new Date('now', Config::get('offset'));
+$date = new \Hubzero\Utility\Date('now', Config::get('offset'));
 $timeWithOffset = $date->toLocal('U');
 
 
