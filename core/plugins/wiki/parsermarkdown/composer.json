@@ -1,0 +1,22 @@
+{
+	"name": "hubzero/plg_wiki_markdownparser",
+	"description": "Markdown parser for the wiki component",
+	"type": "hubzero-plugin",
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Hubzero",
+			"email": "support@hubzero.org",
+			"role": "Platform for Scientific Computing"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "http://help.hubzero.org/support/ticket/new"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/hubzero-cms": "2.2.*",
+	}
+}
