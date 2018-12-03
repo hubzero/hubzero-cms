@@ -219,15 +219,3 @@ $bdcolor = '#e1e1e1';
 		</tbody>
 	</table>
 	<!-- End Spacer -->
-
-	<!-- Start Header -->
-	<table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-			<tr>
-				<td align="left" valign="bottom">
-					<span><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_WHY_NOTFIED', Config::get('sitename'), $link, Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD_TITLE', $this->thread->get('id')), $base, $base); ?></span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- End Header -->

@@ -219,15 +219,3 @@ $this->css(
 		</tbody>
 	</table>
 	<!-- End Spacer -->
-
-	<!-- Start Footer -->
-	<table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-			<tr>
-				<td align="left" valign="bottom">
-					<span><?php echo Lang::txt('COM_SUPPORT_EMAIL_YOU_WERE_ON_RECIPIENT_LIST', Config::get('sitename'), $base, $base); ?></span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- End Header -->
