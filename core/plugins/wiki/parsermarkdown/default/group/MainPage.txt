@@ -1,0 +1,23 @@
+### What are wiki pages?
+
+Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create (and own) new articles, and there can be multiple articles on the same wiki, each written by a different author.
+
+### Who can make a wiki page?
+
+Any member of this group can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where any group member can contribute.
+
+### Getting started
+
+ * [Create a new article](?action=new)
+
+### Finding Articles
+
+ * [Full article list](Special:AllPages)
+ * [A list of new articles](Special:NewPages)
+ * [Recently changed articles](Special:RecentChanges)
+
+### Questions?
+
+ * [Help Articles](Help:Index)
+ * [Wiki Formatting](Help:WikiFormatting)
+ * [Wiki Macros](Help:WikiMacros)
