@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 HUBzero Foundation, LLC.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<extension version="1.5" type="plugin" group="wiki">
+	<name>Wiki - Markdown Parser</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>PLG_WIKI_PARSERMARKDOWN_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="parsermarkdown">parsermarkdown.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_wiki_parsermarkdown.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="style" name="type" default="Markdown" label="PLG_WIKI_PARSERMARKDOWN_STYLE_LABEL" description="PLG_WIKI_PARSERMARKDOWN_STYLE_DESC">
+					<option value="Markdown">Markdown</option>
+					<option value="GithubMarkdown">Github Markdown</option>
+					<option value="MarkdownExtra">Markdown Extra</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
