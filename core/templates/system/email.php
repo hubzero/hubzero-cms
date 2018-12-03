@@ -268,6 +268,18 @@ $tblColor = '#ffffff';
 										</table>
 										<!-- End Footer Spacer -->
 
+										<!-- Start Footer -->
+										<table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
+											<tbody>
+											<tr>
+												<td align="left" valign="bottom">
+													<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
+												</td>
+											</tr>
+											</tbody>
+										</table>
+										<!-- End Footer -->
+
 									</td>
 									<td bgcolor="<?php echo $tblColor; ?>" width="10"></td>
 								</tr>

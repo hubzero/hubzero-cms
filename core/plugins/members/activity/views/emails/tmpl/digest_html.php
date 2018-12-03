@@ -206,15 +206,3 @@ $link = $base . '/' . trim($sef, '/');
 		</tbody>
 	</table>
 	<!-- End Spacer -->
-
-	<!-- Start Header -->
-	<table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-			<tr>
-				<td align="left" valign="bottom">
-					<span><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_EMAIL_WHY_NOTFIED', Config::get('sitename'), $base, $base, $base, $base); ?></span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- End Header -->
