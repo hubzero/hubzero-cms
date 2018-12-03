@@ -1,0 +1,85 @@
+= What is Wiki? =
+
+A wiki is a collaborative software program that allows users to add or edit content on a Web page without having to know HMTL or programming languages. Most commonly, the term wiki refers to a Web page that can be revised by anyone.
+
+Creating and editing wikis are very simple; all that is required is Internet access and a browser. Wikis are very similar to working with a word processing program, or writing emails or blogs.
+
+= Wiki History =
+
+The most famous wiki is called [http://en.wikipedia.org Wikipedia] , a massive online encyclopedia. Wikipedia has become so successful that it is like a result of a Google search. 
+
+The first wiki was created by Ward Cunningham in 1995. His [http://c2.com/cgi-bin/wiki?WikiWikiWeb WikiWikiWeb]  let software developers create a library of "software patterns." The name "Wiki" was inspired by the Hawaiian word wiki or wiki-wiki, which means "quick".
+
+= Open Environment and Living Document =
+
+Wiki’s are designed to provide an open environment for anyone to contribute content.  For example, any visitor to Wikipedia can edit any page or create a new one.  Wikis are living documents because they can be revised over time as that particular topic grows and changes.
+
+Many people have never spent much time with an active wiki community before.  Because all the content is user submitted and maintained, the idea that anyone can edit any page at any time and do so with complete anonymity can be unsettling.  The important thing to remember is that because content is easily editable, many revisions are possible in a short amount of time to refine and grow the knowledge while also verify it’s contents by peers.
+
+While most people are good sports about providing accurate information, wikis do have a history feature in case something goes wrong.  The history feature allows users to go back to a previous version.  Follow the link below for more information about wiki history.
+
+=== Page History ===
+
+All editable pages have an associated [Help:PageHistory page history].
+
+= Community and Collaboration =
+
+The heart of any wiki is its community and the community’s ability to work together. 
+
+Virtually any topic in an active community can support a wiki.  It is now common to see wikis used inside corporations and organizations. 
+
+For example:  A large corporation is using an internally developed software application to manage its clients.  Employees use this software to enter and access data. The program is ten years old, has never been documented very well and training is done by word of mouth.
+
+This type of environment is perfect for a wiki.  Employees using the software can build their own documentation and then build on each other’s. Each time someone learns something new about the software, they can input a sentence or two into the wiki to let other employees see what they learned.  Over time, the employees will build a complete documentation set for the entire application.
+
+It is quite likely that wikis and other community-based efforts will grow rapidly as people become familiar and more comfortable with the concept.
+
+= Wiki vs. Blog vs. Forum =
+
+=== Wikis ===
+
+In the simplest form, wikis (i.e. a visitor-edited resource such as an encyclopedia) can be imagined as a repository of easily editable website pages.  Wikis can be used for a variety of purposes like documentation, knowledge management or just a team repository of information.
+
+=== Blogs ===
+
+Weblogs or blogs (i.e.  a diary or news column type of page display) are online journals maintained by a person or a team with regular updates. They are typically meant for general consumption and are arranged in a chronological manner with the most recent blog posts on the top. Blog posts can also have the provision for readers to leave comments. Blogs are usually more informal and chatty.
+
+=== Forum ===
+
+Discussion Forums (i.e. a message Board or bulletin board program that allows people to start new topics or respond to existing ones.) can be simply thought of as an area where people would like to initiate a topic or idea so people can start commenting and collaborating. The initial idea/topic may be just a single line or a complete descriptive paragraph. But they essentially differ from Wiki pages in the sense that the comments are an integral part of the discussion thread.
+
+= Formatting =
+
+Formatting in a Wiki is very similar to formatting in a word processing program or in an email. Styles such as bold, italics, headings, etc. can be added using Wiki Markup.
+
+For normal paragraphs of text, simply type the text separating each paragraph by a blank line.  For features such as: headings, lists, italics, bold, etc., special character combinations are required before and after the text. For example, placing two equals signs at the beginning and at the end of a line ("=="), creates a heading.  This is similar to selecting text in an email and then clicking the bold icon.  Familiarity with HTML markup is a plus, as Wiki markup follows the same style.  For example, the following with produce the same header:
+
+{{{
+HTML:  <h2> This is a secondary header </h2>
+
+Wiki:  == This is a secondary header ==
+}}}
+
+In other words, wiki is a simpler way to write HTML code and implement more complex features with macros without requiring programming skills.
+
+Follow the links below for more information about wiki formatting.
+
+=== Wiki formatting ===
+
+[Help:WikiFormatting Wiki markup] is a core feature for wiki pages.
+
+=== Wiki HTML ===
+
+The wiki supports [Help:WikiHtml inserting HTML] into any wiki context.
+
+=== Wiki Macros ===
+
+A [Help:WikiMacros macro] inserts dynamic HTML data.
+
+=== Wiki Math ===
+
+The Wiki supports [Help:WikiMath math formulas] with the help of !LaTeX markup.
+
+=== Wiki Page Names ===
+
+Wiki [Help:WikiPageNames page names] commonly use the !CamelCase convention.

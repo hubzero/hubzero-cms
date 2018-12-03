@@ -1,0 +1,73 @@
+Processors are WikiMacros designed to provide alternative markup formats for the Wiki engine. Processors can be thought of as ''macro functions to process user-edited text''.
+
+Wiki processors can be used in any Wiki text throughout the wiki, for various different purposes, like:
+
+ * syntax highlighting or for rendering text verbatim,
+ * rendering Wiki markup inside a context, like inside `<div>` blocks or `<span>` or within `<td>` or `<th>` table cells,
+ * using an alternative markup syntax, like raw HTML
+
+=== Using Processors ===
+
+To use a processor on a block of text, first delimit the lines using a Wiki code block:
+
+{{{
+{{{
+The lines
+that should be processed...
+}}}
+}}}
+
+On the line just below the the curly braces add `#!` followed by the ''processor name''
+
+{{{
+{{{
+#!processorname
+The lines
+that should be processed...
+}}}
+}}}
+
+This is the "shebang" notation, familiar to most UNIX users.
+
+Besides their content, some Wiki processors can also accept parameters, which are then given as key=value pairs after the processor name, on the same line. If value has to contain space, as it's often the case for the style parameter, a quoted string can be used (key="value with space").
+
+As some processors are meant to process Wiki markup, it's quite possible to nest processor blocks. You may want to indent the content of nested blocks for increased clarity, this extra indentation will be ignored when processing the content.
+
+=== Available Processors ===
+
+|| `#!default` || Present the text verbatim in a preformatted text block. This is the same as specifying no processor name (and no `#!`) ||
+|| `#!comment` || Do not process the text in this section (i.e. contents exist only in the plain text - not in the rendered page). ||
+||||==. Admonitions =||
+|| `#!wiki type` || Admonitions are used to make some text stand out or to point out something which doesn’t fit in the normal flow of the text. For more details see the [Help:Admonitions Admonitions help page].[[br]][[br]]''type'' can be caution, warning, important, note, or tip. ||
+||||==. HTML related =||
+|| `#!html` || Insert custom HTML in a wiki page. For more details see the [Help:WikiHtml Wiki HTML help page]. ||
+|| `#!htmlcomment` || Insert an HTML comment in a wiki page. ||
+||||==. Code Highlighting Support =||
+|| `#!c` [[br]] `#!cpp` (C++)[[br]] `#!python` [[br]] `#!perl` [[br]] `#!ruby` [[br]] `#!php` [[br]] `#!asp` [[br]] `#!java` [[br]] `#!js` (Javascript)[[br]] `#!sql` [[br]] `#!xml` [[br]] `#!sh` (Bourne/Bash shell) || The wiki includes processors to provide inline syntax highlighting for source code in various languages. ||
+
+Example:
+
+{{{
+{{{
+#!php
+$yes = true;
+if ($yes)
+{
+    echo 'Yes!';
+}
+}}}
+}}}
+
+Displays:
+
+{{{
+#!php
+$yes = true;
+if ($yes)
+{
+    echo 'Yes!';
+}
+}}}
+
+----
+See also: [Help:WikiFormatting Wiki Formatting], [Help:WikiHtml Wiki HTML], [Help:Admonitions Admonitions]

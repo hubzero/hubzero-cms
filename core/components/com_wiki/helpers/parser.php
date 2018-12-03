@@ -190,17 +190,11 @@ class Parser extends Obj
 		$name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
 		$name = ltrim($name, '.');
 
-		$path = PATH_APP . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
+		$path = Plugin::path('wiki', $name) . DS . $name . '.php';
 
 		if (!is_file($path))
 		{
-			$path = PATH_CORE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
-
-			if (!is_file($path))
-			{
-				throw new Exception(Lang::txt('Cannot load the parser'), 500);
-				return false;
-			}
+			throw new Exception(Lang::txt('Cannot load the parser'), 500);
 		}
 
 		// Require plugin file
@@ -242,5 +236,26 @@ class Parser extends Obj
 	 */
 	public function detach($observer)
 	{
+	}
+
+	/**
+	 * Get the path to the parser's default pages
+	 *
+	 * @return  string
+	 */
+	public function defaultPagesPath()
+	{
+		// Build the path to the needed parser plugin
+		$name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
+		$name = ltrim($name, '.');
+
+		$path = Plugin::path('wiki', $name) . DS . 'default';
+
+		if (!is_dir($path))
+		{
+			$path = '';
+		}
+
+		return $path;
 	}
 }

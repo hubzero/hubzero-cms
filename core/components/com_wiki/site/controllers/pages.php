@@ -111,7 +111,7 @@ class Pages extends SiteController
 	 */
 	public function execute()
 	{
-		/*if (!$this->book->pages('count'))
+		if (!$this->book->pages()->total())
 		{
 			if ($result = $this->book->scribe($this->_option))
 			{
@@ -119,7 +119,7 @@ class Pages extends SiteController
 			}
 
 			//App::get('config')->get('debug') || App::get('config')->get('profile') ? App::get('profiler')->mark('afterWikiSetup') : null;
-		}*/
+		}
 
 		$this->page = $this->book->page();
 
