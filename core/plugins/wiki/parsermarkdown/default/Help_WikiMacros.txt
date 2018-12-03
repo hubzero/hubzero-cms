@@ -1,0 +1,70 @@
+A macro inserts dynamic HTML data in any context supporting [Help:WikiFormatting Wiki Formatting].
+
+== Using Macros ==
+
+Macro calls are enclosed in two ''square brackets''.
+
+=== Examples ===
+
+{{{
+[[Timestamp]]
+}}}
+
+Display:
+[[Timestamp]]
+
+{{{
+[[Resource(100)]]
+}}}
+
+Display:
+[[Resource(100)]]
+
+{{{
+[[Tag(heattransfer)]]
+}}}
+
+Display:
+[[Tag(heattransfer)]]
+
+{{{
+To add a footnote to text you use the footnote macro. [[FootNote(Footnotes are automatically linked)]] You use the same macro but with no text to display the accumulated list of footnotes. For example:
+
+[[FootNote]]
+}}}
+
+Display:
+To add a footnote to text you use the footnote macro. [[FootNote(Footnotes are automatically linked)]] You use the same macro but with no text to display the accumulated list of footnotes. For example:
+
+[[FootNote]]
+
+== Available Macros ==
+ `[[BR]]`::
+   Insert a line break.
+ `[[Span(content, attributes)]]`::
+   Wraps text or other elements inside a `<span>` tag.
+ `[[Image(filename)]]`::
+   Embed an image in wiki-formatted text. The first argument is the filename of the image. The remaining arguments are optional and allow configuring the attributes and style of the rendered `<img>` element:{{{#!html<ul>
+<li>digits and unit are interpreted as the size (ex. 120, 25%) for the image</li>
+<li>right, left, top or bottom are interpreted as the alignment for the image</li>
+<li>nolink means without link to image source</li>
+<li>key=value style are interpreted as HTML attributes or CSS style indications for the image.<br />Valid keys are: align, border, width, height, alt, title, longdesc, class, id and usemap</li>
+</ul>}}}
+ `[[File(content, attributes)]]`::
+   Works similar to the Image macro but, instead, generates a link to a file. The first argument is the filename.
+ `[[Resource(id,alias)]]`::
+   This macro will insert a linked title to a resource. It can be passed wither an ID or alias.
+ `[[Tool(id,alias)]]`::
+   This macro functions identically to the Resource macro mentioned above.
+ `[[Contributor(id,username,name)]`::
+   This macro will generate a link to a contributor's page with the contributor's name as the link text. It accepts either the contributor's ID, username, or name. NOTE: to use a name, it must be identical to their contributor page.
+ `[[Tag(tag)]]`::
+   This macro will generate a link to a Tag.
+ `[[TitleIndex(prefix)]]`::
+   Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.
+ `[[FootNote(footnote text)]]`::
+   Add a footnote, or explicitly display collected footnotes when no args (footnote text) are given.
+ `[[RandomPage]]`::
+   Generates a link to a random page.
+ `[[Anchor(anchorname)]]`::
+   Inserts an anchor into a page.
