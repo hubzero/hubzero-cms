@@ -612,6 +612,15 @@
 				filter="string"
 				size="5" />
 			<field
+				name="fqdn"
+				type="text"
+				default=""
+				label="COM_CONFIG_FIELD_FQDN_LABEL"
+				description="COM_CONFIG_FIELD_FQDN_DESC"
+				required="false"
+				filter="string"
+				size="50" />
+			<field
 				name="editor"
 				type="plugins"
 				folder="editors"
@@ -708,6 +717,7 @@
 					value="none">COM_CONFIG_FIELD_VALUE_NO_EMAIL</option>
 
 			</field>
+
 		</fieldset>
 
 		<fieldset
@@ -788,6 +798,16 @@
 				required="false"
 				filter="string"
 				size="40" />
+
+			<field
+				name="jwt_pub_key"
+				type="textarea"
+				require="false"
+				label="COM_CONFIG_FIELD_JWT_PUB_KEY_LABEL"
+				description="COM_CONFIG_FIELD_JWT_PUB_KEY_DESC"
+				filter="safehtml"
+				cols="60"
+				rows="2" />
 		</fieldset>
 	</fields>
 	<fields name="offline">
