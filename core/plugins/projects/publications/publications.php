@@ -2239,10 +2239,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// When dataset is automatically approved.
-		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $doi)
+		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $pub->version->get('doi'))
 		{
 			// Update DOI metadata
-			$doiService->update($doi, true);
+			$doiService->update($pub->version->get('doi'), true);
 
 			if ($doiService->getError())
 			{
@@ -2252,7 +2252,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Register DOI name and target URL for DataCite DOI
-				$doiService->register(false, true, $doi);
+				$doiService->register(false, true, $pub->version->get('doi'));
 
 				if ($doiService->getError())
 				{
