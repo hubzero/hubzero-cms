@@ -341,7 +341,7 @@ class Repo extends Obj
 	 */
 	public function dirExists($dirPath = null)
 	{
-		if (!$dirPath)
+		if (is_null($dirPath))
 		{
 			return false;
 		}
@@ -397,7 +397,9 @@ class Repo extends Obj
 		$dirPath   = isset($params['subdir']) ? $params['subdir'] : null;
 		$remotes   = isset($params['remoteConnections']) ? $params['remoteConnections'] : array();
 
-		$localPath = $dirPath ? $dirPath . DS . $item : $item;
+		$localPath = !is_null($dirPath) ? $dirPath . DS . $item : $item;
+		$localPath = ltrim($localPath, DS);
+
 		$file = new Models\File($localPath, $path);
 		$file->set('type', $type);
 		if ($type == 'folder')
@@ -744,7 +746,7 @@ class Repo extends Obj
 		}
 
 		// No new location
-		if ($targetDir == $dirPath)
+		if ($targetDir === $dirPath)
 		{
 			return false;
 		}
@@ -753,6 +755,7 @@ class Repo extends Obj
 		if ($create == true)
 		{
 			$localDirPath = $dirPath ? $dirPath . DS . $targetDir : $targetDir;
+			$localDirPath = ltrim($localDirPath, DS);
 			if (!$this->dirExists($localDirPath))
 			{
 				$newDirParams = array(
@@ -775,7 +778,8 @@ class Repo extends Obj
 			'subdir' => $targetDir,
 			'path'   => $path
 		);
-		$targetFile = $this->getMetadata($item, $type, $targetParams);
+
+		$targetFile = $this->getMetadata(basename($item), $type, $targetParams);
 
 		// Do the move
 		$moveParams = array(
