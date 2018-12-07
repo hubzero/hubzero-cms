@@ -94,8 +94,8 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 				<?php if (!$this->row->id) : ?>
 					<div class="input-wrap">
-						<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
-						<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
+						<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/js/autocompleter.js"></script>
+						<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/css/autocompleter.css";</script>
 
 						<label for="field-user_id"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USER'); ?>:</label>
 						<input type="text" name="fields[user_id]" id="field-user_id" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
