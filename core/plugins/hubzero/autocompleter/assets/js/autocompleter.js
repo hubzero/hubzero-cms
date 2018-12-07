@@ -1,6 +1,6 @@
 /**
  * @package	 hubzero-cms
- * @file		plugins/hubzero/autocompleter/autocompleter.js
+ * @file		plugins/hubzero/autocompleter/assets/js/autocompleter.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license	 http://opensource.org/licenses/MIT MIT
  */
@@ -965,7 +965,7 @@ HUB.Plugins.Autocomplete = {
 		styles.rel = 'stylesheet';
 		styles.href = plgAutocompleterCss; //$('#plgAutocompleterCss').val();
 		if (!styles.href) {
-			styles.href = '/core/plugins/hubzero/autocompleter/autocompleter.css';
+			styles.href = '/core/plugins/hubzero/autocompleter/assets/css/autocompleter.css';
 		}
 		head.appendChild(styles);
 

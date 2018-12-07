@@ -37,12 +37,6 @@ HUBzero is a registered trademark of Purdue University.
 	<description>Creates an auto-complete field for different types of entry (tags, groups, users)</description>
 	<files>
 		<filename plugin="autocompleter">autocompleter.php</filename>
-		<filename>autocomplete/autocompleter.css</filename>
-		<filename>autocomplete/autocompleter.js</filename>
-		<filename>autocomplete/observer.js</filename>
-		<filename>autocomplete/close.gif</filename>
-		<filename>autocomplete/spinner.gif</filename>
-		<filename>autocomplete/textboxlist.js</filename>
 	</files>
 	<config>
 		<fields name="params">

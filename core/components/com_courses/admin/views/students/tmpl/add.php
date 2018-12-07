@@ -103,8 +103,8 @@ function submitbutton(pressbutton)
 					<input type="text" name="fields[user_id]" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
 					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_USER_HINT'); ?></span>
 
-					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
-					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
+					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/js/autocompleter.js"></script>
+					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/css/autocompleter.css";</script>
 				</div>
 				<div class="input-wrap">
 					<label for="offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
