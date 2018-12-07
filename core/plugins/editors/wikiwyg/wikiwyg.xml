@@ -37,12 +37,11 @@ HUBzero is a registered trademark of Purdue University.
 	<description>PLG_EDITORS_WIKIWYG_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="wikiwyg">wikiwyg.php</filename>
-		<filename>wikiwyg.css</filename>
-		<filename>wikiwyg.mootools.js</filename>
-		<filename>wikiwyg.jquery.js</filename>
-		<filename>images/header-bg.png</filename>
-		<filename>images/resize.gif</filename>
-		<filename>images/icons.png</filename>
+		<filename>assets/css/wikiwyg.css</filename>
+		<filename>assets/js/wikiwyg.js</filename>
+		<filename>assets/img/header-bg.png</filename>
+		<filename>assets/img/resize.gif</filename>
+		<filename>assets/img/icons.png</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_editors_wikiwyg.ini</language>
