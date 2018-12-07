@@ -457,6 +457,10 @@ class Plugins extends AdminController
 				Notify::error($model->getError());
 				continue;
 			}
+			if ($value != 1)
+			{
+				Event::trigger('onExtensionAfterDelete', array('com_plugins.plugin', $model));
+			}
 
 			$success++;
 		}
@@ -483,6 +487,7 @@ class Plugins extends AdminController
 			{
 				$ntext = 'COM_PLUGINS_N_ITEMS_TRASHED';
 			}
+
 
 			Notify::success(Lang::txts($ntext, $success));
 		}
