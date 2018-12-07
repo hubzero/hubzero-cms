@@ -54,7 +54,7 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 	public function onInit()
 	{
 		// Add ckeditor
-		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
+		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'js/ckeditor.js' );
 	}
 
 	/**

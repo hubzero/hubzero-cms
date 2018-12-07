@@ -37,29 +37,28 @@ HUBzero is a registered trademark of Purdue University.
 	<description>PLG_EDITORS_WIKITOOLBAR_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="wikitoolbar">wikitoolbar.php</filename>
-		<filename>wikitoolbar.css</filename>
-		<filename>wikitoolbar.js</filename>
-		<filename>wikitoolbar.jquery.js</filename>
-		<filename>images/header-bg.png</filename>
-		<filename>images/help_purple.png</filename>
-		<filename>images/html.png</filename>
-		<filename>images/link.png</filename>
-		<filename>images/page_white.png</filename>
-		<filename>images/page.png</filename>
-		<filename>images/picture.png</filename>
-		<filename>images/table.png</filename>
-		<filename>images/tag.png</filename>
-		<filename>images/text_bold.png</filename>
-		<filename>images/text_formula.png</filename>
-		<filename>images/text_heading_2.png</filename>
-		<filename>images/text_horizontalrule.png</filename>
-		<filename>images/text_italic.png</filename>
-		<filename>images/text_list_bullets.png</filename>
-		<filename>images/text_list_numbers.png</filename>
-		<filename>images/text_strikethrough.png</filename>
-		<filename>images/text_subscript.png</filename>
-		<filename>images/text_superscript.png</filename>
-		<filename>images/text_underline.png</filename>
+		<filename>assets/css/wikitoolbar.css</filename>
+		<filename>assets/js/wikitoolbar.js</filename>
+		<filename>assets/img/header-bg.png</filename>
+		<filename>assets/img/help_purple.png</filename>
+		<filename>assets/img/html.png</filename>
+		<filename>assets/img/link.png</filename>
+		<filename>assets/img/page_white.png</filename>
+		<filename>assets/img/page.png</filename>
+		<filename>assets/img/picture.png</filename>
+		<filename>assets/img/table.png</filename>
+		<filename>assets/img/tag.png</filename>
+		<filename>assets/img/text_bold.png</filename>
+		<filename>assets/img/text_formula.png</filename>
+		<filename>assets/img/text_heading_2.png</filename>
+		<filename>assets/img/text_horizontalrule.png</filename>
+		<filename>assets/img/text_italic.png</filename>
+		<filename>assets/img/text_list_bullets.png</filename>
+		<filename>assets/img/text_list_numbers.png</filename>
+		<filename>assets/img/text_strikethrough.png</filename>
+		<filename>assets/img/text_subscript.png</filename>
+		<filename>assets/img/text_superscript.png</filename>
+		<filename>assets/img/text_underline.png</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_editors_wikitoolbar.ini</language>

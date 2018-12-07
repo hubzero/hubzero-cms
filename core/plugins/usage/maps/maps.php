@@ -143,7 +143,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	 */
 	private function checkbot(&$db, $location)
 	{
-		$query = "SELECT bot FROM #__xsession WHERE ipLATITUDE ='" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' ORDER BY bot DESC LIMIT 1";
+		$query = "SELECT bot FROM `#__xsession` WHERE ipLATITUDE ='" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' ORDER BY bot DESC LIMIT 1";
 
 		$db->setQuery($query);
 		$bot = $db->loadResult();
@@ -214,7 +214,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 			case 'online':
 				$html .= '<markers>' . "\n";
-				$query = "SELECT DISTINCT ipLATITUDE, ipLONGITUDE, ipCITY, ipREGION, countrySHORT FROM #__xsession WHERE ipLATITUDE <> '' GROUP BY ipLATITUDE, ipLONGITUDE";
+				$query = "SELECT DISTINCT ipLATITUDE, ipLONGITUDE, ipCITY, ipREGION, countrySHORT FROM `#__xsession` WHERE ipLATITUDE <> '' GROUP BY ipLATITUDE, ipLONGITUDE";
 
 				$db->setQuery($query);
 				$rows = $db->loadObjectList();
