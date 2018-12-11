@@ -1309,6 +1309,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		if ($this->isTool())
 		{
 			require_once Component::path('com_tools') . '/tables/version.php';
+			require_once Component::path('com_tools') . '/tables/author.php';
 
 			$this->thistool = null;
 			$this->curtool  = null;
@@ -1665,6 +1666,15 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		$type = $this->type();
 		$obj = new stdClass;
+		if ($this->isTool())
+		{
+			$this->compileToolInfo('');
+			$toolUrl = $this->generateToolUrl();
+			if (!empty($toolUrl))
+			{
+				$obj->launchlinkurl_s = rtrim(Request::root(), '/') . Route::urlForClient('site', $toolUrl);
+			}
+		}
 		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->title = $this->title;
 		$id = $this->id;
@@ -1734,14 +1744,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$obj->volumeno_s = !empty($fields['volumeno']) ? $fields['volumeno'] : '';
 		$obj->issuenomonth_s = !empty($fields['issuenomonth']) ? $fields['issuenomonth'] : '';
 		$obj->pagenumbers_s = !empty($fields['pagenumbers']) ? $fields['pagenumbers'] : '';
-		if ($this->isTool())
-		{
-			$toolUrl = $this->generateToolUrl();
-			if (!empty($toolUrl))
-			{
-				$obj->launchlinkurl_s = rtrim(Request::root(), '/') . Route::urlForClient('site', $toolUrl);
-			}
-		}
 
 		if (!empty($groups))
 		{
