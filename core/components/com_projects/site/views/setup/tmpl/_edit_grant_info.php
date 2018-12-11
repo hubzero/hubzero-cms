@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$approved = ($this->model->params->get( 'grant_status') == 1) ? 1 : 0;
+$approved = ($this->model->params->get('grant_status') == 1) ? 1 : 0;
 ?>
 
 <h5 class="terms-question">
@@ -41,49 +41,53 @@ $approved = ($this->model->params->get( 'grant_status') == 1) ? 1 : 0;
 <?php if ($approved): ?>
 	<p class="notice notice_passed">
 		<?php echo Lang::txt('COM_PROJECTS_GRANT_APPROVED_WITH_CODE'); ?>
-			<span class="prominent">
-				<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_approval', 'N/A'))); ?>
-			</span>
+		<span class="prominent">
+			<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_approval', 'N/A'))); ?>
+		</span>
 	</p>
 <?php else: ?>
 	<p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_INFO_WHY'); ?></p>
 <?php endif; ?>
 
-<label class="terms-label">
+<label for="param-grant_title" class="terms-label">
 	<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
 	<?php if ($approved):  ?>
-		<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_title', 'N/A'))); ?></span>
+		<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_title', 'N/A'))); ?></span>
 	<?php else: ?>
-		<input name="params[grant_title]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_title'))); ?>" class="long" />
+		<input name="params[grant_title]" id="param-grant_title" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_title'))); ?>" class="long" />
 	<?php endif ?>
 </label>
 
-<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
+<label for="param-grant_PI" class="terms-label">
+	<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
 	<?php if ($approved): ?>
-		<span class="prominent">' . htmlentities(html_entity_decode($this->model->params->get( 'grant_PI', 'N/A'))) . '</span>';
+		<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_PI', 'N/A'))); ?></span>
 	<?php else: ?>
-		<input name="params[grant_PI]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_PI'))); ?>" class="long"  />
+		<input name="params[grant_PI]" id="param-grant_PI" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_PI'))); ?>" class="long"  />
 	<?php endif; ?>
 </label>
 
-<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
+<label for="param-grant_agency" class="terms-label">
+	<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
 	<?php if ($approved): ?>
-		<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_agency', 'N/A'))); ?></span>
+		<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_agency', 'N/A'))); ?></span>
 	<?php else: ?>
-		<input name="params[grant_agency]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_agency'))); ?>" class="long" />
+		<input name="params[grant_agency]" id="param-grant_agency" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_agency'))); ?>" class="long" />
 	<?php endif ?>
 </label>
 
-<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
+<label for="param-grant_budget" class="terms-label">
+	<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
 	<?php if ($approved): ?>
-		<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_budget', 'N/A'))); ?></span>
+		<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_budget', 'N/A'))); ?></span>
 	<?php else: ?>
-		<input name="params[grant_budget]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get( 'grant_budget'))); ?>" class="long"  />
+		<input name="params[grant_budget]" id="param-grant_budget" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_budget'))); ?>" class="long"  />
 	<?php endif; ?>
 </label>
 
 <?php if (!$approved): ?>
-	<label>
-		<input class="option" name="params[grant_status]" type="checkbox" value="0" <?php if ($this->model->params->get( 'grant_status') == 2) { echo 'checked="checked"'; } ?> />
-		<?php echo $this->model->params->get( 'grant_status') == 2 ? Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL'): Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_NOTIFY_ADMIN') ; ?></label>
+	<label for="param-grant_status">
+		<input class="option" name="params[grant_status]" id="param-grant_status" type="checkbox" value="0" <?php if ($this->model->params->get('grant_status') == 2) { echo 'checked="checked"'; } ?> />
+		<?php echo $this->model->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL'): Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_NOTIFY_ADMIN') ; ?>
+	</label>
 <?php endif; ?>

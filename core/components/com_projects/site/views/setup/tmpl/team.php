@@ -71,7 +71,7 @@ $this->view('_title')
 	?>
 	<div class="clear"></div>
 	<div class="setup-wrap">
-		<form id="hubForm" method="post" action="index.php">
+		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 			<div class="explaination">
 				<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_ROLES'); ?></h4>
 				<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_OWNERS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
