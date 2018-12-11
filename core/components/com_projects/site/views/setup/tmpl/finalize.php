@@ -75,7 +75,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 	?>
 	<div class="clear"></div>
 	<div class="setup-wrap">
-		<form id="hubForm" method="post" action="index.php">
+		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 			<div class="explaination">
 				<?php if ($this->config->get('restricted_data', 0)) { ?>
 				<h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE'); ?></h4>
