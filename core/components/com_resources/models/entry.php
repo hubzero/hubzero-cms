@@ -1014,6 +1014,33 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Generate URL for tool
+	 *
+	 * @return  mixed	string or boolean if pubishedOnly is flagged and tool hasn't been published
+	 */
+	public function generateToolUrl()
+	{
+		$lurl = '';
+		if (isset($this->revision) && $this->toolpublished)
+		{
+			$sess = $this->tool ? $this->tool : $this->alias . '_r' . $this->revision;
+			$v = (!isset($this->revision) or $this->revision=='dev') ? 'test' : $this->revision;
+			$lurl = 'index.php?option=com_tools&app=' . $this->alias . '&task=invoke&version=' . $v;
+		}
+		elseif (!isset($this->revision) or $this->revision=='dev')
+		{
+			// serve dev version
+			$lurl = 'index.php?option=com_tools&app=' . $this->alias . '&task=invoke&version=dev';
+		}
+		else
+		{
+			$lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
+		}
+		return $lurl;
+	}
+
+
+	/**
 	 * Authorize current user
 	 *
 	 * @return  void
@@ -1711,6 +1738,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$obj->volumeno_s = !empty($fields['volumeno']) ? $fields['volumeno'] : '';
 		$obj->issuenomonth_s = !empty($fields['issuenomonth']) ? $fields['issuenomonth'] : '';
 		$obj->pagenumbers_s = !empty($fields['pagenumbers']) ? $fields['pagenumbers'] : '';
+		if ($this->isTool())
+		{
+			$toolUrl = $this->generateToolUrl();
+			if (!empty($toolUrl))
+			{
+				$obj->launchlinkurl_s = rtrim(Request::root(), '/') . Route::urlForClient('site', $toolUrl);
+			}
+		}
 
 		if (!empty($groups))
 		{
