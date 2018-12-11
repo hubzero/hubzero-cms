@@ -625,7 +625,7 @@ class Pages extends SiteController
 		}
 
 		$revision->set('page_id', $this->page->get('id'));
-		$revision->set('version', $revision->get('version') + 1);
+		$revision->set('version', intval($revision->get('version')) + 1);
 
 		if ($this->page->param('mode', 'wiki') == 'knol')
 		{
