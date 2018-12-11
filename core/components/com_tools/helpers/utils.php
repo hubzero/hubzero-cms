@@ -123,8 +123,9 @@ class Utils
 	 */
 	public static function createHomeDirectory($username)
 	{
+		$dbname = \App::get('config')->get('database.db');
 		$command = "create_userhome '{$username}'";
-		$cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} 2>&1 </dev/null";
+		$cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} dbname={$dbname} 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 
@@ -631,8 +632,9 @@ class Utils
 		$retval = true; // Assume success.
 
 		$comm = escapeshellcmd($comm);
+		$dbname = \App::get('config')->get('database.db');
 
-		$cmd = "/bin/sh ". dirname(__DIR__) . "/scripts/mw $comm 2>&1 </dev/null";
+		$cmd = "/bin/sh ". dirname(__DIR__) . "/scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 

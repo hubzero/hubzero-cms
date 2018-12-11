@@ -188,7 +188,7 @@ class Sessions extends AdminController
 	}
 
 	/**
-	 * Invoke the Python script to do real work.
+	 * Invoke the Python script to do work elsewhere.
 	 *
 	 * @param   string   $comm
 	 * @param   array    &$output
@@ -198,7 +198,8 @@ class Sessions extends AdminController
 	{
 		$retval = true; // Assume success.
 		$output = new \stdClass();
-		$cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm 2>&1 </dev/null";
+		$hubname = \App::get('config')->get('database.db');
+		$cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm dbname=$hubname 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 
