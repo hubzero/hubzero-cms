@@ -147,7 +147,8 @@ class Hosts extends AdminController
 		$retval = 1; // Assume success.
 		$fnoutput = array();
 
-		$cmd = "/bin/sh " . dirname(__DIR__) . "/../scripts/mw $comm 2>&1 </dev/null";
+		$dbname = \App::get('config')->get('database.db');
+		$cmd = "/bin/sh " . dirname(__DIR__) . "/../scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
 		exec($cmd, $output, $status);
 
 		$outln = 0;

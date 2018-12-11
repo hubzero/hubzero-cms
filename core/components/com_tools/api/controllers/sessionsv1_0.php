@@ -216,8 +216,9 @@ class Sessionsv1_0 extends ApiController
 		$username = $result->get('username');
 		if (isset($username) && $username != '')
 		{
+			$dbname = \App::get('config')->get('database.db');
 			// take new screenshots for user
-			$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $username . " 2>&1 </dev/null";
+			$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $username . " dbname=$dbname 2>&1 </dev/null";
 			exec($cmd, $results, $status);
 			$object->screenshots_taken = true;
 		}
