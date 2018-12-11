@@ -353,8 +353,9 @@ class UsersControllerUser extends UsersController
 			// Redirect the user.
 			if (substr(Config::get('application_env', ''), -5) == 'cloud')
 			{
+				$return = base64_encode($return);
 				setcookie('jwt', '', -86400, '/', '.' . \Hubzero\Utility\Dns::domain(), true, true);
-				//App::redirect(Route::url('/auth/logout&return=' . $return, false));
+				App::redirect(Route::url('/auth/logout&target=' . $return, false));
 			}
 			App::redirect(Route::url($return, false));
 		}
