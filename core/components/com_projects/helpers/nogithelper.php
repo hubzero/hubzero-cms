@@ -33,6 +33,7 @@
 namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
+use Hubzero\Filesystem\Manager;
 use Component;
 use User;
 use Lang;
@@ -69,6 +70,9 @@ class Nogit extends Obj
 
 		// Set repo path
 		$this->_path = $path;
+		$params = [];
+		$params['path'] = $this->_path;
+		$this->adapter = Manager::adapter('local', $params);
 
 		// Set acting user
 		$this->_uid = User::get('id');
@@ -175,19 +179,13 @@ class Nogit extends Obj
 	 */
 	public function getFiles($subdir = '', $recursive = false)
 	{
-		// Make sure subdir has a trailing slash
-		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
-		// Get list of all files
-		if ($recursive)
+		$files = $this->adapter->listContents($subdir, $recursive);
+		$out = array();
+		foreach($files as $file)
 		{
-			$out = $this->call("find ./" . escapeshellarg($subdir) . " -mindepth 1 -name '.git*' -prune -o -printf '%P\n' -not -path -'.'");
+			$out[] = $file->path;
 		}
-		else
-		{
-			$out = $this->call("find ./" . escapeshellarg($subdir) . " -mindepth 1 -maxdepth 1 -name '.git*' -prune -o -printf '%P\n' -not -path -'.'");
-		}
-
-		return (empty($out)) ? array() : $out;
+		return $out;
 	}
 
 	/**
@@ -198,12 +196,16 @@ class Nogit extends Obj
 	 */
 	public function getDirectories($subdir = '')
 	{
-		// Make sure subdir has a trailing slash
-		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
-
-		// Get list of the directories
-		$out = $this->call("find -name '.git*' -prune -o -type d -not -path -'.' -printf '%P\n'");
-		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
+		$files = $this->adapter->listContents($subdir);
+		$out = array();
+		foreach($files as $file)
+		{
+			if ($file->isDir())
+			{
+				$out[] = $file->path;
+			}
+		}
+		return $out;
 	}
 
 	/**
