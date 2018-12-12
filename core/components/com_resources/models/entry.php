@@ -1034,7 +1034,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 		else
 		{
-			$lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
+			$lurl = 'index.php?option=com_tools&task=invoke&app=' . $this->alias;
 		}
 		return $lurl;
 	}
