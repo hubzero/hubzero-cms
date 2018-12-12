@@ -134,7 +134,7 @@ class Nogit extends Models\Adapter
 		// Go through items and get what we need
 		foreach ($files as $item)
 		{
-			$item = rawurldecode($dirPath . DS . $item);
+			$item = rawurldecode($item);
 			if (trim($item) == '')
 			{
 				continue;
