@@ -501,7 +501,7 @@ class Doi extends Obj
 
 		$response = curl_exec($ch);
 
-		if(!$response)
+		if (!$response)
 		{
 			return false;
 		}
@@ -552,7 +552,7 @@ class Doi extends Obj
 
 		$response = curl_exec($ch);
 
-		if(!$response)
+		if (!$response)
 		{
 			return false;
 		}
@@ -618,7 +618,7 @@ class Doi extends Obj
 
 		$regResult = $this->regURL($url, $postvals);
 
-		if(!$regResult)
+		if (!$regResult)
 		{
 			return false;
 		}
@@ -664,7 +664,7 @@ class Doi extends Obj
 
 		$response = curl_exec($ch);
 
-		if(!$response)
+		if (!$response)
 		{
 			return false;
 		}
@@ -1116,14 +1116,14 @@ class Doi extends Obj
 		}
 
 		if (($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
-			|| ($this->_configs->dataciteEZIDSwitch == SELF::SWITCH_OPTION_EZID))
+			|| ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID))
 		{
 			if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 			{
 				$result = $this->dataciteDoiStatusUpdate($doi, $stateSwitch);
 			}
 
-			if ($this->_configs->dataciteEZIDSwitch == SELF::SWITCH_OPTION_EZID)
+			if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 			{
 				$result = $this->ezidDoiStatusUpdate($doi, $stateSwitch);
 			}
