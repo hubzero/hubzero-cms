@@ -100,7 +100,7 @@ class plgSearchRemote extends \Hubzero\Plugin\Plugin
 			if (!empty($url) && !empty($token))
 			{
 				$result = new stdClass;
-				$this->sendSolrRequest($result, 'delete');	
+				$this->sendSolrRequest($result, 'delete');
 			}
 		}
 	}
