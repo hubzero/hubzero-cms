@@ -263,29 +263,42 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 			<div class="dashboard-panel" id="dashboard-panel">
 				<div class="dashboard-panel-inner">
 					<div class="dashboard-panel-content">
-						<header><h2>Dashboard</h2></header>
+						<!-- <header><h2>Dashboard</h2></header> -->
 						<div class="scroller">
 							<?php if (!User::isGuest()) { ?>
 								<section class="user">
-									<div class="user-info">
+									<!-- <div class="user-info">
 										<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
 											<?php echo stripslashes(User::get('name')); ?>
 											<span><?php echo User::get('email'); ?></span>
 										</a>
-									</div>
+									</div> -->
+									<header><h2>All Categories</h2></header>
 									<nav class="user-nav">
 										<ul>
-											<li id="account-dashboard">
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_DASHBOARD'); ?></span></a>
-											</li>
 											<li id="account-profile">
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_PROFILE'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span class="nav-icon-user"><?php echo file_get_contents("core/assets/icons/user.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_PROFILE'); ?></span></a>
+											</li>
+											<li id="account-dashboard">
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span class="nav-icon-dashboard"><?php echo file_get_contents("core/assets/icons/th-large.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_DASHBOARD'); ?></span></a>
 											</li>
 											<li id="account-messages">
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_MESSAGES'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><span class="nav-icon-messages"><?php echo file_get_contents("core/assets/icons/envelope-alt.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_MESSAGES'); ?></span></a>
+											</li>
+											<li id="account-groups">
+												<a href="#"><span class="nav-icon-groups"><?php echo file_get_contents("core/assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents("core/assets/icons/chevron-right.svg") ?></span></a>
+												<div class="component-panel">
+													<header><h2>My Groups</h2></header>
+													<a href="#" class="back"><span class="nav-icon-back"><?php echo file_get_contents("core/assets/icons/chevron-left.svg") ?></span>Back</a>
+													<ul>
+														<li>My Group</li>
+														<li>My Group</li>
+														<li>All Groups</li>
+													</ul>
+												</div>
 											</li>
 											<li id="account-logout">
-												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_BMC_LOGOUT'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span class="nav-icon-logout"><?php echo file_get_contents("core/assets/icons/signout.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_LOGOUT'); ?></span></a>
 											</li>
 										</ul>
 									</nav>
