@@ -355,7 +355,7 @@ class UsersControllerUser extends UsersController
 			{
 				$return = base64_encode($return);
 				setcookie('jwt', '', -86400, '/', '.' . \Hubzero\Utility\Dns::domain(), true, true);
-				App::redirect(Route::url('/auth/logout&target=' . $return, false));
+				App::redirect(Route::url('/auth/logout?target=' . $return, false));
 			}
 			App::redirect(Route::url($return, false));
 		}
