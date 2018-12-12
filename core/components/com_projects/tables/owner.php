@@ -598,7 +598,7 @@ class Owner extends Table
 			foreach ($owners as $k => $owner)
 			{
 				$online = SessionHelper::getSessionWithUserId($owner->userid);
-				$owners[$k]->online = count($online);
+				$owners[$k]->online = ($online ? 1 : 0);
 			}
 		}
 
