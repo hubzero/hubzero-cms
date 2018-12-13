@@ -76,7 +76,7 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$connectionId = Request::getInt('connection', 0);
-			$connection = \Components\Projects\Models\Orm\Connection::One($connectionId);
+			$connection = \Components\Projects\Models\Orm\Connection::one($connectionId);
 			$project = $connection->project;
 			$projectsFilesUrl = \Route::url($project->link('files') . '/browse?connection=' . $connectionId);
 			\Session::set('googledrive.app_id', $app_id);
