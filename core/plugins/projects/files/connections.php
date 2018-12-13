@@ -278,7 +278,7 @@ class connections
 		}
 		// Instantiate the connection to trigger any oauth flow required
 		Request::setVar('connection', $connection->get('id'));
-		$connection = Connection::One($connection->get('id'));
+		$connection = Connection::one($connection->get('id'));
 		$connection->adapter();
 
 		// Redirect
