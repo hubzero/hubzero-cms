@@ -13,9 +13,11 @@ use Components\Modules\Models\Module;
 use Components\Modules\Helpers\Modules as ModulesHelper;
 use Request;
 use Notify;
+use Config;
 use Route;
 use Cache;
 use Event;
+use Date;
 use Lang;
 use App;
 
