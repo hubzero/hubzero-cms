@@ -286,14 +286,14 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><span class="nav-icon-messages"><?php echo file_get_contents("core/assets/icons/envelope-alt.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_MESSAGES'); ?></span></a>
 											</li>
 											<li id="account-groups">
-												<a href="#"><span class="nav-icon-groups"><?php echo file_get_contents("core/assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents("core/assets/icons/chevron-right.svg") ?></span></a>
+												<a href="#" class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents("core/assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents("core/assets/icons/chevron-right.svg") ?></span></a>
 												<div class="component-panel">
 													<header><h2>My Groups</h2></header>
-													<a href="#" class="back"><span class="nav-icon-back"><?php echo file_get_contents("core/assets/icons/chevron-left.svg") ?></span>Back</a>
+													<a href="#" class="component-button"><span class="nav-icon-back"><?php echo file_get_contents("core/assets/icons/chevron-left.svg") ?></span>Back</a>
 													<ul>
-														<li>My Group</li>
-														<li>My Group</li>
-														<li>All Groups</li>
+														<li><a href="#">My Group</a></li>
+														<li><a href="#">My Group</a></li>
+														<li><a href="#">All Groups</a></li>
 													</ul>
 												</div>
 											</li>

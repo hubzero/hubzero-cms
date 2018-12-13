@@ -49,6 +49,11 @@ if (!jq) {
 	var dashboardScroller;
 	var dashboardCloseButton;
 
+	// Mini Dashboard
+	var minidashPanel;
+	var componentButton;
+	var backButton;
+
 	// Mobile search
 	var mobileSearchButton;
 
@@ -221,6 +226,11 @@ if (!jq) {
 		dashboardPanel = $('.dashboard-panel');
 		dashboardScroller = $('.dashboard-panel-inner .scroller');
 		dashboardCloseButton = dashboardPanel.find('.close');
+
+		// Minidash panel show/hide
+		componentButton = $('.component-button');
+		minidashPanel = $('.component-panel');
+		backButton = $('.back');
 
 		// Mobile search
 		mobileSearchButton = $('button.search');
@@ -423,6 +433,7 @@ if (!jq) {
 		};
 
 		var hideDashboard = function() {
+			minidashPanel.removeClass('show');
 			dashboardPanel.removeClass('show');
 			body.removeClass('dashboard-show');
 
@@ -455,6 +466,35 @@ if (!jq) {
 				hideDashboard();
 
 				e.preventDefault();
+			});
+		}
+
+		// Minidash
+		var showMinidash = function() {
+			minidashPanel.addClass('show');
+
+			minidashPanel.on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					TPL.resize();
+				});
+		};
+
+		var hideMinidash = function() {
+			minidashPanel.removeClass('show');
+
+			dashboardPanel.on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					TPL.resize();
+				});
+		};
+
+		if (componentButton.length > 0) {
+			componentButton.on('click', function() {
+				if (!(minidashPanel.hasClass('show'))) {
+					showMinidash();
+				} else {
+					hideMinidash();
+				}
 			});
 		}
 
