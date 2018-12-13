@@ -32,6 +32,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+require_once \Component::path('projects') . '/models/orm/connection.php';
+
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -73,12 +75,16 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
+			$connectionId = Request::getInt('connection', 0);
+			$connection = \Components\Projects\Models\Orm\Connection::One($connectionId);
+			$project = $connection->project;
+			$projectsFilesUrl = \Route::url($project->link('files') . '/browse?connection=' . $connectionId);
 			\Session::set('googledrive.app_id', $app_id);
 			\Session::set('googledrive.app_secret', $app_secret);
-			\Session::set('googledrive.connection_to_set_up', Request::getInt('connection', 0));
+			\Session::set('googledrive.connection_to_set_up', $connectionId);
 
 			// Set upp a return and redirect to Google for auth
-			$return = (Request::getString('return')) ? Request::getString('return') : Request::current(true);
+			$return = (Request::getString('return')) ? Request::getString('return') : $projectsFilesUrl;
 			$return = base64_encode($return);
 
 			$redirectUri      = trim(Request::root(), '/') . '/developer/callback/googledriveAuthorize';
