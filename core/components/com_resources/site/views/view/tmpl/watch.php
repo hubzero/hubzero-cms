@@ -493,7 +493,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 								<?php
 									//use thumb if possible
 									$thumb = $content_folder.DS.$slide->media;
-									if ($slide->thumb && file_exists(PATH_ROOT . $content_folder.DS.$slide->thumb))
+									if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_ROOT . $content_folder.DS.$slide->thumb))
 									{
 										$thumb = $content_folder.DS.$slide->thumb;
 									}
