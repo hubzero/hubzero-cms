@@ -22,21 +22,21 @@
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Installer\Admin\Models;
+use Components\Installer\Admin\Models\Extension;
 use Request;
 use Notify;
 use Lang;
 use Html;
+use User;
 use App;
 
-include_once dirname(__DIR__) . DS . 'models' . DS . 'manage.php';
+include_once dirname(__DIR__) . DS . 'models' . DS . 'extension.php';
 
 /**
  * Controller for managing extensions
@@ -63,46 +63,168 @@ class Manage extends AdminController
 	 */
 	public function displayTask()
 	{
-		$model = new Models\Manage();
-
-		$this->view->state      = $model->getState();
-		$this->view->items      = $model->getItems();
-		$this->view->pagination = $model->getPagination();
-		$this->view->form       = $model->getForm();
-
-		// Check for errors.
-		if (count($errors = $model->getErrors()))
-		{
-			App::abort(500, implode("\n", $errors));
-		}
-
-		//Check if there are no matching items
-		if (!count($this->view->items))
-		{
-			Notify::warning(Lang::txt('COM_INSTALLER_MSG_MANAGE_NOEXTENSION'));
-		}
-
-		$this->view->ftp = \JClientHelper::setCredentialsFromRequest('ftp');
-
-		$showMessage = false;
-		if (is_object($this->view->state))
-		{
-			$message1    = $this->view->state->get('message');
-			$message2    = $this->view->state->get('extension_message');
-			$showMessage = ($message1 || $message2);
-		}
-		$this->view->showMessage = $showMessage;
-
 		// Include the component HTML helpers.
 		Html::addIncludePath(dirname(__DIR__) . '/helpers/html');
 
-		$this->view->display();
+		$filters = Request::getArray('filters');
+		if (empty($filters))
+		{
+			$data = User::getState($this->_option . '.data');
+			$filters = $data['filters'];
+		}
+		else
+		{
+			User::setState($this->_option . '.data', array('filters' => $filters));
+		}
+
+		$limit = Request::getState(
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			\Config::get('list_limit'),
+			'int'
+		);
+		$start = Request::getState(
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+
+		$filters['sort'] = Request::getState(
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
+			'name'
+		);
+		$filters['sort_Dir'] = Request::getState(
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
+			'ASC'
+		);
+
+		$entries = Extension::all();
+
+		$e = $entries->getTableName();
+
+		$entries
+			->select('(2*protected+(1-protected)*enabled)', 'status')
+			->select($e . '.*')
+			->whereEquals('state', 0);
+
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$filters['search'] = str_replace('/', ' ', $filters['search']);
+			if (stripos($filters['search'], 'id:') !== 0)
+			{
+				$entries->whereEquals('extension_id', str_replace('id:', '', $filters['search']));
+			}
+			else
+			{
+				$entries->whereLike('name', strtolower((string)$filters['search']));
+			}
+		}
+
+		if (isset($filters['type']) && $filters['type'])
+		{
+			$entries->whereEquals('type', $filters['type']);
+		}
+
+		if (isset($filters['client_id']) && $filters['client_id'] != '')
+		{
+			$entries->whereEquals('client_id', (int)$filters['client_id']);
+		}
+
+		if (isset($filters['status']) && $filters['status'] != '')
+		{
+			if ($filters['status'] == '2')
+			{
+				$entries->whereEquals('protected', 1);
+			}
+			else
+			{
+				$entries->whereEquals('enabled', (int)$filters['status']);
+			}
+		}
+
+		if (isset($filters['group']) && $filters['group'])
+		{
+			$entries->whereEquals('folder', (int)$filters['group']);
+		}
+
+		// Get records
+		if ($filters['sort'] == 'name' || (!empty($filters['search']) && stripos($filters['search'], 'id:') !== 0))
+		{
+			$rows = $entries->rows();
+
+			$lang = App::get('language');
+
+			$result = array();
+			foreach ($rows as $i => $item)
+			{
+				if (!empty($filters['search']))
+				{
+					if (!preg_match("/" . $filters['search'] . "/i", $item->name))
+					{
+						unset($result[$i]);
+					}
+				}
+
+				$item->translate();
+
+				$result[$i] = $item;
+			}
+
+			\Hubzero\Utility\Arr::sortObjects($result, $filters['sort'], $filters['sort_Dir'] == 'desc' ? -1 : 1, true, $lang->getLocale());
+
+			$total = count($result);
+
+			if ($total < $start)
+			{
+				$start = 0;
+			}
+
+			$rows = array_slice($result, $start, $limit ? $limit : null);
+		}
+		else
+		{
+			$total = with(clone $entries)->total();
+
+			$rows = $entries
+				->order($filters['sort'], $filters['sort_Dir'])
+				->limit($limit)
+				->start($start)
+				->rows();
+		}
+
+		$pagination = new \Hubzero\Pagination\Paginator($total, $start, $limit);
+
+		// Get the form.
+		\Hubzero\Form\Form::addFormPath(dirname(__DIR__) . '/models/forms');
+		\Hubzero\Form\Form::addFieldPath(dirname(__DIR__) . '/models/fields');
+		$form = new \Hubzero\Form\Form('manage');
+		$form->loadFile(dirname(__DIR__) . '/models/forms/manage.xml', false, '//form');
+
+		// Check the session for previously entered form data.
+		$data = User::getState($this->_option . '.data', array());
+
+		// Bind the form data if present.
+		if (!empty($data))
+		{
+			$form->bind($data);
+		}
+
+		// Output the HTML
+		$this->view
+			->set('rows', $rows)
+			->set('pagination', $pagination)
+			->set('filters', $filters)
+			->set('form', $form)
+			->display();
 	}
 
 	/**
 	 * Enable/Disable an extension (if supported).
 	 *
-	 * @since	1.6
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -110,7 +232,7 @@ class Manage extends AdminController
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids    = Request::getArray('cid', array(), '');
+		$ids    = Request::getArray('cid', array());
 		$values = array('publish' => 1, 'unpublish' => 0);
 		$task   = $this->getTask();
 		$value  = \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
@@ -121,15 +243,34 @@ class Manage extends AdminController
 		}
 		else
 		{
-			// Get the model.
-			$model = new Models\Manage();
+			$success = 0;
+
+			foreach ($ids as $id)
+			{
+				$model = Extension::oneOrFail($id);
+
+				if ($value)
+				{
+					if (!$model->publish())
+					{
+						Notify::error($model->getError());
+						continue;
+					}
+				}
+				else
+				{
+					if (!$model->unpublish())
+					{
+						Notify::error($model->getError());
+						continue;
+					}
+				}
+
+				$success++;
+			}
 
 			// Change the state of the records.
-			if (!$model->publish($ids, $value))
-			{
-				App::abort(500, implode('<br />', $model->getErrors()));
-			}
-			else
+			if ($success)
 			{
 				if ($value == 1)
 				{
@@ -139,30 +280,53 @@ class Manage extends AdminController
 				{
 					$ntext = 'COM_INSTALLER_N_EXTENSIONS_UNPUBLISHED';
 				}
-				Notify::success(Lang::txts($ntext, count($ids)));
+
+				Notify::success(Lang::txts($ntext, $success));
 			}
 		}
 
-		App::redirect(Route::url('index.php?option=com_installer&controller=manage', false));
+		$this->cancelTask();
 	}
 
 	/**
 	 * Remove an extension (Uninstall).
 	 *
-	 * @return	void
-	 * @since	1.5
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken();
 
-		$eid   = Request::getArray('cid', array(), '');
-		$model = new Models\Manage();
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+		}
 
-		\Hubzero\Utility\Arr::toInteger($eid, array());
-		$result = $model->remove($eid);
-		App::redirect(Route::url('index.php?option=com_installer&controller=manage', false));
+		$ids  = Request::getArray('cid', array());
+		\Hubzero\Utility\Arr::toInteger($ids, array());
+
+		$success = 0;
+
+		foreach ($ids as $id)
+		{
+			$model = Extension::oneOrFail($id);
+
+			if (!$model->remove())
+			{
+				Notify::error($model->getError());
+				continue;
+			}
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_INSTALLER_UNINSTALL_SUCCESS', $success));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
@@ -170,29 +334,34 @@ class Manage extends AdminController
 	 *
 	 * Useful for debugging and testing purposes when the XML file might change.
 	 *
-	 * @since	1.6
+	 * @return  void
 	 */
 	public function refreshTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken();
 
-		$uid   = Request::getArray('cid', array(), '');
-		$model = new Models\Manage();
+		$ids = Request::getArray('cid', array());
+		\Hubzero\Utility\Arr::toInteger($ids, array());
 
-		\Hubzero\Utility\Arr::toInteger($uid, array());
-		$result = $model->refresh($uid);
+		foreach ($ids as $id)
+		{
+			$model = Extension::oneOrFail($id);
 
-		App::redirect(Route::url('index.php?option=com_installer&controller=manage', false));
+			if (!$model->refreshManifestCache())
+			{
+				Notify::error($model->getError());
+				continue;
+			}
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Creates the content for the tooltip which shows compatibility information
 	 *
-	 * @var  string  $system_data  System_data information
-	 *
-	 * @since  2.5.28
-	 *
+	 * @param   string  $system_data  System_data information
 	 * @return  string  Content for tooltip
 	 */
 	protected function createCompatibilityInfo($system_data)
