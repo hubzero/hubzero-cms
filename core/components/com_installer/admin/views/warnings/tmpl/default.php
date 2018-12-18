@@ -28,7 +28,7 @@
 
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
-Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install.png');
+Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_installer');
