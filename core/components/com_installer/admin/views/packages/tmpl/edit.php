@@ -49,7 +49,7 @@ if ($packageAuthors)
 $status = '';
 
 ?>
-</script>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=install'); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
 		<div class="col span7">
@@ -63,12 +63,11 @@ $status = '';
 						<option value="<?php echo $version->getVersion(); ?>" <?php echo ($this->installedPackage->getVersion() == $version->getVersion()) ? 'selected="true"' : '';?> > <?php echo $version->getFullPrettyVersion(); ?></option>
 						<?php endforeach; ?>
 					</select>
-
 				</div>
+
 				<div class="input-wrap">
 					<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_VERSION'); ?>">
 				</div>
-
 			</fieldset>
 		</div>
 		<div class="col span5">

@@ -60,11 +60,11 @@ class Installer
 			Route::url('index.php?option=com_installer&controller=migrations'),
 			$vName == 'migrations'
 		);
-		Submenu::addEntry(
+		/*Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_LANGUAGES'),
 			Route::url('index.php?option=com_installer&controller=languages'),
 			$vName == 'languages'
-		);
+		);*/
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_WARNINGS'),
 			Route::url('index.php?option=com_installer&controller=warnings'),

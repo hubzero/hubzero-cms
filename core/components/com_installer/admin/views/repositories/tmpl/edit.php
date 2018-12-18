@@ -42,7 +42,7 @@ Toolbar::cancel();
 $status = '';
 
 ?>
-</script>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=save'); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
 		<div class="col span7">
@@ -76,9 +76,9 @@ $status = '';
 				<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_UPDATE'); ?>">
 
 			</fieldset>
-		<p class="warning">
-			<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&alias=' . $this->alias . '&task=remove'); ?>">Remove Repository</a>
-		</p>
+			<p class="warning">
+				<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&alias=' . $this->alias . '&task=remove'); ?>">Remove Repository</a>
+			</p>
 		</div>
 	</div>
 	<input type="hidden" name="oldAlias" value="<?php echo $this->alias; ?>" />
