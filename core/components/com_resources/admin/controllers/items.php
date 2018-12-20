@@ -1000,7 +1000,7 @@ class Items extends AdminController
 
 		// Save the tags
 		$rt = new Tags($row->get('id'));
-		$rt->setTags($tags, User::get('id'), 1, 1);
+		$rt->setTags($tags, User::get('id'), 0);
 
 		// Incoming badges
 		$badgeString = Request::getString('badges', '', 'post');
@@ -1010,7 +1010,7 @@ class Items extends AdminController
 			'scope' => 'resources',
 			'scopeId' => $row->get('id')
 		]);
-		$badges->updateBadges($badgeString, User::get('id'), 1, 1);
+		$badges->updateBadges($badgeString, User::get('id'), 0);
 
 		// Incoming authors
 		if (!$row->isTool())
