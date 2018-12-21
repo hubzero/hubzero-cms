@@ -81,7 +81,11 @@ function submitbutton(pressbutton)
 				<!-- Name -->
 				<div class="input-wrap">
 					<label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_TITLE'); ?>:</label>
-						<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->title)); ?>" />
+				</div> <!-- /.input-wrap -->
+				<div class="input-wrap">
+					<label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_CUSTOM'); ?>:</label>
+					<input type="text" name="fields[custom]" id="field-custom" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->custom)); ?>" />
 				</div> <!-- /.input-wrap -->
 			</fieldset> <!-- /.adminform -->
 		</div><!-- /.col span7 -->
@@ -111,11 +115,15 @@ function submitbutton(pressbutton)
 				<label for="searchable-filter-field">
 					<?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_FIELD');?>
 				</label>
-				<select name="add-filter" id="searchable-filter-field">
-					<?php foreach ($this->availableFields as $field): ?>
-					<option value="<?php echo $field;?>"><?php echo $field;?></option>
-					<?php endforeach; ?>
-				</select>
+				<?php if (!empty($this->availableFields)): ?>
+					<select name="add-filter" id="searchable-filter-field">
+						<?php foreach ($this->availableFields as $field): ?>
+						<option value="<?php echo $field;?>"><?php echo $field;?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else: ?>
+					<input type="text" name="add-filter" id="searchable-filter-field" />
+				<?php endif; ?>
 			</div>
 			<div class="input-wrap">
 				<label for="filter-type">

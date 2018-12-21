@@ -1,7 +1,7 @@
 $(function(){
 	$('#add-filter').on('click', function(e){
 		e.preventDefault();
-		var filterName = $('select[name="add-filter"]').val();
+		var filterName = $('[name="add-filter"]').val();
 		var filterType = $('select[name="filter-type"]').val();
 		$('input[name="add-filter"]').val('');
 		var values = {'type': filterType};

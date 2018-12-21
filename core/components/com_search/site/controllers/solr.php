@@ -103,17 +103,17 @@ class Solr extends SiteController
 		}
 
 		$searchComponents = SearchComponent::all()
-			->whereEquals('state', 1);
+			->whereEquals('state', SearchComponent::STATE_INDEXED);
 		// Add categories for Facet functions (mainly counting the different categories)
 		$multifacet = $query->adapter->getFacetMultiQuery('hubtypes');
 		$allFacets = Facet::all()
-			->whereEquals('state', 1)
+			->whereEquals('state', SearchComponent::STATE_INDEXED)
 			->including('parentFacet')
 			->rows();
 		foreach ($searchComponents as $searchComponent)
 		{
-			$hubType = 'hubtype:' . $searchComponent->getSearchNamespace();
-			$multifacet->createQuery($searchComponent->getQueryName(), $hubType, array('exclude' => 'filter_type', 'include' => 'child_type'));
+			$componentQuery = $searchComponent->getSearchQuery('hubtype');
+			$multifacet->createQuery($searchComponent->getQueryName(), $componentQuery, array('exclude' => 'filter_type', 'include' => 'child_type'));
 		}
 
 		$queryTerms = $terms;
@@ -153,22 +153,34 @@ class Solr extends SiteController
 					$filter->applyFilters($query, $filters);
 				}
 			}
-			$hubType = 'hubtype:' . $typeComponent->getSearchNamespace();
-			$query->addFilter('Type', $hubType, 'root_type');
+			$componentQuery = $typeComponent->getSearchQuery('hubtype');
+			$query->addFilter('Type', $componentQuery, 'root_type');
 			// Add a type
 			$urlQuery .= '&type=' . $type;
 		}
 		else
 		{
 			$hubTypes = array();
+			$hubTypeQuery = '';
 			foreach ($searchComponents as $component)
 			{
-				$hubTypes[] = $component->getSearchNamespace();
+				$searchNamespace = $component->getSearchNamespace();
+				$searchQuery = $component->getSearchQuery();
+				if ($searchNamespace == $searchQuery)
+				{
+					$hubTypes[] = $searchNamespace;
+				}
+				else
+				{
+					$hubTypeQuery .= !empty($hubTypeQuery) ? ' OR ' : '';
+					$hubTypeQuery .= '(' . trim($searchQuery) . ')';
+				}
 			}
-
+			$hubTypeQuery .= !empty($hubTypeQuery) ? ' OR ' : '';
+			$hubTypeQuery .= '(hubtype:(' . implode(' OR ', $hubTypes) . '))';
 			if (!empty($hubTypes))
 			{
-				$query->addFilter('Type', '(hubtype:(' . implode(' OR ', $hubTypes) . '))', 'root_type');
+				$query->addFilter('Type', $hubTypeQuery, 'root_type');
 			}
 		}
 
