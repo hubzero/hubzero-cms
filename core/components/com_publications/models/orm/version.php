@@ -556,6 +556,65 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Check if this entry has an image
+	 *
+	 * @param   string   $type  The type of image
+	 * @return  boolean
+	 */
+	public function hasImage($type = 'thumb')
+	{
+		// Build publication path
+		$path = $this->filespace();
+
+		if ($type == 'thumb')
+		{
+			$source = $path . DS . 'thumb.gif';
+
+			// Check for default image
+			if (!is_file($source))
+			{
+				$source = false;
+			}
+		}
+		else
+		{
+			// Get master image
+			$source = $path . DS . 'master.png';
+
+			// Default image
+			if (!is_file($source))
+			{
+				// Grab first bigger image in gallery
+				if (is_dir($path . DS . 'gallery'))
+				{
+					$file_list = scandir($path . DS . 'gallery');
+
+					foreach ($file_list as $file)
+					{
+						if ($file != '.' && $file != '..' && exif_imagetype($path . DS . 'gallery' . DS . $file))
+						{
+							list($width, $height, $type, $attr) = getimagesize($path . DS . 'gallery' . DS . $file);
+
+							if ($width > 200)
+							{
+								$source = $path . DS . 'gallery' . DS . $file;
+								break;
+							}
+						}
+					}
+				}
+
+				if (!is_file($source))
+				{
+					$source = false;
+				}
+			}
+		}
+
+		return $source;
+	}
+
+	/**
 	 * Split metadata into parts
 	 *
 	 * @return  array
@@ -577,21 +636,114 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 		return $data;
 	}
 
-	/*
+	/**
 	 * Generate link to current active version
-	 * @return string
+	 *
+	 * @param   string  $type
+	 * @return  string
 	 */
-	public function link()
+	public function link($type = '')
 	{
-		$link = 'index.php?option=com_publications';
-		$link .= $this->publication->get('alias') ? '&alias=' . $this->publication->get('alias') : '&id=' . $this->publication->get('id');
-		$link .= '&v=' . $this->version_number;
+		$base  = 'index.php?option=com_publications';
+		$base .= $this->publication->get('alias') ? '&alias=' . $this->publication->get('alias') : '&id=' . $this->get('publication_id');
+
+		if (strpos($type, 'edit') !== false)
+		{
+			$base = $this->publication->project->isProvisioned()
+				? 'index.php?option=com_publications&task=submit'
+				: 'index.php?option=com_projects&alias=' . $this->publication->project->get('alias') . '&active=publications';
+		}
+
+		switch (strtolower($type))
+		{
+			case 'category':
+				$link = 'index.php?option=com_publications&category=' . $this->publication->category->url_alias;
+			break;
+
+			case 'thumb':
+				$link = 'index.php?option=com_publications&id=' . $this->get('publication_id') . '&v=' . $this->get('id') . '&media=Image:thumb';
+			break;
+
+			case 'masterimage':
+				$link = 'index.php?option=com_publications&id=' . $this->get('publication_id') . '&v=' . $this->get('id') . '&media=Image:master';
+			break;
+
+			case 'serve':
+				$link = $base . '&task=serve' . '&v=' . $this->get('version_number');
+			break;
+
+			case 'data':
+				$link = $base . '&task=serve' . '&vid=' . $this->get('id');
+			break;
+
+			case 'citation':
+				$link = $base . '&task=citation' . '&v=' . $this->get('version_number');
+			break;
+
+			case 'curate':
+				$link = $base . '&controller=curation' . '&version=' . $this->get('version_number');
+			break;
+
+			case 'version':
+				$link = $base . '&v=' . $this->get('version_number');
+			break;
+
+			case 'versionid':
+				$link = $base . '&v=' . $this->get('id');
+			break;
+
+			case 'questions':
+			case 'versions':
+			case 'supportingdocs':
+			case 'reviews':
+			case 'wishlist':
+			case 'citations':
+				$link = $base . '&v=' . $this->get('version_number') . '&active=' . strtolower($type);
+			break;
+
+			case 'edit':
+				$link = $this->get('publication_id') ? $this->_editBase . '&pid=' . $this->get('publication_id') : $this->_editBase;
+			break;
+
+			case 'editversion':
+				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&version=' . $this->get('version_number');
+			break;
+
+			case 'editdev':
+				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&version=dev';
+			break;
+
+			case 'editdefault':
+				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&version=default';
+			break;
+
+			case 'editversionid':
+				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&vid=' . $this->get('id');
+			break;
+
+			case 'editbase':
+				$link = $this->_editBase;
+			break;
+
+			case 'project':
+				$link = $this->publication->project->isProvisioned()
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->publication->project->get('alias');
+			break;
+
+			case 'permalink':
+			default:
+				$link = $base;
+			break;
+		}
+
 		return $link;
 	}
 
-	/*
+	/**
 	 * Namespace used for solr Search
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public static function searchNamespace()
 	{
@@ -599,9 +751,10 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 		return $searchNamespace;
 	}
 
-	/*
+	/**
 	 * Generate solr search Id
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public function searchId()
 	{
@@ -609,9 +762,10 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 		return $searchId;
 	}
 
-	/*
+	/**
 	 * Generate search document for Solr
-	 * @return array
+	 *
+	 * @return  array
 	 */
 	public function searchResult()
 	{
