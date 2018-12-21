@@ -5,6 +5,7 @@ php:
 git:
   depth: 30
 before_script:
+  - env
   - composer require squizlabs/php_codesniffer:2.*
   - mkdir -p ~/build
   - git clone --branch hubzero-cms-2.1 --depth=1 https://github.com/hubzero/standards ~/build/standards
