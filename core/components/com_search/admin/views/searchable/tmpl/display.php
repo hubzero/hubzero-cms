@@ -33,8 +33,10 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('Solr Search: Components'));
+Toolbar::addNew();
 Toolbar::custom('activateIndex', 'publish', 'activateindex', 'COM_SEARCH_ADD_FACET', false);
 Toolbar::custom('deleteIndex', 'unpublish', 'deactivateindex', 'COM_SEARCH_DELETE_FACET', true);
+Toolbar::custom('trashIndex', 'trash', 'trashindex', 'COM_SEARCH_DELETE_FACET', true);
 Toolbar::spacer();
 Toolbar::custom('discover', 'refresh', 'refresh', 'COM_SEARCH_SOLR_DISCOVER', false);
 Toolbar::spacer();
@@ -88,7 +90,7 @@ Submenu::addEntry(
 				</td>
 				<td>
 					<?php 
-						if ($component->get('state') == 1)
+						if ($component->get('state') == $component::STATE_INDEXED)
 						{
 							$alt  = 'Indexed';
 							$cls  = 'publish';
@@ -109,8 +111,9 @@ Submenu::addEntry(
 				<td class="total">
 					<?php 
 						$componentName = $component->getQueryName();
+						$componentQuery = $component->getSearchQuery('hubtype');
 						$componentCount = !empty($this->componentCounts[$componentName]) ? $this->componentCounts[$componentName] : 0;
-						$componentLink = Route::url('index.php?option=com_search&controller=' . $this->controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
+						$componentLink = Route::url('index.php?option=com_search&controller=' . $this->controller . '&task=documentListing&facet=' . $componentQuery);
 					?>
 					<?php if ($componentCount > 0): ?>
 					<a href="<?php echo $componentLink;?>">
@@ -121,7 +124,7 @@ Submenu::addEntry(
 					<?php endif; ?>
 				</td>
 				<td class="tasks">
-					<?php if ($component->get('state') == 1): ?>
+					<?php if ($component->get('state') == $component::STATE_INDEXED): ?>
 						<a class="button unpublishtask"  data-link="<?php echo $componentLink;?>" data-linktext="Rebuild Index" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=activateIndex' . '&id=' . $component->get('id') . '&' . Session::getFormToken() . '=1');?>">
 							Rebuild Index
 						</a>
