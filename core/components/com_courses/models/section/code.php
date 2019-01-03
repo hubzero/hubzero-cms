@@ -34,6 +34,7 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 use Components\Courses\Tables;
+use Hubzero\Utility\Date;
 use User;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php');
@@ -171,7 +172,7 @@ class Code extends Base
 			return true;
 		}
 
-		$now = Date::toSql();
+		$now = (new Date('now'))->toSql();
 
 		if ($this->get('expires')
 		 && $this->get('expires') != $this->_db->getNullDate()
@@ -217,7 +218,7 @@ class Code extends Base
 			$redeemed_by = User::get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
-		$this->set('redeemed', Date::toSql());
+		$this->set('redeemed', (new Date('now'))->toSql());
 		return $this->store();
 	}
 }
