@@ -780,13 +780,16 @@ class GradeBook extends Base
 	 * @param      int $member_id
 	 * @return     bool
 	 **/
-	public function isEligibleForRecognition($member_id=null)
+	public function isEligibleForRecognition($member_id = null)
 	{
 		static $assets = null;
 		static $grades = null;
 
 		// Get a grade policy object
-		$gradePolicy = new GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+		$section = $this->course->offering()->section();
+		$sectionGradePolicyId = $section->get('grade_policy_id');
+		$sectionId = $section->get('id');
+		$gradePolicy = new GradePolicies($sectionGradePolicyId, $sectionId);
 
 		if (!isset($assets))
 		{
@@ -884,11 +887,13 @@ class GradeBook extends Base
 			{
 				$passing = $this->passing(true, $m);
 
+				$examWeightPredicate = ($exam_weight == 0 || ($exam_weight > 0 && isset($counts[$m]['exam']) && $totals['exam'] == $counts[$m]['exam']));
+				$quizWeightPredicate = ($quiz_weight == 0 || ($quiz_weight > 0 && isset($counts[$m]['quiz']) && $totals['quiz'] == $counts[$m]['quiz']));
+				$homeworkWeightPredicate = ($homework_weight == 0 || ($homework_weight > 0 && isset($counts[$m]['homework']) && $totals['homework'] == $counts[$m]['homework']));
+				$passingPredicate = isset($passing[$m]) && $passing[$m];
+
 				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
-				if (($exam_weight     == 0 || ($exam_weight     > 0 && isset($counts[$m]['exam'])     && $totals['exam']     == $counts[$m]['exam']))     &&
-					($quiz_weight     == 0 || ($quiz_weight     > 0 && isset($counts[$m]['quiz'])     && $totals['quiz']     == $counts[$m]['quiz']))     &&
-					($homework_weight == 0 || ($homework_weight > 0 && isset($counts[$m]['homework']) && $totals['homework'] == $counts[$m]['homework'])) &&
-					$passing[$m])
+				if ($examWeightPredicate && $quizWeightPredicate && $homeworkWeightPredicate && $passingPredicate)
 				{
 					$return[] = $m;
 				}
