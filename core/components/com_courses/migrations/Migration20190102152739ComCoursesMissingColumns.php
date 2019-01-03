@@ -11,61 +11,50 @@ defined('_HZEXEC_') or die();
 class Migration20190102152739ComCoursesMissingColumns extends Base
 {
 
+	static $assetsTable = '#__courses_assets';
 	static $offeringSectionsTable = '#__courses_offering_sections';
 	static $pagesTable = '#__courses_pages';
 
 	public function up()
 	{
-		$this->_addColumnsToOfferingSectionsTable();
-		$this->_addColumnsToPagesTable();
-	}
+		$assetsTable = self::$assetsTable;
+		$assetsTableQuery = "ALTER TABLE $assetsTable
+			ADD COLUMN grade_weight varchar(255),
+			ADD COLUMN graded tinyint(2),
+			ADD subtype varchar(255) NOT NULL DEFAULT 'file';";
+		$this->_queryIfTableExists($assetsTable, $assetsTableQuery);
 
-	protected function _addColumnsToOfferingSectionsTable()
-	{
 		$offeringSectionsTable = self::$offeringSectionsTable;
+		$offeringSectionsTableQuery = "ALTER TABLE $offeringSectionsTable
+			ADD COLUMN enrollment tinyint(2),
+			ADD is_default tinyint(2) NOT NULL DEFAULT 0;";
+		$this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
-		$alterTable = "ALTER TABLE $offeringSectionsTable
-			ADD COLUMN is_default tinyint(2);
-			ADD COLUMN enrollment tinyint(2);";
-
-		$this->_queryIfTableExists($offeringSectionsTable, $alterTable);
-	}
-
-	protected function _addColumnsToPagesTable()
-	{
 		$pagesTable = self::$pagesTable;
-
-		$alterTable = "ALTER TABLE $pagesTable
+		$pagesTableQuery = "ALTER TABLE $pagesTable
 			ADD COLUMN section_id int(11);";
-
-		$this->_queryIfTableExists($pagesTable, $alterTable);
+		$this->_queryIfTableExists($pagesTable, $pagesTableQuery);
 	}
 
 	public function down()
 	{
-		$this->_removeColumnsFromOfferingSectionsTable();
-		$this->_removeColumnsFromPagesTable();
-	}
+		$assetsTable = self::$assetsTable;
+		$assetsTableQuery  = "ALTER TABLE $assetsTable
+			DROP COLUMN grade_weight,
+			DROP COLUMN graded,
+			DROP COLUMN subtype;";
+		$this->_queryIfTableExists($assetsTable, $assetsTableQuery);
 
-	protected function _removeColumnsFromOfferingSectionsTable()
-	{
 		$offeringSectionsTable = self::$offeringSectionsTable;
+		$offeringSectionsTableQuery = "ALTER TABLE $offeringSectionsTable
+			DROP COLUMN enrollment,
+			DROP COLUMN is_default;";
+		$this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
-		$alterTable = "ALTER TABLE $offeringSectionsTable
-			DROP COLUMN is_default,
-			DROP COLUMN enrollment;";
-
-		$this->_queryIfTableExists($offeringSectionsTable, $alterTable);
-	}
-
-	protected function _removeColumnsFromPagesTable()
-	{
 		$pagesTable = self::$pagesTable;
-
-		$alterTable = "ALTER TABLE $pagesTable
+		$pagesTableQuery = "ALTER TABLE $pagesTable
 			DROP COLUMN section_id;";
-
-		$this->_queryIfTableExists($pagesTable, $alterTable);
+		$this->_queryIfTableExists($pagesTable, $pagesTableQuery);
 	}
 
 	protected function _queryIfTableExists($tableName, $query)
