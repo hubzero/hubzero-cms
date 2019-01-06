@@ -425,7 +425,7 @@ class Publication extends Base
 			$ordering = $i + 1;
 
 			$row = new \Components\Publications\Tables\Version($this->_parent->_db);
-			if (!$row->loadVersion($identifier, 'current'))
+			if (!$row->load($identifier))
 			{
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 				return false;
