@@ -39,17 +39,17 @@ use Components\Publications\Models\Element as Base;
 class Geo extends Base
 {
 	/**
-	* Element name
-	*
-	* @var		string
-	*/
+	 * Element name
+	 *
+	 * @var  string
+	 */
 	protected $_name = 'Geo Location';
 
 	/**
-	* Flag for if JS has been pushed to document or not
-	*
-	* @var		string
-	*/
+	 * Flag for if JS has been pushed to document or not
+	 *
+	 * @var  bool
+	 */
 	protected $_script = false;
 
 	/**
@@ -94,11 +94,11 @@ class Geo extends Base
 		if (!$this->_script)
 		{
 			Document::addScript('//maps.google.com/maps/api/js?sensor=false');
-			Document::addScript(\Request::base(true) . '/core/components/com_publications/models/element/geo.js');
+			Document::addScript(\Request::base(true) . '/core/components/com_publications/models/element/assets/js/geo.js');
 			$this->_script = true;
 		}
 
-		$size  = (isset($element->size)  ? 'size="' . $element->size . '"'               : '');
+		$size  = (isset($element->size)  ? 'size="' . $element->size . '"' : '');
 		$class = (isset($element->class) ? 'class="geolocation ' . $element->class . '"' : 'class="geolocation"');
 
 		$address = $this->_getValue('value', $value);

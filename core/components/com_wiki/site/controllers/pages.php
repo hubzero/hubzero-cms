@@ -111,7 +111,7 @@ class Pages extends SiteController
 	 */
 	public function execute()
 	{
-		/*if (!$this->book->pages('count'))
+		if (!$this->book->pages()->total())
 		{
 			if ($result = $this->book->scribe($this->_option))
 			{
@@ -119,7 +119,7 @@ class Pages extends SiteController
 			}
 
 			//App::get('config')->get('debug') || App::get('config')->get('profile') ? App::get('profiler')->mark('afterWikiSetup') : null;
-		}*/
+		}
 
 		$this->page = $this->book->page();
 
@@ -625,7 +625,7 @@ class Pages extends SiteController
 		}
 
 		$revision->set('page_id', $this->page->get('id'));
-		$revision->set('version', $revision->get('version') + 1);
+		$revision->set('version', intval($revision->get('version')) + 1);
 
 		if ($this->page->param('mode', 'wiki') == 'knol')
 		{

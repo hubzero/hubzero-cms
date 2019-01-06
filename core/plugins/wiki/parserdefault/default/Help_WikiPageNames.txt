@@ -1,0 +1,25 @@
+== Wiki Page Names ==
+
+Wiki page names commonly use the !CamelCase convention. Within wiki text, any word in !CamelCase automatically becomes a hyperlink to the wiki page with that name.
+
+!CamelCase page names must follow these rules:
+
+ # The name must consist of '''alphabetic characters only'''. No digits, spaces, punctuation, or underscores are allowed.
+ # A name must have at least two capital letters.
+ # The first character must be capitalized.
+ # Every capital letter must be followed by one or more lower-case letters. 
+ # The use of slash ( / ) is permitted in page names (possibly representing a hierarchy).
+
+If you want to create a wiki page that doesn't follow !CamelCase rules you can use the following syntax:
+{{{
+ * [wiki:Wiki_page], [wiki:!ISO9000]
+ * [wiki:"Space Matters"] that page name embeds space characters
+ * or simply: ["WikiPageName"]s (!MoinMoin's internal free links style)
+}}}
+
+This will be rendered as:
+ * [wiki:Wiki_page], [wiki:!ISO9000]
+ * [wiki:"Space Matters"] that page name embeds space characters
+ * or simply ["WikiPageName"] (!MoinMoin's internal free links style)
+
+Finally, one can also append an anchor to a Wiki page name, in order to link to a specific section within that page.

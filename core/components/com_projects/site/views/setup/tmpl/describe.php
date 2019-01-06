@@ -68,9 +68,9 @@ $this->view('_title')
 	     ->set('step', $this->step)
 	     ->display();
 	?>
-	<div class="clear"></div>	
+	<div class="clear"></div>
 	<div class="setup-wrap">
-		<form id="hubForm" method="post" action="index.php" enctype="multipart/form-data">
+		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" enctype="multipart/form-data">
 			<div class="explaination">
 				<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_NAME_PROJECT'); ?></h4>
 				<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_NAME_PROJECT'); ?></p>

@@ -41,9 +41,9 @@ class plgEditorWikiwyg extends \Hubzero\Plugin\Plugin
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
-	private $_pushscripts = true;
+	private static $pushscripts = true;
 
 	/**
 	 * Initiate the editor. Push scripts to document if needed
@@ -52,12 +52,12 @@ class plgEditorWikiwyg extends \Hubzero\Plugin\Plugin
 	 */
 	public function onInit()
 	{
-		if ($this->_pushscripts)
+		if (self::$pushscripts)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('editors', $this->_name);
-			\Hubzero\Document\Assets::addPluginScript('editors', $this->_name);
+			$this->css();
+			$this->js();
 
-			$this->_pushscripts = false;
+			self::$pushscripts = false;
 		}
 
 		return '';

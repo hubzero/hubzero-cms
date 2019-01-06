@@ -97,11 +97,11 @@ class Geo extends Base
 		if (!$this->_script)
 		{
 			Document::addScript('//maps.google.com/maps/api/js?sensor=false');
-			Document::addScript(\Request::base(true) . '/core/components/com_resources/models/element/geo.js');
+			Document::addScript(\Request::base(true) . '/core/components/com_resources/models/element/assets/js/geo.js');
 			$this->_script = true;
 		}
 
-		$size  = (isset($element->size)  ? 'size="' . $element->size . '"'               : '');
+		$size  = (isset($element->size)  ? 'size="' . $element->size . '"' : '');
 		$class = (isset($element->class) ? 'class="geolocation ' . $element->class . '"' : 'class="geolocation"');
 
 		$address = $this->_getValue('value', $value);

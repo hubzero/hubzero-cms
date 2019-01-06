@@ -137,7 +137,11 @@ class Archive extends Obj
 
 		if (isset($filters['state']))
 		{
-			$results->whereEquals('state', $filters['state']);
+			if (!is_array($filters['state']))
+			{
+				$filters['state'] = array($filters['state']);
+			}
+			$results->whereIn('state', $filters['state']);
 		}
 
 		if (isset($filters['access']))
@@ -244,7 +248,7 @@ class Archive extends Obj
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->_adapter = new $cls($this->get('scope_id'));

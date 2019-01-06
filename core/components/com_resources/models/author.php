@@ -32,9 +32,11 @@
 namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
+use Components\Members\Models\Member;
 
 require_once __DIR__ . DS . 'author' . DS . 'role.php';
 require_once __DIR__ . DS . 'author' . DS . 'role' . DS . 'type.php';
+require_once(dirname(dirname(__DIR__)) . DS . 'com_members' . DS . 'models' . DS . 'member.php');
 
 /**
  * Resource license model
@@ -151,12 +153,13 @@ class Author extends Relational
 	 */
 	public function populateFromProfile()
 	{
-		$profile = $this->profile;
+		$profile = Member::one($this->profile->get('id'));
 
 		if (!$profile->get('id'))
 		{
 			return false;
 		}
+
 
 		if (!$profile->get('name'))
 		{

@@ -40,7 +40,7 @@ Toolbar::cancel();
 $status = '';
 
 ?>
-</script>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=install'); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
 		<div class="col span5">
@@ -54,12 +54,11 @@ $status = '';
 						<option name="<?php echo $package->getName(); ?>"value="<?php echo $package->getName(); ?>"><?php echo $package->getPrettyName(); ?></option>
 						<?php endforeach; ?>
 					</select> 
-
 				</div>
+
 				<div class="input-wrap">
 					<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_PACKAGE'); ?>">
 				</div>
-
 			</fieldset>
 		</div>
 	</div>

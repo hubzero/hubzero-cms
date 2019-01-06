@@ -48,17 +48,20 @@ $filter = Request::getString('searchterm', '');
 
 <section class="main section custom-reports" id="custom-reports">
 	<div class="status-msg">
-	<?php
+		<?php
 		// Display error or success message
-		if ($this->getError()) {
-			echo ('<p class="witherror">' . $this->getError().'</p>');
+		if ($this->getError())
+		{
+			echo '<p class="witherror">' . $this->getError() . '</p>';
 		}
-		else if ($this->msg) {
-			echo ('<p>' . $this->msg . '</p>');
-		} ?>
+		else if ($this->msg)
+		{
+			echo '<p>' . $this->msg . '</p>';
+		}
+		?>
 	</div>
 	<div class="report-block">
-		<form id="reportForm" method="post" action="index.php">
+		<form id="reportForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 			<fieldset>
 				<input type="hidden"  name="option" value="com_projects" />
 				<input type="hidden"  name="controller" value="reports" />
@@ -68,59 +71,60 @@ $filter = Request::getString('searchterm', '');
 			<div class="report-content">
 				<div class="groupblock">
 					<h6><?php echo Lang::txt('Download publication data:'); ?></h6>
-					<label>
+					<label for="from-date">
 						<?php $ph = Date::of('-1 month')->toLocal('Y-m'); ?>
-						<?php echo Lang::txt('From'); ?>: <input type="text" value="<?php echo $from; ?>" id="from-date" name="fromdate" placeholder="<?php echo $ph; ?>" maxlength="7" />
+						<?php echo Lang::txt('From'); ?>: <input type="text" value="<?php echo $this->escape($from); ?>" id="from-date" name="fromdate" placeholder="<?php echo $this->escape($ph); ?>" maxlength="7" />
 					</label>
-					<label>
+					<label for="to-date">
 						<?php $ph = Date::of('now')->toLocal('Y-m'); ?>
-						<?php echo Lang::txt('To'); ?>: <input type="text" value="<?php echo $to; ?>" id="to-date"  name="todate" placeholder="<?php echo $ph; ?>" maxlength="7" />
+						<?php echo Lang::txt('To'); ?>: <input type="text" value="<?php echo $this->escape($to); ?>" id="to-date" name="todate" placeholder="<?php echo $this->escape($ph); ?>" maxlength="7" />
 					</label>
 				</div>
 				<div class="groupblock">
 					<div class="block">
-						<label><?php echo Lang::txt('Filter by tag'); ?>:
-						<?php
+						<label for="searchterm">
+							<?php echo Lang::txt('Filter by tag'); ?>:
+							<?php
 
-						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'searchterm', 'searchterm','', $filter)) );
+							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'searchterm', 'searchterm', '', $filter)));
 
-						if (count($tf) > 0) {
-							echo $tf[0];
-						} else {
-							echo '<textarea name="searchterm" id="searchterm" rows="6" cols="35">'. $this->tags .'</textarea>'."\n";
-						}
-						?>
+							if (count($tf) > 0) {
+								echo $tf[0];
+							} else {
+								echo '<textarea name="searchterm" id="searchterm" rows="6" cols="35">' . $this->escape($this->tags) . '</textarea>'."\n";
+							}
+							?>
 						</label>
 					</div>
 				</div>
 				<h6><?php echo Lang::txt('Include the following information:'); ?></h6>
 				<div class="groupblock element-choice grid">
 					<div class="col span4">
-						<label class="block">
-							<input type="checkbox" name="data[]" value="id" checked="checked" /> <?php echo Lang::txt('Publication ID'); ?>
+						<label for="choice-id" class="block">
+							<input type="checkbox" name="data[]" value="id" id="choice-id" checked="checked" /> <?php echo Lang::txt('Publication ID'); ?>
 						</label>
-						<label class="block">
-							<input type="checkbox" name="data[]" value="title" checked="checked" /> <?php echo Lang::txt('Publication title'); ?>
+						<label for="choice-title" class="block">
+							<input type="checkbox" name="data[]" value="title" id="choice-title" checked="checked" /> <?php echo Lang::txt('Publication title'); ?>
 						</label>
-						<label class="block">
-							<input type="checkbox" name="data[]" value="author" checked="checked" /> <?php echo Lang::txt('First author'); ?>
+						<label for="choice-author" class="block">
+							<input type="checkbox" name="data[]" value="author" id="choice-author" checked="checked" /> <?php echo Lang::txt('First author'); ?>
 						</label>
-						<label class="block">
-							<input type="checkbox" name="data[]" value="version" checked="checked" /> <?php echo Lang::txt('Version label'); ?>
+						<label for="choice-version" class="block">
+							<input type="checkbox" name="data[]" value="version" id="choice-version" checked="checked" /> <?php echo Lang::txt('Version label'); ?>
 						</label>
-						<label class="block">
-							<input type="checkbox" name="data[]" value="doi" checked="checked" /> <?php echo Lang::txt('DOI url'); ?>
+						<label for="choice-doi" class="block">
+							<input type="checkbox" name="data[]" value="doi" id="choice-doi" checked="checked" /> <?php echo Lang::txt('DOI url'); ?>
 						</label>
 					</div>
 					<div class="col span4">
-						<label class="block">
-							<input type="checkbox" name="data[]" value="downloads" checked="checked" /> <?php echo Lang::txt('Number of downloads'); ?>
+						<label for="choice-downloads" class="block">
+							<input type="checkbox" name="data[]" value="downloads" id="choice-downloads" checked="checked" /> <?php echo Lang::txt('Number of downloads'); ?>
 						</label>
-						<label class="block">
-							<input type="checkbox" name="data[]" value="views" checked="checked" /> <?php echo Lang::txt('Number of page views'); ?>
+						<label for="choice-views" class="block">
+							<input type="checkbox" name="data[]" value="views" id="choice-views" checked="checked" /> <?php echo Lang::txt('Number of page views'); ?>
 						</label>
-						<label class="block">
-							<input type="checkbox" name="data[]" value="citations" checked="checked" /> <?php echo Lang::txt('Number of citations'); ?>
+						<label for="choice-citations" class="block">
+							<input type="checkbox" name="data[]" value="citations" id="choice-citations" checked="checked" /> <?php echo Lang::txt('Number of citations'); ?>
 						</label>
 					</div>
 					<div class="clear"></div>

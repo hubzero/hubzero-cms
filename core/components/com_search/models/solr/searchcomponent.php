@@ -293,7 +293,11 @@ class SearchComponent extends Relational
 	public function getSearchNamespace()
 	{
 		$searchModel = $this->getSearchableModel();
-		return $searchModel::searchNamespace();
+		if (class_exists($searchModel))
+		{
+			return $searchModel::searchNamespace();
+		}
+		return $this->get('name');
 	}
 
 	/**

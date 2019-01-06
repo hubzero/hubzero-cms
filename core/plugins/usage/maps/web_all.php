@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $dataurl = Route::url('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=locations');
-$dataurl = str_replace('&amp;','&',$dataurl);
+$dataurl = str_replace('&amp;', '&', $dataurl);
 
 $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
@@ -47,7 +47,7 @@ behavior:url(#default#VML);
 }
 </style>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'" type="text/javascript"> </script>
-<script src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/js/Clusterer2.js" type="text/javascript"> </script>
+<script src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/js/Clusterer2.js" type="text/javascript"> </script>
 <script type="text/javascript">
 	//<![CDATA[
 	function load() {
@@ -84,7 +84,7 @@ behavior:url(#default#VML);
 	{
 		//var urlstr="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/read.php";
 		var urlstr="'.$dataurl.'";
-		var icon="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/marker_red.png";
+		var icon="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/marker_red.png";
 		var request = GXmlHttp.create();
 		request.open(\'GET\', urlstr , true); // request XML from PHP with AJAX call
 		request.onreadystatechange = function () {
@@ -98,7 +98,7 @@ behavior:url(#default#VML);
 			var usage = locations[i].getAttribute("hits");
 			var icon = new GIcon();
 
-			icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/marker.png";
+			icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/marker.png";
 
 			// icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
 			// icon.shadow = "marker_shadow.png";
@@ -139,4 +139,3 @@ behavior:url(#default#VML);
 <div id="div_map" style="width:1280px; height: 860px"> </div>
 </body>
 </html>';
-

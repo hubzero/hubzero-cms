@@ -325,6 +325,8 @@ class Pipeline extends AdminController
 				$metadata['targetURL'] = $live_site . '/resources/' . $row->rid . '/?rev=' . $row->local_revision;
 				$metadata['title']     = htmlspecialchars($title);
 				$metadata['pubYear']   = $pubyear;
+				$metadata['version']   = $results[0]->version;
+				$metadata['license']   = $results[0]->license;
 
 				// Get authors
 				$objA = new \Components\Tools\Tables\Author($this->database);

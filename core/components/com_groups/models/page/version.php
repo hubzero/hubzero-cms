@@ -240,6 +240,7 @@ class Version extends Model
 
 		// Turn OFF linkify
 		$options['AutoFormat.Linkify'] = false;
+		$options['Cache.SerializerPath'] = App::get('config')->get('tmp_path');
 
 		// Run hubzero html sanitize
 		return \Hubzero\Utility\Sanitize::html($content, $options);

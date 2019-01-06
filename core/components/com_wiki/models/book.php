@@ -33,6 +33,7 @@ namespace Components\Wiki\Models;
 
 use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
+use Components\Wiki\Helpers\Parser;
 use Filesystem;
 use Exception;
 use Component;
@@ -188,7 +189,12 @@ class Book extends Obj
 	 */
 	private function defaultPages()
 	{
-		$path = dirname(__DIR__) . DS . 'default';
+		$path = Parser::getInstance()->defaultPagesPath();
+
+		if (!$path)
+		{
+			$path = dirname(__DIR__) . DS . 'default';
+		}
 
 		if ($this->get('scope') != 'site')
 		{

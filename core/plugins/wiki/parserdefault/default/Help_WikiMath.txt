@@ -1,0 +1,280 @@
+The Wiki supports !LaTeX markup:
+
+<math>pi=\frac{3}{4} \sqrt{3}+24 \int_0^{1/4}{\sqrt{x-x^2}dx}</math>
+
+Mathematical Formula (!LaTeX) can be inserted into text like this:
+{{{
+<math>Insert formula here</math>
+}}}
+
+For example:
+{{{<math>\alpha^2+\beta^2=1</math>}}}
+
+...displays <math>\alpha^2+\beta^2=1</math>
+
+== Displaying a Formula ==
+
+The Wiki uses a subset of !TeX markup, including some extensions from !LaTeX and !AMSLaTeX, for mathematical formulae. It generates either PNG images or simple HTML markup, depending on the complexity of the expression. While it can generate !MathML, it is not currently used due to limited browser support. As browsers become more advanced and support for !MathML becomes more wide-spread, this could be the preferred method of output as images have very real disadvantages.
+
+=== Syntax ===
+
+Math markup goes inside `<math> ... </math>`.
+
+===Pros of HTML===
+ # In-line HTML formulae always align properly with the rest of the HTML text.
+ # The formula's background, font size and face match the rest of HTML contents and the appearance respects CSS and browser settings.
+ # Pages using HTML will load faster.
+
+=== Pros of !TeX ===
+ # !TeX is semantically superior to HTML. In !TeX, "`x`" means "mathematical variable <math>x</math>", whereas in HTML "`x`" could mean anything. Information has been irrevocably lost.
+ # !TeX has been specifically designed for typesetting formulae, so input is easier and more natural, and output is more aesthetically pleasing.
+ # One consequence of point 1 is that !TeX can be transformed into HTML, but not vice-versa. This means that on the server side we can always transform a formula, based on its complexity and location within the text, user preferences, type of browser, etc. Therefore, where possible, all the benefits of HTML can be retained, together with the benefits of !TeX. It's true that the current situation is not ideal, but that's not a good reason to drop information/contents. It's more a reason to [[#Bug_reports|help improve the situation]].
+ # Another consequence of point 1 is that !TeX can be converted to !MathML for browsers which support it, thus keeping its semantics and allowing it to be rendered vectorially.
+ # When writing in !TeX, editors need not worry about whether this or that version of this or that browser supports this or that HTML entity. The burden of these decisions is put on the server. This doesn't hold for HTML formulae, which can easily end up being rendered wrongly or differently from the editor's intentions on a different browser.
+ # !TeX is the preferred text formatting language of most professional mathematicians, scientists, and engineers. It is easier to persuade them to contribute if they can write in !TeX.
+
+=== Example Formulas ===
+
+The following are a few examples of formulas:
+
+{{{
+<math>\sqrt{1-e^2}</math>
+}}}
+<math>\sqrt{1-e^2}</math>
+
+{{{<math>\overbrace{ 1+2+\cdots+100 }^{5050}</math>}}}
+<math>\overbrace{ 1+2+\cdots+100 }^{5050}</math>
+
+{{{<math>ax^2 + bx + c = 0</math>}}}
+<math>ax^2 + bx + c = 0</math>
+
+{{{<math>\int_{-N}^{N} e^x\, dx</math>}}}
+<math>\int_{-N}^{N} e^x\, dx</math>
+
+== Functions, symbols, special characters ==
+
+=== Accents/Diacritics ===
+
+|| `\acute{a} \grave{a} \hat{a} \tilde{a} \breve{a}` || <math>\acute{a} \grave{a} \hat{a} \tilde{a} \breve{a}</math> ||
+|| `\check{a} \bar{a} \ddot{a} \dot{a}` ||<math>\ \check{a} \bar{a} \ddot{a} \dot{a}</math> ||
+
+=== Standard functions ===
+
+|| `\sin a \cos b \tan c`|| <math>\ \sin a \cos b \tan c</math> ||
+|| `\sec d \csc e \cot f`|| <math>\sec d \csc e \cot f\,\!</math> ||
+|| `\arcsin h \arccos i \arctan j`|| <math>\arcsin h \arccos i \arctan j\,\!</math> ||
+|| `\sinh k \cosh l \tanh m \coth n`|| <math>\ \sinh k \cosh l \tanh m \coth n</math> ||
+|| `\operatorname{sh}\,o\,\operatorname{ch}\,p\,\operatorname{th}\,q`|| <math>\ \operatorname{sh}\,o\,\operatorname{ch}\,p\,\operatorname{th}\,q</math> ||
+|| `\operatorname{arsinh}\,r\,\operatorname{arcosh}\,s\,\operatorname{artanh}\,t`|| <math>\operatorname{arsinh}\,r\,\operatorname{arcosh}\,s\,\operatorname{artanh}\,t\,\!</math> ||
+|| `\lim u \limsup v \liminf w \min x \max y` || <math>\ \lim u \limsup v \liminf w \min x \max y</math> ||
+|| `\inf z \sup a \exp b \ln c \lg d \log e \log_{10} f \ker g` ||<math>\ \inf z \sup a \exp b \ln c \lg d \log e \log_{10} f \ker g</math> ||
+|| `\deg h \gcd i \Pr j \det k \hom l \arg m \dim n` || <math>\deg h \gcd i \Pr j \det k \hom l \arg m \dim n\,\!</math> ||
+
+=== Modular arithmetic ===
+
+|| `s_k \equiv 0 \pmod{m}` || <math>s_k \equiv 0 \pmod{m}\,\! </math> ||
+|| `a\,\bmod\,b` || <math>a\,\bmod\,b\,\!</math> ||
+
+=== Derivatives ===
+
+|| `\nabla \, \partial x \, dx \, \dot x \, \ddot y\, dy/dx\, \frac{dy}{dx}\, \frac{\partial^2 y}{\partial x_1\,\partial x_2}` || <math>\nabla \, \partial x \, dx \, \dot x \, \ddot y\, dy/dx\, \frac{dy}{dx}\, \frac{\partial^2 y}{\partial x_1\,\partial x_2}</math> ||
+
+=== Sets ===
+
+|| `\forall \exists \empty \emptyset \varnothing` || <math>\forall \exists \empty \emptyset \varnothing\,\!</math> ||
+|| `\in \ni \not \in \notin \subset \subseteq \supset \supseteq` || <math>\in \ni \not \in \notin \subset \subseteq \supset \supseteq\,\!</math> ||
+|| `\cap \bigcap \cup \bigcup \biguplus \setminus \smallsetminus` || <math>\cap \bigcap \cup \bigcup \biguplus \setminus \smallsetminus\,\!</math> ||
+|| `\sqsubset \sqsubseteq \sqsupset \sqsupseteq \sqcap \sqcup \bigsqcup` || <math>\sqsubset \sqsubseteq \sqsupset \sqsupseteq \sqcap \sqcup \bigsqcup\,\!</math> ||
+
+=== Operators ===
+
+|| `+ \oplus \bigoplus \pm \mp - ` || <math>+ \oplus \bigoplus \pm \mp - \,\!</math> ||
+|| `\times \otimes \bigotimes \cdot \circ \bullet \bigodot` || <math>\times \otimes \bigotimes \cdot \circ \bullet \bigodot\,\!</math> ||
+|| `\star * / \div \frac{1}{2}` || <math>\star * / \div \frac{1}{2}\,\!</math> ||
+
+=== Logic ===
+|| `\land (or \and) \wedge \bigwedge \bar{q} \to p` || <math>\land \wedge \bigwedge \bar{q} \to p\,\!</math> ||
+|| `\lor \vee \bigvee \lnot \neg q \And` || <math>\lor \vee \bigvee \lnot \neg q \And\,\!</math> ||
+
+=== Root ===
+
+|| `\sqrt{2} \sqrt[n]{x}` || <math>\sqrt{2} \sqrt[n]{x}\,\!</math> ||
+
+=== Relations ===
+
+|| `\sim \approx \simeq \cong \dot=  \overset{\underset{\mathrm{def}}{}}{=}` || <math>\sim \approx \simeq \cong \dot=  \overset{\underset{\mathrm{def}}{}}{=}\,\!</math> ||
+|| `\le < \ll \gg \ge > \equiv \not\equiv \ne \mbox{or} \neq \propto` || <math>\le < \ll \gg \ge > \equiv \not\equiv \ne \mbox{or} \neq \propto\,\!</math> ||
+
+=== Geometric ===
+
+|| `\Diamond \Box \triangle \angle \perp \mid \nmid \| 45^\circ` || <math>\Diamond \, \Box \, \triangle \, \angle \perp \, \mid \; \nmid \, \| 45^\circ\,\!</math> ||
+
+=== Arrows ===
+
+|| `\leftarrow (or \gets) \rightarrow (or \to) \nleftarrow \not\to \leftrightarrow \nleftrightarrow \longleftarrow \longrightarrow \longleftrightarrow` || <math>\leftarrow \rightarrow \nleftarrow \not\to \leftrightarrow \nleftrightarrow \longleftarrow \longrightarrow \longleftrightarrow \,\!</math> ||
+|| `\Leftarrow \Rightarrow \nLeftarrow \nRightarrow \Leftrightarrow \nLeftrightarrow \Longleftarrow \Longrightarrow \Longleftrightarrow (or \iff)` || <math>\Leftarrow \Rightarrow \nLeftarrow \nRightarrow \Leftrightarrow \nLeftrightarrow \Longleftarrow \Longrightarrow \Longleftrightarrow \,\!</math> ||
+|| `\uparrow \downarrow \updownarrow \Uparrow \Downarrow \Updownarrow  \nearrow \searrow \swarrow \nwarrow` || <math>\ \uparrow \downarrow \updownarrow \Uparrow \Downarrow \Updownarrow  \nearrow \searrow \swarrow \nwarrow</math> ||
+|| `\rightharpoonup \rightharpoondown \leftharpoonup \leftharpoondown \upharpoonleft \upharpoonright \downharpoonleft \downharpoonright \rightleftharpoons \leftrightharpoons` || <math>\rightharpoonup \rightharpoondown \leftharpoonup \leftharpoondown \upharpoonleft \upharpoonright \downharpoonleft \downharpoonright \rightleftharpoons \leftrightharpoons \,\!</math> ||
+|| `\curvearrowleft \circlearrowleft \Lsh \upuparrows \rightrightarrows \rightleftarrows \Rrightarrow \rightarrowtail \looparrowright` || <math>\curvearrowleft \circlearrowleft \Lsh \upuparrows \rightrightarrows \rightleftarrows \Rrightarrow \rightarrowtail \looparrowright \,\!</math> ||
+|| `\curvearrowright \circlearrowright \Rsh \downdownarrows \leftleftarrows \leftrightarrows \Lleftarrow \leftarrowtail \looparrowleft` || <math>\curvearrowright \circlearrowright \Rsh \downdownarrows \leftleftarrows \leftrightarrows \Lleftarrow \leftarrowtail \looparrowleft \,\!</math> ||
+|| `\mapsto \longmapsto \hookrightarrow \hookleftarrow \multimap \leftrightsquigarrow \rightsquigarrow ` || <math>\mapsto \longmapsto \hookrightarrow \hookleftarrow \multimap \leftrightsquigarrow \rightsquigarrow \,\!</math> ||
+
+=== Special ===
+
+|| `\And \eth \S \P \% \dagger \ddagger \ldots \cdots` || <math>\And \eth \S \P \% \dagger \ddagger \ldots \cdots\,\!</math> ||
+|| `\smile \frown \wr \triangleleft \triangleright \infty \bot \top` || <math>\smile \frown \wr \triangleleft \triangleright \infty \bot \top\,\!</math> ||
+|| `\vdash \vDash \Vdash \models \lVert \rVert \imath \hbar` || <math>\vdash \vDash \Vdash \models \lVert \rVert \imath \hbar\,\!</math> ||
+|| `\ell \mho \Finv \Re \Im \wp \complement` || <math>\ell \mho \Finv \Re \Im \wp \complement\,\!</math> ||
+|| `\diamondsuit \heartsuit \clubsuit \spadesuit \Game \flat \natural \sharp` || <math>\diamondsuit \heartsuit \clubsuit \spadesuit \Game \flat \natural \sharp\,\!</math> ||
+
+=== Unsorted (new stuff) ===
+
+|| `\vartriangle \triangledown \lozenge \circledS \measuredangle \nexists \Bbbk \backprime \blacktriangle \blacktriangledown` || <math> \vartriangle \triangledown \lozenge \circledS \measuredangle \nexists \Bbbk \backprime \blacktriangle \blacktriangledown</math> ||
+|| `\blacksquare \blacklozenge \bigstar \sphericalangle \diagup \diagdown \dotplus \Cap \Cup \barwedge` || <math>\ \blacksquare \blacklozenge \bigstar \sphericalangle \diagup \diagdown \dotplus \Cap \Cup \barwedge</math> ||
+|| `\veebar \doublebarwedge \boxminus \boxtimes \boxdot \boxplus \divideontimes \ltimes \rtimes \leftthreetimes` || <math> \veebar \doublebarwedge \boxminus \boxtimes \boxdot \boxplus \divideontimes \ltimes \rtimes \leftthreetimes</math> ||
+|| `\rightthreetimes \curlywedge \curlyvee \circleddash \circledast \circledcirc \centerdot \intercal \leqq \leqslant` || <math> \rightthreetimes \curlywedge \curlyvee \circleddash \circledast \circledcirc \centerdot \intercal \leqq \leqslant</math> ||
+|| `\eqslantless \lessapprox \approxeq \lessdot \lll \lessgtr \lesseqgtr \lesseqqgtr \doteqdot \risingdotseq` || <math> \eqslantless \lessapprox \approxeq \lessdot \lll \lessgtr \lesseqgtr \lesseqqgtr \doteqdot \risingdotseq</math> ||
+|| `\fallingdotseq \backsim \backsimeq \subseteqq \Subset \preccurlyeq \curlyeqprec \precsim \precapprox \vartriangleleft` || <math> \fallingdotseq \backsim \backsimeq \subseteqq \Subset \preccurlyeq \curlyeqprec \precsim \precapprox \vartriangleleft</math> ||
+|| `\Vvdash \bumpeq \Bumpeq \geqq \geqslant \eqslantgtr \gtrsim \gtrapprox \eqsim \gtrdot` || <math> \Vvdash \bumpeq \Bumpeq \geqq \geqslant \eqslantgtr \gtrsim \gtrapprox \eqsim \gtrdot</math> ||
+|| `\ggg \gtrless \gtreqless \gtreqqless \eqcirc \circeq \triangleq \thicksim \thickapprox \supseteqq` || <math> \ggg \gtrless \gtreqless \gtreqqless \eqcirc \circeq \triangleq \thicksim \thickapprox \supseteqq</math> ||
+|| `\Supset \succcurlyeq \curlyeqsucc \succsim \succapprox \vartriangleright \shortmid \shortparallel \between \pitchfork` || <math> \Supset \succcurlyeq \curlyeqsucc \succsim \succapprox \vartriangleright \shortmid \shortparallel \between \pitchfork</math> ||
+|| `\varpropto \blacktriangleleft \therefore \backepsilon \blacktriangleright \because \nleqslant \nleqq \lneq \lneqq` || <math> \varpropto \blacktriangleleft \therefore \backepsilon \blacktriangleright \because \nleqslant \nleqq \lneq \lneqq</math> ||
+|| `\lvertneqq \lnsim \lnapprox \nprec \npreceq \precneqq \precnsim \precnapprox \nsim \nshortmid` || <math> \lvertneqq \lnsim \lnapprox \nprec \npreceq \precneqq \precnsim \precnapprox \nsim \nshortmid</math> ||
+|| `\nvdash \nVdash \ntriangleleft \ntrianglelefteq \nsubseteq \nsubseteqq \varsubsetneq \subsetneqq \varsubsetneqq \ngtr` || <math> \nvdash \nVdash \ntriangleleft \ntrianglelefteq \nsubseteq \nsubseteqq \varsubsetneq \subsetneqq \varsubsetneqq \ngtr</math> ||
+|| `\subsetneq` || <math>\subsetneq</math> ||
+|| `\ngeqslant \ngeqq \gneq \gneqq \gvertneqq \gnsim \gnapprox \nsucc \nsucceq \succneqq` || <math> \ngeqslant \ngeqq \gneq \gneqq \gvertneqq \gnsim \gnapprox \nsucc \nsucceq \succneqq</math> ||
+|| `\succnsim \succnapprox \ncong \nshortparallel \nparallel \nvDash \nVDash \ntriangleright \ntrianglerighteq \nsupseteq` || <math> \succnsim \succnapprox \ncong \nshortparallel \nparallel \nvDash \nVDash \ntriangleright \ntrianglerighteq \nsupseteq</math> ||
+|| `\nsupseteqq \varsupsetneq \supsetneqq \varsupsetneqq` || <math> \nsupseteqq \varsupsetneq \supsetneqq \varsupsetneqq</math> ||
+|| `\jmath \surd \ast \uplus \diamond \bigtriangleup \bigtriangledown \ominus` || <math>\jmath \surd \ast \uplus \diamond \bigtriangleup \bigtriangledown \ominus\,\!</math> ||
+|| `\oslash \odot \bigcirc \amalg \prec \succ \preceq \succeq` || <math>\oslash \odot \bigcirc \amalg \prec \succ \preceq \succeq\,\!</math> ||
+|| `\dashv \asymp \doteq \parallel` || <math>\dashv \asymp \doteq \parallel\,\!</math> ||
+|| `\ulcorner \urcorner \llcorner \lrcorner` || <math>\ulcorner \urcorner \llcorner \lrcorner</math> ||
+
+== Larger Expressions ==
+
+=== Parenthesizing big expressions, brackets, bars ===
+
+|| '''Feature''' || '''Syntax''' || '''How it looks rendered''' ||
+|| Bad || `( \frac{1}{2} )` || <math>( \frac{1}{2} )</math> ||
+|| Good || `\left ( \frac{1}{2} \right )` || <math>\left ( \frac{1}{2} \right )</math> ||
+
+You can use various delimiters with \left and \right: 
+
+|| '''Feature''' || '''Syntax''' || '''How it looks rendered''' ||
+|| Parentheses || `\left ( \frac{a}{b} \right )` || <math>\left ( \frac{a}{b} \right )</math> ||
+|| Brackets || `\left [ \frac{a}{b} \right ] \quad \left \lbrack \frac{a}{b} \right \rbrack` || <math>\left [ \frac{a}{b} \right ] \quad \left \lbrack \frac{a}{b} \right \rbrack</math> ||
+|| Braces || `\left \{ \frac{a}{b} \right \} \quad \left \lbrace \frac{a}{b} \right \rbrace` || <math>\left \{ \frac{a}{b} \right \} \quad \left \lbrace \frac{a}{b} \right \rbrace</math> ||
+|| Angle brackets || `\left \langle \frac{a}{b} \right \rangle` || <math>\left \langle \frac{a}{b} \right \rangle</math> ||
+|| Bars and double bars || `\left | \frac{a}{b} \right \vert \left \Vert \frac{c}{d} \right \|` || <math>\left | \frac{a}{b} \right \vert \left \Vert \frac{c}{d} \right \|</math> ||
+|| Floor and ceiling functions: || `\left \lfloor \frac{a}{b} \right \rfloor \left \lceil \frac{c}{d} \right \rceil` || <math>\left \lfloor \frac{a}{b} \right \rfloor \left \lceil \frac{c}{d} \right \rceil</math> ||
+|| Slashes and backslashes || `\left / \frac{a}{b} \right \backslash` || <math>\left / \frac{a}{b} \right \backslash</math> ||
+|| Up, down and up-down arrows || `\left \uparrow \frac{a}{b} \right \downarrow \quad \left \Uparrow \frac{a}{b} \right \Downarrow \quad \left \updownarrow \frac{a}{b} \right \Updownarrow` || <math>\left \uparrow \frac{a}{b} \right \downarrow \quad \left \Uparrow \frac{a}{b} \right \Downarrow \quad \left \updownarrow \frac{a}{b} \right \Updownarrow</math> ||
+|| Delimiters can be mixed,[[BR]]as long as \left and \right match || `\left [ 0,1 \right )` [[BR]] `\left \langle \psi \right |` || <math>\left [ 0,1 \right )</math> [[BR]] <math>\left \langle \psi \right |</math> ||
+|| Use \left. and \right. if you don't[[BR]]want a delimiter to appear: || `\left . \frac{A}{B} \right \} \to X` || <math>\left . \frac{A}{B} \right \} \to X</math> ||
+|| Size of the delimiters || `\big( \Big( \bigg( \Bigg( \dots \Bigg] \bigg] \Big] \big]/` || <math>\big( \Big( \bigg( \Bigg( \dots \Bigg] \bigg] \Big] \big]</math> ||
+|| . || `\big\{ \Big\{ \bigg\{ \Bigg\{ \dots \Bigg\rangle \bigg\rangle \Big\rangle \big\rangle` || <math>\big\{ \Big\{ \bigg\{ \Bigg\{ \dots \Bigg\rangle \bigg\rangle \Big\rangle \big\rangle</math> ||
+|| . || `\big\| \Big\| \bigg\| \Bigg\| \dots \Bigg| \bigg| \Big| \big|` || <math>\big\| \Big\| \bigg\| \Bigg\| \dots \Bigg| \bigg| \Big| \big|</math> ||
+|| . || `\big\lfloor \Big\lfloor \bigg\lfloor \Bigg\lfloor \dots \Bigg\rceil \bigg\rceil \Big\rceil \big\rceil` || <math>\big\lfloor \Big\lfloor \bigg\lfloor \Bigg\lfloor \dots \Bigg\rceil \bigg\rceil \Big\rceil \big\rceil</math> ||
+|| . || `\big\uparrow \Big\uparrow \bigg\uparrow \Bigg\uparrow \dots \Bigg\Downarrow \bigg\Downarrow \Big\Downarrow \big\Downarrow` || <math>\big\uparrow \Big\uparrow \bigg\uparrow \Bigg\uparrow \dots \Bigg\Downarrow \bigg\Downarrow \Big\Downarrow \big\Downarrow</math> ||
+|| . || `\big\updownarrow \Big\updownarrow \bigg\updownarrow \Bigg\updownarrow \dots \Bigg\Updownarrow \bigg\Updownarrow \Big\Updownarrow \big\Updownarrow` || <math>\big\updownarrow \Big\updownarrow \bigg\updownarrow \Bigg\updownarrow \dots \Bigg\Updownarrow \bigg\Updownarrow \Big\Updownarrow \big\Updownarrow</math> ||
+|| . || `\big / \Big / \bigg / \Bigg / \dots \Bigg\backslash \bigg\backslash \Big\backslash \big\backslash` || <math>\big / \Big / \bigg / \Bigg / \dots \Bigg\backslash \bigg\backslash \Big\backslash \big\backslash</math> ||
+
+== Alphabets and typefaces == 
+
+Texvc cannot render arbitrary Unicode characters. Those it can handle can be entered by the expressions below. For others, such as Cyrillic, they can be entered as Unicode or HTML entities in running text, but cannot be used in displayed formulas.
+
+||_\2. '''Greek alphabet''' ||
+|| `\Alpha \Beta \Gamma \Delta \Epsilon \Zeta` || <math>\Alpha \Beta \Gamma \Delta \Epsilon \Zeta \,\!</math> ||
+|| `\Eta \Theta \Iota \Kappa \Lambda \Mu` || <math>\Eta \Theta \Iota \Kappa \Lambda \Mu \,\!</math> ||
+|| `\Nu \Xi \Pi \Rho \Sigma \Tau` || <math>\Nu \Xi \Pi \Rho \Sigma \Tau\,\!</math> ||
+|| `\Upsilon \Phi \Chi \Psi \Omega` || <math>\Upsilon \Phi \Chi \Psi \Omega \,\!</math> ||
+|| `\alpha \beta \gamma \delta \epsilon \zeta` || <math>\alpha \beta \gamma \delta \epsilon \zeta \,\!</math> ||
+|| `\eta \theta \iota \kappa \lambda \mu` || <math>\eta \theta \iota \kappa \lambda \mu \,\!</math> ||
+|| `\nu \xi \pi \rho \sigma \tau` || <math>\nu \xi \pi \rho \sigma \tau \,\!</math> ||
+|| `\upsilon \phi \chi \psi \omega` || <math>\upsilon \phi \chi \psi \omega \,\!</math> ||
+|| `\varepsilon \digamma \vartheta \varkappa` || <math>\varepsilon \digamma \vartheta \varkappa \,\!</math> ||
+|| `\varpi \varrho \varsigma \varphi` || <math>\varpi \varrho \varsigma \varphi\,\!</math> ||
+||_\2. '''Blackboard Bold/Scripts''' ||
+|| `\mathbb{A} \mathbb{B} \mathbb{C} \mathbb{D} \mathbb{E} \mathbb{F} \mathbb{G}` || <math>\mathbb{A} \mathbb{B} \mathbb{C} \mathbb{D} \mathbb{E} \mathbb{F} \mathbb{G} \,\!</math> ||
+|| `\mathbb{H} \mathbb{I} \mathbb{J} \mathbb{K} \mathbb{L} \mathbb{M}` || <math>\mathbb{H} \mathbb{I} \mathbb{J} \mathbb{K} \mathbb{L} \mathbb{M} \,\!</math> ||
+|| `\mathbb{N} \mathbb{O} \mathbb{P} \mathbb{Q} \mathbb{R} \mathbb{S} \mathbb{T}` || <math>\mathbb{N} \mathbb{O} \mathbb{P} \mathbb{Q} \mathbb{R} \mathbb{S} \mathbb{T} \,\!</math> ||
+|| `\mathbb{U} \mathbb{V} \mathbb{W} \mathbb{X} \mathbb{Y} \mathbb{Z}` || <math>\mathbb{U} \mathbb{V} \mathbb{W} \mathbb{X} \mathbb{Y} \mathbb{Z}\,\!</math> ||
+||_\2. '''boldface (vectors)''' ||
+|| `\mathbf{A} \mathbf{B} \mathbf{C} \mathbf{D} \mathbf{E} \mathbf{F} \mathbf{G}` || <math>\mathbf{A} \mathbf{B} \mathbf{C} \mathbf{D} \mathbf{E} \mathbf{F} \mathbf{G} \,\!</math> ||
+|| `\mathbf{H} \mathbf{I} \mathbf{J} \mathbf{K} \mathbf{L} \mathbf{M}` || <math>\mathbf{H} \mathbf{I} \mathbf{J} \mathbf{K} \mathbf{L} \mathbf{M} \,\!</math> ||
+|| `\mathbf{N} \mathbf{O} \mathbf{P} \mathbf{Q} \mathbf{R} \mathbf{S} \mathbf{T}` || <math>\mathbf{N} \mathbf{O} \mathbf{P} \mathbf{Q} \mathbf{R} \mathbf{S} \mathbf{T} \,\!</math> ||
+|| `\mathbf{U} \mathbf{V} \mathbf{W} \mathbf{X} \mathbf{Y} \mathbf{Z}` || <math>\mathbf{U} \mathbf{V} \mathbf{W} \mathbf{X} \mathbf{Y} \mathbf{Z} \,\!</math> ||
+|| `\mathbf{a} \mathbf{b} \mathbf{c} \mathbf{d} \mathbf{e} \mathbf{f} \mathbf{g}` || <math>\mathbf{a} \mathbf{b} \mathbf{c} \mathbf{d} \mathbf{e} \mathbf{f} \mathbf{g} \,\!</math> ||
+|| `\mathbf{h} \mathbf{i} \mathbf{j} \mathbf{k} \mathbf{l} \mathbf{m}` || <math>\mathbf{h} \mathbf{i} \mathbf{j} \mathbf{k} \mathbf{l} \mathbf{m} \,\!</math> ||
+|| `\mathbf{n} \mathbf{o} \mathbf{p} \mathbf{q} \mathbf{r} \mathbf{s} \mathbf{t}` || <math>\mathbf{n} \mathbf{o} \mathbf{p} \mathbf{q} \mathbf{r} \mathbf{s} \mathbf{t} \,\!</math> ||
+|| `\mathbf{u} \mathbf{v} \mathbf{w} \mathbf{x} \mathbf{y} \mathbf{z}` || <math>\mathbf{u} \mathbf{v} \mathbf{w} \mathbf{x} \mathbf{y} \mathbf{z} \,\!</math> ||
+|| `\mathbf{0} \mathbf{1} \mathbf{2} \mathbf{3} \mathbf{4}` || <math>\mathbf{0} \mathbf{1} \mathbf{2} \mathbf{3} \mathbf{4} \,\!</math> ||
+|| `\mathbf{5} \mathbf{6} \mathbf{7} \mathbf{8} \mathbf{9}` || <math>\mathbf{5} \mathbf{6} \mathbf{7} \mathbf{8} \mathbf{9}\,\!</math> ||
+||_\2. '''Boldface (greek)''' ||
+|| `\boldsymbol{\Alpha} \boldsymbol{\Beta} \boldsymbol{\Gamma} \boldsymbol{\Delta} \boldsymbol{\Epsilon} \boldsymbol{\Zeta}` || <math>\boldsymbol{\Alpha} \boldsymbol{\Beta} \boldsymbol{\Gamma} \boldsymbol{\Delta} \boldsymbol{\Epsilon} \boldsymbol{\Zeta} \,\!</math> ||
+|| `\boldsymbol{\Eta} \boldsymbol{\Theta} \boldsymbol{\Iota} \boldsymbol{\Kappa} \boldsymbol{\Lambda} \boldsymbol{\Mu}` || <math>\boldsymbol{\Eta} \boldsymbol{\Theta} \boldsymbol{\Iota} \boldsymbol{\Kappa} \boldsymbol{\Lambda} \boldsymbol{\Mu}\,\!</math> ||
+|| `\boldsymbol{\Nu} \boldsymbol{\Xi} \boldsymbol{\Pi} \boldsymbol{\Rho} \boldsymbol{\Sigma} \boldsymbol{\Tau}` || <math>\boldsymbol{\Nu} \boldsymbol{\Xi} \boldsymbol{\Pi} \boldsymbol{\Rho} \boldsymbol{\Sigma} \boldsymbol{\Tau}\,\!</math> ||
+|| `\boldsymbol{\Upsilon} \boldsymbol{\Phi} \boldsymbol{\Chi} \boldsymbol{\Psi} \boldsymbol{\Omega}` || <math>\boldsymbol{\Upsilon} \boldsymbol{\Phi} \boldsymbol{\Chi} \boldsymbol{\Psi} \boldsymbol{\Omega}\,\!</math> ||
+|| `\boldsymbol{\alpha} \boldsymbol{\beta} \boldsymbol{\gamma} \boldsymbol{\delta} \boldsymbol{\epsilon} \boldsymbol{\zeta}` || <math>\boldsymbol{\alpha} \boldsymbol{\beta} \boldsymbol{\gamma} \boldsymbol{\delta} \boldsymbol{\epsilon} \boldsymbol{\zeta}\,\!</math> ||
+|| `\boldsymbol{\eta} \boldsymbol{\theta} \boldsymbol{\iota} \boldsymbol{\kappa} \boldsymbol{\lambda} \boldsymbol{\mu}` || <math>\boldsymbol{\eta} \boldsymbol{\theta} \boldsymbol{\iota} \boldsymbol{\kappa} \boldsymbol{\lambda} \boldsymbol{\mu}\,\!</math> ||
+|| `\boldsymbol{\nu} \boldsymbol{\xi} \boldsymbol{\pi} \boldsymbol{\rho} \boldsymbol{\sigma} \boldsymbol{\tau}` || <math>\boldsymbol{\nu} \boldsymbol{\xi} \boldsymbol{\pi} \boldsymbol{\rho} \boldsymbol{\sigma} \boldsymbol{\tau}\,\!</math> ||
+|| `\boldsymbol{\upsilon} \boldsymbol{\phi} \boldsymbol{\chi} \boldsymbol{\psi} \boldsymbol{\omega}` || <math>\boldsymbol{\upsilon} \boldsymbol{\phi} \boldsymbol{\chi} \boldsymbol{\psi} \boldsymbol{\omega}\,\!</math> ||
+|| `\boldsymbol{\varepsilon} \boldsymbol{\digamma} \boldsymbol{\vartheta} \boldsymbol{\varkappa}` || <math>\boldsymbol{\varepsilon} \boldsymbol{\digamma} \boldsymbol{\vartheta} \boldsymbol{\varkappa} \,\!</math> ||
+|| `\boldsymbol{\varpi} \boldsymbol{\varrho} \boldsymbol{\varsigma} \boldsymbol{\varphi}` || <math>\boldsymbol{\varpi} \boldsymbol{\varrho} \boldsymbol{\varsigma} \boldsymbol{\varphi}\,\!</math> ||
+||_\2. '''Italics''' ||
+|| `\mathit{A} \mathit{B} \mathit{C} \mathit{D} \mathit{E} \mathit{F} \mathit{G}` || <math>\mathit{A} \mathit{B} \mathit{C} \mathit{D} \mathit{E} \mathit{F} \mathit{G} \,\!</math> ||
+|| `\mathit{H} \mathit{I} \mathit{J} \mathit{K} \mathit{L} \mathit{M}` || <math>\mathit{H} \mathit{I} \mathit{J} \mathit{K} \mathit{L} \mathit{M} \,\!</math> ||
+|| `\mathit{N} \mathit{O} \mathit{P} \mathit{Q} \mathit{R} \mathit{S} \mathit{T}` || <math>\mathit{N} \mathit{O} \mathit{P} \mathit{Q} \mathit{R} \mathit{S} \mathit{T} \,\!</math> ||
+|| `\mathit{U} \mathit{V} \mathit{W} \mathit{X} \mathit{Y} \mathit{Z}` || <math>\mathit{U} \mathit{V} \mathit{W} \mathit{X} \mathit{Y} \mathit{Z} \,\!</math> ||
+|| `\mathit{a} \mathit{b} \mathit{c} \mathit{d} \mathit{e} \mathit{f} \mathit{g}` || <math>\mathit{a} \mathit{b} \mathit{c} \mathit{d} \mathit{e} \mathit{f} \mathit{g} \,\!</math> ||
+|| `\mathit{h} \mathit{i} \mathit{j} \mathit{k} \mathit{l} \mathit{m}` || <math>\mathit{h} \mathit{i} \mathit{j} \mathit{k} \mathit{l} \mathit{m} \,\!</math> ||
+|| `\mathit{n} \mathit{o} \mathit{p} \mathit{q} \mathit{r} \mathit{s} \mathit{t}` || <math>\mathit{n} \mathit{o} \mathit{p} \mathit{q} \mathit{r} \mathit{s} \mathit{t} \,\!</math> ||
+|| `\mathit{u} \mathit{v} \mathit{w} \mathit{x} \mathit{y} \mathit{z}` || <math>\mathit{u} \mathit{v} \mathit{w} \mathit{x} \mathit{y} \mathit{z} \,\!</math> ||
+|| `\mathit{0} \mathit{1} \mathit{2} \mathit{3} \mathit{4}` || <math>\mathit{0} \mathit{1} \mathit{2} \mathit{3} \mathit{4} \,\!</math> ||
+|| `\mathit{5} \mathit{6} \mathit{7} \mathit{8} \mathit{9}` || <math>\mathit{5} \mathit{6} \mathit{7} \mathit{8} \mathit{9}\,\!</math> ||
+||_\2. '''Roman typeface''' ||
+|| `\mathrm{A} \mathrm{B} \mathrm{C} \mathrm{D} \mathrm{E} \mathrm{F} \mathrm{G}` || <math>\mathrm{A} \mathrm{B} \mathrm{C} \mathrm{D} \mathrm{E} \mathrm{F} \mathrm{G} \,\!</math> ||
+|| `\mathrm{H} \mathrm{I} \mathrm{J} \mathrm{K} \mathrm{L} \mathrm{M}` || <math>\mathrm{H} \mathrm{I} \mathrm{J} \mathrm{K} \mathrm{L} \mathrm{M} \,\!</math> ||
+|| `\mathrm{N} \mathrm{O} \mathrm{P} \mathrm{Q} \mathrm{R} \mathrm{S} \mathrm{T}` || <math>\mathrm{N} \mathrm{O} \mathrm{P} \mathrm{Q} \mathrm{R} \mathrm{S} \mathrm{T} \,\!</math> ||
+|| `\mathrm{U} \mathrm{V} \mathrm{W} \mathrm{X} \mathrm{Y} \mathrm{Z}` || <math>\mathrm{U} \mathrm{V} \mathrm{W} \mathrm{X} \mathrm{Y} \mathrm{Z} \,\!</math> ||
+|| `\mathrm{a} \mathrm{b} \mathrm{c} \mathrm{d} \mathrm{e} \mathrm{f} \mathrm{g}` || <math>\mathrm{a} \mathrm{b} \mathrm{c} \mathrm{d} \mathrm{e} \mathrm{f} \mathrm{g}\,\!</math> ||
+|| `\mathrm{h} \mathrm{i} \mathrm{j} \mathrm{k} \mathrm{l} \mathrm{m}` || <math>\mathrm{h} \mathrm{i} \mathrm{j} \mathrm{k} \mathrm{l} \mathrm{m} \,\!</math> ||
+|| `\mathrm{n} \mathrm{o} \mathrm{p} \mathrm{q} \mathrm{r} \mathrm{s} \mathrm{t}` || <math>\mathrm{n} \mathrm{o} \mathrm{p} \mathrm{q} \mathrm{r} \mathrm{s} \mathrm{t} \,\!</math> ||
+|| `\mathrm{u} \mathrm{v} \mathrm{w} \mathrm{x} \mathrm{y} \mathrm{z}` || <math>\mathrm{u} \mathrm{v} \mathrm{w} \mathrm{x} \mathrm{y} \mathrm{z} \,\!</math> ||
+|| `\mathrm{0} \mathrm{1} \mathrm{2} \mathrm{3} \mathrm{4}` || <math>\mathrm{0} \mathrm{1} \mathrm{2} \mathrm{3} \mathrm{4} \,\!</math> ||
+|| `\mathrm{5} \mathrm{6} \mathrm{7} \mathrm{8} \mathrm{9}` || <math>\mathrm{5} \mathrm{6} \mathrm{7} \mathrm{8} \mathrm{9}\,\!</math> ||
+||_\2. '''Fraktur typeface''' ||
+|| `\mathfrak{A} \mathfrak{B} \mathfrak{C} \mathfrak{D} \mathfrak{E} \mathfrak{F} \mathfrak{G}` || <math>\mathfrak{A} \mathfrak{B} \mathfrak{C} \mathfrak{D} \mathfrak{E} \mathfrak{F} \mathfrak{G} \,\!</math> ||
+|| `\mathfrak{H} \mathfrak{I} \mathfrak{J} \mathfrak{K} \mathfrak{L} \mathfrak{M}` || <math>\mathfrak{H} \mathfrak{I} \mathfrak{J} \mathfrak{K} \mathfrak{L} \mathfrak{M} \,\!</math> ||
+|| `\mathfrak{N} \mathfrak{O} \mathfrak{P} \mathfrak{Q} \mathfrak{R} \mathfrak{S} \mathfrak{T}` || <math>\mathfrak{N} \mathfrak{O} \mathfrak{P} \mathfrak{Q} \mathfrak{R} \mathfrak{S} \mathfrak{T} \,\!</math> ||
+|| `\mathfrak{U} \mathfrak{V} \mathfrak{W} \mathfrak{X} \mathfrak{Y} \mathfrak{Z}` || <math>\mathfrak{U} \mathfrak{V} \mathfrak{W} \mathfrak{X} \mathfrak{Y} \mathfrak{Z} \,\!</math> ||
+|| `\mathfrak{a} \mathfrak{b} \mathfrak{c} \mathfrak{d} \mathfrak{e} \mathfrak{f} \mathfrak{g}` || <math>\mathfrak{a} \mathfrak{b} \mathfrak{c} \mathfrak{d} \mathfrak{e} \mathfrak{f} \mathfrak{g} \,\!</math> ||
+|| `\mathfrak{h} \mathfrak{i} \mathfrak{j} \mathfrak{k} \mathfrak{l} \mathfrak{m}` || <math>\mathfrak{h} \mathfrak{i} \mathfrak{j} \mathfrak{k} \mathfrak{l} \mathfrak{m} \,\!</math> ||
+|| `\mathfrak{n} \mathfrak{o} \mathfrak{p} \mathfrak{q} \mathfrak{r} \mathfrak{s} \mathfrak{t}` || <math>\mathfrak{n} \mathfrak{o} \mathfrak{p} \mathfrak{q} \mathfrak{r} \mathfrak{s} \mathfrak{t} \,\!</math> ||
+|| `\mathfrak{u} \mathfrak{v} \mathfrak{w} \mathfrak{x} \mathfrak{y} \mathfrak{z}` || <math>\mathfrak{u} \mathfrak{v} \mathfrak{w} \mathfrak{x} \mathfrak{y} \mathfrak{z} \,\!</math> ||
+|| `\mathfrak{0} \mathfrak{1} \mathfrak{2} \mathfrak{3} \mathfrak{4}` || <math>\mathfrak{0} \mathfrak{1} \mathfrak{2} \mathfrak{3} \mathfrak{4} \,\!</math> ||
+|| `\mathfrak{5} \mathfrak{6} \mathfrak{7} \mathfrak{8} \mathfrak{9}` || <math>\mathfrak{5} \mathfrak{6} \mathfrak{7} \mathfrak{8} \mathfrak{9}\,\!</math> ||
+||_\2. '''Calligraphy/Script''' ||
+|| `\mathcal{A} \mathcal{B} \mathcal{C} \mathcal{D} \mathcal{E} \mathcal{F} \mathcal{G}` || <math>\mathcal{A} \mathcal{B} \mathcal{C} \mathcal{D} \mathcal{E} \mathcal{F} \mathcal{G} \,\!</math> ||
+|| `\mathcal{H} \mathcal{I} \mathcal{J} \mathcal{K} \mathcal{L} \mathcal{M}` || <math>\mathcal{H} \mathcal{I} \mathcal{J} \mathcal{K} \mathcal{L} \mathcal{M} \,\!</math> ||
+|| `\mathcal{N} \mathcal{O} \mathcal{P} \mathcal{Q} \mathcal{R} \mathcal{S} \mathcal{T}` || <math>\mathcal{N} \mathcal{O} \mathcal{P} \mathcal{Q} \mathcal{R} \mathcal{S} \mathcal{T} \,\!</math> ||
+|| `\mathcal{U} \mathcal{V} \mathcal{W} \mathcal{X} \mathcal{Y} \mathcal{Z}` || <math>\mathcal{U} \mathcal{V} \mathcal{W} \mathcal{X} \mathcal{Y} \mathcal{Z}\,\!</math> ||
+||_\2. '''Hebrew''' ||
+|| `\aleph \beth \gimel \daleth` || <math>\aleph \beth \gimel \daleth\,\!</math> ||
+
+== Formatting issues ==
+
+=== Spacing ===
+
+Note that !TeX handles most spacing automatically, but you may sometimes want manual control.
+
+|| '''Feature''' || '''Syntax''' || '''How it looks rendered''' ||
+|| double quad space || a \qquad b || <math>a \qquad b</math> ||
+|| quad space || a \quad b || <math>a \quad b</math> ||
+|| text space || a\ b || <math>a\ b</math> ||
+|| text space without PNG conversion || a \mbox{ } b || <math>a \mbox{ } b</math> ||
+|| large space || a\;b || <math>a\;b</math> ||
+|| medium space || a\&gt;b || (not supported) ||
+|| small space || a\,b || <math>a\,b</math> ||
+|| no space || ab || <math>ab\,</math> ||
+|| small negative space || a\!b || <math>a\!b</math> ||

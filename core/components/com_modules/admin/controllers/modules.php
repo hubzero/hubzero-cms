@@ -38,9 +38,11 @@ use Components\Modules\Models\Module;
 use Components\Modules\Helpers\Modules as ModulesHelper;
 use Request;
 use Notify;
+use Config;
 use Route;
 use Cache;
 use Event;
+use Date;
 use Lang;
 use App;
 
@@ -410,6 +412,15 @@ class Modules extends AdminController
 		if (!isset($fields['id']))
 		{
 			$fields['id'] = 0;
+		}
+
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
+		{
+			$fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+		}
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
+		{
+			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
 		}
 
 		// Initiate extended database class

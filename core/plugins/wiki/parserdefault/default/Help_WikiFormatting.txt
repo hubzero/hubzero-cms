@@ -1,0 +1,364 @@
+= Wiki Formatting =
+
+Wiki markup is a core feature for Topic pages, tightly integrating all the other parts of Trac into a flexible and powerful whole.
+
+This site has a built in small and powerful wiki rendering engine. This wiki engine implements an ever growing subset of the commands from other popular Wikis, especially [http://moinmoin.wikiwikiweb.de/ MoinMoin]. 
+
+This page demonstrates the formatting syntax available anywhere [Help:WikiFormatting Wiki Formatting] is allowed.
+
+== Font Styles ==
+
+The pages supports the following font styles:
+{{{
+ * '''bold''', '''!''' can be bold too''', and '''! '''
+ * ''italic''
+ * '''''bold italic'''''
+ * __underline__
+ * {{{monospace}}} or `monospace`
+ * ~~strike-through~~
+ * ^superscript^ 
+ * ,,subscript,,
+}}}
+
+Display:
+ * '''bold''', '''!''' can be bold too''', and '''! '''
+ * ''italic''
+ * '''''bold italic'''''
+ * __underline__
+ * {{{monospace}}} or `monospace`
+ * ~~strike-through~~
+ * ^superscript^ 
+ * ,,subscript,,
+
+Notes:
+ * `{{{...}}}` and {{{`...`}}} commands not only select a monospace font, but also treat their content as verbatim text, meaning that no further wiki processing is done on this text.
+ * ` ! ` tells wiki parser to not take the following characters as wiki format, so pay attention to put a space after !, e.g. when ending bold.
+
+== Headings ==
+
+You can create heading by starting a line with one up to five ''equal'' characters ("=") followed by a single space and the headline text. The line should end with a space  followed by the same number of ''='' characters. The heading might optionally be followed by an explicit id. If not, an implicit but nevertheless readable id will be generated.
+
+Example:
+{{{
+= Heading =
+== Subheading ==
+=== About ''this'' ===
+=== Explicit id === #using-explicit-id-in-heading
+}}}
+
+Display:
+= Heading =
+== Subheading ==
+=== About ''this'' ===
+=== Explicit id === #using-explicit-id-in-heading
+
+== Paragraphs ==
+
+A new text paragraph is created whenever two blocks of text are separated by one or more empty lines.
+
+A forced line break can also be inserted, using:
+{{{
+Line 1[[BR]]Line 2
+}}}
+Display:
+
+Line 1[[BR]]Line 2
+
+== Lists ==
+
+The wiki supports both ordered/numbered and unordered lists.
+
+'''NOTE:''' The first character of a list item must be a space: " * text"
+
+Example:
+{{{
+ * Item 1
+  * Item 1.1
+ * Item 2
+
+ # Item 1
+  # Item 1.a
+  # Item 1.b
+   # Item 1.b.i
+  # Item 1.b.ii
+ # Item 2
+}}}
+
+Display:
+ * Item 1
+  * Item 1.1
+ * Item 2
+
+ # Item 1
+  # Item 1.a
+  # Item 1.b
+   # Item 1.b.i
+   # Item 1.b.ii
+ # Item 2
+
+Note that there must be one or more spaces preceding the list item markers, otherwise the list will be treated as a normal paragraph.
+
+For multi-line content within a listed item, the content must be indented the same number of spaces as the initial list line content. That is, if it takes 3 characters to start a list "(space)#(space)Content", the multi-line content must be indented 3 spaces.
+
+Example:
+
+{{{
+ * One
+ * Two[[br]]
+   Multi-line content
+ * Three
+}}}
+
+ * One
+ * Two[[br]]
+   Multi-line content
+ * Three
+
+== Definition Lists ==
+
+The wiki also supports definition lists. Definition terms start with '''one''' space " " and end with double colons "::". Definitions must be on the line immediately following the term and start with '''two to three''' spaces.
+
+Example:
+{{{
+A line with no beginning spaces.
+
+ llama::
+   some kind of mammal, with hair
+ ppython::
+   some kind of reptile, without hair
+   (can you spot the typo?)
+}}}
+
+Display:
+
+A line with no beginning spaces.
+
+ llama::
+   some kind of mammal, with hair
+ ppython::
+   some kind of reptile, without hair
+   (can you spot the typo?)
+
+== Preformatted Text ==
+
+Block containing preformatted text are suitable for source code snippets, notes and examples. Use three ''curly braces'' wrapped around the text to define a block quote. The curly braces need to be on a separate line.
+
+Example:
+{{{
+ {{{
+  def HelloWorld():
+      print "Hello World"
+ }}}
+}}}
+
+Display:
+{{{
+ def HelloWorld():
+     print "Hello World"
+}}}
+
+== Blockquotes ==
+
+In order to mark a paragraph as blockquote, indent that paragraph with two spaces.
+
+Example:
+{{{
+  This text is a quote from someone else.
+}}}
+
+Display:
+  This text is a quote from someone else.
+
+
+Simple tables can be created like this:
+{{{
+||Cell 1||Cell 2||Cell 3||
+||Cell 4||Cell 5||Cell 6||
+}}}
+
+Display:
+
+||Cell 1||Cell 2||Cell 3||
+||Cell 4||Cell 5||Cell 6||
+
+Cell headings can be specified by wrapping the content in a pair of '=' characters. Note that the '=' characters have to stick to the cell separators, like this:
+{{{
+||        ||= stable =||= latest =||
+||= 0.10 =||  0.10.5  || 0.10.6dev||
+||= 0.11 =||  0.11.6  || 0.11.7dev||
+}}}
+
+Display:
+
+||        ||= stable =||= latest =||
+||= 0.10 =||  0.10.5  || 0.10.6dev||
+||= 0.11 =||  0.11.6  || 0.11.7dev||
+
+Finally, specifying an empty cell means that the next non empty cell will span the empty cells. For example:
+
+{{{
+|| 1 || 2 || 3 ||
+|||| 1-2 || 3 ||
+|| 1 |||| 2-3 ||
+|||||| 1-2-3 ||
+}}}
+
+Display:
+
+|| 1 || 2 || 3 ||
+|||| 1-2 || 3 ||
+|| 1 |||| 2-3 ||
+|||||| 1-2-3 ||
+
+To explicitly align content:
+{{{
+||= attribute list =||= longer column  =||
+||<. align left     ||   longer text    ||
+||>. align right    ||   longer text    ||
+||=. center         ||   longer text    ||
+||<>. justify       ||   longer text    ||
+||^. valign top     || longer[[br]]text ||
+||~. bottom         || longer[[br]]text ||
+}}}
+
+Display:
+
+||= attribute list =||= longer column  =||
+||<. align left     ||   longer text    ||
+||>. align right    ||   longer text    ||
+||=. center         ||   longer text    ||
+||<>. justify       ||   longer text    ||
+||^. valign top     || longer[[br]]text ||
+||~. bottom         || longer[[br]]text ||
+
+Note that if the content of a cell "sticks" to one side of the cell and only one, then the text will be aligned on that side. Explicit alignment (above) will override this. Example:
+
+{{{
+||=Text =||= Numbers =||
+||left align    ||        1.0||
+||      right align||     4.5||
+|| default alignment ||   2.5||
+||default||         2.5||
+||  default ||      2.5||
+|| default ||       2.5||
+||<.     left align||     4.5||
+}}}
+
+||=Text =||= Numbers =||
+||left align    ||        1.0||
+||      right align||     4.5||
+|| default alignment ||   2.5||
+||default||         2.5||
+||  default ||      2.5||
+|| default ||       2.5||
+||<.     left align||     4.5||
+
+== Links ==
+
+Hyperlinks are automatically created for WikiPageNames and URLs. !WikiPageLinks can be disabled by prepending an exclamation mark "!" character, such as {{{!WikiPageLink}}}.
+
+Example:
+{{{
+  MainPage, http://www.edgewall.com/, !NotAlink
+}}}
+
+Display:
+  MainPage, http://www.edgewall.com/, !NotAlink
+
+Links can be given a more descriptive title by writing the link followed by a space and a title and all this inside square brackets.  If the descriptive title is omitted, then the explicit prefix is discarded, unless the link is an external link. This can be useful for wiki pages not adhering to the WikiPageNames convention.
+
+Example:
+{{{
+ * [http://www.edgewall.com/ Edgewall Software]
+ * [MainPage Main Page]
+ * [Help:WikiMacros]
+}}}
+
+Display:
+ * [http://www.edgewall.com/ Edgewall Software]
+ * [MainPage Main Page]
+ * [Help:WikiMacros]
+
+== Setting Anchors ==
+
+An anchor, or more correctly speaking, an anchor name can be added explicitly at any place in the Wiki page, in order to uniquely identify a position in the document:
+
+{{{
+[=#point1]
+}}}
+
+It's also very close to the syntax for the corresponding link to that anchor:
+
+{{{
+[#point1]
+}}}
+
+Example usage:
+
+{{{
+[#point2 jump to the second point]
+
+...
+
+Point2:  [=#point2] Jump here
+}}}
+
+[#point2 jump to the second point]
+
+...
+
+Point2:  [=#point2] Jump here
+
+== Escaping Links and Wiki Page Names ==
+
+You may avoid making hyperlinks out of !WikiLinks by preceding an expression with a single "!" (exclamation mark).
+
+Example:
+{{{
+ !NoHyperLink
+ !#42 is not a link
+}}}
+
+Display:
+ !NoHyperLink
+ !#42 is not a link
+
+== Images ==
+
+The simplest way to include an image is to upload it as attachment to the current page, and put the filename in a macro call like `[[Image(picture.gif)]]`.
+
+In addition to the current page, it is possible to refer to other resources:
+
+ * `[[Image(picture.gif)]]` (simplest)
+ * `[[Image(picture.gif, 120px)]]` (give it a specific width)
+ * `[[Image(picture.gif, right)]]` (align by keyword)
+ * `[[Image(picture.gif, nolink)]]` (unlinked)
+ * `[[Image(picture.gif, align=right)]]` (align by attribute)
+
+See [Help:WikiMacros Help: Wiki Macros] for further documentation on the `[[Image()]]` macro.
+
+== Macros ==
+
+Macros are ''custom functions'' to insert dynamic content in a page.
+
+Example:
+{{{
+[[Timestamp]]
+}}}
+
+Display:
+[[Timestamp]]
+
+See [Help:WikiMacros Wiki Macros] for more information, and a list of installed macros.
+
+== Miscellaneous ==
+
+Four or more dashes will be replaced by a horizontal line.
+
+Example:
+{{{
+----
+}}}
+
+Display:
+----

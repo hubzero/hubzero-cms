@@ -123,7 +123,7 @@ $this->css('tag_graph.css');
 	<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
 	<input type="hidden" value="" name="task" />
 	<input type="hidden" value="0" name="boxchecked" />
-	<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.css" />
+	<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="<?php echo $base; ?>/core/plugins/hubzero/autocompleter/assets/css/autocompleter.css" />
 </form>
 
 <script src="<?php echo $base; ?>/core/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.min.js"></script>
@@ -131,6 +131,6 @@ $this->css('tag_graph.css');
 <script src="<?php echo $base; ?>/core/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.geom.min.js"></script>
 <script src="<?php echo $base; ?>/core/components/<?php echo $this->option; ?>/admin/assets/js/tag_graph.js"></script>
 <script type="text/javascript">
-var plgAutocompleterCss = '<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.css';
+var plgAutocompleterCss = '<?php echo $base; ?>/core/plugins/hubzero/autocompleter/assets/css/autocompleter.css';
 </script>
-<script src="<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.js"></script>
+<script src="<?php echo $base; ?>/core/plugins/hubzero/autocompleter/assets/js/autocompleter.js"></script>

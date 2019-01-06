@@ -42,18 +42,18 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="storagehost" type="text" menu="hide" label="Storage Host" default="" description="The host the storage indicator should use" />
 		<field name="show_storage" type="list" default="1" label="Show Storage" description="Select whether to show the storage meter or not.">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">JYes</option>
+			<option value="0">JNo</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="params_whitelist" type="text" menu="hide" label="Directory Parameter Whitelist" default="/home" description="White-list of directories acceptable to include in tool parameter passing feature" />
 		<field name="github" type="list" default="1" label="Accept Github Repo" description="Offer an option to pull code from a remote (public) Github repository.">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">JYes</option>
+			<option value="0">JNo</option>
 		</field>
 		<field name="jupyter" type="list" default="1" label="Enable Jupyter" description="Offer an option to publish as a Jupyter notebook.">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">JYes</option>
+			<option value="0">JNo</option>
 		</field>
 	</fieldset>
 	<fieldset name="middleware">
@@ -86,8 +86,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">ON</option>
 		</field>
 		<field name="launch_ipad" type="list" default="0" label="Launch on iPad" description="Launch tool sessions on iPad?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
 		<field name="launch_ipad_app" type="text" default="" label="iPad app name" description="iPad app name" />
 	</fieldset>
@@ -107,8 +107,8 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="exec_pu" type="radio" default="1" label="Include PU" description="Include Purdue campus as a tool access restriction">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="screenshot_edit" type="radio" default="0" label="Edit Screenshots" description="Allow editing of screenshots via contribtool and display of screenshots for individual versions">
@@ -117,20 +117,25 @@ HUBzero is a registered trademark of Purdue University.
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="downloadable_on" type="radio" default="0" label="Allow Downloadables" description="Include an option to create a downloadable tool">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
 	</fieldset>
 	<fieldset name="doi">
-		<field name="new_doi" type="radio" default="0" label="Enable DOI service?" description="Register DOI handle for new tool releases with Purdue Libraries DOI service">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="new_doi" type="radio" default="0" label="Enable DOI service?" description="Register DOI handle for new tool releases with specified DOI service">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
-		<field name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL DOI service" />
-		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder DOI service" />
+		<field name="doi_service_switch" type="list" default="1" label="DOI service" description="Select the DOI service to use for minting DOis">
+			<option value="0">None</option>
+			<option value="1">EZID</option>
+			<option value="2">DataCite</option>
+		</field>
+		<field name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL for DOI service" />
 		<field name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
+		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="First part of DOI namespace (what goes right after doi: and before /, e.g. 10.5072 )" />
+		<field name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Hub-specific DOI namespace end (usually 2-3 characters going after /, e.g. F2K)" />
 		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
-		<field name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
 		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
