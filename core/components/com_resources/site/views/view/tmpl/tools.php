@@ -329,4 +329,4 @@ $revision = $this->revision;
 		</aside><!-- / .aside extracontent -->
 		</div>
 	</section><!-- / .main section -->
-<?php } ?>
+<?php }
