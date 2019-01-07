@@ -82,6 +82,30 @@ class Doi extends Relational
 	);
 
 	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'doi_shoulder'
+	);
+
+	/**
+	 * Generates automatic doi_shoulder
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticDoiShoulder($data)
+	{
+		if (!isset($data['doi_shoulder']) || !$data['doi_shoulder'])
+		{
+			$data['doi_shoulder'] = \Component::params('com_tools')->get('doi_shoulder');
+		}
+		return $data['doi_shoulder'];
+	}
+
+	/**
 	 * Get profile for author ID
 	 *
 	 * @return  object
@@ -164,6 +188,7 @@ class Doi extends Relational
 		else
 		{
 			$this->set('doi', $doi);
+			$this->set('doi_shoulder', $service->configs()->get('doi_shoulder'));
 		}
 
 		// Register the DOI name and URL to complete the DOI registration.
