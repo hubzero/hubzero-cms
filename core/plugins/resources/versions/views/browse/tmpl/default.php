@@ -58,7 +58,7 @@ $this->css();
 
 			if (isset($v->doi) && $v->doi && $this->tconfig->get('doi_shoulder'))
 			{
-				$handle = 'doi:' . $this->tconfig->get('doi_shoulder') . '/' . strtoupper($v->doi);
+				$handle = 'doi:' . (isset($v->doi_shoulder) ? $v->doi_shoulder : $this->tconfig->get('doi_shoulder')) . '/' . strtoupper($v->doi);
 				$handle = '<a href="' . $this->tconfig->get('doi_resolve', 'http://dx.doi.org/') . $handle . '">' . $handle . '</a>';
 			}
 			else if (isset($v->doi_label) && $v->doi_label)

@@ -150,7 +150,7 @@ class Version extends Table
 			return false;
 		}
 
-		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi ";
+		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi, d.doi_shoulder ";
 		$query .= "FROM $this->_tbl as v ";
 		$query .= "LEFT JOIN `#__doi_mapping` as d ON d.alias=v.toolname  AND d.local_revision=v.revision ";
 		$query .= "WHERE v.toolname = " . $this->_db->quote($alias) . " AND v.state!=3 ORDER BY v.revision DESC";
@@ -416,7 +416,7 @@ class Version extends Table
 	{
 		$objA = new \Components\Tools\Tables\Author($this->_db);
 
-		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi ";
+		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi, d.doi_shoulder ";
 		$query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($toolid)
 		{
@@ -469,7 +469,7 @@ class Version extends Table
 	public function getVersionInfo($id, $version='', $toolname='', $instance='')
 	{
 		// data comes from mysql
-		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi ";
+		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi, d.doi_shoulder ";
 		$query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)
 		{
@@ -541,6 +541,7 @@ class Version extends Table
 				$resource->toolsource    = ($curtool->codeaccess=='@OPEN') ? 1: 0;
 				$resource->doi           = isset($curtool->doi) ? $curtool->doi : '';
 				$resource->doi_label     = $curtool->doi_label;
+				$resource->doi_shoulder  = isset($curtool->doi_shoulder) ? $curtool->doi_shoulder : '';
 			}
 		}
 
@@ -560,6 +561,7 @@ class Version extends Table
 			$resource->toolsource    = ($thistool && isset($thistool->codeaccess) && $thistool->codeaccess=='@OPEN') ? 1: 0;
 			$resource->doi           = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
 			$resource->doi_label     = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
+			$resource->doi_shoulder  = ($thistool && isset($thistool->doi_shoulder)) ? $thistool->doi_shoulder : '';
 		}
 		else if (!$curtool)
 		{
@@ -576,6 +578,7 @@ class Version extends Table
 			$resource->toolsource    = 0;
 			$resource->doi           = '';
 			$resource->doi_label     = 0;
+			$resource->doi_shoulder  = '';
 		}
 		$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
 

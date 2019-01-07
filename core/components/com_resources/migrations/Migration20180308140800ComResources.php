@@ -68,7 +68,7 @@ class Migration20180308140800ComResources extends Base
 				$this->db->query();
 			}
 
-			if ($this->db->tableHasField('#__doi_mapping', 'license'))
+			if ($this->db->tableHasField('#__resources', 'license'))
 			{
 				$query = "ALTER TABLE `#__resources` DROP COLUMN `license`;";
 				$this->db->setQuery($query);
