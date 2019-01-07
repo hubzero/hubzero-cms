@@ -90,4 +90,4 @@ $this->css();
 	</table>
 <?php } else { ?>
 	<p><?php echo Lang::txt('PLG_RESOURCES_VERSIONS_NO_VERIONS_FOUND'); ?></p>
-<?php } ?>
+<?php }
