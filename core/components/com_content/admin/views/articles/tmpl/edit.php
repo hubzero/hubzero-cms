@@ -38,7 +38,7 @@ $canDo = Components\Content\Admin\Helpers\Permissions::getActions('article', $th
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
-$lang = 'COM_CONTENT_PAGE_' . strtoupper($this->task) . '_ARTICLE';
+$lang = ($this->task == 'edit' || $this->task == 'apply' ? 'COM_CONTENT_PAGE_EDIT_ARTICLE' : 'COM_CONTENT_PAGE_ADD_ARTICLE');
 Toolbar::title(Lang::txt($lang), 'content');
 if ($canDo->get('core.edit')
 	|| ($canDo->get('core.edit.own') && User::getInstance()->get('id') == $this->item->get('created_by'))
