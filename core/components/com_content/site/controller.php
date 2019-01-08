@@ -17,18 +17,18 @@ defined('_HZEXEC_') or die();
  */
 class ContentController extends JControllerLegacy
 {
-	function __construct($config = array())
+	public function __construct($config = array())
 	{
 		// Article frontpage Editor pagebreak proxying:
 		if (Request::getCmd('view') === 'article' && Request::getCmd('layout') === 'pagebreak')
 		{
-			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
+			$config['base_path'] = PATH_COMPONENT_ADMINISTRATOR;
 		}
 		// Article frontpage Editor article proxying:
 		elseif (Request::getCmd('view') === 'articles' && Request::getCmd('layout') === 'modal')
 		{
 			Html::asset('stylesheet', 'adminlist.css', array(), true);
-			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
+			$config['base_path'] = PATH_COMPONENT_ADMINISTRATOR;
 		}
 
 		parent::__construct($config);
