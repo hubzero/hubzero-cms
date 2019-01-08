@@ -9,8 +9,8 @@
 defined('_HZEXEC_') or die();
 
 // Include dependencies
-require_once JPATH_COMPONENT.'/helpers/route.php';
-require_once JPATH_COMPONENT.'/helpers/query.php';
+require_once __DIR__.'/helpers/route.php';
+require_once __DIR__.'/helpers/query.php';
 
 $controller = JControllerLegacy::getInstance('Content');
 $controller->execute(Request::getCmd('task'));
