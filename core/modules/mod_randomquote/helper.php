@@ -33,6 +33,7 @@ namespace Modules\RandomQuote;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Models\Quote;
+use Component;
 
 /**
  * Module class for displaying a random quote
@@ -46,7 +47,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(\Component::path('com_feedback') . DS . 'models' . DS . 'quote.php');
+		require_once Component::path('com_feedback') . '/models/quote.php';
 
 		// Get the admin configured settings
 		$this->charlimit  = $this->params->get('charlimit', 150);
