@@ -33,6 +33,9 @@
 namespace Modules\Poll;
 
 use Hubzero\Module\Module;
+use Components\Poll\Models\Poll as PollModel;
+use Component;
+use App;
 
 /**
  * Module class for displaying a poll
@@ -46,19 +49,19 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		require_once(\Component::path('com_poll') . DS . 'models' . DS . 'poll.php');
+		require_once Component::path('com_poll') . '/models/poll.php';
 
-		$menu   = \App::get('menu');
+		$menu   = App::get('menu');
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
 		if ($id = $this->params->get('id', 0))
 		{
-			$poll = \Components\Poll\Models\Poll::oneOrNew($id);
+			$poll = PollModel::oneOrNew($id);
 		}
 		else
 		{
-			$poll = \Components\Poll\Models\Poll::current();
+			$poll = PollModel::current();
 		}
 
 		if ($poll && $poll->id)

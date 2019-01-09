@@ -33,6 +33,7 @@
 namespace Modules\Resources;
 
 use Hubzero\Module\Module;
+use App;
 
 /**
  * Module class for com_resources data
@@ -46,12 +47,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
 
-		$database = \App::get('db');
+		$database = App::get('db');
 
 		$queries = array(
 			'unpublished'   => 0,
