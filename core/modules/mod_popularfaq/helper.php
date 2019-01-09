@@ -34,6 +34,8 @@ namespace Modules\PopularFaq;
 
 use Hubzero\Module\Module;
 use Components\Kb\Models\Archive;
+use Component;
+use User;
 
 /**
  * Module class for displaying popular KB articles
@@ -47,11 +49,11 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(\Component::path('com_kb') . DS . 'models' . DS . 'archive.php');
+		require_once Component::path('com_kb') . '/models/archive.php';
 
 		$a = new Archive();
 		$popular = $a->articles()
-			->whereIn('access', \User::getAuthorisedViewLevels())
+			->whereIn('access', User::getAuthorisedViewLevels())
 			->whereEquals('state', 1)
 			->order('helpful', 'desc')
 			->limit(intval($this->params->get('limit', 5)))

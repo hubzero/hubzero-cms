@@ -56,8 +56,6 @@ class Helper extends Module
 		}
 		else
 		{
-			$database = \App::get('db');
-
 			$this->moduleclass = $this->params->get('moduleclass');
 			$this->limit = intval($this->params->get('limit', 10));
 
@@ -75,4 +73,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-
