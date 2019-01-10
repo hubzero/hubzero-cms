@@ -71,8 +71,12 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_MASTER_DOI'),
 				'params' => ''
 			),
+			array(
+				'name'   => 'updateFtpLinks',
+				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_UPDATE_FTP_LINKS'),
+				'params' => 'ftplinkdates'
+			)
 		);
-
 		return $obj;
 	}
 
@@ -483,5 +487,45 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Create/Remove ftp links based on embargo date range
+	 *
+	 * @param   object   $job  \Components\Cron\Models\Job
+	 * @return  boolean
+	 */
+	public function updateFtpLinks(\Components\Cron\Models\Job $job)
+	{
+		include_once Component::path('com_publications') . '/models/orm/version.php';
+		include_once Component::path('com_publications') . '/models/publication.php';
+		$params = $job->params;
+		$yesterday = !empty($job->params['startdate']) ? $job->params['startdate'] : Date::of()->subtract('1 day')->format('Y-m-d 00:00:00');
+		$today = Date::of()->format('Y-m-d 00:00:00');
+		$versions = \Components\Publications\Models\Orm\Version::all()
+			->select('#__publication_versions.*')
+			->join('#__publications p', '#__publication_versions.publication_id', 'p.id')
+			->join('#__publication_master_types t', 'p.master_type', 't.id')
+			->whereEquals('#__publication_versions.state', 1)
+			->whereNotIn('t.alias', array('series', 'databases'))
+			->where('#__publication_versions.published_up', '>=', $yesterday, 'AND', 1)
+			->where('#__publication_versions.published_up', '<=', $today, 'AND', 1)
+			->resetDepth()
+			->where('#__publication_versions.published_down', '>=', $yesterday, 'OR', 1)
+			->where('#__publication_versions.published_down', '<=', $today, 'AND', 1)
+			->rows();
+		foreach ($versions as $version)
+		{
+			$publication = new \Components\Publications\Models\Publication($version->publication_id, $version->version_number);
+			$publication->setCuration();
+			if ($version->isPublished())
+			{
+				$publication->_curationModel->createSymLink();
+			}
+			else
+			{
+				$publication->_curationModel->removeSymLink();
+			}
+		}
 	}
 }
