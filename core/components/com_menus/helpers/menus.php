@@ -53,26 +53,6 @@ class Menus
 	protected static $_filter = array('option', 'view', 'layout');
 
 	/**
-	 * Configure the Linkbar.
-	 *
-	 * @param   string  The name of the active view.
-	 * @return  void
-	 */
-	public static function addSubmenu($vName)
-	{
-		Submenu::addEntry(
-			Lang::txt('COM_MENUS_SUBMENU_MENUS'),
-			Route::url('index.php?option=com_menus&controller=menus'),
-			$vName == 'menus'
-		);
-		Submenu::addEntry(
-			Lang::txt('COM_MENUS_SUBMENU_ITEMS'),
-			Route::url('index.php?option=com_menus&controller=items'),
-			$vName == 'items'
-		);
-	}
-
-	/**
 	 * Gets a list of the actions that can be performed.
 	 *
 	 * @param   integer  $parentId  The menu ID.
@@ -88,7 +68,7 @@ class Menus
 		}
 		else
 		{
-			$assetName = 'com_menus.item.'.(int) $parentId;
+			$assetName = 'com_menus.item.' . (int) $parentId;
 		}
 
 		$actions = Access::getActionsFromFile(\Component::path('com_menus') . '/config/access.xml');
@@ -161,10 +141,12 @@ class Menus
 	/**
 	 * Get a list of menu links for one or all menus.
 	 *
-	 * @param	string	An option menu to filter the list on, otherwise all menu links are returned as a grouped array.
-	 * @param	int		An optional parent ID to pivot results around.
-	 * @param	int		An optional mode. If parent ID is set and mode=2, the parent and children are excluded from the list.
-	 * @param	array	An optional array of states
+	 * @param   string  $menuType   An option menu to filter the list on, otherwise all menu links are returned as a grouped array.
+	 * @param   int     $parentId   An optional parent ID to pivot results around.
+	 * @param   int     $mode       An optional mode. If parent ID is set and mode=2, the parent and children are excluded from the list.
+	 * @param   array   $published  An optional array of states
+	 * @param   array   $languages
+	 * @return  mixed
 	 */
 	public static function getMenuLinks($menuType = null, $parentId = 0, $mode = 0, $published=array(), $languages=array())
 	{
@@ -256,7 +238,6 @@ class Menus
 			// Check for a database error.
 			if ($error = $db->getErrorMsg())
 			{
-				throw new Exception($error, 500);
 				return false;
 			}
 
@@ -323,6 +304,7 @@ class Menus
 		{
 			$associations[$tag] = $item->id;
 		}
+
 		return $associations;
 	}
 }
