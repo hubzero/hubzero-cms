@@ -29,45 +29,43 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Menus\Admin;
+namespace Hubzero\Form\Fields;
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_menus'))
+use App;
+
+/**
+ * Supports an HTML select list of menus
+ */
+class Menu extends Select
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	/**
+	 * The form field type.
+	 *
+	 * @var  string
+	 */
+	public $type = 'Menu';
+
+	/**
+	 * Method to get the list of menus for the field options.
+	 *
+	 * @return  array  The field option objects.
+	 */
+	protected function getOptions()
+	{
+		$db = App::get('db');
+
+		$query = $db->getQuery()
+			->select('menutype', 'value')
+			->select('title', 'text')
+			->from('#__menu_types')
+			->order('title', 'asc');
+
+		$db->setQuery($query->toString());
+		$menus = $db->loadObjectList();
+
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $menus);
+
+		return $options;
+	}
 }
-
-// Determine task
-$task = Request::getCmd('task');
-if (strpos($task, '.') !== false)
-{
-	$splitTask = explode('.', $task);
-	Request::setVar('task', $splitTask[1]);
-}
-
-$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'menus'));
-if (!file_exists(__DIR__ . '/controllers/' . $controllerName . '.php'))
-{
-	$controllerName = 'menus';
-}
-
-\Submenu::addEntry(
-	\Lang::txt('COM_MENUS_SUBMENU_MENUS'),
-	\Route::url('index.php?option=com_menus&controller=menus', false),
-	$controllerName == 'menus'
-);
-\Submenu::addEntry(
-	\Lang::txt('COM_MENUS_SUBMENU_ITEMS'),
-	\Route::url('index.php?option=com_menus&controller=items', false),
-	$controllerName == 'items'
-);
-
-require_once dirname(__DIR__) . '/helpers/menus.php';
-require_once dirname(__DIR__) . '/models/menu.php';
-
-require_once __DIR__ . '/controllers/' . $controllerName . '.php';
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
