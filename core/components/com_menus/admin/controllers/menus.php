@@ -1,116 +1,316 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
+namespace Components\Menus\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Menus\Models\Module;
+use Components\Menus\Models\Menu;
+use Request;
+use Notify;
+use Lang;
+use User;
+use App;
 
 /**
  * The Menu List Controller
- *
- * @package		Joomla.Administrator
- * @subpackage	com_menus
- * @since		1.6
  */
-class MenusControllerMenus extends JControllerLegacy
+class Menus extends AdminController
 {
 	/**
-	 * Display the view
+	 * Execute a task
 	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return	JController		This object to support chaining.
-	 * @since	1.6
+	 * @return  void
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function execute()
 	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('save2new', 'save');
+
+		parent::execute();
 	}
 
 	/**
-	 * Method to get a model object, loading it if required.
+	 * Display a list of articles
 	 *
-	 * @param   string  $name    The model name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  object  The model.
-	 *
-	 * @since   1.6
+	 * @return  void
 	 */
-	public function getModel($name = 'Menu', $prefix = 'MenusModel', $config = array('ignore_request' => true))
+	public function displayTask()
 	{
-		$model = parent::getModel($name, $prefix, $config);
-		return $model;
+		// Get filters
+		$filters = array(
+			'parent_id' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.parent_id',
+				'filter_parent_id',
+				0,
+				'int'
+			),
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+
+		$query = Menu::all()
+			->group('id')
+			->group('menutype')
+			->group('title')
+			->group('description');
+
+		// Get records
+		$rows = $query
+			->order($filters['sort'], $filters['sort_Dir'])
+			->paginated('limitstart', 'limit')
+			->rows();
+
+		$modules = Menu::getModules();
+
+		$modMenuId = (int) Module::getModMenuId();
+
+		// Output the HTML
+		$this->view
+			->set('filters', $filters)
+			->set('items', $rows)
+			->set('modules', $modules)
+			->set('modMenuId', $modMenuId)
+			->display();
+	}
+
+	/**
+	 * Show a form for editing an entry
+	 *
+	 * @param   mixed  $row
+	 * @return  void
+	 */
+	public function editTask($row=null)
+	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		Request::setVar('hidemainmenu', 1);
+
+		if (!is_object($row))
+		{
+			// Incoming
+			$id = Request::getArray('cid', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
+			// Load category
+			$row = Menu::oneOrNew($id);
+		}
+
+		$form = $row->getForm();
+
+		// Output the HTML
+		$this->view
+			->set('item', $row)
+			->set('form', $form)
+			->setLayout('edit')
+			->display();
+	}
+
+	/**
+	 * Save an item
+	 *
+	 * @return  void
+	 */
+	public function saveTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming
+		$fields = Request::getArray('fields', array(), 'post');
+		$cid = Request::getInt('cid', 0, 'post');
+
+		// Initiate extended database class
+		$row = Menu::oneOrNew($cid)->set($fields);
+
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onMenuBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Store new content
+		if (!$row->save())
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Trigger after save event
+		Event::trigger('onMenuAfterSave', array(&$row, $isNew));
+
+		// Notify of success
+		Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
+
+		// Redirect to main listing or go back to edit form
+		if ($this->getTask() == 'apply')
+		{
+			return $this->editTask($row);
+		}
+
+		if ($this->getTask() == 'save2new')
+		{
+			$row = Menu::blank();
+
+			return $this->editTask($row);
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
 	 * Removes an item
+	 *
+	 * @return  void
 	 */
-	public function delete()
+	public function removeTask()
 	{
 		// Check for request forgeries
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken();
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Get items to remove from the request.
-		$cid = Request::getArray('cid', array(), '');
+		$ids = Request::getArray('cid', array());
 
-		if (!is_array($cid) || count($cid) < 1)
+		// Make sure the item ids are integers
+		\Hubzero\Utility\Arr::toInteger($ids);
+
+		if (!is_array($ids) || count($ids) < 1)
 		{
 			Notify::error(Lang::txt('COM_MENUS_NO_MENUS_SELECTED'));
 		}
 		else
 		{
-			// Get the model.
-			$model = $this->getModel();
+			$success = 0;
 
-			// Make sure the item ids are integers
-			\Hubzero\Utility\Arr::toInteger($cid);
-
-			// Remove the items.
-			if (!$model->delete($cid))
+			foreach ($ids as $id)
 			{
-				$this->setMessage($model->getError());
+				// Load the record
+				$model = Menu::oneOrFail(intval($id));
+
+				// Trigger before delete event
+				Event::trigger('onMenuBeforeDelete', array('com_menus.menu', $model->getTableName()));
+
+				// Attempt to delete the record
+				$menuType = $model->get('menutype');
+
+				if (!$model->destroy())
+				{
+					Notify::error($model->getError());
+					continue;
+				}
+
+				if ($menuType == User::getState($this->_option . '.items.menutype'))
+				{
+					User::setState($this->_option . '.items.menutype', null);
+				}
+
+				// Trigger after delete event
+				Event::trigger('onMenuAfterDelete', array('com_menus.menu', $model->getTableName()));
+
+				$success++;
 			}
-			else
+
+			if ($success)
 			{
-				$this->setMessage(Lang::txts('COM_MENUS_N_MENUS_DELETED', count($cid)));
+				// Set the success message
+				Notify::success(Lang::txt('COM_MENUS_N_MENUS_DELETED', $success));
 			}
 		}
 
-		$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));
+		$this->cancelTask();
 	}
 
 	/**
 	 * Rebuild the menu tree.
 	 *
-	 * @return	bool	False on failure or error, true on success.
+	 * @return  bool  False on failure or error, true on success.
 	 */
-	public function rebuild()
+	public function rebuildTask()
 	{
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
-
-		$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));
+		Request::checkToken();
 
 		// Initialise variables.
-		$model = $this->getModel('Item');
+		$model = Menu::oneOrFail($id);
 
-		if ($model->rebuild()) {
+		if ($model->rebuild())
+		{
 			// Reorder succeeded.
-			$this->setMessage(Lang::txt('JTOOLBAR_REBUILD_SUCCESS'));
-			return true;
-		} else {
-			// Rebuild failed.
-			$this->setMessage(Lang::txt('JTOOLBAR_REBUILD_FAILED', $model->getMessage()));
-			return false;
+			Notify::success(Lang::txt('JTOOLBAR_REBUILD_SUCCESS'));
 		}
+		else
+		{
+			// Rebuild failed.
+			Notify::error(Lang::txt('JTOOLBAR_REBUILD_FAILED', $model->getError()));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
-	 * Temporary method. This should go into the 1.5 to 1.6 upgrade routines.
+	 * Resync component IDs to menu items.
+	 *
+	 * @return  void
 	 */
-	public function resync()
+	public function resyncTask()
 	{
 		// Initialise variables.
 		$db = App::get('db');
@@ -120,24 +320,24 @@ class MenusControllerMenus extends JControllerLegacy
 		$components = $db->setQuery(
 			'SELECT element, extension_id' .
 			' FROM #__extensions' .
-			' WHERE type = '.$db->quote('component')
+			' WHERE type = ' . $db->quote('component')
 		)->loadAssocList('element', 'extension_id');
 
 		if ($error = $db->getErrorMsg())
 		{
-			throw new Exception($error, 500);
+			App::abort(500, $error);
 		}
 
 		// Load all the component menu links
 		$items = $db->setQuery(
 			'SELECT id, link, component_id' .
 			' FROM #__menu' .
-			' WHERE type = '.$db->quote('component')
+			' WHERE type = ' . $db->quote('component')
 		)->loadObjectList();
 
 		if ($error = $db->getErrorMsg())
 		{
-			throw new Exception($error, 500);
+			App::abort(500, $error);
 		}
 
 		foreach ($items as $item)
@@ -169,15 +369,14 @@ class MenusControllerMenus extends JControllerLegacy
 					echo "<br/>$log";
 
 					$db->setQuery(
-						'UPDATE #__menu' .
-						' SET component_id = '.$componentId.
-						' WHERE id = '.$item->id
+						'UPDATE `#__menu`' .
+						' SET component_id = ' . $componentId .
+						' WHERE id = ' . $item->id
 					)->query();
-					//echo "<br>".$db->getQuery();
 
 					if ($error = $db->getErrorMsg())
 					{
-						throw new Exception($error, 500);
+						App::abort(500, $error);
 					}
 				}
 			}
