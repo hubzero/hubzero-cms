@@ -106,6 +106,8 @@ $this->css();
 				{
 					$desc = '<span class="warning">' . Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_FILE_NOT_FOUND') . '</span>';
 				}
+
+				$cls = ($row['core'] ? 'dir-core' : 'dir-app');
 				?>
 				<tr>
 					<td>
@@ -113,7 +115,7 @@ $this->css();
 					</td>
 					<td>
 						<?php echo $component; ?><br />
-						<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='.urlencode(str_replace('/migrations', '', $row['scope']))); ?>" class="dir-locale <?php echo ($row['core'] ? 'dir-core' : 'dir-app'); ?>"><?php echo str_replace('/migrations', '', $row['scope']); ?></a>
+						<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='.urlencode(str_replace('/migrations', '', $row['scope']))); ?>" class="dir-locale <?php echo $cls; ?>"><?php echo str_replace('/migrations', '', $row['scope']); ?></a>
 					</td>
 					<td class="priority-3"><?php echo $date; ?></td>
 					<td>
