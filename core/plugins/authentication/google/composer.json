@@ -1,0 +1,25 @@
+{
+	"name": "hubzero/plg_authentication_google",
+	"description": "Google authentication plugin for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"google/apiclient": "^2.0"
+	},
+	"extra": {
+		"install-directory": "/plugins/authentication/google/"
+	}
+}

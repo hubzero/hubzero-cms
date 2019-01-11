@@ -1,0 +1,24 @@
+{
+	"name": "hubzero/plg_system_languagecode",
+	"description": "Provides the ability to change the language code in the generated HTML document to improve SEO for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4"
+	},
+	"extra": {
+		"install-directory": "/plugins/system/languagecode/"
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name": "hubzero/plg_filesystem_github",
+	"description": "GitHub filesystem plugin for the HUBzero CMS.",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"league/flysystem": "1.0.*",
+		"hubzero/flysystem-github": "dev-develop"
+	},
+	"extra": {
+		"install-directory": "/plugins/filesystem/github/"
+	}
+}

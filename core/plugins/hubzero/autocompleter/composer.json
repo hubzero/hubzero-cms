@@ -1,0 +1,24 @@
+{
+	"name": "hubzero/plg_hubzero_autocompleter",
+	"description": "Autocompleter (tags, members, groups) plugin for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4"
+	},
+	"extra": {
+		"install-directory": "/plugins/hubzero/autocompleter/"
+	}
+}

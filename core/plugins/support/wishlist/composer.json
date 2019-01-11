@@ -1,0 +1,26 @@
+{
+	"name": "hubzero/plg_support_wishlist",
+	"description": "Wishlist plugin for the Support component for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_support": "dev-master",
+		"hubzero/com_wishlist": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/support/wishlist/"
+	}
+}
