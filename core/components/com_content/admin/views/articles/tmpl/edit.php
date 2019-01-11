@@ -207,7 +207,7 @@ endif;
 			</table>
 			<?php echo Html::sliders('start', 'content-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 			<?php // Do not show the publishing options if the edit form is configured not to. ?>
-			<?php  if ($params['show_publishing_options'] || ( $params['show_publishing_options'] = '' && !empty($editoroptions)) ): ?>
+			<?php  if ($params['show_publishing_options'] || ($params['show_publishing_options'] = '' && !empty($editoroptions))): ?>
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>
 				<fieldset class="panelform">
 					<div class="input-wrap">
@@ -275,8 +275,10 @@ endif;
 				</div>
 			</fieldset>
 
-			<?php // We need to make a separate space for the configuration
-			      // so that those fields always show to those with permissions ?>
+			<?php
+			// We need to make a separate space for the configuration
+			// so that those fields always show to those with permissions
+			?>
 			<?php if ( User::authorise('core.admin')   ):  ?>
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'), 'configure-sliders'); ?>
 				<fieldset class="panelform">
