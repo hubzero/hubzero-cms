@@ -279,7 +279,7 @@ endif;
 			// We need to make a separate space for the configuration
 			// so that those fields always show to those with permissions
 			?>
-			<?php if ( User::authorise('core.admin')   ):  ?>
+			<?php if (User::authorise('core.admin')): ?>
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'), 'configure-sliders'); ?>
 				<fieldset class="panelform">
 					<?php foreach ($this->form->getFieldset('editorConfig') as $field) : ?>
