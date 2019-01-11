@@ -1,6 +1,6 @@
 {
-	"name": "hubzero/plg_wiki_markdownparser",
-	"description": "Markdown parser for the wiki component",
+	"name": "hubzero/plg_wiki_editortoolbar",
+	"description": "Toolbar editor plugin for the Wiki component for the HUBzero CMS",
 	"type": "hubzero-plugin",
 	"keywords": ["hubzero"],
 	"homepage": "https://hubzero.org",
@@ -20,6 +20,6 @@
 		"hubzero/com_wiki": "dev-master"
 	},
 	"extra": {
-		"install-directory": "/plugins/wiki/markdownparser/"
+		"install-directory": "/plugins/wiki/editortoolbar/"
 	}
 }
