@@ -1,6 +1,6 @@
 {
-	"name": "hubzero/plg_wiki_markdownparser",
-	"description": "Markdown parser for the wiki component",
+	"name": "hubzero/plg_editors-xtd_image",
+	"description": "Image extended editor plugin for the HUBzero CMS. Displays a button to make it possible to insert images into an Article.",
 	"type": "hubzero-plugin",
 	"keywords": ["hubzero"],
 	"homepage": "https://hubzero.org",
@@ -17,9 +17,9 @@
 	},
 	"require": {
 		"php" : "^5.4",
-		"hubzero/com_wiki": "dev-master"
+		"hubzero/com_content": "dev-master"
 	},
 	"extra": {
-		"install-directory": "/plugins/wiki/markdownparser/"
+		"install-directory": "/plugins/editors-xtd/image/"
 	}
 }

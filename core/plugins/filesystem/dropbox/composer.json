@@ -1,6 +1,6 @@
 {
-	"name": "hubzero/plg_wiki_markdownparser",
-	"description": "Markdown parser for the wiki component",
+	"name": "hubzero/plg_filesystem_dropbox",
+	"description": "Dropbox filesystem plugin for the HUBzero CMS.",
 	"type": "hubzero-plugin",
 	"keywords": ["hubzero"],
 	"homepage": "https://hubzero.org",
@@ -17,9 +17,11 @@
 	},
 	"require": {
 		"php" : "^5.4",
-		"hubzero/com_wiki": "dev-master"
+		"league/flysystem": "1.0.*",
+		"srmklive/flysystem-dropbox-v2": "^1.0",
+		"stevenmaguire/oauth2-dropbox": "^2.0.0"
 	},
 	"extra": {
-		"install-directory": "/plugins/wiki/markdownparser/"
+		"install-directory": "/plugins/filesystem/dropbox/"
 	}
 }

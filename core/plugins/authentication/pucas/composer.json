@@ -1,6 +1,6 @@
 {
-	"name": "hubzero/plg_wiki_markdownparser",
-	"description": "Markdown parser for the wiki component",
+	"name": "hubzero/plg_authentication_pucas",
+	"description": "Purdue University CAS authentication plugin for the HUBzero CMS",
 	"type": "hubzero-plugin",
 	"keywords": ["hubzero"],
 	"homepage": "https://hubzero.org",
@@ -17,9 +17,9 @@
 	},
 	"require": {
 		"php" : "^5.4",
-		"hubzero/com_wiki": "dev-master"
+		"jasig/phpcas": "1.3.5"
 	},
 	"extra": {
-		"install-directory": "/plugins/wiki/markdownparser/"
+		"install-directory": "/plugins/authentication/pucas/"
 	}
 }
