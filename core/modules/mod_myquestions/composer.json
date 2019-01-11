@@ -1,0 +1,22 @@
+{
+	"name": "hubzero/mod_myquestions",
+	"description": "This module will display a list of questions submitted by the user, as well as those user can answer in the HUBzero CMS",
+	"type": "hubzero-module",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_answers": "dev-master"
+	}
+}
