@@ -1,0 +1,21 @@
+{
+	"name": "hubzero/com_search",
+	"description": "Search component for the HUBzero CMS",
+	"type": "hubzero-component",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4"
+	}
+}
