@@ -1,0 +1,47 @@
+/**
+ * @package     hubzero-cms
+ * @file        core/core/modules/mod_activity/assets/css/mod_activity.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/* Default styles */
+	.mod_eprivacy {
+		margin: 0;
+		padding: 1em 5em 1em 2em;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: #f8ee7b;
+		z-index: 10000;
+		width: 100%;
+		color: #333;
+	}
+	.mod_eprivacy-close {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #e4d53f;
+		text-align: left;
+		padding: 0.5em;
+		font-size: 2em;
+		border: none !important;
+	}
+	.mod_eprivacy-close:hover {
+		border: none !important;
+	}
+	.mod_eprivacy-close span {
+		display: block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	.mod_eprivacy-close span:before {
+		font-family: 'Fontcons';
+		content: "\2716";
+		padding: 0.2em;
+	}
