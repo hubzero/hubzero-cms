@@ -82,7 +82,7 @@ $this->css($css);
 				<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $this->config->get('MetaDesc'); ?></span>
 			</td>
 			<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
-				Members
+				<?php echo Lang::txt('COM_MEMBERS'); ?>
 			</td>
 		</tr>
 	</tbody>
@@ -90,7 +90,7 @@ $this->css($css);
 <!-- End Header -->
 
 <!-- Start Header Spacer -->
-<table  width="100%" cellpadding="0" cellspacing="0" border="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr style="border-collapse: collapse;">
 		<td height="30" style="border-collapse: collapse;"></td>
 	</tr>
@@ -98,7 +98,7 @@ $this->css($css);
 <!-- End Header Spacer -->
 
 <!-- ====== Start Header ====== -->
-<table id="account-header" width="100%"  cellpadding="0" cellspacing="0" border="0">
+<table id="account-header" width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tbody>
 		<tr>
 			<td style="font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
@@ -110,14 +110,14 @@ $this->css($css);
 <!-- ====== End Header ====== -->
 
 <!-- ====== Start Header Spacer ====== -->
-<table  width="100%" cellpadding="0" cellspacing="0" border="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr style="border-collapse: collapse;">
 		<td height="30" style="border-collapse: collapse;"></td>
 	</tr>
 </table>
 <!-- ====== End Header Spacer ====== -->
 
-<table id="account-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table id="account-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
 	<tbody>
 		<tr>
 			<td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
@@ -137,26 +137,12 @@ $this->css($css);
 	</tbody>
 </table>
 
-<!-- Start Header -->
-<table width="100%" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse; border-top: 2px solid #e1e1e1;">
+<!-- Start Spacer -->
+<table class="tbl-spacer" width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tbody>
 		<tr>
-			<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-				<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-					<?php echo Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_WHY_NOTFIED', $this->config->get('sitename'), $this->baseUrl, $this->baseUrl); ?>
-				</span>
-			</td>
+			<td height="30"></td>
 		</tr>
 	</tbody>
 </table>
-<!-- End Header -->
-
-<!-- Start Footer Spacer -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tbody>
-		<tr style="border-collapse: collapse;">
-			<td height="30" style="border-collapse: collapse; color: #fff !important;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
-		</tr>
-	</tbody>
-</table>
-<!-- End Footer Spacer -->
+<!-- End Spacer -->
