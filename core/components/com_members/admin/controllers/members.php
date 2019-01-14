@@ -670,8 +670,17 @@ class Members extends AdminController
 		$this->cancelTask();
 	}
 
+	/**
+	 * Re-send a confirmation email to a user
+	 *
+	 * @return  void
+	 */
 	public function resendConfirmTask()
 	{
+		// Check for request forgeries
+		Request::checkToken('get');
+
+		// Check for permission to perform this aciton
 		if (!User::authorise('core.manage', $this->_option)
 		 && !User::authorise('core.admin', $this->_option)
 		 && !User::authorise('core.create', $this->_option)
@@ -679,16 +688,19 @@ class Members extends AdminController
 		{
 			return $this->cancelTask();
 		}
-		Request::checkToken('get');
+
 		$id = Request::getInt('id');
 		$user = Member::oneOrFail($id);
+
 		$xregistration = new \Components\Members\Models\Registration();
 		$xregistration->loadProfile($user);
+
 		// Send confirmation email
 		if ($user->get('activation') < 0)
 		{
 			$sendEmail = \Components\Members\Helpers\Utility::sendConfirmEmail($user, $xregistration);
 		}
+
 		if ($sendEmail)
 		{
 			Notify::success(Lang::txt('COM_MEMBERS_RESEND_CONFIRM_SUCCESS'));
@@ -697,8 +709,10 @@ class Members extends AdminController
 		{
 			Notify::error(Lang::txt('COM_MEMBERS_RESEND_CONFIRM_ERROR'));
 		}
+
 		return $this->editTask($user);
 	}
+
 	/**
 	 * Removes a profile entry, associated picture, and redirects to main listing
 	 *
