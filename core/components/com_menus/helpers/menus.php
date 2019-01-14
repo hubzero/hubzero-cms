@@ -225,7 +225,7 @@ class Menus
 		if (empty($menuType))
 		{
 			// If the menutype is empty, group the items by menutype.
-			$query->clear();
+			$query = $db->getQuery();
 			$query->select('*');
 			$query->from('#__menu_types');
 			$query->where('menutype', '<>', '');
