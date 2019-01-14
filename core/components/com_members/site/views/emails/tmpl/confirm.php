@@ -48,4 +48,4 @@ $link = str_replace('/administrator', '', $this->baseURL);
 
 <?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename); ?>
 
-<?php echo $link; ?>
+<?php echo $link;
