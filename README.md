@@ -1,5 +1,7 @@
 # QUBESHub Instance of The HUBzero® Platform for Scientific Collaboration
 
+[![DOI](https://zenodo.org/badge/70513480.svg)](https://zenodo.org/badge/latestdoi/70513480)
+
 All extensions of the `app` directory are subtrees (effectively).
 
 ## Components
