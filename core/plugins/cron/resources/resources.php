@@ -60,6 +60,11 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				'name'   => 'auditResourceData',
 				'label'  => Lang::txt('PLG_CRON_RESOURCES_AUDIT'),
 				'params' => 'audit'
+			),
+			array(
+				'name'   => 'emailMemberDigest',
+				'label'  => Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBER_DIGEST'),
+				'params' => 'digest'
 			)/*,
 			array(
 				'name'   => 'updateResourceRanking',
@@ -111,7 +116,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Includes
-		require_once Component::path('com_publications') . DS . 'models' . DS . 'doi.php';
+		require_once Component::path('com_publications') . '/models/doi.php';
 
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi();
@@ -122,7 +127,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+		require_once Component::path('com_resources') . '/models/entry.php';
 
 		// Go through records
 		foreach ($rows as $row)
@@ -255,7 +260,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		$queued = $database->loadObjectList();
 
-		require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+		require_once Component::path('com_resources') . '/models/entry.php';
 
 		// Loop through each resource and rank it
 		foreach ($queued as $item)
@@ -366,6 +371,197 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 					$result->save();
 				}
 			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Email member activity digest
+	 *
+	 * Current limitations include a lack of queuing/scheduling. This means that this cron job
+	 * should not be set to run more than once daily, otherwise it will continue to send out the
+	 * same digest to people over and over again.
+	 *
+	 * @param   object  $job  \Components\Cron\Models\Job
+	 * @return  bool
+	 */
+	public function emailMemberDigest(\Components\Cron\Models\Job $job)
+	{
+		$params = $job->params;
+
+		// Determine parameters
+		$batch    = intval($params->get('digest_batch', 500));
+		$interval = strtoupper($params->get('digest_frequency', '1 month'));
+
+		$now      = Date::of('now')->toSql();
+		$previous = Date::of('now')->subtract($interval)->toSql();
+
+		// Get records that haven't been processed
+		$db = App::get('db');
+
+		$query = "SELECT DISTINCT(u.id)
+				FROM `#__users` AS u
+				LEFT JOIN `#__activity_logs` AS l ON l.scope_id=u.id
+				AND l.`scope`=" . $db->quote('member.resources') . "
+				AND l.`action`=" . $db->quote('emailed') . "
+				WHERE u.`block`=0
+				AND u.`activation` > 0
+				AND u.`approved` > 0
+				AND u.`sendEmail`=1
+				AND (l.`created` IS NULL OR l.`created` = '0000-00-00 00:00:00' OR l.`created` <= " . $db->quote($previous) . ")
+				LIMIT 0," . $batch;
+		$db->setQuery($query);
+		$users = $db->loadColumn();
+
+		// Loop through members and get their groups that have the digest set
+		if ($users && count($users) > 0)
+		{
+			// Load language files
+			Lang::load('plg_cron_resources') ||
+			Lang::load('plg_cron_resources', __DIR__);
+
+			require_once Component::path('com_resources') . '/models/entry.php';
+
+			$limit = intval($params->get('digest_limit', 3));
+
+			foreach ($users as $user)
+			{
+				if ($user != 1001)
+				{
+					continue;
+				}
+				$query = Components\Resources\Models\Entry::all();
+
+				$r = $query->getTableName();
+
+				$query
+					->deselect()
+					->select('DISTINCT ' . $r . '.*')
+					->whereEquals($r . '.published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+					->whereIn($r . '.access', User::getAuthorisedViewLevels())
+					->whereEquals($r . '.standalone', 1);
+
+				$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+					->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
+					->resetDepth();
+
+				$query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+					->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
+					->resetDepth();
+
+				$tags = Components\Tags\Models\Objct::all()
+					->whereEquals('objectid', $user)
+					->whereEquals('tbl', 'xprofiles')
+					->rows()
+					->fieldsByKey('tagid');
+
+				if (!empty($tags))
+				{
+					$subquery = "
+						(
+							(
+								SELECT COUNT(DISTINCT tj.tagid)
+								FROM `#__tags_object` AS tj
+								LEFT JOIN `#__tags` AS t ON t.id=tj.tagid
+								WHERE tj.objectid=" . $r . ".id
+								AND tj.tbl='resources'
+								AND t.id IN (" . implode(',', $tags) . ")
+							)
+							*
+							((90 / ((datediff(NOW(), " . $r . ".created) * 1) + 90)) + 0)
+						)
+						+
+						(LN(LN(1 / (case when datediff(NOW(), " . $r . ".created) >= 1 then datediff(NOW(), " . $r . ".created) else 1 end) + 1)) + 10)
+					";
+
+					$query->select('(' . $subquery . ')', 'tag_weight');
+					$query->order('tag_weight', 'desc');
+				}
+				$query->order($r . '.created', 'desc');
+				$query->start(0);
+				$query->limit($limit);
+
+				$posts = $query->rows();
+
+				// Gather up applicable posts and queue up the emails
+				if (count($posts) > 0)
+				{
+					if ($this->sendEmail($user, $posts, $params))
+					{
+						// Log activity
+						Event::trigger('system.logActivity', [
+							'activity' => [
+								'action'      => 'emailed',
+								'scope'       => 'member.resources',
+								'scope_id'    => $user,
+								'description' => Lang::txt('PLG_CRON_RESOURCES_EMAILED_DIGEST'),
+								'details'     => array(
+								)
+							],
+							'recipients' => [
+								//$user
+							]
+						]);
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Handles the actual sending of emails
+	 *
+	 * @param   int     $user      the user id to send to
+	 * @param   array   $posts     the posts to include in the email
+	 * @param   object  $params    the cron job params
+	 * @return  bool
+	 **/
+	private function sendEmail($user, $posts, $params)
+	{
+		$user = User::oneOrNew($user);
+
+		if (!$user->get('id'))
+		{
+			$this->setError('PLG_CRON_RESOURCES_USER_NOT_FOUND', $user->get('id'));
+			return false;
+		}
+
+		$eview = new Hubzero\Mail\View(array(
+			'base_path' => __DIR__,
+			'name'      => 'emails',
+			'layout'    => 'digest_plain'
+		));
+		$eview->member = $user;
+		$eview->rows   = $posts;
+
+		$plain = $eview->loadTemplate();
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		// HTML
+		$eview->setLayout('digest_html');
+
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
+
+		// Build message
+		$message = App::get('mailer');
+		$message->setSubject($params->get('digest_subject', Lang::txt('PLG_CRON_RESOURCES_EMAIL_DIGEST_SUBJECT')))
+				->addFrom(Config::get('mailfrom'), Config::get('sitename'))
+				->addTo($user->get('email'), $user->get('name'))
+				->addHeader('X-Component', 'com_resources')
+				->addHeader('X-Component-Object', 'members_activity_email_digest');
+
+		$message->addPart($plain, 'text/plain');
+		$message->addPart($html, 'text/html');
+
+		// Send mail
+		if (!$message->send($this->params->get('email_transport_mechanism')))
+		{
+			$this->setError(Lang::txt('PLG_CRON_RESOURCES_EMAIL_FAILED', $user->get('email')));
+			return false;
 		}
 
 		return true;
