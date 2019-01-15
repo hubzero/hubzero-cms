@@ -158,7 +158,7 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 			$ars = $this->onMembersContributionsAreas();
 			if (!isset($areas[$this->_name])
 			 && !in_array($this->_name, $areas)
-			 && !array_intersect($areas, array_keys($ars['publications'])))
+			 && !array_intersect($areas, array_keys($ars)))
 			{
 				return array();
 			}
