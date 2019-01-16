@@ -157,11 +157,12 @@ if ($label == 'none') {
 										<?php $citeId = $cite->id; ?>
 										<?php if ($batch_download) : ?>
 											<td class="batch">
-												<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $citeId; ?>" />
+												<input type="checkbox" class="download-marker" name="download_marker[]" id="download_marker<?php echo $citeId; ?>" value="<?php echo $citeId; ?>" />
 											</td>
 										<?php endif; ?>
 										<?php if ($label != "none") : ?>
 											<td class="priority-3 citation-label <?php echo $citations_label_class; ?>">
+												<label for="download_marker<?php echo $citeId; ?>">
 												<?php
 													$type = "";
 													foreach ($this->types as $t) {
@@ -185,6 +186,7 @@ if ($label == 'none') {
 															break;
 													}
 												?>
+												</label>
 											</td>
 										<?php endif; ?>
 										<td class="citation-container">

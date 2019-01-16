@@ -16,8 +16,6 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$('.entries-filters label').hide();
-
 	$('.entries-filters select').on('change', function(e){
 		$(this).closest('form').submit();
 	});
