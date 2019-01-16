@@ -247,41 +247,6 @@ jQuery(document).ready(function($){
 		});
 	}
 
-	// Test for placeholder support
-	var test = document.createElement('input'),
-		placeholder_supported = ('placeholder' in test);
-
-	// If we dont have placeholder support mimic it with focus and blur events
-	if (!placeholder_supported) {
-		$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
-			var placeholderText = $(el).attr('placeholder');
-
-			if (placeholderText != '' && placeholderText != null) {
-				if ($(el).val() == '') {
-					$(el).addClass('placeholder-support').val(placeholderText);
-				}
-
-				$(el)
-					.on('focus', function() {
-						if ($(el).val() == placeholderText) {
-							$(el).removeClass('placeholder-support').val('');
-						}
-					})
-					.on('blur', function(){
-						if ($(el).val() == '') {
-							$(el).addClass('placeholder-support').val(placeholderText);
-						}
-					});
-			}
-		});
-
-		$('form').on('submit', function(event){
-			$('.placeholder-support').each(function (i, el) {
-				$(this).val('');
-			});
-		});
-	}
-
 	$('.disabled,:disabled').on('click', function(e){
 		if ($(this).hasClass('disabled') || $(this).prop('disabled')) {
 			e.preventDefault();
