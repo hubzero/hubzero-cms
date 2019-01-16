@@ -76,7 +76,7 @@ class Gitlab
 			'headers' => array('PRIVATE-TOKEN' => $token)
 		);
 		$this->client = new \GuzzleHttp\Client;
-		
+
 	}
 
 	/**
@@ -168,7 +168,7 @@ class Gitlab
 		$resource = 'projects' . DS . $params['id'] . DS . 'repository' . DS . 'branches' . DS . $params['branch'] . DS . 'protect';
 		return $this->_putRequest($resource, array());
 	}
-	
+
 	/**
 	 * Generic Get Request
 	 * 
@@ -195,7 +195,7 @@ class Gitlab
 
 		$requestOptions = array_merge(array('query' => $params), $this->options);
 		$response = $this->client->request('POST', $this->url . DS . $resource, $requestOptions);
-	
+
 		return json_decode($response->getBody(), true);
 	}
 
