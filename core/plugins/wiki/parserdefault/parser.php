@@ -1151,7 +1151,10 @@ class WikiParser
 				case 'sql':
 				case 'xml':
 				case 'sh':
-					jimport('geshi.geshi');
+					if (file_exists(PATH_CORE . '/plugins/content/geshi/geshi/geshi.php'))
+					{
+						include_once PATH_CORE . '/plugins/content/geshi/geshi/geshi.php';
+					}
 
 					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
 					$txt = trim($txt, "\n\r\t");
