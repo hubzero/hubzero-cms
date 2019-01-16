@@ -26,7 +26,16 @@
 
 			legend,
 			label {
-				display: none;
+				/*display: none;*/
+				border: 0;
+				clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+				clip: rect(1px, 1px, 1px, 1px);
+				height: 1px;
+				margin: -1px;
+				overflow: hidden;
+				padding: 0;
+				position: absolute;
+				width: 1px;
 			}
 		}
 		input,
@@ -121,6 +130,19 @@
 		.clearfix();
 		border-bottom: 1px solid #ccc;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+
+		label {
+			/*display: none;*/
+			border: 0;
+			clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+			clip: rect(1px, 1px, 1px, 1px);
+			height: 1px;
+			margin: -1px;
+			overflow: hidden;
+			padding: 0;
+			position: absolute;
+			width: 1px;
+		}
 	}
 	.entries-filters + .entries-filters {
 		margin-top: 30px;
