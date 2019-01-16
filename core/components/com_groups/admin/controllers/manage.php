@@ -671,10 +671,10 @@ class Manage extends AdminController
 
 		// instantiate new gitlab client
 		$client = new Gitlab($gitlabUrl, $gitlabKey);
-		
+
 		// Search for group in Gitlab
 		$gitLabGroup = $client->groups($groupName);
-		
+
 		// create group if doesnt exist
 		if ($gitLabGroup == null)
 		{
@@ -683,18 +683,18 @@ class Manage extends AdminController
 				'path' => strtolower($groupName)
 			));
 		}
-		elseif (sizeof($gitLabGroup) > 1)
+		elseif (count($gitLabGroup) > 1)
 		{  // If search returns more than one match, return with error.
 			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_MORE_THAN_ONE' . $groupName));
 			return;
-		} 
-		elseif (sizeof($gitLabGroup) == 1)
+		}
+		elseif (count($gitLabGroup) == 1)
 		{
 			// Grab first element of array
 			$gitLabGroup = $gitLabGroup[0];
 		}
 		else
-		{  
+		{
 			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_UNKNOWN_ERROR'));
 			return;
 		}
@@ -715,22 +715,22 @@ class Manage extends AdminController
 				'snippets_enabled'       => true,
 			));
 		}
-		elseif (sizeof($gitLabProject) > 1)
+		elseif (count($gitLabProject) > 1)
 		{  // If search returns more than one match return with error.
 			Notify::error(Lang::txt('COM_GROUPS_GITLAB_PROJECTS_MORE_THAN_ONE' . $projectName));
 			return;
 		}
-		elseif (sizeof($gitLabProject) == 1)
+		elseif (count($gitLabProject) == 1)
 		{
 			// Grab first element of array
 			$gitLabProject = $gitLabProject[0];
 		}
 		else
-		{  
+		{
 			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_PROJECTS_UNKNOWN_ERROR'));
 			return;
 		}
-		
+
 		// path to group folder
 		$uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
