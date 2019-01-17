@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset addfieldpath="/components/com_categories/admin/models/fields">
+	<fieldset addfieldpath="/core/components/com_categories/models/fields">
 		<field
 			id="id"
 			name="id"

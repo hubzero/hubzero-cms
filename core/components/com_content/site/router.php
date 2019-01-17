@@ -35,7 +35,7 @@ use Hubzero\Component\Router\Base;
 use Component;
 use App;
 
-jimport('joomla.application.categories');
+include_once __DIR__ . '/helpers/route.php';
 
 /**
  * Routing class for the component
@@ -138,10 +138,12 @@ class Router extends Base
 					if (strpos($query['id'], ':') === false)
 					{
 						$db = App::get('db');
-						$aquery = $db->setQuery($db->getQuery(true)
-							->select('alias')
-							->from('#__content')
-							->where('id=' . (int)$query['id'])
+						$aquery = $db->setQuery(
+							$db->getQuery()
+								->select('alias')
+								->from('#__content')
+								->where('id', '=', (int)$query['id'])
+								->toString()
 						);
 						$alias = $db->loadResult();
 						$query['id'] = $query['id'] . ':' . $alias;
@@ -175,7 +177,7 @@ class Router extends Base
 				$mCatid = 0;
 			}
 
-			$categories = \JCategories::getInstance('Content');
+			$categories = \Components\Categories\Helpers\Categories::getInstance('Content');
 			$category   = $categories->get($catid);
 
 			if (!$category)
@@ -326,7 +328,7 @@ class Router extends Base
 			list($id, $alias) = explode(':', $segments[0], 2);
 
 			// first we check if it is a category
-			$category = \JCategories::getInstance('Content')->get($id);
+			$category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($id);
 
 			if ($category && $category->alias == $alias)
 			{
@@ -381,7 +383,7 @@ class Router extends Base
 
 		// we get the category id from the menu item and search from there
 		$id = $item->query['id'];
-		$category = \JCategories::getInstance('Content')->get($id);
+		$category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($id);
 
 		if (!$category)
 		{
