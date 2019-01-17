@@ -52,6 +52,11 @@ require_once Component::path('com_categories') . '/models/category.php';
 class Article extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
+	 * Database state constants
+	 **/
+	const STATE_ARCHIVED = 2;
+
+	/**
 	 * The table namespace
 	 *
 	 * @var  string
@@ -463,17 +468,21 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	/**
 	 * Build a Form object and bind data to it
 	 *
+	 * @param   string  $client
 	 * @return  object
 	 */
-	public function getForm()
+	public function getForm($client = '')
 	{
-		$file = __DIR__ . '/forms/article.xml';
+		$file = __DIR__ . '/forms/article' . ($client ? '_' . $client : ''). '.xml';
 		$file = \Filesystem::cleanPath($file);
+
 		$form = new Form('content', array('control' => 'fields'));
+
 		if (!$form->loadFile($file, false, '//form'))
 		{
 			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
+
 		$data = $this->getAttributes();
 		$data['attribs']  = $this->attribs->toArray();
 		$data['metadata'] = $this->metadata->toArray();
@@ -481,7 +490,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		{
 			unset($data['asset_id']);
 		}
+
 		$form->bind($data);
+
 		return $form;
 	}
 
@@ -721,7 +732,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public static function allByFilters($filters = array())
 	{
-		$query = self::all();
+		$query = self::all()->setTableAlias('a')->newQuery(); //self::blank()->getQuery(); //self::all();
 
 		$query
 			->select('a.id')
@@ -751,11 +762,16 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			->select('a.hits')
 			->select('a.featured')
 			->select('a.xreference')
-			->select('a.fulltext', 'readmore')
-			->from($query->getTableName(), 'a');
+			->select('a.fulltext', 'readmore');
+			//->from(self::blank()->getTableName(), 'a');
+
+		if (isset($filters['published']) && !is_array($filters['published']))
+		{
+			$filters['published'] = array($filters['published']);
+		}
 
 		// Process an Archived Article layout
-		if (isset($filters['published']) && in_array(2, $filters['published']))
+		if (isset($filters['published']) && in_array(self::STATE_ARCHIVED, $filters['published']))
 		{
 			// If badcats is not null, this means that the article is inside an archived category
 			// In this case, the state is set to 2 to indicate Archived (even if the article state is Published)
@@ -809,10 +825,12 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
 		// Join to check for category published state in parent categories up the tree
 		// If all categories are published, badcats.id will be null, and we just use the article state
+		$query->select('c.published');
+		$query->select('CASE WHEN badcats.id is null THEN c.published ELSE 0 END', 'parents_published');
 		$subquery  = " (SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ";
 		$subquery .= "ON cat.lft BETWEEN parent.lft AND parent.rgt ";
 		$subquery .= "WHERE parent.extension = 'com_content'";
-		if (isset($filters['published']) && in_array(2, $filters['published']))
+		if (isset($filters['published']) && in_array(self::STATE_ARCHIVED, $filters['published']))
 		{
 			// Find any up-path categories that are archived
 			// If any up-path categories are archived, include all children in archived layout
@@ -842,13 +860,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		// Filter by published state.
-		if (isset($filters['state']))
+		if (isset($filters['published']) && $publishedWhere)
 		{
-			if (!is_array($filters['state']))
+			if (!is_array($filters['published']))
 			{
-				$filters['state'] = array($filters['state']);
+				$filters['published'] = array($filters['published']);
 			}
-			$query->whereIn($publishedWhere, $filters['state']);
+			$query->whereRaw($publishedWhere . ' IN (' . implode(',', $filters['published']) . ')');
 		}
 
 		// Filter by featured state
@@ -908,11 +926,16 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
 			if (is_numeric($categoryId))
 			{
+				if (!isset($filters['category_id.include']))
+				{
+					$filters['category_id.include'] = true;
+				}
+
 				$type = $filters['category_id.include'] ? '=' : '<>';
 
 				if (!isset($filters['subcategories']))
 				{
-					$filters['subcategories'] = true;
+					$filters['subcategories'] = false;
 				}
 
 				// Add subcategory check
@@ -934,12 +957,12 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 					$subQuery->whereEquals('this.id', (int) $categoryId);
 					if ($levels >= 0)
 					{
-						$subQuery->whereRaw('sub.level', '<= this.level + '.$levels);
+						$subQuery->whereRaw('sub.level <= this.level + ' . $levels);
 					}
 
 					// Add the subquery to the main query
-					$query->where('a.catid', $type, (int) $categoryId, 1)
-						->orWhereIn('a.catid', $subQuery->toString(), 1)
+					$query->where('a.catid', $type, (int) $categoryId, 'and', 1)
+						->orWhereRaw('a.catid IN (' . $subQuery->toString() . ')', array(), 1)
 						->resetDepth();
 				}
 				else
@@ -1121,15 +1144,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 				$filter = strtolower($filter);
 				$hitsFilter = intval($filter);
 
-				$db = \App::get('db');
-				$filter = $db->quote('%'.$db->escape($filter, true).'%', false);
-
 				switch ($params->get('filter_field'))
 				{
 					case 'author':
+						$db = \App::get('db');
 						$query->whereRaw(
 							'LOWER( CASE WHEN a.created_by_alias > '.$db->quote(' ').
-							' THEN a.created_by_alias ELSE ua.name END ) LIKE '.$filter.' '
+							' THEN a.created_by_alias ELSE ua.name END ) LIKE ' . $db->quote('%' . $db->escape($filter, true) . '%', false) . ' '
 						);
 						break;
 
@@ -1156,7 +1177,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
 		$query->order($filters['ordering'], $filters['direction']);
 
-		if (isset($filters['limit']) || $filters['limit'])
+		if (isset($filters['limit']) && $filters['limit'])
 		{
 			$query->limit((int)$filters['limit']);
 		}
@@ -1166,7 +1187,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			$filters['start'] = 0;
 		}
 
-		$query->start((int)$filters['limit']);
+		$query->start((int)$filters['start']);
 
 		return $query;
 	}
@@ -1179,7 +1200,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public static function oneByFilters($filters = array())
 	{
-		$query = self::all();
+		$query = self::all()->setTableAlias('a')->newQuery();
 
 		$query
 			->select('a.id')
@@ -1214,8 +1235,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			->select('a.metadata')
 			->select('a.featured')
 			->select('a.language')
-			->select('a.xreference')
-			->from($query->getTableName(), 'a');
+			->select('a.xreference');
+			//->from($query->getTableName(), 'a');
 
 		// Join on category table.
 		$query->select('c.title', 'category_title')
