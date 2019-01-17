@@ -38,7 +38,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 // It will be a separate class if the user starts it with a space
 ?>
 <div class="blog-featured<?php echo $this->pageclass_sfx; ?>">
-	<?php if ( $this->params->get('show_page_heading')!=0) : ?>
+	<?php if  $this->params->get('show_page_heading') != 0) : ?>
 		<h1>
 			<?php echo $this->escape($this->params->get('page_heading')); ?>
 		</h1>
@@ -71,8 +71,8 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 			$rowcount = (((int)$key-1) % (int) $this->columns) + 1;
 			$row = $counter / $this->columns;
 
-			if ($rowcount==1): ?>
-				<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-' . $row ; ?>">
+			if ($rowcount == 1): ?>
+				<div class="items-row cols-<?php echo (int) $this->columns; ?> <?php echo 'row-' . $row; ?>">
 			<?php endif; ?>
 			<div class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished"' : null; ?>">
 				<?php
@@ -81,7 +81,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 				?>
 			</div>
 			<?php $counter++; ?>
-			<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
+			<?php if (($rowcount == $this->columns) or ($counter == $introcount)): ?>
 					<span class="row-separator"></span>
 				</div>
 			<?php endif; ?>

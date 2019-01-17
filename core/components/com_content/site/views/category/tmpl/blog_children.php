@@ -69,7 +69,7 @@ $class = ' class="first"';
 								<?php echo $child->getNumItems(true); ?>
 							</dd>
 						</dl>
-					<?php endif ; ?>
+					<?php endif; ?>
 
 					<?php if (count($child->getChildren()) > 0):
 						$this->children[$child->id] = $child->getChildren();
