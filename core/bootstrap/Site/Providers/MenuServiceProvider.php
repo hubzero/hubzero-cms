@@ -79,7 +79,7 @@ class MenuServiceProvider extends ServiceProvider
 
 			if (is_object($menu))
 			{
-				$params->parse($menu->params);
+				$params = $menu->params;
 			}
 			else if ($app->has('component'))
 			{
