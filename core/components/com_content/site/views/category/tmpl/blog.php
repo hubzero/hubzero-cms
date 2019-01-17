@@ -99,11 +99,11 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 			<?php foreach ($this->intro_items as $key => &$item) : ?>
 				<?php
 				$key = ($key-$leadingcount)+1;
-				$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
+				$rowcount = (((int)$key-1) % (int) $this->columns) +1;
 				$row = $counter / $this->columns ;
 
-				if ($rowcount==1) : ?>
-					<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
+				if ($rowcount == 1) : ?>
+					<div class="items-row cols-<?php echo (int) $this->columns; ?> <?php echo 'row-' . $row; ?>">
 				<?php endif; ?>
 				<div class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
 					<?php
@@ -112,7 +112,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 					?>
 				</div>
 				<?php $counter++; ?>
-				<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
+				<?php if (($rowcount == $this->columns) or ($counter == $introcount)): ?>
 						<span class="row-separator"></span>
 					</div>
 				<?php endif; ?>
@@ -123,7 +123,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 			<?php echo $this->loadTemplate('links'); ?>
 		<?php endif; ?>
 
-		<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
+		<?php if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0) : ?>
 			<div class="cat-children">
 				<?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
 					<h3>
@@ -134,7 +134,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 			</div>
 		<?php endif; ?>
 
-		<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+		<?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
 			<div class="pagination">
 				<?php /*if ($this->params->def('show_pagination_results', 1)) : ?>
 					<p class="counter">

@@ -79,41 +79,40 @@ $listDirn  = $this->escape($this->filters['direction']);
 
 		<table class="category">
 			<?php if ($this->params->get('show_headings')) :?>
-			<thead>
-				<tr>
-					<th class="list-title" id="tableOrdering">
-						<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
-					</th>
+				<thead>
+					<tr>
+						<th class="list-title" id="tableOrdering">
+							<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+						</th>
 
-					<?php if ($date = $this->params->get('list_show_date')) : ?>
-					<th class="list-date" id="tableOrdering2">
-						<?php if ($date == "created") : ?>
-							<?php echo Html::grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
-						<?php elseif ($date == "modified") : ?>
-							<?php echo Html::grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
-						<?php elseif ($date == "published") : ?>
-							<?php echo Html::grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+						<?php if ($date = $this->params->get('list_show_date')) : ?>
+							<th class="list-date" id="tableOrdering2">
+								<?php if ($date == "created") : ?>
+									<?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.created', $listDirn, $listOrder); ?>
+								<?php elseif ($date == "modified") : ?>
+									<?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.modified', $listDirn, $listOrder); ?>
+								<?php elseif ($date == "published") : ?>
+									<?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+								<?php endif; ?>
+							</th>
 						<?php endif; ?>
-					</th>
-					<?php endif; ?>
 
-					<?php if ($this->params->get('list_show_author', 1)) : ?>
-					<th class="list-author" id="tableOrdering3">
-						<?php echo Html::grid('sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
-					</th>
-					<?php endif; ?>
+						<?php if ($this->params->get('list_show_author', 1)) : ?>
+							<th class="list-author" id="tableOrdering3">
+								<?php echo Html::grid('sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
+							</th>
+						<?php endif; ?>
 
-					<?php if ($this->params->get('list_show_hits', 1)) : ?>
-					<th class="list-hits" id="tableOrdering4">
-						<?php echo Html::grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-					</th>
-					<?php endif; ?>
-				</tr>
-			</thead>
+						<?php if ($this->params->get('list_show_hits', 1)) : ?>
+							<th class="list-hits" id="tableOrdering4">
+								<?php echo Html::grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+							</th>
+						<?php endif; ?>
+					</tr>
+				</thead>
 			<?php endif; ?>
 
 			<tbody>
-
 			<?php foreach ($this->items as $i => $article) : ?>
 				<?php if ($this->items[$i]->state == 0) : ?>
 					<tr class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
@@ -192,15 +191,9 @@ $listDirn  = $this->escape($this->filters['direction']);
 
 	<?php // Add pagination links ?>
 	<?php if (!empty($this->items)) : ?>
-		<?php if (($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+		<?php if (($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
 			<div class="pagination">
-				<?php /*if ($this->params->def('show_pagination_results', 1)) : ?>
-					<p class="counter">
-						<?php echo $this->pagination->getPagesCounter(); ?>
-					</p>
-				<?php endif;*/ ?>
-
-				<?php echo $this->pagination->render(); //getPagesLinks(); ?>
+				<?php echo $this->pagination->render(); ?>
 			</div>
 		<?php endif; ?>
 	</form>
