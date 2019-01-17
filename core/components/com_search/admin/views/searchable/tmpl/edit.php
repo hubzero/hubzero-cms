@@ -132,6 +132,7 @@ function submitbutton(pressbutton)
 				<select id="filter-type" name="filter-type">
 					<option value="list">List</option>
 					<option value="daterange">Date Range</option>
+					<option value="textfield">Text</option>
 				</select>
 			</div>
 			<button id="add-filter">Add Filter</button>
