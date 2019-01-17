@@ -34,6 +34,7 @@ namespace Components\Search\Models\Solr\Filters;
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'option.php';
 require_once Component::path('com_search') . '/models/solr/filters/listfilter.php';
 require_once Component::path('com_search') . '/models/solr/filters/daterangefilter.php';
+require_once Component::path('com_search') . '/models/solr/filters/textfieldfilter.php';
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;

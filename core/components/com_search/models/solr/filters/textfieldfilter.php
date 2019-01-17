@@ -40,28 +40,21 @@ use Hubzero\Config\Registry;
  *
  * @uses  \Hubzero\Database\Relational
  */
-class Daterangefilter extends Filter
+class Textfieldfilter extends Filter
 {
 	/**
 	 * Render form fields on the filter list
 	 *
 	 * @param   array   $counts  counts retrieved from solr search
-	 * @param   array   $dateValues  list of options currently selected
+	 * @param   string   $textValue  list of options currently selected
 	 * @return  string
 	 */
-	public function renderHtml($counts, $dateValues)
+	public function renderHtml($counts, $textValue = '')
 	{
-		$minDate = $this->params->get('minDate');
-		$maxDate = $this->params->get('maxDate');
-		$minDateString = !empty($minDate) ? 'data-mindate="' . $minDate . '" ' : '';
-		$maxDateString = !empty($maxDate) ? 'data-maxdate="' . $maxDate . '" ' : '';
-		$startdate = isset($dateValues['startdate']) ? $dateValues['startdate'] : '';
-		$enddate = isset($dateValues['enddate']) ? $dateValues['enddate'] : '';
+		$textValue = empty($textValue) ? '' : $textValue;
 		$html = '<ul><li><fieldset class="search-filters"><legend>' . $this->label . '</legend>';
-		$html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters[' .
-			$this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';
-		$html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters[' .
-			$this->field . '][enddate]"' . $maxDateString . ' value="' . $enddate . '" autocomplete="off"/>';
+		$html .= '<input type="text" class="" name="filters[' .
+			$this->field . ']" value="' . $textValue . '"/>';
 		$html .= '</li></ul></fieldset>';
 		return $html;
 	}
@@ -75,16 +68,14 @@ class Daterangefilter extends Filter
 	 */
 	public function applyFilters($query, $selectedFilters)
 	{
-		$filterField = strtolower($this->get('field'));
-		$selectedValues = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : array();
-		if (empty($selectedValues))
+		$filterField = strtolower($this->field);
+		$textValue = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : '';
+		if (empty($textValue))
 		{
 			return false;
 		}
 		$queryName = ucfirst($filterField) . '_' . $this->get('id');
-		$startdate = !empty($selectedValues['startdate']) ? Date::of($selectedValues['startdate'])->format('Y-m-d\TH:i:s.999\Z') : '*';
-		$enddate = !empty($selectedValues['enddate']) ? Date::of($selectedValues['enddate'])->format('Y-m-d\TH:i:s.999\Z') : '*';
-		$facetString = '(' . $filterField . ':[' . $startdate . ' TO ' . $enddate . '])';
+		$facetString = '(' . $filterField . ':(' . $textValue . '))';
 		$query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type'));
 		return true;
 	}

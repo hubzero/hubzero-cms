@@ -159,3 +159,14 @@ var daterange = {
 		return optionsContainer;
 	}
 }
+
+var textfield = {
+	addOptionContainer: function(filterName, values){
+		var optionsContainer = $('<section class="options">');
+		var textContainer = $('<div class="input-wrap col span12"></div>');
+		var textField = $('<input type="text" name="filters[' + filterName + '][default]" value="" placeholder="Filter..."/>');
+		textContainer.append(textField);	
+		optionsContainer.append(textContainer);
+		return optionsContainer;
+	}
+}
