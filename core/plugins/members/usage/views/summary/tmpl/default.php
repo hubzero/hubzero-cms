@@ -139,15 +139,15 @@ $this->css('usage', 'com_usage');
 				<?php
 				$count++;
 			}
-			if ($count) //$this->tool_total_14 && $this->tool_total_12)
+			if ($this->tool_total_14 && $this->tool_total_12)
 			{
 				?>
 				<tr class="summary">
 					<td class="group"></td>
 					<td class="group textual-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TOTAL'); ?></td>
-					<td class="group"><?php echo number_format($sum_usercount_12); ?></td>
+					<td class="group"><?php echo number_format($this->tool_total_12); ?></td>
 					<td class="group"><?php echo number_format($sum_simcount_12); ?></td>
-					<td class="group"><?php echo number_format($sum_usercount_14); ?></td>
+					<td class="group"><?php echo number_format($this->tool_total_14); ?></td>
 					<td class="group"><?php echo number_format($sum_simcount_14); ?></td>
 					<td class="group"></td>
 					<td class="group"></td>
