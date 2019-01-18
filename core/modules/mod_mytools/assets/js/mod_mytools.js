@@ -31,7 +31,7 @@ HUB.Modules.MyTools	 = {
 		mouseOverClass: 'over',
 		ajax: {
 			enabled: false,
-			url: $('#myToolsTabs').attr('data-api'), //'/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=',
+			url: $('#myToolsTabs').attr('data-api'),
 			options: {
 				method:'get'
 			},
@@ -124,8 +124,38 @@ HUB.Modules.MyTools	 = {
 
 		// save dashboard
 		if (HUB.Plugins.MemberDashboard) {
-			HUB.Plugins.MemberDashboard.save();
+			HUB.Plugins.MemberDashboard.save(HUB.Modules.MyTools.getFavs);
 		}
+	},
+
+	getFavs: function() {
+		/*var mod = this,
+			$ = this.jQuery,
+			settings = this.settings;*/
+		var settings = HUB.Modules.MyTools.settings;
+
+		if (!settings.ajax.url) {
+			settings.ajax.url = $('#myToolsTabs').attr('data-api');
+		}
+		settings.ajax.url += '&fav=' + $($('.mytools_favs')[0]).val();
+
+		$.ajax({
+			type: settings.ajax.options.method,
+			url: settings.ajax.url,
+			dataType: 'json',
+			success: function(data, status, jqXHR)
+			{
+				dta = $(data.html);
+
+				$('#favtools').html(dta.find('.module-content').html());
+			},
+			error: function(jqXHR, status, error)
+			{
+				console.log(jqXHR);
+				console.log(status);
+				console.log(error);
+			}
+		});
 	},
 
 	activate: function(tab) {
