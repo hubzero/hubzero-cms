@@ -72,7 +72,7 @@ Pathway::append(
 
   <section class="new">
 
-    <h2 id="new">New and Upcoming</h2>
+    <h2 id="new">Current and Upcoming</h2>
 		<hr>
     <div class="new-wrap">
 			<?php \Hubzero\Module\Helper::displayModules('fmnUpcoming'); ?>
