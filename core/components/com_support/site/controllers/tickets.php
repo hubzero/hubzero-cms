@@ -47,6 +47,7 @@ use Hubzero\Component\SiteController;
 use Hubzero\Browser\Detector;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
+use Hubzero\Utility\Arr;
 use Filesystem;
 use Exception;
 use Request;
@@ -297,7 +298,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		$this->view->end   = Request::getString('end', '');
+		$this->view->end = Request::getString('end', '');
 
 		$endmonth = $month;
 		$endyear = date("Y");
@@ -888,6 +889,22 @@ class Tickets extends SiteController
 		}
 		$reporter = Request::getArray('reporter', array(), 'post');
 		$problem  = Request::getArray('problem', array(), 'post');
+
+		foreach ($reporter as $key => $field)
+		{
+			if (is_array($field))
+			{
+				$reporter[$key] = Arr::toString($field);
+			}
+		}
+
+		foreach ($problem as $key => $field)
+		{
+			if (is_array($field))
+			{
+				$problem[$key] = Arr::toString($field);
+			}
+		}
 
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 
