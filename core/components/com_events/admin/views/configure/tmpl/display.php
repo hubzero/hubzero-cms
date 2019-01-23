@@ -44,11 +44,11 @@ Toolbar::cancel();
 		<table class="admintable">
 			<tbody>
 				<tr>
-					<td class="key" style="width:265px;"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINMAIL'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINMAIL'); ?></th>
 					<td><input type="text" name="config[adminmail]" size="30" maxlength="50" value="<?php echo $this->config->adminmail; ?>" /></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL'); ?></th>
 					<td><?php
 					$level[] = Html::select('option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ALL'), 'value', 'text' );
 					$level[] = Html::select('option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SPECIAL'), 'value', 'text' );
@@ -56,7 +56,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FIRSTDAY'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FIRSTDAY'); ?></th>
 					<td><?php
 					$first[] = Html::select('option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SUNDAY_FIRST'), 'value', 'text' );
 					$first[] = Html::select('option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_MONDAY_FIRST'), 'value', 'text' );
@@ -64,7 +64,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWMAIL'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWMAIL'); ?></th>
 					<td><?php
 					$viewm[] = Html::select('option', 'YES', Lang::txt('JYES'), 'value', 'text' );
 					$viewm[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
@@ -72,7 +72,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWBY'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWBY'); ?></th>
 					<td><?php
 					$viewb[] = Html::select('option', 'YES', Lang::txt('YES'), 'value', 'text' );
 					$viewb[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
@@ -80,7 +80,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWHITS'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWHITS'); ?></th>
 					<td><?php
 					$viewh[] = Html::select('option', 'YES', Lang::txt('YES'), 'value', 'text' );
 					$viewh[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
@@ -88,7 +88,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_DATEFORMAT'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_DATEFORMAT'); ?></th>
 					<td><?php
 					$datef[] = Html::select('option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FRENCH_ENGLISH'), 'value', 'text' );
 					$datef[] = Html::select('option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_US'), 'value', 'text' );
@@ -97,7 +97,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT'); ?></th>
 					<td><?php
 					$stdTime[] = Html::select('option', 'YES', Lang::txt('YES'), 'value', 'text' );
 					$stdTime[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
@@ -105,7 +105,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_STARTPAGE'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_STARTPAGE'); ?></th>
 					<td><?php
 					$startpg[] = Html::select('option', 'day', Lang::txt('COM_EVENTS_CAL_LANG_REP_DAY'), 'value', 'text' );
 					$startpg[] = Html::select('option', 'week', Lang::txt('COM_EVENTS_CAL_LANG_REP_WEEK'), 'value', 'text' );
@@ -116,7 +116,7 @@ Toolbar::cancel();
 					?></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_NUMEVENTS'); ?></td>
+					<th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_NUMEVENTS'); ?></th>
 					<td><input type="text" size="3" name="config[calEventListRowsPpg]" value="<?php echo $this->config->calEventListRowsPpg; ?>" /></td>
 				</tr>
 			</tbody>
@@ -128,10 +128,10 @@ Toolbar::cancel();
 		<table class="admintable">
 			<thead>
 				<tr>
-					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_FIELD'); ?></th>
-					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_TYPE'); ?></th>
-					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_REQUIRED'); ?></th>
-					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_SHOW'); ?></th>
+					<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_FIELD'); ?></th>
+					<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_TYPE'); ?></th>
+					<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_REQUIRED'); ?></th>
+					<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_SHOW'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -147,11 +147,11 @@ Toolbar::cancel();
 			{
 				if ($r == 0 || !isset($fields[$i])) {
 					$fields[$i] = array();
-					$fields[$i][0] = NULL;
-					$fields[$i][1] = NULL;
-					$fields[$i][2] = NULL;
-					$fields[$i][3] = NULL;
-					$fields[$i][4] = NULL;
+					$fields[$i][0] = null;
+					$fields[$i][1] = null;
+					$fields[$i][2] = null;
+					$fields[$i][3] = null;
+					$fields[$i][4] = null;
 				}
 				?>
 				<tr>

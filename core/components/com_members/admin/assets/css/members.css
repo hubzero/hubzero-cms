@@ -19,6 +19,10 @@
 	.toolbar-box .icon-32-buildprofile:after {
 		content: "\f0ad"; right: 0px; bottom: -2px;
 	}
+	.tooltip img {
+		float: left;
+		margin-right: 0.5em;
+	}
 	.authenticator,
 	.authenticator-status {
 		display: inline-block;
@@ -35,7 +39,9 @@
 		color: red;
 		border-color: red;
 	}
-
+	.never {
+		color:#bbb;
+	}
 	.unconfirmed {
 		display: block;
 		text-align: center;

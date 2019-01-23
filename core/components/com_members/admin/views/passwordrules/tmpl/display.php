@@ -168,18 +168,18 @@ function submitbutton(pressbutton)
 						//echo $pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'JLIB_HTML_MOVE_DOWN', $row->ordering);
 						?></span>
 						<?php $disabled = $row->get('ordering') ?  '' : 'disabled="disabled"'; ?>
-						<input type="text" name="order[]" size="5" value="<?php echo $row->get('ordering'); ?>" <?php echo $disabled; ?> class="text_area" style="text-align: center" />
+						<input type="text" name="order[]" size="5" value="<?php echo $row->get('ordering'); ?>" <?php echo $disabled; ?> class="text_area align-center" />
 					<?php else : ?>
 						<?php echo $row->get('ordering'); ?>
 					<?php endif; ?>
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit')) : ?>
-						<a class="state <?php echo ($row->get('enabled') ? 'yes': 'no'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle_enabled&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+						<a class="state <?php echo $row->get('enabled') ? 'yes': 'no'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle_enabled&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 							<span><?php echo Lang::txt(($row->get('enabled') ? 'JYES': 'JNO')); ?></span>
 						</a>
 					<?php else : ?>
-						<span class="state <?php echo ($row->get('enabled') ? 'yes': 'no'); ?>">
+						<span class="state <?php echo $row->get('enabled') ? 'yes': 'no'; ?>">
 							<span><?php echo Lang::txt(($row->get('enabled') ? 'JYES': 'JNO')); ?></span>
 						</span>
 					<?php endif; ?>

@@ -124,7 +124,7 @@ if (empty($this->meta->qtyTxt))
 						echo $this->downloaded;
 						if ($this->downloaded == 0 || $this->downloaded > 1)
 						{
-							echo(' times');
+							echo ' times';
 						}
 						else {
 							echo 'time';
@@ -159,7 +159,7 @@ if (empty($this->meta->qtyTxt))
 			if ($this->metaNeeded) {
 				?>
 				<p>
-					<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options (save product first if you updated the type)</a></p>
+					<a class="options-link" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId()); ?>">Edit type-related options (save product first if you updated the type)</a></p>
 				<?php
 			}
 			?>
@@ -342,13 +342,13 @@ if (empty($this->meta->qtyTxt))
 					$image = false;
 					$file = false;
 					$img = new \stdClass();
-					$img->imgId = NULL;
+					$img->imgId = null;
 				}
 				?>
-				<div style="padding-top: 2.5em">
-					<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;task=upload&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
+				<div class="uploader-wrap">
+					<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=product&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
 						<noscript>
-							<iframe height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>"></iframe>
+							<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=product&id=' . $this->row->getId()); ?>"></iframe>
 						</noscript>
 					</div>
 				</div>
@@ -385,15 +385,14 @@ if (empty($this->meta->qtyTxt))
 							<span id="img-name"><?php echo $image; ?></span>
 						</td>
 						<td>
-							<a id="img-delete" <?php echo $image ? '' : 'style="display: none;"'; ?>
-							   href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1"
+							<a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
+							   href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&type=product&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1'); ?>"
 							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span>
-						</td>
+						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
 						<td></td>
 					</tr>
 					<tr>

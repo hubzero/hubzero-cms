@@ -47,7 +47,7 @@ if ($this->page->exists())
 }
 else
 {
-	$lid = Request::getInt('lid', (time() . rand(0,10000)), 'post');
+	$lid = Request::getInt('lid', (time() . rand(0, 10000)), 'post');
 	$lid = '-' . substr($lid, -8);
 }
 
@@ -236,7 +236,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->get('title')); ?>" />
 		<?php } ?>
 
-		<label for="pagetext" style="position: relative;">
+		<label for="pagetext">
 			<?php echo Lang::txt('COM_WIKI_FIELD_PAGETEXT'); ?>:
 			<span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
 			<?php

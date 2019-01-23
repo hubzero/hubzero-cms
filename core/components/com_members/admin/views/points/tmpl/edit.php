@@ -111,12 +111,12 @@ function submitbutton(pressbutton)
 				<caption><?php echo Lang::txt('Transaction History'); ?></caption>
 				<thead>
 					<tr>
-						<th><?php echo Lang::txt('Date'); ?></th>
-						<th><?php echo Lang::txt('Description'); ?></th>
-						<th><?php echo Lang::txt('Category'); ?></th>
-						<th><?php echo Lang::txt('Type'); ?></th>
-						<th><?php echo Lang::txt('Amount'); ?></th>
-						<th><?php echo Lang::txt('Balance'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Date'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Description'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Category'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Type'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Amount'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Balance'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -131,11 +131,11 @@ function submitbutton(pressbutton)
 						<td><?php echo $this->escape($item->category); ?></td>
 						<td><?php echo $this->escape($item->type); ?></td>
 						<?php if ($item->type == 'withdraw') { ?>
-							<td class="aRight"><span style="color: red;">-<?php echo $this->escape($item->amount); ?></span></td>
+							<td class="aRight"><span class="points-subtract">-<?php echo $this->escape($item->amount); ?></span></td>
 						<?php } else if ($item->type == 'hold') { ?>
-							<td class="aRight"><span style="color: #999;"> <?php echo $this->escape($item->amount); ?></span></td>
+							<td class="aRight"><span class="points-hold"> <?php echo $this->escape($item->amount); ?></span></td>
 						<?php } else { ?>
-							<td class="aRight"><span style="color: green;">+<?php echo $this->escape($item->amount); ?></span></td>
+							<td class="aRight"><span class="points-add">+<?php echo $this->escape($item->amount); ?></span></td>
 						<?php } ?>
 						<td class="aRight"><?php echo $this->escape($item->balance); ?></td>
 					</tr>

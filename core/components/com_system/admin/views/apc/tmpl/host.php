@@ -166,13 +166,13 @@ jQuery(document).ready(function($){
 						$j = 0;
 						foreach (ini_get_all('apc') as $k => $v)
 						{
-							echo "<tr class=\"row$j\"><th>",$k,"</th><td>",str_replace(',',',<br />',$v['local_value']),"</td></tr>\n";
+							echo "<tr class=\"row$j\"><th>",$k,"</th><td>",str_replace(',', ',<br />', $v['local_value']),"</td></tr>\n";
 							$j = 1 - $j;
 						}
 
 						if ($this->mem['num_seg'] > 1 || $this->mem['num_seg'] == 1 && count($this->mem['block_lists'][0]) > 1)
 						{
-							$mem_note = 'Memory Usage<br /><span style="font-size: 0.85em">(multiple slices indicate fragments)</span>';
+							$mem_note = 'Memory Usage<br /><span class="smallsub">(multiple slices indicate fragments)</span>';
 						}
 						else
 						{
@@ -255,7 +255,8 @@ jQuery(document).ready(function($){
 								}
 								$ptr = $block['offset'] + $block['size'];
 								// Only consider blocks <5M for the fragmentation %
-								if ($block['size'] < (5*1024*1024)) $fragsize+=$block['size'];
+								if ($block['size'] < (5*1024*1024)) { $fragsize+=$block['size'];
+								}
 								$freetotal+=$block['size'];
 							}
 							$freeseg += count($this->mem['block_lists'][$i]);
@@ -280,11 +281,13 @@ jQuery(document).ready(function($){
 						echo "</tr>";
 						if (isset($this->mem['adist']))
 						{
-							foreach ($this->mem['adist'] as $i=>$v)
+							foreach ($this->mem['adist'] as $i => $v)
 							{
-								$cur = pow(2,$i); $nxt = pow(2,$i+1)-1;
-								if ($i==0) $range = "1";
-								else $range = "$cur - $nxt";
+								$cur = pow(2, $i);
+$nxt = pow(2, $i+1)-1;
+								if ($i==0) { $range = "1";
+								} else { $range = "$cur - $nxt";
+								}
 								echo "<tr><th>$range</th><td>$v</td></tr>\n";
 							}
 						}
