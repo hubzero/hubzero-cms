@@ -1,0 +1,29 @@
+@import "../../less/_mixins/mixins";
+@import "../../less/_vars/vars";
+
+.modnotices {
+  position: fixed !important;
+  background: #f36d06;
+  bottom: 0;
+  top: inherit !important;
+  width: calc(100% - 7px);
+  .padContain();
+  color: #fff;
+  z-index: 600 !important;
+
+  p {
+    padding-right: 6rem;
+    position: relative;
+  }
+
+  .close {
+    position: absolute;
+    /* float: right; */
+    color: #fff;
+    border: 1px solid;
+    padding: 2px 5px;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+  }
+}

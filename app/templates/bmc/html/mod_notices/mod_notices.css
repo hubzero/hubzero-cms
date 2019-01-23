@@ -1,4 +1,74 @@
+/* not yet supported
+.keyframes(@name; @arguments) {
+	@-moz-keyframes @name { @arguments(); }
+	@-webkit-keyframes @name { @arguments(); }
+	@keyframes @name { @arguments(); }
+}
+*/
+/* !important is to override supergroup templates */
+/* In supergroups, make sure to use !important if you want to override these settings */
 .modnotices {
+  position: fixed !important;
+  background: #f36d06;
+  bottom: 0;
+  top: inherit !important;
+  width: calc(100% - 7px);
+  padding-right: 20px;
+  padding-left: 20px;
+  color: #fff;
+  z-index: 600 !important;
+}
+@media (min-width: 900px) {
+  .modnotices {
+    padding-right: 30px;
+  }
+}
+@media (min-width: 1200px) {
+  .modnotices {
+    padding-right: 40px;
+  }
+}
+@media (min-width: 1600px) {
+  .modnotices {
+    padding-right: 50px;
+  }
+}
+@media (min-width: 2000px) {
+  .modnotices {
+    padding-right: 60px;
+  }
+}
+@media (min-width: 900px) {
+  .modnotices {
+    padding-left: 30px;
+  }
+}
+@media (min-width: 1200px) {
+  .modnotices {
+    padding-left: 40px;
+  }
+}
+@media (min-width: 1600px) {
+  .modnotices {
+    padding-left: 50px;
+  }
+}
+@media (min-width: 2000px) {
+  .modnotices {
+    padding-left: 60px;
+  }
+}
+.modnotices p {
+  padding-right: 6rem;
+  position: relative;
+}
+.modnotices .close {
   position: absolute;
-  width: 100%;
+  /* float: right; */
+  color: #fff;
+  border: 1px solid;
+  padding: 2px 5px;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
 }
