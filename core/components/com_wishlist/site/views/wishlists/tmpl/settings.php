@@ -184,10 +184,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					<table class="tktlist">
 						<thead>
 							<tr>
-								<th style="width:20px;"></th>
-								<th><?php echo Lang::txt('COM_WISHLIST_IND_NAME'); ?></th>
-								<th><?php echo Lang::txt('COM_WISHLIST_IND_LOGIN'); ?></th>
-								<th style="width:80px;"><?php echo Lang::txt('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
+								<th scope="col"></th>
+								<th scope="col"><?php echo Lang::txt('COM_WISHLIST_IND_NAME'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_WISHLIST_IND_LOGIN'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -253,10 +253,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 						<table class="tktlist">
 							<thead>
 								<tr>
-									<th style="width:20px;"></th>
-									<th><?php echo Lang::txt('COM_WISHLIST_IND_NAME'); ?></th>
-									<th><?php echo Lang::txt('COM_WISHLIST_IND_LOGIN'); ?></th>
-									<th style="width:80px;"><?php echo Lang::txt('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
+									<th scope="col"></th>
+									<th scope="col"><?php echo Lang::txt('COM_WISHLIST_IND_NAME'); ?></th>
+									<th scope="col"><?php echo Lang::txt('COM_WISHLIST_IND_LOGIN'); ?></th>
+									<th scope="col"><?php echo Lang::txt('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
 								</tr>
 							</thead>
 							<tbody>

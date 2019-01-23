@@ -32,8 +32,8 @@
 // no direct access
 defined('_HZEXEC_') or die();
 ?>
-<div style="padding: 10px;">
-	<div style="text-align:right">
+<div>
+	<div class="align-right">
 		<a href="javascript: void window.close()">
 			<?php echo Lang::txt('COM_MAILTO_CLOSE_WINDOW'); ?>
 			<img src="<?php echo $this->img('close-x.png'); ?>" alt="" />

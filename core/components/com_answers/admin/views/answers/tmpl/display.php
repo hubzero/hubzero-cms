@@ -157,8 +157,8 @@ Toolbar::help('responses');
 					<?php } ?>
 				</td>
 				<td class="priority-4">
-					<span class="vote like" style="color:green;">+<?php echo $row->get('helpful', 0); ?></span>
-					<span class="vote dislike" style="color:red;">-<?php echo $row->get('nothelpful', 0); ?></span>
+					<span class="vote like">+<?php echo $row->get('helpful', 0); ?></span>
+					<span class="vote dislike">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
 			<?php

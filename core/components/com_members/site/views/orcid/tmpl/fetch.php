@@ -57,7 +57,7 @@ foreach ($this->records as $record)
 				$orcid_html .= $orcid;
 			$orcid_html .= "</div>";
 			$orcid_html .= "<div class=\"col span4 omega\">";
-			$orcid_html .= "<a style=\"text-decoration: none;\" class=\"btn\" onclick=\"HUB.Members.Profile.associateOrcid('', '" . $orcid ."')\"> " . Lang::txt('Associate this ORCID') . "</a>";
+			$orcid_html .= "<a class=\"btn\" onclick=\"HUB.Members.Profile.associateOrcid('', '" . $orcid ."')\"> " . Lang::txt('Associate this ORCID') . "</a>";
 			$orcid_html .= "</div>";
 		$orcid_html .= "</div>";
 	$orcid_html .= "</li>";

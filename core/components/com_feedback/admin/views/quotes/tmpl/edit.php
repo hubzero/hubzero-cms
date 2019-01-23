@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
 		files.forEach(function(file) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$('#uploadImages').append('<img style="margin-left: 15px" src="' + e.target.result + '" width="100" height="100" alt="" />');
+				$('#uploadImages').append('<img src="' + e.target.result + '" width="100" height="100" alt="" />');
 			}
 			reader.readAsDataURL(file);
 		});

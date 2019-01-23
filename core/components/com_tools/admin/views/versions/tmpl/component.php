@@ -50,7 +50,7 @@ jQuery(document).ready(function($){
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="4" style="text-align:right;">
+				<th colspan="4" class="align-right">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addZone&version=' . $this->version . '&tmpl=component'); ?>" class="button edit-asset" rel="{type: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_TOOLS_ADD_ZONE'); ?></a>
 				</th>
 			</tr>

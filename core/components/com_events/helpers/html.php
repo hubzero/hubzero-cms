@@ -154,7 +154,7 @@ class Html
 	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array(
-			'<span style="color:red;">'.Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
+			Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
@@ -455,7 +455,7 @@ class Html
 	public static function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array(
-			'<span style="color:red;">' . Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT') . '</span>',
+			Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),

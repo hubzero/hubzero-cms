@@ -162,8 +162,8 @@ Toolbar::help('pages');
 						</span>
 					<?php } ?>
 					<br />
-					<span style="color: #999; font-size: 90%">/wiki/</span> &nbsp;
-					<span style="color: #999; font-size: 90%"><?php echo ($row->get('path') ? $row->get('path') . '/' : '') . $this->escape(stripslashes($row->get('pagename'))); ?></span>
+					<span class="smallsub">/wiki/</span> &nbsp;
+					<span class="smallsub"><?php echo ($row->get('path') ? $row->get('path') . '/' : '') . $this->escape(stripslashes($row->get('pagename'))); ?></span>
 				</td>
 				<td class="priority-4">
 					<?php echo $this->escape($row->param('mode')); ?>

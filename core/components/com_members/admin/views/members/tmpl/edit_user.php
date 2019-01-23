@@ -284,7 +284,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 					echo $confirmed;
 					?>
 				<?php else: ?>
-					<span style="color:#c00;"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
+					<span class="error"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
 					<input type="checkbox" name="activation" id="activation" value="1" />
 					<label for="activation"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM'); ?></label>
 				<?php endif; ?>

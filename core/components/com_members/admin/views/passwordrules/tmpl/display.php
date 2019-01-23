@@ -168,7 +168,7 @@ function submitbutton(pressbutton)
 						//echo $pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'JLIB_HTML_MOVE_DOWN', $row->ordering);
 						?></span>
 						<?php $disabled = $row->get('ordering') ?  '' : 'disabled="disabled"'; ?>
-						<input type="text" name="order[]" size="5" value="<?php echo $row->get('ordering'); ?>" <?php echo $disabled; ?> class="text_area" style="text-align: center" />
+						<input type="text" name="order[]" size="5" value="<?php echo $row->get('ordering'); ?>" <?php echo $disabled; ?> class="text_area align-center" />
 					<?php else : ?>
 						<?php echo $row->get('ordering'); ?>
 					<?php endif; ?>

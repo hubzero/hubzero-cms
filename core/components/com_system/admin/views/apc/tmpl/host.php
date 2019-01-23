@@ -172,7 +172,7 @@ jQuery(document).ready(function($){
 
 						if ($this->mem['num_seg'] > 1 || $this->mem['num_seg'] == 1 && count($this->mem['block_lists'][0]) > 1)
 						{
-							$mem_note = 'Memory Usage<br /><span style="font-size: 0.85em">(multiple slices indicate fragments)</span>';
+							$mem_note = 'Memory Usage<br /><span class="smallsub">(multiple slices indicate fragments)</span>';
 						}
 						else
 						{
