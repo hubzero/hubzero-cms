@@ -694,7 +694,7 @@ class Format
 		{
 			if (count($assocs) > 1)
 			{
-				$html .= '<span>|</span> <span style="line-height:1.6em;color:#444">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
+				$html .= '<span>|</span> <span class="cited-resources">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
 				$k = 0;
 				$rrs = array();
 				foreach ($assocs as $rid)

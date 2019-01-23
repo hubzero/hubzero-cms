@@ -43,6 +43,7 @@ if ($canDo->get('core.admin'))
 $now = Date::toSql();
 
 // Push some styles to the template
+$this->css();
 $this->css('admin.subscriptions.css');
 ?>
 
@@ -103,13 +104,13 @@ $this->css('admin.subscriptions.css');
 			switch ($row->status)
 			{
 				case '1':
-					$status = ($row->expires > $now) ? '<span style="color:#197f11;">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span style="color:#ef721e;">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
+					$status = ($row->expires > $now) ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span  class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
 					break;
 				case '0':
-					$status = '<span style="color:#ff0000;">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
+					$status = '<span class="service-pending">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
 					break;
 				case '2':
-					$status = '<span style="color:#999;">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
+					$status = '<span class="service-cancelled">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
 					$pending .= $row->pendingpayment ? ' (' . Lang::txt('COM_SERVICES_REFUND') . ')' : '';
 					break;
 			}
@@ -129,7 +130,7 @@ $this->css('admin.subscriptions.css');
 					</a>
 				</td>
 				<td>
-					<?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span style="color:#ff0000;">' . $pending . '</span>' : $pending; ?>
+					<?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span class="service-pending">' . $pending . '</span>' : $pending; ?>
 				</td>
 				<td>
 					<?php echo $name . ' (' . $login . ')'; ?>

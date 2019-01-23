@@ -64,6 +64,10 @@
 	.mod_courses .courses-stats-overview tbody tr td a:hover span {
 		color: #222;
 	}
+	.mod_courses .chart {
+		min-width: 400px;
+		height: 200px;
+	}
 
 /* Hero */
 	.hero .mod_courses .courses-stats-overview tbody tr td,

@@ -48,6 +48,21 @@
 		color: #eee;
 	}
 
+	.stats-pie-chart {
+		min-width: 300px;
+		height: 300px;
+		margin: 60px 0 20px 0;
+	}
+	.stats-user-chart {
+		min-width: 200px;
+		height: 100px;
+	}
+	.stats-tickets-chart {
+		min-width: 400px;
+		height: 200px;
+		margin: 60px 20px 20px 20px;
+	}
+
 	.breakdown {
 		padding: 2em;
 	}

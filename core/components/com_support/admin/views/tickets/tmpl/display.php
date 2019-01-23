@@ -142,27 +142,27 @@ $this->css();
 									</li>
 									<li>
 										<a<?php if ($this->filters['sort'] == 'status') { echo ' class="active ' . strtolower($this->filters['sortdir']) . '"'; } ?> href="javascript:tableOrdering('status','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
-											<?php echo  Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
+											<?php echo Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
 										</a>
 									</li>
 									<li>
 										<a<?php if ($this->filters['sort'] == 'severity') { echo ' class="active ' . strtolower($this->filters['sortdir']) . '"'; } ?> href="javascript:tableOrdering('severity','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
-											<?php echo  Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
+											<?php echo Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
 										</a>
 									</li>
 									<li>
 										<a<?php if ($this->filters['sort'] == 'summary') { echo ' class="active ' . strtolower($this->filters['sortdir']) . '"'; } ?> href="javascript:tableOrdering('summary','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
-											<?php echo  Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
+											<?php echo Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
 										</a>
 									</li>
 									<li>
 										<a<?php if ($this->filters['sort'] == 'group') { echo ' class="active ' . strtolower($this->filters['sortdir']) . '"'; } ?> href="javascript:tableOrdering('group','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
-											<?php echo  Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
+											<?php echo Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
 										</a>
 									</li>
 									<li>
 										<a<?php if ($this->filters['sort'] == 'owner') { echo ' class="active ' . strtolower($this->filters['sortdir']) . '"'; } ?> href="javascript:tableOrdering('owner','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
-											<?php echo  Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
+											<?php echo Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
 										</a>
 									</li>
 								</ul>
@@ -207,6 +207,7 @@ $this->css();
 				$tid = Request::getInt('ticket', 0);
 
 				$tsformat = $database->getDateFormat();
+				$statuses = array();
 
 				if (count($this->rows) > 0)
 				{
@@ -228,16 +229,24 @@ $this->css();
 						{
 							$tags = $row->tags('linkedlist');
 						}
+
+						if (!in_array($row->status->get('id'), $statuses))
+						{
+							$statuses[] = $row->status->get('id');
+							$this->css('#tktlist li .status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
+						}
 						?>
-						<li class="<?php echo (!$row->isOpen() ? 'closed' : 'open'); ?>" data-id="<?php echo $row->get('id'); ?>" id="ticket-<?php echo $row->get('id'); ?>">
-							<div class="ticket-wrap"<?php if ($row->get('status')) { echo ($row->status->get('color') ? ' style="border-left-color: #' . $row->status->get('color') . ';"' : ''); } ?>>
+						<li class="<?php echo !$row->isOpen() ? 'closed' : 'open'; ?>" data-id="<?php echo $row->get('id'); ?>" id="ticket-<?php echo $row->get('id'); ?>">
+							<div class="ticket-wrap status-<?php echo $row->status->get('id'); ?>">
 								<p>
 									<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 									<span class="ticket-id">
 										# <?php echo $row->get('id'); ?>
 									</span>
-									<span class="<?php echo $row->status->get('alias'); ?> status hasTip" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . Lang::txt('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status->get('title'); echo (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''); ?>">
-										<?php echo $row->status->get('title'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+									<span class="<?php echo $row->status->get('alias'); ?> status hasTip" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . Lang::txt('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status->get('title');
+echo !$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>">
+										<?php echo $row->status->get('title');
+echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 									</span>
 									<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 										<span class="ticket-activity">
@@ -252,7 +261,8 @@ $this->css();
 								</p>
 								<p>
 									<span class="ticket-author">
-										<?php echo $row->get('name'); echo ($row->get('login')) ? ' (<a href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->escape($row->get('login'))) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
+										<?php echo $row->get('name');
+echo ($row->get('login')) ? ' (<a href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->escape($row->get('login'))) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
 									</span>
 									<span class="ticket-datetime">
 										@ <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>

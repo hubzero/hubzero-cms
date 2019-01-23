@@ -36,6 +36,13 @@ $this->css();
 
 $total = $this->closed + $this->open;
 
+$percent = round(($this->closed / $total) * 100, 2);
+
+$this->css('
+	.' . $this->module->module . ' .graph .bar {
+		width: ' . $percent . '%;
+	}
+');
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<table class="stats-overview">
@@ -45,7 +52,7 @@ $total = $this->closed + $this->open;
 				<td colspan="2">
 					<div>
 						<div class="graph">
-							<strong class="bar" style="width: <?php echo round(($this->closed / $total) * 100, 2); ?>%"><span><?php echo Lang::txt('MOD_ANSWERS_TOTAL_CLOSED', round(($this->closed / $total) * 100, 2)); ?></span></strong>
+							<strong class="bar"><span><?php echo Lang::txt('MOD_ANSWERS_TOTAL_CLOSED', $percent); ?></span></strong>
 						</div>
 					</div>
 				</td>

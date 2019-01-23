@@ -256,7 +256,7 @@ function citeaddRow(id) {
 				<div class="input-wrap">
 					<label for="edition"><?php echo Lang::txt('EDITION'); ?>:</label><br />
 					<input type="text" name="citation[edition]" id="edition" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->edition)); ?>" />
-					<br /><span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('EDITION_EXPLANATION'); ?></span>
+					<br /><span class="hint"><?php echo Lang::txt('EDITION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="school"><?php echo Lang::txt('SCHOOL'); ?>:</label><br />
@@ -269,7 +269,7 @@ function citeaddRow(id) {
 				<div class="input-wrap">
 					<label for="institution"><?php echo Lang::txt('INSTITUTION'); ?>:</label><br />
 					<input type="text" name="citation[institution]" id="institution" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->institution)); ?>" />
-					<br /><span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('INSTITUTION_EXPLANATION'); ?></span>
+					<br /><span class="hint"><?php echo Lang::txt('INSTITUTION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="address"><?php echo Lang::txt('ADDRESS'); ?>:</label><br />
@@ -278,12 +278,12 @@ function citeaddRow(id) {
 				<div class="input-wrap">
 					<label for="location"><?php echo Lang::txt('LOCATION'); ?>:</label><br />
 					<input type="text" name="citation[location]" id="location" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->location)); ?>" />
-					<span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('LOCATION_EXPLANATION'); ?></span>
+					<span class="hint"><?php echo Lang::txt('LOCATION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="howpublished"><?php echo Lang::txt('PUBLISH_METHOD'); ?>:</label><br />
 					<input type="text" name="citation[howpublished]" id="howpublished" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->howpublished)); ?>" />
-					<br /><span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('PUBLISH_METHOD_EXPLANATION'); ?></span>
+					<br /><span class="hint"><?php echo Lang::txt('PUBLISH_METHOD_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="url"><?php echo Lang::txt('URL'); ?>:</label><br />

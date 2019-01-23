@@ -38,6 +38,15 @@ Toolbar::custom('check', 'purge', '', 'COM_SUPPORT_CHECK', false);
 Html::behavior('framework');
 
 $this->view('_submenu')->display();
+
+$this->css('
+.spam {
+	color:red;
+}
+.ham {
+	color:green;
+}
+');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=check'); ?>" method="post" name="adminForm" id="item-form">
@@ -69,8 +78,8 @@ $this->view('_submenu')->display();
 								?>
 								<tr>
 									<th><?php echo $result['service']; ?></th>
-									<td><?php echo ($result['is_spam'] ? '<span style="color:red">spam</span>' : '<span style="color:green">ham</span>'); ?></td>
-									<td><?php echo ($result['message'] ? '<span class="detector-message">' . $result['message'] . '</span>' : ''); ?></td>
+									<td><?php echo $result['is_spam'] ? '<span class="spam">spam</span>' : '<span class="ham">ham</span>'; ?></td>
+									<td><?php echo $result['message'] ? '<span class="detector-message">' . $result['message'] . '</span>' : ''; ?></td>
 								</tr>
 								<?php
 							}

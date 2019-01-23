@@ -19,6 +19,12 @@
 	text-align: center;
 	margin: 0;
 }
+.auth .block {
+	display: block;
+}
+.auth .none {
+	display: none;
+}
 .auth .or {
 	width: 200px;
 	height: 20px;

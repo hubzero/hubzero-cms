@@ -38,7 +38,7 @@ Html::behavior('chart');
 ?>
 <div class="mod_courses">
 	<div class="overview-container">
-		<div id="container<?php echo $this->module->id; ?>" class="chart" style="min-width: 400px; height: 200px;"></div>
+		<div id="container<?php echo $this->module->id; ?>" class="chart"></div>
 	<?php
 		$top = 0;
 
