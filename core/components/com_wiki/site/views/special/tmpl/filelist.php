@@ -63,6 +63,7 @@ $rows = \Components\Wiki\Models\Attachment::all()
 	->join($pages, $pages . '.id', $attach . '.page_id')
 	->whereEquals($pages . '.scope', $this->book->get('scope'))
 	->whereEquals($pages . '.scope_id', $this->book->get('scope_id'))
+	->whereEquals($pages . '.state', '1')
 	->paginated()
 	->rows();
 
