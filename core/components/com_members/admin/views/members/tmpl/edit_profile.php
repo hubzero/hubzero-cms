@@ -83,7 +83,7 @@ $fields = $form->getFieldset('basic');
 				<div class="grid">
 					<div class="col span9">
 						<?php
-						echo '<div class="input-wrap" style="padding-right: 0" id="input-' . $field->fieldname . '" ' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
+						echo '<div class="input-wrap" id="input-' . $field->fieldname . '" ' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
 						if ($field->hidden)
 						{
 							echo '<label for="profile_' . $field->fieldname . '">' . $field->fieldname . '</label>';
@@ -105,8 +105,8 @@ $fields = $form->getFieldset('basic');
 						echo '</div>';
 						?>
 					</div>
-					<div class="col span3">
-						<div class="input-wrap" style="padding-left: 0">
+					<div class="col span3 omega">
+						<div class="input-wrap">
 							<label for="field-access-<?php echo $field->fieldname; ?>"><?php echo Lang::txt('Access'); ?>:</label>
 							<select name="profileaccess[<?php echo $field->fieldname; ?>]" id="field-access-<?php echo $field->fieldname; ?>">
 								<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $access[$field->fieldname]); ?>

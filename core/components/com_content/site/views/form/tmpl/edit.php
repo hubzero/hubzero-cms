@@ -99,7 +99,6 @@ endif;
 						<?php echo $this->form->getLabel('image_intro', 'images'); ?>
 						<?php echo $this->form->getInput('image_intro', 'images'); ?>
 					</div>
-					<div style="clear:both"></div>
 					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('image_intro_alt', 'images'); ?>
 						<?php echo $this->form->getInput('image_intro_alt', 'images'); ?>
@@ -112,12 +111,10 @@ endif;
 						<?php echo $this->form->getLabel('float_intro', 'images'); ?>
 						<?php echo $this->form->getInput('float_intro', 'images'); ?>
 					</div>
-
 					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('image_fulltext', 'images'); ?>
 						<?php echo $this->form->getInput('image_fulltext', 'images'); ?>
 					</div>
-					<div style="clear:both"></div>
 					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('image_fulltext_alt', 'images'); ?>
 						<?php echo $this->form->getInput('image_fulltext_alt', 'images'); ?>
@@ -130,7 +127,6 @@ endif;
 						<?php echo $this->form->getLabel('float_fulltext', 'images'); ?>
 						<?php echo $this->form->getInput('float_fulltext', 'images'); ?>
 					</div>
-
 					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('urla', 'urls'); ?>
 						<?php echo $this->form->getInput('urla', 'urls'); ?>
@@ -140,20 +136,20 @@ endif;
 						<?php echo $this->form->getInput('urlatext', 'urls'); ?>
 					</div>
 					<?php echo $this->form->getInput('targeta', 'urls'); ?>
-					<div  class="formelm input-wrap">
+					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('urlb', 'urls'); ?>
 						<?php echo $this->form->getInput('urlb', 'urls'); ?>
 					</div>
-					<div  class="formelm input-wrap">
+					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('urlbtext', 'urls'); ?>
 						<?php echo $this->form->getInput('urlbtext', 'urls'); ?>
 					</div>
 					<?php echo $this->form->getInput('targetb', 'urls'); ?>
-					<div  class="formelm input-wrap">
+					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('urlc', 'urls'); ?>
 						<?php echo $this->form->getInput('urlc', 'urls'); ?>
 					</div>
-					<div  class="formelm input-wrap">
+					<div class="formelm input-wrap">
 						<?php echo $this->form->getLabel('urlctext', 'urls'); ?>
 						<?php echo $this->form->getInput('urlctext', 'urls'); ?>
 					</div>

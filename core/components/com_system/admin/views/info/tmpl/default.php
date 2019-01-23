@@ -43,6 +43,15 @@ Html::addIncludePath(dirname(PATH_COMPONENT) . '/helpers/html');
 Html::behavior('switcher', 'submenu');
 
 Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+
+$this->css('
+.writable {
+	color: green;
+}
+.unwritable {
+	color: red;
+}
+');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
 		files.forEach(function(file) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$('#uploadImages').append('<img style="margin-left: 15px" src="' + e.target.result + '" width="100" height="100" alt="" />');
+				$('#uploadImages').append('<img src="' + e.target.result + '" width="100" height="100" alt="" />');
 			}
 			reader.readAsDataURL(file);
 		});
@@ -175,10 +175,12 @@ jQuery(document).ready(function($) {
 					<legend><?php echo Lang::txt('COM_FEEDBACK_AUTHOR_CONSENTS'); ?>:</legend>
 
 					<div class="input-wrap">
-						<input type="checkbox" name="fields[publish_ok]" id="publish_ok" value="1" <?php if ($this->row->get('publish_ok') == 1) { echo ' checked="checked"'; } if ($this->row->get('id')) { echo (' disabled="disabled"'); } ?>  />
+						<input type="checkbox" name="fields[publish_ok]" id="publish_ok" value="1" <?php if ($this->row->get('publish_ok') == 1) { echo ' checked="checked"';
+} if ($this->row->get('id')) { echo ' disabled="disabled"'; } ?>  />
 						<label for="publish_ok"><?php echo Lang::txt('COM_FEEDBACK_AUTHOR_CONSENT_PUBLISH'); ?></label><br />
 
-						<input type="checkbox" name="fields[contact_ok]" id="contact_ok" value="1" <?php if ($this->row->get('contact_ok') == 1) { echo ' checked="checked"'; } if ($this->row->get('id')) { echo (' disabled="disabled"'); } ?> />
+						<input type="checkbox" name="fields[contact_ok]" id="contact_ok" value="1" <?php if ($this->row->get('contact_ok') == 1) { echo ' checked="checked"';
+} if ($this->row->get('id')) { echo ' disabled="disabled"'; } ?> />
 						<label for="contact_ok"><?php echo Lang::txt('COM_FEEDBACK_AUTHOR_CONSENT_CONTACT'); ?></label>
 					</div>
 				</fieldset>

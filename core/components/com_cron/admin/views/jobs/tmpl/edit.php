@@ -353,7 +353,7 @@ jQuery(document).ready(function($){
 							<th>
 								<label for="field-hour-c"><?php echo Lang::txt('COM_CRON_FIELD_HOUR'); ?></label>:
 							</th>
-							<td style="width: 10%">
+							<td>
 								<input type="text" name="fields[hour][c]" id="field-hour-c" value="<?php echo $this->row->get('hour'); ?>" />
 							</td>
 							<td>

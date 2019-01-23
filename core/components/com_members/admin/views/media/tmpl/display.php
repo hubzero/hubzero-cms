@@ -31,6 +31,16 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$this->css('
+.img-wrap {
+	text-align: center;
+	max-width: 300px;
+}
+.img-wrap img {
+	width: 100%;
+}
+');
 ?>
 <div id="media">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
@@ -61,8 +71,8 @@ defined('_HZEXEC_') or die();
 			echo '<p class="error">' . $this->getError() . '</p>';
 		}
 		?>
-		<div class="input-wrap" style="text-align: center; max-width: 300px;">
-			<img style="width: 100%;" src="<?php echo $this->profile->picture(0, false); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" />
+		<div class="input-wrap align-center img-wrap">
+			<img src="<?php echo $this->profile->picture(0, false); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" />
 		</div>
 		<?php echo Html::input('token'); ?>
 	</form>

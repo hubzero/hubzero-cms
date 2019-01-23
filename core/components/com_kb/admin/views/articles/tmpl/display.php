@@ -195,8 +195,8 @@ $access = Html::access('assetgroups');
 					<?php echo $this->escape($row->get('ctitle')); ?>
 				</td>
 				<td class="priority-5">
-					<span style="color: green;">+<?php echo $row->get('helpful', 0); ?></span>
-					<span style="color: red;">-<?php echo $row->get('nothelpful', 0); ?></span>
+					<span class="vote helpful">+<?php echo $row->get('helpful', 0); ?></span>
+					<span class="vote nothelpful">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
 			<?php
