@@ -51,7 +51,7 @@ if ($canDo->get('core.edit.state'))
 		Toolbar::publish('publish', 'JTOOLBAR_ENABLE', true);
 		Toolbar::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
 	}
-	if ($this->filters['state'] != -1 )
+	if ($this->filters['state'] != -1)
 	{
 		Toolbar::divider();
 		if ($this->filters['state'] != 2)

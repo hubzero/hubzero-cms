@@ -64,7 +64,7 @@ jQuery(document).ready(function($){
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="<?php echo (!$this->filters['zone'] ? 9 : 8); ?>" class="align-right">
+				<th colspan="<?php echo !$this->filters['zone'] ? 9 : 8; ?>" class="align-right">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=add&zone=' . $this->filters['zone'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="button edit-asset" rel="{type: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_TOOLS_ADD_LOCATION'); ?></a>
 				</th>
 			</tr>

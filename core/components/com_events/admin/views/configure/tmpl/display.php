@@ -147,11 +147,11 @@ Toolbar::cancel();
 			{
 				if ($r == 0 || !isset($fields[$i])) {
 					$fields[$i] = array();
-					$fields[$i][0] = NULL;
-					$fields[$i][1] = NULL;
-					$fields[$i][2] = NULL;
-					$fields[$i][3] = NULL;
-					$fields[$i][4] = NULL;
+					$fields[$i][0] = null;
+					$fields[$i][1] = null;
+					$fields[$i][2] = null;
+					$fields[$i][3] = null;
+					$fields[$i][4] = null;
 				}
 				?>
 				<tr>
