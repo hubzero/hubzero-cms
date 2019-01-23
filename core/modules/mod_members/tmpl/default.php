@@ -35,6 +35,14 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 $total = $this->confirmed + $this->unconfirmed;
+
+$percent = round(($this->confirmed / $total) * 100, 2);
+
+$this->css('
+	.' . $this->module->module . ' .graph .bar {
+		width: ' . $percent . '%;
+	}
+');
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<table class="stats-overview">
@@ -43,7 +51,7 @@ $total = $this->confirmed + $this->unconfirmed;
 				<td colspan="3">
 					<div>
 						<div class="graph">
-							<strong class="bar" style="width: <?php echo ($total ? round(($this->confirmed / $total) * 100, 2) : 0); ?>%"><span><?php echo ($total ? round(($this->confirmed / $total) * 100, 2) : 0); ?>%</span></strong>
+							<strong class="bar"><span><?php echo $percent; ?>%</span></strong>
 						</div>
 					</div>
 				</td>

@@ -53,6 +53,12 @@
 	-o-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
+.auth .block {
+	display: block;
+}
+.auth .none {
+	display: none;
+}
 .auth .person {
 	position: absolute;
 	height: 94px;

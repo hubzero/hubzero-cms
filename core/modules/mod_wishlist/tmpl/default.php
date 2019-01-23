@@ -34,6 +34,27 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
+$this->css('
+.wishlist-removed {
+	background-color: ' . $this->params->get("color_removed", "#cccccc") . ';
+}
+.wishlist-granted {
+	background-color: ' . $this->params->get("color_granted", "#999") . ';
+}
+.wishlist-withdrawn {
+	background-color: ' . $this->params->get("color_withdrawn", "#ffffff") . ';
+}
+.wishlist-pending {
+	background-color: ' . $this->params->get("color_pending", "#656565") . ';
+}
+.wishlist-rejected {
+	background-color: ' . $this->params->get("color_rejected", "#333333") . ';
+}
+.wishlist-accepted {
+	background-color: ' . $this->params->get("color_accepted", "#f9d180") . ';
+}
+');
+
 //Html::behavior('chart', 'resize');
 Html::behavior('chart', 'pie');
 
@@ -96,7 +117,7 @@ if ($total == 0)
 				<tr class="pending-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=pending'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_PENDING_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_pending", "#656565"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_PENDING'); ?>
+							<span class="wishlist-pending"></span><?php echo Lang::txt('MOD_WISHLIST_PENDING'); ?>
 						</a>
 					</th>
 					<td>
@@ -108,7 +129,7 @@ if ($total == 0)
 				<tr class="accepted-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=accepted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_ACCEPTED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_accepted", "#f9d180"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_ACCEPTED'); ?>
+							<span class="wishlist-accepted"></span><?php echo Lang::txt('MOD_WISHLIST_ACCEPTED'); ?>
 						</a>
 					</th>
 					<td>
@@ -120,7 +141,7 @@ if ($total == 0)
 				<tr class="granted-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=granted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_GRANTED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_granted", "#999"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_GRANTED'); ?>
+							<span class="wishlist-granted"></span><?php echo Lang::txt('MOD_WISHLIST_GRANTED'); ?>
 						</a>
 					</th>
 					<td>
@@ -132,7 +153,7 @@ if ($total == 0)
 				<tr class="rejected-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=rejected'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REJECTED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_rejected", "#333333"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_REJECTED'); ?>
+							<span class="wishlist-rejected"></span><?php echo Lang::txt('MOD_WISHLIST_REJECTED'); ?>
 						</a>
 					</th>
 					<td>
@@ -144,7 +165,7 @@ if ($total == 0)
 				<tr class="withdrawn-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=withdrawn'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN'); ?>
+							<span class="wishlist-withdrawn"></span><?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN'); ?>
 						</a>
 					</th>
 					<td>
@@ -156,7 +177,7 @@ if ($total == 0)
 				<tr class="removed-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=deleted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REMOVED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_removed", "#cccccc"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_REMOVED'); ?>
+							<span class="wishlist-removed"></span><?php echo Lang::txt('MOD_WISHLIST_REMOVED'); ?>
 						</a>
 					</th>
 					<td>

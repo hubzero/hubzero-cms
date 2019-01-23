@@ -39,7 +39,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div class="imgBorder center">
-					<a class="img-preview" href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>" style="display: block; width: 100%; height: 100%">
+					<a class="img-preview" href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>">
 						<img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="60" height="60" />
 					</a>
 				</div>

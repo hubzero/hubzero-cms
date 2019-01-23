@@ -37,14 +37,14 @@ $style = '';
 if ($this->category !== null)
 {
 	$cls .= ' category-' . $this->page->get('category');
-	$style = 'border-left-color: #' .  $this->category->get('color');
+	$this->css('.category-' . $this->page->get('category') . '{ border-left-color: #' .  $this->category->get('color') . '; }');
 }
 if (isset($this->version) && $this->version->get('approved') == 0)
 {
 	$cls .= ' not-approved';
 }
 ?>
-<div class="item-container <?php echo $cls; ?>" style="<?php echo $style; ?>">
+<div class="item-container <?php echo $cls; ?>">
 	<div class="item-title">
 		<?php if ($this->page->get('privacy') == 'members') : ?>
 			<span class="icon-lock tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVATE'); ?>"></span>

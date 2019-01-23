@@ -56,7 +56,8 @@ defined('_HZEXEC_') or die();
 						<?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_X_PAGES', $category->getPages('count')); ?>
 					</div>
 
-					<div class="item-color" style="background-color: #<?php echo $category->get('color'); ?>"></div>
+					<?php $this->css('.category-' . $category->get('id') . ' { background-color: #' . $category->get('color') . '; }'); ?>
+					<div class="item-color category-<?php echo $category->get('id'); ?>"></div>
 
 					<div class="item-controls btn-group dropdown">
 						<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>" class="btn">

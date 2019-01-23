@@ -52,7 +52,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 							<input type="hidden" name="task" value="add" />
 							<?php echo Html::input('token'); ?>
 
-							<select name="gid" style="max-width: 15em;">
+							<select name="gid">
 								<option value=""><?php echo Lang::txt('COM_MEMBERS_SELECT'); ?></option>
 								<?php
 								foreach ($this->rows as $row)
@@ -93,9 +93,9 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 				$managers   = \Hubzero\User\Helper::getGroups($this->id, 'managers');
 
 				$applicants = (is_array($applicants)) ? $applicants : array();
-				$invitees   = (is_array($invitees))   ? $invitees   : array();
-				$members    = (is_array($members))    ? $members    : array();
-				$managers   = (is_array($managers))   ? $managers   : array();
+				$invitees   = (is_array($invitees)) ? $invitees : array();
+				$members    = (is_array($members)) ? $members : array();
+				$managers   = (is_array($managers)) ? $managers : array();
 
 				$groups = array_merge($applicants, $invitees);
 				$managerids = array();
@@ -106,7 +106,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 				}
 				foreach ($members as $mem)
 				{
-					if (!in_array($mem->cn,$managerids))
+					if (!in_array($mem->cn, $managerids))
 					{
 						$groups[] = $mem;
 					}
@@ -136,7 +136,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 									foreach ($options as $option)
 									{
 										?>
-										<div style="padding-left:1em;">
+										<div class="input-wrap">
 											<label for="memberoption-<?php echo $this->escape($option->id); ?>"><?php echo $this->escape($option->optionname); ?></label>
 											<input name="memberoption[<?php echo $this->escape($option->id); ?>]" id="memberoption-<?php echo $this->escape($option->id); ?>" size="3" value="<?php echo $this->escape($option->optionvalue); ?>" />
 											<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_UPDATE'); ?>" />

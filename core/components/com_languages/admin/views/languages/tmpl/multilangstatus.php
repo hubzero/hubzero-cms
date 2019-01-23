@@ -90,7 +90,7 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 		<?php endforeach; ?>
 		</tbody>
 	</table>
-	<table class="adminlist" style="border-top: 1px solid #CCCCCC;">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th>
@@ -145,7 +145,7 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 			</tr>
 		</tbody>
 	</table>
-	<table class="adminlist" style="border-top: 1px solid #CCCCCC;">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th>

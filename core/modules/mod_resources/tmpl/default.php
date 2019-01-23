@@ -34,6 +34,23 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
+$this->css('
+.resource-published {
+	background-color: ' . $this->params->get("color_published", "#656565") . ';
+}
+.resource-unpublished {
+	background-color: ' . $this->params->get("color_unpublished", "#fff") . ';
+}
+.resource-draft {
+	background-color: ' . $this->params->get("color_draft", "#999") . ';
+}
+.resource-pending {
+	background-color: ' . $this->params->get("color_pending", "#f9d180") . ';
+}
+.resource-removed {
+	background-color: ' . $this->params->get("color_removed", "#ccc") . ';
+}
+');
 //Html::behavior('chart', 'resize');
 Html::behavior('chart', 'pie');
 
@@ -92,7 +109,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
 				<tr>
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=1'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_PUBLISHED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_published", "#656565"); ?>;"></span><?php echo Lang::txt('MOD_RESOURCES_PUBLISHED'); ?>
+							<span class="resource-published"></span><?php echo Lang::txt('MOD_RESOURCES_PUBLISHED'); ?>
 						</a>
 					</th>
 					<td>
@@ -104,7 +121,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
 				<tr>
 					<th scope="row" class="pending-items">
 						<a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=3'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_PENDING_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_pending", "#f9d180"); ?>;"></span><?php echo Lang::txt('MOD_RESOURCES_PENDING'); ?>
+							<span class="resource-pending"></span><?php echo Lang::txt('MOD_RESOURCES_PENDING'); ?>
 						</a>
 					</th>
 					<td class="pending-items">
@@ -116,7 +133,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
 				<tr>
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=2'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_DRAFT_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_draft", "#999"); ?>;"></span><?php echo Lang::txt('MOD_RESOURCES_DRAFT'); ?>
+							<span class="resource-draft"></span><?php echo Lang::txt('MOD_RESOURCES_DRAFT'); ?>
 						</a>
 					</th>
 					<td>
@@ -128,7 +145,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
 				<tr>
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=0'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_removed", "#ccc"); ?>;"></span><?php echo Lang::txt('MOD_RESOURCES_UNPUBLISHED'); ?>
+							<span class="resource-removed"></span><?php echo Lang::txt('MOD_RESOURCES_UNPUBLISHED'); ?>
 						</a>
 					</th>
 					<td>
@@ -140,7 +157,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
 				<tr>
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=4'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_REMOVED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_unpublished", "#fff"); ?>;"></span><?php echo Lang::txt('MOD_RESOURCES_REMOVED'); ?>
+							<span class="resource-unpublished"></span><?php echo Lang::txt('MOD_RESOURCES_REMOVED'); ?>
 						</a>
 					</th>
 					<td>
