@@ -43,7 +43,7 @@ $this->js();
 
 $base = rtrim(Request::base(true), '/');
 ?>
-<div class="<?php echo $this->module->module . ' ' . $this->params->get('moduleclass_sfx',''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
+<div class="<?php echo $this->module->module . ' ' . $this->params->get('moduleclass_sfx', ''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
 	<ul>
 		<?php if (count($this->sessions) > 0) : ?>
 			<?php foreach ($this->sessions as $k => $session) : ?>
@@ -51,9 +51,9 @@ $base = rtrim(Request::base(true), '/');
 					$cls = ($k == 0) ? 'active' : 'not-active';
 
 					//get the appname
-					$bits = explode('_',$session->appname);
+					$bits = explode('_', $session->appname);
 					$bit = (count($bits) > 1) ? array_pop($bits) : '';
-					$appname = implode('_',$bits);
+					$appname = implode('_', $bits);
 
 					$resumeLink = Route::url('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
 
@@ -204,4 +204,4 @@ $base = rtrim(Request::base(true), '/');
 			</p>
 		<?php endif; ?>
 	</div>
-<?php endif; ?>
+<?php endif; 

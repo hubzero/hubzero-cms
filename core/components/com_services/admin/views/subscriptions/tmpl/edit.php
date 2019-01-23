@@ -135,11 +135,13 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_SERVICES_COL_TOTAL_PAID'); ?>:</th>
-						<td><?php echo $this->subscription->totalpaid; ?> <?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?></td>
+						<td><?php echo $this->subscription->totalpaid; ?> <?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS');
+} else { echo $this->subscription->currency; } ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_SERVICES_COL_PENDING_PAYMENT'); ?>:</th>
-						<td><?php echo $this->subscription->pendingpayment; ?> <?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?></td>
+						<td><?php echo $this->subscription->pendingpayment; ?> <?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS');
+} else { echo $this->subscription->currency; } ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_SERVICES_COL_ACTIVE_UNITS'); ?>:</th>
@@ -168,12 +170,14 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('COM_SERVICES_FIELD_PENDING_REFUND_FOR', $this->subscription->pendingunits); ?>:</label><br />
 						<?php echo $this->subscription->pendingpayment; ?>
-						<?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?>
+						<?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS');
+} else { echo $this->subscription->currency; } ?>
 					</div>
 					<div class="input-wrap">
 						<label for="field-received_refund"><?php echo Lang::txt('COM_SERVICES_FIELD_REFUND_POSTED'); ?>:</label><br />
 						<input type="text" name="received_refund" id="field-received_refund" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
-						<?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?>
+						<?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS');
+} else { echo $this->subscription->currency; } ?>
 					</div>
 				<?php } ?>
 			<?php } else { ?>
@@ -183,14 +187,15 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 				</div>
 				<div class="input-wrap">
 					<label for="field-received_payment"><?php echo Lang::txt('COM_SERVICES_FIELD_PAYMENT_RECEIVED'); ?>:</label><br />
-					<?php if ($this->subscription->pendingpayment > 0 ) { ?>
+					<?php if ($this->subscription->pendingpayment > 0) { ?>
 						<input type="text" name="received_payment" id="field-received_payment" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
 					<?php } else { echo $this->subscription->pendingpayment; } ?>
-					<?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?>
+					<?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS');
+} else { echo $this->subscription->currency; } ?>
 				</div>
 				<div class="input-wrap">
 					<label for="field-newunits"><?php echo Lang::txt('COM_SERVICES_FIELD_ACTIVE_UNITS'); ?>:</label><br />
-					<?php if ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now ) { ?>
+					<?php if ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now) { ?>
 						<input type="text" name="newunits" id="field-newunits" value="<?php echo $this->escape($this->subscription->pendingunits) ?>" />
 					<?php } else { echo $this->subscription->pendingunits; } ?>
 				</div>

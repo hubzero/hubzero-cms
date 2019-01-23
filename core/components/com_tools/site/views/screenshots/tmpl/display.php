@@ -242,4 +242,4 @@ echo $html;
 			</label>
 		</fieldset>
 	</form>
-<?php } ?>
+<?php } 

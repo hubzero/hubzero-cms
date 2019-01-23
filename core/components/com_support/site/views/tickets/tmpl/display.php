@@ -245,7 +245,8 @@ $this->css()
 											<?php echo $row->get('id'); ?>
 										</span>
 										<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status->get('class'); ?> status">
-											<?php echo $row->status->get('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+											<?php echo $row->status->get('text');
+echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 										</span>
 										<?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
 											<span class="ticket-target_date tooltips" title="<?php echo Lang::txt('COM_SUPPORT_TARGET_DATE', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
@@ -257,7 +258,8 @@ $this->css()
 								<td colspan="6">
 									<p>
 										<span class="ticket-author">
-											<?php echo $this->escape($row->get('name')); echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
+											<?php echo $this->escape($row->get('name'));
+echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
 										</span>
 										<span class="ticket-datetime">
 											@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('local'); ?></time>
@@ -270,7 +272,7 @@ $this->css()
 									</p>
 									<p>
 										<a class="ticket-content" title="<?php echo $this->escape(str_replace(array('<br />', '&amp;'), array('', '&'), $row->content)); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-											<?php echo ($row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
+											<?php echo $row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND'); ?>
 										</a>
 									</p>
 									<?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>

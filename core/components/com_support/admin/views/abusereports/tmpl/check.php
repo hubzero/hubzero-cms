@@ -78,8 +78,8 @@ $this->css('
 								?>
 								<tr>
 									<th><?php echo $result['service']; ?></th>
-									<td><?php echo ($result['is_spam'] ? '<span class="spam">spam</span>' : '<span class="ham">ham</span>'); ?></td>
-									<td><?php echo ($result['message'] ? '<span class="detector-message">' . $result['message'] . '</span>' : ''); ?></td>
+									<td><?php echo $result['is_spam'] ? '<span class="spam">spam</span>' : '<span class="ham">ham</span>'; ?></td>
+									<td><?php echo $result['message'] ? '<span class="detector-message">' . $result['message'] . '</span>' : ''; ?></td>
 								</tr>
 								<?php
 							}

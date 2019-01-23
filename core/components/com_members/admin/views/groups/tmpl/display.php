@@ -106,7 +106,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 				}
 				foreach ($members as $mem)
 				{
-					if (!in_array($mem->cn,$managerids))
+					if (!in_array($mem->cn, $managerids))
 					{
 						$groups[] = $mem;
 					}
