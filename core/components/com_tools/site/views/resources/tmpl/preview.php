@@ -73,7 +73,7 @@ $this->css('resource.css')
 </section>
 
 <section class="main section">
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<input type="hidden" name="app" value="<?php echo $this->resource->alias; ?>" />
 		<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
 
@@ -86,9 +86,9 @@ $this->css('resource.css')
 		<input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />
 		<input type="hidden" name="toolname" value="<?php echo $this->resource->alias; ?>" />
 
-		<div style="float:left; width:70%;padding:1em 0 1em 0;">
-			<span style="float:left;width:100px;"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="returntoedit" /></span>
-			<span style="float:right;width:100px;"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')); ?> &gt;" /></span>
+		<div class="steps-nav">
+			<span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="returntoedit" /></span>
+			<span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')); ?> &gt;" /></span>
 		</div>
 		<div class="clear"></div>
 	</form>

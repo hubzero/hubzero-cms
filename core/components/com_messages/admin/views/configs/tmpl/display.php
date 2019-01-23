@@ -56,7 +56,7 @@ Html::behavior('keepalive');
 		</div>
 	</fieldset>
 
-	<fieldset class="adminform" style="padding-top: 3em;">
+	<fieldset class="adminform">
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_MESSAGES_FIELD_LOCK_LABEL'); ?></legend>
 

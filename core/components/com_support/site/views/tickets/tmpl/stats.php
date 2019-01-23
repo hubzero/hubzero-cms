@@ -193,7 +193,7 @@ function getMonthName($month)
 		</div><!-- / .grid -->
 
 		<div class="container">
-			<div id="container" style="min-width: 400px; height: 200px; margin: 0 auto;"></div>
+			<div id="container" class="stats-tickets-chart"></div>
 			<?php
 				$top = 0;
 
@@ -345,7 +345,7 @@ function getMonthName($month)
 		<div class="grid">
 			<div class="col span-half">
 				<h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_SEVERITY'); ?></h3>
-				<div id="severities-container" style="min-width: 270px; height: 270px;">
+				<div id="severities-container" class="stats-pie-chart">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -425,7 +425,7 @@ function getMonthName($month)
 					var $ = jq, severityPie;
 
 					function labelFormatter(label, series) {
-						return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+						return '<div class="chart-label">' + label + '<br/>' + Math.round(series.percent) + "%</div>";
 					}
 
 					$(document).ready(function() {
@@ -455,7 +455,7 @@ function getMonthName($month)
 			</div><!-- / .col span-half -->
 			<div class="col span-half omega">
 				<h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_RESOLUTION'); ?></h3>
-				<div id="resolutions-container" style="min-width: 270px; height: 270px;">
+				<div id="resolutions-container" class="stats-pie-chart">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -618,7 +618,7 @@ function getMonthName($month)
 			</p>
 		</div>
 		<div class="entry-content">
-			<div id="user-<?php echo $this->escape($user->username); ?>" style="min-width: 200px; height: 100px;">
+			<div id="user-<?php echo $this->escape($user->username); ?>" class="stats-user-chart">
 				<script type="text/javascript">
 					if (jQuery()) {
 						var $ = jq, chart<?php echo $user->username; ?>;

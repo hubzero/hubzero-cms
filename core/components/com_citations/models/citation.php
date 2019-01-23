@@ -1229,7 +1229,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 				if ($resourceCount > 1)
 				{
-					$links .= '<span>|</span><span style="line-height:1.6em;color:#444">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span>';
+					$links .= '<span>|</span><span class="cited-resources">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span>';
 					$multiple = true;
 				}
 				else

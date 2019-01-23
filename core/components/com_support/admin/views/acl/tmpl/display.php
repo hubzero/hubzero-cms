@@ -186,11 +186,11 @@ foreach ($this->rows as $row)
 	}
 ?>
 			<tr>
-				<td style="text-align:center;"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" /></td>
-				<td style="text-align:center;"><?php echo $row->id; ?></td>
+				<td class="align-center"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" /></td>
+				<td class="align-center"><?php echo $row->id; ?></td>
 				<td><?php echo $row->alias; ?> (<?php echo $row->foreign_key; ?>)</td>
 				<td><?php echo $row->model; ?></td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -204,7 +204,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -218,7 +218,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -233,7 +233,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -247,7 +247,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -262,7 +262,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -276,7 +276,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';

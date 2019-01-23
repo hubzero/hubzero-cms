@@ -166,14 +166,13 @@ jQuery(document).ready(function($){
 					<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim($this->row->background_img, DS)); ?>
 					<?php if (count($image->getErrors()) == 0) : ?>
 						<?php $image->resize(500); ?>
-						<div style="padding: 10px;"><img src="<?php echo $image->inline(); ?>" alt="billboard image" /></div>
+						<div class="billboard-img"><img src="<?php echo $image->inline(); ?>" alt="billboard image" /></div>
 					<?php endif; ?>
 				</fieldset>
 			<?php endif; ?>
 			<fieldset class="adminform">
-				<!-- @TODO: remove inline styles -->
-				<legend id="styling" style="cursor:pointer;"><?php echo Lang::txt('COM_BILLBOARDS_STYLING'); ?></legend>
-				<br style="clear:both;" />
+				<legend id="styling"><?php echo Lang::txt('COM_BILLBOARDS_STYLING'); ?></legend>
+				<br />
 
 				<div id="styling_table">
 					<div class="input-wrap">

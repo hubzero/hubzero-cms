@@ -209,7 +209,11 @@ div.image {
 .doc-item.ppt:before {
 	content: "\f000\a";
 }
-
+.img-preview {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
 /**
  * Right-to-left
  */

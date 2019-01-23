@@ -214,11 +214,11 @@ Html::behavior('tooltip');
 				<td class="priority-4">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->cn); ?>">
-							<?php echo ($row->description ? $this->escape(stripslashes($row->description)) : '<span class="empty-field" style="color:#bbb;">' . Lang::txt('COM_GROUPS_NONE') . '</span>'); ?>
+							<?php echo ($row->description ? $this->escape(stripslashes($row->description)) : '<span class="empty-field smallsub">' . Lang::txt('COM_GROUPS_NONE') . '</span>'); ?>
 						</a>
 					<?php } else { ?>
 						<span>
-							<?php echo ($row->description ? $this->escape(stripslashes($row->description)) : '<span class="empty-field" style="color:#bbb;">' . Lang::txt('COM_GROUPS_NONE') . '</span>'); ?>
+							<?php echo ($row->description ? $this->escape(stripslashes($row->description)) : '<span class="empty-field smallsub">' . Lang::txt('COM_GROUPS_NONE') . '</span>'); ?>
 						</span>
 					<?php } ?>
 				</td>

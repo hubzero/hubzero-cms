@@ -196,7 +196,7 @@ $this->css()
 							<input type="submit" class="submit" value="<?php echo Lang::txt('COM_SUPPORT_GO'); ?>" />
 						</fieldset>
 					</div>
-					<table id="tktlist" style="clear: none;">
+					<table id="tktlist">
 						<tfoot>
 							<tr>
 								<td colspan="8">
@@ -221,6 +221,7 @@ $this->css()
 						$cls = 'even';
 
 						$i = 0;
+						$statuses = array();
 						foreach ($this->rows as $row)
 						{
 							// Was there any activity on this item?
@@ -230,9 +231,15 @@ $this->css()
 								->get('created', '0000-00-00 00:00:00');
 
 							$tags = $row->tags('linkedlist');
+
+							if (!in_array($row->status->get('id'), $statuses))
+							{
+								$statuses[] = $row->status->get('id');
+								$this->css('#tktlist tbody tr td.status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
+							}
 							?>
 							<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
-								<td<?php if ($row->get('status')) { echo ($row->status->get('color') ? ' style="border-left-color: #' . $row->status->get('color') . ';"' : ''); } ?>>
+								<td class="status-<?php echo $row->status->get('id'); ?>">
 									<span class="hasTip" title="<?php echo Lang::txt('COM_SUPPORT_DETAILS'); ?> :: <?php echo Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $row->status->get('text'); ?>">
 										<span class="ticket-id">
 											<?php echo $row->get('id'); ?>

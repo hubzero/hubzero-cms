@@ -190,7 +190,7 @@ defined('_HZEXEC_') or die();
 
 							<div class="indented">
 								<label for="countryorigin">If not, please select your country of origin</label>
-								<select style="display: block" name="countryorigin" id="countryorigin">
+								<select name="countryorigin" id="countryorigin">
 									<option value="">Select country...</option>
 									<?php
 									$countries = \Hubzero\Geocode\Geocode::countries();
@@ -223,7 +223,7 @@ defined('_HZEXEC_') or die();
 
 							<div class="indented">
 								<label for="countryresident">If not, please select the country where you currently reside</label>
-								<select style="display: block" name="countryresident" id="countryresident">
+								<select name="countryresident" id="countryresident">
 									<option value="">Select country...</option>
 									<?php
 									// Make sure service provider is on
@@ -259,12 +259,12 @@ defined('_HZEXEC_') or die();
 									</label>
 								</div>
 
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="raceasian" value="asian" <?php if (in_array('asian', $race)) echo 'checked="checked" '; ?> />Asian</label>
+								<label><input type="checkbox" class="option" name="race[]" id="raceasian" value="asian" <?php if (in_array('asian', $race)) echo 'checked="checked" '; ?> />Asian</label>
 
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="raceblack" value="black" <?php if (in_array('black', $race)) echo 'checked="checked" '; ?> />Black or African American</label>
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racehawaiian" value="hawaiian" <?php if (in_array('hawaiian', $race)) echo 'checked="checked" '; ?> />Native Hawaiian or Other Pacific Islander</label>
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racewhite" value="white" <?php if (in_array('white', $race)) echo 'checked="checked" '; ?> />White</label>
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racerefused" value="refused" <?php if (in_array('refused', $race)) echo 'checked="checked" '; ?> />Do not wish to reveal</label>
+								<label><input type="checkbox" class="option" name="race[]" id="raceblack" value="black" <?php if (in_array('black', $race)) echo 'checked="checked" '; ?> />Black or African American</label>
+								<label><input type="checkbox" class="option" name="race[]" id="racehawaiian" value="hawaiian" <?php if (in_array('hawaiian', $race)) echo 'checked="checked" '; ?> />Native Hawaiian or Other Pacific Islander</label>
+								<label><input type="checkbox" class="option" name="race[]" id="racewhite" value="white" <?php if (in_array('white', $race)) echo 'checked="checked" '; ?> />White</label>
+								<label><input type="checkbox" class="option" name="race[]" id="racerefused" value="refused" <?php if (in_array('refused', $race)) echo 'checked="checked" '; ?> />Do not wish to reveal</label>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($row['disability'])): ?>

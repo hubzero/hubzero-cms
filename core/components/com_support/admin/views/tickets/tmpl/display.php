@@ -207,6 +207,7 @@ $this->css();
 				$tid = Request::getInt('ticket', 0);
 
 				$tsformat = $database->getDateFormat();
+				$statuses = array();
 
 				if (count($this->rows) > 0)
 				{
@@ -228,9 +229,15 @@ $this->css();
 						{
 							$tags = $row->tags('linkedlist');
 						}
+
+						if (!in_array($row->status->get('id'), $statuses))
+						{
+							$statuses[] = $row->status->get('id');
+							$this->css('#tktlist li .status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
+						}
 						?>
 						<li class="<?php echo (!$row->isOpen() ? 'closed' : 'open'); ?>" data-id="<?php echo $row->get('id'); ?>" id="ticket-<?php echo $row->get('id'); ?>">
-							<div class="ticket-wrap"<?php if ($row->get('status')) { echo ($row->status->get('color') ? ' style="border-left-color: #' . $row->status->get('color') . ';"' : ''); } ?>>
+							<div class="ticket-wrap status-<?php echo $row->status->get('id'); ?>">
 								<p>
 									<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 									<span class="ticket-id">

@@ -49,6 +49,12 @@ if ($canDo->get('core.delete'))
 }
 Toolbar::spacer();
 Toolbar::help('status');
+
+$this->css('
+.color-block {
+	display:block;width:1em;height:1em;overflow:hidden;text-indent:5em;border:1px solid #999;background-color: attr(data-color);
+}
+');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
@@ -86,6 +92,10 @@ Toolbar::help('status');
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
+			if ($row->get('color'))
+			{
+				$this->css('.color-block-' . $row->get('id') . ' { background-color: #' . $row->get('color') . '; }');
+			}
 			?>
 			<tr>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" /></td>
@@ -109,7 +119,7 @@ Toolbar::help('status');
 						<?php echo $this->escape($row->get('alias')); ?>
 					<?php } ?>
 				</td>
-				<td class="priority-4"><span style="display:block;width:1em;height:1em;overflow:hidden;text-indent:5em;border:1px solid #999;background-color:<?php echo ($row->get('color') ? '#' . $row->get('color') : 'transparent'); ?>"><?php echo $row->get('color'); ?></span></td>
+				<td class="priority-4"><span class="color-block color-block-<?php echo $row->get('id'); ?>"><?php echo $row->get('color'); ?></span></td>
 			</tr>
 			<?php
 			$i++;

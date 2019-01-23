@@ -41,7 +41,7 @@ if (!$tmpl && !$no_html) {
 	$this->js('condition.builder.js');
 	$this->css('conditions.css');
 ?>
-	<form action="index.php" method="post" name="adminForm" id="item-form">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 		<div class="col width-100">
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('JDETAILS'); ?></legend>
@@ -161,9 +161,9 @@ if (!$tmpl && !$no_html) {
 		$this->row->title .= ' ' . Lang::txt('(copy)');
 	}
 ?>
-	<form action="index.php" method="post" name="adminForm" id="queryForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="queryForm">
 		<h3>
-			<span style="float: right">
+			<span class="configuration-options">
 				<input type="submit" value="<?php echo Lang::txt('COM_SUPPORT_QUERY_SAVE'); ?>" />
 			</span>
 			<span class="configuration">
@@ -178,23 +178,23 @@ if (!$tmpl && !$no_html) {
 		</fieldset>
 
 		<fieldset class="query">
-<?php
-	if ($this->row->conditions)
-	{
-		$condition = json_decode($this->row->conditions);
-		//foreach ($conditions as $condition)
-		//{
-			$this->view('condition')
-			     ->set('option', $this->option)
-			     ->set('controller', $this->controller)
-			     ->set('condition', $condition)
-			     ->set('conditions', $this->conditions)
-			     ->set('row', $this->row)
-			     ->display();
+			<?php
+			if ($this->row->conditions)
+			{
+				$condition = json_decode($this->row->conditions);
+				//foreach ($conditions as $condition)
+				//{
+					$this->view('condition')
+					     ->set('option', $this->option)
+					     ->set('controller', $this->controller)
+					     ->set('condition', $condition)
+					     ->set('conditions', $this->conditions)
+					     ->set('row', $this->row)
+					     ->display();
 
-		//}
-	}
-?>
+				//}
+			}
+			?>
 		</fieldset>
 
 		<fieldset class="fields sort">

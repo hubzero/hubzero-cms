@@ -41,7 +41,7 @@ Html::behavior('keepalive');
 
 <div class="hz_user">
 	<div class="auth">
-		<div class="default" style="display:<?php echo count($authenticators) == 0 ? 'none' : 'block'; ?>;">
+		<div class="default <?php echo count($authenticators) == 0 ? 'none' : 'block'; ?>">
 			<div class="instructions"><?php echo Lang::txt('COM_LOGIN_CHOOSE_METHOD'); ?></div>
 			<div class="options">
 				<?php foreach ($authenticators as $a) : ?>

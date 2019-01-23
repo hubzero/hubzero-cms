@@ -36,6 +36,8 @@ Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUCSCR
 Toolbar::save();
 Toolbar::cancel();
 
+$this->css();
+
 $added   = (intval($this->subscription->added) <> 0) ? Date::of($this->subscription->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : null;
 $updated = (intval($this->subscription->updated) <> 0) ? Date::of($this->subscription->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 $expires = (intval($this->subscription->expires) <> 0) ? Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
@@ -49,13 +51,13 @@ $onhold_msg = ($this->subscription->status==2) ? Lang::txt('COM_SERVICES_SEND_ME
 switch ($this->subscription->status)
 {
 	case '1':
-		$status = ($this->subscription->expires > $now) ? '<span style="color:#197f11;">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span style="color:#ef721e;">' . strtolower(Lang::txt('COM_SERVICES_STATE_EXPIRED')) . '</span>';
+		$status = ($this->subscription->expires > $now) ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_STATE_EXPIRED')) . '</span>';
 		break;
 	case '0':
-		$status = '<span style="color:#ff0000;">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
+		$status = '<span class="service-pending">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
 		break;
 	case '2':
-		$status = '<span style="color:#999;">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
+		$status = '<span class="service-cancelled">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
 		$pending .= ($this->subscription->pendingpayment) ? ' (' . Lang::txt('COM_SERVICES_REFUND') . ')' : '';
 		break;
 }
