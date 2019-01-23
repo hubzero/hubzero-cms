@@ -124,8 +124,8 @@ $this->css();
 						<td class="<?php echo $stat['class']; ?>"><?php echo $stat['alltimepts']; ?></td>
 						<td><?php echo $stat['alltimetran']; ?></td>
 						<td><?php echo isset($stat['avg']) ? $stat['avg'] : ''; ?></td>
-						<td><?php echo isset($stat['thismonthpts']) ? $stat['thismonthpts'] : '' ; ?></td>
-						<td><?php echo isset($stat['thismonthtran']) ? $stat['thismonthtran'] : '' ; ?></td>
+						<td><?php echo isset($stat['thismonthpts']) ? $stat['thismonthpts'] : ''; ?></td>
+						<td><?php echo isset($stat['thismonthtran']) ? $stat['thismonthtran'] : ''; ?></td>
 						<td><?php echo $stat['lastmonthpts']; ?></td>
 						<td><?php echo $stat['lastmonthtran']; ?></td>
 					</tr>

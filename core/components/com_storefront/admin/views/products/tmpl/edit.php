@@ -124,7 +124,7 @@ if (empty($this->meta->qtyTxt))
 						echo $this->downloaded;
 						if ($this->downloaded == 0 || $this->downloaded > 1)
 						{
-							echo(' times');
+							echo ' times';
 						}
 						else {
 							echo 'time';
@@ -342,7 +342,7 @@ if (empty($this->meta->qtyTxt))
 					$image = false;
 					$file = false;
 					$img = new \stdClass();
-					$img->imgId = NULL;
+					$img->imgId = null;
 				}
 				?>
 				<div class="uploader-wrap">

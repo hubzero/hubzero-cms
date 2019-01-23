@@ -146,7 +146,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo $this->escape($instance->get('cn')); ?></td>
 								<td><?php echo count($members); ?></td>
 								<td>
-									<?php echo ($n>1 && !in_array($groups[$i], $this->wishlist->owners('groups', 1))) ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i]) . '" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
+									<?php echo ($n>1 && !in_array($groups[$i], $this->wishlist->owners('groups', 1))) ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i]) . '" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
 								</td>
 							</tr>
 							<?php
@@ -213,7 +213,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo $this->escape($kuser->get('name')); ?></td>
 								<td><?php echo $this->escape($kuser->get('username')); ?></td>
 								<td>
-									<?php echo ($n> 1 && !in_array($individuals[$i], $native['individuals']))  ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]).'" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
+									<?php echo ($n> 1 && !in_array($individuals[$i], $native['individuals']))  ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]).'" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
 								</td>
 							</tr>
 							<?php
@@ -326,4 +326,4 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 			<?php echo Html::input('token'); ?>
 		</form>
 	</section>
-<?php } // end if authorized ?>
+<?php } // end if authorized 
