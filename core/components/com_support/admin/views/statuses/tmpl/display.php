@@ -100,7 +100,7 @@ $this->css('
 			<tr>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" /></td>
 				<td class="priority-4"><?php echo $row->get('id'); ?></td>
-				<td class="priority-2"><?php echo ($row->get('open') ? Lang::txt('COM_SUPPORT_FOR_OPEN') : Lang::txt('COM_SUPPORT_FOR_CLOSED')); ?></td>
+				<td class="priority-2"><?php echo $row->get('open') ? Lang::txt('COM_SUPPORT_FOR_OPEN') : Lang::txt('COM_SUPPORT_FOR_CLOSED'); ?></td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">

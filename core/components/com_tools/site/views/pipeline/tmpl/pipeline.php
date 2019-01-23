@@ -34,8 +34,8 @@
 defined('_HZEXEC_') or die();
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
-$live_site = rtrim(Request::base(),'/');
-$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
+$live_site = rtrim(Request::base(), '/');
+$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#', '', $live_site);
 $project_path  = $this->config->get('project_path', '/tools/');
 $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 
@@ -178,7 +178,8 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
 					\Components\Tools\Helpers\Html::getStatusName($row->state, $status);
 				?>
-					<tr class="<?php echo strtolower($status); if (!$this->admin) { echo (' user-submitted'); } ?>">
+					<tr class="<?php echo strtolower($status);
+if (!$this->admin) { echo ' user-submitted'; } ?>">
 						<th class="priority-5">
 							<span class="entry-id">
 								<?php echo $this->escape($row->id); ?>

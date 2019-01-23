@@ -100,14 +100,14 @@ function submitbutton(pressbutton)
 					// Customize title
 					$defaultTitle = $element->params->title
 									? str_replace('{pubtitle}', $this->pub->title,
-									$element->params->title) : NULL;
+									$element->params->title) : null;
 					$defaultTitle = $element->params->title
 									? str_replace('{pubversion}', $this->pub->version_label,
-									$defaultTitle) : NULL;
+									$defaultTitle) : null;
 
 					$attachments = $this->pub->_attachments;
 					$attachments = isset($attachments['elements'][$this->elementId])
-								 ? $attachments['elements'][$this->elementId] : NULL;
+								 ? $attachments['elements'][$this->elementId] : null;
 
 					// Get version params and extract bundle name
 					$bundleName = $this->pub->params->get($elName . 'bundlename', $defaultTitle);

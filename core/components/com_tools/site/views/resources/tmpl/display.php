@@ -79,7 +79,7 @@ $this->css('resource.css')
 		<?php } ?>
 
 		<div class="steps-nav">
-			<?php if ($this->step !=1 ) { ?>
+			<?php if ($this->step !=1) { ?>
 				<span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="btn returntoedit" /></span>
 			<?php } ?>
 			<span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" class="btn" /></span>

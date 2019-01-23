@@ -67,7 +67,7 @@ $this->css();
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_TITLE'); ?></legend>
 
-		 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC',$this->group->get('description')); ?></p>
+		 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC', $this->group->get('description')); ?></p>
 
 				<label>
 					<?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>

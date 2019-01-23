@@ -242,4 +242,4 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 			echo implode("\n", $comments);
 		?>
 	</div>
-<?php endif; ?>
+<?php endif; 
