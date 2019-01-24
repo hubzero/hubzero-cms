@@ -32,10 +32,6 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Radio;
-//use Hubzero\Html\Builder\Behavior;
-//use Document;
-//use stdClass;
-//use Route;
 use Lang;
 
 /**
@@ -49,57 +45,6 @@ class Scale extends Radio
 	 * @var  string
 	 */
 	protected $type = 'scale';
-
-	/**
-	 * Method to get the field input markup for a generic list.
-	 * Use the multiple attribute to enable multiselect.
-	 *
-	 * @return  string  The field input markup.
-	 */
-	/*protected function getInput()
-	{
-		$lang = App::get('language');
-
-		$html = array();
-
-		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="scale scale-' . $this->id . ' ' . (string) $this->element['class'] . '"' : ' class="scale scale-' . $this->id . '"';
-
-		// Start the radio field output.
-		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
-		//$html[] = '<div class="form-control">';
-		$html[] = '<ul>';
-
-		// Build the radio field output.
-		foreach ($this->getOptions() as $i => $option)
-		{
-			// Initialize some option attributes.
-			$checked  = ((string) $option->value == (string) $this->value) ? ' checked="checked"' : '';
-			$class    = !empty($option->class) ? ' class="' . $option->class . '"' : '';
-			$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
-
-			if ($checked)
-			{
-				$found = true;
-			}
-
-			// Initialize some JavaScript option attributes.
-			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-
-			$html[] = '<li class="scale-option-' . $option->value . '">';
-				$html[] = '<div class="input-wrap">';
-					$html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="' . $option->value . '" />';
-					$html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . $lang->alt($option->text, preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)) . '</label>';
-				$html[] = '</div>';
-			$html[] = '</li>';
-		}
-
-		$html[] = '</ul>';
-		//$html[] = '</div>';
-		$html[] = '</fieldset>';
-
-		return implode($html);
-	}*/
 
 	/**
 	 * Method to get the field options for radio buttons.
@@ -146,6 +91,12 @@ class Scale extends Radio
 
 		$found = false;
 
+		\Document::addStyleDeclaration('
+			#' . $this->id . ' .li-' . $this->id . ' {
+				width: ' . $percent . '%;
+			}
+		');
+
 		$html[] = '<ul>';
 
 		// Build the radio field output.
@@ -164,7 +115,7 @@ class Scale extends Radio
 			// Initialize some JavaScript option attributes.
 			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-			$html[] = '<li style="width: ' . $percent . '%;">';
+			$html[] = '<li class="li-' . $this->id . '">';
 				$html[] = '<div class="input-wrap">';
 					$html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
 					$html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Lang::alt($option->text, preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)) . '</label>';
@@ -204,9 +155,15 @@ class Scale extends Radio
 			$cls = 'hi';
 		}
 
+		\Document::addStyleDeclaration('
+			.graph .bar' . $this->id . ' {
+				width: ' . $percent . '%;
+			}
+		');
+
 		$html = array();
 		$html[] = '<div class="graph">';
-		$html[] = '<strong class="bar ' . $cls . '" style="width: ' . $percent . '%;"><span>' . Lang::txt('%s out of %s', $value, $top) . '</span></strong>';
+		$html[] = '<strong class="bar bar' . $this->id . ' ' . $cls . '"><span>' . Lang::txt('%s out of %s', $value, $top) . '</span></strong>';
 		$html[] = '</div>';
 
 		$value = implode("\n", $html);

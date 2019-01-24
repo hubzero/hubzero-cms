@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 if ($this->data) { ?>
 	<div id="sponsors" class="container">
 		<h3><?php echo Lang::txt('PLG_RESOURCES_SPONSORS_HEADER'); ?></h3>
-		<div class="plg-content" style="text-align: center;">
+		<div class="plg-content">
 			<?php echo $this->data; ?>
 		</div>
 	</div>

@@ -164,24 +164,32 @@ behavior:url(#default#VML);
 	}
 	//]]>
 </script>
+<style>
+	#div_map {
+		width:1280px;
+		height: 860px;
+	}
+	</style>
 </head>
 <body onload="load()" onunload="GUnload()">
-<div id="div_map" style="width:1280px; height: 860px"> </div>
+<div id="div_map"> </div>
 <table>
+<tbody>
 <tr>
 <td>Usage:&nbsp;&nbsp;&nbsp;</td>
-<td>&nbsp;&nbsp;&nbsp;<img src="1.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="2.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="3.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="4.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="5.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="6.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="7.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="8.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="9.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="10.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="11.png" width=12 height=20/></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="1.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="2.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="3.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="4.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="5.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="6.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="7.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="8.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="9.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="10.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="11.png" width="12" height="20" alt="" /></td>
 </tr>
+</tbody>
 </table>
 </body>
 </html>';

@@ -70,7 +70,7 @@ jQuery(document).ready(function($){
 		<thead>
 			<tr>
 				<th colspan="4">
-					<select name="asset" style="max-width: 15em;">
+					<select name="asset">
 						<option value="0"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 						<?php if ($this->assets) { ?>
 							<?php
@@ -87,7 +87,7 @@ jQuery(document).ready(function($){
 					</select>
 					<input type="submit" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" onclick="setTask('link');" />
 				</th>
-				<th colspan="4" style="text-align:right;">
+				<th colspan="4" class="align-right">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_COURSES_CREATE_ASSET'); ?></a>
 				</th>
 			</tr>
@@ -111,7 +111,7 @@ foreach ($this->rows as $row)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $this->escape($row->id); ?>
-					<input style="visibility:hidden;" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input class="invisible" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>

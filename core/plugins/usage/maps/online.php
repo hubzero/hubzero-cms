@@ -91,8 +91,14 @@ $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   		}
 
 		</script>
+    <style>
+  #div_map {
+    width:100%;
+    height:600px;
+  }
+  </style>
  </head>
  <body onload="initialize()">
-	<div id="div_map" style="width:100%; height:600px"></div>
+	<div id="div_map"></div>
  </body>
 </html>';

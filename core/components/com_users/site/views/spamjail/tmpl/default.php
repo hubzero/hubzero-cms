@@ -45,7 +45,7 @@ $params = Plugin::params('system', 'spamjail');
 
 	<?php if ($video = $params->get('spam_video', false)) : ?>
 		<p><?php echo Lang::txt('COM_USERS_SPAM_VIDEO'); ?></p>
-		<div class="video" style="text-align:center;">
+		<div class="video align-center">
 			<iframe width="420" height="315" src="https://www.youtube.com/embed/<?php echo $video; ?>" frameborder="0" allowfullscreen></iframe>
 		</div>
 	<?php endif; ?>

@@ -63,10 +63,16 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 			$rank = round($this->model->ranking, 1);
 
 			$r = (10*$rank);
+
+			$this->css('
+				#rank-' . $this->model->id . ' {
+					width: ' . $r . '%;
+				}
+			');
 			?>
 			<dl class="rankinfo">
 				<dt class="ranking">
-					<span class="rank"><span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;">This resource has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
+					<span class="rank"><span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->model->id; ?>">This resource has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
 				</dt>
 				<dd>
 					<p>
