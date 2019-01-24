@@ -55,8 +55,15 @@ $votes = 0;
 			<?php foreach ($this->votes as $vote) : ?>
 					<tr class="sectiontableentry<?php echo $vote->odd; ?>">
 						<td>
+							<?php
+							$this->css('
+								.' . $this->option .' .option' . $vote->id . ' {
+									width: ' . $vote->percent . '%;
+								}
+							');
+							?>
 							<div class="graph">
-								<strong class="bar <?php echo $vote->class; ?>" style="width: <?php echo $this->escape($vote->percent); ?>%;"><span><?php echo $this->escape($vote->percent); ?>%</span></strong>
+								<strong class="bar <?php echo $vote->class . ' option' . $vote->id; ?>"><span><?php echo $this->escape($vote->percent); ?>%</span></strong>
 							</div>
 						</td>
 						<td>

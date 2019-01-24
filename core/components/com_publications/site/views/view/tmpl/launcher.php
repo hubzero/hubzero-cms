@@ -33,6 +33,12 @@ $this->css()
 	->css('jquery.fancybox.css', 'system')
 	->js();
 
+$this->css('
+	.launcher-image .imager {
+		background-image: url("' . Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_number) . '/Image:master");
+	}
+');
+
 // Get primary elements
 $elements = $this->publication->_curationModel->getElements(1);
 
@@ -48,7 +54,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
   </style>
 <![endif]-->
 <div class="launcher-image">
-	<div class="imager" style="background-image:url('<?php echo Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_number) . '/Image:master'; ?>');" > </div>
+	<div class="imager"> </div>
 </div>
 <section id="launcher" class="main section launcher grad-blue gradient">
 	<div class="grid">

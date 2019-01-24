@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<th>Ordered by:</th>
-					<td><span><?php echo ($this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN')); ?></span></td>
+					<td><span><?php echo $this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN'); ?></span></td>
 				</tr>
 				<tr>
 					<th>Order subtotal:</th>
@@ -153,9 +153,7 @@ function submitbutton(pressbutton)
 			<fieldset class="adminform">
 				<legend><span>Payment info</span></legend>
 
-				<p>Payment method: <?php echo $this->tInfo->tiPayment; ?></p>
-
-
+				<p>Payment method: <?php echo $this->escape($this->tInfo->tiPayment); ?></p>
 
 				<?php
 				if (!empty($this->tInfo->tiPaymentDetails))
@@ -163,7 +161,7 @@ function submitbutton(pressbutton)
 				?>
 					<p>
 						<strong>Payment details:</strong><br>
-						<input type="text" name="tiPaymentDetails" style="width: 100%" value="<?php echo $this->tInfo->tiPaymentDetails; ?>" />
+						<input type="text" name="tiPaymentDetails" value="<?php echo $this->escape($this->tInfo->tiPaymentDetails); ?>" />
 					</p>
 				<?php
 				}
@@ -187,14 +185,13 @@ function submitbutton(pressbutton)
 					</tr>
 				</thead>
 				<tbody>
-
-			<?php
+				<?php
 				$itemsOrdered = $this->items;
 
 				foreach ($itemsOrdered as $itemOrdered)
 				{
 					$itemInfo = $itemOrdered['info'];
-			?>
+					?>
 					<tr>
 						<td>
 							<?php
@@ -213,15 +210,14 @@ function submitbutton(pressbutton)
 						<td><input type="text" name="tiPrice[<?php echo $itemInfo->sId; ?>]" size="10" maxlength="100" value="<?php echo $itemOrdered['transactionInfo']->tiPrice; ?>" /></td>
 						<td><input type="text" name="tiQty[<?php echo $itemInfo->sId; ?>]" size="10" maxlength="100" value="<?php echo $itemOrdered['transactionInfo']->qty; ?>" /></td>
 					</tr>
-			<?php
+					<?php
 				}
-			?>
+				?>
 				</tbody>
 			</table>
 		</fieldset>
 
 		<?php
-
 		// Check the notes, both SKU-specific and other
 		$notes = array();
 		foreach ($this->items as $sId => $item)
@@ -275,9 +271,7 @@ function submitbutton(pressbutton)
 			}
 			echo '</fieldset>';
 		};
-
 		?>
-
 	</div>
 	<div class="clr"></div>
 

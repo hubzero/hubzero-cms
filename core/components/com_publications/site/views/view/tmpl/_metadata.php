@@ -87,10 +87,16 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 	{
 		$rank = round($this->publication->ranking, 1);
 		$r = (10*$rank);
+
+		$this->css('
+			#rank-' . $this->publication->id . ' {
+				width: ' . $r . '%;
+			}
+		');
 		?>
 		<dl class="rankinfo">
 			<dt class="ranking">
-				<span class="rank"><span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;">This publication has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
+				<span class="rank"><span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->publication->id; ?>">This publication has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
 			</dt>
 			<dd>
 				<p>
@@ -120,7 +126,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 			$link = Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'));
 		}
 
-		echo  '<p class="supported"><a href="' . $link . '">' . $tag->get('raw_tag') . '</a></p>';
+		echo '<p class="supported"><a href="' . $link . '">' . $tag->get('raw_tag') . '</a></p>';
 	}
 
 	// Show audience
@@ -157,4 +163,4 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 	echo $data; ?>
 	<div class="clear"></div>
 </div><!-- / .metadata -->
-<?php } ?>
+<?php } 

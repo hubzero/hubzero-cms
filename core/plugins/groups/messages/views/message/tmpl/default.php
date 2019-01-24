@@ -56,7 +56,7 @@ else
 	<?php endif; ?>
 
 	<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
-		<fieldset class="hub-mail" style="min-height:200px">
+		<fieldset class="hub-mail">
 			<table class="groups entries">
 				<caption>
 					<?php echo Lang::txt('PLG_GROUPS_MESSAGE'); ?>
