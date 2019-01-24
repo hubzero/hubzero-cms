@@ -92,8 +92,8 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 					$status = 'outstanding';
 				}
 
-				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
-				$state .= ($item->private) ? ' private' : '' ;
+				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '';
+				$state .= ($item->private) ? ' private' : '';
 				switch ($item->status)
 				{
 					case 3:
@@ -176,7 +176,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 									'layout'    => '_vote'
 								));
 								$view->set('option', 'com_wishlist')
-								     ->set('item',  $item)
+								     ->set('item', $item)
 								     ->set('listid', $this->wishlist->id)
 								     ->set('plugin', 0)
 								     ->set('admin', 0)

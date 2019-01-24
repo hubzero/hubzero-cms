@@ -173,4 +173,4 @@ if ($assets->total() > 0)
 		<div class="description">
 			<?php echo $content; ?>
 		</div>
-<?php } ?>
+<?php } 

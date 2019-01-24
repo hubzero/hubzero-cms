@@ -484,4 +484,4 @@ if ($this->wishlist->get('id'))
 	<?php } // end if public ?>
 <?php } else { ?>
 	<p class="error"><?php echo Lang::txt('COM_WISHLIST_ERROR_LIST_NOT_FOUND'); ?></p>
-<?php } // end if wish list ?>
+<?php } // end if wish list 

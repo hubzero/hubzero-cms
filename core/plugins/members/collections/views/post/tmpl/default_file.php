@@ -81,8 +81,8 @@ if ($assets->total() > 0)
 
 			if ($isLocal) : ?>
 				<div class="holder">
-					<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
-						<img src="<?php echo  Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" height="<?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>" />
+					<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
+						<img src="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" height="<?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>" />
 					</a>
 				</div>
 			<?php else : ?>
@@ -176,4 +176,4 @@ if ($assets->total() > 0)
 		<div class="description">
 			<?php echo $content; ?>
 		</div>
-<?php } ?>
+<?php } 

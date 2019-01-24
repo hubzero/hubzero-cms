@@ -113,7 +113,8 @@ class Html
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
+		for ($val = count($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1);
+$val--) {}
 
 		// Ensure the script has found a match
 		if ($val < 0)
@@ -837,7 +838,8 @@ class Html
 				case 'HTML':
 				case 'PHP':
 				case 'ASF':
-				case 'SWF': $fs = ''; break;
+				case 'SWF': $fs = '';
+break;
 				default:
 					$fs = \Hubzero\Utility\Number::formatBytes($fs);
 				break;

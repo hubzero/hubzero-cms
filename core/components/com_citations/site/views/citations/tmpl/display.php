@@ -111,7 +111,7 @@ $yearlystats = $this->yearlystats;
 $cls = 'even';
 $tot = 0;
 $rows = array();
-foreach ($yearlystats as $year=>$amt)
+foreach ($yearlystats as $year => $amt)
 {
 	$cls = ($cls == 'even') ? 'odd' : 'even';
 
@@ -138,7 +138,7 @@ $html .= "\t\t\t".'<th scope="col" class="numerical-data">'.Lang::txt('COM_CITAT
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
 $html .= "\t".'<tbody>'."\n";
-$html .= implode('',$rows);
+$html .= implode('', $rows);
 $html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
@@ -248,7 +248,7 @@ $html .= "\t\t\t".'<th scope="col" class="numerical-data">'.Lang::txt('COM_CITAT
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
 $html .= "\t".'<tbody>'."\n";
-$html .= implode('',$rows);
+$html .= implode('', $rows);
 $html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";

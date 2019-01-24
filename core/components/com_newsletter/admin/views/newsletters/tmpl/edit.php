@@ -144,7 +144,7 @@ function submitbutton(pressbutton)
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
 						</option>
 						<?php foreach ($this->templates as $t) : ?>
-							<?php echo $sel = ($t->id == $this->newsletter->template_id) ? 'selected="selected"' : '' ; ?>
+							<?php echo $sel = ($t->id == $this->newsletter->template_id) ? 'selected="selected"' : ''; ?>
 							<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
 								<?php echo $this->escape($t->name); ?>
 							</option>

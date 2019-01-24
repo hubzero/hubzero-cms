@@ -290,7 +290,7 @@ $this->css();
 					<?php if ($row->modified == '0000-00-00 00:00:00') { ?>
 						<?php echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); ?>
 					<?php } else { ?>
-						<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
+						<time datetime="<?php echo $row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created; ?>">
 							<?php echo Date::of($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
 						</time>
 					<?php } ?>

@@ -112,8 +112,8 @@ if ($assets->total() > 0)
 				foreach ($images as $asset)
 				{
 					?>
-					<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo  Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo  Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-						<img src="<?php echo  Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($asset->get('filename'), DS)); ?>" class="img" width="50" height="50" />
+					<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
+						<img src="<?php echo Route::url($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($asset->get('filename'), DS)); ?>" class="img" width="50" height="50" />
 					</a>
 					<?php
 				}
@@ -173,4 +173,4 @@ if ($assets->total() > 0)
 		<div class="description">
 			<?php echo $content; ?>
 		</div>
-<?php } ?>
+<?php } 

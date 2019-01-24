@@ -75,4 +75,4 @@ $browser = new \Hubzero\Browser\Detector();
 			</ol>
 		</li>
 	</ol>
-<?php } ?>
+<?php } 

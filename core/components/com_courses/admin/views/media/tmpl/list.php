@@ -40,7 +40,8 @@ defined('_HZEXEC_') or die();
 			for (i=0; i<allPaths.length; i++)
 			{
 				allPaths.item(i).selected = false;
-				if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
+				if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir;
+} else { echo '/';}  ?>') {
 					allPaths.item(i).selected = true;
 				}
 			}

@@ -126,7 +126,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 			$link = Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'));
 		}
 
-		echo  '<p class="supported"><a href="' . $link . '">' . $tag->get('raw_tag') . '</a></p>';
+		echo '<p class="supported"><a href="' . $link . '">' . $tag->get('raw_tag') . '</a></p>';
 	}
 
 	// Show audience
@@ -163,4 +163,4 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 	echo $data; ?>
 	<div class="clear"></div>
 </div><!-- / .metadata -->
-<?php } ?>
+<?php } 
