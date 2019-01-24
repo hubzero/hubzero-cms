@@ -163,8 +163,8 @@ if ($type == 'hubpresenter')
 	foreach ($local_subs as $k => $subtitle)
 	{
 		$info     = pathinfo($subtitle);
-		$name     = str_replace('-auto','', $info['filename']);
-		$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
+		$name     = str_replace('-auto', '', $info['filename']);
+		$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
 		$source   = $content_folder . DS . $subtitle;
 
 		// add each subtitle
@@ -239,7 +239,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		$redirect .= $delimeter . 'time=' . gmdate("H:i:s", $tracking->current_position);
 
 		// Redirect
-		App::redirect(Route::url($redirect, false), '','',false);
+		App::redirect(Route::url($redirect, false), '', '', false);
 	}
 }
 
@@ -683,9 +683,12 @@ $this->css('
 									switch (strtolower($source->type))
 									{
 										case 'm4v':
-										case 'mp4':  $type = 'video/mp4;';  break;
-										case 'ogv':  $type = 'video/ogg;';  break;
-										case 'webm': $type = 'video/webm;'; break;
+										case 'mp4':  $type = 'video/mp4;';
+break;
+										case 'ogv':  $type = 'video/ogg;';
+break;
+										case 'webm': $type = 'video/webm;';
+break;
 									}
 								?>
 								<source src="<?php echo $content_folder . DS . $source->source; ?>" type='<?php echo $type; ?>'>
@@ -715,7 +718,9 @@ $this->css('
 				</div>
 				<div id="list">
 					<ul id="list_items">
-						<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
+						<?php $num = 0;
+$counter = 0;
+$last_slide_id = 0; ?>
 						<?php foreach ($presentation->slides as $slide) : ?>
 							<?php if ((int)$slide->slide != $last_slide_id) : ?>
 								<li id="list_<?php echo $counter; ?>">
@@ -740,8 +745,9 @@ $this->css('
 											echo ($num) . '. ';
 											echo substr($slide->title, 0, $max);
 
-											if (strlen($slide->title) > $max)
+											if (strlen($slide->title) > $max) {
 												echo $elipsis;
+											}
 										?>
 									</span>
 									<span class="time"><?php echo $slide->time; ?></span>
@@ -801,4 +807,4 @@ $this->css('
 	</div>
 <?php else : ?>
 	<p class="warning"><?php echo (isset($error)) ? $error : Lang::txt('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
-<?php endif; ?>
+<?php endif; 

@@ -67,7 +67,7 @@ defined('_HZEXEC_') or die();
 			}
 
 			// Make sure we have an SEF, otherwise it's a querystring
-			$d = (strstr($sef,'option=')) ? '&' : '?';
+			$d = (strstr($sef, 'option=')) ? '&' : '?';
 
 			// Format the ranking
 			$line->ranking = round($line->ranking, 1);
@@ -112,4 +112,4 @@ defined('_HZEXEC_') or die();
 	</table>
 <?php } else { ?>
 	<p><?php echo Lang::txt('PLG_RESOURCES_RELATED_NO_RESULTS_FOUND'); ?></p>
-<?php } ?>
+<?php } 

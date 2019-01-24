@@ -212,7 +212,7 @@ $groupDefs = $groups->getAllGroups();
 			<p>Packages of profile information to prompt starting some time after registration</p>
 			<ol id="reg-groups">
 				<?php
-					foreach ($groupDefs as $idx=>$group):
+					foreach ($groupDefs as $idx => $group):
 						$unit = 'hour';
 						if ($group['hours'] % (24*7) == 0):
 							$unit = 'week';
@@ -226,17 +226,17 @@ $groupDefs = $groups->getAllGroups();
 					<p>
 						Beginning <input name="group-hours-<?php echo $idx; ?>" value="<?php echo $group['hours']; ?>" size="3" />
 						<select name="group-time-unit-<?php echo $idx; ?>">
-							<option value="hour" <?php if ($unit == 'hour') echo 'selected="selected" '; ?>>hours</option>
-							<option value="day" <?php if ($unit == 'day') echo 'selected="selected" '; ?>>days</option>
-							<option value="week" <?php if ($unit == 'week') echo 'selected="selected" '; ?>>weeks</option>
+							<option value="hour" <?php if ($unit == 'hour') { echo 'selected="selected" ';} ?>>hours</option>
+							<option value="day" <?php if ($unit == 'day') { echo 'selected="selected" ';} ?>>days</option>
+							<option value="week" <?php if ($unit == 'week') { echo 'selected="selected" ';} ?>>weeks</option>
 						</select> after registration, prompt for:
 						<ul>
-							<?php foreach ($group['cols'] as $cidx=>$col): ?>
+							<?php foreach ($group['cols'] as $cidx => $col): ?>
 							<li>
 								<select name="group-cols-<?php echo $idx; ?>[]">
 									<option value="">Select profile field...</option>
-								<?php foreach ($possibleCols as $colName=>$colLabel): ?>
-									<option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) echo ' selected="selected"'; ?>><?php echo htmlentities($colLabel); ?></option>
+								<?php foreach ($possibleCols as $colName => $colLabel): ?>
+									<option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) { echo ' selected="selected"';} ?>><?php echo htmlentities($colLabel); ?></option>
 								<?php endforeach; ?>
 								</select>
 								<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove field</button>
@@ -260,7 +260,7 @@ $groupDefs = $groups->getAllGroups();
 			<p>Time to wait before asking again after subsequent clicks of the "ask me later" button</p>
 			<ol>
 				<?php
-					foreach ($recur as $idx=>$r):
+					foreach ($recur as $idx => $r):
 						$unit = 'hour';
 						if ($r % (24*7) == 0):
 							$unit = 'week';
@@ -273,9 +273,9 @@ $groupDefs = $groups->getAllGroups();
 				<li>
 					<input name="recur-<?php echo $idx; ?>" value="<?php echo $r; ?>" size="3" />
 					<select name="recur-type-<?php echo $idx; ?>">
-						<option value="hour" <?php if ($unit == 'hour') echo 'selected="selected" '; ?>>hours</option>
-						<option value="day" <?php if ($unit == 'day') echo 'selected="selected" '; ?>>days</option>
-						<option value="week" <?php if ($unit == 'week') echo 'selected="selected" '; ?>>weeks</option>
+						<option value="hour" <?php if ($unit == 'hour') { echo 'selected="selected" ';} ?>>hours</option>
+						<option value="day" <?php if ($unit == 'day') { echo 'selected="selected" ';} ?>>days</option>
+						<option value="week" <?php if ($unit == 'week') { echo 'selected="selected" ';} ?>>weeks</option>
 					</select>
 					<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove recurrence</button>
 				</li>

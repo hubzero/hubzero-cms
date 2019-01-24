@@ -164,8 +164,8 @@ $localSubtitles = Filesystem::files(PATH_APP . DS . $content_folder, '.srt|.SRT'
 foreach ($localSubtitles as $k => $subtitle)
 {
 	$info     = pathinfo($subtitle);
-	$name     = str_replace('-auto','', $info['filename']);
-	$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
+	$name     = str_replace('-auto', '', $info['filename']);
+	$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
 	$source   = $content_folder . DS . $subtitle;
 
 	// add each subtitle
@@ -490,7 +490,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 			</div>
 			<div id="list">
 				<ul id="list_items">
-					<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
+					<?php $num = 0;
+$counter = 0;
+$last_slide_id = 0; ?>
 					<?php foreach ($presentation->slides as $slide) : ?>
 						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">

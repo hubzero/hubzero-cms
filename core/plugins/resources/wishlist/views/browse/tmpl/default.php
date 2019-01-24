@@ -71,8 +71,8 @@ $this->css();
 					$status = 'outstanding';
 				}
 
-				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
-				$state .= ($item->private) ? ' private' : '' ;
+				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '';
+				$state .= ($item->private) ? ' private' : '';
 				switch ($item->status)
 				{
 					case 3:
@@ -142,7 +142,7 @@ $this->css();
 							'layout'    => '_vote'
 						));
 						$view->set('option', 'com_wishlist')
-						     ->set('item',  $item)
+						     ->set('item', $item)
 						     ->set('listid', $this->wishlist->id)
 						     ->set('plugin', 0)
 						     ->set('admin', 0)

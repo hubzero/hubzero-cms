@@ -138,7 +138,7 @@ if ($this->results) {
 				$line->title = $this->escape($line->title);
 
 				// Make sure we have an SEF, otherwise it's a querystring
-				if (strstr($line->href,'option='))
+				if (strstr($line->href, 'option='))
 				{
 					$d = '&amp;';
 				}
@@ -157,12 +157,12 @@ if ($this->results) {
 		?>
 			<tr>
 			<?php if ($this->config->get('show_ranking')) { ?>
-				<td class="ranking"><?php echo number_format($line->ranking,1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></span></td>
+				<td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></span></td>
 			<?php } elseif ($this->config->get('show_rating')) { ?>
-				<td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span></td>
+				<td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span></td>
 			<?php } ?>
 				<td>
-					<a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title ; ?></a>
+					<a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title; ?></a>
 					<div class="hide" id="rsrce<?php echo $line->id; ?>">
 						<h4><?php echo $line->title; ?></h4>
 						<div>
@@ -184,7 +184,7 @@ if ($this->results) {
 									</tr>
 									<tr>
 										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>
-										<td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+										<td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
 									</tr>
 									<tr>
 										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATE_THIS'); ?></th>
@@ -213,4 +213,4 @@ if ($this->results) {
 	</table>
 <?php } else { ?>
 	<p><?php echo Lang::txt('PLG_GROUPS_RESOURCES_NONE'); ?></p>
-<?php } ?>
+<?php } 
