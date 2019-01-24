@@ -81,8 +81,14 @@ Toolbar::cancel();
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?></legend>
 			<div class="input-wrap">
-				<input type="text" name="story[readmore_title]" value="<?php echo $this->escape($this->story->readmore_title); ?>" style="width:30%;margin-right:2%" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_TITLE_PLACEHOLDER'); ?>" />
-				<input type="text" name="story[readmore_link]" value="<?php echo $this->escape($this->story->readmore_link); ?>" style="width:67.5%" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_PLACEHOLDER'); ?>" />
+				<div class="grid">
+					<div class="col span4">
+						<input type="text" name="story[readmore_title]" value="<?php echo $this->escape($this->story->readmore_title); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_TITLE_PLACEHOLDER'); ?>" />
+					</div>
+					<div class="col span8">
+						<input type="text" name="story[readmore_link]" value="<?php echo $this->escape($this->story->readmore_link); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_PLACEHOLDER'); ?>" />
+					</div>
+				</div>
 			</div>
 		</fieldset>
 	</fielset>

@@ -38,6 +38,8 @@ if ($this->getError())
 {
 	echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }
+
+$this->css('uploader');
 ?>
 <script type="text/javascript">
 function dirup()
@@ -70,7 +72,7 @@ function goUpDir()
 						<td>
 							<input type="file" name="upload" id="upload" />
 						</td>
-						<td style="white-space:nowrap;">
+						<td>
 							<input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo Lang::txt('Unpack (.zip, .tar, etc)'); ?></label>
 						</td>
 						<td>
@@ -102,101 +104,6 @@ function goUpDir()
 			}
 		});
 		</script>
-		<style>
-		/* Drag and drop file upload */
-			#ajax-uploader-before {
-				height: 0;
-				padding: 1.6em 0;
-				overflow: hidden;
-			}
-			#adminForm fieldset legend:after {
-				content: "";
-				display: table;
-				line-height: 0;
-				clear: left;
-			}
-			.qq-uploading {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 107px;
-				color: #fff;
-				font-size: 18px;
-				padding: 75px 0 0 0;
-				text-align: center;
-				background: rgba(0,0,0,0.75);
-			}
-			.qq-uploader {
-				position: relative;
-				margin: 0;
-				padding: 0;
-			}
-			.qq-upload-button,
-			.qq-upload-drop-area {
-				background: #f7f7f7;
-				border: 3px dashed #ddd;
-				text-align: center;
-				color: #bbb;
-				text-shadow: 0 1px 0 #FFF;
-				padding: 0;
-				-webkit-border-radius: 3px;
-				-moz-border-radius: 3px;
-				-ms-border-radius: 3px;
-				-o-border-radius: 3px;
-				border-radius: 3px;
-				font-size: 1.1em;
-				font-weight: bold;
-			}
-			/*.asset-uploader:hover {
-				border: 3px solid #333;
-			}*/
-			.asset-uploader .columns {
-				margin-top: 0;
-				padding-top: 0;
-			}
-			.qq-upload-button,
-			.qq-upload-drop-area {
-				text-align: center;
-				padding: 0.4em 0;
-			}
-			.qq-upload-button span,
-			.qq-upload-drop-area span {
-				position: relative;
-				padding-left: 1.5em;
-			}
-			.qq-upload-button span:before,
-			.qq-upload-drop-area span:before {
-				display: block;
-				position: absolute;
-				top: 0em;
-				left: -0.2em;
-				font-family: "Fontcons";
-				content: "\f08c"; /*"\f046";*/
-				font-size: 1.1em;
-				line-height: 1;
-				content: "\f016";
-				left: 0;
-				font-weight: normal;
-			}
-			.qq-upload-button:hover,
-			.qq-upload-drop-area:hover,
-			.qq-upload-drop-area-active {
-				/*background: #fdfce4;*/
-				border: 3px solid #333;
-				color: #333;
-				cursor: pointer;
-			}
-			.qq-upload-drop-area {
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-			}
-			.qq-upload-list {
-				display: none;
-			}
-		</style>
 
 		<div id="themanager" class="manager">
 			<iframe src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir . '&course=' . $this->course_id); ?>" name="imgManager" id="imgManager" width="98%" height="150"></iframe>

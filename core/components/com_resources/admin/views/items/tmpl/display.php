@@ -286,7 +286,7 @@ $this->css();
 						<span><?php echo $this->escape(Lang::txt($row->groupname)); ?></span>
 					</a>
 				</td>
-				<td class="priority-4" style="white-space: nowrap">
+				<td class="priority-4">
 					<?php if ($row->modified == '0000-00-00 00:00:00') { ?>
 						<?php echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); ?>
 					<?php } else { ?>
@@ -298,10 +298,10 @@ $this->css();
 				<td class="priority-5">
 					<?php echo $this->escape(stripslashes($license)); ?>
 				</td>
-				<td class="priority-2" style="white-space: nowrap">
+				<td class="priority-2">
 					<?php echo $this->escape(stripslashes($row->type->type)); ?>
 				</td>
-				<td style="white-space: nowrap">
+				<td>
 					<?php if ($row->children()->total() > 0) { ?>
 						<a class="glyph menulist" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $row->id); ?>">
 							<span><?php echo $row->children()->total(); ?></span>
@@ -312,7 +312,7 @@ $this->css();
 						</a>
 					<?php } ?>
 				</td>
-				<td style="white-space: nowrap">
+				<td>
 					<?php if ($tags > 0) { ?>
 						<a class="glyph tag" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tags&id=' . $row->id); ?>">
 							<span><?php echo $tags; ?></span>

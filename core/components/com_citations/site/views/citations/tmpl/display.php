@@ -185,32 +185,49 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 {
 	$text =& $data_arr['text'][$i];
 	$hits =& $data_arr['hits'][$i];
-	if ($maxval > 0 && $sumval > 0) {
-		$width = ceil( $hits*$polls_graphwidth/$maxval);
-		$percent = round( 100*$hits/$sumval, 1);
-	} else {
+	if ($maxval > 0 && $sumval > 0)
+	{
+		$width = ceil($hits*$polls_graphwidth/$maxval);
+		$percent = round(100*$hits/$sumval, 1);
+	}
+	else
+	{
 		$width = 0;
 		$percent = 0;
 	}
-	$tdclass='';
-	if ($polls_barcolor==0) {
-		if ($colorx < $polls_maxcolors) {
+
+	$tdclass = '';
+
+	if ($polls_barcolor==0)
+	{
+		if ($colorx < $polls_maxcolors)
+		{
 			$colorx = ++$colorx;
-		} else {
+		}
+		else
+		{
 			$colorx = 1;
 		}
-		$tdclass = 'color'.$colorx;
-	} else {
-		$tdclass = 'color'.$polls_barcolor;
+		$tdclass = 'color' . $colorx;
+	}
+	else
+	{
+		$tdclass = 'color' . $polls_barcolor;
 	}
 
 	$cls = ($cls == 'even') ? 'odd' : 'even';
+
+	$this->css('
+		.graph .bar' . $i . ' {
+			width: '.$percent.'%;
+		}
+	');
 
 	$tr  = "\t\t".'<tr class="'.$cls.'">'."\n";
 	$tr .= "\t\t\t".'<th class="textual-data">'.$text.'</th>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'."\n";
 	$tr .= "\t\t\t\t".'<div class="graph">'."\n";
-	$tr .= "\t\t\t\t\t".'<strong class="bar '.$tdclass.'" style="width: '.$percent.'%;"><span>'.$percent.'%</span></strong>'."\n";
+	$tr .= "\t\t\t\t\t".'<strong class="bar bar' . $i . ' '.$tdclass.'" title="'.$percent.'%"><span>'.$percent.'%</span></strong>'."\n";
 	$tr .= "\t\t\t\t".'</div>'."\n";
 	$tr .= "\t\t\t".'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$hits.'</td>'."\n";

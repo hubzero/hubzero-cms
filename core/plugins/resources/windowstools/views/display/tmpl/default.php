@@ -52,9 +52,9 @@ $browser = new \Hubzero\Browser\Detector();
 <?php } else { ?>
 	<ol>
 		<li>Click <strong>Launch Tool</strong>
-			<ol style="list-style-type: lower-alpha">
+			<ol>
 				<li>First time Windows Tools users will be prompted to download and install the Hubzero Application, if you are a first time user follow these extra steps:
-					<ol style="list-style-type: lower-roman">
+					<ol>
 						<li>In a new tab you will be taken to the <strong>Chrome Web Store</strong> and directly to the <strong>Hubzero Windows Client for Amazon AppStream</strong></li>
 						<li>Click <strong>+ Add to Chrome</strong></li>
 						<li>A pop-up will appear stating “Add ‘Hubzero Windows Client for Amazon AppStream’? It can: Exchange data with any device on the local network or internet” and confirm by clicking <strong>Add app</strong></li>
@@ -66,7 +66,7 @@ $browser = new \Hubzero\Browser\Detector();
 		</li>
 		<li>Review the <strong>Terms &amp; Conditions</strong> and click <strong>Accept</strong></li>
 		<li>The <strong>Hubzero Windows Client for Amazon AppStream</strong> will then connect to the tool and will be ready to use
-			<ol style="list-style-type: lower-alpha">
+			<ol>
 				<li>
 					Note: If there are too many sessions running, you will be given an error stating, “No available sessions, try again in 10 minutes”<br />
 					<img src="/core/plugins/resources/windowstools/assets/img/winappclient.png" alt="Windows App Client" />

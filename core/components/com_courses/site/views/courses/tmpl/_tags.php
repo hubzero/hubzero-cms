@@ -82,18 +82,6 @@ defined('_HZEXEC_') or die();
 		}
 		else if (isset($this->filters))
 		{
-			/*if ($this->filters['tag'])
-			{
-				if (!in_array($tag->get('tag'), $lst))
-				{
-					$lsst[] = $tag->get('tag');
-				}
-			}
-			else
-			{
-				$lsst = array($tag->get('tag'));
-			}*/
-
 			$append = '&tag=' . $tag->get('tag');
 			if (isset($this->filters['sortby']) && $this->filters['sortby'])
 			{
@@ -119,7 +107,7 @@ defined('_HZEXEC_') or die();
 			{
 				$size = $min_font_size + ($tag->get('count') - $min_qty) * $step;
 
-				$tll[$tag->get('tag')] .= '<span style="font-size: ' . round($size, 1) . 'em;">';
+				$tll[$tag->get('tag')] .= '<span data-size="' . round($size, 1) . 'em">';
 			}
 			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
 			if ($this->config->get('show_tag_count', 0))

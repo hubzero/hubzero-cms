@@ -46,7 +46,14 @@ else
 {
 	$html .= "\t".'<dt>' . Lang::txt('COM_TOOLS_STORAGE') . '</dt>'."\n";
 }
-$html .= "\t".'<dd id="du-amount"><div class="du-amount-bar" style="width:'.$this->amt.'%;"><strong>&nbsp;</strong><span class="du-amount-text">'.$this->amt.'% of '.$this->total.'GB</span></div></dd>'."\n";
+
+$this->css('
+#du-amount .du-amount-bar {
+	width: '.$this->amt.'%;
+}
+');
+
+$html .= "\t".'<dd id="du-amount"><div class="du-amount-bar" title="'.$this->amt.'%"><strong>&nbsp;</strong><span class="du-amount-text">'.$this->amt.'% of '.$this->total.'GB</span></div></dd>'."\n";
 if ($this->msgs)
 {
 	if (count($this->du) <=1)

@@ -83,7 +83,7 @@ defined('_HZEXEC_') or die();
 				<?php if ($line->section != 'Topic') { ?>
 					<?php echo Lang::txt('PLG_RESOURCES_RELATED_PART_OF'); ?>
 					<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
-					<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
+					<div class="hide" id="rsrce<?php echo $line->id; ?>">
 						<h4><?php echo stripslashes($line->title); ?></h4>
 						<div>
 							<table>

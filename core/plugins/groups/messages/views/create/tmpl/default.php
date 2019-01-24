@@ -53,6 +53,15 @@ if ($role_id)
 		}
 	}
 }
+
+if ($this->params->get('stamp_logo'))
+{
+	$this->css('
+		.hub-mail .cont {
+			background: #fff url("' . $this->params->get('stamp_logo') . '") no-repeat 99% 4%;
+		}
+	');
+}
 ?>
 <div class="subject">
 	<?php if (!$this->no_html): ?>
@@ -65,7 +74,7 @@ if ($role_id)
 
 	<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 		<fieldset class="hub-mail">
-			<div class="cont" style="background:#fff url('<?php echo $this->params->get('stamp_logo'); ?>') no-repeat 99% 4%;">
+			<div class="cont">
 				<h3><?php echo Lang::txt('Compose Message to Group'); ?></h3>
 				<label class="width-65"><?php echo Lang::txt('GROUP_MESSAGE_USERS'); ?>  <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<select name="users[]" id="msg-recipient">

@@ -81,9 +81,15 @@ $html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
 	   request.send(null);
 	}
 	</script>
+	<style>
+	#div_map {
+		width:1024px;
+		height:600px;
+	}
+	</style>
  </head>
  <body onload='load()' onunload='GUnload()'>
-	<div id='div_map' style='width:1024px; height:600px'> </div>
+	<div id='div_map'> </div>
  </body>
 </html>";
 }

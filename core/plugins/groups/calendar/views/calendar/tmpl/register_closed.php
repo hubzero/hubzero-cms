@@ -89,7 +89,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 </div>
 
 <form action="index.php" id="hubForm">
-	<p class="warning" style="margin:1.5em 0 0 0;">
+	<p class="warning">
 		<?php echo Lang::txt('Registration is closed for this event.'); ?>
 	</p>
 </form>

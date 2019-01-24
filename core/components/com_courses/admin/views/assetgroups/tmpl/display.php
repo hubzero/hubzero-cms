@@ -198,7 +198,7 @@ Html::behavior('tooltip');
 						</span>
 					<?php } ?>
 				</td>
-				<td class="order" style="whitespace:nowrap">
+				<td class="order">
 					<?php echo $row->treename; ?>
 					<?php echo $row->get('ordering'); ?>
 					<span><?php echo $pageNav->orderUpIcon($i, isset($this->ordering[$row->get('parent')][$orderkey - 1]), 'orderup', 'COM_COURSES_MOVE_UP', $ordering); ?></span>

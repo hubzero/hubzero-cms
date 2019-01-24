@@ -134,8 +134,14 @@ behavior:url(#default#VML);
 	}
 	//]]>
 </script>
+<style>
+	#div_map {
+		width:1280px;
+		height: 860px;
+	}
+	</style>
 </head>
 <body onload="load()" onunload="GUnload()">
-<div id="div_map" style="width:1280px; height: 860px"> </div>
+<div id="div_map"> </div>
 </body>
 </html>';

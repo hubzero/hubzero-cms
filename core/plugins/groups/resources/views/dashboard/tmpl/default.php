@@ -163,7 +163,7 @@ if ($this->results) {
 			<?php } ?>
 				<td>
 					<a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title ; ?></a>
-					<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
+					<div class="hide" id="rsrce<?php echo $line->id; ?>">
 						<h4><?php echo $line->title; ?></h4>
 						<div>
 							<table summary="<?php echo $line->title; ?>">

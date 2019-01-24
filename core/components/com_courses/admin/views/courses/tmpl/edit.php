@@ -36,7 +36,7 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-Toolbar::title(Lang::txt('COM_COURSES').': ' . $text, 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES').': ' . $text, 'courses');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -233,7 +233,7 @@ function submitbutton(pressbutton)
 					$pics = explode(DS, $logo);
 					$file = end($pics);
 				?>
-				<div style="padding-top: 2.5em">
+				<div class="uploader-wrap">
 					<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=course&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
 						<noscript>
 							<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $file . '&type=course&id=' . $this->row->get('id')); ?>"></iframe>
@@ -277,7 +277,7 @@ function submitbutton(pressbutton)
 									<span id="img-name"><?php echo $this->row->get('logo', Lang::txt('COM_COURSES_NONE')); ?></span>
 								</td>
 								<td>
-									<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=course&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">[ x ]</a>
+									<a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=course&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">[ x ]</a>
 								</td>
 							</tr>
 							<tr>

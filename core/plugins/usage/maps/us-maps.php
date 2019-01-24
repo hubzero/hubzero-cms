@@ -115,9 +115,14 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 		request.send(null);
 	}
 </script>
-
+<style>
+	#div_map {
+		width: 2200px;
+		height: 1010px;
+	}
+	</style>
 </head>
 <body onload='initialize()' onunload='GUnload()'>
-	<div id='map_canvas' style='width: 2200px; height: 1010px'></div>
+	<div id='map_canvas'></div>
 </body>
 </html>";
