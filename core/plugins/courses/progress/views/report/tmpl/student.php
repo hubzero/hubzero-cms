@@ -277,14 +277,21 @@ if (count($units) > 0)
 			$current_i = $index;
 		}
 
-		$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\">";
-		$progress_timeline .= "<div class=\"person\"></div>";
-		$progress_timeline .= "<div class=\"unit-inner{$first}{$last}{$past}\">";
-		$progress_timeline .= "<div class=\"unit-fill\">";
-		$progress_timeline .= "<div class=\"unit-fill-inner{$done}\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
-		$progress_timeline .= "</div>";
+		$this->css('
+			.unit-fill .unit-fill-inner' . $unit->get('id') . ' {
+				height: ' . $complete . '%;
+				margin-top: ' . $margin . '%;
+			}
+		');
+
+		$progress_timeline .= '<div class="unit unit_' . $index . $current . '">';
+		$progress_timeline .= '<div class="person"></div>';
+		$progress_timeline .= '<div class="unit-inner' . $first . $last . $past . '">';
+		$progress_timeline .= '<div class="unit-fill">';
+		$progress_timeline .= '<div class="unit-fill-inner' . $done . ' unit-fill-inner' . $unit->get('id') . '"></div>';
+		$progress_timeline .= '</div>';
 		$progress_timeline .= "Unit {$index}";
-		$progress_timeline .= "</div></div>";
+		$progress_timeline .= '</div></div>';
 
 		++$index;
 	}

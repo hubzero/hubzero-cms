@@ -270,7 +270,7 @@ $this->css('usage', 'com_usage');
 							$cls = ($cls == 'even') ? 'odd' : 'even';
 							echo $cls; ?>">
 							<td class="highlight"><?php echo ($count + 1); ?></td>
-							<td class="highlight textual-data"><span class="child-connector" style="color:#ccc;">|-</span> <a href="<?php echo Route::url('index.php?option=com_resources&id='.$rw->id); ?>"><?php echo $rw->title; ?></a> <span class="small"><?php echo $rw->type; ?></span></td>
+							<td class="highlight textual-data"><span class="child-connector">|-</span> <a href="<?php echo Route::url('index.php?option=com_resources&id='.$rw->id); ?>"><?php echo $rw->title; ?></a> <span class="small"><?php echo $rw->type; ?></span></td>
 							<td class="highlight"><?php echo $usercount12; ?></td>
 							<td class="highlight"><?php echo $usercount14; ?></td>
 							<td class="highlight"><?php echo $cites ?></td>

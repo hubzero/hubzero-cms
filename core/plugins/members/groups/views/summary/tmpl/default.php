@@ -262,7 +262,7 @@ $this->css()
 				<?php
 			}
 			?>
-			<div class="results-none" <?php if (count($this->groups)) { echo 'style="display:none;"'; } ?>>
+			<div class="results-none <?php if (count($this->groups)) { echo 'hide'; } ?>">
 				<p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_NONE_FOUND'); ?></p>
 			</div>
 		</div><!-- / .groups -->
@@ -278,4 +278,4 @@ $this->css()
 			<p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', Route::url('index.php?option=com_groups')); ?></p>
 		</div><!-- / .post-type -->
 	</div><!-- / #collection-introduction -->
-<?php } ?>
+<?php }

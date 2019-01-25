@@ -82,26 +82,61 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 			return '<p class="error">' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_API_NEEDED') . '</p>';
 		}
 
+		Document::addStyleDeclaration('
+			noscript .g-recaptcha-ns {
+				width: 302px;
+				height: 352px;
+			}
+			noscript .g-recaptcha-inner {
+				width: 302px;
+				height: 352px;
+				position: relative;
+			}
+			noscript .g-recaptcha-challenge {
+				width: 302px;
+				height: 352px;
+				position: absolute;
+			}
+			noscript .g-recaptcha-challenge iframe {
+				width: 302px;
+				height:352px;
+				border-style: none;
+			}
+			noscript .g-recaptcha-response-wrap {
+				width: 250px;
+				height: 80px;
+				position: absolute;
+				border-style: none;
+				bottom: 21px;
+				left: 25px;
+				margin: 0px;
+				padding: 0px;
+				right: 25px;
+			}
+			noscript .g-recaptcha-response {
+				width: 250px;
+				height: 80px;
+				border: 1px solid #c1c1c1;
+				margin: 0px;
+				padding: 0px;
+				resize: none;
+			}
+		');
+
 		// recaptcha html structure
 		// this has support for users with js off
 		$html  = '<div class="form-group">';
 		$html .= '<label class="">&nbsp;</label><div class="field-wrap">';
 		$html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
 					<noscript>
-					  <div style="width: 302px; height: 352px;">
-					    <div style="width: 302px; height: 352px; position: relative;">
-					      <div style="width: 302px; height: 352px; position: absolute;">
-					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '"
-					                frameborder="0" scrolling="no" title="' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_TITLE') . '"
-					                style="width: 302px; height:352px; border-style: none;">
+					  <div class="g-recaptcha-ns">
+					    <div class="g-recaptcha-inner">
+					      <div class="g-recaptcha-challenge">
+					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '" frameborder="0" scrolling="no" title="' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_TITLE') . '">
 					        </iframe>
 					      </div>
-					      <div style="width: 250px; height: 80px; position: absolute; border-style: none;
-					                  bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">
-					        <textarea id="g-recaptcha-response" name="g-recaptcha-response"
-					                  class="g-recaptcha-response"
-					                  style="width: 250px; height: 80px; border: 1px solid #c1c1c1;
-					                         margin: 0px; padding: 0px; resize: none;" value="">
+					      <div class="g-recaptcha-response-wrap">
+					        <textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" value="">
 					        </textarea>
 					      </div>
 					    </div>

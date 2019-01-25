@@ -363,3 +363,25 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9bbcde, endColorstr=#c9dbfd)";
 		color: #333;
 	}
+	#geo-overview-wrap img {
+		width:100%;
+		max-width:510px;
+	}
+	#users-overview {
+		min-width:400px;
+		height:250px;
+	}
+	#users-overview-timeline {
+		min-width:400px;
+		height:100px;
+		margin-top: -7px
+	}
+	#runs-overview {
+		min-width:400px;
+		height:250px;
+	}
+	#runs-overview-timeline {
+		min-width:400px;
+		height:100px;
+		margin-top: -7px
+	}

@@ -578,6 +578,12 @@
 		border: 2px solid #ddd;
 		height: 20px;
 	}
+	.subtitle-settings #font-color {
+		background-color: #FFF;
+	}
+	.subtitle-settings #background-color {
+		background-color: #000;
+	}
 	.subtitle-settings-preview-container {
 		background: #FFF;
 	}
@@ -593,6 +599,10 @@
 	.subtitle-settings-preview .test {
 		padding: 5px 10px;
 		text-align: center;
+		font-family:arial;
+		background-color: #000;
+		color: #FFF;
+		font-size:18px;
 	}
 	.subtitle-settings .actions {
 		text-align: center;
