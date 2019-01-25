@@ -147,22 +147,26 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 				{
 					continue;
 				}
-		?>
 
-		<?php
 			$complete = isset($progress[$this->member->get('id')][$unit->get('id')]['percentage_complete'])
 					? $progress[$this->member->get('id')][$unit->get('id')]['percentage_complete']
 					: 0;
 			$margin   = 100 - $complete;
 			$done     = ($complete == 100) ? ' complete' : '';
-		?>
 
+			$this->css('
+				.unit-fill .unit-fill-inner' . $unit->get('id') . ' {
+					height: ' . $complete . '%;
+					margin-top: '. $margin . '%;
+				}
+			');
+		?>
 		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1); echo $cls; ?>">
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>" data-id="<?php echo $unit->get('id'); ?>">
 					<h3 class="unit-content-available">
 						<span class="unit-fill">
-							<span class="unit-fill-inner<?php echo $done; ?>" style="height:<?php echo $complete; ?>%;margin-top:<?php echo $margin; ?>%;"></span>
+							<span class="unit-fill-inner<?php echo $done; ?> unit-fill-inner<?php echo $unit->get('id'); ?>"></span>
 						</span>
 						<?php echo $this->escape(stripslashes($unit->get('title'))); ?>
 					</h3>

@@ -225,7 +225,7 @@ if (isset($this->entityId) && isset($this->entityType))
 											<label for="font-color"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
 										</div>
 										<div class="col span6 omega input">
-											<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+											<div id="font-color" data-color="FFF"></div>
 										</div>
 									</div>
 									<div class="grid">
@@ -233,13 +233,13 @@ if (isset($this->entityId) && isset($this->entityType))
 											<label for="background-color"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
 										</div>
 										<div class="col span6 omega input">
-											<div id="background-color" data-color="000" style="background-color: #000;"></div>
+											<div id="background-color" data-color="000"></div>
 										</div>
 									</div>
 									<div class="grid">
 										<div class="col span12 omega subtitle-settings-preview-container">
 											<div class="subtitle-settings-preview">
-												<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+												<div class="test"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
 											</div>
 										</div>
 									</div>

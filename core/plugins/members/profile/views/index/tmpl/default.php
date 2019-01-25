@@ -193,7 +193,7 @@ $legacy = array(
 			</ul>
 		</div>
 	<?php elseif (count($update_missing) > 0) : ?>
-		<?php if (count($update_missing) == 1 && in_array("usageAgreement",array_keys($update_missing))) : ?>
+		<?php if (count($update_missing) == 1 && in_array("usageAgreement", array_keys($update_missing))) : ?>
 		<?php else: ?>
 			<div class="error member-update-missing">
 				<strong><?php echo Lang::txt('PLG_MEMBERS_PROFILE_UPDATE_BEFORE_CONTINUING'); ?></strong>
@@ -211,7 +211,7 @@ $legacy = array(
 			<li id="member-profile-completeness" class="hide">
 				<?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS'); ?>
 				<div id="meter">
-					<span id="meter-percent" data-percent="<?php echo $this->completeness; ?>" data-percent-level="<?php echo @$this->completeness_level; ?>" style="width:0%"></span>
+					<span id="meter-percent" data-percent="<?php echo $this->completeness; ?>" data-percent-level="<?php echo @$this->completeness_level; ?>"></span>
 				</div>
 				<?php if ($isUser && $isIncrementalEnabled) : ?>
 					<span id="completeness-info"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS'); ?></span>
