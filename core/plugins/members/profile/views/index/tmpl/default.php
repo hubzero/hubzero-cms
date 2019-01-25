@@ -131,11 +131,11 @@ foreach ($profiles as $profile)
 }
 
 /**
-* Renders if argument is json?
-*
-* @param  string  $v
-* @return string
-*/
+ * Renders if argument is json?
+ *
+ * @param  string  $v
+ * @return string
+ */
 function renderIfJson($v)
 {
 	if (strstr($v, '{'))
@@ -789,7 +789,7 @@ $legacy = array(
 				<li class="<?php echo implode(' ', $cls); ?> section" id="input-section-<?php echo $this->escape($field->get('name')); ?>">
 					<div class="section-content">
 						<div class="key"><?php echo $field->get('label'); ?></div>
-						<div class="value"><?php echo (!empty($val) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET')); ?></div>
+						<div class="value"><?php echo (!empty($val)) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET'); ?></div>
 						<br class="clear" />
 						<?php
 						if ($isUser)
@@ -824,7 +824,7 @@ $legacy = array(
 								}
 								else
 								{
-									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select');
+									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')), 'input-select');
 								}
 
 								$this->view('default', 'edit')
@@ -874,13 +874,13 @@ $legacy = array(
 				{
 					$cls .= ($isUser) ? " hidden" : " hide";
 				}
-				if (isset($update_missing) && in_array("optin",array_keys($update_missing)))
+				if (isset($update_missing) && in_array("optin", array_keys($update_missing)))
 				{
 					$cls = str_replace(' hide', '', $cls);
 					$cls .= ' missing';
 				}
 				// dont show meant for stats only
-				$cls .= (!$isUser) ? ' hide' : '' ;
+				$cls .= (!$isUser) ? ' hide' : '';
 
 				// get value of mail preference option
 				switch ($this->profile->get('sendEmail'))

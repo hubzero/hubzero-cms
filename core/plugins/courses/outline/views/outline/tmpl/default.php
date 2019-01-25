@@ -161,7 +161,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 				}
 			');
 		?>
-		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1); echo $cls; ?>">
+		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1) . $cls; ?>">
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>" data-id="<?php echo $unit->get('id'); ?>">
 					<h3 class="unit-content-available">

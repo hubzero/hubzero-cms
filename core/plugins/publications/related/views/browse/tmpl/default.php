@@ -132,4 +132,4 @@ $authorlist = '';
 	</table>
 <?php } else { ?>
 	<p><?php echo Lang::txt('PLG_PUBLICATION_RELATED_NO_RESULTS_FOUND'); ?></p>
-<?php } ?>
+<?php }
