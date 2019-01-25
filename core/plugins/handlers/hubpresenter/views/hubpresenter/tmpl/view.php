@@ -40,8 +40,8 @@ foreach ($subs as $k => $subtitle)
 foreach ($this->items->findAllWithExtension(['srt', 'SRT']) as $k => $subtitle)
 {
 	$info     = pathinfo($subtitle);
-	$name     = str_replace('-auto','', $info['filename']);
-	$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
+	$name     = str_replace('-auto', '', $info['filename']);
+	$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
 	$source   = $rel_content_folder . DS . $subtitle;
 
 	// Add each subtitle
@@ -284,18 +284,24 @@ if (isset($this->entityId) && isset($this->entityType))
 		<div id="presenter-right">
 			<div id="media" class="<?php echo $cls; ?>">
 				<?php if (strtolower($presentation->type) == 'video') : ?>
-					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo (isset($this->entityId) ? $this->entityId : 0); ?>" data-mediatype="<?php echo (isset($this->entityType) ? $this->entityType : ''); ?>">
+					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo (isset($this->entityId)) ? $this->entityId : 0; ?>" data-mediatype="<?php echo (isset($this->entityType)) ? $this->entityType : ''; ?>">
 						<?php foreach ($presentation->media as $source): ?>
 							<?php
 								switch (strtolower($source->type))
 								{
 									case 'm4v':
-									case 'mp4':  $type = 'video/mp4;';  break;
-									case 'ogv':  $type = 'video/ogg;';  break;
-									case 'webm': $type = 'video/webm;'; break;
+									case 'mp4':
+										$type = 'video/mp4;';
+										break;
+									case 'ogv':
+										$type = 'video/ogg;';
+										break;
+									case 'webm':
+										$type = 'video/webm;';
+										break;
 								}
 							?>
-							<source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" type='<?php echo $type; ?>'>
+							<source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" type="<?php echo $type; ?>">
 						<?php endforeach; ?>
 						<a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer"></a>
 
@@ -305,7 +311,7 @@ if (isset($this->entityId) && isset($this->entityType))
 									data-autoplay="<?php echo $sub->autoplay; ?>"
 									data-type="subtitle"
 									data-lang="<?php echo $sub->name; ?>"
-									data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime( $sub->source ); ?>"></div>
+									data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime($sub->source); ?>"></div>
 							<?php endforeach; ?>
 						<?php endif; ?>
 
@@ -322,7 +328,11 @@ if (isset($this->entityId) && isset($this->entityType))
 			</div>
 			<div id="list">
 				<ul id="list_items">
-					<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
+					<?php
+					$num = 0;
+					$counter = 0;
+					$last_slide_id = 0;
+					?>
 					<?php foreach ($presentation->slides as $slide) : ?>
 						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
@@ -338,7 +348,7 @@ if (isset($this->entityId) && isset($this->entityType))
 										$thumb = $content_folder . DS . $slide->media;
 									}
 								?>
-								<img src="<?php echo with(new Moderator($thumb))->getUrl(); ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo with(new Moderator($thumb))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 								<span>
 									<?php
 										$num++;
@@ -348,7 +358,9 @@ if (isset($this->entityId) && isset($this->entityType))
 										echo substr($slide->title, 0, $max);
 
 										if (strlen($slide->title) > $max)
+										{
 											echo $elipsis;
+										}
 									?>
 								</span>
 								<span class="time"><?php echo $slide->time; ?></span>

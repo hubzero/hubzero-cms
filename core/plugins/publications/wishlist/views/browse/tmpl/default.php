@@ -34,7 +34,7 @@ $this->css();
 
 			if ($item->status == 7) {
 				$status = 'outstanding';
-			} else if (isset($item->ranked) && !$item->ranked && $item->status !=1 && $item->status !=3 && $item->status !=4 && ($this->admin == 2 or $this->admin == 3))  {
+			} else if (isset($item->ranked) && !$item->ranked && $item->status !=1 && $item->status !=3 && $item->status !=4 && ($this->admin == 2 or $this->admin == 3)) {
 				$status = 'unranked';
 			} else {
 				$status = 'outstanding';
