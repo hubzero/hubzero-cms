@@ -162,8 +162,14 @@ $this->css();
 								}
 								else if (isset($item->ranked) && $item->ranked)
 								{
+									$this->css('
+										.priority-level-base .priority-level-' . $item->id . ' {
+											width: ' . (($item->ranking/50)*100) . '%;
+										}
+									');
+
 									$html .= '<span class="priority-level-base">
-										<span class="priority-level" style="width: ' . (($item->ranking/50)*100) . '%">
+										<span class="priority-level priority-level-' . $item->id . '">
 											<span>' . Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->ranking . '</span>
 										</span>
 									</span>';

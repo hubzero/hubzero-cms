@@ -76,6 +76,8 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
      ->js('base64.js')
      ->js('canvas2image.js')
      ->js('jquery.flot.saveAsImage.js');
+
+$heights = array();
 ?>
 <h3 id="plg-usage-header">
 	<?php echo Lang::txt('PLG_PUBLICATIONS_USAGE'); ?>
@@ -99,8 +101,20 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						foreach ($results as $result)
 						{
 							$height = ($viewshighest) ? round(($result->page_views / $viewshighest)*100) : 0;
+
+							$nm = 'count' . $height;
+							if (!in_array($nm, $heights))
+							{
+								$this->css('
+									.sparkline .' . $nm . ' {
+										height: ' . $height . '%;
+									}
+								');
+								$heights[] = $nm;
+							}
+
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->page_views . '">';
+							$sparkline .= '<span class="count count' . $height . '" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->page_views . '">';
 							$sparkline .= number_format($result->page_views);
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";
@@ -130,8 +144,20 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						foreach ($results as $result)
 						{
 							$height = ($downhighest) ? round(($result->primary_accesses / $downhighest)*100) : 0;
+
+							$nm = 'count' . $height;
+							if (!in_array($nm, $heights))
+							{
+								$this->css('
+									.sparkline .' . $nm . ' {
+										height: ' . $height . '%;
+									}
+								');
+								$heights[] = $nm;
+							}
+
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->primary_accesses . '">';
+							$sparkline .= '<span class="count count' . $height . '" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->primary_accesses . '">';
 							$sparkline .= number_format($result->primary_accesses);
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";

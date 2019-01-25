@@ -302,14 +302,21 @@ if (count($units) > 0)
 			$current_i = $index;
 		}
 
-		$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\">";
-		$progress_timeline .= "<div class=\"person\"></div>";
-		$progress_timeline .= "<div class=\"unit-inner{$first}{$last}{$past}\">";
-		$progress_timeline .= "<div class=\"unit-fill\">";
-		$progress_timeline .= "<div class=\"unit-fill-inner{$done}\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
-		$progress_timeline .= "</div>";
+		$this->css('
+			.unit-fill .unit-fill-inner' . $unit->get('id') . ' {
+				height: ' . $complete . '%;
+				margin-top: ' . $margin . '%;
+			}
+		');
+
+		$progress_timeline .= '<div class="unit unit_' . $index . $current . '">';
+		$progress_timeline .= '<div class="person"></div>';
+		$progress_timeline .= '<div class="unit-inner' . $first . $last . $past . '">';
+		$progress_timeline .= '<div class="unit-fill">';
+		$progress_timeline .= '<div class="unit-fill-inner' . $done . ' unit-fill-inner' . $unit->get('id') . '"></div>';
+		$progress_timeline .= '</div>';
 		$progress_timeline .= "Unit {$index}";
-		$progress_timeline .= "</div></div>";
+		$progress_timeline .= '</div></div>';
 
 		++$index;
 	}
@@ -572,16 +579,16 @@ $progress_timeline .= '</div>';
 
 	</div>
 
-<?php if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
-	<div class="recognition badge">
-		<img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
-		<h3>Work hard. Earn a badge.</h3>
-		<p>
-			Upon successful completion of this course, you will be awarded a special <?php echo $this->course->get('title') ?> badge.
-			This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
-			To learn more about Purdue's Passport initiative, please visit the
-			<a href="https://www.openpassport.org/Login" target="_blank">Open Passport website</a>.
-		</p>
-	</div>
-<?php endif; ?>
+	<?php if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
+		<div class="recognition badge">
+			<img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" alt="Badge" />
+			<h3>Work hard. Earn a badge.</h3>
+			<p>
+				Upon successful completion of this course, you will be awarded a special <?php echo $this->course->get('title') ?> badge.
+				This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
+				To learn more about Purdue's Passport initiative, please visit the
+				<a href="https://www.openpassport.org/Login" rel="external" target="_blank">Open Passport website</a>.
+			</p>
+		</div>
+	<?php endif; ?>
 </div>

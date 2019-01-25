@@ -32,7 +32,7 @@
 defined('_HZEXEC_') or die();
 
 // Add stylesheet
-$this->css('assets/css/related.css');
+$this->css('related.css');
 
 $database = App::get('db');
 
@@ -95,7 +95,7 @@ $authorlist = '';
 						<?php } else { ?>
 							<?php if ($line->section == 'Series') { echo Lang::txt('PLG_PUBLICATION_RELATED_PART_OF'); } ?>
 								<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this>escape(stripslashes($line->title)); ?></a>
-								<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
+								<div class="hide" id="rsrce<?php echo $line->id; ?>">
 									<h4><?php echo stripslashes($line->title); ?></h4>
 									<div>
 										<table>

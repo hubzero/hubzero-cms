@@ -59,7 +59,7 @@ Html::behavior('keepalive');
 				</div>
 			<?php endif; ?>
 		</div>
-		<div class="hz" style="display:<?php echo count($authenticators) == 0 ? 'block' : 'none'; ?>;">
+		<div class="hz <?php echo count($authenticators) == 0 ? 'block' : 'none'; ?>">
 			<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 				<label id="mod-login-username-lbl" for="mod-login-username">
 					<span><?php echo Lang::txt('JGLOBAL_USERNAME'); ?></span>
