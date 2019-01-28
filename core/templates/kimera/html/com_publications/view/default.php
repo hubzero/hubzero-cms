@@ -57,13 +57,12 @@ if ($this->config->get('launcher_layout', 0))
 else
 {
 	?>
-	<div id="content-header">
+
+	<?php echo \Components\Publications\Helpers\Html::title($this->publication); ?>
 		<section class="main section upperpane">
 			<div class="subject">
 				<div class="grid overviewcontainer">
 					<div class="col span8">
-						<?php echo str_replace(' id="content-header"', '', \Components\Publications\Helpers\Html::title($this->publication)); ?>
-
 						<?php if ($this->publication->params->get('show_authors') && $this->publication->_authors) { ?>
 							<div id="authorslist">
 								<?php echo \Components\Publications\Helpers\Html::showContributors($this->publication->_authors, true, false, false, false, $this->publication->params->get('format_authors', 0)); ?>
@@ -167,7 +166,7 @@ else
 				?>
 			</div><!-- / .aside -->
 		</section><!-- / .main section -->
-	</div>
+
 	<?php
 }
 
