@@ -84,8 +84,9 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 		$badgesProvider->setCredentials($creds);
 
-		require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
-		require_once Component::path('com_courses') . DS . 'models' . DS . 'memberBadge.php';
+		require_once Component::path('com_courses') . '/models/courses.php';
+		require_once Component::path('com_courses') . '/models/memberBadge.php';
+
 		$coursesObj = new \Components\Courses\Models\Courses();
 		$courses    = $coursesObj->courses();
 
@@ -169,7 +170,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 		$cconfig  = Component::params('com_courses');
 
 		Lang::load('com_courses') ||
-		Lang::load('com_courses', Component::path('com_courses') . DS . 'site');
+		Lang::load('com_courses', Component::path('com_courses') . '/site');
 
 		$from = array(
 			'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),
@@ -178,7 +179,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 		$subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
 
-		require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
+		require_once Component::path('com_courses') . '/models/courses.php';
 
 		$course_id = 0;
 
@@ -228,7 +229,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 						if (isset($managers) && count($managers) > 0)
 						{
-							require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
+							require_once Component::path('com_forum') . '/models/manager.php';
 
 							foreach ($managers as $manager)
 							{
@@ -280,8 +281,8 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 									$latest_cnt = count($latest);
 								}
 
-								$eview = new \Hubzero\Component\View(array(
-									'base_path' => Component::path('com_courses') . DS . 'site',
+								$eview = new \Hubzero\Mail\View(array(
+									'base_path' => Component::path('com_courses') . '/site',
 									'name'      => 'emails',
 									'layout'    => 'digest_plain'
 								));

@@ -201,7 +201,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 	 **/
 	private function sendEmail($user, $posts, $interval='daily')
 	{
-		$eview = new \Hubzero\Component\View(array(
+		$eview = new Hubzero\Mail\View(array(
 			'base_path' => Component::path('com_forum') . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => 'digest_plain'
@@ -238,7 +238,5 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError('Failed to mail %s', $user->get('email'));
 		}
-
-		$mailed[] = $user->get('username');
 	}
 }
