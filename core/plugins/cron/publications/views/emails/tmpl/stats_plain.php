@@ -41,7 +41,7 @@ $baseView   = 'publications';
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
 $mconfig = Component::params('com_members');
-$pPath   = trim($mconfig->get('webpath'), DS);
+$pPath   = trim($mconfig->get('webpath'), '/');
 $profileThumb = null;
 
 $append = '?from=' . $this->user->get('email');
@@ -60,12 +60,12 @@ for ($a = 0; $a < count($this->pubstats); $a++)
 
 	$stat = $this->pubstats[$a];
 
-	$sefManage = $baseManage . DS . $stat->publication_id . $append;
-	$sefView   = $baseView . DS . $stat->publication_id . $append;
+	$sefManage = $baseManage . '/' . $stat->publication_id . $append;
+	$sefView   = $baseView . '/' . $stat->publication_id . $append;
 
 	$message .= 'Publication #' . $stat->publication_id . ' "' . stripslashes($stat->title) . '"' . "\n";
-	$message .= 'View publication:          ' . $base . DS . trim($sefView, DS) . "\n";
-	$message .= 'Manage publication:        ' . $base . DS . trim($sefManage, DS) . "\n\n";
+	$message .= 'View publication:          ' . $base . '/' . trim($sefView, '/') . "\n";
+	$message .= 'Manage publication:        ' . $base . '/' . trim($sefManage, '/') . "\n\n";
 
 	$message .= 'Usage in the past month... ' . "\n";
 	$message .= 'Page views:                ' . $stat->monthly_views. "\n";
