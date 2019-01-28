@@ -262,7 +262,7 @@ echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : '';
 echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
 										</span>
 										<span class="ticket-datetime">
-											@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('local'); ?></time>
+											@ <time datetime="<?php echo Date::of($row->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($row->get('created'))->toLocal(); ?></time>
 										</span>
 										<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 											<span class="ticket-activity">
