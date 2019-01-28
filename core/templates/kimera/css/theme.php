@@ -358,7 +358,7 @@ $styles .= '
 	a.btn:active,
 	a.btn:visited {
 		color: #777;
-		border: 2px solid rgba(0,0,0,0.2);
+		border-color: rgba(0,0,0,0.2);
 	}
 	#top {
 		background-color: rgba(' . hex2rgb($color1) . ', ' . $opacity . ');
