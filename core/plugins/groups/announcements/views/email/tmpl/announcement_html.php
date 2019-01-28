@@ -148,7 +148,7 @@ if ($this->announcement->priority == 1)
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo Config::get('sitename'); ?> sent this email because you belong to the <a href="<?php echo $groupLink; ?>"><?php echo $group->get('description'); ?></a> group. Visit our <a href="<?php echo rtrim(Request::base(), DS); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim(Request::base(), DS); ?>/support">Support Center</a> if you have any questions.</span>
+					<span><?php echo Config::get('sitename'); ?> sent this email because you belong to the <a href="<?php echo $groupLink; ?>"><?php echo $group->get('description'); ?></a> group.
 				</td>
 			</tr>
 		</tbody>
