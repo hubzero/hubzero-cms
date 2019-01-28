@@ -38,7 +38,7 @@
   display: block;
   position: absolute;
   bottom: 0;
-  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, black 100%);
   height: 100%;
   width: 100%;
 }
@@ -306,6 +306,14 @@
 
 .feature .horizontal {
   grid-column: 1/span 2;
+}
+
+@supports (display: grid) {
+  .feature .horizontal {
+    height: auto;
+    margin: 0;
+    width: auto;
+  }
 }
 
 .feature .regular {

@@ -177,6 +177,11 @@
 
   .horizontal {
     @include grid(1 / span 2, null);
+    @include grid-support {
+      height: auto;
+      margin: 0;
+      width: auto;
+    }
   }
 
   .regular {
