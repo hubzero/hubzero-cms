@@ -82,7 +82,7 @@ array_walk($this->posts, function($val, $idx) use (&$posts)
 		<td width="565" style="padding: 14px;">
 			<span style="font-weight: bold; font-size:14px;">Your <?php echo $this->interval; ?> group discussion digest</span>
 			<hr />
-			<span>You have <?php echo $posts; ?> new post<?php if ($posts > 1) echo 's'; ?> across <?php echo $groups; ?> of your groups</span>
+			<span>You have <?php echo $posts; ?> new post<?php if ($posts > 1) { echo 's'; } ?> across <?php echo $groups; ?> of your groups</span>
 		</td>
 	</tr>
 </table>
