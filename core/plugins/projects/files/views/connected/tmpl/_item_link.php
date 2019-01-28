@@ -27,10 +27,7 @@ if ($itemMimeType && preg_match('/^application\/vnd\.google\-apps\.([^.]+)/', $i
 
 	$format = Arr::getValue($match, 1, null);
 
-	if (isset($googleMimetypeMap[$format]))
-	{
-		$itemExtension = $googleMimetypeMap[$format];
-	}
+	$itemExtension = Arr::getValue($googleMimetypeMap, $format, null);
 }
 else
 {
