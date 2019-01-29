@@ -77,6 +77,7 @@ class Members extends AdminController
 		$this->registerTask('unconfirm', 'state');
 		$this->registerTask('applyprofile', 'saveprofile');
 		$this->registerTask('unblock', 'block');
+		$this->registerTask('disapprove', 'approve');
 
 		parent::execute();
 	}
@@ -863,7 +864,7 @@ class Members extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$state = ($this->getTask() == 'approve' ? 2 : 0);
+		$state = ($this->getTask() == 'approve' ? 1 : 0);
 
 		// Incoming user ID
 		$ids = Request::getArray('id', array());
@@ -883,8 +884,10 @@ class Members extends AdminController
 			// Load the profile
 			$user = Member::oneOrFail(intval($id));
 
+			$prev = $user->get('approved');
+
 			// Extra, paranoid check that we only approve accounts that need it
-			if (!$user->get('approved'))
+			if ($prev != $state)
 			{
 				$user->set('approved', $state);
 
@@ -895,7 +898,7 @@ class Members extends AdminController
 				}
 
 				// Email the user that their account has been approved
-				if ($this->config->get('useractivation_email'))
+				if ($state && $this->config->get('useractivation_email'))
 				{
 					if (!$this->emailApprovedUser($user))
 					{
