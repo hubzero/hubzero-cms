@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 	var form = document.getElementById('adminForm');
 
 	if (pressbutton == 'clearTerms' || pressbutton == 'remove') {
-		var res = confirm('Are you sure? Make sure you know what you\'re doing, as this action cannot be undone!');
+		var res = confirm("<?php echo Lang::txt('COM_MEMBERS_CONFIRMATION_WARNING'); ?>");
 
 		if (!res) {
 			return;
@@ -317,7 +317,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="center">
 					<?php if ($canChange) : ?>
-						<?php echo Html::grid('boolean', $i, $row->get('approved'), 'approve', null); ?>
+						<?php echo Html::grid('boolean', $i, $row->get('approved'), 'approve', 'disapprove'); ?>
 					<?php else : ?>
 						<?php echo Html::grid('boolean', $i, $row->get('approved'), null, null); ?>
 					<?php endif; ?>
