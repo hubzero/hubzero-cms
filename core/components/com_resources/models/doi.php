@@ -188,7 +188,7 @@ class Doi extends Relational
 		else
 		{
 			$this->set('doi', $doi);
-			$this->set('doi_shoulder', $service->configs()->get('doi_shoulder'));
+			$this->set('doi_shoulder', $service->configs()->shoulder);
 		}
 
 		// Register the DOI name and URL to complete the DOI registration.
