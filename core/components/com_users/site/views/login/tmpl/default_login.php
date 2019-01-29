@@ -131,7 +131,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 					<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
 				<?php endif; ?>
 			</div>
-			<div class="default <?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>;">
+			<div class="default <?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_CHOOSE_METHOD'); ?></div>
 				<div class="options">
 					<?php echo $login_provider_html; ?>
@@ -145,7 +145,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 					</div>
 				<?php endif; ?>
 			</div>
-			<div class="hz <?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>;">
+			<div class="hz <?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
