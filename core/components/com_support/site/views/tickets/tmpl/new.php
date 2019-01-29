@@ -100,7 +100,7 @@ if (User::isGuest())
 
 			<label for="reporter_email"<?php echo ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo Lang::txt('COM_SUPPORT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[email]" value="<?php echo $this->escape($this->row->get('email', $this->row->submitter->get('email'))); ?>" id="reporter_email" />
+				<input type="email" name="reporter[email]" value="<?php echo $this->escape($this->row->get('email', $this->row->submitter->get('email'))); ?>" id="reporter_email" />
 			</label>
 			<?php if ($this->getError() && !$this->row->get('email')) { ?>
 				<p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>

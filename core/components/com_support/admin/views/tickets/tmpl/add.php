@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-email"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_EMAIL'); ?>:</label>
-					<input type="text" name="ticket[email]" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
+					<input type="email" name="ticket[email]" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-report"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_DESCRIPTION'); ?>:</label>
