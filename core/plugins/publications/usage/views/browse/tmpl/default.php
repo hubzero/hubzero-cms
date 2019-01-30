@@ -91,7 +91,6 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_VIEWS'); ?></h4>
 				<p class="total">
 					<strong class="usage-value" id="publication-views"><?php echo number_format($totalViews); ?></strong>
-					<span id="publication-views-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
 				</p>
 			</div>
 			<div class="col span9 omega usage-stat">
@@ -122,7 +121,6 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_DOWNLOADS'); ?></h4>
 				<p class="total">
 					<strong class="usage-value" id="publication-downloads"><?php echo number_format($totalDownloads); ?></strong>
-					<span id="publication-downloads-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
 				</p>
 			</div>
 			<div class="col span9 omega usage-stat">
