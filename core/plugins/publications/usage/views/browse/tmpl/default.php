@@ -44,6 +44,8 @@ $downhighest = 0;
 
 $views = array();
 $downloads = array();
+$totalDownloads = $this->totalDownloads;
+$totalViews = $this->totalViews;
 
 $db->setQuery(
 	"SELECT *
@@ -90,7 +92,7 @@ $heights = array();
 			<div class="col span3 usage-stat">
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_VIEWS'); ?></h4>
 				<p class="total">
-					<strong class="usage-value" id="publication-views"><?php echo number_format($current->page_views); ?></strong>
+					<strong class="usage-value" id="publication-views"><?php echo number_format($totalViews); ?></strong>
 					<span id="publication-views-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
 				</p>
 			</div>
@@ -133,7 +135,7 @@ $heights = array();
 			<div class="col span3 usage-stat">
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_DOWNLOADS'); ?></h4>
 				<p class="total">
-					<strong class="usage-value" id="publication-downloads"><?php echo number_format($current->primary_accesses); ?></strong>
+					<strong class="usage-value" id="publication-downloads"><?php echo number_format($totalDownloads); ?></strong>
 					<span id="publication-downloads-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
 				</p>
 			</div>
