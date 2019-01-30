@@ -133,6 +133,10 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		$stats = new \Components\Publications\Tables\Stats($database);
 		$stats->loadStats($publication->id, $period, $dthis);
 
+		$usageHelper = new PublicationUsageHelper(['publication' => $publication]);
+		$views = $usageHelper->totalViews();
+		$downloads = $usageHelper->totalDownloads();
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
@@ -144,15 +148,13 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 				->set('option', $option)
 				->set('publication', $publication)
 				->set('stats', $stats)
+				->set('totalViews', $views)
+				->set('totalDownloads', $downloads)
 				->setErrors($this->getErrors());
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
-
-		$usageHelper = new PublicationUsageHelper(['publication' => $publication]);
-		$views = $usageHelper->totalViews();
-		$downloads = $usageHelper->totalDownloads();
 
 		$view = $this->view('default', 'metadata')
 			->set('publication', $publication)
