@@ -190,12 +190,6 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						chart_downloads.unhighlight();
 						chart_downloads.highlight(0, item.dataIndex);
 					}
-
-					$('#publication-views').text(dataset_views[0].data[item.dataIndex][1]);
-					$('#publication-views-date').text(month_short[item.series.data[item.dataIndex][0].getUTCMonth()] + ' ' + yyyy);
-
-					$('#publication-downloads').text(dataset_downloads[0].data[item.dataIndex][1]);
-					$('#publication-downloads-date').text(month_short[item.series.data[item.dataIndex][0].getUTCMonth()] + ' ' + yyyy);
 				};
 
 				var views = $('#chart-views');
