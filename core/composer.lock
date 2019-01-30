@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "99ac9eadd44d355758035ce5f74ca3a2",
+    "hash": "ef664a908d9cd37281824a1dfce151d5",
+    "content-hash": "62525198787b8e3df5b979b6f060a55c",
     "packages": [
         {
             "name": "authy/php",
@@ -50,7 +51,7 @@
                 "api",
                 "two-factor"
             ],
-            "time": "2014-08-15T15:08:21+00:00"
+            "time": "2014-08-15 15:08:21"
         },
         {
             "name": "aws/aws-sdk-php",
@@ -113,7 +114,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-07-25T18:03:20+00:00"
+            "time": "2016-07-25 18:03:20"
         },
         {
             "name": "bshaffer/oauth2-server-php",
@@ -171,7 +172,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2018-12-04T00:29:32+00:00"
+            "time": "2018-12-04 00:29:32"
         },
         {
             "name": "cilogon/oauth2-cilogon",
@@ -223,7 +224,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2017-05-25T17:36:46+00:00"
+            "time": "2017-05-25 17:36:46"
         },
         {
             "name": "composer/ca-bundle",
@@ -279,7 +280,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2018-10-18T06:09:13+00:00"
+            "time": "2018-10-18 06:09:13"
         },
         {
             "name": "composer/composer",
@@ -356,7 +357,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2018-01-31T15:28:18+00:00"
+            "time": "2018-01-31 15:28:18"
         },
         {
             "name": "composer/semver",
@@ -418,7 +419,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2016-08-30T16:08:34+00:00"
+            "time": "2016-08-30 16:08:34"
         },
         {
             "name": "composer/spdx-licenses",
@@ -479,7 +480,7 @@
                 "spdx",
                 "validator"
             ],
-            "time": "2018-11-01T09:45:54+00:00"
+            "time": "2018-11-01 09:45:54"
         },
         {
             "name": "doctrine/collections",
@@ -542,7 +543,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2015-06-16T18:50:45+00:00"
+            "time": "2015-06-16 18:50:45"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -550,12 +551,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
+                "reference": "v4.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
-                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
+                "reference": "v4.5.0",
                 "shasum": ""
             },
             "require": {
@@ -586,7 +587,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2013-02-18T00:04:08+00:00"
+            "time": "2013-02-18 00:04:08"
         },
         {
             "name": "facebook/graph-sdk",
@@ -644,7 +645,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2017-04-20T14:15:02+00:00"
+            "time": "2017-04-20 14:15:02"
         },
         {
             "name": "firebase/php-jwt",
@@ -690,7 +691,7 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2017-06-27T22:17:23+00:00"
+            "time": "2017-06-27 22:17:23"
         },
         {
             "name": "google/apiclient",
@@ -749,7 +750,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-06-20T15:52:20+00:00"
+            "time": "2018-06-20 15:52:20"
         },
         {
             "name": "google/apiclient-services",
@@ -786,7 +787,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-12-08T00:22:54+00:00"
+            "time": "2018-12-08 00:22:54"
         },
         {
             "name": "google/auth",
@@ -833,7 +834,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2018-09-17T20:29:21+00:00"
+            "time": "2018-09-17 20:29:21"
         },
         {
             "name": "guzzle/guzzle",
@@ -929,7 +930,7 @@
                 "web service"
             ],
             "abandoned": "guzzlehttp/guzzle",
-            "time": "2015-03-18T18:23:50+00:00"
+            "time": "2015-03-18 18:23:50"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -991,7 +992,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-10-08T15:01:37+00:00"
+            "time": "2016-10-08 15:01:37"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1042,7 +1043,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20T10:07:11+00:00"
+            "time": "2016-12-20 10:07:11"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1100,7 +1101,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-06-24T23:00:38+00:00"
+            "time": "2016-06-24 23:00:38"
         },
         {
             "name": "hubzero/flysystem-github",
@@ -1173,7 +1174,7 @@
             "support": {
                 "source": "https://github.com/hubzero/flysystem-github/tree/develop"
             },
-            "time": "2017-07-24T19:58:42+00:00"
+            "time": "2017-07-24 19:58:42"
         },
         {
             "name": "hubzero/framework",
@@ -1181,17 +1182,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "d4ac619ca76af1cbe65d1b23894b45dc0c3817cd"
+                "reference": "3419c59338d17fda756bfb4e1bc8030d61920c0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/d4ac619ca76af1cbe65d1b23894b45dc0c3817cd",
-                "reference": "d4ac619ca76af1cbe65d1b23894b45dc0c3817cd",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/3419c59338d17fda756bfb4e1bc8030d61920c0e",
+                "reference": "3419c59338d17fda756bfb4e1bc8030d61920c0e",
                 "shasum": ""
             },
             "require": {
                 "composer/composer": "1.6.3",
-                "firebase/php-jwt": "5.0.0",
                 "php": ">=5.4.0",
                 "phpoffice/phpspreadsheet": "1.4.1",
                 "symfony/http-foundation": "2.5.5",
@@ -1222,7 +1222,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2018-11-07T12:18:57+00:00"
+            "time": "2019-01-30 16:14:50"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1263,7 +1263,7 @@
                 "orcid",
                 "php"
             ],
-            "time": "2018-10-22T19:14:21+00:00"
+            "time": "2018-10-22 19:14:21"
         },
         {
             "name": "jasig/phpcas",
@@ -1317,7 +1317,7 @@
                 "cas",
                 "jasig"
             ],
-            "time": "2017-04-10T19:12:45+00:00"
+            "time": "2017-04-10 19:12:45"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -1383,7 +1383,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2018-02-14T22:26:30+00:00"
+            "time": "2018-02-14 22:26:30"
         },
         {
             "name": "knplabs/github-api",
@@ -1445,7 +1445,7 @@
                 "gist",
                 "github"
             ],
-            "time": "2016-07-26T08:49:38+00:00"
+            "time": "2016-07-26 08:49:38"
         },
         {
             "name": "leafo/lessphp",
@@ -1486,7 +1486,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2014-11-24T18:39:20+00:00"
+            "time": "2014-11-24 18:39:20"
         },
         {
             "name": "league/flysystem",
@@ -1569,7 +1569,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-10-07T12:20:37+00:00"
+            "time": "2016-10-07 12:20:37"
         },
         {
             "name": "league/flysystem-aws-s3-v2",
@@ -1616,7 +1616,7 @@
                 }
             ],
             "description": "Flysystem adapter for AWS S3 SDK v2",
-            "time": "2015-10-15T15:55:48+00:00"
+            "time": "2015-10-15 15:55:48"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -1664,7 +1664,7 @@
                 }
             ],
             "description": "An adapter decorator to enable meta-data caching.",
-            "time": "2016-11-20T21:02:42+00:00"
+            "time": "2016-11-20 21:02:42"
         },
         {
             "name": "league/oauth2-client",
@@ -1731,7 +1731,7 @@
                 "oauth2",
                 "single sign on"
             ],
-            "time": "2018-01-13T05:27:58+00:00"
+            "time": "2018-01-13 05:27:58"
         },
         {
             "name": "mandrill/mandrill",
@@ -1774,7 +1774,7 @@
                 "api",
                 "email"
             ],
-            "time": "2015-09-22T13:58:03+00:00"
+            "time": "2015-09-22 13:58:03"
         },
         {
             "name": "markbaker/complex",
@@ -1869,7 +1869,7 @@
                 "complex",
                 "mathematics"
             ],
-            "time": "2018-10-13T23:28:42+00:00"
+            "time": "2018-10-13 23:28:42"
         },
         {
             "name": "monolog/monolog",
@@ -1945,7 +1945,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-08-30T11:40:25+00:00"
+            "time": "2015-08-30 11:40:25"
         },
         {
             "name": "nao-pon/flysystem-cached-extra",
@@ -1986,7 +1986,7 @@
                 }
             ],
             "description": "Extra traits for Flysystem cached adapter",
-            "time": "2018-02-16T01:44:38+00:00"
+            "time": "2018-02-16 01:44:38"
         },
         {
             "name": "nao-pon/flysystem-google-drive",
@@ -2035,7 +2035,7 @@
                 }
             ],
             "description": "Flysystem adapter for Google Drive",
-            "time": "2018-05-17T12:54:46+00:00"
+            "time": "2018-05-17 12:54:46"
         },
         {
             "name": "paragonie/random_compat",
@@ -2083,7 +2083,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-09-27T21:40:39+00:00"
+            "time": "2017-09-27 21:40:39"
         },
         {
             "name": "pear/net_dns2",
@@ -2127,7 +2127,7 @@
                 "dns",
                 "network"
             ],
-            "time": "2016-08-23T03:59:55+00:00"
+            "time": "2016-08-23 03:59:55"
         },
         {
             "name": "pelago/emogrifier",
@@ -2187,7 +2187,7 @@
             ],
             "description": "Converts CSS styles into inline style attributes in your HTML code",
             "homepage": "http://www.pelagodesign.com/sidecar/emogrifier/",
-            "time": "2016-09-26T07:15:35+00:00"
+            "time": "2016-09-26 07:15:35"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -2241,7 +2241,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2015-08-11T12:30:09+00:00"
+            "time": "2015-08-11 12:30:09"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2290,7 +2290,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2015-02-03T12:10:50+00:00"
+            "time": "2015-02-03 12:10:50"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -2377,7 +2377,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2018-09-30T03:57:24+00:00"
+            "time": "2018-09-30 03:57:24"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -2469,7 +2469,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2016-10-04T00:57:04+00:00"
+            "time": "2016-10-04 00:57:04"
         },
         {
             "name": "predis/predis",
@@ -2519,7 +2519,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-07-15T09:54:33+00:00"
+            "time": "2014-07-15 09:54:33"
         },
         {
             "name": "psr/cache",
@@ -2565,7 +2565,7 @@
                 "psr",
                 "psr-6"
             ],
-            "time": "2016-08-06T20:24:11+00:00"
+            "time": "2016-08-06 20:24:11"
         },
         {
             "name": "psr/http-message",
@@ -2615,7 +2615,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06T14:39:51+00:00"
+            "time": "2016-08-06 14:39:51"
         },
         {
             "name": "psr/log",
@@ -2662,7 +2662,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20T15:27:04+00:00"
+            "time": "2018-11-20 15:27:04"
         },
         {
             "name": "psr/simple-cache",
@@ -2710,7 +2710,7 @@
                 "psr-16",
                 "simple-cache"
             ],
-            "time": "2017-10-23T01:57:42+00:00"
+            "time": "2017-10-23 01:57:42"
         },
         {
             "name": "resty/resty",
@@ -2757,7 +2757,7 @@
                 "rest",
                 "restful"
             ],
-            "time": "2014-02-13T16:19:46+00:00"
+            "time": "2014-02-13 16:19:46"
         },
         {
             "name": "seld/cli-prompt",
@@ -2805,7 +2805,7 @@
                 "input",
                 "prompt"
             ],
-            "time": "2017-03-18T11:32:45+00:00"
+            "time": "2017-03-18 11:32:45"
         },
         {
             "name": "seld/jsonlint",
@@ -2854,7 +2854,7 @@
                 "parser",
                 "validator"
             ],
-            "time": "2018-01-24T12:46:19+00:00"
+            "time": "2018-01-24 12:46:19"
         },
         {
             "name": "seld/phar-utils",
@@ -2898,7 +2898,7 @@
             "keywords": [
                 "phra"
             ],
-            "time": "2015-10-13T18:44:15+00:00"
+            "time": "2015-10-13 18:44:15"
         },
         {
             "name": "simplepie/simplepie",
@@ -2958,7 +2958,7 @@
                 "feeds",
                 "rss"
             ],
-            "time": "2017-04-17T07:29:31+00:00"
+            "time": "2017-04-17 07:29:31"
         },
         {
             "name": "simshaun/recurr",
@@ -3012,7 +3012,7 @@
                 "recurring",
                 "rrule"
             ],
-            "time": "2014-09-29T21:23:39+00:00"
+            "time": "2014-09-29 21:23:39"
         },
         {
             "name": "solarium/solarium",
@@ -3070,7 +3070,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2017-02-02T13:32:22+00:00"
+            "time": "2017-02-02 13:32:22"
         },
         {
             "name": "srmklive/flysystem-dropbox-v2",
@@ -3119,7 +3119,7 @@
                 "srmklive",
                 "v2"
             ],
-            "time": "2017-10-20T15:24:32+00:00"
+            "time": "2017-10-20 15:24:32"
         },
         {
             "name": "stevenmaguire/oauth2-dropbox",
@@ -3174,7 +3174,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2017-02-03T22:32:30+00:00"
+            "time": "2017-02-03 22:32:30"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3211,9 +3211,7 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Chris Corbyn"
@@ -3225,7 +3223,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2013-08-30T12:35:21+00:00"
+            "time": "2013-08-30 12:35:21"
         },
         {
             "name": "symfony/console",
@@ -3294,7 +3292,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-26T12:48:07+00:00"
+            "time": "2018-11-26 12:48:07"
         },
         {
             "name": "symfony/debug",
@@ -3350,7 +3348,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-27T12:43:10+00:00"
+            "time": "2018-11-27 12:43:10"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -3410,7 +3408,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:36:31+00:00"
+            "time": "2018-01-03 07:36:31"
         },
         {
             "name": "symfony/filesystem",
@@ -3460,7 +3458,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-11T19:48:54+00:00"
+            "time": "2018-11-11 19:48:54"
         },
         {
             "name": "symfony/finder",
@@ -3509,7 +3507,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-11T19:48:54+00:00"
+            "time": "2018-11-11 19:48:54"
         },
         {
             "name": "symfony/http-foundation",
@@ -3562,7 +3560,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-09-25T09:52:29+00:00"
+            "time": "2014-09-25 09:52:29"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3609,7 +3607,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -3620,7 +3618,7 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2018-08-06T14:22:27+00:00"
+            "time": "2018-08-06 14:22:27"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -3679,7 +3677,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-09-21T13:07:52+00:00"
+            "time": "2018-09-21 13:07:52"
         },
         {
             "name": "symfony/process",
@@ -3728,7 +3726,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-20T16:10:26+00:00"
+            "time": "2018-11-20 16:10:26"
         },
         {
             "name": "symfony/yaml",
@@ -3775,7 +3773,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-25T04:37:39+00:00"
+            "time": "2015-01-25 04:37:39"
         },
         {
             "name": "tecnickcom/tcpdf",
@@ -3838,7 +3836,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2013-05-16T16:17:45+00:00"
+            "time": "2013-05-16 16:17:45"
         },
         {
             "name": "willdurand/geocoder",
@@ -3902,7 +3900,7 @@
                 "geocoding",
                 "geoip"
             ],
-            "time": "2015-01-07T13:23:35+00:00"
+            "time": "2015-01-07 13:23:35"
         }
     ],
     "packages-dev": [
@@ -3955,7 +3953,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-05-20T03:37:09+00:00"
+            "time": "2015-05-20 03:37:09"
         },
         {
             "name": "guzzlehttp/streams",
@@ -4005,7 +4003,7 @@
                 "Guzzle",
                 "stream"
             ],
-            "time": "2014-10-12T19:18:40+00:00"
+            "time": "2014-10-12 19:18:40"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -4053,7 +4051,7 @@
             "keywords": [
                 "test"
             ],
-            "time": "2016-01-20T08:20:44+00:00"
+            "time": "2016-01-20 08:20:44"
         },
         {
             "name": "mockery/mockery",
@@ -4118,7 +4116,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2016-11-29T20:06:26+00:00"
+            "time": "2016-11-29 20:06:26"
         },
         {
             "name": "react/promise",
@@ -4162,7 +4160,7 @@
                 }
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "time": "2016-05-03T17:50:52+00:00"
+            "time": "2016-05-03 17:50:52"
         }
     ],
     "aliases": [],
