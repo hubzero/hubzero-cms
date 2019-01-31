@@ -132,7 +132,6 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					{
 						continue;
 					}
-					$count++;
 
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $row->rank . '</td>' . "\n";
@@ -145,6 +144,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					$html .= "\t\t\t" . '<td>' . $vl . '%</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
+				$count++;
 			}
 		}
 		else
