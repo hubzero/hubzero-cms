@@ -144,7 +144,7 @@ class Versions extends AdminController
 
 				foreach ($dois as $doi)
 				{
-					if ($doi['versionid'] == $row['id'] || $doi['loval_revision'] = $row['revision'])
+					if ($doi['versionid'] == $row['id'] || $doi['local_revision'] == $row['revision'])
 					{
 						$rows[$k]['doi'] = $doi['doi_shoulder'] . '/' . $doi['doi'];
 						break;
