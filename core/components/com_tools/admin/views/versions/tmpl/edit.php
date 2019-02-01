@@ -110,15 +110,15 @@ function submitbutton(pressbutton)
 						</div>
 					</fieldset>
 
-					<?php if ($this->doi) { ?>
+					<?php if ($this->doi): ?>
 						<fieldset class="adminform">
 							<legend><span><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION_DOI'); ?></span></legend>
 
-							<?php if ($err = $this->doi->getError()) { ?>
+							<?php if ($err = $this->doi->getError()): ?>
 								<div class="input-wrap">
 									<p class="warning"><?php echo $err; ?></p>
 								</div>
-							<?php } else { ?>
+							<?php else: ?>
 								<div class="grid">
 									<div class="col span5">
 										<div class="input-wrap">
@@ -147,9 +147,9 @@ function submitbutton(pressbutton)
 								<input type="hidden" name="doi[local_revision]" value="<?php echo $this->escape($this->row->revision); ?>" />
 								<input type="hidden" name="doi[versionid]" value="<?php echo $this->escape($this->row->id); ?>" />
 								<input type="hidden" name="doi[alias]" value="<?php echo $this->escape($this->row->toolname); ?>" />
-							<?php } ?>
+							<?php endif; ?>
 						</fieldset>
-					<?php } ?>
+					<?php endif; ?>
 				</div>
 				<div class="col span5">
 					<table class="meta">
