@@ -110,6 +110,7 @@ function submitbutton(pressbutton)
 						</div>
 					</fieldset>
 
+<<<<<<< HEAD
 					<?php if ($this->doi): ?>
 						<fieldset class="adminform">
 							<legend><span><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION_DOI'); ?></span></legend>
@@ -119,6 +120,17 @@ function submitbutton(pressbutton)
 									<p class="warning"><?php echo $err; ?></p>
 								</div>
 							<?php else: ?>
+=======
+					<?php if ($this->doi) { ?>
+						<fieldset class="adminform">
+							<legend><span><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION_DOI'); ?></span></legend>
+
+							<?php if ($err = $this->doi->getError()) { ?>
+								<div class="input-wrap">
+									<p class="warning"><?php echo $err; ?></p>
+								</div>
+							<?php } else { ?>
+>>>>>>> 9ae1ef9... [feat] Adding DOI column and editing capability
 								<div class="grid">
 									<div class="col span5">
 										<div class="input-wrap">
@@ -147,9 +159,15 @@ function submitbutton(pressbutton)
 								<input type="hidden" name="doi[local_revision]" value="<?php echo $this->escape($this->row->revision); ?>" />
 								<input type="hidden" name="doi[versionid]" value="<?php echo $this->escape($this->row->id); ?>" />
 								<input type="hidden" name="doi[alias]" value="<?php echo $this->escape($this->row->toolname); ?>" />
+<<<<<<< HEAD
 							<?php endif; ?>
 						</fieldset>
 					<?php endif; ?>
+=======
+							<?php } ?>
+						</fieldset>
+					<?php } ?>
+>>>>>>> 9ae1ef9... [feat] Adding DOI column and editing capability
 				</div>
 				<div class="col span5">
 					<table class="meta">
