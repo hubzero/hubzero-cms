@@ -291,17 +291,21 @@ class Versions extends AdminController
 
 			if ($dois['doi'])
 			{
-				$doi = \Components\Resources\Models\Doi::oneOrNew($dois['id'])->set($dois);
-				if (!$doi['rid'])
+				if (!$dois['rid'])
 				{
 					if (file_exists(\Component::path('com_resources') . '/models/entry.php'))
 					{
 						require_once \Component::path('com_resources') . '/models/entry.php';
 
-						$doi['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
+						$dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
 					}
 				}
-				$doi->save();
+
+				$doi = \Components\Resources\Models\Doi::oneOrNew($dois['id'])->set($dois);
+				if (!$doi->save())
+				{
+					Notify::error($doi->getError());
+				}
 			}
 		}
 
