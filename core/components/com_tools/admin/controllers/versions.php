@@ -230,6 +230,38 @@ class Versions extends AdminController
 		$row->hostreq = $hostreq;
 		$row->update();
 
+		// If the DOI service is enabled
+		// and the DOI model exists
+		// and the tool version is not a dev version
+		if ($this->config->get('new_doi')
+		 && file_exists(\Component::path('com_resources') . '/models/doi.php')
+		 && substr($row->instance, -4) != '_dev')
+		{
+			require_once \Component::path('com_resources') . '/models/doi.php';
+
+			// Save DOI data
+			$dois = Request::getArray('doi', array(), 'post');
+
+			if ($dois['doi'])
+			{
+				if (!$dois['rid'])
+				{
+					if (file_exists(\Component::path('com_resources') . '/models/entry.php'))
+					{
+						require_once \Component::path('com_resources') . '/models/entry.php';
+
+						$dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
+					}
+				}
+
+				$doi = \Components\Resources\Models\Doi::oneOrNew($dois['id'])->set($dois);
+				if (!$doi->save())
+				{
+					Notify::error($doi->getError());
+				}
+			}
+		}
+
 		if ($this->getTask() == 'apply')
 		{
 			App::redirect(

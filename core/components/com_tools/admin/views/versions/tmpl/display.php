@@ -57,6 +57,9 @@ $this->css('tools.css');
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_VERSION', 'version', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_REVISION', 'revision', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php if ($this->config->get('new_doi')): ?>
+					<th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_DOI'); ?></th>
+				<?php endif; ?>
 			</tr>
 		</thead>
 		<tfoot>
@@ -140,6 +143,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))); ?></span>
 					</span>
 				</td>
+				<?php if ($this->config->get('new_doi')): ?>
+					<td><?php echo $row['doi']; ?></td>
+				<?php endif; ?>
 			</tr>
 <?php
 	$k = 1 - $k;
