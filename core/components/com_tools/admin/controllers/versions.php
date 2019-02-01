@@ -73,61 +73,94 @@ class Versions extends AdminController
 	public function displayTask()
 	{
 		// Get Filters
-		$this->view->filters       = array();
-		$this->view->filters['id'] = Request::getState(
+		$filters       = array();
+		$filters['id'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.versions.id',
 			'id',
 			0,
 			'int'
 		);
-		$this->view->filters['sort']     = Request::getState(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sort',
+		$filters['sort']     = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'sort',
 			'filter_order',
 			'toolname'
 		);
-		$this->view->filters['sort_Dir'] = Request::getState(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sortdir',
+		$filters['sort_Dir'] = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'sortdir',
 			'filter_order_Dir',
 			'ASC'
 		);
-		$this->view->filters['limit']    = Request::getState(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limit',
+		$filters['limit']    = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$this->view->filters['start']    = Request::getState(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limitstart',
+		$filters['start']    = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
 
-		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+		$filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
 		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
 
-		if (!$this->view->filters['id'])
+		if (!$filters['id'])
 		{
 			App::abort(404, Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));
 		}
-		$this->view->tool  = Tool::getInstance($this->view->filters['id']);
-		if (!$this->view->tool)
+
+		$tool = Tool::getInstance($filters['id']);
+
+		if (!$tool)
 		{
 			App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
 		}
-		$this->view->total = count($this->view->tool->version);
-		$this->view->rows  = $this->view->tool->getToolVersionSummaries($this->view->filters, true);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		$total = count($tool->version);
+		$rows  = $tool->getToolVersionSummaries($filters, true);
+
+		if ($this->config->get('new_doi')
+		 && file_exists(\Component::path('com_resources') . '/models/doi.php'))
 		{
-			$this->view->setError($error);
+			require_once \Component::path('com_resources') . '/models/doi.php';
+
+			$dois = \Components\Resources\Models\Doi::all()
+				->whereEquals('alias', $tool->toolname)
+				->rows()
+				->toArray();
+
+			foreach ($rows as $k => $row)
+			{
+				$rows[$k]['doi'] = '';
+
+				if (substr($row['instance'], -4) == '_dev')
+				{
+					continue;
+				}
+
+				foreach ($dois as $doi)
+				{
+					if ($doi['versionid'] == $row['id'] || $doi['loval_revision'] = $row['revision'])
+					{
+						$rows[$k]['doi'] = $doi['doi_shoulder'] . '/' . $doi['doi'];
+						break;
+					}
+				}
+			}
 		}
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('tool', $tool)
+			->set('total', $total)
+			->set('rows', $rows)
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**
@@ -150,22 +183,39 @@ class Versions extends AdminController
 			return $this->cancelTask();
 		}
 
-		$this->view->parent = Tool::getInstance($id);
+		$parent = Tool::getInstance($id);
 
 		if (!is_object($row))
 		{
 			$row = Version::getInstance($version);
 		}
-		$this->view->row = $row;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		$doi = null;
+
+		// If the DOI service is enabled
+		// and the DOI model exists
+		// and the tool version is not a dev version
+		if ($this->config->get('new_doi')
+		 && file_exists(\Component::path('com_resources') . '/models/doi.php'))
 		{
-			$this->view->setError($error);
+			require_once \Component::path('com_resources') . '/models/doi.php';
+
+			$doi = \Components\Resources\Models\Doi::all()
+				->whereEquals('alias', $row->toolname)
+				->whereEquals('local_revision', $row->revision)
+				->row();
+
+			if (substr($row->instance, -4) == '_dev')
+			{
+				$doi->addError(Lang::txt('COM_TOOLS_WARNING_DOI_DEV'));
+			}
 		}
 
 		// Display results
 		$this->view
+			->set('parent', $parent)
+			->set('row', $row)
+			->set('doi', $doi)
 			->setLayout('edit')
 			->display();
 	}
@@ -186,12 +236,9 @@ class Versions extends AdminController
 		// Do we have an ID?
 		if (!$fields['version'])
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_TOOLS_ERROR_MISSING_ID'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));
+
+			return $this->cancelTask();
 		}
 
 		$row = Version::getInstance(intval($fields['version']));
@@ -230,6 +277,34 @@ class Versions extends AdminController
 		$row->hostreq = $hostreq;
 		$row->update();
 
+		// If the DOI service is enabled
+		// and the DOI model exists
+		// and the tool version is not a dev version
+		if ($this->config->get('new_doi')
+		 && file_exists(\Component::path('com_resources') . '/models/doi.php')
+		 && substr($row->instance, -4) != '_dev')
+		{
+			require_once \Component::path('com_resources') . '/models/doi.php';
+
+			// Save DOI data
+			$dois = Request::getArray('doi', array(), 'post');
+
+			if ($dois['doi'])
+			{
+				$doi = \Components\Resources\Models\Doi::oneOrNew($dois['id'])->set($dois);
+				if (!$doi['rid'])
+				{
+					if (file_exists(\Component::path('com_resources') . '/models/entry.php'))
+					{
+						require_once \Component::path('com_resources') . '/models/entry.php';
+
+						$doi['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
+					}
+				}
+				$doi->save();
+			}
+		}
+
 		if ($this->getTask() == 'apply')
 		{
 			App::redirect(
@@ -238,48 +313,41 @@ class Versions extends AdminController
 			return;
 		}
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_ITEM_SAVED')
-		);
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
+
+		$this->editTask();
 	}
 
 	/**
 	 * Display a list of version zones
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayZonesTask()
 	{
-		$this->view->setLayout('component');
-
 		// Get the version number
 		$version = Request::getInt('version', 0);
 
 		// Do we have an ID?
 		if (!$version)
 		{
-			$this->cancelTask();
-			return;
+			return $this->cancelTask();
 		}
 
-		$this->view->rows    = Zone::whereEquals('tool_version_id', $version);
-		$this->view->version = $version;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$rows = Zone::whereEquals('tool_version_id', $version);
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('version', $version)
+			->setLayout('component')
+			->display();
 	}
 
 	/**
 	 * Add a new zone
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addZoneTask()
 	{
@@ -289,42 +357,34 @@ class Versions extends AdminController
 	/**
 	 * Edit a zone
 	 *
-	 * @return     void
+	 * @param   object  $row
+	 * @return  void
 	 */
 	public function editZoneTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('editZone');
-
-		if (is_object($row))
+		if (!is_object($row))
 		{
-			$this->view->row = $row;
-		}
-		else
-		{
-			$this->view->row = Zone::oneOrNew(Request::getInt('id', 0));
+			$row = Zone::oneOrNew(Request::getInt('id', 0));
 		}
 
-		if ($this->view->row->isNew())
+		if ($row->isNew())
 		{
-			$this->view->row->set('tool_version_id', Request::getInt('version', 0));
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row->set('tool_version_id', Request::getInt('version', 0));
 		}
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->set('row', $row)
+			->setLayout('editZone')
+			->display();
 	}
 
 	/**
 	 * Save changes to version zone
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveZoneTask()
 	{
@@ -365,7 +425,7 @@ class Versions extends AdminController
 	/**
 	 * Delete zone entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeZoneTask()
 	{
@@ -377,12 +437,12 @@ class Versions extends AdminController
 		if (!$row->destroy())
 		{
 			App::abort(500, $row->getError());
-			return;
 		}
 
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_DELETED'));
+
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0), false),
-			Lang::txt('COM_TOOLS_ITEM_DELETED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0), false)
 		);
 	}
 }
