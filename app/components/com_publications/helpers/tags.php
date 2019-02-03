@@ -903,7 +903,7 @@ class Tags extends \Hubzero\Base\Obj
 				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span data-size="' . round($size, 1) . 'em"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
 				}
 				else
 				{

@@ -65,13 +65,14 @@ function submitbutton(pressbutton)
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
-		<div style="float: right">
-			<?php if (!$this->getError()) { ?>
-			<button type="button" onclick="submitbutton('savecontent');"><?php echo Lang::txt( 'JSAVE' );?></button>
-			<?php } ?>
-			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt( 'Cancel' );?></button>
-		</div>
-		<div class="configuration" >
+		<div class="configuration">
+			<div class="configuration-options">
+				<?php if (!$this->getError()) { ?>
+					<button type="button" onclick="submitbutton('savecontent');"><?php echo Lang::txt( 'JSAVE' );?></button>
+				<?php } ?>
+				<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt( 'Cancel' );?></button>
+			</div>
+
 			<?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT') ?>
 		</div>
 	</fieldset>
@@ -99,14 +100,14 @@ function submitbutton(pressbutton)
 					// Customize title
 					$defaultTitle = $element->params->title
 									? str_replace('{pubtitle}', $this->pub->title,
-									$element->params->title) : NULL;
+									$element->params->title) : null;
 					$defaultTitle = $element->params->title
 									? str_replace('{pubversion}', $this->pub->version_label,
-									$defaultTitle) : NULL;
+									$defaultTitle) : null;
 
 					$attachments = $this->pub->_attachments;
 					$attachments = isset($attachments['elements'][$this->elementId])
-								 ? $attachments['elements'][$this->elementId] : NULL;
+								 ? $attachments['elements'][$this->elementId] : null;
 
 					// Get version params and extract bundle name
 					$bundleName = $this->pub->params->get($elName . 'bundlename', $defaultTitle);
